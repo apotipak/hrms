@@ -31,3 +31,8 @@
 [class*=sidebar-dark-] {
     background-color: #d6d7d8;
 }
+
+[class*=sidebar-dark] .brand-link {
+    border-bottom: 1px solid #c6c8ca;
+    color: rgba(255,255,255,.8);
+}
