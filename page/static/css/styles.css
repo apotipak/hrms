@@ -27,3 +27,7 @@
     width: 360px;
     margin-bottom: 80px;
 }
+
+[class*=sidebar-dark-] {
+    background-color: #d6d7d8;
+}

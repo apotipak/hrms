@@ -1,0 +1,112 @@
+{% load static %}
+
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="/" class="brand-link">      
+      <span class="brand-text font-weight-light">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+      <span class="brand-text font-weight-light"><img src="{% static 'img/logo-big.png' %}" width="150px;"></span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">  
+
+          {% if request.path|slice:":7" == '/leave/' %}
+          <li class="nav-item has-treeview active menu-open">
+            {% if request.path|slice:":6" == '/leave' %}
+            <a href="#" class="nav-link active">
+            {% else %}
+            <a href="#" class="nav-link">
+            {% endif %}
+            
+              <i class="nav-icon fa fa-laptop-medical"></i>
+              <p>
+                E-Leave
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                {% if request.path == "/leave/leave-history/" %}
+                <a href="{% url 'leave_history' %}" class="nav-link active">
+                {% else %}
+                <a href="{% url 'leave_history' %}" class="nav-link">
+                {% endif %}
+                  &nbsp;&nbsp;<i class="fa fa-check nav-icon"></i>
+                  <p>ประวัติการลา</p>
+                </a>
+              </li>              
+              <li class="nav-item">
+                {% if request.path == "/leave/employee/create/" %}
+                <a href="{% url 'employee_create' %}" class="nav-link active">
+                {% else %}
+                <a href="{% url 'employee_create' %}" class="nav-link">
+                {% endif %}
+                  &nbsp;&nbsp;<i class="fa fa-check nav-icon"></i>
+                  <p>เขียนใบลา</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                {% if request.path == "/leave/leave-policy/" %}
+                <a href="{% url 'leave_policy' %}" class="nav-link active">
+                {%else %}
+                <a href="{% url 'leave_policy' %}" class="nav-link">
+                    {% endif %}
+                  &nbsp;&nbsp;<i class="fa fa-check nav-icon"></i>
+                  <p>สิทธิการลา</p>
+                </a>
+              </li>              
+              {% if perms.leave.approve_leaveplan %}
+              <li class="nav-item">
+                {% if request.path == "/leave/leave-approval/" %}
+                <a href="{% url 'leave_approval' %}" class="nav-link active">
+                {% else %}
+                <a href="{% url 'leave_approval' %}" class="nav-link">
+                {% endif %}
+                  &nbsp;&nbsp;<i class="fa fa-check nav-icon"></i>
+                  <p>อนุมัติใบลา</p>
+                </a>
+              </li>
+              {% endif %}
+            </ul>
+          </li>
+          {% endif %}
+
+          {% if request.path|slice:":10" == '/contract/' %}
+            {% if perms.contract.view_tclcontractqty %}
+            <li class="nav-item has-treeview active menu-open">
+              {% if request.path|slice:":10" == '/contract/' %}
+              <a href="#" class="nav-link active">
+              {% else %}
+              <a href="#" class="nav-link">
+              {% endif %}
+                <i class="nav-icon fas fa-user-clock"></i>
+                <p>
+                  Daily Guard Info
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  {% if request.path == "/contract/contract-list/" %}
+                  <a href="{% url 'contract-list' %}" class="nav-link active">
+                  {% else %}
+                  <a href="{% url 'contract-list' %}" class="nav-link">
+                  {% endif %}
+                    &nbsp;&nbsp;<i class="fa fa-check nav-icon"></i>
+                    <p>รายการสัญญา</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            {% endif %}
+          {% endif %}          
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>
