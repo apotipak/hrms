@@ -22,3 +22,8 @@
     padding: .5rem;
     position: relative;
 }
+
+.login-box, .register-box {
+    width: 360px;
+    margin-bottom: 80px;
+}
