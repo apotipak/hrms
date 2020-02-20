@@ -13,7 +13,7 @@
         {% if request.path|slice:":10" == '/customer/' %}        
         <div>
         <div class="float-right">
-          <h3>ระบบลูกค้า</h3>
+          <!--<h3>ระบบลูกค้า</h3>-->
         </div>                  
         <div class="clearfix"></div>
         </div>
@@ -40,9 +40,9 @@
         <a class="nav-link" href="#">
             {% if user.is_authenticated %}
                 {% if user.is_superuser %}
-                    ยินดีต้อนรับ&nbsp;&nbsp;<b>Admin</b>
+                    ยินดีต้อนรับ&nbsp;&nbsp;<span class="text-primary"><b>Superadmin</b></span>
                 {% else %}
-                    ยินดีต้อนรับ&nbsp;&nbsp;<b>{{ user.get_short_name }}</b>
+                    ยินดีต้อนรับ&nbsp;&nbsp;<span class="text-primary"><b>{{ user.get_short_name }}</b></span>
                 {% endif %}
             {% endif %}
         </a>

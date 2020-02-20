@@ -16,31 +16,23 @@
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">  
 
-          {% if request.path|slice:":7" == '/leave/' %}
+          {% if request.path|slice:":9" == '/customer' %}
           <li class="nav-item has-treeview active menu-open">
-            {% if request.path|slice:":6" == '/leave' %}
+            {% if request.path|slice:":9" == '/customer' %}
             <a href="#" class="nav-link active">
             {% else %}
             <a href="#" class="nav-link">
-            {% endif %}
-            
-              <i class="nav-icon fa fa-laptop-medical"></i>
-              <p>
-                E-Leave
-                <i class="right fas fa-angle-left"></i>
-              </p>
+            {% endif %}            
+              <i class="nav-icon fa fa-user-tie"></i>
+              <p>ระบบลูกค้า<i class="right fas fa-angle-left"></i></p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                {% if request.path == "/leave/leave-history/" %}
-                <a href="{% url 'leave_history' %}" class="nav-link active">
-                {% else %}
-                <a href="{% url 'leave_history' %}" class="nav-link">
-                {% endif %}
-                  &nbsp;&nbsp;<i class="fa fa-check nav-icon"></i>
-                  <p>ประวัติการลา</p>
+                <a href="#" class="nav-link">
+                  <!--&nbsp;&nbsp;<i class="fa fa-check nav-icon"></i><p>Site</p>-->
+                  &nbsp;&nbsp;รายการลูกค้า
                 </a>
-              </li>                          
+              </li>              
             </ul>
           </li>
           {% endif %}       
