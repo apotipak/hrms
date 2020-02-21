@@ -14,13 +14,13 @@
 
       <!-- Sidebar Menu -->
       <nav class="mt-2">
-
-        <!-- System Control - Company -->
+        
         {% if request.path|slice:":15" == '/system-control' %}
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="true">  
+        <!-- System Control - Company -->
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="true">
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
-              <i class="nav-icon fa fa-wrench"></i><p>Company<i class="right fas fa-angle-left"></i></p>
+              <i class="nav-icon fa fa-cog"></i><p>Company<i class="right fas fa-angle-left"></i></p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
@@ -28,12 +28,32 @@
               </li>
               <li class="nav-item">
                 <a href="{% url 'company-company-information' %}" class="nav-link">&nbsp;&nbsp;Company Information</a>
+              </li>                            
+            </ul>
+          </li>           
+        </ul>
+        <!-- /.System Control - Company -->
+
+        <!-- System Control - Main Table -->
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="true">
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fa fa-cog"></i><p>Main Table<i class="right fas fa-angle-left"></i></p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="#" class="nav-link">&nbsp;&nbsp;Sub 1</a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">&nbsp;&nbsp;Sub 2</a>
               </li>              
             </ul>
           </li> 
-          <!-- /.System Control - Company -->
         </ul>
+        <!-- /.System Control - Main Table -->
+
         {% endif %}
+
       </nav>
       <!-- /.sidebar-menu -->
     </div>
