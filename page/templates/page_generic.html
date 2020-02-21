@@ -55,7 +55,7 @@
   {% if request.path|slice:":9" == '/customer' %}
     {% include "left_menu_customer.html" %}
   {% else %}
-    {% include "left_menu_system_control.html" %}
+    {% include "left_menu_system.html" %}
   {% endif %}
 
 
@@ -103,9 +103,11 @@
 <!-- overlayScrollbars -->
 <script src="{% static 'plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js' %}"></script>
 
-<script>
+<script src="{% static 'dist/js/adminlte.min.js' %}"></script>
 
-</script>
+{% block scripts %}
+
+{% endblock %}
 
 </body>
 </html>
