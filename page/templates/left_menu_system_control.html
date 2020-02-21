@@ -16,29 +16,6 @@
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">  
 
-          <!-- Customer -->
-          {% if request.path|slice:":9" == '/customer' %}
-          <li class="nav-item has-treeview active menu-open">
-            {% if request.path|slice:":9" == '/customer' %}
-            <a href="#" class="nav-link active">
-            {% else %}
-            <a href="#" class="nav-link">
-            {% endif %}            
-              <i class="nav-icon fa fa-user-tie"></i>
-              <p>ระบบลูกค้า<i class="right fas fa-angle-left"></i></p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <!--&nbsp;&nbsp;<i class="fa fa-check nav-icon"></i><p>Site</p>-->
-                  &nbsp;&nbsp;รายการลูกค้า
-                </a>
-              </li>              
-            </ul>
-          </li>
-          {% endif %}
-          <!-- /.Customer -->
-
           <!--Contract -->
           <!-- /.Contract -->
 
@@ -58,16 +35,16 @@
           <!-- /.Reports -->
 
           <!-- System Control - Company -->
-          {% if request.path|slice:":23" == '/system-control/company' %}
-          <li class="nav-item has-treeview active">          
+          {% if request.path|slice:":15" == '/system-control' %}
+
+          <li class="nav-item has-treeview active menu-open">       
 
             {% if request.path|slice:":23" == '/system-control/company' %}
             <a href="#" class="nav-link active">
             {% else %}
             <a href="#" class="nav-link">
             {% endif %}            
-              <i class="nav-icon fa fa-wrench"></i>
-              <p>Company<i class="right fas fa-angle-left"></i></p>
+              <i class="nav-icon fa fa-wrench"></i><p>Company<i class="right fas fa-angle-left"></i></p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
@@ -87,6 +64,7 @@
             </ul>
           </li> 
           {% endif %}         
+
           <!-- /.System Control - Company -->
 
         </ul>

@@ -52,7 +52,13 @@
   {% include "menu_bar_generic.html" %}
 
   <!-- Main Sidebar Container -->
-  {% include "left_menu_generic.html" %}
+  {% if request.path|slice:":9" == '/customer' %}
+    {% include "left_menu_customer.html" %}
+  {% else %}
+    {% include "left_menu_system_control.html" %}
+  {% endif %}
+
+
 
     {% block content %}{% endblock %}
 

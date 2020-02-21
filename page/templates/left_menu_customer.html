@@ -57,38 +57,6 @@
           <!--Reports -->
           <!-- /.Reports -->
 
-          <!-- System Control - Company -->
-          {% if request.path|slice:":23" == '/system-control/company' %}
-          <li class="nav-item has-treeview active">          
-
-            {% if request.path|slice:":23" == '/system-control/company' %}
-            <a href="#" class="nav-link active">
-            {% else %}
-            <a href="#" class="nav-link">
-            {% endif %}            
-              <i class="nav-icon fa fa-wrench"></i>
-              <p>Company<i class="right fas fa-angle-left"></i></p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                {% if request.path|slice:":40" == '/system-control/company-approve-priority' %}
-                <a href="#" class="nav-link active">&nbsp;&nbsp;Approve Priority</a>
-                {% else %}
-                <a href="{% url 'company-approve-priority' %}" class="nav-link">&nbsp;&nbsp;Approve Priority</a>
-                {% endif %}
-              </li>
-              <li class="nav-item">
-                {% if request.path|slice:":43" == '/system-control/company-company-information' %}
-                <a href="#" class="nav-link active">&nbsp;&nbsp;Company Information</a>
-                {% else %}
-                <a href="{% url 'company-company-information' %}" class="nav-link">&nbsp;&nbsp;Company Information</a>
-                {% endif %}
-              </li>              
-            </ul>
-          </li> 
-          {% endif %}         
-          <!-- /.System Control - Company -->
-
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
