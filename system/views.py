@@ -9,9 +9,9 @@ def Index(request):
 	return render(request, 'system/index.html', {'page_title': page_title})
 
 @login_required(login_url='/accounts/login/')
-def Company(request):
+def CompanyApprovePriority(request):
 	page_title = settings.PROJECT_NAME
-	return render(request, 'system/company.html', {'page_title': page_title})
+	return render(request, 'system/company_approve_priority.html', {'page_title': page_title})
 
 @login_required(login_url='/accounts/login/')
 def CompanyInformation(request):
