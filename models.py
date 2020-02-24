@@ -160,6 +160,23 @@ class TclContractQty(models.Model):
         db_table = 'TCl_Contract_QTY'
 
 
+class TAprove(models.Model):
+    apr_id = models.DecimalField(primary_key=True, max_digits=6, decimal_places=0)
+    apr_title = models.SmallIntegerField(blank=True, null=True)
+    apr_name_th = models.CharField(max_length=60, blank=True, null=True)
+    apr_name_en = models.CharField(max_length=60, blank=True, null=True)
+    apr_pos_th = models.CharField(max_length=50, blank=True, null=True)
+    apr_pos_en = models.CharField(max_length=50, blank=True, null=True)
+    apr_piority = models.CharField(max_length=3, blank=True, null=True)
+    upd_date = models.DateTimeField(blank=True, null=True)
+    upd_by = models.CharField(max_length=10, blank=True, null=True)
+    upd_flag = models.CharField(max_length=1, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'T_APROVE'
+
+
 class TCity(models.Model):
     city_id = models.DecimalField(primary_key=True, max_digits=2, decimal_places=0)
     country_id = models.SmallIntegerField(blank=True, null=True)
