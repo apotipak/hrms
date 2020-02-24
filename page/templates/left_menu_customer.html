@@ -14,52 +14,41 @@
 
       <!-- Sidebar Menu -->
       <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">  
 
-          <!-- Customer -->
-          {% if request.path|slice:":9" == '/customer' %}
-          <li class="nav-item has-treeview active menu-open">
-            {% if request.path|slice:":9" == '/customer' %}
-            <a href="#" class="nav-link active">
-            {% else %}
+        <!-- Customer -->
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="true">
+          <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
-            {% endif %}            
-              <i class="nav-icon fa fa-user-tie"></i>
-              <p>ระบบลูกค้า<i class="right fas fa-angle-left"></i></p>
+              <i class="nav-icon fa fa-user-tie"></i><p>Customer<i class="right fas fa-angle-left"></i></p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <!--&nbsp;&nbsp;<i class="fa fa-check nav-icon"></i><p>Site</p>-->
-                  &nbsp;&nbsp;รายการลูกค้า
-                </a>
-              </li>              
+                <a href="{% url 'customer-list' %}" class="nav-link"><i class="fas fa-caret-right nav-icon"></i><p>Customer List</p></a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link"><i class="fas fa-caret-right nav-icon"></i><p>Inquiry & Report</p></a>
+              </li>
             </ul>
-          </li>
-          {% endif %}
-          <!-- /.Customer -->
-
-          <!--Contract -->
-          <!-- /.Contract -->
-
-          <!--Employee -->
-          <!-- /.Employee -->
-
-          <!--Income / Deduct -->
-          <!-- /.Income /Deduct -->
-
-          <!--Payroll -->
-          <!-- /.Payroll -->
-
-          <!--Daily Monitoring -->
-          <!-- /.Daily Monitoring -->
-
-          <!--Reports -->
-          <!-- /.Reports -->
-
+          </li> 
         </ul>
+        <!-- /.Customer -->
+
       </nav>
       <!-- /.sidebar-menu -->
     </div>
     <!-- /.sidebar -->
   </aside>
+
+  {% block scripts %}
+
+<script type='text/javascript'>
+$(document).ready(function() {
+  var pathname = window.location.pathname;
+  
+  $('.nav-treeview > li > a[href="'+pathname+'"]').addClass('active');
+  $('.nav-treeview > li > a[href="'+pathname+'"]').closest('.has-treeview').addClass('has-treeview menu-open');
+  $('.nav-treeview > li > a[href="'+pathname+'"]').parents('li.has-treeview').children().addClass('active');
+  
+})
+</script>
+{% endblock %}
