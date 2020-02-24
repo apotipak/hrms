@@ -7,16 +7,28 @@ from django.conf import settings
 def CustomerList(request):	
 	page_title = settings.PROJECT_NAME
 	db_server = settings.DATABASES['default']['HOST']
-	return render(request, 'customer/customer_list.html', {'page_title': page_title, 'db_server': db_server})
+	project_name = settings.PROJECT_NAME
+	project_version = settings.PROJECT_VERSION
+	today_date = settings.TODAY_DATE	
+
+	return render(request, 'customer/customer_list.html', {'page_title': page_title, 'project_name': project_name, 'project_version': project_version, 'db_server': db_server, 'today_date': today_date})
 
 @login_required(login_url='/accounts/login/')
 def PerformanceInformation(request):
 	page_title = settings.PROJECT_NAME
 	db_server = settings.DATABASES['default']['HOST']
-	return render(request, 'customer/performance_information.html', {'page_title': page_title, 'db_server': db_server})
+	project_name = settings.PROJECT_NAME
+	project_version = settings.PROJECT_VERSION	
+	today_date = settings.TODAY_DATE
+
+	return render(request, 'customer/performance_information.html', {'page_title': page_title, 'project_name': project_name, 'project_version': project_version, 'db_server': db_server, 'today_date': today_date})
 
 @login_required(login_url='/accounts/login/')
 def CustomerReport(request):
 	page_title = settings.PROJECT_NAME
 	db_server = settings.DATABASES['default']['HOST']
-	return render(request, 'customer/customer_report.html', {'page_title': page_title, 'db_server': db_server})
+	project_name = settings.PROJECT_NAME
+	project_version = settings.PROJECT_VERSION	
+	today_date = settings.TODAY_DATE
+
+	return render(request, 'customer/customer_report.html', {'page_title': page_title, 'project_name': project_name, 'project_version': project_version, 'db_server': db_server, 'today_date': today_date})

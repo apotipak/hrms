@@ -9,4 +9,8 @@ from django.conf import settings
 def ReportList(request):
 	page_title = settings.PROJECT_NAME
 	db_server = settings.DATABASES['default']['HOST']
-	return render(request, 'report/report_list.html', {'page_title': page_title, 'db_server': db_server})
+	project_name = settings.PROJECT_NAME
+	project_version = settings.PROJECT_VERSION
+	today_date = settings.TODAY_DATE
+
+	return render(request, 'report/report_list.html', {'page_title': page_title, 'project_name': project_name, 'project_version': project_version, 'db_server': db_server, 'today_date': today_date})	
