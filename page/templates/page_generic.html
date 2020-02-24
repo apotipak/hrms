@@ -54,13 +54,23 @@
   <!-- Main Sidebar Container -->
   {% if request.path|slice:":9" == '/customer' %}
     {% include "left_menu_customer.html" %}
-  {% else %}
+  {% elif request.path|slice:":9" == '/contract' %}
+    {% include "left_menu_contract.html" %}
+  {% elif request.path|slice:":9" == '/employee' %}
+    {% include "left_menu_employee.html" %}
+  {% elif request.path|slice:":14" == '/income-deduct' %}
+    {% include "left_menu_income_deduct.html" %}
+  {% elif request.path|slice:":8" == '/payroll' %}
+    {% include "left_menu_payroll.html" %}    
+  {% elif request.path|slice:":11" == '/monitoring' %}
+    {% include "left_menu_monitoring.html" %}
+  {% elif request.path|slice:":7" == '/report' %}
+    {% include "left_menu_report.html" %}      
+  {% elif request.path|slice:":15" == '/system-control' %}
     {% include "left_menu_system.html" %}
   {% endif %}
 
-
-
-    {% block content %}{% endblock %}
+  {% block content %}{% endblock %}
 
   {% include "footer_generic.html" %}
   

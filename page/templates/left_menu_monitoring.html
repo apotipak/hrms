@@ -15,18 +15,38 @@
       <!-- Sidebar Menu -->
       <nav class="mt-2">
 
-        <!-- Customer -->
+        <!-- Daily Monitoring -->
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="true">
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
-              <i class="nav-icon fa fa-user-tie"></i><p>Customer<i class="right fas fa-angle-left"></i></p>
+              <i class="nav-icon fa fa-desktop"></i><p>Daily Monitoring<i class="right fas fa-angle-left"></i></p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{% url 'customer-list' %}" class="nav-link"><i class="fas fa-caret-right nav-icon"></i><p>Customer List</p></a>
+                <a href="{% url 'monitoring-list' %}" class="nav-link"><i class="fas fa-caret-right nav-icon"></i><p>Daily Monitoring List</p></a>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link"><i class="fas fa-caret-right nav-icon"></i><p>Performance Information</p></a>
+                <a href="#" class="nav-link"><i class="fas fa-caret-right nav-icon"></i><p>Schedule Maintenance</p></a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link"><i class="fas fa-caret-right nav-icon"></i><p>Daily Attendance</p></a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link"><i class="fas fa-caret-right nav-icon"></i><p>Daily Guard Performance</p></a>
+              </li>
+              <li class="nav-item"><hr></li>
+              <li class="nav-item">
+                <a href="#" class="nav-link"><i class="fas fa-caret-right nav-icon"></i><p>Generate Daily Attend</p></a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link"><i class="fas fa-caret-right nav-icon"></i><p>Post Daily Attend</p></a>
+              </li>
+              <li class="nav-item"><hr></li>
+              <li class="nav-item">
+                <a href="#" class="nav-link"><i class="fas fa-caret-right nav-icon"></i><p>Export Guard Master File</p></a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link"><i class="fas fa-caret-right nav-icon"></i><p>Import Guard Attend</p></a>
               </li>
               <li class="nav-item"><hr></li>
               <li class="nav-item">
@@ -35,7 +55,7 @@
             </ul>
           </li> 
         </ul>
-        <!-- /.Customer -->
+        <!-- /.Daily Monitoring -->
 
       </nav>
       <!-- /.sidebar-menu -->
