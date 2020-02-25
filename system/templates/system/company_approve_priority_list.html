@@ -4,6 +4,10 @@
 
 {% load static %}
 
+{% block javascript %}
+  <script src="{% static 'system/js/system.js' %}"></script>
+{% endblock %}
+
 {% block content %}
 
   <!-- Content Wrapper. Contains page content -->
@@ -34,7 +38,7 @@
 
           <h3 class="card-title"><b>Approve Priority</b></h3>          
           <div class="card-tools">
-            <button type="button" class="btn btn-success"><i class="fas fa-plus"></i> เพิ่ม</button>
+            <button type="button" class="btn btn-success js-create-approve-priority"><i class="fas fa-plus"></i> เพิ่ม</button>
           </div>
           
         </div>
@@ -102,6 +106,13 @@
 
   </div>
   <!-- /.content-wrapper -->
+
+  <!-- THE MODAL WE WILL BE USING -->
+  <div class="modal fade" id="modal-approve-priority">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      </div>
+    </div>
 
 {% endblock %}
 

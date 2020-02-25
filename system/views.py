@@ -4,8 +4,9 @@ from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
-from system.models import TAprove
 from django.views import generic
+from system.models import TAprove
+from .forms import CompanyApprovePriorityForm
 
 
 @login_required(login_url='/accounts/login/')
@@ -20,7 +21,7 @@ def Index(request):
 
 
 class CompanyApprovePriorityListView(PermissionRequiredMixin, generic.ListView):
-    template_name = 'system/company_approve_priority.html'    
+    template_name = 'system/company_approve_priority_list.html'    
     permission_required = ('system.view_taprove')
     model = TAprove
     #paginate_by = 20
@@ -44,6 +45,15 @@ class CompanyApprovePriorityListView(PermissionRequiredMixin, generic.ListView):
 class CompanyApprovePriorityDetailView(PermissionRequiredMixin, generic.DetailView):
     permission_required = ('system.view_taprove')
     model = TAprove
+
+def CompanyApprovePriorityCreate(request):
+    form = CompanyApprovePriorityForm()
+    context = {'form': form}
+    html_form = render_to_string('system/partial_company_approve_priority_create.html',
+        context,
+        request=request,
+    )
+    return JsonResponse({'html_form': html_form})
 
 
 @login_required(login_url='/accounts/login/')
