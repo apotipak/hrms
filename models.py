@@ -219,6 +219,22 @@ class TDistrict(models.Model):
         db_table = 'T_DISTRICT'
 
 
+class TTitle(models.Model):
+    title_id = models.SmallIntegerField(primary_key=True)
+    title_th = models.CharField(max_length=30, blank=True, null=True)
+    title_en = models.CharField(max_length=30, blank=True, null=True)
+    title_sht_th = models.CharField(max_length=10, blank=True, null=True)
+    title_sht_en = models.CharField(max_length=10, blank=True, null=True)
+    title_sex = models.CharField(max_length=1, blank=True, null=True)
+    upd_date = models.DateTimeField(blank=True, null=True)
+    upd_by = models.CharField(max_length=10, blank=True, null=True)
+    upd_flag = models.CharField(max_length=1, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'T_TITLE'
+
+
 class VBiDlyPlanWork(models.Model):
     zone_en = models.CharField(max_length=30, blank=True, null=True)
     qty = models.DecimalField(db_column='Qty', max_digits=38, decimal_places=0, blank=True, null=True)  # Field name made lowercase.

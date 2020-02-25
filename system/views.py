@@ -6,6 +6,8 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.views import generic
 from system.models import TAprove
+from django.http import JsonResponse
+from django.template.loader import render_to_string
 from .forms import CompanyApprovePriorityForm
 
 
@@ -49,9 +51,9 @@ class CompanyApprovePriorityDetailView(PermissionRequiredMixin, generic.DetailVi
 def CompanyApprovePriorityCreate(request):
     form = CompanyApprovePriorityForm()
     context = {'form': form}
-    html_form = render_to_string('system/partial_company_approve_priority_create.html',
+    html_form = render_to_string('system/company/partial_approve_priority_create.html',
         context,
-        request=request,
+        request = request,
     )
     return JsonResponse({'html_form': html_form})
 

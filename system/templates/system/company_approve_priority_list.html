@@ -107,12 +107,13 @@
   </div>
   <!-- /.content-wrapper -->
 
-  <!-- THE MODAL WE WILL BE USING -->
   <div class="modal fade" id="modal-approve-priority">
     <div class="modal-dialog">
       <div class="modal-content">
+
       </div>
     </div>
+  </div>
 
 {% endblock %}
 
@@ -123,7 +124,7 @@
   $(function () {
     $('#approve_list_table').DataTable({
       "paging": true,
-      "pageLength": 15,
+      "pageLength": 10,
       "lengthChange": false,
       "searching": true,
       "ordering": false,
@@ -133,7 +134,7 @@
          "sSearch": "ค้นหา",
       },
       "language": {
-          "lengthMenu": '_MENU_ bản ghi trên trang',
+          "lengthMenu": '_MENU_ จำนวน',
               "search": '<i class="fa fa-search"></i>',
               "searchPlaceholder": "ค้นหา",
               "paginate": {

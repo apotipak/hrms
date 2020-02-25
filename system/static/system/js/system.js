@@ -1,8 +1,11 @@
 $(function () {
 
   $(".js-create-approve-priority").click(function () {
+
+    console.log("test");
+
     $.ajax({
-      url: '/company-approve-priority-create/',
+      url: '/system-control/company-approve-priority/create',
       type: 'get',
       dataType: 'json',
       beforeSend: function () {
@@ -12,6 +15,7 @@ $(function () {
         $("#modal-approve-priority .modal-content").html(data.html_form);
       }
     });
+
   });
 
 });
