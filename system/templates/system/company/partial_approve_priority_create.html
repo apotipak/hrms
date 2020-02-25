@@ -6,12 +6,15 @@
 
 <form method="post">
   {% csrf_token %}
+
   <div class="modal-header">
+    <h4 class="modal-title">Create New</h4>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
-    <h4 class="modal-title">Create New</h4>
   </div>
+
+
   <div class="modal-body">
     {% for field in form %}
       <div class="form-group{% if field.errors %} has-error{% endif %}">
@@ -23,8 +26,18 @@
       </div>
     {% endfor %}
   </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-    <button type="submit" class="btn btn-primary">Create</button>
+        
+
+
+
+
+
+
+
+  <div class="modal-footer justify-content-between align-right">
+      <button type="button" class="btn btn-default invisible" data-dismiss="modal">&nbsp;</button>
+      <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">&nbsp;&nbsp;ปิด&nbsp;&nbsp;</button>
   </div>
+
+
 </form>
