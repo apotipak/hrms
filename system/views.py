@@ -48,8 +48,19 @@ class CompanyApprovePriorityDetailView(PermissionRequiredMixin, generic.DetailVi
     permission_required = ('system.view_taprove')
     model = TAprove
 
+
 def CompanyApprovePriorityCreate(request):
-    form = CompanyApprovePriorityForm()
+    data = dict()
+
+    if request.method == 'POST':
+        form = CompanyApprovePriorityForm(request.POST)
+        if form.is_valid():
+            data['form_is_valid'] = True
+        else:
+            data['form_is_valid'] = False
+    else:
+        form = CompanyApprovePriorityForm()
+
     context = {'form': form}
     html_form = render_to_string('system/company/partial_approve_priority_create.html',
         context,

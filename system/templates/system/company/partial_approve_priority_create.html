@@ -4,7 +4,7 @@
   {{ hidden }}
 {% endfor %}
 
-<form method="post">
+<form method="post" action="{% url 'company-approve-priority-create' %}" class="js-approve-priority-create-form">  
   {% csrf_token %}
 
   <div class="modal-header">
@@ -27,17 +27,9 @@
     {% endfor %}
   </div>
         
-
-
-
-
-
-
-
-  <div class="modal-footer justify-content-between align-right">
-      <button type="button" class="btn btn-default invisible" data-dismiss="modal">&nbsp;</button>
-      <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">&nbsp;&nbsp;ปิด&nbsp;&nbsp;</button>
+  <div class="modal-footer align-right">
+      <button type="button" class="btn btn-default" data-dismiss="modal">ยกเลิก</button>
+      <button type="button" class="btn btn-success" data-dismiss="modal">&nbsp;&nbsp;บันทึก&nbsp;&nbsp;</button>
   </div>
-
 
 </form>
