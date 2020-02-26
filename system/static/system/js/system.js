@@ -27,13 +27,13 @@ $(function () {
       dataType: 'json',
       success: function (data) {        
         if (data.form_is_valid) {
-          alert("success");
-          //$("#company-approve-priority-table tbody").html(data.html_book_list);
-          //$("#modal-company-approve-priority").modal("hide");
+          //alert("success");
+          $("#company-approve-priority-table tbody").html(data.html_book_list);
+          $("#modal-company-approve-priority").modal("hide");
         }
         else {
-          alert(data.form_is_valid);
-          //$("#modal-company-approve-priority .modal-content").html(data.html_form);
+          //alert(data.form_is_valid);
+          $("#modal-company-approve-priority .modal-content").html(data.html_form);
         }
       }
     });

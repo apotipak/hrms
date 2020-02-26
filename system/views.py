@@ -49,25 +49,28 @@ class CompanyApprovePriorityDetailView(PermissionRequiredMixin, generic.DetailVi
     model = TAprove
 
 
-def CompanyApprovePriorityCreate(request):
+def save_company_approve_priority_form(request, form, template_name):
     data = dict()
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            data['form_is_valid'] = True
+            tapprove = TAprove.objects.all()
+            data['html_company_approve_priority_list'] = render_to_string('system/company_approve_priority_list.html', {
+                'taprove': TAprove
+            })
+        else:
+            data['form_is_valid'] = False
+    context = {'form': form}
+    data['html_form'] = render_to_string(template_name, context, request=request)
+    return JsonResponse(data)
 
+def CompanyApprovePriorityCreate(request):
     if request.method == 'POST':
         form = CompanyApprovePriorityForm(request.POST)
-        print(form)
-        if form.is_valid():
-            data['form_is_valid'] = True
-        else:
-            data['form_is_valid'] = True
     else:
         form = CompanyApprovePriorityForm()
-
-    context = {'form': form}
-    html_form = render_to_string('system/company/partial_approve_priority_create.html',
-        context,
-        request = request,
-    )
-    return JsonResponse({'html_form': html_form})
+    return save_company_approve_priority_form(request, form, 'system/company/partial_approve_priority_create.html')
 
 
 @login_required(login_url='/accounts/login/')
