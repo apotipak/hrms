@@ -4,7 +4,7 @@
   {{ hidden }}
 {% endfor %}
 
-<form method="post" action="{% url 'company-approve-priority-create' %}" class="js-approve-priority-create-form">  
+<form method="post" action="{% url 'company-approve-priority-create' %}" class="js-company-approve-priority-create-form">  
   {% csrf_token %}
 
   <div class="modal-header">
@@ -13,7 +13,6 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-
 
   <div class="modal-body">
     {% for field in form %}
@@ -28,8 +27,8 @@
   </div>
         
   <div class="modal-footer align-right">
-      <button type="button" class="btn btn-default" data-dismiss="modal">ยกเลิก</button>
-      <button type="button" class="btn btn-success" data-dismiss="modal">&nbsp;&nbsp;บันทึก&nbsp;&nbsp;</button>
+    <button type="button" class="btn btn-default" data-dismiss="modal">ยกเลิก</button>
+    <button type="button" class="btn btn-success" data-dismiss="modal">&nbsp;&nbsp;บันทึก&nbsp;&nbsp;</button>
   </div>
 
 </form>

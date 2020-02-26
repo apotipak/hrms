@@ -9,11 +9,11 @@ $(function () {
       type: 'get',
       dataType: 'json',
       beforeSend: function () {
-        $("#modal-approve-priority .modal-content").html("");
-        $("#modal-approve-priority").modal("show");
+        $("#modal-company-approve-priority .modal-content").html("");
+        $("#modal-company-approve-priority").modal("show");
       },
       success: function (data) {
-        $("#modal-approve-priority .modal-content").html(data.html_form);
+        $("#modal-company-approve-priority .modal-content").html(data.html_form);
       }
     });
   };
@@ -27,11 +27,11 @@ $(function () {
       dataType: 'json',
       success: function (data) {
         if (data.form_is_valid) {
-          $("#approve-priority-table tbody").html(data.html_book_list);
-          $("#modal-approve-priority").modal("hide");
+          $("#company-approve-priority-table tbody").html(data.html_book_list);
+          $("#modal-company-approve-priority").modal("hide");
         }
         else {
-          $("#modal-approve-priority .modal-content").html(data.html_form);
+          $("#modal-company-approve-priority .modal-content").html(data.html_form);
         }
       }
     });
@@ -42,7 +42,7 @@ $(function () {
   /* Binding */
 
   // Create book
-  $(".js-create-approve-priority").click(loadForm);
-  $("#modal-approve-priority").on("submit", ".js-approve-priority-create-form", saveForm);
+  $(".js-create-company-approve-priority").click(loadForm);
+  $("#modal-company-approve-priority").on("submit", ".js-company-approve-priority-create-form", saveForm);
 
 });

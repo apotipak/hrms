@@ -5,109 +5,111 @@
 {% load static %}
 
 {% block javascript %}
-  <script src="{% static 'system/js/system.js' %}"></script>
+<script src="{% static 'system/js/system.js' %}"></script>
 {% endblock %}
 
 {% block content %}
 
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0 text-dark"><small><i class="fas fa-cogs text-secondary"></i></small>&nbsp;&nbsp;System Control</h1>
-          </div><!-- /.col -->
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item active">&nbsp;</li>
-            </ol>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content-header -->
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0 text-dark"><small><i class="fas fa-cogs text-secondary"></i></small>&nbsp;&nbsp;System Control</h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item active">&nbsp;</li>
+          </ol>
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </div>
+  <!-- /.content-header -->
 
-    <!-- Main content -->
-    <section class="content">
+  <!-- Main content -->
+  <section class="content">
 
-      <!-- Default box -->
-      <div class="card">
-        <div class="card-header" style="vertical-align: middle;">
+    <!-- Default box -->
+    <div class="card">
+      <div class="card-header" style="vertical-align: middle;">
 
-          <h3 class="card-title"><b>Approve Priority</b></h3>          
-          <div class="card-tools">
-            <button type="button" class="btn btn-success js-create-approve-priority"><i class="fas fa-plus"></i> เพิ่ม</button>
-          </div>
-          
+        <h3 class="card-title"><b>Approve Priority</b></h3>          
+        <div class="card-tools">
+          <button type="button" class="btn btn-success js-create-company-approve-priority" data-url="{% url 'company-approve-priority-create' %}"><i class="fas fa-plus"></i> เพิ่ม</button>
         </div>
         
-        <div class="card-body">
-          {% if taprove_list %}
-          <table id="approve_list_table" class="table table-bordered table-striped">
-            <thead>
-            <tr>
-              <th scope="col">Approve ID</th>
-              <th scope="col">Name(TH)</th>
-              <th scope="col">Position(TH)</th>
-              <th scope="col">Priority Type</th>
-              <th scope="col">&nbsp;</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for item in taprove_list %}
-                <tr>
-                    <td>{{item.apr_id}}</td>
-                    <td>{{item.apr_name_th}}</td>
-                    <td>
-                      {% if item.apr_pos_th != Null %}                      
-                      {{item.apr_pos_th}}
-                      {% else %}
-                        &nbsp;
-                      {% endif %}
-                    </td>
-                    <td>{{item.apr_piority}}</td>
-                    <td class="text-right py-0 align-middle">
-                      <div class="btn-group btn-group-sm">
-                         <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                         <a href="#" class="btn btn-primary"><i class="nav-icon fa fa-pen"></i></a>
-                         <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>                         
-                      </div>
-                    </td>                    
-                </tr>
-            {% endfor %}
-            </tbody>
-          </table>
-          {% else %}
-          <div class="col-lg-12">
-            <div class="alert alert-success" role="alert">
-              <i class="fa fa-info-circle"></i>&nbsp;&nbsp;ยังไม่มีรายการอยู่ในระบบ
-            </div>           
-          </div>
-          {% endif %}
-       
-        </div>
-        <!-- /.card-body -->
-
-        <!--
-        <div class="card-footer">
-          Footer
-        </div>
-        -->
-
-        <!-- /.card-footer-->
-
       </div>
-      <!-- /.card -->
+      
+      <div class="card-body">
+        {% if taprove_list %}
+        <table id="company-approve-priority-table" class="table table-bordered table-striped">
+          <thead>
+          <tr>
+            <th scope="col">Approve ID</th>
+            <th scope="col">Name(TH)</th>
+            <th scope="col">Position(TH)</th>
+            <th scope="col">Priority Type</th>
+            <th scope="col">&nbsp;</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for item in taprove_list %}
+              <tr>
+                  <td>{{item.apr_id}}</td>
+                  <td>{{item.apr_name_th}}</td>
+                  <td>
+                    {% if item.apr_pos_th != Null %}                      
+                    {{item.apr_pos_th}}
+                    {% else %}
+                      &nbsp;
+                    {% endif %}
+                  </td>
+                  <td>{{item.apr_piority}}</td>
+                  <td class="text-right py-0 align-middle">
+                    <div class="btn-group btn-group-sm">
+                       <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
+                       <a href="#" class="btn btn-primary"><i class="nav-icon fa fa-pen"></i></a>
+                       <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>                         
+                    </div>
+                  </td>                    
+              </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+        {% else %}
+        <div class="col-lg-12">
+          <div class="alert alert-warning" role="alert">
+            <i class="fa fa-info-circle"></i>&nbsp;&nbsp;ยังไม่มีรายการอยู่ในระบบ
+          </div>           
+        </div>
+        {% endif %}
+     
+      </div>
+      <!-- /.card-body -->
 
-    </section>
-    <!-- /.content -->
+      <div class="card-footer">
+        &nbsp;
+      </div>
 
+      <!-- /.card-footer-->
+
+    </div>
+    <!-- /.card -->
+
+  </section>
+  <!-- /.content -->
+
+</div>
+<!-- /.content-wrapper -->
+
+<div class="modal fade" id="modal-company-approve-priority">
+  <div class="modal-dialog">
+    <div class="modal-content">
   </div>
-  <!-- /.content-wrapper -->
-
-
+</div>
 
 {% endblock %}
 
