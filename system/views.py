@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -54,10 +54,11 @@ def CompanyApprovePriorityCreate(request):
 
     if request.method == 'POST':
         form = CompanyApprovePriorityForm(request.POST)
+        print(form)
         if form.is_valid():
             data['form_is_valid'] = True
         else:
-            data['form_is_valid'] = False
+            data['form_is_valid'] = True
     else:
         form = CompanyApprovePriorityForm()
 
@@ -75,6 +76,6 @@ def CompanyInformation(request):
 	db_server = settings.DATABASES['default']['HOST']
 	project_name = settings.PROJECT_NAME
 	project_version = settings.PROJECT_VERSION
-	today_date = settings.TODAY_DATE		
+	today_date = settings.TODAY_DATE
 
 	return render(request, 'system/company_information.html', {'page_title': page_title, 'project_name': project_name, 'project_version': project_version, 'db_server': db_server, 'today_date': today_date})

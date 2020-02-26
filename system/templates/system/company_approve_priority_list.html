@@ -45,7 +45,7 @@
       
       <div class="card-body">
         {% if taprove_list %}
-        <table id="company-approve-priority-table" class="table table-bordered table-striped">
+        <table id="company-approve-priority-list-table" class="table table-bordered table-striped">
           <thead>
           <tr>
             <th scope="col">Approve ID</th>
@@ -118,7 +118,7 @@
 <!-- page script -->
 <script>
   $(function () {
-    $('#approve_list_table').DataTable({
+    $('#company-approve-priority-list-table').DataTable({
       "paging": true,
       "pageLength": 10,
       "lengthChange": false,
