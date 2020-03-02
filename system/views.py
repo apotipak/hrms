@@ -71,6 +71,13 @@ def save_company_approve_priority_form(request, form, template_name):
     data['html_form'] = render_to_string(template_name, context, request=request)
     return JsonResponse(data)
 
+def CompanyApprovePriorityUpdate(request, pk):
+    company_approve_priority = get_object_or_404(TAprove, pk=pk)
+    if request.method == 'POST':
+        form = CompanyApprovePriorityForm(request.POST, instance=company_approve_priority)
+    else:
+        form = CompanyApprovePriorityForm(instance=company_approve_priority)
+    return save_company_approve_priority_form(request, form, 'system/company/partial_approve_priority_update.html')
 
 def CompanyApprovePriorityDelete(request, pk):
     company_approve_priority = get_object_or_404(TAprove, pk=pk)

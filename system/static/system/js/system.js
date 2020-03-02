@@ -43,11 +43,15 @@ $(function () {
 
   /* Binding */
 
-  // Create book
+  // Create Company Approve Priority
   $(".js-create-company-approve-priority").click(loadForm);
   $("#modal-company-approve-priority").on("submit", ".js-company-approve-priority-create-form", saveForm);
 
-  // Delete book
+  // Update Company Approve Priority
+  $("#company-approve-priority-list-table").on("click", ".js-update-company-approve-priority", loadForm);
+  $("#modal-company-approve-priority").on("submit", ".js-company-approve-priority-update-form", saveForm);
+
+  // Delete Company Approve Priority
   $("#company-approve-priority-list-table").on("click", ".js-delete-company-approve-priority", loadForm);
   $("#modal-company-approve-priority").on("submit", ".js-company-approve-priority-delete-form", saveForm);  
 
