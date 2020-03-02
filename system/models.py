@@ -16,6 +16,20 @@ class TTitle(models.Model):
         managed = True
         db_table = 'T_TITLE'
 
+class ComDepartment(models.Model):
+    dept_id = models.DecimalField(primary_key=True, max_digits=4, decimal_places=0)
+    div_id = models.DecimalField(max_digits=3, decimal_places=0, blank=True, null=True)
+    dept_sht = models.CharField(max_length=20, blank=True, null=True)
+    dept_th = models.CharField(max_length=50, blank=True, null=True)
+    dept_en = models.CharField(max_length=50, blank=True, null=True)
+    dept_zone = models.BooleanField(blank=True, null=True)
+    upd_date = models.DateTimeField(blank=True, null=True)
+    upd_by = models.CharField(max_length=10, blank=True, null=True)
+    upd_flag = models.CharField(max_length=1, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'COM_DEPARTMENT'
 
 class TAprove(models.Model):
     apr_id = models.DecimalField(primary_key=True, max_digits=6, decimal_places=0)

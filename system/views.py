@@ -28,11 +28,11 @@ def Index(request):
     })	
 
 
+# 1. Approve Priority
 class CompanyApprovePriorityListView(PermissionRequiredMixin, generic.ListView):
     template_name = 'system/company_approve_priority_list.html'    
     permission_required = ('system.view_taprove')
     model = TAprove
-    #paginate_by = 20
 
     def get_context_data(self, **kwargs):
         context = super(CompanyApprovePriorityListView, self).get_context_data(**kwargs)
@@ -71,6 +71,13 @@ def save_company_approve_priority_form(request, form, template_name):
     data['html_form'] = render_to_string(template_name, context, request=request)
     return JsonResponse(data)
 
+def CompanyApprovePriorityCreate(request):
+    if request.method == 'POST':
+        form = CompanyApprovePriorityForm(request.POST)
+    else:
+        form = CompanyApprovePriorityForm()
+    return save_company_approve_priority_form(request, form, 'system/company/partial_approve_priority_create.html')
+
 def CompanyApprovePriorityUpdate(request, pk):
     company_approve_priority = get_object_or_404(TAprove, pk=pk)
     if request.method == 'POST':
@@ -95,14 +102,7 @@ def CompanyApprovePriorityDelete(request, pk):
     return JsonResponse(data)
 
 
-def CompanyApprovePriorityCreate(request):
-    if request.method == 'POST':
-        form = CompanyApprovePriorityForm(request.POST)
-    else:
-        form = CompanyApprovePriorityForm()
-    return save_company_approve_priority_form(request, form, 'system/company/partial_approve_priority_create.html')
-
-
+# 2. Company Information
 @login_required(login_url='/accounts/login/')
 def CompanyInformation(request):
 	page_title = settings.PROJECT_NAME
@@ -112,3 +112,29 @@ def CompanyInformation(request):
 	today_date = settings.TODAY_DATE
 
 	return render(request, 'system/company_information.html', {'page_title': page_title, 'project_name': project_name, 'project_version': project_version, 'db_server': db_server, 'today_date': today_date})
+
+
+# 3. Company Type
+
+
+
+# 4. Department
+class DepartmentListView(PermissionRequiredMixin, generic.ListView):
+    template_name = 'system/company_approve_priority_list.html'    
+    permission_required = ('system.view_taprove')
+    model = TAprove
+
+    def get_context_data(self, **kwargs):
+        context = super(CompanyApprovePriorityListView, self).get_context_data(**kwargs)
+        context.update({
+            'page_title': settings.PROJECT_NAME,
+            'today_date': settings.TODAY_DATE,
+            'project_version': settings.PROJECT_VERSION,
+            'db_server': settings.DATABASES['default']['HOST'],
+            'project_name': settings.PROJECT_NAME,
+        })
+
+        return context
+
+    def get_queryset(self):
+        return TAprove.objects.all()

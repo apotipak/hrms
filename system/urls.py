@@ -6,7 +6,7 @@ urlpatterns = [
     path('', views.Index, name='index'),
 ]
 
-"""Company / Approve Priority"""
+# Company / Approve Priority
 urlpatterns += [
     path('company-approve-priority', views.CompanyApprovePriorityListView.as_view(), name='company-approve-priority'),
     path('company-approve-priority/<int:pk>', views.CompanyApprovePriorityDetailView.as_view(), name='company-approve-priority-detail'),
@@ -15,8 +15,13 @@ urlpatterns += [
    	path('company-approve-priority/<int:pk>/delete', views.CompanyApprovePriorityDelete, name='company-approve-priority-delete'),
 ]
 
-"""Company / Company Information """
+# Company / Company Information
 urlpatterns += [
     path('company-company-information', views.CompanyInformation, name='company-company-information'),
+]
+
+# Company / Department
+urlpatterns += [
+    #path('department-list', views.DepartmentListView.as_view(), name='department-list'),
 ]
 
