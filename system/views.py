@@ -62,7 +62,7 @@ def save_company_approve_priority_form(request, form, template_name):
             form.save()
             data['form_is_valid'] = True
             taprove_list = TAprove.objects.all()
-            data['html_company_approve_priority_list'] = render_to_string('system/company/partial_company_approve_priority_list.html', {
+            data['html_company_approve_priority_list'] = render_to_string('system/company/partial_approve_priority_list.html', {
                 'taprove_list': taprove_list
             })
         else:
@@ -79,12 +79,12 @@ def CompanyApprovePriorityDelete(request, pk):
         company_approve_priority.delete()
         data['form_is_valid'] = True
         taprove_list = TAprove.objects.all()
-        data['html_company_approve_priority_list'] = render_to_string('system/company/partial_company_approve_priority_list.html', {
+        data['html_company_approve_priority_list'] = render_to_string('system/company/partial_approve_priority_list.html', {
             'taprove_list': taprove_list
         })
     else:
         context = {'company_approve_priority': company_approve_priority}
-        data['html_form'] = render_to_string('system/company/partial_company_approve_priority_delete.html', context, request=request)
+        data['html_form'] = render_to_string('system/company/partial_approve_priority_delete.html', context, request=request)
     return JsonResponse(data)
 
 
