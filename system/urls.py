@@ -12,7 +12,6 @@ urlpatterns += [
     path('company-approve-priority/<int:pk>', views.CompanyApprovePriorityDetailView.as_view(), name='company-approve-priority-detail'),
     path('company-approve-priority/create', views.CompanyApprovePriorityCreate, name='company-approve-priority-create'),
    	path('company-approve-priority/<int:pk>/delete', views.CompanyApprovePriorityDelete, name='company-approve-priority-delete'),
-   	#url(r'^company-approve-priority/(?P<pk>\d+)/delete/$', views.CompanyApprovePriorityDelete, name='company-approve-priority-delete'),
 ]
 
 """Company / Company Information """

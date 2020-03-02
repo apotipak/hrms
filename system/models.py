@@ -30,7 +30,7 @@ class TAprove(models.Model):
     upd_flag = models.CharField(max_length=1, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'T_APROVE'
 
 
