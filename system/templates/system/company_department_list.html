@@ -1,0 +1,125 @@
+{% extends "page_generic.html" %}
+
+{% block title %}{{ page_title}} - System Control{% endblock %}
+
+{% load static %}
+
+{% block javascript %}
+<script src="{% static 'system/js/company_department.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0 text-dark"><small><i class="fas fa-cogs text-secondary"></i></small>&nbsp;&nbsp;System Control</h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item active">&nbsp;</li>
+          </ol>
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </div>
+  <!-- /.content-header -->
+
+  <!-- Main content -->
+  <section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+      <div class="card-header" style="vertical-align: middle;">
+
+        <h3 class="card-title"><b>Department</b></h3>          
+        <div class="card-tools">
+          <button type="button" class="btn btn-success js-create-company-approve-priority" data-url="{% url 'company-approve-priority-create' %}"><i class="fas fa-plus"></i> เพิ่ม</button>
+        </div>
+        
+      </div>
+      
+      <div class="card-body">
+        {% if comdepartment_list %}
+        <table id="company-approve-priority-list-table" class="table table-bordered table-striped">
+          <thead>
+          <tr>
+            <th scope="col">Department ID</th>
+            <th scope="col">Division ID</th>
+            <th scope="col">Department Short Name</th>
+            <th scope="col">Department (TH)</th>
+            <th scope="col">&nbsp;</th>
+          </tr>
+          </thead>
+          <tbody>
+            {% include 'system/company/partial_company_department_list.html' %}
+          </tbody>
+        </table>
+        {% else %}
+        <div class="col-lg-12">
+          <div class="alert alert-warning" role="alert">
+            <i class="fa fa-info-circle"></i>&nbsp;&nbsp;ยังไม่มีรายการอยู่ในระบบ
+          </div>           
+        </div>
+        {% endif %}
+     
+      </div>
+      <!-- /.card-body -->
+
+      <div class="card-footer">
+        &nbsp;
+      </div>
+
+      <!-- /.card-footer-->
+
+    </div>
+    <!-- /.card -->
+
+<div class="modal fade" id="modal-company-approve-priority">
+  <div class="modal-dialog">
+    <div class="modal-content">
+  </div>
+</div>
+
+
+  </section>
+  <!-- /.content -->
+
+</div>
+<!-- /.content-wrapper -->
+
+{% endblock %}
+
+
+{% block scripts %}
+<!-- page script -->
+<script>
+  $(function () {
+    $('#company-department-list-table').DataTable({
+      "paging": true,
+      "pageLength": 10,
+      "lengthChange": false,
+      "searching": true,
+      "ordering": false,
+      "info": false,
+      "autoWidth": false,
+      "oLanguage": {
+         "sSearch": "ค้นหา",
+      },
+      "language": {
+          "lengthMenu": '_MENU_ จำนวน',
+              "search": '<i class="fa fa-search"></i>',
+              "searchPlaceholder": "ค้นหา",
+              "paginate": {
+              "previous": '<i class="fa fa-angle-left"></i>',
+                  "next": '<i class="fa fa-angle-right"></i>'
+          }
+      }          
+    });
+  });
+</script>
+{% endblock %}

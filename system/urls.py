@@ -22,6 +22,6 @@ urlpatterns += [
 
 # Company / Department
 urlpatterns += [
-    #path('department-list', views.DepartmentListView.as_view(), name='department-list'),
+    path('company-department-list', views.CompanyDepartmentListView.as_view(), name='company-department-list'),
 ]
 

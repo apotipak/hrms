@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.views import generic
 from system.models import TAprove
+from system.models import ComDepartment
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from .forms import CompanyApprovePriorityForm
@@ -119,13 +120,13 @@ def CompanyInformation(request):
 
 
 # 4. Department
-class DepartmentListView(PermissionRequiredMixin, generic.ListView):
-    template_name = 'system/company_approve_priority_list.html'    
-    permission_required = ('system.view_taprove')
-    model = TAprove
+class CompanyDepartmentListView(PermissionRequiredMixin, generic.ListView):
+    template_name = 'system/company_department_list.html'    
+    permission_required = ('system.view_comdepartment')
+    model = ComDepartment
 
     def get_context_data(self, **kwargs):
-        context = super(CompanyApprovePriorityListView, self).get_context_data(**kwargs)
+        context = super(CompanyDepartmentListView, self).get_context_data(**kwargs)
         context.update({
             'page_title': settings.PROJECT_NAME,
             'today_date': settings.TODAY_DATE,
@@ -137,4 +138,4 @@ class DepartmentListView(PermissionRequiredMixin, generic.ListView):
         return context
 
     def get_queryset(self):
-        return TAprove.objects.all()
+        return ComDepartment.objects.all()
