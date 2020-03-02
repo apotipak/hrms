@@ -12,9 +12,14 @@
                   <td>{{item.apr_piority}}</td>
                   <td class="text-right py-0 align-middle">
                     <div class="btn-group btn-group-sm">
-                       <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
-                       <a href="#" class="btn btn-primary"><i class="nav-icon fa fa-pen"></i></a>
-                       <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>                         
+                        <!--<a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>-->
+                        <!--<a href="#" class="btn btn-primary"><i class="nav-icon fa fa-pen"></i></a>-->
+                        <!--<a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a> -->
+
+                        <button type="button" class="btn btn-danger btn-sm js-delete-company-approve-priority" data-url="{% url 'company-approve-priority-delete' item.apr_id %}">
+                          <i class="fas fa-trash"></i>
+                        </button>
+
                     </div>
                   </td>                    
               </tr>

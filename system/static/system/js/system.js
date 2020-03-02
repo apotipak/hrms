@@ -28,13 +28,11 @@ $(function () {
       success: function (data) {        
         if (data.form_is_valid) {
           console.log("success");
-          //alert("success");
-          //$("#company-approve-priority-list-table tbody").html(data.html_company_approve_priority_list);
-          //$("#modal-company-approve-priority").modal("hide");
+          $("#company-approve-priority-list-table tbody").html(data.html_company_approve_priority_list);
+          $("#modal-company-approve-priority").modal("hide");
         }
         else {
           console.log("error");
-          //alert(data.form_is_valid);
           $("#modal-company-approve-priority .modal-content").html(data.html_form);
         }
       }
@@ -48,5 +46,9 @@ $(function () {
   // Create book
   $(".js-create-company-approve-priority").click(loadForm);
   $("#modal-company-approve-priority").on("submit", ".js-company-approve-priority-create-form", saveForm);
+
+  // Delete book
+  $("#company-approve-priority-list-table").on("click", ".js-delete-company-approve-priority", loadForm);
+  $("#modal-company-approve-priority").on("submit", ".js-company-approve-priority-delete-form", saveForm);  
 
 });

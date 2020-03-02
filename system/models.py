@@ -1,23 +1,5 @@
 from django.db import models
 
-class TAprove(models.Model):
-    apr_id = models.DecimalField(primary_key=True, max_digits=6, decimal_places=0)
-    #apr_title = models.SmallIntegerField(blank=True, null=True)
-    apr_title = models.ForeignKey(TTitle, db_column='apr_title', to_field='title_id', on_delete=models.SET_NULL, null=True) 
-    apr_name_th = models.CharField(max_length=60, blank=True, null=True)
-    apr_name_en = models.CharField(max_length=60, blank=True, null=True)
-    apr_pos_th = models.CharField(max_length=50, blank=True, null=True)
-    apr_pos_en = models.CharField(max_length=50, blank=True, null=True)
-    apr_piority = models.CharField(max_length=3, blank=True, null=True)
-    upd_date = models.DateTimeField(blank=True, null=True)
-    upd_by = models.CharField(max_length=10, blank=True, null=True)
-    upd_flag = models.CharField(max_length=1, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'T_APROVE'
-
-
 
 class TTitle(models.Model):
     title_id = models.SmallIntegerField(primary_key=True)
@@ -31,8 +13,25 @@ class TTitle(models.Model):
     upd_flag = models.CharField(max_length=1, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'T_TITLE'
+
+
+class TAprove(models.Model):
+    apr_id = models.DecimalField(primary_key=True, max_digits=6, decimal_places=0)
+    apr_title = models.ForeignKey(TTitle, db_column='apr_title', to_field='title_id', on_delete=models.SET_NULL, null=True) 
+    apr_name_th = models.CharField(max_length=60, blank=True, null=True)
+    apr_name_en = models.CharField(max_length=60, blank=True, null=True)
+    apr_pos_th = models.CharField(max_length=50, blank=True, null=True)
+    apr_pos_en = models.CharField(max_length=50, blank=True, null=True)
+    apr_piority = models.CharField(max_length=3, blank=True, null=True)
+    upd_date = models.DateTimeField(blank=True, null=True)
+    upd_by = models.CharField(max_length=10, blank=True, null=True)
+    upd_flag = models.CharField(max_length=1, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'T_APROVE'
 
 
 class Company(models.Model):
