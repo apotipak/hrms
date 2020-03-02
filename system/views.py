@@ -19,7 +19,13 @@ def Index(request):
 	project_version = settings.PROJECT_VERSION
 	today_date = settings.TODAY_DATE		
 
-	return render(request, 'system/index.html', {'page_title': page_title, 'project_name': project_name, 'project_version': project_version, 'db_server': db_server, 'today_date': today_date})	
+	return render(request, 'system/index.html', {
+        'page_title': page_title,
+        'project_name': project_name,
+        'project_version': project_version,
+        'db_server': db_server,
+        'today_date': today_date
+    })	
 
 
 class CompanyApprovePriorityListView(PermissionRequiredMixin, generic.ListView):
@@ -55,9 +61,9 @@ def save_company_approve_priority_form(request, form, template_name):
         if form.is_valid():
             form.save()
             data['form_is_valid'] = True
-            tapprove = TAprove.objects.all()
+            taprove_list = TAprove.objects.all()
             data['html_company_approve_priority_list'] = render_to_string('system/company_approve_priority_list.html', {
-                'taprove': TAprove
+                'taprove_list': taprove_list
             })
         else:
             data['form_is_valid'] = False

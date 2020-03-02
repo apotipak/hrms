@@ -1,0 +1,21 @@
+          {% for item in taprove_list %}
+              <tr>
+                  <td>{{item.apr_id}}</td>
+                  <td>{{item.apr_name_th}}</td>
+                  <td>
+                    {% if item.apr_pos_th != Null %}                      
+                    {{item.apr_pos_th}}
+                    {% else %}
+                      &nbsp;
+                    {% endif %}
+                  </td>
+                  <td>{{item.apr_piority}}</td>
+                  <td class="text-right py-0 align-middle">
+                    <div class="btn-group btn-group-sm">
+                       <a href="#" class="btn btn-info"><i class="fas fa-eye"></i></a>
+                       <a href="#" class="btn btn-primary"><i class="nav-icon fa fa-pen"></i></a>
+                       <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>                         
+                    </div>
+                  </td>                    
+              </tr>
+          {% endfor %}

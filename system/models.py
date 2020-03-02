@@ -2,7 +2,8 @@ from django.db import models
 
 class TAprove(models.Model):
     apr_id = models.DecimalField(primary_key=True, max_digits=6, decimal_places=0)
-    apr_title = models.SmallIntegerField(blank=True, null=True)
+    #apr_title = models.SmallIntegerField(blank=True, null=True)
+    apr_title = models.ForeignKey(TTitle, db_column='apr_title', to_field='title_id', on_delete=models.SET_NULL, null=True) 
     apr_name_th = models.CharField(max_length=60, blank=True, null=True)
     apr_name_en = models.CharField(max_length=60, blank=True, null=True)
     apr_pos_th = models.CharField(max_length=50, blank=True, null=True)
