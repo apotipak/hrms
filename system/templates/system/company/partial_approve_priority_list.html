@@ -1,7 +1,8 @@
           {% for item in taprove_list %}
               <tr>
                   <td>{{item.apr_id}}</td>
-                  <td>{{item.apr_name_th}}</td>
+                  <td>{{item.apr_title}}</td>
+                  <td>{{item.apr_name_th}}</td>                  
                   <td>
                     {% if item.apr_pos_th != Null %}                      
                     {{item.apr_pos_th}}

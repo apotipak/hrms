@@ -3,17 +3,40 @@ from .models import TAprove
 from .models import ComDepartment
 
 
-class CompanyApprovePriorityForm(forms.ModelForm):
+class CompanyApprovePriorityCreateForm(forms.ModelForm):
     class Meta:
         model = TAprove
-        fields = ('apr_id', 'apr_name_th', 'apr_pos_th', 'apr_piority', )
+        fields = ('apr_id', 'apr_title', 'apr_name_th', 'apr_pos_th', 'apr_piority', )
 
     def __init__(self, *args, **kwargs):
-    	super(CompanyApprovePriorityForm, self).__init__(*args, **kwargs)
-    	self.fields['apr_id'].label = "Approve ID"
-    	self.fields['apr_name_th'].label = "Name (TH)"
-    	self.fields['apr_pos_th'].label = "Position (TH)"
-    	self.fields['apr_piority'].label = "Priority Type"    	
+        super(CompanyApprovePriorityCreateForm, self).__init__(*args, **kwargs)
+        self.fields['apr_id'].label = "Approve ID"
+        self.fields['apr_title'].label = "Title"
+        self.fields['apr_name_th'].label = "Name (TH)"
+        self.fields['apr_pos_th'].label = "Position (TH)"
+        self.fields['apr_piority'].label = "Priority Type"
+
+
+class CompanyApprovePriorityUpdateForm(forms.ModelForm):
+    class Meta:
+        model = TAprove
+        fields = ('apr_id', 'apr_title', 'apr_name_th', 'apr_pos_th', 'apr_piority', )
+
+    def __init__(self, *args, **kwargs):
+        super(CompanyApprovePriorityUpdateForm, self).__init__(*args, **kwargs)
+        self.fields['apr_id'].widget.attrs['readonly'] = True
+        self.fields['apr_id'].label = "Approve ID"
+        self.fields['apr_title'].label = "Title"
+        self.fields['apr_name_th'].label = "Name (TH)"
+        self.fields['apr_pos_th'].label = "Position (TH)"
+        self.fields['apr_piority'].label = "Priority Type"
+
+        
+    def clean_apr_id(self):
+        if self.instance: 
+            return self.instance.apr_id
+        else: 
+            return self.fields['apr_id']
 
 
 class CompanyDepartmentForm(forms.ModelForm):

@@ -16,6 +16,10 @@ class TTitle(models.Model):
         managed = True
         db_table = 'T_TITLE'
 
+    def __str__(self):
+        return self.title_th
+
+
 class TAprove(models.Model):
     apr_id = models.DecimalField(primary_key=True, max_digits=6, decimal_places=0)
     apr_title = models.ForeignKey(TTitle, db_column='apr_title', to_field='title_id', on_delete=models.SET_NULL, null=True) 

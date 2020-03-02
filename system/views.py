@@ -9,7 +9,7 @@ from system.models import TAprove
 from system.models import ComDepartment
 from django.http import JsonResponse
 from django.template.loader import render_to_string
-from .forms import CompanyApprovePriorityForm
+from .forms import CompanyApprovePriorityCreateForm, CompanyApprovePriorityUpdateForm
 
 
 @login_required(login_url='/accounts/login/')
@@ -74,17 +74,17 @@ def save_company_approve_priority_form(request, form, template_name):
 
 def CompanyApprovePriorityCreate(request):
     if request.method == 'POST':
-        form = CompanyApprovePriorityForm(request.POST)
+        form = CompanyApprovePriorityCreateForm(request.POST)
     else:
-        form = CompanyApprovePriorityForm()
+        form = CompanyApprovePriorityCreateForm()
     return save_company_approve_priority_form(request, form, 'system/company/partial_approve_priority_create.html')
 
 def CompanyApprovePriorityUpdate(request, pk):
     company_approve_priority = get_object_or_404(TAprove, pk=pk)
     if request.method == 'POST':
-        form = CompanyApprovePriorityForm(request.POST, instance=company_approve_priority)
+        form = CompanyApprovePriorityUpdateForm(request.POST, instance=company_approve_priority)
     else:
-        form = CompanyApprovePriorityForm(instance=company_approve_priority)
+        form = CompanyApprovePriorityUpdateForm(instance=company_approve_priority)
     return save_company_approve_priority_form(request, form, 'system/company/partial_approve_priority_update.html')
 
 def CompanyApprovePriorityDelete(request, pk):
