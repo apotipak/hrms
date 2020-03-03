@@ -6,7 +6,12 @@ from .models import ComDepartment
 class CompanyApprovePriorityCreateForm(forms.ModelForm):
     class Meta:
         model = TAprove
-        fields = ('apr_id', 'apr_title', 'apr_name_th', 'apr_pos_th', 'apr_piority', )
+        fields = ('apr_id', 'apr_title', 'apr_name_th', 'apr_pos_th', 'apr_piority')
+        error_messages = {
+            'apr_id': {
+                'required': "This field is required",
+            }
+        }
 
     def __init__(self, *args, **kwargs):
         super(CompanyApprovePriorityCreateForm, self).__init__(*args, **kwargs)
