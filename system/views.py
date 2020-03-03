@@ -66,10 +66,13 @@ def save_company_approve_priority_form(request, form, template_name):
             data['html_company_approve_priority_list'] = render_to_string('system/company/partial_approve_priority_list.html', {
                 'taprove_list': taprove_list
             })
+            data['message'] = "ทำรายการสำเร็จ"
         else:
             data['form_is_valid'] = False
+            data['message'] = "ไม่สามารถทำรายการได้..!"
+
     context = {'form': form}
-    data['html_form'] = render_to_string(template_name, context, request=request)
+    data['html_form'] = render_to_string(template_name, context, request=request)        
     return JsonResponse(data)
 
 def CompanyApprovePriorityCreate(request):

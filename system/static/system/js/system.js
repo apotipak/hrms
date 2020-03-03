@@ -27,14 +27,23 @@ $(function () {
       dataType: 'json',
       success: function (data) {        
         if (data.form_is_valid) {
-          console.log("success");
-          toastr.success('ทำรายการสำเร็จ')
+          console.log(data.message);
+          Toast.fire({
+            type: 'success',
+            title: '',
+            text: data.message,
+          })         
           $("#company-approve-priority-list-table tbody").html(data.html_company_approve_priority_list);          
           $("#modal-company-approve-priority").modal("hide");
         }
         else {
           console.log("error");
-          toastr.error('ไม่สามารถทำรายการได้')
+          Toast.fire({
+            type: 'error',
+            title: '',
+            text: data.message,
+            html: '',
+          })
           $("#modal-company-approve-priority .modal-content").html(data.html_form);
         }
       }
@@ -60,10 +69,10 @@ $(function () {
   const Toast = Swal.mixin({
     toast: true,
     position: 'top-end',
-    showConfirmButton: true,
-    timer: 500
+    showConfirmButton: false,
+    showCloseButton: false,
+    timer: 3000
   });
-  
-});
 
+});
 
