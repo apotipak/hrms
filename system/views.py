@@ -55,12 +55,18 @@ class CompanyApprovePriorityDetailView(PermissionRequiredMixin, generic.DetailVi
     permission_required = ('system.view_taprove')
     model = TAprove
 
-
 def save_company_approve_priority_form(request, form, template_name):
     data = dict()
     if request.method == 'POST':
         if form.is_valid():
-            form.save()
+            obj = form.save(commit=False)
+            
+            if request.user.is_superuser:
+                obj.upd_by = 'Superuser'
+            else:
+                obj.upd_by = request.user.first_name
+
+            obj.save()
             data['form_is_valid'] = True
             taprove_list = TAprove.objects.all()
             data['html_company_approve_priority_list'] = render_to_string('system/company/partial_approve_priority_list.html', {

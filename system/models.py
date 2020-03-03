@@ -28,7 +28,7 @@ class TAprove(models.Model):
     apr_pos_th = models.CharField(max_length=50, blank=True, null=True)
     apr_pos_en = models.CharField(max_length=50, blank=True, null=True)    
     APPROVE_TYPE = (
-        ('', 'เลือกรายการ'),
+        ('', '----------'),
         ('ALL', 'ALL - Can approve all system'),
         ('PRM', 'PRM - Can approve customer performance system'),
         ('PSN', 'PSN - Can approve personel system')        
@@ -40,7 +40,7 @@ class TAprove(models.Model):
         blank=False,
         null=False,
         default=None)
-    upd_date = models.DateTimeField(blank=True, null=True)
+    upd_date = models.DateTimeField(blank=True, null=True, auto_now_add=True)
     upd_by = models.CharField(max_length=10, blank=True, null=True)
     upd_flag = models.CharField(max_length=1, blank=True, null=True)
 

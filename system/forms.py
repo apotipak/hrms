@@ -1,12 +1,18 @@
 from django import forms
 from .models import TAprove
 from .models import ComDepartment
+from django.contrib.auth.models import User
+from django.forms.widgets import HiddenInput
 
 
-class CompanyApprovePriorityCreateForm(forms.ModelForm):
+class CompanyApprovePriorityCreateForm(forms.ModelForm):    
     class Meta:
         model = TAprove
-        fields = ('apr_id', 'apr_title', 'apr_name_th', 'apr_pos_th', 'apr_piority')
+        fields = ('apr_id', 'apr_title', 'apr_name_th', 'apr_pos_th', 'apr_piority', 'upd_by', 'upd_flag')
+        widgets = {
+            'upd_by': forms.HiddenInput(),
+            'upd_flag': forms.HiddenInput()
+        }
         error_messages = {
             'apr_id': {
                 'required': "This field is required",
@@ -20,12 +26,14 @@ class CompanyApprovePriorityCreateForm(forms.ModelForm):
         self.fields['apr_name_th'].label = "Name (TH)"
         self.fields['apr_pos_th'].label = "Position (TH)"
         self.fields['apr_piority'].label = "Priority Type"
-
+        self.initial['upd_flag'] = 'A'
+        self.initial['upd_by'] = 'Superadmin'
+        
 
 class CompanyApprovePriorityUpdateForm(forms.ModelForm):
     class Meta:
         model = TAprove
-        fields = ('apr_id', 'apr_title', 'apr_name_th', 'apr_pos_th', 'apr_piority', )
+        fields = ('apr_id', 'apr_title', 'apr_name_th', 'apr_pos_th', 'apr_piority')
 
     def __init__(self, *args, **kwargs):
         super(CompanyApprovePriorityUpdateForm, self).__init__(*args, **kwargs)

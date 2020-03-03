@@ -15,7 +15,7 @@
   </div>
 
   <div class="modal-body">
-    {% for field in form %}
+    {% for field in form.visible_fields %}
       <div class="form-group{% if field.errors %} has-error{% endif %}">
         <label for="{{ field.id_for_label }}">{{ field.label }}</label>
         {% render_field field class="form-control" %}
@@ -24,6 +24,9 @@
         {% endfor %}
       </div>
     {% endfor %}
+
+    {{form.upd_by}} 
+    {{form.upd_flag}} 
   </div>
         
   <div class="modal-footer align-right">
