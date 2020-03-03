@@ -5,5 +5,12 @@
     	{{ today_date|date:"D d M Y" }}
     </div>
     <!-- Default to the left -->
-    <b>{{ project_name }} {{ project_version }}</b> | {{ db_server }}
-  </footer>
+    {{ project_name }} <b>{{ project_version }}</b> | 
+
+    {% if db_server == 'KTHBNL808-NB\SQLEXPRESS' %}
+    Dev server
+    {% else %}
+    {{ db_server }}
+    {% endif %}
+    
+  </footer>    }
