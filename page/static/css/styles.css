@@ -30,7 +30,7 @@
 
 
 input.empty {
-    background: url("/static/img/icons8-search-18.png");
+    background-image: url("/static/img/icons8-search-18.png");
     background-position: 10px center;
     background-repeat: no-repeat;
     border: 1px solid #ccc;
