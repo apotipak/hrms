@@ -10,6 +10,7 @@ from system.models import ComDepartment
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from .forms import CompanyApprovePriorityCreateForm, CompanyApprovePriorityUpdateForm
+from django.utils import timezone
 
 
 @login_required(login_url='/accounts/login/')
@@ -65,6 +66,11 @@ def save_company_approve_priority_form(request, form, template_name):
                 obj.upd_by = 'Superuser'
             else:
                 obj.upd_by = request.user.first_name
+
+            if obj.upd_flag == 'A':
+                obj.upd_flag = 'E'
+
+            obj.upd_date = timezone.now()
 
             obj.save()
             data['form_is_valid'] = True
