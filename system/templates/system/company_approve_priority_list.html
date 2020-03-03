@@ -99,6 +99,43 @@
 {% block scripts %}
 <!-- page script -->
 <script>
+$(document).ready( function () {  
+  var table = $('#company-approve-priority-list-table').DataTable({
+    "paging": true,
+    "pageLength": 10,
+    "lengthChange": false,
+    "searching": true,
+    "ordering": false,
+    "info": false,
+    "autoWidth": false,    
+    "language": {
+        "searchPlaceholder": 'ค้นหา',
+        "search": '',
+    },
+    "dom": "<'#searchid'f>trip"
+  });
+} );
+
+$( window ).on( "load", function(){
+  $("#searchid :input").addClass('empty');
+} );
+
+$(document).on('keyup','#searchid :input', function() {
+    var input = $("#searchid :input");
+    if(input.val().length === 0) {
+        input.removeClass('no-icon');
+        input.addClass('empty');
+        
+    } else {
+        input.removeClass('empty');
+        input.addClass('no-icon')
+    }
+});
+
+</script>
+{% endblock %}
+
+<!--
   $(function () {
     $('#company-approve-priority-list-table').DataTable({
       "paging": true,
@@ -108,19 +145,19 @@
       "ordering": false,
       "info": false,
       "autoWidth": false,
-      "oLanguage": {
-         "sSearch": "ค้นหา",
-      },
+      //"oLanguage": { "sSearch": '<i class="icon-search"></i>' },
+      //"oLanguage": { "sSearch": "ค้นหา"},
       "language": {
           "lengthMenu": '_MENU_ จำนวน',
-              "search": '<i class="fa fa-search"></i>',
-              "searchPlaceholder": "ค้นหา",
-              "paginate": {
-              "previous": '<i class="fa fa-angle-left"></i>',
-                  "next": '<i class="fa fa-angle-right"></i>'
-          }
+          //"search": '<i class="fa fa-search"></i>',
+          "search": 'ค้นหา',
+          "searchPlaceholder": "",          
+          "paginate": {
+          "previous": '<i class="fa fa-angle-left"></i>',
+          "next": '<i class="fa fa-angle-right"></i>'
+      },
+      "dom": "<'#searchid'f>trip",
       }          
     });
   });
-</script>
-{% endblock %}
+-->
