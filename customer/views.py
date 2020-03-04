@@ -44,7 +44,6 @@ def save_customer_form(request, form, template_name):
         if form.is_valid():
             obj = form.save(commit=False)
             
-            """
             if request.user.is_superuser:
                 obj.upd_by = 'Superuser'
             else:
@@ -54,8 +53,8 @@ def save_customer_form(request, form, template_name):
                 obj.upd_flag = 'E'
 
             obj.upd_date = timezone.now()
-			"""
-
+            obj.cus_active = 1
+            
             obj.save()
             data['form_is_valid'] = True
             customer_list = Customer.objects.all()
@@ -94,8 +93,8 @@ def CustomerDelete(request, pk):
         customer.delete()
         data['form_is_valid'] = True
         customer_list = Customer.objects.all()
-        data['html_company_approve_priority_list'] = render_to_string('partial_customer_list.html', {
-            'taprove_list': customer_list
+        data['html_customer_list'] = render_to_string('partial_customer_list.html', {
+            'customer_list': customer_list
         })
     else:
         context = {'customer': customer}

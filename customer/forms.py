@@ -7,10 +7,10 @@ from django.forms.widgets import HiddenInput
 class CustomerCreateForm(forms.ModelForm):    
     class Meta:
         model = Customer
-        fields = ('cus_no', 'cus_id', 'cus_name_th')
+        fields = ('cus_no', 'cus_id', 'cus_name_th', 'cus_brn')
         widgets = {
-            #'upd_by': forms.HiddenInput(),
-            #'upd_flag': forms.HiddenInput()
+            'upd_by': forms.HiddenInput(),
+            'upd_flag': forms.HiddenInput()
         }
         error_messages = {
             'cus_no': {
@@ -22,11 +22,12 @@ class CustomerCreateForm(forms.ModelForm):
         super(CustomerCreateForm, self).__init__(*args, **kwargs)
         self.fields['cus_no'].label = "Customer Number"
         self.fields['cus_id'].label = "Customer ID"
-        #self.fields['apr_name_th'].label = "Name (TH)"
-        #self.fields['apr_pos_th'].label = "Position (TH)"
-        #self.fields['apr_piority'].label = "Priority Type"
-        #self.initial['upd_flag'] = 'A'
-        #self.initial['upd_by'] = 'Superadmin'
+        self.fields['cus_name_th'].label = "Customer Name (TH)"
+        self.fields['cus_brn'].label = "Branch"
+        self.initial['cus_brn'] = 0
+        self.initial['cus_active'] = 1
+        self.initial['upd_flag'] = 'A'
+        self.initial['upd_by'] = 'Superadmin'
 
 class CustomerUpdateForm(forms.ModelForm):
     class Meta:
