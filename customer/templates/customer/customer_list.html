@@ -1,69 +1,162 @@
 {% extends "page_generic.html" %}
 
-{% block title %}{{ page_title}} - ระบบลูกค้า{% endblock %}
+{% block title %}{{ page_title}} - System Control{% endblock %}
 
 {% load static %}
 
+{% block javascript %}
+<script src="{% static 'system/js/system.js' %}"></script>
+{% endblock %}
+
 {% block content %}
 
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0 text-dark"><small><i class="fas fa-user-tie text-secondary"></i></small>&nbsp;&nbsp;Customer</h1>
-          </div><!-- /.col -->
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <!--
-              <li class="breadcrumb-item"><a href="/">Home</a></li>
-              -->
-            </ol>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content-header -->
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0 text-dark"><small><i class="fas fa-cogs text-secondary"></i></small>&nbsp;&nbsp;Customer</h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item active">&nbsp;</li>
+          </ol>
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </div>
+  <!-- /.content-header -->
 
-    <!-- Main content -->
-    <section class="content">
+  <!-- Main content -->
+  <section class="content">
 
-      <!-- Default box -->
-      <div class="card">
-        <div class="card-header">
-          <h3 class="card-title"><b>Customer List</b></h3>
+    <!-- Default box -->
+    <div class="card">
+      <div class="card-header" style="vertical-align: middle;">
 
-          <!--
-          <div class="card-tools">
-            <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
-              <i class="fas fa-minus"></i></button>
-            <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
-              <i class="fas fa-times"></i></button>
-          </div>
-          -->
+        <h3 class="card-title"><b>Customer List</b></h3>
+        <div class="card-tools">
+          <button type="button" class="btn btn-success js-create-company-approve-priority" data-url="{% url 'company-approve-priority-create' %}"><i class="fas fa-plus"></i>&nbsp;&nbsp;เพิ่ม</button>
         </div>
         
-        <div class="card-body">
-          Content
-        </div>
-        <!-- /.card-body -->
-
-        <!--
-        <div class="card-footer">
-          Footer
-        </div>
-        -->
-        <!-- /.card-footer-->
-
       </div>
-      <!-- /.card -->
+      
+      <div class="card-body">
+        {% if customer_list %}
+        <table id="list-table" class="table table-bordered table-striped">
+          <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name (TH)</th>
+            <th scope="col">Address (TH)</th>            
+            <th scope="col">&nbsp;</th>
+          </tr>
+          </thead>
+          <tbody>
+            {% include 'customer/partial_customer_list.html' %}
+          </tbody>
+        </table>
+        {% else %}
+        <div class="col-lg-12">
+          <div class="alert alert-warning" role="alert">
+            <i class="fa fa-info-circle"></i>&nbsp;&nbsp;ยังไม่มีรายการอยู่ในระบบ
+          </div>           
+        </div>
+        {% endif %}
+     
+      </div>
+      <!-- /.card-body -->
 
-    </section>
-    <!-- /.content -->
+      <div class="card-footer">
+        &nbsp;
+      </div>
 
+      <!-- /.card-footer-->
+
+    </div>
+    <!-- /.card -->
+
+<div class="modal fade" id="modal-company-approve-priority">
+  <div class="modal-dialog">
+    <div class="modal-content">
   </div>
-  <!-- /.content-wrapper -->
+</div>
+
+
+  </section>
+  <!-- /.content -->
+
+</div>
+<!-- /.content-wrapper -->
 
 {% endblock %}
+
+
+{% block scripts %}
+<!-- page script -->
+<script>
+
+$(document).ready(function() {
+  var table = $('#list-table').DataTable({
+    "paging": true,
+    "pageLength": 10,
+    "lengthChange": false,
+    "searching": true,
+    "ordering": false,
+    "info": false,
+    "autoWidth": false,    
+    "language": {
+        "searchPlaceholder": 'ค้นหา',
+        "search": '',
+    },
+    "dom": "<'#searchid'f>trip"
+  });
+});
+
+$( window ).on( "load", function(){
+  $("#searchid :input").addClass('empty');
+} );
+
+$(document).on('keyup','#searchid :input', function() {
+    var input = $("#searchid :input");
+    if(input.val().length === 0) {
+        input.removeClass('no-icon');
+        input.addClass('empty');
+        
+    } else {
+        input.removeClass('empty');
+        input.addClass('no-icon')
+    }
+});
+
+</script>
+{% endblock %}
+
+<!--
+  $(function () {
+    $('#company-approve-priority-list-table').DataTable({
+      "paging": true,
+      "pageLength": 10,
+      "lengthChange": false,
+      "searching": true,
+      "ordering": false,
+      "info": false,
+      "autoWidth": false,
+      //"oLanguage": { "sSearch": '<i class="icon-search"></i>' },
+      //"oLanguage": { "sSearch": "ค้นหา"},
+      "language": {
+          "lengthMenu": '_MENU_ จำนวน',
+          //"search": '<i class="fa fa-search"></i>',
+          "search": 'ค้นหา',
+          "searchPlaceholder": "",          
+          "paginate": {
+          "previous": '<i class="fa fa-angle-left"></i>',
+          "next": '<i class="fa fa-angle-right"></i>'
+      },
+      "dom": "<'#searchid'f>trip",
+      }          
+    });
+  });
+-->
