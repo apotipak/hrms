@@ -5,7 +5,7 @@
 {% load static %}
 
 {% block javascript %}
-<script src="{% static 'system/js/system.js' %}"></script>
+<script src="{% static 'customer/js/customer.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -38,19 +38,18 @@
 
         <h3 class="card-title"><b>Customer List</b></h3>
         <div class="card-tools">
-          <button type="button" class="btn btn-success js-create-company-approve-priority" data-url="{% url 'company-approve-priority-create' %}"><i class="fas fa-plus"></i>&nbsp;&nbsp;เพิ่ม</button>
+          <button type="button" class="btn btn-success js-create-customer" data-url="{% url 'customer-create' %}"><i class="fas fa-plus"></i>&nbsp;&nbsp;เพิ่ม</button>
         </div>
         
       </div>
       
       <div class="card-body">
         {% if customer_list %}
-        <table id="list-table" class="table table-bordered table-striped">
+        <table id="customer-list-table" class="table table-bordered table-striped">
           <thead>
           <tr>
-            <th scope="col">ID</th>
+            <th scope="col">Customer Number</th>
             <th scope="col">Name (TH)</th>
-            <th scope="col">Address (TH)</th>            
             <th scope="col">&nbsp;</th>
           </tr>
           </thead>
@@ -78,7 +77,7 @@
     </div>
     <!-- /.card -->
 
-<div class="modal fade" id="modal-company-approve-priority">
+<div class="modal fade" id="modal-customer">
   <div class="modal-dialog">
     <div class="modal-content">
   </div>
@@ -99,7 +98,7 @@
 <script>
 
 $(document).ready(function() {
-  var table = $('#list-table').DataTable({
+  var table = $('#customer-list-table').DataTable({
     "paging": true,
     "pageLength": 10,
     "lengthChange": false,
