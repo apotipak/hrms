@@ -20,10 +20,10 @@
     <form>
       <div class="row">
         <div class="col">
-          <input type="text" name="cuscode" id="cuscode" class="form-control" placeholder="Customer Code">
+          <input type="text" name="cus-code" id="cus-code" class="form-control" placeholder="Customer Code" onkeypress='validate(event)'>
         </div>
         <div class="col">
-          <input type="text" class="form-control" placeholder="Branch Code">
+          <input type="text" name="cus-branch" id="cus-branch" class="form-control" placeholder="Branch Code" onkeyup="this.value=this.value.replace(/[^\d]/,'')">
         </div>
       </div>
     </form>

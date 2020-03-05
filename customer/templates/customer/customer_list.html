@@ -17,7 +17,7 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1 class="m-0 text-dark"><small><i class="fas fa-cogs text-secondary"></i></small>&nbsp;&nbsp;Customer</h1>
+          <h1 class="m-0 text-dark"><small><i class="fas fa-user-tie text-secondary"></i></small>&nbsp;&nbsp;Customer</h1>
         </div><!-- /.col -->
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
@@ -38,7 +38,6 @@
 
         <h3 class="card-title"><b>Customer List</b></h3>
         <div class="card-tools">
-          <input type="text" id="test">
           <button type="button" class="btn btn-success js-create-customer" data-url="{% url 'customer-create' %}"><i class="fas fa-plus"></i>&nbsp;&nbsp;เพิ่ม</button>
         </div>
         
@@ -100,8 +99,36 @@
 {% block scripts %}
 <!-- page script -->
 <script language="javascript">
+$('#modal-customer').on('shown.bs.modal', function () {
+    $('#cus-code').focus();
 
-$(document).ready(function() {
+    $('#cus-code').on('keypress', function (e) {
+      if(e.which === 13){
+        $('#cus-branch').focus();
+      }
+    });
+
+});
+
+function validate(evt) {
+  var theEvent = evt || window.event;
+
+  // Handle paste
+  if (theEvent.type === 'paste') {
+      key = event.clipboardData.getData('text/plain');
+  } else {
+  // Handle key press
+      var key = theEvent.keyCode || theEvent.which;
+      key = String.fromCharCode(key);
+  }
+  var regex = /[0-9]|\./;
+  if( !regex.test(key) ) {
+    theEvent.returnValue = false;
+    if(theEvent.preventDefault) theEvent.preventDefault();
+  }
+}
+
+$(function () {
   var table = $('#customer-list-table').DataTable({
     "paging": true,
     "pageLength": 10,
@@ -111,10 +138,17 @@ $(document).ready(function() {
     "info": false,
     "autoWidth": false,    
     "language": {
-        "searchPlaceholder": 'ค้นหา',
+        //"searchPlaceholder": 'ค้นหา',        
+        //"search": '<i class="fa fa-search"></i>',
+        //"search": 'ค้นหา',
+        "lengthMenu": '_MENU_ จำนวน',      
         "search": '',
+        "searchPlaceholder": "ค้นหา",          
+        "paginate": {},
+        "previous": '<i class="fa fa-angle-left"></i>',
+        "next": '<i class="fa fa-angle-right"></i>'        
     },
-    "dom": "<'#searchid'f>trip"
+    //"dom": "<'#searchid'f>trip"
   });
 });
 
@@ -133,35 +167,5 @@ $(document).on('keyup','#searchid :input', function() {
         input.addClass('no-icon')
     }
 });
-
-$("#test").focus();
-
 </script>
 {% endblock %}
-
-<!--
-  $(function () {
-    $('#company-approve-priority-list-table').DataTable({
-      "paging": true,
-      "pageLength": 10,
-      "lengthChange": false,
-      "searching": true,
-      "ordering": false,
-      "info": false,
-      "autoWidth": false,
-      //"oLanguage": { "sSearch": '<i class="icon-search"></i>' },
-      //"oLanguage": { "sSearch": "ค้นหา"},
-      "language": {
-          "lengthMenu": '_MENU_ จำนวน',
-          //"search": '<i class="fa fa-search"></i>',
-          "search": 'ค้นหา',
-          "searchPlaceholder": "",          
-          "paginate": {
-          "previous": '<i class="fa fa-angle-left"></i>',
-          "next": '<i class="fa fa-angle-right"></i>'
-      },
-      "dom": "<'#searchid'f>trip",
-      }          
-    });
-  });
--->
