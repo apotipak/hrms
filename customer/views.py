@@ -37,7 +37,7 @@ class CustomerListView(PermissionRequiredMixin, generic.ListView):
 	
 	def get_queryset(self):
         #return Customer.objects.filter(cus_active__exact=1)
-		return Customer.objects.filter(cus_id__in=[2094, 2096, 2097]).order_by('cus_id', '-cus_active')
+		return Customer.objects.filter(cus_id__in=[2094]).order_by('-upd_date', 'cus_id', '-cus_active')
 
 
 def save_customer_form(request, form, template_name):
@@ -45,7 +45,8 @@ def save_customer_form(request, form, template_name):
     if request.method == 'POST':
         if form.is_valid():
             obj = form.save(commit=False)
-            
+            fields = request.POST.dict()
+
             if request.user.is_superuser:
                 obj.upd_by = 'Superuser'
             else:
@@ -54,13 +55,19 @@ def save_customer_form(request, form, template_name):
             if obj.upd_flag == 'A':
                 obj.upd_flag = 'E'
 
+            cus_no = fields.get('cus_id') + fields.get('cus_brn')
+            obj.cus_no = cus_no
+
             obj.upd_date = timezone.now()
             obj.cus_active = 1
             
             obj.save()
             data['form_is_valid'] = True
-            customer_list = Customer.objects.all()
-            data['html_customer_list'] = render_to_string('partial_customer_list.html', {
+            
+            #customer_list = Customer.objects.all()
+            customer_list = Customer.objects.filter(cus_id__in=[2094]).order_by('-upd_date', 'cus_id', '-cus_active')
+
+            data['html_customer_list'] = render_to_string('customer/partial_customer_list.html', {
                 'customer_list': customer_list
             })
             data['message'] = "ทำรายการสำเร็จ"
@@ -94,8 +101,9 @@ def CustomerDelete(request, pk):
     if request.method == 'POST':
         customer.delete()
         data['form_is_valid'] = True
-        customer_list = Customer.objects.all()
-        data['html_customer_list'] = render_to_string('partial_customer_list.html', {
+        #customer_list = Customer.objects.all()
+        customer_list = Customer.objects.filter(cus_id__in=[2094]).order_by('-upd_date', 'cus_id', '-cus_active')
+        data['html_customer_list'] = render_to_string('customer/partial_customer_list.html', {
             'customer_list': customer_list
         })
     else:

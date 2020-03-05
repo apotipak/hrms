@@ -1,5 +1,5 @@
 from django.db import models
-from system.models import ComZone
+from system.models import ComZone, TTitle
 
 
 class Customer(models.Model):
