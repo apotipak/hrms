@@ -1,7 +1,16 @@
 {% for item in customer_list %}
     <tr>
-        <td>{{item.cus_no}}</td>
+        <td>{{item.cus_id}}</td>
         <td>{{item.cus_name_th}}</td>
+        <td>{{item.cus_brn}}</td>
+        <td>{{item.cus_zone}}</td>
+        <td>
+          {% if item.cus_active %}
+          <span class="badge badge-success">Active</span>
+          {%else%}
+          <span class="badge badge-warning">Pending</span>
+          {%endif%}
+        </td>
         <td class="text-right py-0 align-middle">
           <div class="btn-group btn-group-sm">
             <button type="button" class="btn btn-info btn-sm js-update-customer" data-url="{% url 'customer-update' item.cus_no %}">

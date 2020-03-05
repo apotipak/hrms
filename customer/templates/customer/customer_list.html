@@ -38,6 +38,7 @@
 
         <h3 class="card-title"><b>Customer List</b></h3>
         <div class="card-tools">
+          <input type="text" id="test">
           <button type="button" class="btn btn-success js-create-customer" data-url="{% url 'customer-create' %}"><i class="fas fa-plus"></i>&nbsp;&nbsp;เพิ่ม</button>
         </div>
         
@@ -48,8 +49,11 @@
         <table id="customer-list-table" class="table table-bordered table-striped">
           <thead>
           <tr>
-            <th scope="col">Customer Number</th>
+            <th scope="col">Customer Code</th>
             <th scope="col">Name (TH)</th>
+            <th scope="col">Branch</th>
+            <th scope="col">Zone</th>
+            <th scope="col">Status</th>
             <th scope="col">&nbsp;</th>
           </tr>
           </thead>
@@ -95,7 +99,7 @@
 
 {% block scripts %}
 <!-- page script -->
-<script>
+<script language="javascript">
 
 $(document).ready(function() {
   var table = $('#customer-list-table').DataTable({
@@ -129,6 +133,8 @@ $(document).on('keyup','#searchid :input', function() {
         input.addClass('no-icon')
     }
 });
+
+$("#test").focus();
 
 </script>
 {% endblock %}

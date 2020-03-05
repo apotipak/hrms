@@ -1,4 +1,5 @@
 from django.db import models
+from system.models import ComZone
 
 
 class Customer(models.Model):
@@ -27,7 +28,7 @@ class Customer(models.Model):
     cus_bill = models.BooleanField(blank=True, null=True)
     cus_main = models.BooleanField(blank=True, null=True)
     cus_site = models.BooleanField(blank=True, null=True)
-    cus_zone = models.DecimalField(max_digits=4, decimal_places=0, blank=True, null=True)
+    cus_zone = models.ForeignKey(ComZone, db_column='cus_zone', to_field='zone_id', on_delete=models.SET_NULL, null=True) 
     cus_contact = models.DecimalField(max_digits=7, decimal_places=0, blank=True, null=True)
     site_contact = models.DecimalField(max_digits=7, decimal_places=0, blank=True, null=True)
     last_contact = models.SmallIntegerField(blank=True, null=True)

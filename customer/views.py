@@ -36,7 +36,9 @@ class CustomerListView(PermissionRequiredMixin, generic.ListView):
 		return context
 	
 	def get_queryset(self):
-		return Customer.objects.filter(cus_active__exact=1)
+        #return Customer.objects.filter(cus_active__exact=1)
+		return Customer.objects.filter(cus_id__in=[2094, 2096, 2097]).order_by('cus_id', '-cus_active')
+
 
 def save_customer_form(request, form, template_name):
     data = dict()
