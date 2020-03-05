@@ -51,9 +51,7 @@ $(function () {
     return false;
   };
 
-
   /* Binding */
-
   // Create Customer
   $(".js-create-customer").click(loadForm);
   $("#modal-customer").on("submit", ".js-customer-create-form", saveForm);
@@ -71,7 +69,7 @@ $(function () {
     position: 'top-end',
     showConfirmButton: false,
     showCloseButton: false,
-    timer: 3000
+    timer: 5000
   });
 
 });

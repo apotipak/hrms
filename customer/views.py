@@ -106,8 +106,10 @@ def CustomerDelete(request, pk):
         data['html_customer_list'] = render_to_string('customer/partial_customer_list.html', {
             'customer_list': customer_list
         })
+        data['message'] = "ทำรายการสำเร็จ"
     else:
-        context = {'customer': customer}
+        data['message'] = "ไม่สามารถทำรายการได้..!"
+        context = {'customer': customer}        
         data['html_form'] = render_to_string('customer/partial_customer_delete.html', context, request=request)
     return JsonResponse(data)
 
