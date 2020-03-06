@@ -21,7 +21,7 @@ class CustomerListView(PermissionRequiredMixin, generic.ListView):
 	template_name = 'customer/customer_list.html'
 	permission_required = ('system.view_customer')
 	model = Customer
-	paginate_by = 100
+	#paginate_by = 100
 
 	def get_context_data(self, **kwargs):
 		context = super(CustomerListView, self).get_context_data(**kwargs)
@@ -37,13 +37,14 @@ class CustomerListView(PermissionRequiredMixin, generic.ListView):
 	
 	def get_queryset(self):
         #return Customer.objects.filter(cus_active__exact=1)
-		return Customer.objects.filter(cus_id__in=[2094]).order_by('-upd_date', 'cus_id', '-cus_active')
+		return Customer.objects.filter(cus_id__in=[2094, 1234567, 12345678]).order_by('-upd_date', 'cus_id', '-cus_active')
 
 
 def save_customer_form(request, form, template_name):
     data = dict()
     if request.method == 'POST':
         if form.is_valid():
+            print("test")
             obj = form.save(commit=False)
             fields = request.POST.dict()
 
@@ -55,13 +56,16 @@ def save_customer_form(request, form, template_name):
             if obj.upd_flag == 'A':
                 obj.upd_flag = 'E'
 
+            # Check duplicate Customer No
             cus_no = fields.get('cus_id') + fields.get('cus_brn')
-            obj.cus_no = cus_no
 
+
+            obj.cus_no = cus_no
             obj.upd_date = timezone.now()
             obj.cus_active = 1
             
             obj.save()
+
             data['form_is_valid'] = True
             
             #customer_list = Customer.objects.all()

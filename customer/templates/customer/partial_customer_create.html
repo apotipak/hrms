@@ -16,19 +16,40 @@
 
   <div class="modal-body">
 
+    <!--
+    {% for field in form.visible_fields %}
+      <div class="form-group{% if field.errors %} has-error{% endif %}">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {% render_field field class="form-control" %}
+        {% for error in field.errors %}
+          <p class="help-block">{{ error }}</p>
+        {% endfor %}
+      </div>
+    {% endfor %}
+    -->
 
-    <div class="row">
-      <div class="col">
-        <input type="number" name="cus_id" step="1" class="form-control" placeholder="Customer Code" required="" id="id_cus_id">
+    {{ form.non_field_errors }}
+    <div class="form-group row fieldWrapper">
+      <div class="col-6 col-form-label">
+        <label for="{{ form.cus_id.id_for_label }}">Customer Code</label>
+        <!--<input type="number" name="cus_id" id="id_cus_id" class="form-control form-control-sm" placeholder="Customer Code" required="" value="2094">-->
+        {{ form.cus_id }}
+        {% if form.cus_id.errors %}
+          <ul class="list-inline">
+          {% for error in form.cus_id.errors %}
+              <li><p class="text-danger">{{ error|escape }}</p></li>
+          {% endfor %}
+          </ul>
+        {% endif %}
       </div>
-      <div class="col">        
-        <input type="number" name="cus_brn" step="1" class="form-control" placeholder="Branch Code" required="" id="id_cus_brn">
-      </div>
+      <div class="col-6 col-form-label">
+        <label for="id_cus_brn">Branch Code</label>
+        <!--<input type="number" name="cus_brn" id="id_cus_brn" class="form-control form-control-sm" placeholder="Branch Code" required="">-->
+        {{ form.cus_brn }}
+        {{ form.cus_brn.errors }}
+      </div> 
     </div>
-
-    {{form.upd_by}} 
-    {{form.upd_flag}} 
-  
+    
     <hr>
 
     <ul class="nav nav-tabs" id="custom-content-above-tab" role="tablist">
@@ -52,61 +73,61 @@
           <div class="form-group row">
             <label for="company" class="col-sm-2 col-form-label">Company</label>
             <div class="col-sm-5">
-              <input type="text" name="cus_name_th" step="1" class="form-control" placeholder="ชื่อบริษัท (TH)" required="" id="id_cus_name_th">
+              <input type="text" name="cus_name_th" step="1" class="form-control form-control-sm" placeholder="ชื่อบริษัท (TH)" id="id_cus_name_th">
             </div>
             <div class="col">
-              <input type="text" name="cus_name_en" step="1" class="form-control" placeholder="ชื่อบริษัท (EN)" required="" id="id_cus_name_en">
+              <input type="text" name="cus_name_en" step="1" class="form-control form-control-sm" placeholder="ชื่อบริษัท (EN)" id="id_cus_name_en">
             </div>            
           </div>
           <div class="form-group row">
             <label for="address" class="col-sm-2 col-form-label">Address</label>
             <div class="col-sm-5">
-              <input type="text" class="form-control" id="cus-address1-th" placeholder="ที่อยู่ 1 (TH)">
+              <input type="text" class="form-control form-control-sm" id="cus-address1-th" placeholder="ที่อยู่ 1 (TH)">
             </div>
             <div class="col">
-              <input type="text" class="form-control" id="cus-address1-en" placeholder="ที่อยู่ 1 (EN)">
+              <input type="text" class="form-control form-control-sm" id="cus-address1-en" placeholder="ที่อยู่ 1 (EN)">
             </div>            
           </div>
           <div class="form-group row">
             <label for="address" class="col-sm-2 col-form-label">&nbsp;</label>
             <div class="col-sm-5">
-              <input type="text" class="form-control" id="cus-address2-th" placeholder="ที่อยู่ 2 (TH)">
+              <input type="text" class="form-control form-control-sm" id="cus-address2-th" placeholder="ที่อยู่ 2 (TH)">
             </div>
             <div class="col">
-              <input type="text" class="form-control" id="cus-address2-en" placeholder="ที่อยู่ 2 (EN)">
+              <input type="text" class="form-control form-control-sm" id="cus-address2-en" placeholder="ที่อยู่ 2 (EN)">
             </div>            
           </div>
           <div class="form-group row">
             <label for="sub-district" class="col-sm-2 col-form-label">Sub-District</label>
             <div class="col-sm-5">
-              <input type="text" class="form-control" id="cus-subdistrict-th" placeholder="แขวง (TH)">
+              <input type="text" class="form-control form-control-sm" id="cus-subdistrict-th" placeholder="แขวง (TH)">
             </div>
             <div class="col">
-              <input type="text" class="form-control" id="cus-subdistrict-en" placeholder="แขวง (EN)">
+              <input type="text" class="form-control form-control-sm" id="cus-subdistrict-en" placeholder="แขวง (EN)">
             </div>            
           </div>
           <div class="form-group row">
             <label for="district" class="col-sm-2 col-form-label">District</label>
             <div class="col-sm-5">
-              <input type="text" class="form-control" id="cus-district-th" placeholder="เขต (TH)">
+              <input type="text" class="form-control form-control-sm" id="cus-district-th" placeholder="เขต (TH)">
             </div>
             <div class="col">
-              <input type="text" class="form-control" id="cus-district-en" placeholder="เขต (EN)">
+              <input type="text" class="form-control form-control-sm" id="cus-district-en" placeholder="เขต (EN)">
             </div>            
           </div>
           <div class="form-group row">
             <label for="city-country" class="col-sm-2 col-form-label">City / Country</label>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="cus-city-th" placeholder="จังหวัด (TH)">
+              <input type="text" class="form-control form-control-sm" id="cus-city-th" placeholder="จังหวัด (TH)">
             </div>
             <div class="col">
-              <input type="text" class="form-control" id="cus-country-th" placeholder="ประเทศ (TH)">
+              <input type="text" class="form-control form-control-sm" id="cus-country-th" placeholder="ประเทศ (TH)">
             </div>
             <div class="col-sm-2">
-              <input type="text" class="form-control" id="cus-city-en" placeholder="จังหวัด (EN)">
+              <input type="text" class="form-control form-control-sm" id="cus-city-en" placeholder="จังหวัด (EN)">
             </div>
             <div class="col">
-              <input type="text" class="form-control" id="cus-country-en" placeholder="ประเทศ (EN)">
+              <input type="text" class="form-control form-control-sm" id="cus-country-en" placeholder="ประเทศ (EN)">
             </div>  
           </div>
 
@@ -116,19 +137,19 @@
             </div>
             <div class="col">
               <label for="cus-zip">Zip</label>
-              <input type="text" id="cus-zip" class="form-control" placeholder="Zip Code">
+              <input type="text" id="cus-zip" class="form-control form-control-sm" placeholder="Zip Code">
             </div>            
             <div class="col">
               <label for="cus-telephone">Phone</label>
-              <input type="text" id="cus-telephone" class="form-control" placeholder="Phone">
+              <input type="text" id="cus-telephone" class="form-control form-control-sm" placeholder="Phone">
             </div>
             <div class="col">
               <label for="cus-fax">Fax</label>
-              <input type="text" class="form-control" placeholder="Fax">
+              <input type="text" class="form-control form-control-sm" placeholder="Fax">
             </div>
             <div class="col">
               <label for="cus-fax">Email</label>
-              <input type="text" id="cus-email" class="form-control" placeholder="E-mail">
+              <input type="text" id="cus-email" class="form-control form-control-sm" placeholder="E-mail">
             </div>            
           </div>                
       </div>

@@ -69,7 +69,7 @@ $(function () {
     position: 'top-end',
     showConfirmButton: false,
     showCloseButton: false,
-    timer: 5000
+    timer: 4500
   });
 
 });

@@ -37,5 +37,6 @@ class Customer(models.Model):
     upd_flag = models.CharField(max_length=1, blank=True, null=True)
 
     class Meta:
-    	managed = True
-    	db_table = 'CUSTOMER'
+        managed = True
+        db_table = 'CUSTOMER'
+        #unique_together = ('cus_id', 'cus_brn')
