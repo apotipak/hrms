@@ -114,6 +114,19 @@ $('#modal-customer').on('shown.bs.modal', function () {
       }
     });    
 
+    $('#id_cus_name_th').on('keypress', function (e) {
+      if(e.which === 13){
+        $('#id_cus_name_en').focus();
+      }
+    });    
+
+    $('#id_cus_name_en').on('keypress', function (e) {
+      if(e.which === 13){
+        $('#form_submit').focus();
+      }
+    });    
+
+
 });
 
 function validate(evt) {

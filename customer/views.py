@@ -43,8 +43,9 @@ class CustomerListView(PermissionRequiredMixin, generic.ListView):
 def save_customer_form(request, form, template_name):
     data = dict()
     if request.method == 'POST':
+        #form = CustomerCreateForm(request.POST)
+
         if form.is_valid():
-            print("test")
             obj = form.save(commit=False)
             fields = request.POST.dict()
 
@@ -77,7 +78,9 @@ def save_customer_form(request, form, template_name):
             data['message'] = "ทำรายการสำเร็จ"
         else:
             data['form_is_valid'] = False
-            data['message'] = "ไม่สามารถทำรายการได้..!"
+            data['message'] = "ไม่สามารถทำรายการได้!! กรุณาตรวจสอบข้อมูล"
+            
+            print(form.errors)
 
     context = {'form': form}
     data['html_form'] = render_to_string(template_name, context, request=request)        
