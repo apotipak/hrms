@@ -48,10 +48,8 @@ class CustomerCreateForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = self.cleaned_data
-        cus_no = str(cleaned_data.get('cus_id')) + str(cleaned_data.get('cus_brn'))
+        cus_no = str(cleaned_data.get('cus_id')) + str(cleaned_data.get('cus_brn')).zfill(3)
         
-        #matching_cus_no = Customer.objects.filter(cus_no=float(cus_no))
-
         try:
             customer = Customer.objects.get(cus_no=cus_no)
         except Customer.DoesNotExist:
@@ -84,7 +82,7 @@ class CustomerCreateForm(forms.ModelForm):
         if 1 > value > -1:
             string = string.replace('0', '', 1)
         return string
-        
+
 class CustomerUpdateForm(forms.ModelForm):
     class Meta:
         model = Customer

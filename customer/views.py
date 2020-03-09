@@ -58,8 +58,7 @@ def save_customer_form(request, form, template_name):
                 obj.upd_flag = 'E'
 
             # Check duplicate Customer No
-            cus_no = fields.get('cus_id') + fields.get('cus_brn')
-
+            cus_no = fields.get('cus_id') + fields.get('cus_brn').zfill(3)
 
             obj.cus_no = cus_no
             obj.upd_date = timezone.now()
