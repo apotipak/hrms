@@ -9,7 +9,12 @@ class CustomerCreateForm(forms.ModelForm):
 
     class Meta:
         model = Customer
-        fields = ('cus_id', 'cus_brn', 'cus_name_th', 'cus_name_en')
+        #fields = '__all__'
+        #fields = ('cus_id', 'cus_brn', 'cus_name_th', 'cus_name_en', 'cus_add1_th', 'cus_add1_en', 'cus_add2_th', 'cus_add2_en')
+        fields = ('cus_id', 'cus_brn', 'cus_name_th', 'cus_name_en', 'cus_add1_th', 'cus_add1_en', 'cus_add2_th', 'cus_add2_en', 'cus_subdist_en', 'cus_subdist_th')
+        #, 'cus_district', 'cus_city', 'cus_country', 'cus_zip', 'cus_tel', 'cus_fax', 'cus_email', 'cus_taxid', 'cus_active', 'cus_bill', 'cus_main', 'cus_site', 'cus_zone', 'cus_contact', 'site_contact', 'last_contact', 'upd_date', 'upd_by', 'upd_flag')
+
+
         widgets = {
             'cus_no': forms.HiddenInput(),
             'upd_by': forms.HiddenInput(),
@@ -39,8 +44,22 @@ class CustomerCreateForm(forms.ModelForm):
         self.fields['cus_name_th'].widget.attrs={'class': 'form-control', 'placeholder': _('Company Name (TH)')}
         self.fields['cus_name_en'].label = "Customer Name (EN)"
         self.fields['cus_name_en'].widget.attrs={'class': 'form-control', 'placeholder': _('Company Name (EN)')}
+        self.fields['cus_add1_th'].label = "Address 1 (TH)"
+        self.fields['cus_add1_th'].widget.attrs={'class': 'form-control', 'placeholder': _('Address 1 (TH)')}
+        self.fields['cus_add1_en'].label = "Address 1 (EN)"
+        self.fields['cus_add1_en'].widget.attrs={'class': 'form-control', 'placeholder': _('Address 1 (EN)')}
+        self.fields['cus_add2_th'].label = "Address 2 (TH)"
+        self.fields['cus_add2_th'].widget.attrs={'class': 'form-control', 'placeholder': _('Address 2 (TH)')}
+        self.fields['cus_add2_en'].label = "Address 2 (EN)"
+        self.fields['cus_add2_en'].widget.attrs={'class': 'form-control', 'placeholder': _('Address 2 (EN)')}
 
-        
+        self.fields['cus_subdist_th'].label = "Sub-District (TH)"
+        self.fields['cus_subdist_th'].widget.attrs={'class': 'form-control', 'placeholder': _('Sub-Distict (TH)')}
+        self.fields['cus_subdist_en'].label = "Sub-District (EN)"
+        self.fields['cus_subdist_en'].widget.attrs={'class': 'form-control', 'placeholder': _('Sub-Distict (EN)')}
+
+#fields = ('cus_district', 'cus_city', 'cus_country', 'cus_zip', 'cus_tel', 'cus_fax', 'cus_email', 'cus_taxid', 'cus_active', 'cus_bill', 'cus_main', 'cus_site', 'cus_zone', 'cus_contact', 'site_contact', 'last_contact', 'upd_date', 'upd_by', 'upd_flag')
+
         #self.initial['cus_brn'] = 0
         self.initial['cus_active'] = 1
         self.initial['upd_flag'] = 'A'

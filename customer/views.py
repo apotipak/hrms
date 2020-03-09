@@ -58,9 +58,10 @@ def save_customer_form(request, form, template_name):
                 obj.upd_flag = 'E'
 
             # Check duplicate Customer No
-            cus_no = fields.get('cus_id') + fields.get('cus_brn').zfill(3)
-
+            cus_no = fields.get('cus_id') + fields.get('cus_brn').zfill(3)            
             obj.cus_no = cus_no
+
+            # Get current date time
             obj.upd_date = timezone.now()
             obj.cus_active = 1
             
@@ -68,6 +69,7 @@ def save_customer_form(request, form, template_name):
 
             data['form_is_valid'] = True
             
+            # TODO:
             #customer_list = Customer.objects.all()
             customer_list = Customer.objects.filter(cus_id__in=[2094]).order_by('-upd_date', 'cus_id', '-cus_active')
 
