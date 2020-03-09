@@ -36,9 +36,14 @@
       </div>
       <div class="col-6 col-form-label">
         <label for="id_cus_brn">Branch Code</label>
-        <!--<input type="number" name="cus_brn" id="id_cus_brn" class="form-control form-control-sm" placeholder="Branch Code" required="">-->
         {{ form.cus_brn }}
-        {{ form.cus_brn.errors }}
+        {% if form.cus_brn.errors %}
+          <ul class="list-inline">
+          {% for error in form.cus_brn.errors %}
+              <li><p class="text-danger">{{ error|escape }}</p></li>
+          {% endfor %}
+          </ul>
+        {% endif %}        
       </div> 
     </div>
     
@@ -76,7 +81,14 @@
 
             </div>
             <div class="col">
-              <input type="text" name="cus_name_en" step="1" class="form-control form-control-sm" placeholder="ชื่อบริษัท (EN)" id="id_cus_name_en">
+              {{ form.cus_name_en }}
+              {% if form.cus_name_en.errors %}
+                <ul class="list-inline">
+                {% for error in form.cus_name_en.errors %}
+                    <li><p class="text-danger">{{ error|escape }}</p></li>
+                {% endfor %}
+                </ul>
+              {% endif %}              
             </div>            
           </div>
           <div class="form-group row">

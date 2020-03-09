@@ -80,6 +80,11 @@ class CustomerCreateForm(forms.ModelForm):
 
         return cleaned_data
 
+    def _remove_leading_zero(value, string):
+        if 1 > value > -1:
+            string = string.replace('0', '', 1)
+        return string
+        
 class CustomerUpdateForm(forms.ModelForm):
     class Meta:
         model = Customer

@@ -97,32 +97,41 @@
 
 
 {% block scripts %}
-<!-- page script -->
+
 <script language="javascript">
+
 $('#modal-customer').on('shown.bs.modal', function () {
     $('#id_cus_id').focus();
 
     $('#id_cus_id').on('keypress', function (e) {
       if(e.which === 13){
         $('#id_cus_brn').focus();
+        event.preventDefault();
+        return false;        
       }
     });
 
     $('#id_cus_brn').on('keypress', function (e) {
       if(e.which === 13){
         $('#id_cus_name_th').focus();
+        event.preventDefault();
+        return false;        
       }
     });    
 
     $('#id_cus_name_th').on('keypress', function (e) {
       if(e.which === 13){
         $('#id_cus_name_en').focus();
+        event.preventDefault();
+        return false;        
       }
     });    
 
     $('#id_cus_name_en').on('keypress', function (e) {
       if(e.which === 13){
         $('#form_submit').focus();
+        event.preventDefault();
+        return false;        
       }
     });    
 

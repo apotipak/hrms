@@ -78,9 +78,16 @@ def save_customer_form(request, form, template_name):
             data['message'] = "ทำรายการสำเร็จ"
         else:
             data['form_is_valid'] = False
-            data['message'] = "ไม่สามารถทำรายการได้!! กรุณาตรวจสอบข้อมูล"
+            #data['message'] = "ไม่สามารถทำรายการได้!! กรุณาตรวจสอบข้อมูล"
             
-            print(form.errors)
+            for field in form.errors:
+                if field == 'cus_no':
+                    print(field)
+                    data['message'] = "รหัสสาขานี้มีอยู่แล้ว"                
+                else:
+                    data['message'] = "กรุณาป้อนข้อมูลให้ครบถ้วน"
+            
+            #print(form.errors)
 
     context = {'form': form}
     data['html_form'] = render_to_string(template_name, context, request=request)        
