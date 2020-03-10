@@ -16,7 +16,6 @@ class Customer(models.Model):
     cus_add1_en = models.CharField(max_length=150, blank=True, null=True)
     cus_add2_en = models.CharField(max_length=70, blank=True, null=True)
     cus_subdist_en = models.CharField(max_length=30, blank=True, null=True)
-    #cus_district = models.DecimalField(max_digits=4, decimal_places=0, blank=True, null=True)
     cus_district = models.ForeignKey(TDistrict, db_column='cus_district', to_field='dist_id', on_delete=models.SET_NULL, null=True)
     cus_city = models.DecimalField(max_digits=2, decimal_places=0, blank=True, null=True)
     cus_country = models.SmallIntegerField(blank=True, null=True)
