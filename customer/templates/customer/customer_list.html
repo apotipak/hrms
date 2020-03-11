@@ -44,8 +44,41 @@
       </div>
       
       <div class="card-body">
+                
+                <button type="button" data-toggle="modal" data-target="#my-modal">Test</button>
+                <!-- Modal -->
+                <div class="modal fade" id="my-modal">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h4 class="modal-title"><i class="fas fa-plus text-secondary"></i>&nbsp;&nbsp;Test</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="form-group">
+                        <select class="form-control js-example-basic-single" style="width: 100%;">
+                          <option selected="selected">Alabama</option>
+                          <option>Alaska</option>
+                          <option>California</option>
+                          <option>Delaware</option>
+                          <option>Tennessee</option>
+                          <option>Texas</option>
+                          <option>Washington</option>
+                        </select>
+                        </div>
 
 
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!--
                 <div class="form-group">
                   <label>Minimal</label>
                   <select class="form-control select2" style="width: 100%;">
@@ -58,7 +91,7 @@
                     <option>Washington</option>
                   </select>
                 </div>        
-
+                -->
 
         {% if customer_list %}
         <table id="customer-list-table" class="table table-bordered table-striped">
@@ -114,10 +147,26 @@
 
 {% block scripts %}
 
-<script language="javascript">
-$(function () {
-  $('.select2').select2()
+
+<script>
+
+$(document).ready(function() {
+    $('.js-example-basic-single').select2({
+      tags: true,
+      dropdownParent: $("#my-modal")
+    });
 });
+
+$(function () {
+  //$('.select2').select2({
+  $('.js-select2-district').select2({
+    tags: true,
+    dropdownParent: $("#modal-customer")
+  })
+});
+
+
+
 
 $('#modal-customer').on('shown.bs.modal', function () {
     $('#id_cus_id').focus();
