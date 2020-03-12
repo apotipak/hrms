@@ -38,7 +38,9 @@
 
         <h3 class="card-title"><b>Customer List</b></h3>
         <div class="card-tools">
-          <button type="button" class="btn btn-success js-create-customer" data-url="{% url 'customer-create' %}"><i class="fas fa-plus"></i>&nbsp;&nbsp;เพิ่ม</button>
+          <!--<button type="button" class="btn btn-success js-create-customer" data-url="{% url 'customer-create' %}"><i class="fas fa-plus"></i>&nbsp;&nbsp;เพิ่ม</button>-->
+          
+          <a href="{% url 'customer-create' %}" type="button" class="btn btn-success float-right"><i class="fas fa-plus"></i>&nbsp;&nbsp;เพิ่ม</a>
         </div>
         
       </div>

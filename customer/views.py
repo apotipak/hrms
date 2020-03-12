@@ -94,6 +94,7 @@ def save_customer_form(request, form, template_name):
     data['html_form'] = render_to_string(template_name, context, request=request)        
     return JsonResponse(data)
 
+"""
 def CustomerCreate(request):
     if request.method == 'POST':
         form = CustomerCreateForm(request.POST)
@@ -101,6 +102,17 @@ def CustomerCreate(request):
         form = CustomerCreateForm()
 
     return save_customer_form(request, form, 'customer/partial_customer_create.html')
+"""
+
+@login_required(login_url='/accounts/login/')
+def CustomerCreate(request):
+    page_title = settings.PROJECT_NAME
+    db_server = settings.DATABASES['default']['HOST']
+    project_name = settings.PROJECT_NAME
+    project_version = settings.PROJECT_VERSION  
+    today_date = settings.TODAY_DATE
+
+    return render(request, 'customer/customer_create.html', {'page_title': page_title, 'project_name': project_name, 'project_version': project_version, 'db_server': db_server, 'today_date': today_date})
 
 def CustomerUpdate(request, pk):
     customer = get_object_or_404(Customer, pk=pk)
