@@ -34,19 +34,16 @@
         <div class="card-header">
 
           <!--<div class="card-tools">-->
-          <div class="form-group row justify-content-md-center col-md-12" >
+          <div class="form-group row justify-content-md-center col-sm-12" >
             
-           <div class="col-sm-4">
-              <label for="contract_number">Contract Number</label>
-              <input class="form-control" id="contract_number" type="text">
+            <div class="col-sm-4">
+              <input class="form-control" id="contract_number" type="text" placeholder="Contract No">
             </div>
             <div class="col-sm-2">
-              <label for="branch_number">Branch Number</label>
-              <input class="form-control" id="branch_number" type="text">
+              <input class="form-control" id="branch_number" type="text" placeholder="Branch No">
             </div>
             <div class="col-sm-2">
-              <label for="volume_number">Volume Number</label>
-              <input class="form-control" id="volume_number" type="text">
+              <input class="form-control" id="volume_number" type="text" placeholder="Volume No">
             </div>
 
           </div>
@@ -66,5 +63,33 @@
 
   </div>
   <!-- /.content-wrapper -->
+{% endblock %}
 
+
+{% block scripts %}
+<script>
+  $('#contract_number').on('keypress', function (e) {
+    if(e.which === 13){
+      $('#branch_number').focus();
+      event.preventDefault();
+      return false;        
+    }
+  });
+
+  $('#branch_number').on('keypress', function (e) {
+    if(e.which === 13){
+      $('#volume_number').focus();
+      event.preventDefault();
+      return false;        
+    }
+  });
+
+  $('#volume_number').on('keypress', function (e) {
+    if(e.which === 13){      
+      event.preventDefault();
+      return false;    
+    }
+  });
+
+</script>
 {% endblock %}
