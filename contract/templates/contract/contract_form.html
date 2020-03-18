@@ -36,7 +36,8 @@
           <!--<div class="card-tools">-->
           <form method="POST" id="contract-form">
           {% csrf_token %}
-          <div class="form-group row justify-content-md-center col-sm-12" >            
+          <div class="form-group row justify-content-md-center col-sm-12">
+            <div class="col-sm-2 mt-3 text-sm-right"><label>Contract No</label></div>
             <div class="col-sm-3 mt-2">
               {{ form.cus_id }}
               <p class="text-danger">{{ form.cus_id.errors.as_text }}</p>
@@ -55,7 +56,11 @@
         </div>
         
         <div class="card-body">
-          Content
+          {% if contract %}
+            Found {{cnt_id}}
+          {% else %}
+            &nbsp;            
+          {% endif %}
         </div>
         <!-- /.card-body -->
 

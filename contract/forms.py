@@ -5,9 +5,9 @@ from django.utils.translation import gettext_lazy as _
 
 
 class ContractForm(forms.ModelForm):
-    cus_id = forms.IntegerField(label='Customer ID', required=True)
-    cus_brn = forms.IntegerField(label='Branch', required=True, max_value=999, min_value=0)
-    cus_vol = forms.IntegerField(label='Volume', required=True, max_value=9999999, min_value=0)
+    cus_id = forms.IntegerField(label='Customer ID', required=True, initial=1014)
+    cus_brn = forms.IntegerField(label='Branch', required=True, max_value=999, min_value=0, initial=0)
+    cus_vol = forms.IntegerField(label='Volume', required=True, max_value=9999999, min_value=0, initial=91)
 
     class Meta:
         model = CusContract
