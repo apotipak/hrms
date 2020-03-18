@@ -18,9 +18,8 @@ class ContractForm(forms.ModelForm):
             }
         }
 
-    def __init__(self, *args, **kwargs):        
-        super(ContractForm, self).__init__(*args, **kwargs)
-        #self.user = kwargs.pop('user')
+    def __init__(self, *args, **kwargs):    	
+        super(ContractForm, self).__init__(*args, **kwargs)        
         self.fields['customer_id'].widget.attrs={'class': 'form-control', 'placeholder': _('Customer ID')}
         self.fields['customer_branch'].widget.attrs={'class': 'form-control', 'placeholder': _('Branch')}
         self.fields['customer_branch'].widget.attrs['max'] = 3
@@ -28,20 +27,20 @@ class ContractForm(forms.ModelForm):
 
     def clean_customer_id(self):
         if self.instance: 
-            return self.instance.customer_id
+            return self.instance.cus_id
         else: 
-            return self.fields['customer_id']
+            return self.fields['cus_id']
 
     def clean_customer_branch(self):
         if self.instance: 
-            return self.instance.customer_branch
+            return self.instance.cus_brn
         else: 
-            return self.fields['customer_branch']
+            return self.fields['cus_brn']
 
     def clean_customer_volume(self):
         if self.instance: 
-            return self.instance.customer_volume
+            return self.instance.cus_vol
         else: 
-            return self.fields['customer_volume']
+            return self.fields['cus_vol']
 
     

@@ -23,23 +23,25 @@ def ContractList(request):
 
 @login_required(login_url='/accounts/login/')
 def ContractCreate(request):
-	
-	data = dict()	
+    page_title = settings.PROJECT_NAME
+    db_server = settings.DATABASES['default']['HOST']
+    project_name = settings.PROJECT_NAME
+    project_version = settings.PROJECT_VERSION
+    today_date = settings.TODAY_DATE
 
-	if request.method == 'POST':		
+    data = dict()
 
-		form = ContractForm(request.POST)
+    if request.method == 'POST':		
+    	form = ContractForm(request.POST)
+    	contract_number = request.POST['customer_id'] + request.POST.get('customer_branch') + request.POST.get('customer_volume')
+    	data['contract_number'] = contract_number
+    	data['message'] = "Success"
+    else:
+    	form = ContractForm()
 
-		contract_number = request.POST['customer_id'] + request.POST.get('customer_branch') + request.POST.get('customer_volume')				
-
-		data['contract_number'] = contract_number
-		data['message'] = "Success"		
-
-	else:
-		form = ContractForm()
-
-	return render(request, 'contract/contract_form.html', {'form': form})
-	#return JsonResponse(data)
+    #return render(request, 'contract/contract_form.html', {'form': form})
+    return render(request, 'contract/contract_form.html', {'form':form, 'page_title': page_title, 'project_name': project_name, 'project_version': project_version, 'db_server': db_server, 'today_date': today_date})
+    #return JsonResponse(data)
 
 
 @login_required(login_url='/accounts/login/')
