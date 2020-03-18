@@ -38,13 +38,19 @@
           {% csrf_token %}
           <div class="form-group row justify-content-md-center col-sm-12" >            
             <div class="col-sm-3 mt-2">
-              <input class="form-control" id="customer_id" type="text" placeholder="Customer ID">
+              <!--<input class="form-control" id="customer_id" type="text" placeholder="Customer ID">-->
+              {{ form.customer_id }} 
+              {{ form.customer_id.errors }}
             </div>
             <div class="col-sm-2 mt-2">
-              <input class="form-control" id="customer_branch" type="text" placeholder="Branch No">
+              <!--<input class="form-control" id="customer_branch" type="text" placeholder="Branch No">-->
+              {{ form.customer_branch }} 
+              {{ form.customer_branch.errors }}
             </div>
             <div class="col-sm-2 mt-2">
-              <input class="form-control" id="customer_volume" type="text" placeholder="Volume No">
+              <!--<input class="form-control" id="customer_volume" type="text" placeholder="Volume No">-->
+              {{ form.customer_volume }}
+              {{ form.customer_volume.errors }}
             </div>
           </div>
           </form>
@@ -69,25 +75,25 @@
 
 {% block scripts %}
 <script>
-  $('#customer_id').focus();
+  $('#id_customer_id').focus();
 
-  $('#customer_id').on('keypress', function (e) {
+  $('#id_customer_id').on('keypress', function (e) {
     if(e.which === 13){
-      $('#customer_branch').focus();
+      $('#id_customer_branch').focus();
       event.preventDefault();
       return false;        
     }
   });
 
-  $('#customer_branch').on('keypress', function (e) {
+  $('#id_customer_branch').on('keypress', function (e) {
     if(e.which === 13){
-      $('#customer_volume').focus();
+      $('#id_customer_volume').focus();
       event.preventDefault();
       return false;        
     }
   });
 
-  $('#customer_volume').on('keypress', function (e) {
+  $('#id_customer_volume').on('keypress', function (e) {
     if(e.which === 13){      
       event.preventDefault();
       $('#contract-form').submit();
@@ -95,6 +101,7 @@
     }
   });
 
+/*
 $(document).on('submit', '#contract-form',function(e){
   e.preventDefault();
   $.ajax({        
@@ -123,6 +130,7 @@ $(document).on('submit', '#contract-form',function(e){
     }
   });
 });
+*/
 
 </script>
 {% endblock %}
