@@ -38,19 +38,16 @@
           {% csrf_token %}
           <div class="form-group row justify-content-md-center col-sm-12" >            
             <div class="col-sm-3 mt-2">
-              <!--<input class="form-control" id="customer_id" type="text" placeholder="Customer ID">-->
-              {{ form.customer_id }} 
-              {{ form.customer_id.errors }}
+              {{ form.cus_id }}
+              <p class="text-danger">{{ form.cus_id.errors.as_text }}</p>
             </div>
             <div class="col-sm-2 mt-2">
-              <!--<input class="form-control" id="customer_branch" type="text" placeholder="Branch No">-->
-              {{ form.customer_branch }} 
-              {{ form.customer_branch.errors }}
+              {{ form.cus_brn }} 
+              <p class="text-danger">{{ form.cus_brn.errors.as_text }}</p>
             </div>
             <div class="col-sm-2 mt-2">
-              <!--<input class="form-control" id="customer_volume" type="text" placeholder="Volume No">-->
-              {{ form.customer_volume }}
-              {{ form.customer_volume.errors }}
+              {{ form.cus_vol }}
+              <p class="text-danger">{{ form.cus_vol.errors.as_text }}</p>
             </div>
           </div>
           </form>
@@ -75,25 +72,25 @@
 
 {% block scripts %}
 <script>
-  $('#id_customer_id').focus();
+  $('#id_cus_id').focus();
 
-  $('#id_customer_id').on('keypress', function (e) {
+  $('#id_cus_id').on('keypress', function (e) {
     if(e.which === 13){
-      $('#id_customer_branch').focus();
+      $('#id_cus_brn').focus();
       event.preventDefault();
       return false;        
     }
   });
 
-  $('#id_customer_branch').on('keypress', function (e) {
+  $('#id_cus_brn').on('keypress', function (e) {
     if(e.which === 13){
-      $('#id_customer_volume').focus();
+      $('#id_cus_vol').focus();
       event.preventDefault();
       return false;        
     }
   });
 
-  $('#id_customer_volume').on('keypress', function (e) {
+  $('#id_cus_vol').on('keypress', function (e) {
     if(e.which === 13){      
       event.preventDefault();
       $('#contract-form').submit();

@@ -33,7 +33,7 @@ def ContractCreate(request):
 
     if request.method == 'POST':		
     	form = ContractForm(request.POST)
-    	contract_number = request.POST['customer_id'] + request.POST.get('customer_branch') + request.POST.get('customer_volume')
+    	contract_number = request.POST['cus_id'] + request.POST.get('cus_brn') + request.POST.get('cus_vol')
     	data['contract_number'] = contract_number
     	data['message'] = "Success"
     else:
