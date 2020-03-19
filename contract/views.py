@@ -29,69 +29,42 @@ def ContractCreate(request):
     project_name = settings.PROJECT_NAME
     project_version = settings.PROJECT_VERSION
     today_date = settings.TODAY_DATE
-
-    data = dict()
-    contract = None
-    cnt_id = 0
-    cnt_id_is_existed = False
     
-    form = ContractForm(request.POST)
-
-    if request.method == 'POST':
-
-    	if form.is_valid():    		
-    		cnt_id = Decimal(request.POST['cus_id'] + request.POST.get('cus_brn').zfill(3) + request.POST.get('cus_vol').zfill(3))
-    		contract = CusContract.objects.filter(cnt_id__exact=cnt_id)
-    		
-    		if contract:
-    			cnt_id_is_existed = True
-    			data['cnt_id'] = cnt_id
-    			return JsonResponse(data)
-    		
-    	else:
-    		form = ContractForm()		
+    if request.method == "POST":
+    	form = ContractForm(request.POST)
     else:
     	form = ContractForm()
 
-    return render(request, 'contract/contract_form.html', {'cnt_id':cnt_id, 'contract':contract, 'form':form, 'page_title': page_title, 'project_name': project_name, 'project_version': project_version, 'db_server': db_server, 'today_date': today_date})
-    #return JsonResponse(data)
+    return render(request, 'contract/contract_form.html', {'form':form, 'page_title': page_title, 'project_name': project_name, 'project_version': project_version, 'db_server': db_server, 'today_date': today_date})
 
 
 @login_required(login_url='/accounts/login/')
 def SearchContractNumber(request):
 	
-	data = dict()	
+	data = dict()
 	username = None
 	if request.user.is_authenticated:
 		username = request.user.username
 
 	if request.method == "POST":
-		form = ContractForm(request.POST, username)
-
-		cnt_id = Decimal(request.POST['cus_id'] + request.POST.get('cus_brn').zfill(3) + request.POST.get('cus_vol').zfill(3))		
 		
-		data['cnt_id'] = cnt_id
-		
+		form = ContractForm(request.POST, username)		
+				
 		if form.is_valid():
+			cnt_id = Decimal(request.POST['cus_id'] + request.POST.get('cus_brn').zfill(3) + request.POST.get('cus_vol').zfill(3))		
+			data['cnt_id'] = cnt_id
+
+
 			contract = CusContract.objects.filter(cnt_id__exact=cnt_id)
 			if contract:				
 				data['error_message'] = "Found"
+
 			else:
 				data['error_message'] = "Not found"
 		else:
-			data['error_message'] = "Error"
+			data['error_message'] = "Form error"
 
 		return JsonResponse(data)
 
-		"""
-		if form.is_valid():
-        	cnt_id = Decimal(request.POST['cus_id'] + request.POST.get('cus_brn').zfill(3) + request.POST.get('cus_vol').zfill(3))
-        	contract = CusContract.objects.filter(cnt_id__exact=cnt_id)
-
-        	if contract:
-        		cnt_id_is_existed = True
-        		data['cnt_id'] = cnt_id
-        		return JsonResponse(data)
-        """
 	else:
 		form = ContractForm()

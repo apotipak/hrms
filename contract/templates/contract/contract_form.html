@@ -95,6 +95,7 @@
     }
   });
 
+
   /*
   $('#id_cus_vol').on('keypress', function (e) {
     if(e.which === 13){      
@@ -104,7 +105,7 @@
     }
   });
   */
-
+  
   $('#id_cus_vol').on('keypress', function (e) {
     if(e.which === 13){      
       event.preventDefault();
@@ -120,15 +121,13 @@
                 action: 'post'
             },
             success:function(json){
-                document.getElementById("contract-form").reset();
-                $(".card-body").html('<div class="col-md-12">'+
-                    '<div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">' +
-                        '<div class="col p-4 d-flex flex-column position-static">' +
-                            '<p class="mb-auto">' + json.cnt_id + '</p>' +
-                            '<p class="mb-auto">' + json.error_message + '</p>' +
-                        '</div>' +
-                    '</div>' +
-                '</div>' 
+                
+                //document.getElementById("contract-form").reset();
+
+                $(".card-body").html('<div class="col p-4 d-flex flex-column position-static">' +
+                        '<p class="mb-auto">' + json.cnt_id + '</p>' +
+                        '<p class="mb-auto">' + json.error_message + '</p>' +
+                    '</div>'            
                 )
             },
             error : function(xhr,errmsg,err) {

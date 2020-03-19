@@ -1,9 +1,13 @@
 from django.db import models
+from customer.models import Customer
 
 
 class CusContract(models.Model):
     cnt_id = models.DecimalField(primary_key=True, max_digits=13, decimal_places=0)
+    
     cus_id = models.DecimalField(max_digits=7, decimal_places=0, blank=True, null=True)
+    #cus_id = models.ForeignKey(Customer, db_column='cus_id', to_field='cus_id', on_delete=models.SET_NULL, null=True) 
+
     cus_brn = models.DecimalField(max_digits=3, decimal_places=0, blank=True, null=True)
     cus_vol = models.DecimalField(max_digits=3, decimal_places=0, blank=True, null=True)
     cnt_active = models.BooleanField(blank=True, null=True)
