@@ -2,11 +2,13 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.http import JsonResponse
+from django.template.loader import render_to_string
 from django.http import HttpResponseRedirect
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 from .forms import ContractForm
 from .models import CusContract
+from customer.models import Customer
 from decimal import Decimal
 
 
@@ -51,14 +53,16 @@ def SearchContractNumber(request):
 		form = ContractForm(request.POST, username)		
 				
 		if form.is_valid():
-			cnt_id = Decimal(request.POST['cus_id'] + request.POST.get('cus_brn').zfill(3) + request.POST.get('cus_vol').zfill(3))		
-			data['cnt_id'] = cnt_id
-
-
+			data['form_is_valid'] = True
+			
+			cnt_id = Decimal(request.POST['cus_id'] + request.POST.get('cus_brn').zfill(3) + request.POST.get('cus_vol').zfill(3))
 			contract = CusContract.objects.filter(cnt_id__exact=cnt_id)
-			if contract:				
-				data['error_message'] = "Found"
+			customer = Customer.objects.filter(cus_id__exact=request.POST.get('cus_id')).filter(cus_brn__exact=request.POST.get('cus_brn'))
 
+			if contract:
+
+				data['error_message'] = "Existing contract"
+				data['html_form'] = render_to_string('contract/partial_contract_information.html', {'contract':contract, 'customer':customer})
 			else:
 				data['error_message'] = "Not found"
 		else:
