@@ -95,6 +95,7 @@
     }
   });
 
+  /*
   $('#id_cus_vol').on('keypress', function (e) {
     if(e.which === 13){      
       event.preventDefault();
@@ -102,37 +103,42 @@
       return false;    
     }
   });
+  */
 
-/*
-$(document).on('submit', '#contract-form',function(e){
-  e.preventDefault();
-  $.ajax({        
-        type:'POST',
-        url:'{% url "search_contract_number" %}',
-        data:{
-            customer_id:$('#customer_id').val(),
-            customer_branch:$('#customer_branch').val(),
-            customer_volume:$('#customer_volume').val(),
-            csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
-            action: 'post'
-        },
-        success:function(json){
-            document.getElementById("contract-form").reset();
-            $(".card-body").html('<div class="col-md-12">'+
-                '<div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">' +
-                    '<div class="col p-4 d-flex flex-column position-static">' +
-                        '<p class="mb-auto">' + json.contract_number + '</p>' +
+  $('#id_cus_vol').on('keypress', function (e) {
+    if(e.which === 13){      
+      event.preventDefault();
+
+      $.ajax({        
+            type:'POST',
+            url:'{% url "search_contract_number" %}',
+            data:{
+                cus_id:$('#id_cus_id').val(),
+                cus_brn:$('#id_cus_brn').val(),
+                cus_vol:$('#id_cus_vol').val(),
+                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                action: 'post'
+            },
+            success:function(json){
+                document.getElementById("contract-form").reset();
+                $(".card-body").html('<div class="col-md-12">'+
+                    '<div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">' +
+                        '<div class="col p-4 d-flex flex-column position-static">' +
+                            '<p class="mb-auto">' + json.cnt_id + '</p>' +
+                            '<p class="mb-auto">' + json.error_message + '</p>' +
+                        '</div>' +
                     '</div>' +
-                '</div>' +
-            '</div>' 
-            )
-        },
-        error : function(xhr,errmsg,err) {
-        console.log(xhr.status + ": " + xhr.responseText);
+                '</div>' 
+                )
+            },
+            error : function(xhr,errmsg,err) {
+            console.log(xhr.status + ": " + xhr.responseText);
+        }
+      });
+
+      return false;    
     }
   });
-});
-*/
 
 </script>
 {% endblock %}

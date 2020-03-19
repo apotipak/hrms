@@ -58,16 +58,40 @@ def ContractCreate(request):
 
 
 @login_required(login_url='/accounts/login/')
-def SearchContractNumber(request):  
-    if request.method == "POST":
-        
-        #form = ContractForm(request.POST, user=request.user)
-        form = ContractForm()
+def SearchContractNumber(request):
+	
+	data = dict()	
+	username = None
+	if request.user.is_authenticated:
+		username = request.user.username
 
-        if form.is_valid():
-        	return HttpResponseRedirect('/?submitted=True')
-        else:
-        	return HttpResponseRedirect('/?submitted=False')
+	if request.method == "POST":
+		form = ContractForm(request.POST, username)
 
-    else:
-        form = ContractForm()
+		cnt_id = Decimal(request.POST['cus_id'] + request.POST.get('cus_brn').zfill(3) + request.POST.get('cus_vol').zfill(3))		
+		
+		data['cnt_id'] = cnt_id
+		
+		if form.is_valid():
+			contract = CusContract.objects.filter(cnt_id__exact=cnt_id)
+			if contract:				
+				data['error_message'] = "Found"
+			else:
+				data['error_message'] = "Not found"
+		else:
+			data['error_message'] = "Error"
+
+		return JsonResponse(data)
+
+		"""
+		if form.is_valid():
+        	cnt_id = Decimal(request.POST['cus_id'] + request.POST.get('cus_brn').zfill(3) + request.POST.get('cus_vol').zfill(3))
+        	contract = CusContract.objects.filter(cnt_id__exact=cnt_id)
+
+        	if contract:
+        		cnt_id_is_existed = True
+        		data['cnt_id'] = cnt_id
+        		return JsonResponse(data)
+        """
+	else:
+		form = ContractForm()
