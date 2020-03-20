@@ -39,15 +39,15 @@
             <div class="col-sm-2 mt-3 text-sm-right"><label>Contract No</label></div>
             <div class="col-sm-3 mt-2">
               {{ form.cus_id }}
-              <p class="text-danger">{{ form.cus_id.errors.as_text }}</p>
+              <p class="text-danger text-sm">{{ form.cus_id.errors.as_text }}</p>
             </div>
             <div class="col-sm-2 mt-2">
               {{ form.cus_brn }} 
-              <p class="text-danger">{{ form.cus_brn.errors.as_text }}</p>
+              <p class="text-danger text-sm">{{ form.cus_brn.errors.as_text }}</p>
             </div>
             <div class="col-sm-2 mt-2">
               {{ form.cus_vol }}
-              <p class="text-danger">{{ form.cus_vol.errors.as_text }}</p>
+              <p class="text-danger text-sm">{{ form.cus_vol.errors.as_text }}</p>
             </div>
             <div class="col-sm-2 mt-2 text-center">
               <button type="submit" class="btn btn-outline-primary"><i class="fas fa-search"></i> Search</button>
@@ -118,13 +118,15 @@
                 action: 'post'
             },
             success:function(json){
+                /*
                 document.getElementById("contract-form").reset();
                 $(".card-body").html('<div class="col p-4 d-flex flex-column position-static">' +
                         '<p class="mb-auto">' + json.cnt_id + '</p>' +
                         '<p class="mb-auto">' + json.error_message + '</p>' +
                     '</div>'            
                 )
-
+                */
+                
                 $(".card-body").html("");
                 $(".card-body").html(json.error_message);
                 $(".card-body").html(json.html_form);

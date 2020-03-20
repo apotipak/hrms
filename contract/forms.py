@@ -6,9 +6,9 @@ from django.utils.translation import gettext_lazy as _
 
 
 class ContractForm(forms.ModelForm):
-    cus_id = forms.DecimalField(label='Customer ID', required=True, initial=2600)
+    cus_id = forms.DecimalField(label='Customer ID', required=True, max_value=9999999, initial=2600)
     cus_brn = forms.DecimalField(label='Branch', required=True, max_value=999, min_value=0, initial=0)
-    cus_vol = forms.DecimalField(label='Volume', required=True, max_value=9999999, min_value=0, initial=1)
+    cus_vol = forms.DecimalField(label='Volume', required=True, max_value=999, min_value=0, initial=1)
 
     class Meta:
         model = CusContract
@@ -17,14 +17,20 @@ class ContractForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):    	
         super(ContractForm, self).__init__(*args, **kwargs)
 
+        self.fields['cus_id'].widget.attrs = {'class': 'form-control', 'placeholder': _('Customer ID')}        
+        self.fields['cus_id'].error_messages = {'required': _('กรุณาป้อนข้อมูล'), 'max_value': _('รหัสสัญญาเกิน 7 หลัก')}
+
         self.fields['cus_brn'].widget.attrs={'class': 'form-control', 'placeholder': _('Branch')}
         self.fields['cus_brn'].error_messages = {'required': _('กรุณาป้อนข้อมูล'), 'max_value': _('รหัสสาขาเกิน 3 หลัก'), 'min_value': _('ป้อนข้อมูลน้อยกว่า 0')}
 
         self.fields['cus_vol'].widget.attrs={'class': 'form-control', 'placeholder': _('Volume')}
-        self.fields['cus_vol'].error_messages = {'required': _('กรุณาป้อนข้อมูล'), 'max_value': _('รหัสเลขที่สัญญาเกิน 7 หลัก'), 'min_value': _('ป้อนข้อมูลน้อยกว่า 0')}
+        self.fields['cus_vol'].error_messages = {'required': _('กรุณาป้อนข้อมูล'), 'max_value': _('รหัสลำดับสัญญาเกิน 3 หลัก'), 'min_value': _('ป้อนข้อมูลน้อยกว่า 0')}
 
-        self.fields['cus_id'].widget.attrs = {'class': 'form-control', 'placeholder': _('Customer ID')}        
-        self.fields['cus_id'].error_messages = {'required': _('กรุณาป้อนข้อมูล')}
+    def clean_cus_id(self):
+        if self.instance: 
+            return self.instance.cus_id
+        else: 
+            return self.fields['cus_id']
         
     def clean_cus_brn(self):
         if self.instance: 
@@ -38,10 +44,5 @@ class ContractForm(forms.ModelForm):
         else: 
             return self.fields['cus_vol']
 
-    def clean_cus_id(self):
-        if self.instance: 
-            return self.instance.cus_id
-        else: 
-            return self.fields['cus_id']
 
     
