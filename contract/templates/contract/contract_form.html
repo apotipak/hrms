@@ -35,20 +35,20 @@
             <form method="POST" id="contract-form">
             {% csrf_token %}
             <div class="form-group row justify-content-md-center col-sm-12">
-              <div class="col-sm-2 mt-3 text-sm-right"><label>Contract No</label></div>
-              <div class="col-sm-3 mt-2">
+              <div class="col-sm-2 mt-4 text-sm-right"><label>Contract No</label></div>
+              <div class="col-sm-3 mt-4">
                 {{ form.cus_id }}
                 <p id="id_cus_id_error" class="text-danger text-xs">{{ form.cus_id.errors.as_text }}</p>
               </div>
-              <div class="col-sm-2 mt-2">
+              <div class="col-sm-2 mt-4">
                 {{ form.cus_brn }} 
                 <p id="id_cus_brn_error" class="text-danger text-xs">{{ form.cus_brn.errors.as_text }}</p>
               </div>
-              <div class="col-sm-2 mt-2">
+              <div class="col-sm-2 mt-4">
                 {{ form.cus_vol }}
                 <p id="id_cus_vol_error" class="text-danger text-xs">{{ form.cus_vol.errors.as_text }}</p>
               </div>
-              <div class="col-sm-2 mt-2 text-center">
+              <div class="col-sm-2 mt-4 text-center">
                 <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Search</button>
               </div>
             </div>
@@ -74,9 +74,7 @@
           </div>
 
           <div class="card-body">
-            <div class="row">
-              &nbsp;
-            </div>
+            <div class="row">&nbsp;</div>
           </div>
           <!--<div class="card-footer">&nbsp;</div>-->
         </div>
