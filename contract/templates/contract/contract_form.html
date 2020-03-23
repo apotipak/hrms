@@ -39,18 +39,18 @@
             <div class="col-sm-2 mt-3 text-sm-right"><label>Contract No</label></div>
             <div class="col-sm-3 mt-2">
               {{ form.cus_id }}
-              <p class="text-danger text-sm">{{ form.cus_id.errors.as_text }}</p>
+              <p id="id_cus_id_error" class="text-danger text-xs">{{ form.cus_id.errors.as_text }}</p>
             </div>
             <div class="col-sm-2 mt-2">
               {{ form.cus_brn }} 
-              <p class="text-danger text-sm">{{ form.cus_brn.errors.as_text }}</p>
+              <p id="id_cus_brn_error" class="text-danger text-xs">{{ form.cus_brn.errors.as_text }}</p>
             </div>
             <div class="col-sm-2 mt-2">
               {{ form.cus_vol }}
-              <p class="text-danger text-sm">{{ form.cus_vol.errors.as_text }}</p>
+              <p id="id_cus_vol_error" class="text-danger text-xs">{{ form.cus_vol.errors.as_text }}</p>
             </div>
             <div class="col-sm-2 mt-2 text-center">
-              <button type="submit" class="btn btn-outline-primary"><i class="fas fa-search"></i> Search</button>
+              <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Search</button>
             </div>
           </div>
 
@@ -103,7 +103,51 @@
   });
   */
 
-  $('#id_cus_vol').on('keypress', function (e) {
+  $("#contract-form").submit(function(e) {
+    e.preventDefault();
+    var data = $(this).serialize();
+    $.ajax({
+          type:'POST',
+          url:'{% url "contract_create" %}',
+          data:{
+              cus_id:$('#id_cus_id').val(),
+              cus_brn:$('#id_cus_brn').val(),
+              cus_vol:$('#id_cus_vol').val(),
+              csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+              action: 'post'
+          },
+          success:function(json){
+            $(".card-body").html("");
+              
+              $(".card-body").html(json.html_form);
+
+              if (json.errorlist) {     
+                for (item in json.errorlist) {
+                  if (item == 'cus_id')
+                    $("#id_cus_id_error").html(json.errorlist.cus_id);
+
+                  if (item == 'cus_brn')
+                    $("#id_cus_brn_error").html(json.errorlist.cus_brn);
+
+                  if (item == 'cus_vol')
+                    $("#id_cus_vol_error").html(json.errorlist.cus_vol);
+
+                }
+              } else {
+                $("#id_cus_id_error").html('');
+                $("#id_cus_brn_error").html('');
+                $("#id_cus_vol_error").html('');
+              }
+
+          },
+          error : function(xhr,errmsg,err) {
+          console.log(xhr.status + ": " + xhr.responseText);
+      }
+    });
+
+  });
+
+  $('#id_cus_vol1').on('keypress', function (e) {
     if(e.which === 13){      
       event.preventDefault();
 
@@ -126,7 +170,7 @@
                     '</div>'            
                 )
                 */
-                
+
                 $(".card-body").html("");
                 $(".card-body").html(json.error_message);
                 $(".card-body").html(json.html_form);

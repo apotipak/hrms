@@ -1,7 +1,6 @@
 {% if contract %}
-
 <div class="row">
-  
+
   <div class="col-1 col-sm-1">
     <div class="nav flex-column nav-tabs h-100" id="vert-tabs-tab" role="tablist" aria-orientation="vertical">
       <a class="nav-link active" id="vert-tabs-home-tab" data-toggle="pill" href="#vert-tabs-home" role="tab" aria-controls="vert-tabs-home" aria-selected="true">TH</a>
@@ -52,8 +51,22 @@
 
 </div>
 
-{% else %}
+{% elif errorlist %}
 <div class="col p-4 d-flex flex-column position-static">
-	<p class="mb-auto">Not found</p>
+	<div class="row">
+		
+	{% if errorlist %}
+
+		{% for item in errorlist %}
+			<p>{{ item }}</p>
+		{% endfor %}
+		
+	{% endif %}
+
+	<p>กรุณาตรวจสอบเงื่อนไขการป้อนข้อมูล</p>
+
+	</div>
 </div>
+{% else %}
+	<p class="mb-auto">Not found</p>
 {% endif %}
