@@ -26,50 +26,65 @@
     </div>
     <!-- /.content-header -->
 
-    <!-- Main content -->
     <section class="content">
+      <div class="container-fluid">
 
-      <!-- Default box -->
-      <div class="card">
-        <div class="card-header">
+        <div class="card card-default">          
+          
+          <div class="card-header">
+            <form method="POST" id="contract-form">
+            {% csrf_token %}
+            <div class="form-group row justify-content-md-center col-sm-12">
+              <div class="col-sm-2 mt-3 text-sm-right"><label>Contract No</label></div>
+              <div class="col-sm-3 mt-2">
+                {{ form.cus_id }}
+                <p id="id_cus_id_error" class="text-danger text-xs">{{ form.cus_id.errors.as_text }}</p>
+              </div>
+              <div class="col-sm-2 mt-2">
+                {{ form.cus_brn }} 
+                <p id="id_cus_brn_error" class="text-danger text-xs">{{ form.cus_brn.errors.as_text }}</p>
+              </div>
+              <div class="col-sm-2 mt-2">
+                {{ form.cus_vol }}
+                <p id="id_cus_vol_error" class="text-danger text-xs">{{ form.cus_vol.errors.as_text }}</p>
+              </div>
+              <div class="col-sm-2 mt-2 text-center">
+                <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Search</button>
+              </div>
+            </div>
+            </form>
+          </div>
 
-          <form method="POST" id="contract-form">
-          {% csrf_token %}
-          <div class="form-group row justify-content-md-center col-sm-12">
-            <div class="col-sm-2 mt-3 text-sm-right"><label>Contract No</label></div>
-            <div class="col-sm-3 mt-2">
-              {{ form.cus_id }}
-              <p id="id_cus_id_error" class="text-danger text-xs">{{ form.cus_id.errors.as_text }}</p>
-            </div>
-            <div class="col-sm-2 mt-2">
-              {{ form.cus_brn }} 
-              <p id="id_cus_brn_error" class="text-danger text-xs">{{ form.cus_brn.errors.as_text }}</p>
-            </div>
-            <div class="col-sm-2 mt-2">
-              {{ form.cus_vol }}
-              <p id="id_cus_vol_error" class="text-danger text-xs">{{ form.cus_vol.errors.as_text }}</p>
-            </div>
-            <div class="col-sm-2 mt-2 text-center">
-              <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Search</button>
+        </div>
+        
+      </div>
+    </section>
+
+    <section class="content">
+      <div class="container-fluid">
+        <div class="card card-default">
+          
+          <div class="card-header">
+            <h3 class="card-title">Company Name</h3>
+
+            <div class="card-tools">
+              <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+              <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-remove"></i></button>
             </div>
           </div>
 
-          </form>
+          <div class="card-body">
+            <div class="row">
+              &nbsp;
+            </div>
+          </div>
+          <!--<div class="card-footer">&nbsp;</div>-->
         </div>
-        
-        <div class="card-body">
-            &nbsp;            
-        </div>
-        <!-- /.card-body -->
-
       </div>
-      <!-- /.card -->
-
     </section>
-    <!-- /.content -->
 
   </div>
-  <!-- /.content-wrapper -->
+
 {% endblock %}
 
 
