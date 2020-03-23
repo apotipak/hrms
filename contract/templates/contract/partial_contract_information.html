@@ -54,7 +54,8 @@
 {% elif errorlist %}
 <div class="col p-4 d-flex flex-column position-static">
 	<div class="row">
-		
+
+	<!--		
 	{% if errorlist %}
 
 		{% for item in errorlist %}
@@ -64,9 +65,13 @@
 	{% endif %}
 
 	<p>กรุณาตรวจสอบเงื่อนไขการป้อนข้อมูล</p>
-
+	-->
 	</div>
 </div>
 {% else %}
-	<p class="mb-auto">Not found</p>
+<div class="col p-4 d-flex flex-column position-static">
+	<div class="row">
+		<!--<p class="mb-auto">Contract Number not found.</p>-->
+	</div>
+</div>	
 {% endif %}

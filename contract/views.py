@@ -37,28 +37,26 @@ def ContractCreate(request):
     	form = ContractForm(request.POST)
 
     	if form.is_valid():
-    		print("valid")
-    		    		
+
     		cnt_id = Decimal(request.POST['cus_id'] + request.POST.get('cus_brn').zfill(3) + request.POST.get('cus_vol').zfill(3))
     		contract = CusContract.objects.filter(cnt_id__exact=cnt_id)
-    		customer = Customer.objects.filter(cus_id__exact=request.POST.get('cus_id')).filter(cus_brn__exact=request.POST.get('cus_brn'))
-    		
-    		#data['errorlist'] = None
+    		customer = Customer.objects.filter(cus_id__exact=request.POST.get('cus_id')).filter(cus_brn__exact=request.POST.get('cus_brn'))    	    	
 
     		if contract:
-    			data['error_message'] = "Existing contract"
+    			data['error_message'] = _("Existing contract")
     			data['html_form'] = render_to_string('contract/partial_contract_information.html', {'contract':contract, 'customer':customer})
     		else:
-    			data['html_form'] = _("Not found")
+    			data['html_form'] = _("Contract Number not found.")
 
+    		#print("valid")
     		#for field, errors in form.errors.items():
     		#	print('Field: {} Error: {}'.format(field, ','.join(errors)))
 
     		return JsonResponse(data)
-    	else:    		
-    		print("invalid..")
+    	else:    		    		
     		form = ContractForm(request.POST)
 
+    		#print("invalid..")
     		#for field, errors in form.errors.items():
     		#	print('Field: {} Error: {}'.format(field, ','.join(errors)))
 
@@ -79,7 +77,7 @@ def SearchContractNumber(request):
 	if request.user.is_authenticated:
 		username = request.user.username
 
-	data['error_message'] = "Not found"
+	data['error_message'] = _("Contract Number not found.")
 	print("json")
 
 	return JsonResponse(data)
@@ -105,12 +103,12 @@ def SearchContractNumber1(request):
 
 			if contract:
 
-				data['error_message'] = "Existing contract"
+				data['error_message'] = _("Existing contract")
 				data['html_form'] = render_to_string('contract/partial_contract_information.html', {'contract':contract, 'customer':customer})
 			else:
-				data['error_message'] = "Not found"
+				data['error_message'] = _("Contract number not found")
 		else:
-			data['error_message'] = "Form error"
+			data['error_message'] = _("Form error")
 
 		return JsonResponse(data)
 
