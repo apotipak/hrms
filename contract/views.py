@@ -56,9 +56,9 @@ def ContractCreate(request):
     	else:    		    		
     		form = ContractForm(request.POST)
 
-    		#print("invalid..")
-    		#for field, errors in form.errors.items():
-    		#	print('Field: {} Error: {}'.format(field, ','.join(errors)))
+    		print("invalid..")
+    		for field, errors in form.errors.items():
+    			print('Field: {} Error: {}'.format(field, ','.join(errors)))
 
     		data['errorlist'] = form.errors
     		data['html_form'] = render_to_string('contract/partial_contract_information.html', {'form':form, 'errorlist':form.errors})
@@ -102,7 +102,6 @@ def SearchContractNumber1(request):
 			customer = Customer.objects.filter(cus_id__exact=request.POST.get('cus_id')).filter(cus_brn__exact=request.POST.get('cus_brn'))
 
 			if contract:
-
 				data['error_message'] = _("Existing contract")
 				data['html_form'] = render_to_string('contract/partial_contract_information.html', {'contract':contract, 'customer':customer})
 			else:

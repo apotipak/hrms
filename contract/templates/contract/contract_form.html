@@ -56,7 +56,7 @@
           </div>
 
         </div>
-        
+
       </div>
     </section>
 
@@ -136,22 +136,27 @@
               
               $(".card-body").html(json.html_form);
 
+              $("#id_cus_id_error").html('');
+              $("#id_cus_brn_error").html('');
+              $("#id_cus_vol_error").html('');
+
               if (json.errorlist) {     
                 for (item in json.errorlist) {
-                  if (item == 'cus_id')
-                    $("#id_cus_id_error").html(json.errorlist.cus_id);
-
-                  if (item == 'cus_brn')
-                    $("#id_cus_brn_error").html(json.errorlist.cus_brn);
-
-                  if (item == 'cus_vol')
-                    $("#id_cus_vol_error").html(json.errorlist.cus_vol);
-
+                  switch(item) {
+                    case 'cus_id':
+                      if(json.errorlist.cus_id)
+                        $("#id_cus_id_error").html(json.errorlist.cus_id);
+                      break;
+                    case 'cus_brn':
+                      if(json.errorlist.cus_brn)
+                        $("#id_cus_brn_error").html(json.errorlist.cus_brn);
+                      break;
+                    case 'cus_vol':
+                      if(json.errorlist.cus_vol)
+                        $("#id_cus_vol_error").html(json.errorlist.cus_vol);
+                      break;
+                  }
                 }
-              } else {
-                $("#id_cus_id_error").html('');
-                $("#id_cus_brn_error").html('');
-                $("#id_cus_vol_error").html('');
               }
 
           },
