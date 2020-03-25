@@ -40,13 +40,23 @@ def ContractCreate(request):
 
     		cnt_id = Decimal(request.POST['cus_id'] + request.POST.get('cus_brn').zfill(3) + request.POST.get('cus_vol').zfill(3))
     		contract = CusContract.objects.filter(cnt_id__exact=cnt_id)
-    		customer = Customer.objects.filter(cus_id__exact=request.POST.get('cus_id')).filter(cus_brn__exact=request.POST.get('cus_brn'))    	    	
+    		customer = Customer.objects.filter(cus_id__exact=request.POST.get('cus_id')).filter(cus_brn__exact=request.POST.get('cus_brn'))
 
-    		if contract:
+    		if customer:
+    			#print(customer.cus_name_th)
+    			for item in customer:
+    				cus_name_th = item.cus_name_th
+    			
+    			data['cus_name_th'] = cus_name_th
+    		else:
+    			data['cus_name_th'] = "Company"
+
+    		if contract:    			
     			data['error_message'] = _("Existing contract")
     			data['html_form'] = render_to_string('contract/partial_contract_information.html', {'contract':contract, 'customer':customer})
     		else:
     			data['html_form'] = _("Contract Number not found.")
+    			data['cus_name_th'] = _("Company")
 
     		#print("valid")
     		#for field, errors in form.errors.items():
@@ -73,43 +83,14 @@ def ContractCreate(request):
 def SearchContractNumber(request):
 	
 	data = dict()
+	data['cus_name_th'] = ""	
 	username = None
+
 	if request.user.is_authenticated:
 		username = request.user.username
 
-	data['error_message'] = _("Contract Number not found.")
+	data['error_message'] = _("Contract Number not found1.")
+
 	print("json")
 
 	return JsonResponse(data)
-
-@login_required(login_url='/accounts/login/')
-def SearchContractNumber1(request):
-	
-	data = dict()
-	username = None
-	if request.user.is_authenticated:
-		username = request.user.username
-
-	if request.method == "POST":
-		
-		form = ContractForm(request.POST, username)		
-				
-		if form.is_valid():
-			data['form_is_valid'] = True
-			
-			cnt_id = Decimal(request.POST['cus_id'] + request.POST.get('cus_brn').zfill(3) + request.POST.get('cus_vol').zfill(3))
-			contract = CusContract.objects.filter(cnt_id__exact=cnt_id)
-			customer = Customer.objects.filter(cus_id__exact=request.POST.get('cus_id')).filter(cus_brn__exact=request.POST.get('cus_brn'))
-
-			if contract:
-				data['error_message'] = _("Existing contract")
-				data['html_form'] = render_to_string('contract/partial_contract_information.html', {'contract':contract, 'customer':customer})
-			else:
-				data['error_message'] = _("Contract number not found")
-		else:
-			data['error_message'] = _("Form error")
-
-		return JsonResponse(data)
-
-	else:
-		form = ContractForm()
