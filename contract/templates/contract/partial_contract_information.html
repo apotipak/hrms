@@ -3,14 +3,14 @@
 
   <div class="col-1 col-sm-1">
     <div class="nav flex-column nav-tabs h-100" id="vert-tabs-tab" role="tablist" aria-orientation="vertical">
-      <a class="nav-link active" id="vert-tabs-home-tab" data-toggle="pill" href="#vert-tabs-home" role="tab" aria-controls="vert-tabs-home" aria-selected="true">TH</a>
-      <a class="nav-link" id="vert-tabs-profile-tab" data-toggle="pill" href="#vert-tabs-profile" role="tab" aria-controls="vert-tabs-profile" aria-selected="false">EN</a>
+      <a class="nav-link active" id="vert-tabs-contract-th-tab" data-toggle="pill" href="#vert-tabs-contract-th" role="tab" aria-controls="vert-tabs-contract-th" aria-selected="true">TH</a>
+      <a class="nav-link" id="vert-tabs-contract-en-tab" data-toggle="pill" href="#vert-tabs-contract-en" role="tab" aria-controls="vert-tabs-contract-en" aria-selected="false">EN</a>
     </div>
   </div>
 
   <div class="col-11 col-sm-11">
     <div class="tab-content" id="vert-tabs-tabContent">
-      <div class="tab-pane text-left fade show active" id="vert-tabs-home" role="tabpanel" aria-labelledby="vert-tabs-home-tab"> 
+      <div class="tab-pane text-left fade show active" id="vert-tabs-contract-th" role="tabpanel" aria-labelledby="vert-tabs-contract-th-tab"> 
 		{% if customer %}
 			{% for item in customer %}
 			  <div class="form-group row">
@@ -29,7 +29,7 @@
 		{% endif %}		  
   	</div>
 
-  	<div class="tab-pane fade" id="vert-tabs-profile" role="tabpanel" aria-labelledby="vert-tabs-profile-tab">
+  	<div class="tab-pane fade" id="vert-tabs-contract-en" role="tabpanel" aria-labelledby="vert-tabs-contract-en-tab">
 	{% if customer %}
 		{% for item in customer %}
 		  <div class="form-group row">
@@ -75,3 +75,14 @@
 	</div>
 </div>	
 {% endif %}
+
+<script>
+  $('#vert-tabs-contract-th-tab').click(function() {
+    $(".card-title").html(json.cus_name_th);
+  });
+
+  $('#vert-tabs-contract-en-tab').click(function() {
+    $(".card-title").html("ABC");
+  });
+
+ </script>

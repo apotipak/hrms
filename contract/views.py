@@ -46,10 +46,13 @@ def ContractCreate(request):
     			#print(customer.cus_name_th)
     			for item in customer:
     				cus_name_th = item.cus_name_th
+    				cus_name_en = item.cus_name_en
     			
     			data['cus_name_th'] = cus_name_th
+    			data['cus_name_en'] = cus_name_en
     		else:
     			data['cus_name_th'] = "Company"
+    			data['cus_name_en'] = _("Company")
 
     		if contract:    			
     			data['error_message'] = _("Existing contract")
@@ -57,6 +60,7 @@ def ContractCreate(request):
     		else:
     			data['html_form'] = _("Contract Number not found.")
     			data['cus_name_th'] = _("Company")
+    			data['cus_name_en'] = _("Company")
 
     		#print("valid")
     		#for field, errors in form.errors.items():
@@ -83,7 +87,8 @@ def ContractCreate(request):
 def SearchContractNumber(request):
 	
 	data = dict()
-	data['cus_name_th'] = ""	
+	data['cus_name_th'] = ""
+	data['cus_name_en'] = ""
 	username = None
 
 	if request.user.is_authenticated:
