@@ -130,6 +130,7 @@
 
   $("#contract-form").submit(function(e) {
     e.preventDefault();
+
     var data = $(this).serialize();
     $.ajax({
           type:'POST',
@@ -141,34 +142,39 @@
               csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
               action: 'post'
           },
+          beforeSend: function(){
+            $('#waitingDialog').modal();          
+          },
+          complete: function(){
+            $('#waitingDialog').modal('hide');
+          },
           success:function(json){
             $(".card-body").html("");
               
-              $(".card-body").html(json.html_form);
-              $(".card-title").html(json.cus_name_th);
-              $("#id_cus_id_error").html('');
-              $("#id_cus_brn_error").html('');
-              $("#id_cus_vol_error").html('');
+            $(".card-body").html(json.html_form);
+            $(".card-title").html(json.cus_name_th);
+            $("#id_cus_id_error").html('');
+            $("#id_cus_brn_error").html('');
+            $("#id_cus_vol_error").html('');
 
-              if (json.errorlist) {     
-                for (item in json.errorlist) {
-                  switch(item) {
-                    case 'cus_id':
-                      if(json.errorlist.cus_id)
-                        $("#id_cus_id_error").html(json.errorlist.cus_id);
-                      break;
-                    case 'cus_brn':
-                      if(json.errorlist.cus_brn)
-                        $("#id_cus_brn_error").html(json.errorlist.cus_brn);
-                      break;
-                    case 'cus_vol':
-                      if(json.errorlist.cus_vol)
-                        $("#id_cus_vol_error").html(json.errorlist.cus_vol);
-                      break;
-                  }
+            if (json.errorlist) {     
+              for (item in json.errorlist) {
+                switch(item) {
+                  case 'cus_id':
+                    if(json.errorlist.cus_id)
+                      $("#id_cus_id_error").html(json.errorlist.cus_id);
+                    break;
+                  case 'cus_brn':
+                    if(json.errorlist.cus_brn)
+                      $("#id_cus_brn_error").html(json.errorlist.cus_brn);
+                    break;
+                  case 'cus_vol':
+                    if(json.errorlist.cus_vol)
+                      $("#id_cus_vol_error").html(json.errorlist.cus_vol);
+                    break;
                 }
               }
-
+            }
           },
           error : function(xhr,errmsg,err) {
           console.log(xhr.status + ": " + xhr.responseText);

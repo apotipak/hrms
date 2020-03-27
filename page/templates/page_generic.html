@@ -84,6 +84,14 @@
 
   {% include "footer_generic.html" %}
   
+  <div class="modal hide" id="waitingDialog" data-backdrop="static" data-keyboard="false">
+      <div class="modal-body">
+          <div id="ajax_loader">
+              <img src="{% static 'img/ajax_loader.gif' %}" width="80px;" style="display: block; margin-left: auto; margin-right: auto;">
+          </div>
+      </div>
+  </div>
+
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
     <!-- Control sidebar content goes here -->
