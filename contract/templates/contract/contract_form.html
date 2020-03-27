@@ -87,6 +87,19 @@
 
 {% block scripts %}
 <script>
+
+  $(document).on('click', '#vert-tabs-contract-en-tab', function(event) {
+    cus_name_en = jQuery('#customer_name_en').val();
+    $(".card-title").html(cus_name_en);
+
+  });
+
+  $(document).on('click', '#vert-tabs-contract-th-tab', function(event) {
+    cus_name_th = jQuery('#customer_name_th').val();
+    $(".card-title").html(cus_name_th);
+
+  });
+
   $('#id_cus_id').focus();
 
   $('#id_cus_id').on('keypress', function (e) {
@@ -203,4 +216,5 @@
   });
 
 </script>
+
 {% endblock %}

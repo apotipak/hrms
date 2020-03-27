@@ -22,7 +22,7 @@
 			  <div class="form-group row">
 			    <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Address</label>
 			    <div class="col-sm-5">
-			      <input type="text" class="form-control form-control-sm" id="customer_name_th" value="{{ item.cus_add1_th }}" readonly>
+			      <input type="text" class="form-control form-control-sm" id="customer_add1_th" value="{{ item.cus_add1_th }}" readonly>
 			    </div>
 			  </div>			  
 		 	{% endfor %}
@@ -35,19 +35,19 @@
 		  <div class="form-group row">
 		    <label class="col-sm-2 col-form-label col-form-label-sm">Company</label>
 		    <div class="col-sm-5">
-		      <input type="text" class="form-control form-control-sm" id="customer_name_th" value="{{ item.cus_name_en }}" readonly>
+		      <input type="text" class="form-control form-control-sm" id="customer_name_en" value="{{ item.cus_name_en }}" readonly>
 		    </div>
 		  </div>
 		  <div class="form-group row">
 		    <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Address</label>
 		    <div class="col-sm-5">
-		      <input type="text" class="form-control form-control-sm" id="customer_name_th" value="{{ item.cus_add1_en }}" readonly>
+		      <input type="text" class="form-control form-control-sm" id="customer_add1_en" value="{{ item.cus_add1_en }}" readonly>
 		    </div>
 		  </div>
 		{% endfor %}
 	{% endif %}  	
   	</div>
-  </div>
+  </div>  
 
 </div>
 
@@ -76,13 +76,4 @@
 </div>	
 {% endif %}
 
-<script>
-  $('#vert-tabs-contract-th-tab').click(function() {
-    $(".card-title").html(json.cus_name_th);
-  });
 
-  $('#vert-tabs-contract-en-tab').click(function() {
-    $(".card-title").html("ABC");
-  });
-
- </script>
