@@ -150,7 +150,8 @@
           },
           success:function(json){
             $(".card-body").html("");
-              
+            $(".card-title").html('Company');
+
             $(".card-body").html(json.html_form);
             $(".card-title").html(json.cus_name_th);
             $("#id_cus_id_error").html('');
@@ -181,44 +182,6 @@
       }
     });
 
-  });
-
-  $('#id_cus_vol1').on('keypress', function (e) {
-    if(e.which === 13){      
-      event.preventDefault();
-
-      $.ajax({        
-            type:'POST',
-            url:'{% url "search_contract_number" %}',
-            data:{
-                cus_id:$('#id_cus_id').val(),
-                cus_brn:$('#id_cus_brn').val(),
-                cus_vol:$('#id_cus_vol').val(),
-                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
-                action: 'post'
-            },
-            success:function(json){
-                /*
-                document.getElementById("contract-form").reset();
-                $(".card-body").html('<div class="col p-4 d-flex flex-column position-static">' +
-                        '<p class="mb-auto">' + json.cnt_id + '</p>' +
-                        '<p class="mb-auto">' + json.error_message + '</p>' +
-                    '</div>'            
-                )
-                */
-
-                $(".card-body").html("");
-                $(".card-body").html(json.error_message);
-                $(".card-body").html(json.html_form);
-
-            },
-            error : function(xhr,errmsg,err) {
-            console.log(xhr.status + ": " + xhr.responseText);
-        }
-      });
-
-      return false;    
-    }
   });
 
 </script>
