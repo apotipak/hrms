@@ -2,9 +2,11 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from page.rules import *
 from .forms import LanguageForm
 from django.utils import translation
+from django.contrib import messages
 from django.utils.translation import ugettext as _
 
 
@@ -46,8 +48,6 @@ def userlanguage(request):
     user_language = getDefaultLanguage(request.user.username)
     translation.activate(user_language)
 
-    print("user language = " + str(user_language))
-
     page_title = settings.PROJECT_NAME
     db_server = settings.DATABASES['default']['HOST']
     project_name = settings.PROJECT_NAME
@@ -62,19 +62,21 @@ def userlanguage(request):
             username = request.user.username
             userid = request.user.id
 
-            if not UserProfile.objects.filter(username=username).exists():
+            print("language_code = " + str(language_code))
+
+            if not UserProfile.objects.filter(employee_id=username).exists():
                 print("debug 1")
-                UserProfile.objects.create(language=language_code, updated_by_id=userid, username=username)
+                UserProfile.objects.create(language_code=language_code, updated_by_id=userid, employee_id=username)
             else:
                 print("debug 2")
-                employee = UserProfile.objects.get(username=username)
-                employee.language = language_code
+                employee = UserProfile.objects.get(employee_id=username)
+                employee.language_code = language_code
                 employee.updated_by_id = userid
-                employee.username = username
+                employee.employee_id = username
                 employee.save()
             
-            messages.success(request, _('A new language has been set.'))
-            return HttpResponseRedirect('/staff-language')
+            messages.success(request, _('ตั้งค่าใหม่สำเร็จ'))
+            return HttpResponseRedirect('/user-language')
     else:
         form = LanguageForm(user=request.user)    
 

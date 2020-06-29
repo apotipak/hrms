@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-29 10:59+0700\n"
+"POT-Creation-Date: 2020-06-29 12:37+0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1299,8 +1299,14 @@ msgid "English US"
 msgstr "ภาษาอังกฤษ"
 
 #: .\page\forms.py:11
-msgid "Set Display Language"
-msgstr "ตั้งค่าภาษา"
+#, fuzzy
+#| msgid "Set default language"
+msgid "Select your default language"
+msgstr "เลือกภาษา"
+
+#: .\page\forms.py:35
+msgid "Invalid value : "
+msgstr ""
 
 #: .\page\templates\index.html:5
 msgid "Home Page"
@@ -1335,7 +1341,7 @@ msgstr "เงินเดือน"
 
 #: .\page\templates\index.html:103
 msgid "Daily Monitoring"
-msgstr "ตารางประจำวัน"
+msgstr "ตารางเวรประจำวัน"
 
 #: .\page\templates\index.html:120
 msgid "Reports"
@@ -1345,18 +1351,30 @@ msgstr "รายงาน"
 msgid "System Control"
 msgstr "ตั้งค่าระบบ"
 
-#: .\page\templates\page\user_language.html:5
-msgid "Change Language"
-msgstr "เปลี่ยนภาษา"
-
+#: .\page\templates\left_menu_user_profile.html:24
 #: .\page\templates\page\user_profile.html:5
 #: .\page\templates\page\user_profile.html:16
 msgid "User Profile"
 msgstr "โปรไฟล์"
 
+#: .\page\templates\left_menu_user_profile.html:27
+msgid "Change Password"
+msgstr "เปลี่ยนรหัสผ่าน"
+
+#: .\page\templates\left_menu_user_profile.html:30
+#: .\page\templates\page\user_language.html:5
+#: .\page\templates\page\user_language.html:16
+msgid "Change Language"
+msgstr "เปลี่ยนภาษา"
+
+#: .\page\templates\page\user_language.html:20
 #: .\page\templates\page\user_profile.html:20
 msgid "Home"
 msgstr "หน้าแรก"
+
+#: .\page\templates\page\user_language.html:84
+msgid "Confirm"
+msgstr "เปลี่ยนภาษา"
 
 #: .\page\templates\page_index.html:40 .\page\templates\page_index.html:42
 msgid "Welcome"
@@ -1366,6 +1384,6 @@ msgstr "Welcome"
 msgid "Sign out"
 msgstr "ออกจากระบบ"
 
-#: .\page\views.py:88
-msgid "A new language has been set."
-msgstr "ค่าใหม่ติดตั้งสำเร็จ"
+#: .\page\views.py:78
+msgid "ตั้งค่าใหม่สำเร็จ"
+msgstr "A new language has been set."
