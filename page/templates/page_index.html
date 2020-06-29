@@ -4,9 +4,12 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <title>{% block title %}{% endblock %}</title>
+  
   {% load static %}
   {% load i18n %}
+
+  <title>{% block title %}{% endblock %}</title>
+
   <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}" />
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/all.min.css' %}">
@@ -31,12 +34,12 @@
       <!-- Right navbar links -->
       <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="{% url 'user-profile' %}">
               {% if user.is_authenticated %}
                   {% if user.is_superuser %}
                       {% trans 'Welcome' %}&nbsp;&nbsp;<span class="text-primary"><b>Superadmin</b></span>
                   {% else %}
-                      {% trans 'สวัสดี' %}&nbsp;&nbsp;<span class="text-primary"><b>{{ user.get_short_name }}</b></span>
+                      {% trans 'Welcome' %}&nbsp;&nbsp;<span class="text-primary"><b>{{ user.get_short_name }}</b></span>
                   {% endif %}
               {% endif %}
           </a>
@@ -48,7 +51,7 @@
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'logout'%}?next=/accounts/login">
-            <i class="fas fa-sign-out-alt"></i> {% trans 'Sign out' %}
+            <i class="fas fa-sign-out-alt"></i> <span class="text-primary">{% trans 'Sign out' %}</span>
           </a>
         </li>        
       </ul>
@@ -79,16 +82,6 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
-
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-    <div class="p-3">
-      <h5>Title</h5>
-      <p>Sidebar content</p>
-    </div>
-  </aside>
-  <!-- /.control-sidebar -->
 
   {% include "footer.html" %}
 </div>

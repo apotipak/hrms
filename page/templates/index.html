@@ -1,5 +1,8 @@
 {% extends "page_index.html" %}
-{% block title %}{{page_title}} - Home{% endblock %}
+
+{% load i18n %}
+
+{% block title %}{% trans 'Home Page' %}{% endblock %}
 
 {% block content %}
       <div class="container">
@@ -12,8 +15,8 @@
               <div class="info-box-content">
                 <div class="col-12">
                   <h5>
-                    <span>Customer</span>
-                    <a href="/customer/" type="button" class="btn btn-outline-primary float-right">ใช้งาน</a>
+                    <span>{% trans 'Customer' %}</span>
+                    <a href="/customer/" type="button" class="btn btn-outline-primary float-right">{% trans 'Open' %}</a>
                   </h5>
                 </div>
               </div>
@@ -29,8 +32,8 @@
               <div class="info-box-content">
                 <div class="col-12">
                   <h5>
-                    <span>Contract</span>
-                    <a href="/contract" type="button" class="btn btn-outline-primary float-right">ใช้งาน</a>
+                    <span>{% trans 'Contract' %}</span>
+                    <a href="/contract" type="button" class="btn btn-outline-primary float-right">{% trans 'Open' %}</a>
                   </h5>
                 </div>
               </div>
@@ -46,8 +49,8 @@
               <div class="info-box-content">
                 <div class="col-12">
                   <h5>
-                    <span>Employee</span>
-                    <a href="/employee" type="button" class="btn btn-outline-primary float-right">ใช้งาน</a>
+                    <span>{% trans 'Employee' %}</span>
+                    <a href="/employee" type="button" class="btn btn-outline-primary float-right">{% trans 'Open' %}</a>
                   </h5>
                 </div>
               </div>
@@ -63,8 +66,8 @@
               <div class="info-box-content">
                 <div class="col-12">
                   <h5>
-                    <span>Income & Deduct</span>
-                    <a href="/income-deduct" type="button" class="btn btn-outline-primary float-right">ใช้งาน</a>
+                    <span>{% trans 'Income & Deduct' %}</span>
+                    <a href="/income-deduct" type="button" class="btn btn-outline-primary float-right">{% trans 'Open' %}</a>
                   </h5>
                 </div>
               </div>
@@ -80,8 +83,8 @@
               <div class="info-box-content">
                 <div class="col-12">
                   <h5>
-                    <span>Payroll</span>
-                    <a href="/payroll" type="button" class="btn btn-outline-primary float-right">ใช้งาน</a>
+                    <span>{% trans 'Payroll' %}</span>
+                    <a href="/payroll" type="button" class="btn btn-outline-primary float-right">{% trans 'Open' %}</a>
                   </h5>
                 </div>
               </div>
@@ -97,8 +100,8 @@
               <div class="info-box-content">
                 <div class="col-12">
                   <h5>
-                    <span>Daily Monitoring</span>
-                    <a href="/monitoring" type="button" class="btn btn-outline-primary float-right">ใช้งาน</a>
+                    <span>{% trans 'Daily Monitoring' %}</span>
+                    <a href="/monitoring" type="button" class="btn btn-outline-primary float-right">{% trans 'Open' %}</a>
                   </h5>
                 </div>
               </div>
@@ -114,8 +117,8 @@
               <div class="info-box-content">
                 <div class="col-12">
                   <h5>
-                    <span>Report</span>
-                    <a href="/report" type="button" class="btn btn-outline-primary float-right">ใช้งาน</a>
+                    <span>{% trans 'Reports' %}</span>
+                    <a href="/report" type="button" class="btn btn-outline-primary float-right">{% trans 'Open' %}</a>
                   </h5>
                 </div>
               </div>
@@ -132,8 +135,8 @@
 
                 <div class="col-12">
                   <h5>
-                    <span>System Control</span>
-                    <a href="/system-control/" type="button" class="btn btn-outline-primary float-right">ใช้งาน</a>
+                    <span>{% trans 'System Control' %}</span>
+                    <a href="/system-control/" type="button" class="btn btn-outline-primary float-right">{% trans 'Open' %}</a>
                   </h5>
                 </div>
 
