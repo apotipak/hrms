@@ -37,14 +37,15 @@
 
         <li class="nav-item dropdown">
           <a class="nav-link pt-2 m-0" data-toggle="dropdown" href="#">
-            <i class="far fa-user mr-3"></i>            
+            <i class="fas fa-user-alt text-secondary mr-2"></i>            
               {% if user.is_authenticated %}
                   {% if user.is_superuser %}
                       <span class="text-primary"><b>Superadmin</b></span>
                   {% else %}
                       <span class="text-primary"><b>{{ user.get_short_name }}</b></span>
                   {% endif %}
-              {% endif %}            
+              {% endif %}
+              <i class="fas fa-caret-down fa-xs"></i>
           </a>
 
           <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">            
