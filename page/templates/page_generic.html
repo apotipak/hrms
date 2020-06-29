@@ -80,6 +80,8 @@
     {% include "left_menu_system.html" %}
   {% elif request.path|slice:":15" == '/user-profile' %}
     {% include "left_menu_user_profile.html" %}
+  {% elif request.path|slice:":14" == '/user-password' %}
+    {% include "left_menu_user_profile.html" %}    
   {% elif request.path|slice:":16" == '/user-language' %}
     {% include "left_menu_user_profile.html" %}
   {% endif %}

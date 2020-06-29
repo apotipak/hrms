@@ -44,6 +44,24 @@ def userprofile(request):
 
 
 @login_required(login_url='/accounts/login/')
+def userpassword(request):
+    user_language = getDefaultLanguage(request.user.username)
+    translation.activate(user_language)
+
+    db_server = settings.DATABASES['default']['HOST']
+    project_name = settings.PROJECT_NAME
+    project_version = settings.PROJECT_VERSION
+    today_date = getDateFormatDisplay(user_language)   
+
+    return render(request, 'page/user_password.html', {
+        'project_name': project_name, 
+        'project_version': project_version, 
+        'db_server': db_server, 
+        'today_date': today_date,
+    })
+
+
+@login_required(login_url='/accounts/login/')
 def userlanguage(request):
     user_language = getDefaultLanguage(request.user.username)
     translation.activate(user_language)
