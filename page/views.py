@@ -53,6 +53,8 @@ def userpassword(request):
     project_version = settings.PROJECT_VERSION
     today_date = getDateFormatDisplay(user_language)   
 
+    # form = LanguageForm(request.POST, user=request.user)
+
     return render(request, 'page/user_password.html', {
         'project_name': project_name, 
         'project_version': project_version, 

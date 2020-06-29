@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-29 12:37+0700\n"
+"POT-Creation-Date: 2020-06-29 13:44+0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1298,14 +1298,14 @@ msgstr "ภาษาไทย"
 msgid "English US"
 msgstr "ภาษาอังกฤษ"
 
-#: .\page\forms.py:11
+#: .\page\forms.py:13 .\page\forms.py:20
 #, fuzzy
 #| msgid "Set default language"
 msgid "Select your default language"
 msgstr "เลือกภาษา"
 
-#: .\page\forms.py:35
-msgid "Invalid value : "
+#: .\page\forms.py:40
+msgid "Invalid value"
 msgstr ""
 
 #: .\page\templates\index.html:5
@@ -1358,6 +1358,8 @@ msgid "User Profile"
 msgstr "โปรไฟล์"
 
 #: .\page\templates\left_menu_user_profile.html:27
+#: .\page\templates\page\user_password.html:5
+#: .\page\templates\page\user_password.html:16
 msgid "Change Password"
 msgstr "เปลี่ยนรหัสผ่าน"
 
@@ -1368,12 +1370,13 @@ msgid "Change Language"
 msgstr "เปลี่ยนภาษา"
 
 #: .\page\templates\page\user_language.html:20
+#: .\page\templates\page\user_password.html:20
 #: .\page\templates\page\user_profile.html:20
 msgid "Home"
 msgstr "หน้าแรก"
 
 #: .\page\templates\page\user_language.html:84
-msgid "Confirm"
+msgid "Switch Language"
 msgstr "เปลี่ยนภาษา"
 
 #: .\page\templates\page_index.html:40 .\page\templates\page_index.html:42
@@ -1384,6 +1387,9 @@ msgstr "Welcome"
 msgid "Sign out"
 msgstr "ออกจากระบบ"
 
-#: .\page\views.py:78
+#: .\page\views.py:98
 msgid "ตั้งค่าใหม่สำเร็จ"
 msgstr "A new language has been set."
+
+#~ msgid "Confirm"
+#~ msgstr "เปลี่ยนภาษา"
