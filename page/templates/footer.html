@@ -5,10 +5,10 @@
     	{{ today_date|date:"SHORT_DATE_FORMAT" }}
     </div>
     <!-- Default to the left -->
-    {{ project_name }} <b>{{ project_version }}</b> | 
+    v. <b>{{ project_version }}</b> | 
 
-    {% if db_server == 'KTHBNL808-NB\SQLEXPRESS' %}
-    Dev server
+    {% if db_server == 'KTHBNL808\SQLEXPRESS' %}
+    DEV
     {% else %}
     {{ db_server }}
     {% endif %}

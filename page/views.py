@@ -3,20 +3,19 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.http import HttpResponse
 from page.rules import *
+from .forms import LanguageForm
 from django.utils import translation
 from django.utils.translation import ugettext as _
 
 
 @login_required(login_url='/accounts/login/')
 def index(request):
-	page_title = settings.PROJECT_NAME
 	db_server = settings.DATABASES['default']['HOST']
 	project_name = settings.PROJECT_NAME
 	project_version = settings.PROJECT_VERSION
 	today_date = settings.TODAY_DATE
 
 	return render(request, 'index.html', {
-		'page_title': page_title, 
 		'project_name': project_name, 
 		'project_version': project_version, 
 		'db_server': db_server, 
@@ -29,29 +28,16 @@ def userprofile(request):
     user_language = getDefaultLanguage(request.user.username)
     translation.activate(user_language)
 
-    page_title = settings.PROJECT_NAME
     db_server = settings.DATABASES['default']['HOST']
     project_name = settings.PROJECT_NAME
     project_version = settings.PROJECT_VERSION
     today_date = getDateFormatDisplay(user_language)   
 
-    '''
-    if user_language == "th":
-        username_display = LeaveEmployee.objects.filter(emp_id=request.user.username).values_list('emp_fname_th', flat=True).get()
-    else:
-        username_display = LeaveEmployee.objects.filter(emp_id=request.user.username).values_list('emp_fname_en', flat=True).get()
-    '''
-    
-    username_display = "en"
-
     return render(request, 'page/user_profile.html', {
-        'form': form,
-        'page_title': page_title, 
         'project_name': project_name, 
         'project_version': project_version, 
         'db_server': db_server, 
         'today_date': today_date,
-        'username_display': username_display,
     })
 
 
@@ -59,6 +45,8 @@ def userprofile(request):
 def userlanguage(request):
     user_language = getDefaultLanguage(request.user.username)
     translation.activate(user_language)
+
+    print("user language = " + str(user_language))
 
     page_title = settings.PROJECT_NAME
     db_server = settings.DATABASES['default']['HOST']
@@ -90,17 +78,10 @@ def userlanguage(request):
     else:
         form = LanguageForm(user=request.user)    
 
-    if user_language == "th":
-        username_display = LeaveEmployee.objects.filter(emp_id=request.user.username).values_list('emp_fname_th', flat=True).get()
-    else:
-        username_display = LeaveEmployee.objects.filter(emp_id=request.user.username).values_list('emp_fname_en', flat=True).get()
-
     return render(request, 'page/user_language.html', {
         'form': form,
-        'page_title': page_title, 
         'project_name': project_name, 
         'project_version': project_version, 
         'db_server': db_server, 
         'today_date': today_date,
-        'username_display': username_display,
     })

@@ -78,6 +78,10 @@
     {% include "left_menu_report.html" %}      
   {% elif request.path|slice:":15" == '/system-control' %}
     {% include "left_menu_system.html" %}
+  {% elif request.path|slice:":15" == '/user-profile' %}
+    {% include "left_menu_user_profile.html" %}
+  {% elif request.path|slice:":16" == '/user-language' %}
+    {% include "left_menu_change_language.html" %}
   {% endif %}
 
   {% block content %}{% endblock %}

@@ -5,13 +5,18 @@ from django.utils import timezone
 
 
 def getDefaultLanguage(username):
-	default_language = 'th'
-	if UserProfile.objects.filter(username=username).exists():
-		try:
-			default_language = UserProfile.objects.filter(username=username).values_list('language', flat=True).get()
-		except UserProfile.DoesNotExists:
-			default_language = 'th'
-	return default_language
+    default_language = 'th'
+
+    if UserProfile.objects.filter(username=username).exists():
+        try:
+            default_language = UserProfile.objects.filter(username=username).values_list('language', flat=True).get()
+        except UserProfile.DoesNotExists:
+            default_language = 'th'
+    else:
+        default_language = 'th'
+
+    return default_language    
+
 
 def getDateFormatDisplay(language):
     today_day = timezone.now().day
