@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-29 13:44+0700\n"
+"POT-Creation-Date: 2020-06-29 16:47+0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1298,13 +1298,39 @@ msgstr "ภาษาไทย"
 msgid "English US"
 msgstr "ภาษาอังกฤษ"
 
-#: .\page\forms.py:13 .\page\forms.py:20
-#, fuzzy
-#| msgid "Set default language"
+#: .\page\forms.py:27
+msgid "Enter old password"
+msgstr "ป้อนรหัสผ่านเก่า"
+
+#: .\page\forms.py:29
+msgid "Enter new password"
+msgstr "ป้อนรหัสผ่านใหม่"
+
+#: .\page\forms.py:31
+msgid "Reenter new password"
+msgstr "ป้อนรหัสผ่านใหม่อีกครั้ง"
+
+#: .\page\forms.py:44
+msgid "New password is not same."
+msgstr ""
+
+#: .\page\forms.py:47
+msgid "New password is same as the old one."
+msgstr ""
+
+#: .\page\forms.py:52
+msgid "รหัสใหม่ควรยาวอย่างน้อย 6 ตัวอักษร และประกอบด้วย ตัวเลข ตัวหนังสือ สัญลักษณ์"
+msgstr ""
+
+#: .\page\forms.py:55
+msgid "Enter incorrect old password."
+msgstr ""
+
+#: .\page\forms.py:61
 msgid "Select your default language"
 msgstr "เลือกภาษา"
 
-#: .\page\forms.py:40
+#: .\page\forms.py:81
 msgid "Invalid value"
 msgstr ""
 
@@ -1379,6 +1405,22 @@ msgstr "หน้าแรก"
 msgid "Switch Language"
 msgstr "เปลี่ยนภาษา"
 
+#: .\page\templates\page\user_password.html:49
+msgid "Old Password"
+msgstr "รหัสผ่านเก่า"
+
+#: .\page\templates\page\user_password.html:56
+msgid "New Password"
+msgstr "รหัสผ่านใหม่"
+
+#: .\page\templates\page\user_password.html:63
+msgid "Confirm New Password"
+msgstr "ยืนยันรหัสผ่านใหม่"
+
+#: .\page\templates\page\user_password.html:91
+msgid "OK"
+msgstr "ตกลง"
+
 #: .\page\templates\page_index.html:40 .\page\templates\page_index.html:42
 msgid "Welcome"
 msgstr "Welcome"
@@ -1387,7 +1429,7 @@ msgstr "Welcome"
 msgid "Sign out"
 msgstr "ออกจากระบบ"
 
-#: .\page\views.py:98
+#: .\page\views.py:109
 msgid "ตั้งค่าใหม่สำเร็จ"
 msgstr "A new language has been set."
 

@@ -4,7 +4,7 @@ from django.conf import settings
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from page.rules import *
-from .forms import LanguageForm
+from .forms import ChangePasswordForm, LanguageForm
 from django.utils import translation
 from django.contrib import messages
 from django.utils.translation import ugettext as _
@@ -53,9 +53,20 @@ def userpassword(request):
     project_version = settings.PROJECT_VERSION
     today_date = getDateFormatDisplay(user_language)   
 
-    # form = LanguageForm(request.POST, user=request.user)
+    form = ChangePasswordForm(request.POST, user=request.user)
+    
+    if request.method == "POST":
+        if form.is_valid():            
+            new_password = form.cleaned_data['new_password']
+            u = User.objects.get(username__exact=request.user)
+            u.set_password(new_password)
+            u.save()            
+            return HttpResponseRedirect('/staff-profile')
+    else:
+        form = ChangePasswordForm(user=request.user)   
 
     return render(request, 'page/user_password.html', {
+        'form': form,
         'project_name': project_name, 
         'project_version': project_version, 
         'db_server': db_server, 

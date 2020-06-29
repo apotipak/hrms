@@ -9,12 +9,53 @@ language_options = {
 	('en','English US'), ('th','Thai')
 }
 
+
 class ChangePasswordForm(ModelForm):
-	language_code = forms.CharField(label=_('Select your default language'), max_length=2, widget=forms.Select(choices=language_options))
-	
+	password = forms.CharField(max_length=128, error_messages={'required': 'กรุณาป้อนรหัสผ่านเก่า'}, widget=forms.PasswordInput(attrs={'autocomplete':'off'}))
+	new_password = forms.CharField(max_length=128, error_messages={'required': 'กรุณาป้อนรหัสผ่านใหม่'}, widget=forms.TextInput(attrs={'autocomplete':'off'}))
+	confirm_new_password = forms.CharField(max_length=128, error_messages={'required': 'กรุณาป้อนรหัสผ่านใหม่อีกครั้ง'}, widget=forms.TextInput(attrs={'autocomplete':'off'}))
+
+	class Meta:
+		model = User
+		fields = ['password']
+
+	def __init__(self, *args, **kwargs):
+		self.user = kwargs.pop('user')
+		self.confirm_new_password = kwargs.pop('confirm_new_password', None)
+		super(ChangePasswordForm, self).__init__(*args, **kwargs)
+		self.fields['password'].widget.attrs = {'class': 'form-control col-12'}
+		self.fields['password'].widget.attrs['placeholder'] = _("Enter old password")
+		self.fields['new_password'].widget.attrs = {'class': 'form-control col-12'}
+		self.fields['new_password'].widget.attrs['placeholder'] = _("Enter new password")
+		self.fields['confirm_new_password'].widget.attrs = {'class': 'form-control col-12'}
+		self.fields['confirm_new_password'].widget.attrs['placeholder'] = _("Reenter new password")
+
 	def clean(self):
-		cleaned_data = super(LanguageForm, self).clean()
+		cleaned_data = super(ChangePasswordForm, self).clean()
+		username = self.user.username
+		password = self.cleaned_data.get('password')
+		new_password = self.cleaned_data.get('new_password')
+		confirm_new_password = self.cleaned_data.get('confirm_new_password')		
+		userobj = User.objects.get(username=username)
+
+		if userobj.check_password(password):
+			if re.match(r"^(?=.*[\d])(?=.*[a-z])(?=.*[@#$])[\w\d@#$]{6,12}$", new_password):							
+				if new_password != confirm_new_password:
+					raise forms.ValidationError(_("New password is not same."))
+				else:
+					if new_password == password:
+						raise forms.ValidationError(_("New password is same as the old one."))
+					else:
+						return cleaned_data
+
+			else:
+				raise forms.ValidationError(_("รหัสใหม่ควรยาวอย่างน้อย 6 ตัวอักษร และประกอบด้วย ตัวเลข ตัวหนังสือ สัญลักษณ์"))
+
+		else:
+			raise forms.ValidationError(_("Enter incorrect old password."))
+
 		return cleaned_data
+
 
 class LanguageForm(ModelForm):
 	language_code = forms.CharField(label=_('Select your default language'), max_length=2, widget=forms.Select(choices=language_options))
