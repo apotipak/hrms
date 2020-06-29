@@ -6,6 +6,7 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <title>{% block title %}{% endblock %}</title>
   {% load static %}
+  {% load i18n %}
   <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}" />
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/all.min.css' %}">
@@ -33,9 +34,9 @@
           <a class="nav-link" href="#">
               {% if user.is_authenticated %}
                   {% if user.is_superuser %}
-                      ยินดีต้อนรับ&nbsp;&nbsp;<span class="text-primary"><b>Superadmin</b></span>
+                      {% trans 'Welcome' %}&nbsp;&nbsp;<span class="text-primary"><b>Superadmin</b></span>
                   {% else %}
-                      ยินดีต้อนรับ&nbsp;&nbsp;<span class="text-primary"><b>{{ user.get_short_name }}</b></span>
+                      {% trans 'สวัสดี' %}&nbsp;&nbsp;<span class="text-primary"><b>{{ user.get_short_name }}</b></span>
                   {% endif %}
               {% endif %}
           </a>
@@ -47,7 +48,7 @@
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'logout'%}?next=/accounts/login">
-            <i class="fas fa-sign-out-alt"></i> ออกจากระบบ
+            <i class="fas fa-sign-out-alt"></i> {% trans 'Sign out' %}
           </a>
         </li>        
       </ul>

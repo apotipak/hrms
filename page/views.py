@@ -1,6 +1,14 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
+from django.http import HttpResponse
+from django.utils.translation import ugettext as _
+
+
+@login_required(login_url='/accounts/login/')
+def index1(request):
+    output = _('Welcome to my site.')
+    return HttpResponse(output)
 
 
 @login_required(login_url='/accounts/login/')
