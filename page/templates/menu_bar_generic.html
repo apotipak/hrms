@@ -1,4 +1,5 @@
 {% load static %}
+{% load i18n %}
 
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -9,42 +10,57 @@
         <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>        
       </li>
 
-      <!--
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="/" class="nav-link">Home</a>
+      <!--<li class="nav-item d-none d-sm-inline-block">-->
+      <li class="nav-item d-sm-inline-block">
+        <a href="/" class="nav-link"><i class="fa fa-home text-secondary" aria-hidden="true"></i>&nbsp;&nbsp;{% trans 'Main Menu' %}</a>
       </li>
+      <!--
       <li class="nav-item d-none d-sm-inline-block">
         <a href="#" class="nav-link">Contact</a>
       </li>
       -->
-
     </ul>
 
     <!-- Right navbar links -->
-    <ul class="navbar-nav ml-auto">
-      <li class="nav-item">
-        <a class="nav-link" href="/user-profile">
+    <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
+      <li class="nav-item dropdown">
+        <a class="nav-link pt-2 m-0" data-toggle="dropdown" href="#">
+          <!--<i class="fas fa-user-alt text-secondary mr-2"></i>-->
             {% if user.is_authenticated %}
                 {% if user.is_superuser %}
-                    ยินดีต้อนรับ&nbsp;&nbsp;<span class="text-primary"><b>Superadmin</b></span>
+                    <span class="text-primary"><b>Superadmin</b></span>
                 {% else %}
-                    ยินดีต้อนรับ&nbsp;&nbsp;<span class="text-primary"><b>{{ user.get_short_name }}</b></span>
+                    <span class="text-primary"><b>{{ user.get_short_name }}</b></span>
                 {% endif %}
             {% endif %}
+            &nbsp;&nbsp;<i class="fas fa-caret-down fa-xs"></i>              
         </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">
-            |
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'logout'%}?next=/accounts/login">
-          <i class="fas fa-sign-out-alt"></i> <span class="text-primary">ออกจากระบบ</span>
-        </a>
-      </li>
 
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">            
+          <div class="dropdown-divider"></div>
+          <a href="{% url 'user-profile' %}" class="dropdown-item">
+            <i class="fas fa-user-alt text-secondary"></i>&nbsp;&nbsp;{% trans 'View Profile' %}
+          </a>
+
+          <div class="dropdown-divider"></div>
+          <a href="{% url 'user-language' %}" class="dropdown-item">
+            <i class="fas fa-font text-secondary"></i>&nbsp;&nbsp;{% trans 'Switch Lanuage' %}
+          </a>
+
+          <div class="dropdown-divider"></div>
+          <a href="{% url 'user-password' %}" class="dropdown-item">
+            <i class="fas fa-key text-secondary"></i>&nbsp;&nbsp;{% trans 'Change Password' %}
+          </a>
+
+          <div class="dropdown-divider"></div>              
+          <a href="{% url 'logout'%}?next=/accounts/login" class="dropdown-item">
+            <i class="fas fa-sign-out-alt text-secondary"></i>&nbsp;&nbsp;{% trans 'Sign out' %}
+          </a>
+        </div>
+
+      </li>
     </ul>
+
   </nav>
   <!-- /.navbar -->    
   </nav>

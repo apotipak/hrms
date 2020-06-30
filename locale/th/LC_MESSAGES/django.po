@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-29 16:47+0700\n"
+"POT-Creation-Date: 2020-06-30 09:44+0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1384,54 +1384,67 @@ msgid "User Profile"
 msgstr "โปรไฟล์"
 
 #: .\page\templates\left_menu_user_profile.html:27
-#: .\page\templates\page\user_password.html:5
-#: .\page\templates\page\user_password.html:16
-msgid "Change Password"
-msgstr "เปลี่ยนรหัสผ่าน"
-
-#: .\page\templates\left_menu_user_profile.html:30
 #: .\page\templates\page\user_language.html:5
 #: .\page\templates\page\user_language.html:16
 msgid "Change Language"
 msgstr "เปลี่ยนภาษา"
 
-#: .\page\templates\page\user_language.html:20
-#: .\page\templates\page\user_password.html:20
-#: .\page\templates\page\user_profile.html:20
+#: .\page\templates\left_menu_user_profile.html:30
+#: .\page\templates\menu_bar_generic.html:52
+#: .\page\templates\page\user_password.html:5
+#: .\page\templates\page\user_password.html:16
+#: .\page\templates\page_index.html:62
+msgid "Change Password"
+msgstr "เปลี่ยนรหัสผ่าน"
+
+#: .\page\templates\menu_bar_generic.html:15
+msgid "Main Menu"
+msgstr "เมนูหลัก"
+
+#: .\page\templates\menu_bar_generic.html:42
+#: .\page\templates\page_index.html:52
+msgid "View Profile"
+msgstr "โปรไฟล์"
+
+#: .\page\templates\menu_bar_generic.html:47
+#: .\page\templates\page_index.html:57
+msgid "Switch Lanuage"
+msgstr "เปลี่ยนภาษา"
+
+#: .\page\templates\menu_bar_generic.html:57
+#: .\page\templates\page_index.html:67
+msgid "Sign out"
+msgstr "ออกจากระบบ"
+
+#: .\page\templates\page\user_language.html:21
+#: .\page\templates\page\user_password.html:21
+#: .\page\templates\page\user_profile.html:22
 msgid "Home"
 msgstr "หน้าแรก"
 
-#: .\page\templates\page\user_language.html:84
-msgid "Switch Language"
-msgstr "เปลี่ยนภาษา"
-
-#: .\page\templates\page\user_password.html:49
-msgid "Old Password"
-msgstr "รหัสผ่านเก่า"
-
-#: .\page\templates\page\user_password.html:56
-msgid "New Password"
-msgstr "รหัสผ่านใหม่"
-
-#: .\page\templates\page\user_password.html:63
-msgid "Confirm New Password"
-msgstr "ยืนยันรหัสผ่านใหม่"
-
-#: .\page\templates\page\user_password.html:91
+#: .\page\templates\page\user_language.html:86
+#: .\page\templates\page\user_password.html:93
 msgid "OK"
 msgstr "ตกลง"
 
-#: .\page\templates\page_index.html:40 .\page\templates\page_index.html:42
-msgid "Welcome"
-msgstr "Welcome"
+#: .\page\templates\page\user_password.html:51
+msgid "Old Password"
+msgstr "รหัสผ่านเก่า"
 
-#: .\page\templates\page_index.html:54
-msgid "Sign out"
-msgstr "ออกจากระบบ"
+#: .\page\templates\page\user_password.html:58
+msgid "New Password"
+msgstr "รหัสผ่านใหม่"
+
+#: .\page\templates\page\user_password.html:65
+msgid "Confirm New Password"
+msgstr "ยืนยันรหัสผ่านใหม่"
 
 #: .\page\views.py:109
 msgid "ตั้งค่าใหม่สำเร็จ"
 msgstr "A new language has been set."
+
+#~ msgid "Welcome"
+#~ msgstr "Welcome"
 
 #~ msgid "Confirm"
 #~ msgstr "เปลี่ยนภาษา"

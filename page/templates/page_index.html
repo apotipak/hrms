@@ -33,11 +33,9 @@
       
       <!-- Right navbar links -->
       <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
-
-
         <li class="nav-item dropdown">
           <a class="nav-link pt-2 m-0" data-toggle="dropdown" href="#">
-            <i class="fas fa-user-alt text-secondary mr-2"></i>            
+            <!--<i class="fas fa-user-alt text-secondary mr-2"></i>-->
               {% if user.is_authenticated %}
                   {% if user.is_superuser %}
                       <span class="text-primary"><b>Superadmin</b></span>
@@ -45,32 +43,34 @@
                       <span class="text-primary"><b>{{ user.get_short_name }}</b></span>
                   {% endif %}
               {% endif %}
-              <i class="fas fa-caret-down fa-xs"></i>
+              &nbsp;&nbsp;<i class="fas fa-caret-down fa-xs"></i>              
           </a>
 
           <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">            
             <div class="dropdown-divider"></div>
-
             <a href="{% url 'user-profile' %}" class="dropdown-item">
               <i class="fas fa-user-alt text-secondary"></i>&nbsp;&nbsp;{% trans 'View Profile' %}
             </a>
 
             <div class="dropdown-divider"></div>
+            <a href="{% url 'user-language' %}" class="dropdown-item">
+              <i class="fas fa-font text-secondary"></i>&nbsp;&nbsp;{% trans 'Switch Lanuage' %}
+            </a>
 
+            <div class="dropdown-divider"></div>
             <a href="{% url 'user-password' %}" class="dropdown-item">
               <i class="fas fa-key text-secondary"></i>&nbsp;&nbsp;{% trans 'Change Password' %}
             </a>
 
             <div class="dropdown-divider"></div>              
-
             <a href="{% url 'logout'%}?next=/accounts/login" class="dropdown-item">
               <i class="fas fa-sign-out-alt text-secondary"></i>&nbsp;&nbsp;{% trans 'Sign out' %}
             </a>
           </div>
 
         </li>
-
       </ul>
+
     </div>
   </nav>
   <!-- /.navbar -->
