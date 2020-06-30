@@ -1,6 +1,7 @@
 {% extends "page_generic.html" %}
 
-{% block title %}{{ page_title}} - Customer List{% endblock %}
+{% load i18n %}
+{% block title %}{{ page_title}} - {% trans 'Customer List' %} {% endblock %}
 
 {% load static %}
 
@@ -17,7 +18,7 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1 class="m-0 text-dark"><small><i class="fas fa-user-tie text-secondary"></i></small>&nbsp;&nbsp;Customer</h1>
+          <h1 class="m-0 text-dark">{% trans 'Customer List' %}</h1>
         </div><!-- /.col -->
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
@@ -36,11 +37,11 @@
     <div class="card">
       <div class="card-header" style="vertical-align: middle;">
 
-        <h3 class="card-title"><b>Customer List</b></h3>
+        <h3 class="card-title"><b>{% trans 'Customer List' %}</b></h3>
         <div class="card-tools">
           <!--<button type="button" class="btn btn-success js-create-customer" data-url="{% url 'customer-create' %}"><i class="fas fa-plus"></i>&nbsp;&nbsp;เพิ่ม</button>-->
           
-          <a href="{% url 'customer-create' %}" type="button" class="btn btn-success float-right"><i class="fas fa-plus"></i>&nbsp;&nbsp;เพิ่ม</a>
+          <a href="{% url 'customer-create' %}" type="button" class="btn btn-success btn-sm float-right"><i class="fas fa-plus fa-xs"></i>&nbsp;&nbsp;{% trans 'Add' %}</a>
         </div>
         
       </div>

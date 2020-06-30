@@ -19,7 +19,7 @@ class CustomerListView(PermissionRequiredMixin, generic.ListView):
 	project_version = settings.PROJECT_VERSION
 	today_date = settings.TODAY_DATE
 	template_name = 'customer/customer_list.html'
-	permission_required = ('system.view_customer')
+	permission_required = ('customer.view_customer')    
 	model = Customer
 	#paginate_by = 100
 

@@ -3,26 +3,29 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
-from page.rules import *
+from .models import Employee
+from django.shortcuts import get_object_or_404
+from django.shortcuts import get_list_or_404
 from .forms import ChangePasswordForm, LanguageForm
 from django.utils import translation
 from django.contrib import messages
 from django.utils.translation import ugettext as _
+from page.rules import *
 
 
 @login_required(login_url='/accounts/login/')
 def index(request):
-	db_server = settings.DATABASES['default']['HOST']
-	project_name = settings.PROJECT_NAME
-	project_version = settings.PROJECT_VERSION
-	today_date = settings.TODAY_DATE
+    db_server = settings.DATABASES['default']['HOST']
+    project_name = settings.PROJECT_NAME
+    project_version = settings.PROJECT_VERSION
+    today_date = settings.TODAY_DATE
 
-	return render(request, 'index.html', {
-		'project_name': project_name, 
-		'project_version': project_version, 
-		'db_server': db_server, 
-		'today_date': today_date
-	})
+    return render(request, 'index.html', {
+    	'project_name': project_name, 
+    	'project_version': project_version, 
+    	'db_server': db_server, 
+    	'today_date': today_date,        
+    })
 
 
 @login_required(login_url='/accounts/login/')
@@ -35,11 +38,17 @@ def userprofile(request):
     project_version = settings.PROJECT_VERSION
     today_date = getDateFormatDisplay(user_language)   
 
+    username = request.user.username
+    # employee_profile = Employee.objects.filter(emp_id=username).get()
+    employee_profile = get_list_or_404(Employee, emp_id=username)
+
     return render(request, 'page/user_profile.html', {
         'project_name': project_name, 
         'project_version': project_version, 
         'db_server': db_server, 
         'today_date': today_date,
+        'user_language': user_language,
+        'employee_profile': employee_profile,
     })
 
 

@@ -9,7 +9,7 @@ class UserProfile(models.Model):
 
 
 class Employee(models.Model):
-    emp_id = models.DecimalField(max_digits=7, decimal_places=0)
+    emp_id = models.DecimalField(primary_key=True, max_digits=7, decimal_places=0)
     emp_title = models.SmallIntegerField()
     emp_fname_en = models.CharField(max_length=30, blank=True, null=True)
     emp_lname_en = models.CharField(max_length=40, blank=True, null=True)

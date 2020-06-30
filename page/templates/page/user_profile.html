@@ -41,7 +41,19 @@
         </div>
         
         <div class="card-body">
-          Content
+          {% if employee_profile %}
+            {% for employee in employee_profile %}
+              <p>{{employee.emp_id}}&nbsp;
+              {% if user_language == 'th' %}                
+                {{employee.emp_fname_th}}&nbsp;{{employee.emp_lname_th}}
+              {% else %}              
+                {{employee.emp_fname_en}}&nbsp;{{employee.emp_lname_en}}
+              {% endif %}
+              &nbsp;{{employee.emp_type}}</p>
+            {% endfor %}
+          {% else %}
+            <p>There is no information</p>
+          {% endif %}
         </div>
         <!-- /.card-body -->
 
