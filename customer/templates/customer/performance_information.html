@@ -1,9 +1,7 @@
 {% extends "page_generic.html" %}
-
-{% block title %}{{ page_title}} - ระบบลูกค้า{% endblock %}
-
+{% load i18n %}
 {% load static %}
-
+{% block title %}{{ page_title}} - {% trans 'Customer' %}{% endblock %}
 {% block content %}
 
   <!-- Content Wrapper. Contains page content -->
@@ -13,7 +11,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark"><small><i class="fas fa-user-tie text-secondary"></i></small>&nbsp;&nbsp;Customer</h1>
+            <h1 class="m-0 text-dark">{% trans 'Performance Information' %}</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">

@@ -1,14 +1,14 @@
 <!-- Main Footer -->
 <footer class="main-footer">
 <!-- To the right -->
-<div class="float-right d-none d-sm-inline">
-	{{ today_date|date:"SHORT_DATE_FORMAT" }}
+<div class="float-right d-none d-sm-inline">	
+	{{ today_date|date:"d M Y" }}
 </div>
 <!-- Default to the left -->
     v. <b>{{ project_version }}</b> | 
 
     {% if db_server == 'KTHBNL808\SQLEXPRESS' %}
-    DEV
+    Dev
     {% else %}
     {{ db_server }}
     {% endif %}
