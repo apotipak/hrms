@@ -2,6 +2,7 @@ from django.forms import ModelForm
 from django.contrib.auth.models import User
 from .models import UserProfile
 from django import forms
+import re
 from django.utils.translation import ugettext_lazy as _
 
 
