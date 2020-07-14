@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-30 09:44+0700\n"
+"POT-Creation-Date: 2020-07-14 08:01+0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,7 +30,7 @@ msgstr ""
 msgid "รหัสสัญญาเกิน 7 หลัก"
 msgstr ""
 
-#: .\contract\forms.py:23
+#: .\contract\forms.py:23 .\customer\templates\customer\customer_list.html:69
 msgid "Branch"
 msgstr ""
 
@@ -78,7 +78,7 @@ msgstr ""
 msgid "รหัสสาขา ป้อนค่าได้ระหว่าง 0 - 999"
 msgstr ""
 
-#: .\customer\forms.py:40
+#: .\customer\forms.py:40 .\customer\templates\customer\customer_list.html:67
 msgid "Customer Code"
 msgstr ""
 
@@ -116,6 +116,62 @@ msgstr ""
 
 #: .\customer\forms.py:59
 msgid "Sub-Distict (EN)"
+msgstr ""
+
+#: .\customer\templates\customer\customer_list.html:4
+#: .\customer\templates\customer\customer_list.html:21
+#: .\customer\templates\customer\customer_report.html:4
+msgid "Customer List"
+msgstr "ลูกค้า"
+
+#: .\customer\templates\customer\customer_list.html:42
+#: .\customer\templates\customer\performance_information.html:4
+#: .\page\templates\index.html:18
+msgid "Customer"
+msgstr "ลูกค้า"
+
+#: .\customer\templates\customer\customer_list.html:45
+#: .\customer\templates\customer\customer_list.html:228
+msgid "Search"
+msgstr "ค้นหา"
+
+#: .\customer\templates\customer\customer_list.html:53
+#: .\customer\templates\customer\customer_list.html:56
+msgid "Add"
+msgstr "เพิ่ม"
+
+#: .\customer\templates\customer\customer_list.html:61
+msgid "New"
+msgstr ""
+
+#: .\customer\templates\customer\customer_list.html:68
+msgid "Name"
+msgstr "ชื่อ"
+
+#: .\customer\templates\customer\customer_list.html:70
+msgid "Zone"
+msgstr "โซน"
+
+#: .\customer\templates\customer\customer_list.html:71
+msgid "Status"
+msgstr "สถานะ"
+
+#: .\customer\templates\customer\customer_list.html:88
+#, fuzzy
+#| msgid "Home Page"
+msgid "Page"
+msgstr "หน้าแรก"
+
+#: .\customer\templates\customer\customer_list.html:88
+msgid "/"
+msgstr ""
+
+#: .\customer\templates\customer\customer_list.html:101
+msgid "There is no data."
+msgstr ""
+
+#: .\customer\templates\customer\performance_information.html:14
+msgid "Performance Information"
 msgstr ""
 
 #: .\env\Lib\site-packages\django\contrib\messages\apps.py:7
@@ -1298,49 +1354,45 @@ msgstr "ภาษาไทย"
 msgid "English US"
 msgstr "ภาษาอังกฤษ"
 
-#: .\page\forms.py:27
+#: .\page\forms.py:28
 msgid "Enter old password"
 msgstr "ป้อนรหัสผ่านเก่า"
 
-#: .\page\forms.py:29
+#: .\page\forms.py:30
 msgid "Enter new password"
 msgstr "ป้อนรหัสผ่านใหม่"
 
-#: .\page\forms.py:31
+#: .\page\forms.py:32
 msgid "Reenter new password"
 msgstr "ป้อนรหัสผ่านใหม่อีกครั้ง"
 
-#: .\page\forms.py:44
+#: .\page\forms.py:45
 msgid "New password is not same."
 msgstr ""
 
-#: .\page\forms.py:47
+#: .\page\forms.py:48
 msgid "New password is same as the old one."
 msgstr ""
 
-#: .\page\forms.py:52
+#: .\page\forms.py:53
 msgid "รหัสใหม่ควรยาวอย่างน้อย 6 ตัวอักษร และประกอบด้วย ตัวเลข ตัวหนังสือ สัญลักษณ์"
 msgstr ""
 
-#: .\page\forms.py:55
+#: .\page\forms.py:56
 msgid "Enter incorrect old password."
 msgstr ""
 
-#: .\page\forms.py:61
+#: .\page\forms.py:62
 msgid "Select your default language"
 msgstr "เลือกภาษา"
 
-#: .\page\forms.py:81
+#: .\page\forms.py:82
 msgid "Invalid value"
 msgstr ""
 
 #: .\page\templates\index.html:5
 msgid "Home Page"
 msgstr "หน้าแรก"
-
-#: .\page\templates\index.html:18
-msgid "Customer"
-msgstr "ลูกค้า"
 
 #: .\page\templates\index.html:19 .\page\templates\index.html:36
 #: .\page\templates\index.html:53 .\page\templates\index.html:70
@@ -1398,8 +1450,11 @@ msgid "Change Password"
 msgstr "เปลี่ยนรหัสผ่าน"
 
 #: .\page\templates\menu_bar_generic.html:15
-msgid "Main Menu"
-msgstr "เมนูหลัก"
+#: .\page\templates\page\user_language.html:21
+#: .\page\templates\page\user_password.html:21
+#: .\page\templates\page\user_profile.html:22
+msgid "Home"
+msgstr "หน้าแรก"
 
 #: .\page\templates\menu_bar_generic.html:42
 #: .\page\templates\page_index.html:52
@@ -1415,12 +1470,6 @@ msgstr "เปลี่ยนภาษา"
 #: .\page\templates\page_index.html:67
 msgid "Sign out"
 msgstr "ออกจากระบบ"
-
-#: .\page\templates\page\user_language.html:21
-#: .\page\templates\page\user_password.html:21
-#: .\page\templates\page\user_profile.html:22
-msgid "Home"
-msgstr "หน้าแรก"
 
 #: .\page\templates\page\user_language.html:86
 #: .\page\templates\page\user_password.html:93
@@ -1439,12 +1488,26 @@ msgstr "รหัสผ่านใหม่"
 msgid "Confirm New Password"
 msgstr "ยืนยันรหัสผ่านใหม่"
 
-#: .\page\views.py:109
+#: .\page\views.py:118
 msgid "ตั้งค่าใหม่สำเร็จ"
 msgstr "A new language has been set."
 
-#~ msgid "Welcome"
-#~ msgstr "Welcome"
+#: .\templates\registration\login.html:36
+msgid "Sign in to HRMS system"
+msgstr "เข้าสู่ระบบ HRMS"
 
-#~ msgid "Confirm"
-#~ msgstr "เปลี่ยนภาษา"
+#: .\templates\registration\login.html:41
+msgid "Your username and password did not match. Please try again."
+msgstr "ป้อนชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง"
+
+#: .\templates\registration\login.html:59
+msgid "Employee ID"
+msgstr "ป้อนรหัสพนักงาน"
+
+#: .\templates\registration\login.html:68
+msgid "Password"
+msgstr "ป้อนรหัสผ่าน"
+
+#: .\templates\registration\login.html:80
+msgid "Sign in"
+msgstr "เข้าสู่ระบบ"

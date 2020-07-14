@@ -1,8 +1,8 @@
 {% for item in customer_list %}
     <tr>
         <td>{{item.cus_id}}</td>
-        <td>{{item.cus_name_en}}</td>
         <td>{{item.cus_brn}}</td>
+        <td>{{item.cus_name_en}}</td>        
         <td>{{item.cus_zone}}</td>
         <td>
           {% if item.cus_active %}

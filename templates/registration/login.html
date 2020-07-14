@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>HRMS | เข้าสู่ระบบ</title>  
+  {% load i18n %}
+  <title>HRMS | {% trans 'Sign in' %}</title>  
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -32,22 +33,15 @@
   </div>
 
   <div>
-    <p class="login-box-msg">Sign in to HRMS system</p>
+    <p class="login-box-msg">{% trans 'Sign in to HRMS system' %}</p>
   </div>
-
-  <div>
+    
   {% if form.errors %}
-  <p>Your username and password didn't match. Please try again.</p>
-  {% endif %}
-
-  {% if next %}
-      {% if user.is_authenticated %}
-      <p>Your account doesn't have access to this page. To proceed,
-      please login with an account that has access.</p>
-      {% endif %}
-  {% endif %}
+  <div class="alert alert-danger">
+  <i class="fas fa-exclamation fa-xs"></i>&nbsp;&nbsp;{% trans 'Your username and password did not match. Please try again.' %}
   </div>
-
+  {% endif %}
+  
   <!-- /.login-logo -->
   <div class="card">
     <div class="card-body login-card-body">    
@@ -55,7 +49,7 @@
       {% csrf_token %}
   
         <div class="input-group mb-3">
-          <input type="text" name="username" id="username" class="form-control" placeholder="Username">
+          <input type="text" name="username" id="username" class="form-control" placeholder="{% trans 'Employee ID' %}">
 
           <div class="input-group-append">
             <div class="input-group-text">
@@ -64,7 +58,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" name="password" id="password" class="form-control" placeholder="Password">
+          <input type="password" name="password" id="password" class="form-control" placeholder="{% trans 'Password' %}">
 
           <div class="input-group-append">
             <div class="input-group-text">
@@ -74,23 +68,20 @@
         </div>
         <div class="row">
           <div class="col-12">
-            <!--<input type="submit" class="btn btn-success btn-block" value="Sign in" />-->
             <button type="submit" class="btn btn-success btn-block">
-              Sign in&nbsp;&nbsp;<i class="fas fa-sign-in-alt"></i>
+              {% trans 'Sign in' %}&nbsp;&nbsp;<i class="fas fa-sign-in-alt"></i>
             </button>                        
             <input type="hidden" name="next" value="{{ next }}" />
           </div>
           
-          <!--
           <div class="col-8">
             <div class="icheck-primary">
-              <a href="{% url 'password_reset' %}">ลืมรหัสผ่าน</a>
+              <a href="{% url 'password_reset' %}">{% trans 'Forgot password' %} ?</a>
               <label for="remember">
                 &nbsp;                
               </label>
             </div>
           </div>
-          -->
 
         </div>
       </form>

@@ -1,9 +1,9 @@
 {% extends "page_generic.html" %}
 
 {% load i18n %}
-{% block title %}{{ page_title}} - {% trans 'Customer List' %} {% endblock %}
-
 {% load static %}
+
+{% block title %}{{ page_title}} - {% trans 'Customer List' %} {% endblock %}
 
 {% block javascript %}
 <script src="{% static 'customer/js/customer.js' %}"></script>
@@ -13,6 +13,7 @@
 
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
+  
   <!-- Content Header (Page header) -->
   <div class="content-header">
     <div class="container-fluid">
@@ -35,25 +36,39 @@
 
     <!-- Default box -->
     <div class="card">
-      <div class="card-header" style="vertical-align: middle;">
+      
+      <div>
+        <form class="form-inline">
+          <div class="form-group mb-2">
+            <label for="customerCode">{% trans 'Customer' %}&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <input type="text" class="form-control form-control-sm col-xs-4" id="customerCode" placeholder="Code">&nbsp;
+            <input type="text" class="form-control form-control-sm col-xs-2" id="customerBranch" placeholder="Branch">&nbsp;
+            <button type="submit" class="btn btn-sm btn-primary col-xs-2"><i class="fas fa-search fa-sm"></i>&nbsp;{% trans 'Search' %}</button>
+          </div>          
+        </form>
+      </div>
 
-        
+      <div class="card-header" style="vertical-align: middle;">
         <div class="card-tools">
-          <!--<button type="button" class="btn btn-success js-create-customer" data-url="{% url 'customer-create' %}"><i class="fas fa-plus"></i>&nbsp;&nbsp;เพิ่ม</button>-->
-          
-          <a href="{% url 'customer-create' %}" type="button" class="btn btn-success btn-sm float-right"><i class="fas fa-plus fa-xs"></i>&nbsp;&nbsp;{% trans 'Add' %}</a>
+          <!--
+          <button type="button" class="btn btn-success btn-sm js-create-customer" data-url="{% url 'customer-create' %}"><i class="fas fa-plus"></i>&nbsp;&nbsp;{% trans 'Add' %}</button>
+          -->          
+          <!--
+          <div class="float-right"><a href="{% url 'customer-create' %}" type="button" class="btn btn-success btn-sm float-right"><i class="fas fa-plus fa-xs"></i>&nbsp;&nbsp;{% trans 'Add' %}</a></div>-->          
         </div>
-        
       </div>
       
-      <div class="card-body">                
+      <div class="card-body">      
+        
+        <div class="float-right pb-3"><a href="{% url 'customer-create' %}" type="button" class="btn btn-success btn-sm"><i class="fas fa-plus fa-xs"></i>&nbsp;&nbsp;{% trans 'New' %}</a></div>
+
         {% if customer_list %}
-        <table id="customer-list-table" class="table table-bordered table-striped table-sm">
+        <table id="customer-list-table1" class="table table-bordered table-striped table-sm">
           <thead>
           <tr>
             <th scope="col">{% trans 'Customer Code' %}</th>
-            <th scope="col">{% trans 'Name' %}</th>
             <th scope="col">{% trans 'Branch' %}</th>
+            <th scope="col">{% trans 'Name' %}</th>            
             <th scope="col">{% trans 'Zone' %}</th>
             <th scope="col">{% trans 'Status' %}</th>
             <th scope="col">&nbsp;</th>
@@ -63,6 +78,25 @@
             {% include 'customer/partial_customer_list.html' %}
           </tbody>
         </table>
+
+        {% if is_paginated %}
+        <div>
+            <span>
+                {% if current_page.has_previous %}
+                    <a href="?page={{ current_page.previous_page_number }}#allemployees"><i class="fas fa-arrow-circle-left"></i></a>
+                {% endif %}
+                &nbsp;
+                <span>
+                    {% trans 'Page' %} {{ current_page.number }} {% trans '/' %} {{ current_page.paginator.num_pages }}
+                </span>
+                &nbsp;
+                {% if current_page.has_next %}
+                    <a href="?page={{ current_page.next_page_number }}#allemployees"><i class="fas fa-arrow-circle-right"></i></a>
+                {% endif %}
+            </span>
+        </div>
+        {% endif %}
+        
         {% else %}
         <div class="col-lg-12">
           <div class="alert alert-warning" role="alert">
@@ -80,18 +114,18 @@
 
       <!-- /.card-footer-->
 
-    </div>
-    <!-- /.card -->
-
-<div class="modal fade" id="modal-customer">
-  <div class="modal-dialog">
-    <div class="modal-content"></div>
   </div>
-</div>
+  <!-- /.card -->
+
+  <div class="modal fade" id="modal-customer">
+    <div class="modal-dialog">
+      <div class="modal-content"></div>
+    </div>
+  </div>
 
 
-  </section>
-  <!-- /.content -->
+</section>
+<!-- /.content -->
 
 </div>
 <!-- /.content-wrapper -->
@@ -112,15 +146,11 @@ $(document).ready(function() {
 });
 
 $(function () {
-  //$('.select2').select2({
   $('.js-select2-district').select2({
     tags: true,
     dropdownParent: $("#modal-customer")
   })
 });
-
-
-
 
 $('#modal-customer').on('shown.bs.modal', function () {
     $('#id_cus_id').focus();
@@ -156,7 +186,6 @@ $('#modal-customer').on('shown.bs.modal', function () {
         return false;        
       }
     });    
-
 
 });
 
