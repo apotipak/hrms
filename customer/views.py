@@ -13,15 +13,17 @@ from django.utils import timezone
 
 
 class CustomerListView(PermissionRequiredMixin, generic.ListView):
+    permission_required = ('customer.view_customer')    
     page_title = settings.PROJECT_NAME
     db_server = settings.DATABASES['default']['HOST']
     project_name = settings.PROJECT_NAME
     project_version = settings.PROJECT_VERSION
     today_date = settings.TODAY_DATE
-    template_name = 'customer/customer_list.html'
-    permission_required = ('customer.view_customer')    
+        
     model = Customer
-    paginate_by = 10
+    template_name = 'customer/customer_list.html'
+    context_object_name = 'customer_list'
+    paginate_by = 5
 
     def get_context_data(self, **kwargs):
         context = super(CustomerListView, self).get_context_data(**kwargs)
@@ -36,10 +38,6 @@ class CustomerListView(PermissionRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         return Customer.objects.filter(cus_active__exact=1)
-        # return Customer.objects.filter(cus_id__in=[2094, 1234567, 12345678]).order_by('-upd_date', 'cus_id', '-cus_active')
-        paginator = Paginator(employee, paginate_by)
-        is_paginated = True if paginator.num_pages > 1 else False
-        page = 1
 
 
 def save_customer_form(request, form, template_name):

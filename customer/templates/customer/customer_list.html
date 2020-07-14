@@ -63,45 +63,51 @@
         <div class="float-right pb-3"><a href="{% url 'customer-create' %}" type="button" class="btn btn-success btn-sm"><i class="fas fa-plus fa-xs"></i>&nbsp;&nbsp;{% trans 'New' %}</a></div>
 
         {% if customer_list %}
-        <table id="customer-list-table1" class="table table-bordered table-striped table-sm">
-          <thead>
-          <tr>
-            <th scope="col">{% trans 'Customer Code' %}</th>
-            <th scope="col">{% trans 'Branch' %}</th>
-            <th scope="col">{% trans 'Name' %}</th>            
-            <th scope="col">{% trans 'Zone' %}</th>
-            <th scope="col">{% trans 'Status' %}</th>
-            <th scope="col">&nbsp;</th>
-          </tr>
-          </thead>
-          <tbody>
-            {% include 'customer/partial_customer_list.html' %}
-          </tbody>
-        </table>
+          <table id="customer-list-table1" class="table table-bordered table-striped table-sm">
+            <thead>
+            <tr>
+              <th scope="col">{% trans 'Customer Code' %}</th>
+              <th scope="col">{% trans 'Branch' %}</th>
+              <th scope="col">{% trans 'Name' %}</th>            
+              <th scope="col">{% trans 'Zone' %}</th>
+              <th scope="col">{% trans 'Status' %}</th>
+              <th scope="col">&nbsp;</th>
+            </tr>
+            </thead>
+            <tbody>
+              {% include 'customer/partial_customer_list.html' %}
+            </tbody>
+          </table>
 
-        {% if is_paginated %}
-        <div>
-            <span>
-                {% if current_page.has_previous %}
-                    <a href="?page={{ current_page.previous_page_number }}#allemployees"><i class="fas fa-arrow-circle-left"></i></a>
+          {% if is_paginated %}
+          <div>
+              <span>
+
+ {% if is_paginated %}
+        <div class="pagination">
+            <span class="page-links">
+                {% if page_obj.has_previous %}
+                    <a href="/customer?page={{ page_obj.previous_page_number }}">previous</a>
                 {% endif %}
-                &nbsp;
-                <span>
-                    {% trans 'Page' %} {{ current_page.number }} {% trans '/' %} {{ current_page.paginator.num_pages }}
+                <span class="page-current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
                 </span>
-                &nbsp;
-                {% if current_page.has_next %}
-                    <a href="?page={{ current_page.next_page_number }}#allemployees"><i class="fas fa-arrow-circle-right"></i></a>
+                {% if page_obj.has_next %}
+                    <a href="/customer?page={{ page_obj.next_page_number }}">next</a>
                 {% endif %}
             </span>
         </div>
-        {% endif %}
+    {% endif %}
+
+            </span>
+          </div>
+          {% endif %}
         
         {% else %}
         <div class="col-lg-12">
-          <div class="alert alert-warning" role="alert">
-            <i class="fa fa-info-circle"></i>&nbsp;&nbsp;{% trans 'There is no data.' %}
-          </div>           
+          <table id="customer-list-table1" class="table table-bordered table-striped table-sm">
+              <tr><td><i class="fa fa-info-circle"></i>&nbsp;&nbsp;{% trans 'There is no data.' %}</td></tr>            
+          </table>
         </div>
         {% endif %}
      
