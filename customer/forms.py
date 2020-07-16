@@ -58,7 +58,7 @@ class CustomerCreateForm(forms.ModelForm):
         self.fields['cus_subdist_en'].label = "Sub-District (EN)"
         self.fields['cus_subdist_en'].widget.attrs={'class': 'form-control', 'placeholder': _('Sub-Distict (EN)')}
 
-#fields = ('cus_district', 'cus_city', 'cus_country', 'cus_zip', 'cus_tel', 'cus_fax', 'cus_email', 'cus_taxid', 'cus_active', 'cus_bill', 'cus_main', 'cus_site', 'cus_zone', 'cus_contact', 'site_contact', 'last_contact', 'upd_date', 'upd_by', 'upd_flag')
+        #fields = ('cus_district', 'cus_city', 'cus_country', 'cus_zip', 'cus_tel', 'cus_fax', 'cus_email', 'cus_taxid', 'cus_active', 'cus_bill', 'cus_main', 'cus_site', 'cus_zone', 'cus_contact', 'site_contact', 'last_contact', 'upd_date', 'upd_by', 'upd_flag')
 
         #self.initial['cus_brn'] = 0
         self.initial['cus_active'] = 1
@@ -121,3 +121,26 @@ class CustomerUpdateForm(forms.ModelForm):
             return self.instance.cus_no
         else: 
             return self.fields['cus_no']
+
+
+class CustomerSearchForm(forms.ModelForm):
+    cus_id = forms.CharField(label=_('Customer ID'), max_length=7, required=False, widget=forms.TextInput(attrs={'autocomplete':'off'}))    
+    cus_brn = forms.CharField(label=_('Customer Branch'), max_length=3, required=False, widget=forms.TextInput(attrs={'autocomplete':'off'}))    
+    
+    class Meta:
+        model = Customer
+        fields = ['cus_id','cus_brn']
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user')      
+        super(CustomerSearchForm, self).__init__(*args, **kwargs)
+        self.fields['cus_id'].widget.attrs={'class': 'form-control form-control-sm col-xs-4'}
+        self.fields['cus_id'].widget.attrs['placeholder'] = _("ID")
+        self.fields['cus_brn'].widget.attrs={'class': 'form-control form-control-sm col-xs-4'}
+        self.fields['cus_brn'].widget.attrs['placeholder'] = _("Branch")
+        
+    def clean(self):
+        cleaned_data = super(CustomerSearchForm, self).clean()
+        cus_id = self.cleaned_data.get('cus_id')
+        cus_brn = self.cleaned_data.get('cus_brn')
+        return cleaned_data

@@ -38,11 +38,14 @@
     <div class="card">
       
       <div>
-        <form class="form-inline">
+        <form class="form-inline" role="form" method="post" autocomplete="off">
+          {% csrf_token %}          
           <div class="form-group mb-2">
             <label for="customerCode">{% trans 'Customer' %}&nbsp;&nbsp;&nbsp;&nbsp;</label>
-            <input type="text" class="form-control form-control-sm col-xs-4" id="customerCode" placeholder="Code">&nbsp;
-            <input type="text" class="form-control form-control-sm col-xs-2" id="customerBranch" placeholder="Branch">&nbsp;
+            <!--<input type="text" class="form-control form-control-sm col-xs-4" id="customerCode" placeholder="Code">&nbsp;-->
+            {{ form.cus_id}}&nbsp;
+            <!--<input type="text" class="form-control form-control-sm col-xs-2" id="customerBranch" placeholder="Branch">&nbsp;-->
+            {{ form.cus_brn}}&nbsp;
             <button type="submit" class="btn btn-sm btn-primary col-xs-2"><i class="fas fa-search fa-sm"></i>&nbsp;{% trans 'Search' %}</button>
           </div>          
         </form>

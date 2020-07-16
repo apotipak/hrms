@@ -7,6 +7,7 @@ from django.conf import settings
 from django.views import generic
 from .models import Customer
 from .forms import CustomerCreateForm, CustomerUpdateForm
+from .forms import CustomerSearchForm
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from django.utils import timezone
@@ -20,15 +21,21 @@ def CustomerList(request):
     project_name = settings.PROJECT_NAME
     project_version = settings.PROJECT_VERSION
     today_date = settings.TODAY_DATE    
-    item_per_page = 5
+    item_per_page = 6
 
     if request.method == "POST":
         print("post")
-
+        form = CustomerSearchForm(request.POST, user=request.user)
+        customer_list = Customer.objects.filter(cus_active__exact=1).order_by('cus_id','cus_brn')        
+        cus_id = request.POST.get('cus_id')
+        cus_brn = request.POST.get('cus_brn')
+        print("cus_id = " +  str(cus_id))
+        print("cus_brn = " +  str(cus_brn))
     else:
         print("get")
-
-    customer_list = Customer.objects.filter(cus_active__exact=1)
+        form = CustomerSearchForm(user=request.user)
+        customer_list = Customer.objects.filter(cus_active__exact=1).order_by('cus_id','cus_brn')        
+    
     paginator = Paginator(customer_list, item_per_page)
     is_paginated = True if paginator.num_pages > 1 else False
     page = request.GET.get('page') or 1
@@ -46,6 +53,7 @@ def CustomerList(request):
         'current_page': current_page,
         'is_paginated': is_paginated,
         'customer_list': customer_list,
+        'form': form,
     }
 
     return render(request, 'customer/customer_list.html', context)
