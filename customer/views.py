@@ -10,9 +10,47 @@ from .forms import CustomerCreateForm, CustomerUpdateForm
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from django.utils import timezone
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
-class CustomerListView(PermissionRequiredMixin, generic.ListView):
+@permission_required('customer.view_customer', login_url='/accounts/login/')
+def CustomerList(request):
+    page_title = settings.PROJECT_NAME
+    db_server = settings.DATABASES['default']['HOST']
+    project_name = settings.PROJECT_NAME
+    project_version = settings.PROJECT_VERSION
+    today_date = settings.TODAY_DATE    
+    item_per_page = 5
+
+    if request.method == "POST":
+        print("post")
+
+    else:
+        print("get")
+
+    customer_list = Customer.objects.filter(cus_active__exact=1)
+    paginator = Paginator(customer_list, item_per_page)
+    is_paginated = True if paginator.num_pages > 1 else False
+    page = request.GET.get('page') or 1
+
+    try:
+        current_page = paginator.get_page(page)
+    except InvalidPage as e:
+        raise Http404(str(e))
+
+    context = {
+        'page_title': page_title, 
+        'db_server': db_server, 'today_date': today_date,
+        'project_name': project_name, 
+        'project_version': project_version,         
+        'current_page': current_page,
+        'is_paginated': is_paginated,
+        'customer_list': customer_list,
+    }
+
+    return render(request, 'customer/customer_list.html', context)
+
+class CustomerListView1(PermissionRequiredMixin, generic.ListView):
     permission_required = ('customer.view_customer')    
     page_title = settings.PROJECT_NAME
     db_server = settings.DATABASES['default']['HOST']

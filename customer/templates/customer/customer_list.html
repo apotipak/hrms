@@ -62,7 +62,7 @@
         
         <div class="float-right pb-3"><a href="{% url 'customer-create' %}" type="button" class="btn btn-success btn-sm"><i class="fas fa-plus fa-xs"></i>&nbsp;&nbsp;{% trans 'New' %}</a></div>
 
-        {% if customer_list %}
+        {% if current_page %}
           <table id="customer-list-table1" class="table table-bordered table-striped table-sm">
             <thead>
             <tr>
@@ -82,24 +82,18 @@
           {% if is_paginated %}
           <div>
               <span>
-
- {% if is_paginated %}
-        <div class="pagination">
-            <span class="page-links">
-                {% if page_obj.has_previous %}
-                    <a href="/customer?page={{ page_obj.previous_page_number }}">previous</a>
-                {% endif %}
-                <span class="page-current">
-                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-                </span>
-                {% if page_obj.has_next %}
-                    <a href="/customer?page={{ page_obj.next_page_number }}">next</a>
-                {% endif %}
-            </span>
-        </div>
-    {% endif %}
-
-            </span>
+                  {% if current_page.has_previous %}
+                      <a href="?page={{ current_page.previous_page_number }}"><i class="fas fa-arrow-circle-left"></i></a>
+                  {% endif %}
+                  &nbsp;
+                  <span>
+                      {% trans 'Page' %} {{ current_page.number }} {% trans '/' %} {{ current_page.paginator.num_pages }}
+                  </span>
+                  &nbsp;
+                  {% if current_page.has_next %}
+                      <a href="?page={{ current_page.next_page_number }}"><i class="fas fa-arrow-circle-right"></i></a>
+                  {% endif %}
+              </span>
           </div>
           {% endif %}
         
