@@ -134,9 +134,9 @@ class CustomerSearchForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')      
         super(CustomerSearchForm, self).__init__(*args, **kwargs)
-        self.fields['cus_id'].widget.attrs={'class': 'form-control form-control-sm col-xs-4'}
+        self.fields['cus_id'].widget.attrs={'class': 'form-control form-control-sm'}
         self.fields['cus_id'].widget.attrs['placeholder'] = _("ID")
-        self.fields['cus_brn'].widget.attrs={'class': 'form-control form-control-sm col-xs-4'}
+        self.fields['cus_brn'].widget.attrs={'class': 'form-control form-control-sm'}
         self.fields['cus_brn'].widget.attrs['placeholder'] = _("Branch")
         
     def clean(self):

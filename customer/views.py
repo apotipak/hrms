@@ -26,15 +26,31 @@ def CustomerList(request):
     if request.method == "POST":
         print("post")
         form = CustomerSearchForm(request.POST, user=request.user)
-        customer_list = Customer.objects.filter(cus_active__exact=1).order_by('cus_id','cus_brn')        
         cus_id = request.POST.get('cus_id')
         cus_brn = request.POST.get('cus_brn')
+        if cus_id != '' and cus_brn != '':
+            print("test1")
+            customer_list = Customer.objects.filter(cus_id=cus_id,cus_brn=cus_brn).order_by('-cus_active','cus_id','cus_brn')
+        
+        if cus_id == '' and cus_brn != '':
+            print("test2")
+            customer_list = Customer.objects.filter(cus_brn=cus_brn).order_by('-cus_active','cus_id','cus_brn')
+
+        if cus_id == '' and cus_brn == '':
+            print("test3")
+            customer_list = Customer.objects.all().order_by('-cus_active','cus_id','cus_brn')
+
+        if cus_id != '' and cus_brn == '':
+            print("test4")
+            customer_list = Customer.objects.filter(cus_id=cus_id).order_by('-cus_active','cus_id','cus_brn')
+
+
         print("cus_id = " +  str(cus_id))
         print("cus_brn = " +  str(cus_brn))
     else:
         print("get")
         form = CustomerSearchForm(user=request.user)
-        customer_list = Customer.objects.filter(cus_active__exact=1).order_by('cus_id','cus_brn')        
+        customer_list = []
     
     paginator = Paginator(customer_list, item_per_page)
     is_paginated = True if paginator.num_pages > 1 else False
