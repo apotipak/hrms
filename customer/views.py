@@ -21,7 +21,7 @@ def CustomerList(request):
     project_name = settings.PROJECT_NAME
     project_version = settings.PROJECT_VERSION
     today_date = settings.TODAY_DATE    
-    item_per_page = 6
+    item_per_page = 30    
 
     if request.method == "POST":
         print("post")
@@ -31,45 +31,58 @@ def CustomerList(request):
         if cus_id != '' and cus_brn != '':
             print("test1")
             customer_list = Customer.objects.filter(cus_id=cus_id,cus_brn=cus_brn).order_by('-cus_active','cus_id','cus_brn')
-        
-        if cus_id == '' and cus_brn != '':
-            print("test2")
-            customer_list = Customer.objects.filter(cus_brn=cus_brn).order_by('-cus_active','cus_id','cus_brn')
 
         if cus_id == '' and cus_brn == '':
+            print("test2")
+            customer_list = Customer.objects.all().order_by('cus_id','cus_brn','-cus_active')
+        
+        if cus_id == '' and cus_brn != '':
             print("test3")
-            customer_list = Customer.objects.all().order_by('-cus_active','cus_id','cus_brn')
+            customer_list = Customer.objects.filter(cus_brn=cus_brn).order_by('-cus_active','cus_id','cus_brn')
 
         if cus_id != '' and cus_brn == '':
             print("test4")
             customer_list = Customer.objects.filter(cus_id=cus_id).order_by('-cus_active','cus_id','cus_brn')
 
-
         print("POST: cus_id = " +  str(cus_id))
         print("POST: cus_brn = " +  str(cus_brn))
-    else:
-        print("get")
-        form = CustomerSearchForm(user=request.user)    
         
-        #page = request.GET('page')
-        #print("GET: page = " +  str(page))
+        page = 1
+        paginator = Paginator(customer_list, item_per_page)
+        is_paginated = True if paginator.num_pages > 1 else False        
 
-        '''
-        cus_brn = request.GET('cus_brn')        
-        print("GET: cus_id = " +  str(cus_id))
-        print("GET: cus_brn = " +  str(cus_brn))        
-        '''
-        customer_list = []
+        try:
+            current_page = paginator.get_page(page)
+        except InvalidPage as e:
+            raise Http404(str(e))        
+    else:
+        form = CustomerSearchForm(user=request.user)                    
+        cus_id = request.GET.get('cusid', '')
+        cus_brn = request.GET.get('brn', '')
+
+        if cus_id != '' and cus_brn != '':
+            customer_list = Customer.objects.filter(cus_id=cus_id,cus_brn=cus_brn).order_by('-cus_active','cus_id','cus_brn')
+
+        if cus_id == '' and cus_brn == '':
+            customer_list = Customer.objects.all().order_by('-cus_active','cus_id','cus_brn')
+        
+        if cus_id == '' and cus_brn != '':
+            customer_list = Customer.objects.filter(cus_brn=cus_brn).order_by('-cus_active','cus_id','cus_brn')
+
+        if cus_id != '' and cus_brn == '':
+            customer_list = Customer.objects.filter(cus_id=cus_id).order_by('-cus_active','cus_id','cus_brn')
+
+        paginator = Paginator(customer_list, item_per_page)
+        is_paginated = True if paginator.num_pages > 1 else False
+        page = request.GET.get('page', '1') or 1
+
+        try:
+            current_page = paginator.get_page(page)
+        except InvalidPage as e:
+            raise Http404(str(e))
+
+        # customer_list = []
     
-    paginator = Paginator(customer_list, item_per_page)
-    is_paginated = True if paginator.num_pages > 1 else False
-    page = request.GET.get('page') or 1
-
-    try:
-        current_page = paginator.get_page(page)
-    except InvalidPage as e:
-        raise Http404(str(e))
-
     context = {
         'page_title': page_title, 
         'db_server': db_server, 'today_date': today_date,
@@ -79,6 +92,8 @@ def CustomerList(request):
         'is_paginated': is_paginated,
         'customer_list': customer_list,
         'form': form,
+        'cus_id': cus_id,
+        'cus_brn': cus_brn,
     }
 
     return render(request, 'customer/customer_list.html', context)

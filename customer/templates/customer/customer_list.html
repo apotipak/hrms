@@ -2,6 +2,7 @@
 
 {% load i18n %}
 {% load static %}
+{% load widget_tweaks %}
 
 {% block title %}{{ page_title}} - {% trans 'Customer List' %} {% endblock %}
 
@@ -37,29 +38,13 @@
     <!-- Default box -->
     <div class="card">
 
-      <div class="col-sm-8 offset-sm-2 col-md-6 offset-md-3 pt-4 pl-4 pr-4">
-
-      {% load widget_tweaks %}
+      <div class="col-sm-8 offset-sm-2 col-md-6 offset-md-3 pt-4 pl-4 pr-4">      
       <form method="post" novalidate>
         {% csrf_token %}
-
-        <!--
-        {% for hidden_field in form.hidden_fields %}
-          {{ hidden_field }}
-        {% endfor %}
-
-        {% if form.non_field_errors %}
-          <div class="alert alert-danger" role="alert">
-            {% for error in form.non_field_errors %}
-              {{ error }}
-            {% endfor %}
-          </div>
-        {% endif %}
-        -->
-
+        
         {% for field in form.visible_fields %}
           <div class="form-row">
-            {{ field.label_tag }}
+            {#{ field.label_tag }#}
 
             {% if form.is_bound %}
               
@@ -79,11 +64,6 @@
 
             {% endif %}
 
-            <!--
-            {% if field.help_text %}
-              <small class="form-text text-muted">{{ field.help_text }}</small>
-            {% endif %}
-            -->
           </div>
         {% endfor %}
 
@@ -183,7 +163,7 @@
                   </span>
                   &nbsp;
                   {% if current_page.has_next %}
-                      <a href="?page={{ current_page.next_page_number }}"><i class="fas fa-arrow-circle-right"></i></a>
+                      <a href="?page={{ current_page.next_page_number }}&cusid={{cus_id|default:'' }}&brn={{cus_brn|default:'' }}"><i class="fas fa-arrow-circle-right"></i></a>
                   {% endif %}
               </span>
           </div>
