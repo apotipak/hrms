@@ -45,11 +45,20 @@ def CustomerList(request):
             customer_list = Customer.objects.filter(cus_id=cus_id).order_by('-cus_active','cus_id','cus_brn')
 
 
-        print("cus_id = " +  str(cus_id))
-        print("cus_brn = " +  str(cus_brn))
+        print("POST: cus_id = " +  str(cus_id))
+        print("POST: cus_brn = " +  str(cus_brn))
     else:
         print("get")
-        form = CustomerSearchForm(user=request.user)
+        form = CustomerSearchForm(user=request.user)    
+        
+        #page = request.GET('page')
+        #print("GET: page = " +  str(page))
+
+        '''
+        cus_brn = request.GET('cus_brn')        
+        print("GET: cus_id = " +  str(cus_id))
+        print("GET: cus_brn = " +  str(cus_brn))        
+        '''
         customer_list = []
     
     paginator = Paginator(customer_list, item_per_page)

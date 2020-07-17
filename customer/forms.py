@@ -124,12 +124,12 @@ class CustomerUpdateForm(forms.ModelForm):
 
 
 class CustomerSearchForm(forms.ModelForm):
-    cus_id = forms.CharField(label=_('Customer ID'), max_length=7, required=False, widget=forms.TextInput(attrs={'autocomplete':'off'}))    
-    cus_brn = forms.CharField(label=_('Customer Branch'), max_length=3, required=False, widget=forms.TextInput(attrs={'autocomplete':'off'}))    
+    cus_id = forms.CharField(label=_('Customer ID'), max_length=7, required=False, error_messages={'required': 'Please enter a Customer ID.', 'max_length': 'Customer ID is too long.'}, widget=forms.TextInput(attrs={'autocomplete':'off'}))
+    cus_brn = forms.CharField(label=_('Customer Branch'), max_length=3, required=False, widget=forms.TextInput(attrs={'autocomplete':'off'}))
     
     class Meta:
         model = Customer
-        fields = ['cus_id','cus_brn']
+        fields = ['cus_id', 'cus_brn']
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')      
@@ -138,9 +138,20 @@ class CustomerSearchForm(forms.ModelForm):
         self.fields['cus_id'].widget.attrs['placeholder'] = _("ID")
         self.fields['cus_brn'].widget.attrs={'class': 'form-control form-control-sm'}
         self.fields['cus_brn'].widget.attrs['placeholder'] = _("Branch")
-        
-    def clean(self):
-        cleaned_data = super(CustomerSearchForm, self).clean()
-        cus_id = self.cleaned_data.get('cus_id')
-        cus_brn = self.cleaned_data.get('cus_brn')
-        return cleaned_data
+
+    '''
+    def clean_cus_id(self):
+        data = self.cleaned_data['cus_id']        
+        if len(data) > 7: 
+            self._errors['cus_id'] = self.ValidationError('Minimum 5 characters required')
+
+        return self.cleaned_data    
+    '''
+
+    def clean_cus_id(self):        
+        cus_id = self.data.get('cus_id')
+        if len(cus_id) > 7:
+            raise forms.ValidationError('Maximum 7 characters required')
+
+        data = self.cleaned_data['cus_id']        
+        return data
