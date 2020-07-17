@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-14 08:01+0700\n"
+"POT-Creation-Date: 2020-07-17 15:34+0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: .\contract\forms.py:20
+#: .\contract\forms.py:20 .\customer\forms.py:127
 msgid "Customer ID"
 msgstr ""
 
@@ -30,7 +30,9 @@ msgstr ""
 msgid "รหัสสัญญาเกิน 7 หลัก"
 msgstr ""
 
-#: .\contract\forms.py:23 .\customer\templates\customer\customer_list.html:69
+#: .\contract\forms.py:23 .\customer\forms.py:140
+#: .\customer\templates\customer\customer_list.html:149
+#: .\customer\templates\customer\customer_list.html:185
 msgid "Branch"
 msgstr ""
 
@@ -78,7 +80,7 @@ msgstr ""
 msgid "รหัสสาขา ป้อนค่าได้ระหว่าง 0 - 999"
 msgstr ""
 
-#: .\customer\forms.py:40 .\customer\templates\customer\customer_list.html:67
+#: .\customer\forms.py:40 .\customer\templates\customer\customer_list.html:184
 msgid "Customer Code"
 msgstr ""
 
@@ -118,57 +120,73 @@ msgstr ""
 msgid "Sub-Distict (EN)"
 msgstr ""
 
-#: .\customer\templates\customer\customer_list.html:4
-#: .\customer\templates\customer\customer_list.html:21
+#: .\customer\forms.py:127
+msgid "Customer ID is too long."
+msgstr "ป้อนรหัสยาวเกินกำหนด"
+
+#: .\customer\forms.py:128
+#, fuzzy
+#| msgid "Customer"
+msgid "Customer Branch"
+msgstr "ลูกค้า"
+
+#: .\customer\forms.py:138 .\customer\templates\customer\customer_list.html:148
+msgid "ID"
+msgstr ""
+
+#: .\customer\templates\customer\customer_list.html:7
+#: .\customer\templates\customer\customer_list.html:23
 #: .\customer\templates\customer\customer_report.html:4
 msgid "Customer List"
 msgstr "ลูกค้า"
 
-#: .\customer\templates\customer\customer_list.html:42
-#: .\customer\templates\customer\performance_information.html:4
-#: .\page\templates\index.html:18
-msgid "Customer"
-msgstr "ลูกค้า"
-
-#: .\customer\templates\customer\customer_list.html:45
-#: .\customer\templates\customer\customer_list.html:228
+#: .\customer\templates\customer\customer_list.html:98
+#: .\customer\templates\customer\customer_list.html:319
 msgid "Search"
 msgstr "ค้นหา"
 
-#: .\customer\templates\customer\customer_list.html:53
-#: .\customer\templates\customer\customer_list.html:56
+#: .\customer\templates\customer\customer_list.html:133
+#: .\customer\templates\customer\customer_list.html:136
 msgid "Add"
 msgstr "เพิ่ม"
 
-#: .\customer\templates\customer\customer_list.html:61
+#: .\customer\templates\customer\customer_list.html:142
 msgid "New"
 msgstr ""
 
-#: .\customer\templates\customer\customer_list.html:68
+#: .\customer\templates\customer\customer_list.html:150
+#: .\customer\templates\customer\customer_list.html:186
 msgid "Name"
 msgstr "ชื่อ"
 
-#: .\customer\templates\customer\customer_list.html:70
+#: .\customer\templates\customer\customer_list.html:151
+#: .\customer\templates\customer\customer_list.html:187
 msgid "Zone"
 msgstr "โซน"
 
-#: .\customer\templates\customer\customer_list.html:71
+#: .\customer\templates\customer\customer_list.html:152
+#: .\customer\templates\customer\customer_list.html:188
 msgid "Status"
 msgstr "สถานะ"
 
-#: .\customer\templates\customer\customer_list.html:88
+#: .\customer\templates\customer\customer_list.html:169
 #, fuzzy
 #| msgid "Home Page"
 msgid "Page"
 msgstr "หน้าแรก"
 
-#: .\customer\templates\customer\customer_list.html:88
+#: .\customer\templates\customer\customer_list.html:169
 msgid "/"
 msgstr ""
 
-#: .\customer\templates\customer\customer_list.html:101
-msgid "There is no data."
+#: .\customer\templates\customer\customer_list.html:193
+msgid "There is no data displayed."
 msgstr ""
+
+#: .\customer\templates\customer\performance_information.html:4
+#: .\page\templates\index.html:18
+msgid "Customer"
+msgstr "ลูกค้า"
 
 #: .\customer\templates\customer\performance_information.html:14
 msgid "Performance Information"
@@ -1346,11 +1364,20 @@ msgstr ""
 msgid "Connect, get help, or contribute"
 msgstr ""
 
-#: .\hrms\settings.py:138
+#: .\env\Lib\site-packages\jsonfield\fields.py:48
+msgid "Enter valid JSON."
+msgstr ""
+
+#: .\env\Lib\site-packages\jsonfield\forms.py:15
+#, python-format
+msgid "\"%(value)s\" value must be valid JSON."
+msgstr ""
+
+#: .\hrms\settings.py:139
 msgid "Thai"
 msgstr "ภาษาไทย"
 
-#: .\hrms\settings.py:139
+#: .\hrms\settings.py:140
 msgid "English US"
 msgstr "ภาษาอังกฤษ"
 
@@ -1473,6 +1500,7 @@ msgstr "ออกจากระบบ"
 
 #: .\page\templates\page\user_language.html:86
 #: .\page\templates\page\user_password.html:93
+#: .\templates\registration\password_reset_form.html:52
 msgid "OK"
 msgstr "ตกลง"
 
@@ -1492,6 +1520,11 @@ msgstr "ยืนยันรหัสผ่านใหม่"
 msgid "ตั้งค่าใหม่สำเร็จ"
 msgstr "A new language has been set."
 
+#: .\templates\registration\login.html:5 .\templates\registration\login.html:72
+#: .\templates\registration\password_reset_form.html:59
+msgid "Sign in"
+msgstr "เข้าสู่ระบบ"
+
 #: .\templates\registration\login.html:36
 msgid "Sign in to HRMS system"
 msgstr "เข้าสู่ระบบ HRMS"
@@ -1500,14 +1533,34 @@ msgstr "เข้าสู่ระบบ HRMS"
 msgid "Your username and password did not match. Please try again."
 msgstr "ป้อนชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง"
 
-#: .\templates\registration\login.html:59
+#: .\templates\registration\login.html:52
 msgid "Employee ID"
 msgstr "ป้อนรหัสพนักงาน"
 
-#: .\templates\registration\login.html:68
+#: .\templates\registration\login.html:61
 msgid "Password"
 msgstr "ป้อนรหัสผ่าน"
 
-#: .\templates\registration\login.html:80
-msgid "Sign in"
-msgstr "เข้าสู่ระบบ"
+#: .\templates\registration\login.html:79
+#: .\templates\registration\password_reset_form.html:5
+#, fuzzy
+#| msgid "Enter old password"
+msgid "Forgot password"
+msgstr "ป้อนรหัสผ่านเก่า"
+
+#: .\templates\registration\password_reset_form.html:37
+msgid ""
+"Enter your company email address and we will send you a password reset link."
+msgstr ""
+
+#: .\templates\registration\password_reset_form.html:43
+msgid "Enter your company email"
+msgstr ""
+
+#: .\templates\registration\password_reset_form.html:59
+msgid "Back to"
+msgstr ""
+
+#: .\templates\registration\password_reset_form.html:59
+msgid "page"
+msgstr ""

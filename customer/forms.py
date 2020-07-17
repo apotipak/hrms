@@ -124,7 +124,7 @@ class CustomerUpdateForm(forms.ModelForm):
 
 
 class CustomerSearchForm(forms.ModelForm):
-    cus_id = forms.CharField(label=_('Customer ID'), max_length=7, required=False, error_messages={'required': 'Please enter a Customer ID.', 'max_length': 'Customer ID is too long.'}, widget=forms.TextInput(attrs={'autocomplete':'off'}))
+    cus_id = forms.CharField(label=_('Customer ID'), max_length=7, required=False, error_messages={'max_length': _('Customer ID is too long.')}, widget=forms.TextInput(attrs={'autocomplete':'off'}))
     cus_brn = forms.CharField(label=_('Customer Branch'), max_length=3, required=False, widget=forms.TextInput(attrs={'autocomplete':'off'}))
     
     class Meta:

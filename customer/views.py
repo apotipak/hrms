@@ -21,7 +21,7 @@ def CustomerList(request):
     project_name = settings.PROJECT_NAME
     project_version = settings.PROJECT_VERSION
     today_date = settings.TODAY_DATE    
-    item_per_page = 30    
+    item_per_page = 15    
 
     if request.method == "POST":
         print("post")
@@ -64,7 +64,7 @@ def CustomerList(request):
             customer_list = Customer.objects.filter(cus_id=cus_id,cus_brn=cus_brn).order_by('-cus_active','cus_id','cus_brn')
 
         if cus_id == '' and cus_brn == '':
-            customer_list = Customer.objects.all().order_by('-cus_active','cus_id','cus_brn')
+            customer_list = Customer.objects.all().order_by('cus_id','cus_brn','-cus_active')
         
         if cus_id == '' and cus_brn != '':
             customer_list = Customer.objects.filter(cus_brn=cus_brn).order_by('-cus_active','cus_id','cus_brn')
