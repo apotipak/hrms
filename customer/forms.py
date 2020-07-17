@@ -153,5 +153,7 @@ class CustomerSearchForm(forms.ModelForm):
         if len(cus_id) > 7:
             raise forms.ValidationError('Maximum 7 characters required')
 
+        # validate_integer(cus_id, None)
+
         data = self.cleaned_data['cus_id']        
         return data

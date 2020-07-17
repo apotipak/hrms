@@ -38,40 +38,7 @@
     <!-- Default box -->
     <div class="card">
 
-      <div class="col-sm-8 offset-sm-2 col-md-6 offset-md-3 pt-4 pl-4 pr-4">      
-
-        <!--
-        <form method="post" novalidate>
-          {% csrf_token %}          
-          {% for field in form.visible_fields %}
-            <div class="form-row">
-              {#{ field.label_tag }#}
-
-              {% if form.is_bound %}
-                
-                {% if field.errors %}
-                  {% render_field field class="form-control form-control-sm is-invalid" %}
-                  {% for error in field.errors %}
-                    <div class="invalid-feedback">
-                      {{ error }}
-                    </div>
-                  {% endfor %}
-                {% else %}
-                  {% render_field field class="form-control form-control-sm" %}
-                {% endif %}              
-              {% else %}
-
-                {% render_field field class="form-control form-control-sm" %}
-
-              {% endif %}
-
-            </div>
-          {% endfor %}
-
-          <button type="submit" class="btn btn-sm btn-primary">Search</button>
-        </form>
-        -->
-  
+      <div class="col-sm-8 offset-sm-2 col-md-6 offset-md-3 pt-4 pl-4 pr-4">        
         <form class="form-row" method="post" autocomplete="off">
           {% csrf_token %}
           <div class="form-row">
@@ -178,7 +145,7 @@
         
         {% else %}
         <div class="table-responsive">
-          <table class="table table-bordered text-secondary table-striped table-sm">
+          <table class="table table-bordered text-secondary table-striped table-sm table-condensed">
             <thead>
             <tr>
               <th scope="col">{% trans 'Customer Code' %}</th>
@@ -189,7 +156,7 @@
             </tr>
             </thead>
             <tbody>            
-              <tr>
+              <tr class="bg-warning">
                 <td colspan="5" align="center"><br>{% trans 'There is no data displayed.' %}<br><br></td>
               </tr>
             </tbody>
