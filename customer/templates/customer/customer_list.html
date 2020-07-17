@@ -38,30 +38,50 @@
     <!-- Default box -->
     <div class="card">
 
-      <div class="col-sm-8 offset-sm-2 col-md-6 offset-md-3 pt-4 pl-4 pr-4">        
+      <div class="col-sm-8 offset-sm-2 col-md-8 offset-md-2 pt-4 pl-4 pr-4">        
         <form class="form-row" method="post" autocomplete="off">
           {% csrf_token %}
           <div class="form-row">
-            <div class="col-6">              
+
+            <div class="col-4">
+              {% if form.cus_name.errors %}                
+                {% render_field form.cus_name class="form-control form-control-sm is-invalid" %}
+                {% for error in form.cus_name.errors %}
+                <div class="invalid-feedback">
+                  {{error}}
+                </div>
+                {% endfor %}
+              {% else %}
+                {% render_field form.cus_name class="form-control form-control-sm" %}
+              {% endif %}
+            </div>
+
+            <div class="col-2">
               {% if form.cus_id.errors %}                
                 {% render_field form.cus_id class="form-control form-control-sm is-invalid" %}                
-                  {% for error in form.cus_id.errors %}
-                  <div class="invalid-feedback">
-                    {{error}}
-                  </div>
-                  {% endfor %}                
+                {% for error in form.cus_id.errors %}
+                <div class="invalid-feedback">
+                  {{error}}
+                </div>
+                {% endfor %}
               {% else %}
                 {% render_field form.cus_id class="form-control form-control-sm" %}
               {% endif %}
             </div>
-            <div class="col-3">
+
+            <div class="col-2">
               {% if form.cus_brn.errors %}                
                 {% render_field form.cus_brn class="form-control form-control-sm is-invalid" %}
+                {% for error in form.cus_brn.errors %}
+                <div class="invalid-feedback">
+                  {{error}}
+                </div>
+                {% endfor %}                
               {% else %}
                 {% render_field form.cus_brn class="form-control form-control-sm" %}
               {% endif %}              
             </div>
-            <div colass="col-3">
+            <div colass="col-2">
               <button type="submit" class="btn btn-sm btn-primary col-xs-2"><i class="fas fa-search fa-sm"></i>&nbsp;{% trans 'Search' %}</button>
             </div>
 
@@ -129,7 +149,7 @@
           <div>
               <span>
                   {% if current_page.has_previous %}
-                      <a href="?page={{ current_page.previous_page_number }}"><i class="fas fa-arrow-circle-left"></i></a>
+                      <a href="?page={{ current_page.previous_page_number }}&cusid={{cus_id|default:'' }}&brn={{cus_brn|default:'' }}""><i class="fas fa-arrow-circle-left"></i></a>
                   {% endif %}
                   &nbsp;
                   <span>
