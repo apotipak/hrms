@@ -1,6 +1,10 @@
 {% load i18n %}
 {% load widget_tweaks %}
 
+
+
+
+
 <ul class="nav nav-tabs" id="customer" role="tablist">
   <li class="nav-item">
     <a class="nav-link active" id="mainoffice-tab" data-toggle="tab" href="#mainoffice" role="tab" aria-controls="mainoffice" aria-selected="true">{% trans 'Main Office' %}</a>
@@ -14,76 +18,80 @@
 </ul>
 <div class="tab-content" id="customerContent">
  	
+
+
   	<div class="tab-pane fade show active" id="mainoffice" role="tabpanel" aria-labelledby="mainoffice-tab">  	  		
   		<div class="container-fluid pt-2">
+
+
 
 		  <div class="form-group row">
 		    <label for="id_cus_name_th" class="col-sm-2 col-form-label form-control-sm">{% trans 'Customer Name' %}</label>
 		    <div class="col-sm-10">
-		      <input type="text" class="form-control form-control-sm" id="id_cus_name_th" value="{{ customer.cus_name_th }}">
+		      <input type="text" class="form-control form-control-sm" id="id_cus_name_th" name="cus_name_th" value="{{ customer.cus_name_th }}">
 		    </div>
 		  </div>
 		  <div class="form-group row">
 		    <label for="id_cus_add1_th" class="col-sm-2 col-form-label form-control-sm">{% trans 'Address' %}</label>
 		    <div class="col-sm-10">
-		      <input type="text" class="form-control form-control-sm" id="id_cus_add1_th" value="{{ customer.cus_add1_th }}">
-		      <input type="text" class="form-control form-control-sm" id="id_cus_add2_th" value="{{ customer.cus_add2_th }}">
+		      <input type="text" class="form-control form-control-sm" id="id_cus_add1_th" name="cus_add1_th" value="{{ customer.cus_add1_th }}">
+		      <input type="text" class="form-control form-control-sm" id="id_cus_add2_th" name="cus_add2_th" value="{{ customer.cus_add2_th }}">
 		    </div>
 		  </div>
 		  <div class="form-group row">
 		    <label for="id_cus_subdist_th" class="col-sm-2 col-form-label form-control-sm">{% trans 'Sub-District' %}</label>
 		    <div class="col-sm-10">
-		      <input type="text" class="form-control form-control-sm" id="id_cus_subdist_th" value="{{ customer.cus_subdist_th }}">
+		      <input type="text" class="form-control form-control-sm" id="id_cus_subdist_th" name="cus_subdist_th" value="{{ customer.cus_subdist_th }}">
 		    </div>
 		  </div>
 		  <div class="form-group row">
 		    <label for="id_cus_disrict" class="col-sm-2 col-form-label form-control-sm">{% trans 'District' %}</label>
 		    <div class="col-sm-10">
-		      <input type="text" class="form-control form-control-sm" id="id_cus_district" value="{{ customer.cus_district.dist_th }}">
+		      <input type="text" class="form-control form-control-sm" id="id_cus_district" name="cus_district" value="{{ customer.cus_district.dist_th }}">
 		    </div>
 		  </div>
 		  <div class="form-group row">
 		    <label for="id_cus_city" class="col-sm-2 col-form-label form-control-sm">{% trans 'City/Country' %}</label>
 		    <div class="col-sm-10">
-		      <input type="text" class="form-control form-control-sm" id="id_cus_city" value="{{ customer.cus_city }}">
-		      <input type="text" class="form-control form-control-sm" id="id_cus_country" value="{{ customer.cus_country }}">
+		      <input type="text" class="form-control form-control-sm" id="id_cus_city" name="cus_city" value="{{ customer.cus_city }}">
+		      <input type="text" class="form-control form-control-sm" id="id_cus_country" name="cus_country" value="{{ customer.cus_country }}">
 		    </div>
 		  </div>
 		  <div class="form-group row">
 		    <label for="id_cus_zip" class="col-sm-2 col-form-label form-control-sm">{% trans 'Zip' %}</label>
 		    <div class="col-sm-10">
-		      <input type="text" class="form-control form-control-sm" id="id_cus_zip" value="{{ customer.cus_zip }}">
+		      <input type="text" class="form-control form-control-sm" name="cus_zip" id="id_cus_zip" name="cus_zip" value="{{ customer.cus_zip }}">
 		    </div>
 		  </div>
 		  <div class="form-group row">
 		    <label for="id_cus_tel" class="col-sm-2 col-form-label form-control-sm">{% trans 'Phone' %}</label>
 		    <div class="col-sm-10">
-		      <input type="text" class="form-control form-control-sm" id="id_cus_tel" value="{{ customer.cus_tel }}">
+		      <input type="text" class="form-control form-control-sm" id="id_cus_tel" name="cus_tel" value="{{ customer.cus_tel }}">
 		    </div>
 		  </div>
 		  <div class="form-group row">
 		    <label for="id_cus_fax" class="col-sm-2 col-form-label form-control-sm">{% trans 'Fax' %}</label>
 		    <div class="col-sm-10">
-		      <input type="text" class="form-control form-control-sm" id="id_cus_fax" value="{{ customer.cus_fax }}">
+		      <input type="text" class="form-control form-control-sm" id="id_cus_fax" name="cus_fax" value="{{ customer.cus_fax }}">
 		    </div>
 		  </div>
 		  <div class="form-group row">
 		    <label for="id_cus_email" class="col-sm-2 col-form-label form-control-sm">{% trans 'Email' %}</label>
 		    <div class="col-sm-10">
-		      <input type="text" class="form-control form-control-sm" id="id_cus_email" value="{{ customer.cus_email }}">
+		      <input type="text" class="form-control form-control-sm" id="id_cus_email" name="cus_email" value="{{ customer.cus_email }}">
 		    </div>
 		  </div>
 		  <div class="form-group row">
 		    <label for="id_cus_zone" class="col-sm-2 col-form-label form-control-sm">{% trans 'Zone' %}</label>
 		    <div class="col-sm-10">
-		      <input type="text" class="form-control form-control-sm" id="id_cus_zone" value="{{ customer.cus_zone }}">
+		      <input type="text" class="form-control form-control-sm" id="id_cus_zone" name="cus_zone" value="{{ customer.cus_zone }}">
 		    </div>
 		  </div>
 		  <!--
 		  <div class="form-group row">
 		    <label for="id_cus_group" class="col-sm-2 col-form-label form-control-sm">{% trans 'Group ID' %}</label>
 		    <div class="col-sm-10">
-		      <input type="text" class="form-control form-control-sm" id="id_cus_group" value="{{ customer.cus_group }}">
+		      <input type="text" class="form-control form-control-sm" id="id_cus_group" name="cus_group" value="{{ customer.cus_group }}">
 		    </div>
 		  </div>
 		  -->
@@ -91,7 +99,7 @@
 		  <div class="form-group row">
 		    <label for="id_cus_business_type" class="col-sm-2 col-form-label form-control-sm">{% trans 'Business Type' %}</label>
 		    <div class="col-sm-10">
-		      <input type="text" class="form-control form-control-sm" id="id_cus_business_type" value="{{ customer.cus_business_type }}">
+		      <input type="text" class="form-control form-control-sm" id="id_cus_business_type"name="cus_business_type" value="{{ customer.cus_business_type }}">
 		    </div>
 		  </div>
 		  -->
@@ -99,14 +107,14 @@
 		  <div class="form-group row">
 		    <label for="id_cus_arcode" class="col-sm-2 col-form-label form-control-sm">{% trans 'A/R Code' %}</label>
 		    <div class="col-sm-10">
-		      <input type="text" class="form-control form-control-sm" id="id_cus_arcode" value="{{ customer.cus_arcode }}">
+		      <input type="text" class="form-control form-control-sm" id="id_cus_arcode" name="cus_arcode" value="{{ customer.cus_arcode }}">
 		    </div>
 		  </div>
 		  -->
 		  <div class="form-group row">
 		    <label for="id_cus_contact" class="col-sm-2 col-form-label form-control-sm">{% trans 'Contact Person' %}</label>
 		    <div class="col-sm-10">
-		      <input type="text" class="form-control form-control-sm" id="id_cus_contact" value="{{ customer.cus_contact }}">
+		      <input type="text" class="form-control form-control-sm" id="id_cus_contact" name="cus_contact" value="{{ customer.cus_contact }}">
 		    </div>
 		  </div>
 

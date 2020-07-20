@@ -151,9 +151,20 @@ class CustomerUpdateForm(forms.ModelForm):
 
         self.fields['cus_name_en'].label = "Customer Name (EN)"
         self.fields['cus_name_th'].label = "Customer Name (TH)"
+
+        self.fields['cus_zip'].label = "Zip"
+
+    '''
+    def clean_cus_zip(self):
+        cus_zip = self.data.get('cus_zip')
+        print("cus_zip : " + str(cus_zip))
+        if cus_zip is not None:
+            if len(cus_zip) < 0:
+                raise forms.ValidationError(_('Invalid post code.'))
         
-    def clean_cus_no(self):
-        if self.instance: 
-            return self.instance.cus_no
-        else: 
-            return self.fields['cus_no']
+        data = self.data['cus_zip']
+        return data
+    '''
+
+    def clean(self):
+        return cleaned_data

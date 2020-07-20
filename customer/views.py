@@ -293,14 +293,19 @@ def CustomerUpdate(request, pk):
     customer = get_object_or_404(Customer, pk=pk)
 
     if request.method == 'POST':
-        form = CustomerUpdateForm(request.POST, instance=customer)
+        print("customer update | post")
+
+        form = CustomerUpdateForm(request.POST, instance=customer)        
+        context = {'form': form, 'customer': customer, 'request': request}                
+
+        if form.is_valid():
+            cus_zip = form.cleaned_data['cus_zip']
+            print("valid")
+        else:
+            print("invalid data")
+
     else:
         form = CustomerUpdateForm(instance=customer)
-
-    if request.method == 'POST':
-        print("customer update | post")
-        context = {'form': form, 'customer': customer}
-    else:
         print("customer update | get")
         context = {'form': form, 'customer': customer}
 
