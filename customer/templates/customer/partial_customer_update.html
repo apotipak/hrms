@@ -1,6 +1,6 @@
 {% load widget_tweaks %}
 
-<form method="post" action="{% url 'customer-update' form.instance.pk %}" class="js-customer-update-form">
+<form id="customerupdateform" method="post" action="{% url 'customer-update' form.instance.pk %}" class="js-customer-update-form">
   {% csrf_token %}
   
   <!--

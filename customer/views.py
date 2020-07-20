@@ -282,8 +282,7 @@ def CustomerCreate(request):
     return render(request, 'customer/customer_create.html', {'page_title': page_title, 'project_name': project_name, 'project_version': project_version, 'db_server': db_server, 'today_date': today_date})
 
 
-def CustomerUpdate(request, pk):
-    print("customer update")
+def CustomerUpdate(request, pk):    
     page_title = settings.PROJECT_NAME
     db_server = settings.DATABASES['default']['HOST']
     project_name = settings.PROJECT_NAME
@@ -299,8 +298,10 @@ def CustomerUpdate(request, pk):
         form = CustomerUpdateForm(instance=customer)
 
     if request.method == 'POST':
+        print("customer update | post")
         context = {'form': form, 'customer': customer}
     else:
+        print("customer update | get")
         context = {'form': form, 'customer': customer}
 
     context.update({

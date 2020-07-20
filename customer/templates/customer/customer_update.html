@@ -37,7 +37,7 @@
       <div class="card-header" style="vertical-align: middle;">
         <div class="card-tools">
           <a href="#" type="button" onclick="history.back()" class="btn btn-secondary btn-sm">{% trans 'Cancel' %}</a>          
-          <a href="#" type="button" class="btn btn-success btn-sm"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
+          <a href="#" type="button" onclick="customerupdateform.submit()" class="btn btn-success btn-sm"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
         </div>
       </div>
       
@@ -64,7 +64,16 @@
 <script>
   
   $(document).ready(function() {
-
+    $("#customerupdateform").submit(function(e){
+      if ($(".submitBtn").attr('attempted') == 'true' ) {
+        e.preventDefault();
+        alert("submit");
+      } else {
+        //$(".submitBtn").html("<i class='fa fa-hourglass-half' aria-hidden='true'></i>&nbsp;&nbsp;Processing...");
+        //$(".submitBtn").attr("disabled", true);
+        //$(".submitBtn").attr("attempted", 'true');          
+      }
+    });
   });    
 
 </script>

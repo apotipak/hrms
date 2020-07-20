@@ -140,9 +140,6 @@ class CustomerUpdateForm(forms.ModelForm):
     class Meta:
         model = Customer        
         fields = '__all__'
-        widgets = {
-            # 'cus_no': forms.HiddenInput(),
-        }
 
     def __init__(self, *args, **kwargs):
         super(CustomerUpdateForm, self).__init__(*args, **kwargs)

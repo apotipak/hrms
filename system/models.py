@@ -50,6 +50,9 @@ class TDistrict(models.Model):
         managed = False
         db_table = 'T_DISTRICT'
 
+    def __str__(self):
+        return self.dist_th
+
 
 class TAprove(models.Model):
     apr_id = models.DecimalField(primary_key=True, max_digits=6, decimal_places=0)
@@ -138,3 +141,32 @@ class Company(models.Model):
     class Meta:
         managed = False
         db_table = 'COMPANY'
+
+
+class CusContact(models.Model):
+    con_id = models.DecimalField(primary_key=True, max_digits=10, decimal_places=0)
+    cus_id = models.DecimalField(max_digits=7, decimal_places=0)
+    cus_brn = models.DecimalField(max_digits=3, decimal_places=0, blank=True, null=True)
+    cus_rem = models.CharField(max_length=10, blank=True, null=True)
+    con_type = models.CharField(max_length=1, blank=True, null=True)
+    con_title = models.SmallIntegerField(blank=True, null=True)
+    con_fname_th = models.CharField(max_length=70, blank=True, null=True)
+    con_lname_th = models.CharField(max_length=40, blank=True, null=True)
+    con_position_th = models.CharField(max_length=80, blank=True, null=True)
+    con_fname_en = models.CharField(max_length=70, blank=True, null=True)
+    con_lname_en = models.CharField(max_length=40, blank=True, null=True)
+    con_position_en = models.CharField(max_length=80, blank=True, null=True)
+    con_nation = models.SmallIntegerField(blank=True, null=True)
+    con_sex = models.CharField(max_length=1, blank=True, null=True)
+    con_mobile = models.CharField(max_length=30, blank=True, null=True)
+    con_email = models.CharField(max_length=70, blank=True, null=True)
+    upd_date = models.DateTimeField(blank=True, null=True)
+    upd_by = models.CharField(max_length=10, blank=True, null=True)
+    upd_flag = models.CharField(max_length=1, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'CUS_CONTACT'
+
+    def __str__(self):
+        return '{0}'.format(self.cus_fname_th)

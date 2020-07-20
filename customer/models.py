@@ -1,5 +1,5 @@
 from django.db import models
-from system.models import ComZone, TTitle, TDistrict
+from system.models import ComZone, TTitle, TDistrict, CusContact
 
 
 class Customer(models.Model):
@@ -29,7 +29,10 @@ class Customer(models.Model):
     cus_main = models.BooleanField(blank=True, null=True)
     cus_site = models.BooleanField(blank=True, null=True)
     cus_zone = models.ForeignKey(ComZone, db_column='cus_zone', to_field='zone_id', on_delete=models.SET_NULL, null=True) 
+
     cus_contact = models.DecimalField(max_digits=7, decimal_places=0, blank=True, null=True)
+    # cus_contact = models.ForeignKey(CusContact, db_column='cus_contact', to_field='con_id', on_delete=models.SET_NULL, null=True)
+
     site_contact = models.DecimalField(max_digits=7, decimal_places=0, blank=True, null=True)
     last_contact = models.SmallIntegerField(blank=True, null=True)
     upd_date = models.DateTimeField(blank=True, null=True)
@@ -40,20 +43,18 @@ class Customer(models.Model):
         managed = True
         db_table = 'CUSTOMER'
         ordering = ['cus_no']
-        unique_together = ('cus_id', 'cus_brn')
 
-class TDistrict(models.Model):
-    dist_id = models.DecimalField(primary_key=True, max_digits=4, decimal_places=0)
-    city_id = models.DecimalField(max_digits=2, decimal_places=0, blank=True, null=True)
-    dist_th = models.CharField(max_length=30, blank=True, null=True)
-    dist_en = models.CharField(max_length=30, blank=True, null=True)
+
+class TCity(models.Model):
+    city_id = models.DecimalField(primary_key=True, max_digits=2, decimal_places=0)
+    country_id = models.SmallIntegerField(blank=True, null=True)
+    city_th = models.CharField(max_length=30, blank=True, null=True)
+    city_en = models.CharField(max_length=30, blank=True, null=True)
     upd_date = models.DateTimeField(blank=True, null=True)
     upd_by = models.CharField(max_length=10, blank=True, null=True)
     upd_flag = models.CharField(max_length=1, blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'T_DISTRICT'
+        db_table = 'T_CITY'
 
-    def __str__(self):
-        return '{0}'.format(self.dist_th)
