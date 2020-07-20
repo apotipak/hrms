@@ -12,6 +12,7 @@ from django.http import JsonResponse
 from django.template.loader import render_to_string
 from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Q
 
 
 @permission_required('customer.view_customer', login_url='/accounts/login/')
@@ -24,29 +25,63 @@ def CustomerList(request):
     item_per_page = 15    
 
     if request.method == "POST":
-        print("post")
         form = CustomerSearchForm(request.POST, user=request.user)
+        cus_name = request.POST.get('cus_name')
         cus_id = request.POST.get('cus_id')
-        cus_brn = request.POST.get('cus_brn')
-        if cus_id != '' and cus_brn != '':
-            print("test1")
-            customer_list = Customer.objects.filter(cus_id=cus_id,cus_brn=cus_brn).order_by('-cus_active','cus_id','cus_brn')
+        cus_brn = request.POST.get('cus_brn')        
 
-        if cus_id == '' and cus_brn == '':
-            print("test2")
-            customer_list = Customer.objects.all().order_by('cus_id','cus_brn','-cus_active')
-        
-        if cus_id == '' and cus_brn != '':
-            print("test3")
-            customer_list = Customer.objects.filter(cus_brn=cus_brn).order_by('-cus_active','cus_id','cus_brn')
-
-        if cus_id != '' and cus_brn == '':
-            print("test4")
-            customer_list = Customer.objects.filter(cus_id=cus_id).order_by('-cus_active','cus_id','cus_brn')
-
+        print("post")
+        print("POST: cus_name = " +  str(cus_name))
         print("POST: cus_id = " +  str(cus_id))
         print("POST: cus_brn = " +  str(cus_brn))
-        
+
+        # cus_name
+        if cus_name!='' and cus_id!='' and cus_brn!='':
+            print("post case 1")
+            customer_list = Customer.objects.filter(Q(cus_name_en__contains=cus_name) | Q(cus_name_th__contains=cus_name)).filter(cus_id=cus_id).filter(cus_brn=cus_brn).order_by('-cus_active','cus_id','cus_brn')
+
+        if cus_name!='' and cus_id=='' and cus_brn=='':
+            print("post case 2")
+            customer_list = Customer.objects.filter(Q(cus_name_en__contains=cus_name) | Q(cus_name_th__contains=cus_name)).order_by('-cus_active','cus_id','cus_brn')
+
+        if cus_name!='' and cus_id=='' and cus_brn!='':
+            print("post case 3")
+            customer_list = Customer.objects.filter(Q(cus_name_en__contains=cus_name) | Q(cus_name_th__contains=cus_name)).filter(cus_brn=cus_brn).order_by('-cus_active','cus_id','cus_brn')
+
+        if cus_name=='' and cus_id!='' and cus_brn!='':
+            print("post case 4")
+            customer_list = Customer.objects.order_by('-cus_active','cus_id','cus_brn')
+
+        if cus_name=='' and cus_id=='' and cus_brn=='':
+            print("post case 5")
+            customer_list = Customer.objects.order_by('-cus_active','cus_id','cus_brn')
+
+        # cus_id
+        if cus_id!='' and cus_name=='' and cus_brn=='':
+            print("post case 6")
+            customer_list = Customer.objects.filter(cus_id=cus_id).order_by('-cus_active','cus_id','cus_brn')
+
+        if cus_id!='' and cus_name!='' and cus_brn=='':
+            print("post case 7")
+            customer_list = Customer.objects.filter(cus_id=cus_id).filter(Q(cus_name_en__contains=cus_name) | Q(cus_name_th__contains=cus_name)).order_by('-cus_active','cus_id','cus_brn')
+
+        if cus_id!='' and cus_name=='' and cus_brn!='':
+            print("post case 8")
+            customer_list = Customer.objects.filter(cus_id=cus_id).filter(cus_brn=cus_brn).order_by('-cus_active','cus_id','cus_brn')
+
+        # cus_brn
+        if cus_brn!='' and cus_name=='' and cus_id=='':
+            print("post case 9")
+            customer_list = Customer.objects.filter(cus_brn=cus_brn).order_by('-cus_active','cus_id','cus_brn')
+
+        if cus_brn!='' and cus_name!='' and cus_id=='':
+            print("post case 10")
+            customer_list = Customer.objects.filter(cus_brn=cus_brn).filter(Q(cus_name_en__contains=cus_name) | Q(cus_name_th__contains=cus_name)).order_by('-cus_active','cus_id','cus_brn')
+
+        if cus_brn!='' and cus_name=='' and cus_id!='':
+            print("post case 11")
+            customer_list = Customer.objects.filter(cus_brn=cus_brn).order_by('-cus_active','cus_id','cus_brn')
+
         page = 1
         paginator = Paginator(customer_list, item_per_page)
         is_paginated = True if paginator.num_pages > 1 else False        
@@ -57,20 +92,61 @@ def CustomerList(request):
             raise Http404(str(e))        
     else:
         form = CustomerSearchForm(user=request.user)                    
+        cus_name = request.GET.get('cusname', '')
         cus_id = request.GET.get('cusid', '')
-        cus_brn = request.GET.get('brn', '')
+        cus_brn = request.GET.get('cusbrn', '')
 
-        if cus_id != '' and cus_brn != '':
-            customer_list = Customer.objects.filter(cus_id=cus_id,cus_brn=cus_brn).order_by('-cus_active','cus_id','cus_brn')
+        print("get")
+        print("GET: cus_name = " +  str(cus_name))
+        print("GET: cus_id = " +  str(cus_id))
+        print("GET: cus_brn = " +  str(cus_brn))
 
-        if cus_id == '' and cus_brn == '':
-            customer_list = Customer.objects.all().order_by('cus_id','cus_brn','-cus_active')
-        
-        if cus_id == '' and cus_brn != '':
+        # cus_name
+        if cus_name!='' and cus_id!='' and cus_brn!='':
+            print("get case 1")
+            customer_list = Customer.objects.filter(Q(cus_name_en__contains=cus_name) | Q(cus_name_th__contains=cus_name)).filter(cus_id=cus_id).filter(cus_brn=cus_brn).order_by('-cus_active','cus_id','cus_brn')
+
+        if cus_name!='' and cus_id=='' and cus_brn=='':
+            print("get case 2")
+            customer_list = Customer.objects.filter(Q(cus_name_en__contains=cus_name) | Q(cus_name_th__contains=cus_name)).order_by('-cus_active','cus_id','cus_brn')
+
+        if cus_name!='' and cus_id=='' and cus_brn!='':
+            print("get case 3")
+            customer_list = Customer.objects.filter(Q(cus_name_en__contains=cus_name) | Q(cus_name_th__contains=cus_name)).filter(cus_brn=cus_brn).order_by('-cus_active','cus_id','cus_brn')
+
+        if cus_name=='' and cus_id!='' and cus_brn!='':
+            print("get case 4")
+            customer_list = Customer.objects.order_by('-cus_active','cus_id','cus_brn')
+
+        if cus_name=='' and cus_id=='' and cus_brn=='':
+            print("get case 5")
+            customer_list = Customer.objects.order_by('-cus_active','cus_id','cus_brn')
+
+        # cus_id
+        if cus_id!='' and cus_name=='' and cus_brn=='':
+            print("post case 6")
+            customer_list = Customer.objects.filter(cus_id=cus_id).order_by('-cus_active','cus_id','cus_brn')
+
+        if cus_id!='' and cus_name!='' and cus_brn=='':
+            print("get case 7")
+            customer_list = Customer.objects.filter(cus_id=cus_id).filter(Q(cus_name_en__contains=cus_name) | Q(cus_name_th__contains=cus_name)).order_by('-cus_active','cus_id','cus_brn')
+
+        if cus_id!='' and cus_name=='' and cus_brn!='':
+            print("get case 8")
+            customer_list = Customer.objects.filter(cus_id=cus_id).filter(cus_brn=cus_brn).order_by('-cus_active','cus_id','cus_brn')
+
+        # cus_brn
+        if cus_brn!='' and cus_name=='' and cus_id=='':
+            print("post case 9")
             customer_list = Customer.objects.filter(cus_brn=cus_brn).order_by('-cus_active','cus_id','cus_brn')
 
-        if cus_id != '' and cus_brn == '':
-            customer_list = Customer.objects.filter(cus_id=cus_id).order_by('-cus_active','cus_id','cus_brn')
+        if cus_brn!='' and cus_name!='' and cus_id=='':
+            print("get case 10")
+            customer_list = Customer.objects.filter(cus_brn=cus_brn).filter(Q(cus_name_en__contains=cus_name) | Q(cus_name_th__contains=cus_name)).order_by('-cus_active','cus_id','cus_brn')
+
+        if cus_brn!='' and cus_name=='' and cus_id!='':
+            print("get case 11")
+            customer_list = Customer.objects.filter(cus_brn=cus_brn).filter(cus_id=cus_id).order_by('-cus_active','cus_id','cus_brn')
 
         paginator = Paginator(customer_list, item_per_page)
         is_paginated = True if paginator.num_pages > 1 else False
@@ -92,6 +168,7 @@ def CustomerList(request):
         'is_paginated': is_paginated,
         'customer_list': customer_list,
         'form': form,
+        'cus_name': cus_name,
         'cus_id': cus_id,
         'cus_brn': cus_brn,
     }
