@@ -6,12 +6,7 @@
 
 {% block title %}{{ page_title}} - {% trans 'Customer List' %} {% endblock %}
 
-{% block javascript %}
-<script src="{% static 'customer/js/customer.js' %}"></script>
-{% endblock %}
-
 {% block content %}
-
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
   
@@ -83,7 +78,7 @@
             </div>
             <div colass="col-2">
               <button type="submit" class="btn btn-sm btn-primary col-xs-2"><i class="fas fa-search fa-sm"></i>&nbsp;{% trans 'Search' %}</button>
-              <button type="reset" class="btn btn-sm btn-secondary col-xs-2">{% trans 'Cancel' %}</button>
+              <!--<button type="reset" class="btn btn-sm btn-outline-secondary col-xs-2">{% trans 'Clear' %}</button>-->
             </div>
 
           </div>
@@ -127,13 +122,13 @@
       
       <div class="card-body">
         
-        <div class="float-right pb-3"><a href="{% url 'customer-create' %}" type="button" class="btn btn-outline-success btn-sm"><i class="fas fa-plus fa-xs"></i>&nbsp;&nbsp;{% trans 'New' %}</a></div>
+        <div class="float-right pb-3"><a href="{% url 'customer-create' %}" type="button" class="btn btn-success btn-sm"><i class="fas fa-plus fa-xs"></i>&nbsp;&nbsp;{% trans 'New' %}</a></div>
 
         {% if current_page %}
           <table id="customer-list-table1" class="table table-bordered table-striped table-sm">
             <thead>
             <tr>
-              <th scope="col">{% trans 'ID' %}</th>
+              <th scope="col">{% trans 'Code' %}</th>
               <th scope="col">{% trans 'Branch' %}</th>
               <th scope="col">{% trans 'Name (EN)' %}</th>            
               <th scope="col">{% trans 'Zone' %}</th>
@@ -215,11 +210,32 @@
 {% endblock %}
 
 
-{% block scripts %}
+{% block javascript %}
+
+<script>  
+$(document).ready(function() {
+    $('#id_cus_name').focus();    
+
+  $('#id_cus_name').on('keypress', function (e) {
+    if(e.which === 13){
+      $('#id_cus_id').focus();
+      event.preventDefault();
+      return false;        
+    }
+  });    
+
+  $('#id_cus_id').on('keypress', function (e) {
+    if(e.which === 13){
+      $('#id_cus_brn').focus();
+      event.preventDefault();
+      return false;        
+    }
+  });
+
+});
 
 
-<script>
-
+/*
 $(document).ready(function() {
     $('.js-example-basic-single').select2({
       tags: true,
@@ -288,7 +304,10 @@ function validate(evt) {
     if(theEvent.preventDefault) theEvent.preventDefault();
   }
 }
+*/
 
+
+/*
 $(function () {
   var table = $('#customer-list-table').DataTable({
     "paging": true,
@@ -312,11 +331,15 @@ $(function () {
     //"dom": "<'#searchid'f>trip"
   });
 });
+*/
 
+/*
 $( window ).on( "load", function(){
   $("#searchid :input").addClass('empty');
 } );
+*/
 
+/*
 $(document).on('keyup','#searchid :input', function() {
     var input = $("#searchid :input");
     if(input.val().length === 0) {
@@ -328,5 +351,9 @@ $(document).on('keyup','#searchid :input', function() {
         input.addClass('no-icon')
     }
 });
+*/
+
 </script>
+
+
 {% endblock %}

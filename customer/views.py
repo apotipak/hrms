@@ -80,7 +80,7 @@ def CustomerList(request):
 
         if cus_brn!='' and cus_name=='' and cus_id!='':
             print("post case 11")
-            customer_list = Customer.objects.filter(cus_brn=cus_brn).order_by('-cus_active','cus_id','cus_brn')
+            customer_list = Customer.objects.filter(cus_brn=cus_brn).filter(cus_id=cus_id).order_by('-cus_active','cus_id','cus_brn')
 
         page = 1
         paginator = Paginator(customer_list, item_per_page)
@@ -234,7 +234,7 @@ def save_customer_form(request, form, template_name):
             
             # TODO:
             #customer_list = Customer.objects.all()
-            customer_list = Customer.objects.filter(cus_id__in=[2094]).order_by('-upd_date', 'cus_id', '-cus_active')
+            customer_list = Customer.objects.filter(cus_code__exact=[2094]).order_by('-upd_date', 'cus_id', '-cus_active')
 
             data['html_customer_list'] = render_to_string('customer/partial_customer_list.html', {
                 'customer_list': customer_list
@@ -253,9 +253,14 @@ def save_customer_form(request, form, template_name):
             
             #print(form.errors)
 
+    '''
     context = {'form': form}
-    data['html_form'] = render_to_string(template_name, context, request=request)        
+    data['html_form'] = render_to_string(template_name, context, request=request)
     return JsonResponse(data)
+    '''
+
+    context = {'form': form, 'cus_name': "Demo"}
+    return render(request, template_name, context)    
 
 """
 def CustomerCreate(request):
@@ -274,16 +279,40 @@ def CustomerCreate(request):
     project_name = settings.PROJECT_NAME
     project_version = settings.PROJECT_VERSION  
     today_date = settings.TODAY_DATE
-
     return render(request, 'customer/customer_create.html', {'page_title': page_title, 'project_name': project_name, 'project_version': project_version, 'db_server': db_server, 'today_date': today_date})
 
+
 def CustomerUpdate(request, pk):
+    page_title = settings.PROJECT_NAME
+    db_server = settings.DATABASES['default']['HOST']
+    project_name = settings.PROJECT_NAME
+    project_version = settings.PROJECT_VERSION  
+    today_date = settings.TODAY_DATE
+    template_name = 'customer/customer_update.html'
+
     customer = get_object_or_404(Customer, pk=pk)
+    cus_name = customer.cus_name_en
+
     if request.method == 'POST':
         form = CustomerUpdateForm(request.POST, instance=customer)
     else:
         form = CustomerUpdateForm(instance=customer)
-    return save_customer_form(request, form, 'customer/partial_customer_update.html')
+
+    if request.method == 'POST':
+        context = {'form': form, 'cus_name': cus_name}
+    else:
+        context = {'form': form, 'cus_name': cus_name}
+
+    context.update({
+        'page_title': settings.PROJECT_NAME,
+        'today_date': settings.TODAY_DATE,
+        'project_version': settings.PROJECT_VERSION,
+        'db_server': settings.DATABASES['default']['HOST'],
+        'project_name': settings.PROJECT_NAME,
+    })
+
+    return render(request, template_name, context)    
+
 
 def CustomerDelete(request, pk):
     customer = get_object_or_404(Customer, pk=pk)
