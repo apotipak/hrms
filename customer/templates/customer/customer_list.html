@@ -16,14 +16,16 @@
       <div class="row mb-2">
         <div class="col-sm-6">
           <h1 class="m-0 text-dark">{% trans 'Customer List' %}</h1>
-        </div><!-- /.col -->
+        </div>
+        <!--
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item active">&nbsp;</li>
           </ol>
-        </div><!-- /.col -->
-      </div><!-- /.row -->
-    </div><!-- /.container-fluid -->
+        </div>
+      -->
+      </div>
+    </div>
   </div>
   <!-- /.content-header -->
 
@@ -51,7 +53,7 @@
               {% endif %}
             </div>
 
-            <div class="col-2">
+            <div class="col-3">
               {% if form.cus_id.errors %}                
                 {% render_field form.cus_id class="form-control form-control-sm is-invalid" %}                
                 {% for error in form.cus_id.errors %}
@@ -64,7 +66,7 @@
               {% endif %}
             </div>
 
-            <div class="col-2">
+            <div class="col-3">
               {% if form.cus_brn.errors %}                
                 {% render_field form.cus_brn class="form-control form-control-sm is-invalid" %}
                 {% for error in form.cus_brn.errors %}

@@ -283,6 +283,7 @@ def CustomerCreate(request):
 
 
 def CustomerUpdate(request, pk):
+    print("customer update")
     page_title = settings.PROJECT_NAME
     db_server = settings.DATABASES['default']['HOST']
     project_name = settings.PROJECT_NAME
@@ -291,7 +292,6 @@ def CustomerUpdate(request, pk):
     template_name = 'customer/customer_update.html'
 
     customer = get_object_or_404(Customer, pk=pk)
-    cus_name = customer.cus_name_en
 
     if request.method == 'POST':
         form = CustomerUpdateForm(request.POST, instance=customer)
@@ -299,9 +299,9 @@ def CustomerUpdate(request, pk):
         form = CustomerUpdateForm(instance=customer)
 
     if request.method == 'POST':
-        context = {'form': form, 'cus_name': cus_name}
+        context = {'form': form, 'customer': customer}
     else:
-        context = {'form': form, 'cus_name': cus_name}
+        context = {'form': form, 'customer': customer}
 
     context.update({
         'page_title': settings.PROJECT_NAME,

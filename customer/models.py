@@ -41,3 +41,19 @@ class Customer(models.Model):
         db_table = 'CUSTOMER'
         ordering = ['cus_no']
         unique_together = ('cus_id', 'cus_brn')
+
+class TDistrict(models.Model):
+    dist_id = models.DecimalField(primary_key=True, max_digits=4, decimal_places=0)
+    city_id = models.DecimalField(max_digits=2, decimal_places=0, blank=True, null=True)
+    dist_th = models.CharField(max_length=30, blank=True, null=True)
+    dist_en = models.CharField(max_length=30, blank=True, null=True)
+    upd_date = models.DateTimeField(blank=True, null=True)
+    upd_by = models.CharField(max_length=10, blank=True, null=True)
+    upd_flag = models.CharField(max_length=1, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'T_DISTRICT'
+
+    def __str__(self):
+        return '{0}'.format(self.dist_th)

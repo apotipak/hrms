@@ -141,13 +141,18 @@ class CustomerUpdateForm(forms.ModelForm):
         model = Customer        
         fields = '__all__'
         widgets = {
-            'cus_no': forms.HiddenInput(),
+            # 'cus_no': forms.HiddenInput(),
         }
 
     def __init__(self, *args, **kwargs):
         super(CustomerUpdateForm, self).__init__(*args, **kwargs)
+        self.fields['cus_no'].widget.attrs['readonly'] = True
+        self.fields['cus_no'].label = "Customer No"
+
         self.fields['cus_id'].widget.attrs['readonly'] = True
         self.fields['cus_id'].label = "Customer ID"
+
+        self.fields['cus_name_en'].label = "Customer Name (EN)"
         self.fields['cus_name_th'].label = "Customer Name (TH)"
         
     def clean_cus_no(self):
