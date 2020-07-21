@@ -139,32 +139,22 @@ class CustomerSearchForm(forms.ModelForm):
 class CustomerUpdateForm(forms.ModelForm):
     class Meta:
         model = Customer        
-        fields = '__all__'
+        # fields = '__all__'
+        fields = ['cus_name_th', 'cus_add1_th', 'cus_add2_th', 'cus_name_en', 'cus_subdist_th', 'cus_sht_en', 'cus_name_en', 'cus_add1_en', 'cus_add2_en', 'cus_subdist_en', 'cus_district', 'cus_city', 'cus_country', 'cus_zip', 'cus_tel', 'cus_fax', 'cus_email', 'cus_taxid', 'cus_active', 'cus_bill', 'cus_main', 'cus_site', 'cus_zone', 'cus_contact', 'site_contact', 'last_contact', 'upd_date', 'upd_by', 'upd_flag']
 
     def __init__(self, *args, **kwargs):
         super(CustomerUpdateForm, self).__init__(*args, **kwargs)
-        self.fields['cus_no'].widget.attrs['readonly'] = True
-        self.fields['cus_no'].label = "Customer No"
 
-        self.fields['cus_id'].widget.attrs['readonly'] = True
-        self.fields['cus_id'].label = "Customer ID"
+        cus_district = forms.ModelChoiceField(label=_('Select district'), queryset=None, required=False)        
+        cus_city = forms.ModelChoiceField(label=_('Select city'), queryset=None, required=False)
+        cus_country = forms.ModelChoiceField(label=_('Select country'), queryset=None, required=False)
+        cus_zone = forms.ModelChoiceField(label=_('Select zone'), queryset=None, required=False)
+        cus_contact = forms.ModelChoiceField(label=_('Select contact person'), queryset=None, required=False)
 
-        self.fields['cus_name_en'].label = "Customer Name (EN)"
-        self.fields['cus_name_th'].label = "Customer Name (TH)"
-
-        self.fields['cus_zip'].label = "Zip"
-
-    '''
     def clean_cus_zip(self):
         cus_zip = self.data.get('cus_zip')
-        print("cus_zip : " + str(cus_zip))
         if cus_zip is not None:
-            if len(cus_zip) < 0:
-                raise forms.ValidationError(_('Invalid post code.'))
-        
+            if len(cus_zip) <= 0:
+                raise forms.ValidationError(_('Invalid post code.'))        
         data = self.data['cus_zip']
         return data
-    '''
-
-    def clean(self):
-        return cleaned_data

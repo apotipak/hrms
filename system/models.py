@@ -149,7 +149,10 @@ class CusContact(models.Model):
     cus_brn = models.DecimalField(max_digits=3, decimal_places=0, blank=True, null=True)
     cus_rem = models.CharField(max_length=10, blank=True, null=True)
     con_type = models.CharField(max_length=1, blank=True, null=True)
-    con_title = models.SmallIntegerField(blank=True, null=True)
+    
+    # con_title = models.SmallIntegerField(blank=True, null=True)
+    con_title = models.ForeignKey(TTitle, db_column='con_title', to_field='title_id', on_delete=models.SET_NULL, null=True)    
+
     con_fname_th = models.CharField(max_length=70, blank=True, null=True)
     con_lname_th = models.CharField(max_length=40, blank=True, null=True)
     con_position_th = models.CharField(max_length=80, blank=True, null=True)
@@ -165,8 +168,44 @@ class CusContact(models.Model):
     upd_flag = models.CharField(max_length=1, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'CUS_CONTACT'
+        indexes = [
+            models.Index(fields=['con_id']),
+        ]   
 
     def __str__(self):
-        return '{0}'.format(self.cus_fname_th)
+        return '%s %s %s - [ %s ]' % (self.con_title, self.con_fname_th, self.con_lname_th, self.con_position_th)
+
+
+class TCity(models.Model):
+    city_id = models.DecimalField(primary_key=True, max_digits=2, decimal_places=0)
+    country_id = models.SmallIntegerField(blank=True, null=True)
+    city_th = models.CharField(max_length=30, blank=True, null=True)
+    city_en = models.CharField(max_length=30, blank=True, null=True)
+    upd_date = models.DateTimeField(blank=True, null=True)
+    upd_by = models.CharField(max_length=10, blank=True, null=True)
+    upd_flag = models.CharField(max_length=1, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'T_CITY'
+
+    def __str__(self):
+        return '%s' % (self.city_th)
+
+class TCountry(models.Model):
+    country_id = models.SmallIntegerField(primary_key=True)
+    country_sht = models.CharField(max_length=3, blank=True, null=True)
+    country_th = models.CharField(max_length=30, blank=True, null=True)
+    country_en = models.CharField(max_length=30, blank=True, null=True)
+    upd_date = models.DateTimeField(blank=True, null=True)
+    upd_by = models.CharField(max_length=10, blank=True, null=True)
+    upd_flag = models.CharField(max_length=1, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'T_COUNTRY'
+
+    def __str__(self):
+        return '%s' % (self.country_th)

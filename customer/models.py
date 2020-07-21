@@ -1,5 +1,5 @@
 from django.db import models
-from system.models import ComZone, TTitle, TDistrict, CusContact
+from system.models import ComZone, TTitle, TDistrict, CusContact, TCity, TCountry
 
 
 class Customer(models.Model):
@@ -16,9 +16,9 @@ class Customer(models.Model):
     cus_add1_en = models.CharField(max_length=150, blank=True, null=True)
     cus_add2_en = models.CharField(max_length=70, blank=True, null=True)
     cus_subdist_en = models.CharField(max_length=30, blank=True, null=True)
-    cus_district = models.ForeignKey(TDistrict, db_column='cus_district', to_field='dist_id', on_delete=models.SET_NULL, null=True)
-    cus_city = models.DecimalField(max_digits=2, decimal_places=0, blank=True, null=True)
-    cus_country = models.SmallIntegerField(blank=True, null=True)
+    cus_district = models.ForeignKey(TDistrict, db_column='cus_district', to_field='dist_id', on_delete=models.SET_NULL, null=True)    
+    cus_city = models.ForeignKey(TCity, db_column='cus_city', to_field='city_id', on_delete=models.SET_NULL, null=True)
+    cus_country = models.ForeignKey(TCountry, db_column='cus_country', to_field='country_id', on_delete=models.SET_NULL, null=True)
     cus_zip = models.DecimalField(max_digits=5, decimal_places=0, blank=True, null=True)
     cus_tel = models.CharField(max_length=40, blank=True, null=True)
     cus_fax = models.CharField(max_length=30, blank=True, null=True)
@@ -29,10 +29,7 @@ class Customer(models.Model):
     cus_main = models.BooleanField(blank=True, null=True)
     cus_site = models.BooleanField(blank=True, null=True)
     cus_zone = models.ForeignKey(ComZone, db_column='cus_zone', to_field='zone_id', on_delete=models.SET_NULL, null=True) 
-
-    cus_contact = models.DecimalField(max_digits=7, decimal_places=0, blank=True, null=True)
-    # cus_contact = models.ForeignKey(CusContact, db_column='cus_contact', to_field='con_id', on_delete=models.SET_NULL, null=True)
-
+    cus_contact = models.ForeignKey(CusContact, db_column='cus_contact', to_field='con_id', on_delete=models.SET_NULL, null=True)
     site_contact = models.DecimalField(max_digits=7, decimal_places=0, blank=True, null=True)
     last_contact = models.SmallIntegerField(blank=True, null=True)
     upd_date = models.DateTimeField(blank=True, null=True)
@@ -43,18 +40,4 @@ class Customer(models.Model):
         managed = True
         db_table = 'CUSTOMER'
         ordering = ['cus_no']
-
-
-class TCity(models.Model):
-    city_id = models.DecimalField(primary_key=True, max_digits=2, decimal_places=0)
-    country_id = models.SmallIntegerField(blank=True, null=True)
-    city_th = models.CharField(max_length=30, blank=True, null=True)
-    city_en = models.CharField(max_length=30, blank=True, null=True)
-    upd_date = models.DateTimeField(blank=True, null=True)
-    upd_by = models.CharField(max_length=10, blank=True, null=True)
-    upd_flag = models.CharField(max_length=1, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'T_CITY'
 

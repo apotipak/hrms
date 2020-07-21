@@ -291,31 +291,34 @@ def CustomerUpdate(request, pk):
     template_name = 'customer/customer_update.html'
 
     customer = get_object_or_404(Customer, pk=pk)
+    print(customer.cus_name_en)
 
     if request.method == 'POST':
         print("customer update | post")
 
-        form = CustomerUpdateForm(request.POST, instance=customer)        
-        context = {'form': form, 'customer': customer, 'request': request}                
+        form = CustomerUpdateForm(request.POST, instance=customer) 
+        # context = {'form': form, 'customer': customer, 'request': request}
 
         if form.is_valid():
             cus_zip = form.cleaned_data['cus_zip']
             print("valid")
         else:
             print("invalid data")
-
     else:
         form = CustomerUpdateForm(instance=customer)
         print("customer update | get")
-        context = {'form': form, 'customer': customer}
+        # context = {'form': form, 'customer': customer}
 
-    context.update({
+    context = {
         'page_title': settings.PROJECT_NAME,
         'today_date': settings.TODAY_DATE,
         'project_version': settings.PROJECT_VERSION,
         'db_server': settings.DATABASES['default']['HOST'],
         'project_name': settings.PROJECT_NAME,
-    })
+        'form': form, 
+        'customer': customer,
+        'request': request,
+    }    
 
     return render(request, template_name, context)    
 
