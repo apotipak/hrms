@@ -176,6 +176,7 @@ class CusContact(models.Model):
 
     def __str__(self):
         return '%s %s %s - [ %s ]' % (self.con_title, self.con_fname_th, self.con_lname_th, self.con_position_th)
+        # return '%s' % (self.con_id)
 
 
 class TCity(models.Model):

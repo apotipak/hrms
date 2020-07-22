@@ -3,6 +3,7 @@ from .models import Customer
 from django.contrib.auth.models import User
 from django.forms.widgets import HiddenInput
 from django.utils.translation import gettext_lazy as _
+from system.models import CusContact
 
 
 class CustomerCreateForm(forms.ModelForm):
@@ -136,7 +137,8 @@ class CustomerSearchForm(forms.ModelForm):
         return data
 
 
-class CustomerUpdateForm(forms.ModelForm):
+class CustomerUpdateForm(forms.ModelForm):    
+
     class Meta:
         model = Customer        
         # fields = '__all__'
@@ -144,12 +146,19 @@ class CustomerUpdateForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(CustomerUpdateForm, self).__init__(*args, **kwargs)
+        
+        # instance = getattr(self, 'instance', None)
+        # print(instance.cus_contact)
 
-        cus_district = forms.ModelChoiceField(label=_('Select district'), queryset=None, required=False)        
-        cus_city = forms.ModelChoiceField(label=_('Select city'), queryset=None, required=False)
-        cus_country = forms.ModelChoiceField(label=_('Select country'), queryset=None, required=False)
-        cus_zone = forms.ModelChoiceField(label=_('Select zone'), queryset=None, required=False)
-        cus_contact = forms.ModelChoiceField(label=_('Select contact person'), queryset=None, required=False)
+        # contactobj = CusContact.objects.exclude(upd_flag='D')
+        # customer_list = Customer.objects.filter(cus_id__in=[2094]).order_by('-upd_date', 'cus_id', '-cus_active')
+        # cus_contact = forms.ModelChoiceField(label=_('Select contact person'), queryset=contactobj, required=False)
+
+        cus_district = forms.ModelChoiceField(queryset=None, required=False)        
+        cus_city = forms.ModelChoiceField(queryset=None, required=False)
+        cus_country = forms.ModelChoiceField(queryset=None, required=False)
+        cus_zone = forms.ModelChoiceField(queryset=None, required=False)
+        cus_active = forms.CheckboxInput()
 
     def clean_cus_zip(self):
         cus_zip = self.data.get('cus_zip')
@@ -157,4 +166,22 @@ class CustomerUpdateForm(forms.ModelForm):
             if len(cus_zip) <= 0:
                 raise forms.ValidationError(_('Invalid post code.'))        
         data = self.data['cus_zip']
+        return data
+
+    def clean_cus_add2_th(self):
+        data = self.data.get('cus_add2_th')
+        if data is None:
+            data = None
+        return data
+
+    def clean_cus_subdist_th(self):
+        data = self.data.get('cus_subdist_th')
+        if data is None:
+            data = None
+        return data
+
+    def clean_cus_email(self):
+        data = self.data.get('cus_email')
+        if data is None:
+            data = None
         return data

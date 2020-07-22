@@ -282,32 +282,38 @@ def CustomerCreate(request):
     return render(request, 'customer/customer_create.html', {'page_title': page_title, 'project_name': project_name, 'project_version': project_version, 'db_server': db_server, 'today_date': today_date})
 
 
-def CustomerUpdate(request, pk):    
-    page_title = settings.PROJECT_NAME
-    db_server = settings.DATABASES['default']['HOST']
-    project_name = settings.PROJECT_NAME
-    project_version = settings.PROJECT_VERSION  
-    today_date = settings.TODAY_DATE
+def CustomerUpdate(request, pk):
     template_name = 'customer/customer_update.html'
-
     customer = get_object_or_404(Customer, pk=pk)
-    print(customer.cus_name_en)
-
     if request.method == 'POST':
-        print("customer update | post")
-
-        form = CustomerUpdateForm(request.POST, instance=customer) 
-        # context = {'form': form, 'customer': customer, 'request': request}
-
-        if form.is_valid():
-            cus_zip = form.cleaned_data['cus_zip']
-            print("valid")
-        else:
-            print("invalid data")
+        form = CustomerUpdateForm(request.POST, instance=customer)
     else:
         form = CustomerUpdateForm(instance=customer)
-        print("customer update | get")
-        # context = {'form': form, 'customer': customer}
+
+    data = dict()
+    form_is_valid = False
+    update_message = ""
+
+    if request.method == 'POST':
+        if form.is_valid():
+            obj = form.save(commit=False)
+            
+            if request.user.is_superuser:
+                obj.upd_by = 'Superuser'
+            else:
+                obj.upd_by = request.user.first_name
+
+            if obj.upd_flag == 'A':
+                obj.upd_flag = 'E'
+
+            obj.upd_date = timezone.now()
+
+            obj.save()
+            form_is_valid = True            
+            update_message = "ทำรายการสำเร็จ"
+        else:
+            form_is_valid = False
+            update_message = "ไม่สามารถทำรายการได้..!"
 
     context = {
         'page_title': settings.PROJECT_NAME,
@@ -318,9 +324,10 @@ def CustomerUpdate(request, pk):
         'form': form, 
         'customer': customer,
         'request': request,
-    }    
-
-    return render(request, template_name, context)    
+        'form_is_valid': form_is_valid,
+        'update_message': update_message,   
+    }
+    return render(request, template_name, context)
 
 
 def CustomerDelete(request, pk):

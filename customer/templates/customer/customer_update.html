@@ -11,20 +11,35 @@
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
   
+  <form id="customerupdateform" method="post" action="{% url 'customer-update' form.instance.pk %}" class="js-customer-update-form">
+  {% csrf_token %}
+
   <!-- Content Header (Page header) -->
   <div class="content-header">
     <div class="container-fluid">
       <div class="row mb-2">
-        <div class="col-12">          
-          <h1 class="m-0 text-dark">{{customer.cus_name_en}}</h1>
+        <div class="col-8">          
+          <h1 class="m-0 text-dark">{{customer.cus_name_th}}</h1>
         </div>
-        <!--
-        <div class="col-sm-6">
+        <div class="col-4">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item active">&nbsp;</li>
+            
+            <li class="breadcrumb-item active">
+            {% render_field form.cus_active class="form-control" type="checkbox" data-toggle="toggle" data-on="Active" data-off="Pending" data-onstyle="success" data-offstyle="danger" %}
+            </li>
+
+            {% if customer.cus_active %}
+            <li class="breadcrumb-item active">
+              <input name="cus_active" type="checkbox" checked data-toggle="toggle" data-on="Active" data-off="Pending" data-onstyle="success" data-offstyle="danger" value=1>
+            </li>
+            {% else %}
+            <li class="breadcrumb-item">
+              <input name="cus_active" type="checkbox" data-toggle="toggle" data-on="Active" data-off="Pending" data-onstyle="success" data-offstyle="danger" value=0>
+            </li>
+            {% endif %}
+
           </ol>
         </div>
-        -->
       </div>
     </div>
   </div>
@@ -33,30 +48,37 @@
 
     <!-- Default box -->
     <div class="card">
-
-    <form id="customerupdateform" method="post" action="{% url 'customer-update' form.instance.pk %}" class="js-customer-update-form">
-      {% csrf_token %}
-
-          <div class="card-header" style="vertical-align: middle;">
-            <div class="card-tools">
-              <a href="#" type="button" onclick="history.back()" class="btn btn-secondary btn-sm">{% trans 'Cancel' %}</a>          
-              <a href="#" type="button" onclick="customerupdateform.submit()" class="btn btn-success btn-sm"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
-            </div>
-          </div>
+      <!--
+      <div class="card-header" style="vertical-align: middle;">
+        <div class="card-tools">
+          <a href="#" type="button" onclick="history.back()" class="btn btn-secondary btn-sm">{% trans 'Cancel' %}</a>          
+          <a href="#" type="button" onclick="customerupdateform.submit()" class="btn btn-success btn-sm"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
+        </div>
+      </div>
+      -->
       
       <div class="card-body">
         <div class="modal-body">
           <div class="modal-body">
 
+
             <div class="" id="show-error">
             {% if form.errors %}
-                {% for field in form %}
+                {% for field in form %}                
                     {% for error in field.errors %}
+                      <!--
                         <div class="alert alert-danger">
-                            <i class="fas fa-exclamation"></i>&nbsp;&nbsp;Your data is not correct. Please check.
+                            <i class="fas fa-exclamation"></i>&nbsp;&nbsp;Your data is not correct.
                         </div>
+                      -->
                     {% endfor %}
                 {% endfor %}
+            {% else %}
+              {% if form_is_valid %}
+                <div class="alert alert-success">
+                    <i class="fas fa-save"></i>&nbsp;&nbsp;Saved completed.
+                </div>
+              {% endif %}
             {% endif %}
             </div> 
 
@@ -192,32 +214,29 @@
                       {% endif %}
                     </div>
                   </div>
-                  <!--
+                  
+                  {% comment %}
                   <div class="form-group row">
                     <label for="id_cus_group" class="col-sm-2 col-form-label form-control-sm">{% trans 'Group ID' %}</label>
                     <div class="col-sm-10">
                       <input type="text" class="form-control form-control-sm" id="id_cus_group" name="cus_group" value="{{ customer.cus_group }}">
                     </div>
                   </div>
-                  -->
-                  <!--
                   <div class="form-group row">
                     <label for="id_cus_business_type" class="col-sm-2 col-form-label form-control-sm">{% trans 'Business Type' %}</label>
                     <div class="col-sm-10">
                       <input type="text" class="form-control form-control-sm" id="id_cus_business_type"name="cus_business_type" value="{{ customer.cus_business_type }}">
                     </div>
                   </div>
-                  -->
-                  <!--      
                   <div class="form-group row">
                     <label for="id_cus_arcode" class="col-sm-2 col-form-label form-control-sm">{% trans 'A/R Code' %}</label>
                     <div class="col-sm-10">
                       <input type="text" class="form-control form-control-sm" id="id_cus_arcode" name="cus_arcode" value="{{ customer.cus_arcode }}">
                     </div>
                   </div>
-                  -->
+                  {% endcomment %}
 
-                  {% comment %}
+                  
                   <div class="form-group row">
                     <label for="id_cus_contact" class="col-sm-2 col-form-label form-control-sm">{% trans 'Contact Person' %}</label>
                     <div class="col-sm-10">
@@ -229,11 +248,12 @@
                         </div>
                         {% endfor %}                
                       {% else %}
-                        {% render_field form.cus_contact class="form-control form-control-sm" %}
+                        {% render_field form.cus_contact class="form-control form-control-sm" %}                        
                       {% endif %}                      
+                      {% render_field form.cus_contact_display class="form-control form-control-sm" %}
                     </div>
-                  </div>
-                  {% endcomment %}
+                  </div>                  
+                  
 
                 </div>
                 </div>
@@ -256,11 +276,10 @@
         </div>
       </div>
 
-      <!--
-      <div class="card-footer">
-        &nbsp;
+      <div class="card-footer text-right">
+        <a href="#" type="button" onclick="history.back()" class="btn btn-secondary btn-sm">{% trans 'Cancel' %}</a>          
+        <a href="#" type="button" onclick="customerupdateform.submit()" class="btn btn-success btn-sm"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>        
       </div>
-      -->
       </form>
 
     </div>
@@ -287,6 +306,14 @@
       }
     });
   });    
+
+  //$(function(){ $('#customer_active_status').bootstrapToggle() });
+  $(function() {
+    $('#customer_active_status').bootstrapToggle({
+      on: 'Enabled',
+      off: 'Disabled'
+    });
+  })
 
 </script>
 {% endblock %}
