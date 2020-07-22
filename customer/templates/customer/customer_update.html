@@ -11,9 +11,6 @@
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
   
-  <form id="customerupdateform" method="post" action="{% url 'customer-update' form.instance.pk %}" class="js-customer-update-form">
-  {% csrf_token %}
-
   <!-- Content Header (Page header) -->
   <div class="content-header">
     <div class="container-fluid">
@@ -22,271 +19,266 @@
           <h1 class="m-0 text-dark">{{customer.cus_name_th}}</h1>
         </div>
         <div class="col-4">
-          <ol class="breadcrumb float-sm-right">
-            
+          <ol class="breadcrumb float-sm-right">            
             <li class="breadcrumb-item active">
             {% render_field form.cus_active id="id_cus_active" class="form-control" type="checkbox" data-toggle="toggle" data-on="Active" data-off="Pending" data-onstyle="success" data-offstyle="danger"%}
             </li>
-
-            {% comment %}
-            {% if customer.cus_active %}
-            <li class="breadcrumb-item active">
-              <input name="cus_active" type="checkbox" checked data-toggle="toggle" data-on="Active" data-off="Pending" data-onstyle="success" data-offstyle="danger" value=1>
-            </li>
-            {% else %}
-            <li class="breadcrumb-item">
-              <input name="cus_active" type="checkbox" data-toggle="toggle" data-on="Active" data-off="Pending" data-onstyle="success" data-offstyle="danger" value=0>
-            </li>
-            {% endif %}
-            {% endcomment %}
-
           </ol>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- Main content -->  
   <section class="content">
+
+    <form id="customerupdateform" method="post" action="{% url 'customer-update' form.instance.pk %}" class="js-customer-update-form">
+    {% csrf_token %}
 
     <!-- Default box -->
     <div class="card">
-      <!--
+
+      <div class="col-sm-8 offset-sm-2 col-md-8 offset-md-2 pt pl-4 pr-4">        
+
+      </div>
+
       <div class="card-header" style="vertical-align: middle;">
-        <div class="card-tools">
-          <a href="#" type="button" onclick="history.back()" class="btn btn-secondary btn-sm">{% trans 'Cancel' %}</a>          
-          <a href="#" type="button" onclick="customerupdateform.submit()" class="btn btn-success btn-sm"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
+        <div class="card-tools">          
+          <!--<a href="#" type="button" onclick="history.back()" class="btn btn-secondary btn-sm">{% trans 'Cancel' %}</a>-->
+          <a href="#" type="button" onclick="customerupdateform.submit()" class="btn btn-success btn-sm"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>        
+
         </div>
       </div>
-      -->
       
       <div class="card-body">
-        <div class="modal-body">
-          <div class="modal-body">
 
-
-            <div class="" id="show-error">
-            {% if form.errors %}
-                {% for field in form %}                
-                    {% for error in field.errors %}
-                        <div class="alert alert-danger">
-                            <i class="fas fa-exclamation"></i>&nbsp;&nbsp;Your data is not correct. {{ field.name }} - {{ error }}
-                        </div>
-                    {% endfor %}
+        <div class="" id="show-error">
+        {% if form.errors %}
+            {% for field in form %}                
+                {% for error in field.errors %}
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation"></i>&nbsp;&nbsp;Your data is not correct. {{ field.name }} - {{ error }}
+                    </div>
                 {% endfor %}
-            {% else %}
-              {% if form_is_valid %}
-                <div class="alert alert-success">
-                    <i class="fas fa-save"></i>&nbsp;&nbsp;Saved completed.
-                </div>
-              {% endif %}
-            {% endif %}
-            </div> 
-
-            <ul class="nav nav-tabs" id="customer" role="tablist">
-              <li class="nav-item">
-                <a class="nav-link active" id="mainoffice-tab" data-toggle="tab" href="#mainoffice" role="tab" aria-controls="mainoffice" aria-selected="true">{% trans 'Main Office' %}</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" id="site-tab" data-toggle="tab" href="#site" role="tab" aria-controls="site" aria-selected="false">{% trans 'Site' %}</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" id="billing-tab" data-toggle="tab" href="#billing" role="tab" aria-controls="billing" aria-selected="false">{% trans 'Billing' %}</a>
-              </li>
-            </ul>
-
-
-            <div class="tab-content" id="customerContent">
-              
-                <div class="tab-pane fade show active" id="mainoffice" role="tabpanel" aria-labelledby="mainoffice-tab">          
-                  <div class="container-fluid pt-2">
-
-                  <div class="form-group row">
-                    <label for="id_cus_name_th" class="col-sm-2 col-form-label form-control-sm">{% trans 'Customer Name' %}</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control form-control-sm" id="id_cus_name_th" name="cus_name_th" value="{{ customer.cus_name_th }}">
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label for="id_cus_add1_th" class="col-sm-2 col-form-label form-control-sm">{% trans 'Address' %}</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control form-control-sm" id="id_cus_add1_th" name="cus_add1_th" value="{{ customer.cus_add1_th }}">
-                      <input type="text" class="form-control form-control-sm" id="id_cus_add2_th" name="cus_add2_th" value="{{ customer.cus_add2_th }}">
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label for="id_cus_subdist_th" class="col-sm-2 col-form-label form-control-sm">{% trans 'Sub-District' %}</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control form-control-sm" id="id_cus_subdist_th" name="cus_subdist_th" value="{{ customer.cus_subdist_th }}">
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label for="id_cus_disrict" class="col-sm-2 col-form-label form-control-sm">{% trans 'District' %}</label>
-                    <div class="col-sm-10">
-                      {% if form.cus_district.errors %}                
-                        {% render_field form.cus_district class="form-control form-control-sm is-invalid" %}
-                        {% for error in form.cus_district.errors %}
-                        <div class="invalid-feedback">
-                          {{error}}
-                        </div>
-                        {% endfor %}                
-                      {% else %}
-                        {% render_field form.cus_district class="form-control form-control-sm" %}
-                      {% endif %}                                  
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label for="id_cus_city" class="col-sm-2 col-form-label form-control-sm">{% trans 'City/Country' %}</label>
-                    <div class="col-sm-10">
-                      {% comment %}
-                      <input type="text" class="form-control form-control-sm" id="id_cus_city" name="cus_city" value="{{ customer.cus_city }}">
-                      {% endcomment %}
-                      {% if form.cus_city.errors %}                
-                        {% render_field form.cus_city class="form-control form-control-sm is-invalid" %}
-                        {% for error in form.cus_city.errors %}
-                        <div class="invalid-feedback">
-                          {{error}}
-                        </div>
-                        {% endfor %}                
-                      {% else %}
-                        {% render_field form.cus_city class="form-control form-control-sm" %}
-                      {% endif %}
-
-                      {% comment %}
-                      <input type="text" class="form-control form-control-sm" id="id_cus_country" name="cus_country" value="{{ customer.cus_country }}">
-                      {% endcomment %}
-                      {% if form.cus_country.errors %}                
-                        {% render_field form.cus_country class="form-control form-control-sm is-invalid" %}
-                        {% for error in form.cus_country.errors %}
-                        <div class="invalid-feedback">
-                          {{error}}
-                        </div>
-                        {% endfor %}                
-                      {% else %}
-                        {% render_field form.cus_country class="form-control form-control-sm" %}
-                      {% endif %}                      
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label for="id_cus_zip" class="col-sm-2 col-form-label form-control-sm">{% trans 'Zip' %}</label>
-                    <div class="col-sm-10">
-                      {% if form.cus_zip.errors %}                
-                        {% render_field form.cus_zip class="form-control form-control-sm is-invalid" %}
-                        {% for error in form.cus_zip.errors %}
-                        <div class="invalid-feedback">
-                          {{error}}
-                        </div>
-                        {% endfor %}                
-                      {% else %}
-                        {% render_field form.cus_zip class="form-control form-control-sm" %}
-                      {% endif %}                      
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label for="id_cus_tel" class="col-sm-2 col-form-label form-control-sm">{% trans 'Phone' %}</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control form-control-sm" id="id_cus_tel" name="cus_tel" value="{{ customer.cus_tel }}">
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label for="id_cus_fax" class="col-sm-2 col-form-label form-control-sm">{% trans 'Fax' %}</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control form-control-sm" id="id_cus_fax" name="cus_fax" value="{{ customer.cus_fax }}">
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label for="id_cus_email" class="col-sm-2 col-form-label form-control-sm">{% trans 'Email' %}</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control form-control-sm" id="id_cus_email" name="cus_email" value="{{ customer.cus_email }}">
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label for="id_cus_zone" class="col-sm-2 col-form-label form-control-sm">{% trans 'Zone' %}</label>
-                    <div class="col-sm-10">
-                      {% if form.cus_zone.errors %}                
-                        {% render_field form.cus_zone class="form-control form-control-sm is-invalid" %}
-                        {% for error in form.cus_zone.errors %}
-                        <div class="invalid-feedback">
-                          {{error}}
-                        </div>
-                        {% endfor %}                
-                      {% else %}
-                        {% render_field form.cus_zone class="form-control form-control-sm" %}
-                      {% endif %}
-                    </div>
-                  </div>
-                  
-                  {% comment %}
-                  <div class="form-group row">
-                    <label for="id_cus_group" class="col-sm-2 col-form-label form-control-sm">{% trans 'Group ID' %}</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control form-control-sm" id="id_cus_group" name="cus_group" value="{{ customer.cus_group }}">
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label for="id_cus_business_type" class="col-sm-2 col-form-label form-control-sm">{% trans 'Business Type' %}</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control form-control-sm" id="id_cus_business_type"name="cus_business_type" value="{{ customer.cus_business_type }}">
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label for="id_cus_arcode" class="col-sm-2 col-form-label form-control-sm">{% trans 'A/R Code' %}</label>
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control form-control-sm" id="id_cus_arcode" name="cus_arcode" value="{{ customer.cus_arcode }}">
-                    </div>
-                  </div>
-                  {% endcomment %}
-
-                  
-                  <div class="form-group row">
-                    <label for="id_cus_contact" class="col-sm-2 col-form-label form-control-sm">{% trans 'Contact Person' %}</label>
-                    <div class="col-sm-10">
-                      {% if form.cus_contact.errors %}                
-                        {% render_field form.cus_contact class="form-control form-control-sm is-invalid" %}
-                        {% for error in form.cus_contact.errors %}
-                        <div class="invalid-feedback">
-                          {{error}}
-                        </div>
-                        {% endfor %}                
-                      {% else %}
-                        {% render_field form.cus_contact class="form-control form-control-sm" %}                        
-                      {% endif %}                      
-                      {% render_field form.cus_contact_display class="form-control form-control-sm" %}
-                    </div>
-                  </div>                  
-                  
-
-                </div>
-                </div>
-
-              <div class="tab-pane fade" id="site" role="tabpanel" aria-labelledby="site-tab">
-                <div class="container-fluid pt-2">
-                site content...
-                </div>
-              </div>
-
-              <div class="tab-pane fade" id="billing" role="tabpanel" aria-labelledby="billing-tab">
-                <div class="container-fluid pt-2">
-                billing content...
-                </div>
-              </div>
-
+            {% endfor %}
+        {% else %}
+          {% if form_is_valid %}
+            <div class="alert alert-success">
+                <i class="fas fa-save"></i>&nbsp;&nbsp;Saved completed.
             </div>
+          {% endif %}
+        {% endif %}
+        </div> 
+        
+        <ul class="nav nav-tabs" id="customer" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" id="mainoffice-tab" data-toggle="tab" href="#mainoffice" role="tab" aria-controls="mainoffice" aria-selected="true">{% trans 'Main Office' %}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="site-tab" data-toggle="tab" href="#site" role="tab" aria-controls="site" aria-selected="false">{% trans 'Site' %}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="billing-tab" data-toggle="tab" href="#billing" role="tab" aria-controls="billing" aria-selected="false">{% trans 'Billing' %}</a>
+          </li>
+        </ul>
 
-          </div>          
+        <div class="tab-content" id="customerContent">
+          <div class="tab-pane fade show active" id="mainoffice" role="tabpanel" aria-labelledby="mainoffice-tab">          
+            <div class="container-fluid pt-2">
+
+              <div class="form-group row">
+                <label for="id_cus_name_th" class="col-sm-2 col-form-label form-control-sm">{% trans 'Customer Name' %}</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control form-control-sm" id="id_cus_name_th" name="cus_name_th" value="{{ customer.cus_name_th }}">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="id_cus_add1_th" class="col-sm-2 col-form-label form-control-sm">{% trans 'Address' %}</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control form-control-sm" id="id_cus_add1_th" name="cus_add1_th" value="{{ customer.cus_add1_th }}">
+                  <input type="text" class="form-control form-control-sm" id="id_cus_add2_th" name="cus_add2_th" value="{{ customer.cus_add2_th }}">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="id_cus_subdist_th" class="col-sm-2 col-form-label form-control-sm">{% trans 'Sub-District' %}</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control form-control-sm" id="id_cus_subdist_th" name="cus_subdist_th" value="{{ customer.cus_subdist_th }}">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="id_cus_disrict" class="col-sm-2 col-form-label form-control-sm">{% trans 'District' %}</label>
+                <div class="col-sm-10">
+                  {% if form.cus_district.errors %}                
+                    {% render_field form.cus_district class="form-control form-control-sm is-invalid" %}
+                    {% for error in form.cus_district.errors %}
+                    <div class="invalid-feedback">
+                      {{error}}
+                    </div>
+                    {% endfor %}                
+                  {% else %}
+                    {% render_field form.cus_district class="form-control form-control-sm" %}
+                  {% endif %}                                  
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="id_cus_city" class="col-sm-2 col-form-label form-control-sm">{% trans 'City/Country' %}</label>
+                <div class="col-sm-10">
+                  {% comment %}
+                  <input type="text" class="form-control form-control-sm" id="id_cus_city" name="cus_city" value="{{ customer.cus_city }}">
+                  {% endcomment %}
+                  {% if form.cus_city.errors %}                
+                    {% render_field form.cus_city class="form-control form-control-sm is-invalid" %}
+                    {% for error in form.cus_city.errors %}
+                    <div class="invalid-feedback">
+                      {{error}}
+                    </div>
+                    {% endfor %}                
+                  {% else %}
+                    {% render_field form.cus_city class="form-control form-control-sm" %}
+                  {% endif %}
+
+                  {% comment %}
+                  <input type="text" class="form-control form-control-sm" id="id_cus_country" name="cus_country" value="{{ customer.cus_country }}">
+                  {% endcomment %}
+                  {% if form.cus_country.errors %}                
+                    {% render_field form.cus_country class="form-control form-control-sm is-invalid" %}
+                    {% for error in form.cus_country.errors %}
+                    <div class="invalid-feedback">
+                      {{error}}
+                    </div>
+                    {% endfor %}                
+                  {% else %}
+                    {% render_field form.cus_country class="form-control form-control-sm" %}
+                  {% endif %}                      
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="id_cus_zip" class="col-sm-2 col-form-label form-control-sm">{% trans 'Zip' %}</label>
+                <div class="col-sm-10">
+                  {% if form.cus_zip.errors %}                
+                    {% render_field form.cus_zip class="form-control form-control-sm is-invalid" %}
+                    {% for error in form.cus_zip.errors %}
+                    <div class="invalid-feedback">
+                      {{error}}
+                    </div>
+                    {% endfor %}                
+                  {% else %}
+                    {% render_field form.cus_zip class="form-control form-control-sm" %}
+                  {% endif %}                      
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="id_cus_tel" class="col-sm-2 col-form-label form-control-sm">{% trans 'Phone' %}</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control form-control-sm" id="id_cus_tel" name="cus_tel" value="{{ customer.cus_tel }}">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="id_cus_fax" class="col-sm-2 col-form-label form-control-sm">{% trans 'Fax' %}</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control form-control-sm" id="id_cus_fax" name="cus_fax" value="{{ customer.cus_fax }}">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="id_cus_email" class="col-sm-2 col-form-label form-control-sm">{% trans 'Email' %}</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control form-control-sm" id="id_cus_email" name="cus_email" value="{{ customer.cus_email }}">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="id_cus_zone" class="col-sm-2 col-form-label form-control-sm">{% trans 'Zone' %}</label>
+                <div class="col-sm-10">
+                  {% if form.cus_zone.errors %}                
+                    {% render_field form.cus_zone class="form-control form-control-sm is-invalid" %}
+                    {% for error in form.cus_zone.errors %}
+                    <div class="invalid-feedback">
+                      {{error}}
+                    </div>
+                    {% endfor %}                
+                  {% else %}
+                    {% render_field form.cus_zone class="form-control form-control-sm" %}
+                  {% endif %}
+                </div>
+              </div>
+              
+              {% comment %}
+              <div class="form-group row">
+                <label for="id_cus_group" class="col-sm-2 col-form-label form-control-sm">{% trans 'Group ID' %}</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control form-control-sm" id="id_cus_group" name="cus_group" value="{{ customer.cus_group }}">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="id_cus_business_type" class="col-sm-2 col-form-label form-control-sm">{% trans 'Business Type' %}</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control form-control-sm" id="id_cus_business_type"name="cus_business_type" value="{{ customer.cus_business_type }}">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="id_cus_arcode" class="col-sm-2 col-form-label form-control-sm">{% trans 'A/R Code' %}</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control form-control-sm" id="id_cus_arcode" name="cus_arcode" value="{{ customer.cus_arcode }}">
+                </div>
+              </div>
+              {% endcomment %}
+            
+              <div class="form-group row">
+                <label for="id_cus_contact" class="col-sm-2 col-form-label form-control-sm">{% trans 'Contact Person' %}</label>
+                <div class="col-sm-10">
+                  {% if form.cus_contact.errors %}                
+                    {% render_field form.cus_contact class="form-control form-control-sm is-invalid" %}
+                    {% for error in form.cus_contact.errors %}
+                    <div class="invalid-feedback">
+                      {{error}}
+                    </div>
+                    {% endfor %}                
+                  {% else %}
+                    {% render_field form.cus_contact class="form-control form-control-sm" %}                        
+                  {% endif %}                      
+                  {% render_field form.cus_contact_display class="form-control form-control-sm" %}
+                </div>
+              </div>                
+            </div>
+          </div>
+
+          <div class="tab-pane fade" id="site" role="tabpanel" aria-labelledby="site-tab">
+            <div class="container-fluid pt-2">
+            site content...
+            </div>
+          </div>
+
+          <div class="tab-pane fade" id="billing" role="tabpanel" aria-labelledby="billing-tab">
+            <div class="container-fluid pt-2">
+            billing content...
+            </div>
+          </div>
+
         </div>
+        <!-- /.end tabs -->
+
       </div>
+      <!-- /.card-body -->
 
       <div class="card-footer text-right">
-        <a href="#" type="button" onclick="history.back()" class="btn btn-secondary btn-sm">{% trans 'Cancel' %}</a>          
+        <!--<a href="#" type="button" onclick="history.back()" class="btn btn-secondary btn-sm">{% trans 'Cancel' %}</a>-->
         <a href="#" type="button" onclick="customerupdateform.submit()" class="btn btn-success btn-sm"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>        
       </div>
-      </form>
+      <!-- /.card-footer-->
 
+  </div>
+  <!-- /.card -->
+
+  <div class="modal fade" id="modal-customer">
+    <div class="modal-dialog">
+      <div class="modal-content"></div>
     </div>
-  </section>
+  </div>
+  </form>
+</section>
+<!-- /.content -->
 
 </div>
-
+<!-- /.content-wrapper -->
 {% endblock %}
 
 
