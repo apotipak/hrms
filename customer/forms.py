@@ -138,6 +138,8 @@ class CustomerSearchForm(forms.ModelForm):
 
 
 class CustomerUpdateForm(forms.ModelForm):    
+    #cus_active = forms.BooleanField()
+    cus_active = forms.BooleanField(label='Have you taken the test before', required=False, widget=forms.CheckboxInput())
 
     class Meta:
         model = Customer        
@@ -157,8 +159,7 @@ class CustomerUpdateForm(forms.ModelForm):
         cus_district = forms.ModelChoiceField(queryset=None, required=False)        
         cus_city = forms.ModelChoiceField(queryset=None, required=False)
         cus_country = forms.ModelChoiceField(queryset=None, required=False)
-        cus_zone = forms.ModelChoiceField(queryset=None, required=False)
-        cus_active = forms.CheckboxInput()
+        cus_zone = forms.ModelChoiceField(queryset=None, required=False)        
 
     def clean_cus_zip(self):
         cus_zip = self.data.get('cus_zip')
@@ -184,4 +185,16 @@ class CustomerUpdateForm(forms.ModelForm):
         data = self.data.get('cus_email')
         if data is None:
             data = None
+        return data
+
+    def clean_cus_active(self):
+        data = self.data.get('cus_active')
+        if data=="on":
+            data=1
+        else:
+            data=0
+
+        #print("aa : " + str(data))
+        #if data is None:
+        #    data = None
         return data
