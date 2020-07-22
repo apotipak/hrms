@@ -42,15 +42,16 @@
     <!-- /.sidebar -->
   </aside>
 
-  {% block scripts %}
-
+{% block scripts %}
 <script type='text/javascript'>
 $(document).ready(function() {
   var pathname = window.location.pathname;
   
   $('.nav-treeview > li > a[href="'+pathname+'"]').addClass('active');
-  $('.nav-treeview > li > a[href="'+pathname+'"]').closest('.has-treeview').addClass('has-treeview menu-open');
+  //$('.nav-treeview > li > a[href="'+pathname+'"]').closest('.has-treeview').addClass('has-treeview menu-open');
   $('.nav-treeview > li > a[href="'+pathname+'"]').parents('li.has-treeview').children().addClass('active');
+
+  $('.nav-treeview > li > a').closest('.has-treeview').addClass('has-treeview menu-open');
   
 })
 </script>

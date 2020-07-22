@@ -14,8 +14,8 @@
 
   <!-- Content Header (Page header) -->
   <div class="content-header">
-  <form id="customerupdateform" method="post" action="{% url 'customer-update' form.instance.pk %}" class="js-customer-update-form">
-  {% csrf_token %}
+    <form id="customerupdateform" method="post" action="{% url 'customer-update' form.instance.pk %}" class="js-customer-update-form">
+    {% csrf_token %}
   
     <div class="">
       <div class="row mb-2">
