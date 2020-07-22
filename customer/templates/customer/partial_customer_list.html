@@ -13,9 +13,9 @@
         </td>
         <td class="text-right py-0 align-middle">
           <div class="btn-group btn-group-sm">
-            <button type="button" class="btn btn-info btn-xs js-update-customer" data-url="{% url 'customer-update' item.cus_no %}">
+            <a href="{% url 'customer-update' item.cus_no %}" type="button" class="btn btn-info btn-xs js-update-customer" data-url="{% url 'customer-update' item.cus_no %}">
               <i class="fas fa-pen fa-xs"></i>
-            </button>
+            </a>
             &nbsp;
             <button type="button" class="btn btn-danger btn-xs js-delete-customer" data-url="{% url 'customer-delete' item.cus_no %}">
               <i class="fas fa-trash fa-xs"></i>

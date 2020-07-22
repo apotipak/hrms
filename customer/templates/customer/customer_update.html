@@ -44,16 +44,18 @@
 
       </div>
 
+      {% comment %}
       <div class="card-header" style="vertical-align: middle;">
         <div class="card-tools">          
           <!--<a href="#" type="button" onclick="history.back()" class="btn btn-secondary btn-sm">{% trans 'Cancel' %}</a>-->
           <a href="#" type="button" onclick="customerupdateform.submit()" class="btn btn-success btn-sm"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>        
-
         </div>
       </div>
-      
+      {% endcomment %}
+
       <div class="card-body">
 
+        {% comment %}
         <div class="" id="show-error">
         {% if form.errors %}
             {% for field in form %}                
@@ -66,12 +68,12 @@
         {% else %}
           {% if form_is_valid %}
             <div class="alert alert-success">
-                <i class="fas fa-save"></i>&nbsp;&nbsp;Saved completed.
+                <i class="fas fa-save"></i>&nbsp;&nbsp;Saved completed. Back to customer list?&nbsp;&nbsp;<a href="{% url 'customer-list' %}">click here</a>
             </div>
           {% endif %}
         {% endif %}
         </div> 
-        
+        {% endcomment %}
         <ul class="nav nav-tabs" id="customer" role="tablist">
           <li class="nav-item">
             <a class="nav-link active" id="mainoffice-tab" data-toggle="tab" href="#mainoffice" role="tab" aria-controls="mainoffice" aria-selected="true">{% trans 'Main Office' %}</a>
