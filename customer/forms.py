@@ -169,14 +169,38 @@ class CustomerUpdateForm(forms.ModelForm):
         data = self.data['cus_zip']
         return data
 
+    def clean_cus_add1_th(self):
+        data = self.data.get('cus_add1_th')
+        if data is None:
+            data = None
+        return data
+
     def clean_cus_add2_th(self):
         data = self.data.get('cus_add2_th')
         if data is None:
             data = None
         return data
 
+    def clean_cus_add1_en(self):
+        data = self.data.get('cus_add1_en')
+        if data is None:
+            data = None
+        return data
+
+    def clean_cus_add2_en(self):
+        data = self.data.get('cus_add2_en')
+        if data is None:
+            data = None
+        return data
+
     def clean_cus_subdist_th(self):
         data = self.data.get('cus_subdist_th')
+        if data is None:
+            data = None
+        return data
+
+    def clean_cus_subdist_en(self):
+        data = self.data.get('cus_subdist_en')
         if data is None:
             data = None
         return data
