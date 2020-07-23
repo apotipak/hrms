@@ -90,9 +90,10 @@
 
           
             <!-- TODO -->
-            <div class="row pt-2">
+            <div class="row pt-3">
 
               <div class="col-md-6">
+                
                 <div class="card card-info">
                   <div class="card-header">
                     <h3 class="card-title">TH</h3>
@@ -239,35 +240,14 @@
                       <div class="input-group">
                         <label for="id_cus_disrict" class="col-sm-4 col-form-label form-control-sm">{% trans 'District' %}</label>
                         <div class="col-sm-8">
-                          {% if form.cus_district.errors %}                
-                            {% render_field form.cus_district class="form-control form-control-sm is-invalid" %}
-                            {% for error in form.cus_district.errors %}
-                            <div class="invalid-feedback">
-                              {{error}}
-                            </div>
-                            {% endfor %}                
-                          {% else %}
-                            {% render_field form.cus_district class="form-control form-control-sm" %}
-                          {% endif %}                                  
+                          {% render_field form.cus_district_en_text class="form-control form-control-sm" %}
                         </div>
                       </div>
 
                       <div class="input-group">
-                        <label for="id_cus_city" class="col-sm-4 col-form-label form-control-sm">{% trans 'City/Country' %}</label>
+                        <label for="id_cus_city" class="col-sm-4 col-form-label form-control-sm">{% trans 'City' %}</label>
                         <div class="col-sm-8">
-                          {% comment %}
-                          <input type="text" class="form-control form-control-sm" id="id_cus_city" name="cus_city" value="{{ customer.cus_city }}">
-                          {% endcomment %}
-                          {% if form.cus_city.errors %}                
-                            {% render_field form.cus_city class="form-control form-control-sm is-invalid" %}
-                            {% for error in form.cus_city.errors %}
-                            <div class="invalid-feedback">
-                              {{error}}
-                            </div>
-                            {% endfor %}                
-                          {% else %}
-                            {% render_field form.cus_city class="form-control form-control-sm" %}
-                          {% endif %}
+                          {% render_field form.cus_city_en_text class="form-control form-control-sm" %}
                         </div>
                       </div>
 
@@ -275,19 +255,7 @@
                       <div class="input-group">
                         <label for="id_cus_country" class="col-sm-4 col-form-label form-control-sm">{% trans 'Country' %}</label>
                         <div class="col-sm-8">
-                          {% comment %}
-                          <input type="text" class="form-control form-control-sm" id="id_cus_country" name="cus_country" value="{{ customer.cus_country }}">
-                          {% endcomment %}
-                          {% if form.cus_country.errors %}                
-                            {% render_field form.cus_country class="form-control form-control-sm is-invalid" %}
-                            {% for error in form.cus_country.errors %}
-                            <div class="invalid-feedback">
-                              {{error}}
-                            </div>
-                            {% endfor %}                
-                          {% else %}
-                            {% render_field form.cus_country class="form-control form-control-sm" %}
-                          {% endif %}                      
+                          {% render_field form.cus_country_en_text class="form-control form-control-sm" %}
                         </div>
                       </div>
 
