@@ -295,65 +295,54 @@
                   <div class="card-body">
 
 
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="id_cus_zip" class="col-sm-3 col-form-label form-control-sm">{% trans 'Zip' %}</label>
-                  {% if form.cus_zip.errors %}                
-                    {% render_field form.cus_zip class="form-control form-control-sm is-invalid" %}
-                    {% for error in form.cus_zip.errors %}
-                    <div class="invalid-feedback">
-                      {{error}}
-                    </div>
-                    {% endfor %}                
-                  {% else %}
-                    {% render_field form.cus_zip class="form-control form-control-sm" %}
-                  {% endif %} 
-                </div>
-                <!-- /.form-group -->
-                <div class="form-group">
-                  <label for="id_cus_fax" class="col-sm-3 col-form-label form-control-sm">{% trans 'Fax' %}</label>
-                  <input type="text" class="form-control form-control-sm" id="id_cus_fax" name="cus_fax" value="{{ customer.cus_fax }}">
-                </div>
-                <!-- /.form-group -->
-              </div>
-              <!-- /.col -->
 
-              <div class="col-md-6">
-                <div class="form-group">
+  <div class="form-row">
+    <div class="form-group col-md-2">
+      <label for="cus_zip">{% trans 'Zip' %}</label>
+      {% if form.cus_zip.errors %}                
+        {% render_field form.cus_zip class="form-control form-control-sm is-invalid" %}
+        {% for error in form.cus_zip.errors %}
+        <div class="invalid-feedback">
+          {{error}}
+        </div>
+        {% endfor %}                
+      {% else %}
+        {% render_field form.cus_zip class="form-control form-control-sm" %}
+      {% endif %} 
+    </div>
+    <div class="form-group col-md-2">
+      <label for="cus_tel">{% trans 'Phone' %}</label>
+      <input type="text" class="form-control form-control-sm" id="id_cus_tel" name="cus_tel" value="{{ customer.cus_tel }}">
+    </div>
+    <div class="form-group col-md-4">
+      <label for="cus_zip">{% trans 'Fax' %}</label>
+      <input type="text" class="form-control form-control-sm" id="id_cus_fax" name="cus_fax" value="{{ customer.cus_fax }}">
+    </div>
+    <div class="form-group col-md-4">
+      <label for="cus_zip">{% trans 'Email' %}</label>
+      <input type="text" class="form-control form-control-sm" id="id_cus_email" name="cus_email" value="{{ customer.cus_email }}">
+    </div>    
+  </div>
+  
 
-                  <label for="id_cus_tel" class="col-sm-3 col-form-label form-control-sm">{% trans 'Phone' %}</label>
-                  <input type="text" class="form-control form-control-sm" id="id_cus_tel" name="cus_tel" value="{{ customer.cus_tel }}">
-                </div>
-                <!-- /.form-group -->
-                <div class="form-group">
-                  <label for="id_cus_email" class="col-sm-4 col-form-label form-control-sm">{% trans 'Email' %}</label>
-                  <input type="text" class="form-control form-control-sm" id="id_cus_email" name="cus_email" value="{{ customer.cus_email }}">  
-                </div>
-                <!-- /.form-group -->
-              </div>
-              <!-- /.col -->
-            </div>
-            <!-- /.row -->
-
-
-
-
+                  <div class="form-row">
                     <div class="input-group">
-                      <label for="id_cus_zone" class="col-sm-4 col-form-label form-control-sm">{% trans 'Zone' %}</label>
-                      <div class="col-sm-8">
+                      <label for="id_cus_zone" class="col-sm-2 col-form-label form-control-sm">{% trans 'Zone' %}</label>
+                      <div class="col-sm-10">
                         {% if form.cus_zone.errors %}                
-                          {% render_field form.cus_zone class="form-control form-control-sm is-invalid" %}
+                          {% render_field form.cus_zone class="form-control col-sm-10 form-control-sm is-invalid" %}
                           {% for error in form.cus_zone.errors %}
                           <div class="invalid-feedback">
                             {{error}}
                           </div>
                           {% endfor %}                
                         {% else %}
-                          {% render_field form.cus_zone class="form-control form-control-sm" %}
+                          {% render_field form.cus_zone class="form-control col-sm-10 form-control-sm" %}
                         {% endif %}
                       </div>
                     </div>
+                  </div>
+
 
                   </div>
                 </div>
