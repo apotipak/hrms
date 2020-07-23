@@ -55,7 +55,6 @@
 
       <div class="card-body">
 
-        {% comment %}
         <div class="" id="show-error">
         {% if form.errors %}
             {% for field in form %}                
@@ -68,12 +67,12 @@
         {% else %}
           {% if form_is_valid %}
             <div class="alert alert-success">
-                <i class="fas fa-save"></i>&nbsp;&nbsp;Saved completed. Back to customer list?&nbsp;&nbsp;<a href="{% url 'customer-list' %}">click here</a>
+                <i class="fas fa-save"></i>&nbsp;&nbsp;Saved complete. Back to <a href="{% url 'customer-list' %}">Customer List</a>
             </div>
           {% endif %}
         {% endif %}
-        </div> 
-        {% endcomment %}
+        </div>
+
         <ul class="nav nav-tabs" id="customer" role="tablist">
           <li class="nav-item">
             <a class="nav-link active" id="mainoffice-tab" data-toggle="tab" href="#mainoffice" role="tab" aria-controls="mainoffice" aria-selected="true">{% trans 'Main Office' %}</a>
@@ -88,77 +87,218 @@
 
         <div class="tab-content" id="customerContent">
           <div class="tab-pane fade show active" id="mainoffice" role="tabpanel" aria-labelledby="mainoffice-tab">          
-            <div class="container-fluid pt-2">
 
-              <div class="form-group row">
-                <label for="id_cus_name_th" class="col-sm-2 col-form-label form-control-sm">{% trans 'Customer Name' %}</label>
-                <div class="col-sm-10">
-                  <input type="text" class="form-control form-control-sm" id="id_cus_name_th" name="cus_name_th" value="{{ customer.cus_name_th }}">
-                </div>
-              </div>
-              <div class="form-group row">
-                <label for="id_cus_add1_th" class="col-sm-2 col-form-label form-control-sm">{% trans 'Address' %}</label>
-                <div class="col-sm-10">
-                  <input type="text" class="form-control form-control-sm" id="id_cus_add1_th" name="cus_add1_th" value="{{ customer.cus_add1_th }}">
-                  <input type="text" class="form-control form-control-sm" id="id_cus_add2_th" name="cus_add2_th" value="{{ customer.cus_add2_th }}">
-                </div>
-              </div>
-              <div class="form-group row">
-                <label for="id_cus_subdist_th" class="col-sm-2 col-form-label form-control-sm">{% trans 'Sub-District' %}</label>
-                <div class="col-sm-10">
-                  <input type="text" class="form-control form-control-sm" id="id_cus_subdist_th" name="cus_subdist_th" value="{{ customer.cus_subdist_th }}">
-                </div>
-              </div>
-              <div class="form-group row">
-                <label for="id_cus_disrict" class="col-sm-2 col-form-label form-control-sm">{% trans 'District' %}</label>
-                <div class="col-sm-10">
-                  {% if form.cus_district.errors %}                
-                    {% render_field form.cus_district class="form-control form-control-sm is-invalid" %}
-                    {% for error in form.cus_district.errors %}
-                    <div class="invalid-feedback">
-                      {{error}}
-                    </div>
-                    {% endfor %}                
-                  {% else %}
-                    {% render_field form.cus_district class="form-control form-control-sm" %}
-                  {% endif %}                                  
-                </div>
-              </div>
-              <div class="form-group row">
-                <label for="id_cus_city" class="col-sm-2 col-form-label form-control-sm">{% trans 'City/Country' %}</label>
-                <div class="col-sm-10">
-                  {% comment %}
-                  <input type="text" class="form-control form-control-sm" id="id_cus_city" name="cus_city" value="{{ customer.cus_city }}">
-                  {% endcomment %}
-                  {% if form.cus_city.errors %}                
-                    {% render_field form.cus_city class="form-control form-control-sm is-invalid" %}
-                    {% for error in form.cus_city.errors %}
-                    <div class="invalid-feedback">
-                      {{error}}
-                    </div>
-                    {% endfor %}                
-                  {% else %}
-                    {% render_field form.cus_city class="form-control form-control-sm" %}
-                  {% endif %}
+          
+            <!-- TODO -->
+            <div class="row pt-2">
 
-                  {% comment %}
-                  <input type="text" class="form-control form-control-sm" id="id_cus_country" name="cus_country" value="{{ customer.cus_country }}">
-                  {% endcomment %}
-                  {% if form.cus_country.errors %}                
-                    {% render_field form.cus_country class="form-control form-control-sm is-invalid" %}
-                    {% for error in form.cus_country.errors %}
-                    <div class="invalid-feedback">
-                      {{error}}
+              <div class="col-md-6">
+                <div class="card card-info">
+                  <div class="card-header">
+                    <h3 class="card-title">TH</h3>
+                  </div>
+                  <div class="card-body">
+
+                    <div class="form-group">  
+
+                      <div class="input-group">
+                        <label for="id_cus_name_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'Customer Name' %}</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control form-control-sm" id="id_cus_name_th" name="cus_name_th" value="{{ customer.cus_name_th }}">
+                        </div>
+                      </div>
+
+                      <div class="input-group">
+                        <label for="id_cus_add1_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'Address' %}</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control form-control-sm" id="id_cus_add1_th" name="cus_add1_th" value="{{ customer.cus_add1_th }}">
+                          <input type="text" class="form-control form-control-sm" id="id_cus_add2_th" name="cus_add2_th" value="{{ customer.cus_add2_th }}">
+                        </div>
+                      </div>
+
+                      <div class="input-group">
+                        <label for="id_cus_subdist_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'Sub-District' %}</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control form-control-sm" id="id_cus_subdist_th" name="cus_subdist_th" value="{{ customer.cus_subdist_th }}">
+                        </div>
+                      </div>
+
+                      <div class="input-group">
+                        <label for="id_cus_disrict" class="col-sm-4 col-form-label form-control-sm">{% trans 'District' %}</label>
+                        <div class="col-sm-8">
+                          {% if form.cus_district.errors %}                
+                            {% render_field form.cus_district class="form-control form-control-sm is-invalid" %}
+                            {% for error in form.cus_district.errors %}
+                            <div class="invalid-feedback">
+                              {{error}}
+                            </div>
+                            {% endfor %}                
+                          {% else %}
+                            {% render_field form.cus_district class="form-control form-control-sm" %}
+                          {% endif %}                                  
+                        </div>
+                      </div>
+
+                      <div class="input-group">
+                        <label for="id_cus_city" class="col-sm-4 col-form-label form-control-sm">{% trans 'City/Country' %}</label>
+                        <div class="col-sm-8">
+                          {% comment %}
+                          <input type="text" class="form-control form-control-sm" id="id_cus_city" name="cus_city" value="{{ customer.cus_city }}">
+                          {% endcomment %}
+                          {% if form.cus_city.errors %}                
+                            {% render_field form.cus_city class="form-control form-control-sm is-invalid" %}
+                            {% for error in form.cus_city.errors %}
+                            <div class="invalid-feedback">
+                              {{error}}
+                            </div>
+                            {% endfor %}                
+                          {% else %}
+                            {% render_field form.cus_city class="form-control form-control-sm" %}
+                          {% endif %}
+
+                          {% comment %}
+                          <input type="text" class="form-control form-control-sm" id="id_cus_country" name="cus_country" value="{{ customer.cus_country }}">
+                          {% endcomment %}
+                          {% if form.cus_country.errors %}                
+                            {% render_field form.cus_country class="form-control form-control-sm is-invalid" %}
+                            {% for error in form.cus_country.errors %}
+                            <div class="invalid-feedback">
+                              {{error}}
+                            </div>
+                            {% endfor %}                
+                          {% else %}
+                            {% render_field form.cus_country class="form-control form-control-sm" %}
+                          {% endif %}                      
+                        </div>
+                      </div>
+
+
+                      
+                      {% comment %}
+                      <div class="input-group">
+                        <label for="id_cus_group" class="col-sm-4 col-form-label form-control-sm">{% trans 'Group ID' %}</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control form-control-sm" id="id_cus_group" name="cus_group" value="{{ customer.cus_group }}">
+                        </div>
+                      </div>
+
+                      <div class="input-group">
+                        <label for="id_cus_business_type" class="col-sm-4 col-form-label form-control-sm">{% trans 'Business Type' %}</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control form-control-sm" id="id_cus_business_type"name="cus_business_type" value="{{ customer.cus_business_type }}">
+                        </div>
+                      </div>
+
+                      <div class="input-group">
+                        <label for="id_cus_arcode" class="col-sm-4 col-form-label form-control-sm">{% trans 'A/R Code' %}</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control form-control-sm" id="id_cus_arcode" name="cus_arcode" value="{{ customer.cus_arcode }}">
+                        </div>
+                      </div>
+                      {% endcomment %}
+                    
                     </div>
-                    {% endfor %}                
-                  {% else %}
-                    {% render_field form.cus_country class="form-control form-control-sm" %}
-                  {% endif %}                      
+                  </div>
                 </div>
               </div>
-              <div class="form-group row">
-                <label for="id_cus_zip" class="col-sm-2 col-form-label form-control-sm">{% trans 'Zip' %}</label>
-                <div class="col-sm-10">
+
+              <div class="col-md-6">
+                <div class="card card-info">
+                  <div class="card-header">
+                    <h3 class="card-title">EN</h3>
+                  </div>
+                  <div class="card-body">
+                    <div class="form-group">
+                      <div class="input-group">
+                        <label for="id_cus_name_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Customer Name' %}</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control form-control-sm" id="id_cus_name_en" name="cus_name_en" value="{{ customer.cus_name_en }}">
+                        </div>
+                      </div>
+
+                      <div class="input-group">
+                        <label for="id_cus_add1_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Address' %}</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control form-control-sm" id="id_cus_add1_en" name="cus_add1_en" value="{{ customer.cus_add1_en }}">
+                          <input type="text" class="form-control form-control-sm" id="id_cus_add2_en" name="cus_add2_en" value="{{ customer.cus_add2_en }}">
+                        </div>
+                      </div>
+
+                      <div class="input-group">
+                        <label for="id_cus_subdist_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Sub-District' %}</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control form-control-sm" id="id_cus_subdist_en" name="cus_subdist_en" value="{{ customer.cus_subdist_en }}">
+                        </div>
+                      </div>
+
+                      <div class="input-group">
+                        <label for="id_cus_disrict" class="col-sm-4 col-form-label form-control-sm">{% trans 'District' %}</label>
+                        <div class="col-sm-8">
+                          {% if form.cus_district.errors %}                
+                            {% render_field form.cus_district class="form-control form-control-sm is-invalid" %}
+                            {% for error in form.cus_district.errors %}
+                            <div class="invalid-feedback">
+                              {{error}}
+                            </div>
+                            {% endfor %}                
+                          {% else %}
+                            {% render_field form.cus_district class="form-control form-control-sm" %}
+                          {% endif %}                                  
+                        </div>
+                      </div>
+
+                      <div class="input-group">
+                        <label for="id_cus_city" class="col-sm-4 col-form-label form-control-sm">{% trans 'City/Country' %}</label>
+                        <div class="col-sm-8">
+                          {% comment %}
+                          <input type="text" class="form-control form-control-sm" id="id_cus_city" name="cus_city" value="{{ customer.cus_city }}">
+                          {% endcomment %}
+                          {% if form.cus_city.errors %}                
+                            {% render_field form.cus_city class="form-control form-control-sm is-invalid" %}
+                            {% for error in form.cus_city.errors %}
+                            <div class="invalid-feedback">
+                              {{error}}
+                            </div>
+                            {% endfor %}                
+                          {% else %}
+                            {% render_field form.cus_city class="form-control form-control-sm" %}
+                          {% endif %}
+
+                          {% comment %}
+                          <input type="text" class="form-control form-control-sm" id="id_cus_country" name="cus_country" value="{{ customer.cus_country }}">
+                          {% endcomment %}
+                          {% if form.cus_country.errors %}                
+                            {% render_field form.cus_country class="form-control form-control-sm is-invalid" %}
+                            {% for error in form.cus_country.errors %}
+                            <div class="invalid-feedback">
+                              {{error}}
+                            </div>
+                            {% endfor %}                
+                          {% else %}
+                            {% render_field form.cus_country class="form-control form-control-sm" %}
+                          {% endif %}                      
+                        </div>
+                      </div>
+
+                    </div>                    
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- /.row -->            
+
+
+            <!-- Others -->
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card card-info">
+                  <div class="card-body">
+
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="id_cus_zip" class="col-sm-3 col-form-label form-control-sm">{% trans 'Zip' %}</label>
                   {% if form.cus_zip.errors %}                
                     {% render_field form.cus_zip class="form-control form-control-sm is-invalid" %}
                     {% for error in form.cus_zip.errors %}
@@ -168,89 +308,100 @@
                     {% endfor %}                
                   {% else %}
                     {% render_field form.cus_zip class="form-control form-control-sm" %}
-                  {% endif %}                      
+                  {% endif %} 
                 </div>
-              </div>
-              <div class="form-group row">
-                <label for="id_cus_tel" class="col-sm-2 col-form-label form-control-sm">{% trans 'Phone' %}</label>
-                <div class="col-sm-10">
-                  <input type="text" class="form-control form-control-sm" id="id_cus_tel" name="cus_tel" value="{{ customer.cus_tel }}">
-                </div>
-              </div>
-              <div class="form-group row">
-                <label for="id_cus_fax" class="col-sm-2 col-form-label form-control-sm">{% trans 'Fax' %}</label>
-                <div class="col-sm-10">
+                <!-- /.form-group -->
+                <div class="form-group">
+                  <label for="id_cus_fax" class="col-sm-3 col-form-label form-control-sm">{% trans 'Fax' %}</label>
                   <input type="text" class="form-control form-control-sm" id="id_cus_fax" name="cus_fax" value="{{ customer.cus_fax }}">
                 </div>
+                <!-- /.form-group -->
               </div>
-              <div class="form-group row">
-                <label for="id_cus_email" class="col-sm-2 col-form-label form-control-sm">{% trans 'Email' %}</label>
-                <div class="col-sm-10">
-                  <input type="text" class="form-control form-control-sm" id="id_cus_email" name="cus_email" value="{{ customer.cus_email }}">
+              <!-- /.col -->
+
+              <div class="col-md-6">
+                <div class="form-group">
+
+                  <label for="id_cus_tel" class="col-sm-3 col-form-label form-control-sm">{% trans 'Phone' %}</label>
+                  <input type="text" class="form-control form-control-sm" id="id_cus_tel" name="cus_tel" value="{{ customer.cus_tel }}">
                 </div>
+                <!-- /.form-group -->
+                <div class="form-group">
+                  <label for="id_cus_email" class="col-sm-4 col-form-label form-control-sm">{% trans 'Email' %}</label>
+                  <input type="text" class="form-control form-control-sm" id="id_cus_email" name="cus_email" value="{{ customer.cus_email }}">  
+                </div>
+                <!-- /.form-group -->
               </div>
-              <div class="form-group row">
-                <label for="id_cus_zone" class="col-sm-2 col-form-label form-control-sm">{% trans 'Zone' %}</label>
-                <div class="col-sm-10">
-                  {% if form.cus_zone.errors %}                
-                    {% render_field form.cus_zone class="form-control form-control-sm is-invalid" %}
-                    {% for error in form.cus_zone.errors %}
-                    <div class="invalid-feedback">
-                      {{error}}
-                    </div>
-                    {% endfor %}                
-                  {% else %}
-                    {% render_field form.cus_zone class="form-control form-control-sm" %}
-                  {% endif %}
-                </div>
-              </div>
-              
-              {% comment %}
-              <div class="form-group row">
-                <label for="id_cus_group" class="col-sm-2 col-form-label form-control-sm">{% trans 'Group ID' %}</label>
-                <div class="col-sm-10">
-                  <input type="text" class="form-control form-control-sm" id="id_cus_group" name="cus_group" value="{{ customer.cus_group }}">
-                </div>
-              </div>
-              <div class="form-group row">
-                <label for="id_cus_business_type" class="col-sm-2 col-form-label form-control-sm">{% trans 'Business Type' %}</label>
-                <div class="col-sm-10">
-                  <input type="text" class="form-control form-control-sm" id="id_cus_business_type"name="cus_business_type" value="{{ customer.cus_business_type }}">
-                </div>
-              </div>
-              <div class="form-group row">
-                <label for="id_cus_arcode" class="col-sm-2 col-form-label form-control-sm">{% trans 'A/R Code' %}</label>
-                <div class="col-sm-10">
-                  <input type="text" class="form-control form-control-sm" id="id_cus_arcode" name="cus_arcode" value="{{ customer.cus_arcode }}">
-                </div>
-              </div>
-              {% endcomment %}
-            
-              <div class="form-group row">
-                <label for="id_cus_contact" class="col-sm-2 col-form-label form-control-sm">{% trans 'Contact Person' %}</label>
-                <div class="col-sm-10">
-                  {% if form.cus_contact.errors %}                
-                    {% render_field form.cus_contact class="form-control form-control-sm is-invalid" %}
-                    {% for error in form.cus_contact.errors %}
-                    <div class="invalid-feedback">
-                      {{error}}
-                    </div>
-                    {% endfor %}                
-                  {% else %}
-                    {% render_field form.cus_contact class="form-control form-control-sm" %}                        
-                  {% endif %}                      
-                  {% render_field form.cus_contact_display class="form-control form-control-sm" %}
-                </div>
-              </div>                
+              <!-- /.col -->
             </div>
+            <!-- /.row -->
+
+
+
+
+                    <div class="input-group">
+                      <label for="id_cus_zone" class="col-sm-4 col-form-label form-control-sm">{% trans 'Zone' %}</label>
+                      <div class="col-sm-8">
+                        {% if form.cus_zone.errors %}                
+                          {% render_field form.cus_zone class="form-control form-control-sm is-invalid" %}
+                          {% for error in form.cus_zone.errors %}
+                          <div class="invalid-feedback">
+                            {{error}}
+                          </div>
+                          {% endfor %}                
+                        {% else %}
+                          {% render_field form.cus_zone class="form-control form-control-sm" %}
+                        {% endif %}
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <!-- Contact Person -->
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card card-info">
+                  <div class="card-header">
+                    <h3 class="card-title">Contact Information</h3>
+                  </div>
+                  <div class="card-body">
+
+                    <div class="input-group">
+                      <label for="id_cus_contact" class="col-sm-2 col-form-label form-control-sm">{% trans 'Contact Person' %}</label>
+                      <div class="col-sm-10">
+                        {% if form.cus_contact.errors %}                
+                          {% render_field form.cus_contact class="form-control form-control-sm is-invalid" %}
+                          {% for error in form.cus_contact.errors %}
+                          <div class="invalid-feedback">
+                            {{error}}
+                          </div>
+                          {% endfor %}                
+                        {% else %}
+                          {% render_field form.cus_contact class="form-control form-control-sm" %}                        
+                        {% endif %}                      
+                        {% render_field form.cus_contact_display class="form-control form-control-sm" %}
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- TODO -->
           </div>
 
+          <!-- Site Tab -->
           <div class="tab-pane fade" id="site" role="tabpanel" aria-labelledby="site-tab">
             <div class="container-fluid pt-2">
             site content...
             </div>
           </div>
 
+          <!-- Billing -->
           <div class="tab-pane fade" id="billing" role="tabpanel" aria-labelledby="billing-tab">
             <div class="container-fluid pt-2">
             billing content...
@@ -259,8 +410,10 @@
 
         </div>
         <!-- /.end tabs -->
-
       </div>
+
+
+
       <!-- /.card-body -->
 
       <div class="card-footer text-right">

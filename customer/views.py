@@ -97,7 +97,7 @@ def CustomerList(request):
         cus_brn = request.GET.get('cusbrn', '')
 
         # TODO
-        # cus_id = "1001"
+        cus_id = "1001"
         '''
         print("get")
         print("GET: cus_name = " +  str(cus_name))
