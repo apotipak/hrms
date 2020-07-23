@@ -136,7 +136,7 @@
                             {% endfor %}                
                           {% else %}
                             {% render_field form.cus_district class="form-control form-control-sm" %}
-                          {% endif %}                                  
+                          {% endif %}                            
                         </div>
                       </div>
 
@@ -188,8 +188,7 @@
                         </div>
                       </div>
 
-
-
+                      <!-- Comment -->
                       {% comment %}
                       <div class="input-group">
                         <label for="id_cus_group" class="col-sm-4 col-form-label form-control-sm">{% trans 'Group ID' %}</label>
@@ -450,10 +449,10 @@
 {% endblock %}
 
 
-{% block scripts %}
+{% block javascripts %}
 
 <script>
-  
+ 
   $(document).ready(function() {
     $("#customerupdateform").submit(function(e){
       if ($(".submitBtn").attr('attempted') == 'true' ) {
@@ -474,6 +473,6 @@
       off: 'Disabled'
     });
   })
-
+  
 </script>
 {% endblock %}
