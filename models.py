@@ -2,7 +2,7 @@
 # You'll have to do the following manually to clean this up:
 #   * Rearrange models' order
 #   * Make sure each model has one field with primary_key=True
-#   * Make sure each ForeignKey has `on_delete` set to the desired behavior.
+#   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
@@ -195,7 +195,7 @@ class Customer(models.Model):
 
 
 class CusContact(models.Model):
-    con_id = models.DecimalField(max_digits=10, decimal_places=0)
+    con_id = models.DecimalField(primary_key=True, max_digits=10, decimal_places=0)
     cus_id = models.DecimalField(max_digits=7, decimal_places=0)
     cus_brn = models.DecimalField(max_digits=3, decimal_places=0, blank=True, null=True)
     cus_rem = models.CharField(max_length=10, blank=True, null=True)
@@ -221,7 +221,7 @@ class CusContact(models.Model):
 
 
 class CusContract(models.Model):
-    cnt_id = models.DecimalField(primary_key=True, max_digits=13, decimal_places=0)
+    cnt_id = models.DecimalField(max_digits=13, decimal_places=0)
     cus_id = models.DecimalField(max_digits=7, decimal_places=0, blank=True, null=True)
     cus_brn = models.DecimalField(max_digits=3, decimal_places=0, blank=True, null=True)
     cus_vol = models.DecimalField(max_digits=3, decimal_places=0, blank=True, null=True)
@@ -702,6 +702,16 @@ class DjangoSession(models.Model):
         db_table = 'django_session'
 
 
+class Groupbill(models.Model):
+    post = models.FloatField(db_column='Post', blank=True, null=True)  # Field name made lowercase.
+    cnt_id = models.CharField(db_column='Cnt_id', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    groupcom = models.CharField(db_column='GroupCom', max_length=255, blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'groupbill'
+
+
 class LeaveEmployeeNew(models.Model):
     emp_id = models.DecimalField(max_digits=7, decimal_places=0)
     emp_fname_en = models.CharField(max_length=30, blank=True, null=True)
@@ -743,3 +753,85 @@ class LeaveEmployeeinstance(models.Model):
     class Meta:
         managed = False
         db_table = 'leave_employeeinstance'
+
+
+class PageUserprofile(models.Model):
+    language_code = models.CharField(max_length=2, blank=True, null=True)
+    employee_id = models.CharField(max_length=10, blank=True, null=True)
+    updated_by = models.ForeignKey(AuthUser, models.DO_NOTHING, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'page_userprofile'
+
+
+class PostOfficeAttachment(models.Model):
+    file = models.CharField(max_length=100)
+    name = models.CharField(max_length=255)
+    mimetype = models.CharField(max_length=255)
+    headers = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'post_office_attachment'
+
+
+class PostOfficeAttachmentEmails(models.Model):
+    attachment = models.ForeignKey(PostOfficeAttachment, models.DO_NOTHING)
+    email = models.ForeignKey('PostOfficeEmail', models.DO_NOTHING)
+
+    class Meta:
+        managed = False
+        db_table = 'post_office_attachment_emails'
+
+
+class PostOfficeEmail(models.Model):
+    from_email = models.CharField(max_length=254)
+    to = models.TextField()
+    cc = models.TextField()
+    bcc = models.TextField()
+    subject = models.CharField(max_length=989)
+    message = models.TextField()
+    html_message = models.TextField()
+    status = models.SmallIntegerField(blank=True, null=True)
+    priority = models.SmallIntegerField(blank=True, null=True)
+    created = models.DateTimeField()
+    last_updated = models.DateTimeField()
+    scheduled_time = models.DateTimeField(blank=True, null=True)
+    headers = models.TextField(blank=True, null=True)
+    context = models.TextField(blank=True, null=True)
+    template = models.ForeignKey('PostOfficeEmailtemplate', models.DO_NOTHING, blank=True, null=True)
+    backend_alias = models.CharField(max_length=64)
+
+    class Meta:
+        managed = False
+        db_table = 'post_office_email'
+
+
+class PostOfficeEmailtemplate(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    subject = models.CharField(max_length=255)
+    content = models.TextField()
+    html_content = models.TextField()
+    created = models.DateTimeField()
+    last_updated = models.DateTimeField()
+    default_template = models.ForeignKey('self', models.DO_NOTHING, blank=True, null=True)
+    language = models.CharField(max_length=12)
+
+    class Meta:
+        managed = False
+        db_table = 'post_office_emailtemplate'
+        unique_together = (('name', 'language', 'default_template'),)
+
+
+class PostOfficeLog(models.Model):
+    date = models.DateTimeField()
+    status = models.SmallIntegerField()
+    exception_type = models.CharField(max_length=255)
+    message = models.TextField()
+    email = models.ForeignKey(PostOfficeEmail, models.DO_NOTHING)
+
+    class Meta:
+        managed = False
+        db_table = 'post_office_log'

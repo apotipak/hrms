@@ -210,3 +210,13 @@ class TCountry(models.Model):
 
     def __str__(self):
         return '%s' % (self.country_th)
+
+
+class Groupbill(models.Model):
+    post = models.FloatField(db_column='Post', blank=True, null=True)  # Field name made lowercase.
+    cnt_id = models.CharField(db_column='Cnt_id', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    groupcom = models.CharField(db_column='GroupCom', max_length=255, blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'groupbill'
