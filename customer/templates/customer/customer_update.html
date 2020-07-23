@@ -140,7 +140,7 @@
                       </div>
 
                       <div class="input-group">
-                        <label for="id_cus_city" class="col-sm-4 col-form-label form-control-sm">{% trans 'City/Country' %}</label>
+                        <label for="id_cus_city" class="col-sm-4 col-form-label form-control-sm">{% trans 'City' %}</label>
                         <div class="col-sm-8">
                           {% comment %}
                           <input type="text" class="form-control form-control-sm" id="id_cus_city" name="cus_city" value="{{ customer.cus_city }}">
@@ -155,7 +155,12 @@
                           {% else %}
                             {% render_field form.cus_city class="form-control form-control-sm" %}
                           {% endif %}
+                        </div>
+                      </div>
 
+                      <div class="input-group">
+                        <label for="id_cus_country" class="col-sm-4 col-form-label form-control-sm">{% trans 'Country' %}</label>
+                        <div class="col-sm-8">                        
                           {% comment %}
                           <input type="text" class="form-control form-control-sm" id="id_cus_country" name="cus_country" value="{{ customer.cus_country }}">
                           {% endcomment %}
@@ -263,7 +268,13 @@
                           {% else %}
                             {% render_field form.cus_city class="form-control form-control-sm" %}
                           {% endif %}
+                        </div>
+                      </div>
 
+
+                      <div class="input-group">
+                        <label for="id_cus_country" class="col-sm-4 col-form-label form-control-sm">{% trans 'Country' %}</label>
+                        <div class="col-sm-8">
                           {% comment %}
                           <input type="text" class="form-control form-control-sm" id="id_cus_country" name="cus_country" value="{{ customer.cus_country }}">
                           {% endcomment %}
