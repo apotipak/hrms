@@ -141,13 +141,16 @@ class CustomerUpdateForm(forms.ModelForm):
     #cus_active = forms.BooleanField()
     cus_active = forms.BooleanField(label='Have you taken the test before', required=False, widget=forms.CheckboxInput())
     cus_district_en_text = forms.CharField(required=False)
-    cus_country_en_text = forms.CharField(required=False)
+    cus_city_th_text = forms.CharField(required=False)
     cus_city_en_text = forms.CharField(required=False)
+    cus_country_th_text = forms.CharField(required=False)
+    cus_country_en_text = forms.CharField(required=False)
 
     class Meta:
         model = Customer        
-        # fields = '__all__'
-        fields = ['cus_name_th', 'cus_add1_th', 'cus_add2_th', 'cus_name_en', 'cus_subdist_th', 'cus_sht_en', 'cus_name_en', 'cus_add1_en', 'cus_add2_en', 'cus_subdist_en', 'cus_district', 'cus_city', 'cus_country', 'cus_zip', 'cus_tel', 'cus_fax', 'cus_email', 'cus_taxid', 'cus_active', 'cus_bill', 'cus_main', 'cus_site', 'cus_zone', 'cus_contact', 'site_contact', 'last_contact', 'upd_date', 'upd_by', 'upd_flag']
+        fields = '__all__'
+        # fields = ['cus_name_th', 'cus_add1_th', 'cus_add2_th', 'cus_name_en', 'cus_subdist_th', 'cus_sht_en', 'cus_name_en', 'cus_add1_en', 'cus_add2_en', 'cus_subdist_en', 'cus_district', 'cus_city', 'cus_country', 'cus_zip', 'cus_tel', 'cus_fax', 'cus_email', 'cus_taxid', 'cus_active', 'cus_bill', 'cus_main', 'cus_site', 'cus_zone', 'cus_contact', 'site_contact', 'last_contact', 'upd_date', 'upd_by', 'upd_flag']
+        exclude = ['cus_no','cus_id','cus_brn','cus_city','cus_country']
 
     def __init__(self, *args, **kwargs):
         super(CustomerUpdateForm, self).__init__(*args, **kwargs)        
@@ -159,11 +162,11 @@ class CustomerUpdateForm(forms.ModelForm):
         # cus_contact = forms.ModelChoiceField(label=_('Select contact person'), queryset=contactobj, required=False)
 
         cus_district = forms.ModelChoiceField(queryset=None, required=False)
-        cus_city = forms.ModelChoiceField(queryset=None, required=False)
-        self.fields['cus_city'].widget.attrs['readonly'] = True
+        #cus_city = forms.ModelChoiceField(queryset=None, required=False)
+        #self.fields['cus_city'].widget.attrs['readonly'] = True
 
-        cus_country = forms.ModelChoiceField(queryset=None, required=False)
-        self.fields['cus_country'].widget.attrs['readonly'] = True
+        #cus_country = forms.ModelChoiceField(queryset=None, required=False)
+        #self.fields['cus_country'].widget.attrs['readonly'] = True
 
         cus_zone = forms.ModelChoiceField(queryset=None, required=False)
         cus_bill = forms.ModelChoiceField(queryset=None, required=False)
@@ -172,13 +175,21 @@ class CustomerUpdateForm(forms.ModelForm):
         self.initial['cus_district_en_text'] = instance.cus_district.dist_en
         self.fields['cus_district_en_text'].widget.attrs['readonly'] = True
 
-        cus_country_en_text = forms.CharField(required=False)
-        self.initial['cus_country_en_text'] = instance.cus_country.country_en
-        self.fields['cus_country_en_text'].widget.attrs['readonly'] = True
+        cus_city_th_text = forms.CharField(required=False)
+        self.initial['cus_city_th_text'] = instance.cus_city.city_th
+        self.fields['cus_city_th_text'].widget.attrs['readonly'] = True
 
         cus_city_en_text = forms.CharField(required=False)
         self.initial['cus_city_en_text'] = instance.cus_city.city_en
         self.fields['cus_city_en_text'].widget.attrs['readonly'] = True
+
+        cus_country_th_text = forms.CharField(required=False)
+        self.initial['cus_country_th_text'] = instance.cus_country.country_th
+        self.fields['cus_country_th_text'].widget.attrs['readonly'] = True
+
+        cus_country_en_text = forms.CharField(required=False)
+        self.initial['cus_country_en_text'] = instance.cus_country.country_en
+        self.fields['cus_country_en_text'].widget.attrs['readonly'] = True
 
     def clean_cus_zip(self):
         cus_zip = self.data.get('cus_zip')
