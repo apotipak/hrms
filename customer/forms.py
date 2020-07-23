@@ -140,6 +140,7 @@ class CustomerSearchForm(forms.ModelForm):
 class CustomerUpdateForm(forms.ModelForm):    
     #cus_active = forms.BooleanField()
     cus_active = forms.BooleanField(label='Have you taken the test before', required=False, widget=forms.CheckboxInput())
+    cus_district_th_text = forms.CharField(required=False)
     cus_district_en_text = forms.CharField(required=False)
     cus_city_th_text = forms.CharField(required=False)
     cus_city_en_text = forms.CharField(required=False)
@@ -170,6 +171,10 @@ class CustomerUpdateForm(forms.ModelForm):
 
         cus_zone = forms.ModelChoiceField(queryset=None, required=False)
         cus_bill = forms.ModelChoiceField(queryset=None, required=False)
+
+        cus_district_th_text = forms.CharField(required=False)
+        self.initial['cus_district_th_text'] = instance.cus_district.dist_th
+        self.fields['cus_district_th_text'].widget.attrs['readonly'] = True
 
         cus_district_en_text = forms.CharField(required=False)
         self.initial['cus_district_en_text'] = instance.cus_district.dist_en

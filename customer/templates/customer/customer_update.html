@@ -127,14 +127,22 @@
                       <div class="input-group">
                         <label for="id_cus_disrict" class="col-sm-4 col-form-label form-control-sm">{% trans 'District' %}</label>
                         <div class="col-sm-8">
+
+<div class="input-group mb-3">
+  {% render_field form.cus_district_th_text class="form-control form-control-sm" %}
+  <div class="input-group-append">
+    <button class="btn btn-outline-secondary btn-sm" type="button"><i class="fas fa-search fa-sm"></i></button>
+  </div>
+</div>
+
                           {% if form.cus_district.errors %}                
                             {% render_field form.cus_district class="form-control form-control-sm is-invalid" %}
                             {% for error in form.cus_district.errors %}
                             <div class="invalid-feedback">
                               {{error}}
                             </div>
-                            {% endfor %}                
-                          {% else %}
+                            {% endfor %}
+                          {% else %}                          
                             {% render_field form.cus_district class="form-control form-control-sm" %}
                           {% endif %}                            
                         </div>
