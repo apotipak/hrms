@@ -127,13 +127,14 @@
                       <div class="input-group">
                         <label for="id_cus_disrict" class="col-sm-4 col-form-label form-control-sm">{% trans 'District' %}</label>
                         <div class="col-sm-8">
+                          <!-- TODO -->
+                          <div class="input-group mb-3">
+                            {% render_field form.cus_district_th_text class="form-control form-control-sm" %}
+                            <div class="input-group-append">
+                              <button id="district_lookup" type="button" class="btn btn-outline-secondary btn-sm" data-toggle="modal" data-url="{% url 'get_district_list' %}"><i class="fas fa-search fa-sm"></i></button>
 
-<div class="input-group mb-3">
-  {% render_field form.cus_district_th_text class="form-control form-control-sm" %}
-  <div class="input-group-append">
-    <button class="btn btn-outline-secondary btn-sm" type="button"><i class="fas fa-search fa-sm"></i></button>
-  </div>
-</div>
+                            </div>
+                          </div>
 
                           {% if form.cus_district.errors %}                
                             {% render_field form.cus_district class="form-control form-control-sm is-invalid" %}
@@ -144,7 +145,7 @@
                             {% endfor %}
                           {% else %}                          
                             {% render_field form.cus_district class="form-control form-control-sm" %}
-                          {% endif %}                            
+                          {% endif %}
                         </div>
                       </div>
 
@@ -453,14 +454,109 @@
 <!-- /.content -->
 
 </div>
+
+<!-- Customer District Modal -->
+<div class="modal fade" id="districtmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">{% trans 'District Lookup' %}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {% trans 'Loading...' %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">{% trans 'Close' %}</button>
+        <button type="button" class="btn btn-success btn-sm">{% trans 'Select' %}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <!-- /.content-wrapper -->
 {% endblock %}
 
 
-{% block javascripts %}
 
+{% block javascript %}
 <script>
- 
+  $(document).ready(function(){    
+
+    $('#district_lookup').on('click', function (e) {
+      var obj = $(this);      
+      $.ajax({
+          url: obj.attr("data-url"),
+          type: 'get',          
+          dataType: 'json',
+          beforeSend: function () {
+            $("#districtmodal").modal("show");
+          },
+          success: function (data) {
+            var result = ""
+            var count = data.results.length;
+            var dist_id = data.results[0]["dist_id"];
+            //result += "<div class='col-12 text-center pb-2'><h5>" + dist_id + "</h5></div>";
+            result += "<table class='table table-hover table-sm'>";
+            result += " <thead>";
+            result += "   <tr>";
+            result += "     <th scope='col'>{% trans 'ID' %}</th>";
+            result += "     <th scope='col'>{% trans 'Name' %}</th>";
+            result += "     <th scope='col'>{% trans 'City' %}</th>";
+            result += "   </tr>";
+            result += " </thead>";
+            result += " <tbody>";
+
+            for(var i=0; i<count; i++) {              
+              var dist_id = data.results[i]["dist_id"];
+              var dist_name_th = data.results[i]["dist_th"];
+              var city_name_th = data.results[i]["city_th"];
+
+              result += "<tr>";
+              result += "<td>" + dist_id + "</td>";        
+              result += "<td>" + dist_name_th + "</td>";
+              result += "<td>" + city_name_th + "</td>";
+              result += "</td>";
+              result += "</tr>";              
+            }
+            result += " </tbody>";
+            result += "</table>";
+
+            result += "{% if is_paginated %}";
+            result += "<div>";
+            result += "  <span>";
+            result += "      {% if current_page.has_previous %}";
+            result += "          <a href='?page={{current_page.previous_page_number}}'><i class='fas fa-arrow-circle-left'></i></a>";
+            result += "      {% endif %}";
+            result += "      &nbsp;";
+            result += "      <span>";
+            result += "          {% trans 'Page' %} {{ current_page.number }} {% trans '/' %} {{ current_page.paginator.num_pages }}";
+            result += "      </span>";
+            result += "      &nbsp;";
+            result += "      {% if current_page.has_next %}";
+            result += "          <a href='?page={{ current_page.next_page_number }}'><i class='fas fa-arrow-circle-right'></i></a>";
+            result += "      {% endif %}";
+            result += "  </span>";
+            result += "</div>";
+            result += "{%else%}";
+            result += "aaa";
+            result += "{%endif%}";
+
+            $("#districtmodal .modal-body").html(result);            
+          },
+          error: function(data){
+            $("#districtmodal .modal-body").html("{% trans 'There is no data.' %}");
+          }          
+      });
+
+   });
+
+ });
+
+  /*
   $(document).ready(function() {
     $("#customerupdateform").submit(function(e){
       if ($(".submitBtn").attr('attempted') == 'true' ) {
@@ -481,6 +577,7 @@
       off: 'Disabled'
     });
   })
-  
+  */
+
 </script>
 {% endblock %}

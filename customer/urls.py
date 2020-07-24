@@ -17,6 +17,11 @@ urlpatterns = [
 ]
 
 urlpatterns += [
-   	path('performance-information/', views.PerformanceInformation, name='performance-information'),
+  path('performance-information/', views.PerformanceInformation, name='performance-information'),
 	path('customer-report/', views.CustomerReport, name='customer-report'),
 ]
+
+urlpatterns += [    
+  url(r'^ajax/get_district_list/$', views.get_district_list, name='get_district_list'),
+]
+
