@@ -391,6 +391,8 @@ def get_district_list(request):
             current_page = paginator.get_page(page)
         except InvalidPage as e:
             raise Http404(str(e))
+
+
     else:
         print("method get")
         data = TDistrict.objects.raw("select d.dist_id,d.dist_th,d.dist_en,c.city_id,c.city_th,c.city_en from t_district d join t_city c on d.city_id = c.city_id order by c.city_th") or None
@@ -401,7 +403,9 @@ def get_district_list(request):
         try:
             current_page = paginator.get_page(page)
         except InvalidPage as e:
-            raise Http404(str(e))        
+            raise Http404(str(e))   
+
+
 
     #if data:
     if current_page:
@@ -409,7 +413,7 @@ def get_district_list(request):
         pickup_records=[]
         
         for d in current_page:
-            #print("debug 1")
+            print("debug 1")
             record = {
                 "dist_id": d.dist_id, 
                 "city_id": d.city_id,
@@ -419,7 +423,8 @@ def get_district_list(request):
             }
             pickup_records.append(record)
 
-        response = JsonResponse(data={"success": True, "results": list(pickup_records)})
+        print("is_paginated = " + str(is_paginated))
+        response = JsonResponse(data={"success": True, "is_paginated": is_paginated, "page": page, "results": list(pickup_records)})
         response.status_code = 200
         return response
 
@@ -427,5 +432,6 @@ def get_district_list(request):
         response = JsonResponse({"error": "there was an error"})
         response.status_code = 403
         return response
+
 
     return JsonResponse(data={"success": False, "results": ""})

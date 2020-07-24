@@ -525,7 +525,16 @@
             result += " </tbody>";
             result += "</table>";
 
-            result += "{% if is_paginated %}";
+
+            if(data.is_paginated) {
+              alert(data.results);
+            } else {
+              alert("not found");
+            }
+
+
+            
+            result += "{% if data.is_paginated %}";
             result += "<div>";
             result += "  <span>";
             result += "      {% if current_page.has_previous %}";
@@ -542,7 +551,7 @@
             result += "  </span>";
             result += "</div>";
             result += "{%else%}";
-            result += "aaa";
+            result += "{{ data.is_paginated }}";
             result += "{%endif%}";
 
             $("#districtmodal .modal-body").html(result);            
