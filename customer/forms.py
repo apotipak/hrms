@@ -139,7 +139,7 @@ class CustomerSearchForm(forms.ModelForm):
 
 class CustomerUpdateForm(forms.ModelForm):    
     #cus_active = forms.BooleanField()
-    cus_active = forms.BooleanField(label='Have you taken the test before', required=False, widget=forms.CheckboxInput())
+    cus_active = forms.BooleanField(label='', required=False, widget=forms.CheckboxInput())
     cus_district_th_text = forms.CharField(required=False)
     cus_district_en_text = forms.CharField(required=False)
     cus_city_th_text = forms.CharField(required=False)

@@ -1,0 +1,235 @@
+{% extends "page_generic.html" %}
+
+{% load i18n %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}{{ page_title}} - {% trans 'Customer Update' %} {% endblock %}
+
+{% block content %}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  
+
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <form id="customerupdateform" method="post" action="{% url 'customer-update' form.instance.pk %}" class="js-customer-update-form">
+    {% csrf_token %}
+  
+    <div class="">
+      <div class="row mb-2">
+        <div class="col-8">          
+          <h1 class="m-0 text-dark">{{contract.cnt_id}}</h1>
+        </div>
+        <div class="col-4">
+
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item active">
+              status
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Main content -->  
+  <section class="content">
+
+    <div class="card">
+
+      <div class="card-body">
+
+        <div class="" id="show-error">
+        {% if form.errors %}
+            {% for field in form %}                
+                {% for error in field.errors %}
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation"></i>&nbsp;&nbsp;Your data is not correct. {{ field.name }} - {{ error }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        {% else %}
+          {% if form_is_valid %}
+            <div class="alert alert-success">
+                <i class="fas fa-save"></i>&nbsp;&nbsp;Saved complete. Back to <a href="{% url 'customer-list' %}">Customer List</a>
+            </div>
+          {% endif %}
+        {% endif %}
+        </div>
+
+
+        <div class="row">
+          
+          <div class="col-1 col-sm-1">
+            <div class="nav flex-column nav-tabs h-100" id="vert-tabs-tab" role="tablist" aria-orientation="vertical">
+              <a class="nav-link active" id="vert-tabs-th-tab" data-toggle="pill" href="#vert-tabs-th" role="tab" aria-controls="vert-tabs-th" aria-selected="true">TH</a>
+              <a class="nav-link" id="vert-tabs-en-tab" data-toggle="pill" href="#vert-tabs-en" role="tab" aria-controls="vert-tabs-en" aria-selected="false">EN</a>
+            </div>
+          </div>
+
+          <div class="col-11 col-sm-11">
+            <div class="tab-content" id="vert-tabs-tabContent">
+              <div class="tab-pane text-left fade show active" id="vert-tabs-th" role="tabpanel" aria-labelledby="vert-tabs-th-tab">
+                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin malesuada lacus ullamcorper dui molestie, sit amet congue quam finibus. Etiam ultricies nunc non magna feugiat commodo. Etiam odio magna, mollis auctor felis vitae, ullamcorper ornare ligula. Proin pellentesque tincidunt nisi, vitae ullamcorper felis aliquam id. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Proin id orci eu lectus blandit suscipit. Phasellus porta, ante et varius ornare, sem enim sollicitudin eros, at commodo leo est vitae lacus. Etiam ut porta sem. Proin porttitor porta nisl, id tempor risus rhoncus quis. In in quam a nibh cursus pulvinar non consequat neque. Mauris lacus elit, condimentum ac condimentum at, semper vitae lectus. Cras lacinia erat eget sapien porta consectetur. 
+              </div>
+              <div class="tab-pane fade" id="vert-tabs-en" role="tabpanel" aria-labelledby="vert-tabs-en-tab">
+                 Mauris tincidunt mi at erat gravida, eget tristique urna bibendum. Mauris pharetra purus ut ligula tempor, et vulputate metus facilisis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Maecenas sollicitudin, nisi a luctus interdum, nisl ligula placerat mi, quis posuere purus ligula eu lectus. Donec nunc tellus, elementum sit amet ultricies at, posuere nec nunc. Nunc euismod pellentesque diam. 
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- /.card-body -->
+
+      <div class="card-footer text-right">
+        <a href="#" type="button" onclick="customerupdateform.submit()" class="btn btn-success btn-sm"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>        
+      </div>
+      <!-- /.card-footer-->
+
+  </div>
+  <!-- /.card -->
+
+  <div class="modal fade" id="modal-customer">
+    <div class="modal-dialog">
+      <div class="modal-content"></div>
+    </div>
+  </div>
+  </form>
+</section>
+<!-- /.content -->
+
+</div>
+
+<!-- Customer District Modal -->
+<div class="modal fade" id="districtmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">{% trans 'District Lookup' %}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {% trans 'Loading...' %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">{% trans 'Close' %}</button>
+        <button type="button" class="btn btn-success btn-sm">{% trans 'Select' %}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- /.content-wrapper -->
+{% endblock %}
+
+
+
+{% block javascript %}
+<script>
+  $(document).ready(function(){    
+
+    $('#district_lookup').on('click', function (e) {
+      var obj = $(this);      
+      $.ajax({
+          url: obj.attr("data-url"),
+          type: 'get',          
+          dataType: 'json',
+          beforeSend: function () {
+            $("#districtmodal").modal("show");
+          },
+          success: function (data) {
+            var result = ""
+            var count = data.results.length;
+            var dist_id = data.results[0]["dist_id"];
+            //result += "<div class='col-12 text-center pb-2'><h5>" + dist_id + "</h5></div>";
+            result += "<table class='table table-hover table-sm'>";
+            result += " <thead>";
+            result += "   <tr>";
+            result += "     <th scope='col'>{% trans 'ID' %}</th>";
+            result += "     <th scope='col'>{% trans 'Name' %}</th>";
+            result += "     <th scope='col'>{% trans 'City' %}</th>";
+            result += "   </tr>";
+            result += " </thead>";
+            result += " <tbody>";
+
+            for(var i=0; i<count; i++) {              
+              var dist_id = data.results[i]["dist_id"];
+              var dist_name_th = data.results[i]["dist_th"];
+              var city_name_th = data.results[i]["city_th"];
+
+              result += "<tr>";
+              result += "<td>" + dist_id + "</td>";        
+              result += "<td>" + dist_name_th + "</td>";
+              result += "<td>" + city_name_th + "</td>";
+              result += "</td>";
+              result += "</tr>";              
+            }
+            result += " </tbody>";
+            result += "</table>";
+
+            /*
+            if(data.is_paginated) {
+              result += "<div>";
+              result += "  <span>";
+              if(data.previous_page>0) {
+                result += "          <a href='?page=" + data.previous_page + "'><i class='fas fa-arrow-circle-left'></i></a>";
+              }
+              result += "      &nbsp;";
+              result += "      <span>";
+              result += "          {% trans 'Page' %} " + data.current_page + "{% trans ' / ' %}" + data.pages;
+              result += "      </span>";
+              result += "      &nbsp;";
+              if(data.next_page>0) {
+
+              }
+              result += "          <a href='?page=" + data.next_page + "'><i class='fas fa-arrow-circle-right'></i></a>";
+              result += "  </span>";
+              result += "</div>";              
+            } else {
+              alert("not found");
+            }
+            */
+            
+            $("#districtmodal .modal-body").html(result);            
+          },
+          error: function(data){
+            $("#districtmodal .modal-body").html("{% trans 'There is no data.' %}");
+          }          
+      });
+
+   });
+
+ });
+
+  /*
+  $(document).ready(function() {
+    $("#customerupdateform").submit(function(e){
+      if ($(".submitBtn").attr('attempted') == 'true' ) {
+        e.preventDefault();
+        alert("submit");
+      } else {
+        //$(".submitBtn").html("<i class='fa fa-hourglass-half' aria-hidden='true'></i>&nbsp;&nbsp;Processing...");
+        //$(".submitBtn").attr("disabled", true);
+        //$(".submitBtn").attr("attempted", 'true');          
+      }
+    });
+  });    
+
+  //$(function(){ $('#customer_active_status').bootstrapToggle() });
+  $(function() {
+    $('#customer_active_status').bootstrapToggle({
+      on: 'Enabled',
+      off: 'Disabled'
+    });
+  })
+  */
+
+</script>
+{% endblock %}

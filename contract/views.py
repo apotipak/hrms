@@ -1,4 +1,6 @@
+from django.shortcuts import render, get_object_or_404
 from django.shortcuts import render
+#from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.http import JsonResponse
@@ -7,23 +9,10 @@ from django.http import HttpResponseRedirect
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils.translation import ugettext_lazy as _
-from .forms import ContractForm
+from .forms import ContractForm, ContractUpdateForm
 from .models import CusContract
 from customer.models import Customer
 from decimal import Decimal
-
-
-@login_required(login_url='/accounts/login/')
-
-@login_required(login_url='/accounts/login/')
-def ContractList1(request):
-	page_title = settings.PROJECT_NAME
-	db_server = settings.DATABASES['default']['HOST']
-	project_name = settings.PROJECT_NAME
-	project_version = settings.PROJECT_VERSION
-	today_date = settings.TODAY_DATE	
-
-	return render(request, 'contract/contract_list.html', {'page_title': page_title, 'project_name': project_name, 'project_version': project_version, 'db_server': db_server, 'today_date': today_date})
 
 
 @login_required(login_url='/accounts/login/')
@@ -113,6 +102,55 @@ def ContractList(request):
 
     return render(request, 'contract/contract_list.html', context)
 
+
+def ContractUpdate(request, pk):
+    template_name = 'contract/contract_update.html'
+    contract = get_object_or_404(CusContract, pk=pk)
+    if request.method == 'POST':
+        form = ContractUpdateForm(request.POST, instance=contract)
+    else:
+        form = ContractUpdateForm(instance=contract)
+
+    data = dict()
+    form_is_valid = False
+    update_message = ""
+
+    '''
+    if request.method == 'POST':
+        if form.is_valid():
+            obj = form.save(commit=False)
+            
+            if request.user.is_superuser:
+                obj.upd_by = 'Superuser'
+            else:
+                obj.upd_by = request.user.first_name
+
+            if obj.upd_flag == 'A':
+                obj.upd_flag = 'E'
+
+            obj.upd_date = timezone.now()
+
+            obj.save()
+            form_is_valid = True            
+            update_message = "ทำรายการสำเร็จ"
+        else:
+            form_is_valid = False
+            update_message = "ไม่สามารถทำรายการได้..!"
+    '''
+
+    context = {
+        'page_title': settings.PROJECT_NAME,
+        'today_date': settings.TODAY_DATE,
+        'project_version': settings.PROJECT_VERSION,
+        'db_server': settings.DATABASES['default']['HOST'],
+        'project_name': settings.PROJECT_NAME,
+        'form': form, 
+        'contract': contract,
+        'request': request,
+        'form_is_valid': form_is_valid,
+        'update_message': update_message,   
+    }
+    return render(request, template_name, context)
 
 
 @login_required(login_url='/accounts/login/')
