@@ -15,7 +15,7 @@ from decimal import Decimal
 @login_required(login_url='/accounts/login/')
 
 @login_required(login_url='/accounts/login/')
-def ContractList(request):
+def ContractList1(request):
 	page_title = settings.PROJECT_NAME
 	db_server = settings.DATABASES['default']['HOST']
 	project_name = settings.PROJECT_NAME
@@ -25,7 +25,7 @@ def ContractList(request):
 	return render(request, 'contract/contract_list.html', {'page_title': page_title, 'project_name': project_name, 'project_version': project_version, 'db_server': db_server, 'today_date': today_date})
 
 @login_required(login_url='/accounts/login/')
-def ContractCreate(request):
+def ContractList(request):
     page_title = settings.PROJECT_NAME
     db_server = settings.DATABASES['default']['HOST']
     project_name = settings.PROJECT_NAME
