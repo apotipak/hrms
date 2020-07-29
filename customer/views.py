@@ -25,7 +25,7 @@ def CustomerList(request):
     project_name = settings.PROJECT_NAME
     project_version = settings.PROJECT_VERSION
     today_date = settings.TODAY_DATE    
-    item_per_page = 15    
+    item_per_page = 5   
 
     if request.method == "POST":
         form = CustomerSearchForm(request.POST, user=request.user)
@@ -100,7 +100,7 @@ def CustomerList(request):
         cus_brn = request.GET.get('cusbrn', '')
 
         # TODO
-        cus_id = "1001"
+        # cus_id = "1001"
         '''
         print("get")
         print("GET: cus_name = " +  str(cus_name))

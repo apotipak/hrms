@@ -33,7 +33,7 @@ def ContractList(request):
     project_name = settings.PROJECT_NAME
     project_version = settings.PROJECT_VERSION
     today_date = settings.TODAY_DATE
-    item_per_page = 8
+    item_per_page = 5
 
     if request.method == "POST":    	
         data = dict()
