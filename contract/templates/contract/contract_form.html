@@ -1,84 +1,212 @@
 {% extends "page_generic.html" %}
 
-{% block title %}{{ page_title}} - ระบบลูกค้า{% endblock %}
-
+{% load i18n %}
+{% block title %} {{ page_title}} - {% trans 'Contract List' %} {% endblock %}
 {% load static %}
+{% load widget_tweaks %}
 
 {% block content %}
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
+    
     <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark"><small><i class="fas fa-handshake text-secondary"></i></small>&nbsp;&nbsp;Contract <small><small><small>| contract Information</small></small></small></h1>
-          </div><!-- /.col -->
+            <h1 class="m-0 text-dark">{% trans 'Contract List' %}</h1>
+          </div>
           <div class="col-sm-6">
+            <!--
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="/">Home</a></li>
               <li class="breadcrumb-item active">Contract</li>
             </ol>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
+            -->
+          </div>
+        </div>
+      </div>
     </div>
     <!-- /.content-header -->
 
+    <!-- Main content -->
     <section class="content">
-      <div class="container-fluid">
 
-        <div class="card card-default">          
-          
-          <div class="card-header mt-3">
-            <form method="POST" id="contract-form">
+      <!-- Default box -->
+      <div class="card">
+
+        <div class="col-sm-8 offset-sm-2 col-md-8 offset-md-2 pt-4 pl-4 pr-4"> 
+
+          <form class="form-row" method="post" autocomplete="off">
             {% csrf_token %}
-            <div class="form-group row justify-content-md-center col-sm-12">
-              <div class="col-sm-2 mt-4 text-sm-right"><label>Contract No</label></div>
-              <div class="col-sm-3 mt-4">
-                {{ form.cus_id }}
-                <p id="id_cus_id_error" class="text-danger text-xs">{{ form.cus_id.errors.as_text }}</p>
+            <div class="form-row">
+
+              <div class="col-3">
+                {% if form.cus_id.errors %}                
+                  {% render_field form.cus_id class="form-control form-control-sm is-invalid" %}                
+                  {% for error in form.cus_id.errors %}
+                  <div class="invalid-feedback">
+                    {{error}}
+                  </div>
+                  {% endfor %}
+                {% else %}
+                  {% render_field form.cus_id class="form-control form-control-sm" %}
+                {% endif %}
               </div>
-              <div class="col-sm-2 mt-4">
-                {{ form.cus_brn }} 
-                <p id="id_cus_brn_error" class="text-danger text-xs">{{ form.cus_brn.errors.as_text }}</p>
+
+              <div class="col-3">
+                {% if form.cus_brn.errors %}                
+                  {% render_field form.cus_brn class="form-control form-control-sm is-invalid" %}
+                  {% for error in form.cus_brn.errors %}
+                  <div class="invalid-feedback">
+                    {{error}}
+                  </div>
+                  {% endfor %}                
+                {% else %}
+                  {% render_field form.cus_brn class="form-control form-control-sm" %}
+                {% endif %}              
               </div>
-              <div class="col-sm-2 mt-4">
-                {{ form.cus_vol }}
-                <p id="id_cus_vol_error" class="text-danger text-xs">{{ form.cus_vol.errors.as_text }}</p>
+
+              <div class="col-3">
+                {% if form.cus_vol.errors %}                
+                  {% render_field form.cus_vol class="form-control form-control-sm is-invalid" %}
+                  {% for error in form.cus_vol.errors %}
+                  <div class="invalid-feedback">
+                    {{error}}
+                  </div>
+                  {% endfor %}                
+                {% else %}
+                  {% render_field form.cus_vol class="form-control form-control-sm" %}
+                {% endif %}              
               </div>
-              <div class="col-sm-2 mt-4 text-center">
-                <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Search</button>
+
+              <div colass="col-2">
+                <button type="submit" class="btn btn-sm btn-primary col-xs-2"><i class="fas fa-search fa-sm"></i>&nbsp;{% trans 'Search' %}</button>
+                <!--<button type="reset" class="btn btn-sm btn-outline-secondary col-xs-2">{% trans 'Clear' %}</button>-->
               </div>
+
             </div>
-            </form>
-          </div>
+          </form>
 
         </div>
 
-      </div>
-    </section>
+        {% if form.errors %}
+        <div class="col-md-6 offset-md-3 pt-2 pl-15">
+          <div class="container-fluid" id="show-error">       
+            <!--
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <div class="alert alert-danger">
+                        <strong><i class="fas fa-exclamation"></i>&nbsp;&nbsp;{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            -->
 
-    <section class="content">
-      <div class="container-fluid">
-        <div class="card card-default">
+            <!--
+            {% for error in form.non_field_errors %}
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation"></i>&nbsp;&nbsp;{{ error|escape }}
+                </div>
+            {% endfor %}
+            -->
+          </div>        
+        </div>
+        {% endif %}
+
+        <div class="card-header" style="vertical-align: middle;">
+          <div class="card-tools">
+            <!--
+            <button type="button" class="btn btn-success btn-sm js-create-customer" data-url="{% url 'customer-create' %}"><i class="fas fa-plus"></i>&nbsp;&nbsp;{% trans 'Add' %}</button>
+            -->          
+            <!--
+            <div class="float-right"><a href="{% url 'customer-create' %}" type="button" class="btn btn-success btn-sm float-right"><i class="fas fa-plus fa-xs"></i>&nbsp;&nbsp;{% trans 'Add' %}</a></div>-->          
+          </div>
+        </div>
+        
+        <div class="card-body">
           
-          <div class="card-header">
-            <h3 class="card-title">Company Name</h3>
-            <div class="card-tools">
-              <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
-              <!--<button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-remove"></i></button>-->
-            </div>
-          </div>
+          <div class="float-right pb-3"><a href="{% url 'customer-create' %}" type="button" class="btn btn-success btn-sm"><i class="fas fa-plus fa-xs"></i>&nbsp;&nbsp;{% trans 'New' %}</a></div>
 
-          <div class="card-body">
-            <div class="row">&nbsp;</div>
+          {% if current_page %}
+            <table id="customer-list-table1" class="table table-bordered table-striped table-sm">
+              <thead>
+              <tr>
+                <th scope="col">{% trans 'Contract ID' %}</th>
+                <th scope="col">{% trans 'Customer Name (TH)' %}</th>
+                <th scope="col">{% trans 'Customer Name (EN)' %}</th>            
+              </tr>
+              </thead>
+              <tbody>
+                {% include 'customer/partial_customer_list.html' %}
+              </tbody>
+            </table>
+
+            {% if is_paginated %}
+            <div>
+                <span>
+                    {% if current_page.has_previous %}
+                        <a href="?page={{current_page.previous_page_number}}&cusname={{cus_name|default:''}}&cusid={{cus_id|default:'' }}&cusbrn={{cus_brn|default:''}}"><i class="fas fa-arrow-circle-left"></i></a>
+                    {% endif %}
+                    &nbsp;
+                    <span>
+                        {% trans 'Page' %} {{ current_page.number }} {% trans '/' %} {{ current_page.paginator.num_pages }}
+                    </span>
+                    &nbsp;
+                    {% if current_page.has_next %}
+                        <a href="?page={{ current_page.next_page_number }}&cusname={{cus_name|default:''}}&cusid={{cus_id|default:'' }}&cusbrn={{cus_brn|default:'' }}"><i class="fas fa-arrow-circle-right"></i></a>
+                    {% endif %}
+                </span>
+            </div>
+            {% endif %}
+          
+          {% else %}
+          <div class="table-responsive">
+            <table class="table table-bordered text-secondary table-striped table-sm table-condensed">
+              <thead>
+              <tr>
+                <th scope="col">{% trans 'Contract ID' %}</th>
+                <th scope="col">{% trans 'Customer Name (TH)' %}</th>
+                <th scope="col">{% trans 'Customer Name (EN)' %}</th>            
+              </tr>
+              </thead>
+              <tbody>            
+                <tr class="bg-warning">
+                  <td colspan="5" align="center"><br>{% trans 'There is no data displayed.' %}<br><br></td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <!--<div class="card-footer">&nbsp;</div>-->
+          {% endif %}
+       
         </div>
+        <!-- /.card-body -->
+
+        <!--
+        <div class="card-footer">
+          &nbsp;
+        </div>
+        -->
+
+        <!-- /.card-footer-->
+
+    </div>
+    <!-- /.card -->
+
+    <div class="modal fade" id="modal-customer">
+      <div class="modal-dialog">
+        <div class="modal-content"></div>
       </div>
+    </div>
+
+
     </section>
+    <!-- /.content -->
+
+
+
+
 
   </div>
 

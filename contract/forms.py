@@ -17,13 +17,13 @@ class ContractForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):    	
         super(ContractForm, self).__init__(*args, **kwargs)
 
-        self.fields['cus_id'].widget.attrs = {'class': 'form-control', 'placeholder': _('Customer ID')}        
+        self.fields['cus_id'].widget.attrs = {'class': 'form-control form-control-sm', 'placeholder': _('Customer ID')}        
         self.fields['cus_id'].error_messages = {'required': _('กรุณาป้อนข้อมูล'), 'max_value': _('รหัสสัญญาเกิน 7 หลัก')}
 
-        self.fields['cus_brn'].widget.attrs={'class': 'form-control', 'placeholder': _('Branch')}
+        self.fields['cus_brn'].widget.attrs={'class': 'form-control form-control-sm', 'placeholder': _('Branch')}
         self.fields['cus_brn'].error_messages = {'required': _('กรุณาป้อนข้อมูล'), 'max_value': _('รหัสสาขาเกิน 3 หลัก'), 'min_value': _('ป้อนข้อมูลน้อยกว่า 0')}
 
-        self.fields['cus_vol'].widget.attrs={'class': 'form-control', 'placeholder': _('Volume')}
+        self.fields['cus_vol'].widget.attrs={'class': 'form-control form-control-sm', 'placeholder': _('Volume')}
         self.fields['cus_vol'].error_messages = {'required': _('กรุณาป้อนข้อมูล'), 'max_value': _('รหัสลำดับสัญญาเกิน 3 หลัก'), 'min_value': _('ป้อนข้อมูลน้อยกว่า 0')}
 
     def clean_cus_id(self):
