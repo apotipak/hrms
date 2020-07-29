@@ -82,7 +82,7 @@
               </div>
 
               <div colass="col-2">
-                <button type="submit" class="btn btn-sm btn-primary col-xs-2"><i class="fas fa-search fa-sm"></i>&nbsp;{% trans 'Search' %}</button>
+                <button type="submit" class="btn btn-sm btn-primary col-xs-2">&nbsp;&nbsp;{% trans '?' %}&nbsp;&nbsp;</button>
                 <!--<button type="reset" class="btn btn-sm btn-outline-secondary col-xs-2">{% trans 'Clear' %}</button>-->
               </div>
 
@@ -135,11 +135,13 @@
               <tr>
                 <th scope="col">{% trans 'Contract ID' %}</th>
                 <th scope="col">{% trans 'Customer Name (TH)' %}</th>
-                <th scope="col">{% trans 'Customer Name (EN)' %}</th>            
+                <th scope="col">{% trans 'Customer Name (EN)' %}</th>
+                <th scope="col">{% trans 'Status' %}</th>
+                <th scope="col">&nbsp;</th>
               </tr>
               </thead>
               <tbody>
-                {% include 'customer/partial_customer_list.html' %}
+                {% include 'contract/partial_contract_list.html' %}
               </tbody>
             </table>
 
@@ -168,7 +170,9 @@
               <tr>
                 <th scope="col">{% trans 'Contract ID' %}</th>
                 <th scope="col">{% trans 'Customer Name (TH)' %}</th>
-                <th scope="col">{% trans 'Customer Name (EN)' %}</th>            
+                <th scope="col">{% trans 'Customer Name (EN)' %}</th>
+                <th scope="col">{% trans 'Status' %}</th>
+                <th scope="col">&nbsp;</th>       
               </tr>
               </thead>
               <tbody>            

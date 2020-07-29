@@ -1,0 +1,25 @@
+{% for item in current_page %}
+    <tr>
+        <td>{{item.cnt_id}}</td>
+        <td><a href="#">{{item.cus_name_th}}</a></td>
+        <td>{{item.cus_name_en}}</td>
+        <td>
+          {% if item.cnt_active %}
+          <span class="badge badge-success">Active</span>
+          {%else%}
+          <span class="badge badge-secondary">Pending</span>
+          {%endif%}
+        </td>
+        <td class="text-right py-0 align-middle">
+          <div class="btn-group btn-group-sm">
+            <a href="#" type="button" class="btn btn-info btn-xs js-update-customer">
+              <i class="fas fa-pen fa-xs"></i>
+            </a>
+            &nbsp;
+            <button type="button" class="btn btn-danger btn-xs js-delete-customer">
+              <i class="fas fa-trash fa-xs"></i>
+            </button>
+          </div>
+        </td>                    
+    </tr>
+{% endfor %}

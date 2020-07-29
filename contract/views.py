@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from django.template.loader import render_to_string
 from django.http import HttpResponseRedirect
 from django.core.exceptions import ValidationError
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils.translation import ugettext_lazy as _
 from .forms import ContractForm
 from .models import CusContract
@@ -24,6 +25,7 @@ def ContractList1(request):
 
 	return render(request, 'contract/contract_list.html', {'page_title': page_title, 'project_name': project_name, 'project_version': project_version, 'db_server': db_server, 'today_date': today_date})
 
+
 @login_required(login_url='/accounts/login/')
 def ContractList(request):
     page_title = settings.PROJECT_NAME
@@ -31,57 +33,87 @@ def ContractList(request):
     project_name = settings.PROJECT_NAME
     project_version = settings.PROJECT_VERSION
     today_date = settings.TODAY_DATE
-    
+    item_per_page = 8
+
     if request.method == "POST":    	
-    	data = dict()
-    	form = ContractForm(request.POST)
+        data = dict()
+        form = ContractForm(request.POST)
+        cus_id = request.POST.get('cus_id')
+        cus_brn = request.POST.get('cus_brn')
+        cus_vol = request.POST.get('cus_vol')
+        cnt_id = Decimal(request.POST['cus_id'] + request.POST.get('cus_brn').zfill(3) + request.POST.get('cus_vol').zfill(3))
+        print("cnt_id_123 = " + str(cnt_id))
 
-    	if form.is_valid():
+        if form.is_valid():        	
+            # contract_list = CusContract.objects.filter(cnt_id__exact=cnt_id)
+            
+            # contract_list = CusContract.objects.raw("select * from customer cus join cus_contract con on cus.cus_id=con.cus_id and cus.cus_brn=con.cus_brn where cus.cus_id="+cus_id+" and cus.cus_brn="+cus_brn+" and con.cus_vol="+cus_vol)
+            # contract_list = CusContract.objects.raw("select * from customer cus join cus_contract con on cus.cus_id=con.cus_id and cus.cus_brn=con.cus_brn where cus.cus_id="+cus_id+" and cus.cus_brn="+cus_brn+" and con.cus_vol="+cus_vol)
+            contract_list = CusContract.objects.raw("select * from customer cus join cus_contract con on cus.cus_id=con.cus_id and cus.cus_brn=con.cus_brn where cus.cus_id="+cus_id+" order by con.cnt_active desc")
 
-    		cnt_id = Decimal(request.POST['cus_id'] + request.POST.get('cus_brn').zfill(3) + request.POST.get('cus_vol').zfill(3))
-    		contract = CusContract.objects.filter(cnt_id__exact=cnt_id)
-    		customer = Customer.objects.filter(cus_id__exact=request.POST.get('cus_id')).filter(cus_brn__exact=request.POST.get('cus_brn'))
+            print("contract_list")
+            print(contract_list)
+        else:    		    		
+            form = ContractForm(request.POST)
+            print("invalid..")
+            for field, errors in form.errors.items():
+            	print('Field: {} Error: {}'.format(field, ','.join(errors)))
 
-    		if customer:
-    			#print(customer.cus_name_th)
-    			for item in customer:
-    				cus_name_th = item.cus_name_th
-    				cus_name_en = item.cus_name_en
-    			
-    			data['cus_name_th'] = cus_name_th
-    			data['cus_name_en'] = cus_name_en
-    		else:
-    			data['cus_name_th'] = "Company"
-    			data['cus_name_en'] = _("Company")
+            data['errorlist'] = form.errors
+            data['html_form'] = render_to_string('contract/partial_contract_information.html', {'form':form, 'errorlist':form.errors})
 
-    		if contract:    			
-    			data['error_message'] = _("Existing contract")
-    			data['html_form'] = render_to_string('contract/partial_contract_information.html', {'contract':contract, 'customer':customer})
-    		else:
-    			data['html_form'] = _("Contract Number not found.")
-    			data['cus_name_th'] = _("Company")
-    			data['cus_name_en'] = _("Company")
+            # return JsonResponse(data)
+        page = 1
+        paginator = Paginator(contract_list, item_per_page)
+        is_paginated = True if paginator.num_pages > 1 else False        
 
-    		#print("valid")
-    		#for field, errors in form.errors.items():
-    		#	print('Field: {} Error: {}'.format(field, ','.join(errors)))
-
-    		return JsonResponse(data)
-    	else:    		    		
-    		form = ContractForm(request.POST)
-
-    		print("invalid..")
-    		for field, errors in form.errors.items():
-    			print('Field: {} Error: {}'.format(field, ','.join(errors)))
-
-    		data['errorlist'] = form.errors
-    		data['html_form'] = render_to_string('contract/partial_contract_information.html', {'form':form, 'errorlist':form.errors})
-
-    		return JsonResponse(data)
+        try:
+            current_page = paginator.get_page(page)
+        except InvalidPage as e:
+            raise Http404(str(e))            
     else:
-    	form = ContractForm()
-    	print("Form action GET");
-    	return render(request, 'contract/contract_form.html', {'form':form, 'page_title': page_title, 'project_name': project_name, 'project_version': project_version, 'db_server': db_server, 'today_date': today_date})
+        form = ContractForm()
+        cus_id = request.GET.get('cus_id', '')
+        cus_brn = request.GET.get('cus_brn', '')
+        cus_vol = request.GET.get('cus_vol', '')
+
+        # contract_list = CusContract.objects.all().order_by('-cnt_active','cus_id','cus_brn','cus_vol')
+        contract_list = []
+        contract_list = CusContract.objects.raw("select * from customer cus join cus_contract con on cus.cus_id=con.cus_id and cus.cus_brn=con.cus_brn")
+
+        # cus_no = Decimal(request.POST['cus_id'] + request.POST.get('cus_brn').zfill(3))
+        # contract_list = CusContract.objects.select_related('customer').all()
+
+        paginator = Paginator(contract_list, item_per_page)
+        is_paginated = True if paginator.num_pages > 1 else False
+        page = request.GET.get('page', '1') or 1
+
+        try:
+            current_page = paginator.get_page(page)
+        except InvalidPage as e:
+            raise Http404(str(e))
+
+    print("cus_id = " + str(cus_id))
+    print("cus_brn = " + str(cus_brn))
+    print("cus_vol = " + str(cus_vol))
+
+    context = {
+        'page_title': page_title, 
+        'db_server': db_server, 'today_date': today_date,
+        'project_name': project_name, 
+        'project_version': project_version,         
+        'contract_list': contract_list,
+        'current_page': current_page,
+        'is_paginated': is_paginated,
+        'form': form,
+        'cus_id': CusContract.cus_id,
+        'cus_brn': CusContract.cus_brn,
+        'cus_vol': CusContract.cus_vol
+    }
+
+    return render(request, 'contract/contract_list.html', context)
+
+
 
 @login_required(login_url='/accounts/login/')
 def SearchContractNumber(request):
