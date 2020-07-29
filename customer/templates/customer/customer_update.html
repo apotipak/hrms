@@ -525,34 +525,25 @@
             result += " </tbody>";
             result += "</table>";
 
-
             if(data.is_paginated) {
-              alert(data.results);
+              result += "<div>";
+              result += "  <span>";
+              result += "      {% if data.current_page.has_previous %}";
+              result += "          <a href='?page={{data.current_page.previous_page_number}}'><i class='fas fa-arrow-circle-left'></i></a>";
+              result += "      {% endif %}";
+              result += "      &nbsp;";
+              result += "      <span>";
+              result += "          {% trans 'Page' %} {{ data.current_page.number }} {% trans '/' %} {{ data.current_page.paginator.num_pages }}";
+              result += "      </span>";
+              result += "      &nbsp;";
+              result += "      {% if data.current_page.has_next %}";
+              result += "          <a href='?page={{ data.current_page.next_page_number }}'><i class='fas fa-arrow-circle-right'></i></a>";
+              result += "      {% endif %}";
+              result += "  </span>";
+              result += "</div>";              
             } else {
               alert("not found");
             }
-
-
-            
-            result += "{% if data.is_paginated %}";
-            result += "<div>";
-            result += "  <span>";
-            result += "      {% if current_page.has_previous %}";
-            result += "          <a href='?page={{current_page.previous_page_number}}'><i class='fas fa-arrow-circle-left'></i></a>";
-            result += "      {% endif %}";
-            result += "      &nbsp;";
-            result += "      <span>";
-            result += "          {% trans 'Page' %} {{ current_page.number }} {% trans '/' %} {{ current_page.paginator.num_pages }}";
-            result += "      </span>";
-            result += "      &nbsp;";
-            result += "      {% if current_page.has_next %}";
-            result += "          <a href='?page={{ current_page.next_page_number }}'><i class='fas fa-arrow-circle-right'></i></a>";
-            result += "      {% endif %}";
-            result += "  </span>";
-            result += "</div>";
-            result += "{%else%}";
-            result += "{{ data.is_paginated }}";
-            result += "{%endif%}";
 
             $("#districtmodal .modal-body").html(result);            
           },

@@ -14,6 +14,8 @@ from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 from system.models import TDistrict
+from django.core import serializers
+import json
 
 
 @permission_required('customer.view_customer', login_url='/accounts/login/')
@@ -399,7 +401,7 @@ def get_district_list(request):
         paginator = Paginator(data, item_per_page)
         is_paginated = True if paginator.num_pages > 1 else False
         page = request.GET.get('page', '1') or 1
-
+ 
         try:
             current_page = paginator.get_page(page)
         except InvalidPage as e:
@@ -423,8 +425,27 @@ def get_district_list(request):
             }
             pickup_records.append(record)
 
-        print("is_paginated = " + str(is_paginated))
-        response = JsonResponse(data={"success": True, "is_paginated": is_paginated, "page": page, "results": list(pickup_records)})
+        print("pages = " + str(current_page.paginator.num_pages))
+        print("has_previous = " + str(current_page.has_previous))
+
+
+        '''
+        "has_previous": current_page.has_previous,
+        "previous_page_number": current_page.previous_page_number,
+        "number": current_page.number,
+        "num_pages": current_page.paginator.num_pages,
+        "next_page_number": current_page.next_page_number,
+        '''
+        serialized_qs = serializers.serialize('json', current_page)
+        print(serialized_qs);
+        
+        response = JsonResponse(data={
+            "success": True,
+            "is_paginated": is_paginated, 
+            "page": page,
+            "aa": serialized_qs,
+            "results": list(pickup_records)
+            })
         response.status_code = 200
         return response
 
