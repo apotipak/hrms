@@ -425,25 +425,22 @@ def get_district_list(request):
             }
             pickup_records.append(record)
 
-        print("pages = " + str(current_page.paginator.num_pages))
-        print("has_previous = " + str(current_page.has_previous))
-
-
-        '''
-        "has_previous": current_page.has_previous,
-        "previous_page_number": current_page.previous_page_number,
-        "number": current_page.number,
-        "num_pages": current_page.paginator.num_pages,
-        "next_page_number": current_page.next_page_number,
-        '''
         serialized_qs = serializers.serialize('json', current_page)
         print(serialized_qs);
+        print("has_previous : " + str(current_page.has_previous))
         
+        pages = current_page.paginator.num_pages,
+        current_page = 5,
+        next_page = 6
+        previous_page = 4
+
         response = JsonResponse(data={
             "success": True,
             "is_paginated": is_paginated, 
-            "page": page,
-            "aa": serialized_qs,
+            "pages": pages,
+            "current_page": current_page,
+            "previous_page": previous_page,
+            "next_page": next_page,
             "results": list(pickup_records)
             })
         response.status_code = 200
