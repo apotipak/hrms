@@ -103,9 +103,27 @@ def ContractList(request):
     return render(request, 'contract/contract_list.html', context)
 
 
+@login_required(login_url='/accounts/login/')
 def ContractUpdate(request, pk):
     template_name = 'contract/contract_update.html'
     contract = get_object_or_404(CusContract, pk=pk)
+    if contract:
+        cnt_id = contract.cnt_id
+        cus_id = contract.cus_id
+        cus_brn = contract.cus_brn
+        customer = Customer.objects.filter(cus_id=cus_id, cus_brn=cus_brn).get()
+    else:
+        cnt_id = None
+        cus_id = None
+        cus_brn = None
+        customer = []
+
+    print("cnt_id = " + str(cnt_id))
+    print("cus_id = " + str(cus_id))
+    print("cus_brn = " + str(cus_brn))
+    print("cus_name_th = " + str(customer.cus_name_th))
+    print("cus_name_en = " + str(customer.cus_name_en))
+
     if request.method == 'POST':
         form = ContractUpdateForm(request.POST, instance=contract)
     else:
@@ -146,6 +164,7 @@ def ContractUpdate(request, pk):
         'project_name': settings.PROJECT_NAME,
         'form': form, 
         'contract': contract,
+        'customer': customer,
         'request': request,
         'form_is_valid': form_is_valid,
         'update_message': update_message,   

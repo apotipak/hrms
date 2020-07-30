@@ -14,7 +14,7 @@
 
   <!-- Content Header (Page header) -->
   <div class="content-header">
-    <form id="customerupdateform" method="post" action="{% url 'customer-update' form.instance.pk %}" class="js-customer-update-form">
+    <form id="contractupdateform" method="post" action="{% url 'contract-update' form.instance.pk %}" class="js-contract-update-form">
     {% csrf_token %}
   
     <div class="">
@@ -26,7 +26,7 @@
 
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item active">
-              status
+              {% render_field form.cnt_active id="id_cnt_active" class="form-control" type="checkbox" data-toggle="toggle" data-on="Active" data-off="Pending" data-onstyle="success" data-offstyle="danger"%}
             </li>
           </ol>
         </div>
@@ -73,10 +73,31 @@
           <div class="col-11 col-sm-11">
             <div class="tab-content" id="vert-tabs-tabContent">
               <div class="tab-pane text-left fade show active" id="vert-tabs-th" role="tabpanel" aria-labelledby="vert-tabs-th-tab">
-                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin malesuada lacus ullamcorper dui molestie, sit amet congue quam finibus. Etiam ultricies nunc non magna feugiat commodo. Etiam odio magna, mollis auctor felis vitae, ullamcorper ornare ligula. Proin pellentesque tincidunt nisi, vitae ullamcorper felis aliquam id. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Proin id orci eu lectus blandit suscipit. Phasellus porta, ante et varius ornare, sem enim sollicitudin eros, at commodo leo est vitae lacus. Etiam ut porta sem. Proin porttitor porta nisl, id tempor risus rhoncus quis. In in quam a nibh cursus pulvinar non consequat neque. Mauris lacus elit, condimentum ac condimentum at, semper vitae lectus. Cras lacinia erat eget sapien porta consectetur. 
+
+                <div class="form-group">  
+
+                  <div class="input-group">
+                    <label for="id_cus_name_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'Company' %}</label>
+                    <div class="col-sm-8">
+                      {% render_field form.cus_name_th class="form-control form-control-sm" %}
+                    </div>
+                  </div>
+
+                </div>
+
               </div>
               <div class="tab-pane fade" id="vert-tabs-en" role="tabpanel" aria-labelledby="vert-tabs-en-tab">
-                 Mauris tincidunt mi at erat gravida, eget tristique urna bibendum. Mauris pharetra purus ut ligula tempor, et vulputate metus facilisis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Maecenas sollicitudin, nisi a luctus interdum, nisl ligula placerat mi, quis posuere purus ligula eu lectus. Donec nunc tellus, elementum sit amet ultricies at, posuere nec nunc. Nunc euismod pellentesque diam. 
+                <div class="form-group">  
+
+                  <div class="input-group">
+                    <label for="id_cus_name_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Company' %}</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control form-control-sm" id="id_cus_name_en" name="cus_name_en" value="{{ customer.cus_name_en }}">
+                    </div>
+                  </div>
+                  
+                </div>
+
               </div>
             </div>
           </div>
@@ -89,7 +110,6 @@
         <a href="#" type="button" onclick="customerupdateform.submit()" class="btn btn-success btn-sm"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>        
       </div>
       <!-- /.card-footer-->
-
   </div>
   <!-- /.card -->
 
@@ -98,10 +118,9 @@
       <div class="modal-content"></div>
     </div>
   </div>
+  </section>
   </form>
-</section>
 <!-- /.content -->
-
 </div>
 
 <!-- Customer District Modal -->
@@ -124,8 +143,6 @@
     </div>
   </div>
 </div>
-
-
 <!-- /.content-wrapper -->
 {% endblock %}
 
@@ -148,7 +165,7 @@
             var result = ""
             var count = data.results.length;
             var dist_id = data.results[0]["dist_id"];
-            //result += "<div class='col-12 text-center pb-2'><h5>" + dist_id + "</h5></div>";
+
             result += "<table class='table table-hover table-sm'>";
             result += " <thead>";
             result += "   <tr>";
@@ -173,29 +190,6 @@
             }
             result += " </tbody>";
             result += "</table>";
-
-            /*
-            if(data.is_paginated) {
-              result += "<div>";
-              result += "  <span>";
-              if(data.previous_page>0) {
-                result += "          <a href='?page=" + data.previous_page + "'><i class='fas fa-arrow-circle-left'></i></a>";
-              }
-              result += "      &nbsp;";
-              result += "      <span>";
-              result += "          {% trans 'Page' %} " + data.current_page + "{% trans ' / ' %}" + data.pages;
-              result += "      </span>";
-              result += "      &nbsp;";
-              if(data.next_page>0) {
-
-              }
-              result += "          <a href='?page=" + data.next_page + "'><i class='fas fa-arrow-circle-right'></i></a>";
-              result += "  </span>";
-              result += "</div>";              
-            } else {
-              alert("not found");
-            }
-            */
             
             $("#districtmodal .modal-body").html(result);            
           },
@@ -207,29 +201,6 @@
    });
 
  });
-
-  /*
-  $(document).ready(function() {
-    $("#customerupdateform").submit(function(e){
-      if ($(".submitBtn").attr('attempted') == 'true' ) {
-        e.preventDefault();
-        alert("submit");
-      } else {
-        //$(".submitBtn").html("<i class='fa fa-hourglass-half' aria-hidden='true'></i>&nbsp;&nbsp;Processing...");
-        //$(".submitBtn").attr("disabled", true);
-        //$(".submitBtn").attr("attempted", 'true');          
-      }
-    });
-  });    
-
-  //$(function(){ $('#customer_active_status').bootstrapToggle() });
-  $(function() {
-    $('#customer_active_status').bootstrapToggle({
-      on: 'Enabled',
-      off: 'Disabled'
-    });
-  })
-  */
 
 </script>
 {% endblock %}

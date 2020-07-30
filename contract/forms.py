@@ -51,17 +51,10 @@ class ContractForm(forms.ModelForm):
             return self.fields['cus_vol']
 
 
-    
-
 class ContractUpdateForm(forms.ModelForm):    
     cnt_active = forms.BooleanField(label='', required=False, widget=forms.CheckboxInput())
-    
-    cus_district_th_text = forms.CharField(required=False)
-    cus_district_en_text = forms.CharField(required=False)
-    cus_city_th_text = forms.CharField(required=False)
-    cus_city_en_text = forms.CharField(required=False)
-    cus_country_th_text = forms.CharField(required=False)
-    cus_country_en_text = forms.CharField(required=False)
+    cus_name_th = forms.CharField(required=False)
+    cus_name_en = forms.CharField(required=False)
 
     class Meta:
         model = CusContract        
@@ -71,34 +64,7 @@ class ContractUpdateForm(forms.ModelForm):
         super(ContractUpdateForm, self).__init__(*args, **kwargs)        
         instance = getattr(self, 'instance', None)
 
-        '''
-        cus_district = forms.ModelChoiceField(queryset=None, required=False)
-        cus_zone = forms.ModelChoiceField(queryset=None, required=False)
-        cus_bill = forms.ModelChoiceField(queryset=None, required=False)
+        cus_name_th = forms.CharField(required=False)
+        self.initial['cus_name_th'] = instance.customer.cus_name_th
+        self.fields['cus_name_th'].widget.attrs['readonly'] = True
 
-        cus_district_th_text = forms.CharField(required=False)
-        self.initial['cus_district_th_text'] = instance.cus_district.dist_th
-        self.fields['cus_district_th_text'].widget.attrs['readonly'] = True
-
-        cus_district_en_text = forms.CharField(required=False)
-        self.initial['cus_district_en_text'] = instance.cus_district.dist_en
-        self.fields['cus_district_en_text'].widget.attrs['readonly'] = True
-
-        cus_city_th_text = forms.CharField(required=False)
-        self.initial['cus_city_th_text'] = instance.cus_city.city_th
-        self.fields['cus_city_th_text'].widget.attrs['readonly'] = True
-
-        cus_city_en_text = forms.CharField(required=False)
-        self.initial['cus_city_en_text'] = instance.cus_city.city_en
-        self.fields['cus_city_en_text'].widget.attrs['readonly'] = True
-
-        cus_country_th_text = forms.CharField(required=False)
-        self.initial['cus_country_th_text'] = instance.cus_country.country_th
-        self.fields['cus_country_th_text'].widget.attrs['readonly'] = True
-
-        cus_country_en_text = forms.CharField(required=False)
-        self.initial['cus_country_en_text'] = instance.cus_country.country_en
-        self.fields['cus_country_en_text'].widget.attrs['readonly'] = True
-
-        return data
-        '''
