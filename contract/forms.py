@@ -53,8 +53,8 @@ class ContractForm(forms.ModelForm):
 
 class ContractUpdateForm(forms.ModelForm):    
     cnt_active = forms.BooleanField(label='', required=False, widget=forms.CheckboxInput())
-    cus_name_th = forms.CharField(required=False)
-    cus_name_en = forms.CharField(required=False)
+    #cus_name_th = forms.CharField(required=False)
+    #cus_name_en = forms.CharField(required=False)
 
     class Meta:
         model = CusContract        
@@ -64,7 +64,7 @@ class ContractUpdateForm(forms.ModelForm):
         super(ContractUpdateForm, self).__init__(*args, **kwargs)        
         instance = getattr(self, 'instance', None)
 
-        cus_name_th = forms.CharField(required=False)
-        self.initial['cus_name_th'] = instance.customer.cus_name_th
-        self.fields['cus_name_th'].widget.attrs['readonly'] = True
+        #cus_name_th = forms.CharField(required=False)
+        #self.initial['cus_name_th'] = instance.customer.cus_name_th
+        #self.fields['cus_name_th'].widget.attrs['readonly'] = True
 

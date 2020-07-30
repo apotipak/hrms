@@ -106,23 +106,29 @@ def ContractList(request):
 @login_required(login_url='/accounts/login/')
 def ContractUpdate(request, pk):
     template_name = 'contract/contract_update.html'
+    
     contract = get_object_or_404(CusContract, pk=pk)
+    #contract = CusContract.objects.raw("select con.cnt_id, con.cus_id, con.cus_brn from cus_contract con join customer cus on con.cus_id=cus.cus_id and con.cus_brn=cus.cus_brn and con.cnt_id='2771002001'") or None
+    if contract:
+        customer = Customer.objects.filter(cus_id=contract.cus_id, cus_brn=contract.cus_brn).get()
+    else:
+        customer = []
+        
+
+    '''
     if contract:
         cnt_id = contract.cnt_id
         cus_id = contract.cus_id
         cus_brn = contract.cus_brn
-        customer = Customer.objects.filter(cus_id=cus_id, cus_brn=cus_brn).get()
     else:
         cnt_id = None
         cus_id = None
         cus_brn = None
-        customer = []
 
     print("cnt_id = " + str(cnt_id))
     print("cus_id = " + str(cus_id))
     print("cus_brn = " + str(cus_brn))
-    print("cus_name_th = " + str(customer.cus_name_th))
-    print("cus_name_en = " + str(customer.cus_name_en))
+    '''
 
     if request.method == 'POST':
         form = ContractUpdateForm(request.POST, instance=contract)
@@ -163,7 +169,7 @@ def ContractUpdate(request, pk):
         'db_server': settings.DATABASES['default']['HOST'],
         'project_name': settings.PROJECT_NAME,
         'form': form, 
-        'contract': contract,
+        'contract': contract,        
         'customer': customer,
         'request': request,
         'form_is_valid': form_is_valid,

@@ -42,5 +42,6 @@ class Customer(models.Model):
     class Meta:
         managed = True
         db_table = 'CUSTOMER'
+        #unique_together = (('cus_id', 'cus_brn'))
         ordering = ['cus_no']
 

@@ -1,11 +1,18 @@
 from django.db import models
+from customer.models import Customer
 
 
 class CusContract(models.Model):
     cnt_id = models.DecimalField(primary_key=True, max_digits=13, decimal_places=0)
-    cus_id = models.DecimalField(max_digits=7, decimal_places=0, blank=True, null=True)
+    
+    cus_id = models.DecimalField(max_digits=7, decimal_places=0, blank=True, null=True)    
     cus_brn = models.DecimalField(max_digits=3, decimal_places=0, blank=True, null=True)
+
+    #cus_id = models.ForeignKey(Customer, on_delete=models.DO_NOTHING, related_name='cus_id_ref', db_column='cus_id', null=True)
+    #cus_brn = models.DecimalField(max_digits=3, decimal_places=0, blank=True, null=True)
+
     cus_vol = models.DecimalField(max_digits=3, decimal_places=0, blank=True, null=True)
+
     cnt_active = models.BooleanField(blank=True, null=True)
     cnt_sign_frm = models.DateTimeField(blank=True, null=True)
     cnt_sign_to = models.DateTimeField(blank=True, null=True)
