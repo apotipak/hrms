@@ -33,15 +33,9 @@ def ContractList(request):
         cnt_id = Decimal(request.POST['cus_id'] + request.POST.get('cus_brn').zfill(3) + request.POST.get('cus_vol').zfill(3))
         print("cnt_id_123 = " + str(cnt_id))
 
-        if form.is_valid():        	
-            # contract_list = CusContract.objects.filter(cnt_id__exact=cnt_id)
-            
-            # contract_list = CusContract.objects.raw("select * from customer cus join cus_contract con on cus.cus_id=con.cus_id and cus.cus_brn=con.cus_brn where cus.cus_id="+cus_id+" and cus.cus_brn="+cus_brn+" and con.cus_vol="+cus_vol)
-            # contract_list = CusContract.objects.raw("select * from customer cus join cus_contract con on cus.cus_id=con.cus_id and cus.cus_brn=con.cus_brn where cus.cus_id="+cus_id+" and cus.cus_brn="+cus_brn+" and con.cus_vol="+cus_vol)
-            contract_list = CusContract.objects.raw("select * from customer cus join cus_contract con on cus.cus_id=con.cus_id and cus.cus_brn=con.cus_brn where cus.cus_id="+cus_id+" order by con.cnt_active desc")
-
-            print("contract_list")
-            print(contract_list)
+        if form.is_valid():
+            rawsql = "select * from customer cus join cus_contract con on cus.cus_id=con.cus_id and cus.cus_brn=con.cus_brn "
+            contract_list = CusContract.objects.raw(rawsql + " where cus.cus_id="+cus_id+" order by con.cnt_active desc")
         else:    		    		
             form = ContractForm(request.POST)
             print("invalid..")
@@ -95,9 +89,9 @@ def ContractList(request):
         'current_page': current_page,
         'is_paginated': is_paginated,
         'form': form,
-        'cus_id': CusContract.cus_id,
-        'cus_brn': CusContract.cus_brn,
-        'cus_vol': CusContract.cus_vol
+        'cus_id': cus_id,
+        'cus_brn': cus_brn,
+        'cus_vol': cus_vol
     }
 
     return render(request, 'contract/contract_list.html', context)
