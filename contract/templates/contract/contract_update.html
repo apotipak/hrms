@@ -70,29 +70,30 @@
 
 
         <div class="row">          
-          <div class="col-1 col-sm-1">
+          <div class="col-2">
             <div class="nav flex-column nav-tabs h-100" id="vert-tabs-tab" role="tablist" aria-orientation="vertical">
               <a class="nav-link active" id="vert-tabs-th-tab" data-toggle="pill" href="#vert-tabs-th" role="tab" aria-controls="vert-tabs-th" aria-selected="true">TH</a>
               <a class="nav-link" id="vert-tabs-en-tab" data-toggle="pill" href="#vert-tabs-en" role="tab" aria-controls="vert-tabs-en" aria-selected="false">EN</a>
             </div>
           </div>
 
-          <div class="col-11 col-sm-11">
+          <div class="col-10">
             <div class="tab-content" id="vert-tabs-tabContent">
               <div class="tab-pane text-left fade show active" id="vert-tabs-th" role="tabpanel" aria-labelledby="vert-tabs-th-tab">
 
-                <div class="form-group">  
-
-                  <div class="input-group">
-                    <label for="id_cus_name_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'Company' %}</label>
-                    <div class="col-sm-8">
-                      <input type="text" class="form-control form-control-sm" id="id_cus_name_th" name="cus_name_th" readonly value="{{ customer.cus_name_th }}">
-                    </div>
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="cus_zip">{% trans 'Company' %}</label>
+                    <input type="text" class="form-control form-control-sm" id="id_cus_name_th" name="cus_name_th" readonly value="{{ customer.cus_name_th }}">
                   </div>
-
+                  <div class="form-group col-md-6">
+                    <label for="cus_tel">{% trans 'Site Name' %}</label>
+                    <input type="text" class="form-control form-control-sm" value="{{contract.cnt_doc_date|date:'d/m/Y'}}" placeholder="Created Date">
+                  </div>
                 </div>
 
               </div>
+              
               <div class="tab-pane fade" id="vert-tabs-en" role="tabpanel" aria-labelledby="vert-tabs-en-tab">
                 <div class="form-group">  
 
