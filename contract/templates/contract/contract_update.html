@@ -286,12 +286,12 @@
 
             <div class="form-row">
               <div class="form-group col-md-6">
-                <label for="cus_zip">{% trans 'Authorized by' %}</label>
-                <input type="text" class="form-control form-control-sm" value={{contract.cnt_apr_by}} readonly>
+                <label>{% trans 'Authorized by' %}</label>
+                <input type="text" class="form-control form-control-sm" value="{{contract.cnt_apr_by.apr_name_th}}" readonly>
               </div>
               <div class="form-group col-md-6">
-                <label for="cus_tel">&nbsp;</label>
-                <input type="text" class="form-control form-control-sm" value={{contract.cnt_apr_by}} readonly>
+                <label for="cnt_appr_by_en">&nbsp;</label>
+                <input type="text" class="form-control form-control-sm" value="{{contract.cnt_apr_by.apr_name_en}}" readonly>
               </div>
             </div>
 

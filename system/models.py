@@ -82,6 +82,10 @@ class TAprove(models.Model):
         managed = True
         db_table = 'T_APROVE'
 
+    def __str__(self):
+        return self.apr_name_th
+
+
 
 class ComDepartment(models.Model):
     dept_id = models.DecimalField(primary_key=True, max_digits=4, decimal_places=0)

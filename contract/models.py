@@ -1,6 +1,6 @@
 from django.db import models
 from customer.models import Customer
-from system.models import CusContact
+from system.models import CusContact, TAprove
 
 
 class CusContract(models.Model):
@@ -15,10 +15,12 @@ class CusContract(models.Model):
     cnt_eff_to = models.DateTimeField(blank=True, null=True)
     cnt_doc_no = models.CharField(max_length=25, blank=True, null=True)
     cnt_doc_date = models.DateTimeField(blank=True, null=True)    
-    cus_apr_by = models.ForeignKey(CusContact, db_column='cus_apr_by', to_field='con_id', on_delete=models.SET_NULL, null=True)
+    cnt_apr_by = models.ForeignKey(TAprove, db_column='cnt_apr_by', to_field='apr_id', on_delete=models.SET_NULL, null=True)
     cnt_guard_amt = models.DecimalField(max_digits=4, decimal_places=0, blank=True, null=True)
     cnt_sale_amt = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    
     cnt_wage_id = models.DecimalField(max_digits=2, decimal_places=0, blank=True, null=True)
+    
     cnt_zone = models.DecimalField(max_digits=4, decimal_places=0, blank=True, null=True)
     cnt_autoexpire = models.BooleanField(blank=True, null=True)
     cnt_then = models.CharField(max_length=1, blank=True, null=True)

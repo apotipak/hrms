@@ -171,7 +171,7 @@ def ContractUpdate(request, pk):
         'cus_service': cus_service,
         'request': request,
         'form_is_valid': form_is_valid,
-        'update_message': update_message,   
+        'update_message': update_message,
     }
     return render(request, template_name, context)
 
