@@ -28,11 +28,8 @@ class Customer(models.Model):
     cus_bill = models.BooleanField(blank=True, null=True)
     cus_main = models.BooleanField(blank=True, null=True)
     cus_site = models.BooleanField(blank=True, null=True)
-    cus_zone = models.ForeignKey(ComZone, db_column='cus_zone', to_field='zone_id', on_delete=models.SET_NULL, null=True) 
-    
-    cus_contact = models.DecimalField(max_digits=7, decimal_places=0, blank=True, null=True)
-    # cus_contact = models.ForeignKey(CusContact, db_column='cus_contact', to_field='con_id', on_delete=models.SET_NULL, null=True)
-
+    cus_zone = models.ForeignKey(ComZone, db_column='cus_zone', to_field='zone_id', on_delete=models.SET_NULL, null=True)     
+    cus_contact = models.ForeignKey(CusContact, db_column='cus_contact', to_field='con_id', on_delete=models.SET_NULL, null=True)
     site_contact = models.DecimalField(max_digits=7, decimal_places=0, blank=True, null=True)
     last_contact = models.SmallIntegerField(blank=True, null=True)
     upd_date = models.DateTimeField(blank=True, null=True)
@@ -44,4 +41,3 @@ class Customer(models.Model):
         db_table = 'CUSTOMER'
         #unique_together = (('cus_id', 'cus_brn'))
         ordering = ['cus_no']
-

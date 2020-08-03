@@ -148,11 +148,8 @@ class CusContact(models.Model):
     cus_id = models.DecimalField(max_digits=7, decimal_places=0)
     cus_brn = models.DecimalField(max_digits=3, decimal_places=0, blank=True, null=True)
     cus_rem = models.CharField(max_length=10, blank=True, null=True)
-    con_type = models.CharField(max_length=1, blank=True, null=True)
-    
-    # con_title = models.SmallIntegerField(blank=True, null=True)
+    con_type = models.CharField(max_length=1, blank=True, null=True)    
     con_title = models.ForeignKey(TTitle, db_column='con_title', to_field='title_id', on_delete=models.SET_NULL, null=True)    
-
     con_fname_th = models.CharField(max_length=70, blank=True, null=True)
     con_lname_th = models.CharField(max_length=40, blank=True, null=True)
     con_position_th = models.CharField(max_length=80, blank=True, null=True)
@@ -176,7 +173,6 @@ class CusContact(models.Model):
 
     def __str__(self):
         return '%s %s %s - [ %s ]' % (self.con_title, self.con_fname_th, self.con_lname_th, self.con_position_th)
-        # return '%s' % (self.con_id)
 
 
 class TCity(models.Model):
