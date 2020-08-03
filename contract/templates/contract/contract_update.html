@@ -71,22 +71,19 @@
 
         <div class="row">
 
-
-
-
           <div class="col-6">
 
-          <div class="col-2">
-            <div class="nav flex-column nav-tabs h-100" id="vert-tabs-tab" role="tablist" aria-orientation="vertical">
-              <a class="nav-link active" id="vert-tabs-th-tab" data-toggle="pill" href="#vert-tabs-th" role="tab" aria-controls="vert-tabs-th" aria-selected="true">TH</a>
-              <a class="nav-link" id="vert-tabs-en-tab" data-toggle="pill" href="#vert-tabs-en" role="tab" aria-controls="vert-tabs-en" aria-selected="false">EN</a>
-            </div>
-          </div>
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">TH</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">EN</a>
+              </li>
+            </ul>
 
-          <div class="col-10">
-            <div class="tab-content" id="vert-tabs-tabContent">
-
-              <div class="tab-pane text-left fade show active" id="vert-tabs-th" role="tabpanel" aria-labelledby="vert-tabs-th-tab">
+            <div class="tab-content" id="myTabContent">
+              <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 
                 <div class="form-row">
                   <div class="form-group col-md-6">
@@ -109,20 +106,16 @@
                     <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_add2_th }}">
                   </div>
                 </div>
-
               </div>
 
-
-              <!-- English -->              
-              <div class="tab-pane fade" id="vert-tabs-en" role="tabpanel" aria-labelledby="vert-tabs-en-tab">
-
+              <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                 <div class="form-row">
                   <div class="form-group col-md-6">
-                    <label for="cus_name_en">{% trans 'Company' %}</label>
-                    <input type="text" class="form-control form-control-sm" id="id_cus_name_en" name="cus_name_en" readonly value="{{ customer.cus_name_en }}">
+                    <label for="cus_name_th">{% trans 'Company' %}</label>
+                    <input type="text" class="form-control form-control-sm" id="id_cus_name_th" name="cus_name_th" readonly value="{{ customer.cus_name_en }}">
                   </div>
                   <div class="form-group col-md-6">
-                    <label for="cus_site_name">{% trans 'Site Name' %}</label>
+                    <label for="cus_tel">{% trans 'Site Name' %}</label>
                     <input type="text" class="form-control form-control-sm" readonly value="">
                   </div>
                 </div>
@@ -137,18 +130,20 @@
                     <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_add2_en }}">
                   </div>
                 </div>
-
               </div>
             </div>
           </div>
-          </div>
+
+
+
 
           <div class="col-6">
             <div class="card card-info">
+              <!--
               <div class="card-header">
                 <h3 class="card-title">{% trans 'Contract Information' %}</h3>
               </div>
-
+              -->
               <div class="card-body">
 
                 <div class="form-row">
@@ -216,15 +211,10 @@
                     <input type="text" class="form-control form-control-sm" value={{contract.cnt_apr_by}} readonly>
                   </div>
                 </div>
+
               </div>
             </div>
-
-
-
-
           </div>
-
-
 
         </div>
         <!-- /.row -->
@@ -544,7 +534,7 @@
                   </div>
 
                   <div class="form-group col-md-3">
-                    <label for="cus_zip">{% trans 'Cost' %}</label>
+                    <label for="cus_zip">{% trans 'Total Cost' %}</label>
                     <input type="text" class="form-control form-control-sm" readonly>
                   </div>
 
@@ -587,14 +577,6 @@
         <div class="row">
 
           <div class="col-md-12">
-            <div class="card card-info">
-              
-              <!--
-              <div class="card-header">
-                <h3 class="card-title">{% trans 'Service List' %}</h3>
-              </div>
-              -->
-              <div class="card-body">
 
                 <table id="customer-list-table1" class="table table-bordered table-sm table-responsive">
                   <thead>
@@ -652,8 +634,6 @@
                     {% endfor %}
                   </tbody>
                 </table>
-              </div>
-            </div>
           </div>
         </div>
 
