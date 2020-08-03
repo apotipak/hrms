@@ -102,8 +102,10 @@ def ContractUpdate(request, pk):
     template_name = 'contract/contract_update.html'
     
     cus_contract = get_object_or_404(CusContract, pk=pk)
+
     #contract = CusContract.objects.raw("select con.cnt_id, con.cus_id, con.cus_brn from cus_contract con join customer cus on con.cus_id=cus.cus_id and con.cus_brn=cus.cus_brn and con.cnt_id='2771002001'") or None
     if cus_contract:
+        print(cus_contract.cnt_wage_id.wage_en)
         customer = Customer.objects.filter(cus_id=cus_contract.cus_id, cus_brn=cus_contract.cus_brn).get()
         cus_service = CusService.objects.filter(cnt_id=cus_contract.cnt_id).order_by('-srv_active')
     else:

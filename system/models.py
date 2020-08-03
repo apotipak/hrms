@@ -176,7 +176,7 @@ class CusContact(models.Model):
         ]   
 
     def __str__(self):
-        return '%s %s %s - [ %s ]' % (self.con_title, self.con_fname_th, self.con_lname_th, self.con_position_th)
+        return '%s %s %s' % (self.con_title, self.con_fname_th, self.con_lname_th)
 
 
 class TCity(models.Model):
@@ -220,3 +220,27 @@ class Groupbill(models.Model):
     class Meta:
         managed = False
         db_table = 'groupbill'
+
+
+class TWagezone(models.Model):
+    wage_id = models.DecimalField(primary_key=True, max_digits=2, decimal_places=0)
+    wage_th = models.CharField(max_length=30, blank=True, null=True)
+    wage_en = models.CharField(max_length=30, blank=True, null=True)
+    wage_city = models.SmallIntegerField(blank=True, null=True)
+    wage_8hr = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
+    owage_8hr = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
+    wage_en_tmp = models.CharField(max_length=50, blank=True, null=True)
+    w2010 = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
+    w2009 = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
+    w2008 = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
+    w2007 = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
+    w2006 = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
+    w2005 = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
+    w2004 = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
+    upd_date = models.DateTimeField(blank=True, null=True)
+    upd_by = models.CharField(max_length=10, blank=True, null=True)
+    upd_flag = models.CharField(max_length=1, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'T_WAGEZONE'

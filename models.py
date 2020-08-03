@@ -191,7 +191,7 @@ class Customer(models.Model):
     cus_main = models.BooleanField(blank=True, null=True)
     cus_site = models.BooleanField(blank=True, null=True)
     cus_zone = models.DecimalField(max_digits=4, decimal_places=0, blank=True, null=True)
-    cus_contact = models.DecimalField(max_digits=7, decimal_places=0, blank=True, null=True)
+    cus_contact = models.ForeignKey('CusContact', models.DO_NOTHING, db_column='cus_contact', blank=True, null=True)
     site_contact = models.DecimalField(max_digits=7, decimal_places=0, blank=True, null=True)
     last_contact = models.SmallIntegerField(blank=True, null=True)
     upd_date = models.DateTimeField(blank=True, null=True)
@@ -269,7 +269,7 @@ class CusContact(models.Model):
 
 
 class CusContract(models.Model):
-    cnt_id = models.DecimalField(max_digits=13, decimal_places=0)
+    cnt_id = models.DecimalField(primary_key=True, max_digits=13, decimal_places=0)
     cus_id = models.DecimalField(max_digits=7, decimal_places=0, blank=True, null=True)
     cus_brn = models.DecimalField(max_digits=3, decimal_places=0, blank=True, null=True)
     cus_vol = models.DecimalField(max_digits=3, decimal_places=0, blank=True, null=True)
@@ -283,7 +283,7 @@ class CusContract(models.Model):
     cnt_apr_by = models.DecimalField(max_digits=6, decimal_places=0, blank=True, null=True)
     cnt_guard_amt = models.DecimalField(max_digits=4, decimal_places=0, blank=True, null=True)
     cnt_sale_amt = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    cnt_wage_id = models.DecimalField(max_digits=2, decimal_places=0, blank=True, null=True)
+    cnt_wage_id = models.SmallIntegerField(blank=True, null=True)
     cnt_zone = models.DecimalField(max_digits=4, decimal_places=0, blank=True, null=True)
     cnt_autoexpire = models.BooleanField(blank=True, null=True)
     cnt_then = models.CharField(max_length=1, blank=True, null=True)
@@ -367,16 +367,6 @@ class ContractSumShfQty(models.Model):
         db_table = 'Contract_sum_Shf_qty'
 
 
-class CusServiceSum(models.Model):
-    cnt_id = models.DecimalField(max_digits=13, decimal_places=0, blank=True, null=True)
-    qty = models.DecimalField(db_column='Qty', max_digits=38, decimal_places=0, blank=True, null=True)  # Field name made lowercase.
-    tcost = models.DecimalField(db_column='Tcost', max_digits=38, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'Cus_service_Sum'
-
-
 class CustomerOption(models.Model):
     cus_no = models.DecimalField(db_column='CUS_NO', max_digits=10, decimal_places=0)  # Field name made lowercase.
     btype = models.CharField(db_column='Btype', max_length=100, blank=True, null=True)  # Field name made lowercase.
@@ -414,6 +404,61 @@ class CustomerOption(models.Model):
     class Meta:
         managed = False
         db_table = 'Customer_option'
+
+
+class DlyPlan(models.Model):
+    cnt_id = models.DecimalField(primary_key=True, max_digits=13, decimal_places=0)
+    emp_id = models.DecimalField(max_digits=7, decimal_places=0)
+    dly_date = models.DateTimeField()
+    sch_shift = models.DecimalField(max_digits=4, decimal_places=0)
+    sch_no = models.DecimalField(max_digits=20, decimal_places=0, blank=True, null=True)
+    dept_id = models.DecimalField(max_digits=4, decimal_places=0, blank=True, null=True)
+    sch_rank = models.CharField(max_length=3, blank=True, null=True)
+    prd_id = models.CharField(max_length=7, blank=True, null=True)
+    absent = models.BooleanField(blank=True, null=True)
+    late = models.BooleanField(blank=True, null=True)
+    late_full = models.BooleanField(blank=True, null=True)
+    sch_relieft = models.BooleanField(blank=True, null=True)
+    relieft = models.BooleanField(blank=True, null=True)
+    relieft_id = models.DecimalField(max_digits=7, decimal_places=0, blank=True, null=True)
+    tel_man = models.BooleanField(blank=True, null=True)
+    tel_time = models.DateTimeField(blank=True, null=True)
+    tel_amt = models.DecimalField(max_digits=3, decimal_places=0, blank=True, null=True)
+    tel_paid = models.DecimalField(max_digits=3, decimal_places=0, blank=True, null=True)
+    ot = models.BooleanField(blank=True, null=True)
+    ot_reason = models.SmallIntegerField(blank=True, null=True)
+    ot_time_frm = models.DateTimeField(blank=True, null=True)
+    ot_time_to = models.DateTimeField(blank=True, null=True)
+    ot_hr_amt = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    ot_pay_amt = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    spare = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    wage_id = models.DecimalField(max_digits=2, decimal_places=0, blank=True, null=True)
+    wage_no = models.CharField(max_length=5, blank=True, null=True)
+    pay_type = models.CharField(max_length=3, blank=True, null=True)
+    bas_amt = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    otm_amt = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    bon_amt = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    pub_amt = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    soc_amt = models.DecimalField(max_digits=15, decimal_places=2, blank=True, null=True)
+    dof_amt = models.DecimalField(max_digits=15, decimal_places=2, blank=True, null=True)
+    ex_dof_amt = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    soc = models.BooleanField(blank=True, null=True)
+    pub = models.BooleanField(blank=True, null=True)
+    dof = models.BooleanField(blank=True, null=True)
+    paid = models.BooleanField(blank=True, null=True)
+    tpa = models.BooleanField(db_column='TPA', blank=True, null=True)  # Field name made lowercase.
+    day7 = models.BooleanField(db_column='DAY7', blank=True, null=True)  # Field name made lowercase.
+    upd_date = models.DateTimeField(blank=True, null=True)
+    upd_by = models.CharField(max_length=10, blank=True, null=True)
+    upd_flag = models.CharField(max_length=1, blank=True, null=True)
+    upd_gen = models.CharField(max_length=1, blank=True, null=True)
+    upd_log = models.TextField(blank=True, null=True)  # This field type is a guess.
+    remark = models.CharField(db_column='Remark', max_length=200, blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'DLY_PLAN'
+        unique_together = (('cnt_id', 'emp_id', 'dly_date', 'sch_shift'),)
 
 
 class Employee(models.Model):
@@ -672,6 +717,30 @@ class TTitle(models.Model):
     class Meta:
         managed = False
         db_table = 'T_TITLE'
+
+
+class TWagezone(models.Model):
+    wage_id = models.DecimalField(primary_key=True, max_digits=2, decimal_places=0)
+    wage_th = models.CharField(max_length=30, blank=True, null=True)
+    wage_en = models.CharField(max_length=30, blank=True, null=True)
+    wage_city = models.SmallIntegerField(blank=True, null=True)
+    wage_8hr = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
+    owage_8hr = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
+    wage_en_tmp = models.CharField(max_length=50, blank=True, null=True)
+    w2010 = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
+    w2009 = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
+    w2008 = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
+    w2007 = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
+    w2006 = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
+    w2005 = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
+    w2004 = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
+    upd_date = models.DateTimeField(blank=True, null=True)
+    upd_by = models.CharField(max_length=10, blank=True, null=True)
+    upd_flag = models.CharField(max_length=1, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'T_WAGEZONE'
 
 
 class VBiDlyPlanWork(models.Model):
