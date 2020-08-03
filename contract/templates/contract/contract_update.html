@@ -40,7 +40,7 @@
     
     <div class="card card-default">
       <div class="card-header">
-        <h3 class="card-title">{{ customer.cus_name_th }} - {{ customer.cus_zone}}</h3>
+        <h3 class="card-title">{{ customer.cus_name_th }} - {{customer.cus_zone.zone_en}}</h3>
 
         <div class="card-tools">
           <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
@@ -75,15 +75,16 @@
 
             <ul class="nav nav-tabs" id="myTab" role="tablist">
               <li class="nav-item">
-                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">TH</a>
+                <a class="nav-link active" id="thai-tab" data-toggle="tab" href="#thai" role="tab" aria-controls="thai" aria-selected="true">TH</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">EN</a>
+                <a class="nav-link" id="english-tab" data-toggle="tab" href="#english" role="tab" aria-controls="english" aria-selected="false">EN</a>
               </li>
             </ul>
 
             <div class="tab-content" id="myTabContent">
-              <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+
+              <div class="tab-pane fade show active" id="thai" role="tabpanel" aria-labelledby="thai-tab">
 
                 <div class="form-row">
                   <div class="form-group col-md-6">
@@ -106,9 +107,68 @@
                     <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_add2_th }}">
                   </div>
                 </div>
+
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="cus_subdist_th">{% trans 'Sub-District' %}</label>
+                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_subdist_th }}">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="cus_zip">{% trans 'Zip' %}&nbsp;</label>
+                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_zip }}">
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="cus_district">{% trans 'District' %}</label>
+                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_district }}">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="cus_tel">{% trans 'Phone' %}</label>
+                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_tel }}">
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="cus_city">{% trans 'City' %}</label>
+                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_city }}">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="cus_fax">{% trans 'Fax' %}</label>
+                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_fax }}">
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="cus_country">{% trans 'Country' %}</label>
+                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_country }}">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="cus_email">{% trans 'Email' %}</label>
+                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_email }}">
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="cus_contact">{% trans 'Contact' %}</label>
+                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_contact }}">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="cus_zone">{% trans 'Zone' %}</label>
+                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_zone }}">
+                  </div>
+                </div>
+
               </div>
 
-              <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+
+
+
+              <div class="tab-pane fade" id="english" role="tabpanel" aria-labelledby="english-tab">
                 <div class="form-row">
                   <div class="form-group col-md-6">
                     <label for="cus_name_th">{% trans 'Company' %}</label>
