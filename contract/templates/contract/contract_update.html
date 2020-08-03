@@ -69,7 +69,13 @@
         </div>
 
 
-        <div class="row">          
+        <div class="row">
+
+
+
+
+          <div class="col-6">
+
           <div class="col-2">
             <div class="nav flex-column nav-tabs h-100" id="vert-tabs-tab" role="tablist" aria-orientation="vertical">
               <a class="nav-link active" id="vert-tabs-th-tab" data-toggle="pill" href="#vert-tabs-th" role="tab" aria-controls="vert-tabs-th" aria-selected="true">TH</a>
@@ -135,6 +141,91 @@
               </div>
             </div>
           </div>
+          </div>
+
+          <div class="col-6">
+            <div class="card card-info">
+              <div class="card-header">
+                <h3 class="card-title">{% trans 'Contract Information' %}</h3>
+              </div>
+
+              <div class="card-body">
+
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="cus_zip">{% trans 'Contract Ref.' %}</label>
+                    <input type="text" class="form-control form-control-sm" value={{contract.cnt_doc_no}}>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="cus_tel">{% trans 'Created Date' %}</label>
+                    <input type="text" class="form-control form-control-sm" value="{{contract.cnt_doc_date|date:'d/m/Y'}}" placeholder="Created Date">
+                  </div>
+                </div>
+
+
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="cus_zip">{% trans 'Effect Term From' %}</label>
+                    <input type="text" class="form-control form-control-sm" value="{{contract.cnt_eff_frm|date:'d/m/Y'}}" placeholder="From">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="cus_tel">{% trans 'Effect Term To' %}</label>
+                    <input type="text" class="form-control form-control-sm" value="{{contract.cnt_eff_to|date:'d/m/Y'}}" placeholder="To">
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="cus_zip">{% trans 'Contract Term From' %}</label>
+                    <input type="text" class="form-control form-control-sm" value="{{contract.cnt_sign_frm|date:'d/m/Y'}}" placeholder="From">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="cus_tel">{% trans 'Contract Term To' %}</label>
+                    <input type="text" class="form-control form-control-sm" value="{{contract.cnt_sign_to|date:'d/m/Y'}}" placeholder="To">
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col-md-4">
+
+                    <label for="cus_zip">{% trans 'Wage Rate' %}</label>
+                    <div class="input-group-append">
+                    <input type="text" class="form-control form-control-sm" value="{{contract.cnt_wage_id}}">
+                    
+                      <button id="wage_rate_lookup" type="button" class="btn btn-outline-secondary btn-sm" data-toggle="modal" data-url=""><i class="fas fa-search fa-sm"></i></button>
+                    </div>
+
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="cus_zip">{% trans 'Guard Amount' %}</label>
+                    <input type="text" class="form-control form-control-sm" value={{contract.cnt_guard_amt}} readonly>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="cus_tel">{% trans 'Sale Amount' %}</label>
+                    <input type="text" class="form-control form-control-sm text-right" value={{contract.cnt_sale_amt}} readonly>
+                  </div>        
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="cus_zip">{% trans 'Authorized by' %}</label>
+                    <input type="text" class="form-control form-control-sm" value={{contract.cnt_apr_by}} readonly>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="cus_tel">&nbsp;</label>
+                    <input type="text" class="form-control form-control-sm" value={{contract.cnt_apr_by}} readonly>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+
+
+          </div>
+
+
+
         </div>
         <!-- /.row -->
       </div>
@@ -167,257 +258,406 @@
 
       <div class="card-body">
 
+        <div class="row">
 
-          <!-- TODO -->
-          <div class="row">
+          <!--
+          <div class="col-md-6">
 
-            <div class="col-md-6">
+            <div class="card card-info">
+              <div class="card-header">
+                <h3 class="card-title">{% trans 'Contract Information' %}</h3>
+              </div>
 
-              <div class="card card-info">
-                <div class="card-header">
-                  <h3 class="card-title">{% trans 'Contract Information' %}</h3>
+              <div class="card-body">
+
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="cus_zip">{% trans 'Contract Ref.' %}</label>
+                    <input type="text" class="form-control form-control-sm" value={{contract.cnt_doc_no}}>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="cus_tel">{% trans 'Created Date' %}</label>
+                    <input type="text" class="form-control form-control-sm" value="{{contract.cnt_doc_date|date:'d/m/Y'}}" placeholder="Created Date">
+                  </div>
                 </div>
-                <div class="card-body">
 
-                  <!--
-                  <div class="form-group">  
-                    <div class="input-group">
-                      <label for="id_cus_name_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'Customer Name' %}</label>
-                      <div class="col-sm-8">
-                        <input type="text" class="form-control form-control-sm" id="id_cus_name_th" name="cus_name_th" value="">
-                      </div>
-                    </div>
+
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="cus_zip">{% trans 'Effect Term From' %}</label>
+                    <input type="text" class="form-control form-control-sm" value="{{contract.cnt_eff_frm|date:'d/m/Y'}}" placeholder="From">
                   </div>
-                  -->
-
-                  <div class="form-row">
-                    <div class="form-group col-md-6">
-                      <label for="cus_zip">{% trans 'Contract Ref.' %}</label>
-                      <input type="text" class="form-control form-control-sm" value={{contract.cnt_doc_no}}>
-                    </div>
-                    <div class="form-group col-md-6">
-                      <label for="cus_tel">{% trans 'Created Date' %}</label>
-                      <input type="text" class="form-control form-control-sm" value="{{contract.cnt_doc_date|date:'d/m/Y'}}" placeholder="Created Date">
-                    </div>
+                  <div class="form-group col-md-6">
+                    <label for="cus_tel">{% trans 'Effect Term To' %}</label>
+                    <input type="text" class="form-control form-control-sm" value="{{contract.cnt_eff_to|date:'d/m/Y'}}" placeholder="To">
                   </div>
+                </div>
 
-
-                  <div class="form-row">
-                    <div class="form-group col-md-6">
-                      <label for="cus_zip">{% trans 'Effect Term From' %}</label>
-                      <input type="text" class="form-control form-control-sm" value="{{contract.cnt_eff_frm|date:'d/m/Y'}}" placeholder="From">
-                    </div>
-                    <div class="form-group col-md-6">
-                      <label for="cus_tel">{% trans 'Effect Term To' %}</label>
-                      <input type="text" class="form-control form-control-sm" value="{{contract.cnt_eff_to|date:'d/m/Y'}}" placeholder="To">
-                    </div>
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="cus_zip">{% trans 'Contract Term From' %}</label>
+                    <input type="text" class="form-control form-control-sm" value="{{contract.cnt_sign_frm|date:'d/m/Y'}}" placeholder="From">
                   </div>
-
-                  <div class="form-row">
-                    <div class="form-group col-md-6">
-                      <label for="cus_zip">{% trans 'Contract Term From' %}</label>
-                      <input type="text" class="form-control form-control-sm" value="{{contract.cnt_sign_frm|date:'d/m/Y'}}" placeholder="From">
-                    </div>
-                    <div class="form-group col-md-6">
-                      <label for="cus_tel">{% trans 'Contract Term To' %}</label>
-                      <input type="text" class="form-control form-control-sm" value="{{contract.cnt_sign_to|date:'d/m/Y'}}" placeholder="To">
-                    </div>
+                  <div class="form-group col-md-6">
+                    <label for="cus_tel">{% trans 'Contract Term To' %}</label>
+                    <input type="text" class="form-control form-control-sm" value="{{contract.cnt_sign_to|date:'d/m/Y'}}" placeholder="To">
                   </div>
+                </div>
 
-                  <div class="form-row">
-                    <div class="form-group col-md-4">
+                <div class="form-row">
+                  <div class="form-group col-md-4">
 
-                      <label for="cus_zip">{% trans 'Wage Rate' %}</label>
-                      <div class="input-group-append">
-                      <input type="text" class="form-control form-control-sm" value="{{contract.cnt_wage_id}}">
-                      
-                        <button id="wage_rate_lookup" type="button" class="btn btn-outline-secondary btn-sm" data-toggle="modal" data-url=""><i class="fas fa-search fa-sm"></i></button>
-                      </div>
-
+                    <label for="cus_zip">{% trans 'Wage Rate' %}</label>
+                    <div class="input-group-append">
+                    <input type="text" class="form-control form-control-sm" value="{{contract.cnt_wage_id}}">
+                    
+                      <button id="wage_rate_lookup" type="button" class="btn btn-outline-secondary btn-sm" data-toggle="modal" data-url=""><i class="fas fa-search fa-sm"></i></button>
                     </div>
-                    <div class="form-group col-md-4">
-                      <label for="cus_zip">{% trans 'Guard Amount' %}</label>
-                      <input type="text" class="form-control form-control-sm" value={{contract.cnt_guard_amt}} readonly>
-                    </div>
-                    <div class="form-group col-md-4">
-                      <label for="cus_tel">{% trans 'Sale Amount' %}</label>
-                      <input type="text" class="form-control form-control-sm text-right" value={{contract.cnt_sale_amt}} readonly>
-                    </div>        
+
                   </div>
+                  <div class="form-group col-md-4">
+                    <label for="cus_zip">{% trans 'Guard Amount' %}</label>
+                    <input type="text" class="form-control form-control-sm" value={{contract.cnt_guard_amt}} readonly>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="cus_tel">{% trans 'Sale Amount' %}</label>
+                    <input type="text" class="form-control form-control-sm text-right" value={{contract.cnt_sale_amt}} readonly>
+                  </div>        
+                </div>
 
-                  <div class="form-row">
-                    <div class="form-group col-md-6">
-                      <label for="cus_zip">{% trans 'Authorized by' %}</label>
-                      <input type="text" class="form-control form-control-sm" value={{contract.cnt_apr_by}} readonly>
-                    </div>
-                    <div class="form-group col-md-6">
-                      <label for="cus_tel">&nbsp;</label>
-                      <input type="text" class="form-control form-control-sm" value={{contract.cnt_apr_by}} readonly>
-                    </div>
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="cus_zip">{% trans 'Authorized by' %}</label>
+                    <input type="text" class="form-control form-control-sm" value={{contract.cnt_apr_by}} readonly>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="cus_tel">&nbsp;</label>
+                    <input type="text" class="form-control form-control-sm" value={{contract.cnt_apr_by}} readonly>
                   </div>
                 </div>
               </div>
             </div>
-
-            <div class="col-md-6">
-              <div class="card card-info">
-                <div class="card-header">
-                  <h3 class="card-title">{% trans 'Service Information' %}</h3>
-                </div>
-                <div class="card-body">
-
-                  <div class="form-row">
-                    <div class="form-group col-md-6">
-                      <label for="cus_zip">{% trans 'Effect Term From' %}</label>
-                      <input type="text" class="form-control form-control-sm" value="">
-                    </div>
-                    <div class="form-group col-md-6">
-                      <label for="cus_tel">{% trans 'Effect Term To' %}</label>
-                      <input type="text" class="form-control form-control-sm" value="">
-                    </div>
-                  </div>
-
-                  <div class="form-row">
-                    <div class="form-group col-md-6">
-                      <label for="cus_zip">{% trans 'Rank' %}</label>
-                      <input type="text" class="form-control form-control-sm" value="">
-                    </div>
-                    <div class="form-group col-md-6">
-                      <label for="cus_tel">{% trans 'Shift' %}</label>
-                      <input type="text" class="form-control form-control-sm" value="">
-                    </div>
-                  </div>              
-
-                  <div class="form-row">
-                    <div class="form-row col-6">
-                      <div class="form-group col-3">
-                        <label for="cus_zip">{% trans 'Mon' %}</label>
-                        <input type="text" class="form-control form-control-sm" value="">
-                      </div>
-                      <div class="form-group col-3">
-                        <label for="cus_zip">{% trans 'Tue' %}</label>
-                        <input type="text" class="form-control form-control-sm" value="">
-                      </div>
-                      <div class="form-group col-3">
-                        <label for="cus_zip">{% trans 'Wed' %}</label>
-                        <input type="text" class="form-control form-control-sm" value="">
-                      </div>
-                      <div class="form-group col-3">
-                        <label for="cus_zip">{% trans 'Thu' %}</label>                        
-                        <input type="text" class="form-control form-control-sm" value="">
-                      </div>
-                    </div>
-
-                    <div class="form-row col-6">
-                      <div class="form-group col-3">
-                        <label for="cus_zip">{% trans 'Fri' %}</label>
-                        <input type="text" class="form-control form-control-sm" value="">
-                      </div>
-                      <div class="form-group col-3">
-                        <label for="cus_zip">{% trans 'Sat' %}</label>
-                        <input type="text" class="form-control form-control-sm" value="">
-                      </div>
-                      <div class="form-group col-3">
-                        <label for="cus_zip">{% trans 'Sun' %}</label>
-                        <input type="text" class="form-control form-control-sm" value="">
-                      </div>
-                      <div class="form-group col-3">
-                        <label for="cus_zip">{% trans 'Pub' %}</label>                        
-                        <input type="text" class="form-control form-control-sm" value="">
-                      </div>
-                    </div>
-                  </div>              
-
-                  <div class="form-row">
-                    <div class="form-group col-md-3">
-                      <label for="cus_zip">{% trans 'QTY' %}</label>
-                      <input type="text" class="form-control form-control-sm" value="">
-                    </div>
-                    <div class="form-group col-md-3">
-                      <label for="cus_tel">{% trans 'Cost' %}</label>
-                      <input type="text" class="form-control form-control-sm" value="">
-                    </div>
-
-                    <div class="form-group col-md-3">
-                      <label for="cus_zip">{% trans 'Cost' %}</label>
-                      <input type="text" class="form-control form-control-sm" readonly>
-                    </div>
-
-
-                    <div class="form-group col-md-3 text-center">
-                      <label for="cus_zip">&nbsp;</label>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" checked>
-                        <label class="form-check-label">{% trans 'Active' %}</label>
-                      </div>                                                
-                    </div>
-
-                  </div>   
-
-                  <div class="form-row">
-                    <div class="form-group col-md-6">
-                      <label for="cus_zip">{% trans 'Remark' %}</label>
-                      <input type="text" class="form-control form-control-sm" value="">
-                    </div>
-                    <div class="form-group col-md-6">
-                      <label for="cus_tel">{% trans 'Cost Rate' %}</label>
-                      <input type="text" class="form-control form-control-sm" value="">
-                    </div>
-                  </div>   
-
-                </div>
-              </div>
-            </div>
-
           </div>
-          <!-- /.row -->     
+          -->
 
+          <!--
+          <div class="col-md-6">
+            <div class="card card-info">
+              <div class="card-header">
+                <h3 class="card-title">{% trans 'Service Information' %}</h3>
+              </div>
+              <div class="card-body">
 
-
-
-            <!-- Contact Person -->
-            <div class="row">
-              <div class="col-md-12">
-                <div class="card card-info">
-                  
-                  <div class="card-header">
-                    <h3 class="card-title">{% trans 'Service List' %}</h3>
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="cus_zip">{% trans 'Effect Term From' %}</label>
+                    <input type="text" class="form-control form-control-sm" value="">
                   </div>
-
-                  <div class="card-body">
-                    <table id="customer-list-table1" class="table table-bordered table-striped table-sm">
-                      <thead>
-                      <tr>
-                        <th scope="col">{% trans 'Service ID' %}</th>
-                        <th scope="col">{% trans 'Eff From' %}</th>
-                        <th scope="col">{% trans 'Eff To' %}</th>            
-                        <th scope="col">{% trans 'Shift Time' %}</th>
-                        <th scope="col">{% trans 'Qty' %}</th>
-                        <th scope="col">{% trans 'Rank' %}</th>
-                        <th scope="col">{% trans 'Rate' %}</th>
-                        <th scope="col">{% trans 'Qty' %}</th>
-                        <th scope="col">{% trans 'MON' %}</th>
-                        <th scope="col">{% trans 'TUE' %}</th>
-                        <th scope="col">{% trans 'WED' %}</th>
-                        <th scope="col">{% trans 'THU' %}</th>
-                        <th scope="col">{% trans 'FRI' %}</th>
-                        <th scope="col">{% trans 'SAT' %}</th>
-                        <th scope="col">{% trans 'SUN' %}</th>
-                        <th scope="col">{% trans 'PUB' %}</th>
-                        <th scope="col">{% trans 'Remark' %}</th>
-                        <th scope="col">{% trans 'Status' %}</th>
-                      </tr>
-                      </thead>
-                      <tbody>
-                        {% include 'customer/partial_customer_list.html' %}
-                      </tbody>
-                    </table>
-
+                  <div class="form-group col-md-6">
+                    <label for="cus_tel">{% trans 'Effect Term To' %}</label>
+                    <input type="text" class="form-control form-control-sm" value="">
                   </div>
                 </div>
+
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="cus_zip">{% trans 'Rank' %}</label>
+                    <input type="text" class="form-control form-control-sm" value="">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="cus_tel">{% trans 'Shift' %}</label>
+                    <input type="text" class="form-control form-control-sm" value="">
+                  </div>
+                </div>              
+
+                <div class="form-row">
+                  <div class="form-row col-6">
+                    <div class="form-group col-3">
+                      <label for="cus_zip">{% trans 'Mon' %}</label>
+                      <input type="text" class="form-control form-control-sm" value="">
+                    </div>
+                    <div class="form-group col-3">
+                      <label for="cus_zip">{% trans 'Tue' %}</label>
+                      <input type="text" class="form-control form-control-sm" value="">
+                    </div>
+                    <div class="form-group col-3">
+                      <label for="cus_zip">{% trans 'Wed' %}</label>
+                      <input type="text" class="form-control form-control-sm" value="">
+                    </div>
+                    <div class="form-group col-3">
+                      <label for="cus_zip">{% trans 'Thu' %}</label>                        
+                      <input type="text" class="form-control form-control-sm" value="">
+                    </div>
+                  </div>
+
+                  <div class="form-row col-6">
+                    <div class="form-group col-3">
+                      <label for="cus_zip">{% trans 'Fri' %}</label>
+                      <input type="text" class="form-control form-control-sm" value="">
+                    </div>
+                    <div class="form-group col-3">
+                      <label for="cus_zip">{% trans 'Sat' %}</label>
+                      <input type="text" class="form-control form-control-sm" value="">
+                    </div>
+                    <div class="form-group col-3">
+                      <label for="cus_zip">{% trans 'Sun' %}</label>
+                      <input type="text" class="form-control form-control-sm" value="">
+                    </div>
+                    <div class="form-group col-3">
+                      <label for="cus_zip">{% trans 'Pub' %}</label>                        
+                      <input type="text" class="form-control form-control-sm" value="">
+                    </div>
+                  </div>
+                </div>              
+
+                <div class="form-row">
+                  <div class="form-group col-md-3">
+                    <label for="cus_zip">{% trans 'QTY' %}</label>
+                    <input type="text" class="form-control form-control-sm" value="">
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label for="cus_tel">{% trans 'Cost' %}</label>
+                    <input type="text" class="form-control form-control-sm" value="">
+                  </div>
+
+                  <div class="form-group col-md-3">
+                    <label for="cus_zip">{% trans 'Cost' %}</label>
+                    <input type="text" class="form-control form-control-sm" readonly>
+                  </div>
+
+
+                  <div class="form-group col-md-3 text-center">
+                    <label for="cus_zip">&nbsp;</label>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" checked>
+                      <label class="form-check-label">{% trans 'Active' %}</label>
+                    </div>                                                
+                  </div>
+
+                </div>   
+
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="cus_zip">{% trans 'Remark' %}</label>
+                    <input type="text" class="form-control form-control-sm" value="">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="cus_tel">{% trans 'Cost Rate' %}</label>
+                    <input type="text" class="form-control form-control-sm" value="">
+                  </div>
+                </div>   
+
               </div>
             </div>
-            <!-- TODO -->
+          </div>
+          -->
+
+        </div>
+        <!-- /.row -->     
+
+
+
+
+
+
+
+
+        <div class="row">
+
+          <div class="col-12">
+            <div class="card card-info">
+              <div class="card-header">
+                <h3 class="card-title">{% trans 'Service List' %}</h3>
+              </div>
+              <div class="card-body">
+
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="cus_zip">{% trans 'Effect Term From' %}</label>
+                    <input type="text" class="form-control form-control-sm" value="">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="cus_tel">{% trans 'Effect Term To' %}</label>
+                    <input type="text" class="form-control form-control-sm" value="">
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="cus_zip">{% trans 'Rank' %}</label>
+                    <input type="text" class="form-control form-control-sm" value="">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="cus_tel">{% trans 'Shift' %}</label>
+                    <input type="text" class="form-control form-control-sm" value="">
+                  </div>
+                </div>              
+
+                <div class="form-row">
+                  <div class="form-row col-6">
+                    <div class="form-group col-3">
+                      <label for="cus_zip">{% trans 'Mon' %}</label>
+                      <input type="text" class="form-control form-control-sm" value="">
+                    </div>
+                    <div class="form-group col-3">
+                      <label for="cus_zip">{% trans 'Tue' %}</label>
+                      <input type="text" class="form-control form-control-sm" value="">
+                    </div>
+                    <div class="form-group col-3">
+                      <label for="cus_zip">{% trans 'Wed' %}</label>
+                      <input type="text" class="form-control form-control-sm" value="">
+                    </div>
+                    <div class="form-group col-3">
+                      <label for="cus_zip">{% trans 'Thu' %}</label>                        
+                      <input type="text" class="form-control form-control-sm" value="">
+                    </div>
+                  </div>
+
+                  <div class="form-row col-6">
+                    <div class="form-group col-3">
+                      <label for="cus_zip">{% trans 'Fri' %}</label>
+                      <input type="text" class="form-control form-control-sm" value="">
+                    </div>
+                    <div class="form-group col-3">
+                      <label for="cus_zip">{% trans 'Sat' %}</label>
+                      <input type="text" class="form-control form-control-sm" value="">
+                    </div>
+                    <div class="form-group col-3">
+                      <label for="cus_zip">{% trans 'Sun' %}</label>
+                      <input type="text" class="form-control form-control-sm" value="">
+                    </div>
+                    <div class="form-group col-3">
+                      <label for="cus_zip">{% trans 'Pub' %}</label>                        
+                      <input type="text" class="form-control form-control-sm" value="">
+                    </div>
+                  </div>
+                </div>              
+
+                <div class="form-row">
+                  <div class="form-group col-md-3">
+                    <label for="cus_zip">{% trans 'QTY' %}</label>
+                    <input type="text" class="form-control form-control-sm" value="">
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label for="cus_tel">{% trans 'Cost' %}</label>
+                    <input type="text" class="form-control form-control-sm" value="">
+                  </div>
+
+                  <div class="form-group col-md-3">
+                    <label for="cus_zip">{% trans 'Cost' %}</label>
+                    <input type="text" class="form-control form-control-sm" readonly>
+                  </div>
+
+
+                  <div class="form-group col-md-3 text-center">
+                    <label for="cus_zip">&nbsp;</label>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" checked>
+                      <label class="form-check-label">{% trans 'Active' %}</label>
+                    </div>                                                
+                  </div>
+
+                </div>   
+
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="cus_zip">{% trans 'Remark' %}</label>
+                    <input type="text" class="form-control form-control-sm" value="">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="cus_tel">{% trans 'Cost Rate' %}</label>
+                    <input type="text" class="form-control form-control-sm" value="">
+                  </div>
+                </div>   
+
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        <!-- /.row -->     
+
+
+
+
+
+
+
+        <!-- Service List -->
+        <div class="row">
+
+          <div class="col-md-12">
+            <div class="card card-info">
+              
+              <!--
+              <div class="card-header">
+                <h3 class="card-title">{% trans 'Service List' %}</h3>
+              </div>
+              -->
+              <div class="card-body">
+
+                <table id="customer-list-table1" class="table table-bordered table-sm table-responsive">
+                  <thead>
+                  <tr class="table-secondary">
+                    <!--<th scope="col">{% trans 'Service ID' %}</th>-->
+                    <th scope="col">{% trans 'Eff From' %}</th>
+                    <th scope="col">{% trans 'Eff To' %}</th>            
+                    <th scope="col">{% trans 'Shift Time' %}</th>
+                    <th scope="col">{% trans 'Qty' %}</th>
+                    <th scope="col">{% trans 'Rank' %}</th>
+                    <th scope="col">{% trans 'Rate' %}</th>
+                    <th scope="col">{% trans 'Ext.Cost' %}</th>
+                    <th scope="col">{% trans 'MON' %}</th>
+                    <th scope="col">{% trans 'TUE' %}</th>
+                    <th scope="col">{% trans 'WED' %}</th>
+                    <th scope="col">{% trans 'THU' %}</th>
+                    <th scope="col">{% trans 'FRI' %}</th>
+                    <th scope="col">{% trans 'SAT' %}</th>
+                    <th scope="col">{% trans 'SUN' %}</th>
+                    <th scope="col">{% trans 'PUB' %}</th>
+                    <th scope="col">{% trans 'Remark' %}</th>
+                    <th scope="col">{% trans 'Active' %}</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                    {% for item in cus_service %}
+                      {% if item.srv_active %}
+                      <tr class="table-primary">
+                      {% else %}
+                      <tr>
+                      {% endif %}
+                      <!--<td>{{item.srv_id}}</td>-->
+                      <td>{{item.srv_eff_frm|date:'d/m/Y'}}</td>
+                      <td>{{item.srv_eff_to|date:'d/m/Y'}}</td>
+                      <td>{{item.srv_shif_id}}</td>
+                      <td>{{item.srv_qty}}</td>
+                      <td>{{item.srv_rank}}</td>
+                      <td>{{item.srv_rate}}</td>
+                      <td></td>
+                      <td>{{item.srv_mon}}</td>
+                      <td>{{item.srv_tue}}</td>
+                      <td>{{item.srv_wed}}</td>
+                      <td>{{item.srv_thu}}</td>
+                      <td>{{item.srv_fri}}</td>
+                      <td>{{item.srv_sat}}</td>
+                      <td>{{item.srv_sun}}</td>
+                      <td>{{item.srv_pub}}</td>
+                      <td>{{item.srv_rem}}</td>
+                      {% if item.srv_active %}                          
+                      <td><span class="badge badge-success">{% trans 'Active' %}</span></td>
+                      {% else %}
+                      <td><span class="badge badge-secondary">{% trans 'Pending' %}</span></td>
+                      {% endif %}
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
       </div>
       <!-- /.card-body -->
 

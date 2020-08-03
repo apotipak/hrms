@@ -10,7 +10,7 @@ from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils.translation import ugettext_lazy as _
 from .forms import ContractForm, ContractUpdateForm
-from .models import CusContract
+from .models import CusContract, CusService
 from customer.models import Customer
 from decimal import Decimal
 
@@ -101,19 +101,22 @@ def ContractList(request):
 def ContractUpdate(request, pk):
     template_name = 'contract/contract_update.html'
     
-    contract = get_object_or_404(CusContract, pk=pk)
+    cus_contract = get_object_or_404(CusContract, pk=pk)
     #contract = CusContract.objects.raw("select con.cnt_id, con.cus_id, con.cus_brn from cus_contract con join customer cus on con.cus_id=cus.cus_id and con.cus_brn=cus.cus_brn and con.cnt_id='2771002001'") or None
-    if contract:
-        customer = Customer.objects.filter(cus_id=contract.cus_id, cus_brn=contract.cus_brn).get()
+    if cus_contract:
+        customer = Customer.objects.filter(cus_id=cus_contract.cus_id, cus_brn=cus_contract.cus_brn).get()
+        cus_service = CusService.objects.filter(cnt_id=cus_contract.cnt_id).order_by('-srv_active')
     else:
         customer = []
+        cus_contract = []
+        cus_service = []
         
 
     '''
-    if contract:
-        cnt_id = contract.cnt_id
-        cus_id = contract.cus_id
-        cus_brn = contract.cus_brn
+    if cus_contract:
+        cnt_id = cus_contract.cnt_id
+        cus_id = cus_contract.cus_id
+        cus_brn = cus_contract.cus_brn
     else:
         cnt_id = None
         cus_id = None
@@ -125,9 +128,9 @@ def ContractUpdate(request, pk):
     '''
 
     if request.method == 'POST':
-        form = ContractUpdateForm(request.POST, instance=contract)
+        form = ContractUpdateForm(request.POST, instance=cus_contract)
     else:
-        form = ContractUpdateForm(instance=contract)
+        form = ContractUpdateForm(instance=cus_contract)
 
     data = dict()
     form_is_valid = False
@@ -163,8 +166,9 @@ def ContractUpdate(request, pk):
         'db_server': settings.DATABASES['default']['HOST'],
         'project_name': settings.PROJECT_NAME,
         'form': form, 
-        'contract': contract,        
+        'contract': cus_contract,        
         'customer': customer,
+        'cus_service': cus_service,
         'request': request,
         'form_is_valid': form_is_valid,
         'update_message': update_message,   
