@@ -230,15 +230,6 @@
     <!-- /.card -->
 
 
-  
-
-
-
-
-
-
-
-
 
     <div class="card card-default">
 
@@ -323,20 +314,11 @@
         <!-- /.row -->     
 
 
-
-
-
-
       </div>
       <!-- /.card-body -->
     </div>
     <!-- /.card -->
   
-
-
-
-
-
 
 
     <div class="card card-default">
@@ -443,18 +425,6 @@
     </div>
 
 
-
-
-
-
-  <!--
-  <div class="modal fade" id="modal-customer">
-    <div class="modal-dialog">
-      <div class="modal-content"></div>
-    </div>
-  </div>
--->
-
   </section>
   </form>
 <!-- /.content -->
@@ -463,14 +433,17 @@
 
 <!-- Service List Modal -->
 <div class="modal fade" id="service_list_modal" tabindex="-1" role="dialog">
+
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
+      
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">{% trans 'Add New Service' %}</h5>
+        <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;<strong>{% trans 'Add New Service' %}</strong></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+
       <div class="modal-body">
         
 
@@ -482,28 +455,26 @@
               <div class="card-body">
 
                 <div class="form-row">
-                  <div class="form-group col-md-6">
+                  <div class="form-group col-md-3">
                     <label for="cus_zip">{% trans 'Effect Term From' %}</label>
                     <input type="text" class="form-control form-control-sm" value="">
                   </div>
-                  <div class="form-group col-md-6">
+                  <div class="form-group col-md-3">
                     <label for="cus_tel">{% trans 'Effect Term To' %}</label>
                     <input type="text" class="form-control form-control-sm" value="">
                   </div>
-                </div>
-
-                <div class="form-row">
-                  <div class="form-group col-md-6">
+                  <div class="form-group col-md-3">
                     <label for="cus_zip">{% trans 'Rank' %}</label>
                     <input type="text" class="form-control form-control-sm" value="">
                   </div>
-                  <div class="form-group col-md-6">
+                  <div class="form-group col-md-3">
                     <label for="cus_tel">{% trans 'Shift' %}</label>
                     <input type="text" class="form-control form-control-sm" value="">
-                  </div>
-                </div>              
-
+                  </div>                  
+                </div>
+      
                 <div class="form-row">
+
                   <div class="form-row col-6">
                     <div class="form-group col-3">
                       <label for="cus_zip">{% trans 'Mon' %}</label>
@@ -541,6 +512,7 @@
                       <input type="text" class="form-control form-control-sm" value="">
                     </div>
                   </div>
+
                 </div>              
 
                 <div class="form-row">
@@ -562,7 +534,8 @@
                   <div class="form-group col-md-3 text-center">
                     <label for="cus_zip">&nbsp;</label>
                     <div class="form-check">
-                      <input class="form-check-input" type="checkbox" checked>
+                      <!--<input class="form-check-input" type="checkbox" checked>-->
+                      <input class="form-check-input" type="checkbox">
                       <label class="form-check-label">{% trans 'Active' %}</label>
                     </div>                                                
                   </div>
