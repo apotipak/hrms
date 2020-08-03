@@ -39,12 +39,36 @@ class CusContract(models.Model):
         db_table = 'CUS_CONTRACT'
 
 
-class Test(models.Model):
-    srv_id = models.DecimalField(primary_key=True, max_digits=16, decimal_places=0)    
-    cnt_id = models.DecimalField(max_digits=13, decimal_places=0, blank=True, null=True)
+class CusService(models.Model):
+    srv_id = models.DecimalField(primary_key=True, max_digits=16, decimal_places=0)
+    # cnt_id = models.DecimalField(max_digits=13, decimal_places=0, blank=True, null=True)
+    cnt_id = models.ForeignKey(CusContract, db_column='cnt_id', to_field='cnt_id', on_delete=models.SET_NULL, null=True)
     srv_rank = models.CharField(max_length=3, blank=True, null=True)
+    srv_shif_id = models.SmallIntegerField(blank=True, null=True)
+    srv_eff_frm = models.DateTimeField(blank=True, null=True)
+    srv_eff_to = models.DateTimeField(blank=True, null=True)
+    srv_qty = models.DecimalField(max_digits=4, decimal_places=0, blank=True, null=True)
+    srv_mon = models.DecimalField(max_digits=4, decimal_places=0, blank=True, null=True)
+    srv_tue = models.DecimalField(max_digits=4, decimal_places=0, blank=True, null=True)
+    srv_wed = models.DecimalField(max_digits=4, decimal_places=0, blank=True, null=True)
+    srv_thu = models.DecimalField(max_digits=4, decimal_places=0, blank=True, null=True)
+    srv_fri = models.DecimalField(max_digits=4, decimal_places=0, blank=True, null=True)
+    srv_sat = models.DecimalField(max_digits=4, decimal_places=0, blank=True, null=True)
+    srv_sun = models.DecimalField(max_digits=4, decimal_places=0, blank=True, null=True)
+    srv_pub = models.DecimalField(max_digits=4, decimal_places=0, blank=True, null=True)
+    srv_active = models.BooleanField(blank=True, null=True)
+    srv_rate = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    srv_cost = models.DecimalField(max_digits=14, decimal_places=2, blank=True, null=True)
+    srv_rem = models.CharField(max_length=100, blank=True, null=True)
+    upd_date = models.DateTimeField(blank=True, null=True)
+    upd_by = models.CharField(max_length=10, blank=True, null=True)
+    upd_flag = models.CharField(max_length=1, blank=True, null=True)
+    srv_cost_rate = models.DecimalField(max_digits=14, decimal_places=2, blank=True, null=True)
+    srv_cost_change = models.CharField(db_column='Srv_cost_change', max_length=1, blank=True, null=True)  # Field name made lowercase.
+    op1 = models.CharField(max_length=10, blank=True, null=True)
+    op2 = models.CharField(max_length=10, blank=True, null=True)
+    op3 = models.CharField(max_length=10, blank=True, null=True)
 
     class Meta:
         managed = True
-        db_table = 'Test'
-
+        db_table = 'CUS_SERVICE'
