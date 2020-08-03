@@ -260,25 +260,22 @@
             </div>
 
             <div class="form-row">
-              <div class="form-group col-md-6">
+              <div class="form-group col-md-3">
                 <label for="cus_zip">{% trans 'Effect Term From' %}</label>
                 <input type="text" class="form-control form-control-sm" value="{{contract.cnt_eff_frm|date:'d/m/Y'}}" placeholder="From">
               </div>
-              <div class="form-group col-md-6">
+              <div class="form-group col-md-3">
                 <label for="cus_tel">{% trans 'Effect Term To' %}</label>
                 <input type="text" class="form-control form-control-sm" value="{{contract.cnt_eff_to|date:'d/m/Y'}}" placeholder="To">
               </div>
-            </div>
-
-            <div class="form-row">
-              <div class="form-group col-md-6">
+              <div class="form-group col-md-3">
                 <label for="cus_zip">{% trans 'Contract Term From' %}</label>
                 <input type="text" class="form-control form-control-sm" value="{{contract.cnt_sign_frm|date:'d/m/Y'}}" placeholder="From">
               </div>
-              <div class="form-group col-md-6">
+              <div class="form-group col-md-3">
                 <label for="cus_tel">{% trans 'Contract Term To' %}</label>
                 <input type="text" class="form-control form-control-sm" value="{{contract.cnt_sign_to|date:'d/m/Y'}}" placeholder="To">
-              </div>
+              </div>              
             </div>
 
             <div class="form-row">
@@ -366,40 +363,40 @@
                   <tr>
                   <!--<td>{{item.srv_id}}</td>-->
                   {% if item.srv_active %}
-                  <td><a href="javascript:void(0);">{{item.srv_eff_frm|date:'d/m/Y'}}</a></td>
-                  <td><a href="javascript:void(0);">{{item.srv_eff_to|date:'d/m/Y'}}</a></td>
-                  <td><a href="javascript:void(0);">{{item.srv_shif_id}}</a></td>
-                  <td><a href="javascript:void(0);">{{item.srv_qty}}</a></td>
-                  <td><a href="javascript:void(0);">{{item.srv_rank}}</a></td>
-                  <td><a href="javascript:void(0);">{{item.srv_rate}}</a></td>
+                  <td><small><a href="javascript:void(0);">{{item.srv_eff_frm|date:'d/m/Y'}}</a></small></td>
+                  <td><small><a href="javascript:void(0);">{{item.srv_eff_to|date:'d/m/Y'}}</a></small></td>
+                  <td><small><a href="javascript:void(0);">{{item.srv_shif_id}}</a></small></td>
+                  <td><small><a href="javascript:void(0);">{{item.srv_qty}}</a></small></td>
+                  <td><small><a href="javascript:void(0);">{{item.srv_rank}}</a></small></td>
+                  <td><small><a href="javascript:void(0);">{{item.srv_rate}}</a></small></td>
                   <td></td>
-                  <td><a href="javascript:void(0);">{{item.srv_mon}}</a></td>
-                  <td><a href="javascript:void(0);">{{item.srv_tue}}</a></td>
-                  <td><a href="javascript:void(0);">{{item.srv_wed}}</a></td>
-                  <td><a href="javascript:void(0);">{{item.srv_thu}}</a></td>
-                  <td><a href="javascript:void(0);">{{item.srv_fri}}</a></td>
-                  <td><a href="javascript:void(0);">{{item.srv_sat}}</a></td>
-                  <td><a href="javascript:void(0);">{{item.srv_sun}}</a></td>
-                  <td><a href="javascript:void(0);">{{item.srv_pub}}</a></td>
-                  <td><a href="javascript:void(0);">{{item.srv_rem}}</a></td>
-                  <td><span class="badge badge-success">{% trans 'Active' %}</span></td>
+                  <td><small><a href="javascript:void(0);">{{item.srv_mon}}</a></small></td>
+                  <td><small><a href="javascript:void(0);">{{item.srv_tue}}</a></small></td>
+                  <td><small><a href="javascript:void(0);">{{item.srv_wed}}</a></small></td>
+                  <td><small><a href="javascript:void(0);">{{item.srv_thu}}</a></small></td>
+                  <td><small><a href="javascript:void(0);">{{item.srv_fri}}</a></small></td>
+                  <td><small><a href="javascript:void(0);">{{item.srv_sat}}</a></small></td>
+                  <td><small><a href="javascript:void(0);">{{item.srv_sun}}</a></small></td>
+                  <td><small><a href="javascript:void(0);">{{item.srv_pub}}</a></small></td>
+                  <td><small><a href="javascript:void(0);">{{item.srv_rem}}</a></small></td>
+                  <td><small><span class="badge badge-success">{% trans 'Active' %}</span></small></td>
                   {% else %}
-                  <td>{{item.srv_eff_frm|date:'d/m/Y'}}</td>
-                  <td>{{item.srv_eff_to|date:'d/m/Y'}}</td>
-                  <td>{{item.srv_shif_id}}</td>
-                  <td>{{item.srv_qty}}</td>
-                  <td>{{item.srv_rank}}</td>
-                  <td>{{item.srv_rate}}</td>
+                  <td><small>{{item.srv_eff_frm|date:'d/m/Y'}}</small></td>
+                  <td><small>{{item.srv_eff_to|date:'d/m/Y'}}</small></td>
+                  <td><small>{{item.srv_shif_id}}</small></td>
+                  <td><small>{{item.srv_qty}}</small></td>
+                  <td><small>{{item.srv_rank}}</small></td>
+                  <td><small>{{item.srv_rate}}</small></td>
                   <td></td>
-                  <td>{{item.srv_mon}}</td>
-                  <td>{{item.srv_tue}}</td>
-                  <td>{{item.srv_wed}}</td>
-                  <td>{{item.srv_thu}}</td>
-                  <td>{{item.srv_fri}}</td>
-                  <td>{{item.srv_sat}}</td>
-                  <td>{{item.srv_sun}}</td>
-                  <td>{{item.srv_pub}}</td>
-                  <td>{{item.srv_rem}}</td>                  
+                  <td><small>{{item.srv_mon}}</small></td>
+                  <td><small>{{item.srv_tue}}</small></td>
+                  <td><small>{{item.srv_wed}}</small></td>
+                  <td><small>{{item.srv_thu}}</small></td>
+                  <td><small>{{item.srv_fri}}</small></td>
+                  <td><small>{{item.srv_sat}}</small></td>
+                  <td><small>{{item.srv_sun}}</small></td>
+                  <td><small>{{item.srv_pub}}</small></td>
+                  <td><small>{{item.srv_rem}}</small></td>                  
                   <td><span class="badge badge-secondary">{% trans 'Pending' %}</span></td>
                   {% endif %}
 
