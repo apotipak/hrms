@@ -242,13 +242,161 @@
 
 
 
+
+
+
+      </div>
+      <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+  
+
+
+
+
+
+
+
+    <div class="card card-default">
+
+      <div class="card-header">
+        <h1 class="card-title"><strong>Service List</strong></h1>
+        <div class="card-tools">
+          
+          <!--<a href="javascript:void(0);" type="button" class="btn btn-success btn-sm"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;{% trans 'New' %}</a>-->
+
+          <button id="add_service_button" type="button" class="btn btn-outline-success btn-sm" data-toggle="modal" data-url="{% url 'get_district_list' %}"><i class="fas fa-plus fa-sm"></i>&nbsp;New</button>
+
+        </div>        
+      </div>
+
+      <div class="card-body">
+        <!-- Service List -->
+        <div class="row">
+
+          <div class="col-md-12">
+            <table id="customer-list-table1" class="table table-bordered table-sm table-responsive">
+              <tr class="table-secondary">
+                <!--<th scope="col">{% trans 'Service ID' %}</th>-->
+                <th>{% trans 'Eff Frm' %}</th>
+                <th scope="col">{% trans 'Eff To' %}</th>            
+                <th scope="col" nowrap>{% trans 'Shift Time' %}</th>
+                <th scope="col">{% trans 'Qty' %}</th>
+                <th scope="col">{% trans 'Rank' %}</th>
+                <th scope="col">{% trans 'Rate' %}</th>
+                <th scope="col">{% trans 'Ext.Cost' %}</th>
+                <th scope="col">{% trans 'MON' %}</th>
+                <th scope="col">{% trans 'TUE' %}</th>
+                <th scope="col">{% trans 'WED' %}</th>
+                <th scope="col">{% trans 'THU' %}</th>
+                <th scope="col">{% trans 'FRI' %}</th>
+                <th scope="col">{% trans 'SAT' %}</th>
+                <th scope="col">{% trans 'SUN' %}</th>
+                <th scope="col">{% trans 'PUB' %}</th>
+                <th scope="col">{% trans 'Remark' %}</th>
+                <th scope="col">{% trans 'Active' %}</th>
+                <th>&nbsp;</th>
+              </tr>
+              <tbody>
+                {% for item in cus_service %}
+                  <tr>
+                  <!--<td>{{item.srv_id}}</td>-->
+                  {% if item.srv_active %}
+                  <td><a href="javascript:void(0);">{{item.srv_eff_frm|date:'d/m/Y'}}</a></td>
+                  <td><a href="javascript:void(0);">{{item.srv_eff_to|date:'d/m/Y'}}</a></td>
+                  <td><a href="javascript:void(0);">{{item.srv_shif_id}}</a></td>
+                  <td><a href="javascript:void(0);">{{item.srv_qty}}</a></td>
+                  <td><a href="javascript:void(0);">{{item.srv_rank}}</a></td>
+                  <td><a href="javascript:void(0);">{{item.srv_rate}}</a></td>
+                  <td></td>
+                  <td><a href="javascript:void(0);">{{item.srv_mon}}</a></td>
+                  <td><a href="javascript:void(0);">{{item.srv_tue}}</a></td>
+                  <td><a href="javascript:void(0);">{{item.srv_wed}}</a></td>
+                  <td><a href="javascript:void(0);">{{item.srv_thu}}</a></td>
+                  <td><a href="javascript:void(0);">{{item.srv_fri}}</a></td>
+                  <td><a href="javascript:void(0);">{{item.srv_sat}}</a></td>
+                  <td><a href="javascript:void(0);">{{item.srv_sun}}</a></td>
+                  <td><a href="javascript:void(0);">{{item.srv_pub}}</a></td>
+                  <td><a href="javascript:void(0);">{{item.srv_rem}}</a></td>
+                  <td><span class="badge badge-success">{% trans 'Active' %}</span></td>
+                  {% else %}
+                  <td>{{item.srv_eff_frm|date:'d/m/Y'}}</td>
+                  <td>{{item.srv_eff_to|date:'d/m/Y'}}</td>
+                  <td>{{item.srv_shif_id}}</td>
+                  <td>{{item.srv_qty}}</td>
+                  <td>{{item.srv_rank}}</td>
+                  <td>{{item.srv_rate}}</td>
+                  <td></td>
+                  <td>{{item.srv_mon}}</td>
+                  <td>{{item.srv_tue}}</td>
+                  <td>{{item.srv_wed}}</td>
+                  <td>{{item.srv_thu}}</td>
+                  <td>{{item.srv_fri}}</td>
+                  <td>{{item.srv_sat}}</td>
+                  <td>{{item.srv_sun}}</td>
+                  <td>{{item.srv_pub}}</td>
+                  <td>{{item.srv_rem}}</td>                  
+                  <td><span class="badge badge-secondary">{% trans 'Pending' %}</span></td>
+                  {% endif %}
+
+                  <td>
+                    <div class="btn-group btn-group-sm">
+                      <a href="javascript:void(0);" type="button" class="btn btn-info btn-xs js-update-contract-service">
+                        <i class="fas fa-pen fa-xs"></i>
+                      </a>
+                      &nbsp;
+                      <button type="button" class="btn btn-danger btn-xs js-delete-contract-service">
+                        <i class="fas fa-trash fa-xs"></i>
+                      </button>
+                    </div>
+                  </td>
+                  </tr>
+
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+  <!--
+  <div class="modal fade" id="modal-customer">
+    <div class="modal-dialog">
+      <div class="modal-content"></div>
+    </div>
+  </div>
+-->
+
+  </section>
+  </form>
+<!-- /.content -->
+</div>
+
+
+<!-- Service List Modal -->
+<div class="modal fade" id="service_list_modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">{% trans 'Add New Service' %}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+
         <!-- Service List Modal -->
         <div class="row">
           <div class="col-12">
             <div class="card card-info">
-              <div class="card-header">
-                <h3 class="card-title">{% trans 'Service List' %}</h3>
-              </div>
+
               <div class="card-body">
 
                 <div class="form-row">
@@ -355,114 +503,17 @@
           </div>
           
         </div>
-        <!-- /.row -->     
-
-
-
+        <!-- /.row --> 
 
       </div>
-      <!-- /.card-body -->
-    </div>
-    <!-- /.card -->
-  
-
-
-
-
-
-
-
-    <div class="card card-default">
-
-      <div class="card-header">
-        <h1 class="card-title"><strong>Service List</strong></h1>
-        <div class="card-tools">
-          <a href="javascript:void(0);" type="button" class="btn btn-success btn-sm"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;{% trans 'New' %}</a>
-        </div>        
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">{% trans 'Cancel' %}</button>
+        <button type="button" class="btn btn-success btn-sm">{% trans 'Add' %}</button>
       </div>
-
-      <div class="card-body">
-        <!-- Service List -->
-        <div class="row">
-
-          <div class="col-md-12">
-            <table id="customer-list-table1" class="table table-bordered table-sm table-responsive">
-              <thead>
-              <tr class="table-secondary">
-                <!--<th scope="col">{% trans 'Service ID' %}</th>-->
-                <th>{% trans 'Eff From' %}</th>
-                <th scope="col">{% trans 'Eff To' %}</th>            
-                <th scope="col" nowrap>{% trans 'Shift Time' %}</th>
-                <th scope="col">{% trans 'Qty' %}</th>
-                <th scope="col">{% trans 'Rank' %}</th>
-                <th scope="col">{% trans 'Rate' %}</th>
-                <th scope="col">{% trans 'Ext.Cost' %}</th>
-                <th scope="col">{% trans 'MON' %}</th>
-                <th scope="col">{% trans 'TUE' %}</th>
-                <th scope="col">{% trans 'WED' %}</th>
-                <th scope="col">{% trans 'THU' %}</th>
-                <th scope="col">{% trans 'FRI' %}</th>
-                <th scope="col">{% trans 'SAT' %}</th>
-                <th scope="col">{% trans 'SUN' %}</th>
-                <th scope="col">{% trans 'PUB' %}</th>
-                <th scope="col">{% trans 'Remark' %}</th>
-                <th scope="col">{% trans 'Active' %}</th>
-              </tr>
-              </thead>
-              <tbody>
-                {% for item in cus_service %}
-                  {% if item.srv_active %}
-                  <tr class="table-primary">
-                  {% else %}
-                  <tr>
-                  {% endif %}
-                  <!--<td>{{item.srv_id}}</td>-->
-                  <td>{{item.srv_eff_frm|date:'d/m/Y'}}</td>
-                  <td>{{item.srv_eff_to|date:'d/m/Y'}}</td>
-                  <td>{{item.srv_shif_id}}</td>
-                  <td>{{item.srv_qty}}</td>
-                  <td>{{item.srv_rank}}</td>
-                  <td>{{item.srv_rate}}</td>
-                  <td></td>
-                  <td>{{item.srv_mon}}</td>
-                  <td>{{item.srv_tue}}</td>
-                  <td>{{item.srv_wed}}</td>
-                  <td>{{item.srv_thu}}</td>
-                  <td>{{item.srv_fri}}</td>
-                  <td>{{item.srv_sat}}</td>
-                  <td>{{item.srv_sun}}</td>
-                  <td>{{item.srv_pub}}</td>
-                  <td>{{item.srv_rem}}</td>
-                  {% if item.srv_active %}                          
-                  <td><span class="badge badge-success">{% trans 'Active' %}</span></td>
-                  {% else %}
-                  <td><span class="badge badge-secondary">{% trans 'Pending' %}</span></td>
-                  {% endif %}
-                  </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-
-
-
-
-
-  <div class="modal fade" id="modal-customer">
-    <div class="modal-dialog">
-      <div class="modal-content"></div>
     </div>
   </div>
-  </section>
-  </form>
-<!-- /.content -->
-
 </div>
+
 
 <!-- Wage Rate Modal -->
 <div class="modal fade" id="wageratemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -492,6 +543,57 @@
 {% block javascript %}
 <script>
   $(document).ready(function(){    
+
+    $('#add_service_button').on('click', function (e) {
+      var obj = $(this);      
+      $("#service_list_modal").modal("show");
+
+      /*
+      $.ajax({
+        url: obj.attr("data-url"),
+        type: 'get',          
+        dataType: 'json',
+        beforeSend: function () {
+          $("#wageratemodal").modal("show");
+        },
+        success: function (data) {
+          var result = ""
+          var count = data.results.length;
+          var dist_id = data.results[0]["dist_id"];
+
+          result += "<table class='table table-hover table-sm'>";
+          result += " <thead>";
+          result += "   <tr>";
+          result += "     <th scope='col'>{% trans 'ID' %}</th>";
+          result += "     <th scope='col'>{% trans 'Name' %}</th>";
+          result += "     <th scope='col'>{% trans 'City' %}</th>";
+          result += "   </tr>";
+          result += " </thead>";
+          result += " <tbody>";
+
+          for(var i=0; i<count; i++) {              
+            var dist_id = data.results[i]["dist_id"];
+            var dist_name_th = data.results[i]["dist_th"];
+            var city_name_th = data.results[i]["city_th"];
+
+            result += "<tr>";
+            result += "<td>" + dist_id + "</td>";        
+            result += "<td>" + dist_name_th + "</td>";
+            result += "<td>" + city_name_th + "</td>";
+            result += "</td>";
+            result += "</tr>";              
+          }
+          result += " </tbody>";
+          result += "</table>";
+          
+          $("#districtmodal .modal-body").html(result);            
+        },
+        error: function(data){
+          $("#districtmodal .modal-body").html("{% trans 'There is no data.' %}");
+        }          
+      });
+      */
+   });
 
     $('#wage_rate_lookup').on('click', function (e) {
       var obj = $(this);      
@@ -538,7 +640,6 @@
             $("#districtmodal .modal-body").html("{% trans 'There is no data.' %}");
           }          
       });
-
    });
 
  });
