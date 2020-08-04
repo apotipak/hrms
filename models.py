@@ -283,7 +283,7 @@ class CusContract(models.Model):
     cnt_apr_by = models.DecimalField(max_digits=6, decimal_places=0, blank=True, null=True)
     cnt_guard_amt = models.DecimalField(max_digits=4, decimal_places=0, blank=True, null=True)
     cnt_sale_amt = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    cnt_wage_id = models.SmallIntegerField(blank=True, null=True)
+    cnt_wage_id = models.DecimalField(max_digits=2, decimal_places=0, blank=True, null=True)
     cnt_zone = models.DecimalField(max_digits=4, decimal_places=0, blank=True, null=True)
     cnt_autoexpire = models.BooleanField(blank=True, null=True)
     cnt_then = models.CharField(max_length=1, blank=True, null=True)
@@ -303,6 +303,21 @@ class CusContract(models.Model):
     class Meta:
         managed = False
         db_table = 'CUS_CONTRACT'
+
+
+class CusGroup(models.Model):
+    gname = models.CharField(db_column='Gname', primary_key=True, max_length=30)  # Field name made lowercase.
+    gcode = models.CharField(db_column='Gcode', max_length=10, blank=True, null=True)  # Field name made lowercase.
+    upd = models.DateTimeField(db_column='Upd', blank=True, null=True)  # Field name made lowercase.
+    upd_flag = models.CharField(db_column='Upd_flag', max_length=1, blank=True, null=True)  # Field name made lowercase.
+    upd_by = models.CharField(db_column='Upd_By', max_length=30, blank=True, null=True)  # Field name made lowercase.
+    op1 = models.CharField(max_length=10, blank=True, null=True)
+    op2 = models.CharField(max_length=10, blank=True, null=True)
+    op3 = models.CharField(max_length=10, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'CUS_GROUP'
 
 
 class CusService(models.Model):

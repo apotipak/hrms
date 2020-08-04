@@ -128,13 +128,16 @@
                         <label for="id_cus_disrict" class="col-sm-4 col-form-label form-control-sm">{% trans 'District' %}</label>
                         <div class="col-sm-8">
                           <!-- TODO -->
-                          <div class="input-group mb-3">
+
+                          {% comment %}
+                          <div class="input-group">
                             {% render_field form.cus_district_th_text class="form-control form-control-sm" %}
                             <div class="input-group-append">
                               <button id="district_lookup" type="button" class="btn btn-outline-secondary btn-sm" data-toggle="modal" data-url="{% url 'get_district_list' %}"><i class="fas fa-search fa-sm"></i></button>
 
                             </div>
                           </div>
+                          {% endcomment %}
 
                           {% if form.cus_district.errors %}                
                             {% render_field form.cus_district class="form-control form-control-sm is-invalid" %}
@@ -354,7 +357,7 @@
                           <div class="invalid-feedback">
                             {{error}}
                           </div>
-                          {% endfor %}                
+                          {% endfor %}
                         {% else %}
                           {% render_field form.cus_zone class="form-control col-sm-4 form-control-sm" %}
                         {% endif %}
@@ -392,6 +395,7 @@
                     <div class="input-group">
                       <label for="id_cus_contact" class="col-sm-2 col-form-label form-control-sm">{% trans 'Contact Person' %}</label>
                       <div class="col-sm-10">
+                        {% comment %}
                         {% if form.cus_contact.errors %}                
                           {% render_field form.cus_contact class="form-control form-control-sm is-invalid" %}
                           {% for error in form.cus_contact.errors %}
@@ -403,6 +407,7 @@
                           {% render_field form.cus_contact class="form-control form-control-sm" %}                        
                         {% endif %}                      
                         {% render_field form.cus_contact_display class="form-control form-control-sm" %}
+                        {% endcomment %}
                       </div>
                     </div>
 
