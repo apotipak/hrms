@@ -231,7 +231,14 @@
 
 
 
+
+
+
+{% comment %}
+
     <div class="card card-default">
+
+
 
       <div class="card-header">
         <h1 class="card-title"><strong>{% trans 'Contract Information' %}</strong></h1>
@@ -315,7 +322,8 @@
       <!-- /.card-body -->
     </div>
     <!-- /.card -->
-  
+{% endcomment %}
+
 
 
     <div class="card card-default">
@@ -332,13 +340,20 @@
       </div>
 
       <div class="card-body">
-        <!-- Service List -->
+
+      </div>
+    </div>
+
+{% comment %}
+
+      <!-- Service List -->
+      <!--
+      <div class="card-body">        
         <div class="row">
 
           <div class="col-md-12">
             <table id="customer-list-table1" class="table table-bordered table-sm table-responsive">
               <tr class="table-secondary">
-                <!--<th scope="col">{% trans 'Service ID' %}</th>-->
                 <th>{% trans 'Eff Frm' %}</th>
                 <th scope="col">{% trans 'Eff To' %}</th>            
                 <th scope="col" nowrap>{% trans 'Shift Time' %}</th>
@@ -361,7 +376,6 @@
               <tbody>
                 {% for item in cus_service %}
                   <tr>
-                  <!--<td>{{item.srv_id}}</td>-->
                   {% if item.srv_active %}
                   <td><small><a href="javascript:void(0);">{{item.srv_eff_frm|date:'d/m/Y'}}</a></small></td>
                   <td><small><a href="javascript:void(0);">{{item.srv_eff_to|date:'d/m/Y'}}</a></small></td>
@@ -419,7 +433,18 @@
           </div>
         </div>
       </div>
+      -->
+
     </div>
+{% endcomment %}
+
+
+
+
+
+
+
+
 
 
   </section>
