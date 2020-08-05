@@ -244,7 +244,11 @@
           <div class="float-left pt-2">
 
             <div class="form-check d-inline">
+              {% if contract.cnt_new %}
+              <input class="form-check-input" id="checkboxNewReport" type="checkbox" checked>
+              {% else %}
               <input class="form-check-input" id="checkboxNewReport" type="checkbox">
+              {% endif %}
               <label class="form-check-label">New Report</label>&nbsp;&nbsp;&nbsp;&nbsp;
             </div>
             <div class="form-check d-inline">
@@ -252,11 +256,20 @@
               <label class="form-check-label">Amendment</label>&nbsp;&nbsp;&nbsp;&nbsp;
             </div>
             <div class="form-check d-inline">
-              <input class="form-check-input" id="checkboxCustomer" type="checkbox">
+              {% if contract.cnt_print == 'C' %}
+              <input class="form-check-input" id="checkboxCustomer" type="checkbox" checked>
               <label class="form-check-label">Customer</label>&nbsp;&nbsp;&nbsp;&nbsp;
+              {% else %}
+              <input class="form-check-input" id="checkboxCustomer" type="checkbox" checked>
+              <label class="form-check-label">Site</label>&nbsp;&nbsp;&nbsp;&nbsp;
+              {% endif %}
             </div>
             <div class="form-check d-inline">
+              {% if contract.cnt_autoexpire %}
+              <input class="form-check-input" id="checkboxAutoexpire" type="checkbox" checked>
+              {% else %}
               <input class="form-check-input" id="checkboxAutoexpire" type="checkbox">
+              {% endif %}
               <label class="form-check-label text-danger">Auto expire</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </div>                        
 
@@ -306,7 +319,7 @@
             </div>
 
             <div class="form-row">
-              <div class="form-group col-md-6">
+              <div class="form-group col-md-4">
 
                 <label for="cus_zip">{% trans 'Wage Rate' %}</label>
                 <div class="input-group-append">
@@ -315,21 +328,18 @@
                   <button id="wage_rate_lookup" type="button" class="btn btn-outline-secondary btn-sm" data-toggle="modal" data-url=""><i class="fas fa-search fa-sm"></i></button>
                 </div>                
               </div>
-              <div class="form-group col-md-3">
+              <div class="form-group col-md-2">
                 <label for="cus_zip">{% trans 'Guard Amount' %}</label>
                 <input type="text" class="form-control form-control-sm" value="{{contract.cnt_guard_amt}}" readonly>
               </div>
-              <div class="form-group col-md-3">
+              <div class="form-group col-md-2">
                 <label for="cus_tel">{% trans 'Sale Amount' %}</label>
                 <input type="text" class="form-control form-control-sm text-right" value="{{contract.cnt_sale_amt}}" readonly>
               </div>
-            </div>
-
-            <div class="form-row">
-              <div class="form-group col-md-12">
+              <div class="form-group col-md-4">
                 <label>{% trans 'Authorized by' %}</label>
                 <input type="text" class="form-control form-control-sm" value="{{contract.cnt_apr_by.apr_name_en}}&nbsp;&nbsp;({{contract.cnt_apr_by.apr_name_th}})" readonly>
-              </div>                 
+              </div>                               
             </div>
 
           </div>
@@ -351,13 +361,9 @@
     <div class="card card-default">
 
       <div class="card-header">
-        <h1 class="card-title"><strong>Service List</strong></h1>
-        <div class="card-tools">
-          
-          <!--<a href="javascript:void(0);" type="button" class="btn btn-success btn-sm"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;{% trans 'New' %}</a>-->
-
-          <button id="add_service_button" type="button" class="btn btn-outline-success btn-sm" data-toggle="modal" data-url="{% url 'get_district_list' %}"><i class="fas fa-plus fa-sm"></i>&nbsp;New</button>
-
+        <h1 class="card-title pt-1"><strong>{% trans 'Service List' %}</strong></h1>
+        <div class="card-tools">        
+          <button id="add_service_button" type="button" class="btn btn-outline-success btn-sm" data-toggle="modal" data-url="{% url 'get_district_list' %}"><i class="fas fa-plus fa-sm"></i>&nbsp;{% trans 'New' %}</button>
         </div>        
       </div>
 
@@ -407,7 +413,7 @@
                   <td><small><a href="javascript:void(0);">{{item.srv_sun}}</a></small></td>
                   <td><small><a href="javascript:void(0);">{{item.srv_pub}}</a></small></td>
                   <td><small><a href="javascript:void(0);">{{item.srv_rem}}</a></small></td>
-                  <td><small><span class="badge badge-success">{% trans 'Active' %}</span></small></td>
+                  <td><span class="badge badge-success">{% trans 'Active' %}</span></td>
                   {% else %}
                   <td><small>{{item.srv_eff_frm|date:'d/m/Y'}}</small></td>
                   <td><small>{{item.srv_eff_to|date:'d/m/Y'}}</small></td>
@@ -429,14 +435,15 @@
                   {% endif %}
 
                   <td>
-                    <div class="btn-group btn-group-sm">
+                    <div class="btn-group btn-group-sm nowrap">
+                      <small>
                       <a href="javascript:void(0);" type="button" class="btn btn-info btn-xs js-update-contract-service">
-                        <i class="fas fa-pen fa-xs"></i>
+                        &nbsp;<i class="fas fa-pen fa-xs"></i>&nbsp;
                       </a>
-                      &nbsp;
                       <button type="button" class="btn btn-danger btn-xs js-delete-contract-service">
-                        <i class="fas fa-trash fa-xs"></i>
+                        &nbsp;<i class="fas fa-trash fa-xs"></i>&nbsp;
                       </button>
+                      </small>
                     </div>
                   </td>
                   </tr>
