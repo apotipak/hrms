@@ -147,6 +147,9 @@ class CustomerUpdateForm(forms.ModelForm):
     cus_country_th_text = forms.CharField(required=False)
     cus_country_en_text = forms.CharField(required=False)
 
+    # cus_bill
+    cus_bill_active = forms.BooleanField(label='', required=False, widget=forms.CheckboxInput())
+
     class Meta:
         model = Customer        
         fields = '__all__'
@@ -252,8 +255,8 @@ class CustomerUpdateForm(forms.ModelForm):
             data=1
         else:
             data=0
+        return data
 
-        #print("aa : " + str(data))
-        #if data is None:
-        #    data = None
+    def clean_cus_bill_active(self):
+        data=1
         return data
