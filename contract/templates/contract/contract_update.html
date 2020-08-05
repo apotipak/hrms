@@ -4,26 +4,24 @@
 {% load static %}
 {% load widget_tweaks %}
 
-{% block title %}{{ page_title}} - {% trans 'Customer Update' %} {% endblock %}
+{% block title %}{{ page_title}} - {% trans 'Contract Update' %} {% endblock %}
 
 {% block content %}
 
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
   
-
   <!-- Content Header (Page header) -->
+  {% comment %}
   <div class="content-header">
     <form id="contractupdateform" method="post" action="{% url 'contract-update' form.instance.pk %}" class="js-contract-update-form">
-    {% csrf_token %}
-  
+    {% csrf_token %}    
     <div class="">
       <div class="row mb">
-        <div class="col-8">          
-          <h1 class="m-0 text-dark">&nbsp;<strong>{{contract.cnt_id}}</strong></h1>
+        <div class="col-8">        
+          <!--<h1 class="m-0 text-dark">&nbsp;<strong>{{contract.cnt_id}}</strong></h1>-->
         </div>
         <div class="col-4">
-
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item active">
               {% render_field form.cnt_active id="id_cnt_active" class="form-control" type="checkbox" data-toggle="toggle" data-on="Active" data-off="Pending" data-onstyle="success" data-offstyle="danger"%}
@@ -31,15 +29,12 @@
           </ol>
         </div>
       </div>
-    </div>
-
-
-
+    </div>    
   </div>
-
+  {% endcomment %}
 
   <!-- Main content -->  
-  <section class="content">
+  <section class="content pt-2">
     
     <div class="card card-default collapsed-card">
       <div class="card-header">
@@ -242,11 +237,34 @@
 
 
 
-      <div class="card-header">
-        <h1 class="card-title"><strong>{% trans 'Contract Information' %}</strong></h1>
+      <div class="card-header">                
+        <div class="float-left"><h2 class="m-0 text-dark">{{contract.cnt_id}}</h2></div>
         <div class="card-tools">
-          <a href="javascript:void(0);" type="button" onclick="customerupdateform.submit()" class="btn btn-outline-success btn-sm"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>        
-        </div>        
+
+          <div class="float-left pt-2">
+
+            <div class="form-check d-inline">
+              <input class="form-check-input" id="checkboxNewReport" type="checkbox">
+              <label class="form-check-label">New Report</label>&nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+            <div class="form-check d-inline">
+              <input class="form-check-input" id="checkboxAmendment" type="checkbox">
+              <label class="form-check-label">Amendment</label>&nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+            <div class="form-check d-inline">
+              <input class="form-check-input" id="checkboxCustomer" type="checkbox">
+              <label class="form-check-label">Customer</label>&nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+            <div class="form-check d-inline">
+              <input class="form-check-input" id="checkboxAutoexpire" type="checkbox">
+              <label class="form-check-label text-danger">Auto expire</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </div>                        
+
+          </div>
+
+          &nbsp;        
+          {% render_field form.cnt_active id="id_cnt_active" class="form-control" type="checkbox" data-toggle="toggle" data-on="Active" data-off="Pending" data-onstyle="success" data-offstyle="danger"%}
+        </div>
       </div>
       <!-- /.card-header -->
 
@@ -319,6 +337,8 @@
         </div>
         <!-- /.row -->     
 
+        <div class="float-right"><a href="javascript:void(0);" type="button" onclick="customerupdateform.submit()" class="btn btn-outline-success btn-sm"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
+        </div>
 
       </div>
       <!-- /.card-body -->
