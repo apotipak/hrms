@@ -23,12 +23,13 @@
           <h1 class="m-0 text-dark">{{customer.cus_name_th}}</h1>
         </div>
         <div class="col-4">
-
+          {% comment %}
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item active">
             {% render_field form.cus_active id="id_cus_active" class="form-control" type="checkbox" data-toggle="toggle" data-on="Active" data-off="Pending" data-onstyle="success" data-offstyle="danger"%}
             </li>
           </ol>
+          {% endcomment %}
         </div>
       </div>
     </div>
@@ -55,6 +56,27 @@
 
       <div class="card-body">
 
+
+        <div class="clearfix">
+          <div class="float-left">
+            <ul class="nav nav-tabs" id="customer" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" id="mainoffice-tab" data-toggle="tab" href="#mainoffice" role="tab" aria-controls="mainoffice" aria-selected="true">{% trans 'Main Office' %}</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="site-tab" data-toggle="tab" href="#site" role="tab" aria-controls="site" aria-selected="false">{% trans 'Site' %}</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="billing-tab" data-toggle="tab" href="#billing" role="tab" aria-controls="billing" aria-selected="false">{% trans 'Billing' %}</a>
+              </li>
+            </ul>        
+          </div>
+
+
+
+        </div>
+
+
         <div class="" id="show-error">
         {% if form.errors %}
             {% for field in form %}                
@@ -73,22 +95,27 @@
         {% endif %}
         </div>
 
-        <ul class="nav nav-tabs" id="customer" role="tablist">
-          <li class="nav-item">
-            <a class="nav-link active" id="mainoffice-tab" data-toggle="tab" href="#mainoffice" role="tab" aria-controls="mainoffice" aria-selected="true">{% trans 'Main Office' %}</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" id="site-tab" data-toggle="tab" href="#site" role="tab" aria-controls="site" aria-selected="false">{% trans 'Site' %}</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" id="billing-tab" data-toggle="tab" href="#billing" role="tab" aria-controls="billing" aria-selected="false">{% trans 'Billing' %}</a>
-          </li>
-        </ul>
 
         <div class="tab-content" id="customerContent">
           <div class="tab-pane fade show active" id="mainoffice" role="tabpanel" aria-labelledby="mainoffice-tab">          
-
           
+            <div class="clearfix">
+              <div class="float-left">&nbsp;</div>
+              <div class="float-right">
+                <div class="float-left pt-2">
+                  <div class="form-check d-inline">
+                    <input class="form-check-input" id="checkboxForSite" type="checkbox">
+                    <label class="form-check-label">For Site</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                  </div>
+                  <div class="form-check d-inline">
+                    <input class="form-check-input" id="checkboxForBill" type="checkbox">
+                    <label class="form-check-label">For Bill</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                  </div>              
+                </div>
+                {% render_field form.cus_active id="id_cus_active" class="form-control" type="checkbox" data-toggle="toggle" data-on="Active" data-off="Pending" data-onstyle="success" data-offstyle="danger"%}    
+              </div>
+            </div>
+                        
             <!-- TODO -->
             <div class="row pt-3">
 
