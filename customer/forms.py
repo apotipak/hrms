@@ -138,8 +138,11 @@ class CustomerSearchForm(forms.ModelForm):
 
 
 class CustomerUpdateForm(forms.ModelForm):    
-    #cus_active = forms.BooleanField()
+    # contract status    
     cus_active = forms.BooleanField(label='', required=False, widget=forms.CheckboxInput())
+    cus_site_active = forms.BooleanField(label='', required=False, widget=forms.CheckboxInput())
+    cus_billing_active = forms.BooleanField(label='', required=False, widget=forms.CheckboxInput())
+
     cus_district_th_text = forms.CharField(required=False)
     cus_district_en_text = forms.CharField(required=False)
     cus_city_th_text = forms.CharField(required=False)
@@ -147,8 +150,6 @@ class CustomerUpdateForm(forms.ModelForm):
     cus_country_th_text = forms.CharField(required=False)
     cus_country_en_text = forms.CharField(required=False)
 
-    # cus_bill
-    cus_bill_active = forms.BooleanField(label='', required=False, widget=forms.CheckboxInput())
 
     class Meta:
         model = Customer        
@@ -255,8 +256,4 @@ class CustomerUpdateForm(forms.ModelForm):
             data=1
         else:
             data=0
-        return data
-
-    def clean_cus_bill_active(self):
-        data=1
         return data

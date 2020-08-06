@@ -105,11 +105,11 @@
               <div class="float-right">
                 <div class="float-left pt-2">
                   <div class="form-check d-inline">
-                    <input class="form-check-input" id="checkboxForSite" type="checkbox">
+                    <input class="form-check-input" id="checkboxMainOfficeForSite" type="checkbox">
                     <label class="form-check-label">For Site</label>&nbsp;&nbsp;&nbsp;&nbsp;
                   </div>
                   <div class="form-check d-inline">
-                    <input class="form-check-input" id="checkboxForBill" type="checkbox">
+                    <input class="form-check-input" id="checkboxMainOfficeForBill" type="checkbox">
                     <label class="form-check-label">For Bill</label>&nbsp;&nbsp;&nbsp;&nbsp;
                   </div>              
                 </div>
@@ -117,6 +117,9 @@
               </div>
             </div>
 
+
+
+            
             <!-- TODO -->
             <div class="row pt-3">
 
@@ -454,11 +457,11 @@
               <div class="float-right">
                 <div class="float-left pt-2">
                   <div class="form-check d-inline">
-                    <input class="form-check-input" id="checkboxForBill" type="checkbox">
+                    <input class="form-check-input" id="checkboxSiteForBill" type="checkbox">
                     <label class="form-check-label">For Bill</label>&nbsp;&nbsp;&nbsp;&nbsp;
                   </div>              
                 </div>
-                {% render_field form.cus_active id="id_cus_active" class="form-control" type="checkbox" data-toggle="toggle" data-on="Active" data-off="Pending" data-onstyle="success" data-offstyle="danger"%}    
+                {% render_field form.cus_site_active id="id_cus_site_active" class="form-control" type="checkbox" data-toggle="toggle" data-on="Active" data-off="Pending" data-onstyle="success" data-offstyle="danger"%}    
               </div>
             </div>
 
@@ -470,17 +473,17 @@
           <!-- Billing -->
           <div class="tab-pane fade" id="billing" role="tabpanel" aria-labelledby="billing-tab">            
             <div class="clearfix">
-            {% render_field form.cus_bill_active id="id_cus_bill_active" class="form-control" type="checkbox" data-toggle="toggle" data-on="Active" data-off="Pending" data-onstyle="success" data-offstyle="danger"%}    
-            </div>
-            <div class="clearfix">
               <div class="float-left">&nbsp;</div>
               <div class="float-right">
-                
+                <div class="float-left pt-2">
+                  &nbsp;
+                </div>
+                {% render_field form.cus_billing_active id="id_cus_billing_active" class="form-control" type="checkbox" data-toggle="toggle" data-on="Active" data-off="Pending" data-onstyle="success" data-offstyle="danger"%}    
               </div>
             </div>
 
             <div class="container-fluid pt-2">
-            billing content...aa
+            billing content...
             </div>
           </div>
           <!-- end billing -->
