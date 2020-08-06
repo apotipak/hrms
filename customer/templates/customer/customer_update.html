@@ -20,7 +20,7 @@
     <div class="">
       <div class="row mb-2">
         <div class="col-8">          
-          <h1 class="m-0 text-dark">{{customer.cus_name_th}}</h1>
+          <h4 class="m-0 text-dark">{{customer.cus_name_th}}</h4>
         </div>
         <div class="col-4">
           {% comment %}
@@ -469,7 +469,9 @@
 
           <!-- Billing -->
           <div class="tab-pane fade" id="billing" role="tabpanel" aria-labelledby="billing-tab">            
+            <div class="clearfix">
             {% render_field form.cus_bill_active id="id_cus_bill_active" class="form-control" type="checkbox" data-toggle="toggle" data-on="Active" data-off="Pending" data-onstyle="success" data-offstyle="danger"%}    
+            </div>
             <div class="clearfix">
               <div class="float-left">&nbsp;</div>
               <div class="float-right">

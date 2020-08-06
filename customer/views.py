@@ -25,7 +25,7 @@ def CustomerList(request):
     project_name = settings.PROJECT_NAME
     project_version = settings.PROJECT_VERSION
     today_date = settings.TODAY_DATE    
-    item_per_page = 5   
+    item_per_page = 10   
 
     if request.method == "POST":
         form = CustomerSearchForm(request.POST, user=request.user)
@@ -45,7 +45,7 @@ def CustomerList(request):
 
         if cus_name!='' and cus_id=='' and cus_brn=='':
             print("post case 2")
-            customer_list = Customer.objects.filter(Q(cus_name_en__contains=cus_name) | Q(cus_name_th__contains=cus_name)).order_by('-cus_active','cus_id','cus_brn')
+            customer_list = Customer.objects.filter(Q(cus_name_en__contains=cus_name) | Q(cus_name_th__contains=cus_name)).order_by('cus_id', 'cus_brn', '-cus_active')
 
         if cus_name!='' and cus_id=='' and cus_brn!='':
             print("post case 3")
@@ -57,7 +57,7 @@ def CustomerList(request):
 
         if cus_name=='' and cus_id=='' and cus_brn=='':
             print("post case 5")
-            customer_list = Customer.objects.order_by('-cus_active','cus_id','cus_brn')
+            customer_list = Customer.objects.order_by('cus_id', 'cus_brn', '-cus_active')
 
         # cus_id
         if cus_id!='' and cus_name=='' and cus_brn=='':
