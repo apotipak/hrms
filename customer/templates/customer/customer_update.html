@@ -117,17 +117,13 @@
                 </div>
 
                 <label class="switch">
-                  {% if form.cus_active %}
-                  <input type="checkbox" id="id_cus_active" checked>
+                  {% if cus_main_form.cus_active %}
+                  <input type="checkbox" id="id_cus_main_active" checked>
                   {% else %}
-                  <input type="checkbox" id="id_cus_active">
+                  <input type="checkbox" id="id_cus_main_active">
                   {% endif %}
                   <div class="slider"></div>
                 </label>
-
-                {% comment %}
-                {% render_field form.cus_active id="id_cus_active" class="form-control" type="checkbox" data-toggle="toggle" data-on="Active" data-off="Pending" data-onstyle="success" data-offstyle="danger"%}    
-                {% endcomment %}
 
               </div>
             </div>
@@ -149,56 +145,40 @@
                     <div class="form-group">  
 
                       <div class="input-group">
-                        <label for="id_cus_name_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'Customer Name' %}</label>
+                        <label for="id_cus_main_cus_name_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'Customer Name' %}</label>
                         <div class="col-sm-8">
-                          <input type="text" class="form-control form-control-sm" id="id_cus_name_th" name="cus_name_th" value="{{ cus_main.cus_name_th }}">
+                          <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_name_th" name="cus_main_cus_name_th" value="{{ cus_main.cus_name_th }}">
                         </div>
                       </div>
 
                       <div class="input-group">
-                        <label for="id_cus_add1_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'Address' %}</label>
+                        <label for="id_cus_main_cus_add1_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'Address' %}</label>
                         <div class="col-sm-8">
-                          <input type="text" class="form-control form-control-sm" id="id_cus_add1_th" name="cus_add1_th" value="{{ cus_main.cus_add1_th }}">
-                          <input type="text" class="form-control form-control-sm" id="id_cus_add2_th" name="cus_add2_th" value="{{ cus_main.cus_add2_th }}">
+                          <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_add1_th" name="cus_main_cus_add1_th" value="{{ cus_main.cus_add1_th }}">
+                          <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_add2_th" name="cus_main_cus_add2_th" value="{{ cus_main.cus_add2_th }}">
                         </div>
                       </div>
 
                       <div class="input-group">
-                        <label for="id_cus_subdist_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'Sub-District' %}</label>
+                        <label for="id_cus_main_cus_subdist_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'Sub-District' %}</label>
                         <div class="col-sm-8">
-                          <input type="text" class="form-control form-control-sm" id="id_cus_subdist_th" name="cus_subdist_th" value="{{ cus_main.cus_subdist_th }}">
+                          <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_subdist_th" name="cus_main_cus_subdist_th" value="{{ cus_main.cus_subdist_th }}">
                         </div>
                       </div>
 
                       <div class="input-group">
-                        <label for="id_cus_disrict" class="col-sm-4 col-form-label form-control-sm">{% trans 'District' %}</label>
+                        <label for="id_cus_main_cus_disrict" class="col-sm-4 col-form-label form-control-sm">{% trans 'District' %}</label>
                         <div class="col-sm-8">
-                          <!-- TODO -->
-
-                          {% comment %}
-                          <div class="input-group">
-                            {% render_field form.cus_district_th_text class="form-control form-control-sm" %}
-                            <div class="input-group-append">
-                              <button id="district_lookup" type="button" class="btn btn-outline-secondary btn-sm" data-toggle="modal" data-url="{% url 'get_district_list' %}"><i class="fas fa-search fa-sm"></i></button>
-
-                            </div>
-                          </div>
-                          {% endcomment %}
-
                           {% if form.cus_district.errors %}                
-                            {% render_field form.cus_district class="form-control form-control-sm is-invalid" %}
-                            {% for error in form.cus_district.errors %}
+                            {% render_field form.cus_main_cus_district class="form-control form-control-sm is-invalid" %}
+                            {% for error in form.cus_main_cus_district.errors %}
                             <div class="invalid-feedback">
                               {{error}}
                             </div>
                             {% endfor %}
                           {% else %}                          
                             
-                            {% comment %}
-                            {% render_field form.cus_district class="form-control form-control-sm" %}
-                            {% endcomment %}
-
-                            {% render_field cus_main_form.cus_district class="form-control form-control-sm" %}
+                          {% render_field cus_main_form.cus_district class="form-control form-control-sm" %}
 
                           {% endif %}
                         </div>
@@ -233,31 +213,31 @@
                   <div class="card-body">
                     <div class="form-group">
                       <div class="input-group">
-                        <label for="id_cus_name_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Customer Name' %}</label>
+                        <label for="id_cus_main_cus_name_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Customer Name' %}</label>
                         <div class="col-sm-8">
-                          <input type="text" class="form-control form-control-sm" id="id_cus_name_en" name="cus_name_en" value="{{ cus_main.cus_name_en }}">
+                          <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_name_en" name="cus_main_cus_name_en" value="{{ cus_main.cus_name_en }}">
                         </div>
                       </div>
 
                       <div class="input-group">
-                        <label for="id_cus_add1_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Address' %}</label>
+                        <label for="id_cus_main_cus_add1_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Address' %}</label>
                         <div class="col-sm-8">
-                          <input type="text" class="form-control form-control-sm" id="id_cus_add1_en" name="cus_add1_en" value="{{ cus_main.cus_add1_en }}">
-                          <input type="text" class="form-control form-control-sm" id="id_cus_add2_en" name="cus_add2_en" value="{{ cus_main.cus_add2_en }}">
+                          <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_add1_en" name="cus_main_cus_add1_en" value="{{ cus_main.cus_add1_en }}">
+                          <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_add2_en" name="cus_main_cus_add2_en" value="{{ cus_main.cus_add2_en }}">
                         </div>
                       </div>
 
                       <div class="input-group">
-                        <label for="id_cus_subdist_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Sub-District' %}</label>
+                        <label for="id_cus_main_cus_subdist_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Sub-District' %}</label>
                         <div class="col-sm-8">
-                          <input type="text" class="form-control form-control-sm" id="id_cus_main_subdist_en" name="cus_main_subdist_en" value="{{ cus_main.cus_subdist_en }}">
+                          <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_main_subdist_en" name="cus_main_cus_main_subdist_en" value="{{ cus_main.cus_subdist_en }}">
                         </div>
                       </div>
 
                       <div class="input-group">
                         <label for="id_cus_main_disrict_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'District' %}</label>
                         <div class="col-sm-8">
-                          {% render_field cus_main_form.cus_district_en_text class="form-control form-control-sm" %}
+                          {% render_field cus_main_form.cus_main_district_en_text class="form-control form-control-sm" %}
                         </div>
                       </div>
 
@@ -267,7 +247,6 @@
                           {% render_field cus_main_form.cus_main_city_en_text class="form-control form-control-sm" %}
                         </div>
                       </div>
-
 
                       <div class="input-group">
                         <label for="id_cus_main_country_en_text" class="col-sm-4 col-form-label form-control-sm">{% trans 'Country' %}</label>
@@ -292,10 +271,10 @@
 
                     <div class="form-row">
                       <div class="form-group col-md-2">
-                        <label for="cus_zip">{% trans 'Zip' %}</label>
-                        {% if form.cus_zip.errors %}                
-                          {% render_field form.cus_zip class="form-control form-control-sm is-invalid" %}
-                          {% for error in form.cus_zip.errors %}
+                        <label for="cus_main_cus_zip">{% trans 'Zip' %}</label>
+                        {% if cus_main_form.cus_zip.errors %}                
+                          {% render_field cus_main_form.cus_zip class="form-control form-control-sm is-invalid" %}
+                          {% for error in cus_main_form.cus_zip.errors %}
                           <div class="invalid-feedback">
                             {{error}}
                           </div>
@@ -309,69 +288,30 @@
                         <input type="text" class="form-control form-control-sm" id="id_cus_tel" name="cus_tel" value="{{ cus_main.cus_tel }}">
                       </div>
                       <div class="form-group col-md-4">
-                        <label for="cus_zip">{% trans 'Fax' %}</label>
-                        <input type="text" class="form-control form-control-sm" id="id_cus_fax" name="cus_fax" value="{{ cus_main.cus_fax }}">
+                        <label for="cus_main_cus_fax">{% trans 'Fax' %}</label>
+                        <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_fax" name="cus_main_cus_fax" value="{{ cus_main.cus_fax }}">
                       </div>
                       <div class="form-group col-md-4">
-                        <label for="cus_zip">{% trans 'Email' %}</label>
-                        <input type="text" class="form-control form-control-sm" id="id_cus_email" name="cus_email" value="{{ cus_main.cus_email }}">
+                        <label for="cus_main_cus_email">{% trans 'Email' %}</label>
+                        <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_email" name="cus_main_cus_email" value="{{ cus_main.cus_email }}">
                       </div>    
                     </div>
 
                     <div class="form-row">
                       <div class="form-group col-md-6">
-                        <label for="cus_zone">{% trans 'Zone' %}</label>
-                        {% if form.cus_zone.errors %}                
-                          {% render_field form.cus_zone class="form-control col-sm-12 form-control-sm is-invalid" %}
-                          {% for error in form.cus_zone.errors %}
+                        <label for="cus_main_cus_zone">{% trans 'Zone' %}</label>
+                        {% if cus_main_form.cus_zone.errors %}                
+                          {% render_field cus_main_form.cus_zone class="form-control col-sm-12 form-control-sm is-invalid" %}
+                          {% for error in cus_main_form.cus_zone.errors %}
                           <div class="invalid-feedback">
                             {{error}}
                           </div>
                           {% endfor %}                
                         {% else %}
-                          {% render_field form.cus_zone class="form-control col-sm-12 form-control-sm" %}
+                          {% render_field cus_main_form.cus_zone class="form-control col-sm-12 form-control-sm" %}
                         {% endif %}      
                       </div>
-
-                      {% comment %}
-                      <div class="form-group col-md-6">
-                        <label for="cus_zip">{% trans 'Group ID' %}</label>
-                        {% render_field form.cus_bill class="form-control col-sm-12 form-control-sm" %}
-                      </div>
-                      {% endcomment %}
                     </div>
-
-
-                  {% comment %}
-                  <div class="form-row">
-                    <div class="input-group">
-                      <label for="id_cus_zone" class="col-sm-2 col-form-label form-control-sm">{% trans 'Zone' %}</label>
-                      <div class="col-sm-4">
-                        {% if cus_main_form.cus_zone.errors %}                
-                          {% render_field cus_main_form.cus_zone class="form-control col-sm-4 form-control-sm is-invalid" %}
-                          {% for error in cus_main_form.cus_zone.errors %}
-                          <div class="invalid-feedback">
-                            {{error}}
-                          </div>
-                          {% endfor %}
-                        {% else %}
-                          {% render_field cus_main_form.cus_zone class="form-control col-sm-4 form-control-sm" %}
-                        {% endif %}
-                      </div>
-                    </div>
-
-                    <div class="input-group">
-                      <label for="id_cus_group" class="col-sm-2 col-form-label form-control-sm">{% trans 'Group ID' %}</label>
-                      <div class="col-sm-4">
-                        <input type="text" class="form-control form-control-sm" id="id_cus_group" name="cus_group" value="{{ customer.cus_group }}">
-                      </div>
-                    </div>
-
-                  </div>
-                  {% endcomment %}
-
-
-
 
                   </div>
                 </div>
@@ -414,7 +354,10 @@
             <!-- TODO -->
           </div>
 
-          <!-- Site Tab -->
+
+
+
+          <!-- Customer Site Tab -->
           <div class="tab-pane fade" id="site" role="tabpanel" aria-labelledby="site-tab">
 
             <div class="clearfix">
@@ -425,9 +368,14 @@
                     <input class="form-check-input" id="checkboxSiteForBill" type="checkbox">
                     <label class="form-check-label">For Bill</label>&nbsp;&nbsp;&nbsp;&nbsp;
                   </div>              
-                </div>
+                </div>              
+
                 <label class="switch">
-                  <input type="checkbox" id="id_cus_site_active">
+                  {% if form.cus_site %}
+                  <input type="checkbox" id="id_cus_site" checked>
+                  {% else %}
+                  <input type="checkbox" id="id_cus_site">
+                  {% endif %}
                   <div class="slider"></div>
                 </label>
 
@@ -435,7 +383,79 @@
             </div>
 
             <div class="container-fluid pt-2">
-            site content...
+
+              <div class="row pt-3">
+
+                <div class="col-md-6">
+
+                  <div class="card card-info">
+                    <div class="card-header">
+                      <h3 class="card-title">TH</h3>
+                    </div>
+                    <div class="card-body">
+
+                      <div class="form-group">  
+
+                        <div class="input-group">
+                          <label for="id_cus_name_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'Customer Name' %}</label>
+                          <div class="col-sm-8">
+                            <input type="text" class="form-control form-control-sm" id="id_cus_name_th" name="cus_name_th" value="{{ customer.cus_name_th }}">
+                          </div>
+                        </div>
+
+                        <div class="input-group">
+                          <label for="id_cus_add1_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'Address' %}</label>
+                          <div class="col-sm-8">
+                            <input type="text" class="form-control form-control-sm" id="id_cus_add1_th" name="cus_add1_th" value="{{ customer.cus_add1_th }}">
+                            <input type="text" class="form-control form-control-sm" id="id_cus_add2_th" name="cus_add2_th" value="{{ customer.cus_add2_th }}">
+                          </div>
+                        </div>
+
+                        <div class="input-group">
+                          <label for="id_cus_subdist_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'Sub-District' %}</label>
+                          <div class="col-sm-8">
+                            <input type="text" class="form-control form-control-sm" id="id_cus_subdist_th" name="cus_subdist_th" value="{{ customer.cus_subdist_th }}">
+                          </div>
+                        </div>
+
+                        <div class="input-group">
+                          <label for="id_cus_disrict" class="col-sm-4 col-form-label form-control-sm">{% trans 'District' %}</label>
+                          <div class="col-sm-8">
+
+                            {% if form.cus_district.errors %}                
+                              {% render_field form.cus_district class="form-control form-control-sm is-invalid" %}
+                              {% for error in form.cus_district.errors %}
+                              <div class="invalid-feedback">
+                                {{error}}
+                              </div>
+                              {% endfor %}
+                            {% else %}                          
+                              
+                            {% render_field form.cus_district class="form-control form-control-sm" %}
+
+                            {% endif %}
+                          </div>
+                        </div>
+
+                        <div class="input-group">
+                          <label for="id_cus_city" class="col-sm-4 col-form-label form-control-sm">{% trans 'City' %}</label>
+                          <div class="col-sm-8">
+                            {% render_field form.cus_city_th_text class="form-control form-control-sm" %}
+                          </div>
+                        </div>
+
+                        <div class="input-group">
+                          <label for="id_cus_country" class="col-sm-4 col-form-label form-control-sm">{% trans 'Country' %}</label>
+                          <div class="col-sm-8">                        
+                            {% render_field form.cus_country_th_text class="form-control form-control-sm" %}
+                          </div>
+                        </div>                      
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 

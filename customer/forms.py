@@ -268,7 +268,7 @@ class CusMainUpdateForm(forms.ModelForm):
     cus_main_city_en_text = forms.CharField(required=False)
     cus_main_country_th_text = forms.CharField(required=False)
     cus_main_country_en_text = forms.CharField(required=False)
-    cus_district_en_text = forms.CharField(required=False)
+    cus_main_district_en_text = forms.CharField(required=False)
 
     class Meta:
         model = CusMain  
@@ -279,13 +279,14 @@ class CusMainUpdateForm(forms.ModelForm):
         super(CusMainUpdateForm, self).__init__(*args, **kwargs)        
         instance = getattr(self, 'instance', None)        
         
-        cus_district_en_text = forms.CharField(required=False)
-        self.initial['cus_district_en_text'] = instance.cus_district.dist_en
-        self.fields['cus_district_en_text'].widget.attrs['readonly'] = True
+        cus_main_district_en_text = forms.CharField(required=False)
+        self.initial['cus_main_district_en_text'] = instance.cus_district.dist_en
+        self.fields['cus_main_district_en_text'].widget.attrs['readonly'] = True
 
         cus_main_city_th_text = forms.CharField(required=False)
         self.initial['cus_main_city_th_text'] = instance.cus_city
         self.fields['cus_main_city_th_text'].widget.attrs['readonly'] = True
+
         cus_main_city_en_text = forms.CharField(required=False)
         self.initial['cus_main_city_en_text'] = instance.cus_city.city_en
         self.fields['cus_main_city_en_text'].widget.attrs['readonly'] = True
@@ -293,6 +294,7 @@ class CusMainUpdateForm(forms.ModelForm):
         cus_main_country_th_text = forms.CharField(required=False)
         self.initial['cus_main_country_th_text'] = instance.cus_country
         self.fields['cus_main_country_en_text'].widget.attrs['readonly'] = True        
+
         cus_main_country_en_text = forms.CharField(required=False)
         self.initial['cus_main_country_en_text'] = instance.cus_country.country_en
         self.fields['cus_main_country_en_text'].widget.attrs['readonly'] = True
