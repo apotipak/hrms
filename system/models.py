@@ -34,7 +34,7 @@ class ComZone(models.Model):
         db_table = 'COM_ZONE'
 
     def __str__(self):
-        return self.zone_en
+        return '%s - %s' % (self.zone_id,self.zone_en)
 
 
 class TDistrict(models.Model):
