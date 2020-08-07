@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.views import generic
 from .models import Customer, CusMain
-from .forms import CustomerCreateForm, CustomerUpdateForm
+from .forms import CustomerCreateForm, CustomerUpdateForm, CusMainUpdateForm
 from .forms import CustomerSearchForm
 from django.http import JsonResponse
 from django.template.loader import render_to_string
@@ -299,8 +299,10 @@ def CustomerUpdate(request, pk):
 
     if request.method == 'POST':
         form = CustomerUpdateForm(request.POST, instance=customer)
+        cus_main_form = CusMainUpdateForm(instance=cus_main)
     else:
         form = CustomerUpdateForm(instance=customer)
+        cus_main_form = CusMainUpdateForm(instance=cus_main)
 
     data = dict()
     form_is_valid = False
@@ -334,6 +336,7 @@ def CustomerUpdate(request, pk):
         'db_server': settings.DATABASES['default']['HOST'],
         'project_name': settings.PROJECT_NAME,
         'form': form, 
+        'cus_main_form': cus_main_form,
         'customer': customer,
         'cus_main': cus_main,
         'request': request,

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Customer
+from .models import Customer, CusMain
 from django.contrib.auth.models import User
 from django.forms.widgets import HiddenInput
 from django.utils.translation import gettext_lazy as _
@@ -150,7 +150,6 @@ class CustomerUpdateForm(forms.ModelForm):
     cus_country_th_text = forms.CharField(required=False)
     cus_country_en_text = forms.CharField(required=False)
 
-
     class Meta:
         model = Customer        
         fields = '__all__'
@@ -166,7 +165,9 @@ class CustomerUpdateForm(forms.ModelForm):
         # customer_list = Customer.objects.filter(cus_id__in=[2094]).order_by('-upd_date', 'cus_id', '-cus_active')
         # cus_contact = forms.ModelChoiceField(label=_('Select contact person'), queryset=contactobj, required=False)
 
-        cus_district1 = forms.ModelChoiceField(queryset=None, required=False)
+        cus_district = forms.ModelChoiceField(queryset=None, required=False)
+        cus_main_district = forms.ModelChoiceField(queryset=None, required=False)
+
         #cus_city = forms.ModelChoiceField(queryset=None, required=False)
         #self.fields['cus_city'].widget.attrs['readonly'] = True
 
@@ -260,3 +261,25 @@ class CustomerUpdateForm(forms.ModelForm):
         else:
             data=0
         return data
+
+
+class CusMainUpdateForm(forms.ModelForm):
+    cus_main_city_th_text = forms.CharField(required=False)
+    cus_main_country_th_text = forms.CharField(required=False)
+
+    class Meta:
+        model = CusMain  
+        fields = '__all__'
+        exclude = ['cus_id']
+
+    def __init__(self, *args, **kwargs):
+        super(CusMainUpdateForm, self).__init__(*args, **kwargs)        
+        instance = getattr(self, 'instance', None)        
+        
+        cus_main_city_th_text = forms.CharField(required=False)
+        self.initial['cus_main_city_th_text'] = instance.cus_city
+        self.fields['cus_main_city_th_text'].widget.attrs['readonly'] = True
+        
+        cus_main_country_th_text = forms.CharField(required=False)
+        self.initial['cus_main_country_th_text'] = instance.cus_country
+        self.fields['cus_main_country_th_text'].widget.attrs['readonly'] = True        

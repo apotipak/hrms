@@ -194,7 +194,11 @@
                             {% endfor %}
                           {% else %}                          
                             
+                            {% comment %}
                             {% render_field form.cus_district class="form-control form-control-sm" %}
+                            {% endcomment %}
+
+                            {% render_field cus_main_form.cus_district class="form-control form-control-sm" %}
 
                           {% endif %}
                         </div>
@@ -237,14 +241,14 @@
                       <div class="input-group">
                         <label for="id_cus_city" class="col-sm-4 col-form-label form-control-sm">{% trans 'City' %}</label>
                         <div class="col-sm-8">
-                          {% render_field form.cus_city_th_text class="form-control form-control-sm" %}
+                          {% render_field cus_main_form.cus_main_city_th_text class="form-control form-control-sm" %}
                         </div>
                       </div>
 
                       <div class="input-group">
                         <label for="id_cus_country" class="col-sm-4 col-form-label form-control-sm">{% trans 'Country' %}</label>
                         <div class="col-sm-8">                        
-                          {% render_field form.cus_country_th_text class="form-control form-control-sm" %}
+                          {% render_field cus_main_form.cus_main_country_th_text class="form-control form-control-sm" %}
                         </div>
                       </div>
 
