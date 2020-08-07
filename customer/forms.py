@@ -177,7 +177,10 @@ class CustomerUpdateForm(forms.ModelForm):
         cus_bill = forms.ModelChoiceField(queryset=None, required=False)
 
         cus_district_th_text = forms.CharField(required=False)
-        self.initial['cus_district_th_text'] = instance.cus_district.dist_th
+        if instance.cus_district.dist_th:
+            self.initial['cus_district_th_text'] = instance.cus_district.dist_th
+        else:
+            self.initial['cus_district_th_text'] = ""
         self.fields['cus_district_th_text'].widget.attrs['readonly'] = True
 
         cus_district_en_text = forms.CharField(required=False)

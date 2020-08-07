@@ -20,7 +20,7 @@
     <div class="">
       <div class="row mb-2">
         <div class="col-8">          
-          <h4 class="m-0 text-dark">{{customer.cus_name_th}}</h4>
+          <h4 class="display-6 m-0 text-dark">{{customer.cus_name_th}} <span> - {{customer.cus_id|stringformat:"04d"}}{{customer.cus_brn|stringformat:"03d"}}</span></h4>
         </div>
         <div class="col-4">
           {% comment %}
@@ -59,7 +59,8 @@
 
         <div class="clearfix">
           <div class="float-left">
-            <ul class="nav nav-tabs" id="customer" role="tablist">
+
+            <ul class="nav nav-tabs navbar-expand" id="customer" role="tablist">
               <li class="nav-item">
                 <a class="nav-link active" id="mainoffice-tab" data-toggle="tab" href="#mainoffice" role="tab" aria-controls="mainoffice" aria-selected="true">{% trans 'Main Office' %}</a>
               </li>
@@ -70,6 +71,7 @@
                 <a class="nav-link" id="billing-tab" data-toggle="tab" href="#billing" role="tab" aria-controls="billing" aria-selected="false">{% trans 'Billing' %}</a>
               </li>
             </ul>        
+
           </div>
 
 
@@ -113,13 +115,26 @@
                     <label class="form-check-label">For Bill</label>&nbsp;&nbsp;&nbsp;&nbsp;
                   </div>              
                 </div>
+
+                <label class="switch">
+                  {% if form.cus_active %}
+                  <input type="checkbox" id="id_cus_active" checked>
+                  {% else %}
+                  <input type="checkbox" id="id_cus_active">
+                  {% endif %}
+                  <div class="slider"></div>
+                </label>
+
+                {% comment %}
                 {% render_field form.cus_active id="id_cus_active" class="form-control" type="checkbox" data-toggle="toggle" data-on="Active" data-off="Pending" data-onstyle="success" data-offstyle="danger"%}    
+                {% endcomment %}
+
               </div>
             </div>
 
 
 
-            
+
             <!-- TODO -->
             <div class="row pt-3">
 
@@ -461,7 +476,11 @@
                     <label class="form-check-label">For Bill</label>&nbsp;&nbsp;&nbsp;&nbsp;
                   </div>              
                 </div>
-                {% render_field form.cus_site_active id="id_cus_site_active" class="form-control" type="checkbox" data-toggle="toggle" data-on="Active" data-off="Pending" data-onstyle="success" data-offstyle="danger"%}    
+                <label class="switch">
+                  <input type="checkbox" id="id_cus_site_active">
+                  <div class="slider"></div>
+                </label>
+
               </div>
             </div>
 
@@ -478,7 +497,10 @@
                 <div class="float-left pt-2">
                   &nbsp;
                 </div>
-                {% render_field form.cus_billing_active id="id_cus_billing_active" class="form-control" type="checkbox" data-toggle="toggle" data-on="Active" data-off="Pending" data-onstyle="success" data-offstyle="danger"%}    
+                <label class="switch">
+                  <input type="checkbox" id="id_cus_billing_active">
+                  <div class="slider"></div>
+                </label>                
               </div>
             </div>
 
@@ -550,7 +572,27 @@
 
 {% block javascript %}
 <script>
-  $(document).ready(function(){    
+
+  
+  $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+    var target = $(e.target).attr("href") // activated tab    
+    
+    //$('#id_cus_site_active').bootstrapSwitch('_width');
+    /*
+    $('body').on('shown.bs.tab', function(e) {
+        var $switches = $('.bootstrap-switch-container input');
+        $switches.each(function(index, element) {
+            var $element = $(element);
+            if ($element.is(':visible')) {
+                $element.bootstrapSwitch('_width');
+            }
+        });
+    }); 
+    */   
+  });
+  
+
+  $(document).ready(function(){        
 
     $('#district_lookup').on('click', function (e) {
       var obj = $(this);      
