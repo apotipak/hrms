@@ -14,12 +14,9 @@ class CusMain(models.Model):
     cus_add1_en = models.CharField(max_length=150, blank=True, null=True)
     cus_add2_en = models.CharField(max_length=70, blank=True, null=True)
     cus_subdist_en = models.CharField(max_length=50, blank=True, null=True)
-    
-    #cus_district = models.DecimalField(max_digits=4, decimal_places=0, blank=True, null=True)
     cus_district = models.ForeignKey(TDistrict, db_column='cus_district', to_field='dist_id', on_delete=models.SET_NULL, null=True)    
-
-    cus_city = models.DecimalField(max_digits=2, decimal_places=0, blank=True, null=True)
-    cus_country = models.SmallIntegerField(blank=True, null=True)
+    cus_city = models.ForeignKey(TCity, db_column='cus_city', to_field='city_id', on_delete=models.SET_NULL, null=True)    
+    cus_country = models.ForeignKey(TCountry, db_column='cus_country', to_field='country_id', on_delete=models.SET_NULL, null=True)
     cus_zip = models.DecimalField(max_digits=5, decimal_places=0, blank=True, null=True)
     cus_tel = models.CharField(max_length=40, blank=True, null=True)
     cus_fax = models.CharField(max_length=30, blank=True, null=True)
