@@ -1,7 +1,8 @@
 {% for item in current_page %}
     <tr>
         <td>{{item.cus_id}}</td>
-        <td>{{item.cus_brn}}</td>
+        <td>{{item.cus_brn|stringformat:"03d"}}</td>
+        <td><a href="{% url 'customer-update' item.cus_no %}">{{item.cus_name_th}}</a></td>
         <td><a href="{% url 'customer-update' item.cus_no %}">{{item.cus_name_en}}</a></td>
         <td>{{item.cus_zone}}</td>
         <td>

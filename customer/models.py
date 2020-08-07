@@ -44,8 +44,7 @@ class Customer(models.Model):
 
 
 class CusMain(models.Model):
-    cus_id = models.DecimalField(primary_key=True, max_digits=7, decimal_places=0)
-    #cus_id = models.ForeignKey(CUSTOMER, db_column='cus_country', to_field='country_id', on_delete=models.SET_NULL, null=True)
+    cus_id = models.DecimalField(primary_key=True, max_digits=7, decimal_places=0)    
     cus_sht_th = models.CharField(max_length=10, blank=True, null=True)
     cus_name_th = models.CharField(max_length=120, blank=True, null=True)
     cus_add1_th = models.CharField(max_length=150, blank=True, null=True)
@@ -56,7 +55,10 @@ class CusMain(models.Model):
     cus_add1_en = models.CharField(max_length=150, blank=True, null=True)
     cus_add2_en = models.CharField(max_length=70, blank=True, null=True)
     cus_subdist_en = models.CharField(max_length=50, blank=True, null=True)
-    cus_district = models.DecimalField(max_digits=4, decimal_places=0, blank=True, null=True)
+    
+    #cus_district = models.DecimalField(max_digits=4, decimal_places=0, blank=True, null=True)
+    cus_district = models.ForeignKey(TDistrict, db_column='cus_district', to_field='dist_id', on_delete=models.SET_NULL, null=True)    
+
     cus_city = models.DecimalField(max_digits=2, decimal_places=0, blank=True, null=True)
     cus_country = models.SmallIntegerField(blank=True, null=True)
     cus_zip = models.DecimalField(max_digits=5, decimal_places=0, blank=True, null=True)

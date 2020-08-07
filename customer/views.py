@@ -5,7 +5,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.views import generic
-from .models import Customer
+from .models import Customer, CusMain
 from .forms import CustomerCreateForm, CustomerUpdateForm
 from .forms import CustomerSearchForm
 from django.http import JsonResponse
@@ -291,7 +291,12 @@ def CustomerCreate(request):
 
 def CustomerUpdate(request, pk):
     template_name = 'customer/customer_update.html'
+    
     customer = get_object_or_404(Customer, pk=pk)
+    cus_main = []
+    if customer:
+        cus_main = CusMain.objects.filter(cus_id=customer.cus_id).get()
+
     if request.method == 'POST':
         form = CustomerUpdateForm(request.POST, instance=customer)
     else:
@@ -330,6 +335,7 @@ def CustomerUpdate(request, pk):
         'project_name': settings.PROJECT_NAME,
         'form': form, 
         'customer': customer,
+        'cus_main': cus_main,
         'request': request,
         'form_is_valid': form_is_valid,
         'update_message': update_message,   
