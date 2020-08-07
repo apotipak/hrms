@@ -283,7 +283,7 @@ class CusContract(models.Model):
     cnt_apr_by = models.DecimalField(max_digits=6, decimal_places=0, blank=True, null=True)
     cnt_guard_amt = models.DecimalField(max_digits=4, decimal_places=0, blank=True, null=True)
     cnt_sale_amt = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    cnt_wage_id = models.DecimalField(max_digits=2, decimal_places=0, blank=True, null=True)
+    cnt_wage = models.ForeignKey('TWagezone', models.DO_NOTHING, blank=True, null=True)
     cnt_zone = models.DecimalField(max_digits=4, decimal_places=0, blank=True, null=True)
     cnt_autoexpire = models.BooleanField(blank=True, null=True)
     cnt_then = models.CharField(max_length=1, blank=True, null=True)
@@ -318,6 +318,43 @@ class CusGroup(models.Model):
     class Meta:
         managed = False
         db_table = 'CUS_GROUP'
+
+
+class CusMain(models.Model):
+    cus_id = models.DecimalField(primary_key=True, max_digits=7, decimal_places=0)
+    cus_sht_th = models.CharField(max_length=10, blank=True, null=True)
+    cus_name_th = models.CharField(max_length=120, blank=True, null=True)
+    cus_add1_th = models.CharField(max_length=150, blank=True, null=True)
+    cus_add2_th = models.CharField(max_length=70, blank=True, null=True)
+    cus_subdist_th = models.CharField(max_length=50, blank=True, null=True)
+    cus_sht_en = models.CharField(max_length=10, blank=True, null=True)
+    cus_name_en = models.CharField(max_length=120, blank=True, null=True)
+    cus_add1_en = models.CharField(max_length=150, blank=True, null=True)
+    cus_add2_en = models.CharField(max_length=70, blank=True, null=True)
+    cus_subdist_en = models.CharField(max_length=50, blank=True, null=True)
+    cus_district = models.DecimalField(max_digits=4, decimal_places=0, blank=True, null=True)
+    cus_city = models.DecimalField(max_digits=2, decimal_places=0, blank=True, null=True)
+    cus_country = models.SmallIntegerField(blank=True, null=True)
+    cus_zip = models.DecimalField(max_digits=5, decimal_places=0, blank=True, null=True)
+    cus_tel = models.CharField(max_length=40, blank=True, null=True)
+    cus_fax = models.CharField(max_length=30, blank=True, null=True)
+    cus_email = models.CharField(max_length=60, blank=True, null=True)
+    cus_taxid = models.CharField(max_length=30, blank=True, null=True)
+    cus_active = models.BooleanField(blank=True, null=True)
+    cus_bill = models.BooleanField(blank=True, null=True)
+    cus_main = models.BooleanField(blank=True, null=True)
+    cus_site = models.BooleanField(blank=True, null=True)
+    cus_zone = models.DecimalField(max_digits=4, decimal_places=0, blank=True, null=True)
+    cus_contact = models.DecimalField(max_digits=7, decimal_places=0, blank=True, null=True)
+    site_contact = models.DecimalField(max_digits=7, decimal_places=0, blank=True, null=True)
+    last_contact = models.SmallIntegerField(blank=True, null=True)
+    upd_date = models.DateTimeField(blank=True, null=True)
+    upd_by = models.CharField(max_length=10, blank=True, null=True)
+    upd_flag = models.CharField(max_length=1, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'CUS_MAIN'
 
 
 class CusService(models.Model):
