@@ -166,7 +166,7 @@ class CustomerUpdateForm(forms.ModelForm):
         # customer_list = Customer.objects.filter(cus_id__in=[2094]).order_by('-upd_date', 'cus_id', '-cus_active')
         # cus_contact = forms.ModelChoiceField(label=_('Select contact person'), queryset=contactobj, required=False)
 
-        cus_district = forms.ModelChoiceField(queryset=None, required=False)
+        cus_district1 = forms.ModelChoiceField(queryset=None, required=False)
         #cus_city = forms.ModelChoiceField(queryset=None, required=False)
         #self.fields['cus_city'].widget.attrs['readonly'] = True
 
