@@ -149,7 +149,7 @@ class Company(models.Model):
 
 class CusContact(models.Model):
     con_id = models.DecimalField(primary_key=True, max_digits=10, decimal_places=0)
-    cus_id = models.DecimalField(max_digits=7, decimal_places=0)
+    cus_id = models.DecimalField(max_digits=7, unique=True, decimal_places=0)
     cus_brn = models.DecimalField(max_digits=3, decimal_places=0, blank=True, null=True)
     cus_rem = models.CharField(max_length=10, blank=True, null=True)
     con_type = models.CharField(max_length=1, blank=True, null=True)    
