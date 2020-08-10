@@ -279,6 +279,9 @@ class CusMainUpdateForm(forms.ModelForm):
         super(CusMainUpdateForm, self).__init__(*args, **kwargs)        
         instance = getattr(self, 'instance', None)        
         
+        cus_active = forms.CharField(required=False)
+        self.initial['cus_main_cus_active'] = instance.cus_active
+
         cus_main_district_en_text = forms.CharField(required=False)
         self.initial['cus_main_district_en_text'] = instance.cus_district.dist_en
         self.fields['cus_main_district_en_text'].widget.attrs['readonly'] = True

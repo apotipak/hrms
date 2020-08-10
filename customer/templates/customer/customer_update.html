@@ -117,7 +117,7 @@
                 </div>
 
                 <label class="switch">
-                  {% if cus_main_form.cus_active %}
+                  {% if cus_main.cus_active %}
                   <input type="checkbox" id="id_cus_main_active" checked>
                   {% else %}
                   <input type="checkbox" id="id_cus_main_active">
@@ -204,7 +204,7 @@
               </div>
 
 
-              <!-- TAB ENGLISH -->
+              <!-- Main Office Tab English -->
               <div class="col-md-6">
                 <div class="card card-info">
                   <div class="card-header">
@@ -259,11 +259,13 @@
                   </div>
                 </div>
               </div>
+              <!-- Main Office Tab English -->
+
             </div>
             <!-- /.row -->            
 
 
-            <!-- Others -->
+            <!-- Others - Zip, Phone, Fax, Email, Zone, Group, Business Type, etc. -->
             <div class="row">
               <div class="col-md-12">
                 <div class="card card-info">
@@ -357,7 +359,7 @@
 
 
 
-          <!-- Customer Site Tab -->
+          <!-- Site Tab -->
           <div class="tab-pane fade" id="site" role="tabpanel" aria-labelledby="site-tab">
 
             <div class="clearfix">
@@ -386,8 +388,8 @@
 
               <div class="row pt-3">
 
+                <!-- Site Tab Thai -->
                 <div class="col-md-6">
-
                   <div class="card card-info">
                     <div class="card-header">
                       <h3 class="card-title">TH</h3>
@@ -455,6 +457,70 @@
                     </div>
                   </div>
                 </div>
+                <!-- Site Tab Thai -->
+
+                <!-- Site Tab English -->
+                <div class="col-md-6">
+                  <div class="card card-info">
+                    <div class="card-header">
+                      <h3 class="card-title">EN</h3>
+                    </div>
+                    <div class="card-body">
+
+
+                      <div class="form-group">
+
+                        <div class="input-group">
+                          <label for="id_cus_name_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Customer Name' %}</label>
+                          <div class="col-sm-8">
+                            <input type="text" class="form-control form-control-sm" id="id_cus_name_en" name="cus_name_th" value="{{ customer.cus_name_en }}">
+                          </div>
+                        </div>
+
+                        <div class="input-group">
+                          <label for="id_cus_add1_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Address' %}</label>
+                          <div class="col-sm-8">
+                            <input type="text" class="form-control form-control-sm" id="id_cus_add1_en" name="cus_add1_th" value="{{ customer.cus_add1_en }}">
+                            <input type="text" class="form-control form-control-sm" id="id_cus_add2_en" name="cus_add2_th" value="{{ customer.cus_add2_en }}">
+                          </div>
+                        </div>
+
+                        <div class="input-group">
+                          <label for="id_cus_subdist_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Sub-District' %}</label>
+                          <div class="col-sm-8">
+                            <input type="text" class="form-control form-control-sm" id="id_cus_subdist_th" name="cus_subdist_en" value="{{ customer.cus_subdist_en }}">
+                          </div>
+                        </div>
+
+                        <div class="input-group">
+                          <label for="id_cus_disrict" class="col-sm-4 col-form-label form-control-sm">{% trans 'District' %}</label>
+                          <div class="col-sm-8">                                                    
+                            {% render_field form.cus_district_en_text class="form-control form-control-sm" %}
+                          </div>
+                        </div>
+
+                        <div class="input-group">
+                          <label for="id_cus_city" class="col-sm-4 col-form-label form-control-sm">{% trans 'City' %}</label>
+                          <div class="col-sm-8">
+                            {% render_field form.cus_city_en_text class="form-control form-control-sm" %}
+                          </div>
+                        </div>
+
+                        <div class="input-group">
+                          <label for="id_cus_country" class="col-sm-4 col-form-label form-control-sm">{% trans 'Country' %}</label>
+                          <div class="col-sm-8">                        
+                            {% render_field form.cus_country_en_text class="form-control form-control-sm" %}
+                          </div>
+                        </div>                      
+
+                      </div>                    
+                    </div>
+                  </div>
+                </div>
+                <!-- Site Tab English -->
+
+
+
               </div>
             </div>
           </div>
