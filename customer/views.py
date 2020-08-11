@@ -466,6 +466,7 @@ def get_district_list(request):
 
 def CusMainUpdate(request, pk):
 
+    print(pk)
     template_name = 'customer/customer_update.html'
     
     customer = get_object_or_404(Customer, pk=pk)
