@@ -14,8 +14,6 @@
 
   <!-- Content Header (Page header) -->
   <div class="content-header">
-    <form id="customerupdateform" method="post" action="{% url 'customer-update' form.instance.pk %}" class="js-customer-update-form">
-    {% csrf_token %}
   
     <div class="">
       <div class="row mb-2">
@@ -45,14 +43,12 @@
 
       </div>
 
-      {% comment %}
       <div class="card-header" style="vertical-align: middle;">
         <div class="card-tools">          
           <!--<a href="#" type="button" onclick="history.back()" class="btn btn-secondary btn-sm">{% trans 'Cancel' %}</a>-->
-          <a href="#" type="button" onclick="customerupdateform.submit()" class="btn btn-success btn-sm"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>        
+          <a href="#" id="mainOfficeSaveButton" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>        
         </div>
       </div>
-      {% endcomment %}
 
       <div class="card-body">
 
@@ -79,7 +75,7 @@
         </div>
 
 
-        <div class="" id="show-error">
+        <div class="pt-2" id="show-error">
         {% if form.errors %}
             {% for field in form %}                
                 {% for error in field.errors %}
@@ -128,8 +124,8 @@
               </div>
             </div>
 
-
-
+            <form id="customermainofficeupdateform" method="post" action="{% url 'customer-mainoffice-update' form.instance.pk %}">
+            {% csrf_token %}
 
             <!-- TODO -->
             <div class="row pt-3">
@@ -354,8 +350,9 @@
               </div>
             </div>
             <!-- TODO -->
-          </div>
+            </form>
 
+          </div>        
 
 
 
@@ -554,8 +551,7 @@
 
       <!-- /.card-body -->
 
-      <div class="card-footer text-right">
-        <!--<a href="#" type="button" onclick="history.back()" class="btn btn-secondary btn-sm">{% trans 'Cancel' %}</a>-->
+      <div class="card-footer text-right">        
         <a href="#" type="button" onclick="customerupdateform.submit()" class="btn btn-success btn-sm"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>        
       </div>
       <!-- /.card-footer-->
@@ -716,15 +712,12 @@
       }
     });
   });    
+*/
 
-  //$(function(){ $('#customer_active_status').bootstrapToggle() });
-  $(function() {
-    $('#customer_active_status').bootstrapToggle({
-      on: 'Enabled',
-      off: 'Disabled'
-    });
-  })
-  */
+  $("#mainOfficeSaveButton").click( function() {
+    event.preventDefault();    
+    $('#customermainofficeupdateform').submit();
+  });
 
 </script>
 {% endblock %}

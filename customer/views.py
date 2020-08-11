@@ -462,3 +462,62 @@ def get_district_list(request):
 
 
     return JsonResponse(data={"success": False, "results": ""})
+
+
+def CustomerMainOfficeUpdate(request, pk):
+    print("todooo")
+
+    template_name = 'customer/customer_update.html'
+    
+    customer = get_object_or_404(Customer, pk=pk)
+    cus_main = []
+    if customer:
+        cus_main = CusMain.objects.filter(cus_id=customer.cus_id).get()
+
+    if request.method == 'POST':
+        form = CustomerUpdateForm(request.POST, instance=customer)
+        cus_main_form = CusMainUpdateForm(instance=cus_main)
+    else:
+        form = CustomerUpdateForm(instance=customer)
+        cus_main_form = CusMainUpdateForm(instance=cus_main)
+
+    data = dict()
+    form_is_valid = False
+    update_message = ""
+
+    if request.method == 'POST':
+        if form.is_valid():
+            obj = form.save(commit=False)
+            
+            if request.user.is_superuser:
+                obj.upd_by = 'Superuser'
+            else:
+                obj.upd_by = request.user.first_name
+
+            if obj.upd_flag == 'A':
+                obj.upd_flag = 'E'
+
+            obj.upd_date = timezone.now()
+
+            obj.save()
+            form_is_valid = True            
+            update_message = "ทำรายการสำเร็จ"
+        else:
+            form_is_valid = False
+            update_message = "ไม่สามารถทำรายการได้..!"
+
+    context = {
+        'page_title': settings.PROJECT_NAME,
+        'today_date': settings.TODAY_DATE,
+        'project_version': settings.PROJECT_VERSION,
+        'db_server': settings.DATABASES['default']['HOST'],
+        'project_name': settings.PROJECT_NAME,
+        'form': form, 
+        'cus_main_form': cus_main_form,
+        'customer': customer,
+        'cus_main': cus_main,
+        'request': request,
+        'form_is_valid': form_is_valid,
+        'update_message': update_message,   
+    }
+    return render(request, template_name, context)
