@@ -39,23 +39,22 @@
     <!-- Default box -->
     <div class="card">
 
+      <!--
       <div class="col-sm-8 offset-sm-2 col-md-8 offset-md-2 pt pl-4 pr-4">        
 
       </div>
 
       <div class="card-header" style="vertical-align: middle;">
         <div class="card-tools">          
-          <!--<a href="#" type="button" onclick="history.back()" class="btn btn-secondary btn-sm">{% trans 'Cancel' %}</a>-->
-          <a href="#" id="mainOfficeSaveButton" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>        
+          <a href="#" id="mainOfficeSaveButton" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
         </div>
       </div>
+      -->
 
       <div class="card-body">
 
-
         <div class="clearfix">
           <div class="float-left">
-
             <ul class="nav nav-tabs navbar-expand" id="customer" role="tablist">
               <li class="nav-item">
                 <a class="nav-link active" id="mainoffice-tab" data-toggle="tab" href="#mainoffice" role="tab" aria-controls="mainoffice" aria-selected="true">{% trans 'Main Office' %}</a>
@@ -67,36 +66,31 @@
                 <a class="nav-link" id="billing-tab" data-toggle="tab" href="#billing" role="tab" aria-controls="billing" aria-selected="false">{% trans 'Billing' %}</a>
               </li>
             </ul>        
-
           </div>
-
-
-
         </div>
-
-
-        <div class="pt-2" id="show-error">
-        {% if form.errors %}
-            {% for field in form %}                
-                {% for error in field.errors %}
-                    <div class="alert alert-danger">
-                        <i class="fas fa-exclamation"></i>&nbsp;&nbsp;Your data is not correct. {{ field.name }} - {{ error }}
-                    </div>
-                {% endfor %}
-            {% endfor %}
-        {% else %}
-          {% if form_is_valid %}
-            <div class="alert alert-success">
-                <i class="fas fa-save"></i>&nbsp;&nbsp;Saved complete. Back to <a href="{% url 'customer-list' %}">Customer List</a>
-            </div>
-          {% endif %}
-        {% endif %}
-        </div>
-
 
         <div class="tab-content" id="customerContent">
 
           <div class="tab-pane fade show active" id="mainoffice" role="tabpanel" aria-labelledby="mainoffice-tab">          
+
+            <div class="pt-2" id="show-error">
+            {% if form.errors %}
+                {% for field in form %}                
+                    {% for error in field.errors %}
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation"></i>&nbsp;&nbsp;Your data is not correct. {{ field.name }} - {{ error }}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            {% else %}
+              {% if form_is_valid %}
+                <div class="alert alert-success">
+                    <i class="fas fa-save"></i>&nbsp;&nbsp;Saved complete. Back to <a href="{% url 'customer-list' %}">Customer List</a>
+                </div>
+              {% endif %}
+            {% endif %}
+            </div>
+
 
             <div class="clearfix">
               <div class="float-left">&nbsp;</div>
@@ -350,6 +344,10 @@
               </div>
             </div>
             <!-- TODO -->
+
+            <div class="float-right">
+              <a href="#" id="mainOfficeSaveButton" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
+            </div>
             </form>
 
           </div>        
@@ -551,9 +549,11 @@
 
       <!-- /.card-body -->
 
+      <!--
       <div class="card-footer text-right">        
         <a href="#" type="button" onclick="customerupdateform.submit()" class="btn btn-success btn-sm"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>        
       </div>
+      -->
       <!-- /.card-footer-->
 
   </div>

@@ -465,7 +465,6 @@ def get_district_list(request):
 
 
 def CustomerMainOfficeUpdate(request, pk):
-    print("todooo")
 
     template_name = 'customer/customer_update.html'
     
