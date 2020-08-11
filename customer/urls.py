@@ -14,7 +14,7 @@ urlpatterns = [
     path('customer/create', views.CustomerCreate, name='customer-create'),
     
     # path('customer/<int:pk>/update', views.CustomerUpdate, name='customer-update'),
-    path('customer/<int:pk>/update', views.CustomerMainOfficeUpdate, name='customer-mainoffice-update'),
+    path('customer/<int:pk>/update', views.CusMainUpdate, name='cus-main-update'),
 
    	path('customer/<int:pk>/delete', views.CustomerDelete, name='customer-delete'),
 ]

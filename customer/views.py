@@ -464,7 +464,7 @@ def get_district_list(request):
     return JsonResponse(data={"success": False, "results": ""})
 
 
-def CustomerMainOfficeUpdate(request, pk):
+def CusMainUpdate(request, pk):
 
     template_name = 'customer/customer_update.html'
     

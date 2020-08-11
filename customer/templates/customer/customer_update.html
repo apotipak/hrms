@@ -118,7 +118,7 @@
               </div>
             </div>
 
-            <form id="customermainofficeupdateform" method="post" action="{% url 'customer-mainoffice-update' cus_main_form.instance.pk %}">
+            <form id="cus_main_form" method="post" action="{% url 'cus-main-update' cus_main_form.instance.pk %}">
             {% csrf_token %}
 
             <!-- TODO -->
@@ -346,7 +346,7 @@
             <!-- TODO -->
 
             <div class="float-right">
-              <a href="#" id="mainOfficeSaveButton" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
+              <a href="#" id="cusMainSaveButton" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
             </div>
             </form>
 
@@ -714,9 +714,9 @@
   });    
 */
 
-  $("#mainOfficeSaveButton").click( function() {
+  $("#cusMainSaveButton").click( function() {
     event.preventDefault();    
-    $('#customermainofficeupdateform').submit();
+    $('#cus_main_form').submit();
   });
 
 </script>
