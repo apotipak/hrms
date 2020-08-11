@@ -74,7 +74,7 @@
           <div class="tab-pane fade show active" id="mainoffice" role="tabpanel" aria-labelledby="mainoffice-tab">          
 
             <div class="pt-2" id="show-error">
-            {% if form.errors %}
+            {% if cus_main_form.errors %}
                 {% for field in form %}                
                     {% for error in field.errors %}
                         <div class="alert alert-danger">
@@ -118,7 +118,7 @@
               </div>
             </div>
 
-            <form id="customermainofficeupdateform" method="post" action="{% url 'customer-mainoffice-update' form.instance.pk %}">
+            <form id="customermainofficeupdateform" method="post" action="{% url 'customer-mainoffice-update' cus_main_form.instance.pk %}">
             {% csrf_token %}
 
             <!-- TODO -->
@@ -159,9 +159,9 @@
                       <div class="input-group">
                         <label for="id_cus_main_cus_disrict" class="col-sm-4 col-form-label form-control-sm">{% trans 'District' %}</label>
                         <div class="col-sm-8">
-                          {% if form.cus_district.errors %}                
-                            {% render_field form.cus_main_cus_district class="form-control form-control-sm is-invalid" %}
-                            {% for error in form.cus_main_cus_district.errors %}
+                          {% if cus_main_form.cus_district.errors %}                
+                            {% render_field cus_main_form.cus_main_cus_district class="form-control form-control-sm is-invalid" %}
+                            {% for error in cus_main_form.cus_main_cus_district.errors %}
                             <div class="invalid-feedback">
                               {{error}}
                             </div>
@@ -324,17 +324,17 @@
                       <label for="id_cus_contact" class="col-sm-2 col-form-label form-control-sm">{% trans 'Contact Person' %}</label>
                       <div class="col-sm-10">
                         {% comment %}
-                        {% if form.cus_contact.errors %}                
-                          {% render_field form.cus_contact class="form-control form-control-sm is-invalid" %}
-                          {% for error in form.cus_contact.errors %}
+                        {% if cus_main_form.cus_contact.errors %}                
+                          {% render_field cus_main_form.cus_contact class="form-control form-control-sm is-invalid" %}
+                          {% for error in cus_main_form.cus_contact.errors %}
                           <div class="invalid-feedback">
                             {{error}}
                           </div>
                           {% endfor %}                
                         {% else %}
-                          {% render_field form.cus_contact class="form-control form-control-sm" %}                        
+                          {% render_field cus_main_form.cus_contact class="form-control form-control-sm" %}                        
                         {% endif %}                      
-                        {% render_field form.cus_contact_display class="form-control form-control-sm" %}
+                        {% render_field cus_main_form.cus_contact_display class="form-control form-control-sm" %}
                         {% endcomment %}
                       </div>
                     </div>
@@ -368,7 +368,7 @@
                 </div>              
 
                 <label class="switch">
-                  {% if form.cus_site %}
+                  {% if cus_main_form.cus_site %}
                   <input type="checkbox" id="id_cus_site" checked>
                   {% else %}
                   <input type="checkbox" id="id_cus_site">

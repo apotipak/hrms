@@ -475,7 +475,7 @@ def CustomerMainOfficeUpdate(request, pk):
 
     if request.method == 'POST':
         form = CustomerUpdateForm(request.POST, instance=customer)
-        cus_main_form = CusMainUpdateForm(instance=cus_main)
+        cus_main_form = CusMainUpdateForm(request.POST, instance=cus_main)
     else:
         form = CustomerUpdateForm(instance=customer)
         cus_main_form = CusMainUpdateForm(instance=cus_main)
@@ -485,7 +485,8 @@ def CustomerMainOfficeUpdate(request, pk):
     update_message = ""
 
     if request.method == 'POST':
-        if form.is_valid():
+        if form.is_valid():            
+            print("valid")
             obj = form.save(commit=False)
             
             if request.user.is_superuser:
@@ -502,6 +503,7 @@ def CustomerMainOfficeUpdate(request, pk):
             form_is_valid = True            
             update_message = "ทำรายการสำเร็จ"
         else:
+            print("not valid")
             form_is_valid = False
             update_message = "ไม่สามารถทำรายการได้..!"
 

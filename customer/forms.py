@@ -271,9 +271,9 @@ class CusMainUpdateForm(forms.ModelForm):
     cus_main_district_en_text = forms.CharField(required=False)
 
     class Meta:
-        model = CusMain  
+        model = CusMain
         fields = '__all__'
-        exclude = ['cus_id']
+        exclude = ['cus_id','cus_contact','site_contact']
 
     def __init__(self, *args, **kwargs):
         super(CusMainUpdateForm, self).__init__(*args, **kwargs)        
