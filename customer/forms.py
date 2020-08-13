@@ -265,7 +265,7 @@ class CustomerUpdateForm(forms.ModelForm):
 
 
 class CusMainForm(forms.ModelForm):
-    cus_name_th = forms.CharField(required=False)
+    cus_main_name_th = forms.CharField(required=False)
 
     cus_main_city_th_text = forms.CharField(required=False)
     cus_main_city_en_text = forms.CharField(required=False)
@@ -283,7 +283,7 @@ class CusMainForm(forms.ModelForm):
         super(CusMainForm, self).__init__(*args, **kwargs)        
         instance = getattr(self, 'instance', None)        
         
-        cus_name_th = forms.CharField(required=False)
+        cus_main_name_th = forms.CharField(required=False)
         self.initial['cus_name_th'] = instance.cus_name_th
 
         cus_active = forms.CharField(required=False)
