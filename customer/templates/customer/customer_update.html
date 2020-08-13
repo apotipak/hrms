@@ -75,15 +75,17 @@
 
             <div class="pt-2" id="show-error">
             {% if cus_main_form.errors %}
-                {% for field in form %}                
+                {% for field in cus_main_form %}                
                     {% for error in field.errors %}
                         <div class="alert alert-danger">
-                            <i class="fas fa-exclamation"></i>&nbsp;&nbsp;Your data is not correct. {{ field.name }} - {{ error }}
+                            <!--<i class="fas fa-exclamation"></i>&nbsp;&nbsp;Your data is not correct. {{ field.name }} - {{ error }}-->
+                            <i class="fas fa-exclamation"></i>&nbsp;&nbsp;{{ error }}
                         </div>
                     {% endfor %}
                 {% endfor %}
             {% else %}
-              {% if form_is_valid %}
+
+              {% if cus_main_form_is_valid %}
                 <div class="alert alert-success">
                     <i class="fas fa-save"></i>&nbsp;&nbsp;Saved complete. Back to <a href="{% url 'customer-list' %}">Customer List</a>
                 </div>
@@ -134,13 +136,16 @@
 
                     <div class="form-group">  
 
+
+                      
                       <div class="input-group">
                         <label for="id_cus_main_cus_name_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'Customer Name' %}</label>
                         <div class="col-sm-8">
-                          <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_name_th" name="cus_main_cus_name_th" value="{{ cus_main.cus_name_th }}">
+                          <input type="text" class="form-control form-control-sm" id="id_cus_name_th" name="cus_name_th" value="{{ cus_main.cus_name_th }}">
                         </div>
                       </div>
 
+                      {% comment %}
                       <div class="input-group">
                         <label for="id_cus_main_cus_add1_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'Address' %}</label>
                         <div class="col-sm-8">
@@ -187,6 +192,7 @@
                           {% render_field cus_main_form.cus_main_country_th_text class="form-control form-control-sm" %}
                         </div>
                       </div>
+                      {% endcomment %}
 
                     </div>
                   </div>
@@ -202,13 +208,15 @@
                   </div>
                   <div class="card-body">
                     <div class="form-group">
+                      
                       <div class="input-group">
-                        <label for="id_cus_main_cus_name_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Customer Name' %}</label>
+                        <label for="id_cus_name_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Customer Name' %}</label>
                         <div class="col-sm-8">
-                          <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_name_en" name="cus_main_cus_name_en" value="{{ cus_main.cus_name_en }}">
+                          <input type="text" class="form-control form-control-sm" id="id_cus_name_en" name="cus_name_en" value="{{ cus_main.cus_name_en }}">
                         </div>
                       </div>
 
+                      {% comment %}
                       <div class="input-group">
                         <label for="id_cus_main_cus_add1_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Address' %}</label>
                         <div class="col-sm-8">
@@ -244,7 +252,7 @@
                           {% render_field cus_main_form.cus_main_country_en_text class="form-control form-control-sm" %}                          
                         </div>
                       </div>
-
+                      {% endcomment %}
                     </div>                    
                   </div>
                 </div>
@@ -259,8 +267,9 @@
             <div class="row">
               <div class="col-md-12">
                 <div class="card card-info">
-                  <div class="card-body">
 
+                  <div class="card-body"> 
+                    {% comment %}                  
                     <div class="form-row">
                       <div class="form-group col-md-2">
                         <label for="cus_main_cus_zip">{% trans 'Zip' %}</label>
@@ -304,13 +313,17 @@
                         {% endif %}      
                       </div>
                     </div>
+                    {% endcomment %}
 
                   </div>
+
+
                 </div>
               </div>
             </div>
 
 
+            {% comment %}
             <!-- Contact Person -->
             <div class="row">
               <div class="col-md-12">
@@ -323,7 +336,6 @@
                     <div class="input-group">
                       <label for="id_cus_contact" class="col-sm-2 col-form-label form-control-sm">{% trans 'Contact Person' %}</label>
                       <div class="col-sm-10">
-                        {% comment %}
                         {% if cus_main_form.cus_contact.errors %}                
                           {% render_field cus_main_form.cus_contact class="form-control form-control-sm is-invalid" %}
                           {% for error in cus_main_form.cus_contact.errors %}
@@ -335,7 +347,6 @@
                           {% render_field cus_main_form.cus_contact class="form-control form-control-sm" %}                        
                         {% endif %}                      
                         {% render_field cus_main_form.cus_contact_display class="form-control form-control-sm" %}
-                        {% endcomment %}
                       </div>
                     </div>
 
@@ -343,6 +354,7 @@
                 </div>
               </div>
             </div>
+            {% endcomment %}
             <!-- TODO -->
 
             <div class="float-right">

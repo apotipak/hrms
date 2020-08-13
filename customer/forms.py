@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.forms.widgets import HiddenInput
 from django.utils.translation import gettext_lazy as _
 from system.models import CusContact
+from django.core.exceptions import ValidationError
 
 
 class CustomerCreateForm(forms.ModelForm):
@@ -153,8 +154,8 @@ class CustomerUpdateForm(forms.ModelForm):
     class Meta:
         model = Customer        
         fields = '__all__'
-        # fields = ['cus_name_th', 'cus_add1_th', 'cus_add2_th', 'cus_name_en', 'cus_subdist_th', 'cus_sht_en', 'cus_name_en', 'cus_add1_en', 'cus_add2_en', 'cus_subdist_en', 'cus_district', 'cus_city', 'cus_country', 'cus_zip', 'cus_tel', 'cus_fax', 'cus_email', 'cus_taxid', 'cus_active', 'cus_bill', 'cus_main', 'cus_site', 'cus_zone', 'cus_contact', 'site_contact', 'last_contact', 'upd_date', 'upd_by', 'upd_flag']
-        exclude = ['cus_no','cus_id','cus_brn','cus_city','cus_country']
+        # fields = ['cus_name_th', 'cus_add1_th', 'cus_add2_th', 'cus_name_en', 'cus_subdist_th', 'cus_sht_en', 'cus_name_en', 'cus_add1_en', 'cus_add2_en', 'cus_subdist_en', 'cus_district', 'cus_city', 'cus_country', 'cus_zip', 'cus_tel', 'cus_fax', 'cus_email', 'cus_taxid', 'cus_active', 'cus_bill', 'cus_main', 'cus_site', 'cus_zone', 'cus_contact', 'site_contact', 'last_contact', 'upd_date', 'upd_by', 'upd_flag']        
+        exclude = ['cus_no','cus_id','cus_brn','cus_city','cus_country','cus_zip','cus_district','cus_contact','site_contact']
 
     def __init__(self, *args, **kwargs):
         super(CustomerUpdateForm, self).__init__(*args, **kwargs)        
@@ -263,7 +264,9 @@ class CustomerUpdateForm(forms.ModelForm):
         return data
 
 
-class CusMainUpdateForm(forms.ModelForm):
+class CusMainForm(forms.ModelForm):
+    cus_name_th = forms.CharField(required=False)
+
     cus_main_city_th_text = forms.CharField(required=False)
     cus_main_city_en_text = forms.CharField(required=False)
     cus_main_country_th_text = forms.CharField(required=False)
@@ -272,13 +275,17 @@ class CusMainUpdateForm(forms.ModelForm):
 
     class Meta:
         model = CusMain
-        fields = '__all__'
-        exclude = ['cus_id','cus_contact','site_contact']
+        fields = '__all__'        
+        # exclude = ['cus_no','cus_id','cus_brn','cus_city','cus_country','cus_zip','cus_district'
+        exclude = ['cus_no','cus_id','cus_brn','cus_city','cus_country','cus_zip','cus_district','cus_zone','cus_contact','site_contact']
 
     def __init__(self, *args, **kwargs):
-        super(CusMainUpdateForm, self).__init__(*args, **kwargs)        
+        super(CusMainForm, self).__init__(*args, **kwargs)        
         instance = getattr(self, 'instance', None)        
         
+        cus_name_th = forms.CharField(required=False)
+        self.initial['cus_name_th'] = instance.cus_name_th
+
         cus_active = forms.CharField(required=False)
         self.initial['cus_main_cus_active'] = instance.cus_active
 
@@ -301,3 +308,17 @@ class CusMainUpdateForm(forms.ModelForm):
         cus_main_country_en_text = forms.CharField(required=False)
         self.initial['cus_main_country_en_text'] = instance.cus_country.country_en
         self.fields['cus_main_country_en_text'].widget.attrs['readonly'] = True
+
+    def clean_cus_name_th(self):
+        data = self.data.get('cus_name_th')
+        if data:
+            return data
+        else:
+            raise ValidationError("Customer Name (TH) is empty!")
+
+    def clean_cus_name_en(self):
+        data = self.data.get('cus_name_en')
+        if data:
+            return data
+        else:
+            raise ValidationError("Customer Name (EN) is empty!")
