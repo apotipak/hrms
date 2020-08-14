@@ -565,7 +565,13 @@ def update_cus_main(request):
             print("test" + cus_no)
         else:
             response_data['form_is_valid'] = False
-            response_data['message'] = "ไม่สามารถทำรายการได้..!"
+            response_data['message'] = ""
+            if form.errors:
+                for field in form:
+                    for error in field.errors:
+                        response_data['message'] += error + "<br>"
+            else:
+                response_data['message'] = "ไม่สามารถทำรายการได้..!"
 
         return JsonResponse(response_data)
     else:

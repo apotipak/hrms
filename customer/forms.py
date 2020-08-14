@@ -317,11 +317,11 @@ class CusMainForm(forms.ModelForm):
         if len(data) > 0:
             return data
         else:
-            raise ValidationError("Customer Name (TH) is empty.")
+            raise ValidationError("Customer Name (TH) is required.")
 
     def clean_cus_name_en(self):
         data = self.data.get('cus_name_en')
-        if data:
+        if len(data) > 0:
             return data
         else:
-            raise ValidationError("Customer Name (EN) is empty.")
+            raise ValidationError("Customer Name (EN) is required.")
