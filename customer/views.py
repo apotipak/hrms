@@ -544,18 +544,28 @@ def update_cus_main(request):
     response_data = {}
 
     if request.method == 'POST':
-        cus_no = request.POST.get('cus_no')
-        cus_id = request.POST.get('cus_id')
-        cus_brn = request.POST.get('cus_brn')        
-        cus_name_th = request.POST.get('cus_name_th')
-        cus_name_en = request.POST.get('cus_name_en')
-        
-        response_data['cus_name_th'] = cus_name_th
-        response_data['cus_name_en'] = cus_name_en
-        response_data['result'] = "Update completed!"
-        response_data['message'] = "ทำรายการสำเร็จ"
-        
-        print("test" + cus_no)
+        form = CusMainForm(request.POST)
+    else:
+        form = CusMainForm()
+
+    if request.method == 'POST':
+        if form.is_valid():
+            cus_no = request.POST.get('cus_no')
+            cus_id = request.POST.get('cus_id')
+            cus_brn = request.POST.get('cus_brn')        
+            cus_name_th = request.POST.get('cus_name_th')
+            cus_name_en = request.POST.get('cus_name_en')
+            
+            response_data['cus_name_th'] = cus_name_th
+            response_data['cus_name_en'] = cus_name_en
+            response_data['result'] = "Update completed!"
+            response_data['message'] = "ทำรายการสำเร็จ"
+            response_data['form_is_valid'] = True
+
+            print("test" + cus_no)
+        else:
+            response_data['form_is_valid'] = False
+            response_data['message'] = "ไม่สามารถทำรายการได้..!"
 
         return JsonResponse(response_data)
     else:

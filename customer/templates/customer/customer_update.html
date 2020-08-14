@@ -761,13 +761,24 @@
           cus_name_en : cus_name_en,
         },
         success : function(json) {
-          $(document).Toasts('create', {
-            class: 'bg-success', 
-            title: "{% trans 'Success' %}",
-            subtitle: '',
-            autohide: false,
-            body:  "{% trans 'Customer number' %}" + " " + cus_no + " " + "{% trans 'has been updated.' %}"
-          })    
+          if(json.form_is_valid) {
+            $(document).Toasts('create', {
+              class: 'bg-success', 
+              title: "{% trans 'Success' %}",
+              subtitle: '',
+              autohide: true,
+              body:  "{% trans 'Customer number' %}" + " " + cus_no + " " + "{% trans 'has been updated.' %}"
+            })
+          }
+          else {
+            $(document).Toasts('create', {
+              class: 'bg-danger', 
+              title: "{% trans 'Error' %}",
+              subtitle: '',
+              autohide: false,
+              body:  "{% trans 'Customer number' %}" + " " + cus_no + " " + "{% trans 'has been updated.' %}"
+            })            
+          }
         },
 
         // handle a non-successful response

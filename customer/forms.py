@@ -277,7 +277,7 @@ class CusMainForm(forms.ModelForm):
         model = CusMain
         fields = '__all__'        
         # exclude = ['cus_no','cus_id','cus_brn','cus_city','cus_country','cus_zip','cus_district'
-        exclude = ['cus_no','cus_id','cus_brn','cus_city','cus_country','cus_zip','cus_district','cus_zone','cus_contact','site_contact']
+        exclude = ['cus_no','cus_id','cus_brn','cus_city','cus_country','cus_zip','cus_district','cus_zone','cus_contact','site_contact','dist_en']
 
     def __init__(self, *args, **kwargs):
         super(CusMainForm, self).__init__(*args, **kwargs)        
@@ -290,7 +290,8 @@ class CusMainForm(forms.ModelForm):
         self.initial['cus_main_cus_active'] = instance.cus_active
 
         cus_main_district_en_text = forms.CharField(required=False)
-        self.initial['cus_main_district_en_text'] = instance.cus_district.dist_en
+        # self.initial['cus_main_district_en_text'] = instance.cus_district.dist_en
+        self.initial['cus_main_district_en_text'] = instance.cus_district
         self.fields['cus_main_district_en_text'].widget.attrs['readonly'] = True
 
         cus_main_city_th_text = forms.CharField(required=False)
@@ -298,7 +299,8 @@ class CusMainForm(forms.ModelForm):
         self.fields['cus_main_city_th_text'].widget.attrs['readonly'] = True
 
         cus_main_city_en_text = forms.CharField(required=False)
-        self.initial['cus_main_city_en_text'] = instance.cus_city.city_en
+        # self.initial['cus_main_city_en_text'] = instance.cus_city.city_en
+        self.initial['cus_main_city_en_text'] = instance.cus_city
         self.fields['cus_main_city_en_text'].widget.attrs['readonly'] = True
         
         cus_main_country_th_text = forms.CharField(required=False)
@@ -306,12 +308,13 @@ class CusMainForm(forms.ModelForm):
         self.fields['cus_main_country_en_text'].widget.attrs['readonly'] = True        
 
         cus_main_country_en_text = forms.CharField(required=False)
-        self.initial['cus_main_country_en_text'] = instance.cus_country.country_en
+        # self.initial['cus_main_country_en_text'] = instance.cus_country.country_en
+        self.initial['cus_main_country_en_text'] = instance.cus_country
         self.fields['cus_main_country_en_text'].widget.attrs['readonly'] = True
 
     def clean_cus_name_th(self):
-        data = self.data.get('cus_name_th')
-        if data:
+        data = self.data.get('cus_name_th')        
+        if len(data) > 0:
             return data
         else:
             raise ValidationError("Customer Name (TH) is empty.")
