@@ -464,6 +464,25 @@ def get_district_list(request):
     return JsonResponse(data={"success": False, "results": ""})
 
 
+@login_required(login_url='/accounts/login/')
+def update_cus_main(request):        
+    # data = TDistrict.objects.all() or None    
+    item_per_page = 5
+
+    if request.method == "POST":
+        print("method post")
+        data = TDistrict.objects.raw("select d.dist_id,d.dist_th,d.dist_en,c.city_id,c.city_th,c.city_en from t_district d join t_city c on d.city_id = c.city_id order by c.city_th") or None
+
+        page = 1
+        paginator = Paginator(data, item_per_page)
+        is_paginated = True if paginator.num_pages > 1 else False        
+
+        try:
+            current_page = paginator.get_page(page)
+        except InvalidPage as e:
+            raise Http404(str(e))
+
+
 def CusMainUpdate(request, pk):
 
     print(pk)
@@ -511,11 +530,13 @@ def CusMainUpdate(request, pk):
             form_is_valid = True            
             '''
             cus_main_form_is_valid = True
-            update_message = "ทำรายการสำเร็จ"
+            message = "ทำรายการสำเร็จ"
+            data['message'] = "ทำรายการสำเร็จ"
         else:
             print("cus_main_form is not valid")
             cus_main_form_is_valid = False
-            update_message = "ไม่สามารถทำรายการได้..!"
+            message = "ไม่สามารถทำรายการได้..!"
+            data['message'] = "ทำรายการสำเร็จ"
 
     context = {
         'page_title': settings.PROJECT_NAME,
@@ -533,3 +554,7 @@ def CusMainUpdate(request, pk):
         'update_message': update_message,   
     }
     return render(request, template_name, context)
+
+    data['html_form'] = render_to_string(template_name, context, request=request)        
+    return JsonResponse(data)
+

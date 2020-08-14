@@ -28,3 +28,7 @@ urlpatterns += [
   url(r'^ajax/get_district_list/$', views.get_district_list, name='get_district_list'),
 ]
 
+urlpatterns += [
+  # url(r'^ajax/update_cus_main/(?P<pk>[^/]+)/$', views.ajax_update_cus_main, name='ajax_update_cus_main'),
+  url(r'^ajax/update_cus_main/$', views.update_cus_main, name='update_cus_main'),
+]
