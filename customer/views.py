@@ -464,25 +464,6 @@ def get_district_list(request):
     return JsonResponse(data={"success": False, "results": ""})
 
 
-@login_required(login_url='/accounts/login/')
-def update_cus_main(request):        
-    # data = TDistrict.objects.all() or None    
-    item_per_page = 5
-
-    if request.method == "POST":
-        print("method post")
-        data = TDistrict.objects.raw("select d.dist_id,d.dist_th,d.dist_en,c.city_id,c.city_th,c.city_en from t_district d join t_city c on d.city_id = c.city_id order by c.city_th") or None
-
-        page = 1
-        paginator = Paginator(data, item_per_page)
-        is_paginated = True if paginator.num_pages > 1 else False        
-
-        try:
-            current_page = paginator.get_page(page)
-        except InvalidPage as e:
-            raise Http404(str(e))
-
-
 def CusMainUpdate(request, pk):
 
     print(pk)
@@ -555,6 +536,34 @@ def CusMainUpdate(request, pk):
     }
     return render(request, template_name, context)
 
-    data['html_form'] = render_to_string(template_name, context, request=request)        
-    return JsonResponse(data)
+
+@login_required(login_url='/accounts/login/')
+def update_cus_main(request):
+    template_name = 'customer/customer_update.html'
+    customer = Customer.objects.all()
+    response_data = {}
+
+    if request.method == 'POST':
+        cus_no = request.POST.get('cus_no')
+        cus_id = request.POST.get('cus_id')
+        cus_brn = request.POST.get('cus_brn')        
+        cus_name_th = request.POST.get('cus_name_th')
+        cus_name_en = request.POST.get('cus_name_en')
+        
+        response_data['cus_name_th'] = cus_name_th
+        response_data['cus_name_en'] = cus_name_en
+        response_data['result'] = "Update completed!"
+
+        return JsonResponse(response_data)
+    else:
+        print("debug 2")
+
+    context = {
+        'page_title': settings.PROJECT_NAME,
+        'today_date': settings.TODAY_DATE,
+        'project_version': settings.PROJECT_VERSION,
+        'db_server': settings.DATABASES['default']['HOST'],
+        'project_name': settings.PROJECT_NAME,
+    }
+    return render(request, template_name, context)    
 
