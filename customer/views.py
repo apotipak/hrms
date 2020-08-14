@@ -465,8 +465,6 @@ def get_district_list(request):
 
 
 def CusMainUpdate(request, pk):
-
-    print(pk)
     template_name = 'customer/customer_update.html'
     
     customer = get_object_or_404(Customer, pk=pk)
@@ -539,8 +537,7 @@ def CusMainUpdate(request, pk):
 
 @login_required(login_url='/accounts/login/')
 def update_cus_main(request):
-    template_name = 'customer/customer_update.html'
-    customer = Customer.objects.all()
+    template_name = 'customer/customer_update.html'    
     response_data = {}
 
     if request.method == 'POST':
@@ -555,14 +552,23 @@ def update_cus_main(request):
             cus_brn = request.POST.get('cus_brn')        
             cus_name_th = request.POST.get('cus_name_th')
             cus_name_en = request.POST.get('cus_name_en')
-            
-            response_data['cus_name_th'] = cus_name_th
-            response_data['cus_name_en'] = cus_name_en
+
+            customer = CusMain.objects.get(cus_id=cus_id)
+
+            if request.user.is_superuser:
+                customer.upd_by = 'Superuser'
+            else:
+                customer.upd_by = request.user.first_name
+            if customer.upd_flag == 'A':
+                customer.upd_flag = 'E'
+                                
+            customer.upd_date = timezone.now()            
+            cus_main_form = CusMainForm(request.POST, instance=customer)
+            cus_main_form.save()
+
             response_data['result'] = "Update completed!"
             response_data['message'] = "ทำรายการสำเร็จ"
             response_data['form_is_valid'] = True
-
-            print("test" + cus_no)
         else:
             response_data['form_is_valid'] = False
             response_data['message'] = ""

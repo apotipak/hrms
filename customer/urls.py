@@ -4,18 +4,9 @@ from . import views
 
 
 urlpatterns = [
-    # path('', views.CustomerListView.as_view(), name='customer-list'),
-    # path('', views.CustomerList, name='customer-list'),
-    
-    # path('', views.CustomerList, name='customer-list'),
     url(r'^$', views.CustomerList, name='customer-list'),
-    #url(r'^/$', views.CustomerList, name='customer-list'),
-
     path('customer/create', views.CustomerCreate, name='customer-create'),
-    
-    # path('customer/<int:pk>/update', views.CustomerUpdate, name='customer-update'),
     path('customer/<int:pk>/update', views.CusMainUpdate, name='cus-main-update'),
-
    	path('customer/<int:pk>/delete', views.CustomerDelete, name='customer-delete'),
 ]
 
@@ -29,6 +20,5 @@ urlpatterns += [
 ]
 
 urlpatterns += [
-  # url(r'^ajax/update_cus_main/(?P<pk>[^/]+)/$', views.ajax_update_cus_main, name='ajax_update_cus_main'),
   url(r'^ajax/update_cus_main/$', views.update_cus_main, name='update_cus_main'),
 ]
