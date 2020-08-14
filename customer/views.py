@@ -555,6 +555,8 @@ def update_cus_main(request):
         response_data['result'] = "Update completed!"
         response_data['message'] = "ทำรายการสำเร็จ"
         
+        print("test" + cus_no)
+
         return JsonResponse(response_data)
     else:
         print("debug 2")
