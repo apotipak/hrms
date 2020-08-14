@@ -553,7 +553,8 @@ def update_cus_main(request):
         response_data['cus_name_th'] = cus_name_th
         response_data['cus_name_en'] = cus_name_en
         response_data['result'] = "Update completed!"
-
+        response_data['message'] = "ทำรายการสำเร็จ"
+        
         return JsonResponse(response_data)
     else:
         print("debug 2")
