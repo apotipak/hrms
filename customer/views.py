@@ -524,7 +524,6 @@ def CusMainUpdate(request, pk):
         'project_version': settings.PROJECT_VERSION,
         'db_server': settings.DATABASES['default']['HOST'],
         'project_name': settings.PROJECT_NAME,
-        # 'form': form, 
         'cus_main_form': cus_main_form,
         'customer': customer,
         'cus_main': cus_main,
@@ -555,15 +554,14 @@ def update_cus_main(request):
             cus_brn = request.POST.get('cus_brn')        
             
             cus_name_th = request.POST.get('cus_main_cus_name_th')            
-            cus_add1_th = request.POST.get('cus_add1_th')
-            cus_add2_th = request.POST.get('cus_add2_th')
-            
-            print(cus_name_th)
+            cus_add1_th = request.POST.get('cus_main_cus_add1_th')
+            cus_add2_th = request.POST.get('cus_main_cus_add2_th')
+            cus_subdist_th = request.POST.get('cus_main_cus_subdist_th')            
+            # cus_email = request.POST.get('cus_main_cus_email')
 
-            cus_name_en = request.POST.get('cus_name_en')
-            cus_email = request.POST.get('cus_email')            
+            cus_name_en = request.POST.get('cus_main_cus_name_en')
+                          
             cus_main = CusMain.objects.get(cus_id=cus_id)
-            
             cus_main.upd_by = request.user.first_name
 
             if cus_main.upd_flag == 'A':

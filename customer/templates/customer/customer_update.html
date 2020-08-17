@@ -157,16 +157,15 @@
                         </div>
                       </div>
 
-
-                      {% comment %}
-
                       <div class="input-group">
                         <label for="id_cus_main_cus_subdist_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'Sub-District' %}</label>
                         <div class="col-sm-8">
-                          <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_subdist_th" name="cus_main_cus_subdist_th" value="{{ cus_main.cus_subdist_th }}">
+                          <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_subdist_th" name="cus_main_cus_subdist_th" value="{{ cus_main.cus_subdist_th|default_if_none:'' }}">
                         </div>
                       </div>
 
+
+                      {% comment %}
                       <div class="input-group">
                         <label for="id_cus_main_cus_disrict" class="col-sm-4 col-form-label form-control-sm">{% trans 'District' %}</label>
                         <div class="col-sm-8">
@@ -222,43 +221,21 @@
                         </div>
                       </div>
 
-                      {% comment %}
                       <div class="input-group">
                         <label for="id_cus_main_cus_add1_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Address' %}</label>
                         <div class="col-sm-8">
-                          <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_add1_en" name="cus_main_cus_add1_en" value="{{ cus_main.cus_add1_en }}">
-                          <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_add2_en" name="cus_main_cus_add2_en" value="{{ cus_main.cus_add2_en }}">
+                          <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_add1_en" name="cus_main_cus_add1_en" value="{{ cus_main.cus_add1_en|default_if_none:''}}">
+                          <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_add2_en" name="cus_main_cus_add2_en" value="{{ cus_main.cus_add2_en|default_if_none:''}}">
                         </div>
                       </div>
 
                       <div class="input-group">
                         <label for="id_cus_main_cus_subdist_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Sub-District' %}</label>
                         <div class="col-sm-8">
-                          <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_main_subdist_en" name="cus_main_cus_main_subdist_en" value="{{ cus_main.cus_subdist_en }}">
+                          <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_subdist_en" name="cus_main_cus_subdist_en" value="{{ cus_main.cus_subdist_en|default_if_none:'' }}">
                         </div>
                       </div>
 
-                      <div class="input-group">
-                        <label for="id_cus_main_disrict_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'District' %}</label>
-                        <div class="col-sm-8">
-                          {% render_field cus_main_form.cus_main_district_en_text class="form-control form-control-sm" %}
-                        </div>
-                      </div>
-
-                      <div class="input-group">
-                        <label for="id_cus_main_city_en_text" class="col-sm-4 col-form-label form-control-sm">{% trans 'City' %}</label>
-                        <div class="col-sm-8">
-                          {% render_field cus_main_form.cus_main_city_en_text class="form-control form-control-sm" %}
-                        </div>
-                      </div>
-
-                      <div class="input-group">
-                        <label for="id_cus_main_country_en_text" class="col-sm-4 col-form-label form-control-sm">{% trans 'Country' %}</label>
-                        <div class="col-sm-8">
-                          {% render_field cus_main_form.cus_main_country_en_text class="form-control form-control-sm" %}                          
-                        </div>
-                      </div>
-                      {% endcomment %}
                     </div>                    
                   </div>
                 </div>
@@ -733,9 +710,13 @@
     cus_main_cus_name_th = $('#id_cus_main_cus_name_th').val();    
     cus_main_cus_add1_th = $('#id_cus_main_cus_add1_th').val();
     cus_main_cus_add2_th = $('#id_cus_main_cus_add2_th').val();
+    cus_main_cus_subdist_th = $('#id_cus_main_cus_subdist_th').val();
 
     // Main Office EN
     cus_main_cus_name_en = $('#id_cus_main_cus_name_en').val();
+    cus_main_cus_add1_en = $('#id_cus_main_cus_add1_en').val();
+    cus_main_cus_add2_en = $('#id_cus_main_cus_add2_en').val();
+    cus_main_cus_subdist_en = $('#id_cus_main_cus_subdist_en').val();
     
 
     $.ajax({
@@ -746,10 +727,16 @@
           cus_id : cus_id,
           cus_brn : cus_brn,
           cus_no : cus_no,
+
           cus_main_cus_name_th : cus_main_cus_name_th,
-          cus_main_cus_name_en : cus_main_cus_name_en,
           cus_main_cus_add1_th : cus_main_cus_add1_th,
-          cus_main_cus_add2_th : cus_main_cus_add2_th
+          cus_main_cus_add2_th : cus_main_cus_add2_th,
+          cus_main_cus_subdist_th :  cus_main_cus_subdist_th,
+
+          cus_main_cus_name_en : cus_main_cus_name_en,
+          cus_main_cus_add1_en : cus_main_cus_add1_en,
+          cus_main_cus_add2_en : cus_main_cus_add2_en,
+          cus_main_cus_subdist_en :  cus_main_cus_subdist_en
         },
         success : function(json) {
           if(json.form_is_valid) {          

@@ -271,8 +271,6 @@ class CusMainForm(forms.ModelForm):
     cus_main_country_en_text = forms.CharField(required=False)
     cus_main_district_en_text = forms.CharField(required=False)
     
-    cus_main_cus_name_th = forms.CharField(required=False)
-
     class Meta:
         model = CusMain
         fields = '__all__'        
@@ -317,13 +315,6 @@ class CusMainForm(forms.ModelForm):
         else:
             raise ValidationError("Customer Name (TH) is required.")
 
-    def clean_cus_name_en(self):
-        data = self.data.get('cus_main_cus_name_en')
-        if len(data) > 0:
-            return data
-        else:
-            raise ValidationError("Customer Name (EN) is required.")
-
     def clean_cus_add1_th(self):
         data = self.data.get('cus_main_cus_add1_th')
         if len(data) > 150:
@@ -335,5 +326,40 @@ class CusMainForm(forms.ModelForm):
         data = self.data.get('cus_main_cus_add2_th')
         if len(data) > 70:
             raise ValidationError("Address 2 (TH) is too long.")
+        else:
+            return data
+
+    def clean_cus_subdist_th(self):
+        data = self.data.get('cus_main_cus_subdist_th')
+        if len(data) > 50:
+            raise ValidationError("Sub-District is too long.")
+        else:
+            return data
+
+    def clean_cus_name_en(self):
+        data = self.data.get('cus_main_cus_name_en')
+        if len(data) > 0:
+            return data
+        else:
+            raise ValidationError("Customer Name (EN) is required.")
+
+    def clean_cus_add1_en(self):
+        data = self.data.get('cus_main_cus_add1_en')
+        if len(data) > 150:
+            raise ValidationError("Address 1 (EN) is too long.")
+        else:
+            return data
+
+    def clean_cus_add2_en(self):
+        data = self.data.get('cus_main_cus_add2_en')
+        if len(data) > 70:
+            raise ValidationError("Address 2 (EN) is too long.")
+        else:
+            return data
+
+    def clean_cus_subdist_en(self):
+        data = self.data.get('cus_main_cus_subdist_en')
+        if len(data) > 50:
+            raise ValidationError("Sub-District (EN) is too long.")
         else:
             return data
