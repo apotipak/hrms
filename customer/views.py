@@ -557,7 +557,6 @@ def update_cus_main(request):
             cus_add1_th = request.POST.get('cus_main_cus_add1_th')
             cus_add2_th = request.POST.get('cus_main_cus_add2_th')
             cus_subdist_th = request.POST.get('cus_main_cus_subdist_th')            
-            # cus_email = request.POST.get('cus_main_cus_email')
 
             cus_name_en = request.POST.get('cus_main_cus_name_en')
                           

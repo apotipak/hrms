@@ -266,11 +266,12 @@ class CustomerUpdateForm1(forms.ModelForm):
 
 class CusMainForm(forms.ModelForm):        
     cus_main_city_th_text = forms.CharField(required=False)
-    cus_main_city_en_text = forms.CharField(required=False)
-    cus_main_country_th_text = forms.CharField(required=False)
-    cus_main_country_en_text = forms.CharField(required=False)
-    cus_main_district_en_text = forms.CharField(required=False)
-    
+    cus_main_cus_country_th_text = forms.CharField(required=False)    
+
+    cus_main_cus_city_en = forms.CharField(required=False)
+    cus_main_cus_district_en = forms.CharField(required=False)
+    cus_main_cus_country_en = forms.CharField(required=False)
+
     class Meta:
         model = CusMain
         fields = '__all__'        
@@ -284,29 +285,21 @@ class CusMainForm(forms.ModelForm):
         cus_active = forms.CharField(required=False)
         self.initial['cus_main_cus_active'] = instance.cus_active
 
-        cus_main_district_en_text = forms.CharField(required=False)
-        # self.initial['cus_main_district_en_text'] = instance.cus_district.dist_en
-        self.initial['cus_main_district_en_text'] = instance.cus_district
-        self.fields['cus_main_district_en_text'].widget.attrs['readonly'] = True
-
         cus_main_city_th_text = forms.CharField(required=False)
         self.initial['cus_main_city_th_text'] = instance.cus_city
         self.fields['cus_main_city_th_text'].widget.attrs['readonly'] = True
 
-        cus_main_city_en_text = forms.CharField(required=False)
-        # self.initial['cus_main_city_en_text'] = instance.cus_city.city_en
-        self.initial['cus_main_city_en_text'] = instance.cus_city
-        self.fields['cus_main_city_en_text'].widget.attrs['readonly'] = True
-        
-        cus_main_country_th_text = forms.CharField(required=False)
-        self.initial['cus_main_country_th_text'] = instance.cus_country
-        self.fields['cus_main_country_en_text'].widget.attrs['readonly'] = True        
+        cus_main_cus_city_en = forms.CharField(required=False)
+        self.initial['cus_main_cus_city_en'] = instance.cus_city
+        self.fields['cus_main_cus_city_en'].widget.attrs['readonly'] = True
 
-        cus_main_country_en_text = forms.CharField(required=False)
-        # self.initial['cus_main_country_en_text'] = instance.cus_country.country_en
+        cus_main_cus_district_en = forms.CharField(required=False)
+        self.initial['cus_main_cus_district_en'] = instance.cus_district
+        self.fields['cus_main_cus_district_en'].widget.attrs['readonly'] = True
 
-        self.initial['cus_main_country_en_text'] = instance.cus_country
-        self.fields['cus_main_country_en_text'].widget.attrs['readonly'] = True                
+        cus_main_cus_country_en = forms.CharField(required=False)
+        self.fields['cus_main_cus_country_en'].initial = instance.cus_country        
+        self.fields['cus_main_cus_country_en'].widget.attrs['readonly'] = True                
 
     def clean_cus_name_th(self):
         data = self.data.get('cus_main_cus_name_th')        
@@ -363,3 +356,4 @@ class CusMainForm(forms.ModelForm):
             raise ValidationError("Sub-District (EN) is too long.")
         else:
             return data
+
