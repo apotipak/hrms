@@ -538,6 +538,7 @@ def CusMainUpdate(request, pk):
 
 @login_required(login_url='/accounts/login/')
 def update_cus_main(request):
+
     template_name = 'customer/customer_update.html'    
     response_data = {}
 
@@ -548,24 +549,28 @@ def update_cus_main(request):
 
     if request.method == 'POST':
         if form.is_valid():
+
             cus_no = request.POST.get('cus_no')
             cus_id = request.POST.get('cus_id')
             cus_brn = request.POST.get('cus_brn')        
             
-            cus_name_th = request.POST.get('cus_name_th')
+            cus_name_th = request.POST.get('cus_main_cus_name_th')            
             cus_add1_th = request.POST.get('cus_add1_th')
+            cus_add2_th = request.POST.get('cus_add2_th')
             
-            #request.POST.get('cus_add2_th')
+            print(cus_name_th)
 
-            print("cus_add1_th__ : " + str(request.POST.get('cus_add1_th')))
-
-            cus_name_en = request.POST.get('cus_name_en')            
-
+            cus_name_en = request.POST.get('cus_name_en')
+            cus_email = request.POST.get('cus_email')            
             cus_main = CusMain.objects.get(cus_id=cus_id)
+            
             cus_main.upd_by = request.user.first_name
+
             if cus_main.upd_flag == 'A':
                 cus_main.upd_flag = 'E'
-            cus_main.upd_date = timezone.now()            
+            
+            cus_main.upd_date = timezone.now()
+            
             cus_main_form = CusMainForm(request.POST, instance=cus_main)
             cus_main_form.save()
 

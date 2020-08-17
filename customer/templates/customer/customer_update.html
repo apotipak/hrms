@@ -126,7 +126,7 @@
             </div>
 
             <!--<form id="cus_main_form" method="post" action="{% url 'cus-main-update' cus_main_form.instance.pk %}">-->
-            <form id="cus_main_form" method="post" action="{% url 'update_cus_main' %}">
+            <form id="cus_main_form" method="POST" action="{% url 'update_cus_main' %}">
             {% csrf_token %}
 
             <!-- TODO -->
@@ -142,37 +142,23 @@
 
                     <div class="form-group">  
 
-
-
-
-                      
                       <div class="input-group">
                         <label for="id_cus_main_cus_name_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'Customer Name' %}</label>
-                        <div class="col-sm-8">
-                          <!--<input type="text" class="form-control form-control-sm" id="id_cus_main_name_th" name="cus_main_name_th" value="{{ cus_main.cus_name_th }}">-->
-                          {% render_field cus_main_form.cus_name_th class="form-control form-control-sm" %}
+                        <div class="col-sm-8">                          
+                          <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_name_th" name="cus_main_cus_name_th" value="{{ cus_main.cus_name_th }}">
                         </div>
                       </div>
-
 
                       <div class="input-group">
                         <label for="id_cus_main_cus_add1_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'Address' %}</label>
                         <div class="col-sm-8">
-                          {% render_field cus_main_form.cus_add1_th class="form-control form-control-sm" %}
-                          {% render_field cus_main_form.cus_add2_th class="form-control form-control-sm" %}
+                          <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_add1_th" name="cus_main_cus_add1_th" value="{{ cus_main.cus_add1_th|default_if_none:''}}">
+                          <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_add2_th" name="cus_main_cus_add2_th" value="{{ cus_main.cus_add2_th|default_if_none:''}}">
                         </div>
                       </div>
-
 
 
                       {% comment %}
-                      <div class="input-group">
-                        <label for="id_cus_main_cus_add1_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'Address' %}</label>
-                        <div class="col-sm-8">
-                          <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_add1_th" name="cus_main_cus_add1_th" value="{{ cus_main.cus_add1_th }}">
-                          <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_add2_th" name="cus_main_cus_add2_th" value="{{ cus_main.cus_add2_th }}">
-                        </div>
-                      </div>
 
                       <div class="input-group">
                         <label for="id_cus_main_cus_subdist_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'Sub-District' %}</label>
@@ -208,7 +194,7 @@
 
                       <div class="input-group">
                         <label for="id_cus_country" class="col-sm-4 col-form-label form-control-sm">{% trans 'Country' %}</label>
-                        <div class="col-sm-8">                        
+                        <div class="col-sm-8">
                           {% render_field cus_main_form.cus_main_country_th_text class="form-control form-control-sm" %}
                         </div>
                       </div>
@@ -218,7 +204,7 @@
                   </div>
                 </div>
               </div>
-
+            </form>
 
               <!-- Main Office Tab English -->
               <div class="col-md-6">
@@ -230,9 +216,9 @@
                     <div class="form-group">
                       
                       <div class="input-group">
-                        <label for="id_cus_name_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Customer Name' %}</label>
+                        <label for="id_cus_main_cus_name_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Customer Name' %}</label>
                         <div class="col-sm-8">
-                          <input type="text" class="form-control form-control-sm" id="id_cus_name_en" name="cus_name_en" value="{{ cus_main.cus_name_en }}">
+                          <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_name_en" name="cus_main_cus_name_en" value="{{ cus_main.cus_name_en }}">
                         </div>
                       </div>
 
@@ -380,7 +366,7 @@
             <div class="float-right">
               <a href="#" id="cusMainSaveButton" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
             </div>
-            </form>
+            <!--</form>-->
 
           </div>        
 
@@ -429,6 +415,7 @@
                           <label for="id_cus_name_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'Customer Name' %}</label>
                           <div class="col-sm-8">
                             <input type="text" class="form-control form-control-sm" id="id_cus_name_th" name="cus_name_th" value="{{ customer.cus_name_th }}">
+
                           </div>
                         </div>
 
@@ -741,8 +728,15 @@
     cus_id = "{{customer.cus_id|stringformat:'04d'}}";
     cus_brn = "{{customer.cus_brn|stringformat:'03d'}}";
     cus_no = cus_id + cus_brn;
-    cus_name_th = $('#id_cus_name_th').val();
-    cus_name_en = $('#id_cus_name_en').val();
+
+    // Main Office TH
+    cus_main_cus_name_th = $('#id_cus_main_cus_name_th').val();    
+    cus_main_cus_add1_th = $('#id_cus_main_cus_add1_th').val();
+    cus_main_cus_add2_th = $('#id_cus_main_cus_add2_th').val();
+
+    // Main Office EN
+    cus_main_cus_name_en = $('#id_cus_main_cus_name_en').val();
+    
 
     $.ajax({
         url : "/customer/ajax/update_cus_main/",
@@ -752,14 +746,16 @@
           cus_id : cus_id,
           cus_brn : cus_brn,
           cus_no : cus_no,
-          cus_name_th : cus_name_th,
-          cus_name_en : cus_name_en,
+          cus_main_cus_name_th : cus_main_cus_name_th,
+          cus_main_cus_name_en : cus_main_cus_name_en,
+          cus_main_cus_add1_th : cus_main_cus_add1_th,
+          cus_main_cus_add2_th : cus_main_cus_add2_th
         },
         success : function(json) {
           if(json.form_is_valid) {          
             $(document).Toasts('create', {
               class: 'bg-success', 
-              title: "{% trans 'Success' %}",
+              title: "{% trans 'Message' %}",
               subtitle: '',
               autohide: true,
               delay: 3000,
@@ -789,3 +785,4 @@
 
 </script>
 {% endblock %}
+

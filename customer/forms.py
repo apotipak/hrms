@@ -264,29 +264,25 @@ class CustomerUpdateForm1(forms.ModelForm):
         return data
 
 
-class CusMainForm(forms.ModelForm):
-    # cus_main_name_th = forms.CharField(required=False)
-
-    
+class CusMainForm(forms.ModelForm):        
     cus_main_city_th_text = forms.CharField(required=False)
     cus_main_city_en_text = forms.CharField(required=False)
     cus_main_country_th_text = forms.CharField(required=False)
     cus_main_country_en_text = forms.CharField(required=False)
     cus_main_district_en_text = forms.CharField(required=False)
+    
+    cus_main_cus_name_th = forms.CharField(required=False)
 
     class Meta:
         model = CusMain
         fields = '__all__'        
-        # exclude = ['cus_no','cus_id','cus_brn','cus_city','cus_country','cus_zip','cus_district'
+        # exclude = ['cus_no','cus_id','cus_brn','cus_city','cus_country','cus_zip','cus_district']
         exclude = ['cus_no','cus_id','cus_brn','cus_city','cus_country','cus_zip','cus_district','cus_zone','cus_contact','site_contact','dist_en']
-
+    
     def __init__(self, *args, **kwargs):
         super(CusMainForm, self).__init__(*args, **kwargs)        
         instance = getattr(self, 'instance', None)        
         
-        # cus_main_name_th = forms.CharField(required=False)
-        self.initial['cus_name_th'] = instance.cus_name_th
-
         cus_active = forms.CharField(required=False)
         self.initial['cus_main_cus_active'] = instance.cus_active
 
@@ -310,19 +306,34 @@ class CusMainForm(forms.ModelForm):
 
         cus_main_country_en_text = forms.CharField(required=False)
         # self.initial['cus_main_country_en_text'] = instance.cus_country.country_en
+
         self.initial['cus_main_country_en_text'] = instance.cus_country
-        self.fields['cus_main_country_en_text'].widget.attrs['readonly'] = True
+        self.fields['cus_main_country_en_text'].widget.attrs['readonly'] = True                
 
     def clean_cus_name_th(self):
-        data = self.data.get('cus_name_th')        
+        data = self.data.get('cus_main_cus_name_th')        
         if len(data) > 0:
             return data
         else:
             raise ValidationError("Customer Name (TH) is required.")
 
     def clean_cus_name_en(self):
-        data = self.data.get('cus_name_en')
+        data = self.data.get('cus_main_cus_name_en')
         if len(data) > 0:
             return data
         else:
             raise ValidationError("Customer Name (EN) is required.")
+
+    def clean_cus_add1_th(self):
+        data = self.data.get('cus_main_cus_add1_th')
+        if len(data) > 150:
+            raise ValidationError("Address 1 (TH) is too long.")
+        else:
+            return data
+
+    def clean_cus_add2_th(self):
+        data = self.data.get('cus_main_cus_add2_th')
+        if len(data) > 70:
+            raise ValidationError("Address 2 (TH) is too long.")
+        else:
+            return data
