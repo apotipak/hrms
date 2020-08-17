@@ -293,17 +293,28 @@ class CusMainForm(forms.ModelForm):
         self.fields['cus_main_cus_country_th'].initial = instance.cus_country        
         self.fields['cus_main_cus_country_th'].widget.attrs['readonly'] = True
 
+
         cus_main_cus_city_en = forms.CharField(required=False)
-        self.initial['cus_main_cus_city_en'] = instance.cus_city
         self.fields['cus_main_cus_city_en'].widget.attrs['readonly'] = True
-
+        if instance.cus_city is not None:
+            self.initial['cus_main_cus_city_en'] = instance.cus_city.city_en
+        else:
+            self.initial['cus_main_cus_city_en'] = ""
+        
         cus_main_cus_district_en = forms.CharField(required=False)
-        self.initial['cus_main_cus_district_en'] = instance.cus_district
         self.fields['cus_main_cus_district_en'].widget.attrs['readonly'] = True
-
+        if instance.cus_district is not None:
+            self.initial['cus_main_cus_district_en'] = instance.cus_district.dist_en
+        else:
+            self.initial['cus_main_cus_district_en'] = ""
+        
         cus_main_cus_country_en = forms.CharField(required=False)
-        self.fields['cus_main_cus_country_en'].initial = instance.cus_country        
-        self.fields['cus_main_cus_country_en'].widget.attrs['readonly'] = True                
+        self.fields['cus_main_cus_country_en'].widget.attrs['readonly'] = True
+        if instance.cus_district is not None:
+            self.fields['cus_main_cus_country_en'].initial = instance.cus_country.country_en
+        else:
+            self.fields['cus_main_cus_country_en'].initial = ""
+        
 
     def clean_cus_name_th(self):
         data = self.data.get('cus_main_cus_name_th')        
