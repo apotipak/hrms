@@ -138,7 +138,7 @@ class CustomerSearchForm(forms.ModelForm):
         return data
 
 
-class CustomerUpdateForm(forms.ModelForm):    
+class CustomerUpdateForm1(forms.ModelForm):    
     # contract status    
     cus_active = forms.BooleanField(label='', required=False, widget=forms.CheckboxInput())
     cus_site_active = forms.BooleanField(label='', required=False, widget=forms.CheckboxInput())
@@ -265,8 +265,9 @@ class CustomerUpdateForm(forms.ModelForm):
 
 
 class CusMainForm(forms.ModelForm):
-    cus_main_name_th = forms.CharField(required=False)
+    # cus_main_name_th = forms.CharField(required=False)
 
+    
     cus_main_city_th_text = forms.CharField(required=False)
     cus_main_city_en_text = forms.CharField(required=False)
     cus_main_country_th_text = forms.CharField(required=False)
@@ -283,7 +284,7 @@ class CusMainForm(forms.ModelForm):
         super(CusMainForm, self).__init__(*args, **kwargs)        
         instance = getattr(self, 'instance', None)        
         
-        cus_main_name_th = forms.CharField(required=False)
+        # cus_main_name_th = forms.CharField(required=False)
         self.initial['cus_name_th'] = instance.cus_name_th
 
         cus_active = forms.CharField(required=False)

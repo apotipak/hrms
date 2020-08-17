@@ -6,7 +6,8 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.views import generic
 from .models import Customer, CusMain
-from .forms import CustomerCreateForm, CustomerUpdateForm, CusMainForm
+from .forms import CustomerCreateForm, CusMainForm
+# from .forms import CustomerUpdateForm
 from .forms import CustomerSearchForm
 from django.http import JsonResponse
 from django.template.loader import render_to_string
@@ -473,10 +474,10 @@ def CusMainUpdate(request, pk):
         cus_main = CusMain.objects.filter(cus_id=customer.cus_id).get()
 
     if request.method == 'POST':
-        form = CustomerUpdateForm(request.POST, instance=customer)
+        # form = CustomerUpdateForm(request.POST, instance=customer)
         cus_main_form = CusMainForm(request.POST, instance=cus_main)
     else:
-        form = CustomerUpdateForm(instance=customer)
+        # form = CustomerUpdateForm(instance=customer)
         cus_main_form = CusMainForm(instance=cus_main)
 
     data = dict()
@@ -523,7 +524,7 @@ def CusMainUpdate(request, pk):
         'project_version': settings.PROJECT_VERSION,
         'db_server': settings.DATABASES['default']['HOST'],
         'project_name': settings.PROJECT_NAME,
-        'form': form, 
+        # 'form': form, 
         'cus_main_form': cus_main_form,
         'customer': customer,
         'cus_main': cus_main,
@@ -550,20 +551,22 @@ def update_cus_main(request):
             cus_no = request.POST.get('cus_no')
             cus_id = request.POST.get('cus_id')
             cus_brn = request.POST.get('cus_brn')        
+            
             cus_name_th = request.POST.get('cus_name_th')
-            cus_name_en = request.POST.get('cus_name_en')
+            cus_add1_th = request.POST.get('cus_add1_th')
+            
+            #request.POST.get('cus_add2_th')
 
-            customer = CusMain.objects.get(cus_id=cus_id)
+            print("cus_add1_th__ : " + str(request.POST.get('cus_add1_th')))
 
-            if request.user.is_superuser:
-                customer.upd_by = 'Superuser'
-            else:
-                customer.upd_by = request.user.first_name
-            if customer.upd_flag == 'A':
-                customer.upd_flag = 'E'
-                                
-            customer.upd_date = timezone.now()            
-            cus_main_form = CusMainForm(request.POST, instance=customer)
+            cus_name_en = request.POST.get('cus_name_en')            
+
+            cus_main = CusMain.objects.get(cus_id=cus_id)
+            cus_main.upd_by = request.user.first_name
+            if cus_main.upd_flag == 'A':
+                cus_main.upd_flag = 'E'
+            cus_main.upd_date = timezone.now()            
+            cus_main_form = CusMainForm(request.POST, instance=cus_main)
             cus_main_form.save()
 
             response_data['result'] = "Update completed!"

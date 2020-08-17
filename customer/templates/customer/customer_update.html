@@ -73,6 +73,8 @@
 
           <div class="tab-pane fade show active" id="mainoffice" role="tabpanel" aria-labelledby="mainoffice-tab">          
 
+
+            {% comment %}
             <div id="result"></div>
 
             <div class="pt-2" id="show-error">
@@ -80,7 +82,6 @@
                 {% for field in cus_main_form %}                
                     {% for error in field.errors %}
                         <div class="alert alert-danger">
-                            <!--<i class="fas fa-exclamation"></i>&nbsp;&nbsp;Your data is not correct. {{ field.name }} - {{ error }}-->
                             <i class="fas fa-exclamation"></i>&nbsp;&nbsp;{{ error }}
                         </div>
                     {% endfor %}
@@ -94,6 +95,8 @@
               {% endif %}
             {% endif %}
             </div>
+            {% endcomment %}
+
 
 
             <div class="clearfix">
@@ -152,6 +155,13 @@
                       </div>
 
 
+                      <div class="input-group">
+                        <label for="id_cus_main_cus_add1_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'Address' %}</label>
+                        <div class="col-sm-8">
+                          {% render_field cus_main_form.cus_add1_th class="form-control form-control-sm" %}
+                          {% render_field cus_main_form.cus_add2_th class="form-control form-control-sm" %}
+                        </div>
+                      </div>
 
 
 
