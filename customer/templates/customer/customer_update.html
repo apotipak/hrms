@@ -57,10 +57,10 @@
           <div class="float-left">
             <ul class="nav nav-tabs navbar-expand" id="customer" role="tablist">
               <li class="nav-item">
-                <a class="nav-link active" id="mainoffice-tab" data-toggle="tab" href="#mainoffice" role="tab" aria-controls="mainoffice" aria-selected="true">{% trans 'Main Office' %}</a>
+                <a class="nav-link" id="mainoffice-tab" data-toggle="tab" href="#mainoffice" role="tab" aria-controls="mainoffice" aria-selected="false">{% trans 'Main Office' %}</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" id="site-tab" data-toggle="tab" href="#site" role="tab" aria-controls="site" aria-selected="false">{% trans 'Site' %}</a>
+                <a class="nav-link active" id="site-tab" data-toggle="tab" href="#site" role="tab" aria-controls="site" aria-selected="true">{% trans 'Site' %}</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" id="billing-tab" data-toggle="tab" href="#billing" role="tab" aria-controls="billing" aria-selected="false">{% trans 'Billing' %}</a>
@@ -98,6 +98,9 @@
             {% endcomment %}
 
 
+            <!--<form id="cus_main_form" method="post" action="{% url 'cus-main-update' cus_main_form.instance.pk %}">-->
+            <form id="cus_main_form" method="POST" action="{% url 'update_cus_main' %}">
+            {% csrf_token %}
 
             <div class="clearfix">
               <div class="float-left">&nbsp;</div>
@@ -113,24 +116,27 @@
                   </div>              
                 </div>
 
-                {{ cus_main.cus_active }}
-
+                {% comment %}
                 <label class="switch">                                    
-                  {% if cus_main.cus_active %}
+                  {% if cus_main.cus_active|default_if_none:0 %}
                   <input type="checkbox" id="id_cus_main_cus_active" name="cus_main_cus_active" checked>
                   {% else %}
                   <input type="checkbox" id="id_cus_main_cus_active" name="cus_main_cus_active">
-                  {% endif %}
-                  
+                  {% endif %}                  
                   <div class="slider"></div>
                 </label>
+                {% endcomment %}
+
+                {% if cus_main.cus_active|default_if_none:0 %}
+                <input type="checkbox" id="id_cus_main_cus_active" name="cus_main_cus_active" value=1 checked>
+                {% else %}
+                <input type="checkbox" id="id_cus_main_cus_active" name="cus_main_cus_active" value=0>
+                {% endif %}                  
+
 
               </div>
             </div>
 
-            <!--<form id="cus_main_form" method="post" action="{% url 'cus-main-update' cus_main_form.instance.pk %}">-->
-            <form id="cus_main_form" method="POST" action="{% url 'update_cus_main' %}">
-            {% csrf_token %}
 
             <!-- TODO -->
             <div class="row pt-3">
@@ -739,11 +745,16 @@
     cus_no = cus_id + cus_brn;
 
     // Main Office TH
+    if ($('#id_cus_main_cus_active').is(":checked"))
+      cus_main_cus_active = 1;
+    else
+      cus_main_cus_active = 0;
+    //alert(cus_main_cus_active);
+
     cus_main_cus_name_th = $('#id_cus_main_cus_name_th').val();    
     cus_main_cus_add1_th = $('#id_cus_main_cus_add1_th').val();
     cus_main_cus_add2_th = $('#id_cus_main_cus_add2_th').val();
     cus_main_cus_subdist_th = $('#id_cus_main_cus_subdist_th').val();
-
 
     // Main Office EN
     cus_main_cus_name_en = $('#id_cus_main_cus_name_en').val();
@@ -758,12 +769,13 @@
     $.ajax({
         url : "/customer/ajax/update_cus_main/",
         type : "POST",
-        data : {
+        data : {          
           csrfmiddlewaretoken: '{{ csrf_token }}',
           cus_id : cus_id,
           cus_brn : cus_brn,
           cus_no : cus_no,
 
+          cus_main_cus_active : cus_main_cus_active,
           cus_main_cus_name_th : cus_main_cus_name_th,
           cus_main_cus_add1_th : cus_main_cus_add1_th,
           cus_main_cus_add2_th : cus_main_cus_add2_th,

@@ -265,8 +265,9 @@ class CustomerUpdateForm1(forms.ModelForm):
 
 
 class CusMainForm(forms.ModelForm):        
-    cus_main_cus_active = forms.CharField(required=False)
-    
+    # cus_main_cus_active = forms.CharField(required=False)
+    cus_main_cus_active = forms.BooleanField(label='', required=False, widget=forms.CheckboxInput())
+
     cus_main_cus_city_th = forms.CharField(required=False)
     cus_main_cus_country_th = forms.CharField(required=False)    
 
@@ -314,7 +315,12 @@ class CusMainForm(forms.ModelForm):
             self.fields['cus_main_cus_country_en'].initial = instance.cus_country.country_en
         else:
             self.fields['cus_main_cus_country_en'].initial = ""
-        
+
+    def clean_cus_active(self):
+        data = self.data.get('cus_main_cus_active')
+        print("demo = " + str(data))
+        return data        
+
     def clean_cus_name_th(self):
         data = self.data.get('cus_main_cus_name_th')        
         if len(data) > 0:

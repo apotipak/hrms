@@ -470,6 +470,7 @@ def CusMainUpdate(request, pk):
     
     customer = get_object_or_404(Customer, pk=pk)
     cus_main = []
+
     if customer:
         cus_main = CusMain.objects.filter(cus_id=customer.cus_id).get()
 
@@ -478,7 +479,10 @@ def CusMainUpdate(request, pk):
         cus_main_form = CusMainForm(request.POST, instance=cus_main)
     else:
         # form = CustomerUpdateForm(instance=customer)
-        cus_main_form = CusMainForm(instance=cus_main)
+        cus_main_form = CusMainForm(instance=cus_main)        
+        print("test - update cus_main")
+        print(cus_main.cus_active)
+
 
     data = dict()
     form_is_valid = False
@@ -549,7 +553,7 @@ def update_cus_main(request):
     if request.method == 'POST':
         if form.is_valid():
             cus_active = request.POST.get('cus_main_cus_active')
-            print(cus_active)
+            # print("cus_main cus_active = " + str(cus_active))            
 
             cus_no = request.POST.get('cus_no')
             cus_id = request.POST.get('cus_id')
@@ -568,9 +572,12 @@ def update_cus_main(request):
             if cus_main.upd_flag == 'A':
                 cus_main.upd_flag = 'E'
             
+            cus_main.cus_active = cus_active
             cus_main.upd_date = timezone.now()
             
             cus_main_form = CusMainForm(request.POST, instance=cus_main)
+
+
             cus_main_form.save()
 
             response_data['result'] = "Update completed!"
