@@ -99,8 +99,7 @@
             {% endcomment %}
 
 
-            <!--<form id="cus_main_form" method="post" action="{% url 'cus-main-update' cus_main_form.instance.pk %}">-->
-            <form id="cus_main_form" method="POST" action="{% url 'update_cus_main' %}">
+            <form id="cus_main_form" method="POST">
             {% csrf_token %}
 
             <div class="clearfix">
