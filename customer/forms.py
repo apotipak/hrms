@@ -375,13 +375,75 @@ class CusMainForm(forms.ModelForm):
             return data
 
 
-class CusSiteForm(forms.ModelForm):
+class CusSiteForm(forms.ModelForm):    
     class Meta:
         model = Customer
-        fields = '__all__'        
+        fields = '__all__'
         exclude = ['cus_no','cus_id','cus_brn','cus_city','cus_country','cus_zip','cus_district','cus_zone','cus_contact','site_contact','dist_en']
     
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs):        
         super(CusSiteForm, self).__init__(*args, **kwargs)        
         instance = getattr(self, 'instance', None)
-    
+
+    def clean_cus_active(self):
+        data = self.data.get('cus_site_cus_active')
+        if data != "1":
+            return 0
+        return 1     
+
+    def clean_cus_name_th(self):
+        data = self.data.get('cus_site_cus_name_th')        
+        if len(data) > 0:
+            return data
+        else:
+            raise ValidationError("Customer Name (TH) is required.")
+
+    def clean_cus_add1_th(self):
+        data = self.data.get('cus_site_cus_add1_th')
+        if len(data) > 150:
+            raise ValidationError("Address 1 (TH) is too long.")
+        else:
+            return data
+
+    def clean_cus_add2_th(self):
+        data = self.data.get('cus_site_cus_add2_th')
+        if len(data) > 70:
+            raise ValidationError("Address 2 (TH) is too long.")
+        else:
+            return data
+
+    def clean_cus_subdist_th(self):
+        data = self.data.get('cus_site_cus_subdist_th')
+        if len(data) > 50:
+            raise ValidationError("Sub-District is too long.")
+        else:
+            return data
+
+    def clean_cus_name_en(self):
+        data = self.data.get('cus_site_cus_name_en')
+        if len(data) > 0:
+            return data
+        else:
+            raise ValidationError("Customer Name (EN) is required.")
+
+    def clean_cus_add1_en(self):
+        data = self.data.get('cus_site_cus_add1_en')
+        if len(data) > 150:
+            raise ValidationError("Address 1 (EN) is too long.")
+        else:
+            return data
+
+    def clean_cus_add2_en(self):
+        data = self.data.get('cus_site_cus_add2_en')
+        if len(data) > 70:
+            raise ValidationError("Address 2 (EN) is too long.")
+        else:
+            return data
+
+    def clean_cus_subdist_en(self):
+        data = self.data.get('cus_site_cus_subdist_en')
+        if len(data) > 50:
+            raise ValidationError("Sub-District (EN) is too long.")
+        else:
+            return data
+

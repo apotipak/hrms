@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.views import generic
 from .models import Customer, CusMain
-from .forms import CustomerCreateForm, CusMainForm
+from .forms import CustomerCreateForm, CusMainForm, CusSiteForm
 # from .forms import CustomerUpdateForm
 from .forms import CustomerSearchForm
 from django.http import JsonResponse
@@ -550,38 +550,54 @@ def update_cus_main(request):
 
     if request.method == 'POST':
         form = CusMainForm(request.POST)
-    else:
-        form = CusMainForm()
 
-    if request.method == 'POST':
         if form.is_valid():
             cus_active = request.POST.get('cus_main_cus_active')
-            # print("cus_main cus_active = " + str(cus_active))            
-
             cus_no = request.POST.get('cus_no')
             cus_id = request.POST.get('cus_id')
             cus_brn = request.POST.get('cus_brn')
-
+            
             cus_name_th = request.POST.get('cus_main_cus_name_th')            
             cus_add1_th = request.POST.get('cus_main_cus_add1_th')
             cus_add2_th = request.POST.get('cus_main_cus_add2_th')
             cus_subdist_th = request.POST.get('cus_main_cus_subdist_th')            
+            
+            cus_name_en = request.POST.get('cus_main_cus_name_en')                          
+            cus_add1_en = request.POST.get('cus_main_cus_add1_en')
+            cus_add2_en = request.POST.get('cus_main_cus_add2_en')
+            cus_subdist_en = request.POST.get('cus_main_cus_subdist_en')
+            
+            # cus_main = CusMain.objects.get(cus_id=cus_id)            
+            # cus_main.upd_by = request.user.first_name
 
-            cus_name_en = request.POST.get('cus_main_cus_name_en')
-                          
-            cus_main = CusMain.objects.get(cus_id=cus_id)
-            cus_main.upd_by = request.user.first_name
-
+            '''
             if cus_main.upd_flag == 'A':
                 cus_main.upd_flag = 'E'
             
             cus_main.cus_active = cus_active
+            cus_main.upd_date = timezone.now()            
+            cus_main_form = CusMainForm(request.POST, instance=cus_main)
+            cus_main_form.save()
+            '''
+
+            cus_main = get_object_or_404(CusMain, pk=cus_id)
+            cus_main.cus_active = cus_active
+            cus_main.cus_name_th = cus_name_th
+            cus_main.cus_add1_th = cus_add1_th
+            cus_main.cus_add2_th = cus_add2_th
+            cus_main.cus_subdist_th = cus_subdist_th
+            
+            cus_main.cus_name_en = cus_name_en
+            cus_main.cus_add1_en = cus_add1_en
+            cus_main.cus_add2_en = cus_add2_en
+            cus_main.cus_subdist_en = cus_subdist_en
+
+            if cus_main.upd_flag == 'A':
+                cus_main.upd_flag = 'E'
+            cus_main.upd_by = request.user.first_name
             cus_main.upd_date = timezone.now()
             
-            cus_main_form = CusMainForm(request.POST, instance=cus_main)
-
-
-            cus_main_form.save()
+            cus_main.save()
 
             response_data['result'] = "Save customer main office success."
             response_data['message'] = "ทำรายการสำเร็จ"
@@ -598,7 +614,7 @@ def update_cus_main(request):
 
         return JsonResponse(response_data)
     else:
-        print("debug 2")
+        print("debug - found cus_main_form problem")
 
     context = {
         'page_title': settings.PROJECT_NAME,
@@ -615,20 +631,62 @@ def update_cus_site(request):
     template_name = 'customer/customer_update.html'    
     response_data = {}
 
+    if request.method == 'POST':
+        form = CusSiteForm(request.POST)
+        if form.is_valid():
+            cus_no = request.POST.get('cus_no')
+            cus_id = request.POST.get('cus_id')
+            cus_brn = request.POST.get('cus_brn')
 
-    if request.method == 'POST':        
-        cus_no = request.POST.get('cus_no')
-        cus_id = request.POST.get('cus_id')
-        cus_brn = request.POST.get('cus_brn')
-        cus_active = request.POST.get('cus_active')
-        cus_name_th = request.POST.get('cus_name_th')            
-        print(str(cus_no) + ", " + str(cus_id) + ", " + str(cus_brn) + ", " + str(cus_name_th) + ", " + str(cus_active))
+            cus_active = request.POST.get('cus_site_cus_active')
+            cus_name_th = request.POST.get('cus_site_cus_name_th')
+            cus_add1_th = request.POST.get('cus_site_cus_add1_th')
+            cus_add2_th = request.POST.get('cus_site_cus_add2_th')
+            cus_subdist_th = request.POST.get('cus_site_cus_subdist_th')
 
+            cus_name_en = request.POST.get('cus_site_cus_name_en')
+            cus_add1_en = request.POST.get('cus_site_cus_add1_en')
+            cus_add2_en = request.POST.get('cus_site_cus_add2_en')
+            cus_subdist_en = request.POST.get('cus_site_cus_subdist_en')
+
+            # print(str(cus_no) + ", " + str(cus_id) + ", " + str(cus_brn))
+            # print(str(cus_active) + ", " + str(cus_name_th) + ", " + str(cus_add1_th) + ", " + str(cus_add2_th) + ", " + str(cus_subdist_th))
+            # print(str(cus_active) + ", " + str(cus_name_en) + ", " + str(cus_add1_en) + ", " + str(cus_add2_en) + ", " + str(cus_subdist_en))            
+
+            customer = get_object_or_404(Customer, pk=cus_no)
+
+            customer.cus_active = cus_active
+            customer.cus_name_th = cus_name_th
+            customer.cus_add1_th = cus_add1_th
+            customer.cus_add2_th = cus_add2_th
+            customer.cus_subdist_th = cus_subdist_th
+            customer.cus_name_en = cus_name_en
+            customer.cus_add1_en = cus_add1_en
+            customer.cus_add2_en = cus_add2_en
+            customer.cus_subdist_en = cus_subdist_en
+
+            if customer.upd_flag == 'A':
+                customer.upd_flag = 'E'
+            customer.upd_by = request.user.first_name
+            customer.upd_date = timezone.now()
+            
+            customer.save()
+
+            response_data['result'] = "Save customer main office success."
+            response_data['message'] = "ทำรายการสำเร็จ"
+            response_data['form_is_valid'] = True
+        else:
+            response_data['form_is_valid'] = False
+            response_data['message'] = ""
+            if form.errors:
+                for field in form:
+                    for error in field.errors:
+                        response_data['message'] += error + "<br>"
+            else:
+                response_data['message'] = "ไม่สามารถทำรายการได้..!"
     else:
-        print("error")
-
-    response_data['result'] = "Save customer site success."
-    response_data['message'] = "ทำรายการสำเร็จ"
-    response_data['form_is_valid'] = True
+        response_data['result'] = "There is an error!"
+        response_data['message'] = "ไม่สามารถทำรายการได้..!"
+        response_data['form_is_valid'] = False        
 
     return JsonResponse(response_data)

@@ -521,14 +521,14 @@
                           <label for="id_cus_add1_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Address' %}</label>
                           <div class="col-sm-8">
                             <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_add1_en" name="cus_site_cus_add1_th" value="{{ customer.cus_add1_en }}">
-                            <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_add2_en" name="cus_site_cus_add2_th" value="{{ customer.cus_add2_en }}">
+                            <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_add2_en" name="cus_site_cus_add2_th" value="{{ customer.cus_add2_en|default_if_none:'' }}">
                           </div>
                         </div>
 
                         <div class="input-group">
                           <label for="id_cus_site_cus_subdist_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Sub-District' %}</label>
                           <div class="col-sm-8">
-                            <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_subdist_en" name="cus_site_cus_subdist_en" value="{{ customer.cus_subdist_en }}">
+                            <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_subdist_en" name="cus_site_cus_subdist_en" value="{{ customer.cus_subdist_en|default_if_none:'' }}">
                           </div>
                         </div>
 
@@ -793,7 +793,7 @@
           csrfmiddlewaretoken: '{{ csrf_token }}',
           cus_id : cus_id,
           cus_brn : cus_brn,
-          cus_no : cus_no,
+          //cus_no : cus_no,
 
           cus_main_cus_active : cus_main_cus_active,
           cus_main_cus_name_th : cus_main_cus_name_th,
@@ -854,7 +854,12 @@
     cus_site_cus_name_th = $('#id_cus_site_cus_name_th').val();
     cus_site_cus_add1_th = $('#id_cus_site_cus_add1_th').val();
     cus_site_cus_add2_th = $('#id_cus_site_cus_add2_th').val();
-    cus_site_cus_subdist_th = $('#id_cus_site_cus_subdist_th').val();    
+    cus_site_cus_subdist_th = $('#id_cus_site_cus_subdist_th').val();
+
+    cus_site_cus_name_en = $('#id_cus_site_cus_name_en').val();
+    cus_site_cus_add1_en = $('#id_cus_site_cus_add1_en').val();
+    cus_site_cus_add2_en = $('#id_cus_site_cus_add2_en').val();
+    cus_site_cus_subdist_en = $('#id_cus_site_cus_subdist_en').val();    
 
     $.ajax({
         url : "/customer/ajax/update_cus_site/",
@@ -864,16 +869,17 @@
           cus_id : cus_id,
           cus_brn : cus_brn,
           cus_no : cus_no,
-          cus_active : cus_site_cus_active,
+          cus_site_cus_active : cus_site_cus_active,
           
-          cus_name_th : cus_site_cus_name_th,
+          cus_site_cus_name_th : cus_site_cus_name_th,
           cus_site_cus_add1_th : cus_site_cus_add1_th,
           cus_site_cus_add2_th : cus_site_cus_add2_th,
           cus_site_cus_subdist_th :  cus_site_cus_subdist_th,
-          cus_name_en : cus_site_cus_name_en,
+
+          cus_site_cus_name_en : cus_site_cus_name_en,
           cus_site_cus_add1_en : cus_site_cus_add1_en,
           cus_site_cus_add2_en : cus_site_cus_add2_en,
-          cus_site_cus_subdist_en :  cus_site_cus_subdist_en
+          cus_site_cus_subdist_en : cus_site_cus_subdist_en
         },
         success : function(json) {
           if(json.form_is_valid) {          
