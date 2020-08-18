@@ -58,7 +58,7 @@ def CustomerList(request):
 
         if cus_name=='' and cus_id=='' and cus_brn=='':
             print("post case 5")
-            customer_list = Customer.objects.order_by('cus_id', 'cus_brn', '-cus_active')
+            customer_list = Customer.objects.order_by('cus_id', 'cus_brn', '-cus_active')            
 
         # cus_id
         if cus_id!='' and cus_name=='' and cus_brn=='':
@@ -128,7 +128,8 @@ def CustomerList(request):
 
         if cus_name=='' and cus_id=='' and cus_brn=='':
             print("get case 5")
-            customer_list = Customer.objects.order_by('-cus_active','cus_id','cus_brn')
+            # customer_list = Customer.objects.order_by('-cus_active','cus_id','cus_brn')
+            customer_list = Customer.objects.order_by('cus_id','cus_brn','-cus_active')
 
         # cus_id
         if cus_id!='' and cus_name=='' and cus_brn=='':
@@ -522,6 +523,8 @@ def CusMainUpdate(request, pk):
             message = "ไม่สามารถทำรายการได้..!"
             data['message'] = "ทำรายการสำเร็จ"
 
+    print("customer cus_active = " + str(customer.cus_active))
+    
     context = {
         'page_title': settings.PROJECT_NAME,
         'today_date': settings.TODAY_DATE,

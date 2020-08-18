@@ -115,32 +115,31 @@
                     <label class="form-check-label">For Bill</label>&nbsp;&nbsp;&nbsp;&nbsp;
                   </div>              
                 </div>
-
-                {% comment %}
-                <label class="switch">                                    
+                
+                <label class="switch">                                 
                   {% if cus_main.cus_active|default_if_none:0 %}
-                  <input type="checkbox" id="id_cus_main_cus_active" name="cus_main_cus_active" checked>
+                  <input type="checkbox" id="id_cus_main_cus_active" name="cus_main_cus_active" value=1 checked>
                   {% else %}
-                  <input type="checkbox" id="id_cus_main_cus_active" name="cus_main_cus_active">
+                  <input type="checkbox" id="id_cus_main_cus_active" name="cus_main_cus_active" value=0>
                   {% endif %}                  
                   <div class="slider"></div>
                 </label>
-                {% endcomment %}
-
+                
+                {% comment %}
                 {% if cus_main.cus_active|default_if_none:0 %}
                 <input type="checkbox" id="id_cus_main_cus_active" name="cus_main_cus_active" value=1 checked>
                 {% else %}
                 <input type="checkbox" id="id_cus_main_cus_active" name="cus_main_cus_active" value=0>
                 {% endif %}                  
-
+                {% endcomment %}
 
               </div>
             </div>
 
 
-            <!-- TODO -->
-            <div class="row pt-3">
 
+            <div class="row pt-3">
+              
               <div class="col-md-6">
 
                 <div class="card card-info">
@@ -376,7 +375,8 @@
               </div>
             </div>
             {% endcomment %}
-            <!-- TODO -->
+
+
 
             <div class="float-right">
               <a href="#" id="cusMainSaveButton" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
@@ -400,12 +400,13 @@
                   </div>              
                 </div>              
 
-                <label class="switch">
-                  {% if cus_main_form.cus_site %}
-                  <input type="checkbox" id="id_cus_site" checked>
+
+                <label class="switch">                                 
+                  {% if customer.cus_active|default_if_none:0 %}
+                  <input type="checkbox" id="id_cus_site_cus_active" name="cus_site_cus_active" value=1 checked>
                   {% else %}
-                  <input type="checkbox" id="id_cus_site">
-                  {% endif %}
+                  <input type="checkbox" id="id_cus_site_cus_active" name="cus_site_cus_active" value=0>
+                  {% endif %}                  
                   <div class="slider"></div>
                 </label>
 
