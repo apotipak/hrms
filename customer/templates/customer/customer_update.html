@@ -113,12 +113,15 @@
                   </div>              
                 </div>
 
-                <label class="switch">
+                {{ cus_main.cus_active }}
+
+                <label class="switch">                                    
                   {% if cus_main.cus_active %}
-                  <input type="checkbox" id="id_cus_main_active" checked>
+                  <input type="checkbox" id="id_cus_main_cus_active" name="cus_main_cus_active" checked>
                   {% else %}
-                  <input type="checkbox" id="id_cus_main_active">
+                  <input type="checkbox" id="id_cus_main_cus_active" name="cus_main_cus_active">
                   {% endif %}
+                  
                   <div class="slider"></div>
                 </label>
 

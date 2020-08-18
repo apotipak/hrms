@@ -548,11 +548,13 @@ def update_cus_main(request):
 
     if request.method == 'POST':
         if form.is_valid():
+            cus_active = request.POST.get('cus_main_cus_active')
+            print(cus_active)
 
             cus_no = request.POST.get('cus_no')
             cus_id = request.POST.get('cus_id')
-            cus_brn = request.POST.get('cus_brn')        
-            
+            cus_brn = request.POST.get('cus_brn')
+
             cus_name_th = request.POST.get('cus_main_cus_name_th')            
             cus_add1_th = request.POST.get('cus_main_cus_add1_th')
             cus_add2_th = request.POST.get('cus_main_cus_add2_th')
