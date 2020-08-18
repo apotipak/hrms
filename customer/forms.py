@@ -264,13 +264,10 @@ class CustomerUpdateForm1(forms.ModelForm):
         return data
 
 
-class CusMainForm(forms.ModelForm):        
-    # cus_main_cus_active = forms.CharField(required=False)
+class CusMainForm(forms.ModelForm):            
     cus_main_cus_active = forms.BooleanField(label='', required=False, widget=forms.CheckboxInput())
-
     cus_main_cus_city_th = forms.CharField(required=False)
     cus_main_cus_country_th = forms.CharField(required=False)    
-
     cus_main_cus_city_en = forms.CharField(required=False)
     cus_main_cus_district_en = forms.CharField(required=False)
     cus_main_cus_country_en = forms.CharField(required=False)
@@ -278,7 +275,6 @@ class CusMainForm(forms.ModelForm):
     class Meta:
         model = CusMain
         fields = '__all__'        
-        # exclude = ['cus_no','cus_id','cus_brn','cus_city','cus_country','cus_zip','cus_district']
         exclude = ['cus_no','cus_id','cus_brn','cus_city','cus_country','cus_zip','cus_district','cus_zone','cus_contact','site_contact','dist_en']
     
     def __init__(self, *args, **kwargs):
@@ -378,3 +374,15 @@ class CusMainForm(forms.ModelForm):
         else:
             return data
 
+
+class CusSiteForm(forms.ModelForm):
+    class Meta:
+        model = Customer
+        fields = '__all__'        
+        exclude = ['cus_no','cus_id','cus_brn','cus_city','cus_country','cus_zip','cus_district','cus_zone','cus_contact','site_contact','dist_en']
+    
+    def __init__(self, *args, **kwargs):
+        super(CusSiteForm, self).__init__(*args, **kwargs)        
+        instance = getattr(self, 'instance', None)        
+                
+        self.initial['cus_site_cus_active'] = instance.cus_active

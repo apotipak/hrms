@@ -524,7 +524,7 @@ def CusMainUpdate(request, pk):
             data['message'] = "ทำรายการสำเร็จ"
 
     print("customer cus_active = " + str(customer.cus_active))
-    
+
     context = {
         'page_title': settings.PROJECT_NAME,
         'today_date': settings.TODAY_DATE,
@@ -608,4 +608,11 @@ def update_cus_main(request):
         'project_name': settings.PROJECT_NAME,
     }
     return render(request, template_name, context)    
+
+
+@login_required(login_url='/accounts/login/')
+def update_cus_site(request):
+
+    template_name = 'customer/customer_update.html'    
+    response_data = {}
 
