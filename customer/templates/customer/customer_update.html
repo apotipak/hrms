@@ -137,7 +137,7 @@
             </div>
 
 
-
+            <!-- Main Office Tab -->
             <div class="row pt-3">
               
               <div class="col-md-6">
@@ -208,7 +208,6 @@
                   </div>
                 </div>
               </div>
-            </form>
 
               <!-- Main Office Tab English -->
               <div class="col-md-6">
@@ -282,14 +281,15 @@
             </div>
             <!-- /.row -->            
 
+            </form>
 
+
+            {% comment %}
             <!-- Others - Zip, Phone, Fax, Email, Zone, Group, Business Type, etc. -->
             <div class="row">
               <div class="col-md-12">
                 <div class="card card-info">
-
                   <div class="card-body"> 
-                    {% comment %}                  
                     <div class="form-row">
                       <div class="form-group col-md-2">
                         <label for="cus_main_cus_zip">{% trans 'Zip' %}</label>
@@ -332,16 +332,12 @@
                           {% render_field cus_main_form.cus_zone class="form-control col-sm-12 form-control-sm" %}
                         {% endif %}      
                       </div>
-                    </div>
-                    {% endcomment %}
-
+                    </div>                    
                   </div>
-
-
                 </div>
               </div>
             </div>
-
+            {% endcomment %}
 
             {% comment %}
             <!-- Contact Person -->
@@ -414,8 +410,7 @@
                 </label>
 
               </div>
-            </div>
-            </form>
+            </div>            
 
 
             <div class="container-fluid pt-2">
@@ -449,12 +444,32 @@
                         </div>
 
                         <div class="input-group">
-                          <label for="id_cus_subdist_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'Sub-District' %}</label>
+                          <label for="id_cus_site_cus_subdist_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'Sub-District' %}</label>
                           <div class="col-sm-8">
                             <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_subdist_th" name="cus_site_cus_subdist_th" value="{{ customer.cus_subdist_th }}">
                           </div>
                         </div>
 
+                        <div class="input-group">
+                          <label for="id_cus_site_cus_disrict" class="col-sm-4 col-form-label form-control-sm">{% trans 'District' %}</label>
+
+                          <div class="col-sm-8">
+                            
+
+
+                            <div class="form-row">
+
+                              <div class="form-group col-md-12">
+                                <div class="input-group-append">
+                                  <input type="text" class="form-control form-control-sm" value="{{ customer.cus_district }}" readonly>
+                                  <button id="wage_rate_lookup" type="button" class="btn btn-outline-secondary btn-sm" data-toggle="modal" data-url=""><i class="fas fa-search fa-sm"></i></button>
+                                </div>                
+                              </div>
+
+                            </div>
+
+                          </div>
+                        </div>
 
                         {% comment %}
                         <div class="input-group">
@@ -567,6 +582,8 @@
 
               </div>
             </div>
+            </form>
+
           </div>
 
           <!-- Billing -->
