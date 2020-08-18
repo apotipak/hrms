@@ -318,8 +318,9 @@ class CusMainForm(forms.ModelForm):
 
     def clean_cus_active(self):
         data = self.data.get('cus_main_cus_active')
-        print("demo = " + str(data))
-        return data        
+        if data != "1":
+            return 0
+        return 1     
 
     def clean_cus_name_th(self):
         data = self.data.get('cus_main_cus_name_th')        
