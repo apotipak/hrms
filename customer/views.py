@@ -26,7 +26,7 @@ def CustomerList(request):
     project_name = settings.PROJECT_NAME
     project_version = settings.PROJECT_VERSION
     today_date = settings.TODAY_DATE    
-    item_per_page = 10   
+    item_per_page = 50
 
     if request.method == "POST":
         form = CustomerSearchForm(request.POST, user=request.user)
@@ -583,7 +583,7 @@ def update_cus_main(request):
 
             cus_main_form.save()
 
-            response_data['result'] = "Update completed!"
+            response_data['result'] = "Save customer main office success."
             response_data['message'] = "ทำรายการสำเร็จ"
             response_data['form_is_valid'] = True
         else:
@@ -611,8 +611,24 @@ def update_cus_main(request):
 
 
 @login_required(login_url='/accounts/login/')
-def update_cus_site(request):
-
+def update_cus_site(request):    
     template_name = 'customer/customer_update.html'    
     response_data = {}
 
+
+    if request.method == 'POST':        
+        cus_no = request.POST.get('cus_no')
+        cus_id = request.POST.get('cus_id')
+        cus_brn = request.POST.get('cus_brn')
+        cus_active = request.POST.get('cus_active')
+        cus_name_th = request.POST.get('cus_name_th')            
+        print(str(cus_no) + ", " + str(cus_id) + ", " + str(cus_brn) + ", " + str(cus_name_th) + ", " + str(cus_active))
+
+    else:
+        print("error")
+
+    response_data['result'] = "Save customer site success."
+    response_data['message'] = "ทำรายการสำเร็จ"
+    response_data['form_is_valid'] = True
+
+    return JsonResponse(response_data)

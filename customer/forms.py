@@ -275,7 +275,7 @@ class CusMainForm(forms.ModelForm):
     class Meta:
         model = CusMain
         fields = '__all__'        
-        exclude = ['cus_no','cus_id','cus_brn','cus_city','cus_country','cus_zip','cus_district','cus_zone','cus_contact','site_contact','dist_en']
+        exclude = ['cus_id','cus_city','cus_country','cus_zip','cus_district','cus_zone','cus_contact','site_contact','dist_en']
     
     def __init__(self, *args, **kwargs):
         super(CusMainForm, self).__init__(*args, **kwargs)        
@@ -383,6 +383,5 @@ class CusSiteForm(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
         super(CusSiteForm, self).__init__(*args, **kwargs)        
-        instance = getattr(self, 'instance', None)        
-                
-        self.initial['cus_site_cus_active'] = instance.cus_active
+        instance = getattr(self, 'instance', None)
+    
