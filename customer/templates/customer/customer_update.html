@@ -462,7 +462,7 @@
                               <div class="form-group col-md-12">
                                 <div class="input-group-append">
                                   <input type="text" class="form-control form-control-sm" value="{{ customer.cus_district }}" readonly>
-                                  <button id="wage_rate_lookup" type="button" class="btn btn-outline-secondary btn-sm" data-toggle="modal" data-url=""><i class="fas fa-search fa-sm"></i></button>
+                                  <button id="district_lookup" type="button" class="btn btn-outline-secondary btn-sm" data-toggle="modal" data-url=""><i class="fas fa-search fa-sm"></i></button>                                  
                                 </div>                
                               </div>
 
@@ -646,7 +646,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">{% trans 'District Lookup' %}</h5>
+        <h5 class="modal-title" id="exampleModalLongTitle">{% trans 'Select District' %}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -671,24 +671,6 @@
 {% block javascript %}
 <script>
 
-  
-  $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-    var target = $(e.target).attr("href") // activated tab    
-    
-    //$('#id_cus_site_active').bootstrapSwitch('_width');
-    /*
-    $('body').on('shown.bs.tab', function(e) {
-        var $switches = $('.bootstrap-switch-container input');
-        $switches.each(function(index, element) {
-            var $element = $(element);
-            if ($element.is(':visible')) {
-                $element.bootstrapSwitch('_width');
-            }
-        });
-    }); 
-    */   
-  });
-  
 
   $(document).ready(function(){        
 
