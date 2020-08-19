@@ -654,10 +654,14 @@
       <div class="modal-body">
         {% trans 'Loading...' %}
       </div>
+
+      <!--
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">{% trans 'Close' %}</button>
         <button type="button" class="btn btn-success btn-sm">{% trans 'Select' %}</button>
       </div>
+      -->
+
     </div>
   </div>
 </div>
@@ -686,13 +690,18 @@
             var result = ""
             var count = data.results.length;
             var dist_id = data.results[0]["dist_id"];
-            //result += "<div class='col-12 text-center pb-2'><h5>" + dist_id + "</h5></div>";
+            var dist_th = data.results[0]["dist_th"];
+
+            //result += "<div class='col-12 text-center pb-2'><h5>" + dist_id + " - " + dist_th + "</h5></div>";            
+            result += "<div class='col-12 text-center pb-2'><h5>search</h5></div>";
+
             result += "<table class='table table-hover table-sm'>";
             result += " <thead>";
             result += "   <tr>";
             result += "     <th scope='col'>{% trans 'ID' %}</th>";
             result += "     <th scope='col'>{% trans 'Name' %}</th>";
             result += "     <th scope='col'>{% trans 'City' %}</th>";
+            result += "     <th scope='col'>&nbsp;</th>";
             result += "   </tr>";
             result += " </thead>";
             result += " <tbody>";
@@ -706,34 +715,38 @@
               result += "<td>" + dist_id + "</td>";        
               result += "<td>" + dist_name_th + "</td>";
               result += "<td>" + city_name_th + "</td>";
-              result += "</td>";
+              result += "<td><a href='#' id='cusSiteSaveButton' type='button' class='btn btn-primary btn-xs'>Select</a></td>";
               result += "</tr>";              
             }
             result += " </tbody>";
             result += "</table>";
 
-            /*
-            if(data.is_paginated) {
-              result += "<div>";
-              result += "  <span>";
-              if(data.previous_page>0) {
-                result += "          <a href='?page=" + data.previous_page + "'><i class='fas fa-arrow-circle-left'></i></a>";
-              }
-              result += "      &nbsp;";
-              result += "      <span>";
-              result += "          {% trans 'Page' %} " + data.current_page + "{% trans ' / ' %}" + data.pages;
-              result += "      </span>";
-              result += "      &nbsp;";
-              if(data.next_page>0) {
+            //var instance = JSON.parse(data.paginator);
 
-              }
-              result += "          <a href='?page=" + data.next_page + "'><i class='fas fa-arrow-circle-right'></i></a>";
-              result += "  </span>";
-              result += "</div>";              
-            } else {
-              alert("not found");
+            if(data.is_paginated) {
+              //alert(data.current_page);
+              //alert(data.current_page);
+              //alert(instance);
             }
+
+            /*
+            <div>
+                <span>
+                    {% if current_page.has_previous %}
+                        <a href="?page={{current_page.previous_page_number}}&cusname={{cus_name|default:''}}&cusid={{cus_id|default:'' }}&cusbrn={{cus_brn|default:''}}"><i class="fas fa-arrow-circle-left"></i></a>
+                    {% endif %}
+                    &nbsp;
+                    <span>
+                        {% trans 'Page' %} {{ current_page.number }} {% trans '/' %} {{ current_page.paginator.num_pages }}
+                    </span>
+                    &nbsp;
+                    {% if current_page.has_next %}
+                        <a href="?page={{ current_page.next_page_number }}&cusname={{cus_name|default:''}}&cusid={{cus_id|default:'' }}&cusbrn={{cus_brn|default:'' }}"><i class="fas fa-arrow-circle-right"></i></a>
+                    {% endif %}
+                </span>
+            </div>
             */
+
             
             $("#districtmodal .modal-body").html(result);            
           },
