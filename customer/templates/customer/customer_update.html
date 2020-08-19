@@ -462,7 +462,7 @@
                               <div class="form-group col-md-12">
                                 <div class="input-group-append">
                                   <input type="text" class="form-control form-control-sm" value="{{ customer.cus_district }}" readonly>
-                                  <button id="district_lookup" type="button" class="btn btn-outline-secondary btn-sm" data-toggle="modal" data-url=""><i class="fas fa-search fa-sm"></i></button>                                  
+                                  <button id="district_lookup" type="button" class="btn btn-outline-secondary btn-sm" data-toggle="modal" data-url="{% url 'get_district_list' %}"><i class="fas fa-search fa-sm"></i></button>                                  
                                 </div>                
                               </div>
 
@@ -671,7 +671,6 @@
 {% block javascript %}
 <script>
 
-
   $(document).ready(function(){        
 
     $('#district_lookup').on('click', function (e) {
@@ -785,56 +784,56 @@
     //alert(cus_main_cus_country_en);
 
     $.ajax({
-        url : "/customer/ajax/update_cus_main/",
-        type : "POST",
-        data : {          
-          csrfmiddlewaretoken: '{{ csrf_token }}',
-          cus_id : cus_id,
-          cus_brn : cus_brn,
-          //cus_no : cus_no,
+      url : "/customer/ajax/update_cus_main/",
+      type : "POST",
+      data : {          
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        cus_id : cus_id,
+        cus_brn : cus_brn,
+        //cus_no : cus_no,
 
-          cus_main_cus_active : cus_main_cus_active,
-          cus_main_cus_name_th : cus_main_cus_name_th,
-          cus_main_cus_add1_th : cus_main_cus_add1_th,
-          cus_main_cus_add2_th : cus_main_cus_add2_th,
-          cus_main_cus_subdist_th :  cus_main_cus_subdist_th,
+        cus_main_cus_active : cus_main_cus_active,
+        cus_main_cus_name_th : cus_main_cus_name_th,
+        cus_main_cus_add1_th : cus_main_cus_add1_th,
+        cus_main_cus_add2_th : cus_main_cus_add2_th,
+        cus_main_cus_subdist_th :  cus_main_cus_subdist_th,
 
-          cus_main_cus_name_en : cus_main_cus_name_en,
-          cus_main_cus_add1_en : cus_main_cus_add1_en,
-          cus_main_cus_add2_en : cus_main_cus_add2_en,
-          cus_main_cus_subdist_en :  cus_main_cus_subdist_en,
+        cus_main_cus_name_en : cus_main_cus_name_en,
+        cus_main_cus_add1_en : cus_main_cus_add1_en,
+        cus_main_cus_add2_en : cus_main_cus_add2_en,
+        cus_main_cus_subdist_en :  cus_main_cus_subdist_en,
 
-          cus_main_cus_country_en : cus_main_cus_country_en
-        },
-        success : function(json) {
-          if(json.form_is_valid) {          
-            $(document).Toasts('create', {
-              class: 'bg-success', 
-              title: "{% trans 'Message' %}",
-              subtitle: '',
-              autohide: true,
-              delay: 2000,
-              body: json.result + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
-              autoDismiss: true,
-              close: true,
-              autoremove: true,
-            })
-          }
-          else {            
-            $(document).Toasts('create', {
-              class: 'bg-danger', 
-              title: "{% trans 'Error' %}",
-              subtitle: '',
-              autohide: true,
-              delay: 5000,
-              body: json.message,
-              autoDismiss: true,
-              close: true,
-              autoremove: true,
-              preventDuplicates: true,       
-            })            
-          }
-        },
+        cus_main_cus_country_en : cus_main_cus_country_en
+      },
+      success : function(json) {
+        if(json.form_is_valid) {          
+          $(document).Toasts('create', {
+            class: 'bg-success', 
+            title: "{% trans 'Message' %}",
+            subtitle: '',
+            autohide: true,
+            delay: 2000,
+            body: json.result + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+            autoDismiss: true,
+            close: true,
+            autoremove: true,
+          })
+        }
+        else {            
+          $(document).Toasts('create', {
+            class: 'bg-danger', 
+            title: "{% trans 'Error' %}",
+            subtitle: '',
+            autohide: true,
+            delay: 5000,
+            body: json.message,
+            autoDismiss: true,
+            close: true,
+            autoremove: true,
+            preventDuplicates: true,       
+          })            
+        }
+      },
     });
   };
 
