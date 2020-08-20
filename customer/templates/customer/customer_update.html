@@ -461,7 +461,7 @@
                                 <div class="input-group-append">
                                   <input type="text" id="id_cus_site_cus_district_dist_th" name="cus_site_cus_district_dist_th" class="form-control form-control-sm" value="{{ customer.cus_district }}" readonly>
                                   <button id="district_lookup" type="button" class="btn btn-outline-secondary btn-sm" data-toggle="modal" data-url="{% url 'get_district_list' %}"><i class="fas fa-search fa-sm"></i></button>
-                                  <input type="hidden" id="id_cus_site_select_district_id" name="cus_site_select_district_id">
+                                  <input type="hidden" id="id_cus_site_select_district_id" name="cus_site_select_district_id" value="{{ customer.cus_district_id }}">
                                 </div>
                               </div>
 
