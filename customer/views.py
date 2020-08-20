@@ -348,35 +348,6 @@ def get_district_list(request):
     return JsonResponse(data={"success": False, "results": ""})
 
 
-'''
-class CustomerListView1(PermissionRequiredMixin, generic.ListView):
-    permission_required = ('customer.view_customer')    
-    page_title = settings.PROJECT_NAME
-    db_server = settings.DATABASES['default']['HOST']
-    project_name = settings.PROJECT_NAME
-    project_version = settings.PROJECT_VERSION
-    today_date = settings.TODAY_DATE
-        
-    model = Customer
-    template_name = 'customer/customer_list.html'
-    context_object_name = 'customer_list'
-    paginate_by = 5
-
-    def get_context_data(self, **kwargs):
-        context = super(CustomerListView, self).get_context_data(**kwargs)
-        context.update({
-            'page_title': settings.PROJECT_NAME,
-            'today_date': settings.TODAY_DATE,
-            'project_version': settings.PROJECT_VERSION,
-            'db_server': settings.DATABASES['default']['HOST'],
-            'project_name': settings.PROJECT_NAME,
-        })
-        return context
-
-    def get_queryset(self):
-        return Customer.objects.filter(cus_active__exact=1)
-'''
-
 def save_customer_form(request, form, template_name):
     print("todo : save_customer_form")
     data = dict()
@@ -804,8 +775,7 @@ def update_cus_site(request):
     if request.method == 'POST':
         form = CusSiteForm(request.POST)
         if form.is_valid():
-            select_district_id = request.POST.get('select_district_id')
-            print(select_district_id)
+
             cus_no = request.POST.get('cus_no')
             cus_id = request.POST.get('cus_id')
             cus_brn = request.POST.get('cus_brn')
@@ -826,6 +796,13 @@ def update_cus_site(request):
             # print(str(cus_active) + ", " + str(cus_name_en) + ", " + str(cus_add1_en) + ", " + str(cus_add2_en) + ", " + str(cus_subdist_en))            
 
             customer = get_object_or_404(Customer, pk=cus_no)
+
+            # TODO
+            select_district_id = request.POST.get('select_district_id')
+            district = TDistrict.objects.get(dist_id=select_district_id)
+            old_district_id = customer.cus_district.dist_id
+            customer.cus_district_id = select_district_id
+            #print("old cus_district = " + str(old_district_id) + " | new = " + str(select_district_id))
 
             customer.cus_active = cus_active
             customer.cus_name_th = cus_name_th

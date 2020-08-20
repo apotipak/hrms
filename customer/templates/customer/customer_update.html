@@ -738,7 +738,7 @@
 
 
   $("#cusMainSaveButton").click( function() {
-    event.preventDefault();    
+    event.preventDefault();
     update_cus_main();
   });
 
@@ -748,11 +748,11 @@
   });
 
   function select_distict(dist_id, dist_name_th, city_name_th) {    
-    // TODO    
+    // TODO
     $("#id_cus_site_cus_district_dist_th").val(dist_name_th);
     $("#id_cus_site_select_district_id").val(dist_id);
     $("#districtmodal").modal("hide");
-    //alert($("#id_cus_site_cus_district_dist_th").val());
+    
   }
 
   function get_district_lookup(page_no) {
@@ -792,7 +792,8 @@
             result += "<td>" + dist_id + "</td>";        
             result += "<td>" + dist_name_th + "</td>";
             result += "<td>" + city_name_th + "</td>";
-            result += "<td><a href='javascript:select_distict(" + dist_id + ");' type='button' class='btn btn-primary btn-xs'>Select</a></td>";
+            //result += "<td><a href='javascript:select_distict(" + dist_id + ");' type='button' class='btn btn-primary btn-xs'>Select</a></td>";
+            result += "<td><a href='javascript:select_distict(" + dist_id + ",\"" + dist_name_th + "\",\"" + city_name_th + "\");' type='button' class='btn btn-primary btn-xs'>Select</a></td>";
             result += "</tr>";              
           }
           result += " </tbody>";
