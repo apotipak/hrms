@@ -712,8 +712,8 @@
               result += "<td>" + dist_id + "</td>";        
               result += "<td>" + dist_name_th + "</td>";
               result += "<td>" + city_name_th + "</td>";
-              //result += "<td><a href='#' id='cusSiteSelectDistrictButton' type='button' class='btn btn-primary btn-xs'>Select</a></td>";
-              result += "<td><a href='javascript:select_distict(" + dist_id + ");' type='button' class='btn btn-primary btn-xs'>Select</a></td>";
+              result += "<td><a href='javascript:select_distict(" + dist_id + ",\"" + dist_name_th + "\",\"" + city_name_th + "\");' type='button' class='btn btn-primary btn-xs'>Select</a></td>";
+
               result += "</tr>";              
             }
             result += " </tbody>";
@@ -748,8 +748,12 @@
     update_cus_site();
   });
 
-  function select_distict(dist_id) {
+  function select_distict(dist_id, dist_name_th, city_name_th) {    
+  //function select_distict(name) {    
+    //alert(name);
     alert(dist_id);
+    alert(dist_name_th);
+    alert(city_name_th);
   }
 
   function get_district_lookup(page_no) {
