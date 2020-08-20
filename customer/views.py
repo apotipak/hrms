@@ -17,6 +17,7 @@ from django.db.models import Q
 from system.models import TDistrict
 from django.core import serializers
 import json
+import urllib
 
 
 @permission_required('customer.view_customer', login_url='/accounts/login/')
@@ -193,10 +194,29 @@ def CustomerList(request):
 
 @login_required(login_url='/accounts/login/')
 def get_district_list_modal(request):    
-    item_per_page = 10
+    item_per_page = 8
     page_no = request.GET["page_no"]
+    #city_name = request.GET["city_name"].encode('utf-8')
+    city_name = request.GET["city_name"].encode("UTF-8")
+    print("GET_DISTRICT_LIST_MODAL: city_name = ")
+    print(city_name)
     
-    data = TDistrict.objects.raw("select d.dist_id,d.dist_th,d.dist_en,c.city_id,c.city_th,c.city_en from t_district d join t_city c on d.city_id = c.city_id order by c.city_th") or None    
+    # city_name = 'จันทบุรี'
+
+    if city_name != '':
+        # data = TDistrict.objects.raw("select d.dist_id,d.dist_th,d.dist_en,c.city_id,c.city_th,c.city_en from t_district d join t_city c on d.city_id = c.city_id where c.city_en = %s", [city_name]) or None
+        data = TDistrict.objects.raw("select d.dist_id,d.dist_th,d.dist_en,c.city_id,c.city_th,c.city_en from t_district d join t_city c on d.city_id = c.city_id order by c.city_th") or None
+    else:
+        data = TDistrict.objects.raw("select d.dist_id,d.dist_th,d.dist_en,c.city_id,c.city_th,c.city_en from t_district d join t_city c on d.city_id = c.city_id order by c.city_th") or None
+
+
+    '''
+    if city_name:
+        data = TDistrict.objects.raw("select d.dist_id,d.dist_th,d.dist_en,c.city_id,c.city_th,c.city_en from t_district d join t_city c on d.city_id = c.city_id where c.city_name like '%'" + city_name + "'" + " order by c.city_th") or None
+    else:
+        data = TDistrict.objects.raw("select d.dist_id,d.dist_th,d.dist_en,c.city_id,c.city_th,c.city_en from t_district d join t_city c on d.city_id = c.city_id order by c.city_th") or None
+    '''
+
     page = int(page_no)
 
     next_page = page + 1
@@ -272,7 +292,7 @@ def get_district_list_modal(request):
 
 @login_required(login_url='/accounts/login/')
 def get_district_list(request):        
-    item_per_page = 10
+    item_per_page = 8
 
     if request.method == "POST":
         print("method post")
