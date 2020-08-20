@@ -376,6 +376,8 @@ class CusMainForm(forms.ModelForm):
 
 
 class CusSiteForm(forms.ModelForm):    
+    #select_dist_id = forms.CharField(widget=forms.HiddenInput(), required=False)
+
     class Meta:
         model = Customer
         fields = '__all__'

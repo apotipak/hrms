@@ -198,7 +198,7 @@ def get_district_list_modal(request):
     
     data = TDistrict.objects.raw("select d.dist_id,d.dist_th,d.dist_en,c.city_id,c.city_th,c.city_en from t_district d join t_city c on d.city_id = c.city_id order by c.city_th") or None    
     page = int(page_no)
-    
+
     next_page = page + 1
     if page >= 1:
         previous_page = page - 1
@@ -348,9 +348,7 @@ def get_district_list(request):
     return JsonResponse(data={"success": False, "results": ""})
 
 
-
-
-
+'''
 class CustomerListView1(PermissionRequiredMixin, generic.ListView):
     permission_required = ('customer.view_customer')    
     page_title = settings.PROJECT_NAME
@@ -377,9 +375,10 @@ class CustomerListView1(PermissionRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         return Customer.objects.filter(cus_active__exact=1)
-
+'''
 
 def save_customer_form(request, form, template_name):
+    print("todo : save_customer_form")
     data = dict()
     if request.method == 'POST':
         #form = CustomerCreateForm(request.POST)
@@ -795,13 +794,18 @@ def update_cus_main(request):
 
 
 @login_required(login_url='/accounts/login/')
-def update_cus_site(request):    
+def update_cus_site(request):
+    
+    print("todo: update_cus_site")
+
     template_name = 'customer/customer_update.html'    
     response_data = {}
 
     if request.method == 'POST':
         form = CusSiteForm(request.POST)
         if form.is_valid():
+            select_district_id = request.POST.get('select_district_id')
+            print(select_district_id)
             cus_no = request.POST.get('cus_no')
             cus_id = request.POST.get('cus_id')
             cus_brn = request.POST.get('cus_brn')
