@@ -691,9 +691,7 @@
             var dist_id = data.results[0]["dist_id"];
             var dist_th = data.results[0]["dist_th"];
 
-            //result += "<div class='col-12 text-center pb-2'><h5>" + dist_id + " - " + dist_th + "</h5></div>";            
             result += "<div class='col-12 text-center pb-2'><h5>search</h5></div>";
-
             result += "<table class='table table-hover table-sm'>";
             result += " <thead>";
             result += "   <tr>";
@@ -714,17 +712,14 @@
               result += "<td>" + dist_id + "</td>";        
               result += "<td>" + dist_name_th + "</td>";
               result += "<td>" + city_name_th + "</td>";
-              result += "<td><a href='#' id='cusSiteSelectDistrictButton' type='button' class='btn btn-primary btn-xs'>Select</a></td>";
+              //result += "<td><a href='#' id='cusSiteSelectDistrictButton' type='button' class='btn btn-primary btn-xs'>Select</a></td>";
+              result += "<td><a href='javascript:select_distict(" + dist_id + ");' type='button' class='btn btn-primary btn-xs'>Select</a></td>";
               result += "</tr>";              
             }
             result += " </tbody>";
             result += "</table>";
 
-            //var instance = JSON.parse(data.paginator);
-
             if(data.is_paginated) {
-              //alert(data.current_page + " | " + data.current_page_number + " | " + data.current_page_paginator_num_pages);
-
               result += "<div>";
               result += "  <span>";
               result += data.current_page_number + " / " + data.current_page_paginator_num_pages;
@@ -753,10 +748,11 @@
     update_cus_site();
   });
 
-  function get_district_lookup(page_no) {
-    //{% url 'get_district_list_modal' %}
-    //$("#districtmodal .modal-body").html("loading page " + page);
+  function select_distict(dist_id) {
+    alert(dist_id);
+  }
 
+  function get_district_lookup(page_no) {
     $.ajax({
         url : "/customer/ajax/get_district_list_modal",
         type: 'get',   
@@ -793,7 +789,7 @@
             result += "<td>" + dist_id + "</td>";        
             result += "<td>" + dist_name_th + "</td>";
             result += "<td>" + city_name_th + "</td>";
-            result += "<td><a href='#' id='cusSiteSelectDistrictButton' type='button' class='btn btn-primary btn-xs'>Select</a></td>";
+            result += "<td><a href='javascript:select_distict(" + dist_id + ");' type='button' class='btn btn-primary btn-xs'>Select</a></td>";
             result += "</tr>";              
           }
           result += " </tbody>";
