@@ -14,10 +14,10 @@ from django.template.loader import render_to_string
 from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
-from system.models import TDistrict
+from system.models import TDistrict, TCity
 from django.core import serializers
 import json
-import urllib
+import sys, locale
 
 
 @permission_required('customer.view_customer', login_url='/accounts/login/')
@@ -193,18 +193,29 @@ def CustomerList(request):
 
 
 @login_required(login_url='/accounts/login/')
-def get_district_list_modal(request):    
+def get_district_list_modal(request):
+
+    '''
+    queryset = TDistrict.objects.select_related('tcity').all()
+    districts = []
+    for district in queryset:
+        district.append({'dist_id': district.dist_id})
+    '''
+
+    queryset = CusMain.objects.select_related('cus_city').all()
+    cusmain = []
+    for cus in queryset:
+        cusmain.append({'cus_id': cus.cus_id})
+
     item_per_page = 8
     page_no = request.GET["page_no"]
-    #city_name = request.GET["city_name"].encode('utf-8')
-    city_name = request.GET["city_name"].encode("UTF-8")
+    city_name = request.GET["city_name"]
     print("GET_DISTRICT_LIST_MODAL: city_name = ")
     print(city_name)
     
     # city_name = 'จันทบุรี'
-
     if city_name != '':
-        # data = TDistrict.objects.raw("select d.dist_id,d.dist_th,d.dist_en,c.city_id,c.city_th,c.city_en from t_district d join t_city c on d.city_id = c.city_id where c.city_en = %s", [city_name]) or None
+        #data = TDistrict.objects.raw("select d.dist_id,d.dist_th,d.dist_en,c.city_id,c.city_th,c.city_en from t_district d join t_city c on d.city_id = c.city_id where c.city_en = %s", [u'bangkok']) or None
         data = TDistrict.objects.raw("select d.dist_id,d.dist_th,d.dist_en,c.city_id,c.city_th,c.city_en from t_district d join t_city c on d.city_id = c.city_id order by c.city_th") or None
     else:
         data = TDistrict.objects.raw("select d.dist_id,d.dist_th,d.dist_en,c.city_id,c.city_th,c.city_en from t_district d join t_city c on d.city_id = c.city_id order by c.city_th") or None

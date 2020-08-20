@@ -54,6 +54,23 @@ class TDistrict(models.Model):
         return self.dist_th
 
 
+class TCity(models.Model):
+    city_id = models.DecimalField(primary_key=True, max_digits=2, decimal_places=0)
+    country_id = models.SmallIntegerField(blank=True, null=True)
+    city_th = models.CharField(max_length=30, blank=True, null=True)
+    city_en = models.CharField(max_length=30, blank=True, null=True)
+    upd_date = models.DateTimeField(blank=True, null=True)
+    upd_by = models.CharField(max_length=10, blank=True, null=True)
+    upd_flag = models.CharField(max_length=1, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'T_CITY'
+
+    def __str__(self):
+        return '%s' % (self.city_th)
+
+
 class TAprove(models.Model):
     apr_id = models.DecimalField(primary_key=True, max_digits=6, decimal_places=0)
     apr_title = models.ForeignKey(TTitle, db_column='apr_title', to_field='title_id', on_delete=models.SET_NULL, null=True) 
@@ -178,22 +195,6 @@ class CusContact(models.Model):
     def __str__(self):
         return '%s %s %s' % (self.con_title, self.con_fname_th, self.con_lname_th)
 
-
-class TCity(models.Model):
-    city_id = models.DecimalField(primary_key=True, max_digits=2, decimal_places=0)
-    country_id = models.SmallIntegerField(blank=True, null=True)
-    city_th = models.CharField(max_length=30, blank=True, null=True)
-    city_en = models.CharField(max_length=30, blank=True, null=True)
-    upd_date = models.DateTimeField(blank=True, null=True)
-    upd_by = models.CharField(max_length=10, blank=True, null=True)
-    upd_flag = models.CharField(max_length=1, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'T_CITY'
-
-    def __str__(self):
-        return '%s' % (self.city_th)
 
 class TCountry(models.Model):
     country_id = models.SmallIntegerField(primary_key=True)
