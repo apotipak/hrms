@@ -192,17 +192,86 @@ def CustomerList(request):
 
 
 @login_required(login_url='/accounts/login/')
-def get_district_list_modal(request):        
+def get_district_list_modal(request):    
+    item_per_page = 10
+    page_no = request.GET["page_no"]
+    
+    data = TDistrict.objects.raw("select d.dist_id,d.dist_th,d.dist_en,c.city_id,c.city_th,c.city_en from t_district d join t_city c on d.city_id = c.city_id order by c.city_th") or None    
+    page = int(page_no)
+    next_page = page + 1
+    if page >= 1:
+        previous_page = page - 1
+    else:
+        previous_page = 0
+    paginator = Paginator(data, item_per_page)
+    is_paginated = True if paginator.num_pages > 1 else False        
+
+    try:
+        current_page = paginator.get_page(page)
+    except InvalidPage as e:
+        raise Http404(str(e))
+
+    if current_page:
+        print("current_page = " + str(current_page))
+        print("current_page.number = " + str(current_page.number))        
+        print("current_page.paginator.num_pages = " + str(current_page.paginator.num_pages))
+        
+        print("current_page.has_next = " + str(current_page.has_next))
+        print("current_page.has_previous = " + str(current_page.has_previous))
+    
+        current_page_number = current_page.number
+        current_page_paginator_num_pages = current_page.paginator.num_pages
+
+        pickup_dict = {}
+        pickup_records=[]
+        
+        for d in current_page:
+            print("debug 1")
+            record = {
+                "dist_id": d.dist_id, 
+                "city_id": d.city_id,
+                "dist_th": d.dist_th,
+                "dist_en": d.dist_en,
+                "city_th": d.city_th
+            }
+            pickup_records.append(record)
+
+        # serialized_qs = serializers.serialize('json', current_page)
+        # print(serialized_qs);        
+        # pages = current_page.paginator.num_pages
+        # current_page = 1
+
+        response = JsonResponse(data={
+            "success": True,
+            "is_paginated": is_paginated,
+            "page" : page,
+            "next_page" : next_page,
+            "previous_page" : previous_page,
+            "current_page_number" : current_page_number,
+            "current_page_paginator_num_pages" : current_page_paginator_num_pages,
+            "results": list(pickup_records)         
+            })
+        response.status_code = 200
+        return response
+    else:
+        response = JsonResponse({"error": "there was an error"})
+        response.status_code = 403
+        return response
+
+    return JsonResponse(data={"success": False, "results": ""})
+
+    '''
     response = JsonResponse(data={
         "test" : "test"
     })
+
     response.status_code = 200
     return response
+    '''
 
 @login_required(login_url='/accounts/login/')
 def get_district_list(request):        
-    # data = TDistrict.objects.all() or None    
-    item_per_page = 8
+    item_per_page = 10
 
     if request.method == "POST":
         print("method post")
@@ -254,9 +323,8 @@ def get_district_list(request):
             }
             pickup_records.append(record)
 
-        serialized_qs = serializers.serialize('json', current_page)
+        # serialized_qs = serializers.serialize('json', current_page)
         #print(serialized_qs);
-        
         # pages = current_page.paginator.num_pages
         # current_page = 1
 
