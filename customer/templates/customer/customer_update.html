@@ -806,7 +806,7 @@
 
             result += "<div>";
             result += "  <span>";
-            if(data.previous_page > 1) {
+            if(data.previous_page != 0) {
               result += " <a href='javascript:get_district_lookup(" + data.previous_page + ");'>" + "<i class='fas fa-arrow-circle-left'></i></a> ";
             }
             result += data.current_page_number + " / " + data.current_page_paginator_num_pages;

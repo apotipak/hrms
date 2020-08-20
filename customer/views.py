@@ -198,6 +198,7 @@ def get_district_list_modal(request):
     
     data = TDistrict.objects.raw("select d.dist_id,d.dist_th,d.dist_en,c.city_id,c.city_th,c.city_en from t_district d join t_city c on d.city_id = c.city_id order by c.city_th") or None    
     page = int(page_no)
+    
     next_page = page + 1
     if page >= 1:
         previous_page = page - 1
