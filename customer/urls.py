@@ -17,6 +17,7 @@ urlpatterns += [
 
 urlpatterns += [    
   url(r'^ajax/get_district_list/$', views.get_district_list, name='get_district_list'),
+  url(r'^ajax/get_district_list_modal/$', views.get_district_list_modal, name='get_district_list_modal'),
 ]
 
 urlpatterns += [

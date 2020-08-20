@@ -91,7 +91,7 @@ def CustomerList(request):
         is_paginated = True if paginator.num_pages > 1 else False        
 
         try:
-            current_page = paginator.get_page(page)
+            current_page = paginator.get_page(page)            
         except InvalidPage as e:
             raise Http404(str(e))        
     else:
@@ -163,6 +163,12 @@ def CustomerList(request):
 
         try:
             current_page = paginator.get_page(page)
+            print("current_page = " + str(current_page))
+            print("current_page.number = " + str(current_page.number))        
+            print("current_page.paginator.num_pages = " + str(current_page.paginator.num_pages))
+            
+            print("current_page.has_next = " + str(current_page.has_next))
+            print("current_page.has_previous = " + str(current_page.has_previous))            
         except InvalidPage as e:
             raise Http404(str(e))
 
@@ -185,6 +191,13 @@ def CustomerList(request):
     return render(request, 'customer/customer_list.html', context)
 
 
+@login_required(login_url='/accounts/login/')
+def get_district_list_modal(request):        
+    response = JsonResponse(data={
+        "test" : "test"
+    })
+    response.status_code = 200
+    return response
 
 @login_required(login_url='/accounts/login/')
 def get_district_list(request):        
@@ -209,7 +222,7 @@ def get_district_list(request):
         data = TDistrict.objects.raw("select d.dist_id,d.dist_th,d.dist_en,c.city_id,c.city_th,c.city_en from t_district d join t_city c on d.city_id = c.city_id order by c.city_th") or None
         paginator = Paginator(data, item_per_page)
         is_paginated = True if paginator.num_pages > 1 else False
-        page = request.GET.get('page', '1') or 1
+        page = request.GET.get('page', 1) or 1
         try:
             current_page = paginator.get_page(page)
         except InvalidPage as e:
@@ -217,6 +230,16 @@ def get_district_list(request):
 
     #if data:
     if current_page:
+        print("current_page = " + str(current_page))
+        print("current_page.number = " + str(current_page.number))        
+        print("current_page.paginator.num_pages = " + str(current_page.paginator.num_pages))
+        
+        print("current_page.has_next = " + str(current_page.has_next))
+        print("current_page.has_previous = " + str(current_page.has_previous))
+    
+        current_page_number = current_page.number
+        current_page_paginator_num_pages = current_page.paginator.num_pages
+
         pickup_dict = {}
         pickup_records=[]
         
@@ -234,18 +257,20 @@ def get_district_list(request):
         serialized_qs = serializers.serialize('json', current_page)
         #print(serialized_qs);
         
-        pages = current_page.paginator.num_pages
-        current_page = 1
+        # pages = current_page.paginator.num_pages
+        # current_page = 1
 
         response = JsonResponse(data={
             "success": True,
-            "current_page": current_page,
             "is_paginated": is_paginated,
+            "page" : page,
+            "next_page" : page + 1,
+            "current_page_number" : current_page_number,
+            "current_page_paginator_num_pages" : current_page_paginator_num_pages,
             "results": list(pickup_records)         
             })
         response.status_code = 200
         return response
-
     else:
         response = JsonResponse({"error": "there was an error"})
         response.status_code = 403
