@@ -307,7 +307,8 @@ def get_district_list(request):
 
     if request.method == "POST":
         print("method post")
-        data = TDistrict.objects.raw("select d.dist_id,d.dist_th,d.dist_en,c.city_id,c.city_th,c.city_en from t_district d join t_city c on d.city_id = c.city_id order by c.city_th") or None
+        data = TDistrict.objects.raw("select d.dist_id,d.dist_th,d.dist_en,c.city_id,c.city_th,c.city_en \
+            from t_district d join t_city c on d.city_id = c.city_id order by c.city_th") or None
 
         page = 1
         paginator = Paginator(data, item_per_page)
@@ -320,7 +321,13 @@ def get_district_list(request):
 
     else:
         print("method get")
-        data = TDistrict.objects.raw("select d.dist_id,d.dist_th,d.dist_en,c.city_id,c.city_th,c.city_en from t_district d join t_city c on d.city_id = c.city_id order by c.city_th") or None
+        data = TDistrict.objects.raw("select d.dist_id as dist_id, d.dist_th as dist_th, d.dist_en as dist_en, c.city_id as city_id, c.city_th as city_th, c.city_en as city_en \
+            from t_district d join \
+            t_city c on d.city_id = c.city_id order by c.city_th") or None
+
+        #data = TDistrict.objects.raw("select * from t_district")
+        data = TDistrict.objects.select_related('city_id')
+
         paginator = Paginator(data, item_per_page)
         is_paginated = True if paginator.num_pages > 1 else False
         page = request.GET.get('page', 1) or 1
@@ -347,11 +354,11 @@ def get_district_list(request):
         for d in current_page:
             print("debug 1")
             record = {
-                "dist_id": d.dist_id, 
-                "city_id": d.city_id,
-                "dist_th": d.dist_th,
-                "dist_en": d.dist_en,
-                "city_th": d.city_th
+                "dist_id": d.dist_id, #d.dist_id, 
+                "city_id": d.city_id_id, #d.city_id,
+                "dist_th": d.dist_th, #d.dist_th,
+                "dist_en": d.dist_en, #d.dist_en,
+                "city_th": d.city_id.city_th, #d.city_th
             }
             pickup_records.append(record)
 

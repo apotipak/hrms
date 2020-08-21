@@ -50,14 +50,14 @@ class TCity(models.Model):
         db_table = 'T_CITY'
 
     def __str__(self):
-        return '%s' % (self.city_th)
+        return self.city_th
 
 
 class TDistrict(models.Model):
     dist_id = models.DecimalField(primary_key=True, max_digits=4, decimal_places=0)
     
-    city_id = models.DecimalField(max_digits=2, decimal_places=0, blank=True, null=True)
-    #city_id = models.ForeignKey(TCity, related_name='tdistrict_tcity', db_column='city_id', to_field='city_id', on_delete=models.SET_NULL, null=True)
+    # city_id = models.DecimalField(max_digits=2, decimal_places=0, blank=True, null=True)
+    city_id = models.ForeignKey(TCity, related_name='tdistrict_tcity', db_column='city_id', to_field='city_id', on_delete=models.SET_NULL, null=True)
 
     dist_th = models.CharField(max_length=30, blank=True, null=True)
     dist_en = models.CharField(max_length=30, blank=True, null=True)
