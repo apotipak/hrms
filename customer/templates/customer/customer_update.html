@@ -824,7 +824,34 @@
           $("#districtmodal .modal-body").html(result);          
         },
         error: function(data){
-          $("#districtmodal .modal-body").html("error");
+          result = "";
+          result += "<div class='row'>";
+          result += "<div class='col-md-6 offset-md-3 pb-2'>";
+          result += "<form id='cus_site_search_district_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
+          result += "  <div class='form-group mx-sm-3 mb-2'>";
+          result += "    <label for='id_cus_site_search_district' class='sr-only'>Search</label>";
+          result += "    <input type='text' class='form-control' id='id_cus_site_search_district_by_city_name' name='id_cus_site_search_district_by_city_name' placeholder='Enter a city name'>";
+          result += "  </div>";
+          result += "<a href='javascript:cus_site_search_district_modal()' type='button' class='btn btn-primary mb-2'>Search</a>";            
+          result += "</form>";
+          result += "</div>";
+
+          result += "<table class='table table-hover table-sm'>";
+          result += " <thead>";
+          result += "   <tr>";
+          result += "     <th scope='col' >{% trans 'ID' %}</th>";
+          result += "     <th scope='col'>{% trans 'Name' %}</th>";
+          result += "     <th scope='col'>{% trans 'City' %}</th>";
+          result += "     <th scope='col'>&nbsp;</th>";
+          result += "   </tr>";
+          result += " </thead>";
+          result += " <tbody>";
+          result += "   <tr>";
+          result += "     <td colspan='4' class='text-center'><br>Not found.<br><br></td>";
+          result += "   </tr>";            
+          result += " </tbody>";
+          result += "</table>";
+          $("#districtmodal .modal-body").html(result);
         }          
     });
 
