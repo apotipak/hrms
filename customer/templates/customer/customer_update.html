@@ -284,7 +284,6 @@
             </form>
 
 
-            {% comment %}
             <!-- Others - Zip, Phone, Fax, Email, Zone, Group, Business Type, etc. -->
             <div class="row">
               <div class="col-md-12">
@@ -337,7 +336,9 @@
                 </div>
               </div>
             </div>
-            {% endcomment %}
+
+
+
 
             {% comment %}
             <!-- Contact Person -->
@@ -419,6 +420,8 @@
 
                 <!-- Site Tab Thai -->
                 <div class="col-md-6">
+
+
                   <div class="card card-info">
                     <div class="card-header">
                       <h3 class="card-title">TH</h3>
@@ -484,6 +487,14 @@
 
                     </div>
                   </div>
+
+
+
+
+
+
+
+
                 </div>
                 <!-- Site Tab Thai End -->
 
@@ -545,15 +556,77 @@
                     </div>
                   </div>
 
-                  <div class="float-right">
-                    <a href="#" id="cusSiteSaveButton" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
-                  </div>
 
                 </div>
                 <!-- Site Tab English -->
 
               </div>
+
+
+
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card card-info">
+                  <div class="card-body"> 
+                    <div class="form-row">
+                      <div class="form-group col-md-2">
+                        <label for="cus_main_cus_zip">{% trans 'Zip' %}</label>
+                        {% if cus_main_form.cus_zip.errors %}                
+                          {% render_field cus_main_form.cus_zip class="form-control form-control-sm is-invalid" %}
+                          {% for error in cus_main_form.cus_zip.errors %}
+                          <div class="invalid-feedback">
+                            {{error}}
+                          </div>
+                          {% endfor %}                
+                        {% else %}
+                          {% render_field cus_main_form.cus_zip class="form-control form-control-sm" %}
+                        {% endif %} 
+                      </div>
+                      <div class="form-group col-md-2">
+                        <label for="cus_tel">{% trans 'Phone' %}</label>
+                        <input type="text" class="form-control form-control-sm" id="id_cus_tel" name="cus_tel" value="{{ cus_main.cus_tel }}">
+                      </div>
+                      <div class="form-group col-md-4">
+                        <label for="cus_main_cus_fax">{% trans 'Fax' %}</label>
+                        <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_fax" name="cus_main_cus_fax" value="{{ cus_main.cus_fax }}">
+                      </div>
+                      <div class="form-group col-md-4">
+                        <label for="cus_main_cus_email">{% trans 'Email' %}</label>
+                        <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_email" name="cus_main_cus_email" value="{{ cus_main.cus_email }}">
+                      </div>    
+                    </div>
+
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="cus_main_cus_zone">{% trans 'Zone' %}</label>
+                        {% if cus_main_form.cus_zone.errors %}                
+                          {% render_field cus_main_form.cus_zone class="form-control col-sm-12 form-control-sm is-invalid" %}
+                          {% for error in cus_main_form.cus_zone.errors %}
+                          <div class="invalid-feedback">
+                            {{error}}
+                          </div>
+                          {% endfor %}                
+                        {% else %}
+                          {% render_field cus_main_form.cus_zone class="form-control col-sm-12 form-control-sm" %}
+                        {% endif %}      
+                      </div>
+                    </div>                    
+                  </div>
+                </div>
+              </div>
             </div>
+            
+
+            </div>
+
+
+
+
+                  <div class="float-right">
+                    <a href="#" id="cusSiteSaveButton" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
+                  </div>
+
             </form>
 
           </div>
