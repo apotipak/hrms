@@ -785,7 +785,9 @@ def update_cus_main(request):
 @login_required(login_url='/accounts/login/')
 def update_cus_site(request):
     
-    print("todo: update_cus_site")
+    print("*************************")
+    print("FUNCTION: update_cus_site")
+    print("*************************")
 
     template_name = 'customer/customer_update.html'    
     response_data = {}
@@ -809,18 +811,18 @@ def update_cus_site(request):
             cus_add2_en = request.POST.get('cus_site_cus_add2_en')
             cus_subdist_en = request.POST.get('cus_site_cus_subdist_en')
 
-            # print(str(cus_no) + ", " + str(cus_id) + ", " + str(cus_brn))
-            # print(str(cus_active) + ", " + str(cus_name_th) + ", " + str(cus_add1_th) + ", " + str(cus_add2_th) + ", " + str(cus_subdist_th))
-            # print(str(cus_active) + ", " + str(cus_name_en) + ", " + str(cus_add1_en) + ", " + str(cus_add2_en) + ", " + str(cus_subdist_en))            
-
             customer = get_object_or_404(Customer, pk=cus_no)
 
-            # TODO
-            select_district_id = request.POST.get('select_district_id')
-            district = TDistrict.objects.get(dist_id=select_district_id)
-            old_district_id = customer.cus_district.dist_id
-            customer.cus_district_id = select_district_id
-            #print("old cus_district = " + str(old_district_id) + " | new = " + str(select_district_id))
+            select_district_id = request.POST.get('select_district_id')            
+            district_obj = TDistrict.objects.get(dist_id=select_district_id)
+            if district_obj:
+                city_id = district_obj.city_id
+                old_district_id = customer.cus_district.dist_id
+                customer.cus_district_id = select_district_id
+                customer.cus_city = district_obj.city_id
+                
+                # TODO
+                #print(district_obj.tcity.city_th)                
 
             customer.cus_active = cus_active
             customer.cus_name_th = cus_name_th
