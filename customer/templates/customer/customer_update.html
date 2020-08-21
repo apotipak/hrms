@@ -466,13 +466,6 @@
                           </div>
                         </div>
 
-
-
-
-
-
-
-
                         <div class="input-group">
                           <label for="id_cus_city" class="col-sm-4 col-form-label form-control-sm">{% trans 'City' %}</label>
                           <div class="col-sm-8">                            
@@ -486,29 +479,6 @@
                             <input type="text" id="id_cus_site_cus_country" name="cus_site_cus_country" class="form-control form-control-sm" value="{{ customer.cus_country }}" readonly>
                           </div>
                         </div>
-
-
-
-
-
-
-
-
-                        {% comment %}
-                        <div class="input-group">
-                          <label for="id_cus_city" class="col-sm-4 col-form-label form-control-sm">{% trans 'City' %}</label>
-                          <div class="col-sm-8">
-                            {% render_field form.cus_city_th_text class="form-control form-control-sm" %}
-                          </div>
-                        </div>
-
-                        <div class="input-group">
-                          <label for="id_cus_country" class="col-sm-4 col-form-label form-control-sm">{% trans 'Country' %}</label>
-                          <div class="col-sm-8">                        
-                            {% render_field form.cus_country_th_text class="form-control form-control-sm" %}
-                          </div>
-                        </div>
-                        {% endcomment %}
 
                       </div>
 
@@ -739,7 +709,7 @@
               result += "<td>" + dist_id + "</td>";        
               result += "<td>" + dist_name_th + "</td>";
               result += "<td>" + city_name_th + "</td>";
-              result += "<td><a href='javascript:select_distict(" + dist_id + ",\"" + dist_name_th + "\",\"" + city_name_th + "\");' type='button' class='btn btn-primary btn-xs'>Select</a></td>";
+              result += "<td><a href='javascript:select_district(" + dist_id + ",\"" + dist_name_th + "\",\"" + city_name_th + "\");' type='button' class='btn btn-primary btn-xs'>Select</a></td>";
 
               result += "</tr>";              
             }
@@ -825,8 +795,8 @@
             result += "<td>" + dist_id + "</td>";        
             result += "<td>" + dist_name_th + "</td>";
             result += "<td>" + city_name_th + "</td>";
-            //result += "<td><a href='javascript:select_distict(" + dist_id + ");' type='button' class='btn btn-primary btn-xs'>Select</a></td>";
-            result += "<td><a href='javascript:select_distict(" + dist_id + ",\"" + dist_name_th + "\",\"" + city_name_th + "\");' type='button' class='btn btn-primary btn-xs'>Select</a></td>";
+            //result += "<td><a href='javascript:select_district(" + dist_id + ");' type='button' class='btn btn-primary btn-xs'>Select</a></td>";
+            result += "<td><a href='javascript:select_district(" + dist_id + ",\"" + dist_name_th + "\",\"" + city_name_th + "\");' type='button' class='btn btn-primary btn-xs'>Select</a></td>";
             result += "</tr>";              
           }
           result += " </tbody>";
@@ -858,9 +828,12 @@
 
   }
 
-  function select_distict(dist_id, dist_name_th, city_name_th) {    
+  function select_district(dist_id, dist_name_th, city_name_th) {    
+    
     $("#id_cus_site_cus_district_dist_th").val(dist_name_th);
     $("#id_cus_site_select_district_id").val(dist_id);
+    $("#id_cus_site_cus_city").val(city_name_th);
+
     $("#districtmodal").modal("hide");    
   }
 
@@ -917,8 +890,8 @@
             result += "<td>" + dist_id + "</td>";        
             result += "<td>" + dist_name_th + "</td>";
             result += "<td>" + city_name_th + "</td>";
-            //result += "<td><a href='javascript:select_distict(" + dist_id + ");' type='button' class='btn btn-primary btn-xs'>Select</a></td>";
-            result += "<td><a href='javascript:select_distict(" + dist_id + ",\"" + dist_name_th + "\",\"" + city_name_th + "\");' type='button' class='btn btn-primary btn-xs'>Select</a></td>";
+            //result += "<td><a href='javascript:select_district(" + dist_id + ");' type='button' class='btn btn-primary btn-xs'>Select</a></td>";
+            result += "<td><a href='javascript:select_district(" + dist_id + ",\"" + dist_name_th + "\",\"" + city_name_th + "\");' type='button' class='btn btn-primary btn-xs'>Select</a></td>";
             result += "</tr>";              
           }
           result += " </tbody>";

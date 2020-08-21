@@ -816,13 +816,16 @@ def update_cus_site(request):
             select_district_id = request.POST.get('select_district_id')            
             district_obj = TDistrict.objects.get(dist_id=select_district_id)
             if district_obj:
-                city_id = district_obj.city_id
+                city_id = district_obj.city_id_id
+                # print("city_id = " + str(city_id))
                 old_district_id = customer.cus_district.dist_id
                 customer.cus_district_id = select_district_id
                 customer.cus_city = district_obj.city_id
                 
                 # TODO
-                #print(district_obj.tcity.city_th)                
+                city_obj = TCity.objects.get(city_id=city_id)                
+                # print(city_obj.country_id)
+                customer.cus_country = city_obj.country_id
 
             customer.cus_active = cus_active
             customer.cus_name_th = cus_name_th
