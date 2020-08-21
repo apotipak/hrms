@@ -244,6 +244,7 @@ def get_district_list_modal(request):
                 "dist_th": d.dist_th,
                 "dist_en": d.dist_en,
                 "city_th": d.city_id.city_th,
+                "city_en": d.city_id.city_en,
             }
             pickup_records.append(record)
 
@@ -339,6 +340,7 @@ def get_district_list(request):
                 "dist_th": d.dist_th,
                 "dist_en": d.dist_en,
                 "city_th": d.city_id.city_th,
+                "city_en": d.city_id.city_en,
             }
             pickup_records.append(record)
 

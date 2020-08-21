@@ -458,7 +458,7 @@
                               <div class="col-12 input-group">
                                 <input type="text" id="id_cus_site_cus_district_dist_th" name="cus_site_cus_district_dist_th" class="form-control form-control-sm" value="{{ customer.cus_district }}" readonly>
                                 
-                                <button id="district_lookup" type="button" class="btn btn-outline-secondary btn-sm" data-toggle="modal" data-url="{% url 'get_district_list' %}"><i class="fas fa-search fa-sm"></i></button>
+                                <button id="district_lookup" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url="{% url 'get_district_list' %}"><i class="fas fa-search fa-sm"></i></button>
 
                                 <input type="hidden" id="id_cus_site_select_district_id" name="cus_site_select_district_id" value="{{ customer.cus_district_id }}">
                               </div>
@@ -676,7 +676,9 @@
             var dist_id = data.results[0]["dist_id"];
             var dist_th = data.results[0]["dist_th"];
 
-            result += "<div class='row text-center pb-2'>";
+
+            result += "<div class='row'>";
+            result += "<div class='col-md-6 offset-md-3 pb-2'>";
             result += "<form id='cus_site_search_district_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
             result += "  <div class='form-group mx-sm-3 mb-2'>";
             result += "    <label for='id_cus_site_search_district' class='sr-only'>Search</label>";
@@ -685,7 +687,7 @@
             result += "<a href='javascript:cus_site_search_district_modal()' type='button' class='btn btn-primary mb-2'>Search</a>";            
             result += "</form>";
             result += "</div>";
-
+            
             //result += "<div class='col-12 text-center pb-2'><h5>search</h5></div>";
             result += "<table class='table table-hover table-sm'>";
             result += " <thead>";
@@ -697,17 +699,22 @@
             result += "   </tr>";
             result += " </thead>";
             result += " <tbody>";
+            result += "<div>";
+
 
             for(var i=0; i<count; i++) {              
               var dist_id = data.results[i]["dist_id"];
               var dist_name_th = data.results[i]["dist_th"];
+              var dist_name_en = data.results[i]["dist_en"];
               var city_name_th = data.results[i]["city_th"];
+              var city_name_en = data.results[i]["city_en"];
 
               result += "<tr>";
               result += "<td>" + dist_id + "</td>";        
               result += "<td>" + dist_name_th + "</td>";
               result += "<td>" + city_name_th + "</td>";
-              result += "<td><a href='javascript:select_district(" + dist_id + ",\"" + dist_name_th + "\",\"" + city_name_th + "\");' type='button' class='btn btn-primary btn-xs'>Select</a></td>";
+              //result += "<td><a href='javascript:select_district(" + dist_id + ",\"" + dist_name_th + "\",\"" + city_name_th + "\");' type='button' class='btn btn-primary btn-xs'>Selectbb</a></td>";
+              result += "<td><a href='javascript:select_district(" + dist_id + ",\"" + dist_name_th + "\",\"" + city_name_th + "\",\"" + dist_name_en + "\",\"" + city_name_en + "\");' type='button' class='btn btn-primary btn-xs'>Selectbb</a></td>";
 
               result += "</tr>";              
             }
@@ -760,7 +767,8 @@
           var dist_id = data.results[0]["dist_id"];
           var dist_th = data.results[0]["dist_th"];
           
-          result += "<div class='row text-center pb-2'>";
+          result += "<div class='row'>";
+          result += "<div class='col-md-6 offset-md-3 pb-2'>";
           result += "<form id='cus_site_search_district_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
           result += "  <div class='form-group mx-sm-3 mb-2'>";
           result += "    <label for='id_cus_site_search_district' class='sr-only'>Search</label>";
@@ -769,9 +777,6 @@
           result += "<a href='javascript:cus_site_search_district_modal()' type='button' class='btn btn-primary mb-2'>Search</a>";            
           result += "</form>";
           result += "</div>";
-
-          //result += "<div class='col-12 text-center pb-2'><h5>" + dist_id + " - " + dist_th + "</h5></div>";            
-          //result += "<div class='col-12 text-center pb-2'><h5>search</h5></div>";
 
           result += "<table class='table table-hover table-sm'>";
           result += " <thead>";
@@ -783,18 +788,25 @@
           result += "   </tr>";
           result += " </thead>";
           result += " <tbody>";
+          result += "<div>";
 
           for(var i=0; i<count; i++) {              
             var dist_id = data.results[i]["dist_id"];
             var dist_name_th = data.results[i]["dist_th"];
             var city_name_th = data.results[i]["city_th"];
+            var dist_name_en = data.results[i]["dist_en"];
+            var city_name_en = data.results[i]["city_en"];
 
             result += "<tr>";
             result += "<td>" + dist_id + "</td>";        
             result += "<td>" + dist_name_th + "</td>";
             result += "<td>" + city_name_th + "</td>";
+            
             //result += "<td><a href='javascript:select_district(" + dist_id + ");' type='button' class='btn btn-primary btn-xs'>Select</a></td>";
-            result += "<td><a href='javascript:select_district(" + dist_id + ",\"" + dist_name_th + "\",\"" + city_name_th + "\");' type='button' class='btn btn-primary btn-xs'>Select</a></td>";
+            //result += "<td><a href='javascript:select_district(" + dist_id + ",\"" + dist_name_th + "\",\"" + city_name_th + "\");' type='button' class='btn btn-primary btn-xs'>Select xyz</a></td>";
+
+            result += "<td><a href='javascript:select_district(" + dist_id + ",\"" + dist_name_th + "\",\"" + city_name_th + "\",\"" + dist_name_en + "\",\"" + city_name_en + "\");' type='button' class='btn btn-primary btn-xs'>Selectcc</a></td>";
+
             result += "</tr>";              
           }
           result += " </tbody>";
@@ -826,11 +838,16 @@
 
   }
 
-  function select_district(dist_id, dist_name_th, city_name_th) {    
-    
+  function select_district(dist_id, dist_name_th, city_name_th, dist_name_en, city_name_en) {    
+    alert(dist_name_en);
+    alert(city_name_en);
+
     $("#id_cus_site_cus_district_dist_th").val(dist_name_th);
     $("#id_cus_site_select_district_id").val(dist_id);
     $("#id_cus_site_cus_city").val(city_name_th);
+
+    $("#id_cus_site_cus_district_en").val(dist_name_en);
+    $("#id_cus_site_cus_city_en").val(city_name_en);
 
     $("#districtmodal").modal("hide");    
   }
@@ -889,7 +906,7 @@
             result += "<td>" + dist_name_th + "</td>";
             result += "<td>" + city_name_th + "</td>";
             //result += "<td><a href='javascript:select_district(" + dist_id + ");' type='button' class='btn btn-primary btn-xs'>Select</a></td>";
-            result += "<td><a href='javascript:select_district(" + dist_id + ",\"" + dist_name_th + "\",\"" + city_name_th + "\");' type='button' class='btn btn-primary btn-xs'>Select</a></td>";
+            result += "<td><a href='javascript:select_district(" + dist_id + ",\"" + dist_name_th + "\",\"" + city_name_th + "\");' type='button' class='btn btn-primary btn-xs'>Selectaa</a></td>";
             result += "</tr>";              
           }
           result += " </tbody>";
