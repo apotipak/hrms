@@ -859,9 +859,7 @@
           var result = ""
           var count = data.results.length;
           var dist_id = data.results[0]["dist_id"];
-          var dist_th = data.results[0]["dist_th"];
-
-          //result += "<div class='col-12 text-center pb-2'><h5>" + dist_id + " - " + dist_th + "</h5></div>";            
+          var dist_name_th = data.results[0]["dist_th"];
 
           result += "<div class='row text-center pb-2'>";
           result += "<form id='cus_site_search_district_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
@@ -889,13 +887,18 @@
           for(var i=0; i<count; i++) {              
             var dist_id = data.results[i]["dist_id"];
             var dist_name_th = data.results[i]["dist_th"];
-            var city_name_th = data.results[i]["city_th"];
+            var dist_name_en = data.results[i]["dist_en"];
+            var city_name_th = data.results[i]["city_th"];            
+            var city_name_en = data.results[i]["city_en"];
 
             result += "<tr>";
             result += "<td>" + dist_id + "</td>";        
             result += "<td>" + dist_name_th + "</td>";
             result += "<td>" + city_name_th + "</td>";
-            result += "<td><a href='javascript:select_district(" + dist_id + ",\"" + dist_name_th + "\",\"" + city_name_th + "\");' type='button' class='btn btn-primary btn-xs'>Selectaaa</a></td>";
+
+            //result += "<td><a href='javascript:select_district(" + dist_id + ",\"" + dist_name_th + "\",\"" + city_name_th + "\");' type='button' class='btn btn-primary btn-xs'>Selectaaa</a></td>";
+            result += "<td><a href='javascript:select_district(" + dist_id + ",\"" + dist_name_th + "\",\"" + city_name_th + "\",\"" + dist_name_en + "\",\"" + city_name_en + "\");' type='button' class='btn btn-outline-primary btn-sm'>Select</a></td>";
+
             result += "</tr>";              
           }
           result += " </tbody>";
