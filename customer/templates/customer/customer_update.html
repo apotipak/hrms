@@ -676,11 +676,17 @@
   $(document).ready(function(){        
 
     $('#district_lookup').on('click', function (e) {
-      var obj = $(this);      
+      var obj = $(this);
+      current_district_id = $('#id_cus_site_select_district_id').val();
+      //alert(current_district_id);
+
       $.ajax({
           url: obj.attr("data-url"),
           type: 'get',          
           dataType: 'json',
+          data : {          
+            current_district_id : current_district_id,
+          },          
           beforeSend: function () {
             $("#districtmodal").modal("show");
           },
@@ -758,7 +764,6 @@
 
   function cus_site_search_district_modal() {
     city_name = $('#id_cus_site_search_district_by_city_name').val();
-    //alert(city_name);
     page_no = 1;
 
     $.ajax({
@@ -848,14 +853,17 @@
   }
 
   function get_district_lookup(page_no) {
+    current_district_id = $('#id_cus_site_select_district_id').val();
     city_name = $('#id_cus_site_search_district_by_city_name').val();
+
     $.ajax({
         url : "/customer/ajax/get_district_list_modal",
         type: 'get',   
         dataType: 'json',
         data : {          
           page_no : page_no,
-          city_name : city_name
+          city_name : city_name,
+          current_district_id : current_district_id,
         },
         success: function (data) {
           var result = ""

@@ -195,38 +195,17 @@ def CustomerList(request):
 @login_required(login_url='/accounts/login/')
 def get_district_list_modal(request):
 
-    '''
-    queryset = TDistrict.objects.select_related('tcity').all()
-    districts = []
-    for district in queryset:
-        district.append({'dist_id': district.dist_id})
-    '''
+    print("FUNCTION: get_district_list_modal")
 
-    queryset = CusMain.objects.select_related('cus_city').all()
-    cusmain = []
-    for cus in queryset:
-        cusmain.append({'cus_id': cus.cus_id})
-
-    item_per_page = 8
+    item_per_page = 50
     page_no = request.GET["page_no"]
     city_name = request.GET["city_name"]
-    print("GET_DISTRICT_LIST_MODAL: city_name = ")
     print(city_name)
     
-    # city_name = 'จันทบุรี'
-    if city_name != '':
-        #data = TDistrict.objects.raw("select d.dist_id,d.dist_th,d.dist_en,c.city_id,c.city_th,c.city_en from t_district d join t_city c on d.city_id = c.city_id where c.city_en = %s", [u'bangkok']) or None
-        data = TDistrict.objects.raw("select d.dist_id,d.dist_th,d.dist_en,c.city_id,c.city_th,c.city_en from t_district d join t_city c on d.city_id = c.city_id order by c.city_th") or None
+    if city_name != '':        
+        data = TDistrict.objects.select_related('city_id').filter(city_id__city_th__contains=city_name)        
     else:
-        data = TDistrict.objects.raw("select d.dist_id,d.dist_th,d.dist_en,c.city_id,c.city_th,c.city_en from t_district d join t_city c on d.city_id = c.city_id order by c.city_th") or None
-
-
-    '''
-    if city_name:
-        data = TDistrict.objects.raw("select d.dist_id,d.dist_th,d.dist_en,c.city_id,c.city_th,c.city_en from t_district d join t_city c on d.city_id = c.city_id where c.city_name like '%'" + city_name + "'" + " order by c.city_th") or None
-    else:
-        data = TDistrict.objects.raw("select d.dist_id,d.dist_th,d.dist_en,c.city_id,c.city_th,c.city_en from t_district d join t_city c on d.city_id = c.city_id order by c.city_th") or None
-    '''
+        data = TDistrict.objects.select_related('city_id')
 
     page = int(page_no)
 
@@ -260,11 +239,11 @@ def get_district_list_modal(request):
         for d in current_page:
             print("debug 1")
             record = {
-                "dist_id": d.dist_id, 
-                "city_id": d.city_id,
+                "dist_id": d.dist_id,
+                "city_id": d.city_id_id,
                 "dist_th": d.dist_th,
                 "dist_en": d.dist_en,
-                "city_th": d.city_th
+                "city_th": d.city_id.city_th,
             }
             pickup_records.append(record)
 
@@ -302,13 +281,20 @@ def get_district_list_modal(request):
     '''
 
 @login_required(login_url='/accounts/login/')
-def get_district_list(request):        
+def get_district_list(request):
+
+    print("FUNCTION: get_district_list")
+
+    current_district_id = request.GET.get('current_district_id')
+    cus_active = request.POST.get('cus_main_cus_active')
+
+    print(current_district_id)
+
     item_per_page = 8
 
     if request.method == "POST":
-        print("method post")
-        data = TDistrict.objects.raw("select d.dist_id,d.dist_th,d.dist_en,c.city_id,c.city_th,c.city_en \
-            from t_district d join t_city c on d.city_id = c.city_id order by c.city_th") or None
+        print("method post")        
+        data = TDistrict.objects.select_related('city_id')
 
         page = 1
         paginator = Paginator(data, item_per_page)
@@ -320,13 +306,7 @@ def get_district_list(request):
             raise Http404(str(e))
 
     else:
-        print("method get")
-        data = TDistrict.objects.raw("select d.dist_id as dist_id, d.dist_th as dist_th, d.dist_en as dist_en, c.city_id as city_id, c.city_th as city_th, c.city_en as city_en \
-            from t_district d join \
-            t_city c on d.city_id = c.city_id order by c.city_th") or None
-
-        #data = TDistrict.objects.raw("select * from t_district")
-        data = TDistrict.objects.select_related('city_id')
+        data = TDistrict.objects.select_related('city_id').filter(dist_id=current_district_id)
 
         paginator = Paginator(data, item_per_page)
         is_paginated = True if paginator.num_pages > 1 else False
@@ -354,11 +334,11 @@ def get_district_list(request):
         for d in current_page:
             print("debug 1")
             record = {
-                "dist_id": d.dist_id, #d.dist_id, 
-                "city_id": d.city_id_id, #d.city_id,
-                "dist_th": d.dist_th, #d.dist_th,
-                "dist_en": d.dist_en, #d.dist_en,
-                "city_th": d.city_id.city_th, #d.city_th
+                "dist_id": d.dist_id,
+                "city_id": d.city_id_id,
+                "dist_th": d.dist_th,
+                "dist_en": d.dist_en,
+                "city_th": d.city_id.city_th,
             }
             pickup_records.append(record)
 
