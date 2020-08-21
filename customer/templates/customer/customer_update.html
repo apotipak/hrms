@@ -570,8 +570,10 @@
                 <div class="card card-info">
                   <div class="card-body"> 
                     <div class="form-row">
+                      
                       <div class="form-group col-md-2">
-                        <label for="cus_main_cus_zip">{% trans 'Zip' %}</label>
+                        <label for="id_cus_site_cus_zip">{% trans 'Zip' %}</label>
+                        {% comment %}
                         {% if cus_main_form.cus_zip.errors %}                
                           {% render_field cus_main_form.cus_zip class="form-control form-control-sm is-invalid" %}
                           {% for error in cus_main_form.cus_zip.errors %}
@@ -581,19 +583,22 @@
                           {% endfor %}                
                         {% else %}
                           {% render_field cus_main_form.cus_zip class="form-control form-control-sm" %}
-                        {% endif %} 
+                        {% endif %}
+                        {% endcomment %}
+                        <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_zip" name="cus_site_cus_zip" value="{{customer.cus_zip|default_if_none:''}}">
                       </div>
+
                       <div class="form-group col-md-2">
-                        <label for="cus_tel">{% trans 'Phone' %}</label>
-                        <input type="text" class="form-control form-control-sm" id="id_cus_tel" name="cus_tel" value="{{ cus_main.cus_tel }}">
+                        <label for="id_cus_site_cus_tel">{% trans 'Phone' %}</label>
+                        <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_tel" name="cus_site_cus_tel" value="{{ customer.cus_tel|default_if_none:'' }}">
                       </div>
                       <div class="form-group col-md-4">
-                        <label for="cus_main_cus_fax">{% trans 'Fax' %}</label>
-                        <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_fax" name="cus_main_cus_fax" value="{{ cus_main.cus_fax }}">
+                        <label for="id_cus_site_cus_fax">{% trans 'Fax' %}</label>
+                        <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_fax" name="cus_site_cus_fax" value="{{ customer.cus_fax|default_if_none:'' }}">
                       </div>
                       <div class="form-group col-md-4">
-                        <label for="cus_main_cus_email">{% trans 'Email' %}</label>
-                        <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_email" name="cus_main_cus_email" value="{{ cus_main.cus_email }}">
+                        <label for="id_cus_site_cus_email">{% trans 'Email' %}</label>
+                        <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_email" name="cus_site_cus_email" value="{{ customer.cus_email|default_if_none:'' }}">
                       </div>    
                     </div>
 
@@ -616,7 +621,7 @@
                 </div>
               </div>
             </div>
-            
+
 
             </div>
 
