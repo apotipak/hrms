@@ -714,7 +714,7 @@
               result += "<td>" + dist_name_th + "</td>";
               result += "<td>" + city_name_th + "</td>";
               //result += "<td><a href='javascript:select_district(" + dist_id + ",\"" + dist_name_th + "\",\"" + city_name_th + "\");' type='button' class='btn btn-primary btn-xs'>Selectbb</a></td>";
-              result += "<td><a href='javascript:select_district(" + dist_id + ",\"" + dist_name_th + "\",\"" + city_name_th + "\",\"" + dist_name_en + "\",\"" + city_name_en + "\");' type='button' class='btn btn-primary btn-xs'>Selectbb</a></td>";
+              result += "<td><a href='javascript:select_district(" + dist_id + ",\"" + dist_name_th + "\",\"" + city_name_th + "\",\"" + dist_name_en + "\",\"" + city_name_en + "\");' type='button' class='btn btn-outline-primary btn-sm'>Select</a></td>";
 
               result += "</tr>";              
             }
@@ -802,21 +802,14 @@
             result += "<td>" + dist_name_th + "</td>";
             result += "<td>" + city_name_th + "</td>";
             
-            //result += "<td><a href='javascript:select_district(" + dist_id + ");' type='button' class='btn btn-primary btn-xs'>Select</a></td>";
-            //result += "<td><a href='javascript:select_district(" + dist_id + ",\"" + dist_name_th + "\",\"" + city_name_th + "\");' type='button' class='btn btn-primary btn-xs'>Select xyz</a></td>";
-
-            result += "<td><a href='javascript:select_district(" + dist_id + ",\"" + dist_name_th + "\",\"" + city_name_th + "\",\"" + dist_name_en + "\",\"" + city_name_en + "\");' type='button' class='btn btn-primary btn-xs'>Selectcc</a></td>";
+            result += "<td><a href='javascript:select_district(" + dist_id + ",\"" + dist_name_th + "\",\"" + city_name_th + "\",\"" + dist_name_en + "\",\"" + city_name_en + "\");' type='button' class='btn btn-outline-primary btn-sm'>Select</a></td>";
 
             result += "</tr>";              
           }
           result += " </tbody>";
           result += "</table>";
 
-          //var instance = JSON.parse(data.paginator);
-
           if(data.is_paginated) {
-            //alert(data.current_page + " | " + data.current_page_number + " | " + data.current_page_paginator_num_pages);
-
             result += "<div>";
             result += "  <span>";
             if(data.previous_page != 0) {
@@ -839,9 +832,6 @@
   }
 
   function select_district(dist_id, dist_name_th, city_name_th, dist_name_en, city_name_en) {    
-    alert(dist_name_en);
-    alert(city_name_en);
-
     $("#id_cus_site_cus_district_dist_th").val(dist_name_th);
     $("#id_cus_site_select_district_id").val(dist_id);
     $("#id_cus_site_cus_city").val(city_name_th);
@@ -905,8 +895,7 @@
             result += "<td>" + dist_id + "</td>";        
             result += "<td>" + dist_name_th + "</td>";
             result += "<td>" + city_name_th + "</td>";
-            //result += "<td><a href='javascript:select_district(" + dist_id + ");' type='button' class='btn btn-primary btn-xs'>Select</a></td>";
-            result += "<td><a href='javascript:select_district(" + dist_id + ",\"" + dist_name_th + "\",\"" + city_name_th + "\");' type='button' class='btn btn-primary btn-xs'>Selectaa</a></td>";
+            result += "<td><a href='javascript:select_district(" + dist_id + ",\"" + dist_name_th + "\",\"" + city_name_th + "\");' type='button' class='btn btn-primary btn-xs'>Selectaaa</a></td>";
             result += "</tr>";              
           }
           result += " </tbody>";
