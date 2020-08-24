@@ -380,13 +380,15 @@ class CusSiteForm(forms.ModelForm):
     cus_site_cus_zip = forms.CharField(required=False)
     cus_site_cus_tel = forms.CharField(required=False)
     cus_site_cus_fax = forms.CharField(required=False)
-    cus_site_cus_email = forms.CharField(required=False)    
+    cus_site_cus_email = forms.CharField(required=False)
     cus_site_cus_zone = forms.ModelChoiceField(queryset=None, required=True)
+    # cus_site_cus_contact = forms.ModelChoiceField(queryset=None, required=True)
 
     class Meta:
         model = Customer
         fields = '__all__'
         exclude = ['cus_no','cus_id','cus_brn','cus_city','cus_country','cus_zip','cus_district','cus_zone','cus_contact','site_contact','dist_en']
+        # exclude = ['cus_no','cus_id','cus_brn']
     
     def __init__(self, *args, **kwargs):        
         super(CusSiteForm, self).__init__(*args, **kwargs)        

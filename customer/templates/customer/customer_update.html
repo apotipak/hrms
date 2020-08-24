@@ -632,6 +632,8 @@
                       <div class="input-group">
                         <label for="id_cus_contact" class="col-sm-2 col-form-label form-control-sm">{% trans 'Contact Person' %}</label>
                         <div class="col-sm-10">
+
+                          {% comment %}
                           {% if cus_site_form.cus_site_cus_contact.errors %}                
                             {% render_field cus_site_form.cus_site_cus_contact class="form-control form-control-sm is-invalid" %}
                             {% for error in cus_site_form.cus_site_cus_contact.errors %}
@@ -643,6 +645,10 @@
                             {% render_field cus_site_form.cus_site_cus_contact class="form-control form-control-sm" %}                        
                           {% endif %}                      
                           {% render_field cus_site_form.cus_site_cus_contact class="form-control form-control-sm" %}
+                          {% endcomment %}
+
+
+                          <!-- con_sex, con_title, -->
                         </div>
                       </div>
 

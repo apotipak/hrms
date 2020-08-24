@@ -869,7 +869,7 @@ def update_cus_site(request):
             
             customer.save()
 
-            response_data['result'] = "Save success."
+            response_data['result'] = "Update complete."
             response_data['message'] = "ทำรายการสำเร็จ"
             response_data['form_is_valid'] = True
         else:
