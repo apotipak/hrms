@@ -7,7 +7,6 @@ from django.conf import settings
 from django.views import generic
 from .models import Customer, CusMain
 from .forms import CustomerCreateForm, CusMainForm, CusSiteForm
-# from .forms import CustomerUpdateForm
 from .forms import CustomerSearchForm
 from django.http import JsonResponse
 from django.template.loader import render_to_string
@@ -632,28 +631,31 @@ def get_district_list_backup(request):
     return JsonResponse(data={"success": False, "results": ""})
 
 
-def CusMainUpdate(request, pk):
+# Load all 3 forms (cus_main, cus_site, cus_bill)
+def CustomerUpdate(request, pk):
     template_name = 'customer/customer_update.html'
     
     customer = get_object_or_404(Customer, pk=pk)
     cus_main = []
+    cus_site = []
+    cus_bill = []
 
     if customer:
         cus_main = CusMain.objects.filter(cus_id=customer.cus_id).get()
+        cus_site = Customer.objects.filter(cus_no=pk).get()        
+        # todo cus_bill
 
-    if request.method == 'POST':
-        # form = CustomerUpdateForm(request.POST, instance=customer)
+    if request.method == 'POST':        
         cus_main_form = CusMainForm(request.POST, instance=cus_main)
+        cus_site_form = CusSiteForm(request.POST, instance=cus_site)
     else:
-        # form = CustomerUpdateForm(instance=customer)
         cus_main_form = CusMainForm(instance=cus_main)        
-        print("test - update cus_main")
-        print(cus_main.cus_active)
-
+        cus_site_form = CusSiteForm(instance=cus_site)
 
     data = dict()
-    form_is_valid = False
+
     cus_main_form_is_valid = False
+    cus_site_form_is_valid = False
     update_message = ""
 
     if request.method == 'POST':
@@ -683,11 +685,13 @@ def CusMainUpdate(request, pk):
             cus_main_form_is_valid = True
             message = "ทำรายการสำเร็จ"
             data['message'] = "ทำรายการสำเร็จ"
+            print("aa")
         else:
             print("cus_main_form is not valid")
             cus_main_form_is_valid = False
             message = "ไม่สามารถทำรายการได้..!"
             data['message'] = "ทำรายการสำเร็จ"
+            print("bb")
 
     print("customer cus_active = " + str(customer.cus_active))
 
@@ -697,12 +701,14 @@ def CusMainUpdate(request, pk):
         'project_version': settings.PROJECT_VERSION,
         'db_server': settings.DATABASES['default']['HOST'],
         'project_name': settings.PROJECT_NAME,
+
         'cus_main_form': cus_main_form,
-        'customer': customer,
         'cus_main': cus_main,
+        'cus_site_form': cus_site_form,
+        'cus_site': cus_site,
+
+        'customer': customer,                
         'request': request,
-        'cus_main_form_is_valid': cus_main_form_is_valid,
-        'form_is_valid': form_is_valid,
         'update_message': update_message,   
     }
     return render(request, template_name, context)

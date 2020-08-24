@@ -376,7 +376,7 @@ class CusMainForm(forms.ModelForm):
 
 
 class CusSiteForm(forms.ModelForm):    
-    #select_dist_id = forms.CharField(widget=forms.HiddenInput(), required=False)
+    cus_zip = forms.CharField(required=False)
 
     class Meta:
         model = Customer
@@ -386,6 +386,12 @@ class CusSiteForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):        
         super(CusSiteForm, self).__init__(*args, **kwargs)        
         instance = getattr(self, 'instance', None)
+
+        self.initial['cus_zip'] = instance.cus_zip        
+
+    def clean_cus_zip(self):
+        data = self.data.get('cus_zip')
+        return data
 
     def clean_cus_active(self):
         data = self.data.get('cus_site_cus_active')
