@@ -828,7 +828,9 @@ def update_cus_site(request):
             cus_subdist_en = request.POST.get('cus_site_cus_subdist_en')
 
             cus_zip = request.POST.get('cus_site_cus_zip')
-            print(cus_zip)
+            cus_tel = request.POST.get('cus_site_cus_tel')
+            cus_fax = request.POST.get('cus_site_cus_fax')
+            cus_email = request.POST.get('cus_site_cus_email')
 
             customer = get_object_or_404(Customer, pk=cus_no)
             
@@ -854,8 +856,11 @@ def update_cus_site(request):
             customer.cus_add1_en = cus_add1_en
             customer.cus_add2_en = cus_add2_en
             customer.cus_subdist_en = cus_subdist_en
-            print("cus_zip = " + str(cus_zip))
+            
             customer.cus_zip = cus_zip
+            customer.cus_tel = cus_tel
+            customer.cus_fax = cus_fax
+            customer.cus_email = cus_email
 
             if customer.upd_flag == 'A':
                 customer.upd_flag = 'E'

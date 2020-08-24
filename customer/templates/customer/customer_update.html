@@ -1132,6 +1132,9 @@
     cus_site_cus_subdist_en = $('#id_cus_site_cus_subdist_en').val();
     select_district_id = $('#id_cus_site_select_district_id').val();
     cus_site_cus_zip = $('#id_cus_site_cus_zip').val();
+    cus_site_cus_tel = $('#id_cus_site_cus_tel').val();
+    cus_site_cus_fax = $('#id_cus_site_cus_fax').val();
+    cus_site_cus_email = $('#id_cus_site_cus_email').val();
 
     $.ajax({
         url : "/customer/ajax/update_cus_site/",
@@ -1152,6 +1155,9 @@
           cus_site_cus_subdist_en : cus_site_cus_subdist_en,
           select_district_id : select_district_id,
           cus_site_cus_zip : cus_site_cus_zip,
+          cus_site_cus_tel : cus_site_cus_tel,
+          cus_site_cus_fax : cus_site_cus_fax,
+          cus_site_cus_email : cus_site_cus_email,
         },
         success : function(json) {
           if(json.form_is_valid) {        
