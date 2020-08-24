@@ -125,4 +125,3 @@ class Customer(models.Model):
         db_table = 'CUSTOMER'
         ordering = ['cus_no']
 
-

@@ -3,7 +3,7 @@ from .models import Customer, CusMain
 from django.contrib.auth.models import User
 from django.forms.widgets import HiddenInput
 from django.utils.translation import gettext_lazy as _
-from system.models import CusContact, ComZone
+from system.models import CusContact, ComZone, TTitle
 from django.core.exceptions import ValidationError
 
 
@@ -381,11 +381,14 @@ class CusSiteForm(forms.ModelForm):
     cus_site_cus_tel = forms.CharField(required=False)
     cus_site_cus_fax = forms.CharField(required=False)
     cus_site_cus_email = forms.CharField(required=False)
-    cus_site_cus_zone = forms.ModelChoiceField(queryset=None, required=True)
+    cus_site_cus_zone = forms.ModelChoiceField(queryset=None, required=True)    
 
     # Contact Information
+    cus_site_cus_contact = forms.CharField(required=False)
     sex_choices=[('M','Male'), ('F','Female')]    
-    cus_site_cus_contact_con_sex = forms.ChoiceField(choices=sex_choices, widget=forms.RadioSelect(), required=False)
+    cus_site_cus_contact_con_sex = forms.ChoiceField(choices=sex_choices, widget=forms.RadioSelect(attrs={'class': 'inline'}), required=False)
+    cus_site_cus_contact_cus_title = forms.ModelChoiceField(queryset=None, required=False)
+
 
     class Meta:
         model = Customer
@@ -401,7 +404,15 @@ class CusSiteForm(forms.ModelForm):
         self.fields['cus_site_cus_zone'].queryset=ComZone.objects.all()
         self.initial['cus_site_cus_zone'] = instance.cus_zone_id
         
-        self.initial['cus_site_cus_contact_con_sex'] = instance.cus_contact.con_sex
+        self.initial['cus_site_cus_contact'] = instance.cus_contact
+        print("cus_contact = " + str(instance.cus_contact_id))
+
+        # sex_object = CusContact.objects.filter(con_id=instance.cus_contact_id).get()
+        sex_object = CusContact.objects.filter(con_id=0).get()
+
+        print("sex = " + str(sex_object.con_sex))
+        # self.fields['cus_site_cus_contact_con_sex'].widget.attrs={'class': 'radio-inline'}
+        self.initial['cus_site_cus_contact_con_sex'] = sex_object.con_sex
 
     def clean_cus_active(self):
         data = self.data.get('cus_site_cus_active')
@@ -493,6 +504,11 @@ class CusSiteForm(forms.ModelForm):
         data = self.data.get('cus_site_cus_zone')
         return data
 
+    def clean_cus_site_cus_contact(self):
+        data = self.data.get('cus_site_cus_contact')
+        return data
+
     def clean_cus_site_cus_contact_con_sex(self):
         data = self.data.get('cus_site_cus_contact_con_sex')
+        data = "F"
         return data        

@@ -564,6 +564,8 @@
                 <div class="col-md-12">
                   <div class="card card-info">
                     <div class="card-body"> 
+
+
                       <div class="form-row">
                         
                         <div class="form-group col-md-2">
@@ -629,35 +631,44 @@
                     </div>
                     <div class="card-body">
 
+                      <div class="form-row">
+                        
+                        <!-- con_sex, con_title, -->
+                        <div class="form-group col-md-2">
+                          <label for="id_cus_site_cus_zip">{% trans 'Title' %}</label>
+                            <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_contact_cus_title" name="cus_site_cus_contact_cus_title" value="{{ customer.cus_contact.con_title|default_if_none:'' }}">
+                        </div>
+
+                        <div class="form-group col-md-2">
+                          <label for="id_cus_site_cus_contact_con_fname_th">{% trans 'First Name' %}</label>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_contact_con_fname_th" name="cus_site_cus_contact_con_fname_th" value="{{ customer.cus_contact.con_fname_th|default_if_none:'' }}">
+                        </div>
+
+                        <div class="form-group col-md-4">
+                          <label for="id_cus_site_cus_contact_con_lname_th">{% trans 'Last Name' %}</label>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_contact_con_lname_th" name="cus_site_cus_contact_con_fname_th" value="{{ customer.cus_contact.con_lname_th|default_if_none:'' }}">
+                        </div>
+
+                        <div class="form-group col-md-4">
+                          <label for="id_cus_site_cus_contact_con_position_th">{% trans 'Position' %}</label>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_contact_con_position_th" name="cus_site_cus_contact_con_position_th" value="{{ customer.cus_contact.con_position_th|default_if_none:'' }}">
+                        </div>
+
+                      </div>
+                      
+
                       {% comment %}
-                      <div class="input-group">
-                        <label for="id_cus_contact" class="col-sm-2 col-form-label form-control-sm">{% trans 'Contact Person' %}</label>
-                        <div class="col-sm-10">
-                          {% if cus_site_form.cus_site_cus_contact.errors %}                
-                            {% render_field cus_site_form.cus_site_cus_contact class="form-control form-control-sm is-invalid" %}
-                            {% for error in cus_site_form.cus_site_cus_contact.errors %}
-                            <div class="invalid-feedback">
-                              {{error}}
+                      <div class="form-group">                              
+                        <div class="col-sm-3">
+                            <label for="input-type">Sex</label>
+                            <div id="input-type" class="row">
+
+                                {% render_field cus_site_form.cus_site_cus_contact_con_sex class="radio-inline" %}
+
                             </div>
-                            {% endfor %}                
-                          {% else %}
-                            {% render_field cus_site_form.cus_site_cus_contact class="form-control form-control-sm" %}                        
-                          {% endif %}                      
-                          {% render_field cus_site_form.cus_site_cus_contact class="form-control form-control-sm" %}
                         </div>
                       </div>
                       {% endcomment %}
-
-
-                      <!-- con_sex, con_title, -->
-                      <div class="form-group col-md-2">
-                        <label for="id_cus_site_cus_tel">{% trans 'Sex' %}</label>                        
-                        {% render_field cus_site_form.cus_site_cus_contact_con_sex class="form-check form-check-inline" %}
-
-
-                      </div>
-
-
 
                     </div>
                   </div>

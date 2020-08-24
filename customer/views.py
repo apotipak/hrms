@@ -833,7 +833,7 @@ def update_cus_site(request):
             cus_email = request.POST.get('cus_site_cus_email')
 
             cus_site_cus_contact_con_sex = request.POST.get('cus_site_cus_contact_con_sex')
-            print("sex = " + str(cus_site_cus_contact_con_sex))
+            #print("sex = " + str(cus_site_cus_contact_con_sex))
 
             customer = get_object_or_404(Customer, pk=cus_no)
             
