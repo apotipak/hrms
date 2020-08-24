@@ -376,7 +376,8 @@ class CusMainForm(forms.ModelForm):
 
 
 class CusSiteForm(forms.ModelForm):    
-    cus_zip = forms.CharField(required=False)
+    cus_site_cus_name_th = forms.CharField(required=False)
+    cus_site_cus_zip = forms.CharField(required=False)
 
     class Meta:
         model = Customer
@@ -389,8 +390,16 @@ class CusSiteForm(forms.ModelForm):
 
         self.initial['cus_zip'] = instance.cus_zip        
 
-    def clean_cus_zip(self):
-        data = self.data.get('cus_zip')
+    def clean_cus_site_cus_zip(self):
+        data = self.data.get('cus_site_cus_zip')
+        if len(data) != 5:
+            raise ValidationError("Zip is not correct.")
+
+        if data.isnumeric():
+            return data
+        else:
+            raise ValidationError("Zip is not correct.")
+        
         return data
 
     def clean_cus_active(self):
@@ -399,7 +408,7 @@ class CusSiteForm(forms.ModelForm):
             return 0
         return 1     
 
-    def clean_cus_name_th(self):
+    def clean_cus_site_cus_name_th(self):
         data = self.data.get('cus_site_cus_name_th')        
         if len(data) > 0:
             return data

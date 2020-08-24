@@ -566,17 +566,17 @@
                       
                       <div class="form-group col-md-2">
                         <label for="id_cus_site_cus_zip">{% trans 'Zip' %}</label>
-                        {% if cus_site_form.cus_zip.errors %}                
-                          
-                          {% render_field cus_site_form.cus_zip class="form-control form-control-sm is-invalid" %}
+                        {% if cus_site_form.cus_site_cus_zip.errors %}                
+                                                    
+                          <input type="text" class="form-control form-control-sm is-invalid" id="id_cus_site_cus_zip" name="cus_site_cus_zip" value="{{ customer.cus_zip|default_if_none:'' }}">
 
-                          {% for error in cus_site_form.cus_zip.errors %}
+                          {% for error in cus_site_form.cus_site_cus_zip.errors %}
                           <div class="invalid-feedback">
                             {{error}}
                           </div>
                           {% endfor %}
-                        {% else %}                          
-                          {% render_field cus_site_form.cus_zip class="form-control form-control-sm" %}
+                        {% else %}
+                          <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_zip" name="cus_site_cus_zip" value="{{ customer.cus_zip|default_if_none:'' }}">
                         {% endif %}
 
                       </div>
@@ -1131,6 +1131,7 @@
     cus_site_cus_add2_en = $('#id_cus_site_cus_add2_en').val();
     cus_site_cus_subdist_en = $('#id_cus_site_cus_subdist_en').val();
     select_district_id = $('#id_cus_site_select_district_id').val();
+    cus_site_cus_zip = $('#id_cus_site_cus_zip').val();
 
     $.ajax({
         url : "/customer/ajax/update_cus_site/",
@@ -1141,21 +1142,20 @@
           cus_brn : cus_brn,
           cus_no : cus_no,
           cus_site_cus_active : cus_site_cus_active,
-          
           cus_site_cus_name_th : cus_site_cus_name_th,
           cus_site_cus_add1_th : cus_site_cus_add1_th,
           cus_site_cus_add2_th : cus_site_cus_add2_th,
           cus_site_cus_subdist_th :  cus_site_cus_subdist_th,
-
           cus_site_cus_name_en : cus_site_cus_name_en,
           cus_site_cus_add1_en : cus_site_cus_add1_en,
           cus_site_cus_add2_en : cus_site_cus_add2_en,
           cus_site_cus_subdist_en : cus_site_cus_subdist_en,
-
-          select_district_id : select_district_id
+          select_district_id : select_district_id,
+          cus_site_cus_zip : cus_site_cus_zip,
         },
         success : function(json) {
-          if(json.form_is_valid) {          
+          if(json.form_is_valid) {        
+
             $(document).Toasts('create', {
               class: 'bg-success', 
               title: "{% trans 'Message' %}",
@@ -1166,7 +1166,17 @@
               autoDismiss: true,
               close: true,
               autoremove: true,
-            })
+            });
+
+            $.each($('.is-valid'), function() {
+              $('.is-valid').removeClass('is-valid');              
+            });            
+
+            $.each($('.is-invalid'), function() {
+              $('.is-invalid').addClass('is-valid');  
+              $('.is-invalid').removeClass('is-invalid');              
+            });            
+
           }
           else {            
             $(document).Toasts('create', {
@@ -1179,10 +1189,17 @@
               autoDismiss: true,
               close: true,
               autoremove: true,
-              preventDuplicates: true,       
-            })            
+              preventDuplicates: true,
+            });
+
+            for(error in json.errors) {
+              $("#id_"+error).addClass("is-invalid");         
+            }
           }
         },
+        error : function(json) {
+          //
+        }
     });
   };
       

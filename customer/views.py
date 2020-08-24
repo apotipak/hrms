@@ -827,13 +827,15 @@ def update_cus_site(request):
             cus_add2_en = request.POST.get('cus_site_cus_add2_en')
             cus_subdist_en = request.POST.get('cus_site_cus_subdist_en')
 
-            customer = get_object_or_404(Customer, pk=cus_no)
+            cus_zip = request.POST.get('cus_site_cus_zip')
+            print(cus_zip)
 
-            select_district_id = request.POST.get('select_district_id')            
+            customer = get_object_or_404(Customer, pk=cus_no)
+            
+            select_district_id = request.POST.get('select_district_id')
             district_obj = TDistrict.objects.get(dist_id=select_district_id)
             if district_obj:
                 city_id = district_obj.city_id_id
-                # print("city_id = " + str(city_id))
                 old_district_id = customer.cus_district.dist_id
                 customer.cus_district_id = select_district_id
                 customer.cus_city = district_obj.city_id
@@ -852,6 +854,8 @@ def update_cus_site(request):
             customer.cus_add1_en = cus_add1_en
             customer.cus_add2_en = cus_add2_en
             customer.cus_subdist_en = cus_subdist_en
+            print("cus_zip = " + str(cus_zip))
+            customer.cus_zip = cus_zip
 
             if customer.upd_flag == 'A':
                 customer.upd_flag = 'E'
@@ -860,7 +864,7 @@ def update_cus_site(request):
             
             customer.save()
 
-            response_data['result'] = "Save customer main office success."
+            response_data['result'] = "Save success."
             response_data['message'] = "ทำรายการสำเร็จ"
             response_data['form_is_valid'] = True
         else:
@@ -870,8 +874,11 @@ def update_cus_site(request):
                 for field in form:
                     for error in field.errors:
                         response_data['message'] += error + "<br>"
+
+                response_data['errors'] = form.errors
             else:
                 response_data['message'] = "ไม่สามารถทำรายการได้..!"
+
     else:
         response_data['result'] = "There is an error!"
         response_data['message'] = "ไม่สามารถทำรายการได้..!"
