@@ -629,11 +629,10 @@
                     </div>
                     <div class="card-body">
 
+                      {% comment %}
                       <div class="input-group">
                         <label for="id_cus_contact" class="col-sm-2 col-form-label form-control-sm">{% trans 'Contact Person' %}</label>
                         <div class="col-sm-10">
-
-                          {% comment %}
                           {% if cus_site_form.cus_site_cus_contact.errors %}                
                             {% render_field cus_site_form.cus_site_cus_contact class="form-control form-control-sm is-invalid" %}
                             {% for error in cus_site_form.cus_site_cus_contact.errors %}
@@ -645,12 +644,20 @@
                             {% render_field cus_site_form.cus_site_cus_contact class="form-control form-control-sm" %}                        
                           {% endif %}                      
                           {% render_field cus_site_form.cus_site_cus_contact class="form-control form-control-sm" %}
-                          {% endcomment %}
-
-
-                          <!-- con_sex, con_title, -->
                         </div>
                       </div>
+                      {% endcomment %}
+
+
+                      <!-- con_sex, con_title, -->
+                      <div class="form-group col-md-2">
+                        <label for="id_cus_site_cus_tel">{% trans 'Sex' %}</label>                        
+                        {% render_field cus_site_form.cus_site_cus_contact_con_sex class="form-check form-check-inline" %}
+
+
+                      </div>
+
+
 
                     </div>
                   </div>
@@ -1175,6 +1182,9 @@
     cus_site_cus_email = $('#id_cus_site_cus_email').val();
     cus_site_cus_zone = $('#id_cus_site_cus_zone').val();
 
+    // Contact Information
+    cus_site_cus_contact_con_sex = $('input[name="cus_site_cus_contact_con_sex"]:checked').val();    
+
     $.ajax({
         url : "/customer/ajax/update_cus_site/",
         type : "POST",
@@ -1198,6 +1208,8 @@
           cus_site_cus_fax : cus_site_cus_fax,
           cus_site_cus_email : cus_site_cus_email,
           cus_site_cus_zone : cus_site_cus_zone,
+
+          cus_site_cus_contact_con_sex : cus_site_cus_contact_con_sex,
         },
         success : function(json) {
           if(json.form_is_valid) {        

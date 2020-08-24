@@ -382,13 +382,15 @@ class CusSiteForm(forms.ModelForm):
     cus_site_cus_fax = forms.CharField(required=False)
     cus_site_cus_email = forms.CharField(required=False)
     cus_site_cus_zone = forms.ModelChoiceField(queryset=None, required=True)
-    # cus_site_cus_contact = forms.ModelChoiceField(queryset=None, required=True)
+
+    # Contact Information
+    sex_choices=[('M','Male'), ('F','Female')]    
+    cus_site_cus_contact_con_sex = forms.ChoiceField(choices=sex_choices, widget=forms.RadioSelect(), required=False)
 
     class Meta:
         model = Customer
         fields = '__all__'
         exclude = ['cus_no','cus_id','cus_brn','cus_city','cus_country','cus_zip','cus_district','cus_zone','cus_contact','site_contact','dist_en']
-        # exclude = ['cus_no','cus_id','cus_brn']
     
     def __init__(self, *args, **kwargs):        
         super(CusSiteForm, self).__init__(*args, **kwargs)        
@@ -396,9 +398,10 @@ class CusSiteForm(forms.ModelForm):
 
         self.initial['cus_zip'] = instance.cus_zip
 
-        self.fields['cus_site_cus_zone'].widget.attrs={'class': 'form-control'}
         self.fields['cus_site_cus_zone'].queryset=ComZone.objects.all()
         self.initial['cus_site_cus_zone'] = instance.cus_zone_id
+        
+        self.initial['cus_site_cus_contact_con_sex'] = instance.cus_contact.con_sex
 
     def clean_cus_active(self):
         data = self.data.get('cus_site_cus_active')
@@ -489,3 +492,7 @@ class CusSiteForm(forms.ModelForm):
     def clean_cus_site_cus_zone(self):
         data = self.data.get('cus_site_cus_zone')
         return data
+
+    def clean_cus_site_cus_contact_con_sex(self):
+        data = self.data.get('cus_site_cus_contact_con_sex')
+        return data        
