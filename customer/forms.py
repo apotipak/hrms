@@ -3,7 +3,7 @@ from .models import Customer, CusMain
 from django.contrib.auth.models import User
 from django.forms.widgets import HiddenInput
 from django.utils.translation import gettext_lazy as _
-from system.models import CusContact
+from system.models import CusContact, ComZone
 from django.core.exceptions import ValidationError
 
 
@@ -380,7 +380,8 @@ class CusSiteForm(forms.ModelForm):
     cus_site_cus_zip = forms.CharField(required=False)
     cus_site_cus_tel = forms.CharField(required=False)
     cus_site_cus_fax = forms.CharField(required=False)
-    cus_site_cus_email = forms.CharField(required=False)
+    cus_site_cus_email = forms.CharField(required=False)    
+    cus_site_cus_zone = forms.ModelChoiceField(queryset=None, required=True)
 
     class Meta:
         model = Customer
@@ -391,7 +392,11 @@ class CusSiteForm(forms.ModelForm):
         super(CusSiteForm, self).__init__(*args, **kwargs)        
         instance = getattr(self, 'instance', None)
 
-        self.initial['cus_zip'] = instance.cus_zip        
+        self.initial['cus_zip'] = instance.cus_zip
+
+        self.fields['cus_site_cus_zone'].widget.attrs={'class': 'form-control'}
+        self.fields['cus_site_cus_zone'].queryset=ComZone.objects.all()
+        self.initial['cus_site_cus_zone'] = instance.cus_zone_id
 
     def clean_cus_active(self):
         data = self.data.get('cus_site_cus_active')
@@ -477,4 +482,8 @@ class CusSiteForm(forms.ModelForm):
 
     def clean_cus_site_cus_email(self):
         data = self.data.get('cus_site_cus_email')
+        return data
+
+    def clean_cus_site_cus_zone(self):
+        data = self.data.get('cus_site_cus_zone')
         return data

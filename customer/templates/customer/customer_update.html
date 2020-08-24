@@ -320,16 +320,18 @@
                     <div class="form-row">
                       <div class="form-group col-md-6">
                         <label for="cus_main_cus_zone">{% trans 'Zone' %}</label>
-                        {% if cus_main_form.cus_zone.errors %}                
-                          {% render_field cus_main_form.cus_zone class="form-control col-sm-12 form-control-sm is-invalid" %}
-                          {% for error in cus_main_form.cus_zone.errors %}
+                        
+                        {% if cus_main_form.cus_site_cus_zone.errors %}                
+                          {% render_field cus_main_form.cus_main_cus_zone class="form-control col-sm-12 form-control-sm is-invalid" %}
+                          {% for error in cus_main_form.cus_main_cus_zone.errors %}
                           <div class="invalid-feedback">
                             {{error}}
                           </div>
                           {% endfor %}                
                         {% else %}
-                          {% render_field cus_main_form.cus_zone class="form-control col-sm-12 form-control-sm" %}
-                        {% endif %}      
+                          {% render_field cus_main_form.cus_main_cus_zone class="form-control col-sm-12 form-control-sm" %}
+                        {% endif %}
+
                       </div>
                     </div>                    
                   </div>
@@ -586,33 +588,31 @@
                         <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_tel" name="cus_site_cus_tel" value="{{ customer.cus_tel|default_if_none:'' }}">
                       </div>
 
-                      <div class="form-group col-md-4">
+                      <div class="form-group col-md-2">
                         <label for="id_cus_site_cus_fax">{% trans 'Fax' %}</label>
                         <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_fax" name="cus_site_cus_fax" value="{{ customer.cus_fax|default_if_none:'' }}">
                       </div>
 
-                      <div class="form-group col-md-4">
+                      <div class="form-group col-md-3">
                         <label for="id_cus_site_cus_email">{% trans 'Email' %}</label>
                         <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_email" name="cus_site_cus_email" value="{{ customer.cus_email|default_if_none:'' }}">
                       </div>
 
-                    </div>
-
-                    <div class="form-row">
-                      <div class="form-group col-md-6">
+                      <div class="form-group col-md-3">
                         <label for="cus_main_cus_zone">{% trans 'Zone' %}</label>
-                        {% if cus_main_form.cus_zone.errors %}                
-                          {% render_field cus_main_form.cus_zone class="form-control col-sm-12 form-control-sm is-invalid" %}
-                          {% for error in cus_main_form.cus_zone.errors %}
+                        {% if cus_site_form.cus_site_cus_zone.errors %}                
+                          {% render_field cus_site_form.cus_site_cus_zone class="form-control col-sm-12 form-control-sm is-invalid" %}
+                          {% for error in cus_site_form.cus_site_cus_zone.errors %}
                           <div class="invalid-feedback">
                             {{error}}
                           </div>
                           {% endfor %}                
                         {% else %}
-                          {% render_field cus_main_form.cus_zone class="form-control col-sm-12 form-control-sm" %}
+                          {% render_field cus_site_form.cus_site_cus_zone class="form-control col-sm-12 form-control-sm" %}
                         {% endif %}      
                       </div>
-                    </div>                    
+
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1135,6 +1135,7 @@
     cus_site_cus_tel = $('#id_cus_site_cus_tel').val();
     cus_site_cus_fax = $('#id_cus_site_cus_fax').val();
     cus_site_cus_email = $('#id_cus_site_cus_email').val();
+    cus_site_cus_zone = $('#id_cus_site_cus_zone').val();
 
     $.ajax({
         url : "/customer/ajax/update_cus_site/",
@@ -1158,6 +1159,7 @@
           cus_site_cus_tel : cus_site_cus_tel,
           cus_site_cus_fax : cus_site_cus_fax,
           cus_site_cus_email : cus_site_cus_email,
+          cus_site_cus_zone : cus_site_cus_zone,
         },
         success : function(json) {
           if(json.form_is_valid) {        
