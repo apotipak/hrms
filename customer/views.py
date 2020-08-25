@@ -13,7 +13,7 @@ from django.template.loader import render_to_string
 from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
-from system.models import TDistrict, TCity
+from system.models import TDistrict, TCity, CusContact
 from django.core import serializers
 import json
 import sys, locale
@@ -908,3 +908,177 @@ def update_cus_site(request):
         response_data['form_is_valid'] = False        
 
     return JsonResponse(response_data)
+
+
+
+@login_required(login_url='/accounts/login/')
+def get_contact_list_modal(request):
+
+    print("**********************************")    
+    print("FUNCTION: get_contact_list_modal")
+    print("**********************************")
+
+    data = []
+    item_per_page = 100
+    page_no = request.GET["page_no"]
+    current_contact_id = request.GET["current_contact_id"]
+    search_contact_option = request.GET["search_contact_option"]
+    search_contact_text = request.GET["search_contact_text"]
+    
+    print("current_contact_id = " + str(current_contact_id))
+    print("search_contact_option = " + str(search_contact_option))
+    print("search_contact_text = " + str(search_contact_text))
+
+    '''
+    if search_district_option == '1':
+        data = TDistrict.objects.select_related('city_id').filter(dist_id__exact=search_district_text)
+
+    if search_district_option == '2':
+        data = TDistrict.objects.select_related('city_id').filter(dist_th__contains=search_district_text)
+        if not data:
+            data = TDistrict.objects.select_related('city_id').filter(dist_en__contains=search_district_text)        
+
+    if search_district_option == '3':
+        data = TDistrict.objects.select_related('city_id').filter(city_id__city_th__contains=search_district_text)
+        if not data:
+            data = TDistrict.objects.select_related('city_id').filter(city_id__city_en__contains=search_district_text)        
+
+    if data:
+        page = int(page_no)
+
+        next_page = page + 1
+        if page >= 1:
+            previous_page = page - 1
+        else:
+            previous_page = 0
+
+
+        paginator = Paginator(data, item_per_page)
+        is_paginated = True if paginator.num_pages > 1 else False        
+
+        try:
+            current_page = paginator.get_page(page)
+        except InvalidPage as e:
+            raise Http404(str(e))
+
+        if current_page:
+
+            current_page_number = current_page.number
+            current_page_paginator_num_pages = current_page.paginator.num_pages
+
+            pickup_dict = {}
+            pickup_records=[]
+            
+            for d in current_page:
+                # print("debug 1")
+                record = {
+                    "dist_id": d.dist_id,
+                    "city_id": d.city_id_id,
+                    "dist_th": d.dist_th,
+                    "dist_en": d.dist_en,
+                    "city_th": d.city_id.city_th,
+                    "city_en": d.city_id.city_en,
+                }
+                pickup_records.append(record)
+
+            response = JsonResponse(data={
+                "success": True,
+                "is_paginated": is_paginated,
+                "page" : page,
+                "next_page" : next_page,
+                "previous_page" : previous_page,
+                "current_page_number" : current_page_number,
+                "current_page_paginator_num_pages" : current_page_paginator_num_pages,
+                "results": list(pickup_records)         
+                })
+            response.status_code = 200
+            return response
+        else:
+            # print("not found")      
+            response = JsonResponse(data={
+                "success": False,
+                "results": [],
+            })
+            response.status_code = 403
+            return response
+    else:        
+        # print("not found 2")
+        response = JsonResponse(data={
+            "success": False,
+            "error"
+            "results": [],
+        })
+        response.status_code = 403
+        return response
+    '''
+    return JsonResponse(data={"success": False, "results": ""})
+
+@login_required(login_url='/accounts/login/')
+def get_contact_list(request):
+
+    print("****************************")
+    print("FUNCTION: get_contact_list")
+    print("****************************")
+    
+    current_contact_id = request.GET.get('current_contact_id')
+    print("current_contact_id : " + str(current_contact_id))
+
+    item_per_page = 100
+
+    if request.method == "POST":        
+        data = Contact.objects.filter(con_id__exact=current_contact_id)
+
+        page = 1
+        paginator = Paginator(data, item_per_page)
+        is_paginated = True if paginator.num_pages > 1 else False        
+
+        try:
+            current_page = paginator.get_page(page)
+        except InvalidPage as e:
+            raise Http404(str(e))
+    else:
+        print("method get")
+        data = CusContact.objects.filter(con_id__exact=current_contact_id)
+
+        paginator = Paginator(data, item_per_page)
+        is_paginated = True if paginator.num_pages > 1 else False
+        page = request.GET.get('page', 1) or 1
+        try:
+            current_page = paginator.get_page(page)
+        except InvalidPage as e:
+            raise Http404(str(e))   
+
+    if current_page:    
+        current_page_number = current_page.number
+        current_page_paginator_num_pages = current_page.paginator.num_pages
+
+        pickup_dict = {}
+        pickup_records=[]
+        
+        for d in current_page:
+            record = {
+                "con_id": d.con_id,
+                "con_fname_th": d.con_fname_th,
+                "con_lname_th": d.con_lname_th
+            }
+            pickup_records.append(record)
+
+        response = JsonResponse(data={
+            "success": True,
+            "is_paginated": is_paginated,
+            "page" : page,
+            "next_page" : page + 1,
+            "current_page_number" : current_page_number,
+            "current_page_paginator_num_pages" : current_page_paginator_num_pages,
+            "results": list(pickup_records)         
+            })
+        response.status_code = 200
+        return response
+    else:
+        response = JsonResponse({"error": "there was an error"})
+        response.status_code = 403
+        return response
+
+
+    #return JsonResponse(data={"success": False, "results": ""})
+

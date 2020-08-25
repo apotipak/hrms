@@ -24,3 +24,9 @@ urlpatterns += [
   url(r'^ajax/update_cus_main/$', views.update_cus_main, name='update_cus_main'),
   url(r'^ajax/update_cus_site/$', views.update_cus_site, name='update_cus_site'),
 ]
+
+urlpatterns += [
+  url(r'^ajax/get_contact_list/$', views.get_contact_list, name='get_contact_list'),
+  url(r'^ajax/get_contact_list_modal/$', views.get_contact_list_modal, name='get_contact_list_modal'),
+]
+
