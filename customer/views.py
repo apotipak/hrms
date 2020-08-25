@@ -919,7 +919,7 @@ def get_contact_list_modal(request):
     print("**********************************")
 
     data = []
-    item_per_page = 100
+    item_per_page = 200
     page_no = request.GET["page_no"]
     current_contact_id = request.GET["current_contact_id"]
     search_contact_option = request.GET["search_contact_option"]
@@ -929,19 +929,18 @@ def get_contact_list_modal(request):
     print("search_contact_option = " + str(search_contact_option))
     print("search_contact_text = " + str(search_contact_text))
 
-    '''
-    if search_district_option == '1':
-        data = TDistrict.objects.select_related('city_id').filter(dist_id__exact=search_district_text)
+    if search_contact_option == "1":
+        data = CusContact.objects.filter(con_id__exact=search_contact_text)
 
-    if search_district_option == '2':
-        data = TDistrict.objects.select_related('city_id').filter(dist_th__contains=search_district_text)
+    if search_contact_option == "2":
+        data = CusContact.objects.filter(con_fname_th__istartswith=search_contact_text)
         if not data:
-            data = TDistrict.objects.select_related('city_id').filter(dist_en__contains=search_district_text)        
+            data = CusContact.objects.filter(con_fname_en__istartswith=search_contact_text)
 
-    if search_district_option == '3':
-        data = TDistrict.objects.select_related('city_id').filter(city_id__city_th__contains=search_district_text)
+    if search_contact_option == "3":
+        data = CusContact.objects.filter(con_lname_th__istartswith=search_contact_text)
         if not data:
-            data = TDistrict.objects.select_related('city_id').filter(city_id__city_en__contains=search_district_text)        
+            data = CusContact.objects.filter(con_lname_en__istartswith=search_contact_text)
 
     if data:
         page = int(page_no)
@@ -951,7 +950,6 @@ def get_contact_list_modal(request):
             previous_page = page - 1
         else:
             previous_page = 0
-
 
         paginator = Paginator(data, item_per_page)
         is_paginated = True if paginator.num_pages > 1 else False        
@@ -972,12 +970,11 @@ def get_contact_list_modal(request):
             for d in current_page:
                 # print("debug 1")
                 record = {
-                    "dist_id": d.dist_id,
-                    "city_id": d.city_id_id,
-                    "dist_th": d.dist_th,
-                    "dist_en": d.dist_en,
-                    "city_th": d.city_id.city_th,
-                    "city_en": d.city_id.city_en,
+                    "con_id": d.con_id,
+                    "con_fname_th": d.con_fname_th,
+                    "con_lname_th": d.con_lname_th,
+                    "con_position_th": d.con_position_th,
+                    "con_position_en": d.con_position_en,
                 }
                 pickup_records.append(record)
 
@@ -994,7 +991,6 @@ def get_contact_list_modal(request):
             response.status_code = 200
             return response
         else:
-            # print("not found")      
             response = JsonResponse(data={
                 "success": False,
                 "results": [],
@@ -1002,7 +998,6 @@ def get_contact_list_modal(request):
             response.status_code = 403
             return response
     else:        
-        # print("not found 2")
         response = JsonResponse(data={
             "success": False,
             "error"
@@ -1010,8 +1005,7 @@ def get_contact_list_modal(request):
         })
         response.status_code = 403
         return response
-    '''
-    return JsonResponse(data={"success": False, "results": ""})
+
 
 @login_required(login_url='/accounts/login/')
 def get_contact_list(request):
