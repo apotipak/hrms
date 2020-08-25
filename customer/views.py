@@ -850,6 +850,8 @@ def update_cus_site(request):
             cus_site_cus_contact_con_sex = request.POST.get('cus_site_cus_contact_con_sex')
             #print("sex = " + str(cus_site_cus_contact_con_sex))
 
+            cus_contact_id = request.POST.get('cus_contact_id')
+
             customer = get_object_or_404(Customer, pk=cus_no)
             
             select_district_id = request.POST.get('select_district_id')
@@ -879,6 +881,8 @@ def update_cus_site(request):
             customer.cus_tel = cus_tel
             customer.cus_fax = cus_fax
             customer.cus_email = cus_email
+
+            customer.cus_contact_id = cus_contact_id
 
             if customer.upd_flag == 'A':
                 customer.upd_flag = 'E'

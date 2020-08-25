@@ -1497,6 +1497,7 @@
 
     // Contact Information
     cus_site_cus_contact_con_sex = $('input[name="cus_site_cus_contact_con_sex"]:checked').val();    
+    cus_contact_id = $("#id_cus_site_cus_contact_id").val();
 
     $.ajax({
         url : "/customer/ajax/update_cus_site/",
@@ -1523,6 +1524,7 @@
           cus_site_cus_zone : cus_site_cus_zone,
 
           cus_site_cus_contact_con_sex : cus_site_cus_contact_con_sex,
+          cus_contact_id : cus_contact_id,
         },
         success : function(json) {
           if(json.form_is_valid) {        
