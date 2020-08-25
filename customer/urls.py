@@ -26,7 +26,8 @@ urlpatterns += [
 ]
 
 urlpatterns += [
+  url(r'^ajax/get_contact/$', views.get_contact, name='get_contact'),
   url(r'^ajax/get_contact_list/$', views.get_contact_list, name='get_contact_list'),
-  url(r'^ajax/get_contact_list_modal/$', views.get_contact_list_modal, name='get_contact_list_modal'),
+  url(r'^ajax/get_contact_list_modal/$', views.get_contact_list_modal, name='get_contact_list_modal'),  
 ]
 

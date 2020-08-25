@@ -1074,5 +1074,48 @@ def get_contact_list(request):
         return response
 
 
-    #return JsonResponse(data={"success": False, "results": ""})
+@login_required(login_url='/accounts/login/')
+def get_contact(request):
+
+    print("****************************")
+    print("FUNCTION: get_contact")
+    print("****************************")
+
+    contact_id = request.GET.get('contact_id')
+    print("contact_id : " + str(contact_id))
+
+    data = CusContact.objects.filter(con_id__exact=contact_id)
+
+    if data:
+        print("success")
+
+        pickup_dict = {}
+        pickup_records=[]
+        
+        for d in data:
+            print("debug 1")
+            record = {
+                "con_id": d.con_id,
+                "con_fname_th": d.con_fname_th,
+                "con_lname_th": d.con_lname_th,
+                "con_position_th": d.con_position_th,
+            }
+            pickup_records.append(record)
+
+        response = JsonResponse(data={
+            "success": True,
+            "results": list(pickup_records)         
+        })
+        response.status_code = 200
+    else:
+        print("error")
+        response = JsonResponse(data={
+            "success": False,
+            "contact": [],
+        })
+
+        response = JsonResponse({"error": "there was an error"})
+        response.status_code = 403
+    
+    return response        
 

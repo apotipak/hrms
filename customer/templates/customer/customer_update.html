@@ -846,7 +846,7 @@
             result += "<div class='col-8 offset-3 pb-2'>";
             result += "<form id='cus_site_search_contact_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
             result += "  <div class='form-group mx-sm-3 mb-2'>";
-            result += "  <select name='cus_site_contact_option' class='form-control form-control-sm' required id='id_cus_site_contact_option'>";
+            result += "  <select name='cus_site_contact_option' class='form-control form-control-sm' required id='id_cus_site_cus_contact_option'>";
             result += "    <option value='1'>Contact ID</option>";
             result += "    <option value='2' selected>Name (TH)</option>";
             result += "    <option value='3'>Last Name (TH)</option>";
@@ -908,35 +908,35 @@
 
 
   function select_contact(con_id) {
-
-    /*
-    $("#id_cus_site_cus_district_dist_th").val(dist_name_th);
-    $("#id_cus_site_select_district_id").val(dist_id);
-    $("#id_cus_site_cus_city").val(city_name_th);
-    $("#id_cus_site_cus_district_en").val(dist_name_en);
-    $("#id_cus_site_cus_city_en").val(city_name_en);
-    */
-
     $.ajax({
-        //url : "/customer/ajax/get_contact_modal",
+        url : "/customer/ajax/get_contact",
         type: 'get',          
         dataType: 'json',
         data : {          
-          con_id : con_id,
+          contact_id : con_id,
         },
         beforeSend: function () {
           $("#contact_modal").modal("show");
         },
         success: function (data) {
-          $("#contact_modal .modal-body").html("{% trans 'Todo' %}");
+          var con_id = data.results[0]["con_id"];
+          var con_fname_th = data.results[0]["con_fname_th"];
+          var con_lname_th = data.results[0]["con_lname_th"];
+          var con_position_th = data.results[0]["con_position_th"];
+
+          $("#id_cus_site_cus_contact_id").val(con_id);
+          $("#id_cus_site_cus_contact_con_fname_th").val(con_fname_th);          
+          $("#id_cus_site_cus_contact_con_lname_th").val(con_lname_th);          
+          $("#id_cus_site_cus_contact_con_position_th").val(con_position_th);          
         },
         error: function(data){
-          $("#contact_modal .modal-body").html("{% trans 'There is no data.' %}");
+          // 
         }          
     });
 
     $("#contact_modal").modal("hide");    
   }
+
 
   $(document).ready(function(){
 
