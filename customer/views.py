@@ -202,9 +202,12 @@ def get_district_list_modal(request):
     data = []
     item_per_page = 100
     page_no = request.GET["page_no"]
+    current_district_id = request.GET["current_district_id"]
     search_district_option = request.GET["search_district_option"]
     search_district_text = request.GET["search_district_text"]
     
+    print("current_district_id = " + str(current_district_id))
+
     if search_district_option == '1':
         data = TDistrict.objects.select_related('city_id').filter(dist_id__exact=search_district_text)
 
@@ -292,14 +295,16 @@ def get_district_list_modal(request):
 @login_required(login_url='/accounts/login/')
 def get_district_list(request):
 
+    print("****************************")
     print("FUNCTION: get_district_list")
+    print("****************************")
 
     current_district_id = request.GET.get('current_district_id')
     cus_active = request.POST.get('cus_main_cus_active')
 
-    print(current_district_id)
+    print("current_district_id : " + str(current_district_id))
 
-    item_per_page = 8
+    item_per_page = 100
 
     if request.method == "POST":
         print("method post")        
@@ -315,7 +320,16 @@ def get_district_list(request):
             raise Http404(str(e))
 
     else:
-        data = TDistrict.objects.select_related('city_id').filter(dist_id=current_district_id)
+        print("method get")
+        if current_district_id != "":
+            district_object = TDistrict.objects.filter(dist_id__exact=current_district_id).get()                        
+            print("city name th = " + str(district_object.city_id.city_en))
+
+            data = TDistrict.objects.select_related('city_id').filter(city_id__city_th__contains=district_object.city_id.city_th)
+            if not data:
+                data = TDistrict.objects.select_related('city_id').filter(city_id__city_en__contains=district_object.city_id.city_en)
+        else:    
+            data = TDistrict.objects.select_related('city_id').all()
 
         paginator = Paginator(data, item_per_page)
         is_paginated = True if paginator.num_pages > 1 else False

@@ -783,7 +783,7 @@
     }
   });
 
-  $(document).ready(function(){        
+  $(document).ready(function(){
 
     $('#district_lookup').on('click', function (e) {
       var obj = $(this);
@@ -879,12 +879,9 @@
   });
 
   function cus_site_search_district_modal() {
+    current_district_id = $('#id_cus_site_select_district_id').val();
     search_district_option = $('#id_cus_site_cus_district_option').val();
-    //alert(district_option);
-
-    //city_name = $('#id_cus_site_search_district_by_city_name').val();
     search_district_text = $('#id_cus_site_cus_district_search_text').val();
-    //alert(city_name);
 
     page_no = 1;
 
@@ -896,7 +893,8 @@
           page_no : page_no,
           city_name : search_district_text,
           search_district_option : search_district_option,          
-          search_district_text : search_district_text
+          search_district_text : search_district_text,
+          current_district_id : current_district_id,
         },
         success: function (data) {
           var result = ""
@@ -1008,10 +1006,7 @@
   }
 
   function get_district_lookup(page_no) {
-    //current_district_id = $('#id_cus_site_select_district_id').val();
-    //city_name = $('#id_cus_site_search_district_by_city_name').val();
-    //city_name = $('#id_cus_site_cus_district_search_text').val();
-
+    current_district_id = $('#id_cus_site_select_district_id').val();
     search_district_option = $('#id_cus_site_cus_district_option').val();
     search_district_text = $('#id_cus_site_cus_district_search_text').val();
 
@@ -1021,7 +1016,6 @@
         dataType: 'json',
         data : {          
           page_no : page_no,
-          //city_name : city_name,
           current_district_id : current_district_id,
           search_district_option : search_district_option,
           search_district_text : search_district_text,
