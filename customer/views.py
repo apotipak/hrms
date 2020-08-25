@@ -195,23 +195,30 @@ def CustomerList(request):
 @login_required(login_url='/accounts/login/')
 def get_district_list_modal(request):
 
+    print("**********************************")    
     print("FUNCTION: get_district_list_modal")
+    print("**********************************")
 
-    item_per_page = 50
+    data = []
+    item_per_page = 100
     page_no = request.GET["page_no"]
-    city_name = request.GET["city_name"]
-    print(city_name)
+    search_district_option = request.GET["search_district_option"]
+    search_district_text = request.GET["search_district_text"]
     
-    if city_name != '':
-        data = TDistrict.objects.select_related('city_id').filter(city_id__city_th__contains=city_name)
+    if search_district_option == '1':
+        data = TDistrict.objects.select_related('city_id').filter(dist_id__exact=search_district_text)
+
+    if search_district_option == '2':
+        data = TDistrict.objects.select_related('city_id').filter(dist_th__contains=search_district_text)
         if not data:
-            data = TDistrict.objects.select_related('city_id').filter(city_id__city_en__contains=city_name)
-    else:
-        data = TDistrict.objects.select_related('city_id')
-    
+            data = TDistrict.objects.select_related('city_id').filter(dist_en__contains=search_district_text)        
+
+    if search_district_option == '3':
+        data = TDistrict.objects.select_related('city_id').filter(city_id__city_th__contains=search_district_text)
+        if not data:
+            data = TDistrict.objects.select_related('city_id').filter(city_id__city_en__contains=search_district_text)        
 
     if data:
-        print("good")
         page = int(page_no)
 
         next_page = page + 1
@@ -230,13 +237,7 @@ def get_district_list_modal(request):
             raise Http404(str(e))
 
         if current_page:
-            print("current_page = " + str(current_page))
-            print("current_page.number = " + str(current_page.number))        
-            print("current_page.paginator.num_pages = " + str(current_page.paginator.num_pages))
-            
-            print("current_page.has_next = " + str(current_page.has_next))
-            print("current_page.has_previous = " + str(current_page.has_previous))
-        
+
             current_page_number = current_page.number
             current_page_paginator_num_pages = current_page.paginator.num_pages
 
@@ -244,7 +245,7 @@ def get_district_list_modal(request):
             pickup_records=[]
             
             for d in current_page:
-                print("debug 1")
+                # print("debug 1")
                 record = {
                     "dist_id": d.dist_id,
                     "city_id": d.city_id_id,
@@ -268,7 +269,7 @@ def get_district_list_modal(request):
             response.status_code = 200
             return response
         else:
-            print("not found")      
+            # print("not found")      
             response = JsonResponse(data={
                 "success": False,
                 "results": [],
@@ -276,7 +277,7 @@ def get_district_list_modal(request):
             response.status_code = 403
             return response
     else:        
-        print("not found 2")
+        # print("not found 2")
         response = JsonResponse(data={
             "success": False,
             "error"

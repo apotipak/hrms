@@ -788,7 +788,6 @@
     $('#district_lookup').on('click', function (e) {
       var obj = $(this);
       current_district_id = $('#id_cus_site_select_district_id').val();
-      //alert(current_district_id);
 
       $.ajax({
           url: obj.attr("data-url"),
@@ -806,31 +805,32 @@
             var dist_id = data.results[0]["dist_id"];
             var dist_th = data.results[0]["dist_th"];
 
-
             result += "<div class='row'>";
             result += "<div class='col-md-6 offset-md-3 pb-2'>";
             result += "<form id='cus_site_search_district_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
             result += "  <div class='form-group mx-sm-3 mb-2'>";
-            result += "    <label for='id_cus_site_search_district' class='sr-only'>Search</label>";
-            result += "    <input type='text' class='form-control' id='id_cus_site_search_district_by_city_name' name='id_cus_site_search_district_by_city_name' placeholder='Enter a city name'>";
+            result += "  <select name='cus_site_cus_district_option' class='form-control form-control-sm' required id='id_cus_site_cus_district_option'>";
+            result += "    <option value='1'>District ID</option>";
+            result += "    <option value='2'>District</option>";
+            result += "    <option value='3' selected>City</option>";
+            result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";
+            result += "    <label for='id_cus_site_search_district' class='sr-only'>Search</label>";            
+            result += "    <input type='text' class='form-control form-control-sm' id='id_cus_site_cus_district_search_text' name='cus_site_cus_district_search_text' placeholder=''>";
             result += "  </div>";
-            result += "<a href='javascript:cus_site_search_district_modal()' type='button' class='btn btn-primary mb-2'>Search</a>";            
+            result += "<a href='javascript:cus_site_search_district_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";            
             result += "</form>";
             result += "</div>";
-            
-            //result += "<div class='col-12 text-center pb-2'><h5>search</h5></div>";
             result += "<table class='table table-hover table-sm'>";
             result += " <thead>";
             result += "   <tr>";
-            result += "     <th scope='col'>{% trans 'ID' %}</th>";
-            result += "     <th scope='col'>{% trans 'Name' %}</th>";
+            result += "     <th scope='col'>{% trans 'District ID' %}</th>";
+            result += "     <th scope='col'>{% trans 'District' %}</th>";
             result += "     <th scope='col'>{% trans 'City' %}</th>";
             result += "     <th scope='col'>&nbsp;</th>";
             result += "   </tr>";
             result += " </thead>";
-            result += " <tbody>";
+            result += "<tbody>";
             result += "<div>";
-
 
             for(var i=0; i<count; i++) {              
               var dist_id = data.results[i]["dist_id"];
@@ -843,7 +843,6 @@
               result += "<td>" + dist_id + "</td>";        
               result += "<td>" + dist_name_th + "</td>";
               result += "<td>" + city_name_th + "</td>";
-              //result += "<td><a href='javascript:select_district(" + dist_id + ",\"" + dist_name_th + "\",\"" + city_name_th + "\");' type='button' class='btn btn-primary btn-xs'>Selectbb</a></td>";
               result += "<td><a href='javascript:select_district(" + dist_id + ",\"" + dist_name_th + "\",\"" + city_name_th + "\",\"" + dist_name_en + "\",\"" + city_name_en + "\");' type='button' class='btn btn-outline-primary btn-sm'>Select</a></td>";
 
               result += "</tr>";              
@@ -880,7 +879,13 @@
   });
 
   function cus_site_search_district_modal() {
-    city_name = $('#id_cus_site_search_district_by_city_name').val();
+    search_district_option = $('#id_cus_site_cus_district_option').val();
+    //alert(district_option);
+
+    //city_name = $('#id_cus_site_search_district_by_city_name').val();
+    search_district_text = $('#id_cus_site_cus_district_search_text').val();
+    //alert(city_name);
+
     page_no = 1;
 
     $.ajax({
@@ -889,35 +894,41 @@
         dataType: 'json',
         data : {          
           page_no : page_no,
-          city_name : city_name
+          city_name : search_district_text,
+          search_district_option : search_district_option,          
+          search_district_text : search_district_text
         },
         success: function (data) {
           var result = ""
           var count = data.results.length;
           var dist_id = data.results[0]["dist_id"];
           var dist_th = data.results[0]["dist_th"];
-          
+
           result += "<div class='row'>";
           result += "<div class='col-md-6 offset-md-3 pb-2'>";
           result += "<form id='cus_site_search_district_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
           result += "  <div class='form-group mx-sm-3 mb-2'>";
-          result += "    <label for='id_cus_site_search_district' class='sr-only'>Search</label>";
-          result += "    <input type='text' class='form-control' id='id_cus_site_search_district_by_city_name' name='id_cus_site_search_district_by_city_name' placeholder='Enter a city name'>";
+          result += "  <select name='cus_site_cus_district_option' class='form-control form-control-sm' required id='id_cus_site_cus_district_option'>";
+          result += "    <option value='1'>District ID</option>";
+          result += "    <option value='2'>District</option>";
+          result += "    <option value='3' selected>City</option>";
+          result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";
+          result += "    <label for='id_cus_site_search_district' class='sr-only'>Search</label>";            
+          result += "    <input type='text' class='form-control form-control-sm' id='id_cus_site_cus_district_search_text' name='cus_site_cus_district_search_text' placeholder=''>";
           result += "  </div>";
-          result += "<a href='javascript:cus_site_search_district_modal()' type='button' class='btn btn-primary mb-2'>Search</a>";            
+          result += "<a href='javascript:cus_site_search_district_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";            
           result += "</form>";
           result += "</div>";
-
           result += "<table class='table table-hover table-sm'>";
           result += " <thead>";
           result += "   <tr>";
-          result += "     <th scope='col'>{% trans 'ID' %}</th>";
-          result += "     <th scope='col'>{% trans 'Name' %}</th>";
+          result += "     <th scope='col'>{% trans 'District ID' %}</th>";
+          result += "     <th scope='col'>{% trans 'District' %}</th>";
           result += "     <th scope='col'>{% trans 'City' %}</th>";
           result += "     <th scope='col'>&nbsp;</th>";
           result += "   </tr>";
           result += " </thead>";
-          result += " <tbody>";
+          result += "<tbody>";
           result += "<div>";
 
           for(var i=0; i<count; i++) {              
@@ -959,27 +970,24 @@
           result += "<div class='col-md-6 offset-md-3 pb-2'>";
           result += "<form id='cus_site_search_district_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
           result += "  <div class='form-group mx-sm-3 mb-2'>";
-          result += "    <label for='id_cus_site_search_district' class='sr-only'>Search</label>";
-          result += "    <input type='text' class='form-control' id='id_cus_site_search_district_by_city_name' name='id_cus_site_search_district_by_city_name' placeholder='Enter a city name'>";
+          result += "  <select name='cus_site_cus_district_option' class='form-control form-control-sm' required id='id_cus_site_cus_district_option'>";
+          result += "    <option value='1'>District ID</option>";
+          result += "    <option value='2'>District</option>";
+          result += "    <option value='3' selected>City</option>";
+          result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";
+          result += "    <label for='id_cus_site_search_district' class='sr-only'>Search</label>";            
+          result += "    <input type='text' class='form-control form-control-sm' id='id_cus_site_cus_district_search_text' name='cus_site_cus_district_search_text' placeholder=''>";
           result += "  </div>";
-          result += "<a href='javascript:cus_site_search_district_modal()' type='button' class='btn btn-primary mb-2'>Search</a>";            
+          result += "<a href='javascript:cus_site_search_district_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";            
           result += "</form>";
           result += "</div>";
-
           result += "<table class='table table-hover table-sm'>";
           result += " <thead>";
           result += "   <tr>";
-          result += "     <th scope='col' >{% trans 'ID' %}</th>";
-          result += "     <th scope='col'>{% trans 'Name' %}</th>";
-          result += "     <th scope='col'>{% trans 'City' %}</th>";
-          result += "     <th scope='col'>&nbsp;</th>";
+          result += "     <td colspan='4' class='text-center'><br>Not found.<br><br></td>";
           result += "   </tr>";
           result += " </thead>";
-          result += " <tbody>";
-          result += "   <tr>";
-          result += "     <td colspan='4' class='text-center'><br>Not found.<br><br></td>";
-          result += "   </tr>";            
-          result += " </tbody>";
+          result += "</tbody>";
           result += "</table>";
           $("#districtmodal .modal-body").html(result);
         }          
@@ -1000,8 +1008,12 @@
   }
 
   function get_district_lookup(page_no) {
-    current_district_id = $('#id_cus_site_select_district_id').val();
-    city_name = $('#id_cus_site_search_district_by_city_name').val();
+    //current_district_id = $('#id_cus_site_select_district_id').val();
+    //city_name = $('#id_cus_site_search_district_by_city_name').val();
+    //city_name = $('#id_cus_site_cus_district_search_text').val();
+
+    search_district_option = $('#id_cus_site_cus_district_option').val();
+    search_district_text = $('#id_cus_site_cus_district_search_text').val();
 
     $.ajax({
         url : "/customer/ajax/get_district_list_modal",
@@ -1009,8 +1021,10 @@
         dataType: 'json',
         data : {          
           page_no : page_no,
-          city_name : city_name,
+          //city_name : city_name,
           current_district_id : current_district_id,
+          search_district_option : search_district_option,
+          search_district_text : search_district_text,
         },
         success: function (data) {
           var result = ""
@@ -1018,28 +1032,32 @@
           var dist_id = data.results[0]["dist_id"];
           var dist_name_th = data.results[0]["dist_th"];
 
-          result += "<div class='row text-center pb-2'>";
+          result += "<div class='row'>";
+          result += "<div class='col-md-6 offset-md-3 pb-2'>";
           result += "<form id='cus_site_search_district_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
           result += "  <div class='form-group mx-sm-3 mb-2'>";
-          result += "    <label for='id_cus_site_search_district' class='sr-only'>Search</label>";
-          result += "    <input type='text' class='form-control' id='id_cus_site_search_district_by_city_name' name='id_cus_site_search_district_by_city_name' placeholder='Enter a city name'>";
+          result += "  <select name='cus_site_cus_district_option' class='form-control form-control-sm' required id='id_cus_site_cus_district_option'>";
+          result += "    <option value='1'>District ID</option>";
+          result += "    <option value='2'>District</option>";
+          result += "    <option value='3' selected>City</option>";
+          result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";
+          result += "    <label for='id_cus_site_search_district' class='sr-only'>Search</label>";            
+          result += "    <input type='text' class='form-control form-control-sm' id='id_cus_site_cus_district_search_text' name='cus_site_cus_district_search_text' placeholder=''>";
           result += "  </div>";
-          result += "<a href='javascript:cus_site_search_district_modal()' type='button' class='btn btn-primary mb-2'>Search</a>";            
+          result += "<a href='javascript:cus_site_search_district_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";            
           result += "</form>";
           result += "</div>";
-
-          //result += "<div class='col-12 text-center pb-2'><h5>search</h5></div>";
-
           result += "<table class='table table-hover table-sm'>";
           result += " <thead>";
           result += "   <tr>";
-          result += "     <th scope='col'>{% trans 'ID' %}</th>";
-          result += "     <th scope='col'>{% trans 'Name' %}</th>";
+          result += "     <th scope='col'>{% trans 'District ID' %}</th>";
+          result += "     <th scope='col'>{% trans 'District' %}</th>";
           result += "     <th scope='col'>{% trans 'City' %}</th>";
           result += "     <th scope='col'>&nbsp;</th>";
           result += "   </tr>";
           result += " </thead>";
-          result += " <tbody>";
+          result += "<tbody>";
+          result += "<div>";
 
           for(var i=0; i<count; i++) {              
             var dist_id = data.results[i]["dist_id"];
