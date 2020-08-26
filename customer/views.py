@@ -470,6 +470,7 @@ def CustomerCreate(request):
     return render(request, 'customer/customer_create.html', {'page_title': page_title, 'project_name': project_name, 'project_version': project_version, 'db_server': db_server, 'today_date': today_date})
 
 
+'''
 def CustomerUpdate(request, pk):
     template_name = 'customer/customer_update.html'
     
@@ -525,7 +526,7 @@ def CustomerUpdate(request, pk):
         'update_message': update_message,   
     }
     return render(request, template_name, context)
-
+'''
 
 def CustomerDelete(request, pk):
     customer = get_object_or_404(Customer, pk=pk)
@@ -644,6 +645,7 @@ def get_district_list_backup(request):
 
 
     return JsonResponse(data={"success": False, "results": ""})
+
 
 
 # Load all 3 forms (cus_main, cus_site, cus_bill)
