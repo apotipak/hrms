@@ -613,9 +613,15 @@ def CustomerUpdate(request, pk):
             cus_site = None
 
         try:
+            print("test cus_bill_cus_zone")
             cus_bill = CusBill.objects.get(pk=pk)
         except CusBill.DoesNotExist:
             cus_bill = None
+
+        if cus_bill:
+            print("cus_bill_cus_zone = " + str(cus_bill.cus_zone))
+        else:
+            print("cus bill error")
 
     if request.method == 'POST':        
         cus_main_form = CusMainForm(request.POST, instance=cus_main)
@@ -625,48 +631,6 @@ def CustomerUpdate(request, pk):
         cus_main_form = CusMainForm(instance=cus_main)        
         cus_site_form = CusSiteForm(instance=cus_site)
         cus_bill_form = CusBillForm(instance=cus_bill)
-
-    data = dict()
-
-    cus_main_form_is_valid = False
-    cus_site_form_is_valid = False
-    cus_bill_form_is_valid = False
-    update_message = ""
-
-    if request.method == 'POST':
-        if cus_main_form.is_valid():            
-            print("cus_main_form is valid")
-            obj = cus_main_form.save(commit=False)
-            obj.upd_by = request.user.first_name
-            obj.upd_date = timezone.now()
-            obj.save()
-
-            '''
-            obj = form.save(commit=False)
-            
-            if request.user.is_superuser:
-                obj.upd_by = 'Superuser'
-            else:
-                obj.upd_by = request.user.first_name
-
-            if obj.upd_flag == 'A':
-                obj.upd_flag = 'E'
-
-            obj.upd_date = timezone.now()
-
-            obj.save()
-            form_is_valid = True            
-            '''
-            cus_main_form_is_valid = True
-            message = "ทำรายการสำเร็จ"
-            data['message'] = "ทำรายการสำเร็จ"
-            print("aa")
-        else:
-            print("cus_main_form is not valid")
-            cus_main_form_is_valid = False
-            message = "ไม่สามารถทำรายการได้..!"
-            data['message'] = "ทำรายการสำเร็จ"
-            print("bb")
 
     print("customer cus_active = " + str(customer.cus_active))
 
@@ -685,7 +649,6 @@ def CustomerUpdate(request, pk):
         'cus_bill': cus_bill,
         'customer': customer,        
         'request': request,
-        'update_message': update_message,   
     }
     return render(request, template_name, context)
 
@@ -714,6 +677,12 @@ def update_cus_main(request):
             cus_add1_en = request.POST.get('cus_main_cus_add1_en')
             cus_add2_en = request.POST.get('cus_main_cus_add2_en')
             cus_subdist_en = request.POST.get('cus_main_cus_subdist_en')
+
+            cus_zip = request.POST.get('cus_main_cus_zip')
+            cus_tel = request.POST.get('cus_main_cus_tel')
+            cus_fax = request.POST.get('cus_main_cus_fax')
+            cus_email = request.POST.get('cus_main_cus_email')
+            cus_zone = request.POST.get('cus_main_cus_zone')
             
             # cus_main = CusMain.objects.get(cus_id=cus_id)            
             # cus_main.upd_by = request.user.first_name
@@ -740,6 +709,12 @@ def update_cus_main(request):
             cus_main.cus_add2_en = cus_add2_en
             cus_main.cus_subdist_en = cus_subdist_en
 
+            cus_main.cus_zip = cus_zip
+            cus_main.cus_tel = cus_tel
+            cus_main.cus_fax = cus_fax
+            cus_main.cus_email = cus_email
+            cus_main.cus_zone_id = cus_zone
+
             if cus_main.upd_flag == 'A':
                 cus_main.upd_flag = 'E'
             cus_main.upd_by = request.user.first_name
@@ -747,7 +722,7 @@ def update_cus_main(request):
             
             cus_main.save()
 
-            response_data['result'] = "Save customer main office success."
+            response_data['result'] = "Update complete."
             response_data['message'] = "ทำรายการสำเร็จ"
             response_data['form_is_valid'] = True
         else:
@@ -807,6 +782,7 @@ def update_cus_site(request):
             cus_tel = request.POST.get('cus_site_cus_tel')
             cus_fax = request.POST.get('cus_site_cus_fax')
             cus_email = request.POST.get('cus_site_cus_email')
+            cus_zone = request.POST.get('cus_site_cus_zone')
 
             cus_site_cus_contact_con_sex = request.POST.get('cus_site_cus_contact_con_sex')
             #print("sex = " + str(cus_site_cus_contact_con_sex))
@@ -842,6 +818,7 @@ def update_cus_site(request):
             customer.cus_tel = cus_tel
             customer.cus_fax = cus_fax
             customer.cus_email = cus_email
+            customer.cus_zone_id = cus_zone
 
             customer.site_contact_id = cus_site_site_contact_id
 

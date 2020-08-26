@@ -281,8 +281,6 @@
             </div>
             <!-- /.row -->            
 
-            </form>
-
             <!-- Main Office Tab Others -->
             <div class="row">
               <div class="col-md-12">
@@ -335,7 +333,7 @@
                           {% endfor %}                
                         {% else %}
                           {% render_field cus_main_form.cus_main_cus_zone class="form-control col-sm-12 form-control-sm" %}
-                        {% endif %}      
+                        {% endif %}
                       </div>
 
                     </div>
@@ -343,7 +341,7 @@
                 </div>
               </div>
             </div>
-
+            </form> <!-- Main Office Form -->
 
 
             {% comment %}
@@ -1664,6 +1662,13 @@
 
     cus_main_cus_country_en = $('#id_cus_main_cus_country_en').val();
 
+    cus_main_cus_zip = $('#id_cus_main_cus_zip').val();
+    cus_main_cus_tel = $('#id_cus_main_cus_tel').val();
+    cus_main_cus_fax = $('#id_cus_main_cus_fax').val();
+    cus_main_cus_email = $('#id_cus_main_cus_email').val();
+    cus_main_cus_zone = $('#id_cus_main_cus_zone').val();
+
+
     //alert(cus_main_cus_country_en);
 
     $.ajax({
@@ -1686,7 +1691,13 @@
         cus_main_cus_add2_en : cus_main_cus_add2_en,
         cus_main_cus_subdist_en :  cus_main_cus_subdist_en,
 
-        cus_main_cus_country_en : cus_main_cus_country_en
+        cus_main_cus_country_en : cus_main_cus_country_en,
+
+        cus_main_cus_zip : cus_main_cus_zip,
+        cus_main_cus_tel : cus_main_cus_tel,
+        cus_main_cus_fax : cus_main_cus_fax,
+        cus_main_cus_email : cus_main_cus_email,
+        cus_main_cus_zone : cus_main_cus_zone
       },
       success : function(json) {
         if(json.form_is_valid) {          

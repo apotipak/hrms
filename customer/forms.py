@@ -271,6 +271,7 @@ class CusMainForm(forms.ModelForm):
     cus_main_cus_city_en = forms.CharField(required=False)
     cus_main_cus_district_en = forms.CharField(required=False)
     cus_main_cus_country_en = forms.CharField(required=False)
+    cus_main_cus_zone = forms.ModelChoiceField(queryset=None, required=True)    
 
     class Meta:
         model = CusMain
@@ -311,6 +312,10 @@ class CusMainForm(forms.ModelForm):
             self.fields['cus_main_cus_country_en'].initial = instance.cus_country.country_en
         else:
             self.fields['cus_main_cus_country_en'].initial = ""
+
+        self.fields['cus_main_cus_zone'].queryset=ComZone.objects.all()
+        self.initial['cus_main_cus_zone'] = instance.cus_zone_id
+
 
     def clean_cus_active(self):
         data = self.data.get('cus_main_cus_active')
@@ -535,6 +540,9 @@ class CusBillForm(forms.ModelForm):
 
         self.fields['cus_bill_cus_zone'].queryset=ComZone.objects.all()
         self.initial['cus_bill_cus_zone'] = instance.cus_zone_id
-        
+
         self.initial['cus_bill_cus_contact'] = instance.cus_contact
 
+    def clean_cus_bill_cus_zone(self):
+        data = self.data.get('cus_bill_cus_zone')
+        return data
