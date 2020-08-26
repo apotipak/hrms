@@ -363,7 +363,7 @@
                         <div class="row">                              
                           <div class="col-12 input-group">
                             <input type="text" id="id_cus_main_cus_contact_id" name="cus_main_cus_contact_id" class="form-control form-control-sm" value="{{ cus_main.cus_contact_id }}" readonly>                              
-                            <button id="contact_lookup" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url="{% url 'get_contact_list' %}"><i class="fas fa-search fa-sm"></i></button>                              
+                            <button id="cus_main_contact_lookup" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url="{% url 'get_contact_list' %}"><i class="fas fa-search fa-sm"></i></button>
                             <input type="hidden" id="id_cus_main_select_cus_contact_id" name="cus_main_select_cus_contact_id" value="{{ cus_main.cus_contact_id }}">
                           </div>
                         </div>                          
@@ -719,7 +719,7 @@
                           <div class="row">                              
                             <div class="col-12 input-group">
                               <input type="text" id="id_cus_site_site_contact_id" name="cus_site_site_contact_id" class="form-control form-control-sm" value="{{ customer.site_contact_id }}" readonly>                              
-                              <button id="contact_lookup" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url="{% url 'get_contact_list' %}"><i class="fas fa-search fa-sm"></i></button>                              
+                              <button id="cus_site_contact_lookup" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url="{% url 'get_contact_list' %}"><i class="fas fa-search fa-sm"></i></button>                              
                               <input type="hidden" id="id_cus_site_select_site_contact_id" name="cus_site_select_site_contact_id" value="{{ customer.site_contact_id }}">
                             </div>
                           </div>                          
@@ -1051,8 +1051,14 @@
   });
 
   $(document).ready(function(){
+    $('#cus_main_contact_lookup').on('click', function (e) {
+      var obj = $(this);
+      alert("todo");  
+    });
+  });
 
-    $('#contact_lookup').on('click', function (e) {
+  $(document).ready(function(){
+    $('#cus_site_contact_lookup').on('click', function (e) {
       var obj = $(this);
       current_contact_id = $('#id_cus_site_site_contact_id').val();
       
@@ -1344,10 +1350,10 @@
             result += "<div>";
             result += "  <span>";
             if(data.previous_page != 0) {
-              result += " <a href='javascript:get_contact_lookup(" + data.previous_page + ");'>" + "<i class='fas fa-arrow-circle-left'></i></a> ";
+              result += " <a href='javascript:get_site_contact_lookup(" + data.previous_page + ");'>" + "<i class='fas fa-arrow-circle-left'></i></a> ";
             }
             result += data.current_page_number + " / " + data.current_page_paginator_num_pages;
-            result += " <a href='javascript:get_contact_lookup(" + data.next_page + ");'>" + "<i class='fas fa-arrow-circle-right'></i></a>";
+            result += " <a href='javascript:get_site_contact_lookup(" + data.next_page + ");'>" + "<i class='fas fa-arrow-circle-right'></i></a>";
             result += "    </span>";
             result += "</div>";
           }
@@ -1617,7 +1623,7 @@
 
   }
 
-  function get_contact_lookup(page_no) {
+  function get_site_contact_lookup(page_no) {
     current_contact_id = $('#id_cus_site_select_site_contact_id').val();
     search_contact_option = $('#id_cus_site_cus_contact_option').val();
     search_contact_text = $('#id_cus_site_cus_contact_search_text').val();
@@ -1690,10 +1696,10 @@
             result += "<div>";
             result += "  <span>";
             if(data.previous_page != 0) {
-              result += " <a href='javascript:get_contact_lookup(" + data.previous_page + ");'>" + "<i class='fas fa-arrow-circle-left'></i></a> ";
+              result += " <a href='javascript:get_site_contact_lookup(" + data.previous_page + ");'>" + "<i class='fas fa-arrow-circle-left'></i></a> ";
             }
             result += data.current_page_number + " / " + data.current_page_paginator_num_pages;
-            result += " <a href='javascript:get_contact_lookup(" + data.next_page + ");'>" + "<i class='fas fa-arrow-circle-right'></i></a>";
+            result += " <a href='javascript:get_site_contact_lookup(" + data.next_page + ");'>" + "<i class='fas fa-arrow-circle-right'></i></a>";
             result += "    </span>";
             result += "</div>";
           }
