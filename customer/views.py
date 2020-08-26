@@ -5,8 +5,8 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.views import generic
-from .models import Customer, CusMain
-from .forms import CustomerCreateForm, CusMainForm, CusSiteForm
+from .models import Customer, CusMain, CusBill
+from .forms import CustomerCreateForm, CusMainForm, CusSiteForm, CusBillForm
 from .forms import CustomerSearchForm
 from django.http import JsonResponse
 from django.template.loader import render_to_string
@@ -470,64 +470,6 @@ def CustomerCreate(request):
     return render(request, 'customer/customer_create.html', {'page_title': page_title, 'project_name': project_name, 'project_version': project_version, 'db_server': db_server, 'today_date': today_date})
 
 
-'''
-def CustomerUpdate(request, pk):
-    template_name = 'customer/customer_update.html'
-    
-    customer = get_object_or_404(Customer, pk=pk)
-    cus_main = []
-    if customer:
-        cus_main = CusMain.objects.filter(cus_id=customer.cus_id).get()
-
-    if request.method == 'POST':
-        form = CustomerUpdateForm(request.POST, instance=customer)
-        cus_main_form = CusMainUpdateForm(instance=cus_main)
-    else:
-        form = CustomerUpdateForm(instance=customer)
-        cus_main_form = CusMainUpdateForm(instance=cus_main)
-
-    data = dict()
-    form_is_valid = False
-    update_message = ""
-
-    if request.method == 'POST':
-        if form.is_valid():
-            obj = form.save(commit=False)
-            
-            if request.user.is_superuser:
-                obj.upd_by = 'Superuser'
-            else:
-                obj.upd_by = request.user.first_name
-
-            if obj.upd_flag == 'A':
-                obj.upd_flag = 'E'
-
-            obj.upd_date = timezone.now()
-
-            obj.save()
-            form_is_valid = True            
-            update_message = "ทำรายการสำเร็จ"
-        else:
-            form_is_valid = False
-            update_message = "ไม่สามารถทำรายการได้..!"
-
-    context = {
-        'page_title': settings.PROJECT_NAME,
-        'today_date': settings.TODAY_DATE,
-        'project_version': settings.PROJECT_VERSION,
-        'db_server': settings.DATABASES['default']['HOST'],
-        'project_name': settings.PROJECT_NAME,
-        'form': form, 
-        'cus_main_form': cus_main_form,
-        'customer': customer,
-        'cus_main': cus_main,
-        'request': request,
-        'form_is_valid': form_is_valid,
-        'update_message': update_message,   
-    }
-    return render(request, template_name, context)
-'''
-
 def CustomerDelete(request, pk):
     customer = get_object_or_404(Customer, pk=pk)
     data = dict()
@@ -557,6 +499,7 @@ def PerformanceInformation(request):
 
 	return render(request, 'customer/performance_information.html', {'page_title': page_title, 'project_name': project_name, 'project_version': project_version, 'db_server': db_server, 'today_date': today_date})
 
+
 @login_required(login_url='/accounts/login/')
 def CustomerReport(request):
 	page_title = settings.PROJECT_NAME
@@ -585,8 +528,6 @@ def get_district_list_backup(request):
             current_page = paginator.get_page(page)
         except InvalidPage as e:
             raise Http404(str(e))
-
-
     else:
         print("method get")
         data = TDistrict.objects.raw("select d.dist_id,d.dist_th,d.dist_en,c.city_id,c.city_th,c.city_en from t_district d join t_city c on d.city_id = c.city_id order by c.city_th") or None
@@ -653,26 +594,43 @@ def CustomerUpdate(request, pk):
     template_name = 'customer/customer_update.html'
     
     customer = get_object_or_404(Customer, pk=pk)
-    cus_main = []
-    cus_site = []
-    cus_bill = []
+    cus_main = None
+    cus_site = None
+    cus_bill = None
 
     if customer:
-        cus_main = CusMain.objects.filter(cus_id=customer.cus_id).get()
-        cus_site = Customer.objects.filter(cus_no=pk).get()        
-        # todo cus_bill
+        # cus_main = CusMain.objects.filter(cus_id=customer.cus_id).get()
+        # cus_site = Customer.objects.filter(cus_no=pk).get()
+
+        try:
+            cus_main = CusMain.objects.get(pk=customer.cus_id)
+        except CusMain.DoesNotExist:
+            cus_main = None
+
+        try:
+            cus_site = Customer.objects.get(pk=pk)
+        except Customer.DoesNotExist:
+            cus_site = None
+
+        try:
+            cus_bill = CusBill.objects.get(pk=pk)
+        except CusBill.DoesNotExist:
+            cus_bill = None
 
     if request.method == 'POST':        
         cus_main_form = CusMainForm(request.POST, instance=cus_main)
         cus_site_form = CusSiteForm(request.POST, instance=cus_site)
+        cus_bill_form = CusBillForm(request.POST, instance=cus_bill)
     else:
         cus_main_form = CusMainForm(instance=cus_main)        
         cus_site_form = CusSiteForm(instance=cus_site)
+        cus_bill_form = CusBillForm(instance=cus_bill)
 
     data = dict()
 
     cus_main_form_is_valid = False
     cus_site_form_is_valid = False
+    cus_bill_form_is_valid = False
     update_message = ""
 
     if request.method == 'POST':
@@ -723,8 +681,9 @@ def CustomerUpdate(request, pk):
         'cus_main': cus_main,
         'cus_site_form': cus_site_form,
         'cus_site': cus_site,
-
-        'customer': customer,                
+        'cus_bill_form': cus_bill_form,
+        'cus_bill': cus_bill,
+        'customer': customer,        
         'request': request,
         'update_message': update_message,   
     }

@@ -418,6 +418,13 @@
 
             <div class="container-fluid pt-2">
 
+
+
+
+
+
+
+
               <div class="row pt-3">
 
                 <!-- Site Tab Thai -->
@@ -703,7 +710,12 @@
 
           </div>
 
-          <!-- Billing -->
+
+
+
+
+
+          <!-- Billing Tab -->
           <div class="tab-pane fade" id="billing" role="tabpanel" aria-labelledby="billing-tab">            
             <div class="clearfix">
               <div class="float-left">&nbsp;</div>
@@ -719,7 +731,154 @@
             </div>
 
             <div class="container-fluid pt-2">
-            billing content...
+
+
+
+
+              <div class="row pt-3">
+
+                <!-- Billing Tab Thai -->
+                <div class="col-md-6">
+
+
+                  <div class="card card-info">
+                    <div class="card-header">
+                      <h3 class="card-title">TH</h3>
+                    </div>
+                    <div class="card-body">
+
+                      <div class="form-group">  
+
+                        <div class="input-group">
+                          <label for="id_cus_site_cus_name_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'Customer Name' %}</label>
+                          <div class="col-sm-8">
+                            <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_name_th" name="cus_bill_cus_name_th" value="{{ customer.cus_name_th }}">
+
+                          </div>
+                        </div>
+
+
+
+                        <div class="input-group">
+                          <label for="id_cus_add1_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'Address' %}</label>
+                          <div class="col-sm-8">
+                            <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_add1_th" name="cus_site_cus_add1_th" value="{{ customer.cus_add1_th }}" autocomplete="off">
+                            <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_add2_th" name="cus_site_cus_add2_th" value="{{ customer.cus_add2_th }}" autocomplete="off">
+                          </div>
+                        </div>
+
+                        <div class="input-group">
+                          <label for="id_cus_site_cus_subdist_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'Sub-District' %}</label>
+                          <div class="col-sm-8">
+                            <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_subdist_th" name="cus_site_cus_subdist_th" value="{{ customer.cus_subdist_th }}">
+                          </div>
+                        </div>
+
+                        <div class="input-group">
+                          <label for="id_cus_site_cus_disrict" class="col-sm-4 col-form-label form-control-sm">{% trans 'District' %}</label>
+
+                          <div class="col-sm-8">                            
+                            <div class="row">                              
+                              <div class="col-12 input-group">
+                                <input type="text" id="id_cus_site_cus_district_dist_th" name="cus_site_cus_district_dist_th" class="form-control form-control-sm" value="{{ customer.cus_district }}" readonly>
+                                
+                                <button id="district_lookup" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url="{% url 'get_district_list' %}"><i class="fas fa-search fa-sm"></i></button>
+
+                                <input type="hidden" id="id_cus_site_select_district_id" name="cus_site_select_district_id" value="{{ customer.cus_district_id }}">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="input-group">
+                          <label for="id_cus_city" class="col-sm-4 col-form-label form-control-sm">{% trans 'City' %}</label>
+                          <div class="col-sm-8">                            
+                            <input type="text" id="id_cus_site_cus_city" name="cus_site_cus_city" class="form-control form-control-sm" value="{{ customer.cus_city }}" readonly>
+                          </div>
+                        </div>
+
+                        <div class="input-group">
+                          <label for="id_cus_country" class="col-sm-4 col-form-label form-control-sm">{% trans 'Country' %}</label>
+                          <div class="col-sm-8">                                                    
+                            <input type="text" id="id_cus_site_cus_country" name="cus_site_cus_country" class="form-control form-control-sm" value="{{ customer.cus_country }}" readonly>
+                          </div>
+                        </div>
+
+                      </div>
+
+                    </div>
+                  </div>
+
+                </div>
+                <!-- Site Tab Thai End -->
+
+                <!-- Site Tab English -->
+                <div class="col-md-6">
+                  <div class="card card-info">
+                    <div class="card-header">
+                      <h3 class="card-title">EN</h3>
+                    </div>
+                    <div class="card-body">
+
+
+                      <div class="form-group">
+
+                        <div class="input-group">
+                          <label for="id_cus_name_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Customer Name' %}</label>
+                          <div class="col-sm-8">
+                            <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_name_en" name="cus_site_cus_name_th" value="{{ customer.cus_name_en }}">
+                          </div>
+                        </div>
+
+                        <div class="input-group">
+                          <label for="id_cus_add1_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Address' %}</label>
+                          <div class="col-sm-8">
+                            <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_add1_en" name="cus_site_cus_add1_th" value="{{ customer.cus_add1_en }}">
+                            <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_add2_en" name="cus_site_cus_add2_th" value="{{ customer.cus_add2_en|default_if_none:'' }}">
+                          </div>
+                        </div>
+
+                        <div class="input-group">
+                          <label for="id_cus_site_cus_subdist_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Sub-District' %}</label>
+                          <div class="col-sm-8">
+                            <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_subdist_en" name="cus_site_cus_subdist_en" value="{{ customer.cus_subdist_en|default_if_none:'' }}">
+                          </div>
+                        </div>
+                        
+                        <div class="input-group">
+                          <label for="id_cus_site_cus_district_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'District' %}</label>
+                          <div class="col-sm-8">                                                    
+                            <input type="text" id="id_cus_site_cus_district_en" name="cus_site_cus_district_en" class="form-control form-control-sm" value="{{ customer.cus_district.dist_en }}" readonly>
+                          </div>
+                        </div>
+
+                        <div class="input-group">
+                          <label for="id_cus_site_cus_city_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'City' %}</label>
+                          <div class="col-sm-8">                            
+                            <input type="text" id="id_cus_site_cus_city_en" name="cus_site_cus_city_en" class="form-control form-control-sm" value="{{ customer.cus_city.city_en }}" readonly>
+                          </div>
+                        </div>
+
+                        <div class="input-group">
+                          <label for="id_cus_site_cus_country_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Country' %}</label>
+                          <div class="col-sm-8">                                                    
+                            <input type="text" id="id_cus_site_cus_country_en" name="cus_site_cus_country_en" class="form-control form-control-sm" value="{{ customer.cus_country.country_en }}" readonly>
+                          </div>
+                        </div>
+
+                      </div>                                          
+                    </div>
+                  </div>
+
+
+                </div>
+                <!-- Site Tab English -->
+
+              </div>
+
+
+
+            
             </div>
           </div>
           <!-- end billing -->

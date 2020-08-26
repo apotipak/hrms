@@ -1,5 +1,5 @@
 from django import forms
-from .models import Customer, CusMain
+from .models import Customer, CusMain, CusBill
 from django.contrib.auth.models import User
 from django.forms.widgets import HiddenInput
 from django.utils.translation import gettext_lazy as _
@@ -512,3 +512,22 @@ class CusSiteForm(forms.ModelForm):
         data = self.data.get('cus_site_cus_contact_con_sex')
         data = "F"
         return data        
+
+
+class CusBillForm(forms.ModelForm):    
+    cus_bill_cus_name_th = forms.CharField(required=False)
+    cus_bill_cus_zip = forms.CharField(required=False)
+    cus_bill_cus_tel = forms.CharField(required=False)
+    cus_bill_cus_fax = forms.CharField(required=False)
+    cus_bill_cus_email = forms.CharField(required=False)
+    cus_bill_cus_zone = forms.ModelChoiceField(queryset=None, required=True)    
+
+    class Meta:
+        model = CusBill
+        fields = '__all__'
+        exclude = ['cus_no','cus_id','cus_brn','cus_city','cus_country','cus_zip','cus_district','cus_zone','cus_contact','site_contact','dist_en']
+    
+    def __init__(self, *args, **kwargs):        
+        super(CusBillForm, self).__init__(*args, **kwargs)        
+        instance = getattr(self, 'instance', None)
+
