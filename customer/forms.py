@@ -531,3 +531,10 @@ class CusBillForm(forms.ModelForm):
         super(CusBillForm, self).__init__(*args, **kwargs)        
         instance = getattr(self, 'instance', None)
 
+        self.initial['cus_zip'] = instance.cus_zip
+
+        self.fields['cus_bill_cus_zone'].queryset=ComZone.objects.all()
+        self.initial['cus_bill_cus_zone'] = instance.cus_zone_id
+        
+        self.initial['cus_bill_cus_contact'] = instance.cus_contact
+

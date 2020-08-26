@@ -27,7 +27,7 @@ class CusMain(models.Model):
     cus_bill = models.BooleanField(blank=True, null=True)
     cus_main = models.BooleanField(blank=True, null=True)
     cus_site = models.BooleanField(blank=True, null=True)    
-    cus_zone = models.ForeignKey(ComZone, related_name='customer_main_zone', db_column='cus_zone', to_field='zone_id', on_delete=models.SET_NULL, null=True)     
+    cus_zone = models.ForeignKey(ComZone, related_name='customer_main_zone', db_column='cus_zone', to_field='zone_id', on_delete=models.SET_NULL, null=True)
     
     cus_contact = models.ForeignKey(CusContact, related_name='customer_main_contact', db_column='cus_contact', to_field='con_id', on_delete=models.SET_NULL, null=True)
     site_contact = models.ForeignKey(CusContact, related_name='customer_main_site_contact', db_column='site_contact', to_field='con_id', on_delete=models.SET_NULL, null=True)
@@ -70,9 +70,15 @@ class CusBill(models.Model):
     cus_bill = models.BooleanField(blank=True, null=True)
     cus_main = models.BooleanField(blank=True, null=True)
     cus_site = models.BooleanField(blank=True, null=True)
-    cus_zone = models.DecimalField(max_digits=4, decimal_places=0, blank=True, null=True)
-    cus_contact = models.DecimalField(max_digits=7, decimal_places=0, blank=True, null=True)
-    site_contact = models.DecimalField(max_digits=7, decimal_places=0, blank=True, null=True)
+
+    # cus_zone = models.DecimalField(max_digits=4, decimal_places=0, blank=True, null=True)
+    cus_zone = models.ForeignKey(ComZone, related_name='cus_bill_main_zone', db_column='cus_zone', to_field='zone_id', on_delete=models.SET_NULL, null=True)
+
+    # cus_contact = models.DecimalField(max_digits=7, decimal_places=0, blank=True, null=True)    
+    # site_contact = models.DecimalField(max_digits=7, decimal_places=0, blank=True, null=True)
+    cus_contact = models.ForeignKey(CusContact, related_name='cus_bill_main_contact', db_column='cus_contact', to_field='con_id', on_delete=models.SET_NULL, null=True)
+    site_contact = models.ForeignKey(CusContact, related_name='cus_bill_main_site_contact', db_column='site_contact', to_field='con_id', on_delete=models.SET_NULL, null=True)
+
     last_contact = models.SmallIntegerField(blank=True, null=True)
     upd_date = models.DateTimeField(blank=True, null=True)
     upd_by = models.CharField(max_length=10, blank=True, null=True)
