@@ -341,7 +341,76 @@
                 </div>
               </div>
             </div>
-            </form> <!-- Main Office Form -->
+            </form> <!-- Main Office Form End -->
+
+
+
+            <!-- Main Office Tab - Contact Information -->
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card card-info">
+                  <div class="card-header">
+                    <h3 class="card-title">Contact Information</h3>
+                  </div>
+                  <div class="card-body">
+
+                    <div class="form-row">
+                      
+
+                      <div class="form-group col-md-2">
+                        <label for="id_cus_site_site_contact_id" class="col-sm-12 col-form-label form-control-sm">{% trans 'Contact ID' %}</label>
+
+                        <div class="row">                              
+                          <div class="col-12 input-group">
+                            <input type="text" id="id_cus_main_cus_contact_id" name="cus_main_cus_contact_id" class="form-control form-control-sm" value="{{ cus_main.cus_contact_id }}" readonly>                              
+                            <button id="contact_lookup" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url="{% url 'get_contact_list' %}"><i class="fas fa-search fa-sm"></i></button>                              
+                            <input type="hidden" id="id_cus_main_select_cus_contact_id" name="cus_main_select_cus_contact_id" value="{{ cus_main.cus_contact_id }}">
+                          </div>
+                        </div>                          
+                      </div>
+
+                      <div class="form-group col-md-2">
+                        <label for="id_cus_site_cus_zip">{% trans 'Title' %}</label>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_contact_cus_title" name="cus_main_cus_contact_cus_title" value="{{ cus_mainm.cus_contact.con_title|default_if_none:'' }}" readonly>
+                      </div>
+
+                      <div class="form-group col-md-2">
+                        <label for="id_cus_main_cus_contact_con_fname_th">{% trans 'First Name' %}</label>
+                        <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_contact_con_fname_th" name="cus_main_cus_contact_con_fname_th" value="{{ cus_main.cus_contact.con_fname_th|default_if_none:'' }}" >
+                      </div>
+
+                      <div class="form-group col-md-3">
+                        <label for="id_cus_main_cus_contact_con_lname_th">{% trans 'Last Name' %}</label>
+                        <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_contact_con_lname_th" name="cus_main_cus_contact_con_fname_th" value="{{ cus_main.site_contact.con_lname_th|default_if_none:'' }}">
+                      </div>
+
+                      <div class="form-group col-md-3">
+                        <label for="id_cus_main_cus_contact_con_position_th">{% trans 'Position' %}</label>
+                        <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_contact_con_position_th" name="cus_main_cus_contact_con_position_th" value="{{ cus_main.cus_contact.con_position_th|default_if_none:'' }}">
+                      </div>
+
+                    </div>
+                    
+
+                    {% comment %}
+                    <div class="form-group">                              
+                      <div class="col-sm-3">
+                          <label for="input-type">Sex</label>
+                          <div id="input-type" class="row">
+
+                              {% render_field cus_site_form.cus_site_cus_contact_con_sex class="radio-inline" %}
+
+                          </div>
+                      </div>
+                    </div>
+                    {% endcomment %}
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
 
 
             {% comment %}
@@ -812,9 +881,9 @@
                   </div>
 
                 </div>
-                <!-- Site Tab Thai End -->
+                <!-- Billing Tab Thai End -->
 
-                <!-- Site Tab English -->
+                <!-- Billing Tab English -->
                 <div class="col-md-6">
                   <div class="card card-info">
                     <div class="card-header">
@@ -874,7 +943,7 @@
 
 
                 </div>
-                <!-- Site Tab English -->
+                <!-- Billing Tab English -->
 
               </div>
 
