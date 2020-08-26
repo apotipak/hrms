@@ -541,7 +541,7 @@
                               <div class="col-12 input-group">
                                 <input type="text" id="id_cus_site_cus_district_dist_th" name="cus_site_cus_district_dist_th" class="form-control form-control-sm" value="{{ customer.cus_district }}" readonly>
                                 
-                                <button id="district_lookup" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url="{% url 'get_district_list' %}"><i class="fas fa-search fa-sm"></i></button>
+                                <button id="cus_site_distict_lookup" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url="{% url 'get_district_list' %}"><i class="fas fa-search fa-sm"></i></button>
 
                                 <input type="hidden" id="id_cus_site_select_district_id" name="cus_site_select_district_id" value="{{ customer.cus_district_id }}">
                               </div>
@@ -853,7 +853,7 @@
                               <div class="col-12 input-group">
                                 <input type="text" id="id_cus_site_cus_district_dist_th" name="cus_site_cus_district_dist_th" class="form-control form-control-sm" value="{{ customer.cus_district }}" readonly>
                                 
-                                <button id="district_lookup" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url="{% url 'get_district_list' %}"><i class="fas fa-search fa-sm"></i></button>
+                                <button id="cus_site_distict_lookup" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url="{% url 'get_district_list' %}"><i class="fas fa-search fa-sm"></i></button>
 
                                 <input type="hidden" id="id_cus_site_select_district_id" name="cus_site_select_district_id" value="{{ customer.cus_district_id }}">
                               </div>
@@ -1003,7 +1003,7 @@
       </div>
 
       <div class="modal-footer">
-        <!--<button id='district_lookup_modal' type='button' class='btn btn-outline-secondary btn-xs'><b>></b></button>-->
+        <!--<button id='cus_site_distict_lookup_modal' type='button' class='btn btn-outline-secondary btn-xs'><b>></b></button>-->
         <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">{% trans 'Close' %}</button>
         <!--<button type="button" class="btn btn-success btn-sm">{% trans 'Select' %}</button>-->
       </div>
@@ -1127,7 +1127,7 @@
               result += "<div>";
               result += "  <span>";
               result += data.current_page_number + " / " + data.current_page_paginator_num_pages;
-              result += " <a href='javascript:get_district_lookup(" + data.next_page + ");'>" + "<i class='fas fa-arrow-circle-right'></i></a>";
+              result += " <a href='javascript:get_cus_site_distict_lookup(" + data.next_page + ");'>" + "<i class='fas fa-arrow-circle-right'></i></a>";
               result += "    </span>";
               result += "</div>";
             }
@@ -1175,7 +1175,7 @@
 
   $(document).ready(function(){
 
-    $('#district_lookup').on('click', function (e) {
+    $('#cus_site_distict_lookup').on('click', function (e) {
       var obj = $(this);
       current_district_id = $('#id_cus_site_select_district_id').val();
 
@@ -1247,7 +1247,7 @@
               result += "<div>";
               result += "  <span>";
               result += data.current_page_number + " / " + data.current_page_paginator_num_pages;
-              result += " <a href='javascript:get_district_lookup(" + data.next_page + ");'>" + "<i class='fas fa-arrow-circle-right'></i></a>";
+              result += " <a href='javascript:get_cus_site_distict_lookup(" + data.next_page + ");'>" + "<i class='fas fa-arrow-circle-right'></i></a>";
               result += "    </span>";
               result += "</div>";
             }
@@ -1472,10 +1472,10 @@
             result += "<div>";
             result += "  <span>";
             if(data.previous_page != 0) {
-              result += " <a href='javascript:get_district_lookup(" + data.previous_page + ");'>" + "<i class='fas fa-arrow-circle-left'></i></a> ";
+              result += " <a href='javascript:get_cus_site_distict_lookup(" + data.previous_page + ");'>" + "<i class='fas fa-arrow-circle-left'></i></a> ";
             }
             result += data.current_page_number + " / " + data.current_page_paginator_num_pages;
-            result += " <a href='javascript:get_district_lookup(" + data.next_page + ");'>" + "<i class='fas fa-arrow-circle-right'></i></a>";
+            result += " <a href='javascript:get_cus_site_distict_lookup(" + data.next_page + ");'>" + "<i class='fas fa-arrow-circle-right'></i></a>";
             result += "    </span>";
             result += "</div>";
           }
@@ -1527,7 +1527,7 @@
     $("#districtmodal").modal("hide");    
   }
 
-  function get_district_lookup(page_no) {
+  function get_cus_site_distict_lookup(page_no) {
     current_district_id = $('#id_cus_site_select_district_id').val();
     search_district_option = $('#id_cus_site_cus_district_option').val();
     search_district_text = $('#id_cus_site_cus_district_search_text').val();
@@ -1606,10 +1606,10 @@
             result += "<div>";
             result += "  <span>";
             if(data.previous_page != 0) {
-              result += " <a href='javascript:get_district_lookup(" + data.previous_page + ");'>" + "<i class='fas fa-arrow-circle-left'></i></a> ";
+              result += " <a href='javascript:get_cus_site_distict_lookup(" + data.previous_page + ");'>" + "<i class='fas fa-arrow-circle-left'></i></a> ";
             }
             result += data.current_page_number + " / " + data.current_page_paginator_num_pages;
-            result += " <a href='javascript:get_district_lookup(" + data.next_page + ");'>" + "<i class='fas fa-arrow-circle-right'></i></a>";
+            result += " <a href='javascript:get_cus_site_distict_lookup(" + data.next_page + ");'>" + "<i class='fas fa-arrow-circle-right'></i></a>";
             result += "    </span>";
             result += "</div>";
           }
