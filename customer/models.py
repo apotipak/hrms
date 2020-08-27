@@ -133,7 +133,7 @@ class Customer(models.Model):
 
 
 class CustomerOption(models.Model):
-    cus_no = models.DecimalField(db_column='CUS_NO', max_digits=10, decimal_places=0)  # Field name made lowercase.
+    cus_no = models.DecimalField(primary_key=True, db_column='CUS_NO', max_digits=10, decimal_places=0)  # Field name made lowercase.
     btype = models.CharField(db_column='Btype', max_length=100, blank=True, null=True)  # Field name made lowercase.
     op1 = models.CharField(max_length=10, blank=True, null=True)
     op2 = models.CharField(max_length=100, blank=True, null=True)

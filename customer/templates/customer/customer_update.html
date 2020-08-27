@@ -344,14 +344,14 @@
                     </div>
 
                     <!-- Business Type -->
-                    <div class="form-row">
-                      
-                      <div class="form-group col-md-2">
-                        <label for="id_cus_main_business_type">{% trans 'Business Type' %}</label>
-                          <input type="text" class="form-control form-control-sm" id="id_cus_main_business_type" name="cus_main_cus_zip" value="">
+                    <div class="form-row">                      
+                      <div class="form-group col-md-3">
+                        <label for="id_cus_main_business_type">{% trans 'Business Type' %}</label>                          
+                        {% render_field cus_main_form.cus_main_business_type class="form-control col-sm-12 form-control-sm" %}
                       </div>
-                    
                     </div>
+
+
 
                   </div>
                 </div>

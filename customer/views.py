@@ -5,7 +5,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.views import generic
-from .models import Customer, CusMain, CusBill
+from .models import Customer, CusMain, CusBill, CustomerOption
 from .forms import CustomerCreateForm, CusMainForm, CusSiteForm, CusBillForm
 from .forms import CustomerSearchForm
 from django.http import JsonResponse
@@ -190,6 +190,64 @@ def CustomerList(request):
 
     return render(request, 'customer/customer_list.html', context)
 
+
+# Load all 3 forms (cus_main, cus_site, cus_bill)
+
+def CustomerUpdate(request, pk):
+    template_name = 'customer/customer_update.html'
+    
+    customer = get_object_or_404(Customer, pk=pk)
+    cus_main = None
+    cus_site = None
+    cus_bill = None
+
+    if customer:
+        # cus_main = CusMain.objects.filter(cus_id=customer.cus_id).get()
+        # cus_site = Customer.objects.filter(cus_no=pk).get()
+
+        try:
+            cus_main = CusMain.objects.get(pk=customer.cus_id)
+        except CusMain.DoesNotExist:
+            cus_main = None
+
+        try:
+            cus_site = Customer.objects.get(pk=pk)
+        except Customer.DoesNotExist:
+            cus_site = None
+
+        try:
+            cus_bill = CusBill.objects.get(pk=pk)
+        except CusBill.DoesNotExist:
+            cus_bill = None
+
+    if request.method == 'POST':        
+        cus_main_form = CusMainForm(request.POST, instance=cus_main, cus_no=pk)
+        cus_site_form = CusSiteForm(request.POST, instance=cus_site)
+        cus_bill_form = CusBillForm(request.POST, instance=cus_bill)
+    else:
+        cus_main_form = CusMainForm(instance=cus_main, cus_no=pk)    
+        cus_site_form = CusSiteForm(instance=cus_site)
+        cus_bill_form = CusBillForm(instance=cus_bill)
+
+    # print("customer cus_active = " + str(customer.cus_active))
+
+    context = {
+        'page_title': settings.PROJECT_NAME,
+        'today_date': settings.TODAY_DATE,
+        'project_version': settings.PROJECT_VERSION,
+        'db_server': settings.DATABASES['default']['HOST'],
+        'project_name': settings.PROJECT_NAME,
+
+        'cus_main_form': cus_main_form,
+        'cus_main': cus_main,
+        'cus_site_form': cus_site_form,
+        'cus_site': cus_site,
+        'cus_bill_form': cus_bill_form,
+        'cus_bill': cus_bill,
+        'customer': customer,        
+        'request': request,
+    }
+    return render(request, template_name, context)
 
 
 @login_required(login_url='/accounts/login/')
@@ -586,71 +644,6 @@ def get_district_list_backup(request):
 
 
     return JsonResponse(data={"success": False, "results": ""})
-
-
-
-# Load all 3 forms (cus_main, cus_site, cus_bill)
-def CustomerUpdate(request, pk):
-    template_name = 'customer/customer_update.html'
-    
-    customer = get_object_or_404(Customer, pk=pk)
-    cus_main = None
-    cus_site = None
-    cus_bill = None
-
-    if customer:
-        # cus_main = CusMain.objects.filter(cus_id=customer.cus_id).get()
-        # cus_site = Customer.objects.filter(cus_no=pk).get()
-
-        try:
-            cus_main = CusMain.objects.get(pk=customer.cus_id)
-        except CusMain.DoesNotExist:
-            cus_main = None
-
-        try:
-            cus_site = Customer.objects.get(pk=pk)
-        except Customer.DoesNotExist:
-            cus_site = None
-
-        try:
-            print("test cus_bill_cus_zone")
-            cus_bill = CusBill.objects.get(pk=pk)
-        except CusBill.DoesNotExist:
-            cus_bill = None
-
-        if cus_bill:
-            print("cus_bill_cus_zone = " + str(cus_bill.cus_zone))
-        else:
-            print("cus bill error")
-
-    if request.method == 'POST':        
-        cus_main_form = CusMainForm(request.POST, instance=cus_main)
-        cus_site_form = CusSiteForm(request.POST, instance=cus_site)
-        cus_bill_form = CusBillForm(request.POST, instance=cus_bill)
-    else:
-        cus_main_form = CusMainForm(instance=cus_main)        
-        cus_site_form = CusSiteForm(instance=cus_site)
-        cus_bill_form = CusBillForm(instance=cus_bill)
-
-    print("customer cus_active = " + str(customer.cus_active))
-
-    context = {
-        'page_title': settings.PROJECT_NAME,
-        'today_date': settings.TODAY_DATE,
-        'project_version': settings.PROJECT_VERSION,
-        'db_server': settings.DATABASES['default']['HOST'],
-        'project_name': settings.PROJECT_NAME,
-
-        'cus_main_form': cus_main_form,
-        'cus_main': cus_main,
-        'cus_site_form': cus_site_form,
-        'cus_site': cus_site,
-        'cus_bill_form': cus_bill_form,
-        'cus_bill': cus_bill,
-        'customer': customer,        
-        'request': request,
-    }
-    return render(request, template_name, context)
 
 
 @login_required(login_url='/accounts/login/')

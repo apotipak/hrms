@@ -1,5 +1,5 @@
 from django import forms
-from .models import Customer, CusMain, CusBill
+from .models import Customer, CusMain, CusBill, CustomerOption
 from django.contrib.auth.models import User
 from django.forms.widgets import HiddenInput
 from django.utils.translation import gettext_lazy as _
@@ -11,11 +11,7 @@ class CustomerCreateForm(forms.ModelForm):
 
     class Meta:
         model = Customer
-        #fields = '__all__'
-        #fields = ('cus_id', 'cus_brn', 'cus_name_th', 'cus_name_en', 'cus_add1_th', 'cus_add1_en', 'cus_add2_th', 'cus_add2_en')
         fields = ('cus_id', 'cus_brn', 'cus_name_th', 'cus_name_en', 'cus_add1_th', 'cus_add1_en', 'cus_add2_th', 'cus_add2_en', 'cus_subdist_en', 'cus_subdist_th')
-        #, 'cus_district', 'cus_city', 'cus_country', 'cus_zip', 'cus_tel', 'cus_fax', 'cus_email', 'cus_taxid', 'cus_active', 'cus_bill', 'cus_main', 'cus_site', 'cus_zone', 'cus_contact', 'site_contact', 'last_contact', 'upd_date', 'upd_by', 'upd_flag')
-
 
         widgets = {
             'cus_no': forms.HiddenInput(),
@@ -138,132 +134,6 @@ class CustomerSearchForm(forms.ModelForm):
         return data
 
 
-class CustomerUpdateForm1(forms.ModelForm):    
-    # contract status    
-    cus_active = forms.BooleanField(label='', required=False, widget=forms.CheckboxInput())
-    cus_site_active = forms.BooleanField(label='', required=False, widget=forms.CheckboxInput())
-    cus_billing_active = forms.BooleanField(label='', required=False, widget=forms.CheckboxInput())
-
-    cus_district_th_text = forms.CharField(required=False)
-    cus_district_en_text = forms.CharField(required=False)
-    cus_city_th_text = forms.CharField(required=False)
-    cus_city_en_text = forms.CharField(required=False)
-    cus_country_th_text = forms.CharField(required=False)
-    cus_country_en_text = forms.CharField(required=False)
-
-    class Meta:
-        model = Customer        
-        fields = '__all__'
-        # fields = ['cus_name_th', 'cus_add1_th', 'cus_add2_th', 'cus_name_en', 'cus_subdist_th', 'cus_sht_en', 'cus_name_en', 'cus_add1_en', 'cus_add2_en', 'cus_subdist_en', 'cus_district', 'cus_city', 'cus_country', 'cus_zip', 'cus_tel', 'cus_fax', 'cus_email', 'cus_taxid', 'cus_active', 'cus_bill', 'cus_main', 'cus_site', 'cus_zone', 'cus_contact', 'site_contact', 'last_contact', 'upd_date', 'upd_by', 'upd_flag']        
-        exclude = ['cus_no','cus_id','cus_brn','cus_city','cus_country','cus_zip','cus_district','cus_contact','site_contact']
-
-    def __init__(self, *args, **kwargs):
-        super(CustomerUpdateForm, self).__init__(*args, **kwargs)        
-        instance = getattr(self, 'instance', None)
-        # print("country = " + str(instance.cus_country.pk))
-
-        # contactobj = CusContact.objects.exclude(upd_flag='D')
-        # customer_list = Customer.objects.filter(cus_id__in=[2094]).order_by('-upd_date', 'cus_id', '-cus_active')
-        # cus_contact = forms.ModelChoiceField(label=_('Select contact person'), queryset=contactobj, required=False)
-
-        cus_district = forms.ModelChoiceField(queryset=None, required=False)
-        cus_main_district = forms.ModelChoiceField(queryset=None, required=False)
-
-        #cus_city = forms.ModelChoiceField(queryset=None, required=False)
-        #self.fields['cus_city'].widget.attrs['readonly'] = True
-
-        #cus_country = forms.ModelChoiceField(queryset=None, required=False)
-        #self.fields['cus_country'].widget.attrs['readonly'] = True
-
-        cus_zone = forms.ModelChoiceField(queryset=None, required=False)
-        cus_bill = forms.ModelChoiceField(queryset=None, required=False)
-
-        cus_district_th_text = forms.CharField(required=False)
-        if instance.cus_district.dist_th:
-            self.initial['cus_district_th_text'] = instance.cus_district.dist_th
-        else:
-            self.initial['cus_district_th_text'] = ""
-        self.fields['cus_district_th_text'].widget.attrs['readonly'] = True
-
-        cus_district_en_text = forms.CharField(required=False)
-        self.initial['cus_district_en_text'] = instance.cus_district.dist_en
-        self.fields['cus_district_en_text'].widget.attrs['readonly'] = True
-
-        cus_city_th_text = forms.CharField(required=False)
-        self.initial['cus_city_th_text'] = instance.cus_city.city_th
-        self.fields['cus_city_th_text'].widget.attrs['readonly'] = True
-
-        cus_city_en_text = forms.CharField(required=False)
-        self.initial['cus_city_en_text'] = instance.cus_city.city_en
-        self.fields['cus_city_en_text'].widget.attrs['readonly'] = True
-
-        cus_country_th_text = forms.CharField(required=False)
-        self.initial['cus_country_th_text'] = instance.cus_country.country_th
-        self.fields['cus_country_th_text'].widget.attrs['readonly'] = True
-
-        cus_country_en_text = forms.CharField(required=False)
-        self.initial['cus_country_en_text'] = instance.cus_country.country_en
-        self.fields['cus_country_en_text'].widget.attrs['readonly'] = True
-
-    def clean_cus_zip(self):
-        cus_zip = self.data.get('cus_zip')
-        if cus_zip is not None:
-            if len(cus_zip) <= 0:
-                raise forms.ValidationError(_('Invalid post code.'))        
-        data = self.data['cus_zip']
-        return data
-
-    def clean_cus_add1_th(self):
-        data = self.data.get('cus_add1_th')
-        if data is None:
-            data = None
-        return data
-
-    def clean_cus_add2_th(self):
-        data = self.data.get('cus_add2_th')
-        if data is None:
-            data = None
-        return data
-
-    def clean_cus_add1_en(self):
-        data = self.data.get('cus_add1_en')
-        if data is None:
-            data = None
-        return data
-
-    def clean_cus_add2_en(self):
-        data = self.data.get('cus_add2_en')
-        if data is None:
-            data = None
-        return data
-
-    def clean_cus_subdist_th(self):
-        data = self.data.get('cus_subdist_th')
-        if data is None:
-            data = None
-        return data
-
-    def clean_cus_subdist_en(self):
-        data = self.data.get('cus_subdist_en')
-        if data is None:
-            data = None
-        return data
-
-    def clean_cus_email(self):
-        data = self.data.get('cus_email')
-        if data is None:
-            data = None
-        return data
-
-    def clean_cus_active(self):
-        data = self.data.get('cus_active')
-        if data=="on":
-            data=1
-        else:
-            data=0
-        return data
-
-
 class CusMainForm(forms.ModelForm):
     cus_main_cus_name_th = forms.CharField(required=False)
     cus_main_cus_active = forms.BooleanField(label='', required=False, widget=forms.CheckboxInput())
@@ -275,7 +145,7 @@ class CusMainForm(forms.ModelForm):
     cus_main_cus_zone = forms.ModelChoiceField(queryset=None, required=True)
     cus_main_cus_zip = forms.CharField(required=False)
 
-    cus_main_business_type = forms.ModelChoiceField(queryset=None, required=True)
+    cus_main_business_type = forms.ModelChoiceField(queryset=None, required=False)
 
     class Meta:
         model = CusMain
@@ -283,9 +153,15 @@ class CusMainForm(forms.ModelForm):
         exclude = ['cus_id','cus_city','cus_country','cus_zip','cus_district','cus_zone','cus_contact','site_contact','dist_en']
     
     def __init__(self, *args, **kwargs):
-        super(CusMainForm, self).__init__(*args, **kwargs)        
-        instance = getattr(self, 'instance', None)        
-                
+        if 'cus_no' in kwargs:
+            cus_no = kwargs.pop('cus_no')
+        else:
+            cus_no = None
+
+        super(CusMainForm, self).__init__(*args, **kwargs)
+        self.request = kwargs.pop('request', None)        
+        instance = getattr(self, 'instance', None)
+
         self.initial['cus_main_cus_active'] = instance.cus_active
 
         self.initial['cus_zip'] = instance.cus_zip
@@ -323,8 +199,20 @@ class CusMainForm(forms.ModelForm):
         self.initial['cus_main_cus_zone'] = instance.cus_zone_id
 
         # TODO
-        # self.fields['cus_main_business_typee'].queryset=ComZone.objects.all()
+        customer_option_list = CustomerOption.objects.values_list('btype', flat=True).exclude(btype=None).order_by('btype').distinct()        
+        self.fields['cus_main_business_type'].queryset = customer_option_list
         
+        try:
+            customer_business_type = CustomerOption.objects.get(cus_no__exact=cus_no)
+        except CustomerOption.DoesNotExist:
+            customer_business_type = None
+
+        if customer_business_type:
+            # print("customer_business_type = " + str(customer_business_type.btype))
+            self.initial['cus_main_business_type'] = customer_business_type.btype
+        else:
+            # print("customer_business_type = None")
+            self.initial['cus_main_business_type'] = ""    
 
     def clean_cus_active(self):
         data = self.data.get('cus_main_cus_active')
