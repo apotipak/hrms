@@ -272,8 +272,10 @@ class CusMainForm(forms.ModelForm):
     cus_main_cus_city_en = forms.CharField(required=False)
     cus_main_cus_district_en = forms.CharField(required=False)
     cus_main_cus_country_en = forms.CharField(required=False)
-    cus_main_cus_zone = forms.ModelChoiceField(queryset=None, required=True)    
+    cus_main_cus_zone = forms.ModelChoiceField(queryset=None, required=True)
     cus_main_cus_zip = forms.CharField(required=False)
+
+    cus_main_business_type = forms.ModelChoiceField(queryset=None, required=True)
 
     class Meta:
         model = CusMain
@@ -320,6 +322,9 @@ class CusMainForm(forms.ModelForm):
         self.fields['cus_main_cus_zone'].queryset=ComZone.objects.all()
         self.initial['cus_main_cus_zone'] = instance.cus_zone_id
 
+        # TODO
+        # self.fields['cus_main_business_typee'].queryset=ComZone.objects.all()
+        
 
     def clean_cus_active(self):
         data = self.data.get('cus_main_cus_active')

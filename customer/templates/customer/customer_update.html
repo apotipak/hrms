@@ -172,28 +172,6 @@
                         </div>
                       </div>
 
-
-                      {% comment %}
-                      <div class="input-group">
-                        <label for="id_cus_main_cus_disrict" class="col-sm-4 col-form-label form-control-sm">{% trans 'District' %}</label>
-                        <div class="col-sm-8">
-                          {% if cus_main_form.cus_district.errors %}                
-                            {% render_field cus_main_form.cus_main_cus_district class="form-control form-control-sm is-invalid" %}
-                            {% for error in cus_main_form.cus_main_cus_district.errors %}
-                            <div class="invalid-feedback">
-                              {{error}}
-                            </div>
-                            {% endfor %}
-                          {% else %}                          
-                                                      
-                          <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_district" name="cus_main_cus_district" value="{{ cus_main.cus_district}}">
-
-                          {% endif %}
-                        </div>
-                      </div>
-                      {% endcomment %}
-
-
                       <div class="input-group">
                         <label for="id_cus_main_cus_disrict" class="col-sm-4 col-form-label form-control-sm">{% trans 'District' %}</label>
 
@@ -307,6 +285,8 @@
             </div>
             <!-- /.row -->            
 
+
+
             <!-- Main Office Tab Others -->
             <div class="row">
               <div class="col-md-12">
@@ -362,13 +342,21 @@
                       </div>
 
                     </div>
+
+                    <!-- Business Type -->
+                    <div class="form-row">
+                      
+                      <div class="form-group col-md-2">
+                        <label for="id_cus_main_business_type">{% trans 'Business Type' %}</label>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_main_business_type" name="cus_main_cus_zip" value="">
+                      </div>
+                    
+                    </div>
+
                   </div>
                 </div>
               </div>
             </div>
-            </form> <!-- Main Office Form End -->
-
-
 
             <!-- Main Office Tab - Contact Information -->
             <div class="row">
@@ -438,45 +426,10 @@
 
 
 
-            {% comment %}
-            <!-- Contact Person -->
-            <div class="row">
-              <div class="col-md-12">
-                <div class="card card-info">
-                  <div class="card-header">
-                    <h3 class="card-title">Contact Information</h3>
-                  </div>
-                  <div class="card-body">
-
-                    <div class="input-group">
-                      <label for="id_cus_contact" class="col-sm-2 col-form-label form-control-sm">{% trans 'Contact Person' %}</label>
-                      <div class="col-sm-10">
-                        {% if cus_main_form.cus_contact.errors %}                
-                          {% render_field cus_main_form.cus_contact class="form-control form-control-sm is-invalid" %}
-                          {% for error in cus_main_form.cus_contact.errors %}
-                          <div class="invalid-feedback">
-                            {{error}}
-                          </div>
-                          {% endfor %}                
-                        {% else %}
-                          {% render_field cus_main_form.cus_contact class="form-control form-control-sm" %}                        
-                        {% endif %}                      
-                        {% render_field cus_main_form.cus_contact_display class="form-control form-control-sm" %}
-                      </div>
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-            </div>
-            {% endcomment %}
-
-
-
             <div class="float-right">
               <a href="#" id="cusMainSaveButton" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
             </div>
-            <!--</form>-->
+            </form>
 
           </div>        
 

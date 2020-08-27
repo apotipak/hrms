@@ -131,3 +131,41 @@ class Customer(models.Model):
         db_table = 'CUSTOMER'
         ordering = ['cus_no']
 
+
+class CustomerOption(models.Model):
+    cus_no = models.DecimalField(db_column='CUS_NO', max_digits=10, decimal_places=0)  # Field name made lowercase.
+    btype = models.CharField(db_column='Btype', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    op1 = models.CharField(max_length=10, blank=True, null=True)
+    op2 = models.CharField(max_length=100, blank=True, null=True)
+    op3 = models.CharField(max_length=100, blank=True, null=True)
+    op4 = models.CharField(max_length=100, blank=True, null=True)
+    op5 = models.CharField(max_length=100, blank=True, null=True)
+    op6 = models.CharField(max_length=100, blank=True, null=True)
+    op7 = models.CharField(max_length=100, blank=True, null=True)
+    op8 = models.CharField(max_length=100, blank=True, null=True)
+    op9 = models.CharField(max_length=100, blank=True, null=True)
+    op10 = models.CharField(max_length=100, blank=True, null=True)
+    op11 = models.CharField(max_length=100, blank=True, null=True)
+    op12 = models.CharField(max_length=100, blank=True, null=True)
+    op13 = models.CharField(max_length=100, blank=True, null=True)
+    op14 = models.CharField(max_length=100, blank=True, null=True)
+    op15 = models.CharField(max_length=100, blank=True, null=True)
+    opn1 = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+    opn2 = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+    opn3 = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+    opn4 = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+    opn5 = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+    opn6 = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+    opn7 = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+    opn8 = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+    opn9 = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+    opn10 = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+    opn11 = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+    opn12 = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+    opn13 = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+    opn14 = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+    opn15 = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'Customer_option'
