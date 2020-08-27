@@ -1013,7 +1013,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">{% trans 'Select District' %}</h5>
+        <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-home"></i>&nbsp;&nbsp;{% trans 'Select a Location' %}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -1024,7 +1024,7 @@
 
       <div class="modal-footer">
         <!--<button id='cus_site_district_lookup_modal' type='button' class='btn btn-outline-secondary btn-xs'><b>></b></button>-->
-        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">{% trans 'Close' %}</button>
+        <button type="button" class="btn btn-success btn-sm" data-dismiss="modal">{% trans 'Close' %}</button>
         <!--<button type="button" class="btn btn-success btn-sm">{% trans 'Select' %}</button>-->
       </div>
 
@@ -1038,7 +1038,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">{% trans 'Select Contact' %}</h5>
+        <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-user"></i>&nbsp;&nbsp;{% trans 'Select a Person' %}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -1048,7 +1048,7 @@
       </div>
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">{% trans 'Close' %}</button>
+        <button type="button" class="btn btn-success btn-sm" data-dismiss="modal">{% trans 'Close' %}</button>
       </div>
 
     </div>
@@ -1076,6 +1076,20 @@
       return false;
     }
   });
+
+  $(document).on('keyup keypress', '#cus_main_search_contact_modal_form input[type="text"]', function(e) {
+    if(e.which == 13) {
+      e.preventDefault();
+      return false;
+    }
+  });
+
+  $(document).on('keyup keypress', '#cus_site_search_contact_modal_form input[type="text"]', function(e) {
+    if(e.which == 13) {
+      e.preventDefault();
+      return false;
+    }
+  });  
 
   $(document).ready(function(){
     $('#cus_main_contact_lookup').on('click', function (e) {
@@ -1110,7 +1124,7 @@
             result += "    <label for='id_cus_site_search_contact' class='sr-only'>Search</label>";            
             result += "    <input type='text' class='form-control form-control-sm' id='id_cus_main_cus_contact_search_text' name='cus_main_cus_contact_search_text' placeholder=''>";
             result += "  </div>";
-            result += "<a href='javascript:cus_main_search_contact_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search1</a>";            
+            result += "<a href='javascript:cus_main_search_contact_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";            
             result += "</form>";
             result += "</div>";
 
@@ -1536,7 +1550,7 @@
           result += "    <label for='id_cus_main_search_contact' class='sr-only'>Search</label>";            
           result += "    <input type='text' class='form-control form-control-sm' id='id_cus_main_cus_contact_search_text' name='cus_main_cus_contact_search_text' placeholder=''>";
           result += "  </div>";
-          result += "<a href='javascript:cus_main_search_contact_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search2</a>";            
+          result += "<a href='javascript:cus_main_search_contact_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";            
           result += "</form>";
           result += "</div>";
 
