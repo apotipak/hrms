@@ -541,7 +541,7 @@
                               <div class="col-12 input-group">
                                 <input type="text" id="id_cus_site_cus_district_dist_th" name="cus_site_cus_district_dist_th" class="form-control form-control-sm" value="{{ customer.cus_district }}" readonly>
                                 
-                                <button id="cus_site_distict_lookup" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url="{% url 'get_district_list' %}"><i class="fas fa-search fa-sm"></i></button>
+                                <button id="cus_site_district_lookup" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url="{% url 'get_district_list' %}"><i class="fas fa-search fa-sm"></i></button>
 
                                 <input type="hidden" id="id_cus_site_select_district_id" name="cus_site_select_district_id" value="{{ customer.cus_district_id }}">
                               </div>
@@ -853,7 +853,7 @@
                               <div class="col-12 input-group">
                                 <input type="text" id="id_cus_site_cus_district_dist_th" name="cus_site_cus_district_dist_th" class="form-control form-control-sm" value="{{ customer.cus_district }}" readonly>
                                 
-                                <button id="cus_site_distict_lookup" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url="{% url 'get_district_list' %}"><i class="fas fa-search fa-sm"></i></button>
+                                <button id="cus_site_district_lookup" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url="{% url 'get_district_list' %}"><i class="fas fa-search fa-sm"></i></button>
 
                                 <input type="hidden" id="id_cus_site_select_district_id" name="cus_site_select_district_id" value="{{ customer.cus_district_id }}">
                               </div>
@@ -1003,7 +1003,7 @@
       </div>
 
       <div class="modal-footer">
-        <!--<button id='cus_site_distict_lookup_modal' type='button' class='btn btn-outline-secondary btn-xs'><b>></b></button>-->
+        <!--<button id='cus_site_district_lookup_modal' type='button' class='btn btn-outline-secondary btn-xs'><b>></b></button>-->
         <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">{% trans 'Close' %}</button>
         <!--<button type="button" class="btn btn-success btn-sm">{% trans 'Select' %}</button>-->
       </div>
@@ -1073,17 +1073,17 @@
 
             result += "<div class='row col-12'>";
             result += "<div class='col-8 offset-3 pb-2'>";
-            result += "<form id='cus_site_search_contact_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
+            result += "<form id='cus_main_search_contact_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
             result += "  <div class='form-group mx-sm-3 mb-2'>";
-            result += "  <select name='cus_site_contact_option' class='form-control form-control-sm' required id='id_cus_site_cus_contact_option'>";
+            result += "  <select name='cus_main_contact_option' class='form-control form-control-sm' required id='id_cus_main_cus_contact_option'>";
             result += "    <option value='1'>Contact ID</option>";
             result += "    <option value='2' selected>Name (TH)</option>";
             result += "    <option value='3'>Last Name (TH)</option>";
             result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";
             result += "    <label for='id_cus_site_search_contact' class='sr-only'>Search</label>";            
-            result += "    <input type='text' class='form-control form-control-sm' id='id_cus_site_cus_contact_search_text' name='cus_site_cus_contact_search_text' placeholder=''>";
+            result += "    <input type='text' class='form-control form-control-sm' id='id_cus_main_cus_contact_search_text' name='cus_main_cus_contact_search_text' placeholder=''>";
             result += "  </div>";
-            result += "<a href='javascript:cus_site_search_contact_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";            
+            result += "<a href='javascript:cus_main_search_contact_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search1</a>";            
             result += "</form>";
             result += "</div>";
 
@@ -1120,7 +1120,7 @@
               result += "<div>";
               result += "  <span>";
               result += data.current_page_number + " / " + data.current_page_paginator_num_pages;
-              result += " <a href='javascript:get_cus_site_distict_lookup(" + data.next_page + ");'>" + "<i class='fas fa-arrow-circle-right'></i></a>";
+              result += " <a href='javascript:get_cus_main_distict_lookup(" + data.next_page + ");'>" + "<i class='fas fa-arrow-circle-right'></i></a>";
               result += "    </span>";
               result += "</div>";
             }
@@ -1205,7 +1205,7 @@
               result += "<div>";
               result += "  <span>";
               result += data.current_page_number + " / " + data.current_page_paginator_num_pages;
-              result += " <a href='javascript:get_cus_site_distict_lookup(" + data.next_page + ");'>" + "<i class='fas fa-arrow-circle-right'></i></a>";
+              result += " <a href='javascript:get_cus_site_district_lookup(" + data.next_page + ");'>" + "<i class='fas fa-arrow-circle-right'></i></a>";
               result += "    </span>";
               result += "</div>";
             }
@@ -1250,9 +1250,7 @@
     $("#contact_modal").modal("hide");    
   }
 
-  function cus_main_select_contact(con_id) {
-    alert(con_id);
-
+  function cus_main_select_contact(con_id) {    
     $.ajax({
         url : "/customer/ajax/get_contact",
         type: 'get',          
@@ -1283,7 +1281,7 @@
 
   $(document).ready(function(){
 
-    $('#cus_site_distict_lookup').on('click', function (e) {
+    $('#cus_site_district_lookup').on('click', function (e) {
       var obj = $(this);
       current_district_id = $('#id_cus_site_select_district_id').val();
 
@@ -1355,7 +1353,7 @@
               result += "<div>";
               result += "  <span>";
               result += data.current_page_number + " / " + data.current_page_paginator_num_pages;
-              result += " <a href='javascript:get_cus_site_distict_lookup(" + data.next_page + ");'>" + "<i class='fas fa-arrow-circle-right'></i></a>";
+              result += " <a href='javascript:get_cus_site_district_lookup(" + data.next_page + ");'>" + "<i class='fas fa-arrow-circle-right'></i></a>";
               result += "    </span>";
               result += "</div>";
             }
@@ -1378,6 +1376,132 @@
     event.preventDefault();  
     update_cus_site();
   });
+
+
+  function cus_main_search_contact_modal() {
+    //alert("todo");
+    current_contact_id = $('#id_cus_main_select_cus_contact_id').val();    
+    search_contact_option = $('#id_cus_main_cus_contact_option').val();
+    search_contact_text = $('#id_cus_main_cus_contact_search_text').val();    
+    page_no = 1;
+
+    console.log(current_contact_id);
+
+    $.ajax({
+        url : "/customer/ajax/get_contact_list_modal",
+        type: 'get',   
+        dataType: 'json',
+        data : {          
+          page_no : page_no,
+          current_contact_id : current_contact_id,
+          search_contact_option : search_contact_option,
+          search_contact_text : search_contact_text,          
+        },
+        success: function (data) {
+    
+          var result = ""
+          var count = data.results.length;
+          var dist_id = data.results[0]["dist_id"];
+          var dist_th = data.results[0]["dist_th"];
+
+
+          result += "<div class='row col-12'>";
+          result += "<div class='col-8 offset-3 pb-2'>";
+          result += "<form id='cus_main_search_contact_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
+          result += "  <div class='form-group mx-sm-3 mb-2'>";
+          result += "  <select name='cus_main_cus_contact_option' class='form-control form-control-sm' required id='id_cus_main_cus_contact_option'>";
+          result += "    <option value='1'>Contact ID</option>";
+          result += "    <option value='2' selected>Name (TH)</option>";
+          result += "    <option value='3'>Last Name (TH)</option>";
+          result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";
+          result += "    <label for='id_cus_main_search_contact' class='sr-only'>Search</label>";            
+          result += "    <input type='text' class='form-control form-control-sm' id='id_cus_main_cus_contact_search_text' name='cus_main_cus_contact_search_text' placeholder=''>";
+          result += "  </div>";
+          result += "<a href='javascript:cus_main_search_contact_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search2</a>";            
+          result += "</form>";
+          result += "</div>";
+
+          
+          result += "<div class='row col-12'>";
+          result += "<table class='table table-hover table-sm'>";
+          result += " <thead>";
+          result += "   <tr>";
+          result += "     <th scope='col'>{% trans 'Contact ID' %}</th>";
+          result += "     <th scope='col'>{% trans 'Name (TH)' %}</th>";
+          result += "     <th scope='col'>{% trans 'Last Name (TH)' %}</th>";
+          result += "     <th scope='col'>&nbsp;</th>";
+          result += "   </tr>";
+          result += " </thead>";
+          result += "<tbody>";
+          result += "</div>";
+          result += "<div>";
+
+          for(var i=0; i<count; i++) {              
+            var con_id = data.results[i]["con_id"];
+            var con_fname_th = data.results[i]["con_fname_th"];
+            var con_lname_th = data.results[i]["con_lname_th"];
+            var con_position_th = data.results[i]["con_position_th"];
+            var con_position_en = data.results[i]["con_position_en"];
+
+            result += "<tr>";
+            result += "<td>" + con_id + "</td>";        
+            result += "<td>" + con_fname_th + "</td>";
+            result += "<td>" + con_lname_th + "</td>";
+            
+            result += "<td><a href='javascript:cus_main_select_contact(" + con_id + ");' type='button' class='btn btn-outline-primary btn-sm'>Select</a></td>";
+
+            result += "</tr>";              
+          }
+          result += " </tbody>";
+          result += "</table>";
+
+          if(data.is_paginated) {
+            result += "<div>";
+            result += "  <span>";
+            if(data.previous_page != 0) {
+              result += " <a href='javascript:get_main_contact_lookup(" + data.previous_page + ");'>" + "<i class='fas fa-arrow-circle-left'></i></a> ";
+            }
+            result += data.current_page_number + " / " + data.current_page_paginator_num_pages;
+            result += " <a href='javascript:get_main_contact_lookup(" + data.next_page + ");'>" + "<i class='fas fa-arrow-circle-right'></i></a>";
+            result += "    </span>";
+            result += "</div>";
+          }
+          
+
+          $("#contact_modal .modal-body").html(result);
+        },
+        error: function(data){
+          result = "";
+          result += "<div class='row col-12'>";
+          result += "<div class='col-8 offset-3 pb-2'>";
+          result += "<form id='cus_main_search_contact_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
+          result += "  <div class='form-group mx-sm-3 mb-2'>";
+          result += "  <select name='cus_main_cus_contact_option' class='form-control form-control-sm' required id='id_cus_main_cus_contact_option'>";
+          result += "    <option value='1'>Contact ID</option>";
+          result += "    <option value='2' selected>Name (TH)</option>";
+          result += "    <option value='3'>Last Name (TH)</option>";
+          result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";
+          result += "    <label for='id_cus_main_search_district' class='sr-only'>Search</label>";            
+          result += "    <input type='text' class='form-control form-control-sm' id='id_cus_main_cus_contact_search_text' name='cus_main_cus_contact_search_text' placeholder=''>";
+          result += "  </div>";
+          result += "<a href='javascript:cus_main_search_contact_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";
+          result += "</form>";
+          result += "</div>";
+
+          result += "<table class='table table-hover table-sm'>";
+          result += " <thead>";
+          result += "   <tr>";
+          result += "     <td colspan='4' class='text-center'><br>Not found.<br><br></td>";
+          result += "   </tr>";
+          result += " </thead>";
+          result += "</tbody>";
+          result += "</table>";
+
+          $("#contact_modal .modal-body").html(result);
+        }          
+    });
+  }
+
 
 
   function cus_site_search_contact_modal() {
@@ -1580,10 +1704,10 @@
             result += "<div>";
             result += "  <span>";
             if(data.previous_page != 0) {
-              result += " <a href='javascript:get_cus_site_distict_lookup(" + data.previous_page + ");'>" + "<i class='fas fa-arrow-circle-left'></i></a> ";
+              result += " <a href='javascript:get_cus_site_district_lookup(" + data.previous_page + ");'>" + "<i class='fas fa-arrow-circle-left'></i></a> ";
             }
             result += data.current_page_number + " / " + data.current_page_paginator_num_pages;
-            result += " <a href='javascript:get_cus_site_distict_lookup(" + data.next_page + ");'>" + "<i class='fas fa-arrow-circle-right'></i></a>";
+            result += " <a href='javascript:get_cus_site_district_lookup(" + data.next_page + ");'>" + "<i class='fas fa-arrow-circle-right'></i></a>";
             result += "    </span>";
             result += "</div>";
           }
@@ -1635,7 +1759,7 @@
     $("#districtmodal").modal("hide");    
   }
 
-  function get_cus_site_distict_lookup(page_no) {
+  function get_cus_site_district_lookup(page_no) {
     current_district_id = $('#id_cus_site_select_district_id').val();
     search_district_option = $('#id_cus_site_cus_district_option').val();
     search_district_text = $('#id_cus_site_cus_district_search_text').val();
@@ -1714,10 +1838,10 @@
             result += "<div>";
             result += "  <span>";
             if(data.previous_page != 0) {
-              result += " <a href='javascript:get_cus_site_distict_lookup(" + data.previous_page + ");'>" + "<i class='fas fa-arrow-circle-left'></i></a> ";
+              result += " <a href='javascript:get_cus_site_district_lookup(" + data.previous_page + ");'>" + "<i class='fas fa-arrow-circle-left'></i></a> ";
             }
             result += data.current_page_number + " / " + data.current_page_paginator_num_pages;
-            result += " <a href='javascript:get_cus_site_distict_lookup(" + data.next_page + ");'>" + "<i class='fas fa-arrow-circle-right'></i></a>";
+            result += " <a href='javascript:get_cus_site_district_lookup(" + data.next_page + ");'>" + "<i class='fas fa-arrow-circle-right'></i></a>";
             result += "    </span>";
             result += "</div>";
           }
@@ -1851,8 +1975,7 @@
     cus_main_cus_email = $('#id_cus_main_cus_email').val();
     cus_main_cus_zone = $('#id_cus_main_cus_zone').val();
 
-
-    //alert(cus_main_cus_country_en);
+    cus_main_cus_contact_id = $("#id_cus_main_cus_contact_id").val();
 
     $.ajax({
       url : "/customer/ajax/update_cus_main/",
@@ -1880,7 +2003,10 @@
         cus_main_cus_tel : cus_main_cus_tel,
         cus_main_cus_fax : cus_main_cus_fax,
         cus_main_cus_email : cus_main_cus_email,
-        cus_main_cus_zone : cus_main_cus_zone
+        cus_main_cus_zone : cus_main_cus_zone,
+
+        cus_main_cus_contact_id : cus_main_cus_contact_id,
+
       },
       success : function(json) {
         if(json.form_is_valid) {          

@@ -656,6 +656,10 @@ def CustomerUpdate(request, pk):
 @login_required(login_url='/accounts/login/')
 def update_cus_main(request):
 
+    print("****************************")
+    print("FUNCTION: update_cus_main")
+    print("****************************")
+
     template_name = 'customer/customer_update.html'    
     response_data = {}
 
@@ -684,8 +688,8 @@ def update_cus_main(request):
             cus_email = request.POST.get('cus_main_cus_email')
             cus_zone = request.POST.get('cus_main_cus_zone')
             
-            # cus_main = CusMain.objects.get(cus_id=cus_id)            
-            # cus_main.upd_by = request.user.first_name
+            cus_main_cus_contact_id = request.POST.get('cus_main_cus_contact_id')
+            print("cus_main_cus_contact_id = " + str(cus_main_cus_contact_id))
 
             '''
             if cus_main.upd_flag == 'A':
@@ -715,6 +719,8 @@ def update_cus_main(request):
             cus_main.cus_email = cus_email
             cus_main.cus_zone_id = cus_zone
 
+            cus_main.cus_contact_id = cus_main_cus_contact_id
+            
             if cus_main.upd_flag == 'A':
                 cus_main.upd_flag = 'E'
             cus_main.upd_by = request.user.first_name
