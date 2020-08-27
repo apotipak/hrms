@@ -702,6 +702,19 @@ def update_cus_main(request):
             '''
 
             cus_main = get_object_or_404(CusMain, pk=cus_id)
+
+            select_district_id = request.POST.get('select_district_id')
+            print("cus_main_select_district_id = " + str(select_district_id))
+
+            district_obj = TDistrict.objects.get(dist_id=select_district_id)
+            if district_obj:
+                city_id = district_obj.city_id_id
+                old_district_id = cus_main.cus_district.dist_id
+                cus_main.cus_district_id = select_district_id
+                cus_main.cus_city = district_obj.city_id                
+                city_obj = TCity.objects.get(city_id=city_id)
+                cus_main.cus_country = city_obj.country_id
+
             cus_main.cus_active = cus_active
             cus_main.cus_name_th = cus_name_th
             cus_main.cus_add1_th = cus_add1_th
@@ -720,7 +733,7 @@ def update_cus_main(request):
             cus_main.cus_zone_id = cus_zone
 
             cus_main.cus_contact_id = cus_main_cus_contact_id
-            
+
             if cus_main.upd_flag == 'A':
                 cus_main.upd_flag = 'E'
             cus_main.upd_by = request.user.first_name
@@ -798,6 +811,8 @@ def update_cus_site(request):
             customer = get_object_or_404(Customer, pk=cus_no)
             
             select_district_id = request.POST.get('select_district_id')
+            print("cus_site_select_district_id = " + str(select_district_id))
+
             district_obj = TDistrict.objects.get(dist_id=select_district_id)
             if district_obj:
                 city_id = district_obj.city_id_id

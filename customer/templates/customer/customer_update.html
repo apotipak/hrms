@@ -205,6 +205,7 @@
                               <button id="cus_main_district_lookup" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url="{% url 'get_district_list' %}"><i class="fas fa-search fa-sm"></i></button>
 
                               <input type="hidden" id="id_cus_main_select_district_id" name="cus_main_select_district_id" value="{{ cus_main.cus_district_id }}">
+
                             </div>
                           </div>
                         </div>
@@ -1320,8 +1321,6 @@
       var obj = $(this);
       current_district_id = $('#id_cus_main_select_district_id').val();
 
-      alert(current_district_id);
-
       $.ajax({
           url: obj.attr("data-url"),
           type: 'get',          
@@ -1992,7 +1991,6 @@
   }
 
   function cus_main_select_district(dist_id, dist_name_th, city_name_th, dist_name_en, city_name_en) {    
-    alert("todo");
     
     $("#id_cus_main_cus_district_dist_th").val(dist_name_th);
     $("#id_cus_main_select_district_id").val(dist_id);
@@ -2223,7 +2221,7 @@
     cus_main_cus_add1_en = $('#id_cus_main_cus_add1_en').val();
     cus_main_cus_add2_en = $('#id_cus_main_cus_add2_en').val();
     cus_main_cus_subdist_en = $('#id_cus_main_cus_subdist_en').val();
-
+    select_district_id = $('#id_cus_main_select_district_id').val();
     cus_main_cus_country_en = $('#id_cus_main_cus_country_en').val();
 
     cus_main_cus_zip = $('#id_cus_main_cus_zip').val();
@@ -2251,9 +2249,9 @@
 
         cus_main_cus_name_en : cus_main_cus_name_en,
         cus_main_cus_add1_en : cus_main_cus_add1_en,
-        cus_main_cus_add2_en : cus_main_cus_add2_en,
+        cus_main_cus_add2_en : cus_main_cus_add2_en,      
         cus_main_cus_subdist_en :  cus_main_cus_subdist_en,
-
+        select_district_id : select_district_id,        
         cus_main_cus_country_en : cus_main_cus_country_en,
 
         cus_main_cus_zip : cus_main_cus_zip,
