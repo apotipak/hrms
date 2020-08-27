@@ -264,7 +264,8 @@ class CustomerUpdateForm1(forms.ModelForm):
         return data
 
 
-class CusMainForm(forms.ModelForm):            
+class CusMainForm(forms.ModelForm):
+    cus_main_cus_name_th = forms.CharField(required=False)
     cus_main_cus_active = forms.BooleanField(label='', required=False, widget=forms.CheckboxInput())
     cus_main_cus_city_th = forms.CharField(required=False)
     cus_main_cus_country_th = forms.CharField(required=False)    
@@ -272,6 +273,7 @@ class CusMainForm(forms.ModelForm):
     cus_main_cus_district_en = forms.CharField(required=False)
     cus_main_cus_country_en = forms.CharField(required=False)
     cus_main_cus_zone = forms.ModelChoiceField(queryset=None, required=True)    
+    cus_main_cus_zip = forms.CharField(required=False)
 
     class Meta:
         model = CusMain
@@ -283,6 +285,8 @@ class CusMainForm(forms.ModelForm):
         instance = getattr(self, 'instance', None)        
                 
         self.initial['cus_main_cus_active'] = instance.cus_active
+
+        self.initial['cus_zip'] = instance.cus_zip
 
         cus_main_cus_city_th = forms.CharField(required=False)
         self.initial['cus_main_cus_city_th'] = instance.cus_city
@@ -323,7 +327,7 @@ class CusMainForm(forms.ModelForm):
             return 0
         return 1     
 
-    def clean_cus_name_th(self):
+    def clean_cus_main_cus_name_th(self):
         data = self.data.get('cus_main_cus_name_th')        
         if len(data) > 0:
             return data
@@ -378,6 +382,18 @@ class CusMainForm(forms.ModelForm):
             raise ValidationError("Sub-District (EN) is too long.")
         else:
             return data
+
+    def clean_cus_main_cus_zip(self):
+        data = self.data.get('cus_main_cus_zip')
+        if len(data) != 5:
+            raise ValidationError("Zip is not correct.")
+        else:
+            return data
+
+        if data.isnumeric():
+            return data
+        else:
+            raise ValidationError("Zip is not correct.")
 
 
 class CusSiteForm(forms.ModelForm):    

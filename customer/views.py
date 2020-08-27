@@ -683,13 +683,14 @@ def update_cus_main(request):
             cus_subdist_en = request.POST.get('cus_main_cus_subdist_en')
 
             cus_zip = request.POST.get('cus_main_cus_zip')
+            print("cus_zip = " + str(cus_zip))
+
             cus_tel = request.POST.get('cus_main_cus_tel')
             cus_fax = request.POST.get('cus_main_cus_fax')
             cus_email = request.POST.get('cus_main_cus_email')
             cus_zone = request.POST.get('cus_main_cus_zone')
             
-            cus_main_cus_contact_id = request.POST.get('cus_main_cus_contact_id')
-            print("cus_main_cus_contact_id = " + str(cus_main_cus_contact_id))
+            cus_main_cus_contact_id = request.POST.get('cus_main_cus_contact_id')            
 
             '''
             if cus_main.upd_flag == 'A':
@@ -751,8 +752,11 @@ def update_cus_main(request):
                 for field in form:
                     for error in field.errors:
                         response_data['message'] += error + "<br>"
+
+                response_data['errors'] = form.errors
             else:
                 response_data['message'] = "ไม่สามารถทำรายการได้..!"
+
 
         return JsonResponse(response_data)
     else:

@@ -317,7 +317,7 @@
                     <div class="form-row">
                       
                       <div class="form-group col-md-2">
-                        <label for="id_cus_site_cus_zip">{% trans 'Zip' %}</label>
+                        <label for="id_cus_main_cus_zip">{% trans 'Zip' %}</label>
                         {% if cus_main_form.cus_main_cus_zip.errors %}                
                                                     
                           <input type="text" class="form-control form-control-sm is-invalid" id="id_cus_main_cus_zip" name="cus_main_cus_zip" value="{{ cus_main.cus_zip|default_if_none:'' }}">
@@ -330,7 +330,6 @@
                         {% else %}
                           <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_zip" name="cus_main_cus_zip" value="{{ cus_main.cus_zip|default_if_none:'' }}">
                         {% endif %}
-
                       </div>
 
                       <div class="form-group col-md-2">
@@ -396,7 +395,7 @@
                       </div>
 
                       <div class="form-group col-md-2">
-                        <label for="id_cus_main_cus_zip">{% trans 'Title' %}</label>
+                        <label for="id_cus_main_cus_title">{% trans 'Title' %}</label>
                           <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_contact_cus_title" name="cus_main_cus_contact_cus_title" value="{{ cus_main.cus_contact.con_title|default_if_none:'' }}" readonly>
                       </div>
 
@@ -676,13 +675,8 @@
                           <label for="id_cus_site_cus_zip">{% trans 'Zip' %}</label>
                           {% if cus_site_form.cus_site_cus_zip.errors %}                
                                                       
-                            <input type="text" class="form-control form-control-sm is-invalid" id="id_cus_site_cus_zip" name="cus_site_cus_zip" value="{{ customer.cus_zip|default_if_none:'' }}">
+                            <input type="text" class="form-control form-control-sm " id="id_cus_site_cus_zip" name="cus_site_cus_zip" value="{{ customer.cus_zip|default_if_none:'' }}">
 
-                            {% for error in cus_site_form.cus_site_cus_zip.errors %}
-                            <div class="invalid-feedback">
-                              {{error}}
-                            </div>
-                            {% endfor %}
                           {% else %}
                             <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_zip" name="cus_site_cus_zip" value="{{ customer.cus_zip|default_if_none:'' }}">
                           {% endif %}
@@ -754,7 +748,7 @@
 
 
                         <div class="form-group col-md-2">
-                          <label for="id_cus_site_cus_zip">{% trans 'Title' %}</label>
+                          <label for="id_cus_site_cus_title">{% trans 'Title' %}</label>
                             <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_contact_cus_title" name="cus_site_cus_contact_cus_title" value="{{ customer.site_contact.con_title|default_if_none:'' }}" readonly>
                         </div>
 
@@ -2275,9 +2269,20 @@
             autoDismiss: true,
             close: true,
             autoremove: true,
-          })
+          });
+
+          $.each($('.is-valid'), function() {
+            $('.is-valid').removeClass('is-valid');              
+          });            
+
+          $.each($('.is-invalid'), function() {
+            $('.is-invalid').addClass('is-valid');  
+            $('.is-invalid').removeClass('is-invalid');              
+          });           
+
         }
-        else {            
+        else {          
+
           $(document).Toasts('create', {
             class: 'bg-danger', 
             title: "{% trans 'Error' %}",
@@ -2289,7 +2294,11 @@
             close: true,
             autoremove: true,
             preventDuplicates: true,       
-          })            
+          });
+
+          for(error in json.errors) {
+            $("#id_"+error).addClass("is-invalid");         
+          };            
         }
       },
     });
@@ -2394,7 +2403,7 @@
 
             for(error in json.errors) {
               $("#id_"+error).addClass("is-invalid");         
-            }
+            };
           }
         },
         error : function(json) {
