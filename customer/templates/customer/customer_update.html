@@ -538,7 +538,7 @@
                         <div class="input-group">
                           <label for="id_cus_site_cus_name_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'Customer Name' %}</label>
                           <div class="col-sm-8">
-                            <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_name_th" name="cus_site_cus_name_th" value="{{ customer.cus_name_th }}">
+                            <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_name_th" name="cus_site_cus_name_th" value="{{ customer.cus_name_th|default_if_none:'' }}">
 
                           </div>
                         </div>
@@ -546,15 +546,15 @@
                         <div class="input-group">
                           <label for="id_cus_add1_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'Address' %}</label>
                           <div class="col-sm-8">
-                            <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_add1_th" name="cus_site_cus_add1_th" value="{{ customer.cus_add1_th }}" autocomplete="off">
-                            <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_add2_th" name="cus_site_cus_add2_th" value="{{ customer.cus_add2_th }}" autocomplete="off">
+                            <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_add1_th" name="cus_site_cus_add1_th" value="{{ customer.cus_add1_th|default_if_none:'' }}" autocomplete="off">
+                            <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_add2_th" name="cus_site_cus_add2_th" value="{{ customer.cus_add2_th|default_if_none:'' }}" autocomplete="off">
                           </div>
                         </div>
 
                         <div class="input-group">
                           <label for="id_cus_site_cus_subdist_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'Sub-District' %}</label>
                           <div class="col-sm-8">
-                            <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_subdist_th" name="cus_site_cus_subdist_th" value="{{ customer.cus_subdist_th }}">
+                            <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_subdist_th" name="cus_site_cus_subdist_th" value="{{ customer.cus_subdist_th|default_if_none:'' }}">
                           </div>
                         </div>
 
@@ -564,7 +564,7 @@
                           <div class="col-sm-8">                            
                             <div class="row">                              
                               <div class="col-12 input-group">
-                                <input type="text" id="id_cus_site_cus_district_dist_th" name="cus_site_cus_district_dist_th" class="form-control form-control-sm" value="{{ customer.cus_district }}" readonly>
+                                <input type="text" id="id_cus_site_cus_district_dist_th" name="cus_site_cus_district_dist_th" class="form-control form-control-sm" value="{{ customer.cus_district|default_if_none:'' }}" readonly>
                                 
                                 <button id="cus_site_district_lookup" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url="{% url 'get_district_list' %}"><i class="fas fa-search fa-sm"></i></button>
 
@@ -577,14 +577,14 @@
                         <div class="input-group">
                           <label for="id_cus_city" class="col-sm-4 col-form-label form-control-sm">{% trans 'City' %}</label>
                           <div class="col-sm-8">                            
-                            <input type="text" id="id_cus_site_cus_city" name="cus_site_cus_city" class="form-control form-control-sm" value="{{ customer.cus_city }}" readonly>
+                            <input type="text" id="id_cus_site_cus_city" name="cus_site_cus_city" class="form-control form-control-sm" value="{{ customer.cus_city|default_if_none:'' }}" readonly>
                           </div>
                         </div>
 
                         <div class="input-group">
                           <label for="id_cus_country" class="col-sm-4 col-form-label form-control-sm">{% trans 'Country' %}</label>
                           <div class="col-sm-8">                                                    
-                            <input type="text" id="id_cus_site_cus_country" name="cus_site_cus_country" class="form-control form-control-sm" value="{{ customer.cus_country }}" readonly>
+                            <input type="text" id="id_cus_site_cus_country" name="cus_site_cus_country" class="form-control form-control-sm" value="{{ customer.cus_country|default_if_none:'' }}" readonly>
                           </div>
                         </div>
 
@@ -610,14 +610,14 @@
                         <div class="input-group">
                           <label for="id_cus_name_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Customer Name' %}</label>
                           <div class="col-sm-8">
-                            <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_name_en" name="cus_site_cus_name_th" value="{{ customer.cus_name_en }}">
+                            <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_name_en" name="cus_site_cus_name_th" value="{{ customer.cus_name_en|default_if_none:'' }}">
                           </div>
                         </div>
 
                         <div class="input-group">
                           <label for="id_cus_add1_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Address' %}</label>
                           <div class="col-sm-8">
-                            <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_add1_en" name="cus_site_cus_add1_th" value="{{ customer.cus_add1_en }}">
+                            <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_add1_en" name="cus_site_cus_add1_th" value="{{ customer.cus_add1_en|default_if_none:'' }}">
                             <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_add2_en" name="cus_site_cus_add2_th" value="{{ customer.cus_add2_en|default_if_none:'' }}">
                           </div>
                         </div>
@@ -632,21 +632,21 @@
                         <div class="input-group">
                           <label for="id_cus_site_cus_district_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'District' %}</label>
                           <div class="col-sm-8">                                                    
-                            <input type="text" id="id_cus_site_cus_district_en" name="cus_site_cus_district_en" class="form-control form-control-sm" value="{{ customer.cus_district.dist_en }}" readonly>
+                            <input type="text" id="id_cus_site_cus_district_en" name="cus_site_cus_district_en" class="form-control form-control-sm" value="{{ customer.cus_district.dist_en|default_if_none:'' }}" readonly>
                           </div>
                         </div>
 
                         <div class="input-group">
                           <label for="id_cus_site_cus_city_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'City' %}</label>
                           <div class="col-sm-8">                            
-                            <input type="text" id="id_cus_site_cus_city_en" name="cus_site_cus_city_en" class="form-control form-control-sm" value="{{ customer.cus_city.city_en }}" readonly>
+                            <input type="text" id="id_cus_site_cus_city_en" name="cus_site_cus_city_en" class="form-control form-control-sm" value="{{ customer.cus_city.city_en|default_if_none:'' }}" readonly>
                           </div>
                         </div>
 
                         <div class="input-group">
                           <label for="id_cus_site_cus_country_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Country' %}</label>
                           <div class="col-sm-8">                                                    
-                            <input type="text" id="id_cus_site_cus_country_en" name="cus_site_cus_country_en" class="form-control form-control-sm" value="{{ customer.cus_country.country_en }}" readonly>
+                            <input type="text" id="id_cus_site_cus_country_en" name="cus_site_cus_country_en" class="form-control form-control-sm" value="{{ customer.cus_country.country_en|default_if_none:'' }}" readonly>
                           </div>
                         </div>
 
