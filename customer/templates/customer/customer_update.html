@@ -172,6 +172,8 @@
                         </div>
                       </div>
 
+
+                      {% comment %}
                       <div class="input-group">
                         <label for="id_cus_main_cus_disrict" class="col-sm-4 col-form-label form-control-sm">{% trans 'District' %}</label>
                         <div class="col-sm-8">
@@ -189,6 +191,25 @@
                           {% endif %}
                         </div>
                       </div>
+                      {% endcomment %}
+
+
+                      <div class="input-group">
+                        <label for="id_cus_main_cus_disrict" class="col-sm-4 col-form-label form-control-sm">{% trans 'District' %}</label>
+
+                        <div class="col-sm-8">                            
+                          <div class="row">                              
+                            <div class="col-12 input-group">
+                              <input type="text" id="id_cus_main_cus_district_dist_th" name="cus_main_cus_district_dist_th" class="form-control form-control-sm" value="{{ cus_main.cus_district }}" readonly>
+                              
+                              <button id="cus_main_district_lookup" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url="{% url 'get_district_list' %}"><i class="fas fa-search fa-sm"></i></button>
+
+                              <input type="hidden" id="id_cus_main_select_district_id" name="cus_main_select_district_id" value="{{ cus_main.cus_district_id }}">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
 
                       <div class="input-group">
                         <label for="id_cus_main_cus_city_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'City' %}</label>
@@ -271,6 +292,10 @@
                           {% render_field cus_main_form.cus_main_cus_country_en class="form-control form-control-sm" %}
                         </div>
                       </div>
+
+
+
+
 
                     </div>                    
                   </div>
@@ -1050,6 +1075,13 @@
     }
   });
 
+  $(document).on('keyup keypress', '#cus_main_search_district_modal_form input[type="text"]', function(e) {
+    if(e.which == 13) {
+      e.preventDefault();
+      return false;
+    }
+  });
+
   $(document).ready(function(){
     $('#cus_main_contact_lookup').on('click', function (e) {
       var obj = $(this);
@@ -1278,6 +1310,100 @@
 
     $("#contact_modal").modal("hide");    
   }
+
+
+
+
+  $(document).ready(function(){
+
+    $('#cus_main_district_lookup').on('click', function (e) {
+      var obj = $(this);
+      current_district_id = $('#id_cus_main_select_district_id').val();
+
+      alert(current_district_id);
+
+      $.ajax({
+          url: obj.attr("data-url"),
+          type: 'get',          
+          dataType: 'json',
+          data : {          
+            current_district_id : current_district_id,
+          },          
+          beforeSend: function () {
+            $("#districtmodal").modal("show");
+          },
+          success: function (data) {
+            var result = "";
+            var count = data.results.length;
+            var dist_id = data.results[0]["dist_id"];
+            var dist_th = data.results[0]["dist_th"];
+
+            result += "<div class='row col-12'>";
+            result += "<div class='col-8 offset-3 pb-2'>";
+            result += "<form id='cus_main_search_district_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
+            result += "  <div class='form-group mx-sm-3 mb-2'>";
+            result += "  <select name='cus_main_cus_district_option' class='form-control form-control-sm' required id='id_cus_main_cus_district_option'>";
+            result += "    <option value='1'>District ID</option>";
+            result += "    <option value='2'>District</option>";
+            result += "    <option value='3' selected>City</option>";
+            result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";
+            result += "    <label for='id_cus_main_search_district' class='sr-only'>Search</label>";            
+            result += "    <input type='text' class='form-control form-control-sm' id='id_cus_main_cus_district_search_text' name='cus_main_cus_district_search_text' placeholder=''>";
+            result += "  </div>";
+            result += "<a href='javascript:cus_main_search_district_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";            
+            result += "</form>";
+            result += "</div>";
+
+            result += "<div class='row col-12'>";
+            result += "<table class='table table-hover table-sm'>";
+            result += " <thead>";
+            result += "   <tr>";
+            result += "     <th scope='col'>{% trans 'District ID' %}</th>";
+            result += "     <th scope='col'>{% trans 'District' %}</th>";
+            result += "     <th scope='col'>{% trans 'City' %}</th>";
+            result += "     <th scope='col'>&nbsp;</th>";
+            result += "   </tr>";
+            result += " </thead>";
+            result += "<tbody>";
+            result += "</div>";
+            result += "<div>";
+
+            for(var i=0; i<count; i++) {              
+              var dist_id = data.results[i]["dist_id"];
+              var dist_name_th = data.results[i]["dist_th"];
+              var dist_name_en = data.results[i]["dist_en"];
+              var city_name_th = data.results[i]["city_th"];
+              var city_name_en = data.results[i]["city_en"];
+
+              result += "<tr>";
+              result += "<td>" + dist_id + "</td>";        
+              result += "<td>" + dist_name_th + "</td>";
+              result += "<td>" + city_name_th + "</td>";
+              result += "<td><a href='javascript:cus_main_select_district(" + dist_id + ",\"" + dist_name_th + "\",\"" + city_name_th + "\",\"" + dist_name_en + "\",\"" + city_name_en + "\");' type='button' class='btn btn-outline-primary btn-sm'>Select</a></td>";
+
+              result += "</tr>";              
+            }
+            result += " </tbody>";
+            result += "</table>";
+
+            if(data.is_paginated) {
+              result += "<div>";
+              result += "  <span>";
+              result += data.current_page_number + " / " + data.current_page_paginator_num_pages;
+              result += " <a href='javascript:get_cus_site_district_lookup(" + data.next_page + ");'>" + "<i class='fas fa-arrow-circle-right'></i></a>";
+              result += "    </span>";
+              result += "</div>";
+            }
+            
+            $("#districtmodal .modal-body").html(result);            
+          },
+          error: function(data){
+            $("#districtmodal .modal-body").html("{% trans 'There is no data.' %}");
+          }          
+      });
+    });
+  });
+
 
   $(document).ready(function(){
 
@@ -1625,6 +1751,125 @@
     });
   }
 
+  function cus_main_search_district_modal() {
+    current_district_id = $('#id_cus_main_select_district_id').val();
+    search_district_option = $('#id_cus_main_cus_district_option').val();
+    search_district_text = $('#id_cus_main_cus_district_search_text').val();
+
+    page_no = 1;
+
+    $.ajax({
+        url : "/customer/ajax/get_district_list_modal",
+        type: 'get',   
+        dataType: 'json',
+        data : {          
+          page_no : page_no,
+          city_name : search_district_text,
+          search_district_option : search_district_option,          
+          search_district_text : search_district_text,
+          current_district_id : current_district_id,
+        },
+        success: function (data) {
+          var result = ""
+          var count = data.results.length;
+          var dist_id = data.results[0]["dist_id"];
+          var dist_th = data.results[0]["dist_th"];
+
+
+            result += "<div class='row col-12'>";
+            result += "<div class='col-8 offset-3 pb-2'>";
+            result += "<form id='cus_main_search_district_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
+            result += "  <div class='form-group mx-sm-3 mb-2'>";
+            result += "  <select name='cus_main_cus_district_option' class='form-control form-control-sm' required id='id_cus_main_cus_district_option'>";
+            result += "    <option value='1'>District ID</option>";
+            result += "    <option value='2'>District</option>";
+            result += "    <option value='3' selected>City</option>";
+            result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";
+            result += "    <label for='id_cus_main_search_district' class='sr-only'>Search</label>";            
+            result += "    <input type='text' class='form-control form-control-sm' id='id_cus_main_cus_district_search_text' name='cus_main_cus_district_search_text' placeholder=''>";
+            result += "  </div>";
+            result += "<a href='javascript:cus_main_search_district_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";            
+            result += "</form>";
+            result += "</div>";
+
+            result += "<div class='row col-12'>";
+            result += "<table class='table table-hover table-sm'>";
+            result += " <thead>";
+            result += "   <tr>";
+            result += "     <th scope='col'>{% trans 'District ID' %}</th>";
+            result += "     <th scope='col'>{% trans 'District' %}</th>";
+            result += "     <th scope='col'>{% trans 'City' %}</th>";
+            result += "     <th scope='col'>&nbsp;</th>";
+            result += "   </tr>";
+            result += " </thead>";
+            result += "<tbody>";
+            result += "</div>";
+            result += "<div>";
+
+          for(var i=0; i<count; i++) {              
+            var dist_id = data.results[i]["dist_id"];
+            var dist_name_th = data.results[i]["dist_th"];
+            var city_name_th = data.results[i]["city_th"];
+            var dist_name_en = data.results[i]["dist_en"];
+            var city_name_en = data.results[i]["city_en"];
+
+            result += "<tr>";
+            result += "<td>" + dist_id + "</td>";        
+            result += "<td>" + dist_name_th + "</td>";
+            result += "<td>" + city_name_th + "</td>";
+            
+            result += "<td><a href='javascript:cus_main_select_district(" + dist_id + ",\"" + dist_name_th + "\",\"" + city_name_th + "\",\"" + dist_name_en + "\",\"" + city_name_en + "\");' type='button' class='btn btn-outline-primary btn-sm'>Select</a></td>";
+
+            result += "</tr>";              
+          }
+          result += " </tbody>";
+          result += "</table>";
+
+          if(data.is_paginated) {
+            result += "<div>";
+            result += "  <span>";
+            if(data.previous_page != 0) {
+              result += " <a href='javascript:get_cus_main_district_lookup(" + data.previous_page + ");'>" + "<i class='fas fa-arrow-circle-left'></i></a> ";
+            }
+            result += data.current_page_number + " / " + data.current_page_paginator_num_pages;
+            result += " <a href='javascript:get_cus_main_district_lookup(" + data.next_page + ");'>" + "<i class='fas fa-arrow-circle-right'></i></a>";
+            result += "    </span>";
+            result += "</div>";
+          }
+          
+          $("#districtmodal .modal-body").html(result);          
+        },
+        error: function(data){
+          result = "";
+          result += "<div class='row col-12'>";
+          result += "<div class='col-8 offset-3 pb-2'>";
+          result += "<form id='cus_main_search_district_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
+          result += "  <div class='form-group mx-sm-3 mb-2'>";
+          result += "  <select name='cus_main_cus_district_option' class='form-control form-control-sm' required id='id_cus_main_cus_district_option'>";
+          result += "    <option value='1'>District ID</option>";
+          result += "    <option value='2'>District</option>";
+          result += "    <option value='3' selected>City</option>";
+          result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";
+          result += "    <label for='id_cus_main_search_district' class='sr-only'>Search</label>";            
+          result += "    <input type='text' class='form-control form-control-sm' id='id_cus_main_cus_district_search_text' name='cus_main_cus_district_search_text' placeholder=''>";
+          result += "  </div>";
+          result += "<a href='javascript:cus_main_search_district_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";            
+          result += "</form>";
+          result += "</div>";
+
+          result += "<table class='table table-hover table-sm'>";
+          result += " <thead>";
+          result += "   <tr>";
+          result += "     <td colspan='4' class='text-center'><br>Not found.<br><br></td>";
+          result += "   </tr>";
+          result += " </thead>";
+          result += "</tbody>";
+          result += "</table>";
+
+          $("#districtmodal .modal-body").html(result);
+        }          
+    });
+  }
 
   function cus_site_search_district_modal() {
     current_district_id = $('#id_cus_site_select_district_id').val();
@@ -1744,8 +1989,20 @@
           $("#districtmodal .modal-body").html(result);
         }          
     });
+  }
 
+  function cus_main_select_district(dist_id, dist_name_th, city_name_th, dist_name_en, city_name_en) {    
+    alert("todo");
+    
+    $("#id_cus_main_cus_district_dist_th").val(dist_name_th);
+    $("#id_cus_main_select_district_id").val(dist_id);
 
+    $("#id_cus_main_cus_city_th").val(city_name_th);
+    $("#id_cus_main_cus_district_en").val(dist_name_en);
+    $("#id_cus_main_cus_city_en").val(city_name_en);
+    
+
+    $("#districtmodal").modal("hide");    
   }
 
   function select_district(dist_id, dist_name_th, city_name_th, dist_name_en, city_name_en) {    
@@ -1823,7 +2080,7 @@
             result += "<td>" + city_name_th + "</td>";
 
             //result += "<td><a href='javascript:select_district(" + dist_id + ",\"" + dist_name_th + "\",\"" + city_name_th + "\");' type='button' class='btn btn-primary btn-xs'>Selectaaa</a></td>";
-            result += "<td><a href='javascript:select_district(" + dist_id + ",\"" + dist_name_th + "\",\"" + city_name_th + "\",\"" + dist_name_en + "\",\"" + city_name_en + "\");' type='button' class='btn btn-outline-primary btn-sm'>Select</a></td>";
+            result += "<td><a href='javascript:cus_main_select_district(" + dist_id + ",\"" + dist_name_th + "\",\"" + city_name_th + "\",\"" + dist_name_en + "\",\"" + city_name_en + "\");' type='button' class='btn btn-outline-primary btn-sm'>Select</a></td>";
 
             result += "</tr>";              
           }
