@@ -676,13 +676,14 @@ def update_cus_main(request):
             cus_subdist_en = request.POST.get('cus_main_cus_subdist_en')
 
             cus_zip = request.POST.get('cus_main_cus_zip')
-            print("cus_zip = " + str(cus_zip))
 
             cus_tel = request.POST.get('cus_main_cus_tel')
             cus_fax = request.POST.get('cus_main_cus_fax')
             cus_email = request.POST.get('cus_main_cus_email')
             cus_zone = request.POST.get('cus_main_cus_zone')
             
+            business_type = request.POST.get('cus_main_business_type')
+
             cus_main_cus_contact_id = request.POST.get('cus_main_cus_contact_id')            
 
             '''
@@ -734,6 +735,9 @@ def update_cus_main(request):
             cus_main.upd_date = timezone.now()
             
             cus_main.save()
+
+            # Business Type
+            print("business_type = " + business_type)
 
             response_data['result'] = "Update complete."
             response_data['message'] = "ทำรายการสำเร็จ"

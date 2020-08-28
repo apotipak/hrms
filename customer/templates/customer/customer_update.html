@@ -2191,6 +2191,8 @@
     cus_main_cus_email = $('#id_cus_main_cus_email').val();
     cus_main_cus_zone = $('#id_cus_main_cus_zone').val();
 
+    cus_main_business_type = $('#id_cus_main_business_type').val();
+
     cus_main_cus_contact_id = $("#id_cus_main_cus_contact_id").val();
 
     $.ajax({
@@ -2221,8 +2223,9 @@
         cus_main_cus_email : cus_main_cus_email,
         cus_main_cus_zone : cus_main_cus_zone,
 
-        cus_main_cus_contact_id : cus_main_cus_contact_id,
+        cus_main_business_type : cus_main_business_type,
 
+        cus_main_cus_contact_id : cus_main_cus_contact_id,
       },
       success : function(json) {
         if(json.form_is_valid) {          

@@ -150,7 +150,7 @@ class CusMainForm(forms.ModelForm):
     class Meta:
         model = CusMain
         fields = '__all__'        
-        exclude = ['cus_id','cus_city','cus_country','cus_zip','cus_district','cus_zone','cus_contact','site_contact','dist_en']
+        exclude = ['cus_no','cus_id','cus_city','cus_country','cus_zip','cus_district','cus_zone','cus_contact','site_contact','dist_en']
     
     def __init__(self, *args, **kwargs):
         if 'cus_no' in kwargs:
@@ -214,11 +214,15 @@ class CusMainForm(forms.ModelForm):
             # print("customer_business_type = None")
             self.initial['cus_main_business_type'] = ""    
 
+    def clean_cus_main_business_type(self):
+        data = self.data.get('cus_main_business_type')
+        return data
+
     def clean_cus_active(self):
         data = self.data.get('cus_main_cus_active')
         if data != "1":
             return 0
-        return 1     
+        return 1
 
     def clean_cus_main_cus_name_th(self):
         data = self.data.get('cus_main_cus_name_th')        
