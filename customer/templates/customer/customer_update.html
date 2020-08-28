@@ -350,12 +350,12 @@
                         {% comment %}{% render_field cus_main_form.cus_main_business_type class="form-control col-sm-12 form-control-sm" %}{% endcomment %}
 
                         <div class="container">
-                          <select class="editableBox">        
+                          <select id="id_cus_main_business_type_temp" name="cus_main_business_type_temp" class="editableBox">        
                             {% for option in customer_option_list %}
                               <option>{{ option }}</option>
                             {% endfor %}
                           </select>
-                          <input class="timeTextBox" name="timebox" />
+                          <input class="timeTextBox" id="id_cus_main_business_type" name="cus_main_business_type" />
                         </div>
                          
                       </div>
@@ -2201,7 +2201,8 @@
     cus_main_cus_zone = $('#id_cus_main_cus_zone').val();
 
     cus_main_business_type = $('#id_cus_main_business_type').val();
-
+    alert(cus_main_business_type);
+    
     cus_main_cus_contact_id = $("#id_cus_main_cus_contact_id").val();
 
     $.ajax({
@@ -2276,7 +2277,7 @@
           });
 
           for(error in json.errors) {
-            $("#id_"+error).addClass("is-invalid");         
+            $("#id_" + error).addClass("is-invalid");         
           };            
         }
       },

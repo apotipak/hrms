@@ -738,8 +738,12 @@ def update_cus_main(request):
             
             cus_main.save()
 
+            # TODO
             # Business Type
             print("business_type = " + str(business_type))
+
+
+
 
             response_data['result'] = "Update complete."
             response_data['message'] = "ทำรายการสำเร็จ"
@@ -750,7 +754,7 @@ def update_cus_main(request):
             if form.errors:
                 for field in form:
                     for error in field.errors:
-                        response_data['message'] += error + "<br>"
+                        response_data['message'] += field.name + " | " + error + "<br>"
 
                 response_data['errors'] = form.errors
             else:

@@ -145,7 +145,7 @@ class CusMainForm(forms.ModelForm):
     cus_main_cus_zone = forms.ModelChoiceField(queryset=None, required=True)
     cus_main_cus_zip = forms.CharField(required=False)
 
-    cus_main_business_type = forms.ModelChoiceField(queryset=None, required=False)
+    # cus_main_business_type = forms.ModelChoiceField(queryset=None, required=False)
 
     class Meta:
         model = CusMain
@@ -200,23 +200,25 @@ class CusMainForm(forms.ModelForm):
 
         # TODO
         customer_option_list = CustomerOption.objects.values_list('btype', flat=True).exclude(btype=None).order_by('btype').distinct()        
-        self.fields['cus_main_business_type'].queryset = customer_option_list
+        # self.fields['cus_main_business_type'].queryset = customer_option_list
         
+        '''
         try:
             customer_business_type = CustomerOption.objects.get(cus_no__exact=cus_no)
         except CustomerOption.DoesNotExist:
             customer_business_type = None
 
         if customer_business_type:
-            # print("customer_business_type = " + str(customer_business_type.btype))
+            print("customer_business_type = " + str(customer_business_type.btype))
             self.initial['cus_main_business_type'] = customer_business_type.btype
         else:
-            # print("customer_business_type = None")
-            self.initial['cus_main_business_type'] = ""    
-
+            print("customer_business_type = None")
+            self.initial['cus_main_business_type'] = ""
+        '''
+        
     def clean_cus_main_business_type(self):
         data = self.data.get('cus_main_business_type')
-        return data
+        return 1
 
     def clean_cus_active(self):
         data = self.data.get('cus_main_cus_active')
