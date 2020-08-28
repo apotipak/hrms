@@ -739,7 +739,7 @@ def update_cus_main(request):
             cus_main.save()
 
             # Business Type
-            print("business_type = " + business_type)
+            print("business_type = " + str(business_type))
 
             response_data['result'] = "Update complete."
             response_data['message'] = "ทำรายการสำเร็จ"
