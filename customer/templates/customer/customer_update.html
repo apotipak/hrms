@@ -347,11 +347,20 @@
                     <div class="form-row">                      
                       <div class="form-group col-md-3">
                         <label for="id_cus_main_business_type">{% trans 'Business Type' %}</label>                          
-                        {% render_field cus_main_form.cus_main_business_type class="form-control col-sm-12 form-control-sm" %}
+                        {% comment %}{% render_field cus_main_form.cus_main_business_type class="form-control col-sm-12 form-control-sm" %}{% endcomment %}
+
+                        <div class="container">
+                          <select class="editableBox">        
+                            {% for option in customer_option_list %}
+                              <option>{{ option }}</option>
+                            {% endfor %}
+                          </select>
+                          <input class="timeTextBox" name="timebox" />
+                        </div>
+                         
                       </div>
+
                     </div>
-
-
 
                   </div>
                 </div>
@@ -966,7 +975,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-home"></i>&nbsp;&nbsp;{% trans 'Select a Location' %}</h5>
+        <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-search"></i>&nbsp;&nbsp;{% trans 'Select a Location' %}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -991,7 +1000,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-user"></i>&nbsp;&nbsp;{% trans 'Select a Person' %}</h5>
+        <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-search"></i>&nbsp;&nbsp;{% trans 'Select a Person' %}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -2383,6 +2392,14 @@
   };
 
 
+$(document).ready(function(){
+   
+    $(".editableBox").change(function(){         
+        $(".timeTextBox").val($(".editableBox option:selected").html());
+    });
+});
 
 </script>
+
+
 {% endblock %}

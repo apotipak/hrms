@@ -230,6 +230,7 @@ def CustomerUpdate(request, pk):
         cus_bill_form = CusBillForm(instance=cus_bill)
 
     # print("customer cus_active = " + str(customer.cus_active))
+    customer_option_list = CustomerOption.objects.values_list('btype', flat=True).exclude(btype=None).order_by('btype').distinct()        
 
     context = {
         'page_title': settings.PROJECT_NAME,
@@ -246,6 +247,7 @@ def CustomerUpdate(request, pk):
         'cus_bill': cus_bill,
         'customer': customer,        
         'request': request,
+        'customer_option_list': customer_option_list,
     }
     return render(request, template_name, context)
 

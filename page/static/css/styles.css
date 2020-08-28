@@ -143,3 +143,16 @@ input:checked + .slider:before {
 input:checked + .slider:after {
   content:'Active  ';
 }
+
+.editableBox {
+    width: 140px;
+    height: 30px;
+    margin-left: -7px;
+}
+
+.timeTextBox {
+    width: 117px;
+    margin-left: -140px;
+    height: 25px;
+    border: none;
+}
