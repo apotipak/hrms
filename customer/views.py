@@ -194,6 +194,9 @@ def CustomerList(request):
 # Load all 3 forms (cus_main, cus_site, cus_bill)
 
 def CustomerUpdate(request, pk):
+    print("check")
+    print(pk)
+
     template_name = 'customer/customer_update.html'
     
     customer = get_object_or_404(Customer, pk=pk)
@@ -214,6 +217,8 @@ def CustomerUpdate(request, pk):
 
         try:
             cus_bill = CusBill.objects.get(pk=pk)
+            print("check cus_subdist_th")
+            print(cus_bill.cus_subdist_th)
         except CusBill.DoesNotExist:
             cus_bill = None
 
@@ -918,6 +923,121 @@ def update_cus_site(request):
         response_data['form_is_valid'] = False        
 
     return JsonResponse(response_data)
+
+
+
+
+@login_required(login_url='/accounts/login/')
+def update_cus_bill(request):
+
+    print("****************************")
+    print("FUNCTION: update_cus_bill")
+    print("****************************")
+
+    template_name = 'customer/customer_update.html'    
+    response_data = {}
+
+    if request.method == 'POST':
+        form = CusBillForm(request.POST)
+
+        if form.is_valid():
+            cus_active = request.POST.get('cus_bill_cus_active')
+
+            cus_no = request.POST.get('cus_no')
+            cus_id = request.POST.get('cus_id')
+            cus_brn = request.POST.get('cus_brn')
+            
+            cus_name_th = request.POST.get('cus_bill_cus_name_th')            
+            cus_add1_th = request.POST.get('cus_bill_cus_add1_th')
+            cus_add2_th = request.POST.get('cus_bill_cus_add2_th')
+            cus_subdist_th = request.POST.get('cus_bill_cus_subdist_th')            
+            
+            cus_name_en = request.POST.get('cus_bill_cus_name_en')                          
+            cus_add1_en = request.POST.get('cus_bill_cus_add1_en')
+            cus_add2_en = request.POST.get('cus_bill_cus_add2_en')
+            cus_subdist_en = request.POST.get('cus_bill_cus_subdist_en')
+
+            cus_zip = request.POST.get('cus_bill_cus_zip')
+
+            cus_tel = request.POST.get('cus_bill_cus_tel')
+            cus_fax = request.POST.get('cus_bill_cus_fax')
+            cus_email = request.POST.get('cus_bill_cus_email')
+            cus_zone = request.POST.get('cus_bill_cus_zone')
+                    
+            cus_bill_cus_contact_id = request.POST.get('cus_bill_cus_contact_id')
+
+            print("check")
+            print(cus_no)
+            cus_bill = get_object_or_404(CusBill, pk=cus_no)
+
+            select_district_id = request.POST.get('select_district_id')
+
+            district_obj = TDistrict.objects.get(dist_id=select_district_id)
+            if district_obj:
+                city_id = district_obj.city_id_id
+                old_district_id = cus_bill.cus_district.dist_id
+                cus_bill.cus_district_id = select_district_id
+                cus_bill.cus_city = district_obj.city_id                
+                city_obj = TCity.objects.get(city_id=city_id)
+                cus_bill.cus_country = city_obj.country_id
+
+            cus_bill.cus_active = cus_active
+            cus_bill.cus_name_th = cus_name_th
+            cus_bill.cus_add1_th = cus_add1_th
+            cus_bill.cus_add2_th = cus_add2_th
+            cus_bill.cus_subdist_th = cus_subdist_th
+            
+            cus_bill.cus_name_en = cus_name_en
+            cus_bill.cus_add1_en = cus_add1_en
+            cus_bill.cus_add2_en = cus_add2_en
+            cus_bill.cus_subdist_en = cus_subdist_en
+
+            cus_bill.cus_zip = cus_zip
+            cus_bill.cus_tel = cus_tel
+            cus_bill.cus_fax = cus_fax
+            cus_bill.cus_email = cus_email
+            cus_bill.cus_zone_id = cus_zone
+
+            cus_bill.cus_contact_id = cus_bill_cus_contact_id
+
+            if cus_bill.upd_flag == 'A':
+                cus_bill.upd_flag = 'E'
+            cus_bill.upd_by = request.user.first_name
+            cus_bill.upd_date = timezone.now()
+
+            cus_bill.save()
+            
+
+            # Return success message
+            response_data['result'] = "Update complete."
+            response_data['message'] = "ทำรายการสำเร็จ"
+            response_data['form_is_valid'] = True
+        else:
+            response_data['form_is_valid'] = False
+            response_data['message'] = ""
+            if form.errors:
+                for field in form:
+                    for error in field.errors:
+                        response_data['message'] += field.name + " | " + error + "<br>"
+
+                response_data['errors'] = form.errors
+            else:
+                response_data['message'] = "ไม่สามารถทำรายการได้..!"
+
+        return JsonResponse(response_data)
+    else:
+        print("debug - found cus_main_form problem")
+
+    context = {
+        'page_title': settings.PROJECT_NAME,
+        'today_date': settings.TODAY_DATE,
+        'project_version': settings.PROJECT_VERSION,
+        'db_server': settings.DATABASES['default']['HOST'],
+        'project_name': settings.PROJECT_NAME,
+        'business_type': 'abc',
+    }
+    
+    return render(request, template_name, context)    
 
 
 

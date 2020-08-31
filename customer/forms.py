@@ -221,7 +221,7 @@ class CusMainForm(forms.ModelForm):
         data = self.data.get('cus_main_business_type')
         return 1
     '''
-    
+
     def clean_cus_active(self):
         data = self.data.get('cus_main_cus_active')
         if data != "1":
@@ -442,7 +442,7 @@ class CusBillForm(forms.ModelForm):
     cus_bill_cus_tel = forms.CharField(required=False)
     cus_bill_cus_fax = forms.CharField(required=False)
     cus_bill_cus_email = forms.CharField(required=False)
-    cus_bill_cus_zone = forms.ModelChoiceField(queryset=None, required=True)    
+    cus_bill_cus_zone = forms.ModelChoiceField(queryset=None, required=False)    
 
     class Meta:
         model = CusBill
@@ -450,7 +450,7 @@ class CusBillForm(forms.ModelForm):
         exclude = ['cus_no','cus_id','cus_brn','cus_city','cus_country','cus_zip','cus_district','cus_zone','cus_contact','site_contact','dist_en']
     
     def __init__(self, *args, **kwargs):        
-        super(CusBillForm, self).__init__(*args, **kwargs)        
+        super(CusBillForm, self).__init__(*args, **kwargs)     
         instance = getattr(self, 'instance', None)
 
         self.initial['cus_zip'] = instance.cus_zip

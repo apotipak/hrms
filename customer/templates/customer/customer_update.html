@@ -806,15 +806,13 @@
               </div>
 
 
-
-            </div>
-
-
             <div class="float-right">
               <a href="#" id="cusSiteSaveButton" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
             </div>
 
             </form>
+
+            </div>
 
           </div>
 
@@ -841,13 +839,13 @@
             <div class="container-fluid pt-2">
 
 
-
+            <form id="cus_bill_form" method="POST" action="{% url 'update_cus_bill' %}">
+            {% csrf_token %}
 
               <div class="row pt-3">
 
                 <!-- Billing Tab Thai -->
                 <div class="col-md-6">
-
 
                   <div class="card card-info">
                     <div class="card-header">
@@ -901,12 +899,11 @@
                         </div>
 
 
-
-
+                        <!-- cus_bill_cus_city_th-->
                         <div class="input-group">
-                          <label for="id_cus_bill_cus_city" class="col-sm-4 col-form-label form-control-sm">{% trans 'City' %}</label>
+                          <label for="id_cus_bill_cus_city_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'City1' %}</label>
                           <div class="col-sm-8">                            
-                            <input type="text" id="id_cus_bill_cus_city" name="cus_bill_cus_city" class="form-control form-control-sm" value="{{ cus_bill.cus_city }}" readonly>
+                            <input type="text" id="id_cus_bill_cus_city_th" name="cus_bill_cus_city_th" class="form-control form-control-sm" value="{{ cus_bill.cus_city.city_th }}" readonly>
                           </div>
                         </div>
 
@@ -939,15 +936,15 @@
                         <div class="input-group">
                           <label for="id_cus_bill_cus_name_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Customer Name' %}</label>
                           <div class="col-sm-8">
-                            <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_name_en" name="cus_bill_cus_name_th" value="{{ cus_bill.cus_name_en }}">
+                            <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_name_en" name="cus_bill_cus_name_en" value="{{ cus_bill.cus_name_en }}">
                           </div>
                         </div>
 
                         <div class="input-group">
                           <label for="id_cus_bill_cus_add1_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Address' %}</label>
                           <div class="col-sm-8">
-                            <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_add1_en" name="cus_bill_cus_add1_th" value="{{ cus_bill.cus_add1_en }}">
-                            <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_add2_en" name="cus_bill_cus_add2_th" value="{{ cus_bill.cus_add2_en|default_if_none:'' }}">
+                            <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_add1_en" name="cus_bill_cus_add1_en" value="{{ cus_bill.cus_add1_en }}">
+                            <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_add2_en" name="cus_bill_cus_add2_en" value="{{ cus_bill.cus_add2_en|default_if_none:'' }}">
                           </div>
                         </div>
 
@@ -968,7 +965,7 @@
                         <div class="input-group">
                           <label for="id_cus_bill_cus_city_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'City' %}</label>
                           <div class="col-sm-8">                            
-                            <input type="text" id="id_cus_bill_cus_city_en" name="cus_bill_cus_city_en" class="form-control form-control-sm" value="{{ cuscus_bill.cus_city.city_en }}" readonly>
+                            <input type="text" id="id_cus_bill_cus_city_en" name="cus_bill_cus_city_en" class="form-control form-control-sm" value="{{ cus_bill.cus_city.city_en }}" readonly>                            
                           </div>
                         </div>
 
@@ -990,11 +987,19 @@
               </div>
 
 
+            <div class="float-right">
+              <a href="#" id="cusBillSaveButton" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
+            </div>
+
+            </form>
 
             
             </div>
           </div>
           <!-- end billing -->
+
+
+
 
         </div>
         <!-- /.end tabs -->
@@ -1623,6 +1628,10 @@
     update_cus_site();
   });
 
+  $("#cusBillSaveButton").click( function() {
+    event.preventDefault();  
+    update_cus_bill();
+  });
 
   function cus_main_search_contact_modal() {
     //alert("todo");
@@ -2115,6 +2124,8 @@
     current_district_id = $('#id_cus_bill_select_district_id').val();
     search_district_option = $('#id_cus_bill_cus_district_option').val();
     search_district_text = $('#id_cus_bill_cus_district_search_text').val();
+
+    //alert(current_district_id);
 
     page_no = 1;
 
@@ -2683,25 +2694,130 @@
   };
 
 
-$(document).ready(function(){
 
-  $("#id_cus_main_business_type_temp").change(function(){         
-    $(".businessTypeTextBox").val($("#id_cus_main_business_type_temp option:selected").html());
+  function update_cus_bill() {
+    cus_id = "{{cus_bill.cus_id|stringformat:'04d'}}";
+    cus_brn = "{{cus_bill.cus_brn|stringformat:'03d'}}";
+    cus_no = cus_id + cus_brn;
+
+    if ($('#id_cus_bill_cus_active').is(":checked"))
+      cus_bill_cus_active = 1;
+    else
+      cus_bill_cus_active = 0;
+
+    cus_bill_cus_name_th = $('#id_cus_bill_cus_name_th').val();
+    cus_bill_cus_add1_th = $('#id_cus_bill_cus_add1_th').val();
+    cus_bill_cus_add2_th = $('#id_cus_bill_cus_add2_th').val();
+    cus_bill_cus_subdist_th = $('#id_cus_bill_cus_subdist_th').val();
+
+    cus_bill_cus_name_en = $('#id_cus_bill_cus_name_en').val();
+    cus_bill_cus_add1_en = $('#id_cus_bill_cus_add1_en').val();
+    cus_bill_cus_add2_en = $('#id_cus_bill_cus_add2_en').val();
+    cus_bill_cus_subdist_en = $('#id_cus_bill_cus_subdist_en').val();
+    select_district_id = $('#id_cus_bill_select_district_id').val();
+    cus_bill_cus_zip = $('#id_cus_bill_cus_zip').val();
+    cus_bill_cus_tel = $('#id_cus_bill_cus_tel').val();
+    cus_bill_cus_fax = $('#id_cus_bill_cus_fax').val();
+    cus_bill_cus_email = $('#id_cus_bill_cus_email').val();
+    cus_bill_cus_zone = $('#id_cus_bill_cus_zone').val();
+
+    // Contact Information
+    cus_bill_cus_contact_con_sex = $('input[name="cus_bill_cus_contact_con_sex"]:checked').val();    
+    cus_bill_bill_contact_id = $("#id_cus_bill_bill_contact_id").val();
+
+    $.ajax({
+        url : "/customer/ajax/update_cus_bill/",
+        type : "POST",
+        data : {          
+          csrfmiddlewaretoken: '{{ csrf_token }}',
+          cus_id : cus_id,
+          cus_brn : cus_brn,
+          cus_no : cus_no,
+          cus_bill_cus_active : cus_bill_cus_active,
+          cus_bill_cus_name_th : cus_bill_cus_name_th,
+          cus_bill_cus_add1_th : cus_bill_cus_add1_th,
+          cus_bill_cus_add2_th : cus_bill_cus_add2_th,
+          cus_bill_cus_subdist_th :  cus_bill_cus_subdist_th,
+          cus_bill_cus_name_en : cus_bill_cus_name_en,
+          cus_bill_cus_add1_en : cus_bill_cus_add1_en,
+          cus_bill_cus_add2_en : cus_bill_cus_add2_en,
+          cus_bill_cus_subdist_en : cus_bill_cus_subdist_en,
+          select_district_id : select_district_id,
+          cus_bill_cus_zip : cus_bill_cus_zip,
+          cus_bill_cus_tel : cus_bill_cus_tel,
+          cus_bill_cus_fax : cus_bill_cus_fax,
+          cus_bill_cus_email : cus_bill_cus_email,
+          cus_bill_cus_zone : cus_bill_cus_zone,
+
+          cus_bill_cus_contact_con_sex : cus_bill_cus_contact_con_sex,
+          cus_bill_site_contact_id : cus_bill_bill_contact_id,
+        },
+        success : function(json) {
+          if(json.form_is_valid) {        
+
+            $(document).Toasts('create', {
+              class: 'bg-success', 
+              title: "{% trans 'Message' %}",
+              subtitle: '',
+              autohide: true,
+              delay: 2000,
+              body: json.result + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+              autoDismiss: true,
+              close: true,
+              autoremove: true,
+            });
+
+            $.each($('.is-valid'), function() {
+              $('.is-valid').removeClass('is-valid');              
+            });            
+
+            $.each($('.is-invalid'), function() {
+              $('.is-invalid').addClass('is-valid');  
+              $('.is-invalid').removeClass('is-invalid');              
+            });            
+
+          }
+          else {            
+            $(document).Toasts('create', {
+              class: 'bg-danger', 
+              title: "{% trans 'Error' %}",
+              subtitle: '',
+              autohide: true,
+              delay: 5000,
+              body: json.message,
+              autoDismiss: true,
+              close: true,
+              autoremove: true,
+              preventDuplicates: true,
+            });
+
+            for(error in json.errors) {
+              $("#id_"+error).addClass("is-invalid");         
+            };
+          }
+        },
+        error : function(json) {
+          //
+        }
+    });
+  };
+
+
+  $(document).ready(function(){
+
+    $("#id_cus_main_business_type_temp").change(function(){         
+      $(".businessTypeTextBox").val($("#id_cus_main_business_type_temp option:selected").html());
+    });
+
+    $("#selectCustoemrOptionGroup1").change(function(){         
+      $(".group1TextBox").val($("#selectCustoemrOptionGroup1 option:selected").html());
+    });
+
+    $("#selectCustoemrOptionGroup2").change(function(){         
+      $(".group2TextBox").val($("#selectCustoemrOptionGroup2 option:selected").html());
+    });
+
   });
-
-
-
-  $("#selectCustoemrOptionGroup1").change(function(){         
-    $(".group1TextBox").val($("#selectCustoemrOptionGroup1 option:selected").html());
-  });
-
-
-  $("#selectCustoemrOptionGroup2").change(function(){         
-    $(".group2TextBox").val($("#selectCustoemrOptionGroup2 option:selected").html());
-  });
-
-
-});
 
 </script>
 
