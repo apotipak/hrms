@@ -738,10 +738,12 @@ def update_cus_main(request):
             
             cus_main.save()
 
+            
             # TODO
             # Business Type
             print("business_type = " + str(business_type))
-
+            print("cus_no = " + str(cus_no))
+            customer_option_list = CustomerOption.objects.get(cus_no=cus_no)
 
 
 

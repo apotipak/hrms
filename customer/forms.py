@@ -199,7 +199,7 @@ class CusMainForm(forms.ModelForm):
         self.initial['cus_main_cus_zone'] = instance.cus_zone_id
 
         # TODO
-        customer_option_list = CustomerOption.objects.values_list('btype', flat=True).exclude(btype=None).order_by('btype').distinct()        
+        # customer_option_list = CustomerOption.objects.values_list('btype', flat=True).exclude(btype=None).order_by('btype').distinct()        
         # self.fields['cus_main_business_type'].queryset = customer_option_list
         
         '''
@@ -215,11 +215,13 @@ class CusMainForm(forms.ModelForm):
             print("customer_business_type = None")
             self.initial['cus_main_business_type'] = ""
         '''
-        
+
+    '''
     def clean_cus_main_business_type(self):
         data = self.data.get('cus_main_business_type')
         return 1
-
+    '''
+    
     def clean_cus_active(self):
         data = self.data.get('cus_main_cus_active')
         if data != "1":
