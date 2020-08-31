@@ -144,15 +144,16 @@ input:checked + .slider:after {
   content:'Active  ';
 }
 
-.editableBox {
-    width: 140px;
+
+.selectBusinessType {
+    width: 340px;
     height: 30px;
     margin-left: -7px;
 }
 
-.timeTextBox {
-    width: 117px;
-    margin-left: -140px;
+.businessTypeTextBox {
+    width: 317px;
+    margin-left: -340px;
     height: 25px;
     border: none;
 }

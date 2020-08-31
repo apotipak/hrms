@@ -344,20 +344,32 @@
                     </div>
 
                     <!-- Business Type -->
-                    <div class="form-row">                      
-                      <div class="form-group col-md-3">
-                        <label for="id_cus_main_business_type">{% trans 'Business Type' %}</label>                          
-                        {% comment %}{% render_field cus_main_form.cus_main_business_type class="form-control col-sm-12 form-control-sm" %}{% endcomment %}
+                    <div class="form-row">
 
+                      <div class="form-group col-md-6">
+                        <label for="id_cus_main_business_type">{% trans 'Business Type' %}</label>                          
                         <div class="container">
-                          <select id="id_cus_main_business_type_temp" name="cus_main_business_type_temp" class="editableBox">        
+                          <select id="id_cus_main_business_type_temp" name="cus_main_business_type_temp" class="selectBusinessType">
                             {% for option in customer_option_list %}
+                              {% if customer_option.btype == option %}
+                              <option selected>{{ option }}</option>
+                              {% else %}
                               <option>{{ option }}</option>
+                              {% endif %}
                             {% endfor %}
                           </select>
-                          <input class="timeTextBox" id="id_cus_main_business_type" name="cus_main_business_type" />
-                        </div>
-                         
+                          <input class="businessTypeTextBox" id="id_cus_main_business_type" name="cus_main_business_type" value="{{customer_option.btype|default_if_none:''}}" />
+                        </div>                        
+                      </div>
+
+                      <div class="form-group col-md-3">
+                        <label for="id_cus_main_customer_option_op1">{% trans 'Status' %}</label>
+                        <input type="text" class="form-control form-control-sm" id="id_cus_main_customer_option_op1" name="cus_main_customer_option_op1" value="{{ customer_option.op1|default_if_none:'' }}">
+                      </div>
+
+                      <div class="form-group col-md-3">
+                        <label for="id_cus_main_customer_option_op4">{% trans 'A/R Code' %}</label>
+                        <input type="text" class="form-control form-control-sm" id="id_cus_main_customer_option_op4" name="cus_main_customer_option_op4" value="{{ customer_option.op4|default_if_none:'' }}">
                       </div>
 
                     </div>
@@ -2201,7 +2213,8 @@
     cus_main_cus_zone = $('#id_cus_main_cus_zone').val();
 
     cus_main_business_type = $('#id_cus_main_business_type').val();
-    //alert(cus_main_business_type);
+    cus_main_customer_option_op1 = $('#id_cus_main_customer_option_op1').val();
+    cus_main_customer_option_op4 = $('#id_cus_main_customer_option_op4').val();
 
     cus_main_cus_contact_id = $("#id_cus_main_cus_contact_id").val();
 
@@ -2212,7 +2225,7 @@
         csrfmiddlewaretoken: '{{ csrf_token }}',
         cus_id : cus_id,
         cus_brn : cus_brn,
-        //cus_no : cus_no,
+        cus_no : cus_no,
 
         cus_main_cus_active : cus_main_cus_active,
         cus_main_cus_name_th : cus_main_cus_name_th,
@@ -2234,6 +2247,8 @@
         cus_main_cus_zone : cus_main_cus_zone,
 
         cus_main_business_type : cus_main_business_type,
+        cus_main_customer_option_op1 : cus_main_customer_option_op1,
+        cus_main_customer_option_op4 : cus_main_customer_option_op4,
 
         cus_main_cus_contact_id : cus_main_cus_contact_id,
       },
@@ -2395,8 +2410,8 @@
 
 $(document).ready(function(){
    
-    $(".editableBox").change(function(){         
-        $(".timeTextBox").val($(".editableBox option:selected").html());
+    $("#id_cus_main_business_type_temp").change(function(){         
+        $(".businessTypeTextBox").val($("#id_cus_main_business_type_temp option:selected").html());
     });
 });
 

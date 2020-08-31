@@ -232,6 +232,14 @@ def CustomerUpdate(request, pk):
     # print("customer cus_active = " + str(customer.cus_active))
     customer_option_list = CustomerOption.objects.values_list('btype', flat=True).exclude(btype=None).order_by('btype').distinct()        
 
+    try:
+        customer_option = CustomerOption.objects.get(cus_no=pk)
+        business_type = customer_option.btype
+    except CustomerOption.DoesNotExist:
+        business_type = ""
+        print("Insert complete")
+
+
     context = {
         'page_title': settings.PROJECT_NAME,
         'today_date': settings.TODAY_DATE,
@@ -247,7 +255,8 @@ def CustomerUpdate(request, pk):
         'cus_bill': cus_bill,
         'customer': customer,        
         'request': request,
-        'customer_option_list': customer_option_list,
+        'customer_option': customer_option,
+        'customer_option_list': customer_option_list,        
     }
     return render(request, template_name, context)
 
@@ -664,6 +673,7 @@ def update_cus_main(request):
         if form.is_valid():
             cus_active = request.POST.get('cus_main_cus_active')
             cus_no = request.POST.get('cus_no')
+
             cus_id = request.POST.get('cus_id')
             cus_brn = request.POST.get('cus_brn')
             
@@ -685,9 +695,12 @@ def update_cus_main(request):
             cus_zone = request.POST.get('cus_main_cus_zone')
             
             business_type = request.POST.get('cus_main_business_type')
+            cus_main_customer_option_op1 = request.POST.get('cus_main_customer_option_op1')
+            cus_main_customer_option_op4 = request.POST.get('cus_main_customer_option_op4')
 
             cus_main_cus_contact_id = request.POST.get('cus_main_cus_contact_id')            
 
+            # TODO
             '''
             if cus_main.upd_flag == 'A':
                 cus_main.upd_flag = 'E'
@@ -738,15 +751,20 @@ def update_cus_main(request):
             
             cus_main.save()
 
-            
-            # TODO
             # Business Type
-            print("business_type = " + str(business_type))
-            print("cus_no = " + str(cus_no))
-            customer_option_list = CustomerOption.objects.get(cus_no=cus_no)
+            try:
+                # Update               
+                customer_option = CustomerOption.objects.get(cus_no=cus_no)
+                customer_option.btype = business_type.replace('&amp;', '&')
+                customer_option.op1 = cus_main_customer_option_op1
+                customer_option.op4 = cus_main_customer_option_op4
+                customer_option.save()
+            except CustomerOption.DoesNotExist:
+                # Insert
+                c = CustomerOption(cus_no=cus_no, btype=business_type.replace('&amp;', '&'), op1=cus_main_customer_option_op1, op4=cus_main_customer_option_op4)
+                c.save()
 
-
-
+            # Return success message
             response_data['result'] = "Update complete."
             response_data['message'] = "ทำรายการสำเร็จ"
             response_data['form_is_valid'] = True
@@ -763,6 +781,7 @@ def update_cus_main(request):
                 response_data['message'] = "ไม่สามารถทำรายการได้..!"
 
 
+        print("def")
         return JsonResponse(response_data)
     else:
         print("debug - found cus_main_form problem")
@@ -773,7 +792,10 @@ def update_cus_main(request):
         'project_version': settings.PROJECT_VERSION,
         'db_server': settings.DATABASES['default']['HOST'],
         'project_name': settings.PROJECT_NAME,
+        'business_type': 'abc',
     }
+
+    print("xyz")
     return render(request, template_name, context)    
 
 
