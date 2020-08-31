@@ -128,8 +128,8 @@ def CustomerList(request):
 
         if cus_name=='' and cus_id=='' and cus_brn=='':
             print("get case 5")
-            # customer_list = Customer.objects.order_by('-cus_active','cus_id','cus_brn')
-            customer_list = Customer.objects.order_by('cus_id','cus_brn','-cus_active')
+            # customer_list = Customer.objects.order_by('cus_id','cus_brn','-cus_active')
+            customer_list = Customer.objects.exclude(upd_flag='D').order_by('cus_id','cus_brn','-cus_active')
 
         # cus_id
         if cus_id!='' and cus_name=='' and cus_brn=='':
@@ -230,8 +230,11 @@ def CustomerUpdate(request, pk):
         cus_bill_form = CusBillForm(instance=cus_bill)
 
     # print("customer cus_active = " + str(customer.cus_active))
-    customer_option_list = CustomerOption.objects.values_list('btype', flat=True).exclude(btype=None).order_by('btype').distinct()        
+    business_type_list = CustomerOption.objects.values_list('btype', flat=True).exclude(btype=None).order_by('btype').distinct()
+    group_1_list = CustomerOption.objects.values_list('op2', flat=True).exclude(op2=None).order_by('op2').distinct()
+    group_2_list = CustomerOption.objects.values_list('op3', flat=True).exclude(op2=None).order_by('op3').distinct()
 
+    customer_option = []
     try:
         customer_option = CustomerOption.objects.get(cus_no=pk)
         business_type = customer_option.btype
@@ -256,7 +259,9 @@ def CustomerUpdate(request, pk):
         'customer': customer,        
         'request': request,
         'customer_option': customer_option,
-        'customer_option_list': customer_option_list,        
+        'business_type_list': business_type_list,
+        'group_1_list': group_1_list,
+        'group_2_list': group_2_list,
     }
     return render(request, template_name, context)
 
@@ -696,7 +701,12 @@ def update_cus_main(request):
             
             business_type = request.POST.get('cus_main_business_type')
             cus_main_customer_option_op1 = request.POST.get('cus_main_customer_option_op1')
-            cus_main_customer_option_op4 = request.POST.get('cus_main_customer_option_op4')
+            cus_main_customer_option_op2 = request.POST.get('cus_main_customer_option_op2')
+            cus_main_customer_option_op3 = request.POST.get('cus_main_customer_option_op3')
+            cus_main_customer_option_op4 = request.POST.get('cus_main_customer_option_op4').strip()
+
+            print("check")
+            print(cus_main_customer_option_op3)
 
             cus_main_cus_contact_id = request.POST.get('cus_main_cus_contact_id')            
 
@@ -756,12 +766,21 @@ def update_cus_main(request):
                 # Update               
                 customer_option = CustomerOption.objects.get(cus_no=cus_no)
                 customer_option.btype = business_type.replace('&amp;', '&')
-                customer_option.op1 = cus_main_customer_option_op1
-                customer_option.op4 = cus_main_customer_option_op4
+                customer_option.op1 = cus_main_customer_option_op1  # Status
+                customer_option.op2 = cus_main_customer_option_op2.replace('&amp;', '&') # Group 1
+                customer_option.op3 = cus_main_customer_option_op3.replace('&amp;', '&') # Group 2
+                customer_option.op4 = cus_main_customer_option_op4 # A/R Code
                 customer_option.save()
             except CustomerOption.DoesNotExist:
                 # Insert
-                c = CustomerOption(cus_no=cus_no, btype=business_type.replace('&amp;', '&'), op1=cus_main_customer_option_op1, op4=cus_main_customer_option_op4)
+                c = CustomerOption(
+                    cus_no=cus_no, 
+                    btype=business_type.replace('&amp;', '&'), 
+                    op1=cus_main_customer_option_op1,   # Status
+                    op2=cus_main_customer_option_op2.replace('&amp;', '&'), # Group 1
+                    op3=cus_main_customer_option_op3.replace('&amp;', '&'), # Group 2
+                    op4=cus_main_customer_option_op4)   # A/R Code
+
                 c.save()
 
             # Return success message

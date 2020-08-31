@@ -350,7 +350,7 @@
                         <label for="id_cus_main_business_type">{% trans 'Business Type' %}</label>                          
                         <div class="container">
                           <select id="id_cus_main_business_type_temp" name="cus_main_business_type_temp" class="selectBusinessType">
-                            {% for option in customer_option_list %}
+                            {% for option in business_type_list %}
                               {% if customer_option.btype == option %}
                               <option selected>{{ option }}</option>
                               {% else %}
@@ -373,6 +373,49 @@
                       </div>
 
                     </div>
+
+
+
+                    <div class="form-row">
+
+                      <div class="form-group col-md-6">
+                        <label for="id_cus_main_group_1">{% trans 'Group 1' %}</label>                          
+                        <div class="container">
+                          <select id="selectCustoemrOptionGroup1" name="cus_main_group_1" class="selectGroup1">
+                            {% for option in group_1_list %}
+                              {% if customer_option.op2 == option %}
+                              <option selected>{{ option }}</option>
+                              {% else %}
+                              <option>{{ option }}</option>
+                              {% endif %}
+                            {% endfor %}
+                          </select>
+                          <input class="group1TextBox" id="id_cus_main_customer_option_op2" name="cus_main_customer_option_op2" value="{{customer_option.op2|default_if_none:''}}" />
+                        </div>                        
+                      </div>
+
+                    </div>
+
+                    <div class="form-row">
+
+                      <div class="form-group col-md-6">
+                        <label for="id_cus_main_group_2">{% trans 'Group 2' %}</label>                          
+                        <div class="container">
+                          <select id="selectCustoemrOptionGroup2" name="cus_main_group_2" class="selectGroup2">
+                            {% for option in group_2_list %}
+                              {% if customer_option.op3 == option %}
+                              <option selected>{{ option }}</option>
+                              {% else %}
+                              <option>{{ option }}</option>
+                              {% endif %}
+                            {% endfor %}
+                          </select>
+                          <input class="group2TextBox" id="id_cus_main_customer_option_op3" name="cus_main_customer_option_op3" value="{{customer_option.op3|default_if_none:''}}" />
+                        </div>
+                      </div>
+
+                    </div>
+
 
                   </div>
                 </div>
@@ -2212,10 +2255,14 @@
     cus_main_cus_email = $('#id_cus_main_cus_email').val();
     cus_main_cus_zone = $('#id_cus_main_cus_zone').val();
 
+    // Business Type
     cus_main_business_type = $('#id_cus_main_business_type').val();
-    cus_main_customer_option_op1 = $('#id_cus_main_customer_option_op1').val();
-    cus_main_customer_option_op4 = $('#id_cus_main_customer_option_op4').val();
+    cus_main_customer_option_op1 = $('#id_cus_main_customer_option_op1').val(); // Status    
+    cus_main_customer_option_op2 = $('#id_cus_main_customer_option_op2').val(); // Group 1
+    cus_main_customer_option_op3 = $('#id_cus_main_customer_option_op3').val(); // Group 2
+    cus_main_customer_option_op4 = $('#id_cus_main_customer_option_op4').val(); // A/R Code
 
+    // Contact Information
     cus_main_cus_contact_id = $("#id_cus_main_cus_contact_id").val();
 
     $.ajax({
@@ -2248,6 +2295,8 @@
 
         cus_main_business_type : cus_main_business_type,
         cus_main_customer_option_op1 : cus_main_customer_option_op1,
+        cus_main_customer_option_op2 : cus_main_customer_option_op2,
+        cus_main_customer_option_op3 : cus_main_customer_option_op3,
         cus_main_customer_option_op4 : cus_main_customer_option_op4,
 
         cus_main_cus_contact_id : cus_main_cus_contact_id,
@@ -2409,10 +2458,23 @@
 
 
 $(document).ready(function(){
-   
-    $("#id_cus_main_business_type_temp").change(function(){         
-        $(".businessTypeTextBox").val($("#id_cus_main_business_type_temp option:selected").html());
-    });
+
+  $("#id_cus_main_business_type_temp").change(function(){         
+    $(".businessTypeTextBox").val($("#id_cus_main_business_type_temp option:selected").html());
+  });
+
+
+
+  $("#selectCustoemrOptionGroup1").change(function(){         
+    $(".group1TextBox").val($("#selectCustoemrOptionGroup1 option:selected").html());
+  });
+
+
+  $("#selectCustoemrOptionGroup2").change(function(){         
+    $(".group2TextBox").val($("#selectCustoemrOptionGroup2 option:selected").html());
+  });
+
+
 });
 
 </script>
