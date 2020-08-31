@@ -1143,14 +1143,25 @@ def get_contact_list(request):
     print("****************************")
     print("FUNCTION: get_contact_list")
     print("****************************")
-    
-    current_contact_id = request.GET.get('current_contact_id')
-    print("current_contact_id : " + str(current_contact_id))
+
+    current_contact_id = request.GET.get('current_contact_id', "")
+
+    # print("current_contact_id : " + str(current_contact_id))
+    print("*************************")
+    if current_contact_id != '':
+        print("Not none")
+    else:
+        print("None")
+    print("*************************")
 
     item_per_page = 100
 
-    if request.method == "POST":        
-        data = Contact.objects.filter(con_id__exact=current_contact_id)
+    if request.method == "POST":
+
+        if current_contact_id is None:
+            data = CusContact.objects.all()
+        else:
+            data = CusContact.objects.filter(con_id__exact=current_contact_id)            
 
         page = 1
         paginator = Paginator(data, item_per_page)
@@ -1162,7 +1173,14 @@ def get_contact_list(request):
             raise Http404(str(e))
     else:
         print("method get")
-        data = CusContact.objects.filter(con_id__exact=current_contact_id)
+
+
+        if request.method == 'GET' and 'current_contact_id' in request.GET:
+            current_contact_id = request.GET['current_contact_id']
+            data = CusContact.objects.filter(con_id__exact=current_contact_id)
+        else:
+            data = CusContact.objects.all()
+
 
         paginator = Paginator(data, item_per_page)
         is_paginated = True if paginator.num_pages > 1 else False

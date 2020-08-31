@@ -1048,6 +1048,74 @@
 
 
 
+              <!-- Bill Tab - Contact Information -->
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="card card-info">
+                    <div class="card-header">
+                      <h3 class="card-title">Contact Information</h3>
+                    </div>
+                    <div class="card-body">
+
+                      <div class="form-row">
+                        
+
+
+                        <div class="form-group col-md-2">
+                          <label for="id_cus_bill_cus_contact_id" class="col-sm-12 col-form-label form-control-sm">{% trans 'Contact ID' %}</label>
+
+                          <div class="row">                              
+                            <div class="col-12 input-group">
+                              <input type="text" id="id_cus_bill_cus_contact_id" name="cus_bill_cus_contact_id" class="form-control form-control-sm" value="{{ cus_bill.cus_contact_id }}" readonly>                              
+                              <button id="cus_bill_contact_lookup" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url="{% url 'get_contact_list' %}"><i class="fas fa-search fa-sm"></i></button>                              
+                              <input type="hidden" id="id_cus_bill_select_bill_contact_id" name="cus_bill_select_bill_contact_id" value="{{ cus_bill.cus_contact_id }}">
+                            </div>
+                          </div>                          
+                        </div>
+
+                        <div class="form-group col-md-2">
+                          <label for="id_cus_bill_cus_title">{% trans 'Title' %}</label>
+                            <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_contact_cus_title" name="cus_bill_cus_contact_cus_title" value="{{ cus_bill.cus_contact.con_title|default_if_none:'' }}" readonly>
+                        </div>
+
+                        <div class="form-group col-md-2">
+                          <label for="id_cus_bill_cus_contact_con_fname_th">{% trans 'First Name' %}</label>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_contact_con_fname_th" name="cus_bill_cus_contact_con_fname_th" value="{{ cus_bill.cus_contact.con_fname_th|default_if_none:'' }}" >
+                        </div>
+
+                        <div class="form-group col-md-3">
+                          <label for="id_cus_bill_cus_contact_con_lname_th">{% trans 'Last Name' %}</label>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_contact_con_lname_th" name="cus_bill_cus_contact_con_fname_th" value="{{ cus_bill.cus_contact.con_lname_th|default_if_none:'' }}">
+                        </div>
+
+                        <div class="form-group col-md-3">
+                          <label for="id_cus_bill_cus_contact_con_position_th">{% trans 'Position' %}</label>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_contact_con_position_th" name="cus_bill_cus_contact_con_position_th" value="{{ cus_bill.cus_contact.con_position_th|default_if_none:'' }}">
+                        </div>
+
+                      </div>
+                      
+
+                      {% comment %}
+                      <div class="form-group">                              
+                        <div class="col-sm-3">
+                            <label for="input-type">Sex</label>
+                            <div id="input-type" class="row">
+
+                                {% render_field cus_site_form.cus_site_cus_contact_con_sex class="radio-inline" %}
+
+                            </div>
+                        </div>
+                      </div>
+                      {% endcomment %}
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+
             <div class="float-right">
               <a href="#" id="cusBillSaveButton" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
             </div>
@@ -1335,6 +1403,95 @@
               result += "  <span>";
               result += data.current_page_number + " / " + data.current_page_paginator_num_pages;
               result += " <a href='javascript:get_cus_site_district_lookup(" + data.next_page + ");'>" + "<i class='fas fa-arrow-circle-right'></i></a>";
+              result += "    </span>";
+              result += "</div>";
+            }
+
+            $("#contact_modal .modal-body").html(result);            
+          },
+          error: function(data){
+            $("#contact_modal .modal-body").html("{% trans 'There is no data.' %}");
+          }          
+      });
+
+    });
+  });
+
+
+  $(document).ready(function(){
+    $('#cus_bill_contact_lookup').on('click', function (e) {
+      var obj = $(this);
+      current_contact_id = $('#id_cus_bill_cus_contact_id').val();
+      id_cus_bill_select_bill_contact_id
+      
+      alert(current_contact_id);
+
+      $.ajax({
+          url: obj.attr("data-url"), // url: get_contact_list
+          type: 'get',          
+          dataType: 'json',
+          data : {          
+            current_contact_id : current_contact_id,
+          },          
+          beforeSend: function () {
+            $("#contact_modal").modal("show");
+          },
+          success: function (data) {
+            var result = "";
+            var count = data.results.length;
+            var con_id = data.results[0]["con_id"];
+            var con_fname_th = data.results[0]["con_fname_th"];
+
+            result += "<div class='row col-12'>";
+            result += "<div class='col-8 offset-3 pb-2'>";
+            result += "<form id='cus_bill_search_contact_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
+            result += "  <div class='form-group mx-sm-3 mb-2'>";
+            result += "  <select name='cus_bill_contact_option' class='form-control form-control-sm' required id='id_cus_bill_cus_contact_option'>";
+            result += "    <option value='1'>Contact ID</option>";
+            result += "    <option value='2' selected>Name (TH)</option>";
+            result += "    <option value='3'>Last Name (TH)</option>";
+            result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";
+            result += "    <label for='id_cus_bill_search_contact' class='sr-only'>Search</label>";            
+            result += "    <input type='text' class='form-control form-control-sm' id='id_cus_bill_cus_contact_search_text' name='cus_bill_cus_contact_search_text' placeholder=''>";
+            result += "  </div>";
+            result += "<a href='javascript:cus_bill_search_contact_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";            
+            result += "</form>";
+            result += "</div>";
+
+            result += "<div class='row col-12'>";
+            result += "<table class='table table-hover table-sm'>";
+            result += " <thead>";
+            result += "   <tr>";
+            result += "     <th scope='col'>{% trans 'Contact ID' %}</th>";
+            result += "     <th scope='col'>{% trans 'Name (TH)' %}</th>";
+            result += "     <th scope='col'>{% trans 'Last Name (TH)' %}</th>";
+            result += "     <th scope='col'>&nbsp;</th>";
+            result += "   </tr>";
+            result += " </thead>";
+            result += "<tbody>";
+            result += "</div>";
+            result += "<div>";
+
+            for(var i=0; i<count; i++) {              
+              var con_id = data.results[i]["con_id"];
+              var con_fname_th = data.results[i]["con_fname_th"];
+              var con_lname_th = data.results[i]["con_lname_th"];
+
+              result += "<tr>";
+              result += "<td>" + con_id + "</td>";        
+              result += "<td>" + con_fname_th + "</td>";
+              result += "<td>" + con_lname_th + "</td>";
+              result += "<td><a href='javascript:cus_bill_select_contact(" + con_id + ");' type='button' class='btn btn-outline-primary btn-sm'>Select</a></td>";
+              result += "</tr>";
+            }
+            result += " </tbody>";
+            result += "</table>";
+
+            if(data.is_paginated) {
+              result += "<div>";
+              result += "  <span>";
+              result += data.current_page_number + " / " + data.current_page_paginator_num_pages;
+              result += " <a href='javascript:get_cus_bill_contact_lookup(" + data.next_page + ");'>" + "<i class='fas fa-arrow-circle-right'></i></a>";
               result += "    </span>";
               result += "</div>";
             }
