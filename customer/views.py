@@ -202,9 +202,6 @@ def CustomerUpdate(request, pk):
     cus_bill = None
 
     if customer:
-        # cus_main = CusMain.objects.filter(cus_id=customer.cus_id).get()
-        # cus_site = Customer.objects.filter(cus_no=pk).get()
-
         try:
             cus_main = CusMain.objects.get(pk=customer.cus_id)
         except CusMain.DoesNotExist:
