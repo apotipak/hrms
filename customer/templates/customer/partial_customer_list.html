@@ -4,6 +4,8 @@
         <td>{{item.cus_brn|stringformat:"03d"}}</td>
         <td><a href="{% url 'cus-main-update' item.cus_no %}">{{item.cus_name_th}}</a></td>
         <td><a href="{% url 'cus-main-update' item.cus_no %}">{{item.cus_name_en}}</a></td>
+        
+        {% comment %}
         <td>{{item.cus_zone}}</td>
         <td>
           {% if item.cus_active %}
@@ -12,6 +14,8 @@
           <span class="badge badge-secondary">Pending</span>
           {%endif%}
         </td>
+        {% endcomment %}
+
         <td class="text-right py-0 align-middle">
           <div class="btn-group btn-group-sm">
             <a href="{% url 'cus-main-update' item.cus_no %}" type="button" class="btn btn-info btn-xs js-update-customer" data-url="{% url 'cus-main-update' item.cus_no %}">
