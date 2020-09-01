@@ -1176,7 +1176,9 @@ def get_contact_list(request):
 
 
         if request.method == 'GET' and 'current_contact_id' in request.GET:
-            current_contact_id = request.GET['current_contact_id']
+            current_contact_id = request.GET.get('current_contact_id')
+            
+        if current_contact_id:
             data = CusContact.objects.filter(con_id__exact=current_contact_id)
         else:
             data = CusContact.objects.all()
