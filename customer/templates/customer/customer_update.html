@@ -829,10 +829,16 @@
                 <div class="float-left pt-2">
                   &nbsp;
                 </div>
-                <label class="switch">
-                  <input type="checkbox" id="id_cus_billing_active">
+
+                <label class="switch">                                 
+                  {% if cus_bill.cus_active|default_if_none:0 %}
+                  <input type="checkbox" id="id_cus_bill_cus_active" name="cus_bill_cus_active" value=1 checked>
+                  {% else %}
+                  <input type="checkbox" id="id_cus_bill_cus_active" name="cus_bill_cus_active" value=0>
+                  {% endif %}                  
                   <div class="slider"></div>
-                </label>                
+                </label>
+
               </div>
             </div>
 
@@ -897,7 +903,6 @@
                             </div>
                           </div>
                         </div>
-
 
                         <!-- cus_bill_cus_city_th-->
                         <div class="input-group">
@@ -3111,7 +3116,7 @@
     cus_bill_cus_subdist_en = $('#id_cus_bill_cus_subdist_en').val();
     
     select_district_id = $('#id_cus_bill_select_district_id').val();
-    alert(select_district_id);
+    //alert(select_district_id);
 
     cus_bill_cus_zip = $('#id_cus_bill_cus_zip').val();
     cus_bill_cus_tel = $('#id_cus_bill_cus_tel').val();

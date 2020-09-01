@@ -311,7 +311,6 @@ class CusSiteForm(forms.ModelForm):
     cus_site_cus_contact_con_sex = forms.ChoiceField(choices=sex_choices, widget=forms.RadioSelect(attrs={'class': 'inline'}), required=False)
     cus_site_cus_contact_cus_title = forms.ModelChoiceField(queryset=None, required=False)
 
-
     class Meta:
         model = Customer
         fields = '__all__'
@@ -460,6 +459,20 @@ class CusBillForm(forms.ModelForm):
 
         self.initial['cus_bill_cus_contact'] = instance.cus_contact
 
+    def clean_cus_active(self):
+        data = self.data.get('cus_bill_cus_active')
+        if data != "1":
+            return 0
+        return 1 
+
+    def clean_cus_bill_cus_name_th(self):
+        data = self.data.get('cus_bill_cus_name_th')        
+        if len(data) > 0:
+            return data
+        else:
+            raise ValidationError("Customer Name (TH) is required.")
+
     def clean_cus_bill_cus_zone(self):
         data = self.data.get('cus_bill_cus_zone')
+        print("cus_bill_zone " + str(data))
         return data
