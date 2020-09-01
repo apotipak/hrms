@@ -145,38 +145,44 @@ input:checked + .slider:after {
 }
 
 
+
+
 .selectBusinessType {
-    width: 340px;
+    width: 240px;
     height: 30px;
     margin-left: -7px;
 }
 .businessTypeTextBox {
-    width: 317px;
-    margin-left: -340px;
+    width: 217px;
+    margin-left: -240px;
     height: 25px;
     border: none;
 }
 
 .selectGroup1 {
-    width: 340px;
+    width: 240px;
     height: 30px;
     margin-left: -7px;
 }
 .group1TextBox {
-    width: 317px;
-    margin-left: -340px;
+    width: 217px;
+    margin-left: -240px;
     height: 25px;
     border: none;
 }
 
+
+
+
+
 .selectGroup2 {
-    width: 340px;
+    width: 240px;
     height: 30px;
     margin-left: -7px;
 }
 .group2TextBox {
-    width: 317px;
-    margin-left: -340px;
+    width: 217px;
+    margin-left: -240px;
     height: 25px;
     border: none;
 }
