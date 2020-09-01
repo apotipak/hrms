@@ -965,9 +965,11 @@ def update_cus_bill(request):
             cus_zone = request.POST.get('cus_bill_cus_zone')
                     
             cus_bill_cus_contact_id = request.POST.get('cus_bill_cus_contact_id')
+            select_district_id = request.POST.get('select_district_id')
 
             print("check")
             print("cus_no = " + str(cus_no))
+            print("cus_bill_cus_contact_id = " + str(cus_bill_cus_contact_id))
             
             try:
                 cus_bill = CusBill.objects.get(pk=cus_no)
@@ -975,25 +977,13 @@ def update_cus_bill(request):
                 cus_bill = None
 
             if cus_bill:
-                select_district_id = request.POST.get('select_district_id')
-
-                district_obj = TDistrict.objects.get(dist_id=select_district_id)
-                if district_obj:
-                    city_id = district_obj.city_id_id
-                    
-                    old_district_id = cus_bill.cus_district.dist_id
-
-                    cus_bill.cus_district_id = select_district_id
-                    cus_bill.cus_city = district_obj.city_id                
-                    city_obj = TCity.objects.get(city_id=city_id)
-                    cus_bill.cus_country = city_obj.country_id
-
+                
+                
                 cus_bill.cus_active = cus_active
                 cus_bill.cus_name_th = cus_name_th
                 cus_bill.cus_add1_th = cus_add1_th
                 cus_bill.cus_add2_th = cus_add2_th
-                cus_bill.cus_subdist_th = cus_subdist_th
-                
+                cus_bill.cus_subdist_th = cus_subdist_th                
                 cus_bill.cus_name_en = cus_name_en
                 cus_bill.cus_add1_en = cus_add1_en
                 cus_bill.cus_add2_en = cus_add2_en
@@ -1005,6 +995,18 @@ def update_cus_bill(request):
                 cus_bill.cus_email = cus_email
                 cus_bill.cus_zone_id = cus_zone
 
+                # Address Info
+                if select_district_id or select_district_id != '':
+                    cus_bill.cus_district_id = select_district_id
+                    district_obj = TDistrict.objects.get(dist_id=select_district_id)
+                    if district_obj:
+                        city_id = district_obj.city_id_id                        
+                        cus_bill.cus_district_id = select_district_id
+                        cus_bill.cus_city = district_obj.city_id                
+                        city_obj = TCity.objects.get(city_id=city_id)
+                        cus_bill.cus_country = city_obj.country_id
+
+                # Contact Person Info
                 cus_bill.cus_contact_id = cus_bill_cus_contact_id
 
                 if cus_bill.upd_flag == 'A':
@@ -1014,8 +1016,28 @@ def update_cus_bill(request):
 
                 cus_bill.save()                
             else:
+                new_cus_bill = CusBill(
+                    cus_no = cus_no,
+                    cus_id = cus_id,
+                    cus_brn = cus_brn,
 
-                print("insert new record")
+                    cus_active = cus_active,
+                    cus_name_th = cus_name_th,
+                    cus_add1_th = cus_add1_th,
+                    cus_add2_th = cus_add2_th,
+                    cus_subdist_th = cus_subdist_th,                
+                    cus_name_en = cus_name_en,
+                    cus_add1_en = cus_add1_en,
+                    cus_add2_en = cus_add2_en,
+                    cus_subdist_en = cus_subdist_en,
+                    cus_zip = cus_zip,
+                    cus_tel = cus_tel,
+                    cus_fax = cus_fax,
+                    cus_email = cus_email,
+                    cus_zone_id = cus_zone,
+                    cus_contact_id = cus_bill_cus_contact_id
+                )
+                new_cus_bill.save()                
 
             # Return success message
             response_data['result'] = "Update complete."
