@@ -967,46 +967,55 @@ def update_cus_bill(request):
             cus_bill_cus_contact_id = request.POST.get('cus_bill_cus_contact_id')
 
             print("check")
-            print(cus_no)
-            cus_bill = get_object_or_404(CusBill, pk=cus_no)
-
-            select_district_id = request.POST.get('select_district_id')
-
-            district_obj = TDistrict.objects.get(dist_id=select_district_id)
-            if district_obj:
-                city_id = district_obj.city_id_id
-                old_district_id = cus_bill.cus_district.dist_id
-                cus_bill.cus_district_id = select_district_id
-                cus_bill.cus_city = district_obj.city_id                
-                city_obj = TCity.objects.get(city_id=city_id)
-                cus_bill.cus_country = city_obj.country_id
-
-            cus_bill.cus_active = cus_active
-            cus_bill.cus_name_th = cus_name_th
-            cus_bill.cus_add1_th = cus_add1_th
-            cus_bill.cus_add2_th = cus_add2_th
-            cus_bill.cus_subdist_th = cus_subdist_th
+            print("cus_no = " + str(cus_no))
             
-            cus_bill.cus_name_en = cus_name_en
-            cus_bill.cus_add1_en = cus_add1_en
-            cus_bill.cus_add2_en = cus_add2_en
-            cus_bill.cus_subdist_en = cus_subdist_en
+            try:
+                cus_bill = CusBill.objects.get(pk=cus_no)
+            except CusBill.DoesNotExist:
+                cus_bill = None
 
-            cus_bill.cus_zip = cus_zip
-            cus_bill.cus_tel = cus_tel
-            cus_bill.cus_fax = cus_fax
-            cus_bill.cus_email = cus_email
-            cus_bill.cus_zone_id = cus_zone
+            if cus_bill:
+                select_district_id = request.POST.get('select_district_id')
 
-            cus_bill.cus_contact_id = cus_bill_cus_contact_id
+                district_obj = TDistrict.objects.get(dist_id=select_district_id)
+                if district_obj:
+                    city_id = district_obj.city_id_id
+                    
+                    old_district_id = cus_bill.cus_district.dist_id
 
-            if cus_bill.upd_flag == 'A':
-                cus_bill.upd_flag = 'E'
-            cus_bill.upd_by = request.user.first_name
-            cus_bill.upd_date = timezone.now()
+                    cus_bill.cus_district_id = select_district_id
+                    cus_bill.cus_city = district_obj.city_id                
+                    city_obj = TCity.objects.get(city_id=city_id)
+                    cus_bill.cus_country = city_obj.country_id
 
-            cus_bill.save()
-            
+                cus_bill.cus_active = cus_active
+                cus_bill.cus_name_th = cus_name_th
+                cus_bill.cus_add1_th = cus_add1_th
+                cus_bill.cus_add2_th = cus_add2_th
+                cus_bill.cus_subdist_th = cus_subdist_th
+                
+                cus_bill.cus_name_en = cus_name_en
+                cus_bill.cus_add1_en = cus_add1_en
+                cus_bill.cus_add2_en = cus_add2_en
+                cus_bill.cus_subdist_en = cus_subdist_en
+
+                cus_bill.cus_zip = cus_zip
+                cus_bill.cus_tel = cus_tel
+                cus_bill.cus_fax = cus_fax
+                cus_bill.cus_email = cus_email
+                cus_bill.cus_zone_id = cus_zone
+
+                cus_bill.cus_contact_id = cus_bill_cus_contact_id
+
+                if cus_bill.upd_flag == 'A':
+                    cus_bill.upd_flag = 'E'
+                cus_bill.upd_by = request.user.first_name
+                cus_bill.upd_date = timezone.now()
+
+                cus_bill.save()                
+            else:
+
+                print("insert new record")
 
             # Return success message
             response_data['result'] = "Update complete."
@@ -1234,27 +1243,27 @@ def get_contact(request):
     contact_id = request.GET.get('contact_id')
     print("contact_id : " + str(contact_id))
 
-    data = CusContact.objects.filter(con_id__exact=contact_id)
+    #data = CusContact.objects.filter(con_id__exact=contact_id)
+
+    data = CusContact.objects.select_related('con_title').filter(con_id__exact=contact_id)
 
     if data:
-        print("success")
-
         pickup_dict = {}
         pickup_records=[]
         
         for d in data:
-            print("debug 1")
             record = {
                 "con_id": d.con_id,
                 "con_fname_th": d.con_fname_th,
                 "con_lname_th": d.con_lname_th,
                 "con_position_th": d.con_position_th,
+                "con_title_th": d.con_title.title_th,
             }
             pickup_records.append(record)
 
         response = JsonResponse(data={
-            "success": True,
-            "results": list(pickup_records)         
+            "success": True,            
+            "results": list(pickup_records)        
         })
         response.status_code = 200
     else:

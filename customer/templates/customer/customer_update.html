@@ -1069,6 +1069,7 @@
                               <input type="text" id="id_cus_bill_cus_contact_id" name="cus_bill_cus_contact_id" class="form-control form-control-sm" value="{{ cus_bill.cus_contact_id }}" readonly>                              
                               <button id="cus_bill_contact_lookup" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url="{% url 'get_contact_list' %}"><i class="fas fa-search fa-sm"></i></button>                              
                               <input type="hidden" id="id_cus_bill_select_bill_contact_id" name="cus_bill_select_bill_contact_id" value="{{ cus_bill.cus_contact_id }}">
+
                             </div>
                           </div>                          
                         </div>
@@ -1077,6 +1078,11 @@
                           <label for="id_cus_bill_cus_title">{% trans 'Title' %}</label>
                             <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_contact_cus_title" name="cus_bill_cus_contact_cus_title" value="{{ cus_bill.cus_contact.con_title|default_if_none:'' }}" readonly>
                         </div>
+
+
+
+
+
 
                         <div class="form-group col-md-2">
                           <label for="id_cus_bill_cus_contact_con_fname_th">{% trans 'First Name' %}</label>
@@ -1246,6 +1252,14 @@
       return false;
     }
   });  
+
+  $(document).on('keyup keypress', '#cus_bill_search_contact_modal_form input[type="text"]', function(e) {
+    if(e.which == 13) {
+      e.preventDefault();
+      return false;
+    }
+  });  
+
 
   $(document).ready(function(){
     $('#cus_main_contact_lookup').on('click', function (e) {
@@ -1424,7 +1438,7 @@
       current_contact_id = $('#id_cus_bill_cus_contact_id').val();
       id_cus_bill_select_bill_contact_id
       
-      alert(current_contact_id);
+      //alert(current_contact_id);
 
       $.ajax({
           url: obj.attr("data-url"), // url: get_contact_list
@@ -1566,6 +1580,39 @@
   }
 
 
+
+  function cus_bill_select_contact(con_id) {
+    $.ajax({
+        url : "/customer/ajax/get_contact",
+        type: 'get',          
+        dataType: 'json',
+        data : {          
+          contact_id : con_id,
+        },
+        beforeSend: function () {
+          $("#contact_modal").modal("show");
+        },
+        success: function (data) {
+          var con_id = data.results[0]["con_id"];
+          var con_title_th = data.results[0]["con_title_th"];
+          var con_fname_th = data.results[0]["con_fname_th"];
+          var con_lname_th = data.results[0]["con_lname_th"];
+          var con_position_th = data.results[0]["con_position_th"];
+
+          $("#id_cus_bill_cus_contact_id").val(con_id);
+          $("#id_cus_bill_cus_contact_cus_title").val(con_title_th);
+          $("#id_cus_bill_cus_contact_con_fname_th").val(con_fname_th);          
+          $("#id_cus_bill_cus_contact_con_lname_th").val(con_lname_th);          
+          $("#id_cus_bill_cus_contact_con_position_th").val(con_position_th);          
+
+        },
+        error: function(data){
+          // 
+        }          
+    });
+
+    $("#contact_modal").modal("hide");    
+  }
 
 
   $(document).ready(function(){
@@ -2098,6 +2145,134 @@
     });
   }
 
+
+  //amnaj
+  function cus_bill_search_contact_modal() {
+    current_contact_id = $('#id_cus_bill_select_bill_contact_id').val();    
+    search_contact_option = $('#id_cus_bill_cus_contact_option').val();
+    search_contact_text = $('#id_cus_bill_cus_contact_search_text').val();    
+    page_no = 1;
+
+    //alert(current_contact_id);
+    //alert("todo");
+
+
+    $.ajax({
+        url : "/customer/ajax/get_contact_list_modal",
+        type: 'get',   
+        dataType: 'json',
+        data : {          
+          page_no : page_no,
+          current_contact_id : current_contact_id,
+          search_contact_option : search_contact_option,
+          search_contact_text : search_contact_text,          
+        },
+        success: function (data) {
+    
+          var result = ""
+          var count = data.results.length;
+          var dist_id = data.results[0]["dist_id"];
+          var dist_th = data.results[0]["dist_th"];
+
+
+          result += "<div class='row col-12'>";
+          result += "<div class='col-8 offset-3 pb-2'>";
+          result += "<form id='cus_bill_search_contact_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
+          result += "  <div class='form-group mx-sm-3 mb-2'>";
+          result += "  <select name='cus_bill_cus_contact_option' class='form-control form-control-sm' required id='id_cus_bill_cus_contact_option'>";
+          result += "    <option value='1'>Contact ID</option>";
+          result += "    <option value='2' selected>Name (TH)</option>";
+          result += "    <option value='3'>Last Name (TH)</option>";
+          result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";
+          result += "    <label for='id_cus_bill_search_contact' class='sr-only'>Search</label>";            
+          result += "    <input type='text' class='form-control form-control-sm' id='id_cus_bill_cus_contact_search_text' name='cus_site_cus_contact_search_text' placeholder=''>";
+          result += "  </div>";
+          result += "<a href='javascript:cus_bill_search_contact_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";            
+          result += "</form>";
+          result += "</div>";
+
+          
+          result += "<div class='row col-12'>";
+          result += "<table class='table table-hover table-sm'>";
+          result += " <thead>";
+          result += "   <tr>";
+          result += "     <th scope='col'>{% trans 'Contact ID' %}</th>";
+          result += "     <th scope='col'>{% trans 'Name (TH)' %}</th>";
+          result += "     <th scope='col'>{% trans 'Last Name (TH)' %}</th>";
+          result += "     <th scope='col'>&nbsp;</th>";
+          result += "   </tr>";
+          result += " </thead>";
+          result += "<tbody>";
+          result += "</div>";
+          result += "<div>";
+
+          for(var i=0; i<count; i++) {              
+            var con_id = data.results[i]["con_id"];
+            var con_fname_th = data.results[i]["con_fname_th"];
+            var con_lname_th = data.results[i]["con_lname_th"];
+            var con_position_th = data.results[i]["con_position_th"];
+            var con_position_en = data.results[i]["con_position_en"];
+
+            result += "<tr>";
+            result += "<td>" + con_id + "</td>";        
+            result += "<td>" + con_fname_th + "</td>";
+            result += "<td>" + con_lname_th + "</td>";
+            
+            result += "<td><a href='javascript:cus_bill_select_contact(" + con_id + ");' type='button' class='btn btn-outline-primary btn-sm'>Select</a></td>";
+
+            result += "</tr>";              
+          }
+          result += " </tbody>";
+          result += "</table>";
+
+          if(data.is_paginated) {
+            result += "<div>";
+            result += "  <span>";
+            if(data.previous_page != 0) {
+              result += " <a href='javascript:get_bill_contact_lookup(" + data.previous_page + ");'>" + "<i class='fas fa-arrow-circle-left'></i></a> ";
+            }
+            result += data.current_page_number + " / " + data.current_page_paginator_num_pages;
+            result += " <a href='javascript:get_bill_contact_lookup(" + data.next_page + ");'>" + "<i class='fas fa-arrow-circle-right'></i></a>";
+            result += "    </span>";
+            result += "</div>";
+          }
+          
+
+          $("#contact_modal .modal-body").html(result);
+        },
+        error: function(data){
+          result = "";
+          result += "<div class='row col-12'>";
+          result += "<div class='col-8 offset-3 pb-2'>";
+          result += "<form id='cus_bill_search_contact_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
+          result += "  <div class='form-group mx-sm-3 mb-2'>";
+          result += "  <select name='cus_bill_cus_contact_option' class='form-control form-control-sm' required id='id_cus_site_cus_contact_option'>";
+          result += "    <option value='1'>Contact ID</option>";
+          result += "    <option value='2' selected>Name (TH)</option>";
+          result += "    <option value='3'>Last Name (TH)</option>";
+          result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";
+          result += "    <label for='id_cus_bill_search_district' class='sr-only'>Search</label>";            
+          result += "    <input type='text' class='form-control form-control-sm' id='id_cus_bill_cus_contact_search_text' name='cus_site_cus_contact_search_text' placeholder=''>";
+          result += "  </div>";
+          result += "<a href='javascript:cus_bill_search_contact_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";
+          result += "</form>";
+          result += "</div>";
+
+          result += "<table class='table table-hover table-sm'>";
+          result += " <thead>";
+          result += "   <tr>";
+          result += "     <td colspan='4' class='text-center'><br>Not found.<br><br></td>";
+          result += "   </tr>";
+          result += " </thead>";
+          result += "</tbody>";
+          result += "</table>";
+
+          $("#contact_modal .modal-body").html(result);
+        }          
+    });    
+  }
+
+
   function cus_main_search_district_modal() {
     current_district_id = $('#id_cus_main_select_district_id').val();
     search_district_option = $('#id_cus_main_cus_district_option').val();
@@ -2336,7 +2511,7 @@
           $("#districtmodal .modal-body").html(result);
         }          
     });
-  };
+  }
 
   function cus_bill_search_district_modal() {
     current_district_id = $('#id_cus_bill_select_district_id').val();
@@ -2458,7 +2633,7 @@
           $("#districtmodal .modal-body").html(result);
         }          
     });
-  };
+  }
 
   function cus_main_select_district(dist_id, dist_name_th, city_name_th, dist_name_en, city_name_en) {    
     
@@ -2470,7 +2645,7 @@
     $("#id_cus_main_cus_city_en").val(city_name_en);    
 
     $("#districtmodal").modal("hide");    
-  }
+  };
 
   function select_district(dist_id, dist_name_th, city_name_th, dist_name_en, city_name_en) {    
     $("#id_cus_site_cus_district_dist_th").val(dist_name_th);
@@ -2801,7 +2976,7 @@
         }
       },
     });
-  };
+  }
 
 
   function update_cus_site() {
@@ -2909,14 +3084,16 @@
           //
         }
     });
-  };
+  }
 
 
 
   function update_cus_bill() {
-    cus_id = "{{cus_bill.cus_id|stringformat:'04d'}}";
-    cus_brn = "{{cus_bill.cus_brn|stringformat:'03d'}}";
+    cus_id = "{{cus_site.cus_id|stringformat:'04d'}}";
+    cus_brn = "{{cus_site.cus_brn|stringformat:'03d'}}";
     cus_no = cus_id + cus_brn;
+
+    //alert(cus_no);
 
     if ($('#id_cus_bill_cus_active').is(":checked"))
       cus_bill_cus_active = 1;
@@ -2932,7 +3109,10 @@
     cus_bill_cus_add1_en = $('#id_cus_bill_cus_add1_en').val();
     cus_bill_cus_add2_en = $('#id_cus_bill_cus_add2_en').val();
     cus_bill_cus_subdist_en = $('#id_cus_bill_cus_subdist_en').val();
+    
     select_district_id = $('#id_cus_bill_select_district_id').val();
+    alert(select_district_id);
+
     cus_bill_cus_zip = $('#id_cus_bill_cus_zip').val();
     cus_bill_cus_tel = $('#id_cus_bill_cus_tel').val();
     cus_bill_cus_fax = $('#id_cus_bill_cus_fax').val();
@@ -3018,7 +3198,7 @@
           //
         }
     });
-  };
+  }
 
 
   $(document).ready(function(){
