@@ -816,7 +816,6 @@ def update_cus_main(request):
         'business_type': 'abc',
     }
 
-    print("xyz")
     return render(request, template_name, context)    
 
 
@@ -1076,16 +1075,17 @@ def update_cus_bill(request):
                     cus_name_en = cus_name_en,
                     cus_add1_en = cus_add1_en,
                     cus_add2_en = cus_add2_en,
-
                     cus_district_id = select_district_id,
                     cus_city_id = city_id,
-                    cus_country_id = country_id,
-                    
+                    cus_country_id = country_id,                    
                     cus_zip = cus_zip,
-
                     cus_zone_id = cus_zone,
                     cus_contact_id = cus_bill_cus_contact_id,
                     site_contact_id = cus_bill_cus_contact_id,
+
+                    upd_flag = 'A',
+                    upd_by = request.user.first_name,
+                    upd_date = timezone.now()
                 )
                 new_cus_bill.save()                
 
@@ -1350,3 +1350,18 @@ def get_contact(request):
     
     return response        
 
+
+@login_required(login_url='/accounts/login/')
+def get_country(request):
+
+    dist_id = request.GET["dist_id"]    
+    
+    data = TDistrict.objects.select_related('city_id').filter(dist_id__exact=dist_id).get()
+    country_en = data.city_id.country_id.country_en
+    country_th = data.city_id.country_id.country_th
+    
+    response = JsonResponse(data={"success": True, "country_en": country_en, "country_th": country_th})
+    response.status_code = 200
+
+    return response
+    

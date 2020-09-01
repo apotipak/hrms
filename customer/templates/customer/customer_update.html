@@ -913,9 +913,9 @@
                         </div>
 
                         <div class="input-group">
-                          <label for="id_cus_bill_cus_country" class="col-sm-4 col-form-label form-control-sm">{% trans 'Country' %}</label>
+                          <label for="id_cus_bill_cus_country_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'Country' %}</label>
                           <div class="col-sm-8">                                                    
-                            <input type="text" id="id_cus_bill_cus_country" name="cus_bill_cus_country" class="form-control form-control-sm" value="{{ cus_bill.cus_country|default_if_none:'' }}" readonly>
+                            <input type="text" id="id_cus_bill_cus_country_th" name="cus_bill_cus_country_th" class="form-control form-control-sm" value="{{ cus_bill.cus_country|default_if_none:'' }}" readonly>
                           </div>
                         </div>
 
@@ -2652,11 +2652,10 @@
     $("#districtmodal").modal("hide");    
   };
 
-  function select_district(dist_id, dist_name_th, city_name_th, dist_name_en, city_name_en) {    
+  function select_district(dist_id, dist_name_th, city_name_th, dist_name_en, city_name_en) {        
     $("#id_cus_site_cus_district_dist_th").val(dist_name_th);
     $("#id_cus_site_select_district_id").val(dist_id);
     $("#id_cus_site_cus_city").val(city_name_th);
-
     $("#id_cus_site_cus_district_en").val(dist_name_en);
     $("#id_cus_site_cus_city_en").val(city_name_en);
 
@@ -2666,10 +2665,25 @@
   function cus_bill_select_district(dist_id, dist_name_th, city_name_th, dist_name_en, city_name_en) {        
     $("#id_cus_bill_cus_district_dist_th").val(dist_name_th);
     $("#id_cus_bill_select_district_id").val(dist_id);
-
     $("#id_cus_bill_cus_city_th").val(city_name_th);
     $("#id_cus_bill_cus_district_en").val(dist_name_en);
-    $("#id_cus_bill_cus_city_en").val(city_name_en);    
+    $("#id_cus_bill_cus_city_en").val(city_name_en);
+
+    // Get Country
+    $.ajax({
+      url : "/customer/ajax/get_country/",
+      type : 'get',
+      dataType: 'json',
+      data : {          
+        dist_id : dist_id,
+      },
+      success : function(json) {        
+        var country_th = json.country_th;
+        var country_en = json.country_en;
+        $("#id_cus_bill_cus_country_th").val(country_th);
+        $("#id_cus_bill_cus_country_en").val(country_en);
+      },
+    });
 
     $("#districtmodal").modal("hide");    
   }

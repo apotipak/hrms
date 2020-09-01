@@ -479,11 +479,14 @@ class CusBillForm(forms.ModelForm):
 
     def clean_cus_bill_cus_zip(self):
         data = self.data.get('cus_bill_cus_zip')
+
+        '''
         if len(data) != 5:
             raise ValidationError("Zip is not correct.")
         else:
             return data
-
+        '''
+        
         if data.isnumeric():
             return data
         else:
