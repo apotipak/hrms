@@ -56,15 +56,19 @@
         <div class="clearfix">
           <div class="float-left">
             <ul class="nav nav-tabs navbar-expand nav-fill" id="customer" role="tablist">
-              <li class="nav-item">
-                <a class="nav-link" id="mainoffice-tab" data-toggle="tab" href="#mainoffice" role="tab" aria-controls="mainoffice">{% trans 'Main Office' %}</a>
-              </li>
+
               <li class="nav-item active">
-                <a class="nav-link active" id="site-tab" data-toggle="tab" href="#site" role="tab" aria-controls="site">{% trans 'Site' %}</a>
+                <a class="nav-link active" id="mainoffice-tab" data-toggle="tab" href="#mainoffice" role="tab" aria-controls="mainoffice">{% trans 'Main Office' %}</a>
               </li>
+
+              <li class="nav-item">
+                <a class="nav-link" id="site-tab" data-toggle="tab" href="#site" role="tab" aria-controls="site">{% trans 'Site' %}</a>
+              </li>
+
               <li class="nav-item">
                 <a class="nav-link" id="billing-tab" data-toggle="tab" href="#billing" role="tab" aria-controls="billing">{% trans 'Billing' %}</a>
               </li>
+
             </ul>        
           </div>
         </div>
@@ -73,8 +77,8 @@
 
         <div class="tab-content" id="customerContent">
 
-          <!--<div class="tab-pane fade show active" id="mainoffice" role="tabpanel" aria-labelledby="mainoffice-tab">-->
-            <div class="tab-pane" id="mainoffice" role="tabpanel" aria-labelledby="mainoffice-tab">          
+            <div class="tab-pane fade show active" id="mainoffice" role="tabpanel" aria-labelledby="mainoffice-tab">
+            <!--<div class="tab-pane" id="mainoffice" role="tabpanel" aria-labelledby="mainoffice-tab">-->
             {% comment %}
             <div id="result"></div>
 
@@ -137,7 +141,7 @@
             </div>
 
 
-            <!-- Main Office Tab -->
+            <!-- Main Office Tab -->            
             <div class="row pt-3">
               
               <div class="col-md-6">
@@ -501,7 +505,8 @@
 
 
           <!-- Site Tab -->
-          <div class="tab-pane fade show active" id="site" role="tabpanel" aria-labelledby="site-tab">
+          <div class="tab-pane" id="site" role="tabpanel" aria-labelledby="site-tab">
+          <!--<div class="tab-pane fade show active" id="site" role="tabpanel" aria-labelledby="site-tab">-->
 
             <form id="cus_site_form" method="POST" action="{% url 'update_cus_site' %}">
             {% csrf_token %}
