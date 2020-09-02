@@ -29,15 +29,15 @@
 
           <div class="form-row">
 
-            <div class="col-2 text-nowrap">
-              Customer Code
+            <div class="col-4 text-nowrap text-right">
+              Customer Code&nbsp;&nbsp;&nbsp;
             </div>
 
-            <div class="col-5">
-              <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_id" name="cus_main_cus_id">  
+            <div class="col-4">              
+              {% render_field cus_main_form.cus_id %}
             </div>
             
-            <div class="col-5">
+            <div class="col-4">
               <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_brn" name="cus_main_cus_brn">
             </div>
 
@@ -48,8 +48,10 @@
     </div>
 
 
+    <!--
     <input type="button" class="btn btn-secondary btn-md" value="Cancel" onClick="this.form.reset()" />
     <a href="#" id="cusMainSaveButton" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
+    -->
 
     </form>
 
@@ -1245,73 +1247,60 @@
 {% block javascript %}
 <script>
   $(document).ready(function(){
-    $('#id_cus_main_cus_id').focus();
+    $('#id_cus_id').focus();
   });
 
-  $(document).on('keypress', '#id_cus_main_cus_id', function(e) {
+  $(document).on('keypress', '#id_cus_id', function(e) {
     if(e.which == 13) {      
       e.preventDefault();
 
-      // TODO: Check if cus_id is existed
-      // start
       var obj = $(this);
-      alert(obj.val());
-      //check_existed_cus_main_cus_id();
-      // end
+      var cus_id = obj.val();
+      //alert(cus_id);
+      
+      if (check_exist_cus_main_cus_id(cus_id)) {
+        show_cus_main_in_main_office_tab();
+      }
+      else {
+        add_cus_main();        
+      }
 
       return false;
     }
   });
 
-  $("#cusMainSaveButton").click( function() {
-    event.preventDefault();    
-    add_cus_main();
-  });
+  function check_exist_cus_main_cus_id(cus_id) {
+    //alert(cus_id);
 
-  function check_existed_cus_main_cus_id(cus_id) {
+    $.ajax({
+      url : "/customer/ajax/ajax_check_exist_cus_main_cus_id/",
+      type : "POST",
+      data : {          
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        cus_id : cus_id,
+      },
+      success : function(data) {        
+        alert(data.success);
+        return true; 
+      },
+      error: function(data) {
+        alert(data.responseJSON.error);
+        return false
+      },
+    });
+  }
 
+  function show_cus_main_in_main_office_tab() {
+    //alert("todo: show_cus_main_in_main_office_tab");
   }
 
   function add_cus_main() {
-    cus_id = "{{customer.cus_id|stringformat:'04d'}}";
-    cus_brn = "{{customer.cus_brn|stringformat:'03d'}}";
-    cus_no = cus_id + cus_brn;
+    cus_id = $('#id_cus_id').val();
+    //cus_brn = $('#id_cus_brn').val();
+      
+    //alert("todo: add_cus_main");
 
-    // Main Office TH
-    if ($('#id_cus_main_cus_active').is(":checked"))
-      cus_main_cus_active = 1;
-    else
-      cus_main_cus_active = 0;
-
-    cus_main_cus_name_th = $('#id_cus_main_cus_name_th').val();    
-    cus_main_cus_add1_th = $('#id_cus_main_cus_add1_th').val();
-    cus_main_cus_add2_th = $('#id_cus_main_cus_add2_th').val();
-    cus_main_cus_subdist_th = $('#id_cus_main_cus_subdist_th').val();
-
-    // Main Office EN
-    cus_main_cus_name_en = $('#id_cus_main_cus_name_en').val();
-    cus_main_cus_add1_en = $('#id_cus_main_cus_add1_en').val();
-    cus_main_cus_add2_en = $('#id_cus_main_cus_add2_en').val();
-    cus_main_cus_subdist_en = $('#id_cus_main_cus_subdist_en').val();
-    select_district_id = $('#id_cus_main_select_district_id').val();
-    cus_main_cus_country_en = $('#id_cus_main_cus_country_en').val();
-
-    cus_main_cus_zip = $('#id_cus_main_cus_zip').val();
-    cus_main_cus_tel = $('#id_cus_main_cus_tel').val();
-    cus_main_cus_fax = $('#id_cus_main_cus_fax').val();
-    cus_main_cus_email = $('#id_cus_main_cus_email').val();
-    cus_main_cus_zone = $('#id_cus_main_cus_zone').val();
-
-    // Business Type
-    cus_main_business_type = $('#id_cus_main_business_type').val();
-    cus_main_customer_option_op1 = $('#id_cus_main_customer_option_op1').val(); // Status    
-    cus_main_customer_option_op2 = $('#id_cus_main_customer_option_op2').val(); // Group 1
-    cus_main_customer_option_op3 = $('#id_cus_main_customer_option_op3').val(); // Group 2
-    cus_main_customer_option_op4 = $('#id_cus_main_customer_option_op4').val(); // A/R Code
-
-    // Contact Information
-    cus_main_cus_contact_id = $("#id_cus_main_cus_contact_id").val();
-
+    /*
     $.ajax({
       url : "/customer/ajax/update_cus_main/",
       type : "POST",
@@ -1320,32 +1309,6 @@
         cus_id : cus_id,
         cus_brn : cus_brn,
         cus_no : cus_no,
-
-        cus_main_cus_active : cus_main_cus_active,
-        cus_main_cus_name_th : cus_main_cus_name_th,
-        cus_main_cus_add1_th : cus_main_cus_add1_th,
-        cus_main_cus_add2_th : cus_main_cus_add2_th,
-        cus_main_cus_subdist_th :  cus_main_cus_subdist_th,
-
-        cus_main_cus_name_en : cus_main_cus_name_en,
-        cus_main_cus_add1_en : cus_main_cus_add1_en,
-        cus_main_cus_add2_en : cus_main_cus_add2_en,      
-        cus_main_cus_subdist_en :  cus_main_cus_subdist_en,
-        select_district_id : select_district_id,        
-        cus_main_cus_country_en : cus_main_cus_country_en,
-
-        cus_main_cus_zip : cus_main_cus_zip,
-        cus_main_cus_tel : cus_main_cus_tel,
-        cus_main_cus_fax : cus_main_cus_fax,
-        cus_main_cus_email : cus_main_cus_email,
-        cus_main_cus_zone : cus_main_cus_zone,
-
-        cus_main_business_type : cus_main_business_type,
-        cus_main_customer_option_op1 : cus_main_customer_option_op1,
-        cus_main_customer_option_op2 : cus_main_customer_option_op2,
-        cus_main_customer_option_op3 : cus_main_customer_option_op3,
-        cus_main_customer_option_op4 : cus_main_customer_option_op4,
-
         cus_main_cus_contact_id : cus_main_cus_contact_id,
       },
       success : function(json) {
@@ -1393,6 +1356,7 @@
         }
       },
     });
+    */    
   }
 
 

@@ -33,3 +33,10 @@ urlpatterns += [
   url(r'^ajax/get_contact_list_modal/$', views.get_contact_list_modal, name='get_contact_list_modal'),  
 ]
 
+urlpatterns += [
+  url(r'^ajax/ajax_check_exist_cus_main_cus_id/$', views.ajax_check_exist_cus_main_cus_id, name='ajax_check_exist_cus_main_cus_id'),
+]
+
+
+
+

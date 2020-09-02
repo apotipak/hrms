@@ -22,16 +22,26 @@ import sys, locale
 
 @login_required(login_url='/accounts/login/')
 def CustomerCreate(request):
+    template_name = 'customer/customer_create.html'
     page_title = settings.PROJECT_NAME
     db_server = settings.DATABASES['default']['HOST']
     project_name = settings.PROJECT_NAME
     project_version = settings.PROJECT_VERSION  
     today_date = settings.TODAY_DATE
+    response_data = dict()
 
     if request.method == "POST":
-        cus_main_form = CusMainCreateForm(request.POST, user=request.user)
+        if form.is_valid():            
+            cus_main_form = CusMainCreateForm(request.POST, user=request.user)
+            response_data['form_is_valid'] = True
+        else:            
+            response_data['form_is_valid'] = False
+
+        return JsonResponse(response_data)     
     else:
+        print("GET")
         cus_main_form = CusMainCreateForm(user=request.user)                    
+        
 
     return render(request, 'customer/customer_create.html', 
         {
@@ -42,6 +52,34 @@ def CustomerCreate(request):
         'today_date': today_date,
         'cus_main_form': cus_main_form,
         })
+
+
+
+@login_required(login_url='/accounts/login/')
+def ajax_check_exist_cus_main_cus_id(request):
+
+    print("************************************************")
+    print("FUNCTION: view_ajax_check_exist_cus_main_cus_id")
+    print("************************************************")
+
+    response_data = {}
+
+    if request.method == "POST":
+        cus_id = request.POST.get('cus_id')
+        print("cus_id = " + str(cus_id))
+        print("user = " + str(request.user))
+
+        form = CusMainCreateForm(request.POST, user=request.user)
+        if form.is_valid():
+            print("form is valid")
+            response = JsonResponse({"success": "Duplicated record."})
+            response.status_code = 200
+            return response
+        else:
+            print("form is invalid")
+            response = JsonResponse({"error": "There was an error 111"})
+            response.status_code = 403
+            return response            
 
 
 @permission_required('customer.view_customer', login_url='/accounts/login/')
@@ -1381,3 +1419,46 @@ def get_country(request):
 
     return response
     
+
+
+
+
+    
+    '''
+    data = CusContact.objects.select_related('con_title').filter(con_id__exact=contact_id)
+
+    if data:
+        pickup_dict = {}
+        pickup_records=[]
+        
+        for d in data:
+            record = {
+                "con_id": d.con_id,
+                "con_fname_th": d.con_fname_th,
+                "con_lname_th": d.con_lname_th,
+                "con_position_th": d.con_position_th,
+                "con_title_th": d.con_title.title_th,
+            }
+            pickup_records.append(record)
+
+        response = JsonResponse(data={
+            "success": True,            
+            "results": list(pickup_records)        
+        })
+        response.status_code = 200
+    else:
+        print("error")
+        response = JsonResponse(data={
+            "success": False,
+            "contact": [],
+        })
+
+        response = JsonResponse({"error": "there was an error"})
+        response.status_code = 403
+    '''
+
+    '''
+    response = JsonResponse({"success": "test"})
+    response.status_code = 200
+    return response
+    '''

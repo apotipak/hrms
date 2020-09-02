@@ -8,13 +8,14 @@ from django.core.exceptions import ValidationError
 
 
 class CusMainCreateForm(forms.ModelForm):
-    cus_main_cus_id = forms.CharField(label=_('Customer ID'), max_length=7, required=False, error_messages={'max_length': _('Too long')}, widget=forms.TextInput(attrs={'autocomplete':'off', 'type':'number'}))
-    cus_main_cus_brn = forms.CharField(label=_('Customer Branch'), max_length=3, required=False, error_messages={'max_length': _('Too long')}, widget=forms.TextInput(attrs={'autocomplete':'off','type':'number'}))    
+    cus_id = forms.CharField()
+    # cus_main_cus_brn = forms.CharField(label=_('Customer Branch'), max_length=3, required=False, error_messages={'max_length': _('Too long')}, widget=forms.TextInput(attrs={'autocomplete':'off','type':'number'}))    
 
     class Meta:
         model = CusMain
-        fields = '__all__'        
+        fields = ['cus_id']
 
+        '''
         error_messages = {
             'cus_main_cus_id': {
                 'required': _("This field is required"),
@@ -25,23 +26,26 @@ class CusMainCreateForm(forms.ModelForm):
                 'max_digits': _("รหัสสาขาลูกค้าป้อนค่าได้ระหว่าง 0 - 999"),
             },
         }
+        '''
 
     def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop('user')      
+        self.user = kwargs.pop('user')     
         super(CusMainCreateForm, self).__init__(*args, **kwargs)
-        self.fields['cus_main_cus_id'].widget.attrs['placeholder'] = _("ID")
-        self.fields['cus_main_cus_id'].widget.attrs={'class': 'form-control form-control-sm'}
+        self.fields['cus_id'].widget.attrs={'class': 'form-control form-control-sm'}
+        # self.fields['cus_main_cus_id'].widget.attrs['placeholder'] = _("ID")
+        
 
-    def clean_cus_main_cus_id(self):
-        data = self.data.get('cus_main_cus_id')
-        if len(data) > 0:
-            print("success")
+    def clean_cus_id(self):
+        data = self.data.get('cus_id')
+        print("data = " + str(data))
+        print("length = " + str(len(data)))
+
+        if data.isnumeric():
             return data
         else:
-            print("error")
-            raise ValidationError("Customer ID is required.")
+            raise ValidationError("Customer ID is not correct.")
 
-
+        
 class CustomerCreateForm(forms.ModelForm):
 
     class Meta:
