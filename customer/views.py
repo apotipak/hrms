@@ -7,6 +7,7 @@ from django.conf import settings
 from django.views import generic
 from .models import Customer, CusMain, CusBill, CustomerOption
 from .forms import CustomerCreateForm, CusMainForm, CusSiteForm, CusBillForm
+from .forms import CusMainCreateForm
 from .forms import CustomerSearchForm
 from django.http import JsonResponse
 from django.template.loader import render_to_string
@@ -17,6 +18,30 @@ from system.models import TDistrict, TCity, CusContact
 from django.core import serializers
 import json
 import sys, locale
+
+
+@login_required(login_url='/accounts/login/')
+def CustomerCreate(request):
+    page_title = settings.PROJECT_NAME
+    db_server = settings.DATABASES['default']['HOST']
+    project_name = settings.PROJECT_NAME
+    project_version = settings.PROJECT_VERSION  
+    today_date = settings.TODAY_DATE
+
+    if request.method == "POST":
+        cus_main_form = CusMainCreateForm(request.POST, user=request.user)
+    else:
+        cus_main_form = CusMainCreateForm(user=request.user)                    
+
+    return render(request, 'customer/customer_create.html', 
+        {
+        'page_title': page_title, 
+        'project_name': project_name, 
+        'project_version': project_version, 
+        'db_server': db_server, 
+        'today_date': today_date,
+        'cus_main_form': cus_main_form,
+        })
 
 
 @permission_required('customer.view_customer', login_url='/accounts/login/')
@@ -535,16 +560,6 @@ def CustomerCreate(request):
 
     return save_customer_form(request, form, 'customer/partial_customer_create.html')
 """
-
-@login_required(login_url='/accounts/login/')
-def CustomerCreate(request):
-    page_title = settings.PROJECT_NAME
-    db_server = settings.DATABASES['default']['HOST']
-    project_name = settings.PROJECT_NAME
-    project_version = settings.PROJECT_VERSION  
-    today_date = settings.TODAY_DATE
-    return render(request, 'customer/customer_create.html', {'page_title': page_title, 'project_name': project_name, 'project_version': project_version, 'db_server': db_server, 'today_date': today_date})
-
 
 def CustomerDelete(request, pk):
     customer = get_object_or_404(Customer, pk=pk)

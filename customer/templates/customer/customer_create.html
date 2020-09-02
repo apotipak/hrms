@@ -1,1 +1,1402 @@
-afdf
+{% extends "page_generic.html" %}
+
+{% load i18n %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}{{ page_title}} - {% trans 'New Customer' %} {% endblock %}
+
+{% block content %}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  
+
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+  
+    <form id="cus_main_form" method="POST">
+    {% csrf_token %}
+
+    <div class="">
+      <div class="row mb-2">
+        <!--
+        <div class="col-xs-4">          
+          <h4 class="display-6 m-0 text-dark">Add New Customer</h4>
+        </div>
+        -->
+        <div class="col-8 offset-2">
+
+          <div class="form-row">
+
+            <div class="col-2 text-nowrap">
+              Customer Code
+            </div>
+
+            <div class="col-5">
+              <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_id" name="cus_main_cus_id">  
+            </div>
+            
+            <div class="col-5">
+              <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_brn" name="cus_main_cus_brn">
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+    <input type="button" class="btn btn-secondary btn-md" value="Cancel" onClick="this.form.reset()" />
+    <a href="#" id="cusMainSaveButton" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
+
+    </form>
+
+  </div>
+
+  <!-- Main content -->  
+  <section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+
+      <div class="card-body">
+
+        <div class="clearfix">
+          <div class="float-left">
+            <ul class="nav nav-tabs navbar-expand nav-fill" id="customer" role="tablist">
+
+              <li class="nav-item active">
+                <a class="nav-link active" id="mainoffice-tab" data-toggle="tab" href="#mainoffice" role="tab" aria-controls="mainoffice">{% trans 'Main Office' %}</a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link" id="site-tab" data-toggle="tab" href="#site" role="tab" aria-controls="site">{% trans 'Site' %}</a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link" id="billing-tab" data-toggle="tab" href="#billing" role="tab" aria-controls="billing">{% trans 'Billing' %}</a>
+              </li>
+
+            </ul>        
+          </div>
+        </div>
+
+
+        <div class="tab-content" id="customerContent">
+
+            <div class="tab-pane fade show active" id="mainoffice" role="tabpanel" aria-labelledby="mainoffice-tab">
+            <!--<div class="tab-pane" id="mainoffice" role="tabpanel" aria-labelledby="mainoffice-tab">-->
+            {% comment %}
+            <div id="result"></div>
+
+            <div class="pt-2" id="show-error">
+            {% if cus_main_form.errors %}
+                {% for field in cus_main_form %}                
+                    {% for error in field.errors %}
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation"></i>&nbsp;&nbsp;{{ error }}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            {% else %}
+
+              {% if cus_main_form_is_valid %}
+                <div class="alert alert-success">
+                    <i class="fas fa-save"></i>&nbsp;&nbsp;Saved complete. Back to <a href="{% url 'customer-list' %}">Customer List</a>
+                </div>
+              {% endif %}
+            {% endif %}
+            </div>
+            {% endcomment %}
+
+
+            <form id="cus_main_form_temp" method="POST">
+            {% csrf_token %}
+
+            <div class="clearfix">
+              <div class="float-left">&nbsp;</div>
+              <div class="float-right">
+                <div class="float-left pt-2">
+                  <div class="form-check d-inline">
+                    <input class="form-check-input" id="checkboxMainOfficeForSite" type="checkbox">
+                    <label class="form-check-label">For Site</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                  </div>
+                  <div class="form-check d-inline">
+                    <input class="form-check-input" id="checkboxMainOfficeForBill" type="checkbox">
+                    <label class="form-check-label">For Bill</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                  </div>              
+                </div>
+                
+                <label class="switch">                                 
+                  {% if cus_main.cus_active|default_if_none:0 %}
+                  <input type="checkbox" id="id_cus_main_cus_active" name="cus_main_cus_active" value=1 checked>
+                  {% else %}
+                  <input type="checkbox" id="id_cus_main_cus_active" name="cus_main_cus_active" value=0>
+                  {% endif %}                  
+                  <div class="slider"></div>
+                </label>
+                
+                {% comment %}
+                {% if cus_main.cus_active|default_if_none:0 %}
+                <input type="checkbox" id="id_cus_main_cus_active" name="cus_main_cus_active" value=1 checked>
+                {% else %}
+                <input type="checkbox" id="id_cus_main_cus_active" name="cus_main_cus_active" value=0>
+                {% endif %}                  
+                {% endcomment %}
+
+              </div>
+            </div>
+
+
+            <!-- Main Office Tab -->            
+            <div class="row pt-3">
+              
+              <div class="col-md-6">
+
+                <div class="card card-green">
+                  <div class="card-header">
+                    <h3 class="card-title">TH</h3>
+                  </div>
+                  <div class="card-body">
+
+                    <div class="form-group">  
+
+                      <div class="input-group">
+                        <label for="id_cus_main_cus_name_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'Customer Name' %}</label>
+                        <div class="col-sm-8">                          
+                          <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_name_th" name="cus_main_cus_name_th" value="{{ cus_main.cus_name_th }}">
+                        </div>
+                      </div>
+
+                      <div class="input-group">
+                        <label for="id_cus_main_cus_add1_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'Address' %}</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_add1_th" name="cus_main_cus_add1_th" value="{{ cus_main.cus_add1_th|default_if_none:''}}">
+                          <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_add2_th" name="cus_main_cus_add2_th" value="{{ cus_main.cus_add2_th|default_if_none:''}}">
+                        </div>
+                      </div>
+
+                      <div class="input-group">
+                        <label for="id_cus_main_cus_subdist_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'Sub-District' %}</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_subdist_th" name="cus_main_cus_subdist_th" value="{{ cus_main.cus_subdist_th|default_if_none:'' }}">
+                        </div>
+                      </div>
+
+                      <div class="input-group">
+                        <label for="id_cus_main_cus_disrict" class="col-sm-4 col-form-label form-control-sm">{% trans 'District' %}</label>
+
+                        <div class="col-sm-8">                            
+                          <div class="row">                              
+                            <div class="col-12 input-group">
+                              <input type="text" id="id_cus_main_cus_district_dist_th" name="cus_main_cus_district_dist_th" class="form-control form-control-sm" value="{{ cus_main.cus_district }}" readonly>
+                              
+                              <button id="cus_main_district_lookup" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url="{% url 'get_district_list' %}"><i class="fas fa-search fa-sm"></i></button>
+
+                              <input type="hidden" id="id_cus_main_select_district_id" name="cus_main_select_district_id" value="{{ cus_main.cus_district_id }}">
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+
+                      <div class="input-group">
+                        <label for="id_cus_main_cus_city_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'City' %}</label>
+                        <div class="col-sm-8">                          
+                          {% render_field cus_main_form.cus_main_cus_city_th class="form-control form-control-sm" %}
+                        </div>
+                      </div>
+
+                      <div class="input-group">
+                        <label for="id_cus_main_cus_country" class="col-sm-4 col-form-label form-control-sm">{% trans 'Country' %}</label>
+                        <div class="col-sm-8">
+                          {% render_field cus_main_form.cus_main_cus_country_th class="form-control form-control-sm" %}
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Main Office Tab English -->
+              <div class="col-md-6">
+                <div class="card card-green">
+                  <div class="card-header">
+                    <h3 class="card-title">EN</h3>
+                  </div>
+                  <div class="card-body">
+                    <div class="form-group">
+                      
+                      <div class="input-group">
+                        <label for="id_cus_main_cus_name_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Customer Name' %}</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_name_en" name="cus_main_cus_name_en" value="{{ cus_main.cus_name_en }}">
+                        </div>
+                      </div>
+
+                      <div class="input-group">
+                        <label for="id_cus_main_cus_add1_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Address' %}</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_add1_en" name="cus_main_cus_add1_en" value="{{ cus_main.cus_add1_en|default_if_none:''}}">
+                          <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_add2_en" name="cus_main_cus_add2_en" value="{{ cus_main.cus_add2_en|default_if_none:''}}">
+                        </div>
+                      </div>
+
+                      <div class="input-group">
+                        <label for="id_cus_main_cus_subdist_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Sub-District' %}</label>
+                        <div class="col-sm-8">
+                          <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_subdist_en" name="cus_main_cus_subdist_en" value="{{ cus_main.cus_subdist_en|default_if_none:'' }}">
+                        </div>
+                      </div>
+
+                      <div class="input-group">
+                        <label for="id_cus_main_cus_disrict_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'District' %}</label>
+                        <div class="col-sm-8">
+                          {% if cus_main_form.cus_district.errors %}                
+                            {% render_field cus_main_form.cus_main_cus_district_en class="form-control form-control-sm" %}
+                            {% for error in cus_main_form.cus_main_cus_district.errors %}
+                            <div class="invalid-feedback">
+                              {{error}}
+                            </div>
+                            {% endfor %}
+                          {% else %}                          
+
+                          {% render_field cus_main_form.cus_main_cus_district_en class="form-control form-control-sm" %}
+
+                          {% endif %}
+                        </div>
+                      </div>
+
+                      <div class="input-group">
+                        <label for="id_cus_main_cus_city_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'City' %}</label>
+                        <div class="col-sm-8">                                                    
+                          {% render_field cus_main_form.cus_main_cus_city_en class="form-control form-control-sm" %}
+                        </div>
+                      </div>
+
+                      <div class="input-group">
+                        <label for="id_cus_main_cus_country_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Country' %}</label>
+                        <div class="col-sm-8">
+                          {% render_field cus_main_form.cus_main_cus_country_en class="form-control form-control-sm" %}
+                        </div>
+                      </div>
+
+
+
+
+
+                    </div>                    
+                  </div>
+                </div>
+              </div>
+              <!-- Main Office Tab English -->
+
+            </div>
+            <!-- /.row -->            
+
+
+
+            <!-- Main Office Tab Others -->
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card card-info">
+                  <div class="card-body"> 
+
+
+                    <div class="form-row">
+                      
+                      <div class="form-group col-md-2">
+                        <label for="id_cus_main_cus_zip">{% trans 'Zip' %}</label>
+                        {% if cus_main_form.cus_main_cus_zip.errors %}                
+                                                    
+                          <input type="text" class="form-control form-control-sm is-invalid" id="id_cus_main_cus_zip" name="cus_main_cus_zip" value="{{ cus_main.cus_zip|default_if_none:'' }}">
+
+                          {% for error in cus_main_form.cus_main_cus_zip.errors %}
+                          <div class="invalid-feedback">
+                            {{error}}
+                          </div>
+                          {% endfor %}
+                        {% else %}
+                          <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_zip" name="cus_main_cus_zip" value="{{ cus_main.cus_zip|default_if_none:'' }}">
+                        {% endif %}
+                      </div>
+
+                      <div class="form-group col-md-2">
+                        <label for="id_cus_main_cus_tel">{% trans 'Phone' %}</label>
+                        <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_tel" name="cus_main_cus_tel" value="{{ cus_main.cus_tel|default_if_none:'' }}">
+                      </div>
+
+                      <div class="form-group col-md-2">
+                        <label for="id_cus_main_cus_fax">{% trans 'Fax' %}</label>
+                        <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_fax" name="cus_main_cus_fax" value="{{ cus_main.cus_fax|default_if_none:'' }}">
+                      </div>
+
+                      <div class="form-group col-md-3">
+                        <label for="id_cus_main_cus_email">{% trans 'Email' %}</label>
+                        <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_email" name="cus_main_cus_email" value="{{ cus_main.cus_email|default_if_none:'' }}">
+                      </div>
+
+                      <div class="form-group col-md-3">
+                        <label for="cus_main_cus_zone">{% trans 'Zone' %}</label>
+                        {% if cus_main_form.cus_main_cus_zone.errors %}                
+                          {% render_field cus_main_form.cus_main_cus_zone class="form-control col-sm-12 form-control-sm is-invalid" %}
+                          {% for error in cus_main_form.cus_main_cus_zone.errors %}
+                          <div class="invalid-feedback">
+                            {{error}}
+                          </div>
+                          {% endfor %}                
+                        {% else %}
+                          {% render_field cus_main_form.cus_main_cus_zone class="form-control col-sm-12 form-control-sm" %}
+                        {% endif %}
+                      </div>
+
+                    </div>
+
+                    <!-- Business Type -->
+                    <div class="form-row">
+
+                      <div class="form-group col-md-4">
+                        <label for="id_cus_main_business_type">{% trans 'Business Type' %}</label>                          
+                        <div class="container">
+                          <select id="id_cus_main_business_type_temp" name="cus_main_business_type_temp" class="selectBusinessType">
+                            {% for option in business_type_list %}
+                              {% if customer_option.btype == option %}
+                              <option selected>{{ option }}</option>
+                              {% else %}
+                              <option>{{ option }}</option>
+                              {% endif %}
+                            {% endfor %}
+                          </select>
+                          <input class="businessTypeTextBox" id="id_cus_main_business_type" name="cus_main_business_type" value="{{customer_option.btype|default_if_none:''}}" />
+                        </div>                        
+                      </div>
+
+                      <div class="form-group col-md-4">
+                        <label for="id_cus_main_group_1">{% trans 'Group 1' %}</label>                          
+                        <div class="container">
+                          <select id="selectCustoemrOptionGroup1" name="cus_main_group_1" class="selectGroup1">
+                            {% for option in group_1_list %}
+                              {% if customer_option.op2 == option %}
+                              <option selected>{{ option }}</option>
+                              {% else %}
+                              <option>{{ option }}</option>
+                              {% endif %}
+                            {% endfor %}
+                          </select>
+                          <input class="group1TextBox" id="id_cus_main_customer_option_op2" name="cus_main_customer_option_op2" value="{{customer_option.op2|default_if_none:''}}" />
+                        </div>                        
+                      </div>
+
+
+                      <div class="form-group col-md-4">
+                        <label for="id_cus_main_group_2">{% trans 'Group 2' %}</label>                          
+                        <div class="container">
+                          <select id="selectCustoemrOptionGroup2" name="cus_main_group_2" class="selectGroup2">
+                            {% for option in group_2_list %}
+                              {% if customer_option.op3 == option %}
+                              <option selected>{{ option }}</option>
+                              {% else %}
+                              <option>{{ option }}</option>
+                              {% endif %}
+                            {% endfor %}
+                          </select>
+                          <input class="group2TextBox" id="id_cus_main_customer_option_op3" name="cus_main_customer_option_op3" value="{{customer_option.op3|default_if_none:''}}" />
+                        </div>
+                      </div>
+
+                    </div>
+
+
+
+
+                    <div class="form-row">
+
+                      <div class="form-group col-md-3">
+                        <label for="id_cus_main_customer_option_op1">{% trans 'Status' %}</label>
+                        <input type="text" class="form-control form-control-sm" id="id_cus_main_customer_option_op1" name="cus_main_customer_option_op1" value="{{ customer_option.op1|default_if_none:'' }}">
+                      </div>
+
+                      <div class="form-group col-md-3">
+                        <label for="id_cus_main_customer_option_op4">{% trans 'A/R Code' %}</label>
+                        <input type="text" class="form-control form-control-sm" id="id_cus_main_customer_option_op4" name="cus_main_customer_option_op4" value="{{ customer_option.op4|default_if_none:'' }}">
+                      </div>
+
+                    </div>
+
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Main Office Tab - Contact Information -->
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card card-info">
+                  <div class="card-header">
+                    <h3 class="card-title">Contact Information</h3>
+                  </div>
+                  <div class="card-body">
+
+                    <div class="form-row">
+                      
+
+                      <div class="form-group col-md-2">
+                        <label for="id_cus_site_site_contact_id" class="col-sm-12 col-form-label form-control-sm">{% trans 'Contact ID' %}</label>
+
+                        <div class="row">                              
+                          <div class="col-12 input-group">
+                            <input type="text" id="id_cus_main_cus_contact_id" name="cus_main_cus_contact_id" class="form-control form-control-sm" value="{{ cus_main.cus_contact_id }}" readonly>                              
+                            <button id="cus_main_contact_lookup" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url="{% url 'get_contact_list' %}"><i class="fas fa-search fa-sm"></i></button>
+                            <input type="hidden" id="id_cus_main_select_cus_contact_id" name="cus_main_select_cus_contact_id" value="{{ cus_main.cus_contact_id }}">
+                          </div>
+                        </div>                          
+                      </div>
+
+                      <div class="form-group col-md-2">
+                        <label for="id_cus_main_cus_title">{% trans 'Title' %}</label>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_contact_cus_title" name="cus_main_cus_contact_cus_title" value="{{ cus_main.cus_contact.con_title|default_if_none:'' }}" readonly>
+                      </div>
+
+                      <div class="form-group col-md-2">
+                        <label for="id_cus_main_cus_contact_con_fname_th">{% trans 'First Name' %}</label>
+                        <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_contact_con_fname_th" name="cus_main_cus_contact_con_fname_th" value="{{ cus_main.cus_contact.con_fname_th|default_if_none:'' }}" >
+                      </div>
+
+                      <div class="form-group col-md-3">
+                        <label for="id_cus_main_cus_contact_con_lname_th">{% trans 'Last Name' %}</label>
+                        <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_contact_con_lname_th" name="cus_main_cus_contact_con_fname_th" value="{{ cus_main.cus_contact.con_lname_th|default_if_none:'' }}">
+                      </div>
+
+                      <div class="form-group col-md-3">
+                        <label for="id_cus_main_cus_contact_con_position_th">{% trans 'Position' %}</label>
+                        <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_contact_con_position_th" name="cus_main_cus_contact_con_position_th" value="{{ cus_main.cus_contact.con_position_th|default_if_none:'' }}">
+                      </div>
+
+                    </div>
+                    
+
+                    {% comment %}
+                    <div class="form-group">                              
+                      <div class="col-sm-3">
+                          <label for="input-type">Sex</label>
+                          <div id="input-type" class="row">
+
+                              {% render_field cus_site_form.cus_site_cus_contact_con_sex class="radio-inline" %}
+
+                          </div>
+                      </div>
+                    </div>
+                    {% endcomment %}
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+
+
+            <div class="float-right">
+              <input type="button" class="btn btn-secondary btn-md" value="Cancel" onClick="this.form.reset()" />
+              <a href="#" id="cusMainSaveButton1" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
+            </div>
+            </form>
+
+          </div>        
+
+
+
+          <!-- Site Tab -->
+          <div class="tab-pane" id="site" role="tabpanel" aria-labelledby="site-tab">
+          <!--<div class="tab-pane fade show active" id="site" role="tabpanel" aria-labelledby="site-tab">-->
+
+            <form id="cus_site_form" method="POST" action="{% url 'update_cus_site' %}">
+            {% csrf_token %}
+
+            <div class="clearfix">
+              <div class="float-left">&nbsp;</div>
+              <div class="float-right">
+                <div class="float-left pt-2">
+                  <div class="form-check d-inline">
+                    <input class="form-check-input" id="checkboxSiteForBill" type="checkbox">
+                    <label class="form-check-label">For Bill</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                  </div>              
+                </div>              
+
+
+                <label class="switch">                                 
+                  {% if customer.cus_active|default_if_none:0 %}
+                  <input type="checkbox" id="id_cus_site_cus_active" name="cus_site_cus_active" value=1 checked>
+                  {% else %}
+                  <input type="checkbox" id="id_cus_site_cus_active" name="cus_site_cus_active" value=0>
+                  {% endif %}                  
+                  <div class="slider"></div>
+                </label>
+
+              </div>
+            </div>            
+
+
+            <div class="container-fluid pt-2">
+
+
+
+
+
+
+
+
+              <div class="row pt-3">
+
+                <!-- Site Tab Thai -->
+                <div class="col-md-6">
+
+
+                  <div class="card card-info">
+                    <div class="card-header">
+                      <h3 class="card-title">TH</h3>
+                    </div>
+                    <div class="card-body">
+
+                      <div class="form-group">  
+
+                        <div class="input-group">
+                          <label for="id_cus_site_cus_name_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'Customer Name' %}</label>
+                          <div class="col-sm-8">
+                            <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_name_th" name="cus_site_cus_name_th" value="{{ customer.cus_name_th|default_if_none:'' }}">
+
+                          </div>
+                        </div>
+
+                        <div class="input-group">
+                          <label for="id_cus_add1_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'Address' %}</label>
+                          <div class="col-sm-8">
+                            <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_add1_th" name="cus_site_cus_add1_th" value="{{ customer.cus_add1_th|default_if_none:'' }}" autocomplete="off">
+                            <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_add2_th" name="cus_site_cus_add2_th" value="{{ customer.cus_add2_th|default_if_none:'' }}" autocomplete="off">
+                          </div>
+                        </div>
+
+                        <div class="input-group">
+                          <label for="id_cus_site_cus_subdist_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'Sub-District' %}</label>
+                          <div class="col-sm-8">
+                            <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_subdist_th" name="cus_site_cus_subdist_th" value="{{ customer.cus_subdist_th|default_if_none:'' }}">
+                          </div>
+                        </div>
+
+                        <div class="input-group">
+                          <label for="id_cus_site_cus_disrict" class="col-sm-4 col-form-label form-control-sm">{% trans 'District' %}</label>
+
+                          <div class="col-sm-8">                            
+                            <div class="row">                              
+                              <div class="col-12 input-group">
+                                <input type="text" id="id_cus_site_cus_district_dist_th" name="cus_site_cus_district_dist_th" class="form-control form-control-sm" value="{{ customer.cus_district|default_if_none:'' }}" readonly>
+                                
+                                <button id="cus_site_district_lookup" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url="{% url 'get_district_list' %}"><i class="fas fa-search fa-sm"></i></button>
+
+                                <input type="hidden" id="id_cus_site_select_district_id" name="cus_site_select_district_id" value="{{ customer.cus_district_id }}">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="input-group">
+                          <label for="id_cus_city" class="col-sm-4 col-form-label form-control-sm">{% trans 'City' %}</label>
+                          <div class="col-sm-8">                            
+                            <input type="text" id="id_cus_site_cus_city" name="cus_site_cus_city" class="form-control form-control-sm" value="{{ customer.cus_city|default_if_none:'' }}" readonly>
+                          </div>
+                        </div>
+
+                        <div class="input-group">
+                          <label for="id_cus_country" class="col-sm-4 col-form-label form-control-sm">{% trans 'Country' %}</label>
+                          <div class="col-sm-8">                                                    
+                            <input type="text" id="id_cus_site_cus_country" name="cus_site_cus_country" class="form-control form-control-sm" value="{{ customer.cus_country|default_if_none:'' }}" readonly>
+                          </div>
+                        </div>
+
+                      </div>
+
+                    </div>
+                  </div>
+
+                </div>
+                <!-- Site Tab Thai End -->
+
+                <!-- Site Tab English -->
+                <div class="col-md-6">
+                  <div class="card card-info">
+                    <div class="card-header">
+                      <h3 class="card-title">EN</h3>
+                    </div>
+                    <div class="card-body">
+
+
+                      <div class="form-group">
+
+                        <div class="input-group">
+                          <label for="id_cus_name_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Customer Name' %}</label>
+                          <div class="col-sm-8">
+                            <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_name_en" name="cus_site_cus_name_th" value="{{ customer.cus_name_en|default_if_none:'' }}">
+                          </div>
+                        </div>
+
+                        <div class="input-group">
+                          <label for="id_cus_add1_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Address' %}</label>
+                          <div class="col-sm-8">
+                            <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_add1_en" name="cus_site_cus_add1_th" value="{{ customer.cus_add1_en|default_if_none:'' }}">
+                            <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_add2_en" name="cus_site_cus_add2_th" value="{{ customer.cus_add2_en|default_if_none:'' }}">
+                          </div>
+                        </div>
+
+                        <div class="input-group">
+                          <label for="id_cus_site_cus_subdist_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Sub-District' %}</label>
+                          <div class="col-sm-8">
+                            <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_subdist_en" name="cus_site_cus_subdist_en" value="{{ customer.cus_subdist_en|default_if_none:'' }}">
+                          </div>
+                        </div>
+                        
+                        <div class="input-group">
+                          <label for="id_cus_site_cus_district_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'District' %}</label>
+                          <div class="col-sm-8">                                                    
+                            <input type="text" id="id_cus_site_cus_district_en" name="cus_site_cus_district_en" class="form-control form-control-sm" value="{{ customer.cus_district.dist_en|default_if_none:'' }}" readonly>
+                          </div>
+                        </div>
+
+                        <div class="input-group">
+                          <label for="id_cus_site_cus_city_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'City' %}</label>
+                          <div class="col-sm-8">                            
+                            <input type="text" id="id_cus_site_cus_city_en" name="cus_site_cus_city_en" class="form-control form-control-sm" value="{{ customer.cus_city.city_en|default_if_none:'' }}" readonly>
+                          </div>
+                        </div>
+
+                        <div class="input-group">
+                          <label for="id_cus_site_cus_country_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Country' %}</label>
+                          <div class="col-sm-8">                                                    
+                            <input type="text" id="id_cus_site_cus_country_en" name="cus_site_cus_country_en" class="form-control form-control-sm" value="{{ customer.cus_country.country_en|default_if_none:'' }}" readonly>
+                          </div>
+                        </div>
+
+                      </div>                                          
+                    </div>
+                  </div>
+
+
+                </div>
+                <!-- Site Tab English -->
+
+              </div>
+
+
+
+              <!-- Site Tab Others -->
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="card card-info">
+                    <div class="card-body"> 
+
+
+                      <div class="form-row">
+                        
+                        <div class="form-group col-md-2">
+                          <label for="id_cus_site_cus_zip">{% trans 'Zip' %}</label>
+                          {% if cus_site_form.cus_site_cus_zip.errors %}                
+                                                      
+                            <input type="text" class="form-control form-control-sm " id="id_cus_site_cus_zip" name="cus_site_cus_zip" value="{{ customer.cus_zip|default_if_none:'' }}">
+
+                          {% else %}
+                            <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_zip" name="cus_site_cus_zip" value="{{ customer.cus_zip|default_if_none:'' }}">
+                          {% endif %}
+
+                        </div>
+
+                        <div class="form-group col-md-2">
+                          <label for="id_cus_site_cus_tel">{% trans 'Phone' %}</label>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_tel" name="cus_site_cus_tel" value="{{ customer.cus_tel|default_if_none:'' }}">
+                        </div>
+
+                        <div class="form-group col-md-2">
+                          <label for="id_cus_site_cus_fax">{% trans 'Fax' %}</label>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_fax" name="cus_site_cus_fax" value="{{ customer.cus_fax|default_if_none:'' }}">
+                        </div>
+
+                        <div class="form-group col-md-3">
+                          <label for="id_cus_site_cus_email">{% trans 'Email' %}</label>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_email" name="cus_site_cus_email" value="{{ customer.cus_email|default_if_none:'' }}">
+                        </div>
+
+                        <div class="form-group col-md-3">
+                          <label for="cus_main_cus_zone">{% trans 'Zone' %}</label>
+                          {% if cus_site_form.cus_site_cus_zone.errors %}                
+                            {% render_field cus_site_form.cus_site_cus_zone class="form-control col-sm-12 form-control-sm is-invalid" %}
+                            {% for error in cus_site_form.cus_site_cus_zone.errors %}
+                            <div class="invalid-feedback">
+                              {{error}}
+                            </div>
+                            {% endfor %}                
+                          {% else %}
+                            {% render_field cus_site_form.cus_site_cus_zone class="form-control col-sm-12 form-control-sm" %}
+                          {% endif %}      
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+
+              <!-- Site Tab - Contact Information -->
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="card card-info">
+                    <div class="card-header">
+                      <h3 class="card-title">Contact Information</h3>
+                    </div>
+                    <div class="card-body">
+
+                      <div class="form-row">
+                        
+
+
+                        <div class="form-group col-md-2">
+                          <label for="id_cus_site_site_contact_id" class="col-sm-12 col-form-label form-control-sm">{% trans 'Contact ID' %}</label>
+
+                          <div class="row">                              
+                            <div class="col-12 input-group">
+                              <input type="text" id="id_cus_site_site_contact_id" name="cus_site_site_contact_id" class="form-control form-control-sm" value="{{ customer.site_contact_id }}" readonly>                              
+                              <button id="cus_site_contact_lookup" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url="{% url 'get_contact_list' %}"><i class="fas fa-search fa-sm"></i></button>                              
+                              <input type="hidden" id="id_cus_site_select_site_contact_id" name="cus_site_select_site_contact_id" value="{{ customer.site_contact_id }}">
+                            </div>
+                          </div>                          
+                        </div>
+
+
+
+                        <div class="form-group col-md-2">
+                          <label for="id_cus_site_cus_title">{% trans 'Title' %}</label>
+                            <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_contact_cus_title" name="cus_site_cus_contact_cus_title" value="{{ customer.site_contact.con_title|default_if_none:'' }}" readonly>
+                        </div>
+
+                        <div class="form-group col-md-2">
+                          <label for="id_cus_site_cus_contact_con_fname_th">{% trans 'First Name' %}</label>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_contact_con_fname_th" name="cus_site_cus_contact_con_fname_th" value="{{ cus_site.site_contact.con_fname_th|default_if_none:'' }}" >
+                        </div>
+
+                        <div class="form-group col-md-3">
+                          <label for="id_cus_site_cus_contact_con_lname_th">{% trans 'Last Name' %}</label>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_contact_con_lname_th" name="cus_site_cus_contact_con_fname_th" value="{{ cus_site.site_contact.con_lname_th|default_if_none:'' }}">
+                        </div>
+
+                        <div class="form-group col-md-3">
+                          <label for="id_cus_site_site_contact_con_position_th">{% trans 'Position' %}</label>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_con_position_th" name="cus_site_site_contact_con_position_th" value="{{ cus_site.site_contact.con_position_th|default_if_none:'' }}">
+                        </div>
+
+                      </div>
+                      
+
+                      {% comment %}
+                      <div class="form-group">                              
+                        <div class="col-sm-3">
+                            <label for="input-type">Sex</label>
+                            <div id="input-type" class="row">
+
+                                {% render_field cus_site_form.cus_site_cus_contact_con_sex class="radio-inline" %}
+
+                            </div>
+                        </div>
+                      </div>
+                      {% endcomment %}
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+            <div class="float-right">              
+              <input type="button" class="btn btn-secondary btn-md" value="Cancel" onClick="this.form.reset()" />
+              <a href="#" id="cusSiteSaveButton" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
+            </div>
+
+            </form>
+
+            </div>
+
+          </div>
+
+
+
+
+
+
+          <!-- Billing Tab -->
+          <div class="tab-pane fade" id="billing" role="tabpanel" aria-labelledby="billing-tab">            
+            <div class="clearfix">
+              <div class="float-left">&nbsp;</div>
+              <div class="float-right">
+                <div class="float-left pt-2">
+                  &nbsp;
+                </div>
+
+                <label class="switch">                                 
+                  {% if cus_bill.cus_active|default_if_none:0 %}
+                  <input type="checkbox" id="id_cus_bill_cus_active" name="cus_bill_cus_active" value=1 checked>
+                  {% else %}
+                  <input type="checkbox" id="id_cus_bill_cus_active" name="cus_bill_cus_active" value=0>
+                  {% endif %}                  
+                  <div class="slider"></div>
+                </label>
+
+              </div>
+            </div>
+
+            <div class="container-fluid pt-2">
+
+
+            <form id="cus_bill_form" method="POST" action="{% url 'update_cus_bill' %}">
+            {% csrf_token %}
+
+              <div class="row pt-3">
+
+                <!-- Billing Tab Thai -->
+                <div class="col-md-6">
+
+                  <div class="card card-info">
+                    <div class="card-header">
+                      <h3 class="card-title">TH</h3>
+                    </div>
+                    <div class="card-body">
+
+                      <div class="form-group">  
+
+                        <div class="input-group">
+                          <label for="id_cus_bill_cus_name_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'Customer Name' %}</label>
+                          <div class="col-sm-8">
+                            <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_name_th" name="cus_bill_cus_name_th" value="{{ cus_bill.cus_name_th|default_if_none:'' }}">
+
+                          </div>
+                        </div>
+
+
+
+                        <div class="input-group">
+                          <label for="id_cus_bill_cus_add1_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'Address' %}</label>
+                          <div class="col-sm-8">
+                            <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_add1_th" name="cus_bill_cus_add1_th" value="{{ cus_bill.cus_add1_th|default_if_none:'' }}" autocomplete="off">
+                            <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_add2_th" name="cus_bill_cus_add2_th" value="{{ cus_bill.cus_add2_th|default_if_none:'' }}" autocomplete="off">
+                          </div>
+                        </div>
+
+                        <div class="input-group">
+                          <label for="id_cus_bill_cus_subdist_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'Sub-District' %}</label>
+                          <div class="col-sm-8">
+                            <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_subdist_th" name="cus_bill_cus_subdist_th" value="{{ cus_bill.cus_subdist_th|default_if_none:'' }}">
+                          </div>
+                        </div>
+
+
+
+                        <div class="input-group">
+                          <label for="id_cus_bill_cus_disrict" class="col-sm-4 col-form-label form-control-sm">{% trans 'District' %}</label>
+
+                          <div class="col-sm-8">                            
+                            <div class="row">                              
+                              <div class="col-12 input-group">
+                                <input type="text" id="id_cus_bill_cus_district_dist_th" name="cus_bill_cus_district_dist_th" class="form-control form-control-sm" value="{{ cus_bill.cus_district|default_if_none:'' }}" readonly>
+                                
+                                <button id="cus_bill_district_lookup" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url="{% url 'get_district_list' %}"><i class="fas fa-search fa-sm"></i></button>
+
+                                <input type="hidden" id="id_cus_bill_select_district_id" name="cus_bill_select_district_id" value="{{ cus_bill.cus_district_id|default_if_none:'' }}">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- cus_bill_cus_city_th-->
+                        <div class="input-group">
+                          <label for="id_cus_bill_cus_city_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'City' %}</label>
+                          <div class="col-sm-8">                            
+                            <input type="text" id="id_cus_bill_cus_city_th" name="cus_bill_cus_city_th" class="form-control form-control-sm" value="{{ cus_bill.cus_city.city_th|default_if_none:'' }}" readonly>
+                          </div>
+                        </div>
+
+                        <div class="input-group">
+                          <label for="id_cus_bill_cus_country_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'Country' %}</label>
+                          <div class="col-sm-8">                                                    
+                            <input type="text" id="id_cus_bill_cus_country_th" name="cus_bill_cus_country_th" class="form-control form-control-sm" value="{{ cus_bill.cus_country|default_if_none:'' }}" readonly>
+                          </div>
+                        </div>
+
+                      </div>
+
+                    </div>
+                  </div>
+
+                </div>
+                <!-- Billing Tab Thai End -->
+
+                <!-- Billing Tab English -->
+                <div class="col-md-6">
+                  <div class="card card-info">
+                    <div class="card-header">
+                      <h3 class="card-title">EN</h3>
+                    </div>
+                    <div class="card-body">
+
+
+                      <div class="form-group">
+
+                        <div class="input-group">
+                          <label for="id_cus_bill_cus_name_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Customer Name' %}</label>
+                          <div class="col-sm-8">
+                            <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_name_en" name="cus_bill_cus_name_en" value="{{ cus_bill.cus_name_en|default_if_none:'' }}">
+                          </div>
+                        </div>
+
+                        <div class="input-group">
+                          <label for="id_cus_bill_cus_add1_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Address' %}</label>
+                          <div class="col-sm-8">
+                            <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_add1_en" name="cus_bill_cus_add1_en" value="{{ cus_bill.cus_add1_en|default_if_none:'' }}">
+                            <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_add2_en" name="cus_bill_cus_add2_en" value="{{ cus_bill.cus_add2_en|default_if_none:'' }}">
+                          </div>
+                        </div>
+
+                        <div class="input-group">
+                          <label for="id_cus_bill_cus_subdist_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Sub-District' %}</label>
+                          <div class="col-sm-8">
+                            <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_subdist_en" name="cus_bill_cus_subdist_en" value="{{ cus_bill.cus_subdist_en|default_if_none:'' }}">
+                          </div>
+                        </div>
+                        
+                        <div class="input-group">
+                          <label for="id_cus_bill_cus_district_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'District' %}</label>
+                          <div class="col-sm-8">                                                    
+                            <input type="text" id="id_cus_bill_cus_district_en" name="cus_bill_cus_district_en" class="form-control form-control-sm" value="{{ cus_bill.cus_district.dist_en|default_if_none:'' }}" readonly>
+                          </div>
+                        </div>
+
+                        <div class="input-group">
+                          <label for="id_cus_bill_cus_city_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'City' %}</label>
+                          <div class="col-sm-8">                            
+                            <input type="text" id="id_cus_bill_cus_city_en" name="cus_bill_cus_city_en" class="form-control form-control-sm" value="{{ cus_bill.cus_city.city_en|default_if_none:'' }}" readonly>                            
+                          </div>
+                        </div>
+
+                        <div class="input-group">
+                          <label for="id_cus_bill_cus_country_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Country' %}</label>
+                          <div class="col-sm-8">                                                    
+                            <input type="text" id="id_cus_bill_cus_country_en" name="cus_bill_cus_country_en" class="form-control form-control-sm" value="{{ cus_bill.cus_country.country_en|default_if_none:'' }}" readonly>
+                          </div>
+                        </div>
+
+                      </div>                                          
+                    </div>
+                  </div>
+
+
+                </div>
+                <!-- Billing Tab English -->
+
+              </div>
+
+
+
+
+              <!-- Bill Tab - Others -->
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="card card-info">
+                    <div class="card-body"> 
+
+
+                      <div class="form-row">
+                        
+                        <div class="form-group col-md-2">
+                          <label for="id_cus_bill_cus_zip">{% trans 'Zip' %}</label>
+                          {% if cus_bill_form.cus_bill_cus_zip.errors %}                
+                                                      
+                            <input type="text" class="form-control form-control-sm " id="id_cus_bill_cus_zip" name="cus_bill_cus_zip" value="{{ cus_bill.cus_zip|default_if_none:'' }}">
+
+                          {% else %}
+                            <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_zip" name="cus_bill_cus_zip" value="{{ cus_bill.cus_zip|default_if_none:'' }}">
+                          {% endif %}
+
+                        </div>
+
+                        <div class="form-group col-md-2">
+                          <label for="id_cus_bill_cus_tel">{% trans 'Phone' %}</label>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_tel" name="cus_bill_cus_tel" value="{{ cus_bill.cus_tel|default_if_none:'' }}">
+                        </div>
+
+                        <div class="form-group col-md-2">
+                          <label for="id_cus_bill_cus_fax">{% trans 'Fax' %}</label>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_fax" name="cus_bill_cus_fax" value="{{ cus_bill.cus_fax|default_if_none:'' }}">
+                        </div>
+
+                        <div class="form-group col-md-3">
+                          <label for="id_cus_bill_cus_email">{% trans 'Email' %}</label>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_email" name="cus_bill_cus_email" value="{{ cus_bill.cus_email|default_if_none:'' }}">
+                        </div>
+
+                        <div class="form-group col-md-3">
+                          <label for="cus_main_cus_zone">{% trans 'Zone' %}</label>
+                          {% if cus_bill_form.cus_bill_cus_zone.errors %}                
+                            {% render_field cus_bill_form.cus_bill_cus_zone class="form-control col-sm-12 form-control-sm is-invalid" %}
+                            {% for error in cus_bill_form.cus_bill_cus_zone.errors %}
+                            <div class="invalid-feedback">
+                              {{error}}
+                            </div>
+                            {% endfor %}                
+                          {% else %}
+                            {% render_field cus_bill_form.cus_bill_cus_zone class="form-control col-sm-12 form-control-sm" %}
+                          {% endif %}      
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+
+
+              <!-- Bill Tab - Contact Information -->
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="card card-info">
+                    <div class="card-header">
+                      <h3 class="card-title">Contact Information</h3>
+                    </div>
+                    <div class="card-body">
+
+                      <div class="form-row">
+                        
+
+
+                        <div class="form-group col-md-2">
+                          <label for="id_cus_bill_cus_contact_id" class="col-sm-12 col-form-label form-control-sm">{% trans 'Contact ID' %}</label>
+
+                          <div class="row">                              
+                            <div class="col-12 input-group">
+                              <input type="text" id="id_cus_bill_cus_contact_id" name="cus_bill_cus_contact_id" class="form-control form-control-sm" value="{{ cus_bill.cus_contact_id|default_if_none:'' }}" readonly>                              
+                              <button id="cus_bill_contact_lookup" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url="{% url 'get_contact_list' %}"><i class="fas fa-search fa-sm"></i></button>                              
+                              <input type="hidden" id="id_cus_bill_select_bill_contact_id" name="cus_bill_select_bill_contact_id" value="{{ cus_bill.cus_contact_id|default_if_none:'' }}">
+
+                            </div>
+                          </div>                          
+                        </div>
+
+                        <div class="form-group col-md-2">
+                          <label for="id_cus_bill_cus_title">{% trans 'Title' %}</label>
+                            <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_contact_cus_title" name="cus_bill_cus_contact_cus_title" value="{{ cus_bill.cus_contact.con_title|default_if_none:'' }}" readonly>
+                        </div>
+
+
+
+
+
+
+                        <div class="form-group col-md-2">
+                          <label for="id_cus_bill_cus_contact_con_fname_th">{% trans 'First Name' %}</label>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_contact_con_fname_th" name="cus_bill_cus_contact_con_fname_th" value="{{ cus_bill.cus_contact.con_fname_th|default_if_none:'' }}" >
+                        </div>
+
+                        <div class="form-group col-md-3">
+                          <label for="id_cus_bill_cus_contact_con_lname_th">{% trans 'Last Name' %}</label>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_contact_con_lname_th" name="cus_bill_cus_contact_con_fname_th" value="{{ cus_bill.cus_contact.con_lname_th|default_if_none:'' }}">
+                        </div>
+
+                        <div class="form-group col-md-3">
+                          <label for="id_cus_bill_cus_contact_con_position_th">{% trans 'Position' %}</label>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_contact_con_position_th" name="cus_bill_cus_contact_con_position_th" value="{{ cus_bill.cus_contact.con_position_th|default_if_none:'' }}">
+                        </div>
+
+                      </div>
+                      
+
+                      {% comment %}
+                      <div class="form-group">                              
+                        <div class="col-sm-3">
+                            <label for="input-type">Sex</label>
+                            <div id="input-type" class="row">
+
+                                {% render_field cus_site_form.cus_site_cus_contact_con_sex class="radio-inline" %}
+
+                            </div>
+                        </div>
+                      </div>
+                      {% endcomment %}
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+
+            <div class="float-right">
+              <input type="button" class="btn btn-secondary btn-md" value="Cancel" onClick="this.form.reset()" />
+              <a href="#" id="cusBillSaveButton" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
+            </div>
+
+            </form>
+
+            
+            </div>
+          </div>
+          <!-- end billing -->
+
+
+
+
+        </div>
+        <!-- /.end tabs -->
+      </div>
+
+
+
+      <!-- /.card-body -->
+
+      <!--
+      <div class="card-footer text-right">        
+        <a href="#" type="button" onclick="customerupdateform.submit()" class="btn btn-success btn-sm"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>        
+      </div>
+      -->
+      <!-- /.card-footer-->
+
+  </div>
+  <!-- /.card -->
+
+  <div class="modal fade" id="modal-customer">
+    <div class="modal-dialog">
+      <div class="modal-content"></div>
+    </div>
+  </div>
+  </form>
+
+  <div class="container">
+    <div class="row"></div>
+  </div>
+
+</section>
+<!-- /.content -->
+
+</div>
+
+<!-- Customer District Modal -->
+<div class="modal fade" id="districtmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-search"></i>&nbsp;&nbsp;{% trans 'Select a Location' %}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {% trans 'Loading...' %}
+      </div>
+
+      <div class="modal-footer">
+        <!--<button id='cus_site_district_lookup_modal' type='button' class='btn btn-outline-secondary btn-xs'><b>></b></button>-->
+        <button type="button" class="btn btn-success btn-sm" data-dismiss="modal">{% trans 'Close' %}</button>
+        <!--<button type="button" class="btn btn-success btn-sm">{% trans 'Select' %}</button>-->
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- Contact Modal -->
+<div class="modal fade" id="contact_modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-search"></i>&nbsp;&nbsp;{% trans 'Select a Person' %}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {% trans 'Loading...' %}
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success btn-sm" data-dismiss="modal">{% trans 'Close' %}</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- /.content-wrapper -->
+{% endblock %}
+
+
+
+{% block javascript %}
+<script>
+  $(document).ready(function(){
+    $('#id_cus_main_cus_id').focus();
+  });
+
+  $(document).on('keypress', '#id_cus_main_cus_id', function(e) {
+    if(e.which == 13) {      
+      e.preventDefault();
+
+      // TODO: Check if cus_id is existed
+      // start
+      var obj = $(this);
+      alert(obj.val());
+      //check_existed_cus_main_cus_id();
+      // end
+
+      return false;
+    }
+  });
+
+  $("#cusMainSaveButton").click( function() {
+    event.preventDefault();    
+    add_cus_main();
+  });
+
+  function check_existed_cus_main_cus_id(cus_id) {
+
+  }
+
+  function add_cus_main() {
+    cus_id = "{{customer.cus_id|stringformat:'04d'}}";
+    cus_brn = "{{customer.cus_brn|stringformat:'03d'}}";
+    cus_no = cus_id + cus_brn;
+
+    // Main Office TH
+    if ($('#id_cus_main_cus_active').is(":checked"))
+      cus_main_cus_active = 1;
+    else
+      cus_main_cus_active = 0;
+
+    cus_main_cus_name_th = $('#id_cus_main_cus_name_th').val();    
+    cus_main_cus_add1_th = $('#id_cus_main_cus_add1_th').val();
+    cus_main_cus_add2_th = $('#id_cus_main_cus_add2_th').val();
+    cus_main_cus_subdist_th = $('#id_cus_main_cus_subdist_th').val();
+
+    // Main Office EN
+    cus_main_cus_name_en = $('#id_cus_main_cus_name_en').val();
+    cus_main_cus_add1_en = $('#id_cus_main_cus_add1_en').val();
+    cus_main_cus_add2_en = $('#id_cus_main_cus_add2_en').val();
+    cus_main_cus_subdist_en = $('#id_cus_main_cus_subdist_en').val();
+    select_district_id = $('#id_cus_main_select_district_id').val();
+    cus_main_cus_country_en = $('#id_cus_main_cus_country_en').val();
+
+    cus_main_cus_zip = $('#id_cus_main_cus_zip').val();
+    cus_main_cus_tel = $('#id_cus_main_cus_tel').val();
+    cus_main_cus_fax = $('#id_cus_main_cus_fax').val();
+    cus_main_cus_email = $('#id_cus_main_cus_email').val();
+    cus_main_cus_zone = $('#id_cus_main_cus_zone').val();
+
+    // Business Type
+    cus_main_business_type = $('#id_cus_main_business_type').val();
+    cus_main_customer_option_op1 = $('#id_cus_main_customer_option_op1').val(); // Status    
+    cus_main_customer_option_op2 = $('#id_cus_main_customer_option_op2').val(); // Group 1
+    cus_main_customer_option_op3 = $('#id_cus_main_customer_option_op3').val(); // Group 2
+    cus_main_customer_option_op4 = $('#id_cus_main_customer_option_op4').val(); // A/R Code
+
+    // Contact Information
+    cus_main_cus_contact_id = $("#id_cus_main_cus_contact_id").val();
+
+    $.ajax({
+      url : "/customer/ajax/update_cus_main/",
+      type : "POST",
+      data : {          
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        cus_id : cus_id,
+        cus_brn : cus_brn,
+        cus_no : cus_no,
+
+        cus_main_cus_active : cus_main_cus_active,
+        cus_main_cus_name_th : cus_main_cus_name_th,
+        cus_main_cus_add1_th : cus_main_cus_add1_th,
+        cus_main_cus_add2_th : cus_main_cus_add2_th,
+        cus_main_cus_subdist_th :  cus_main_cus_subdist_th,
+
+        cus_main_cus_name_en : cus_main_cus_name_en,
+        cus_main_cus_add1_en : cus_main_cus_add1_en,
+        cus_main_cus_add2_en : cus_main_cus_add2_en,      
+        cus_main_cus_subdist_en :  cus_main_cus_subdist_en,
+        select_district_id : select_district_id,        
+        cus_main_cus_country_en : cus_main_cus_country_en,
+
+        cus_main_cus_zip : cus_main_cus_zip,
+        cus_main_cus_tel : cus_main_cus_tel,
+        cus_main_cus_fax : cus_main_cus_fax,
+        cus_main_cus_email : cus_main_cus_email,
+        cus_main_cus_zone : cus_main_cus_zone,
+
+        cus_main_business_type : cus_main_business_type,
+        cus_main_customer_option_op1 : cus_main_customer_option_op1,
+        cus_main_customer_option_op2 : cus_main_customer_option_op2,
+        cus_main_customer_option_op3 : cus_main_customer_option_op3,
+        cus_main_customer_option_op4 : cus_main_customer_option_op4,
+
+        cus_main_cus_contact_id : cus_main_cus_contact_id,
+      },
+      success : function(json) {
+        if(json.form_is_valid) {          
+          $(document).Toasts('create', {
+            class: 'bg-success', 
+            title: "{% trans 'Message' %}",
+            subtitle: '',
+            autohide: true,
+            delay: 2000,
+            body: json.result + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+            autoDismiss: true,
+            close: true,
+            autoremove: true,
+          });
+
+          $.each($('.is-valid'), function() {
+            $('.is-valid').removeClass('is-valid');              
+          });            
+
+          $.each($('.is-invalid'), function() {
+            $('.is-invalid').addClass('is-valid');  
+            $('.is-invalid').removeClass('is-invalid');              
+          });           
+
+        }
+        else {          
+
+          $(document).Toasts('create', {
+            class: 'bg-danger', 
+            title: "{% trans 'Error' %}",
+            subtitle: '',
+            autohide: true,
+            delay: 5000,
+            body: json.message,
+            autoDismiss: true,
+            close: true,
+            autoremove: true,
+            preventDuplicates: true,       
+          });
+
+          for(error in json.errors) {
+            $("#id_" + error).addClass("is-invalid");         
+          };            
+        }
+      },
+    });
+  }
+
+
+
+</script>
+
+{% endblock %}
