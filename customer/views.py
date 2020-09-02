@@ -705,10 +705,11 @@ def update_cus_main(request):
             cus_main_customer_option_op1 = request.POST.get('cus_main_customer_option_op1')
             cus_main_customer_option_op2 = request.POST.get('cus_main_customer_option_op2')
             cus_main_customer_option_op3 = request.POST.get('cus_main_customer_option_op3')
-            cus_main_customer_option_op4 = request.POST.get('cus_main_customer_option_op4').strip()
+            cus_main_customer_option_op4 = request.POST.get('cus_main_customer_option_op4')
 
             print("check")
-            print(cus_main_customer_option_op3)
+            print("status = [" + str(cus_main_customer_option_op1) + "]")
+            print("A/R Code = [" + str(cus_main_customer_option_op4) + "]")        
 
             cus_main_cus_contact_id = request.POST.get('cus_main_cus_contact_id')            
 
@@ -768,10 +769,10 @@ def update_cus_main(request):
                 # Update               
                 customer_option = CustomerOption.objects.get(cus_no=cus_no)
                 customer_option.btype = business_type.replace('&amp;', '&')
-                customer_option.op1 = cus_main_customer_option_op1  # Status
+                customer_option.op1 = cus_main_customer_option_op1.strip()  # Status
                 customer_option.op2 = cus_main_customer_option_op2.replace('&amp;', '&') # Group 1
                 customer_option.op3 = cus_main_customer_option_op3.replace('&amp;', '&') # Group 2
-                customer_option.op4 = cus_main_customer_option_op4 # A/R Code
+                customer_option.op4 = cus_main_customer_option_op4.strip() # A/R Code
                 customer_option.save()
             except CustomerOption.DoesNotExist:
                 # Insert
