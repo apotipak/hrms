@@ -1256,9 +1256,8 @@
 
       var obj = $(this);
       var cus_id = obj.val();
-      //alert(cus_id);
       
-      if (check_exist_cus_main_cus_id(cus_id)) {
+      if (ajax_check_exist_cus_main_cus_id(cus_id)) {
         show_cus_main_in_main_office_tab();
       }
       else {
@@ -1269,7 +1268,7 @@
     }
   });
 
-  function check_exist_cus_main_cus_id(cus_id) {
+  function ajax_check_exist_cus_main_cus_id(cus_id) {
     //alert(cus_id);
 
     $.ajax({

@@ -13,37 +13,19 @@ class CusMainCreateForm(forms.ModelForm):
 
     class Meta:
         model = CusMain
-        fields = ['cus_id']
-
-        '''
-        error_messages = {
-            'cus_main_cus_id': {
-                'required': _("This field is required"),
-                'max_digits': _("รหัสลูกค้าป้อนค่าได้ระหว่าง 1 - 9999"),
-            },
-            'cus_main_cus_brn': {
-                'required': _("This field is required"),
-                'max_digits': _("รหัสสาขาลูกค้าป้อนค่าได้ระหว่าง 0 - 999"),
-            },
-        }
-        '''
+        exclude = ['cus_id','cus_zone','cus_contact','site_contact','cus_district','cus_country','cus_city']
 
     def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop('user')     
+        # self.user = kwargs.pop('user')     
         super(CusMainCreateForm, self).__init__(*args, **kwargs)
         self.fields['cus_id'].widget.attrs={'class': 'form-control form-control-sm'}
-        # self.fields['cus_main_cus_id'].widget.attrs['placeholder'] = _("ID")
         
-
     def clean_cus_id(self):
         data = self.data.get('cus_id')
-        print("data = " + str(data))
-        print("length = " + str(len(data)))
-
         if data.isnumeric():
             return data
         else:
-            raise ValidationError("Customer ID is not correct.")
+            raise ValidationError("Customer ID is not correct!")
 
         
 class CustomerCreateForm(forms.ModelForm):

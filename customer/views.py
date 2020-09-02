@@ -32,15 +32,15 @@ def CustomerCreate(request):
 
     if request.method == "POST":
         if form.is_valid():            
-            cus_main_form = CusMainCreateForm(request.POST, user=request.user)
-            response_data['form_is_valid'] = True
+            cus_main_form = CusMainCreateForm(request.POST, user=request.user)            
+            response_data['form_is_valid'] = True            
         else:            
             response_data['form_is_valid'] = False
 
         return JsonResponse(response_data)     
     else:
         print("GET")
-        cus_main_form = CusMainCreateForm(user=request.user)                    
+        cus_main_form = CusMainCreateForm()
         
 
     return render(request, 'customer/customer_create.html', 
@@ -59,7 +59,7 @@ def CustomerCreate(request):
 def ajax_check_exist_cus_main_cus_id(request):
 
     print("************************************************")
-    print("FUNCTION: view_ajax_check_exist_cus_main_cus_id")
+    print("FUNCTION: view__ajax_check_exist_cus_main_cus_id")
     print("************************************************")
 
     response_data = {}
@@ -69,15 +69,17 @@ def ajax_check_exist_cus_main_cus_id(request):
         print("cus_id = " + str(cus_id))
         print("user = " + str(request.user))
 
-        form = CusMainCreateForm(request.POST, user=request.user)
+        form = CusMainCreateForm(request.POST)
+
         if form.is_valid():
             print("form is valid")
-            response = JsonResponse({"success": "Duplicated record."})
+            response = JsonResponse({"success": "Form is valid"})
             response.status_code = 200
             return response
         else:
             print("form is invalid")
-            response = JsonResponse({"error": "There was an error 111"})
+            print(form.errors)
+            response = JsonResponse({"error": "There was an error."})
             response.status_code = 403
             return response            
 
