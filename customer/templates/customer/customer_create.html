@@ -1258,7 +1258,7 @@
         show_cus_main_in_main_office_tab();
       }
       else {
-        add_cus_main();        
+        //add_cus_main();        
       }
 
       return false;
@@ -1303,15 +1303,17 @@
 
   $("#cusMainSaveButton").click( function() {
     event.preventDefault();
-    alert("add_cus_main")
+    add_cus_main();    
   });
 
-  
   function add_cus_main() {
+    //alert("todo: add_cus_main");
     cus_id = $('#id_cus_id').val();
     //cus_brn = $('#id_cus_brn').val();
-      
-    //alert("todo: add_cus_main");
+    cus_main_cus_name_th = $('#id_cus_main_cus_name_th').val();
+    
+    alert(cus_id);
+    alert(cus_main_cus_name_th);    
 
     /*
     $.ajax({
