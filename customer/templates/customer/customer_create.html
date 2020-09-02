@@ -53,7 +53,9 @@
     <a href="#" id="cusMainSaveButton" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
     -->
 
+    {% comment %}
     </form>
+    {% endcomment %}
 
   </div>
 
@@ -114,8 +116,12 @@
             {% endcomment %}
 
 
+
+            {% comment %}
             <form id="cus_main_form_temp" method="POST">
             {% csrf_token %}
+            {% endcomment %}
+
 
             <div class="clearfix">
               <div class="float-left">&nbsp;</div>
@@ -139,15 +145,6 @@
                   {% endif %}                  
                   <div class="slider"></div>
                 </label>
-                
-                {% comment %}
-                {% if cus_main.cus_active|default_if_none:0 %}
-                <input type="checkbox" id="id_cus_main_cus_active" name="cus_main_cus_active" value=1 checked>
-                {% else %}
-                <input type="checkbox" id="id_cus_main_cus_active" name="cus_main_cus_active" value=0>
-                {% endif %}                  
-                {% endcomment %}
-
               </div>
             </div>
 
@@ -505,7 +502,7 @@
 
             <div class="float-right">
               <input type="button" class="btn btn-secondary btn-md" value="Cancel" onClick="this.form.reset()" />
-              <a href="#" id="cusMainSaveButton1" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
+              <a href="#" id="cusMainSaveButton" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
             </div>
             </form>
 
@@ -1278,12 +1275,22 @@
         csrfmiddlewaretoken: '{{ csrf_token }}',
         cus_id : cus_id,
       },
-      success : function(data) {        
-        alert(data.success);
+      success : function(data) {
+        
+        //$('#id_cus_main_cus_name_th').focus();
+        $('#id_cus_main_cus_brn').focus();
+
+        var cus_id = data.results[0]["cus_id"];
+        var cus_name_th = data.results[0]["cus_name_th"];
+        var cus_name_en = data.results[0]["cus_name_en"];              
+        
+        $('#id_cus_main_cus_name_th').val(cus_name_th);
+        $('#id_cus_main_cus_name_en').val(cus_name_en);
+
         return true; 
       },
       error: function(data) {
-        alert(data.responseJSON.error);
+        //alert(data.responseJSON.error);
         return false
       },
     });
@@ -1293,6 +1300,13 @@
     //alert("todo: show_cus_main_in_main_office_tab");
   }
 
+
+  $("#cusMainSaveButton").click( function() {
+    event.preventDefault();
+    alert("add_cus_main")
+  });
+
+  
   function add_cus_main() {
     cus_id = $('#id_cus_id').val();
     //cus_brn = $('#id_cus_brn').val();

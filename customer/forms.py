@@ -9,14 +9,13 @@ from django.core.exceptions import ValidationError
 
 class CusMainCreateForm(forms.ModelForm):
     cus_id = forms.CharField()
-    # cus_main_cus_brn = forms.CharField(label=_('Customer Branch'), max_length=3, required=False, error_messages={'max_length': _('Too long')}, widget=forms.TextInput(attrs={'autocomplete':'off','type':'number'}))    
 
     class Meta:
         model = CusMain
         exclude = ['cus_id','cus_zone','cus_contact','site_contact','cus_district','cus_country','cus_city']
 
     def __init__(self, *args, **kwargs):
-        # self.user = kwargs.pop('user')     
+        # self.user = kwargs.pop('user')
         super(CusMainCreateForm, self).__init__(*args, **kwargs)
         self.fields['cus_id'].widget.attrs={'class': 'form-control form-control-sm'}
         

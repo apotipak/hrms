@@ -19,7 +19,6 @@ from django.core import serializers
 import json
 import sys, locale
 
-
 @login_required(login_url='/accounts/login/')
 def CustomerCreate(request):
     template_name = 'customer/customer_create.html'
@@ -69,19 +68,66 @@ def ajax_check_exist_cus_main_cus_id(request):
         print("cus_id = " + str(cus_id))
         print("user = " + str(request.user))
 
-        form = CusMainCreateForm(request.POST)
+        form = CusMainCreateForm(request.POST)        
+        pickup_records=[]
 
         if form.is_valid():
-            print("form is valid")
-            response = JsonResponse({"success": "Form is valid"})
+            print("form is valid")            
+
+            try:
+                cus_main = CusMain.objects.get(pk=cus_id)                
+                record = {
+                    "cus_id": cus_main.cus_id,
+                    "cus_name_th": cus_main.cus_name_th,
+                    "cus_name_en": cus_main.cus_name_en,
+                }             
+                
+                pickup_records.append(record)
+            except CusMain.DoesNotExist:
+                cus_main = None
+                record = {
+                    "cus_id": '',
+                    "cus_name_th": '',
+                    "cus_name_en": '',
+                }                             
+
+            response = JsonResponse({"success": "Form is valid", "results": list(pickup_records) })
             response.status_code = 200
             return response
         else:
             print("form is invalid")
             print(form.errors)
-            response = JsonResponse({"error": "There was an error."})
+            response = JsonResponse({ "error": "There was an error.", "results": list(pickup_records) })
             response.status_code = 403
             return response            
+
+
+'''
+            pickup_records=[]
+            
+            for d in current_page:
+                # print("debug 1")
+                record = {
+                    "dist_id": d.dist_id,
+                    "city_id": d.city_id_id,
+                    "dist_th": d.dist_th,
+                    "dist_en": d.dist_en,
+                    "city_th": d.city_id.city_th,
+                    "city_en": d.city_id.city_en,
+                }
+                pickup_records.append(record)
+
+            response = JsonResponse(data={
+                "success": True,
+                "is_paginated": is_paginated,
+                "page" : page,
+                "next_page" : next_page,
+                "previous_page" : previous_page,
+                "current_page_number" : current_page_number,
+                "current_page_paginator_num_pages" : current_page_paginator_num_pages,
+                "results": list(pickup_records)         
+                })
+'''
 
 
 @permission_required('customer.view_customer', login_url='/accounts/login/')
