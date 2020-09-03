@@ -79,6 +79,9 @@ def ajax_check_exist_cus_main_cus_id(request):
 
             try:
                 cus_main = CusMain.objects.get(pk=cus_id)
+                
+                print("cus_subdist_th = " + str(cus_main.cus_subdist_th))
+
                 record = {
                     "cus_id": cus_main.cus_id,
                     "cus_name_th": cus_main.cus_name_th,
