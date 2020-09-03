@@ -1227,26 +1227,30 @@
           var cus_main_cus_name_th = data.results[0]["cus_name_th"];
           var cus_main_cus_add1_th = data.results[0]["cus_add1_th"];
           var cus_main_cus_add2_th = data.results[0]["cus_add2_th"];
+          var cus_main_cus_district = data.results[0]["cus_district"];
           var cus_main_subdist_th = data.results[0]["cus_subdist_th"];
 
           var cus_main_cus_name_en = data.results[0]["cus_name_en"];
           var cus_main_cus_add1_en = data.results[0]["cus_add1_en"];
-          var cus_main_cus_add2_en = data.results[0]["cus_add2_en"];
+          var cus_main_cus_add2_en = data.results[0]["cus_add2_en"];          
           var cus_main_subdist_en = data.results[0]["cus_subdist_en"];
 
           var cus_main_cus_zip = data.results[0]["cus_zip"];
+          var cus_main_cus_zone = data.results[0]["cus_zone"];
 
           $('#id_cus_main_cus_name_th').val(cus_main_cus_name_th);
           $('#id_cus_main_cus_add1_th').val(cus_main_cus_add1_th);
           $('#id_cus_main_cus_add2_th').val(cus_main_cus_add2_th);
+          $('#id_cus_main_cus_district').val(cus_main_cus_district);          
           $('#id_cus_main_cus_subdist_th').val(cus_main_subdist_th);
 
           $('#id_cus_main_cus_name_en').val(cus_main_cus_name_en);
           $('#id_cus_main_cus_add1_en').val(cus_main_cus_add1_en);
-          $('#id_cus_main_cus_add2_en').val(cus_main_cus_add2_en);
+          $('#id_cus_main_cus_add2_en').val(cus_main_cus_add2_en);          
           $('#id_cus_main_cus_subdist_en').val(cus_main_subdist_en);
           
           $('#id_cus_main_cus_zip').val(cus_main_cus_zip);
+          $('#id_cus_main_cus_zone').val(cus_main_cus_zone);
 
           return true; 
         },

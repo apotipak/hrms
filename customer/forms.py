@@ -19,7 +19,10 @@ class CustomerCodeCreateForm(forms.Form):
         self.fields['cus_brn'].widget.attrs={'class': 'form-control form-control-sm'}
 
         self.fields['cus_main_cus_zone'].queryset=ComZone.objects.all()
-        # self.initial['cus_main_cus_zone'] = instance.cus_zone_id
+        print("debugggggg")
+        print(self.data.get('cus_main_cus_zone'))
+        print("debugggggg")
+        self.initial['cus_main_cus_zone'] = 2070
 
     def clean_cus_id(self):
         data = self.data.get('cus_id')
@@ -28,6 +31,9 @@ class CustomerCodeCreateForm(forms.Form):
         else:
             raise ValidationError("Customer ID is not correct!")
 
+    def clean_cus_main_cus_zone(self):
+        data = self.data.get('cus_main_cus_zone')
+        return data
 
 class CusSiteCreateForm(forms.ModelForm):
     cus_site_cus_id = forms.CharField()

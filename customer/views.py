@@ -78,18 +78,22 @@ def ajax_check_exist_cus_main_cus_id(request):
             print("form is valid")            
 
             try:
-                cus_main = CusMain.objects.get(pk=cus_id)                
+                cus_main = CusMain.objects.get(pk=cus_id)
+
                 record = {
                     "cus_id": cus_main.cus_id,
                     "cus_name_th": cus_main.cus_name_th,
                     "cus_add1_th": cus_main.cus_add1_th,
                     "cus_add2_th": cus_main.cus_add2_th,
+                    "cus_district": cus_main.cus_district_id,
                     "cus_subdist_th": cus_main.cus_subdist_th,
                     "cus_name_en": cus_main.cus_name_en,
                     "cus_add1_en": cus_main.cus_add1_en,
                     "cus_add2_en": cus_main.cus_add2_en,
                     "cus_subdist_en": cus_main.cus_subdist_en,
                     "cus_zip": cus_main.cus_zip,
+                    "cus_zone": cus_main.cus_zone_id,
+                    
                 }
                 pickup_records.append(record)
                 
@@ -97,18 +101,20 @@ def ajax_check_exist_cus_main_cus_id(request):
             except CusMain.DoesNotExist:
                 cus_main = None
                 record = {
-                    "cus_id": '',
-                    "cus_name_th": '',
-                    "cus_name_en": '',
-                    "cus_name_th": '',
-                    "cus_add1_th": '',
-                    "cus_add2_th": '',
-                    "cus_subdist_th": '',
-                    "cus_name_en": '',
-                    "cus_add1_en": '',
-                    "cus_add2_en": '',
-                    "cus_subdist_en": '',
-                    "cus_zip": '',
+                    "cus_id": None,
+                    "cus_name_th": None,
+                    "cus_name_en": None,
+                    "cus_name_th": None,
+                    "cus_add1_th": None,
+                    "cus_add2_th": None,
+                    "cus_district": None,
+                    "cus_subdist_th": None,
+                    "cus_name_en": None,
+                    "cus_add1_en": None,
+                    "cus_add2_en": None,
+                    "cus_subdist_en": None,
+                    "cus_zip": None,
+                    "cus_zone": None,               
                 }
                 pickup_records.append(record)      
 
