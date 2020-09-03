@@ -78,10 +78,7 @@ def ajax_check_exist_cus_main_cus_id(request):
             print("form is valid")            
 
             try:
-                cus_main = CusMain.objects.get(pk=cus_id)
-                
-                print("cus_subdist_th = " + str(cus_main.cus_subdist_th))
-
+                cus_main = CusMain.objects.get(pk=cus_id)                
                 record = {
                     "cus_id": cus_main.cus_id,
                     "cus_name_th": cus_main.cus_name_th,
@@ -92,8 +89,11 @@ def ajax_check_exist_cus_main_cus_id(request):
                     "cus_add1_en": cus_main.cus_add1_en,
                     "cus_add2_en": cus_main.cus_add2_en,
                     "cus_subdist_en": cus_main.cus_subdist_en,
+                    "cus_zip": cus_main.cus_zip,
                 }
                 pickup_records.append(record)
+                
+                cus_main_form = CusMainForm(instance=cus_main)
             except CusMain.DoesNotExist:
                 cus_main = None
                 record = {
@@ -108,12 +108,19 @@ def ajax_check_exist_cus_main_cus_id(request):
                     "cus_add1_en": '',
                     "cus_add2_en": '',
                     "cus_subdist_en": '',
+                    "cus_zip": '',
                 }
                 pickup_records.append(record)      
 
-            response = JsonResponse({"success": "Form is valid", "results": list(pickup_records) })
+            '''
+            print("return render")
+            return render(request, 'customer/customer_create.html', {"cus_main_form": cus_main_form})
+            '''
+
+            
+            response = JsonResponse({"success": "Form is valid", "results": list(pickup_records)})
             response.status_code = 200
-            return response
+            return response            
         else:
             print("form is invalid")
             print(form.errors)
@@ -820,8 +827,10 @@ def update_cus_main(request):
             cus_tel = request.POST.get('cus_main_cus_tel')
             cus_fax = request.POST.get('cus_main_cus_fax')
             cus_email = request.POST.get('cus_main_cus_email')
-            cus_zone = request.POST.get('cus_main_cus_zone')
-            
+
+            cus_zone = request.POST.get('cus_main_cus_zone')        
+            print("cus_zone = " + str(cus_zone))
+
             business_type = request.POST.get('cus_main_business_type')
             cus_main_customer_option_op1 = request.POST.get('cus_main_customer_option_op1')
             cus_main_customer_option_op2 = request.POST.get('cus_main_customer_option_op2')
@@ -834,23 +843,13 @@ def update_cus_main(request):
 
             cus_main_cus_contact_id = request.POST.get('cus_main_cus_contact_id')            
 
-            # TODO
-            '''
-            if cus_main.upd_flag == 'A':
-                cus_main.upd_flag = 'E'
-            
-            cus_main.cus_active = cus_active
-            cus_main.upd_date = timezone.now()            
-            cus_main_form = CusMainForm(request.POST, instance=cus_main)
-            cus_main_form.save()
-            '''
-
             cus_main = get_object_or_404(CusMain, pk=cus_id)
 
             select_district_id = request.POST.get('select_district_id')
             print("cus_main_select_district_id = " + str(select_district_id))
 
             district_obj = TDistrict.objects.get(dist_id=select_district_id)
+            
             if district_obj:
                 city_id = district_obj.city_id_id
                 old_district_id = cus_main.cus_district.dist_id
@@ -912,6 +911,8 @@ def update_cus_main(request):
             response_data['message'] = "ทำรายการสำเร็จ"
             response_data['form_is_valid'] = True
         else:
+            print("form is invalid")
+
             response_data['form_is_valid'] = False
             response_data['message'] = ""
             if form.errors:
@@ -923,8 +924,8 @@ def update_cus_main(request):
             else:
                 response_data['message'] = "ไม่สามารถทำรายการได้..!"
 
+        print("FUNCTION: update_cus_mian")
 
-        print("def")
         return JsonResponse(response_data)
     else:
         print("debug - found cus_main_form problem")

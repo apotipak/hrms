@@ -11,11 +11,15 @@ from django.core.exceptions import ValidationError
 class CustomerCodeCreateForm(forms.Form):
     cus_id = forms.CharField()
     cus_brn = forms.CharField(required=False)
+    cus_main_cus_zone = forms.ModelChoiceField(queryset=None, required=False)
 
     def __init__(self, *args, **kwargs):
         super(CustomerCodeCreateForm, self).__init__(*args, **kwargs)
         self.fields['cus_id'].widget.attrs={'class': 'form-control form-control-sm'}
         self.fields['cus_brn'].widget.attrs={'class': 'form-control form-control-sm'}
+
+        self.fields['cus_main_cus_zone'].queryset=ComZone.objects.all()
+        # self.initial['cus_main_cus_zone'] = instance.cus_zone_id
 
     def clean_cus_id(self):
         data = self.data.get('cus_id')
@@ -344,6 +348,7 @@ class CusMainForm(forms.ModelForm):
 
     def clean_cus_main_cus_zip(self):
         data = self.data.get('cus_main_cus_zip')
+
         if len(data) != 5:
             raise ValidationError("Zip is not correct.")
         else:

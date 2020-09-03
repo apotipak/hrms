@@ -308,16 +308,7 @@
 
                       <div class="form-group col-md-3">
                         <label for="cus_main_cus_zone">{% trans 'Zone' %}</label>
-                        {% if cus_main_form.cus_main_cus_zone.errors %}                
-                          {% render_field cus_main_form.cus_main_cus_zone class="form-control col-sm-12 form-control-sm is-invalid" %}
-                          {% for error in cus_main_form.cus_main_cus_zone.errors %}
-                          <div class="invalid-feedback">
-                            {{error}}
-                          </div>
-                          {% endfor %}                
-                        {% else %}
-                          {% render_field cus_main_form.cus_main_cus_zone class="form-control col-sm-12 form-control-sm" %}
-                        {% endif %}
+                          {% render_field customer_code_create_form.cus_main_cus_zone class="form-control col-sm-12 form-control-sm" %}
                       </div>
 
                     </div>
@@ -1229,7 +1220,8 @@
           csrfmiddlewaretoken: '{{ csrf_token }}',
           cus_id : cus_id,
         },
-        success : function(data) {        
+        success : function(data) {
+
           $('#id_cus_brn').focus();
 
           var cus_main_cus_name_th = data.results[0]["cus_name_th"];
@@ -1242,6 +1234,8 @@
           var cus_main_cus_add2_en = data.results[0]["cus_add2_en"];
           var cus_main_subdist_en = data.results[0]["cus_subdist_en"];
 
+          var cus_main_cus_zip = data.results[0]["cus_zip"];
+
           $('#id_cus_main_cus_name_th').val(cus_main_cus_name_th);
           $('#id_cus_main_cus_add1_th').val(cus_main_cus_add1_th);
           $('#id_cus_main_cus_add2_th').val(cus_main_cus_add2_th);
@@ -1252,6 +1246,8 @@
           $('#id_cus_main_cus_add2_en').val(cus_main_cus_add2_en);
           $('#id_cus_main_cus_subdist_en').val(cus_main_subdist_en);
           
+          $('#id_cus_main_cus_zip').val(cus_main_cus_zip);
+
           return true; 
         },
         error: function(data) {
@@ -1269,25 +1265,42 @@
     add_cus_main();
   });
 
-  function add_cus_main() {
-    //alert("todo: add_cus_main");
-    cus_id = $('#id_cus_id').val();
-    //cus_brn = $('#id_cus_brn').val();
+  function add_cus_main() {    
+    cus_id = $('#id_cus_id').val();    
     cus_main_cus_name_th = $('#id_cus_main_cus_name_th').val();
-    
-    alert(cus_id);
-    alert(cus_main_cus_name_th);    
+    cus_main_cus_add1_th = $('#id_cus_main_cus_add1_th').val();
+    cus_main_cus_add2_th = $('#id_cus_main_cus_add2_th').val();
+    cus_main_cus_subdist_th = $('#id_cus_main_cus_subdist_th').val();
 
-    /*
+    cus_main_cus_name_en = $('#id_cus_main_cus_name_en').val();
+    cus_main_cus_add1_en = $('#id_cus_main_cus_add1_en').val();
+    cus_main_cus_add2_en = $('#id_cus_main_cus_add2_en').val();
+    cus_main_cus_subdist_en = $('#id_cus_main_cus_subdist_en').val();
+
+    cus_main_cus_zip = $('#id_cus_main_cus_zip').val();
+    cus_main_cus_zone = $('#id_cus_main_cus_zone').val();
+    alert(cus_main_cus_zone);
+
+    // TODO: remove this line
+    console.log(cus_main_cus_name_th + cus_main_cus_add1_th + "," + cus_main_cus_add2_th + "," + cus_main_cus_subdist_th + "," + cus_main_cus_zip);
+
     $.ajax({
       url : "/customer/ajax/update_cus_main/",
       type : "POST",
       data : {          
         csrfmiddlewaretoken: '{{ csrf_token }}',
-        cus_id : cus_id,
-        cus_brn : cus_brn,
-        cus_no : cus_no,
-        cus_main_cus_contact_id : cus_main_cus_contact_id,
+        cus_id: cus_id,
+        cus_main_cus_name_th: cus_main_cus_name_th,
+        cus_main_cus_add1_th: cus_main_cus_add1_th,
+        cus_main_cus_add2_th: cus_main_cus_add2_th,
+        cus_main_cus_subdist_th: cus_main_cus_subdist_th,
+        cus_main_cus_name_en: cus_main_cus_name_en,
+        cus_main_cus_add1_en: cus_main_cus_add1_en,
+        cus_main_cus_add2_en: cus_main_cus_add2_en,
+        cus_main_cus_subdist_en: cus_main_cus_subdist_en,
+        
+        cus_main_cus_zip: cus_main_cus_zip,
+        cus_main_cus_zone: cus_main_cus_zone,
       },
       success : function(json) {
         if(json.form_is_valid) {          
@@ -1334,7 +1347,6 @@
         }
       },
     });
-    */    
   }
 
 
