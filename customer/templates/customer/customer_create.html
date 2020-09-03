@@ -15,7 +15,8 @@
   <!-- Content Header (Page header) -->
   <div class="content-header">
   
-    <form id="cus_main_form" method="POST">
+    <!--<form id="cus_main_form" method="POST">-->
+    <form id="customer_code_form" method="POST">
     {% csrf_token %}
 
     <div class="">
@@ -48,15 +49,7 @@
       </div>
     </div>
 
-
-    <!--
-    <input type="button" class="btn btn-secondary btn-md" value="Cancel" onClick="this.form.reset()" />
-    <a href="#" id="cusMainSaveButton" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
-    -->
-
-    {% comment %}
     </form>
-    {% endcomment %}
 
   </div>
 
@@ -93,36 +86,9 @@
 
             <div class="tab-pane fade show active" id="mainoffice" role="tabpanel" aria-labelledby="mainoffice-tab">
             <!--<div class="tab-pane" id="mainoffice" role="tabpanel" aria-labelledby="mainoffice-tab">-->
-            {% comment %}
-            <div id="result"></div>
 
-            <div class="pt-2" id="show-error">
-            {% if cus_main_form.errors %}
-                {% for field in cus_main_form %}                
-                    {% for error in field.errors %}
-                        <div class="alert alert-danger">
-                            <i class="fas fa-exclamation"></i>&nbsp;&nbsp;{{ error }}
-                        </div>
-                    {% endfor %}
-                {% endfor %}
-            {% else %}
-
-              {% if cus_main_form_is_valid %}
-                <div class="alert alert-success">
-                    <i class="fas fa-save"></i>&nbsp;&nbsp;Saved complete. Back to <a href="{% url 'customer-list' %}">Customer List</a>
-                </div>
-              {% endif %}
-            {% endif %}
-            </div>
-            {% endcomment %}
-
-
-
-            {% comment %}
             <form id="cus_main_form_temp" method="POST">
             {% csrf_token %}
-            {% endcomment %}
-
 
             <div class="clearfix">
               <div class="float-left">&nbsp;</div>
@@ -1245,7 +1211,6 @@
 {% block javascript %}
 <script>
   $(document).ready(function(){
-    //$('#id_cus_site_cus_id').focus();
     $('#id_cus_id').focus();
   });
 
@@ -1256,53 +1221,52 @@
       var obj = $(this);
       var cus_id = obj.val();
       
-      if (ajax_check_exist_cus_main_cus_id(cus_id)) {
-        show_cus_main_in_main_office_tab();
-      }
-      else {
+      // Check check_exist_cus_main_cus_id
+      $.ajax({
+        url : "/customer/ajax/ajax_check_exist_cus_main_cus_id/",
+        type : "POST",
+        data : {          
+          csrfmiddlewaretoken: '{{ csrf_token }}',
+          cus_id : cus_id,
+        },
+        success : function(data) {        
+          $('#id_cus_brn').focus();
 
-        //$('#form_id').trigger("reset");
-        //add_cus_main();        
-      }
+          var cus_main_cus_name_th = data.results[0]["cus_name_th"];
+          var cus_main_cus_add1_th = data.results[0]["cus_add1_th"];
+          var cus_main_cus_add2_th = data.results[0]["cus_add2_th"];
+          var cus_main_subdist_th = data.results[0]["cus_subdist_th"];
+
+          var cus_main_cus_name_en = data.results[0]["cus_name_en"];
+          var cus_main_cus_add1_en = data.results[0]["cus_add1_en"];
+          var cus_main_cus_add2_en = data.results[0]["cus_add2_en"];
+          var cus_main_subdist_en = data.results[0]["cus_subdist_en"];
+
+          $('#id_cus_main_cus_name_th').val(cus_main_cus_name_th);
+          $('#id_cus_main_cus_add1_th').val(cus_main_cus_add1_th);
+          $('#id_cus_main_cus_add2_th').val(cus_main_cus_add2_th);
+          $('#cus_main_subdist_th').val(cus_main_subdist_th);
+
+          $('#id_cus_main_cus_name_en').val(cus_main_cus_name_en);
+          $('#id_cus_main_cus_add1_en').val(cus_main_cus_add1_en);
+          $('#id_cus_main_cus_add2_en').val(cus_main_cus_add2_en);
+          $('#cus_main_subdist_en').val(cus_main_subdist_en);
+          
+          return true; 
+        },
+        error: function(data) {
+          alert(data.responseJSON.error);
+          return false
+        },
+      });
 
       return false;
     }
   });
 
-  function ajax_check_exist_cus_main_cus_id(cus_id) {
-    $.ajax({
-      url : "/customer/ajax/ajax_check_exist_cus_main_cus_id/",
-      type : "POST",
-      data : {          
-        csrfmiddlewaretoken: '{{ csrf_token }}',
-        cus_id : cus_id,
-      },
-      success : function(data) {        
-        $('#id_cus_brn').focus();
-        
-        var cus_name_th = data.results[0]["cus_name_th"];
-        var cus_name_en = data.results[0]["cus_name_en"];
-        
-        $('#id_cus_main_cus_name_th').val(cus_name_th);
-        $('#id_cus_main_cus_name_en').val(cus_name_en);
-  
-        return true; 
-      },
-      error: function(data) {
-        alert(data.responseJSON.error);
-        return false
-      },
-    });
-  }
-
-  function show_cus_main_in_main_office_tab() {
-    //alert("todo: show_cus_main_in_main_office_tab");
-  }
-
-
   $("#cusMainSaveButton").click( function() {
     event.preventDefault();
-    add_cus_main();    
+    add_cus_main();
   });
 
   function add_cus_main() {
