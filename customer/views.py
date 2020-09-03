@@ -7,7 +7,8 @@ from django.conf import settings
 from django.views import generic
 from .models import Customer, CusMain, CusBill, CustomerOption
 from .forms import CustomerCreateForm, CusMainForm, CusSiteForm, CusBillForm
-from .forms import CusMainCreateForm
+# from .forms import CusSiteCreateForm
+from .forms import CustomerCodeCreateForm
 from .forms import CustomerSearchForm
 from django.http import JsonResponse
 from django.template.loader import render_to_string
@@ -30,8 +31,9 @@ def CustomerCreate(request):
     response_data = dict()
 
     if request.method == "POST":
-        if form.is_valid():            
-            cus_main_form = CusMainCreateForm(request.POST, user=request.user)            
+        if form.is_valid():          
+            #cus_main_form = CusMainCreateForm(request.POST, user=request.user)
+            cus_site_form = CusSiteCreateForm(request.POST, user=request.user)
             response_data['form_is_valid'] = True            
         else:            
             response_data['form_is_valid'] = False
@@ -39,7 +41,8 @@ def CustomerCreate(request):
         return JsonResponse(response_data)     
     else:
         print("GET")
-        cus_main_form = CusMainCreateForm()
+        #cus_main_form = CusMainCreateForm()
+        customer_code_create_form = CustomerCodeCreateForm()
         
 
     return render(request, 'customer/customer_create.html', 
@@ -49,7 +52,7 @@ def CustomerCreate(request):
         'project_version': project_version, 
         'db_server': db_server, 
         'today_date': today_date,
-        'cus_main_form': cus_main_form,
+        'customer_code_create_form': customer_code_create_form,
         })
 
 
@@ -58,7 +61,7 @@ def CustomerCreate(request):
 def ajax_check_exist_cus_main_cus_id(request):
 
     print("************************************************")
-    print("FUNCTION: view__ajax_check_exist_cus_main_cus_id")
+    print("FUNCTION: ajax_check_exist_cus_main_cus_id")
     print("************************************************")
 
     response_data = {}
@@ -66,22 +69,21 @@ def ajax_check_exist_cus_main_cus_id(request):
     if request.method == "POST":
         cus_id = request.POST.get('cus_id')
         print("cus_id = " + str(cus_id))
-        print("user = " + str(request.user))
+        # print("user = " + str(request.user))
 
-        form = CusMainCreateForm(request.POST)        
+        form = CustomerCodeCreateForm(request.POST)        
         pickup_records=[]
 
         if form.is_valid():
             print("form is valid")            
 
             try:
-                cus_main = CusMain.objects.get(pk=cus_id)                
+                cus_main = CusMain.objects.get(pk=cus_id)
                 record = {
                     "cus_id": cus_main.cus_id,
                     "cus_name_th": cus_main.cus_name_th,
                     "cus_name_en": cus_main.cus_name_en,
-                }             
-                
+                }
                 pickup_records.append(record)
             except CusMain.DoesNotExist:
                 cus_main = None
@@ -99,7 +101,7 @@ def ajax_check_exist_cus_main_cus_id(request):
             print(form.errors)
             response = JsonResponse({ "error": "There was an error.", "results": list(pickup_records) })
             response.status_code = 403
-            return response            
+            return response
 
 
 '''

@@ -34,11 +34,12 @@
             </div>
 
             <div class="col-4">              
-              {% render_field cus_main_form.cus_id %}
+              {% render_field customer_code_create_form.cus_id %}
             </div>
             
             <div class="col-4">
-              <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_brn" name="cus_main_cus_brn">
+              <!--<input type="text" class="form-control form-control-sm" id="id_cus_site_cus_brn" name="cus_site_cus_brn">-->
+              {% render_field customer_code_create_form.cus_brn %}
             </div>
 
           </div>
@@ -1244,6 +1245,7 @@
 {% block javascript %}
 <script>
   $(document).ready(function(){
+    //$('#id_cus_site_cus_id').focus();
     $('#id_cus_id').focus();
   });
 
@@ -1258,6 +1260,8 @@
         show_cus_main_in_main_office_tab();
       }
       else {
+
+        //$('#form_id').trigger("reset");
         //add_cus_main();        
       }
 
@@ -1275,18 +1279,15 @@
         csrfmiddlewaretoken: '{{ csrf_token }}',
         cus_id : cus_id,
       },
-      success : function(data) {
+      success : function(data) {        
+        $('#id_cus_brn').focus();
         
-        //$('#id_cus_main_cus_name_th').focus();
-        $('#id_cus_main_cus_brn').focus();
-
-        var cus_id = data.results[0]["cus_id"];
         var cus_name_th = data.results[0]["cus_name_th"];
-        var cus_name_en = data.results[0]["cus_name_en"];              
+        var cus_name_en = data.results[0]["cus_name_en"];     
         
         $('#id_cus_main_cus_name_th').val(cus_name_th);
         $('#id_cus_main_cus_name_en').val(cus_name_en);
-
+  
         return true; 
       },
       error: function(data) {

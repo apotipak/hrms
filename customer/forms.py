@@ -7,6 +7,44 @@ from system.models import CusContact, ComZone, TTitle
 from django.core.exceptions import ValidationError
 
 
+
+class CustomerCodeCreateForm(forms.Form):
+    cus_id = forms.CharField()
+    cus_brn = forms.CharField(required=False)
+
+    def __init__(self, *args, **kwargs):
+        super(CustomerCodeCreateForm, self).__init__(*args, **kwargs)
+        self.fields['cus_id'].widget.attrs={'class': 'form-control form-control-sm'}
+        self.fields['cus_brn'].widget.attrs={'class': 'form-control form-control-sm'}
+
+    def clean_cus_id(self):
+        data = self.data.get('cus_id')
+        if data.isnumeric():
+            return data
+        else:
+            raise ValidationError("Customer ID is not correct!")
+
+
+class CusSiteCreateForm(forms.ModelForm):
+    cus_site_cus_id = forms.CharField()
+
+    class Meta:
+        model = CusMain
+        exclude = ['cus_no','cus_id','cus_brn','cus_zone','cus_contact','site_contact','cus_district','cus_country','cus_city']
+
+    def __init__(self, *args, **kwargs):
+        # self.user = kwargs.pop('user')
+        super(CusSiteCreateForm, self).__init__(*args, **kwargs)
+        self.fields['cus_site_cus_id'].widget.attrs={'class': 'form-control form-control-sm'}
+        
+    def clean_cus_site_cus_id(self):
+        data = self.data.get('cus_site_cus_id')
+        if data.isnumeric():
+            return data
+        else:
+            raise ValidationError("Customer ID is not correct!")
+
+'''
 class CusMainCreateForm(forms.ModelForm):
     cus_id = forms.CharField()
 
@@ -25,7 +63,7 @@ class CusMainCreateForm(forms.ModelForm):
             return data
         else:
             raise ValidationError("Customer ID is not correct!")
-
+'''
         
 class CustomerCreateForm(forms.ModelForm):
 
