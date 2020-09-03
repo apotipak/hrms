@@ -82,7 +82,13 @@ def ajax_check_exist_cus_main_cus_id(request):
                 record = {
                     "cus_id": cus_main.cus_id,
                     "cus_name_th": cus_main.cus_name_th,
+                    "cus_add1_th": cus_main.cus_add1_th,
+                    "cus_add2_th": cus_main.cus_add2_th,
+                    "cus_subdist_th": cus_main.cus_subdist_th,
                     "cus_name_en": cus_main.cus_name_en,
+                    "cus_add1_en": cus_main.cus_add1_en,
+                    "cus_add2_en": cus_main.cus_add2_en,
+                    "cus_subdist_en": cus_main.cus_subdist_en,
                 }
                 pickup_records.append(record)
             except CusMain.DoesNotExist:
@@ -91,7 +97,16 @@ def ajax_check_exist_cus_main_cus_id(request):
                     "cus_id": '',
                     "cus_name_th": '',
                     "cus_name_en": '',
-                }                             
+                    "cus_name_th": '',
+                    "cus_add1_th": '',
+                    "cus_add2_th": '',
+                    "cus_subdist_th": '',
+                    "cus_name_en": '',
+                    "cus_add1_en": '',
+                    "cus_add2_en": '',
+                    "cus_subdist_en": '',
+                }
+                pickup_records.append(record)      
 
             response = JsonResponse({"success": "Form is valid", "results": list(pickup_records) })
             response.status_code = 200
@@ -99,7 +114,7 @@ def ajax_check_exist_cus_main_cus_id(request):
         else:
             print("form is invalid")
             print(form.errors)
-            response = JsonResponse({ "error": "There was an error.", "results": list(pickup_records) })
+            response = JsonResponse({ "error": "Customer ID is not correct.", "results": list(pickup_records) })
             response.status_code = 403
             return response
 

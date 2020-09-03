@@ -1270,8 +1270,6 @@
   });
 
   function ajax_check_exist_cus_main_cus_id(cus_id) {
-    //alert(cus_id);
-
     $.ajax({
       url : "/customer/ajax/ajax_check_exist_cus_main_cus_id/",
       type : "POST",
@@ -1283,7 +1281,7 @@
         $('#id_cus_brn').focus();
         
         var cus_name_th = data.results[0]["cus_name_th"];
-        var cus_name_en = data.results[0]["cus_name_en"];     
+        var cus_name_en = data.results[0]["cus_name_en"];
         
         $('#id_cus_main_cus_name_th').val(cus_name_th);
         $('#id_cus_main_cus_name_en').val(cus_name_en);
@@ -1291,7 +1289,7 @@
         return true; 
       },
       error: function(data) {
-        //alert(data.responseJSON.error);
+        alert(data.responseJSON.error);
         return false
       },
     });
