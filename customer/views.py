@@ -30,6 +30,13 @@ def CustomerCreate(request):
     today_date = settings.TODAY_DATE
     response_data = dict()
 
+    business_type_list = []
+    group_1_list = []
+    group_2_list = []
+    business_type_list = CustomerOption.objects.values_list('btype', flat=True).exclude(btype=None).order_by('btype').distinct()
+    group_1_list = CustomerOption.objects.values_list('op2', flat=True).exclude(op2=None).order_by('op2').distinct()
+    group_2_list = CustomerOption.objects.values_list('op3', flat=True).exclude(op2=None).order_by('op3').distinct()
+
     if request.method == "POST":
         if form.is_valid():          
             cus_site_form = CusSiteCreateForm(request.POST, user=request.user)
@@ -51,6 +58,9 @@ def CustomerCreate(request):
         'db_server': db_server, 
         'today_date': today_date,
         'customer_code_create_form': customer_code_create_form,
+        'business_type_list': business_type_list,
+        'group_1_list': group_1_list,
+        'group_2_list': group_2_list,
         })
 
 
