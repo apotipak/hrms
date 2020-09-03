@@ -30,13 +30,6 @@ def CustomerCreate(request):
     today_date = settings.TODAY_DATE
     response_data = dict()
 
-    business_type_list = []
-    group_1_list = []
-    group_2_list = []
-    business_type_list = CustomerOption.objects.values_list('btype', flat=True).exclude(btype=None).order_by('btype').distinct()
-    group_1_list = CustomerOption.objects.values_list('op2', flat=True).exclude(op2=None).order_by('op2').distinct()
-    group_2_list = CustomerOption.objects.values_list('op3', flat=True).exclude(op2=None).order_by('op3').distinct()
-
     if request.method == "POST":
         if form.is_valid():          
             cus_site_form = CusSiteCreateForm(request.POST, user=request.user)
@@ -58,9 +51,6 @@ def CustomerCreate(request):
         'db_server': db_server, 
         'today_date': today_date,
         'customer_code_create_form': customer_code_create_form,
-        'business_type_list': business_type_list,
-        'group_1_list': group_1_list,
-        'group_2_list': group_2_list,
         })
 
 
@@ -87,7 +77,28 @@ def ajax_check_exist_cus_main_cus_id(request):
 
             try:
                 cus_main = CusMain.objects.get(pk=cus_id)
-                print("cus_district = " + str(cus_main.cus_district.dist_th))
+
+                # customer_option
+                business_type_list = []
+                group_1_list = []
+                group_2_list = []
+                business_type_list = CustomerOption.objects.values_list('btype', flat=True).exclude(btype=None).order_by('btype').distinct()
+                group_1_list = CustomerOption.objects.values_list('op2', flat=True).exclude(op2=None).order_by('op2').distinct()
+                group_2_list = CustomerOption.objects.values_list('op3', flat=True).exclude(op2=None).order_by('op3').distinct()
+
+                customer_option = []
+                cus_no = 1001000
+                try:
+                    customer_option = CustomerOption.objects.get(cus_no=cus_no)
+                    business_type = customer_option.btype
+                except CustomerOption.DoesNotExist:
+                    business_type = ""
+                
+                customer_option_btype = ""
+                customer_option_op1 = ""
+                customer_option_op2 = ""
+                customer_option_op3 = ""
+                customer_option_op4 = ""
 
                 record = {
                     "cus_id": cus_main.cus_id,
@@ -102,8 +113,7 @@ def ajax_check_exist_cus_main_cus_id(request):
                     "cus_add2_en": cus_main.cus_add2_en,
                     "cus_subdist_en": cus_main.cus_subdist_en,
                     "cus_zip": cus_main.cus_zip,
-                    "cus_zone": cus_main.cus_zone_id,
-                    
+                    "cus_zone": cus_main.cus_zone_id,                 
                 }
                 pickup_records.append(record)
                 
@@ -135,7 +145,7 @@ def ajax_check_exist_cus_main_cus_id(request):
             '''
 
             
-            response = JsonResponse({"success": "Form is valid", "results": list(pickup_records)})
+            response = JsonResponse({"success": "Form is valid", "results": list(pickup_records), "business_type_list": list(business_type_list)})
             response.status_code = 200
             return response            
         else:
