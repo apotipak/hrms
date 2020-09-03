@@ -7,7 +7,6 @@ from system.models import CusContact, ComZone, TTitle
 from django.core.exceptions import ValidationError
 
 
-
 class CustomerCodeCreateForm(forms.Form):
     cus_id = forms.CharField()
     cus_brn = forms.CharField(required=False)
@@ -17,12 +16,7 @@ class CustomerCodeCreateForm(forms.Form):
         super(CustomerCodeCreateForm, self).__init__(*args, **kwargs)
         self.fields['cus_id'].widget.attrs={'class': 'form-control form-control-sm'}
         self.fields['cus_brn'].widget.attrs={'class': 'form-control form-control-sm'}
-
         self.fields['cus_main_cus_zone'].queryset=ComZone.objects.all()
-        print("debugggggg")
-        print(self.data.get('cus_main_cus_zone'))
-        print("debugggggg")
-        self.initial['cus_main_cus_zone'] = 2070
 
     def clean_cus_id(self):
         data = self.data.get('cus_id')

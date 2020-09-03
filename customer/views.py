@@ -32,7 +32,6 @@ def CustomerCreate(request):
 
     if request.method == "POST":
         if form.is_valid():          
-            #cus_main_form = CusMainCreateForm(request.POST, user=request.user)
             cus_site_form = CusSiteCreateForm(request.POST, user=request.user)
             response_data['form_is_valid'] = True            
         else:            
@@ -41,7 +40,6 @@ def CustomerCreate(request):
         return JsonResponse(response_data)     
     else:
         print("GET")
-        #cus_main_form = CusMainCreateForm()
         customer_code_create_form = CustomerCodeCreateForm()
         
 
@@ -79,13 +77,15 @@ def ajax_check_exist_cus_main_cus_id(request):
 
             try:
                 cus_main = CusMain.objects.get(pk=cus_id)
+                print("cus_district = " + str(cus_main.cus_district.dist_th))
 
                 record = {
                     "cus_id": cus_main.cus_id,
                     "cus_name_th": cus_main.cus_name_th,
                     "cus_add1_th": cus_main.cus_add1_th,
                     "cus_add2_th": cus_main.cus_add2_th,
-                    "cus_district": cus_main.cus_district_id,
+                    # "cus_district": cus_main.cus_district_id,
+                    "cus_district": cus_main.cus_district.dist_th,
                     "cus_subdist_th": cus_main.cus_subdist_th,
                     "cus_name_en": cus_main.cus_name_en,
                     "cus_add1_en": cus_main.cus_add1_en,
