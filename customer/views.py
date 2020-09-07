@@ -71,6 +71,10 @@ def ajax_check_exist_cus_main_cus_id(request):
 
         form = CustomerCodeCreateForm(request.POST)        
         pickup_records=[]
+        business_type_list = []
+        group_1_list = []
+        group_2_list = []
+        customer_option = []
 
         if form.is_valid():
             print("form is valid")            
@@ -79,14 +83,10 @@ def ajax_check_exist_cus_main_cus_id(request):
                 cus_main = CusMain.objects.get(pk=cus_id)
 
                 # customer_option
-                business_type_list = []
-                group_1_list = []
-                group_2_list = []
                 business_type_list = CustomerOption.objects.values_list('btype', flat=True).exclude(btype=None).order_by('btype').distinct()
                 group_1_list = CustomerOption.objects.values_list('op2', flat=True).exclude(op2=None).order_by('op2').distinct()
                 group_2_list = CustomerOption.objects.values_list('op3', flat=True).exclude(op2=None).order_by('op3').distinct()
-
-                customer_option = []
+        
                 cus_no = 1001000
                 try:
                     customer_option = CustomerOption.objects.get(cus_no=cus_no)
@@ -842,39 +842,40 @@ def update_cus_main(request):
             cus_name_th = request.POST.get('cus_main_cus_name_th')            
             cus_add1_th = request.POST.get('cus_main_cus_add1_th')
             cus_add2_th = request.POST.get('cus_main_cus_add2_th')
-            cus_subdist_th = request.POST.get('cus_main_cus_subdist_th')            
-            
+            cus_subdist_th = request.POST.get('cus_main_cus_subdist_th')                        
             cus_name_en = request.POST.get('cus_main_cus_name_en')                          
             cus_add1_en = request.POST.get('cus_main_cus_add1_en')
             cus_add2_en = request.POST.get('cus_main_cus_add2_en')
             cus_subdist_en = request.POST.get('cus_main_cus_subdist_en')
-
             cus_zip = request.POST.get('cus_main_cus_zip')
-
             cus_tel = request.POST.get('cus_main_cus_tel')
             cus_fax = request.POST.get('cus_main_cus_fax')
             cus_email = request.POST.get('cus_main_cus_email')
-
-            cus_zone = request.POST.get('cus_main_cus_zone')        
-            print("cus_zone = " + str(cus_zone))
-
+            cus_zone = request.POST.get('cus_main_cus_zone')                
             business_type = request.POST.get('cus_main_business_type')
             cus_main_customer_option_op1 = request.POST.get('cus_main_customer_option_op1')
             cus_main_customer_option_op2 = request.POST.get('cus_main_customer_option_op2')
             cus_main_customer_option_op3 = request.POST.get('cus_main_customer_option_op3')
             cus_main_customer_option_op4 = request.POST.get('cus_main_customer_option_op4')
 
-            print("check")
-            print("status = [" + str(cus_main_customer_option_op1) + "]")
-            print("A/R Code = [" + str(cus_main_customer_option_op4) + "]")        
-
             cus_main_cus_contact_id = request.POST.get('cus_main_cus_contact_id')            
 
             cus_main = get_object_or_404(CusMain, pk=cus_id)
 
             select_district_id = request.POST.get('select_district_id')
-            print("cus_main_select_district_id = " + str(select_district_id))
 
+            print("check")
+            print("**************************")
+            print("status = [" + str(cus_main_customer_option_op1) + "]")
+            print("A/R Code = [" + str(cus_main_customer_option_op4) + "]")        
+            print("cus_zone = " + str(cus_zone))
+            print("cus_tel = " + str(cus_tel))
+            print("cus_fax = " + str(cus_fax))
+            print("cus_email = " + str(cus_email))
+            print("cus_main_cus_contact_id = " + str(cus_main_cus_contact_id))
+            print("cus_main_select_district_id = " + str(select_district_id))            
+            print("**************************")
+            
             district_obj = TDistrict.objects.get(dist_id=select_district_id)
             
             if district_obj:
@@ -902,6 +903,8 @@ def update_cus_main(request):
             cus_main.cus_email = cus_email
             cus_main.cus_zone_id = cus_zone
 
+
+            #cus_main.cus_contact_id = None
             cus_main.cus_contact_id = cus_main_cus_contact_id
 
             if cus_main.upd_flag == 'A':
@@ -915,23 +918,27 @@ def update_cus_main(request):
             try:
                 # Update               
                 customer_option = CustomerOption.objects.get(cus_no=cus_no)
-                customer_option.btype = business_type.replace('&amp;', '&')
-                customer_option.op1 = cus_main_customer_option_op1.strip()  # Status
-                customer_option.op2 = cus_main_customer_option_op2.replace('&amp;', '&') # Group 1
-                customer_option.op3 = cus_main_customer_option_op3.replace('&amp;', '&') # Group 2
-                customer_option.op4 = cus_main_customer_option_op4.strip() # A/R Code
-                customer_option.save()
+                if customer_option:
+                    customer_option.btype = business_type.replace('&amp;', '&')
+                    customer_option.op1 = cus_main_customer_option_op1.strip()  # Status
+                    customer_option.op2 = cus_main_customer_option_op2.replace('&amp;', '&') # Group 1
+                    customer_option.op3 = cus_main_customer_option_op3.replace('&amp;', '&') # Group 2
+                    customer_option.op4 = cus_main_customer_option_op4.strip() # A/R Code
+                    customer_option.save()
             except CustomerOption.DoesNotExist:
+                print("customer_option error!")
                 # Insert
+                '''
                 c = CustomerOption(
-                    cus_no=cus_no, 
-                    btype=business_type.replace('&amp;', '&'), 
-                    op1=cus_main_customer_option_op1,   # Status
-                    op2=cus_main_customer_option_op2.replace('&amp;', '&'), # Group 1
-                    op3=cus_main_customer_option_op3.replace('&amp;', '&'), # Group 2
-                    op4=cus_main_customer_option_op4)   # A/R Code
+                    cus_no = cus_no, 
+                    btype = business_type.replace('&amp;', '&'), 
+                    op1 = cus_main_customer_option_op1,   # Status
+                    op2 = cus_main_customer_option_op2.replace('&amp;', '&'), # Group 1
+                    op3 = cus_main_customer_option_op3.replace('&amp;', '&'), # Group 2
+                    op4 = cus_main_customer_option_op4)   # A/R Code
 
                 c.save()
+                '''
 
             # Return success message
             response_data['result'] = "Update complete."
@@ -1375,11 +1382,12 @@ def get_contact_list(request):
     print("FUNCTION: get_contact_list")
     print("****************************")
 
-    current_contact_id = request.GET.get('current_contact_id', "")
+    current_contact_id = request.GET.get('current_contact_id')
+    
+    print("*************************")    
+    print("current_contact_id : " + str(current_contact_id))
 
-    # print("current_contact_id : " + str(current_contact_id))
-    print("*************************")
-    if current_contact_id != '':
+    if current_contact_id:
         print("Not none")
     else:
         print("None")
@@ -1389,7 +1397,7 @@ def get_contact_list(request):
 
     if request.method == "POST":
 
-        if current_contact_id is None:
+        if current_contact_id == None:
             data = CusContact.objects.all()
         else:
             data = CusContact.objects.filter(con_id__exact=current_contact_id)            

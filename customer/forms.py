@@ -29,6 +29,7 @@ class CustomerCodeCreateForm(forms.Form):
         data = self.data.get('cus_main_cus_zone')
         return data
 
+
 class CusSiteCreateForm(forms.ModelForm):
     cus_site_cus_id = forms.CharField()
 

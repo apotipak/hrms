@@ -460,7 +460,7 @@
 
             <div class="float-right">
               <input type="button" class="btn btn-secondary btn-md" value="Cancel" onClick="this.form.reset()" />
-              <a href="#" id="cusMainSaveButton" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
+              <a href="#" id="cusMainCreateSaveButton" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
             </div>
             </form>
 
@@ -1266,12 +1266,21 @@
     }
   });
 
+
   $("#cusMainSaveButton").click( function() {
     event.preventDefault();
-    add_cus_main();
+    //add_cus_main();
+    alert("todo: to be deleted");
   });
 
-  function add_cus_main() {    
+  $("#cusMainCreateSaveButton").click( function() {
+    event.preventDefault();
+    //alert("todo: cusMainCreateSaveButton");
+    add_cus_main();    
+  });
+
+  function add_cus_main() {
+
     cus_id = $('#id_cus_id').val();    
     cus_main_cus_name_th = $('#id_cus_main_cus_name_th').val();
     cus_main_cus_add1_th = $('#id_cus_main_cus_add1_th').val();
@@ -1290,10 +1299,13 @@
     cus_main_cus_zip = $('#id_cus_main_cus_zip').val();
     cus_main_cus_zone = $('#id_cus_main_cus_zone').val();
 
+    cus_main_select_cus_contact_id = $('#id_cus_main_select_cus_contact_id').val();
+    alert(cus_main_select_cus_contact_id);
+
     // amnaj
 
     $.ajax({
-      url : "/customer/ajax/update_cus_main/",
+      url : "/customer/ajax/update_cus_main/",      
       type : "POST",
       data : {          
         csrfmiddlewaretoken: '{{ csrf_token }}',

@@ -1276,9 +1276,15 @@
     $('#cus_main_contact_lookup').on('click', function (e) {
       var obj = $(this);
       current_contact_id = $('#id_cus_main_cus_contact_id').val();
+      //alert(current_contact_id);
+      
+      if(current_contact_id == null)
+        current_contact_id = null;
+      else
+        current_contact_id = null;
 
       $.ajax({
-          url: obj.attr("data-url"),
+          url: obj.attr("data-url"),  // get_contact_list
           type: 'get',          
           dataType: 'json',
           data : {          
@@ -1888,7 +1894,7 @@
           },
           error: function(data){
             $("#districtmodal .modal-body").html("{% trans 'There is no data.' %}");
-          }          
+          }
       });
 
     });
@@ -1900,12 +1906,12 @@
   });
 
   $("#cusSiteSaveButton").click( function() {
-    event.preventDefault();  
+    event.preventDefault();
     update_cus_site();
   });
 
   $("#cusBillSaveButton").click( function() {
-    event.preventDefault();  
+    event.preventDefault();
     update_cus_bill();
   });
 
@@ -1913,7 +1919,7 @@
     //alert("todo");
     current_contact_id = $('#id_cus_main_select_cus_contact_id').val();    
     search_contact_option = $('#id_cus_main_cus_contact_option').val();
-    search_contact_text = $('#id_cus_main_cus_contact_search_text').val();    
+    search_contact_text = $('#id_cus_main_cus_contact_search_text').val();
     page_no = 1;
 
     console.log(current_contact_id);
@@ -2918,7 +2924,7 @@
     cus_main_customer_option_op4 = $('#id_cus_main_customer_option_op4').val(); // A/R Code
 
     // Contact Information
-    cus_main_cus_contact_id = $("#id_cus_main_cus_contact_id").val();
+    cus_main_cus_contact_id = $("#id_cus_main_cus_contact_id").val();    
 
     $.ajax({
       url : "/customer/ajax/update_cus_main/",
