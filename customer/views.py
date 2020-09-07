@@ -81,7 +81,7 @@ def ajax_check_exist_cus_main_cus_id(request):
 
             try:                
                 cus_main = CusMain.objects.get(pk=cus_id)
-                print("cus_tel = " + cus_main.cus_tel)
+                print(cus_main.cus_city.city_th)
 
                 # customer_option
                 business_type_list = CustomerOption.objects.values_list('btype', flat=True).exclude(btype=None).order_by('btype').distinct()
@@ -110,8 +110,9 @@ def ajax_check_exist_cus_main_cus_id(request):
                     "cus_add1_th": cus_main.cus_add1_th,
                     "cus_add2_th": cus_main.cus_add2_th,
                     "cus_district_id": cus_main.cus_district_id,
-                    "cus_district": cus_main.cus_district.dist_th,
                     "cus_subdist_th": cus_main.cus_subdist_th,
+                    "cus_district": cus_main.cus_district.dist_th,
+                    "cus_city_th": cus_main.cus_city.city_th,
                     "cus_name_en": cus_main.cus_name_en,
                     "cus_add1_en": cus_main.cus_add1_en,
                     "cus_add2_en": cus_main.cus_add2_en,
@@ -135,8 +136,9 @@ def ajax_check_exist_cus_main_cus_id(request):
                     "cus_add1_th": None,
                     "cus_add2_th": None,
                     "cus_district_id": None,
-                    "cus_district": None,
                     "cus_subdist_th": None,
+                    "cus_district": None,
+                    "cus_city_th": None,
                     "cus_name_en": None,
                     "cus_add1_en": None,
                     "cus_add2_en": None,
