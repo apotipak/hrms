@@ -319,6 +319,9 @@
                       <div class="form-group col-md-4">
                         <label for="id_cus_main_business_type">{% trans 'Business Type' %}</label>                          
                         <div class="container">
+                          {% render_field customer_code_create_form.customer_option_btype class="form-control col-sm-12 form-control-sm" %}
+
+                          {% comment %}
                           <select id="id_cus_main_business_type_temp" name="cus_main_business_type_temp" class="selectBusinessType">
                             {% for option in business_type_list %}
                               {% if customer_option.btype == option %}
@@ -328,13 +331,19 @@
                               {% endif %}
                             {% endfor %}
                           </select>
+                          {% endcomment %}
+
                           <input class="businessTypeTextBox" id="id_cus_main_business_type" name="cus_main_business_type" value="{{customer_option.btype|default_if_none:''}}" />
+
                         </div>                        
                       </div>
 
                       <div class="form-group col-md-4">
                         <label for="id_cus_main_group_1">{% trans 'Group 1' %}</label>                          
                         <div class="container">
+                          {% render_field customer_code_create_form.customer_option_op2 class="form-control col-sm-12 form-control-sm" %}
+
+                          {% comment %}
                           <select id="selectCustoemrOptionGroup1" name="cus_main_group_1" class="selectGroup1">
                             {% for option in group_1_list %}
                               {% if customer_option.op2 == option %}
@@ -344,7 +353,10 @@
                               {% endif %}
                             {% endfor %}
                           </select>
+                          {% endcomment %}
+
                           <input class="group1TextBox" id="id_cus_main_customer_option_op2" name="cus_main_customer_option_op2" value="{{customer_option.op2|default_if_none:''}}" />
+
                         </div>                        
                       </div>
 
@@ -352,6 +364,10 @@
                       <div class="form-group col-md-4">
                         <label for="id_cus_main_group_2">{% trans 'Group 2' %}</label>                          
                         <div class="container">
+
+                          {% render_field customer_code_create_form.customer_option_op3 class="form-control col-sm-12 form-control-sm" %}
+
+                          {% comment %}
                           <select id="selectCustoemrOptionGroup2" name="cus_main_group_2" class="selectGroup2">
                             {% for option in group_2_list %}
                               {% if customer_option.op3 == option %}
@@ -361,6 +377,8 @@
                               {% endif %}
                             {% endfor %}
                           </select>
+                          {% endcomment %}
+                          
                           <input class="group2TextBox" id="id_cus_main_customer_option_op3" name="cus_main_customer_option_op3" value="{{customer_option.op3|default_if_none:''}}" />
                         </div>
                       </div>

@@ -11,12 +11,18 @@ class CustomerCodeCreateForm(forms.Form):
     cus_id = forms.CharField()
     cus_brn = forms.CharField(required=False)
     cus_main_cus_zone = forms.ModelChoiceField(queryset=None, required=False)
+    customer_option_btype = forms.ModelChoiceField(queryset=None, required=False)
+    customer_option_op2 = forms.ModelChoiceField(queryset=None, required=False)
+    customer_option_op3 = forms.ModelChoiceField(queryset=None, required=False)
 
     def __init__(self, *args, **kwargs):
         super(CustomerCodeCreateForm, self).__init__(*args, **kwargs)
         self.fields['cus_id'].widget.attrs={'class': 'form-control form-control-sm'}
         self.fields['cus_brn'].widget.attrs={'class': 'form-control form-control-sm'}
         self.fields['cus_main_cus_zone'].queryset=ComZone.objects.all()
+        self.fields['customer_option_btype'].queryset = CustomerOption.objects.values_list('btype', flat=True).exclude(btype=None).order_by('btype').distinct()
+        self.fields['customer_option_op2'].queryset = CustomerOption.objects.values_list('op2', flat=True).exclude(op2=None).order_by('op2').distinct()
+        self.fields['customer_option_op3'].queryset = CustomerOption.objects.values_list('op3', flat=True).exclude(op2=None).order_by('op3').distinct()
 
     def clean_cus_id(self):
         data = self.data.get('cus_id')

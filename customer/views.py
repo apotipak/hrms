@@ -89,9 +89,10 @@ def ajax_check_exist_cus_main_cus_id(request):
                 group_2_list = CustomerOption.objects.values_list('op3', flat=True).exclude(op2=None).order_by('op3').distinct()
         
                 # TODO
-                cus_no = 1001000
+                cus_no = 1001000                
 
                 try:
+                    # customer_option = CustomerOption.objects.raw("select * from Customer_option where CUS_NO="+cus_id)
                     customer_option = CustomerOption.objects.get(cus_no=cus_no)
                     business_type = customer_option.btype
                 except CustomerOption.DoesNotExist:
