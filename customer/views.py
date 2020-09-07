@@ -858,7 +858,11 @@ def update_cus_main(request):
             cus_main_customer_option_op3 = request.POST.get('cus_main_customer_option_op3')
             cus_main_customer_option_op4 = request.POST.get('cus_main_customer_option_op4')
 
-            cus_main_cus_contact_id = request.POST.get('cus_main_cus_contact_id')            
+            cus_main_cus_contact_id = request.POST.get('cus_main_cus_contact_id')
+            if cus_main_cus_contact_id:
+                cus_main_cus_contact_id = cus_main_cus_contact_id
+            else:
+                cus_main_cus_contact_id = None
 
             cus_main = get_object_or_404(CusMain, pk=cus_id)
 

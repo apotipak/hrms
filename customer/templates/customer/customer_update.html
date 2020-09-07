@@ -441,7 +441,7 @@
 
                         <div class="row">                              
                           <div class="col-12 input-group">
-                            <input type="text" id="id_cus_main_cus_contact_id" name="cus_main_cus_contact_id" class="form-control form-control-sm" value="{{ cus_main.cus_contact_id }}" readonly>                              
+                            <input type="text" id="id_cus_main_cus_contact_id" name="cus_main_cus_contact_id" class="form-control form-control-sm" value="{{ cus_main.cus_contact_id|default_if_none:'' }}" readonly>                              
                             <button id="cus_main_contact_lookup" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url="{% url 'get_contact_list' %}"><i class="fas fa-search fa-sm"></i></button>
                             <input type="hidden" id="id_cus_main_select_cus_contact_id" name="cus_main_select_cus_contact_id" value="{{ cus_main.cus_contact_id }}">
                           </div>
@@ -2922,7 +2922,10 @@
     cus_main_customer_option_op4 = $('#id_cus_main_customer_option_op4').val(); // A/R Code
 
     // Contact Information
-    cus_main_cus_contact_id = $("#id_cus_main_cus_contact_id").val();    
+    cus_main_cus_contact_id = $("#id_cus_main_cus_contact_id").val();
+    alert(cus_main_cus_contact_id);
+    if(cus_main_cus_contact_id == null)
+      cus_main_cus_contact_id = null;
 
     $.ajax({
       url : "/customer/ajax/update_cus_main/",

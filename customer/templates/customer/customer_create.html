@@ -1286,17 +1286,16 @@
     cus_main_cus_add1_th = $('#id_cus_main_cus_add1_th').val();
     cus_main_cus_add2_th = $('#id_cus_main_cus_add2_th').val();    
     cus_main_cus_district = $('#id_cus_main_cus_district').val();
-    
     cus_main_cus_district_id = $('#id_cus_main_select_district_id').val();
-
     cus_main_cus_subdist_th = $('#id_cus_main_cus_subdist_th').val();
-
     cus_main_cus_name_en = $('#id_cus_main_cus_name_en').val();
     cus_main_cus_add1_en = $('#id_cus_main_cus_add1_en').val();
     cus_main_cus_add2_en = $('#id_cus_main_cus_add2_en').val();
     cus_main_cus_subdist_en = $('#id_cus_main_cus_subdist_en').val();
-
     cus_main_cus_zip = $('#id_cus_main_cus_zip').val();
+    cus_main_cus_tel = $('#id_cus_main_cus_tel').val();
+    cus_main_cus_fax = $('#id_cus_main_cus_fax').val();
+    cus_main_cus_email = $('#id_cus_main_cus_email').val();
     cus_main_cus_zone = $('#id_cus_main_cus_zone').val();
 
     cus_main_select_cus_contact_id = $('#id_cus_main_select_cus_contact_id').val();
@@ -1304,10 +1303,7 @@
     if(cus_main_select_cus_contact_id == null)
       cus_main_select_cus_contact_id = null;
 
-    alert(cus_main_select_cus_contact_id);
-
     // amnaj
-
     $.ajax({
       url : "/customer/ajax/update_cus_main/",      
       type : "POST",
@@ -1322,9 +1318,13 @@
         cus_main_cus_name_en: cus_main_cus_name_en,
         cus_main_cus_add1_en: cus_main_cus_add1_en,
         cus_main_cus_add2_en: cus_main_cus_add2_en,
-        cus_main_cus_subdist_en: cus_main_cus_subdist_en,
-        
+        cus_main_cus_subdist_en: cus_main_cus_subdist_en,        
         cus_main_cus_zip: cus_main_cus_zip,
+        
+        cus_main_cus_tel: cus_main_cus_tel,
+        cus_main_cus_fax: cus_main_cus_fax,
+        cus_main_cus_email: cus_main_cus_email,
+
         cus_main_cus_zone: cus_main_cus_zone,
       },
       success : function(json) {
