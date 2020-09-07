@@ -79,15 +79,18 @@ def ajax_check_exist_cus_main_cus_id(request):
         if form.is_valid():
             print("form is valid")            
 
-            try:
+            try:                
                 cus_main = CusMain.objects.get(pk=cus_id)
+                print("cus_tel = " + cus_main.cus_tel)
 
                 # customer_option
                 business_type_list = CustomerOption.objects.values_list('btype', flat=True).exclude(btype=None).order_by('btype').distinct()
                 group_1_list = CustomerOption.objects.values_list('op2', flat=True).exclude(op2=None).order_by('op2').distinct()
                 group_2_list = CustomerOption.objects.values_list('op3', flat=True).exclude(op2=None).order_by('op3').distinct()
         
+                # TODO
                 cus_no = 1001000
+
                 try:
                     customer_option = CustomerOption.objects.get(cus_no=cus_no)
                     business_type = customer_option.btype
@@ -113,7 +116,10 @@ def ajax_check_exist_cus_main_cus_id(request):
                     "cus_add2_en": cus_main.cus_add2_en,
                     "cus_subdist_en": cus_main.cus_subdist_en,
                     "cus_zip": cus_main.cus_zip,
-                    "cus_zone": cus_main.cus_zone_id,                 
+                    "cus_tel": cus_main.cus_tel,
+                    "cus_fax": cus_main.cus_fax,
+                    "cus_email": cus_main.cus_email,
+                    "cus_zone": cus_main.cus_zone_id,             
                 }
                 pickup_records.append(record)
                 
@@ -135,6 +141,9 @@ def ajax_check_exist_cus_main_cus_id(request):
                     "cus_add2_en": None,
                     "cus_subdist_en": None,
                     "cus_zip": None,
+                    "cus_tel": None,
+                    "cus_fax": None,
+                    "cus_email": None,
                     "cus_zone": None,               
                 }
                 pickup_records.append(record)      

@@ -292,7 +292,7 @@
                       </div>
 
                       <div class="form-group col-md-2">
-                        <label for="id_cus_main_cus_tel">{% trans 'Phone' %}</label>
+                        <label for="id_cus_main_cus_tel">{% trans 'Phone1' %}</label>
                         <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_tel" name="cus_main_cus_tel" value="{{ cus_main.cus_tel|default_if_none:'' }}">
                       </div>
 
@@ -1230,13 +1230,14 @@
           var cus_main_cus_district_id = data.results[0]["cus_district_id"];
           var cus_main_cus_district = data.results[0]["cus_district"];
           var cus_main_subdist_th = data.results[0]["cus_subdist_th"];
-
           var cus_main_cus_name_en = data.results[0]["cus_name_en"];
           var cus_main_cus_add1_en = data.results[0]["cus_add1_en"];
           var cus_main_cus_add2_en = data.results[0]["cus_add2_en"];          
           var cus_main_subdist_en = data.results[0]["cus_subdist_en"];
-
           var cus_main_cus_zip = data.results[0]["cus_zip"];
+          var cus_main_cus_tel = data.results[0]["cus_tel"];
+          var cus_main_cus_fax = data.results[0]["cus_fax"];
+          var cus_main_cus_email = data.results[0]["cus_email"];
           var cus_main_cus_zone = data.results[0]["cus_zone"];
 
           $('#id_cus_main_cus_name_th').val(cus_main_cus_name_th);
@@ -1252,6 +1253,10 @@
           $('#id_cus_main_cus_subdist_en').val(cus_main_subdist_en);
           
           $('#id_cus_main_cus_zip').val(cus_main_cus_zip);
+          $('#id_cus_main_cus_tel').val(cus_main_cus_tel);
+          $('#id_cus_main_cus_fax').val(cus_main_cus_fax);
+          $('#id_cus_main_cus_email').val(cus_main_cus_email);
+
           $('#id_cus_main_cus_zone').val(cus_main_cus_zone);
 
           return true; 
