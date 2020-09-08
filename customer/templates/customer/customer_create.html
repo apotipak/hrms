@@ -1332,6 +1332,7 @@
     customer_option_op2 = $('#id_cus_main_customer_option_op2').val();
     customer_option_op3 = $('#id_cus_main_customer_option_op3').val();
     customer_option_op4 = $('#id_cus_main_customer_option_op4').val();
+    console.log(customer_option_btype + " | " + customer_option_op1 + " | " + customer_option_op2 + " | " + customer_option_op3 + " | " + customer_option_op4)
 
     cus_main_select_cus_contact_id = $('#id_cus_main_select_cus_contact_id').val();
 
@@ -1521,7 +1522,7 @@
     });
 
     $("#id_customer_option_op3").change(function(){         
-      $(".group2TextBox").val($("#id_customer_option_op2 option:selected").html());
+      $(".group2TextBox").val($("#id_customer_option_op3 option:selected").html());
     });
 
   });

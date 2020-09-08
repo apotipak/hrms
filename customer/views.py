@@ -81,7 +81,7 @@ def ajax_check_exist_cus_site(request):
         if form.is_valid():
             print("form is valid")
 
-            # Get customer site information                
+            # Get customer site information
             cus_no = str(cus_id) + str(cus_brn)            
             print("cus_no = " + str(cus_no))
             try:
@@ -963,11 +963,9 @@ def update_cus_main(request):
 
         if form.is_valid():
             cus_active = request.POST.get('cus_main_cus_active')
-            cus_no = request.POST.get('cus_no')
-
             cus_id = request.POST.get('cus_id')
-            cus_brn = request.POST.get('cus_brn')
-            
+            cus_brn = request.POST.get('cus_brn').zfill(3)
+            cus_no = str(cus_id) + str(cus_brn)                        
             cus_name_th = request.POST.get('cus_main_cus_name_th')            
             cus_add1_th = request.POST.get('cus_main_cus_add1_th')
             cus_add2_th = request.POST.get('cus_main_cus_add2_th')
@@ -1055,7 +1053,7 @@ def update_cus_main(request):
 
             # Business Type
             try:
-                # Update               
+                # Update
                 customer_option = CustomerOption.objects.get(cus_no=cus_no)
                 if customer_option:
                     customer_option.btype = business_type.replace('&amp;', '&')
