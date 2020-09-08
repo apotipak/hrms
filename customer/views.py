@@ -218,6 +218,10 @@ def ajax_check_exist_cus_main(request):
                 
                 print("cus_main.cus_contact_id = " + str(cus_main.cus_contact_id))
                 print(cus_main.cus_contact.con_title.title_en)
+                print(cus_main.cus_contact.con_fname_th)
+                print(cus_main.cus_contact.con_lname_th)
+                print(cus_main.cus_contact.con_position_th)
+
 
                 record = {
                     "cus_id": cus_main.cus_id,
@@ -246,6 +250,10 @@ def ajax_check_exist_cus_main(request):
 
                     "cus_contact_id": cus_main.cus_contact_id,
                     "cus_contact_title_th": cus_main.cus_contact.con_title.title_th,
+                    "cus_contact_fname_th": cus_main.cus_contact.con_fname_th,
+                    "cus_contact_lname_th": cus_main.cus_contact.con_lname_th,
+                    "cus_contact_position_th": cus_main.cus_contact.con_position_th,
+
                 }
                 pickup_records.append(record)
                 
@@ -278,6 +286,9 @@ def ajax_check_exist_cus_main(request):
                     "cus_zone": None,
                     "cus_contact_id": None,
                     "cus_contact_title_th": None,
+                    "cus_contact_fname_th": None,
+                    "cus_contact_lname_th": None,
+                    "cus_contact_position_th": None,
                 }
                 pickup_records.append(record)      
             
