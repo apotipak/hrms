@@ -34,7 +34,7 @@ urlpatterns += [
 ]
 
 urlpatterns += [
-  url(r'^ajax/ajax_check_exist_cus_main_cus_id/$', views.ajax_check_exist_cus_main_cus_id, name='ajax_check_exist_cus_main_cus_id'),
+  url(r'^ajax/ajax_check_exist_cus_main/$', views.ajax_check_exist_cus_main, name='ajax_check_exist_cus_main'),
   url(r'^ajax/ajax_check_exist_cus_site/$', views.ajax_check_exist_cus_site, name='ajax_check_exist_cus_site'),
 ]
 

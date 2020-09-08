@@ -168,10 +168,10 @@ def ajax_check_exist_cus_site(request):
 
 
 @login_required(login_url='/accounts/login/')
-def ajax_check_exist_cus_main_cus_id(request):
+def ajax_check_exist_cus_main(request):
 
     print("************************************************")
-    print("FUNCTION: ajax_check_exist_cus_main_cus_id")
+    print("FUNCTION: ajax_check_exist_cus_main")
     print("************************************************")
 
     response_data = {}
@@ -180,8 +180,6 @@ def ajax_check_exist_cus_main_cus_id(request):
         cus_id = request.POST.get('cus_id')
         cus_brn = request.POST.get('cus_brn')        
 
-        print("**************************")
-        # print("user = " + str(request.user))
         print("cus_id = " + str(cus_id))
         print("cus_brn = " + str(cus_brn))
         print("**************************")
@@ -226,15 +224,21 @@ def ajax_check_exist_cus_main_cus_id(request):
                     "cus_name_th": cus_main.cus_name_th,
                     "cus_add1_th": cus_main.cus_add1_th,
                     "cus_add2_th": cus_main.cus_add2_th,
-                    "cus_district_id": cus_main.cus_district_id,
                     "cus_subdist_th": cus_main.cus_subdist_th,
-                    "cus_district": cus_main.cus_district.dist_th,
+                    "cus_district_id": cus_main.cus_district_id,                    
+                    "cus_district_th": cus_main.cus_district.dist_th,
                     "cus_city_th": cus_main.cus_city.city_th,
+                    "cus_country_th": cus_main.cus_country.country_th,
+                    
                     "cus_name_en": cus_main.cus_name_en,
                     "cus_add1_en": cus_main.cus_add1_en,
                     "cus_add2_en": cus_main.cus_add2_en,
                     "cus_subdist_en": cus_main.cus_subdist_en,
-                    "cus_zip": cus_main.cus_zip,
+                    "cus_district_en": cus_main.cus_district.dist_en,
+                    "cus_city_en": cus_main.cus_city.city_en,
+                    "cus_country_en": cus_main.cus_country.country_en,
+
+                    "cus_zip": cus_main.cus_zip,                    
                     "cus_tel": cus_main.cus_tel,
                     "cus_fax": cus_main.cus_fax,
                     "cus_email": cus_main.cus_email,
@@ -252,14 +256,18 @@ def ajax_check_exist_cus_main_cus_id(request):
                     "cus_name_th": None,
                     "cus_add1_th": None,
                     "cus_add2_th": None,
-                    "cus_district_id": None,
                     "cus_subdist_th": None,
-                    "cus_district": None,
+                    "cus_district_id": None,                    
+                    "cus_district_th": None,
                     "cus_city_th": None,
+                    "cus_country_th": None,
                     "cus_name_en": None,
                     "cus_add1_en": None,
                     "cus_add2_en": None,
                     "cus_subdist_en": None,
+                    "cus_district_en": None,
+                    "cus_city_en": None,
+                    "cus_country_en": None,
                     "cus_zip": None,
                     "cus_tel": None,
                     "cus_fax": None,

@@ -71,26 +71,6 @@ class CusSiteCreateForm(forms.ModelForm):
         else:
             raise ValidationError("Customer ID is not correct!")
 
-'''
-class CusMainCreateForm(forms.ModelForm):
-    cus_id = forms.CharField()
-
-    class Meta:
-        model = CusMain
-        exclude = ['cus_id','cus_zone','cus_contact','site_contact','cus_district','cus_country','cus_city']
-
-    def __init__(self, *args, **kwargs):
-        # self.user = kwargs.pop('user')
-        super(CusMainCreateForm, self).__init__(*args, **kwargs)
-        self.fields['cus_id'].widget.attrs={'class': 'form-control form-control-sm'}
-        
-    def clean_cus_id(self):
-        data = self.data.get('cus_id')
-        if data.isnumeric():
-            return data
-        else:
-            raise ValidationError("Customer ID is not correct!")
-'''
         
 class CustomerCreateForm(forms.ModelForm):
 

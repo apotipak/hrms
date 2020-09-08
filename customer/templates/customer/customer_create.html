@@ -157,11 +157,11 @@
                         <div class="col-sm-8">                            
                           <div class="row">                              
                             <div class="col-12 input-group">
-                              <input type="text" id="id_cus_main_cus_district_dist_th" name="cus_main_cus_district_dist_th" class="form-control form-control-sm" value="{{ cus_main.cus_district }}" readonly>
+                              <input type="text" id="id_cus_main_cus_district_dist_th" name="cus_main_cus_district_dist_th" class="form-control form-control-sm" value="" readonly>
                               
                               <button id="cus_main_district_lookup" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url="{% url 'get_district_list' %}"><i class="fas fa-search fa-sm"></i></button>
 
-                              <input type="hidden" id="id_cus_main_select_district_id" name="cus_main_select_district_id" value="{{ cus_main.cus_district_id }}">
+                              <input type="hidden" id="id_cus_main_select_district_id" name="cus_main_select_district_id" value="">
 
                             </div>
                           </div>
@@ -179,9 +179,9 @@
                       </div>
 
                       <div class="input-group">
-                        <label for="id_cus_main_cus_country" class="col-sm-4 col-form-label form-control-sm">{% trans 'Country' %}</label>
-                        <div class="col-sm-8">
-                          {% render_field cus_main_form.cus_main_cus_country_th class="form-control form-control-sm" %}
+                        <label for="id_cus_main_cus_country_country_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'Country' %}</label>
+                        <div class="col-sm-8">                          
+                          <input type="text" id="id_cus_main_cus_country_country_th" name="cus_main_cus_country_country_th" class="form-control form-control-sm" value="{{ cus_main.cus_city }}" readonly>
                         </div>
                       </div>
 
@@ -224,39 +224,23 @@
                       <div class="input-group">
                         <label for="id_cus_main_cus_disrict_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'District' %}</label>
                         <div class="col-sm-8">
-                          {% if cus_main_form.cus_district.errors %}                
-                            {% render_field cus_main_form.cus_main_cus_district_en class="form-control form-control-sm" %}
-                            {% for error in cus_main_form.cus_main_cus_district.errors %}
-                            <div class="invalid-feedback">
-                              {{error}}
-                            </div>
-                            {% endfor %}
-                          {% else %}                          
-
-                          {% render_field cus_main_form.cus_main_cus_district_en class="form-control form-control-sm" %}
-
-                          {% endif %}
+                          <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_district_dist_en" name="cus_main_cus_district_dist_en" value="" readonly>
                         </div>
                       </div>
 
                       <div class="input-group">
                         <label for="id_cus_main_cus_city_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'City' %}</label>
-                        <div class="col-sm-8">                                                    
-                          {% render_field cus_main_form.cus_main_cus_city_en class="form-control form-control-sm" %}
+                        <div class="col-sm-8">                                                                              
+                          <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_city_city_en" name="cus_main_cus_city_city_en" value="" readonly>
                         </div>
                       </div>
 
                       <div class="input-group">
-                        <label for="id_cus_main_cus_country_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Country' %}</label>
-                        <div class="col-sm-8">
-                          {% render_field cus_main_form.cus_main_cus_country_en class="form-control form-control-sm" %}
+                        <label for="id_cus_main_cus_country_country_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Country' %}</label>
+                        <div class="col-sm-8">                          
+                          <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_country_country_en" name="cus_main_cus_country_country_en" value="" readonly>
                         </div>
                       </div>
-
-
-
-
-
                     </div>                    
                   </div>
                 </div>
@@ -1235,7 +1219,7 @@
 
       // Check check_exist_cus_main_cus_id
       $.ajax({
-        url: "/customer/ajax/ajax_check_exist_cus_main_cus_id/",
+        url: "/customer/ajax/ajax_check_exist_cus_main/",
         type: "POST",
         data: {          
           csrfmiddlewaretoken: '{{ csrf_token }}',
@@ -1249,15 +1233,21 @@
           var cus_main_cus_name_th = data.results[0]["cus_name_th"];
           var cus_main_cus_add1_th = data.results[0]["cus_add1_th"];
           var cus_main_cus_add2_th = data.results[0]["cus_add2_th"];
-          var cus_main_cus_district_id = data.results[0]["cus_district_id"];
-          var cus_main_cus_district = data.results[0]["cus_district"];
+          var cus_main_cus_district_id = data.results[0]["cus_district_id"];          
           var cus_main_subdist_th = data.results[0]["cus_subdist_th"];
+          var cus_main_cus_district_th = data.results[0]["cus_district_th"];          
           var cus_main_cus_city_th = data.results[0]["cus_city_th"];
+          var cus_main_cus_country_th = data.results[0]["cus_country_th"];
 
           var cus_main_cus_name_en = data.results[0]["cus_name_en"];
           var cus_main_cus_add1_en = data.results[0]["cus_add1_en"];
           var cus_main_cus_add2_en = data.results[0]["cus_add2_en"];          
           var cus_main_subdist_en = data.results[0]["cus_subdist_en"];
+
+          var cus_main_cus_district_en = data.results[0]["cus_district_en"];
+          var cus_main_cus_city_en = data.results[0]["cus_city_en"];
+          var cus_main_cus_country_en = data.results[0]["cus_country_en"];
+
           var cus_main_cus_zip = data.results[0]["cus_zip"];
           var cus_main_cus_tel = data.results[0]["cus_tel"];
           var cus_main_cus_fax = data.results[0]["cus_fax"];
@@ -1268,14 +1258,18 @@
           $('#id_cus_main_cus_add1_th').val(cus_main_cus_add1_th);
           $('#id_cus_main_cus_add2_th').val(cus_main_cus_add2_th);
           $('#id_cus_main_select_district_id').val(cus_main_cus_district_id);
-          $('#id_cus_main_cus_district_dist_th').val(cus_main_cus_district);
+          $('#id_cus_main_cus_district_dist_th').val(cus_main_cus_district_th);
           $('#id_cus_main_cus_subdist_th').val(cus_main_subdist_th);
           $('#id_cus_main_cus_city_city_th').val(cus_main_cus_city_th);
+          $('#id_cus_main_cus_country_country_th').val(cus_main_cus_country_th);
 
           $('#id_cus_main_cus_name_en').val(cus_main_cus_name_en);
           $('#id_cus_main_cus_add1_en').val(cus_main_cus_add1_en);
           $('#id_cus_main_cus_add2_en').val(cus_main_cus_add2_en);          
           $('#id_cus_main_cus_subdist_en').val(cus_main_subdist_en);
+          $('#id_cus_main_cus_city_city_en').val(cus_main_cus_city_en);
+          $('#id_cus_main_cus_district_dist_en').val(cus_main_cus_district_en);
+          $('#id_cus_main_cus_country_country_en').val(cus_main_cus_country_en);
           
           $('#id_cus_main_cus_zip').val(cus_main_cus_zip);
           $('#id_cus_main_cus_tel').val(cus_main_cus_tel);
@@ -1315,7 +1309,7 @@
         success: function(data) {          
           if(cus_brn == '') {            
             cus_brn = 0;
-            $('#id_cus_brn').val('000');
+            $('#id_cus_brn').val('0');
           }else {
 
             //$('#id_cus_brn').val('000');
