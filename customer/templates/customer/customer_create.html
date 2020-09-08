@@ -1315,11 +1315,13 @@
         success: function(data) {          
           if(cus_brn == '') {            
             cus_brn = 0;
-            $('#id_cus_brn').val(0);            
+            $('#id_cus_brn').val('000');
           }
 
+          var cus_site_cus_name_th = data.results[0]["cus_name_th"];
+
           $('#id_cus_main_cus_name_th').focus();
-            
+          $('#id_cus_site_cus_name_th').val(cus_site_cus_name_th);
         },
         error: function(data) {
           alert(data.responseJSON.error);          

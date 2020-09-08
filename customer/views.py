@@ -82,10 +82,75 @@ def ajax_check_exist_cus_site(request):
             print("form is valid")
 
             # Get customer site information                
-            cus_no = str(cus_id) + str(cus_brn)
-            print("cus_no = " + cus_no)
+            cus_no = str(cus_id) + str(cus_brn)            
+            print("cus_no = " + str(cus_no))
+            try:
+                customer_site = Customer.objects.get(pk=cus_no)
+            except Customer.DoesNotExist:
+                customer_site = None
 
-            response = JsonResponse({"success": "Form is valid", "results": list(pickup_records), "business_type_list": list(business_type_list)})
+            if customer_site:
+                # print("todo: update customer site")
+
+                # 1.Bind customer site on Site tab                
+                record = {
+                    "cus_no": customer_site.cus_no,
+                    "cus_name_th": customer_site.cus_name_th,
+                    "cus_add1_th": customer_site.cus_add1_th,
+                    "cus_add2_th": customer_site.cus_add2_th,
+                    "cus_district_id": customer_site.cus_district_id,
+                    "cus_subdist_th": customer_site.cus_subdist_th,
+                    "cus_district": customer_site.cus_district.dist_th,
+                    "cus_city_th": customer_site.cus_city.city_th,
+                    "cus_name_en": customer_site.cus_name_en,
+                    "cus_add1_en": customer_site.cus_add1_en,
+                    "cus_add2_en": customer_site.cus_add2_en,
+                    "cus_subdist_en": customer_site.cus_subdist_en,
+                    "cus_zip": customer_site.cus_zip,
+                    "cus_tel": customer_site.cus_tel,
+                    "cus_fax": customer_site.cus_fax,
+                    "cus_email": customer_site.cus_email,
+                    "cus_zone": customer_site.cus_zone_id,             
+                }
+                pickup_records.append(record)
+
+                # 2.Bind customer_option information on Main Office tab
+                try:
+                    customer_option = CustomerOption.objects.get(cus_no=cus_no)
+                    customer_option_btype = customer_option.btype
+                except CustomerOption.DoesNotExist:
+                    customer_option_btype = ""
+
+            else:
+                print("todo: add new customer site")
+                # 1.Bind customer site on Site tab                
+                record = {
+                    "cus_no": "",
+                    "cus_name_th": "",
+                    "cus_add1_th": "",
+                    "cus_add2_th": "",
+                    "cus_district_id": "",
+                    "cus_subdist_th": "",
+                    "cus_district": "",
+                    "cus_city_th": "",
+                    "cus_name_en": "",
+                    "cus_add1_en": "",
+                    "cus_add2_en": "",
+                    "cus_subdist_en": "",
+                    "cus_zip": "",
+                    "cus_tel": "",
+                    "cus_fax": "",
+                    "cus_email": "",
+                    "cus_zone": "",
+                }
+                pickup_records.append(record)
+
+
+            response = JsonResponse({"success": "Form is valid", 
+                "results": list(pickup_records), 
+                "business_type_list": list(business_type_list)
+                })
+
             response.status_code = 200
             return response            
         else:
@@ -203,7 +268,11 @@ def ajax_check_exist_cus_main_cus_id(request):
                 }
                 pickup_records.append(record)      
             
-            response = JsonResponse({"success": "Form is valid", "results": list(pickup_records), "business_type_list": list(business_type_list)})
+            response = JsonResponse({"success": "Form is valid", 
+                "results": list(pickup_records), 
+                "business_type_list": list(business_type_list)
+                })
+
             response.status_code = 200
             return response            
         else:
