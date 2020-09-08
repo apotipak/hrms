@@ -29,7 +29,19 @@ class CustomerCodeCreateForm(forms.Form):
         if data.isnumeric():
             return data
         else:
-            raise ValidationError("Customer ID is not correct!")
+            raise ValidationError("Customer ID is not correct11!")
+
+    def clean_cus_brn(self):        
+        data = self.data.get('cus_brn')        
+        if data.isnumeric():
+            return data
+        else:
+            print('form: cus_brn = ' + str(data))
+            if data == '':
+                data = 0
+                return data
+            else:
+                raise ValidationError("Customer Branch is not correct!")
 
     def clean_cus_main_cus_zone(self):
         data = self.data.get('cus_main_cus_zone')

@@ -1303,7 +1303,24 @@
       var obj = $(this);      
       var cus_brn = obj.val();
       var cus_id = $('#id_cus_id').val();    
-      alert(cus_id + " | " + cus_brn);
+
+      $.ajax({
+        url: "/customer/ajax/ajax_check_exist_cus_site/",
+        type: "POST",
+        data: {          
+          csrfmiddlewaretoken: '{{ csrf_token }}',
+          cus_id: cus_id,
+          cus_brn: cus_brn,
+        },
+        success: function(data) {
+          alert("success");
+          
+        },
+        error: function(data) {
+          alert(data.responseJSON.error);          
+        },
+      });
+
     }
   });
 

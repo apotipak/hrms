@@ -54,6 +54,48 @@ def CustomerCreate(request):
         })
 
 
+@login_required(login_url='/accounts/login/')
+def ajax_check_exist_cus_site(request):
+
+    print("************************************************")
+    print("FUNCTION: ajax_check_exist_cus_site")
+    print("************************************************")
+
+    response_data = {}
+    pickup_records=[]
+    business_type_list = []
+    group_1_list = []
+    group_2_list = []
+    customer_option = []
+
+    if request.method == "POST":
+        form = CustomerCodeCreateForm(request.POST)
+        cus_id = request.POST.get('cus_id')
+        cus_brn = request.POST.get('cus_brn')
+
+        print("**************************")
+        print("cus_id = " + str(cus_id))
+        print("cus_brn = " + str(cus_brn))
+        print("**************************")
+
+        if form.is_valid():
+            print("form is valid")            
+            response = JsonResponse({"success": "Form is valid", "results": list(pickup_records), "business_type_list": list(business_type_list)})
+            response.status_code = 200
+            return response            
+        else:
+            print("form is invalid")       
+            response = JsonResponse({ "error": "Data is not correct.", "results": list(pickup_records) })
+            response.status_code = 403
+            return response                        
+    else:
+        print("TODO: Handle get request")
+
+
+    response = JsonResponse({ "error": "Contact admistrator.", "results": list(pickup_records) })
+    response.status_code = 403
+    return response
+
 
 @login_required(login_url='/accounts/login/')
 def ajax_check_exist_cus_main_cus_id(request):
@@ -66,8 +108,13 @@ def ajax_check_exist_cus_main_cus_id(request):
 
     if request.method == "POST":
         cus_id = request.POST.get('cus_id')
-        print("cus_id = " + str(cus_id))
+        cus_brn = request.POST.get('cus_brn')        
+
+        print("**************************")
         # print("user = " + str(request.user))
+        print("cus_id = " + str(cus_id))
+        print("cus_brn = " + str(cus_brn))
+        print("**************************")
 
         form = CustomerCodeCreateForm(request.POST)        
         pickup_records=[]
@@ -150,12 +197,6 @@ def ajax_check_exist_cus_main_cus_id(request):
                     "cus_zone": None,               
                 }
                 pickup_records.append(record)      
-
-            '''
-            print("return render")
-            return render(request, 'customer/customer_create.html', {"cus_main_form": cus_main_form})
-            '''
-
             
             response = JsonResponse({"success": "Form is valid", "results": list(pickup_records), "business_type_list": list(business_type_list)})
             response.status_code = 200
@@ -166,34 +207,6 @@ def ajax_check_exist_cus_main_cus_id(request):
             response = JsonResponse({ "error": "Customer ID is not correct.", "results": list(pickup_records) })
             response.status_code = 403
             return response
-
-
-'''
-            pickup_records=[]
-            
-            for d in current_page:
-                # print("debug 1")
-                record = {
-                    "dist_id": d.dist_id,
-                    "city_id": d.city_id_id,
-                    "dist_th": d.dist_th,
-                    "dist_en": d.dist_en,
-                    "city_th": d.city_id.city_th,
-                    "city_en": d.city_id.city_en,
-                }
-                pickup_records.append(record)
-
-            response = JsonResponse(data={
-                "success": True,
-                "is_paginated": is_paginated,
-                "page" : page,
-                "next_page" : next_page,
-                "previous_page" : previous_page,
-                "current_page_number" : current_page_number,
-                "current_page_paginator_num_pages" : current_page_paginator_num_pages,
-                "results": list(pickup_records)         
-                })
-'''
 
 
 @permission_required('customer.view_customer', login_url='/accounts/login/')
