@@ -20,6 +20,7 @@ class CustomerCodeCreateForm(forms.Form):
         self.fields['cus_id'].widget.attrs={'class': 'form-control form-control-sm'}
         self.fields['cus_brn'].widget.attrs={'class': 'form-control form-control-sm'}
         self.fields['cus_main_cus_zone'].queryset=ComZone.objects.all()
+        
         self.fields['customer_option_btype'].queryset = CustomerOption.objects.values_list('btype', flat=True).exclude(btype=None).order_by('btype').distinct()
         self.fields['customer_option_op2'].queryset = CustomerOption.objects.values_list('op2', flat=True).exclude(op2=None).order_by('op2').distinct()
         self.fields['customer_option_op3'].queryset = CustomerOption.objects.values_list('op3', flat=True).exclude(op2=None).order_by('op3').distinct()

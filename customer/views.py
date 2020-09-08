@@ -92,7 +92,22 @@ def ajax_check_exist_cus_site(request):
             if customer_site:
                 # print("todo: update customer site")
 
-                # 1.Bind customer site on Site tab                
+                # 1.Bind customer_option information on Main Office tab
+                try:
+                    customer_option = CustomerOption.objects.get(cus_no=cus_no)
+                    customer_option_btype = customer_option.btype
+                    customer_option_op1 = customer_option.op1
+                    customer_option_op2 = customer_option.op2
+                    customer_option_op3 = customer_option.op3
+                    customer_option_op4 = customer_option.op4
+                except CustomerOption.DoesNotExist:
+                    customer_option_btype = ""
+                    customer_option_op1 = ""
+                    customer_option_op2 = ""
+                    customer_option_op3 = ""
+                    customer_option_op4 = ""
+
+                # 2.Bind customer site on Site tab                
                 record = {
                     "cus_no": customer_site.cus_no,
                     "cus_name_th": customer_site.cus_name_th,
@@ -110,16 +125,15 @@ def ajax_check_exist_cus_site(request):
                     "cus_tel": customer_site.cus_tel,
                     "cus_fax": customer_site.cus_fax,
                     "cus_email": customer_site.cus_email,
-                    "cus_zone": customer_site.cus_zone_id,             
+                    "cus_zone": customer_site.cus_zone_id,
+                    "customer_option_btype": customer_option_btype,
+                    "customer_option_op1": customer_option_op1,
+                    "customer_option_op2": customer_option_op2,
+                    "customer_option_op3": customer_option_op3,
+                    "customer_option_op4": customer_option_op4,
                 }
-                pickup_records.append(record)
 
-                # 2.Bind customer_option information on Main Office tab
-                try:
-                    customer_option = CustomerOption.objects.get(cus_no=cus_no)
-                    customer_option_btype = customer_option.btype
-                except CustomerOption.DoesNotExist:
-                    customer_option_btype = ""
+                pickup_records.append(record)
 
             else:
                 print("todo: add new customer site")
@@ -142,6 +156,11 @@ def ajax_check_exist_cus_site(request):
                     "cus_fax": "",
                     "cus_email": "",
                     "cus_zone": "",
+                    "customer_option_btype": "",
+                    "customer_option_op1": "",
+                    "customer_option_op2": "",
+                    "customer_option_op3": "",
+                    "customer_option_op4": "",
                 }
                 pickup_records.append(record)
 
@@ -199,6 +218,7 @@ def ajax_check_exist_cus_main(request):
                 print(cus_main.cus_city.city_th)
 
                 # customer_option
+                '''
                 business_type_list = CustomerOption.objects.values_list('btype', flat=True).exclude(btype=None).order_by('btype').distinct()
                 group_1_list = CustomerOption.objects.values_list('op2', flat=True).exclude(op2=None).order_by('op2').distinct()
                 group_2_list = CustomerOption.objects.values_list('op3', flat=True).exclude(op2=None).order_by('op3').distinct()
@@ -218,6 +238,7 @@ def ajax_check_exist_cus_main(request):
                 customer_option_op2 = ""
                 customer_option_op3 = ""
                 customer_option_op4 = ""
+                '''
 
                 record = {
                     "cus_id": cus_main.cus_id,
@@ -278,7 +299,7 @@ def ajax_check_exist_cus_main(request):
             
             response = JsonResponse({"success": "Form is valid", 
                 "results": list(pickup_records), 
-                "business_type_list": list(business_type_list)
+                #"business_type_list": list(business_type_list)
                 })
 
             response.status_code = 200
@@ -960,6 +981,7 @@ def update_cus_main(request):
             cus_fax = request.POST.get('cus_main_cus_fax')
             cus_email = request.POST.get('cus_main_cus_email')
             cus_zone = request.POST.get('cus_main_cus_zone')                
+
             business_type = request.POST.get('cus_main_business_type')
             cus_main_customer_option_op1 = request.POST.get('cus_main_customer_option_op1')
             cus_main_customer_option_op2 = request.POST.get('cus_main_customer_option_op2')
@@ -978,6 +1000,9 @@ def update_cus_main(request):
 
             print("check")
             print("**************************")
+            print("cus_no = " + str(cus_no))
+            print("cus_id = " + str(cus_id))
+            print("cus_brn = " + str(cus_brn))
             print("status = [" + str(cus_main_customer_option_op1) + "]")
             print("A/R Code = [" + str(cus_main_customer_option_op4) + "]")        
             print("cus_zone = " + str(cus_zone))
@@ -986,6 +1011,8 @@ def update_cus_main(request):
             print("cus_email = " + str(cus_email))
             print("cus_main_cus_contact_id = " + str(cus_main_cus_contact_id))
             print("cus_main_select_district_id = " + str(select_district_id))            
+
+            print("business_type = " + str(business_type))            
             print("**************************")
             
             district_obj = TDistrict.objects.get(dist_id=select_district_id)

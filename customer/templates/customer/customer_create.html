@@ -299,79 +299,35 @@
 
                     </div>
 
+
                     <!-- Business Type -->
                     <div class="form-row">
 
                       <div class="form-group col-md-4">
                         <label for="id_cus_main_business_type">{% trans 'Business Type' %}</label>                          
                         <div class="container">
-                          {% render_field customer_code_create_form.customer_option_btype class="form-control col-sm-12 form-control-sm" %}
-
-                          {% comment %}
-                          <select id="id_cus_main_business_type_temp" name="cus_main_business_type_temp" class="selectBusinessType">
-                            {% for option in business_type_list %}
-                              {% if customer_option.btype == option %}
-                              <option selected>{{ option }}</option>
-                              {% else %}
-                              <option>{{ option }}</option>
-                              {% endif %}
-                            {% endfor %}
-                          </select>
-                          {% endcomment %}
-
+                          {% render_field customer_code_create_form.customer_option_btype class="selectBusinessType" %}
                           <input class="businessTypeTextBox" id="id_cus_main_business_type" name="cus_main_business_type" value="{{customer_option.btype|default_if_none:''}}" />
-
                         </div>                        
                       </div>
 
                       <div class="form-group col-md-4">
                         <label for="id_cus_main_group_1">{% trans 'Group 1' %}</label>                          
                         <div class="container">
-                          {% render_field customer_code_create_form.customer_option_op2 class="form-control col-sm-12 form-control-sm" %}
-
-                          {% comment %}
-                          <select id="selectCustoemrOptionGroup1" name="cus_main_group_1" class="selectGroup1">
-                            {% for option in group_1_list %}
-                              {% if customer_option.op2 == option %}
-                              <option selected>{{ option }}</option>
-                              {% else %}
-                              <option>{{ option }}</option>
-                              {% endif %}
-                            {% endfor %}
-                          </select>
-                          {% endcomment %}
-
+                          {% render_field customer_code_create_form.customer_option_op2 class="selectBusinessType" %}
                           <input class="group1TextBox" id="id_cus_main_customer_option_op2" name="cus_main_customer_option_op2" value="{{customer_option.op2|default_if_none:''}}" />
-
                         </div>                        
                       </div>
-
 
                       <div class="form-group col-md-4">
                         <label for="id_cus_main_group_2">{% trans 'Group 2' %}</label>                          
                         <div class="container">
-
-                          {% render_field customer_code_create_form.customer_option_op3 class="form-control col-sm-12 form-control-sm" %}
-
-                          {% comment %}
-                          <select id="selectCustoemrOptionGroup2" name="cus_main_group_2" class="selectGroup2">
-                            {% for option in group_2_list %}
-                              {% if customer_option.op3 == option %}
-                              <option selected>{{ option }}</option>
-                              {% else %}
-                              <option>{{ option }}</option>
-                              {% endif %}
-                            {% endfor %}
-                          </select>
-                          {% endcomment %}
-
+                          {% render_field customer_code_create_form.customer_option_op3 class="selectBusinessType" %}
                           <input class="group2TextBox" id="id_cus_main_customer_option_op3" name="cus_main_customer_option_op3" value="{{customer_option.op3|default_if_none:''}}" />
                         </div>
                       </div>
 
                     </div>
-
-
 
 
                     <div class="form-row">
@@ -1317,9 +1273,19 @@
 
           // fill all data
           var cus_site_cus_name_th = data.results[0]["cus_name_th"];
+          var customer_option_btype = data.results[0]["customer_option_btype"];
+          var customer_option_op1 = data.results[0]["customer_option_op1"];
+          var customer_option_op2 = data.results[0]["customer_option_op2"];
+          var customer_option_op3 = data.results[0]["customer_option_op3"];
+          var customer_option_op4 = data.results[0]["customer_option_op4"];
 
           $('#id_cus_main_cus_name_th').focus();
           $('#id_cus_site_cus_name_th').val(cus_site_cus_name_th);
+          $('#id_cus_main_business_type').val(customer_option_btype);
+          $('#id_cus_main_customer_option_op1').val(customer_option_op1);
+          $('#id_cus_main_customer_option_op2').val(customer_option_op2);
+          $('#id_cus_main_customer_option_op3').val(customer_option_op3);
+          $('#id_cus_main_customer_option_op4').val(customer_option_op4);
         },
         error: function(data) {
           alert(data.responseJSON.error);          
@@ -1341,7 +1307,9 @@
 
   function add_cus_main() {
 
-    cus_id = $('#id_cus_id').val();    
+    cus_id = $('#id_cus_id').val();
+    cus_brn = $('#id_cus_brn').val();
+
     cus_main_cus_name_th = $('#id_cus_main_cus_name_th').val();
     cus_main_cus_add1_th = $('#id_cus_main_cus_add1_th').val();
     cus_main_cus_add2_th = $('#id_cus_main_cus_add2_th').val();    
@@ -1358,6 +1326,13 @@
     cus_main_cus_email = $('#id_cus_main_cus_email').val();
     cus_main_cus_zone = $('#id_cus_main_cus_zone').val();
 
+    // Business Type
+    customer_option_btype = $('#id_cus_main_business_type').val();
+    customer_option_op1 = $('#id_cus_main_customer_option_op1').val();
+    customer_option_op2 = $('#id_cus_main_customer_option_op2').val();
+    customer_option_op3 = $('#id_cus_main_customer_option_op3').val();
+    customer_option_op4 = $('#id_cus_main_customer_option_op4').val();
+
     cus_main_select_cus_contact_id = $('#id_cus_main_select_cus_contact_id').val();
 
     if(cus_main_select_cus_contact_id == null)
@@ -1370,6 +1345,7 @@
       data : {          
         csrfmiddlewaretoken: '{{ csrf_token }}',
         cus_id: cus_id,
+        cus_brn: cus_brn,
         cus_main_cus_name_th: cus_main_cus_name_th,
         cus_main_cus_add1_th: cus_main_cus_add1_th,
         cus_main_cus_add2_th: cus_main_cus_add2_th,
@@ -1386,6 +1362,12 @@
         cus_main_cus_email: cus_main_cus_email,
 
         cus_main_cus_zone: cus_main_cus_zone,
+
+        cus_main_business_type: customer_option_btype,
+        cus_main_customer_option_op1: customer_option_op1,
+        cus_main_customer_option_op2: customer_option_op2,
+        cus_main_customer_option_op3: customer_option_op3,
+        cus_main_customer_option_op4: customer_option_op4,       
       },
       success : function(json) {
         if(json.form_is_valid) {          
@@ -1527,6 +1509,22 @@
     });
   });
 
+
+  $(document).ready(function(){
+
+    $("#id_customer_option_btype").change(function(){         
+      $(".businessTypeTextBox").val($("#id_customer_option_btype option:selected").html());
+    });
+
+    $("#id_customer_option_op2").change(function(){         
+      $(".group1TextBox").val($("#id_customer_option_op2 option:selected").html());
+    });
+
+    $("#id_customer_option_op3").change(function(){         
+      $(".group2TextBox").val($("#id_customer_option_op2 option:selected").html());
+    });
+
+  });
 </script>
 
 {% endblock %}
