@@ -376,7 +376,7 @@
 
                       <div class="form-group col-md-2">
                         <label for="id_cus_main_cus_title">{% trans 'Title' %}</label>
-                          <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_contact_cus_title" name="cus_main_cus_contact_cus_title" value="{{ cus_main.cus_contact.con_title|default_if_none:'' }}" readonly>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_contact_cus_title_th" name="cus_main_cus_contact_cus_title_th" value="" readonly>
                       </div>
 
                       <div class="form-group col-md-2">
@@ -1210,6 +1210,9 @@
           var cus_main_cus_email = data.results[0]["cus_email"];
           var cus_main_cus_zone = data.results[0]["cus_zone"];
 
+          var cus_main_cus_contact_id = data.results[0]["cus_contact_id"];
+          var cus_main_cus_contact_title_th = data.results[0]["cus_contact_title_th"];
+
           $('#id_cus_main_cus_name_th').val(cus_main_cus_name_th);
           $('#id_cus_main_cus_add1_th').val(cus_main_cus_add1_th);
           $('#id_cus_main_cus_add2_th').val(cus_main_cus_add2_th);
@@ -1233,6 +1236,9 @@
           $('#id_cus_main_cus_email').val(cus_main_cus_email);
 
           $('#id_cus_main_cus_zone').val(cus_main_cus_zone);
+
+          $('#id_cus_main_cus_contact_id').val(cus_main_cus_contact_id);
+          $('#id_cus_main_cus_contact_cus_title_th').val(cus_main_cus_contact_title_th);
 
           return true; 
         },

@@ -215,30 +215,9 @@ def ajax_check_exist_cus_main(request):
 
             try:                
                 cus_main = CusMain.objects.get(pk=cus_id)
-                print(cus_main.cus_city.city_th)
-
-                # customer_option
-                '''
-                business_type_list = CustomerOption.objects.values_list('btype', flat=True).exclude(btype=None).order_by('btype').distinct()
-                group_1_list = CustomerOption.objects.values_list('op2', flat=True).exclude(op2=None).order_by('op2').distinct()
-                group_2_list = CustomerOption.objects.values_list('op3', flat=True).exclude(op2=None).order_by('op3').distinct()
-        
-                # TODO
-                cus_no = 1001000                
-
-                try:
-                    # customer_option = CustomerOption.objects.raw("select * from Customer_option where CUS_NO="+cus_id)
-                    customer_option = CustomerOption.objects.get(cus_no=cus_no)
-                    business_type = customer_option.btype
-                except CustomerOption.DoesNotExist:
-                    business_type = ""
                 
-                customer_option_btype = ""
-                customer_option_op1 = ""
-                customer_option_op2 = ""
-                customer_option_op3 = ""
-                customer_option_op4 = ""
-                '''
+                print("cus_main.cus_contact_id = " + str(cus_main.cus_contact_id))
+                print(cus_main.cus_contact.con_title.title_en)
 
                 record = {
                     "cus_id": cus_main.cus_id,
@@ -263,7 +242,10 @@ def ajax_check_exist_cus_main(request):
                     "cus_tel": cus_main.cus_tel,
                     "cus_fax": cus_main.cus_fax,
                     "cus_email": cus_main.cus_email,
-                    "cus_zone": cus_main.cus_zone_id,             
+                    "cus_zone": cus_main.cus_zone_id,
+
+                    "cus_contact_id": cus_main.cus_contact_id,
+                    "cus_contact_title_th": cus_main.cus_contact.con_title.title_th,
                 }
                 pickup_records.append(record)
                 
@@ -293,7 +275,9 @@ def ajax_check_exist_cus_main(request):
                     "cus_tel": None,
                     "cus_fax": None,
                     "cus_email": None,
-                    "cus_zone": None,               
+                    "cus_zone": None,
+                    "cus_contact_id": None,
+                    "cus_contact_title_th": None,
                 }
                 pickup_records.append(record)      
             
