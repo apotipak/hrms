@@ -738,7 +738,7 @@
 
             <div class="float-right">              
               <input type="button" class="btn btn-secondary btn-md" value="Cancel" onClick="this.form.reset()" />
-              <a href="#" id="cusSiteSaveButton" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
+              <a href="#" id="cusSiteSaveButton" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Savea' %}</a>
             </div>
 
             </form>
@@ -1165,6 +1165,7 @@
     $('#id_cus_id').focus();
   });
 
+  // Update Main Office
   $(document).on('keypress', '#id_cus_id', function(e) {
     if(e.which == 13) {      
       e.preventDefault();
@@ -1344,9 +1345,15 @@
     customer_option_op2 = $('#id_cus_main_customer_option_op2').val();
     customer_option_op3 = $('#id_cus_main_customer_option_op3').val();
     customer_option_op4 = $('#id_cus_main_customer_option_op4').val();
+
+    // Contact Information
+    cus_main_cus_contact_id = $('#id_cus_main_cus_contact_id').val();
+
+    // Todo
     console.log(customer_option_btype + " | " + customer_option_op1 + " | " + customer_option_op2 + " | " + customer_option_op3 + " | " + customer_option_op4)
 
-    cus_main_select_cus_contact_id = $('#id_cus_main_select_cus_contact_id').val();
+    cus_main_select_cus_contact_id = $('#id_cus_main_cus_contact_id').val();
+    alert(cus_main_select_cus_contact_id);
 
     if(cus_main_select_cus_contact_id == null)
       cus_main_select_cus_contact_id = null;
@@ -1380,7 +1387,9 @@
         cus_main_customer_option_op1: customer_option_op1,
         cus_main_customer_option_op2: customer_option_op2,
         cus_main_customer_option_op3: customer_option_op3,
-        cus_main_customer_option_op4: customer_option_op4,       
+        cus_main_customer_option_op4: customer_option_op4,
+
+        cus_main_cus_contact_id: id_cus_main_cus_contact_id, 
       },
       success : function(json) {
         if(json.form_is_valid) {          
