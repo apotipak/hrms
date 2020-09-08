@@ -7,7 +7,6 @@ from django.conf import settings
 from django.views import generic
 from .models import Customer, CusMain, CusBill, CustomerOption
 from .forms import CustomerCreateForm, CusMainForm, CusSiteForm, CusBillForm
-# from .forms import CusSiteCreateForm
 from .forms import CustomerCodeCreateForm
 from .forms import CustomerSearchForm
 from django.http import JsonResponse
@@ -17,6 +16,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 from system.models import TDistrict, TCity, CusContact
 from django.core import serializers
+from decimal import Decimal
 import json
 import sys, locale
 
@@ -71,7 +71,7 @@ def ajax_check_exist_cus_site(request):
     if request.method == "POST":
         form = CustomerCodeCreateForm(request.POST)
         cus_id = request.POST.get('cus_id')
-        cus_brn = request.POST.get('cus_brn')
+        cus_brn = request.POST.get('cus_brn').zfill(3)
 
         print("**************************")
         print("cus_id = " + str(cus_id))
@@ -79,7 +79,12 @@ def ajax_check_exist_cus_site(request):
         print("**************************")
 
         if form.is_valid():
-            print("form is valid")            
+            print("form is valid")
+
+            # Get customer site information                
+            cus_no = str(cus_id) + str(cus_brn)
+            print("cus_no = " + cus_no)
+
             response = JsonResponse({"success": "Form is valid", "results": list(pickup_records), "business_type_list": list(business_type_list)})
             response.status_code = 200
             return response            
@@ -87,7 +92,7 @@ def ajax_check_exist_cus_site(request):
             print("form is invalid")       
             response = JsonResponse({ "error": "Data is not correct.", "results": list(pickup_records) })
             response.status_code = 403
-            return response                        
+            return response   
     else:
         print("TODO: Handle get request")
 

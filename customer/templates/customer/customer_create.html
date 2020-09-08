@@ -1302,7 +1302,7 @@
 
       var obj = $(this);      
       var cus_brn = obj.val();
-      var cus_id = $('#id_cus_id').val();    
+      var cus_id = $('#id_cus_id').val();
 
       $.ajax({
         url: "/customer/ajax/ajax_check_exist_cus_site/",
@@ -1312,9 +1312,14 @@
           cus_id: cus_id,
           cus_brn: cus_brn,
         },
-        success: function(data) {
-          alert("success");
-          
+        success: function(data) {          
+          if(cus_brn == '') {            
+            cus_brn = 0;
+            $('#id_cus_brn').val(0);            
+          }
+
+          $('#id_cus_main_cus_name_th').focus();
+            
         },
         error: function(data) {
           alert(data.responseJSON.error);          
@@ -1326,13 +1331,11 @@
 
   $("#cusMainSaveButton").click( function() {
     event.preventDefault();
-    //add_cus_main();
     alert("todo: to be deleted");
   });
 
   $("#cusMainCreateSaveButton").click( function() {
     event.preventDefault();
-    //alert("todo: cusMainCreateSaveButton");
     add_cus_main();    
   });
 
