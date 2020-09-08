@@ -1316,8 +1316,12 @@
           if(cus_brn == '') {            
             cus_brn = 0;
             $('#id_cus_brn').val('000');
+          }else {
+
+            //$('#id_cus_brn').val('000');
           }
 
+          // fill all data
           var cus_site_cus_name_th = data.results[0]["cus_name_th"];
 
           $('#id_cus_main_cus_name_th').focus();

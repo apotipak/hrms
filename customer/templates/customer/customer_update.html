@@ -17,8 +17,13 @@
   
     <div class="">
       <div class="row mb-2">
-        <div class="col-8">          
-          <h4 class="display-6 m-0 text-dark">{{customer.cus_name_th}} <span> - {{customer.cus_id|stringformat:"04d"}}{{customer.cus_brn|stringformat:"03d"}}</span></h4>
+        <div class="col-8">
+          {% comment %}
+           <h4 class="display-6 m-0 text-dark">{{customer.cus_name_th}} <span> - {{customer.cus_id|stringformat:"04d"}}{{customer.cus_brn|stringformat:"03d"}}</span></h4>
+          {% endcomment %}
+
+          <h4 class="display-6 m-0 text-dark">{{customer.cus_name_th}} <span> - {{ cus_no }}</span></h4>
+
         </div>
         <div class="col-4">
           {% comment %}
@@ -3014,7 +3019,8 @@
   function update_cus_site() {
     cus_id = "{{customer.cus_id|stringformat:'04d'}}";
     cus_brn = "{{customer.cus_brn|stringformat:'03d'}}";
-    cus_no = cus_id + cus_brn;
+    //cus_no = cus_id + cus_brn;
+    cus_no = "{{cus_no}}";
 
     if ($('#id_cus_site_cus_active').is(":checked"))
       cus_site_cus_active = 1;

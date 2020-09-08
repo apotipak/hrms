@@ -463,6 +463,7 @@ def CustomerUpdate(request, pk):
 
     template_name = 'customer/customer_update.html'
     
+    cus_no = pk
     customer = get_object_or_404(Customer, pk=pk)
     cus_main = None
     cus_site = None
@@ -488,8 +489,8 @@ def CustomerUpdate(request, pk):
 
     if request.method == 'POST':        
         cus_main_form = CusMainForm(request.POST, instance=cus_main, cus_no=pk)
-        cus_site_form = CusSiteForm(request.POST, instance=cus_site)
-        cus_bill_form = CusBillForm(request.POST, instance=cus_bill)
+        cus_site_form = CusSiteForm(request.POST, instance=cus_site, cus_no=pk)
+        cus_bill_form = CusBillForm(request.POST, instance=cus_bill, cus_no=pk)
     else:
         cus_main_form = CusMainForm(instance=cus_main, cus_no=pk)    
         cus_site_form = CusSiteForm(instance=cus_site)
@@ -515,7 +516,7 @@ def CustomerUpdate(request, pk):
         'project_version': settings.PROJECT_VERSION,
         'db_server': settings.DATABASES['default']['HOST'],
         'project_name': settings.PROJECT_NAME,
-
+        'cus_no': cus_no,
         'cus_main_form': cus_main_form,
         'cus_main': cus_main,
         'cus_site_form': cus_site_form,
@@ -1094,6 +1095,9 @@ def update_cus_site(request):
         if form.is_valid():
 
             cus_no = request.POST.get('cus_no')
+            print("aaa")
+            print("cus_no = " + str(cus_no))
+
             cus_id = request.POST.get('cus_id')
             cus_brn = request.POST.get('cus_brn')
 
@@ -1118,6 +1122,9 @@ def update_cus_site(request):
             #print("sex = " + str(cus_site_cus_contact_con_sex))
 
             cus_site_site_contact_id = request.POST.get('cus_site_site_contact_id')
+
+            print("bbb")
+            print("cus_no = " + str(cus_no))
 
             customer = get_object_or_404(Customer, pk=cus_no)
             
