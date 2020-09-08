@@ -1231,16 +1231,18 @@
 
       var obj = $(this);
       var cus_id = obj.val();
-      
+      var cus_brn = $('#id_cus_brn').val();      
+
       // Check check_exist_cus_main_cus_id
       $.ajax({
-        url : "/customer/ajax/ajax_check_exist_cus_main_cus_id/",
-        type : "POST",
-        data : {          
+        url: "/customer/ajax/ajax_check_exist_cus_main_cus_id/",
+        type: "POST",
+        data: {          
           csrfmiddlewaretoken: '{{ csrf_token }}',
-          cus_id : cus_id,
+          cus_id: cus_id,
+          cus_brn: cus_brn,
         },
-        success : function(data) {
+        success: function(data) {
 
           $('#id_cus_brn').focus();
 
@@ -1294,6 +1296,16 @@
     }
   });
 
+  $(document).on('keypress', '#id_cus_brn', function(e) {
+    if(e.which == 13) {      
+      e.preventDefault();
+
+      var obj = $(this);      
+      var cus_brn = obj.val();
+      var cus_id = $('#id_cus_id').val();    
+      alert(cus_id + " | " + cus_brn);
+    }
+  });
 
   $("#cusMainSaveButton").click( function() {
     event.preventDefault();
