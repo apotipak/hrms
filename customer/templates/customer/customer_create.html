@@ -334,12 +334,12 @@
 
                       <div class="form-group col-md-3">
                         <label for="id_cus_main_customer_option_op1">{% trans 'Status' %}</label>
-                        <input type="text" class="form-control form-control-sm" id="id_cus_main_customer_option_op1" name="cus_main_customer_option_op1" value="{{ customer_option.op1|default_if_none:'' }}">
+                        <input type="text" class="form-control form-control-sm" id="id_cus_main_customer_option_op1" name="cus_main_customer_option_op1" value="{{ customer_option.op1.strip }}">
                       </div>
 
                       <div class="form-group col-md-3">
                         <label for="id_cus_main_customer_option_op4" class="text-danger">{% trans 'A/R Code' %}</label>
-                        <input type="text" class="form-control form-control-sm" id="id_cus_main_customer_option_op4" name="cus_main_customer_option_op4" value="{{ customer_option.op4|default_if_none:'' }}">
+                        <input type="text" class="form-control form-control-sm" id="id_cus_main_customer_option_op4" name="cus_main_customer_option_op4" value="{{ customer_option.op4.strip }}">
                       </div>
 
                     </div>

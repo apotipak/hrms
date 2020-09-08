@@ -422,7 +422,8 @@ def CustomerList(request):
         if cus_name=='' and cus_id=='' and cus_brn=='':
             print("get case 5")
             # customer_list = Customer.objects.order_by('cus_id','cus_brn','-cus_active')
-            customer_list = Customer.objects.exclude(upd_flag='D').order_by('cus_id','cus_brn','-cus_active')
+            # customer_list = Customer.objects.exclude(upd_flag='D').order_by('cus_id','cus_brn','-cus_active')
+            customer_list = Customer.objects.exclude(upd_flag='D').order_by('cus_id','cus_brn')
 
         # cus_id
         if cus_id!='' and cus_name=='' and cus_brn=='':
@@ -488,7 +489,7 @@ def CustomerList(request):
 
 def CustomerUpdate(request, pk):
     print("check")
-    print(pk)
+    print("pk = " + str(pk))
 
     template_name = 'customer/customer_update.html'
     
@@ -1057,10 +1058,10 @@ def update_cus_main(request):
                 customer_option = CustomerOption.objects.get(cus_no=cus_no)
                 if customer_option:
                     customer_option.btype = business_type.replace('&amp;', '&')
-                    customer_option.op1 = cus_main_customer_option_op1.strip()  # Status
+                    customer_option.op1 = cus_main_customer_option_op1.rstrip() # Status
                     customer_option.op2 = cus_main_customer_option_op2.replace('&amp;', '&') # Group 1
                     customer_option.op3 = cus_main_customer_option_op3.replace('&amp;', '&') # Group 2
-                    customer_option.op4 = cus_main_customer_option_op4.strip() # A/R Code
+                    customer_option.op4 = cus_main_customer_option_op4.rstrip() # A/R Code
                     customer_option.save()
             except CustomerOption.DoesNotExist:
                 print("customer_option error!")
