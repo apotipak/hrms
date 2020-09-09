@@ -1385,7 +1385,11 @@
 
     // CUS_SITE
     cus_site_cus_name_th = $('#id_cus_site_cus_name_th').val();
-    cus_site_cus_active = $('#id_cus_site_cus_active').val();
+    if ($('#id_cus_site_cus_active').is(":checked"))
+      cus_site_cus_active = 1;
+    else
+      cus_site_cus_active = 0;
+
 
     /*
     cus_main_cus_add1_th = $('#id_cus_main_cus_add1_th').val();
