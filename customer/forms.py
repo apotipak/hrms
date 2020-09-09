@@ -226,6 +226,7 @@ class CusAllTabsForm(forms.ModelForm):
 
     # Customer Site
     cus_site_cus_name_th = forms.CharField(required=True)
+    cus_site_cus_zone = forms.CharField(required=True)
 
     class Meta:
         model = CusMain
@@ -377,6 +378,13 @@ class CusAllTabsForm(forms.ModelForm):
             return data
         else:
             raise ValidationError("Site Tab - Customer Name (TH) is required.")
+
+    def clean_cus_site_cus_zone(self):
+        data = self.data.get('cus_site_cus_zone')
+        if len(data) > 0:
+            return data
+        else:
+            raise ValidationError("Site Tab - Zone is required.")
 
 
 class CusMainForm(forms.ModelForm):

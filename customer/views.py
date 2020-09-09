@@ -235,7 +235,28 @@ def ajax_check_exist_cus_site(request):
                     customer_option_op3 = ""
                     customer_option_op4 = ""
 
-                # 2.Bind customer site on Site tab                
+                # 2.Bind customer site on Site tab
+                if not customer_site.cus_district:
+                    cus_site_cus_district_th = None
+                    cus_site_cus_district_en = None
+                else:
+                    cus_site_cus_district_th = customer_site.cus_district.dist_th
+                    cus_site_cus_district_en = customer_site.cus_district.dist_en
+
+                if not customer_site.cus_city:
+                    cus_site_cus_city_th = None
+                    cus_site_cus_city_en = None
+                else:
+                    cus_site_cus_city_th = customer_site.cus_city.city_th
+                    cus_site_cus_city_en = customer_site.cus_city.city_en
+
+                if not customer_site.cus_country:
+                    cus_site_cus_country_th = None
+                    cus_site_cus_country_en = None
+                else:
+                    cus_site_cus_country_th = customer_site.cus_country.country_th
+                    cus_site_cus_country_en = customer_site.cus_country.country_en
+
                 record = {
                     "cus_no": customer_site.cus_no,
                     "cus_active": customer_site.cus_active,
@@ -244,18 +265,18 @@ def ajax_check_exist_cus_site(request):
                     "cus_add2_th": customer_site.cus_add2_th,
                     "cus_subdist_th": customer_site.cus_subdist_th,
                     "cus_district_id": customer_site.cus_district_id,                    
-                    "cus_district_th": customer_site.cus_district.dist_th,
-                    "cus_city_th": customer_site.cus_city.city_th,
-                    "cus_country_th": customer_site.cus_country.country_th,
+                    "cus_district_th": cus_site_cus_district_th,
+                    "cus_city_th": cus_site_cus_city_th,
+                    "cus_country_th": cus_site_cus_country_th,
 
                     "cus_name_en": customer_site.cus_name_en,
                     "cus_add1_en": customer_site.cus_add1_en,
                     "cus_add2_en": customer_site.cus_add2_en,
                     "cus_subdist_en": customer_site.cus_subdist_en,
                     "cus_subdist_en": customer_site.cus_subdist_en,
-                    "cus_district_en": customer_site.cus_district.dist_en,
-                    "cus_city_en": customer_site.cus_city.city_en,
-                    "cus_country_en": customer_site.cus_country.country_en,
+                    "cus_district_en": cus_site_cus_district_en,
+                    "cus_city_en": cus_site_cus_city_en,
+                    "cus_country_en": cus_site_cus_country_en,
 
                     "cus_zip": customer_site.cus_zip,
                     "cus_tel": customer_site.cus_tel,
@@ -1390,7 +1411,7 @@ def update_cus_bill(request):
                         country_id = city_obj.country_id_id
                         # print("country id = " + str(country_id))
 
-                if not cus_zip or cus_zip =='':
+                if not cus_zip or cus_zip == '':
                     cus_zip = None
 
                 if not cus_bill_cus_contact_id or cus_bill_cus_contact_id == '':
@@ -1599,10 +1620,27 @@ def update_all_cus_tabs(request):
             cus_site_cus_name_th = request.POST.get('cus_site_cus_name_th')
             cus_site_cus_zone = request.POST.get('cus_site_cus_zone')            
             print("------ Customer Site data -------")
+            print("cus_no = " + str(cus_no))
             print("cus_site_cus_active = " + str(cus_site_cus_active))
             print("cus_site_cus_name = " + str(cus_site_cus_name_th))
             print("cus_site_cus_zone = " + str(cus_site_cus_zone))
             print("------------------------")
+
+            # Save Customer Site Tab
+            try:
+                customer = Customer.objects.get(pk=cus_no)
+                customer.cus_name_th = cus_site_cus_name_th
+                customer.cus_zone_id = cus_site_cus_zone
+                customer.save()                
+            except Customer.DoesNotExist:                
+                new_customer_site = Customer(
+                    cus_no = cus_no,
+                    cus_id = cus_id,
+                    cus_brn = cus_brn,
+                    cus_name_th = cus_site_cus_name_th,
+                    cus_zone_id = cus_site_cus_zone
+                    )
+                new_customer_site.save()                
 
             response_data['result'] = "Update complete."
             response_data['message'] = "ทำรายการสำเร็จ"
