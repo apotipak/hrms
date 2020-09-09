@@ -1597,9 +1597,11 @@ def update_all_cus_tabs(request):
             # Customer Site
             cus_site_cus_active = request.POST.get('cus_site_cus_active')
             cus_site_cus_name_th = request.POST.get('cus_site_cus_name_th')
+            cus_site_cus_zone = request.POST.get('cus_site_cus_zone')            
             print("------ Customer Site data -------")
             print("cus_site_cus_active = " + str(cus_site_cus_active))
             print("cus_site_cus_name = " + str(cus_site_cus_name_th))
+            print("cus_site_cus_zone = " + str(cus_site_cus_zone))
             print("------------------------")
 
             response_data['result'] = "Update complete."
