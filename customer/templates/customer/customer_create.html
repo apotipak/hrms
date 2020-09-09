@@ -15,7 +15,6 @@
   <!-- Content Header (Page header) -->
   <div class="content-header">
   
-    <!--<form id="cus_main_form" method="POST">-->
     <form id="customer_code_form" method="POST">
     {% csrf_token %}
 
@@ -420,7 +419,14 @@
 
             <div class="float-right">
               <input type="button" class="btn btn-secondary btn-md" value="Cancel" onClick="this.form.reset()" />
+
+              {% comment %}
               <a href="#" id="cusMainCreateSaveButton" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
+              {% endcomment %}
+
+              
+              <a href="#" id="saveAllCustomerTabs" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
+
             </div>
             </form>
 
@@ -1318,7 +1324,13 @@
     add_cus_main();    
   });
 
-  function add_cus_main() {
+  $("#saveAllCustomerTabs").click( function() {
+    event.preventDefault();
+    add_all_customer_tabs();
+  });
+
+  //function add_cus_main() {
+  function add_all_customer_tabs() {
 
     cus_id = $('#id_cus_id').val();
     cus_brn = $('#id_cus_brn').val();
