@@ -236,6 +236,8 @@ def ajax_check_exist_cus_site(request):
                     customer_option_op4 = ""
 
                 # 2.Bind customer site on Site tab
+                # cus_site_cus_district_id = customer_site.cus_district_id
+
                 if not customer_site.cus_district:
                     cus_site_cus_district_th = None
                     cus_site_cus_district_en = None
