@@ -1218,17 +1218,22 @@ def update_cus_site(request):
             select_district_id = request.POST.get('select_district_id')
             # print("cus_site_select_district_id = " + str(select_district_id))
 
-            district_obj = TDistrict.objects.get(dist_id=select_district_id)
-            if district_obj:
-                city_id = district_obj.city_id_id
-                old_district_id = customer.cus_district.dist_id
-                customer.cus_district_id = select_district_id
-                customer.cus_city = district_obj.city_id
-                
-                # TODO
-                city_obj = TCity.objects.get(city_id=city_id)                
-                # print(city_obj.country_id)
-                customer.cus_country = city_obj.country_id
+            # district_obj = TDistrict.objects.get(dist_id=select_district_id)
+            try:
+                district_obj = TDistrict.objects.get(dist_id=select_district_id)
+                if district_obj:
+                    city_id = district_obj.city_id_id
+                    old_district_id = customer.cus_district.dist_id
+                    customer.cus_district_id = select_district_id
+                    customer.cus_city = district_obj.city_id
+                    
+                    # TODO
+                    city_obj = TCity.objects.get(city_id=city_id)                
+                    # print(city_obj.country_id)
+                    customer.cus_country = city_obj.country_id
+
+            except TDistrict.DoesNotExist:
+                district_obj = None
 
             customer.cus_active = cus_active
             customer.cus_name_th = cus_name_th
@@ -1618,11 +1623,14 @@ def update_all_cus_tabs(request):
             # Customer Site
             cus_site_cus_active = request.POST.get('cus_site_cus_active')
             cus_site_cus_name_th = request.POST.get('cus_site_cus_name_th')
-            cus_site_cus_zone = request.POST.get('cus_site_cus_zone')            
+            cus_site_cus_name_en = request.POST.get('cus_site_cus_name_en')
+            cus_site_cus_zip = request.POST.get('cus_site_cus_zip')
+            cus_site_cus_zone = request.POST.get('cus_site_cus_zone')
             print("------ Customer Site data -------")
             print("cus_no = " + str(cus_no))
             print("cus_site_cus_active = " + str(cus_site_cus_active))
             print("cus_site_cus_name = " + str(cus_site_cus_name_th))
+            print("cus_site_cus_zip = " + str(cus_site_cus_zip))
             print("cus_site_cus_zone = " + str(cus_site_cus_zone))
             print("------------------------")
 
@@ -1630,6 +1638,8 @@ def update_all_cus_tabs(request):
             try:
                 customer = Customer.objects.get(pk=cus_no)
                 customer.cus_name_th = cus_site_cus_name_th
+                customer.cus_name_en = cus_site_cus_name_en
+                customer.cus_zip = cus_site_cus_zip
                 customer.cus_zone_id = cus_site_cus_zone
                 customer.save()                
             except Customer.DoesNotExist:                
@@ -1638,6 +1648,8 @@ def update_all_cus_tabs(request):
                     cus_id = cus_id,
                     cus_brn = cus_brn,
                     cus_name_th = cus_site_cus_name_th,
+                    cus_name_en = cus_site_cus_name_en,
+                    cus_zip = cus_site_cus_zip,
                     cus_zone_id = cus_site_cus_zone
                     )
                 new_customer_site.save()                

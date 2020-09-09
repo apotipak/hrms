@@ -1423,11 +1423,13 @@
     if ($('#id_cus_site_cus_active').is(":checked"))
       cus_site_cus_active = 1;
     else
-      cus_site_cus_active = 0;    
+      cus_site_cus_active = 0;
+
     cus_site_cus_name_th = $('#id_cus_site_cus_name_th').val();
+    cus_site_cus_name_en = $('#id_cus_site_cus_name_en').val();
+    cus_site_cus_zip = $('#id_cus_site_cus_zip').val();
     cus_site_cus_zone = $('#id_cus_site_cus_zone').val();
-
-
+    
     /*
     cus_main_cus_add1_th = $('#id_cus_main_cus_add1_th').val();
     cus_main_cus_add2_th = $('#id_cus_main_cus_add2_th').val();    
@@ -1487,6 +1489,8 @@
 
         cus_site_cus_active: cus_site_cus_active,
         cus_site_cus_name_th: cus_site_cus_name_th,
+        cus_site_cus_name_en: cus_site_cus_name_en,
+        cus_site_cus_zip: cus_site_cus_zip,
         cus_site_cus_zone: cus_site_cus_zone,
         
       },
