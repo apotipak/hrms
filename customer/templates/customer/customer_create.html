@@ -524,7 +524,7 @@
                                 
                                 <button id="cus_site_district_lookup" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url="{% url 'get_district_list' %}"><i class="fas fa-search fa-sm"></i></button>
 
-                                <input type="hidden" id="id_cus_site_select_district_id" name="cus_site_select_district_id" value="{{ customer.cus_district_id }}">
+                                <input type="hidden" id="id_cus_site_select_district_id" name="cus_site_select_district_id" value="">
                               </div>
                             </div>
                           </div>
@@ -533,14 +533,14 @@
                         <div class="input-group">
                           <label for="id_cus_city" class="col-sm-4 col-form-label form-control-sm">{% trans 'City' %}</label>
                           <div class="col-sm-8">                            
-                            <input type="text" id="id_cus_site_cus_city" name="cus_site_cus_city" class="form-control form-control-sm" value="{{ customer.cus_city|default_if_none:'' }}" readonly>
+                            <input type="text" id="id_cus_site_cus_city_th" name="cus_site_cus_city_th" class="form-control form-control-sm" value="" readonly>
                           </div>
                         </div>
 
                         <div class="input-group">
                           <label for="id_cus_country" class="col-sm-4 col-form-label form-control-sm">{% trans 'Country' %}</label>
                           <div class="col-sm-8">                                                    
-                            <input type="text" id="id_cus_site_cus_country" name="cus_site_cus_country" class="form-control form-control-sm" value="{{ customer.cus_country|default_if_none:'' }}" readonly>
+                            <input type="text" id="id_cus_site_cus_country_th" name="cus_site_cus_country_th" class="form-control form-control-sm" value="" readonly>
                           </div>
                         </div>
 
@@ -1294,35 +1294,78 @@
           cus_brn: cus_brn,
         },
         success: function(data) {
+
           while (cus_brn.length < 3) 
             cus_brn = "0" + cus_brn;
-
           $('#id_cus_brn').val(cus_brn);
+          
 
-          /*
-          if(cus_brn == '') {
-            while (cus_brn.length < 3) cus_brn = "000" + cus_brn;
-            $('#id_cus_brn').val(cus_brn);
-          }else {
-            //$('#id_cus_brn').val('000');
-          }
-          */
-
-          // fill all data
-          var cus_site_cus_name_th = data.results[0]["cus_name_th"];
           var customer_option_btype = data.results[0]["customer_option_btype"];
           var customer_option_op1 = data.results[0]["customer_option_op1"];
           var customer_option_op2 = data.results[0]["customer_option_op2"];
           var customer_option_op3 = data.results[0]["customer_option_op3"];
           var customer_option_op4 = data.results[0]["customer_option_op4"];
 
-          $('#id_cus_main_cus_name_th').focus();
-          $('#id_cus_site_cus_name_th').val(cus_site_cus_name_th);
+          // Customer Main Office
+          $('#id_cus_main_cus_name_th').focus();          
           $('#id_cus_main_business_type').val(customer_option_btype);
           $('#id_cus_main_customer_option_op1').val(customer_option_op1);
           $('#id_cus_main_customer_option_op2').val(customer_option_op2);
           $('#id_cus_main_customer_option_op3').val(customer_option_op3);
           $('#id_cus_main_customer_option_op4').val(customer_option_op4);
+
+          // Customer Site
+          var cus_site_cus_active = data.results[0]["cus_active"];
+          if(cus_site_cus_active==1) {
+            $('#id_cus_site_cus_active').val(1);
+            $('#id_cus_site_cus_active').prop("checked", true);
+          } else {
+            $('#id_cus_site_cus_active').val(0);
+            $('#id_cus_site_cus_active').prop("checked", false);
+          }
+
+          var cus_site_cus_name_th = data.results[0]["cus_name_th"];
+          var cus_site_cus_add1_th = data.results[0]["cus_add1_th"];
+          var cus_site_cus_add2_th = data.results[0]["cus_add2_th"];        
+          var cus_site_cus_district_id = data.results[0]["cus_district_id"];
+          var cus_site_cus_subdist_th = data.results[0]["cus_subdist_th"];          
+          var cus_site_cus_district_th = data.results[0]["cus_district_th"];
+          var cus_site_cus_city_th = data.results[0]["cus_city_th"];
+          var cus_site_cus_country_th = data.results[0]["cus_country_th"];
+          
+          var cus_site_cus_name_en = data.results[0]["cus_name_en"];
+          var cus_site_cus_add1_en = data.results[0]["cus_add1_en"];
+          var cus_site_cus_add2_en = data.results[0]["cus_add2_en"];        
+          var cus_site_cus_subdist_en = data.results[0]["cus_subdist_en"];
+          var cus_site_cus_district_en = data.results[0]["cus_district_en"];
+          var cus_site_cus_city_en = data.results[0]["cus_city_en"];
+          var cus_site_cus_country_en = data.results[0]["cus_country_en"];
+
+          var cus_site_cus_zip = data.results[0]["cus_zip"];
+          var cus_site_cus_tel = data.results[0]["cus_tel"];
+          var cus_site_cus_fax = data.results[0]["cus_fax"];
+          var cus_site_cus_email = data.results[0]["cus_email"];
+
+          $('#id_cus_site_cus_name_th').val(cus_site_cus_name_th);
+          $('#id_cus_site_cus_add1_th').val(cus_site_cus_add1_th);
+          $('#id_cus_site_cus_add2_th').val(cus_site_cus_add2_th);
+          $('#id_cus_site_cus_subdist_th').val(cus_site_cus_subdist_th);          
+          $('#id_cus_site_cus_district_dist_th').val(cus_site_cus_district_th);
+          $('#id_cus_site_cus_city_th').val(cus_site_cus_city_th);
+          $('#id_cus_site_cus_country_th').val(cus_site_cus_country_th);
+
+          $('#id_cus_site_cus_name_en').val(cus_site_cus_name_en);
+          $('#id_cus_site_cus_add1_en').val(cus_site_cus_add1_en);
+          $('#id_cus_site_cus_add2_en').val(cus_site_cus_add2_en);
+          $('#id_cus_site_cus_subdist_en').val(cus_site_cus_subdist_en);
+          $('#id_cus_site_cus_district_dist_en').val(cus_site_cus_district_en);
+          $('#id_cus_site_cus_city_en').val(cus_site_cus_city_en);
+          $('#id_cus_site_cus_country_en').val(cus_site_cus_country_en);
+
+          $('#id_cus_site_cus_zip').val(cus_site_cus_zip);
+          $('#id_cus_site_cus_tel').val(cus_site_cus_tel);
+          $('#id_cus_site_cus_fax').val(cus_site_cus_fax);
+          $('#id_cus_site_cus_email').val(cus_site_cus_email);
         },
         error: function(data) {
           alert(data.responseJSON.error);          
