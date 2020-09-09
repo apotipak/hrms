@@ -8,12 +8,20 @@ from django.core.exceptions import ValidationError
 
 
 class CustomerCodeCreateForm(forms.Form):
+    # ID
     cus_id = forms.CharField()
     cus_brn = forms.CharField(required=False)
+
+    # Customer Main Office
     cus_main_cus_zone = forms.ModelChoiceField(queryset=None, required=False)
     customer_option_btype = forms.ModelChoiceField(queryset=None, required=False)
     customer_option_op2 = forms.ModelChoiceField(queryset=None, required=False)
     customer_option_op3 = forms.ModelChoiceField(queryset=None, required=False)
+
+    # Customer Site
+    
+
+    # Customer Site
 
     def __init__(self, *args, **kwargs):
         super(CustomerCodeCreateForm, self).__init__(*args, **kwargs)

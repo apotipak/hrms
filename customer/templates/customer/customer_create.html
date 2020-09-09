@@ -434,6 +434,8 @@
 
 
 
+
+
           <!-- Site Tab -->
           <div class="tab-pane" id="site" role="tabpanel" aria-labelledby="site-tab">
           <!--<div class="tab-pane fade show active" id="site" role="tabpanel" aria-labelledby="site-tab">-->
@@ -1281,14 +1283,20 @@
           cus_id: cus_id,
           cus_brn: cus_brn,
         },
-        success: function(data) {          
-          if(cus_brn == '') {            
-            cus_brn = 0;
-            $('#id_cus_brn').val('0');
-          }else {
+        success: function(data) {
+          while (cus_brn.length < 3) 
+            cus_brn = "0" + cus_brn;
 
+          $('#id_cus_brn').val(cus_brn);
+
+          /*
+          if(cus_brn == '') {
+            while (cus_brn.length < 3) cus_brn = "000" + cus_brn;
+            $('#id_cus_brn').val(cus_brn);
+          }else {
             //$('#id_cus_brn').val('000');
           }
+          */
 
           // fill all data
           var cus_site_cus_name_th = data.results[0]["cus_name_th"];
@@ -1335,6 +1343,7 @@
     cus_id = $('#id_cus_id').val();
     cus_brn = $('#id_cus_brn').val();
 
+    // CUS_MAIN
     cus_main_cus_name_th = $('#id_cus_main_cus_name_th').val();
     cus_main_cus_add1_th = $('#id_cus_main_cus_add1_th').val();
     cus_main_cus_add2_th = $('#id_cus_main_cus_add2_th').val();    
@@ -1350,29 +1359,46 @@
     cus_main_cus_fax = $('#id_cus_main_cus_fax').val();
     cus_main_cus_email = $('#id_cus_main_cus_email').val();
     cus_main_cus_zone = $('#id_cus_main_cus_zone').val();
-
-    // Business Type
     customer_option_btype = $('#id_cus_main_business_type').val();
     customer_option_op1 = $('#id_cus_main_customer_option_op1').val();
     customer_option_op2 = $('#id_cus_main_customer_option_op2').val();
     customer_option_op3 = $('#id_cus_main_customer_option_op3').val();
     customer_option_op4 = $('#id_cus_main_customer_option_op4').val();
-
-    // Contact Information
     cus_main_cus_contact_id = $('#id_cus_main_cus_contact_id').val();
-
-    // Todo
-    console.log(customer_option_btype + " | " + customer_option_op1 + " | " + customer_option_op2 + " | " + customer_option_op3 + " | " + customer_option_op4)
-
-    //cus_main_select_cus_contact_id = $('#id_cus_main_cus_contact_id').val();
-    //alert(cus_main_select_cus_contact_id);
-
     if(cus_main_cus_contact_id == null)
       cus_main_cus_contact_id = null;
 
-    // amnaj
+    // CUS_SITE
+    cus_site_cus_name_th = $('#id_cus_site_cus_name_th').val();
+    /*
+    cus_main_cus_add1_th = $('#id_cus_main_cus_add1_th').val();
+    cus_main_cus_add2_th = $('#id_cus_main_cus_add2_th').val();    
+    cus_main_cus_district = $('#id_cus_main_cus_district').val();
+    cus_main_cus_district_id = $('#id_cus_main_select_district_id').val();
+    cus_main_cus_subdist_th = $('#id_cus_main_cus_subdist_th').val();
+    cus_main_cus_name_en = $('#id_cus_main_cus_name_en').val();
+    cus_main_cus_add1_en = $('#id_cus_main_cus_add1_en').val();
+    cus_main_cus_add2_en = $('#id_cus_main_cus_add2_en').val();
+    cus_main_cus_subdist_en = $('#id_cus_main_cus_subdist_en').val();
+    cus_main_cus_zip = $('#id_cus_main_cus_zip').val();
+    cus_main_cus_tel = $('#id_cus_main_cus_tel').val();
+    cus_main_cus_fax = $('#id_cus_main_cus_fax').val();
+    cus_main_cus_email = $('#id_cus_main_cus_email').val();
+    cus_main_cus_zone = $('#id_cus_main_cus_zone').val();
+    customer_option_btype = $('#id_cus_main_business_type').val();
+    customer_option_op1 = $('#id_cus_main_customer_option_op1').val();
+    customer_option_op2 = $('#id_cus_main_customer_option_op2').val();
+    customer_option_op3 = $('#id_cus_main_customer_option_op3').val();
+    customer_option_op4 = $('#id_cus_main_customer_option_op4').val();
+    cus_main_cus_contact_id = $('#id_cus_main_cus_contact_id').val();
+    if(cus_main_cus_contact_id == null)
+      cus_main_cus_contact_id = null;
+    */
+    //alert(cus_site_cus_name_th);
+
     $.ajax({
-      url : "/customer/ajax/update_cus_main/",      
+      //url : "/customer/ajax/update_cus_main/",
+      url : "/customer/ajax/update_all_cus_tabs/",
       type : "POST",
       data : {          
         csrfmiddlewaretoken: '{{ csrf_token }}',
@@ -1388,19 +1414,15 @@
         cus_main_cus_add2_en: cus_main_cus_add2_en,
         cus_main_cus_subdist_en: cus_main_cus_subdist_en,        
         cus_main_cus_zip: cus_main_cus_zip,
-        
         cus_main_cus_tel: cus_main_cus_tel,
         cus_main_cus_fax: cus_main_cus_fax,
         cus_main_cus_email: cus_main_cus_email,
-
         cus_main_cus_zone: cus_main_cus_zone,
-
         cus_main_business_type: customer_option_btype,
         cus_main_customer_option_op1: customer_option_op1,
         cus_main_customer_option_op2: customer_option_op2,
         cus_main_customer_option_op3: customer_option_op3,
         cus_main_customer_option_op4: customer_option_op4,
-
         cus_main_cus_contact_id: cus_main_cus_contact_id, 
       },
       success : function(json) {

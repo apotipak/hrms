@@ -1243,8 +1243,6 @@ def update_cus_site(request):
     return JsonResponse(response_data)
 
 
-
-
 @login_required(login_url='/accounts/login/')
 def update_cus_bill(request):
 
@@ -1444,6 +1442,177 @@ def update_cus_bill(request):
     
     return render(request, template_name, context)    
 
+
+@login_required(login_url='/accounts/login/')
+def update_all_cus_tabs(request):
+
+    print("****************************")
+    print("FUNCTION: update_all_cus_tabs")
+    # print("****************************")
+
+    template_name = 'customer/customer_update.html'    
+    response_data = {}
+
+    if request.method == 'POST':
+        form = CusMainForm(request.POST)
+
+        if form.is_valid():            
+            cus_id = request.POST.get('cus_id')
+            cus_brn = request.POST.get('cus_brn').zfill(3)
+            cus_no = str(cus_id) + str(cus_brn)
+
+            
+            cus_main_active = request.POST.get('cus_main_cus_active')            
+            cus_name_th = request.POST.get('cus_main_cus_name_th')            
+            cus_add1_th = request.POST.get('cus_main_cus_add1_th')
+            cus_add2_th = request.POST.get('cus_main_cus_add2_th')
+            cus_subdist_th = request.POST.get('cus_main_cus_subdist_th')                        
+            cus_name_en = request.POST.get('cus_main_cus_name_en')                          
+            cus_add1_en = request.POST.get('cus_main_cus_add1_en')
+            cus_add2_en = request.POST.get('cus_main_cus_add2_en')
+            cus_subdist_en = request.POST.get('cus_main_cus_subdist_en')
+            cus_zip = request.POST.get('cus_main_cus_zip')
+            cus_tel = request.POST.get('cus_main_cus_tel')
+            cus_fax = request.POST.get('cus_main_cus_fax')
+            cus_email = request.POST.get('cus_main_cus_email')
+            cus_zone = request.POST.get('cus_main_cus_zone')                
+            business_type = request.POST.get('cus_main_business_type')
+            cus_main_customer_option_op1 = request.POST.get('cus_main_customer_option_op1')
+            cus_main_customer_option_op2 = request.POST.get('cus_main_customer_option_op2')
+            cus_main_customer_option_op3 = request.POST.get('cus_main_customer_option_op3')
+            cus_main_customer_option_op4 = request.POST.get('cus_main_customer_option_op4')
+            cus_main_cus_contact_id = request.POST.get('cus_main_cus_contact_id')
+            if cus_main_cus_contact_id:
+                cus_main_cus_contact_id = cus_main_cus_contact_id
+            else:
+                cus_main_cus_contact_id = None
+
+            cus_main = get_object_or_404(CusMain, pk=cus_id)
+
+            select_district_id = request.POST.get('select_district_id')
+
+            '''
+            print("check")
+            print("**************************")
+            print("cus_no = " + str(cus_no))
+            print("cus_id = " + str(cus_id))
+            print("cus_brn = " + str(cus_brn))
+            print("status = [" + str(cus_main_customer_option_op1) + "]")
+            print("A/R Code = [" + str(cus_main_customer_option_op4) + "]")        
+            print("cus_zone = " + str(cus_zone))
+            print("cus_tel = " + str(cus_tel))
+            print("cus_fax = " + str(cus_fax))
+            print("cus_email = " + str(cus_email))
+            print("cus_main_cus_contact_id = " + str(cus_main_cus_contact_id))
+            print("cus_main_select_district_id = " + str(select_district_id))            
+
+            print("business_type = " + str(business_type))            
+            print("**************************")
+            '''
+
+            district_obj = TDistrict.objects.get(dist_id=select_district_id)
+            
+            if district_obj:
+                city_id = district_obj.city_id_id
+                old_district_id = cus_main.cus_district.dist_id
+                cus_main.cus_district_id = select_district_id
+                cus_main.cus_city = district_obj.city_id                
+                city_obj = TCity.objects.get(city_id=city_id)
+                cus_main.cus_country = city_obj.country_id
+
+            cus_main.cus_active = cus_main_active
+            cus_main.cus_name_th = cus_name_th
+            cus_main.cus_add1_th = cus_add1_th
+            cus_main.cus_add2_th = cus_add2_th
+            cus_main.cus_subdist_th = cus_subdist_th
+            
+            cus_main.cus_name_en = cus_name_en
+            cus_main.cus_add1_en = cus_add1_en
+            cus_main.cus_add2_en = cus_add2_en
+            cus_main.cus_subdist_en = cus_subdist_en
+
+            cus_main.cus_zip = cus_zip
+            cus_main.cus_tel = cus_tel
+            cus_main.cus_fax = cus_fax
+            cus_main.cus_email = cus_email
+            cus_main.cus_zone_id = cus_zone
+
+
+            #cus_main.cus_contact_id = None
+            cus_main.cus_contact_id = cus_main_cus_contact_id
+
+            if cus_main.upd_flag == 'A':
+                cus_main.upd_flag = 'E'
+            cus_main.upd_by = request.user.first_name
+            cus_main.upd_date = timezone.now()
+            
+            cus_main.save()
+
+            # Business Type
+            try:
+                # Update
+                customer_option = CustomerOption.objects.get(cus_no=cus_no)
+                if customer_option:
+                    customer_option.btype = business_type.replace('&amp;', '&')
+                    customer_option.op1 = cus_main_customer_option_op1.rstrip() # Status
+                    customer_option.op2 = cus_main_customer_option_op2.replace('&amp;', '&') # Group 1
+                    customer_option.op3 = cus_main_customer_option_op3.replace('&amp;', '&') # Group 2
+                    customer_option.op4 = cus_main_customer_option_op4.rstrip() # A/R Code
+                    customer_option.save()
+            except CustomerOption.DoesNotExist:
+                print("customer_option error!")
+                # Insert
+                '''
+                c = CustomerOption(
+                    cus_no = cus_no, 
+                    btype = business_type.replace('&amp;', '&'), 
+                    op1 = cus_main_customer_option_op1,   # Status
+                    op2 = cus_main_customer_option_op2.replace('&amp;', '&'), # Group 1
+                    op3 = cus_main_customer_option_op3.replace('&amp;', '&'), # Group 2
+                    op4 = cus_main_customer_option_op4)   # A/R Code
+
+                c.save()
+                '''
+
+            # Return success message
+            response_data['result'] = "Update complete."
+            response_data['message'] = "ทำรายการสำเร็จ"
+            response_data['form_is_valid'] = True
+
+            print("OK")
+            print("****************************")
+
+        else:
+            print("form is invalid")
+
+            response_data['form_is_valid'] = False
+            response_data['message'] = ""
+            if form.errors:
+                for field in form:
+                    for error in field.errors:
+                        response_data['message'] += field.name + " | " + error + "<br>"
+
+                response_data['errors'] = form.errors
+            else:
+                response_data['message'] = "ไม่สามารถทำรายการได้..!"
+        
+            print("Error!")
+            print("****************************")
+
+        return JsonResponse(response_data)
+    else:
+        print("debug - found cus_main_form problem")
+
+    context = {
+        'page_title': settings.PROJECT_NAME,
+        'today_date': settings.TODAY_DATE,
+        'project_version': settings.PROJECT_VERSION,
+        'db_server': settings.DATABASES['default']['HOST'],
+        'project_name': settings.PROJECT_NAME,
+        'business_type': 'abc',
+    }
+
+    return render(request, template_name, context)    
 
 
 @login_required(login_url='/accounts/login/')
@@ -1691,47 +1860,4 @@ def get_country(request):
     response.status_code = 200
 
     return response
-    
 
-
-
-
-    
-    '''
-    data = CusContact.objects.select_related('con_title').filter(con_id__exact=contact_id)
-
-    if data:
-        pickup_dict = {}
-        pickup_records=[]
-        
-        for d in data:
-            record = {
-                "con_id": d.con_id,
-                "con_fname_th": d.con_fname_th,
-                "con_lname_th": d.con_lname_th,
-                "con_position_th": d.con_position_th,
-                "con_title_th": d.con_title.title_th,
-            }
-            pickup_records.append(record)
-
-        response = JsonResponse(data={
-            "success": True,            
-            "results": list(pickup_records)        
-        })
-        response.status_code = 200
-    else:
-        print("error")
-        response = JsonResponse(data={
-            "success": False,
-            "contact": [],
-        })
-
-        response = JsonResponse({"error": "there was an error"})
-        response.status_code = 403
-    '''
-
-    '''
-    response = JsonResponse({"success": "test"})
-    response.status_code = 200
-    return response
-    '''
