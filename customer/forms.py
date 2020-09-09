@@ -12,14 +12,14 @@ class CustomerCodeCreateForm(forms.Form):
     cus_id = forms.CharField()
     cus_brn = forms.CharField(required=False)
 
-    # Customer Main Office
+    # Customer Main Office    
     cus_main_cus_zone = forms.ModelChoiceField(queryset=None, required=False)
     customer_option_btype = forms.ModelChoiceField(queryset=None, required=False)
     customer_option_op2 = forms.ModelChoiceField(queryset=None, required=False)
     customer_option_op3 = forms.ModelChoiceField(queryset=None, required=False)
 
     # Customer Site
-    
+    cus_site_cus_zone = forms.ModelChoiceField(queryset=None, required=False)
 
     # Customer Site
 
@@ -32,6 +32,8 @@ class CustomerCodeCreateForm(forms.Form):
         self.fields['customer_option_btype'].queryset = CustomerOption.objects.values_list('btype', flat=True).exclude(btype=None).order_by('btype').distinct()
         self.fields['customer_option_op2'].queryset = CustomerOption.objects.values_list('op2', flat=True).exclude(op2=None).order_by('op2').distinct()
         self.fields['customer_option_op3'].queryset = CustomerOption.objects.values_list('op3', flat=True).exclude(op2=None).order_by('op3').distinct()
+
+        self.fields['cus_site_cus_zone'].queryset=ComZone.objects.all()
 
     def clean_cus_id(self):
         data = self.data.get('cus_id')
@@ -55,11 +57,11 @@ class CustomerCodeCreateForm(forms.Form):
                 return data
             else:
                 raise ValidationError("Customer Branch is not correct!")
-
+    '''
     def clean_cus_main_cus_zone(self):
         data = self.data.get('cus_main_cus_zone')
         return data
-
+    '''
 
 class CusSiteCreateForm(forms.ModelForm):
     cus_site_cus_id = forms.CharField()

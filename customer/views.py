@@ -262,7 +262,7 @@ def ajax_check_exist_cus_site(request):
                     "cus_fax": customer_site.cus_fax,
                     "cus_email": customer_site.cus_email,
                     "cus_zone": customer_site.cus_zone_id,
-                    
+
                     "customer_option_btype": customer_option_btype,
                     "customer_option_op1": customer_option_op1,
                     "customer_option_op2": customer_option_op2,
