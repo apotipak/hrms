@@ -1251,7 +1251,8 @@ def update_cus_site(request):
             customer.cus_email = cus_email
             customer.cus_zone_id = cus_zone
 
-            customer.site_contact_id = cus_site_site_contact_id
+            #customer.site_contact_id = cus_site_site_contact_id
+            customer.site_contact_id = 2
 
             if customer.upd_flag == 'A':
                 customer.upd_flag = 'E'
@@ -1624,12 +1625,14 @@ def update_all_cus_tabs(request):
             cus_site_cus_active = request.POST.get('cus_site_cus_active')
             cus_site_cus_name_th = request.POST.get('cus_site_cus_name_th')
             cus_site_cus_name_en = request.POST.get('cus_site_cus_name_en')
+            cus_site_select_district_id = request.POST.get('cus_site_select_district_id') 
             cus_site_cus_zip = request.POST.get('cus_site_cus_zip')
             cus_site_cus_zone = request.POST.get('cus_site_cus_zone')
             print("------ Customer Site data -------")
             print("cus_no = " + str(cus_no))
             print("cus_site_cus_active = " + str(cus_site_cus_active))
             print("cus_site_cus_name = " + str(cus_site_cus_name_th))
+            print("cus_site_select_district_id = " + str(cus_site_select_district_id))
             print("cus_site_cus_zip = " + str(cus_site_cus_zip))
             print("cus_site_cus_zone = " + str(cus_site_cus_zone))
             print("------------------------")
@@ -1639,6 +1642,7 @@ def update_all_cus_tabs(request):
                 customer = Customer.objects.get(pk=cus_no)
                 customer.cus_name_th = cus_site_cus_name_th
                 customer.cus_name_en = cus_site_cus_name_en
+                customer.cus_district_id = cus_site_select_district_id
                 customer.cus_zip = cus_site_cus_zip
                 customer.cus_zone_id = cus_site_cus_zone
                 customer.save()                
@@ -1649,6 +1653,7 @@ def update_all_cus_tabs(request):
                     cus_brn = cus_brn,
                     cus_name_th = cus_site_cus_name_th,
                     cus_name_en = cus_site_cus_name_en,
+                    cus_district_id = cus_site_select_district_id,
                     cus_zip = cus_site_cus_zip,
                     cus_zone_id = cus_site_cus_zone
                     )

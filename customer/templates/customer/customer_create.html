@@ -1341,7 +1341,8 @@
           $('#id_cus_site_cus_name_th').val(cus_site_cus_name_th);
           $('#id_cus_site_cus_add1_th').val(cus_site_cus_add1_th);
           $('#id_cus_site_cus_add2_th').val(cus_site_cus_add2_th);
-          $('#id_cus_site_cus_subdist_th').val(cus_site_cus_subdist_th);          
+          $('#id_cus_site_cus_subdist_th').val(cus_site_cus_subdist_th);
+          $('#id_cus_main_select_district_id').val(cus_site_cus_district_id);        
           $('#id_cus_site_cus_district_dist_th').val(cus_site_cus_district_th);
           $('#id_cus_site_cus_city_th').val(cus_site_cus_city_th);
           $('#id_cus_site_cus_country_th').val(cus_site_cus_country_th);
@@ -1427,6 +1428,8 @@
 
     cus_site_cus_name_th = $('#id_cus_site_cus_name_th').val();
     cus_site_cus_name_en = $('#id_cus_site_cus_name_en').val();
+    cus_site_select_district_id = $('#id_cus_site_select_district_id').val();
+
     cus_site_cus_zip = $('#id_cus_site_cus_zip').val();
     cus_site_cus_zone = $('#id_cus_site_cus_zone').val();
     
@@ -1490,6 +1493,7 @@
         cus_site_cus_active: cus_site_cus_active,
         cus_site_cus_name_th: cus_site_cus_name_th,
         cus_site_cus_name_en: cus_site_cus_name_en,
+        cus_site_select_district_id: cus_site_select_district_id,
         cus_site_cus_zip: cus_site_cus_zip,
         cus_site_cus_zone: cus_site_cus_zone,
         
@@ -2027,6 +2031,106 @@
 
     });
   });
+
+  $(document).ready(function(){
+    $('#cus_site_district_lookup').on('click', function (e) {
+      var obj = $(this);
+      current_district_id = $('#id_cus_site_select_district_id').val();
+
+      $.ajax({
+          url: obj.attr("data-url"),
+          type: 'get',          
+          dataType: 'json',
+          data : {          
+            current_district_id : current_district_id,
+          },          
+          beforeSend: function () {
+            $("#districtmodal").modal("show");
+          },
+          success: function (data) {
+            var result = "";
+            var count = data.results.length;
+            var dist_id = data.results[0]["dist_id"];
+            var dist_th = data.results[0]["dist_th"];
+
+            result += "<div class='row col-12'>";
+            result += "<div class='col-8 offset-3 pb-2'>";
+            result += "<form id='cus_site_search_district_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
+            result += "  <div class='form-group mx-sm-3 mb-2'>";
+            result += "  <select name='cus_site_cus_district_option' class='form-control form-control-sm' required id='id_cus_site_cus_district_option'>";
+            result += "    <option value='1'>District ID</option>";
+            result += "    <option value='2'>District</option>";
+            result += "    <option value='3' selected>City</option>";
+            result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";
+            result += "    <label for='id_cus_site_search_district' class='sr-only'>Search</label>";            
+            result += "    <input type='text' class='form-control form-control-sm' id='id_cus_site_cus_district_search_text' name='cus_site_cus_district_search_text' placeholder=''>";
+            result += "  </div>";
+            result += "<a href='javascript:cus_site_search_district_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";            
+            result += "</form>";
+            result += "</div>";
+
+            result += "<div class='row col-12'>";
+            result += "<table class='table table-hover table-sm'>";
+            result += " <thead>";
+            result += "   <tr>";
+            result += "     <th scope='col'>{% trans 'District ID' %}</th>";
+            result += "     <th scope='col'>{% trans 'District' %}</th>";
+            result += "     <th scope='col'>{% trans 'City' %}</th>";
+            result += "     <th scope='col'>&nbsp;</th>";
+            result += "   </tr>";
+            result += " </thead>";
+            result += "<tbody>";
+            result += "</div>";
+            result += "<div>";
+
+            for(var i=0; i<count; i++) {              
+              var dist_id = data.results[i]["dist_id"];
+              var dist_name_th = data.results[i]["dist_th"];
+              var dist_name_en = data.results[i]["dist_en"];
+              var city_name_th = data.results[i]["city_th"];
+              var city_name_en = data.results[i]["city_en"];
+
+              result += "<tr>";
+              result += "<td>" + dist_id + "</td>";        
+              result += "<td>" + dist_name_th + "</td>";
+              result += "<td>" + city_name_th + "</td>";
+              result += "<td><a href='javascript:select_district(" + dist_id + ",\"" + dist_name_th + "\",\"" + city_name_th + "\",\"" + dist_name_en + "\",\"" + city_name_en + "\");' type='button' class='btn btn-outline-primary btn-sm'>Select</a></td>";
+
+              result += "</tr>";              
+            }
+            result += " </tbody>";
+            result += "</table>";
+
+            if(data.is_paginated) {
+              result += "<div>";
+              result += "  <span>";
+              result += data.current_page_number + " / " + data.current_page_paginator_num_pages;
+              result += " <a href='javascript:get_cus_site_district_lookup(" + data.next_page + ");'>" + "<i class='fas fa-arrow-circle-right'></i></a>";
+              result += "    </span>";
+              result += "</div>";
+            }
+            
+            $("#districtmodal .modal-body").html(result);            
+          },
+          error: function(data){
+            $("#districtmodal .modal-body").html("{% trans 'There is no data.' %}");
+          }          
+      });
+    });  
+  });
+
+  function select_district(dist_id, dist_name_th, city_name_th, dist_name_en, city_name_en) {        
+    $("#id_cus_site_cus_district_dist_th").val(dist_name_th);
+    $("#id_cus_site_select_district_id").val(dist_id);
+    
+    $("#id_cus_site_cus_city_th").val(city_name_th);    
+
+    $("#id_cus_site_cus_district_en").val(dist_name_en);
+    $("#id_cus_site_cus_city_en").val(city_name_en);
+
+    $("#districtmodal").modal("hide");    
+  }
+
 
 </script>
 

@@ -227,6 +227,10 @@ class CusAllTabsForm(forms.ModelForm):
     # Customer Site
     cus_site_cus_name_th = forms.CharField(required=True)
     cus_site_cus_name_en = forms.CharField(required=True)
+    
+    # cus_site_cud_district = forms.CharField(required=True)
+    cus_site_select_district_id = forms.CharField(required=True)
+
     cus_site_cus_zone = forms.CharField(required=True)
     cus_site_cus_zip = forms.CharField(required=True)
 
@@ -374,6 +378,7 @@ class CusAllTabsForm(forms.ModelForm):
         else:
             raise ValidationError("Zip is not correct.")
 
+    # Customer Site validation
     def clean_cus_site_cus_name_th(self):
         data = self.data.get('cus_site_cus_name_th')        
         if len(data) > 0:
@@ -387,6 +392,14 @@ class CusAllTabsForm(forms.ModelForm):
             return data
         else:
             raise ValidationError("Site Tab - Customer Name (EN) is required.")
+
+    # def clean_cus_site_cud_district(self):
+    def clean_cus_site_select_district_id(self):
+        data = self.data.get('cus_site_select_district_id')
+        if len(data) > 0:
+            return data
+        else:
+            raise ValidationError("Site Tab - District is required.")
 
     def clean_cus_site_cus_zone(self):
         data = self.data.get('cus_site_cus_zone')
