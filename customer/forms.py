@@ -208,7 +208,8 @@ class CustomerSearchForm(forms.ModelForm):
         return data
 
 
-class CusMainForm(forms.ModelForm):
+class CusAllTabsForm(forms.ModelForm):
+    # Customer Main Office
     cus_main_cus_name_th = forms.CharField(required=False)
     cus_main_cus_active = forms.BooleanField(label='', required=False, widget=forms.CheckboxInput())
     cus_main_cus_city_th = forms.CharField(required=False)
@@ -218,10 +219,11 @@ class CusMainForm(forms.ModelForm):
     cus_main_cus_country_en = forms.CharField(required=False)
     cus_main_cus_zone = forms.ModelChoiceField(queryset=None, required=True)
     cus_main_cus_zip = forms.CharField(required=False)
-
-    # cus_main_business_type = forms.ModelChoiceField(queryset=None, required=False)
     cus_main_customer_option_op1 = forms.CharField(required=False)
     cus_main_customer_option_op4 = forms.CharField(required=False)
+
+    # Customer Site
+    cus_site_cus_name_th = forms.CharField(required=True)
 
     class Meta:
         model = CusMain
@@ -366,6 +368,184 @@ class CusMainForm(forms.ModelForm):
             return data
         else:
             raise ValidationError("Zip is not correct.")
+
+    def clean_cus_site_cus_name_th(self):
+        data = self.data.get('cus_site_cus_name_th')        
+        if len(data) > 0:
+            return data
+        else:
+            raise ValidationError("Site Tab - Customer Name (TH) is required.")
+
+
+class CusMainForm(forms.ModelForm):
+    # Customer Main Office
+    cus_main_cus_name_th = forms.CharField(required=False)
+    cus_main_cus_active = forms.BooleanField(label='', required=False, widget=forms.CheckboxInput())
+    cus_main_cus_city_th = forms.CharField(required=False)
+    cus_main_cus_country_th = forms.CharField(required=False)    
+    cus_main_cus_city_en = forms.CharField(required=False)
+    cus_main_cus_district_en = forms.CharField(required=False)
+    cus_main_cus_country_en = forms.CharField(required=False)
+    cus_main_cus_zone = forms.ModelChoiceField(queryset=None, required=True)
+    cus_main_cus_zip = forms.CharField(required=False)
+    cus_main_customer_option_op1 = forms.CharField(required=False)
+    cus_main_customer_option_op4 = forms.CharField(required=False)
+
+    # Customer Site
+    #cus_site_cus_name_th = forms.CharField(required=True)
+
+    class Meta:
+        model = CusMain
+        fields = '__all__'        
+        exclude = ['cus_no','cus_id','cus_city','cus_country','cus_zip','cus_district','cus_zone','cus_contact','site_contact','dist_en']
+    
+    def __init__(self, *args, **kwargs):
+        if 'cus_no' in kwargs:
+            cus_no = kwargs.pop('cus_no')
+        else:
+            cus_no = None
+
+        super(CusMainForm, self).__init__(*args, **kwargs)
+        self.request = kwargs.pop('request', None)        
+        instance = getattr(self, 'instance', None)
+
+        self.initial['cus_main_cus_active'] = instance.cus_active
+
+        self.initial['cus_zip'] = instance.cus_zip
+
+        cus_main_cus_city_th = forms.CharField(required=False)
+        self.initial['cus_main_cus_city_th'] = instance.cus_city
+        self.fields['cus_main_cus_city_th'].widget.attrs['readonly'] = True
+
+        cus_main_cus_country_th = forms.CharField(required=False)
+        self.fields['cus_main_cus_country_th'].initial = instance.cus_country        
+        self.fields['cus_main_cus_country_th'].widget.attrs['readonly'] = True
+
+        cus_main_cus_city_en = forms.CharField(required=False)
+        self.fields['cus_main_cus_city_en'].widget.attrs['readonly'] = True
+        if instance.cus_city is not None:
+            self.initial['cus_main_cus_city_en'] = instance.cus_city.city_en
+        else:
+            self.initial['cus_main_cus_city_en'] = ""
+        
+        cus_main_cus_district_en = forms.CharField(required=False)
+        self.fields['cus_main_cus_district_en'].widget.attrs['readonly'] = True
+        if instance.cus_district is not None:
+            self.initial['cus_main_cus_district_en'] = instance.cus_district.dist_en
+        else:
+            self.initial['cus_main_cus_district_en'] = ""
+        
+        cus_main_cus_country_en = forms.CharField(required=False)
+        self.fields['cus_main_cus_country_en'].widget.attrs['readonly'] = True
+        if instance.cus_district is not None:
+            self.fields['cus_main_cus_country_en'].initial = instance.cus_country.country_en
+        else:
+            self.fields['cus_main_cus_country_en'].initial = ""
+
+        self.fields['cus_main_cus_zone'].queryset=ComZone.objects.all()
+        self.initial['cus_main_cus_zone'] = instance.cus_zone_id
+
+        self.fields['cus_main_customer_option_op1'].strip = False
+        self.fields['cus_main_customer_option_op4'].strip = False
+
+
+    def clean_cus_main_customer_option_op1(self):
+        data = self.data.get('cus_main_customer_option_op1')
+        if len(data) > 10:
+            raise ValidationError("Status is too long.")
+        else:
+            return data
+
+    def clean_cus_main_customer_option_op4(self):
+        data = self.data.get('cus_main_customer_option_op4')
+        if len(data) > 100:
+            raise ValidationError("A/R Code is too long.")
+        else:
+            return data            
+
+    def clean_cus_active(self):
+        data = self.data.get('cus_main_cus_active')
+        if data != "1":
+            return 0
+        return 1
+
+    def clean_cus_main_cus_name_th(self):
+        data = self.data.get('cus_main_cus_name_th')        
+        if len(data) > 0:
+            return data
+        else:
+            raise ValidationError("Customer Name (TH) is required.")
+
+    def clean_cus_add1_th(self):
+        data = self.data.get('cus_main_cus_add1_th')
+        if len(data) > 150:
+            raise ValidationError("Address 1 (TH) is too long.")
+        else:
+            return data
+
+    def clean_cus_add2_th(self):
+        data = self.data.get('cus_main_cus_add2_th')
+        if len(data) > 70:
+            raise ValidationError("Address 2 (TH) is too long.")
+        else:
+            return data
+
+    def clean_cus_subdist_th(self):
+        data = self.data.get('cus_main_cus_subdist_th')
+        if len(data) > 50:
+            raise ValidationError("Sub-District is too long.")
+        else:
+            return data
+
+    def clean_cus_name_en(self):
+        data = self.data.get('cus_main_cus_name_en')
+        if len(data) > 0:
+            return data
+        else:
+            raise ValidationError("Customer Name (EN) is required.")
+
+    def clean_cus_add1_en(self):
+        data = self.data.get('cus_main_cus_add1_en')
+        if len(data) > 150:
+            raise ValidationError("Address 1 (EN) is too long.")
+        else:
+            return data
+
+    def clean_cus_add2_en(self):
+        data = self.data.get('cus_main_cus_add2_en')
+        if len(data) > 70:
+            raise ValidationError("Address 2 (EN) is too long.")
+        else:
+            return data
+
+    def clean_cus_subdist_en(self):
+        data = self.data.get('cus_main_cus_subdist_en')
+        if len(data) > 50:
+            raise ValidationError("Sub-District (EN) is too long.")
+        else:
+            return data
+
+    def clean_cus_main_cus_zip(self):
+        data = self.data.get('cus_main_cus_zip')
+
+        if len(data) != 5:
+            raise ValidationError("Zip is not correct.")
+        else:
+            return data
+
+        if data.isnumeric():
+            return data
+        else:
+            raise ValidationError("Zip is not correct.")
+
+    '''
+    def clean_cus_site_cus_name_th(self):
+        data = self.data.get('cus_site_cus_name_th')        
+        if len(data) > 0:
+            return data
+        else:
+            raise ValidationError("Site Tab - Customer Name (TH) is required.")
+    '''
 
 
 class CusSiteForm(forms.ModelForm):    

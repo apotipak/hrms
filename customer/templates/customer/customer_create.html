@@ -111,6 +111,7 @@
                   {% endif %}                  
                   <div class="slider"></div>
                 </label>
+
               </div>
             </div>
 
@@ -1195,6 +1196,7 @@
 
           $('#id_cus_brn').focus();
 
+          var cus_main_cus_active = data.results[0]["cus_active"];
           var cus_main_cus_name_th = data.results[0]["cus_name_th"];
           var cus_main_cus_add1_th = data.results[0]["cus_add1_th"];
           var cus_main_cus_add2_th = data.results[0]["cus_add2_th"];
@@ -1224,6 +1226,14 @@
           var cus_main_cus_contact_fname_th = data.results[0]["cus_contact_fname_th"];
           var cus_main_cus_contact_lname_th = data.results[0]["cus_contact_lname_th"];
           var cus_main_cus_contact_position_th = data.results[0]["cus_contact_position_th"];
+
+          if(cus_main_cus_active==1) {
+            $('#id_cus_main_cus_active').val(1);
+            $('#id_cus_main_cus_active').prop("checked", true);
+          } else {
+            $('#id_cus_main_cus_active').val(0);
+            $('#id_cus_main_cus_active').prop("checked", false);
+          }
 
           $('#id_cus_main_cus_name_th').val(cus_main_cus_name_th);
           $('#id_cus_main_cus_add1_th').val(cus_main_cus_add1_th);
@@ -1370,6 +1380,8 @@
 
     // CUS_SITE
     cus_site_cus_name_th = $('#id_cus_site_cus_name_th').val();
+    //id_cus_site_cus_active
+
     /*
     cus_main_cus_add1_th = $('#id_cus_main_cus_add1_th').val();
     cus_main_cus_add2_th = $('#id_cus_main_cus_add2_th').val();    
@@ -1423,7 +1435,9 @@
         cus_main_customer_option_op2: customer_option_op2,
         cus_main_customer_option_op3: customer_option_op3,
         cus_main_customer_option_op4: customer_option_op4,
-        cus_main_cus_contact_id: cus_main_cus_contact_id, 
+        cus_main_cus_contact_id: cus_main_cus_contact_id,
+
+        cus_site_cus_name_th: cus_site_cus_name_th,
       },
       success : function(json) {
         if(json.form_is_valid) {          

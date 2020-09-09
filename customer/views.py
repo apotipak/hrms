@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.views import generic
 from .models import Customer, CusMain, CusBill, CustomerOption
-from .forms import CustomerCreateForm, CusMainForm, CusSiteForm, CusBillForm
+from .forms import CustomerCreateForm, CusMainForm, CusSiteForm, CusBillForm, CusAllTabsForm
 from .forms import CustomerCodeCreateForm
 from .forms import CustomerSearchForm
 from django.http import JsonResponse
@@ -52,6 +52,132 @@ def CustomerCreate(request):
         'today_date': today_date,
         'customer_code_create_form': customer_code_create_form,
         })
+
+
+
+@login_required(login_url='/accounts/login/')
+def ajax_check_exist_cus_main(request):
+
+    print("************************************************")
+    print("FUNCTION: ajax_check_exist_cus_main")
+    print("************************************************")
+
+    response_data = {}
+
+    if request.method == "POST":
+        cus_id = request.POST.get('cus_id')
+        cus_brn = request.POST.get('cus_brn')        
+
+        '''
+        print("cus_id = " + str(cus_id))
+        print("cus_brn = " + str(cus_brn))
+        print("**************************")
+        '''
+
+        form = CustomerCodeCreateForm(request.POST)        
+        pickup_records=[]
+        business_type_list = []
+        group_1_list = []
+        group_2_list = []
+        customer_option = []
+
+        if form.is_valid():
+            # print("form is valid")            
+
+            try:                
+                cus_main = CusMain.objects.get(pk=cus_id)
+                
+                '''
+                print("cus_main.cus_contact_id = " + str(cus_main.cus_contact_id))
+                print(cus_main.cus_contact.con_title.title_en)
+                print(cus_main.cus_contact.con_fname_th)
+                print(cus_main.cus_contact.con_lname_th)
+                print(cus_main.cus_contact.con_position_th)
+                '''
+
+                record = {
+                    "cus_id": cus_main.cus_id,
+                    "cus_active": cus_main.cus_active,
+                    "cus_name_th": cus_main.cus_name_th,
+                    "cus_add1_th": cus_main.cus_add1_th,
+                    "cus_add2_th": cus_main.cus_add2_th,
+                    "cus_subdist_th": cus_main.cus_subdist_th,
+                    "cus_district_id": cus_main.cus_district_id,                    
+                    "cus_district_th": cus_main.cus_district.dist_th,
+                    "cus_city_th": cus_main.cus_city.city_th,
+                    "cus_country_th": cus_main.cus_country.country_th,
+                    
+                    "cus_name_en": cus_main.cus_name_en,
+                    "cus_add1_en": cus_main.cus_add1_en,
+                    "cus_add2_en": cus_main.cus_add2_en,
+                    "cus_subdist_en": cus_main.cus_subdist_en,
+                    "cus_district_en": cus_main.cus_district.dist_en,
+                    "cus_city_en": cus_main.cus_city.city_en,
+                    "cus_country_en": cus_main.cus_country.country_en,
+
+                    "cus_zip": cus_main.cus_zip,                    
+                    "cus_tel": cus_main.cus_tel,
+                    "cus_fax": cus_main.cus_fax,
+                    "cus_email": cus_main.cus_email,
+                    "cus_zone": cus_main.cus_zone_id,
+
+                    "cus_contact_id": cus_main.cus_contact_id,
+                    "cus_contact_title_th": cus_main.cus_contact.con_title.title_th,
+                    "cus_contact_fname_th": cus_main.cus_contact.con_fname_th,
+                    "cus_contact_lname_th": cus_main.cus_contact.con_lname_th,
+                    "cus_contact_position_th": cus_main.cus_contact.con_position_th,
+
+                }
+                pickup_records.append(record)
+                
+                cus_main_form = CusMainForm(instance=cus_main)
+            except CusMain.DoesNotExist:
+                cus_main = None
+                record = {
+                    "cus_id": None,
+                    "cus_name_th": None,
+                    "cus_name_en": None,
+                    "cus_name_th": None,
+                    "cus_add1_th": None,
+                    "cus_add2_th": None,
+                    "cus_subdist_th": None,
+                    "cus_district_id": None,                    
+                    "cus_district_th": None,
+                    "cus_city_th": None,
+                    "cus_country_th": None,
+                    "cus_name_en": None,
+                    "cus_add1_en": None,
+                    "cus_add2_en": None,
+                    "cus_subdist_en": None,
+                    "cus_district_en": None,
+                    "cus_city_en": None,
+                    "cus_country_en": None,
+                    "cus_zip": None,
+                    "cus_tel": None,
+                    "cus_fax": None,
+                    "cus_email": None,
+                    "cus_zone": None,
+                    "cus_contact_id": None,
+                    "cus_contact_title_th": None,
+                    "cus_contact_fname_th": None,
+                    "cus_contact_lname_th": None,
+                    "cus_contact_position_th": None,
+                }
+                pickup_records.append(record)      
+            
+            response = JsonResponse({"success": "Form is valid", 
+                "results": list(pickup_records), 
+                #"business_type_list": list(business_type_list)
+                })
+
+            response.status_code = 200
+            return response            
+        else:
+            print("form is invalid")
+            print(form.errors)
+            response = JsonResponse({ "error": "Customer ID is not correct.", "results": list(pickup_records) })
+            response.status_code = 403
+            return response
 
 
 @login_required(login_url='/accounts/login/')
@@ -186,130 +312,6 @@ def ajax_check_exist_cus_site(request):
     response = JsonResponse({ "error": "Contact admistrator.", "results": list(pickup_records) })
     response.status_code = 403
     return response
-
-
-@login_required(login_url='/accounts/login/')
-def ajax_check_exist_cus_main(request):
-
-    print("************************************************")
-    print("FUNCTION: ajax_check_exist_cus_main")
-    print("************************************************")
-
-    response_data = {}
-
-    if request.method == "POST":
-        cus_id = request.POST.get('cus_id')
-        cus_brn = request.POST.get('cus_brn')        
-
-        '''
-        print("cus_id = " + str(cus_id))
-        print("cus_brn = " + str(cus_brn))
-        print("**************************")
-        '''
-
-        form = CustomerCodeCreateForm(request.POST)        
-        pickup_records=[]
-        business_type_list = []
-        group_1_list = []
-        group_2_list = []
-        customer_option = []
-
-        if form.is_valid():
-            # print("form is valid")            
-
-            try:                
-                cus_main = CusMain.objects.get(pk=cus_id)
-                
-                '''
-                print("cus_main.cus_contact_id = " + str(cus_main.cus_contact_id))
-                print(cus_main.cus_contact.con_title.title_en)
-                print(cus_main.cus_contact.con_fname_th)
-                print(cus_main.cus_contact.con_lname_th)
-                print(cus_main.cus_contact.con_position_th)
-                '''
-
-                record = {
-                    "cus_id": cus_main.cus_id,
-                    "cus_name_th": cus_main.cus_name_th,
-                    "cus_add1_th": cus_main.cus_add1_th,
-                    "cus_add2_th": cus_main.cus_add2_th,
-                    "cus_subdist_th": cus_main.cus_subdist_th,
-                    "cus_district_id": cus_main.cus_district_id,                    
-                    "cus_district_th": cus_main.cus_district.dist_th,
-                    "cus_city_th": cus_main.cus_city.city_th,
-                    "cus_country_th": cus_main.cus_country.country_th,
-                    
-                    "cus_name_en": cus_main.cus_name_en,
-                    "cus_add1_en": cus_main.cus_add1_en,
-                    "cus_add2_en": cus_main.cus_add2_en,
-                    "cus_subdist_en": cus_main.cus_subdist_en,
-                    "cus_district_en": cus_main.cus_district.dist_en,
-                    "cus_city_en": cus_main.cus_city.city_en,
-                    "cus_country_en": cus_main.cus_country.country_en,
-
-                    "cus_zip": cus_main.cus_zip,                    
-                    "cus_tel": cus_main.cus_tel,
-                    "cus_fax": cus_main.cus_fax,
-                    "cus_email": cus_main.cus_email,
-                    "cus_zone": cus_main.cus_zone_id,
-
-                    "cus_contact_id": cus_main.cus_contact_id,
-                    "cus_contact_title_th": cus_main.cus_contact.con_title.title_th,
-                    "cus_contact_fname_th": cus_main.cus_contact.con_fname_th,
-                    "cus_contact_lname_th": cus_main.cus_contact.con_lname_th,
-                    "cus_contact_position_th": cus_main.cus_contact.con_position_th,
-
-                }
-                pickup_records.append(record)
-                
-                cus_main_form = CusMainForm(instance=cus_main)
-            except CusMain.DoesNotExist:
-                cus_main = None
-                record = {
-                    "cus_id": None,
-                    "cus_name_th": None,
-                    "cus_name_en": None,
-                    "cus_name_th": None,
-                    "cus_add1_th": None,
-                    "cus_add2_th": None,
-                    "cus_subdist_th": None,
-                    "cus_district_id": None,                    
-                    "cus_district_th": None,
-                    "cus_city_th": None,
-                    "cus_country_th": None,
-                    "cus_name_en": None,
-                    "cus_add1_en": None,
-                    "cus_add2_en": None,
-                    "cus_subdist_en": None,
-                    "cus_district_en": None,
-                    "cus_city_en": None,
-                    "cus_country_en": None,
-                    "cus_zip": None,
-                    "cus_tel": None,
-                    "cus_fax": None,
-                    "cus_email": None,
-                    "cus_zone": None,
-                    "cus_contact_id": None,
-                    "cus_contact_title_th": None,
-                    "cus_contact_fname_th": None,
-                    "cus_contact_lname_th": None,
-                    "cus_contact_position_th": None,
-                }
-                pickup_records.append(record)      
-            
-            response = JsonResponse({"success": "Form is valid", 
-                "results": list(pickup_records), 
-                #"business_type_list": list(business_type_list)
-                })
-
-            response.status_code = 200
-            return response            
-        else:
-            print("form is invalid")
-            print(form.errors)
-            response = JsonResponse({ "error": "Customer ID is not correct.", "results": list(pickup_records) })
-            response.status_code = 403
-            return response
 
 
 @permission_required('customer.view_customer', login_url='/accounts/login/')
@@ -1454,16 +1456,17 @@ def update_all_cus_tabs(request):
     response_data = {}
 
     if request.method == 'POST':
-        form = CusMainForm(request.POST)
+        # form = CusMainForm(request.POST)
+        form = CusAllTabsForm(request.POST)
 
         if form.is_valid():            
             cus_id = request.POST.get('cus_id')
             cus_brn = request.POST.get('cus_brn').zfill(3)
             cus_no = str(cus_id) + str(cus_brn)
 
-            
-            cus_main_active = request.POST.get('cus_main_cus_active')            
-            cus_name_th = request.POST.get('cus_main_cus_name_th')            
+            # Customer Main Office            
+            cus_main_active = request.POST.get('cus_main_cus_active')
+            cus_main_cus_name_th = request.POST.get('cus_main_cus_name_th')            
             cus_add1_th = request.POST.get('cus_main_cus_add1_th')
             cus_add2_th = request.POST.get('cus_main_cus_add2_th')
             cus_subdist_th = request.POST.get('cus_main_cus_subdist_th')                        
@@ -1521,7 +1524,7 @@ def update_all_cus_tabs(request):
                 cus_main.cus_country = city_obj.country_id
 
             cus_main.cus_active = cus_main_active
-            cus_main.cus_name_th = cus_name_th
+            cus_main.cus_name_th = cus_main_cus_name_th
             cus_main.cus_add1_th = cus_add1_th
             cus_main.cus_add2_th = cus_add2_th
             cus_main.cus_subdist_th = cus_subdist_th
@@ -1558,9 +1561,9 @@ def update_all_cus_tabs(request):
                     customer_option.op2 = cus_main_customer_option_op2.replace('&amp;', '&') # Group 1
                     customer_option.op3 = cus_main_customer_option_op3.replace('&amp;', '&') # Group 2
                     customer_option.op4 = cus_main_customer_option_op4.rstrip() # A/R Code
-                    customer_option.save()
+                    customer_option.save()                
             except CustomerOption.DoesNotExist:
-                print("customer_option error!")
+                print("Update customer_option error!")
                 # Insert
                 '''
                 c = CustomerOption(
@@ -1574,7 +1577,15 @@ def update_all_cus_tabs(request):
                 c.save()
                 '''
 
-            # Return success message
+
+            # Customer Site
+            cus_site_cus_active = request.POST.get('cus_site_cus_active')
+            cus_site_cus_name_th = request.POST.get('cus_site_cus_name_th')
+            print("------ Customer Site data -------")
+            print("cus_site_cus_active = " + str(cus_site_cus_active))
+            print("cus_site_cus_name = " + str(cus_site_cus_name_th))
+            print("------------------------")
+
             response_data['result'] = "Update complete."
             response_data['message'] = "ทำรายการสำเร็จ"
             response_data['form_is_valid'] = True
