@@ -1922,6 +1922,357 @@
     update_cus_bill();
   });
 
+
+  function update_cus_main() {
+    cus_id = "{{customer.cus_id|stringformat:'04d'}}";
+    cus_brn = "{{customer.cus_brn|stringformat:'03d'}}";
+    cus_no = cus_id + cus_brn;
+
+    // Main Office TH
+    if ($('#id_cus_main_cus_active').is(":checked"))
+      cus_main_cus_active = 1;
+    else
+      cus_main_cus_active = 0;
+
+    cus_main_cus_name_th = $('#id_cus_main_cus_name_th').val();    
+    cus_main_cus_add1_th = $('#id_cus_main_cus_add1_th').val();
+    cus_main_cus_add2_th = $('#id_cus_main_cus_add2_th').val();
+    cus_main_cus_subdist_th = $('#id_cus_main_cus_subdist_th').val();
+
+    // Main Office EN
+    cus_main_cus_name_en = $('#id_cus_main_cus_name_en').val();
+    cus_main_cus_add1_en = $('#id_cus_main_cus_add1_en').val();
+    cus_main_cus_add2_en = $('#id_cus_main_cus_add2_en').val();
+    cus_main_cus_subdist_en = $('#id_cus_main_cus_subdist_en').val();
+    select_district_id = $('#id_cus_main_select_district_id').val();
+    cus_main_cus_country_en = $('#id_cus_main_cus_country_en').val();
+
+    cus_main_cus_zip = $('#id_cus_main_cus_zip').val();
+    cus_main_cus_tel = $('#id_cus_main_cus_tel').val();
+    cus_main_cus_fax = $('#id_cus_main_cus_fax').val();
+    cus_main_cus_email = $('#id_cus_main_cus_email').val();
+    cus_main_cus_zone = $('#id_cus_main_cus_zone').val();
+
+    // Business Type
+    cus_main_business_type = $('#id_cus_main_business_type').val();
+    cus_main_customer_option_op1 = $('#id_cus_main_customer_option_op1').val(); // Status    
+    cus_main_customer_option_op2 = $('#id_cus_main_customer_option_op2').val(); // Group 1
+    cus_main_customer_option_op3 = $('#id_cus_main_customer_option_op3').val(); // Group 2
+    cus_main_customer_option_op4 = $('#id_cus_main_customer_option_op4').val(); // A/R Code
+
+    // Contact Information
+    cus_main_cus_contact_id = $("#id_cus_main_cus_contact_id").val();
+    //alert(cus_main_cus_contact_id);
+    if(cus_main_cus_contact_id == null)
+      cus_main_cus_contact_id = null;
+
+    $.ajax({
+      url : "/customer/ajax/update_cus_main/",
+      type : "POST",
+      data : {          
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        cus_id : cus_id,
+        cus_brn : cus_brn,
+        cus_no : cus_no,
+
+        cus_main_cus_active : cus_main_cus_active,
+        cus_main_cus_name_th : cus_main_cus_name_th,
+        cus_main_cus_add1_th : cus_main_cus_add1_th,
+        cus_main_cus_add2_th : cus_main_cus_add2_th,
+        cus_main_cus_subdist_th :  cus_main_cus_subdist_th,
+
+        cus_main_cus_name_en : cus_main_cus_name_en,
+        cus_main_cus_add1_en : cus_main_cus_add1_en,
+        cus_main_cus_add2_en : cus_main_cus_add2_en,      
+        cus_main_cus_subdist_en :  cus_main_cus_subdist_en,
+        select_district_id : select_district_id,        
+        cus_main_cus_country_en : cus_main_cus_country_en,
+
+        cus_main_cus_zip : cus_main_cus_zip,
+        cus_main_cus_tel : cus_main_cus_tel,
+        cus_main_cus_fax : cus_main_cus_fax,
+        cus_main_cus_email : cus_main_cus_email,
+        cus_main_cus_zone : cus_main_cus_zone,
+
+        cus_main_business_type : cus_main_business_type,
+        cus_main_customer_option_op1 : cus_main_customer_option_op1,
+        cus_main_customer_option_op2 : cus_main_customer_option_op2,
+        cus_main_customer_option_op3 : cus_main_customer_option_op3,
+        cus_main_customer_option_op4 : cus_main_customer_option_op4,
+
+        cus_main_cus_contact_id : cus_main_cus_contact_id,
+      },
+      success : function(json) {
+        if(json.form_is_valid) {          
+          $(document).Toasts('create', {
+            class: 'bg-success', 
+            title: "{% trans 'Message' %}",
+            subtitle: '',
+            autohide: true,
+            delay: 2000,
+            body: json.result + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+            autoDismiss: true,
+            close: true,
+            autoremove: true,
+          });
+
+          $.each($('.is-valid'), function() {
+            $('.is-valid').removeClass('is-valid');              
+          });            
+
+          $.each($('.is-invalid'), function() {
+            $('.is-invalid').addClass('is-valid');  
+            $('.is-invalid').removeClass('is-invalid');              
+          });
+
+        }
+        else {          
+
+          $(document).Toasts('create', {
+            class: 'bg-danger', 
+            title: "{% trans 'Error' %}",
+            subtitle: '',
+            autohide: true,
+            delay: 5000,
+            body: json.message,
+            autoDismiss: true,
+            close: true,
+            autoremove: true,
+            preventDuplicates: true,       
+          });
+
+          for(error in json.errors) {
+            $("#id_" + error).addClass("is-invalid");         
+          };
+
+        }
+      },
+    });
+  }
+
+
+  function update_cus_site() {
+    cus_id = "{{customer.cus_id|stringformat:'04d'}}";
+    cus_brn = "{{customer.cus_brn|stringformat:'03d'}}";
+    //cus_no = cus_id + cus_brn;
+    cus_no = "{{cus_no}}";
+
+    if ($('#id_cus_site_cus_active').is(":checked"))
+      cus_site_cus_active = 1;
+    else
+      cus_site_cus_active = 0;
+
+    cus_site_cus_name_th = $('#id_cus_site_cus_name_th').val();
+    cus_site_cus_add1_th = $('#id_cus_site_cus_add1_th').val();
+    cus_site_cus_add2_th = $('#id_cus_site_cus_add2_th').val();
+    cus_site_cus_subdist_th = $('#id_cus_site_cus_subdist_th').val();
+
+    cus_site_cus_name_en = $('#id_cus_site_cus_name_en').val();
+    cus_site_cus_add1_en = $('#id_cus_site_cus_add1_en').val();
+    cus_site_cus_add2_en = $('#id_cus_site_cus_add2_en').val();
+    cus_site_cus_subdist_en = $('#id_cus_site_cus_subdist_en').val();
+    select_district_id = $('#id_cus_site_select_district_id').val();
+    cus_site_cus_zip = $('#id_cus_site_cus_zip').val();
+    cus_site_cus_tel = $('#id_cus_site_cus_tel').val();
+    cus_site_cus_fax = $('#id_cus_site_cus_fax').val();
+    cus_site_cus_email = $('#id_cus_site_cus_email').val();
+    cus_site_cus_zone = $('#id_cus_site_cus_zone').val();
+
+    // Contact Information
+    cus_site_cus_contact_con_sex = $('input[name="cus_site_cus_contact_con_sex"]:checked').val();    
+    cus_site_site_contact_id = $("#id_cus_site_site_contact_id").val();
+
+    $.ajax({
+        url : "/customer/ajax/update_cus_site/",
+        type : "POST",
+        data : {          
+          csrfmiddlewaretoken: '{{ csrf_token }}',
+          cus_id : cus_id,
+          cus_brn : cus_brn,
+          cus_no : cus_no,
+          cus_site_cus_active : cus_site_cus_active,
+          cus_site_cus_name_th : cus_site_cus_name_th,
+          cus_site_cus_add1_th : cus_site_cus_add1_th,
+          cus_site_cus_add2_th : cus_site_cus_add2_th,
+          cus_site_cus_subdist_th :  cus_site_cus_subdist_th,
+          cus_site_cus_name_en : cus_site_cus_name_en,
+          cus_site_cus_add1_en : cus_site_cus_add1_en,
+          cus_site_cus_add2_en : cus_site_cus_add2_en,
+          cus_site_cus_subdist_en : cus_site_cus_subdist_en,
+          select_district_id : select_district_id,
+          cus_site_cus_zip : cus_site_cus_zip,
+          cus_site_cus_tel : cus_site_cus_tel,
+          cus_site_cus_fax : cus_site_cus_fax,
+          cus_site_cus_email : cus_site_cus_email,
+          cus_site_cus_zone : cus_site_cus_zone,
+
+          cus_site_cus_contact_con_sex : cus_site_cus_contact_con_sex,
+          cus_site_site_contact_id : cus_site_site_contact_id,
+        },
+        success : function(json) {
+          if(json.form_is_valid) {        
+
+            $(document).Toasts('create', {
+              class: 'bg-success', 
+              title: "{% trans 'Message' %}",
+              subtitle: '',
+              autohide: true,
+              delay: 2000,
+              body: json.result + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+              autoDismiss: true,
+              close: true,
+              autoremove: true,
+            });
+
+            $.each($('.is-valid'), function() {
+              $('.is-valid').removeClass('is-valid');              
+            });            
+
+            $.each($('.is-invalid'), function() {
+              $('.is-invalid').addClass('is-valid');  
+              $('.is-invalid').removeClass('is-invalid');              
+            });            
+
+          }
+          else {            
+            $(document).Toasts('create', {
+              class: 'bg-danger', 
+              title: "{% trans 'Error' %}",
+              subtitle: '',
+              autohide: true,
+              delay: 5000,
+              body: json.message,
+              autoDismiss: true,
+              close: true,
+              autoremove: true,
+              preventDuplicates: true,
+            });
+
+            for(error in json.errors) {
+              $("#id_"+error).addClass("is-invalid");         
+            };
+          }
+        },
+        error : function(json) {
+          //
+        }
+    });
+  }
+
+
+
+  function update_cus_bill() {
+    cus_id = "{{cus_site.cus_id|stringformat:'04d'}}";
+    cus_brn = "{{cus_site.cus_brn|stringformat:'03d'}}";
+    cus_no = cus_id + cus_brn;
+
+    //alert(cus_no);
+
+    if ($('#id_cus_bill_cus_active').is(":checked"))
+      cus_bill_cus_active = 1;
+    else
+      cus_bill_cus_active = 0;
+
+    cus_bill_cus_name_th = $('#id_cus_bill_cus_name_th').val();
+    cus_bill_cus_add1_th = $('#id_cus_bill_cus_add1_th').val();
+    cus_bill_cus_add2_th = $('#id_cus_bill_cus_add2_th').val();
+    cus_bill_cus_subdist_th = $('#id_cus_bill_cus_subdist_th').val();
+
+    cus_bill_cus_name_en = $('#id_cus_bill_cus_name_en').val();
+    cus_bill_cus_add1_en = $('#id_cus_bill_cus_add1_en').val();
+    cus_bill_cus_add2_en = $('#id_cus_bill_cus_add2_en').val();
+    cus_bill_cus_subdist_en = $('#id_cus_bill_cus_subdist_en').val();
+    
+    select_district_id = $('#id_cus_bill_select_district_id').val();
+    //alert(select_district_id);
+
+    cus_bill_cus_zip = $('#id_cus_bill_cus_zip').val();
+    cus_bill_cus_tel = $('#id_cus_bill_cus_tel').val();
+    cus_bill_cus_fax = $('#id_cus_bill_cus_fax').val();
+    cus_bill_cus_email = $('#id_cus_bill_cus_email').val();
+    cus_bill_cus_zone = $('#id_cus_bill_cus_zone').val();
+
+    // Contact Information
+    cus_bill_cus_contact_con_sex = $('input[name="cus_bill_cus_contact_con_sex"]:checked').val();    
+    cus_bill_cus_contact_id = $("#id_cus_bill_cus_contact_id").val();
+    
+    $.ajax({
+        url : "/customer/ajax/update_cus_bill/",
+        type : "POST",
+        data : {          
+          csrfmiddlewaretoken: '{{ csrf_token }}',
+          cus_id : cus_id,
+          cus_brn : cus_brn,
+          cus_no : cus_no,
+          cus_bill_cus_active : cus_bill_cus_active,
+          cus_bill_cus_name_th : cus_bill_cus_name_th,
+          cus_bill_cus_add1_th : cus_bill_cus_add1_th,
+          cus_bill_cus_add2_th : cus_bill_cus_add2_th,
+          cus_bill_cus_subdist_th :  cus_bill_cus_subdist_th,
+          cus_bill_cus_name_en : cus_bill_cus_name_en,
+          cus_bill_cus_add1_en : cus_bill_cus_add1_en,
+          cus_bill_cus_add2_en : cus_bill_cus_add2_en,
+          cus_bill_cus_subdist_en : cus_bill_cus_subdist_en,
+          select_district_id : select_district_id,
+          cus_bill_cus_zip : cus_bill_cus_zip,
+          cus_bill_cus_tel : cus_bill_cus_tel,
+          cus_bill_cus_fax : cus_bill_cus_fax,
+          cus_bill_cus_email : cus_bill_cus_email,
+          cus_bill_cus_zone : cus_bill_cus_zone,
+
+          cus_bill_cus_contact_con_sex : cus_bill_cus_contact_con_sex,
+          cus_bill_cus_contact_id : cus_bill_cus_contact_id,
+        },
+        success : function(json) {
+          if(json.form_is_valid) {        
+
+            $(document).Toasts('create', {
+              class: 'bg-success', 
+              title: "{% trans 'Message' %}",
+              subtitle: '',
+              autohide: true,
+              delay: 2000,
+              body: json.result + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+              autoDismiss: true,
+              close: true,
+              autoremove: true,
+            });
+
+            $.each($('.is-valid'), function() {
+              $('.is-valid').removeClass('is-valid');              
+            });            
+
+            $.each($('.is-invalid'), function() {
+              $('.is-invalid').addClass('is-valid');  
+              $('.is-invalid').removeClass('is-invalid');              
+            });            
+
+          }
+          else {            
+            $(document).Toasts('create', {
+              class: 'bg-danger', 
+              title: "{% trans 'Error' %}",
+              subtitle: '',
+              autohide: true,
+              delay: 5000,
+              body: json.message,
+              autoDismiss: true,
+              close: true,
+              autoremove: true,
+              preventDuplicates: true,
+            });
+
+            for(error in json.errors) {
+              $("#id_"+error).addClass("is-invalid");         
+            };
+          }
+        },
+        error : function(json) {
+          //
+        }
+    });
+  }
+
   function cus_main_search_contact_modal() {
     //alert("todo");
     current_contact_id = $('#id_cus_main_select_cus_contact_id').val();    
@@ -2892,356 +3243,6 @@
     });
 
   }
-
-  function update_cus_main() {
-    cus_id = "{{customer.cus_id|stringformat:'04d'}}";
-    cus_brn = "{{customer.cus_brn|stringformat:'03d'}}";
-    cus_no = cus_id + cus_brn;
-
-    // Main Office TH
-    if ($('#id_cus_main_cus_active').is(":checked"))
-      cus_main_cus_active = 1;
-    else
-      cus_main_cus_active = 0;
-
-    cus_main_cus_name_th = $('#id_cus_main_cus_name_th').val();    
-    cus_main_cus_add1_th = $('#id_cus_main_cus_add1_th').val();
-    cus_main_cus_add2_th = $('#id_cus_main_cus_add2_th').val();
-    cus_main_cus_subdist_th = $('#id_cus_main_cus_subdist_th').val();
-
-    // Main Office EN
-    cus_main_cus_name_en = $('#id_cus_main_cus_name_en').val();
-    cus_main_cus_add1_en = $('#id_cus_main_cus_add1_en').val();
-    cus_main_cus_add2_en = $('#id_cus_main_cus_add2_en').val();
-    cus_main_cus_subdist_en = $('#id_cus_main_cus_subdist_en').val();
-    select_district_id = $('#id_cus_main_select_district_id').val();
-    cus_main_cus_country_en = $('#id_cus_main_cus_country_en').val();
-
-    cus_main_cus_zip = $('#id_cus_main_cus_zip').val();
-    cus_main_cus_tel = $('#id_cus_main_cus_tel').val();
-    cus_main_cus_fax = $('#id_cus_main_cus_fax').val();
-    cus_main_cus_email = $('#id_cus_main_cus_email').val();
-    cus_main_cus_zone = $('#id_cus_main_cus_zone').val();
-
-    // Business Type
-    cus_main_business_type = $('#id_cus_main_business_type').val();
-    cus_main_customer_option_op1 = $('#id_cus_main_customer_option_op1').val(); // Status    
-    cus_main_customer_option_op2 = $('#id_cus_main_customer_option_op2').val(); // Group 1
-    cus_main_customer_option_op3 = $('#id_cus_main_customer_option_op3').val(); // Group 2
-    cus_main_customer_option_op4 = $('#id_cus_main_customer_option_op4').val(); // A/R Code
-
-    // Contact Information
-    cus_main_cus_contact_id = $("#id_cus_main_cus_contact_id").val();
-    //alert(cus_main_cus_contact_id);
-    if(cus_main_cus_contact_id == null)
-      cus_main_cus_contact_id = null;
-
-    $.ajax({
-      url : "/customer/ajax/update_cus_main/",
-      type : "POST",
-      data : {          
-        csrfmiddlewaretoken: '{{ csrf_token }}',
-        cus_id : cus_id,
-        cus_brn : cus_brn,
-        cus_no : cus_no,
-
-        cus_main_cus_active : cus_main_cus_active,
-        cus_main_cus_name_th : cus_main_cus_name_th,
-        cus_main_cus_add1_th : cus_main_cus_add1_th,
-        cus_main_cus_add2_th : cus_main_cus_add2_th,
-        cus_main_cus_subdist_th :  cus_main_cus_subdist_th,
-
-        cus_main_cus_name_en : cus_main_cus_name_en,
-        cus_main_cus_add1_en : cus_main_cus_add1_en,
-        cus_main_cus_add2_en : cus_main_cus_add2_en,      
-        cus_main_cus_subdist_en :  cus_main_cus_subdist_en,
-        select_district_id : select_district_id,        
-        cus_main_cus_country_en : cus_main_cus_country_en,
-
-        cus_main_cus_zip : cus_main_cus_zip,
-        cus_main_cus_tel : cus_main_cus_tel,
-        cus_main_cus_fax : cus_main_cus_fax,
-        cus_main_cus_email : cus_main_cus_email,
-        cus_main_cus_zone : cus_main_cus_zone,
-
-        cus_main_business_type : cus_main_business_type,
-        cus_main_customer_option_op1 : cus_main_customer_option_op1,
-        cus_main_customer_option_op2 : cus_main_customer_option_op2,
-        cus_main_customer_option_op3 : cus_main_customer_option_op3,
-        cus_main_customer_option_op4 : cus_main_customer_option_op4,
-
-        cus_main_cus_contact_id : cus_main_cus_contact_id,
-      },
-      success : function(json) {
-        if(json.form_is_valid) {          
-          $(document).Toasts('create', {
-            class: 'bg-success', 
-            title: "{% trans 'Message' %}",
-            subtitle: '',
-            autohide: true,
-            delay: 2000,
-            body: json.result + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
-            autoDismiss: true,
-            close: true,
-            autoremove: true,
-          });
-
-          $.each($('.is-valid'), function() {
-            $('.is-valid').removeClass('is-valid');              
-          });            
-
-          $.each($('.is-invalid'), function() {
-            $('.is-invalid').addClass('is-valid');  
-            $('.is-invalid').removeClass('is-invalid');              
-          });           
-
-        }
-        else {          
-
-          $(document).Toasts('create', {
-            class: 'bg-danger', 
-            title: "{% trans 'Error' %}",
-            subtitle: '',
-            autohide: true,
-            delay: 5000,
-            body: json.message,
-            autoDismiss: true,
-            close: true,
-            autoremove: true,
-            preventDuplicates: true,       
-          });
-
-          for(error in json.errors) {
-            $("#id_" + error).addClass("is-invalid");         
-          };            
-        }
-      },
-    });
-  }
-
-
-  function update_cus_site() {
-    cus_id = "{{customer.cus_id|stringformat:'04d'}}";
-    cus_brn = "{{customer.cus_brn|stringformat:'03d'}}";
-    //cus_no = cus_id + cus_brn;
-    cus_no = "{{cus_no}}";
-
-    if ($('#id_cus_site_cus_active').is(":checked"))
-      cus_site_cus_active = 1;
-    else
-      cus_site_cus_active = 0;
-
-    cus_site_cus_name_th = $('#id_cus_site_cus_name_th').val();
-    cus_site_cus_add1_th = $('#id_cus_site_cus_add1_th').val();
-    cus_site_cus_add2_th = $('#id_cus_site_cus_add2_th').val();
-    cus_site_cus_subdist_th = $('#id_cus_site_cus_subdist_th').val();
-
-    cus_site_cus_name_en = $('#id_cus_site_cus_name_en').val();
-    cus_site_cus_add1_en = $('#id_cus_site_cus_add1_en').val();
-    cus_site_cus_add2_en = $('#id_cus_site_cus_add2_en').val();
-    cus_site_cus_subdist_en = $('#id_cus_site_cus_subdist_en').val();
-    select_district_id = $('#id_cus_site_select_district_id').val();
-    cus_site_cus_zip = $('#id_cus_site_cus_zip').val();
-    cus_site_cus_tel = $('#id_cus_site_cus_tel').val();
-    cus_site_cus_fax = $('#id_cus_site_cus_fax').val();
-    cus_site_cus_email = $('#id_cus_site_cus_email').val();
-    cus_site_cus_zone = $('#id_cus_site_cus_zone').val();
-
-    // Contact Information
-    cus_site_cus_contact_con_sex = $('input[name="cus_site_cus_contact_con_sex"]:checked').val();    
-    cus_site_site_contact_id = $("#id_cus_site_site_contact_id").val();
-
-    $.ajax({
-        url : "/customer/ajax/update_cus_site/",
-        type : "POST",
-        data : {          
-          csrfmiddlewaretoken: '{{ csrf_token }}',
-          cus_id : cus_id,
-          cus_brn : cus_brn,
-          cus_no : cus_no,
-          cus_site_cus_active : cus_site_cus_active,
-          cus_site_cus_name_th : cus_site_cus_name_th,
-          cus_site_cus_add1_th : cus_site_cus_add1_th,
-          cus_site_cus_add2_th : cus_site_cus_add2_th,
-          cus_site_cus_subdist_th :  cus_site_cus_subdist_th,
-          cus_site_cus_name_en : cus_site_cus_name_en,
-          cus_site_cus_add1_en : cus_site_cus_add1_en,
-          cus_site_cus_add2_en : cus_site_cus_add2_en,
-          cus_site_cus_subdist_en : cus_site_cus_subdist_en,
-          select_district_id : select_district_id,
-          cus_site_cus_zip : cus_site_cus_zip,
-          cus_site_cus_tel : cus_site_cus_tel,
-          cus_site_cus_fax : cus_site_cus_fax,
-          cus_site_cus_email : cus_site_cus_email,
-          cus_site_cus_zone : cus_site_cus_zone,
-
-          cus_site_cus_contact_con_sex : cus_site_cus_contact_con_sex,
-          cus_site_site_contact_id : cus_site_site_contact_id,
-        },
-        success : function(json) {
-          if(json.form_is_valid) {        
-
-            $(document).Toasts('create', {
-              class: 'bg-success', 
-              title: "{% trans 'Message' %}",
-              subtitle: '',
-              autohide: true,
-              delay: 2000,
-              body: json.result + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
-              autoDismiss: true,
-              close: true,
-              autoremove: true,
-            });
-
-            $.each($('.is-valid'), function() {
-              $('.is-valid').removeClass('is-valid');              
-            });            
-
-            $.each($('.is-invalid'), function() {
-              $('.is-invalid').addClass('is-valid');  
-              $('.is-invalid').removeClass('is-invalid');              
-            });            
-
-          }
-          else {            
-            $(document).Toasts('create', {
-              class: 'bg-danger', 
-              title: "{% trans 'Error' %}",
-              subtitle: '',
-              autohide: true,
-              delay: 5000,
-              body: json.message,
-              autoDismiss: true,
-              close: true,
-              autoremove: true,
-              preventDuplicates: true,
-            });
-
-            for(error in json.errors) {
-              $("#id_"+error).addClass("is-invalid");         
-            };
-          }
-        },
-        error : function(json) {
-          //
-        }
-    });
-  }
-
-
-
-  function update_cus_bill() {
-    cus_id = "{{cus_site.cus_id|stringformat:'04d'}}";
-    cus_brn = "{{cus_site.cus_brn|stringformat:'03d'}}";
-    cus_no = cus_id + cus_brn;
-
-    //alert(cus_no);
-
-    if ($('#id_cus_bill_cus_active').is(":checked"))
-      cus_bill_cus_active = 1;
-    else
-      cus_bill_cus_active = 0;
-
-    cus_bill_cus_name_th = $('#id_cus_bill_cus_name_th').val();
-    cus_bill_cus_add1_th = $('#id_cus_bill_cus_add1_th').val();
-    cus_bill_cus_add2_th = $('#id_cus_bill_cus_add2_th').val();
-    cus_bill_cus_subdist_th = $('#id_cus_bill_cus_subdist_th').val();
-
-    cus_bill_cus_name_en = $('#id_cus_bill_cus_name_en').val();
-    cus_bill_cus_add1_en = $('#id_cus_bill_cus_add1_en').val();
-    cus_bill_cus_add2_en = $('#id_cus_bill_cus_add2_en').val();
-    cus_bill_cus_subdist_en = $('#id_cus_bill_cus_subdist_en').val();
-    
-    select_district_id = $('#id_cus_bill_select_district_id').val();
-    //alert(select_district_id);
-
-    cus_bill_cus_zip = $('#id_cus_bill_cus_zip').val();
-    cus_bill_cus_tel = $('#id_cus_bill_cus_tel').val();
-    cus_bill_cus_fax = $('#id_cus_bill_cus_fax').val();
-    cus_bill_cus_email = $('#id_cus_bill_cus_email').val();
-    cus_bill_cus_zone = $('#id_cus_bill_cus_zone').val();
-
-    // Contact Information
-    cus_bill_cus_contact_con_sex = $('input[name="cus_bill_cus_contact_con_sex"]:checked').val();    
-    cus_bill_cus_contact_id = $("#id_cus_bill_cus_contact_id").val();
-    
-    $.ajax({
-        url : "/customer/ajax/update_cus_bill/",
-        type : "POST",
-        data : {          
-          csrfmiddlewaretoken: '{{ csrf_token }}',
-          cus_id : cus_id,
-          cus_brn : cus_brn,
-          cus_no : cus_no,
-          cus_bill_cus_active : cus_bill_cus_active,
-          cus_bill_cus_name_th : cus_bill_cus_name_th,
-          cus_bill_cus_add1_th : cus_bill_cus_add1_th,
-          cus_bill_cus_add2_th : cus_bill_cus_add2_th,
-          cus_bill_cus_subdist_th :  cus_bill_cus_subdist_th,
-          cus_bill_cus_name_en : cus_bill_cus_name_en,
-          cus_bill_cus_add1_en : cus_bill_cus_add1_en,
-          cus_bill_cus_add2_en : cus_bill_cus_add2_en,
-          cus_bill_cus_subdist_en : cus_bill_cus_subdist_en,
-          select_district_id : select_district_id,
-          cus_bill_cus_zip : cus_bill_cus_zip,
-          cus_bill_cus_tel : cus_bill_cus_tel,
-          cus_bill_cus_fax : cus_bill_cus_fax,
-          cus_bill_cus_email : cus_bill_cus_email,
-          cus_bill_cus_zone : cus_bill_cus_zone,
-
-          cus_bill_cus_contact_con_sex : cus_bill_cus_contact_con_sex,
-          cus_bill_cus_contact_id : cus_bill_cus_contact_id,
-        },
-        success : function(json) {
-          if(json.form_is_valid) {        
-
-            $(document).Toasts('create', {
-              class: 'bg-success', 
-              title: "{% trans 'Message' %}",
-              subtitle: '',
-              autohide: true,
-              delay: 2000,
-              body: json.result + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
-              autoDismiss: true,
-              close: true,
-              autoremove: true,
-            });
-
-            $.each($('.is-valid'), function() {
-              $('.is-valid').removeClass('is-valid');              
-            });            
-
-            $.each($('.is-invalid'), function() {
-              $('.is-invalid').addClass('is-valid');  
-              $('.is-invalid').removeClass('is-invalid');              
-            });            
-
-          }
-          else {            
-            $(document).Toasts('create', {
-              class: 'bg-danger', 
-              title: "{% trans 'Error' %}",
-              subtitle: '',
-              autohide: true,
-              delay: 5000,
-              body: json.message,
-              autoDismiss: true,
-              close: true,
-              autoremove: true,
-              preventDuplicates: true,
-            });
-
-            for(error in json.errors) {
-              $("#id_"+error).addClass("is-invalid");         
-            };
-          }
-        },
-        error : function(json) {
-          //
-        }
-    });
-  }
-
 
   $(document).ready(function(){
 
