@@ -1465,7 +1465,7 @@ def update_all_cus_tabs(request):
             cus_no = str(cus_id) + str(cus_brn)
 
             # Customer Main Office            
-            cus_main_active = request.POST.get('cus_main_cus_active')
+            cus_main_cus_active = request.POST.get('cus_main_cus_active')
             cus_main_cus_name_th = request.POST.get('cus_main_cus_name_th')            
             cus_add1_th = request.POST.get('cus_main_cus_add1_th')
             cus_add2_th = request.POST.get('cus_main_cus_add2_th')
@@ -1523,7 +1523,7 @@ def update_all_cus_tabs(request):
                 city_obj = TCity.objects.get(city_id=city_id)
                 cus_main.cus_country = city_obj.country_id
 
-            cus_main.cus_active = cus_main_active
+            cus_main.cus_active = cus_main_cus_active
             cus_main.cus_name_th = cus_main_cus_name_th
             cus_main.cus_add1_th = cus_add1_th
             cus_main.cus_add2_th = cus_add2_th

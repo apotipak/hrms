@@ -236,7 +236,7 @@ class CusAllTabsForm(forms.ModelForm):
         else:
             cus_no = None
 
-        super(CusMainForm, self).__init__(*args, **kwargs)
+        super(CusAllTabsForm, self).__init__(*args, **kwargs)
         self.request = kwargs.pop('request', None)        
         instance = getattr(self, 'instance', None)
 
