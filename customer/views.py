@@ -73,17 +73,19 @@ def ajax_check_exist_cus_site(request):
         cus_id = request.POST.get('cus_id')
         cus_brn = request.POST.get('cus_brn').zfill(3)
 
+        '''
         print("**************************")
         print("cus_id = " + str(cus_id))
         print("cus_brn = " + str(cus_brn))
         print("**************************")
+        '''
 
         if form.is_valid():
-            print("form is valid")
+            # print("form is valid")
 
             # Get customer site information
             cus_no = str(cus_id) + str(cus_brn)            
-            print("cus_no = " + str(cus_no))
+            # print("cus_no = " + str(cus_no))
             try:
                 customer_site = Customer.objects.get(pk=cus_no)
             except Customer.DoesNotExist:
@@ -173,7 +175,7 @@ def ajax_check_exist_cus_site(request):
             response.status_code = 200
             return response            
         else:
-            print("form is invalid")       
+            # print("form is invalid")       
             response = JsonResponse({ "error": "Data is not correct.", "results": list(pickup_records) })
             response.status_code = 403
             return response   
@@ -199,9 +201,11 @@ def ajax_check_exist_cus_main(request):
         cus_id = request.POST.get('cus_id')
         cus_brn = request.POST.get('cus_brn')        
 
+        '''
         print("cus_id = " + str(cus_id))
         print("cus_brn = " + str(cus_brn))
         print("**************************")
+        '''
 
         form = CustomerCodeCreateForm(request.POST)        
         pickup_records=[]
@@ -211,17 +215,18 @@ def ajax_check_exist_cus_main(request):
         customer_option = []
 
         if form.is_valid():
-            print("form is valid")            
+            # print("form is valid")            
 
             try:                
                 cus_main = CusMain.objects.get(pk=cus_id)
                 
+                '''
                 print("cus_main.cus_contact_id = " + str(cus_main.cus_contact_id))
                 print(cus_main.cus_contact.con_title.title_en)
                 print(cus_main.cus_contact.con_fname_th)
                 print(cus_main.cus_contact.con_lname_th)
                 print(cus_main.cus_contact.con_position_th)
-
+                '''
 
                 record = {
                     "cus_id": cus_main.cus_id,
@@ -322,10 +327,12 @@ def CustomerList(request):
         cus_id = request.POST.get('cus_id')
         cus_brn = request.POST.get('cus_brn')        
 
+        '''
         print("post")
         print("POST: cus_name = " +  str(cus_name))
         print("POST: cus_id = " +  str(cus_id))
         print("POST: cus_brn = " +  str(cus_brn))
+        '''
 
         # cus_name
         if cus_name!='' and cus_id!='' and cus_brn!='':
@@ -452,12 +459,14 @@ def CustomerList(request):
 
         try:
             current_page = paginator.get_page(page)
+            '''
             print("current_page = " + str(current_page))
             print("current_page.number = " + str(current_page.number))        
             print("current_page.paginator.num_pages = " + str(current_page.paginator.num_pages))
             
             print("current_page.has_next = " + str(current_page.has_next))
             print("current_page.has_previous = " + str(current_page.has_previous))            
+            '''
         except InvalidPage as e:
             raise Http404(str(e))
 
@@ -483,8 +492,8 @@ def CustomerList(request):
 # Load all 3 forms (cus_main, cus_site, cus_bill)
 
 def CustomerUpdate(request, pk):
-    print("check")
-    print("pk = " + str(pk))
+    # print("check")
+    # print("pk = " + str(pk))
 
     template_name = 'customer/customer_update.html'
     
@@ -507,8 +516,9 @@ def CustomerUpdate(request, pk):
 
         try:
             cus_bill = CusBill.objects.get(pk=pk)
-            print("check cus_subdist_th")
-            print(cus_bill.cus_subdist_th)
+
+            # print("check cus_subdist_th")
+            # print(cus_bill.cus_subdist_th)
         except CusBill.DoesNotExist:
             cus_bill = None
 
@@ -572,7 +582,7 @@ def get_district_list_modal(request):
     search_district_option = request.GET["search_district_option"]
     search_district_text = request.GET["search_district_text"]
     
-    print("current_district_id = " + str(current_district_id))
+    # print("current_district_id = " + str(current_district_id))
 
     if search_district_option == '1':
         data = TDistrict.objects.select_related('city_id').filter(dist_id__exact=search_district_text)
@@ -668,7 +678,7 @@ def get_district_list(request):
     current_district_id = request.GET.get('current_district_id')
     cus_active = request.POST.get('cus_main_cus_active')
 
-    print("current_district_id : " + str(current_district_id))
+    # print("current_district_id : " + str(current_district_id))
 
     item_per_page = 100
 
@@ -689,7 +699,7 @@ def get_district_list(request):
         print("method get")
         if current_district_id != "":
             district_object = TDistrict.objects.filter(dist_id__exact=current_district_id).get()                        
-            print("city name th = " + str(district_object.city_id.city_en))
+            # print("city name th = " + str(district_object.city_id.city_en))
 
             data = TDistrict.objects.select_related('city_id').filter(city_id__city_th__contains=district_object.city_id.city_th)
             if not data:
@@ -707,13 +717,15 @@ def get_district_list(request):
 
     #if data:
     if current_page:
+        '''
         print("current_page = " + str(current_page))
         print("current_page.number = " + str(current_page.number))        
         print("current_page.paginator.num_pages = " + str(current_page.paginator.num_pages))
         
         print("current_page.has_next = " + str(current_page.has_next))
         print("current_page.has_previous = " + str(current_page.has_previous))
-    
+        '''
+
         current_page_number = current_page.number
         current_page_paginator_num_pages = current_page.paginator.num_pages
 
@@ -721,7 +733,7 @@ def get_district_list(request):
         pickup_records=[]
         
         for d in current_page:
-            print("debug 1")
+            # print("debug 1")
             record = {
                 "dist_id": d.dist_id,
                 "city_id": d.city_id_id,
@@ -757,7 +769,7 @@ def get_district_list(request):
 
 
 def save_customer_form(request, form, template_name):
-    print("todo : save_customer_form")
+    # print("todo : save_customer_form")
     data = dict()
     if request.method == 'POST':
         #form = CustomerCreateForm(request.POST)
@@ -873,7 +885,7 @@ def get_district_list_backup(request):
     item_per_page = 5
 
     if request.method == "POST":
-        print("method post")
+        # print("method post")
         data = TDistrict.objects.raw("select d.dist_id,d.dist_th,d.dist_en,c.city_id,c.city_th,c.city_en from t_district d join t_city c on d.city_id = c.city_id order by c.city_th") or None
 
         page = 1
@@ -885,7 +897,7 @@ def get_district_list_backup(request):
         except InvalidPage as e:
             raise Http404(str(e))
     else:
-        print("method get")
+        # print("method get")
         data = TDistrict.objects.raw("select d.dist_id,d.dist_th,d.dist_en,c.city_id,c.city_th,c.city_en from t_district d join t_city c on d.city_id = c.city_id order by c.city_th") or None
         paginator = Paginator(data, item_per_page)
         is_paginated = True if paginator.num_pages > 1 else False
@@ -904,7 +916,7 @@ def get_district_list_backup(request):
         pickup_records=[]
         
         for d in current_page:
-            print("debug 1")
+            # print("debug 1")
             record = {
                 "dist_id": d.dist_id, 
                 "city_id": d.city_id,
@@ -915,8 +927,8 @@ def get_district_list_backup(request):
             pickup_records.append(record)
 
         serialized_qs = serializers.serialize('json', current_page)
-        print(serialized_qs);
-        print("has_previous : " + str(current_page.has_previous))
+        # print(serialized_qs);
+        # print("has_previous : " + str(current_page.has_previous))
         
         pages = current_page.paginator.num_pages,
         current_page = 5,
@@ -948,8 +960,8 @@ def get_district_list_backup(request):
 def update_cus_main(request):
 
     print("****************************")
-    print("FUNCTION: update_cus_main")
-    print("****************************")
+    print("FUNCTION: update_cus_main")    
+    # print("****************************")
 
     template_name = 'customer/customer_update.html'    
     response_data = {}
@@ -992,6 +1004,7 @@ def update_cus_main(request):
 
             select_district_id = request.POST.get('select_district_id')
 
+            '''
             print("check")
             print("**************************")
             print("cus_no = " + str(cus_no))
@@ -1008,7 +1021,8 @@ def update_cus_main(request):
 
             print("business_type = " + str(business_type))            
             print("**************************")
-            
+            '''
+
             district_obj = TDistrict.objects.get(dist_id=select_district_id)
             
             if district_obj:
@@ -1077,6 +1091,10 @@ def update_cus_main(request):
             response_data['result'] = "Update complete."
             response_data['message'] = "ทำรายการสำเร็จ"
             response_data['form_is_valid'] = True
+
+            print("OK")
+            print("****************************")
+
         else:
             print("form is invalid")
 
@@ -1090,8 +1108,9 @@ def update_cus_main(request):
                 response_data['errors'] = form.errors
             else:
                 response_data['message'] = "ไม่สามารถทำรายการได้..!"
-
-        print("FUNCTION: update_cus_mian")
+        
+            print("Error!")
+            print("****************************")
 
         return JsonResponse(response_data)
     else:
@@ -1114,7 +1133,7 @@ def update_cus_site(request):
     
     print("*************************")
     print("FUNCTION: update_cus_site")
-    print("*************************")
+    # print("*************************")
 
     template_name = 'customer/customer_update.html'    
     response_data = {}
@@ -1124,8 +1143,8 @@ def update_cus_site(request):
         if form.is_valid():
 
             cus_no = request.POST.get('cus_no')
-            print("aaa")
-            print("cus_no = " + str(cus_no))
+            # print("aaa")
+            # print("cus_no = " + str(cus_no))
 
             cus_id = request.POST.get('cus_id')
             cus_brn = request.POST.get('cus_brn')
@@ -1152,13 +1171,13 @@ def update_cus_site(request):
 
             cus_site_site_contact_id = request.POST.get('cus_site_site_contact_id')
 
-            print("bbb")
-            print("cus_no = " + str(cus_no))
+            # print("bbb")
+            # print("cus_no = " + str(cus_no))
 
             customer = get_object_or_404(Customer, pk=cus_no)
             
             select_district_id = request.POST.get('select_district_id')
-            print("cus_site_select_district_id = " + str(select_district_id))
+            # print("cus_site_select_district_id = " + str(select_district_id))
 
             district_obj = TDistrict.objects.get(dist_id=select_district_id)
             if district_obj:
@@ -1200,6 +1219,8 @@ def update_cus_site(request):
             response_data['result'] = "Update complete."
             response_data['message'] = "ทำรายการสำเร็จ"
             response_data['form_is_valid'] = True
+            print("OK")
+            print("****************************")            
         else:
             response_data['form_is_valid'] = False
             response_data['message'] = ""
@@ -1211,6 +1232,8 @@ def update_cus_site(request):
                 response_data['errors'] = form.errors
             else:
                 response_data['message'] = "ไม่สามารถทำรายการได้..!"
+            print("ERROR")
+            print("****************************")                
 
     else:
         response_data['result'] = "There is an error!"
@@ -1227,7 +1250,7 @@ def update_cus_bill(request):
 
     print("****************************")
     print("FUNCTION: update_cus_bill")
-    print("****************************")
+    # print("****************************")
 
     template_name = 'customer/customer_update.html'    
     response_data = {}
@@ -1253,7 +1276,7 @@ def update_cus_bill(request):
             cus_subdist_en = request.POST.get('cus_bill_cus_subdist_en')
 
             cus_zip = request.POST.get('cus_bill_cus_zip')
-            print("cus_zip = " + str(cus_zip))
+            # print("cus_zip = " + str(cus_zip))
 
             cus_tel = request.POST.get('cus_bill_cus_tel')
             cus_fax = request.POST.get('cus_bill_cus_fax')
@@ -1269,7 +1292,7 @@ def update_cus_bill(request):
                 cus_bill = None
 
             if cus_bill:
-                print("UPDATE")
+                # print("UPDATE")
 
                 cus_bill.cus_active = cus_active
                 cus_bill.cus_name_th = cus_name_th
@@ -1326,7 +1349,7 @@ def update_cus_bill(request):
 
                 cus_bill.save()                
             else:
-                print("INSERT")
+                # print("INSERT")
 
                 if not cus_zone or cus_zone == '':
                     cus_zone = None
@@ -1345,11 +1368,11 @@ def update_cus_bill(request):
                         select_district_id = select_district_id
                         
                         city_id = district_obj.city_id_id               
-                        print("city id = " + str(city_id))
+                        # print("city id = " + str(city_id))
 
                         city_obj = TCity.objects.get(city_id=city_id)
                         country_id = city_obj.country_id_id
-                        print("country id = " + str(country_id))
+                        # print("country id = " + str(country_id))
 
                 if not cus_zip or cus_zip =='':
                     cus_zip = None
@@ -1389,6 +1412,9 @@ def update_cus_bill(request):
             response_data['result'] = "Update complete."
             response_data['message'] = "ทำรายการสำเร็จ"
             response_data['form_is_valid'] = True
+
+            print("OK")
+            print("****************************")
         else:
             response_data['form_is_valid'] = False
             response_data['message'] = ""
@@ -1401,6 +1427,8 @@ def update_cus_bill(request):
             else:
                 response_data['message'] = "ไม่สามารถทำรายการได้..!"
 
+            print("ERROR!")
+            print("****************************")
         return JsonResponse(response_data)
     else:
         print("debug - found cus_main_form problem")
@@ -1431,10 +1459,12 @@ def get_contact_list_modal(request):
     current_contact_id = request.GET["current_contact_id"]
     search_contact_option = request.GET["search_contact_option"]
     search_contact_text = request.GET["search_contact_text"]
-    
+
+    '''    
     print("current_contact_id = " + str(current_contact_id))
     print("search_contact_option = " + str(search_contact_option))
     print("search_contact_text = " + str(search_contact_text))
+    '''
 
     if search_contact_option == "1":
         data = CusContact.objects.filter(con_id__exact=search_contact_text)

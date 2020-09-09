@@ -389,12 +389,12 @@ class CusSiteForm(forms.ModelForm):
         self.initial['cus_site_cus_zone'] = instance.cus_zone_id
         
         self.initial['cus_site_cus_contact'] = instance.cus_contact
-        print("cus_contact = " + str(instance.cus_contact_id))
+        # print("cus_contact = " + str(instance.cus_contact_id))
 
         # sex_object = CusContact.objects.filter(con_id=instance.cus_contact_id).get()
         sex_object = CusContact.objects.filter(con_id=0).get()
 
-        print("sex = " + str(sex_object.con_sex))
+        # print("sex = " + str(sex_object.con_sex))
         # self.fields['cus_site_cus_contact_con_sex'].widget.attrs={'class': 'radio-inline'}
         self.initial['cus_site_cus_contact_con_sex'] = sex_object.con_sex
 
@@ -537,7 +537,7 @@ class CusBillForm(forms.ModelForm):
 
     def clean_cus_bill_cus_zone(self):
         data = self.data.get('cus_bill_cus_zone')
-        print("cus_bill_zone " + str(data))
+        # print("cus_bill_zone " + str(data))
         return data
 
     def clean_cus_bill_cus_zip(self):
