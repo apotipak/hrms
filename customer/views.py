@@ -1638,6 +1638,9 @@ def update_all_cus_tabs(request):
             cus_site_cus_subdist_en = request.POST.get('cus_site_cus_subdist_en')
             
             cus_site_cus_zip = request.POST.get('cus_site_cus_zip')
+            cus_site_cus_tel = request.POST.get('cus_site_cus_tel')
+            cus_site_cus_fax = request.POST.get('cus_site_cus_fax')
+            cus_site_cus_email = request.POST.get('cus_site_cus_email')        
             cus_site_cus_zone = request.POST.get('cus_site_cus_zone')
 
             print("------ Customer Site data -------")
@@ -1663,6 +1666,9 @@ def update_all_cus_tabs(request):
                 customer.cus_subdist_en = cus_site_cus_subdist_en
 
                 customer.cus_zip = cus_site_cus_zip
+                customer.cus_tel = cus_site_cus_tel
+                customer.cus_fax = cus_site_cus_fax
+                customer.cus_email = cus_site_cus_email
                 customer.cus_zone_id = cus_site_cus_zone
                 customer.save()                
             except Customer.DoesNotExist:                
@@ -1671,9 +1677,18 @@ def update_all_cus_tabs(request):
                     cus_id = cus_id,
                     cus_brn = cus_brn,
                     cus_name_th = cus_site_cus_name_th,
-                    cus_name_en = cus_site_cus_name_en,
+                    cus_add1_th = cus_site_cus_add1_th,
+                    cus_add2_th = cus_site_cus_add2_th,
+                    cus_subdist_th = cus_site_cus_subdist_th,
                     cus_district_id = cus_site_select_district_id,
+                    cus_name_en = cus_site_cus_name_en,
+                    cus_add1_en = cus_site_cus_add1_en,
+                    cus_add2_en = cus_site_cus_add2_en,
+                    cus_subdist_en = cus_site_cus_subdist_en,                    
                     cus_zip = cus_site_cus_zip,
+                    cus_tel = cus_site_cus_tel,
+                    cus_fax = cus_site_cus_fax,
+                    cus_email = cus_site_cus_email,
                     cus_zone_id = cus_site_cus_zone
                     )
                 new_customer_site.save()                
