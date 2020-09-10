@@ -286,7 +286,11 @@ def ajax_check_exist_cus_site(request):
                     "cus_email": customer_site.cus_email,
                     "cus_zone": customer_site.cus_zone_id,
 
-                    "cus_site_contact_id": customer_site.site_contact_id,
+                    "cus_site_site_contact_id": customer_site.site_contact_id,
+                    "cus_site_site_contact_title_th": customer_site.site_contact.con_title.title_th,
+                    "cus_site_site_contact_fname_th": customer_site.site_contact.con_fname_th,
+                    "cus_site_site_contact_lname_th": customer_site.site_contact.con_lname_th,
+                    "cus_site_site_contact_position_th": customer_site.site_contact.con_position_th,
 
                     "customer_option_btype": customer_option_btype,
                     "customer_option_op1": customer_option_op1,
@@ -327,6 +331,10 @@ def ajax_check_exist_cus_site(request):
                     "cus_zone": "",
 
                     "cus_site_contact_id": "",
+                    "cus_site_site_contact_title_th": "",
+                    "cus_site_site_contact_fname_th": "",
+                    "cus_site_site_contact_lname_th": "",
+                    "cus_site_site_contact_position_th": "",
                     
                     "customer_option_btype": "",
                     "customer_option_op1": "",

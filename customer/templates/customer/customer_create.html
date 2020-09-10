@@ -690,22 +690,22 @@
 
                         <div class="form-group col-md-2">
                           <label for="id_cus_site_cus_title">{% trans 'Title' %}</label>
-                            <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_contact_cus_title" name="cus_site_cus_contact_cus_title" value="{{ customer.site_contact.con_title|default_if_none:'' }}" readonly>
+                            <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_title_th" name="cus_site_site_contact_title_th" value="" readonly>
                         </div>
 
                         <div class="form-group col-md-2">
-                          <label for="id_cus_site_cus_contact_con_fname_th">{% trans 'First Name' %}</label>
-                          <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_contact_con_fname_th" name="cus_site_cus_contact_con_fname_th" value="{{ cus_site.site_contact.con_fname_th|default_if_none:'' }}" >
+                          <label for="id_cus_site_site_contact_fname_th">{% trans 'First Name' %}</label>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_fname_th" name="cus_site_site_contact_fname_th" value="" >
                         </div>
 
                         <div class="form-group col-md-3">
-                          <label for="id_cus_site_cus_contact_con_lname_th">{% trans 'Last Name' %}</label>
-                          <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_contact_con_lname_th" name="cus_site_cus_contact_con_fname_th" value="{{ cus_site.site_contact.con_lname_th|default_if_none:'' }}">
+                          <label for="id_cus_site_site_contact_lname_th">{% trans 'Last Name' %}</label>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_lname_th" name="cus_site_site_contact_fname_th" value="">
                         </div>
 
                         <div class="form-group col-md-3">
-                          <label for="id_cus_site_site_contact_con_position_th">{% trans 'Position' %}</label>
-                          <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_con_position_th" name="cus_site_site_contact_con_position_th" value="{{ cus_site.site_contact.con_position_th|default_if_none:'' }}">
+                          <label for="id_cus_site_site_contact_position_th">{% trans 'Position' %}</label>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_position_th" name="cus_site_site_contact_position_th" value="">
                         </div>
 
                       </div>
@@ -1359,7 +1359,11 @@
           var cus_site_cus_email = data.results[0]["cus_email"];
           var cus_site_cus_zone = data.results[0]["cus_zone"];
 
-          var cus_site_site_contact_id = data.results[0]["cus_site_contact_id"];
+          var cus_site_site_contact_id = data.results[0]["cus_site_site_contact_id"];
+          var cus_site_site_contact_title_th = data.results[0]["cus_site_site_contact_title_th"];
+          var cus_site_site_contact_fname_th = data.results[0]["cus_site_site_contact_fname_th"];
+          var cus_site_site_contact_lname_th = data.results[0]["cus_site_site_contact_lname_th"];
+          var cus_site_site_contact_position_th = data.results[0]["cus_site_site_contact_position_th"];
 
           $('#id_cus_site_cus_name_th').val(cus_site_cus_name_th);
           $('#id_cus_site_cus_add1_th').val(cus_site_cus_add1_th);
@@ -1385,6 +1389,11 @@
           $('#id_cus_site_cus_zone').val(cus_site_cus_zone);
 
           $('#id_cus_site_site_contact_id').val(cus_site_site_contact_id);
+          $('#id_cus_site_site_contact_title_th').val(cus_site_site_contact_title_th);
+          $('#id_cus_site_site_contact_fname_th').val(cus_site_site_contact_fname_th);
+          $('#id_cus_site_site_contact_lname_th').val(cus_site_site_contact_lname_th);
+          $('#id_cus_site_site_contact_position_th').val(cus_site_site_contact_position_th);
+
         },
         error: function(data) {
           alert(data.responseJSON.error);          
@@ -1693,7 +1702,7 @@
       
       //alert(current_district_id);
       //alert("TODO");
-      console.log("customer_create.html l1450");
+      console.log("customer_create.html line 1698");
 
       $.ajax({
           url: obj.attr("data-url"),
