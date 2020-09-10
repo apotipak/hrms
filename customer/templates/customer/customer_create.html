@@ -60,19 +60,20 @@
 
       <div class="card-body">
 
+
         <div class="clearfix">
           <div class="float-left">
             <ul class="nav nav-tabs navbar-expand nav-fill" id="customer" role="tablist">
-
-              <li class="nav-item active">
+              
+              <li class="disabled nav-item active">
                 <a class="nav-link active" id="mainoffice-tab" data-toggle="tab" href="#mainoffice" role="tab" aria-controls="mainoffice">{% trans 'Main Office' %}</a>
               </li>
 
-              <li class="nav-item">
+              <li class="disabled nav-item">
                 <a class="nav-link" id="site-tab" data-toggle="tab" href="#site" role="tab" aria-controls="site">{% trans 'Site' %}</a>
               </li>
 
-              <li class="nav-item">
+              <li class="disabled nav-item">
                 <a class="nav-link" id="billing-tab" data-toggle="tab" href="#billing" role="tab" aria-controls="billing">{% trans 'Billing' %}</a>
               </li>
 
@@ -415,20 +416,13 @@
               </div>
             </div>
 
-
-
-
+            {% comment %}
             <div class="float-right">
-              <input type="button" class="btn btn-secondary btn-md" value="Cancel" onClick="this.form.reset()" />
-
-              {% comment %}
-              <a href="#" id="cusMainCreateSaveButton" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
-              {% endcomment %}
-
-              
+              <input type="button" class="btn btn-secondary btn-md" value="Cancel" onClick="this.form.reset()" />              
               <a href="#" id="saveAllCustomerTabs" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
-
             </div>
+            {% endcomment %}
+
             </form>
 
           </div>        
@@ -736,10 +730,12 @@
               </div>
 
 
+            {% comment %}
             <div class="float-right">              
               <input type="button" class="btn btn-secondary btn-md" value="Cancel" onClick="this.form.reset()" />
               <a href="#" id="cusSiteSaveButton" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
             </div>
+            {% endcomment %}
 
             </form>
 
@@ -1056,12 +1052,12 @@
                 </div>
               </div>
 
-
-
+            {% comment %}
             <div class="float-right">
               <input type="button" class="btn btn-secondary btn-md" value="Cancel" onClick="this.form.reset()" />
               <a href="#" id="cusBillSaveButton" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
             </div>
+            {% endcomment %}
 
             </form>
 
@@ -1074,6 +1070,13 @@
 
 
         </div>
+
+            <div class="float-right">
+              <input type="button" class="btn btn-secondary btn-md" value="Cancel" onClick="this.form.reset()" />              
+              <a href="#" id="saveAllCustomerTabs" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
+            </div>
+
+            
         <!-- /.end tabs -->
       </div>
 
@@ -1161,6 +1164,21 @@
 
 {% block javascript %}
 <script>
+
+  $(".nav-tabs a[data-toggle=tab]").on("click", function(e) {
+     var cus_id = $('#id_cus_id').val();
+     var cus_brn = $('#id_cus_brn').val();
+
+     console.log("nav-tabs click | " + cus_id + ", " + cus_brn);
+
+    /*
+    if ($(this).hasClass("disabled")) {
+      e.preventDefault();
+      return false;
+    }
+    */
+  });
+
   $(document).ready(function(){
     $('#id_cus_id').focus();
   });
@@ -1384,7 +1402,14 @@
 
   $("#saveAllCustomerTabs").click( function() {
     event.preventDefault();
-    add_all_customer_tabs();
+
+    var cus_id = $('#id_cus_id').val();
+    var cus_brn = $('#id_cus_brn').val();
+
+    if(cus_id=='' || cus_brn=='')
+      alert("Customer Code is not completed.");
+    else
+      add_all_customer_tabs();
   });
 
   //function add_cus_main() {

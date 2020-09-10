@@ -186,3 +186,8 @@ input:checked + .slider:after {
     height: 25px;
     border: none;
 }
+
+
+.nav-tabs li.disabled a {
+  pointer-events: none;
+}
