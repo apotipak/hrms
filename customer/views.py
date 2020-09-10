@@ -1679,13 +1679,11 @@ def update_all_cus_tabs(request):
 
             # Customer Site District ID
             cus_site_cus_district_id = request.POST.get('cus_site_cus_district_id')
-
-            '''
+            print("DEBUG - cus_site_cus_district_id = " + str(cus_site_cus_district_id))
             try:
                 district_obj = TDistrict.objects.get(dist_id=cus_site_cus_district_id)
             except TDistrict.DoesNotExist:
                 cus_site_cus_district_id = None
-            '''
 
             '''
             if district_obj:
@@ -1719,7 +1717,7 @@ def update_all_cus_tabs(request):
                 customer.cus_add1_th = cus_site_cus_add1_th
                 customer.cus_add2_th = cus_site_cus_add2_th
                 customer.cus_subdist_th = cus_site_cus_subdist_th
-                #customer.cus_district_id = cus_site_cus_district_id
+                customer.cus_district_id = cus_site_cus_district_id
 
                 customer.cus_name_en = cus_site_cus_name_en
                 customer.cus_add1_en = cus_site_cus_add1_en

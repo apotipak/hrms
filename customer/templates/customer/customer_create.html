@@ -518,7 +518,7 @@
                                 
                                 <button id="cus_site_district_lookup" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url="{% url 'get_district_list' %}"><i class="fas fa-search fa-sm"></i></button>
 
-                                <input type="hidden" id="id_cus_site_select_district_id" name="cus_site_select_district_id" value="">
+                                <input type="hidden" id="id_cus_site_select_district_id" name="cus_site_select_district_id" />
                               </div>
                             </div>
                           </div>
@@ -1338,7 +1338,9 @@
           var cus_site_cus_name_th = data.results[0]["cus_name_th"];
           var cus_site_cus_add1_th = data.results[0]["cus_add1_th"];
           var cus_site_cus_add2_th = data.results[0]["cus_add2_th"];        
+          
           var cus_site_cus_district_id = data.results[0]["cus_district_id"];
+
           var cus_site_cus_subdist_th = data.results[0]["cus_subdist_th"];          
           var cus_site_cus_district_th = data.results[0]["cus_district_th"];
           var cus_site_cus_city_th = data.results[0]["cus_city_th"];
@@ -1367,10 +1369,10 @@
           $('#id_cus_site_cus_name_th').val(cus_site_cus_name_th);
           $('#id_cus_site_cus_add1_th').val(cus_site_cus_add1_th);
           $('#id_cus_site_cus_add2_th').val(cus_site_cus_add2_th);
-          $('#id_cus_site_cus_subdist_th').val(cus_site_cus_subdist_th);
-          $('#id_cus_site_select_district_id').val(cus_site_cus_district_id);        
-          $('#id_cus_site_cus_district_dist_th').val(cus_site_cus_district_th);
-          $('#id_cus_site_cus_city_th').val(cus_site_cus_city_th);
+          $('#id_cus_site_cus_subdist_th').val(cus_site_cus_subdist_th);          
+          $('#id_cus_site_cus_district_id').val(cus_site_cus_district_id);
+          $('#id_cus_site_cus_district_dist_th').val(cus_site_cus_district_th);          
+          $('#id_cus_site_cus_city_th').val(cus_site_cus_city_th);          
           $('#id_cus_site_cus_country_th').val(cus_site_cus_country_th);
 
           $('#id_cus_site_cus_name_en').val(cus_site_cus_name_en);
@@ -2322,14 +2324,14 @@
   $(document).ready(function(){
     $('#cus_site_district_lookup').on('click', function (e) {
       var obj = $(this);
-      current_district_id = $('#id_cus_site_select_district_id').val();
-
+      cus_site_cus_district_id = $('#id_cus_site_cus_district_id').val();
+      //alert(cus_site_cus_district_id);
       $.ajax({
           url: obj.attr("data-url"),
           type: 'get',          
           dataType: 'json',
           data : {          
-            current_district_id : current_district_id,
+            current_district_id : cus_site_cus_district_id,
           },          
           beforeSend: function () {
             $("#districtmodal").modal("show");
@@ -2408,13 +2410,19 @@
 
   function select_district(dist_id, dist_name_th, city_name_th, dist_name_en, city_name_en) {        
     $("#id_cus_site_cus_district_dist_th").val(dist_name_th);
-    $("#id_cus_site_select_district_id").val(dist_id);
-    
+    $("#id_cus_site_cus_district_id").val(dist_id);    
     $("#id_cus_site_cus_city_th").val(city_name_th);    
-
     $("#id_cus_site_cus_district_en").val(dist_name_en);
     $("#id_cus_site_cus_city_en").val(city_name_en);
+    $("#districtmodal").modal("hide");    
+  }
 
+  function select_cus_site_district(dist_id, dist_name_th, city_name_th, dist_name_en, city_name_en) {        
+    $("#id_cus_site_cus_district_dist_th").val(dist_name_th);
+    $("#id_cus_site_cus_district_id").val(dist_id);    
+    $("#id_cus_site_cus_city_th").val(city_name_th);    
+    $("#id_cus_site_cus_district_en").val(dist_name_en);
+    $("#id_cus_site_cus_city_en").val(city_name_en);
     $("#districtmodal").modal("hide");    
   }
 
