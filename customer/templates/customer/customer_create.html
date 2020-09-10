@@ -1164,6 +1164,22 @@
 {% block javascript %}
 <script>
 
+  $('#checkboxMainOfficeForSite').on('change', function(){
+    if(this.checked) {
+      alert("check for site");
+    } else {
+      alert("uncheck for site");
+    }
+  });
+
+  $('#checkboxMainOfficeForBill').on('change', function(){
+    if(this.checked) {
+      alert("check for bill");
+    } else {
+      alert("uncheck for bill");
+    }
+  });
+
   $(".nav-tabs a[data-toggle=tab]").on("click", function(e) {
      var cus_id = $('#id_cus_id').val();
      var cus_brn = $('#id_cus_brn').val();

@@ -1545,7 +1545,11 @@ def update_all_cus_tabs(request):
             cus_add1_en = request.POST.get('cus_main_cus_add1_en')
             cus_add2_en = request.POST.get('cus_main_cus_add2_en')
             cus_subdist_en = request.POST.get('cus_main_cus_subdist_en')
+
             cus_zip = request.POST.get('cus_main_cus_zip')
+            if not cus_zip:
+                cus_zip = None
+
             cus_tel = request.POST.get('cus_main_cus_tel')
             cus_fax = request.POST.get('cus_main_cus_fax')
             cus_email = request.POST.get('cus_main_cus_email')
@@ -1672,6 +1676,9 @@ def update_all_cus_tabs(request):
             cus_site_cus_subdist_en = request.POST.get('cus_site_cus_subdist_en')
             
             cus_site_cus_zip = request.POST.get('cus_site_cus_zip')
+            if not cus_site_cus_zip:
+                cus_site_cus_zip = None
+
             cus_site_cus_tel = request.POST.get('cus_site_cus_tel')
             cus_site_cus_fax = request.POST.get('cus_site_cus_fax')
             cus_site_cus_email = request.POST.get('cus_site_cus_email')        
@@ -1679,11 +1686,16 @@ def update_all_cus_tabs(request):
 
             # Customer Site District ID
             cus_site_cus_district_id = request.POST.get('cus_site_cus_district_id')
+            '''
             print("DEBUG - cus_site_cus_district_id = " + str(cus_site_cus_district_id))
-            try:
-                district_obj = TDistrict.objects.get(dist_id=cus_site_cus_district_id)
-            except TDistrict.DoesNotExist:
+            if cus_site_cus_district_id:
+                try:
+                    district_obj = TDistrict.objects.get(dist_id=cus_site_cus_district_id)
+                except TDistrict.DoesNotExist:
+                    cus_site_cus_district_id = None
+            else:
                 cus_site_cus_district_id = None
+            '''
 
             '''
             if district_obj:
@@ -1696,10 +1708,12 @@ def update_all_cus_tabs(request):
             '''
 
             cus_site_site_contact_id = request.POST.get('cus_site_site_contact_id')
+            '''
             if cus_site_site_contact_id:
                 cus_site_site_contact_id = cus_site_site_contact_id
             else:
                 cus_site_site_contact_id = None
+            '''
 
             print("------ Customer Site data -------")
             print("cus_no = " + str(cus_no))
