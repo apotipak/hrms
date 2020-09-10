@@ -153,7 +153,7 @@
                       </div>
 
                       <div class="input-group">
-                        <label for="id_cus_main_cus_disrict" class="col-sm-4 col-form-label form-control-sm">{% trans 'District' %}</label>
+                        <label for="id_cus_main_cus_disrict" class="col-sm-4 col-form-label form-control-sm">{% trans 'District-M' %}</label>
 
                         <div class="col-sm-8">                            
                           <div class="row">                              
@@ -162,7 +162,7 @@
                               
                               <button id="cus_main_district_lookup" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url="{% url 'get_district_list' %}"><i class="fas fa-search fa-sm"></i></button>
 
-                              <input type="hidden" id="id_cus_main_select_district_id" name="cus_main_select_district_id" value="">
+                              <input type="hidden" id="id_cus_main_cus_district_id" name="cus_main_cus_district_id" value="">
 
                             </div>
                           </div>
@@ -580,9 +580,13 @@
                         </div>
                         
                         <div class="input-group">
-                          <label for="id_cus_site_cus_district_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'District' %}</label>
-                          <div class="col-sm-8">                                                    
+                          <label for="id_cus_site_cus_district_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'District-S' %}</label>
+                          <div class="col-sm-8">
+                            
                             <input type="text" id="id_cus_site_cus_district_en" name="cus_site_cus_district_en" class="form-control form-control-sm" value="{{ customer.cus_district.dist_en|default_if_none:'' }}" readonly>
+                            
+                            <input type="hidden" id="id_cus_site_cus_district_id" name="cus_site_cus_district_id" value="">
+
                           </div>
                         </div>
 
@@ -1414,6 +1418,12 @@
     var cus_id = $('#id_cus_id').val();
     var cus_brn = $('#id_cus_brn').val();
 
+    var cus_main_cus_district_id = $('#id_cus_main_cus_district_id').val();
+    var cus_site_cus_district_id = $('#id_cus_site_cus_district_id').val();
+    
+    //alert(cus_main_cus_district_id);
+    //alert(cus_site_cus_district_id);
+
     if(cus_id=='' || cus_brn=='')
       alert("Customer Code is not completed.");
     else
@@ -1435,7 +1445,7 @@
     cus_main_cus_add1_th = $('#id_cus_main_cus_add1_th').val();
     cus_main_cus_add2_th = $('#id_cus_main_cus_add2_th').val();    
     cus_main_cus_subdist_th = $('#id_cus_main_cus_subdist_th').val();
-    cus_main_cus_district_id = $('#id_cus_main_select_district_id').val();
+    cus_main_cus_district_id = $('#id_cus_main_cus_district_id').val();
     cus_main_cus_district = $('#id_cus_main_cus_district').val();
     cus_main_cus_name_en = $('#id_cus_main_cus_name_en').val();
     cus_main_cus_add1_en = $('#id_cus_main_cus_add1_en').val();
@@ -1464,7 +1474,7 @@
     cus_site_cus_add1_th = $('#id_cus_site_cus_add1_th').val();
     cus_site_cus_add2_th = $('#id_cus_site_cus_add2_th').val();    
     cus_site_cus_subdist_th = $('#id_cus_site_cus_subdist_th').val();
-    cus_site_select_district_id = $('#id_cus_site_select_district_id').val();
+    cus_site_cus_district_id = $('#id_cus_site_cus_district_id').val();
 
     cus_site_cus_name_en = $('#id_cus_site_cus_name_en').val();    
     cus_site_cus_add1_en = $('#id_cus_site_cus_add1_en').val();
@@ -1494,7 +1504,7 @@
         cus_main_cus_add1_th: cus_main_cus_add1_th,
         cus_main_cus_add2_th: cus_main_cus_add2_th,
         cus_main_cus_subdist_th: cus_main_cus_subdist_th,
-        select_district_id: cus_main_cus_district_id,        
+        cus_main_cus_district_id: cus_main_cus_district_id,        
         cus_main_cus_name_en: cus_main_cus_name_en,
         cus_main_cus_add1_en: cus_main_cus_add1_en,
         cus_main_cus_add2_en: cus_main_cus_add2_en,
@@ -1521,9 +1531,8 @@
         cus_site_cus_name_en: cus_site_cus_name_en,
         cus_site_cus_add1_en: cus_site_cus_add1_en,
         cus_site_cus_add2_en: cus_site_cus_add2_en,
-        cus_site_cus_subdist_en: cus_site_cus_subdist_en,
-
-        cus_site_select_district_id: cus_site_select_district_id,
+        cus_site_cus_subdist_en: cus_site_cus_subdist_en,        
+        cus_site_cus_district_id: cus_site_cus_district_id,
         cus_site_cus_zip: cus_site_cus_zip,
         cus_site_cus_tel: cus_site_cus_tel,
         cus_site_cus_fax: cus_site_cus_fax,
@@ -1563,7 +1572,7 @@
             class: 'bg-danger', 
             title: "{% trans 'Error' %}",
             subtitle: '',
-            autohide: true,
+            autohide: false,
             delay: 5000,
             body: json.message,
             autoDismiss: true,

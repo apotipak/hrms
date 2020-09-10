@@ -229,8 +229,9 @@ class CusAllTabsForm(forms.ModelForm):
     cus_site_cus_name_th = forms.CharField(required=True)
     cus_site_cus_name_en = forms.CharField(required=True)
     
-    # cus_site_cud_district = forms.CharField(required=True)
-    # cus_site_select_district_id = forms.CharField(required=True)
+    # District ID
+    cus_main_cus_district_id = forms.CharField(required=False)
+    cus_site_cus_district_id = forms.CharField(required=False)
 
     cus_site_cus_zone = forms.CharField(required=True)
     cus_site_cus_zip = forms.CharField(required=True)
@@ -260,6 +261,8 @@ class CusAllTabsForm(forms.ModelForm):
         self.fields['cus_site_cus_name_en'].error_messages = {'required': _('Site - Customer Name (EN) is required.')}
         self.fields['cus_site_cus_zone'].error_messages = {'required': _('Site - Zone is required.')}
         self.fields['cus_site_cus_zip'].error_messages = {'required': _('Site - Zip is required.')}
+        self.fields['cus_main_cus_district_id'].error_messages = {'required': _('Main Office - District is required.')}
+        self.fields['cus_site_cus_district_id'].error_messages = {'required': _('Site - District is required.')}
 
         self.initial['cus_main_cus_active'] = instance.cus_active
 
@@ -300,6 +303,22 @@ class CusAllTabsForm(forms.ModelForm):
         self.fields['cus_main_customer_option_op1'].strip = False
         self.fields['cus_main_customer_option_op4'].strip = False
 
+
+    def clean_cus_main_cus_district_id(self):
+        data = self.data.get('cus_main_cus_district_id')        
+        if len(data) > 0:
+            return data
+        else:
+            return None
+            #raise ValidationError("Main Office - District is required.")
+
+    def clean_cus_site_cus_district_id(self):
+        data = self.data.get('cus_site_cus_district_id')        
+        if len(data) > 0:
+            return data
+        else:
+            return None
+            # raise ValidationError("Site - District is required.")
 
     def clean_cus_main_customer_option_op1(self):
         data = self.data.get('cus_main_customer_option_op1')
@@ -414,7 +433,7 @@ class CusAllTabsForm(forms.ModelForm):
         else:
             raise ValidationError("Site Tab - District is required.")
     '''
-    
+
     def clean_cus_site_cus_zone(self):
         data = self.data.get('cus_site_cus_zone')
         if len(data) > 0:

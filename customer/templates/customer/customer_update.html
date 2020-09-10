@@ -650,7 +650,10 @@
                         <div class="input-group">
                           <label for="id_cus_site_cus_district_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'District' %}</label>
                           <div class="col-sm-8">                                                    
+                            
                             <input type="text" id="id_cus_site_cus_district_en" name="cus_site_cus_district_en" class="form-control form-control-sm" value="{{ customer.cus_district.dist_en|default_if_none:'' }}" readonly>
+                            <input type="hidden" id="id_cus_site_cus_district_id" name="cus_site_cus_district_id" value="{{ customer.cus_site_cus_district_id }}">
+
                           </div>
                         </div>
 
