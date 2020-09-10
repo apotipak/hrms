@@ -201,7 +201,7 @@
                     <div class="form-group">
                       
                       <div class="input-group">
-                        <label for="id_cus_main_cus_name_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Customer Name' %}</label>
+                        <label for="id_cus_main_cus_name_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Customer Name22' %}</label>
                         <div class="col-sm-8">
                           <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_name_en" name="cus_main_cus_name_en" value="{{ cus_main.cus_name_en }}">
                         </div>
@@ -558,7 +558,7 @@
                       <div class="form-group">
 
                         <div class="input-group">
-                          <label for="id_cus_name_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Customer Name' %}</label>
+                          <label for="id_cus_site_cus_name_en" class="col-sm-4 col-form-label form-control-sm">{% trans 'Customer Name' %}</label>
                           <div class="col-sm-8">
                             <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_name_en" name="cus_site_cus_name_th" value="{{ customer.cus_name_en|default_if_none:'' }}">
                           </div>
@@ -1563,7 +1563,7 @@
             class: 'bg-danger', 
             title: "{% trans 'Error' %}",
             subtitle: '',
-            autohide: true,
+            autohide: false,
             delay: 5000,
             body: json.message,
             autoDismiss: true,
@@ -1575,6 +1575,8 @@
           for(error in json.errors) {
             $("#id_" + error).addClass("is-invalid");         
           };            
+
+
         }
       },
     });
