@@ -1622,14 +1622,24 @@ def update_all_cus_tabs(request):
                 c.save()
                 '''
 
-
-            # Customer Site
+            # ******************************************
+            # ***********  Customer Site  **************
+            # ******************************************
             cus_site_cus_active = request.POST.get('cus_site_cus_active')
             cus_site_cus_name_th = request.POST.get('cus_site_cus_name_th')
-            cus_site_cus_name_en = request.POST.get('cus_site_cus_name_en')
+            cus_site_cus_add1_th = request.POST.get('cus_site_cus_add1_th')
+            cus_site_cus_add2_th = request.POST.get('cus_site_cus_add2_th')
+            cus_site_cus_subdist_th = request.POST.get('cus_site_cus_subdist_th')
             cus_site_select_district_id = request.POST.get('cus_site_select_district_id') 
+
+            cus_site_cus_name_en = request.POST.get('cus_site_cus_name_en')
+            cus_site_cus_add1_en = request.POST.get('cus_site_cus_add1_en')
+            cus_site_cus_add2_en = request.POST.get('cus_site_cus_add2_en')
+            cus_site_cus_subdist_en = request.POST.get('cus_site_cus_subdist_en')
+            
             cus_site_cus_zip = request.POST.get('cus_site_cus_zip')
             cus_site_cus_zone = request.POST.get('cus_site_cus_zone')
+
             print("------ Customer Site data -------")
             print("cus_no = " + str(cus_no))
             print("cus_site_cus_active = " + str(cus_site_cus_active))
@@ -1639,12 +1649,19 @@ def update_all_cus_tabs(request):
             print("cus_site_cus_zone = " + str(cus_site_cus_zone))
             print("------------------------")
 
-            # Save Customer Site Tab
             try:
                 customer = Customer.objects.get(pk=cus_no)
                 customer.cus_name_th = cus_site_cus_name_th
-                customer.cus_name_en = cus_site_cus_name_en
+                customer.cus_add1_th = cus_site_cus_add1_th
+                customer.cus_add2_th = cus_site_cus_add2_th
+                customer.cus_subdist_th = cus_site_cus_subdist_th
                 customer.cus_district_id = cus_site_select_district_id
+
+                customer.cus_name_en = cus_site_cus_name_en
+                customer.cus_add1_en = cus_site_cus_add1_en
+                customer.cus_add2_en = cus_site_cus_add2_en
+                customer.cus_subdist_en = cus_site_cus_subdist_en
+
                 customer.cus_zip = cus_site_cus_zip
                 customer.cus_zone_id = cus_site_cus_zone
                 customer.save()                
@@ -1664,6 +1681,12 @@ def update_all_cus_tabs(request):
             response_data['result'] = "Update complete."
             response_data['message'] = "ทำรายการสำเร็จ"
             response_data['form_is_valid'] = True
+
+
+            # ******************************************
+            # ********  Customer Billing  **************
+            # ******************************************
+            # TODO
 
             print("OK")
             print("****************************")
