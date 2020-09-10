@@ -1211,6 +1211,7 @@ def update_cus_site(request):
             #print("sex = " + str(cus_site_cus_contact_con_sex))
 
             cus_site_site_contact_id = request.POST.get('cus_site_site_contact_id')
+            print("debug: " + str(cus_site_site_contact_id))
 
             # print("bbb")
             # print("cus_no = " + str(cus_no))
@@ -1253,8 +1254,8 @@ def update_cus_site(request):
             customer.cus_email = cus_email
             customer.cus_zone_id = cus_zone
 
-            #customer.site_contact_id = cus_site_site_contact_id
-            customer.site_contact_id = 2
+            customer.site_contact_id = cus_site_site_contact_id
+            #customer.site_contact_id = 2
 
             if customer.upd_flag == 'A':
                 customer.upd_flag = 'E'

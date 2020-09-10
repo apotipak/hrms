@@ -2047,7 +2047,6 @@
   function update_cus_site() {
     cus_id = "{{customer.cus_id|stringformat:'04d'}}";
     cus_brn = "{{customer.cus_brn|stringformat:'03d'}}";
-    //cus_no = cus_id + cus_brn;
     cus_no = "{{cus_no}}";
 
     if ($('#id_cus_site_cus_active').is(":checked"))
@@ -2074,6 +2073,7 @@
     // Contact Information
     cus_site_cus_contact_con_sex = $('input[name="cus_site_cus_contact_con_sex"]:checked').val();    
     cus_site_site_contact_id = $("#id_cus_site_site_contact_id").val();
+    //alert(cus_site_site_contact_id);
 
     $.ajax({
         url : "/customer/ajax/update_cus_site/",
