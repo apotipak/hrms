@@ -1657,6 +1657,8 @@ def update_all_cus_tabs(request):
             cus_site_cus_email = request.POST.get('cus_site_cus_email')        
             cus_site_cus_zone = request.POST.get('cus_site_cus_zone')
 
+            cus_site_site_contact_id = request.POST.get('cus_site_site_contact_id')
+
             print("------ Customer Site data -------")
             print("cus_no = " + str(cus_no))
             print("cus_site_cus_active = " + str(cus_site_cus_active))
@@ -1684,6 +1686,9 @@ def update_all_cus_tabs(request):
                 customer.cus_fax = cus_site_cus_fax
                 customer.cus_email = cus_site_cus_email
                 customer.cus_zone_id = cus_site_cus_zone
+
+                customer.site_contact_id = cus_site_site_contact_id
+
                 customer.save()                
             except Customer.DoesNotExist:                
                 new_customer_site = Customer(
@@ -1703,7 +1708,8 @@ def update_all_cus_tabs(request):
                     cus_tel = cus_site_cus_tel,
                     cus_fax = cus_site_cus_fax,
                     cus_email = cus_site_cus_email,
-                    cus_zone_id = cus_site_cus_zone
+                    cus_zone_id = cus_site_cus_zone,
+                    site_contact = cus_site_site_contact_id,
                     )
                 new_customer_site.save()                
 
