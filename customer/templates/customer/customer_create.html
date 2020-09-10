@@ -1563,7 +1563,7 @@
             class: 'bg-danger', 
             title: "{% trans 'Error' %}",
             subtitle: '',
-            autohide: false,
+            autohide: true,
             delay: 5000,
             body: json.message,
             autoDismiss: true,
@@ -1571,6 +1571,10 @@
             autoremove: true,
             preventDuplicates: true,       
           });
+
+          $.each($('.is-invalid'), function() {
+            $('.is-invalid').removeClass('is-invalid');
+          });            
 
           for(error in json.errors) {
             $("#id_" + error).addClass("is-invalid");         

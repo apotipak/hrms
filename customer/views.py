@@ -259,6 +259,17 @@ def ajax_check_exist_cus_site(request):
                     cus_site_cus_country_th = customer_site.cus_country.country_th
                     cus_site_cus_country_en = customer_site.cus_country.country_en
 
+                if not customer_site.site_contact_id:
+                    cus_site_site_contact_title_th = ""
+                    cus_site_site_contact_fname_th = ""
+                    cus_site_site_contact_lname_th = ""
+                    cus_site_site_contact_position_th = "" 
+                else:
+                    cus_site_site_contact_title_th = customer_site.site_contact.con_title.title_th
+                    cus_site_site_contact_fname_th = customer_site.site_contact.con_fname_th
+                    cus_site_site_contact_lname_th = customer_site.site_contact.con_lname_th,
+                    cus_site_site_contact_position_th = customer_site.site_contact.con_position_th
+
                 record = {
                     "cus_no": customer_site.cus_no,
                     "cus_active": customer_site.cus_active,
@@ -287,10 +298,10 @@ def ajax_check_exist_cus_site(request):
                     "cus_zone": customer_site.cus_zone_id,
 
                     "cus_site_site_contact_id": customer_site.site_contact_id,
-                    "cus_site_site_contact_title_th": customer_site.site_contact.con_title.title_th,
-                    "cus_site_site_contact_fname_th": customer_site.site_contact.con_fname_th,
-                    "cus_site_site_contact_lname_th": customer_site.site_contact.con_lname_th,
-                    "cus_site_site_contact_position_th": customer_site.site_contact.con_position_th,
+                    "cus_site_site_contact_title_th": cus_site_site_contact_title_th,
+                    "cus_site_site_contact_fname_th": cus_site_site_contact_fname_th,
+                    "cus_site_site_contact_lname_th": cus_site_site_contact_lname_th,
+                    "cus_site_site_contact_position_th": cus_site_site_contact_position_th,
 
                     "customer_option_btype": customer_option_btype,
                     "customer_option_op1": customer_option_op1,
@@ -1231,25 +1242,25 @@ def update_cus_site(request):
 
             customer = get_object_or_404(Customer, pk=cus_no)
             
+
             select_district_id = request.POST.get('select_district_id')
-            # print("cus_site_select_district_id = " + str(select_district_id))
+            print("DEBUG - select_district_id = " + str(select_district_id))
+            if select_district_id:
+                try:
+                    district_obj = TDistrict.objects.get(dist_id=select_district_id)
+                    if district_obj:
+                        city_id = district_obj.city_id_id
+                        old_district_id = customer.cus_district.dist_id
+                        customer.cus_district_id = select_district_id
+                        customer.cus_city = district_obj.city_id
+                        
+                        # TODO
+                        city_obj = TCity.objects.get(city_id=city_id)                
+                        # print(city_obj.country_id)
+                        customer.cus_country = city_obj.country_id
 
-            # district_obj = TDistrict.objects.get(dist_id=select_district_id)
-            try:
-                district_obj = TDistrict.objects.get(dist_id=select_district_id)
-                if district_obj:
-                    city_id = district_obj.city_id_id
-                    old_district_id = customer.cus_district.dist_id
-                    customer.cus_district_id = select_district_id
-                    customer.cus_city = district_obj.city_id
-                    
-                    # TODO
-                    city_obj = TCity.objects.get(city_id=city_id)                
-                    # print(city_obj.country_id)
-                    customer.cus_country = city_obj.country_id
-
-            except TDistrict.DoesNotExist:
-                district_obj = None
+                except TDistrict.DoesNotExist:
+                    district_obj = None
 
             customer.cus_active = cus_active
             customer.cus_name_th = cus_name_th
@@ -1267,8 +1278,9 @@ def update_cus_site(request):
             customer.cus_email = cus_email
             customer.cus_zone_id = cus_zone
 
-            customer.site_contact_id = cus_site_site_contact_id
-            #customer.site_contact_id = 2
+            # customer.site_contact_id = 2
+            if cus_site_site_contact_id:
+                customer.site_contact_id = cus_site_site_contact_id
 
             if customer.upd_flag == 'A':
                 customer.upd_flag = 'E'
@@ -1670,6 +1682,7 @@ def update_all_cus_tabs(request):
 
             try:
                 customer = Customer.objects.get(pk=cus_no)
+
                 customer.cus_name_th = cus_site_cus_name_th
                 customer.cus_add1_th = cus_site_cus_add1_th
                 customer.cus_add2_th = cus_site_cus_add2_th
@@ -1709,7 +1722,7 @@ def update_all_cus_tabs(request):
                     cus_fax = cus_site_cus_fax,
                     cus_email = cus_site_cus_email,
                     cus_zone_id = cus_site_cus_zone,
-                    site_contact = cus_site_site_contact_id,
+                    site_contact_id = cus_site_site_contact_id,
                     )
                 new_customer_site.save()                
 
@@ -1734,7 +1747,8 @@ def update_all_cus_tabs(request):
             if form.errors:
                 for field in form:
                     for error in field.errors:
-                        response_data['message'] += field.name + " | " + error + "<br>"
+                        # response_data['message'] += field.name + " | " + error + "<br>"
+                        response_data['message'] += error + "<br>"
 
                 response_data['errors'] = form.errors
             else:

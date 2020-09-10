@@ -221,7 +221,7 @@ class CusAllTabsForm(forms.ModelForm):
     cus_main_cus_district_en = forms.CharField(required=False)
     cus_main_cus_country_en = forms.CharField(required=False)
     cus_main_cus_zone = forms.ModelChoiceField(queryset=None, required=True)
-    cus_main_cus_zip = forms.CharField(required=False)
+    cus_main_cus_zip = forms.CharField(required=True)
     cus_main_customer_option_op1 = forms.CharField(required=False)
     cus_main_customer_option_op4 = forms.CharField(required=False)
 
@@ -230,7 +230,7 @@ class CusAllTabsForm(forms.ModelForm):
     cus_site_cus_name_en = forms.CharField(required=True)
     
     # cus_site_cud_district = forms.CharField(required=True)
-    cus_site_select_district_id = forms.CharField(required=True)
+    # cus_site_select_district_id = forms.CharField(required=True)
 
     cus_site_cus_zone = forms.CharField(required=True)
     cus_site_cus_zip = forms.CharField(required=True)
@@ -249,6 +249,17 @@ class CusAllTabsForm(forms.ModelForm):
         super(CusAllTabsForm, self).__init__(*args, **kwargs)
         self.request = kwargs.pop('request', None)        
         instance = getattr(self, 'instance', None)
+
+        # self.fields['cus_main_cus_name_th'].error_messages = {'required': _('Main Office - Customer Name is required'), 'max_value': _('รหัสสัญญาเกิน 7 หลัก')}
+        self.fields['cus_main_cus_name_th'].error_messages = {'required': _('Main Office - Customer Name (TH) is required.')}
+        self.fields['cus_main_cus_name_en'].error_messages = {'required': _('Main Office - Customer Name (EN) is required.')}
+        self.fields['cus_main_cus_zone'].error_messages = {'required': _('Main Office - Zone is required.')}
+        self.fields['cus_main_cus_zip'].error_messages = {'required': _('Main Office - Zip is required.')}
+
+        self.fields['cus_site_cus_name_th'].error_messages = {'required': _('Site - Customer Name (TH) is required.')}
+        self.fields['cus_site_cus_name_en'].error_messages = {'required': _('Site - Customer Name (EN) is required.')}
+        self.fields['cus_site_cus_zone'].error_messages = {'required': _('Site - Zone is required.')}
+        self.fields['cus_site_cus_zip'].error_messages = {'required': _('Site - Zip is required.')}
 
         self.initial['cus_main_cus_active'] = instance.cus_active
 
@@ -315,7 +326,7 @@ class CusAllTabsForm(forms.ModelForm):
         if len(data) > 0:
             return data
         else:
-            raise ValidationError("Customer Name (TH) is required.")
+            raise ValidationError("Main Office - Customer Name (TH) is required.")
 
     def clean_cus_add1_th(self):
         data = self.data.get('cus_main_cus_add1_th')
@@ -395,13 +406,15 @@ class CusAllTabsForm(forms.ModelForm):
             raise ValidationError("Site Tab - Customer Name (EN) is required.")
 
     # def clean_cus_site_cud_district(self):
+    '''
     def clean_cus_site_select_district_id(self):
         data = self.data.get('cus_site_select_district_id')
         if len(data) > 0:
             return data
         else:
             raise ValidationError("Site Tab - District is required.")
-
+    '''
+    
     def clean_cus_site_cus_zone(self):
         data = self.data.get('cus_site_cus_zone')
         if len(data) > 0:
@@ -514,7 +527,7 @@ class CusMainForm(forms.ModelForm):
         if len(data) > 0:
             return data
         else:
-            raise ValidationError("Customer Name (TH) is required.")
+            raise ValidationError("aCustomer Name (TH) is required.")
 
     def clean_cus_add1_th(self):
         data = self.data.get('cus_main_cus_add1_th')
