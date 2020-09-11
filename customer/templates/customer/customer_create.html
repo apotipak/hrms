@@ -1435,12 +1435,8 @@
 
     var cus_id = $('#id_cus_id').val();
     var cus_brn = $('#id_cus_brn').val();
-
     var cus_main_cus_district_id = $('#id_cus_main_cus_district_id').val();
-    var cus_site_cus_district_id = $('#id_cus_site_cus_district_id').val();
-    
-    //alert(cus_main_cus_district_id);
-    //alert(cus_site_cus_district_id);
+    var cus_site_cus_district_id = $('#id_cus_site_cus_district_id').val();  
 
     if(cus_id=='' || cus_brn=='')
       alert("Customer Code is not completed.");
@@ -1448,7 +1444,6 @@
       add_all_customer_tabs();
   });
 
-  //function add_cus_main() {
   function add_all_customer_tabs() {
 
     cus_id = $('#id_cus_id').val();
@@ -1493,22 +1488,25 @@
     cus_site_cus_add2_th = $('#id_cus_site_cus_add2_th').val();    
     cus_site_cus_subdist_th = $('#id_cus_site_cus_subdist_th').val();
     cus_site_cus_district_id = $('#id_cus_site_cus_district_id').val();
-
     cus_site_cus_name_en = $('#id_cus_site_cus_name_en').val();    
     cus_site_cus_add1_en = $('#id_cus_site_cus_add1_en').val();
     cus_site_cus_add2_en = $('#id_cus_site_cus_add2_en').val();    
     cus_site_cus_subdist_en = $('#id_cus_site_cus_subdist_en').val();
-
     cus_site_cus_zip = $('#id_cus_site_cus_zip').val();
     cus_site_cus_tel = $('#id_cus_site_cus_tel').val();
     cus_site_cus_fax = $('#id_cus_site_cus_fax').val();
     cus_site_cus_email = $('#id_cus_site_cus_email').val();
-    cus_site_cus_zone = $('#id_cus_site_cus_zone').val();
-    
+    cus_site_cus_zone = $('#id_cus_site_cus_zone').val();    
     cus_site_site_contact_id = $('#id_cus_site_site_contact_id').val();
 
+    // CUS_BILL
+    if ($('#id_cus_bill_cus_active').is(":checked"))
+      cus_bill_cus_active = 1;
+    else
+      cus_bill_cus_active = 0;
+    cus_bill_cus_name_th = $('#id_cus_bill_cus_name_th').val();    
+
     $.ajax({
-      //url : "/customer/ajax/update_cus_main/",
       url : "/customer/ajax/update_all_cus_tabs/",
       type : "POST",
       data : {          
@@ -1516,7 +1514,7 @@
         cus_id: cus_id,
         cus_brn: cus_brn,
 
-        // CUSTOMER MAIN OFFICE
+        // CUS_MAIN
         cus_main_cus_active: cus_main_cus_active,        
         cus_main_cus_name_th: cus_main_cus_name_th,
         cus_main_cus_add1_th: cus_main_cus_add1_th,
@@ -1539,7 +1537,7 @@
         cus_main_customer_option_op4: customer_option_op4,
         cus_main_cus_contact_id: cus_main_cus_contact_id,
 
-        // CUSTOMER SITE
+        // CUS_SITE
         cus_site_cus_active: cus_site_cus_active,
         cus_site_cus_name_th: cus_site_cus_name_th,
         cus_site_cus_add1_th: cus_site_cus_add1_th,
@@ -1555,8 +1553,11 @@
         cus_site_cus_fax: cus_site_cus_fax,
         cus_site_cus_email: cus_site_cus_email,
         cus_site_cus_zone: cus_site_cus_zone,
-
         cus_site_site_contact_id: cus_site_site_contact_id,
+
+        // CUS_BILL
+        cus_bill_cus_active: cus_bill_cus_active,
+        cus_bill_cus_name_th: cus_bill_cus_name_th,
         
       },
       success : function(json) {

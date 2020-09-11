@@ -1528,7 +1528,6 @@ def update_all_cus_tabs(request):
     response_data = {}
 
     if request.method == 'POST':
-        # form = CusMainForm(request.POST)
         form = CusAllTabsForm(request.POST)
 
         if form.is_valid():            
@@ -1536,7 +1535,9 @@ def update_all_cus_tabs(request):
             cus_brn = request.POST.get('cus_brn').zfill(3)
             cus_no = str(cus_id) + str(cus_brn)
 
-            # Customer Main Office            
+            # ******************************************
+            # **************  CUS_MAIN  ****************
+            # ******************************************            
             cus_main_cus_active = request.POST.get('cus_main_cus_active')
             cus_main_cus_name_th = request.POST.get('cus_main_cus_name_th')            
             cus_add1_th = request.POST.get('cus_main_cus_add1_th')
@@ -1546,11 +1547,9 @@ def update_all_cus_tabs(request):
             cus_add1_en = request.POST.get('cus_main_cus_add1_en')
             cus_add2_en = request.POST.get('cus_main_cus_add2_en')
             cus_subdist_en = request.POST.get('cus_main_cus_subdist_en')
-
             cus_zip = request.POST.get('cus_main_cus_zip')
             if not cus_zip:
                 cus_zip = None
-
             cus_tel = request.POST.get('cus_main_cus_tel')
             cus_fax = request.POST.get('cus_main_cus_fax')
             cus_email = request.POST.get('cus_main_cus_email')
@@ -1560,84 +1559,35 @@ def update_all_cus_tabs(request):
             cus_main_customer_option_op2 = request.POST.get('cus_main_customer_option_op2')
             cus_main_customer_option_op3 = request.POST.get('cus_main_customer_option_op3')
             cus_main_customer_option_op4 = request.POST.get('cus_main_customer_option_op4')
-
             cus_main_cus_contact_id = request.POST.get('cus_main_cus_contact_id')
             if cus_main_cus_contact_id:
                 cus_main_cus_contact_id = cus_main_cus_contact_id
             else:
                 cus_main_cus_contact_id = None
-
             cus_main = get_object_or_404(CusMain, pk=cus_id)
-
             cus_main_cus_district_id = request.POST.get('cus_main_cus_district_id')
-            print("DEBUG - cus_main_cus_district_id = " + str(cus_main_cus_district_id))
-
-            '''
-            print("check")
-            print("**************************")
-            print("cus_no = " + str(cus_no))
-            print("cus_id = " + str(cus_id))
-            print("cus_brn = " + str(cus_brn))
-            print("status = [" + str(cus_main_customer_option_op1) + "]")
-            print("A/R Code = [" + str(cus_main_customer_option_op4) + "]")        
-            print("cus_zone = " + str(cus_zone))
-            print("cus_tel = " + str(cus_tel))
-            print("cus_fax = " + str(cus_fax))
-            print("cus_email = " + str(cus_email))
-            print("cus_main_cus_contact_id = " + str(cus_main_cus_contact_id))
-            print("cus_main_select_district_id = " + str(select_district_id))            
-
-            print("business_type = " + str(business_type))            
-            print("**************************")
-            '''
-
-            # Main Office District ID
-            #district_obj = TDistrict.objects.get(dist_id=cus_main_cus_district_id)
-            '''
-            try:
-                district_obj = TDistrict.objects.get(dist_id=cus_main_cus_district_id)
-            except TDistrict.DoesNotExist:
-                cus_main_cus_district_id = None
-            if district_obj:
-                city_id = district_obj.city_id_id
-                old_district_id = cus_main.cus_district.dist_id
-                cus_main.cus_district_id = cus_main_cus_district_id
-                cus_main.cus_city = district_obj.city_id                
-                city_obj = TCity.objects.get(city_id=city_id)
-                cus_main.cus_country = city_obj.country_id
-            '''
-
             cus_main.cus_active = cus_main_cus_active
             cus_main.cus_name_th = cus_main_cus_name_th
             cus_main.cus_add1_th = cus_add1_th
             cus_main.cus_add2_th = cus_add2_th
             cus_main.cus_subdist_th = cus_subdist_th
-            
             cus_main.cus_name_en = cus_name_en
             cus_main.cus_add1_en = cus_add1_en
             cus_main.cus_add2_en = cus_add2_en
             cus_main.cus_subdist_en = cus_subdist_en
-
             cus_main.cus_zip = cus_zip
             cus_main.cus_tel = cus_tel
             cus_main.cus_fax = cus_fax
             cus_main.cus_email = cus_email
             cus_main.cus_zone_id = cus_zone
-
-
-            #cus_main.cus_contact_id = None
             cus_main.cus_contact_id = cus_main_cus_contact_id
-
             if cus_main.upd_flag == 'A':
                 cus_main.upd_flag = 'E'
             cus_main.upd_by = request.user.first_name
-            cus_main.upd_date = timezone.now()
-            
+            cus_main.upd_date = timezone.now()        
             cus_main.save()
-
-            # Business Type
+            # CUS_MAIN Business Type
             try:
-                # Update
                 customer_option = CustomerOption.objects.get(cus_no=cus_no)
                 if customer_option:
                     customer_option.btype = business_type.replace('&amp;', '&')
@@ -1662,34 +1612,26 @@ def update_all_cus_tabs(request):
                 '''
 
             # ******************************************
-            # ***********  Customer Site  **************
+            # **************  CUS_SITE  ****************
             # ******************************************
-
             cus_site_cus_active = request.POST.get('cus_site_cus_active')            
             cus_site_cus_name_th = request.POST.get('cus_site_cus_name_th')
             cus_site_cus_add1_th = request.POST.get('cus_site_cus_add1_th')
             cus_site_cus_add2_th = request.POST.get('cus_site_cus_add2_th')
             cus_site_cus_subdist_th = request.POST.get('cus_site_cus_subdist_th')            
             cus_site_cus_district_id = request.POST.get('cus_site_cus_district_id') 
-
             cus_site_cus_name_en = request.POST.get('cus_site_cus_name_en')
             cus_site_cus_add1_en = request.POST.get('cus_site_cus_add1_en')
             cus_site_cus_add2_en = request.POST.get('cus_site_cus_add2_en')
-            cus_site_cus_subdist_en = request.POST.get('cus_site_cus_subdist_en')
-            
+            cus_site_cus_subdist_en = request.POST.get('cus_site_cus_subdist_en')            
             cus_site_cus_zip = request.POST.get('cus_site_cus_zip')
             if not cus_site_cus_zip:
                 cus_site_cus_zip = None
-
             cus_site_cus_tel = request.POST.get('cus_site_cus_tel')
             cus_site_cus_fax = request.POST.get('cus_site_cus_fax')
             cus_site_cus_email = request.POST.get('cus_site_cus_email')
             cus_site_cus_zone = request.POST.get('cus_site_cus_zone')
-
-            # Customer Site District ID
             cus_site_cus_district_id = request.POST.get('cus_site_cus_district_id')
-
-            # print("DEBUG - cus_site_cus_district_id = " + str(cus_site_cus_district_id))
             if cus_site_cus_district_id:
                 print("debug 1")
                 try:
@@ -1699,18 +1641,11 @@ def update_all_cus_tabs(request):
                         city_id = district_obj.city_id_id
                         city_obj = TCity.objects.get(city_id=city_id)
                         country_id = city_obj.country_id_id
-                        # old_district_id = cus_main.cus_district.dist_id
-                        # cus_site.cus_district_id = cus_site_cus_district_id
-                        # cus_site.cus_city = district_obj.city_id                
-                        # city_obj = TCity.objects.get(city_id=city_id)
-                        # cus_site.cus_country = city_obj.country_id
-
                 except TDistrict.DoesNotExist:
                     print("debug 3")
                     cus_site_cus_district_id = None
             else:
                 cus_site_cus_district_id = None
-
 
             cus_site_site_contact_id = request.POST.get('cus_site_site_contact_id')
             if cus_site_site_contact_id:
@@ -1718,7 +1653,7 @@ def update_all_cus_tabs(request):
             else:
                 cus_site_site_contact_id = None
 
-            print("------ Customer Site data -------")
+            print("------ Print CUS_SITE data -------")
             print("cus_no = " + str(cus_no))
             print("cus_site_cus_active = " + str(cus_site_cus_active))
             print("cus_site_cus_name = " + str(cus_site_cus_name_th))
@@ -1731,7 +1666,6 @@ def update_all_cus_tabs(request):
 
             try:
                 customer = Customer.objects.get(pk=cus_no)
-
                 customer.cus_active = cus_site_cus_active
                 customer.cus_name_th = cus_site_cus_name_th
                 customer.cus_add1_th = cus_site_cus_add1_th
@@ -1744,15 +1678,12 @@ def update_all_cus_tabs(request):
                 customer.cus_add1_en = cus_site_cus_add1_en
                 customer.cus_add2_en = cus_site_cus_add2_en
                 customer.cus_subdist_en = cus_site_cus_subdist_en
-
                 customer.cus_zip = cus_site_cus_zip
                 customer.cus_tel = cus_site_cus_tel
                 customer.cus_fax = cus_site_cus_fax
                 customer.cus_email = cus_site_cus_email
                 customer.cus_zone_id = cus_site_cus_zone
-
                 customer.site_contact_id = cus_site_site_contact_id
-
                 customer.save()                
             except Customer.DoesNotExist:                
                 new_customer_site = Customer(
@@ -1779,16 +1710,15 @@ def update_all_cus_tabs(request):
                     site_contact_id = cus_site_site_contact_id,
                     )
                 new_customer_site.save()                
-
             response_data['result'] = "Update complete."
             response_data['message'] = "ทำรายการสำเร็จ"
             response_data['form_is_valid'] = True
 
 
             # ******************************************
-            # ********  Customer Billing  **************
+            # **************  CUS_BUKK  ****************
             # ******************************************
-            # TODO
+
 
             print("OK")
             print("****************************")
