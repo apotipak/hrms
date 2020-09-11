@@ -965,8 +965,8 @@ def get_district_list(request):
                 "dist_en": d.dist_en,
                 "city_th": d.city_id.city_th,
                 "city_en": d.city_id.city_en,
-                "country_th": d.city_id.country_id.country_th,
-                "country_en": d.city_id.country_id.country_en,
+                "country_name_th": d.city_id.country_id.country_th,
+                "country_name_en": d.city_id.country_id.country_en,
             }
             pickup_records.append(record)
 
@@ -1721,9 +1721,9 @@ def update_all_cus_tabs(request):
                 try:
                     district_obj = TDistrict.objects.get(dist_id=cus_main_cus_district_id)
                     if district_obj:
-                        city_id = district_obj.city_id_id
+                        cus_main_city_id = district_obj.city_id_id
                         city_obj = TCity.objects.get(city_id=city_id)
-                        country_id = city_obj.country_id_id
+                        cus_main_country_id = city_obj.country_id_id
                 except TDistrict.DoesNotExist:
                     cus_main_cus_district_id = None
                     cus_main_city_id = None
@@ -1774,6 +1774,28 @@ def update_all_cus_tabs(request):
                     cus_main.upd_by = request.user.first_name
                     cus_main.upd_date = timezone.now()        
                     cus_main.save()
+
+                    # CUS_MAIN Business Type
+                    try:
+                        customer_option = CustomerOption.objects.get(cus_no=cus_no)
+                        customer_option.btype = cus_main_business_type.replace('&amp;', '&')
+                        customer_option.op1 = cus_main_customer_option_op1.rstrip() # Status
+                        customer_option.op2 = cus_main_customer_option_op2.replace('&amp;', '&') # Group 1
+                        customer_option.op3 = cus_main_customer_option_op3.replace('&amp;', '&') # Group 2
+                        customer_option.op4 = cus_main_customer_option_op4.rstrip() # A/R Code
+                        customer_option.save()
+                        print("save cus_main_customer_option")
+                    except CustomerOption.DoesNotExist:
+                        # Insert
+                        c = CustomerOption(
+                            cus_no = cus_no, 
+                            btype = cus_main_business_type.replace('&amp;', '&'), 
+                            op1 = cus_main_customer_option_op1,   # Status
+                            op2 = cus_main_customer_option_op2.replace('&amp;', '&'), # Group 1
+                            op3 = cus_main_customer_option_op3.replace('&amp;', '&'), # Group 2
+                            op4 = cus_main_customer_option_op4)   # A/R Code
+                        c.save()
+
             except CusMain.DoesNotExist:
                 new_customer_main = CusMain(
                     cus_active = cus_main_cus_active,
@@ -1801,7 +1823,7 @@ def update_all_cus_tabs(request):
                 # CUS_MAIN Business Type
                 try:
                     customer_option = CustomerOption.objects.get(cus_no=cus_no)
-                    customer_option.btype = business_type.replace('&amp;', '&')
+                    customer_option.btype = cus_main_business_type.replace('&amp;', '&')
                     customer_option.op1 = cus_main_customer_option_op1.rstrip() # Status
                     customer_option.op2 = cus_main_customer_option_op2.replace('&amp;', '&') # Group 1
                     customer_option.op3 = cus_main_customer_option_op3.replace('&amp;', '&') # Group 2
