@@ -1682,45 +1682,48 @@ def update_all_cus_tabs(request):
 
             cus_site_cus_tel = request.POST.get('cus_site_cus_tel')
             cus_site_cus_fax = request.POST.get('cus_site_cus_fax')
-            cus_site_cus_email = request.POST.get('cus_site_cus_email')        
+            cus_site_cus_email = request.POST.get('cus_site_cus_email')
             cus_site_cus_zone = request.POST.get('cus_site_cus_zone')
 
             # Customer Site District ID
             cus_site_cus_district_id = request.POST.get('cus_site_cus_district_id')
-            '''
-            print("DEBUG - cus_site_cus_district_id = " + str(cus_site_cus_district_id))
+
+            # print("DEBUG - cus_site_cus_district_id = " + str(cus_site_cus_district_id))
             if cus_site_cus_district_id:
+                print("debug 1")
                 try:
                     district_obj = TDistrict.objects.get(dist_id=cus_site_cus_district_id)
+                    if district_obj:
+                        print("debug 2")
+                        city_id = district_obj.city_id_id
+                        city_obj = TCity.objects.get(city_id=city_id)
+                        country_id = city_obj.country_id_id
+                        # old_district_id = cus_main.cus_district.dist_id
+                        # cus_site.cus_district_id = cus_site_cus_district_id
+                        # cus_site.cus_city = district_obj.city_id                
+                        # city_obj = TCity.objects.get(city_id=city_id)
+                        # cus_site.cus_country = city_obj.country_id
+
                 except TDistrict.DoesNotExist:
+                    print("debug 3")
                     cus_site_cus_district_id = None
             else:
                 cus_site_cus_district_id = None
-            '''
 
-            '''
-            if district_obj:
-                city_id = district_obj.city_id_id
-                old_district_id = cus_main.cus_district.dist_id
-                cus_main.cus_district_id = cus_site_cus_district_id
-                cus_main.cus_city = district_obj.city_id                
-                city_obj = TCity.objects.get(city_id=city_id)
-                cus_main.cus_country = city_obj.country_id
-            '''
 
             cus_site_site_contact_id = request.POST.get('cus_site_site_contact_id')
-            '''
             if cus_site_site_contact_id:
                 cus_site_site_contact_id = cus_site_site_contact_id
             else:
                 cus_site_site_contact_id = None
-            '''
 
             print("------ Customer Site data -------")
             print("cus_no = " + str(cus_no))
             print("cus_site_cus_active = " + str(cus_site_cus_active))
             print("cus_site_cus_name = " + str(cus_site_cus_name_th))
             print("cus_site_cus_district_id = " + str(cus_site_cus_district_id))
+            print("cus_site_city_id = " + str(city_id))
+            print("cus_site_country_id = " + str(country_id))
             print("cus_site_cus_zip = " + str(cus_site_cus_zip))
             print("cus_site_cus_zone = " + str(cus_site_cus_zone))
             print("------------------------")
@@ -1734,7 +1737,8 @@ def update_all_cus_tabs(request):
                 customer.cus_add2_th = cus_site_cus_add2_th
                 customer.cus_subdist_th = cus_site_cus_subdist_th
                 customer.cus_district_id = cus_site_cus_district_id
-
+                customer.cus_city_id = city_id
+                customer.cus_country_id = country_id
                 customer.cus_name_en = cus_site_cus_name_en
                 customer.cus_add1_en = cus_site_cus_add1_en
                 customer.cus_add2_en = cus_site_cus_add2_en
@@ -1760,6 +1764,8 @@ def update_all_cus_tabs(request):
                     cus_add2_th = cus_site_cus_add2_th,
                     cus_subdist_th = cus_site_cus_subdist_th,
                     cus_district_id = cus_site_cus_district_id,
+                    cus_city_id = city_id,
+                    cus_country_id = country_id,
                     cus_name_en = cus_site_cus_name_en,
                     cus_add1_en = cus_site_cus_add1_en,
                     cus_add2_en = cus_site_cus_add2_en,
