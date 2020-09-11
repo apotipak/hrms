@@ -1619,7 +1619,6 @@ def update_all_cus_tabs(request):
             cus_site_cus_add1_th = request.POST.get('cus_site_cus_add1_th')
             cus_site_cus_add2_th = request.POST.get('cus_site_cus_add2_th')
             cus_site_cus_subdist_th = request.POST.get('cus_site_cus_subdist_th')            
-            cus_site_cus_district_id = request.POST.get('cus_site_cus_district_id') 
             cus_site_cus_name_en = request.POST.get('cus_site_cus_name_en')
             cus_site_cus_add1_en = request.POST.get('cus_site_cus_add1_en')
             cus_site_cus_add2_en = request.POST.get('cus_site_cus_add2_en')
@@ -1653,6 +1652,7 @@ def update_all_cus_tabs(request):
             else:
                 cus_site_site_contact_id = None
 
+            '''
             print("------ Print CUS_SITE data -------")
             print("cus_no = " + str(cus_no))
             print("cus_site_cus_active = " + str(cus_site_cus_active))
@@ -1663,6 +1663,7 @@ def update_all_cus_tabs(request):
             print("cus_site_cus_zip = " + str(cus_site_cus_zip))
             print("cus_site_cus_zone = " + str(cus_site_cus_zone))
             print("------------------------")
+            '''
 
             try:
                 customer = Customer.objects.get(pk=cus_no)
@@ -1716,10 +1717,50 @@ def update_all_cus_tabs(request):
 
 
             # ******************************************
-            # **************  CUS_BUKK  ****************
+            # **************  CUS_BILL  ****************
             # ******************************************
+            cus_bill_cus_active = request.POST.get('cus_bill_cus_active')
+            cus_bill_cus_name_th = request.POST.get('cus_bill_cus_name_th')
+            cus_bill_cus_add1_th = request.POST.get('cus_bill_cus_add1_th')
+            cus_bill_cus_add2_th = request.POST.get('cus_bill_cus_add2_th')
+            cus_bill_cus_subdist_th = request.POST.get('cus_bill_cus_subdist_th')            
+            cus_bill_cus_district_id = request.POST.get('cus_bill_cus_district_id') 
+            cus_bill_cus_name_en = request.POST.get('cus_bill_cus_name_en')
+            cus_bill_cus_add1_en = request.POST.get('cus_bill_cus_add1_en')
+            cus_bill_cus_add2_en = request.POST.get('cus_bill_cus_add2_en')
+            cus_bill_cus_subdist_en = request.POST.get('cus_bill_cus_subdist_en')            
+            cus_bill_cus_zip = request.POST.get('cus_bill_cus_zip')
+            if not cus_bill_cus_zip:
+                cus_bill_cus_zip = None
+            cus_bill_cus_tel = request.POST.get('cus_bill_cus_tel')
+            cus_bill_cus_fax = request.POST.get('cus_bill_cus_fax')
+            cus_bill_cus_email = request.POST.get('cus_bill_cus_email')
+            cus_bill_cus_zone = request.POST.get('cus_bill_cus_zone')
 
+            cus_bill_cus_contact_id = request.POST.get('cus_bill_cus_contact_id')
+            if cus_bill_cus_contact_id:
+                cus_bill_cus_contact_id = cus_bill_cus_contact_id
+            else:
+                cus_bill_cus_contact_id = None
 
+            print("------ Print CUS_BILL data -------")
+            print("cus_bill_cus_active = " + str(cus_bill_cus_active))
+            print("cus_bill_cus_name_th = " + str(cus_bill_cus_name_th))
+            print("cus_bill_cus_add1_th = " + str(cus_bill_cus_add1_th))
+            print("cus_bill_cus_add2_th = " + str(cus_bill_cus_add2_th))
+            print("cus_bill_cus_subdist_th = " + str(cus_bill_cus_subdist_th))
+            print("cus_bill_cus_district_id = " + str(cus_bill_cus_district_id))
+            print("cus_bill_cus_name_en = " + str(cus_bill_cus_name_en))
+            print("cus_bill_cus_add1_en = " + str(cus_bill_cus_add1_en))
+            print("cus_bill_cus_add2_en = " + str(cus_bill_cus_add2_en))
+            print("cus_bill_cus_subdist_en = " + str(cus_bill_cus_subdist_en))
+            print("cus_bill_cus_zip = " + str(cus_bill_cus_zip))
+            print("cus_bill_cus_tel = " + str(cus_bill_cus_tel))
+            print("cus_bill_cus_fax = " + str(cus_bill_cus_fax))
+            print("cus_bill_cus_email = " + str(cus_bill_cus_email))
+            print("cus_bill_cus_zone = " + str(cus_bill_cus_zone))
+            print("cus_bill_cus_contact_id = " + str(cus_bill_cus_contact_id))
+            
             print("OK")
             print("****************************")
 
