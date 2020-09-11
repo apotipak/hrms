@@ -377,6 +377,128 @@ def ajax_check_exist_cus_site(request):
     return response
 
 
+@login_required(login_url='/accounts/login/')
+def ajax_check_exist_cus_bill(request):
+
+    print("************************************************")
+    print("FUNCTION: ajax_check_exist_cus_bill")
+    print("************************************************")
+
+    response_data = {}
+    pickup_records=[]
+    business_type_list = []
+    group_1_list = []
+    group_2_list = []
+    customer_option = []
+
+    if request.method == "POST":
+        form = CustomerCodeCreateForm(request.POST)
+        cus_id = request.POST.get('cus_id')
+        cus_brn = request.POST.get('cus_brn').zfill(3)
+
+        if form.is_valid():
+            # Get customer site information
+            cus_no = str(cus_id) + str(cus_brn)            
+            
+            try:
+                customer_bill = CusBill.objects.get(pk=cus_no)
+            except CusBill.DoesNotExist:
+                customer_bill = None
+
+            if customer_bill:
+
+                if not customer_bill.cus_district:
+                    cus_bill_cus_district_th = None
+                    cus_bill_cus_district_en = None
+                else:
+                    cus_bill_cus_district_th = customer_bill.cus_district.dist_th
+                    cus_bill_cus_district_en = customer_bill.cus_district.dist_en
+
+                print("debug : " + str(cus_bill_cus_district_th))
+                
+                if not customer_bill.cus_city:
+                    cus_bill_cus_city_th = None
+                    cus_bill_cus_city_en = None
+                else:
+                    cus_bill_cus_city_th = customer_bill.cus_city.city_th
+                    cus_bill_cus_city_en = customer_bill.cus_city.city_en
+
+                if not customer_bill.cus_country:
+                    cus_bill_cus_country_th = None
+                    cus_bill_cus_country_en = None
+                else:
+                    cus_bill_cus_country_th = customer_bill.cus_country.country_th
+                    cus_bill_cus_country_en = customer_bill.cus_country.country_en
+
+                if not customer_bill.cus_contact_id:
+                    cus_bill_cus_contact_title_th = ""
+                    cus_bill_cus_contact_fname_th = ""
+                    cus_bill_cus_contact_lname_th = ""
+                    cus_bill_cus_contact_position_th = "" 
+                else:
+                    cus_bill_cus_contact_title_th = customer_bill.cus_contact.con_title.title_th
+                    cus_bill_cus_contact_fname_th = customer_bill.cus_contact.con_fname_th
+                    cus_bill_cus_contact_lname_th = customer_bill.cus_contact.con_lname_th,
+                    cus_bill_cus_contact_position_th = customer_bill.cus_contact.con_position_th
+
+                record = {
+                    "cus_no": customer_bill.cus_no,
+                    "cus_active": customer_bill.cus_active,
+                    "cus_name_th": customer_bill.cus_name_th,
+                    "cus_add1_th": customer_bill.cus_add1_th,
+                    "cus_add2_th": customer_bill.cus_add2_th,
+                    "cus_subdist_th": customer_bill.cus_subdist_th,
+                    "cus_district_id": customer_bill.cus_district_id,                    
+                    "cus_district_th": cus_bill_cus_district_th,
+                    "cus_city_th": cus_bill_cus_city_th,
+                    "cus_country_th": cus_bill_cus_country_th,
+                    "cus_name_en": customer_bill.cus_name_en,
+                    "cus_add1_en": customer_bill.cus_add1_en,
+                    "cus_add2_en": customer_bill.cus_add2_en,
+                    "cus_subdist_en": customer_bill.cus_subdist_en,
+                    "cus_subdist_en": customer_bill.cus_subdist_en,
+                    "cus_district_en": cus_bill_cus_district_en,
+                    "cus_city_en": cus_bill_cus_city_en,
+                    "cus_country_en": cus_bill_cus_country_en,
+
+                    "cus_zip": customer_bill.cus_zip,
+                    "cus_tel": customer_bill.cus_tel,
+                    "cus_fax": customer_bill.cus_fax,
+                    "cus_email": customer_bill.cus_email,
+                    "cus_zone": customer_bill.cus_zone_id,
+
+                    "cus_bill_cus_contact_id": customer_bill.cus_contact_id,
+                    "cus_bill_cus_contact_title_th": cus_bill_cus_contact_title_th,
+                    "cus_bill_cus_contact_fname_th": cus_bill_cus_contact_fname_th,
+                    "cus_bill_cus_contact_lname_th": cus_bill_cus_contact_lname_th,
+                    "cus_bill_cis_contact_position_th": cus_bill_cus_contact_position_th,
+                }
+
+                pickup_records.append(record)
+
+            else:
+                print("todo: add new customer bill")
+
+            response = JsonResponse({"success": "Form is valid", 
+                "results": list(pickup_records), 
+                })
+
+            response.status_code = 200
+            return response            
+        else:
+            # print("form is invalid")       
+            response = JsonResponse({ "error": "Data is not correct.", "results": list(pickup_records) })
+            response.status_code = 403
+            return response   
+    else:
+        print("TODO: Handle get request")
+
+
+    response = JsonResponse({ "error": "Contact admistrator.", "results": list(pickup_records) })
+    response.status_code = 403
+    return response
+
+
 @permission_required('customer.view_customer', login_url='/accounts/login/')
 def CustomerList(request):
     page_title = settings.PROJECT_NAME
@@ -697,6 +819,8 @@ def get_district_list_modal(request):
                     "dist_en": d.dist_en,
                     "city_th": d.city_id.city_th,
                     "city_en": d.city_id.city_en,
+                    "country_th": d.city_id.country_id.country_th,
+                    "country_en": d.city_id.country_id.country_en,
                 }
                 pickup_records.append(record)
 
@@ -1643,8 +1767,12 @@ def update_all_cus_tabs(request):
                 except TDistrict.DoesNotExist:
                     print("debug 3")
                     cus_site_cus_district_id = None
+                    city_id = None
+                    country_id = None
             else:
                 cus_site_cus_district_id = None
+                city_id = None
+                country_id = None
 
             cus_site_site_contact_id = request.POST.get('cus_site_site_contact_id')
             if cus_site_site_contact_id:
@@ -1652,7 +1780,6 @@ def update_all_cus_tabs(request):
             else:
                 cus_site_site_contact_id = None
 
-            '''
             print("------ Print CUS_SITE data -------")
             print("cus_no = " + str(cus_no))
             print("cus_site_cus_active = " + str(cus_site_cus_active))
@@ -1663,7 +1790,6 @@ def update_all_cus_tabs(request):
             print("cus_site_cus_zip = " + str(cus_site_cus_zip))
             print("cus_site_cus_zone = " + str(cus_site_cus_zone))
             print("------------------------")
-            '''
 
             try:
                 customer = Customer.objects.get(pk=cus_no)
@@ -1760,7 +1886,58 @@ def update_all_cus_tabs(request):
             print("cus_bill_cus_email = " + str(cus_bill_cus_email))
             print("cus_bill_cus_zone = " + str(cus_bill_cus_zone))
             print("cus_bill_cus_contact_id = " + str(cus_bill_cus_contact_id))
-            
+
+            try:
+                cusbill = CusBill.objects.get(pk=cus_no)
+                cusbill.cus_active = cus_bill_cus_active
+                cusbill.cus_name_th = cus_bill_cus_name_th
+                cusbill.cus_add1_th = cus_bill_cus_add1_th
+                cusbill.cus_add2_th = cus_bill_cus_add2_th
+                cusbill.cus_subdist_th = cus_bill_cus_subdist_th
+                cusbill.cus_district_id = cus_bill_cus_district_id
+                cusbill.cus_city_id = city_id
+                cusbill.cus_country_id = country_id
+                cusbill.cus_name_en = cus_bill_cus_name_en
+                cusbill.cus_add1_en = cus_bill_cus_add1_en
+                cusbill.cus_add2_en = cus_bill_cus_add2_en
+                cusbill.cus_subdist_en = cus_bill_cus_subdist_en
+                cusbill.cus_zip = cus_bill_cus_zip
+                cusbill.cus_tel = cus_bill_cus_tel
+                cusbill.cus_fax = cus_bill_cus_fax
+                cusbill.cus_email = cus_bill_cus_email
+                cusbill.cus_zone_id = cus_bill_cus_zone
+                cusbill.cus_contact_id = cus_bill_cus_contact_id
+                cusbill.site_contact_id = cus_bill_cus_contact_id
+                cusbill.save()
+                print("update cus_bill")
+            except CusBill.DoesNotExist:
+                new_cusbill = CusBill(
+                    cus_active = cus_bill_cus_active,
+                    cus_no = cus_no,
+                    cus_id = cus_id,
+                    cus_brn = cus_brn,
+                    cus_name_th = cus_bill_cus_name_th,
+                    cus_add1_th = cus_bill_cus_add1_th,
+                    cus_add2_th = cus_bill_cus_add2_th,
+                    cus_subdist_th = cus_bill_cus_subdist_th,
+                    cus_district_id = cus_bill_cus_district_id,
+                    cus_city_id = city_id,
+                    cus_country_id = country_id,
+                    cus_name_en = cus_bill_cus_name_en,
+                    cus_add1_en = cus_bill_cus_add1_en,
+                    cus_add2_en = cus_bill_cus_add2_en,
+                    cus_subdist_en = cus_bill_cus_subdist_en,                    
+                    cus_zip = cus_bill_cus_zip,
+                    cus_tel = cus_bill_cus_tel,
+                    cus_fax = cus_bill_cus_fax,
+                    cus_email = cus_bill_cus_email,
+                    cus_zone_id = cus_bill_cus_zone,
+                    cus_contact_id = cus_bill_cus_contact_id,
+                    site_contact_id = cus_bill_cus_contact_id,
+                    )
+                new_cusbill.save()
+                print("insert cus_bill")
+
             print("OK")
             print("****************************")
 

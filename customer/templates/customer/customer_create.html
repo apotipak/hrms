@@ -1353,15 +1353,12 @@
 
           var cus_site_cus_name_th = data.results[0]["cus_name_th"];
           var cus_site_cus_add1_th = data.results[0]["cus_add1_th"];
-          var cus_site_cus_add2_th = data.results[0]["cus_add2_th"];        
-          
+          var cus_site_cus_add2_th = data.results[0]["cus_add2_th"];                  
           var cus_site_cus_district_id = data.results[0]["cus_district_id"];
-
           var cus_site_cus_subdist_th = data.results[0]["cus_subdist_th"];          
           var cus_site_cus_district_th = data.results[0]["cus_district_th"];
           var cus_site_cus_city_th = data.results[0]["cus_city_th"];
-          var cus_site_cus_country_th = data.results[0]["cus_country_th"];
-          
+          var cus_site_cus_country_th = data.results[0]["cus_country_th"];          
           var cus_site_cus_name_en = data.results[0]["cus_name_en"];
           var cus_site_cus_add1_en = data.results[0]["cus_add1_en"];
           var cus_site_cus_add2_en = data.results[0]["cus_add2_en"];        
@@ -1369,13 +1366,11 @@
           var cus_site_cus_district_en = data.results[0]["cus_district_en"];
           var cus_site_cus_city_en = data.results[0]["cus_city_en"];
           var cus_site_cus_country_en = data.results[0]["cus_country_en"];
-
           var cus_site_cus_zip = data.results[0]["cus_zip"];
           var cus_site_cus_tel = data.results[0]["cus_tel"];
           var cus_site_cus_fax = data.results[0]["cus_fax"];
           var cus_site_cus_email = data.results[0]["cus_email"];
           var cus_site_cus_zone = data.results[0]["cus_zone"];
-
           var cus_site_site_contact_id = data.results[0]["cus_site_site_contact_id"];
           var cus_site_site_contact_title_th = data.results[0]["cus_site_site_contact_title_th"];
           var cus_site_site_contact_fname_th = data.results[0]["cus_site_site_contact_fname_th"];
@@ -1390,7 +1385,6 @@
           $('#id_cus_site_cus_district_dist_th').val(cus_site_cus_district_th);          
           $('#id_cus_site_cus_city_th').val(cus_site_cus_city_th);          
           $('#id_cus_site_cus_country_th').val(cus_site_cus_country_th);
-
           $('#id_cus_site_cus_name_en').val(cus_site_cus_name_en);
           $('#id_cus_site_cus_add1_en').val(cus_site_cus_add1_en);
           $('#id_cus_site_cus_add2_en').val(cus_site_cus_add2_en);
@@ -1398,13 +1392,11 @@
           $('#id_cus_site_cus_district_en').val(cus_site_cus_district_en);
           $('#id_cus_site_cus_city_en').val(cus_site_cus_city_en);
           $('#id_cus_site_cus_country_en').val(cus_site_cus_country_en);
-
           $('#id_cus_site_cus_zip').val(cus_site_cus_zip);
           $('#id_cus_site_cus_tel').val(cus_site_cus_tel);
           $('#id_cus_site_cus_fax').val(cus_site_cus_fax);
           $('#id_cus_site_cus_email').val(cus_site_cus_email);
           $('#id_cus_site_cus_zone').val(cus_site_cus_zone);
-
           $('#id_cus_site_site_contact_id').val(cus_site_site_contact_id);
           $('#id_cus_site_site_contact_title_th').val(cus_site_site_contact_title_th);
           $('#id_cus_site_site_contact_fname_th').val(cus_site_site_contact_fname_th);
@@ -1416,6 +1408,91 @@
           alert(data.responseJSON.error);          
         },
       });
+
+
+
+      // Fill in CUS_BILL
+      $.ajax({
+        url: "/customer/ajax/ajax_check_exist_cus_bill/",
+        type: "POST",
+        data: {          
+          csrfmiddlewaretoken: '{{ csrf_token }}',
+          cus_id: cus_id,
+          cus_brn: cus_brn,
+        },
+        success: function(data) {
+
+          while (cus_brn.length < 3) 
+            cus_brn = "0" + cus_brn;
+          $('#id_cus_brn').val(cus_brn);
+          
+          // Customer Site
+          var cus_bill_cus_active = data.results[0]["cus_active"];
+          if(cus_bill_cus_active==1) {
+            $('#id_cus_bill_cus_active').val(1);
+            $('#id_cus_bill_cus_active').prop("checked", true);
+          } else {
+            $('#id_cus_bill_cus_active').val(0);
+            $('#id_cus_bill_cus_active').prop("checked", false);
+          }
+
+          var cus_bill_cus_name_th = data.results[0]["cus_name_th"];
+          var cus_bill_cus_add1_th = data.results[0]["cus_add1_th"];
+          var cus_bill_cus_add2_th = data.results[0]["cus_add2_th"];                  
+          var cus_bill_cus_district_id = data.results[0]["cus_district_id"];
+          var cus_bill_cus_subdist_th = data.results[0]["cus_subdist_th"];          
+          var cus_bill_cus_district_th = data.results[0]["cus_district_th"];
+          var cus_bill_cus_city_th = data.results[0]["cus_city_th"];
+          var cus_bill_cus_country_th = data.results[0]["cus_country_th"];          
+          var cus_bill_cus_name_en = data.results[0]["cus_name_en"];
+          var cus_bill_cus_add1_en = data.results[0]["cus_add1_en"];
+          var cus_bill_cus_add2_en = data.results[0]["cus_add2_en"];        
+          var cus_bill_cus_subdist_en = data.results[0]["cus_subdist_en"];
+          var cus_bill_cus_district_en = data.results[0]["cus_district_en"];
+          var cus_bill_cus_city_en = data.results[0]["cus_city_en"];
+          var cus_bill_cus_country_en = data.results[0]["cus_country_en"];
+          var cus_bill_cus_zip = data.results[0]["cus_zip"];
+          var cus_bill_cus_tel = data.results[0]["cus_tel"];
+          var cus_bill_cus_fax = data.results[0]["cus_fax"];
+          var cus_bill_cus_email = data.results[0]["cus_email"];
+          var cus_bill_cus_zone = data.results[0]["cus_zone"];
+          var cus_bill_site_contact_id = data.results[0]["cus_bill_site_contact_id"];
+          var cus_bill_site_contact_title_th = data.results[0]["cus_bill_site_contact_title_th"];
+          var cus_bill_site_contact_fname_th = data.results[0]["cus_bill_site_contact_fname_th"];
+          var cus_bill_site_contact_lname_th = data.results[0]["cus_bill_site_contact_lname_th"];
+          var cus_bill_site_contact_position_th = data.results[0]["cus_bill_site_contact_position_th"];
+
+          $('#id_cus_bill_cus_name_th').val(cus_bill_cus_name_th);
+          $('#id_cus_bill_cus_add1_th').val(cus_bill_cus_add1_th);
+          $('#id_cus_bill_cus_add2_th').val(cus_bill_cus_add2_th);
+          $('#id_cus_bill_cus_subdist_th').val(cus_bill_cus_subdist_th);          
+          $('#id_cus_bill_cus_district_id').val(cus_bill_cus_district_id);
+          $('#id_cus_bill_cus_district_dist_th').val(cus_bill_cus_district_th);          
+          $('#id_cus_bill_cus_city_th').val(cus_bill_cus_city_th);          
+          $('#id_cus_bill_cus_country_th').val(cus_bill_cus_country_th);
+          $('#id_cus_bill_cus_name_en').val(cus_bill_cus_name_en);
+          $('#id_cus_bill_cus_add1_en').val(cus_bill_cus_add1_en);
+          $('#id_cus_bill_cus_add2_en').val(cus_bill_cus_add2_en);
+          $('#id_cus_bill_cus_subdist_en').val(cus_bill_cus_subdist_en);
+          $('#id_cus_bill_cus_district_en').val(cus_bill_cus_district_en);
+          $('#id_cus_bill_cus_city_en').val(cus_bill_cus_city_en);
+          $('#id_cus_bill_cus_country_en').val(cus_bill_cus_country_en);
+          $('#id_cus_bill_cus_zip').val(cus_bill_cus_zip);
+          $('#id_cus_bill_cus_tel').val(cus_bill_cus_tel);
+          $('#id_cus_bill_cus_fax').val(cus_bill_cus_fax);
+          $('#id_cus_bill_cus_email').val(cus_bill_cus_email);
+          $('#id_cus_bill_cus_zone').val(cus_bill_cus_zone);
+          $('#id_cus_bill_site_contact_id').val(cus_bill_site_contact_id);
+          $('#id_cus_bill_site_contact_title_th').val(cus_bill_cus_contact_title_th);
+          $('#id_cus_bill_site_contact_fname_th').val(cus_bill_cis_contact_fname_th);
+          $('#id_cus_bill_site_contact_lname_th').val(cus_bill_cus_contact_lname_th);
+          $('#id_cus_bill_site_contact_position_th').val(cus_bill_cus_contact_position_th);
+        },
+        error: function(data) {
+          alert(data.responseJSON.error);          
+        },
+      });      
+
 
     }
   });
@@ -1510,10 +1587,7 @@
     cus_bill_cus_add1_th = $('#id_cus_bill_cus_add1_th').val();
     cus_bill_cus_add2_th = $('#id_cus_bill_cus_add2_th').val();    
     cus_bill_cus_subdist_th = $('#id_cus_bill_cus_subdist_th').val();
-    
     cus_bill_cus_district_id = $('#id_cus_bill_select_district_id').val();
-    alert(cus_bill_cus_district_id);
-
     cus_bill_cus_district = $('#id_cus_bill_cus_district').val();
     cus_bill_cus_name_en = $('#id_cus_bill_cus_name_en').val();
     cus_bill_cus_add1_en = $('#id_cus_bill_cus_add1_en').val();
@@ -1852,6 +1926,127 @@
     });
   }
 
+  function cus_bill_search_district_modal() {
+    current_district_id = $('#id_cus_bill_select_district_id').val();
+    search_district_option = $('#id_cus_bill_cus_district_option').val();
+    search_district_text = $('#id_cus_bill_cus_district_search_text').val();
+
+    page_no = 1;
+
+    $.ajax({
+        url : "/customer/ajax/get_district_list_modal",
+        type: 'get',   
+        dataType: 'json',
+        data : {          
+          page_no : page_no,
+          city_name : search_district_text,
+          search_district_option : search_district_option,          
+          search_district_text : search_district_text,
+          current_district_id : current_district_id,
+        },
+        success: function (data) {
+          var result = ""
+          var count = data.results.length;
+          var dist_id = data.results[0]["dist_id"];
+          var dist_th = data.results[0]["dist_th"];
+
+
+            result += "<div class='row col-12'>";
+            result += "<div class='col-8 offset-3 pb-2'>";
+            result += "<form id='cus_bill_search_district_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
+            result += "  <div class='form-group mx-sm-3 mb-2'>";
+            result += "  <select name='cus_bill_cus_district_option' class='form-control form-control-sm' required id='id_cus_bill_cus_district_option'>";
+            result += "    <option value='1'>District ID</option>";
+            result += "    <option value='2'>District</option>";
+            result += "    <option value='3' selected>City</option>";
+            result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";
+            result += "    <label for='id_cus_bill_search_district' class='sr-only'>Search</label>";            
+            result += "    <input type='text' class='form-control form-control-sm' id='id_cus_bill_cus_district_search_text' name='cus_bill_cus_district_search_text' placeholder=''>";
+            result += "  </div>";
+            result += "<a href='javascript:cus_bill_search_district_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";            
+            result += "</form>";
+            result += "</div>";
+
+            result += "<div class='row col-12'>";
+            result += "<table class='table table-hover table-sm'>";
+            result += " <thead>";
+            result += "   <tr>";
+            result += "     <th scope='col'>{% trans 'District ID' %}</th>";
+            result += "     <th scope='col'>{% trans 'District' %}</th>";
+            result += "     <th scope='col'>{% trans 'City' %}</th>";
+            result += "     <th scope='col'>&nbsp;</th>";
+            result += "   </tr>";
+            result += " </thead>";
+            result += "<tbody>";
+            result += "</div>";
+            result += "<div>";
+
+          for(var i=0; i<count; i++) {              
+            var dist_id = data.results[i]["dist_id"];
+            var dist_name_th = data.results[i]["dist_th"];
+            var city_name_th = data.results[i]["city_th"];
+            var dist_name_en = data.results[i]["dist_en"];
+            var city_name_en = data.results[i]["city_en"];
+            var country_name_th = data.results[i]["country_th"]
+            var country_name_en = data.results[i]["country_en"];
+
+            result += "<tr>";
+            result += "<td>" + dist_id + "</td>";        
+            result += "<td>" + dist_name_th + "</td>";
+            result += "<td>" + city_name_th + "</td>";            
+            result += "<td><a href='javascript:select_cus_bill_district(" + dist_id + ",\"" + dist_name_th + "\",\"" + city_name_th + "\",\"" + dist_name_en + "\",\"" + city_name_en + "\",\"" + country_name_th + "\",\"" + country_name_en + "\");' type='button' class='btn btn-outline-primary btn-sm'>Select</a></td>";
+
+            result += "</tr>";              
+          }
+          result += " </tbody>";
+          result += "</table>";
+
+          if(data.is_paginated) {
+            result += "<div>";
+            result += "  <span>";
+            if(data.previous_page != 0) {
+              result += " <a href='javascript:get_cus_bill_district_lookup(" + data.previous_page + ");'>" + "<i class='fas fa-arrow-circle-left'></i></a> ";
+            }
+            result += data.current_page_number + " / " + data.current_page_paginator_num_pages;
+            result += " <a href='javascript:get_cus_bill_district_lookup(" + data.next_page + ");'>" + "<i class='fas fa-arrow-circle-right'></i></a>";
+            result += "    </span>";
+            result += "</div>";
+          }
+          
+          $("#districtmodal .modal-body").html(result);          
+        },
+        error: function(data){
+          result = "";
+          result += "<div class='row col-12'>";
+          result += "<div class='col-8 offset-3 pb-2'>";
+          result += "<form id='cus_bill_search_district_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
+          result += "  <div class='form-group mx-sm-3 mb-2'>";
+          result += "  <select name='cus_bill_cus_district_option' class='form-control form-control-sm' required id='id_cus_bill_cus_district_option'>";
+          result += "    <option value='1'>District ID</option>";
+          result += "    <option value='2'>District</option>";
+          result += "    <option value='3' selected>City</option>";
+          result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";
+          result += "    <label for='id_cus_bill_search_district' class='sr-only'>Search</label>";            
+          result += "    <input type='text' class='form-control form-control-sm' id='id_cus_bill_cus_district_search_text' name='cus_site_cus_district_search_text' placeholder=''>";
+          result += "  </div>";
+          result += "<a href='javascript:cus_bill_search_district_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";            
+          result += "</form>";
+          result += "</div>";
+
+          result += "<table class='table table-hover table-sm'>";
+          result += " <thead>";
+          result += "   <tr>";
+          result += "     <td colspan='4' class='text-center'><br>Not found.<br><br></td>";
+          result += "   </tr>";
+          result += " </thead>";
+          result += "</tbody>";
+          result += "</table>";
+
+          $("#districtmodal .modal-body").html(result);
+        }          
+    });
+  }
+
   function cus_site_select_contact(con_id) {
     $.ajax({
         url : "/customer/ajax/get_contact",
@@ -1887,10 +2082,6 @@
       var obj = $(this);
       current_district_id = $('#id_cus_main_select_district_id').val();
       
-      //alert(current_district_id);
-      //alert("TODO");
-      console.log("customer_create.html line 1698");
-
       $.ajax({
           url: obj.attr("data-url"),
           type: 'get',          
@@ -2139,7 +2330,6 @@
   }
 
   function cus_main_search_contact_modal() {
-    //alert("todo");
     current_contact_id = $('#id_cus_main_select_cus_contact_id').val();    
     search_contact_option = $('#id_cus_main_cus_contact_option').val();
     search_contact_text = $('#id_cus_main_cus_contact_search_text').val();
@@ -2405,7 +2595,6 @@
     $('#cus_main_contact_lookup').on('click', function (e) {
       var obj = $(this);
       current_contact_id = $('#id_cus_main_cus_contact_id').val();
-      //alert(current_contact_id);
       
       if(current_contact_id == null)
         current_contact_id = null;
