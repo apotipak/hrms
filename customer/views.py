@@ -798,7 +798,6 @@ def get_district_list(request):
         pickup_records=[]
         
         for d in current_page:
-            # print("debug 1")
             record = {
                 "dist_id": d.dist_id,
                 "city_id": d.city_id_id,
@@ -806,11 +805,13 @@ def get_district_list(request):
                 "dist_en": d.dist_en,
                 "city_th": d.city_id.city_th,
                 "city_en": d.city_id.city_en,
+                "country_th": d.city_id.country_id.country_th,
+                "country_en": d.city_id.country_id.country_en,
             }
             pickup_records.append(record)
 
         # serialized_qs = serializers.serialize('json', current_page)
-        #print(serialized_qs);
+        # print(serialized_qs);
         # pages = current_page.paginator.num_pages
         # current_page = 1
 

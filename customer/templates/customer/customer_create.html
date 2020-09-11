@@ -2393,12 +2393,15 @@
               var dist_name_en = data.results[i]["dist_en"];
               var city_name_th = data.results[i]["city_th"];
               var city_name_en = data.results[i]["city_en"];
+              var country_name_th = data.results[i]["country_th"];
+              var country_name_en = data.results[i]["country_en"];
+
 
               result += "<tr>";
               result += "<td>" + dist_id + "</td>";        
               result += "<td>" + dist_name_th + "</td>";
               result += "<td>" + city_name_th + "</td>";
-              result += "<td><a href='javascript:select_district(" + dist_id + ",\"" + dist_name_th + "\",\"" + city_name_th + "\",\"" + dist_name_en + "\",\"" + city_name_en + "\");' type='button' class='btn btn-outline-primary btn-sm'>Select</a></td>";
+              result += "<td><a href='javascript:select_cus_site_district(" + dist_id + ",\"" + dist_name_th + "\",\"" + city_name_th + "\",\"" + dist_name_en + "\",\"" + city_name_en + "\",\"" + country_name_th + "\",\"" + country_name_en + "\");' type='button' class='btn btn-outline-primary btn-sm'>Select</a></td>";
 
               result += "</tr>";              
             }
@@ -2424,21 +2427,29 @@
   });
 
   function select_district(dist_id, dist_name_th, city_name_th, dist_name_en, city_name_en) {        
+    $("#id_cus_site_cus_district_id").val(dist_id); 
+
     $("#id_cus_site_cus_district_dist_th").val(dist_name_th);
-    $("#id_cus_site_cus_district_id").val(dist_id);    
-    $("#id_cus_site_cus_city_th").val(city_name_th);    
-    $("#id_cus_site_cus_district_en").val(dist_name_en);
+    $("#id_cus_site_cus_district_en").val(dist_name_en);    
+
+    $("#id_cus_site_cus_city_th").val(city_name_th);
     $("#id_cus_site_cus_city_en").val(city_name_en);
+    
     $("#districtmodal").modal("hide");    
   }
 
-  function select_cus_site_district(dist_id, dist_name_th, city_name_th, dist_name_en, city_name_en) {        
+  function select_cus_site_district(dist_id, dist_name_th, city_name_th, dist_name_en, city_name_en, country_name_th, country_name_en) {        
     $("#id_cus_site_cus_district_dist_th").val(dist_name_th);
     $("#id_cus_site_cus_district_id").val(dist_id);    
     $("#id_cus_site_cus_city_th").val(city_name_th);    
     $("#id_cus_site_cus_district_en").val(dist_name_en);
     $("#id_cus_site_cus_city_en").val(city_name_en);
-    $("#districtmodal").modal("hide");    
+
+    // TODO Country
+    $("#id_cus_site_cus_country_th").val(country_name_th);
+    $("#id_cus_site_cus_country_en").val(country_name_en);
+
+    $("#districtmodal").modal("hide");  
   }
 
 
