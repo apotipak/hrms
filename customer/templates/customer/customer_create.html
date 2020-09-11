@@ -1195,7 +1195,7 @@
   });
 
   $(document).ready(function(){
-    $('#id_cus_id').focus();
+    $('#id_cus_id').focus();    
   });
 
   // Update Main Office
@@ -1603,7 +1603,6 @@
     cus_bill_cus_zone = $('#id_cus_bill_cus_zone').val();    
     cus_bill_cus_contact_id = $('#id_cus_bill_cus_contact_id').val();
 
-
     $.ajax({
       url : "/customer/ajax/update_all_cus_tabs/",
       type : "POST",
@@ -1671,8 +1670,8 @@
         cus_bill_cus_zone: cus_bill_cus_zone,
         cus_bill_cus_contact_id: cus_bill_cus_contact_id,        
       },
-      success : function(json) {
-        if(json.form_is_valid) {          
+      success : function(json) {        
+        if(json.form_is_valid) {
           $(document).Toasts('create', {
             class: 'bg-success', 
             title: "{% trans 'Message' %}",
@@ -1696,6 +1695,7 @@
 
         }
         else {          
+          //alert("b");          
 
           $(document).Toasts('create', {
             class: 'bg-danger', 

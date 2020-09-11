@@ -95,42 +95,75 @@ def ajax_check_exist_cus_main(request):
                 print(cus_main.cus_contact.con_position_th)
                 '''
 
-                record = {
-                    "cus_id": cus_main.cus_id,
-                    "cus_active": cus_main.cus_active,
-                    "cus_name_th": cus_main.cus_name_th,
-                    "cus_add1_th": cus_main.cus_add1_th,
-                    "cus_add2_th": cus_main.cus_add2_th,
-                    "cus_subdist_th": cus_main.cus_subdist_th,
-                    "cus_district_id": cus_main.cus_district_id,                    
-                    "cus_district_th": cus_main.cus_district.dist_th,
-                    "cus_city_th": cus_main.cus_city.city_th,
-                    "cus_country_th": cus_main.cus_country.country_th,
-                    
-                    "cus_name_en": cus_main.cus_name_en,
-                    "cus_add1_en": cus_main.cus_add1_en,
-                    "cus_add2_en": cus_main.cus_add2_en,
-                    "cus_subdist_en": cus_main.cus_subdist_en,
-                    "cus_district_en": cus_main.cus_district.dist_en,
-                    "cus_city_en": cus_main.cus_city.city_en,
-                    "cus_country_en": cus_main.cus_country.country_en,
+                if cus_main:
 
-                    "cus_zip": cus_main.cus_zip,                    
-                    "cus_tel": cus_main.cus_tel,
-                    "cus_fax": cus_main.cus_fax,
-                    "cus_email": cus_main.cus_email,
-                    "cus_zone": cus_main.cus_zone_id,
+                    if not cus_main.cus_district:
+                        cus_main_cus_district_th = None
+                        cus_main_cus_district_en = None
+                    else:
+                        cus_main_cus_district_th = cus_main.cus_district.dist_th
+                        cus_main_cus_district_en = cus_main.cus_district.dist_en
 
-                    "cus_contact_id": cus_main.cus_contact_id,
-                    "cus_contact_title_th": cus_main.cus_contact.con_title.title_th,
-                    "cus_contact_fname_th": cus_main.cus_contact.con_fname_th,
-                    "cus_contact_lname_th": cus_main.cus_contact.con_lname_th,
-                    "cus_contact_position_th": cus_main.cus_contact.con_position_th,
+                    if not cus_main.cus_city:
+                        cus_main_cus_city_th = None
+                        cus_main_cus_city_en = None
+                    else:
+                        cus_main_cus_city_th = cus_main.cus_city.city_th
+                        cus_main_cus_city_en = cus_main.cus_city.city_en
 
-                }
-                pickup_records.append(record)
+                    if not cus_main.cus_country:
+                        cus_main_cus_country_th = None
+                        cus_main_cus_country_en = None
+                    else:
+                        cus_main_cus_country_th = cus_main.cus_country.country_th
+                        cus_main_cus_country_en = cus_main.cus_country.country_en
+
+                    if not cus_main.site_contact_id:
+                        cus_main_site_contact_title_th = ""
+                        cus_main_site_contact_fname_th = ""
+                        cus_main_site_contact_lname_th = ""
+                        cus_main_site_contact_position_th = "" 
+                    else:
+                        cus_main_site_contact_title_th = cus_main.site_contact.con_title.title_th
+                        cus_main_site_contact_fname_th = cus_main.site_contact.con_fname_th
+                        cus_main_site_contact_lname_th = cus_main.site_contact.con_lname_th,
+                        cus_main_site_contact_position_th = cus_main.site_contact.con_position_th
+
+                    record = {
+                        "cus_id": cus_main.cus_id,
+                        "cus_active": cus_main.cus_active,
+                        "cus_name_th": cus_main.cus_name_th,
+                        "cus_add1_th": cus_main.cus_add1_th,
+                        "cus_add2_th": cus_main.cus_add2_th,
+                        "cus_subdist_th": cus_main.cus_subdist_th,
+                        "cus_district_id": cus_main.cus_district_id,                    
+                        "cus_district_th": cus_main_cus_district_th,
+                        "cus_city_th": cus_main_cus_city_th,
+                        "cus_country_th": cus_main_cus_country_th,
+                        
+                        "cus_name_en": cus_main.cus_name_en,
+                        "cus_add1_en": cus_main.cus_add1_en,
+                        "cus_add2_en": cus_main.cus_add2_en,
+                        "cus_subdist_en": cus_main.cus_subdist_en,
+                        "cus_district_en": cus_main_cus_district_en,
+                        "cus_city_en": cus_main_cus_city_en,
+                        "cus_country_en": cus_main_cus_country_en,
+
+                        "cus_zip": cus_main.cus_zip,                    
+                        "cus_tel": cus_main.cus_tel,
+                        "cus_fax": cus_main.cus_fax,
+                        "cus_email": cus_main.cus_email,
+                        "cus_zone": cus_main.cus_zone_id,
+
+                        "cus_contact_id": cus_main.cus_contact_id,
+                        "cus_contact_title_th": cus_main_site_contact_title_th,
+                        "cus_contact_fname_th": cus_main_site_contact_fname_th,
+                        "cus_contact_lname_th": cus_main_site_contact_lname_th,
+                        "cus_contact_position_th": cus_main_site_contact_position_th,
+                    }
+                    pickup_records.append(record)
                 
-                cus_main_form = CusMainForm(instance=cus_main)
+                    cus_main_form = CusMainForm(instance=cus_main)
             except CusMain.DoesNotExist:
                 cus_main = None
                 record = {
@@ -1667,21 +1700,40 @@ def update_all_cus_tabs(request):
             # ******************************************            
             cus_main_cus_active = request.POST.get('cus_main_cus_active')
             cus_main_cus_name_th = request.POST.get('cus_main_cus_name_th')            
-            cus_add1_th = request.POST.get('cus_main_cus_add1_th')
-            cus_add2_th = request.POST.get('cus_main_cus_add2_th')
-            cus_subdist_th = request.POST.get('cus_main_cus_subdist_th')                        
-            cus_name_en = request.POST.get('cus_main_cus_name_en')                          
-            cus_add1_en = request.POST.get('cus_main_cus_add1_en')
-            cus_add2_en = request.POST.get('cus_main_cus_add2_en')
-            cus_subdist_en = request.POST.get('cus_main_cus_subdist_en')
-            cus_zip = request.POST.get('cus_main_cus_zip')
-            if not cus_zip:
-                cus_zip = None
-            cus_tel = request.POST.get('cus_main_cus_tel')
-            cus_fax = request.POST.get('cus_main_cus_fax')
-            cus_email = request.POST.get('cus_main_cus_email')
-            cus_zone = request.POST.get('cus_main_cus_zone')                
-            business_type = request.POST.get('cus_main_business_type')
+            cus_main_cus_add1_th = request.POST.get('cus_main_cus_add1_th')
+            cus_main_cus_add2_th = request.POST.get('cus_main_cus_add2_th')
+            cus_main_cus_subdist_th = request.POST.get('cus_main_cus_subdist_th')                        
+            cus_main_cus_name_en = request.POST.get('cus_main_cus_name_en')                          
+            cus_main_cus_add1_en = request.POST.get('cus_main_cus_add1_en')
+            cus_main_cus_add2_en = request.POST.get('cus_main_cus_add2_en')
+            cus_main_cus_district_id = request.POST.get('id_cus_main_cus_district_id')
+            cus_main_cus_subdist_en = request.POST.get('cus_main_cus_subdist_en')
+            cus_main_cus_zip = request.POST.get('cus_main_cus_zip')
+            if not cus_main_cus_zip:
+                cus_main_cus_zip = None
+            cus_main_cus_tel = request.POST.get('cus_main_cus_tel')
+            cus_main_cus_fax = request.POST.get('cus_main_cus_fax')
+            cus_main_cus_email = request.POST.get('cus_main_cus_email')
+            cus_main_cus_zone = request.POST.get('cus_main_cus_zone')                
+
+            cus_main_cus_district_id = request.POST.get('cus_main_cus_district_id')
+            if cus_main_cus_district_id:
+                try:
+                    district_obj = TDistrict.objects.get(dist_id=cus_main_cus_district_id)
+                    if district_obj:
+                        city_id = district_obj.city_id_id
+                        city_obj = TCity.objects.get(city_id=city_id)
+                        country_id = city_obj.country_id_id
+                except TDistrict.DoesNotExist:
+                    cus_main_cus_district_id = None
+                    cus_main_city_id = None
+                    cus_main_country_id = None
+            else:
+                cus_main_cus_district_id = None
+                cus_main_city_id = None
+                cus_main_country_id = None
+
+            cus_main_business_type = request.POST.get('cus_main_business_type')
             cus_main_customer_option_op1 = request.POST.get('cus_main_customer_option_op1')
             cus_main_customer_option_op2 = request.POST.get('cus_main_customer_option_op2')
             cus_main_customer_option_op3 = request.POST.get('cus_main_customer_option_op3')
@@ -1691,52 +1743,81 @@ def update_all_cus_tabs(request):
                 cus_main_cus_contact_id = cus_main_cus_contact_id
             else:
                 cus_main_cus_contact_id = None
-            cus_main = get_object_or_404(CusMain, pk=cus_id)
-            cus_main_cus_district_id = request.POST.get('cus_main_cus_district_id')
-            cus_main.cus_active = cus_main_cus_active
-            cus_main.cus_name_th = cus_main_cus_name_th
-            cus_main.cus_add1_th = cus_add1_th
-            cus_main.cus_add2_th = cus_add2_th
-            cus_main.cus_subdist_th = cus_subdist_th
-            cus_main.cus_name_en = cus_name_en
-            cus_main.cus_add1_en = cus_add1_en
-            cus_main.cus_add2_en = cus_add2_en
-            cus_main.cus_subdist_en = cus_subdist_en
-            cus_main.cus_zip = cus_zip
-            cus_main.cus_tel = cus_tel
-            cus_main.cus_fax = cus_fax
-            cus_main.cus_email = cus_email
-            cus_main.cus_zone_id = cus_zone
-            cus_main.cus_contact_id = cus_main_cus_contact_id
-            if cus_main.upd_flag == 'A':
-                cus_main.upd_flag = 'E'
-            cus_main.upd_by = request.user.first_name
-            cus_main.upd_date = timezone.now()        
-            cus_main.save()
-            # CUS_MAIN Business Type
-            try:
-                customer_option = CustomerOption.objects.get(cus_no=cus_no)
-                if customer_option:
-                    customer_option.btype = business_type.replace('&amp;', '&')
-                    customer_option.op1 = cus_main_customer_option_op1.rstrip() # Status
-                    customer_option.op2 = cus_main_customer_option_op2.replace('&amp;', '&') # Group 1
-                    customer_option.op3 = cus_main_customer_option_op3.replace('&amp;', '&') # Group 2
-                    customer_option.op4 = cus_main_customer_option_op4.rstrip() # A/R Code
-                    customer_option.save()                
-            except CustomerOption.DoesNotExist:
-                print("Update customer_option error!")
-                # Insert
-                '''
-                c = CustomerOption(
-                    cus_no = cus_no, 
-                    btype = business_type.replace('&amp;', '&'), 
-                    op1 = cus_main_customer_option_op1,   # Status
-                    op2 = cus_main_customer_option_op2.replace('&amp;', '&'), # Group 1
-                    op3 = cus_main_customer_option_op3.replace('&amp;', '&'), # Group 2
-                    op4 = cus_main_customer_option_op4)   # A/R Code
 
-                c.save()
-                '''
+
+            # cus_main = get_object_or_404(CusMain, pk=cus_id)
+            try:
+                cus_main = CusMain.objects.get(pk=cus_id)
+                if cus_main:
+                    # cus_main_cus_district_id = request.POST.get('id_cus_main_cus_district_id')
+                    cus_main.cus_active = cus_main_cus_active
+                    cus_main.cus_name_th = cus_main_cus_name_th
+                    cus_main.cus_add1_th = cus_main_cus_add1_th
+                    cus_main.cus_add2_th = cus_main_cus_add2_th
+                    cus_main.cus_subdist_th = cus_main_cus_subdist_th
+                    cus_main.cus_name_en = cus_main_cus_name_en
+                    cus_main.cus_add1_en = cus_main_cus_add1_en
+                    cus_main.cus_add2_en = cus_main_cus_add2_en
+                    cus_main.cus_subdist_en = cus_main_cus_subdist_en
+                    cus_main.cus_zip = cus_main_cus_zip
+                    cus_main.cus_tel = cus_main_cus_tel
+                    cus_main.cus_fax = cus_main_cus_fax
+                    cus_main.cus_email = cus_main_cus_email
+                    cus_main.cus_zone_id = cus_main_cus_zone
+                    cus_main.cus_contact_id = cus_main_cus_contact_id
+                    if cus_main.upd_flag == 'A':
+                        cus_main.upd_flag = 'E'
+                    cus_main.upd_by = request.user.first_name
+                    cus_main.upd_date = timezone.now()        
+                    cus_main.save()
+                    # CUS_MAIN Business Type
+                    try:
+                        customer_option = CustomerOption.objects.get(cus_no=cus_no)
+                        if customer_option:
+                            customer_option.btype = business_type.replace('&amp;', '&')
+                            customer_option.op1 = cus_main_customer_option_op1.rstrip() # Status
+                            customer_option.op2 = cus_main_customer_option_op2.replace('&amp;', '&') # Group 1
+                            customer_option.op3 = cus_main_customer_option_op3.replace('&amp;', '&') # Group 2
+                            customer_option.op4 = cus_main_customer_option_op4.rstrip() # A/R Code
+                            customer_option.save()                
+                    except CustomerOption.DoesNotExist:
+                        print("Update customer_option error!")
+                        # Insert
+                        '''
+                        c = CustomerOption(
+                            cus_no = cus_no, 
+                            btype = business_type.replace('&amp;', '&'), 
+                            op1 = cus_main_customer_option_op1,   # Status
+                            op2 = cus_main_customer_option_op2.replace('&amp;', '&'), # Group 1
+                            op3 = cus_main_customer_option_op3.replace('&amp;', '&'), # Group 2
+                            op4 = cus_main_customer_option_op4)   # A/R Code
+
+                        c.save()
+                        '''                
+            except CusMain.DoesNotExist:
+                new_customer_main = CusMain(
+                    cus_active = cus_main_cus_active,
+                    cus_id = cus_id,
+                    cus_name_th = cus_main_cus_name_th,
+                    cus_add1_th = cus_main_cus_add1_th,
+                    cus_add2_th = cus_main_cus_add2_th,
+                    cus_subdist_th = cus_main_cus_subdist_th,
+                    cus_district_id = cus_main_cus_district_id,
+                    cus_city_id = cus_main_city_id,
+                    cus_country_id = cus_main_country_id,
+                    cus_name_en = cus_main_cus_name_en,
+                    cus_add1_en = cus_main_cus_add1_en,
+                    cus_add2_en = cus_main_cus_add2_en,
+                    cus_subdist_en = cus_main_cus_subdist_en,                    
+                    cus_zip = cus_main_cus_zip,
+                    cus_tel = cus_main_cus_tel,
+                    cus_fax = cus_main_cus_fax,
+                    cus_email = cus_main_cus_email,
+                    cus_zone_id = cus_main_cus_zone,
+                    site_contact_id = cus_main_cus_contact_id,
+                    )
+                new_customer_main.save()                     
+
 
             # ******************************************
             # **************  CUS_SITE  ****************
