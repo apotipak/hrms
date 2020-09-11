@@ -1744,12 +1744,16 @@ def update_all_cus_tabs(request):
             else:
                 cus_main_cus_contact_id = None
 
-
-            # cus_main = get_object_or_404(CusMain, pk=cus_id)
+            print("------ Print CUS_MAIN data -------")
+            print("cus_main_business_type = " + str(cus_main_business_type))
+            print("cus_main_customer_option_op1 = " + str(cus_main_customer_option_op1))
+            print("cus_main_customer_option_op2 = " + str(cus_main_customer_option_op2))
+            print("cus_main_customer_option_op3 = " + str(cus_main_customer_option_op3))
+            print("cus_main_customer_option_op4 = " + str(cus_main_customer_option_op4))
+            
             try:
                 cus_main = CusMain.objects.get(pk=cus_id)
                 if cus_main:
-                    # cus_main_cus_district_id = request.POST.get('id_cus_main_cus_district_id')
                     cus_main.cus_active = cus_main_cus_active
                     cus_main.cus_name_th = cus_main_cus_name_th
                     cus_main.cus_add1_th = cus_main_cus_add1_th
@@ -1770,30 +1774,6 @@ def update_all_cus_tabs(request):
                     cus_main.upd_by = request.user.first_name
                     cus_main.upd_date = timezone.now()        
                     cus_main.save()
-                    # CUS_MAIN Business Type
-                    try:
-                        customer_option = CustomerOption.objects.get(cus_no=cus_no)
-                        if customer_option:
-                            customer_option.btype = business_type.replace('&amp;', '&')
-                            customer_option.op1 = cus_main_customer_option_op1.rstrip() # Status
-                            customer_option.op2 = cus_main_customer_option_op2.replace('&amp;', '&') # Group 1
-                            customer_option.op3 = cus_main_customer_option_op3.replace('&amp;', '&') # Group 2
-                            customer_option.op4 = cus_main_customer_option_op4.rstrip() # A/R Code
-                            customer_option.save()                
-                    except CustomerOption.DoesNotExist:
-                        print("Update customer_option error!")
-                        # Insert
-                        '''
-                        c = CustomerOption(
-                            cus_no = cus_no, 
-                            btype = business_type.replace('&amp;', '&'), 
-                            op1 = cus_main_customer_option_op1,   # Status
-                            op2 = cus_main_customer_option_op2.replace('&amp;', '&'), # Group 1
-                            op3 = cus_main_customer_option_op3.replace('&amp;', '&'), # Group 2
-                            op4 = cus_main_customer_option_op4)   # A/R Code
-
-                        c.save()
-                        '''                
             except CusMain.DoesNotExist:
                 new_customer_main = CusMain(
                     cus_active = cus_main_cus_active,
@@ -1817,6 +1797,28 @@ def update_all_cus_tabs(request):
                     site_contact_id = cus_main_cus_contact_id,
                     )
                 new_customer_main.save()                     
+
+                # CUS_MAIN Business Type
+                try:
+                    customer_option = CustomerOption.objects.get(cus_no=cus_no)
+                    customer_option.btype = business_type.replace('&amp;', '&')
+                    customer_option.op1 = cus_main_customer_option_op1.rstrip() # Status
+                    customer_option.op2 = cus_main_customer_option_op2.replace('&amp;', '&') # Group 1
+                    customer_option.op3 = cus_main_customer_option_op3.replace('&amp;', '&') # Group 2
+                    customer_option.op4 = cus_main_customer_option_op4.rstrip() # A/R Code
+                    customer_option.save()
+                    print("save cus_main_customer_option")
+                except CustomerOption.DoesNotExist:
+                    # Insert
+                    c = CustomerOption(
+                        cus_no = cus_no, 
+                        btype = cus_main_business_type.replace('&amp;', '&'), 
+                        op1 = cus_main_customer_option_op1,   # Status
+                        op2 = cus_main_customer_option_op2.replace('&amp;', '&'), # Group 1
+                        op3 = cus_main_customer_option_op3.replace('&amp;', '&'), # Group 2
+                        op4 = cus_main_customer_option_op4)   # A/R Code
+                    c.save()
+
 
 
             # ******************************************
@@ -1865,6 +1867,7 @@ def update_all_cus_tabs(request):
             else:
                 cus_site_site_contact_id = None
 
+            '''
             print("------ Print CUS_SITE data -------")
             print("cus_no = " + str(cus_no))
             print("cus_site_cus_active = " + str(cus_site_cus_active))
@@ -1875,6 +1878,7 @@ def update_all_cus_tabs(request):
             print("cus_site_cus_zip = " + str(cus_site_cus_zip))
             print("cus_site_cus_zone = " + str(cus_site_cus_zone))
             print("------------------------")
+            '''
 
             try:
                 customer = Customer.objects.get(pk=cus_no)
@@ -1973,6 +1977,7 @@ def update_all_cus_tabs(request):
             else:
                 cus_bill_cus_contact_id = None
 
+            '''
             print("------ Print CUS_BILL data -------")
             print("cus_bill_cus_active = " + str(cus_bill_cus_active))
             print("cus_bill_cus_name_th = " + str(cus_bill_cus_name_th))
@@ -1990,7 +1995,7 @@ def update_all_cus_tabs(request):
             print("cus_bill_cus_email = " + str(cus_bill_cus_email))
             print("cus_bill_cus_zone = " + str(cus_bill_cus_zone))
             print("cus_bill_cus_contact_id = " + str(cus_bill_cus_contact_id))
-
+            '''
             try:
                 cusbill = CusBill.objects.get(pk=cus_no)
 

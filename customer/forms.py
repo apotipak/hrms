@@ -213,7 +213,7 @@ class CustomerSearchForm(forms.ModelForm):
 class CusAllTabsForm(forms.ModelForm):
     # Customer Main Office
     cus_main_cus_name_th = forms.CharField(required=True)
-    cus_main_cus_name_en = forms.CharField(required=True)    
+    cus_main_cus_name_en = forms.CharField(required=False)    
     cus_main_cus_active = forms.BooleanField(label='', required=False, widget=forms.CheckboxInput())
     cus_main_cus_city_th = forms.CharField(required=False)
     cus_main_cus_country_th = forms.CharField(required=False)    
@@ -253,7 +253,7 @@ class CusAllTabsForm(forms.ModelForm):
 
         # self.fields['cus_main_cus_name_th'].error_messages = {'required': _('Main Office - Customer Name is required'), 'max_value': _('รหัสสัญญาเกิน 7 หลัก')}
         self.fields['cus_main_cus_name_th'].error_messages = {'required': _('Main Office - Customer Name (TH) is required.')}
-        self.fields['cus_main_cus_name_en'].error_messages = {'required': _('Main Office - Customer Name (EN) is required.')}
+        # self.fields['cus_main_cus_name_en'].error_messages = {'required': _('Main Office - Customer Name (EN) is required.')}
         self.fields['cus_main_cus_zone'].error_messages = {'required': _('Main Office - Zone is required.')}
         self.fields['cus_main_cus_zip'].error_messages = {'required': _('Main Office - Zip is required.')}
 
@@ -360,13 +360,15 @@ class CusAllTabsForm(forms.ModelForm):
         else:
             return data
 
+    '''
     def clean_cus_main_cus_name_en(self):
         data = self.data.get('cus_main_cus_name_en')
         if len(data) > 0:
             return data
         else:
             raise ValidationError("Customer Name (EN) is required.")
-
+    '''
+    
     def clean_cus_add1_en(self):
         data = self.data.get('cus_main_cus_add1_en')
         if len(data) > 150:
