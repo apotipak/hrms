@@ -1663,7 +1663,8 @@ def update_all_cus_tabs(request):
             # ******************************************
             # ***********  Customer Site  **************
             # ******************************************
-            cus_site_cus_active = request.POST.get('cus_site_cus_active')
+
+            cus_site_cus_active = request.POST.get('cus_site_cus_active')            
             cus_site_cus_name_th = request.POST.get('cus_site_cus_name_th')
             cus_site_cus_add1_th = request.POST.get('cus_site_cus_add1_th')
             cus_site_cus_add2_th = request.POST.get('cus_site_cus_add2_th')
@@ -1727,6 +1728,7 @@ def update_all_cus_tabs(request):
             try:
                 customer = Customer.objects.get(pk=cus_no)
 
+                customer.cus_active = cus_site_cus_active
                 customer.cus_name_th = cus_site_cus_name_th
                 customer.cus_add1_th = cus_site_cus_add1_th
                 customer.cus_add2_th = cus_site_cus_add2_th
@@ -1749,6 +1751,7 @@ def update_all_cus_tabs(request):
                 customer.save()                
             except Customer.DoesNotExist:                
                 new_customer_site = Customer(
+                    cus_active = cus_site_cus_active,
                     cus_no = cus_no,
                     cus_id = cus_id,
                     cus_brn = cus_brn,
