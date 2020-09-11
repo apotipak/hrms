@@ -221,7 +221,7 @@ class CusAllTabsForm(forms.ModelForm):
     cus_main_cus_district_en = forms.CharField(required=False)
     cus_main_cus_country_en = forms.CharField(required=False)
     cus_main_cus_zone = forms.ModelChoiceField(queryset=None, required=True)
-    cus_main_cus_zip = forms.CharField(required=True)
+    cus_main_cus_zip = forms.CharField(required=False)
     cus_main_customer_option_op1 = forms.CharField(required=False)
     cus_main_customer_option_op4 = forms.CharField(required=False)
 
@@ -312,16 +312,6 @@ class CusAllTabsForm(forms.ModelForm):
             return None
             #raise ValidationError("Main Office - District is required.")
 
-    '''
-    def clean_cus_site_cus_district_id(self):
-        data = self.data.get('cus_site_cus_district_id')        
-        if len(data) > 0:
-            return data
-        else:
-            return None
-            # raise ValidationError("Site - District is required.")
-    '''
-
     def clean_cus_main_customer_option_op1(self):
         data = self.data.get('cus_main_customer_option_op1')
         if len(data) > 10:
@@ -398,18 +388,18 @@ class CusAllTabsForm(forms.ModelForm):
         else:
             return data
 
+    '''
     def clean_cus_main_cus_zip(self):
         data = self.data.get('cus_main_cus_zip')
-
         if len(data) != 5:
             raise ValidationError("Zip is not correct.")
         else:
             return data
-
         if data.isnumeric():
             return data
         else:
             raise ValidationError("Zip is not correct.")
+    '''
 
     # Customer Site validation
     '''
