@@ -399,14 +399,15 @@ def ajax_check_exist_cus_bill(request):
         if form.is_valid():
             # Get customer site information
             cus_no = str(cus_id) + str(cus_brn)            
-            
+            print("cus_no = " + str(cus_no))
+
             try:
                 customer_bill = CusBill.objects.get(pk=cus_no)
+                print(customer_bill.cus_district)
             except CusBill.DoesNotExist:
                 customer_bill = None
 
             if customer_bill:
-
                 if not customer_bill.cus_district:
                     cus_bill_cus_district_th = None
                     cus_bill_cus_district_en = None
@@ -414,14 +415,16 @@ def ajax_check_exist_cus_bill(request):
                     cus_bill_cus_district_th = customer_bill.cus_district.dist_th
                     cus_bill_cus_district_en = customer_bill.cus_district.dist_en
 
-                print("debug : " + str(cus_bill_cus_district_th))
-                
+                print("debug 2 : " + str(cus_bill_cus_district_th))
+
                 if not customer_bill.cus_city:
                     cus_bill_cus_city_th = None
                     cus_bill_cus_city_en = None
                 else:
                     cus_bill_cus_city_th = customer_bill.cus_city.city_th
                     cus_bill_cus_city_en = customer_bill.cus_city.city_en
+
+                print("debug 3 : " + str(cus_bill_cus_city_en))
 
                 if not customer_bill.cus_country:
                     cus_bill_cus_country_th = None
@@ -1754,6 +1757,7 @@ def update_all_cus_tabs(request):
             cus_site_cus_fax = request.POST.get('cus_site_cus_fax')
             cus_site_cus_email = request.POST.get('cus_site_cus_email')
             cus_site_cus_zone = request.POST.get('cus_site_cus_zone')
+            
             cus_site_cus_district_id = request.POST.get('cus_site_cus_district_id')
             if cus_site_cus_district_id:
                 print("debug 1")
@@ -1854,14 +1858,33 @@ def update_all_cus_tabs(request):
             cus_bill_cus_name_en = request.POST.get('cus_bill_cus_name_en')
             cus_bill_cus_add1_en = request.POST.get('cus_bill_cus_add1_en')
             cus_bill_cus_add2_en = request.POST.get('cus_bill_cus_add2_en')
-            cus_bill_cus_subdist_en = request.POST.get('cus_bill_cus_subdist_en')            
+            cus_bill_cus_subdist_en = request.POST.get('cus_bill_cus_subdist_en')
             cus_bill_cus_zip = request.POST.get('cus_bill_cus_zip')
+
             if not cus_bill_cus_zip:
                 cus_bill_cus_zip = None
+
             cus_bill_cus_tel = request.POST.get('cus_bill_cus_tel')
             cus_bill_cus_fax = request.POST.get('cus_bill_cus_fax')
             cus_bill_cus_email = request.POST.get('cus_bill_cus_email')
             cus_bill_cus_zone = request.POST.get('cus_bill_cus_zone')
+
+            cus_bill_cus_district_id = request.POST.get('cus_bill_cus_district_id')
+            if cus_bill_cus_district_id:
+                try:
+                    district_obj = TDistrict.objects.get(dist_id=cus_bill_cus_district_id)
+                    if district_obj:
+                        city_id = district_obj.city_id_id
+                        city_obj = TCity.objects.get(city_id=city_id)
+                        country_id = city_obj.country_id_id
+                except TDistrict.DoesNotExist:
+                    cus_bill_cus_district_id = None
+                    city_id = None
+                    country_id = None
+            else:
+                cus_bill_cus_district_id = None
+                city_id = None
+                country_id = None
 
             cus_bill_cus_contact_id = request.POST.get('cus_bill_cus_contact_id')
             if cus_bill_cus_contact_id:
@@ -1889,6 +1912,7 @@ def update_all_cus_tabs(request):
 
             try:
                 cusbill = CusBill.objects.get(pk=cus_no)
+
                 cusbill.cus_active = cus_bill_cus_active
                 cusbill.cus_name_th = cus_bill_cus_name_th
                 cusbill.cus_add1_th = cus_bill_cus_add1_th
