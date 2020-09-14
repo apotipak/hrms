@@ -586,7 +586,7 @@
                                 
                                 <button id="cus_site_district_lookup" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url="{% url 'get_district_list' %}"><i class="fas fa-search fa-sm"></i></button>
 
-                                <input type="hidden" id="id_cus_site_select_district_id" name="cus_site_select_district_id" value="{{ customer.cus_district_id }}">
+                                <input type="hidden" id="id_cus_site_select_district_id" name="cus_site_select_district_id" value="{{ customer.cus_district_id|default_if_none:'' }}">
                               </div>
                             </div>
                           </div>
@@ -759,9 +759,9 @@
 
                           <div class="row">                              
                             <div class="col-12 input-group">
-                              <input type="text" id="id_cus_site_site_contact_id" name="cus_site_site_contact_id" class="form-control form-control-sm" value="{{ customer.site_contact_id }}" readonly>                              
+                              <input type="text" id="id_cus_site_site_contact_id" name="cus_site_site_contact_id" class="form-control form-control-sm" value="{{ customer.site_contact_id|default_if_none:'' }}" readonly>                              
                               <button id="cus_site_contact_lookup" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url="{% url 'get_contact_list' %}"><i class="fas fa-search fa-sm"></i></button>                              
-                              <input type="hidden" id="id_cus_site_select_site_contact_id" name="cus_site_select_site_contact_id" value="{{ customer.site_contact_id }}">
+                              <input type="hidden" id="id_cus_site_select_site_contact_id" name="cus_site_select_site_contact_id" value="{{ customer.site_contact_id|default_if_none:'' }}">
                             </div>
                           </div>                          
                         </div>

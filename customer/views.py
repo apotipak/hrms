@@ -1258,9 +1258,7 @@ def update_cus_main(request):
                 cus_main_cus_contact_id = None
 
             cus_main = get_object_or_404(CusMain, pk=cus_id)
-
-            
-
+        
             '''
             print("check")
             print("**************************")
@@ -1281,10 +1279,9 @@ def update_cus_main(request):
             '''
 
             select_district_id = request.POST.get('select_district_id')
-
-            if select_district_id:            
+            if select_district_id != "":
                 try:
-                    select_district_id = 10
+                    select_district_id = select_district_id
                     district_obj = TDistrict.objects.get(dist_id=select_district_id)
                     if district_obj:
                         cus_main.cus_district_id = select_district_id
@@ -1449,7 +1446,8 @@ def update_cus_site(request):
             customer = get_object_or_404(Customer, pk=cus_no)
             
             cus_site_cus_district_id = request.POST.get('select_district_id')
-            if cus_site_cus_district_id:
+            #if cus_site_cus_district_id:
+            if cus_site_cus_district_id != "":
                 try:
                     district_obj = TDistrict.objects.get(dist_id=cus_site_cus_district_id)
                     if district_obj:                        
@@ -1478,7 +1476,7 @@ def update_cus_site(request):
             customer.cus_email = cus_email
             customer.cus_zone_id = cus_zone
 
-            if not cus_site_site_contact_id:
+            if cus_site_site_contact_id:
                 customer.site_contact_id = cus_site_site_contact_id
 
             if customer.upd_flag == 'A':
