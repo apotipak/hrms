@@ -1250,13 +1250,13 @@ def update_cus_main(request):
             '''
 
             select_district_id = request.POST.get('select_district_id')
-            if not select_district_id:
+            if select_district_id:
                 try:
                     district_obj = TDistrict.objects.get(dist_id=select_district_id)
                     if district_obj:
                         cus_main.cus_district_id = select_district_id
                         cus_main.cus_city_id = district_obj.city_id
-                        cus_main.cus_country_id = city_obj.country_id                        
+                        cus_main.cus_country_id = district_obj.city_id.country_id
                     else:
                         cus_main.cus_district_id = None
                         cus_main.cus_city_id = None
