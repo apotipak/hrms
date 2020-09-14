@@ -1519,8 +1519,10 @@
     //var cus_main_cus_district_id = $('#id_cus_main_cus_district_id').val();
     //var cus_site_cus_district_id = $('#id_cus_site_cus_district_id').val();  
 
-    if(cus_id=='' || cus_brn=='')
-      alert("Customer Code is not completed.");
+    if(cus_id=='' || cus_brn=='') {
+      alert("Customer Code is required.");
+      $('#id_cus_id').focus();
+    }
     else
       add_all_customer_tabs();
   });

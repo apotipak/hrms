@@ -1209,6 +1209,8 @@ def update_cus_main(request):
             cus_add2_en = request.POST.get('cus_main_cus_add2_en')
             cus_subdist_en = request.POST.get('cus_main_cus_subdist_en')
             cus_zip = request.POST.get('cus_main_cus_zip')
+            if not cus_zip:
+                cus_zip = None
             cus_tel = request.POST.get('cus_main_cus_tel')
             cus_fax = request.POST.get('cus_main_cus_fax')
             cus_email = request.POST.get('cus_main_cus_email')
@@ -1228,7 +1230,7 @@ def update_cus_main(request):
 
             cus_main = get_object_or_404(CusMain, pk=cus_id)
 
-            select_district_id = request.POST.get('select_district_id')
+            
 
             '''
             print("check")
@@ -1249,15 +1251,26 @@ def update_cus_main(request):
             print("**************************")
             '''
 
-            district_obj = TDistrict.objects.get(dist_id=select_district_id)
-            
-            if district_obj:
-                city_id = district_obj.city_id_id
-                old_district_id = cus_main.cus_district.dist_id
-                cus_main.cus_district_id = select_district_id
-                cus_main.cus_city = district_obj.city_id                
-                city_obj = TCity.objects.get(city_id=city_id)
-                cus_main.cus_country = city_obj.country_id
+            select_district_id = request.POST.get('select_district_id')
+            if not select_district_id:
+                try:
+                    district_obj = TDistrict.objects.get(dist_id=select_district_id)
+                    if district_obj:
+                        cus_main.cus_district_id = select_district_id
+                        cus_main.cus_city_id = district_obj.city_id
+                        cus_main.cus_country_id = city_obj.country_id                        
+                    else:
+                        cus_main.cus_district_id = None
+                        cus_main.cus_city_id = None
+                        cus_main_cus_country_id = None
+                except TDistrict.DoesNotExist:
+                        cus_main.cus_district_id = None
+                        cus_main.cus_city_id = None
+                        cus_main_cus_country_id = None
+            else:
+                cus_main.cus_district_id = None
+                cus_main.cus_city_id = None
+                cus_main_cus_country_id = None
 
             cus_main.cus_active = cus_active
             cus_main.cus_name_th = cus_name_th
@@ -1270,14 +1283,14 @@ def update_cus_main(request):
             cus_main.cus_add2_en = cus_add2_en
             cus_main.cus_subdist_en = cus_subdist_en
 
-            cus_main.cus_zip = cus_zip
+            #cus_main.cus_zip = cus_zip
             cus_main.cus_tel = cus_tel
             cus_main.cus_fax = cus_fax
             cus_main.cus_email = cus_email
             cus_main.cus_zone_id = cus_zone
 
 
-            #cus_main.cus_contact_id = None
+            # cus_main.cus_contact_id = None
             cus_main.cus_contact_id = cus_main_cus_contact_id
 
             if cus_main.upd_flag == 'A':
