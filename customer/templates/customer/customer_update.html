@@ -116,13 +116,21 @@
               <div class="float-right">
                 <div class="float-left pt-2">
                   <div class="form-check d-inline">
-                    <input class="form-check-input" id="checkboxMainOfficeForSite" type="checkbox">
+                    {% comment %}
+                    <input class="form-check-input" id="checkboxMainOfficeForSite" type="checkbox">                    
                     <label class="form-check-label">For Site</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                    {% endcomment %}
+
+                    <a href="#" id="btnMainOfficeForSite" type="button" class="btn btn-primary btn-sm"><i class="fas fa-greater-than"></i>&nbsp;&nbsp;{% trans 'For Site' %}</a>                    
                   </div>
+
+                  <!--
                   <div class="form-check d-inline">
                     <input class="form-check-input" id="checkboxMainOfficeForBill" type="checkbox">
                     <label class="form-check-label">For Bill</label>&nbsp;&nbsp;&nbsp;&nbsp;
-                  </div>              
+                  </div>
+                  -->
+                  
                 </div>
                 
                 <label class="switch">                                 
@@ -1230,8 +1238,10 @@
 
 {% block javascript %}
 <script>
-  $('#checkboxMainOfficeForSite').on('change', function(){
-    if(this.checked) {
+
+  $('#btnMainOfficeForSite').on('click', function (e) {
+  //$('#checkboxMainOfficeForSite').on('change', function(){
+    //if(this.checked) {
       cus_main_cus_name_th = $('#id_cus_main_cus_name_th').val();
       cus_main_cus_add1_th = $('#id_cus_main_cus_add1_th').val();
       cus_main_cus_add2_th = $('#id_cus_main_cus_add2_th').val();
@@ -1292,10 +1302,10 @@
       $('#id_cus_site_cus_contact_con_lname_th').val(cus_main_cus_contact_con_lname_th);
       $('#id_cus_site_site_contact_con_position_th').val(cus_main_cus_contact_con_position_th);
 
-    } else {          
+    //} else {          
       //alert("uncheck for site");
 
-    }
+    //}
   });
 
   $(document).on('keyup keypress', '#cus_site_search_district_modal_form input[type="text"]', function(e) {

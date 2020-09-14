@@ -1238,8 +1238,9 @@ def update_cus_main(request):
             cus_add2_en = request.POST.get('cus_main_cus_add2_en')
             cus_subdist_en = request.POST.get('cus_main_cus_subdist_en')
             cus_zip = request.POST.get('cus_main_cus_zip')
-            if not cus_zip:
-                cus_zip = None
+            if not cus_zip.isnumeric():
+                cus_zip = 0
+                
             cus_tel = request.POST.get('cus_main_cus_tel')
             cus_fax = request.POST.get('cus_main_cus_fax')
             cus_email = request.POST.get('cus_main_cus_email')
@@ -1259,25 +1260,6 @@ def update_cus_main(request):
 
             cus_main = get_object_or_404(CusMain, pk=cus_id)
         
-            '''
-            print("check")
-            print("**************************")
-            print("cus_no = " + str(cus_no))
-            print("cus_id = " + str(cus_id))
-            print("cus_brn = " + str(cus_brn))
-            print("status = [" + str(cus_main_customer_option_op1) + "]")
-            print("A/R Code = [" + str(cus_main_customer_option_op4) + "]")        
-            print("cus_zone = " + str(cus_zone))
-            print("cus_tel = " + str(cus_tel))
-            print("cus_fax = " + str(cus_fax))
-            print("cus_email = " + str(cus_email))
-            print("cus_main_cus_contact_id = " + str(cus_main_cus_contact_id))
-            print("cus_main_select_district_id = " + str(select_district_id))            
-
-            print("business_type = " + str(business_type))            
-            print("**************************")
-            '''
-
             select_district_id = request.POST.get('select_district_id')
             if select_district_id != "":
                 try:
@@ -1312,7 +1294,7 @@ def update_cus_main(request):
             cus_main.cus_add2_en = cus_add2_en
             cus_main.cus_subdist_en = cus_subdist_en
 
-            #cus_main.cus_zip = cus_zip
+            cus_main.cus_zip = cus_zip
             cus_main.cus_tel = cus_tel
             cus_main.cus_fax = cus_fax
             cus_main.cus_email = cus_email
