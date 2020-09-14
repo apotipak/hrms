@@ -600,9 +600,9 @@
                         </div>
 
                         <div class="input-group">
-                          <label for="id_cus_country" class="col-sm-4 col-form-label form-control-sm">{% trans 'Country' %}</label>
+                          <label for="id_cus_site_cus_country_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'Country' %}</label>
                           <div class="col-sm-8">                                                    
-                            <input type="text" id="id_cus_site_cus_country" name="cus_site_cus_country" class="form-control form-control-sm" value="{{ customer.cus_country|default_if_none:'' }}" readonly>
+                            <input type="text" id="id_cus_site_cus_country_th" name="cus_site_cus_country_th" class="form-control form-control-sm" value="{{ customer.cus_country|default_if_none:'' }}" readonly>
                           </div>
                         </div>
 
@@ -1776,12 +1776,17 @@
               var dist_name_en = data.results[i]["dist_en"];
               var city_name_th = data.results[i]["city_th"];
               var city_name_en = data.results[i]["city_en"];
+              var country_name_th = data.results[i]["country_name_th"];
+              var country_name_en = data.results[i]["country_name_en"];
 
               result += "<tr>";
               result += "<td>" + dist_id + "</td>";        
               result += "<td>" + dist_name_th + "</td>";
               result += "<td>" + city_name_th + "</td>";
-              result += "<td><a href='javascript:select_district(" + dist_id + ",\"" + dist_name_th + "\",\"" + city_name_th + "\",\"" + dist_name_en + "\",\"" + city_name_en + "\");' type='button' class='btn btn-outline-primary btn-sm'>Select</a></td>";
+              
+              //result += "<td><a href='javascript:select_district(" + dist_id + ",\"" + dist_name_th + "\",\"" + city_name_th + "\",\"" + dist_name_en + "\",\"" + city_name_en + "\");' type='button' class='btn btn-outline-primary btn-sm'>Selectxx</a></td>";
+
+              result += "<td><a href='javascript:select_district(" + dist_id + ",\"" + dist_name_th + "\",\"" + city_name_th + "\",\"" + dist_name_en + "\",\"" + city_name_en + "\",\"" + country_name_th + "\",\"" + country_name_en + "\");' type='button' class='btn btn-outline-primary btn-sm'>Select</a></td>";
 
               result += "</tr>";              
             }
@@ -2066,6 +2071,7 @@
     cus_site_cus_add2_en = $('#id_cus_site_cus_add2_en').val();
     cus_site_cus_subdist_en = $('#id_cus_site_cus_subdist_en').val();
     select_district_id = $('#id_cus_site_select_district_id').val();
+    //alert(select_district_id);
     cus_site_cus_zip = $('#id_cus_site_cus_zip').val();
     cus_site_cus_tel = $('#id_cus_site_cus_tel').val();
     cus_site_cus_fax = $('#id_cus_site_cus_fax').val();
@@ -2827,13 +2833,16 @@
             var city_name_th = data.results[i]["city_th"];
             var dist_name_en = data.results[i]["dist_en"];
             var city_name_en = data.results[i]["city_en"];
+            var country_name_th = data.results[i]["country_name_th"];
+            var country_name_en = data.results[i]["country_name_en"];
 
             result += "<tr>";
             result += "<td>" + dist_id + "</td>";        
             result += "<td>" + dist_name_th + "</td>";
             result += "<td>" + city_name_th + "</td>";
             
-            result += "<td><a href='javascript:select_district(" + dist_id + ",\"" + dist_name_th + "\",\"" + city_name_th + "\",\"" + dist_name_en + "\",\"" + city_name_en + "\");' type='button' class='btn btn-outline-primary btn-sm'>Select</a></td>";
+            //result += "<td><a href='javascript:select_district(" + dist_id + ",\"" + dist_name_th + "\",\"" + city_name_th + "\",\"" + dist_name_en + "\",\"" + city_name_en + "\");' type='button' class='btn btn-outline-primary btn-sm'>Select</a></td>";
+            result += "<td><a href='javascript:select_district(" + dist_id + ",\"" + dist_name_th + "\",\"" + city_name_th + "\",\"" + dist_name_en + "\",\"" + city_name_en + "\",\"" + country_name_th + "\",\"" + country_name_en + "\");' type='button' class='btn btn-outline-primary btn-sm'>Select</a></td>";
 
             result += "</tr>";              
           }
@@ -3009,27 +3018,26 @@
   }
 
   //function cus_main_select_district(dist_id, dist_name_th, city_name_th, dist_name_en, city_name_en) {
-  function cus_main_select_district(dist_id, dist_name_th, city_name_th, dist_name_en, city_name_en, country_name_th, country_name_en) {          
+  function cus_main_select_district(dist_id, dist_name_th, city_name_th, dist_name_en, city_name_en, country_name_th, country_name_en) {
     $("#id_cus_main_cus_district_dist_th").val(dist_name_th);
     $("#id_cus_main_select_district_id").val(dist_id);
-
     $("#id_cus_main_cus_city_th").val(city_name_th);
     $("#id_cus_main_cus_district_en").val(dist_name_en);
     $("#id_cus_main_cus_city_en").val(city_name_en);    
-
     $("#id_cus_main_cus_country_th").val(country_name_th);
     $("#id_cus_main_cus_country_en").val(country_name_en);
 
     $("#districtmodal").modal("hide");    
   };
 
-  function select_district(dist_id, dist_name_th, city_name_th, dist_name_en, city_name_en) {        
+  function select_district(dist_id, dist_name_th, city_name_th, dist_name_en, city_name_en, country_name_th, country_name_en) {        
     $("#id_cus_site_cus_district_dist_th").val(dist_name_th);
     $("#id_cus_site_select_district_id").val(dist_id);
     $("#id_cus_site_cus_city").val(city_name_th);
     $("#id_cus_site_cus_district_en").val(dist_name_en);
     $("#id_cus_site_cus_city_en").val(city_name_en);
-
+    $("#id_cus_site_cus_country_th").val(country_name_th);
+    $("#id_cus_site_cus_country_en").val(country_name_en);
     $("#districtmodal").modal("hide");    
   }
 

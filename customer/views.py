@@ -1418,15 +1418,15 @@ def update_cus_site(request):
             customer = get_object_or_404(Customer, pk=cus_no)
             
 
-            cus_site_cus_district_id = request.POST.get('cus_site_cus_district_id')
+            cus_site_cus_district_id = request.POST.get('select_district_id')
             print("DEBUG - cus_site_cus_district_id = " + str(cus_site_cus_district_id))
-            if not cus_site_cus_district_id:
+            if cus_site_cus_district_id:
                 try:
                     district_obj = TDistrict.objects.get(dist_id=cus_site_cus_district_id)
                     if district_obj:                        
                         customer.cus_district_id = cus_site_cus_district_id
-                        customer.cus_city_id = district_obj.city_id                        
-                        customer.cus_country_id = None
+                        customer.cus_city_id = district_obj.city_id
+                        customer.cus_country_id = district_obj.city_id.country_id
 
                 except TDistrict.DoesNotExist:
                         customer.cus_district_id = None
