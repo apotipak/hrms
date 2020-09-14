@@ -1093,14 +1093,16 @@ def CustomerCreate(request):
     return save_customer_form(request, form, 'customer/partial_customer_create.html')
 """
 
+@login_required(login_url='/accounts/login/')
 def CustomerDelete(request, pk):
     customer = get_object_or_404(Customer, pk=pk)
     data = dict()
+
     if request.method == 'POST':
-        customer.delete()
+        # customer.delete()
         data['form_is_valid'] = True
-        #customer_list = Customer.objects.all()
-        customer_list = Customer.objects.filter(cus_id__in=[2094]).order_by('-upd_date', 'cus_id', '-cus_active')
+        customer_list = Customer.objects.all()
+        # customer_list = Customer.objects.filter(cus_id__in=[2094]).order_by('-upd_date', 'cus_id', '-cus_active')
         data['html_customer_list'] = render_to_string('customer/partial_customer_list.html', {
             'customer_list': customer_list
         })
@@ -1109,6 +1111,7 @@ def CustomerDelete(request, pk):
         data['message'] = "ไม่สามารถทำรายการได้..!"
         context = {'customer': customer}        
         data['html_form'] = render_to_string('customer/partial_customer_delete.html', context, request=request)
+    
     return JsonResponse(data)
 
 

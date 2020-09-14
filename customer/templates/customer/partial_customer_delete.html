@@ -11,8 +11,8 @@
   </div>
 
   <div class="modal-body">
-    <p class="lead">ต้องการลบรายการ<p>
-    <h4>{{ customer.cus_id }} - {{ customer.cus_name_th }} (สาขา {{customer.cus_brn}} )</h4>
+    <p class="lead">คุณต้องการลบรายการ<p>
+    <h4>{{ customer.cus_id }}{{ customer.cus_brn|stringformat:"03d"}} - {{ customer.cus_name_th }}</h4>
   </div>
 
   <div class="modal-footer align-right">
