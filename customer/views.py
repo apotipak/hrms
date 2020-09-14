@@ -1398,6 +1398,9 @@ def update_cus_site(request):
             cus_subdist_en = request.POST.get('cus_site_cus_subdist_en')
 
             cus_zip = request.POST.get('cus_site_cus_zip')
+            if not cus_zip:
+                cus_zip = None
+
             cus_tel = request.POST.get('cus_site_cus_tel')
             cus_fax = request.POST.get('cus_site_cus_fax')
             cus_email = request.POST.get('cus_site_cus_email')
@@ -1417,22 +1420,18 @@ def update_cus_site(request):
 
             cus_site_cus_district_id = request.POST.get('cus_site_cus_district_id')
             print("DEBUG - cus_site_cus_district_id = " + str(cus_site_cus_district_id))
-            if cus_site_cus_district_id:
+            if not cus_site_cus_district_id:
                 try:
                     district_obj = TDistrict.objects.get(dist_id=cus_site_cus_district_id)
-                    if district_obj:
-                        city_id = district_obj.city_id_id
-                        old_district_id = customer.cus_district.dist_id
+                    if district_obj:                        
                         customer.cus_district_id = cus_site_cus_district_id
-                        customer.cus_city = district_obj.city_id
-                        
-                        # TODO
-                        city_obj = TCity.objects.get(city_id=city_id)                
-                        # print(city_obj.country_id)
-                        customer.cus_country = city_obj.country_id
+                        customer.cus_city_id = district_obj.city_id                        
+                        customer.cus_country_id = None
 
                 except TDistrict.DoesNotExist:
-                    district_obj = None
+                        customer.cus_district_id = None
+                        customer.cus_city_id = None
+                        customer.cus_country_id = None
 
             customer.cus_active = cus_active
             customer.cus_name_th = cus_name_th
@@ -1450,8 +1449,7 @@ def update_cus_site(request):
             customer.cus_email = cus_email
             customer.cus_zone_id = cus_zone
 
-            # customer.site_contact_id = 2
-            if cus_site_site_contact_id:
+            if not cus_site_site_contact_id:
                 customer.site_contact_id = cus_site_site_contact_id
 
             if customer.upd_flag == 'A':

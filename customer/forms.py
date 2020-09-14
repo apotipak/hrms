@@ -630,7 +630,7 @@ class CusSiteForm(forms.ModelForm):
     cus_site_cus_tel = forms.CharField(required=False)
     cus_site_cus_fax = forms.CharField(required=False)
     cus_site_cus_email = forms.CharField(required=False)
-    cus_site_cus_zone = forms.ModelChoiceField(queryset=None, required=True)    
+    cus_site_cus_zone = forms.ModelChoiceField(queryset=None, required=False)    
 
     # Contact Information
     cus_site_cus_contact = forms.CharField(required=False)
@@ -668,12 +668,15 @@ class CusSiteForm(forms.ModelForm):
             return 0
         return 1     
 
+    '''
     def clean_cus_site_cus_name_th(self):
         data = self.data.get('cus_site_cus_name_th')        
         if len(data) > 0:
             return data
         else:
             raise ValidationError("Customer Name (TH) is required.")
+    '''
+
 
     def clean_cus_add1_th(self):
         data = self.data.get('cus_site_cus_add1_th')
@@ -696,12 +699,14 @@ class CusSiteForm(forms.ModelForm):
         else:
             return data
 
+    '''
     def clean_cus_name_en(self):
         data = self.data.get('cus_site_cus_name_en')
         if len(data) > 0:
             return data
         else:
             raise ValidationError("Customer Name (EN) is required.")
+    '''
 
     def clean_cus_add1_en(self):
         data = self.data.get('cus_site_cus_add1_en')
@@ -724,6 +729,7 @@ class CusSiteForm(forms.ModelForm):
         else:
             return data
 
+    '''
     def clean_cus_site_cus_zip(self):
         data = self.data.get('cus_site_cus_zip')
         if len(data) != 5:
@@ -735,7 +741,8 @@ class CusSiteForm(forms.ModelForm):
             return data
         else:
             raise ValidationError("Zip is not correct.")
-
+    '''
+    
     def clean_cus_site_cus_tel(self):
         data = self.data.get('cus_site_cus_tel')
         return data
