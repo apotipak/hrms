@@ -1093,28 +1093,6 @@ def CustomerCreate(request):
     return save_customer_form(request, form, 'customer/partial_customer_create.html')
 """
 
-@login_required(login_url='/accounts/login/')
-def CustomerDeleteOld(request, pk):
-    customer = get_object_or_404(Customer, pk=pk)
-    data = dict()
-
-    if request.method == 'POST':
-        # customer.delete()
-
-        data['form_is_valid'] = True
-        customer_list = Customer.objects.all()
-        # customer_list = Customer.objects.filter(cus_id__in=[2094]).order_by('-upd_date', 'cus_id', '-cus_active')
-        data['html_customer_list'] = render_to_string('customer/partial_customer_list.html', {
-            'customer_list': customer_list
-        })
-        data['message'] = "ทำรายการสำเร็จ"
-    else:
-        data['message'] = "ไม่สามารถทำรายการได้..!"
-        context = {'customer': customer}        
-        data['html_form'] = render_to_string('customer/partial_customer_delete.html', context, request=request)
-    
-    return JsonResponse(data)
-
 
 @login_required(login_url='/accounts/login/')
 def CustomerDelete(request, pk):
@@ -1495,6 +1473,10 @@ def update_cus_site(request):
 
             if customer.upd_flag == 'A':
                 customer.upd_flag = 'E'
+
+            if customer.upd_flag == 'D':
+                customer.upd_flag = 'E'
+
             customer.upd_by = request.user.first_name
             customer.upd_date = timezone.now()
             
@@ -1978,6 +1960,13 @@ def update_all_cus_tabs(request):
                 customer.cus_email = cus_site_cus_email
                 customer.cus_zone_id = cus_site_cus_zone
                 customer.site_contact_id = cus_site_site_contact_id
+
+                if customer.upd_flag == 'A':
+                    customer.upd_flag = 'E'
+
+                if customer.upd_flag == 'D':
+                    customer.upd_flag = 'E'
+                    
                 customer.save()                
             except Customer.DoesNotExist:                
                 new_customer_site = Customer(
