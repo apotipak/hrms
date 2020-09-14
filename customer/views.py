@@ -514,6 +514,37 @@ def ajax_check_exist_cus_bill(request):
 
             else:
                 print("todo: add new customer bill")
+                record = {
+                    "cus_no": "",
+                    "cus_active": "",
+                    "cus_name_th": "",
+                    "cus_add1_th": "",
+                    "cus_add2_th": "",
+                    "cus_subdist_th": "",
+                    "cus_district_id": "",
+                    "cus_district_th": "",
+                    "cus_city_th": "",
+                    "cus_country_th": "",
+                    "cus_name_en": "",
+                    "cus_add1_en": "",
+                    "cus_add2_en": "",
+                    "cus_subdist_en": "",
+                    "cus_subdist_en": "",
+                    "cus_district_en": "",
+                    "cus_city_en": "",
+                    "cus_country_en": "",
+                    "cus_zip": "",
+                    "cus_tel": "",
+                    "cus_fax": "",
+                    "cus_email": "",
+                    "cus_zone": "",
+                    "cus_bill_cus_contact_id": "",
+                    "cus_bill_cus_contact_title_th": "",
+                    "cus_bill_cus_contact_fname_th": "",
+                    "cus_bill_cus_contact_lname_th": "",
+                    "cus_bill_cis_contact_position_th": "",
+                }
+                pickup_records.append(record)
 
             response = JsonResponse({"success": "Form is valid", 
                 "results": list(pickup_records), 
