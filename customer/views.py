@@ -953,7 +953,7 @@ def get_district_list(request):
 
     else:
         print("method get")
-        if not current_district_id:
+        if current_district_id:
             district_object = TDistrict.objects.filter(dist_id__exact=current_district_id).get()
             data = TDistrict.objects.select_related('city_id').filter(city_id__city_th__contains=district_object.city_id.city_th)
             if not data:
@@ -1281,8 +1281,10 @@ def update_cus_main(request):
             '''
 
             select_district_id = request.POST.get('select_district_id')
-            if select_district_id:
+
+            if select_district_id:            
                 try:
+                    select_district_id = 10
                     district_obj = TDistrict.objects.get(dist_id=select_district_id)
                     if district_obj:
                         cus_main.cus_district_id = select_district_id
@@ -1297,6 +1299,7 @@ def update_cus_main(request):
                         cus_main.cus_city_id = None
                         cus_main_cus_country_id = None
             else:
+                print("not ok")
                 cus_main.cus_district_id = None
                 cus_main.cus_city_id = None
                 cus_main_cus_country_id = None
