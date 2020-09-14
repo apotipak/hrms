@@ -903,7 +903,7 @@ def get_district_list(request):
     current_district_id = request.GET.get('current_district_id')
     cus_active = request.POST.get('cus_main_cus_active')
 
-    # print("current_district_id : " + str(current_district_id))
+    print("current_district_id : " + str(current_district_id))
 
     item_per_page = 100
 
@@ -922,14 +922,12 @@ def get_district_list(request):
 
     else:
         print("method get")
-        if current_district_id != "":
-            district_object = TDistrict.objects.filter(dist_id__exact=current_district_id).get()                        
-            # print("city name th = " + str(district_object.city_id.city_en))
-
+        if not current_district_id:
+            district_object = TDistrict.objects.filter(dist_id__exact=current_district_id).get()
             data = TDistrict.objects.select_related('city_id').filter(city_id__city_th__contains=district_object.city_id.city_th)
             if not data:
                 data = TDistrict.objects.select_related('city_id').filter(city_id__city_en__contains=district_object.city_id.city_en)
-        else:    
+        else:
             data = TDistrict.objects.select_related('city_id').all()
 
         paginator = Paginator(data, item_per_page)
