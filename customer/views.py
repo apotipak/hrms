@@ -855,8 +855,8 @@ def get_district_list_modal(request):
                     "dist_en": d.dist_en,
                     "city_th": d.city_id.city_th,
                     "city_en": d.city_id.city_en,
-                    "country_th": d.city_id.country_id.country_th,
-                    "country_en": d.city_id.country_id.country_en,
+                    "country_name_th": d.city_id.country_id.country_th,
+                    "country_name_en": d.city_id.country_id.country_en,
                 }
                 pickup_records.append(record)
 
