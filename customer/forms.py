@@ -742,7 +742,7 @@ class CusSiteForm(forms.ModelForm):
         else:
             raise ValidationError("Zip is not correct.")
     '''
-    
+
     def clean_cus_site_cus_tel(self):
         data = self.data.get('cus_site_cus_tel')
         return data
@@ -790,7 +790,6 @@ class CusBillForm(forms.ModelForm):
 
         self.fields['cus_bill_cus_zone'].queryset=ComZone.objects.all()
         self.initial['cus_bill_cus_zone'] = instance.cus_zone_id
-
         self.initial['cus_bill_cus_contact'] = instance.cus_contact
 
     def clean_cus_active(self):
@@ -799,29 +798,31 @@ class CusBillForm(forms.ModelForm):
             return 0
         return 1 
 
+    '''
     def clean_cus_bill_cus_name_th(self):
         data = self.data.get('cus_bill_cus_name_th')        
         if len(data) > 0:
             return data
         else:
             raise ValidationError("Customer Name (TH) is required.")
+    '''
 
+    '''
     def clean_cus_bill_cus_zone(self):
         data = self.data.get('cus_bill_cus_zone')
         # print("cus_bill_zone " + str(data))
         return data
-
+    '''
+    
+    '''
     def clean_cus_bill_cus_zip(self):
         data = self.data.get('cus_bill_cus_zip')
-
-        '''
         if len(data) != 5:
             raise ValidationError("Zip is not correct.")
         else:
-            return data
-        '''
-        
+            return data        
         if data.isnumeric():
             return data
         else:
-            raise ValidationError("Zip is not correct.")
+            raise ValidationError("Zip is not correct.") 
+    '''

@@ -1412,14 +1412,9 @@ def update_cus_site(request):
             cus_site_site_contact_id = request.POST.get('cus_site_site_contact_id')
             print("debug: " + str(cus_site_site_contact_id))
 
-            # print("bbb")
-            # print("cus_no = " + str(cus_no))
-
             customer = get_object_or_404(Customer, pk=cus_no)
             
-
             cus_site_cus_district_id = request.POST.get('select_district_id')
-            print("DEBUG - cus_site_cus_district_id = " + str(cus_site_cus_district_id))
             if cus_site_cus_district_id:
                 try:
                     district_obj = TDistrict.objects.get(dist_id=cus_site_cus_district_id)
@@ -1517,7 +1512,8 @@ def update_cus_bill(request):
             cus_subdist_en = request.POST.get('cus_bill_cus_subdist_en')
 
             cus_zip = request.POST.get('cus_bill_cus_zip')
-            # print("cus_zip = " + str(cus_zip))
+            if not cus_zip:
+                cus_zip = None
 
             cus_tel = request.POST.get('cus_bill_cus_tel')
             cus_fax = request.POST.get('cus_bill_cus_fax')
@@ -1525,7 +1521,7 @@ def update_cus_bill(request):
             cus_zone = request.POST.get('cus_bill_cus_zone')
                     
             cus_bill_cus_contact_id = request.POST.get('cus_bill_cus_contact_id', None)
-            select_district_id = request.POST.get('select_district_id', None)
+
 
             try:
                 cus_bill = CusBill.objects.get(pk=cus_no)
@@ -1551,21 +1547,26 @@ def update_cus_bill(request):
                 cus_bill.cus_email = cus_email
                 cus_bill.cus_zone_id = cus_zone
 
+                # select_district_id = request.POST.get('select_district_id', None)
+                select_district_id = request.POST.get('select_district_id')            
+                if select_district_id:
+                    try:
+                        district_obj = TDistrict.objects.get(dist_id=select_district_id)
+                        if district_obj:                        
+                            cus_bill.cus_district_id = select_district_id
+                            cus_bill.cus_city_id = district_obj.city_id
+                            cus_bill.cus_country_id = district_obj.city_id.country_id
+
+                    except TDistrict.DoesNotExist:
+                            cus_bill.cus_district_id = None
+                            cus_bill.cus_city_id = None
+                            cus_bill.cus_country_id = None
+
                 # Address Info
                 if not select_district_id or select_district_id == '':
                     select_district_id = None
                     cus_city = None
                     cus_country = None
-
-                if select_district_id or select_district_id != '':
-                    cus_bill.cus_district_id = select_district_id
-                    district_obj = TDistrict.objects.get(dist_id=select_district_id)
-                    if district_obj:
-                        city_id = district_obj.city_id_id                        
-                        cus_bill.cus_district_id = select_district_id
-                        cus_bill.cus_city = district_obj.city_id                
-                        city_obj = TCity.objects.get(city_id=city_id)
-                        cus_bill.cus_country = city_obj.country_id
 
                 # Contact Person Info
                 if not cus_bill_cus_contact_id or cus_bill_cus_contact_id == '':
