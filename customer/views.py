@@ -1094,15 +1094,44 @@ def CustomerCreate(request):
 """
 
 @login_required(login_url='/accounts/login/')
-def CustomerDelete(request, pk):
+def CustomerDeleteOld(request, pk):
     customer = get_object_or_404(Customer, pk=pk)
     data = dict()
 
     if request.method == 'POST':
         # customer.delete()
+
         data['form_is_valid'] = True
         customer_list = Customer.objects.all()
         # customer_list = Customer.objects.filter(cus_id__in=[2094]).order_by('-upd_date', 'cus_id', '-cus_active')
+        data['html_customer_list'] = render_to_string('customer/partial_customer_list.html', {
+            'customer_list': customer_list
+        })
+        data['message'] = "ทำรายการสำเร็จ"
+    else:
+        data['message'] = "ไม่สามารถทำรายการได้..!"
+        context = {'customer': customer}        
+        data['html_form'] = render_to_string('customer/partial_customer_delete.html', context, request=request)
+    
+    return JsonResponse(data)
+
+
+@login_required(login_url='/accounts/login/')
+def CustomerDelete(request, pk):
+    customer = get_object_or_404(Customer, pk=pk)
+    data = dict()
+
+    if request.method == 'POST':
+        # TODO
+        # customer.delete()
+        if customer:
+            customer.upd_flag = 'D'
+            customer.upd_by = request.user.first_name
+            customer.upd_date = timezone.now()
+            customer.save()
+
+        data['form_is_valid'] = True
+        customer_list = Customer.objects.all()
         data['html_customer_list'] = render_to_string('customer/partial_customer_list.html', {
             'customer_list': customer_list
         })
