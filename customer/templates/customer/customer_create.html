@@ -89,13 +89,15 @@
 
             <form id="cus_main_form_temp" method="POST">
             {% csrf_token %}
-
+            
             <div class="clearfix">
               <div class="float-left">&nbsp;</div>
               <div class="float-right">
+                
+                {% comment %}
                 <div class="float-left pt-2">
                   <div class="form-check d-inline">
-                    <input class="form-check-input" id="checkboxMainOfficeForSite" type="checkbox">
+                    <input class="form-check-input" id="checkboxMainOfficeForSite" type="checkbox">                  
                     <label class="form-check-label">For Site</label>&nbsp;&nbsp;&nbsp;&nbsp;
                   </div>
                   <div class="form-check d-inline">
@@ -103,7 +105,8 @@
                     <label class="form-check-label">For Bill</label>&nbsp;&nbsp;&nbsp;&nbsp;
                   </div>              
                 </div>
-                
+                {% endcomment %}
+
                 <label class="switch">                                 
                   {% if cus_main.cus_active|default_if_none:0 %}
                   <input type="checkbox" id="id_cus_main_cus_active" name="cus_main_cus_active" value=1 checked>
@@ -114,15 +117,14 @@
                 </label>
 
               </div>
-            </div>
-
+            </div>            
 
             <!-- Main Office Tab -->            
             <div class="row pt-3">
               
               <div class="col-md-6">
 
-                <div class="card card-green">
+                <div class="card card-info">
                   <div class="card-header">
                     <h3 class="card-title">TH</h3>
                   </div>
@@ -193,7 +195,7 @@
 
               <!-- Main Office Tab English -->
               <div class="col-md-6">
-                <div class="card card-green">
+                <div class="card card-info">
                   <div class="card-header">
                     <h3 class="card-title">EN</h3>
                   </div>
