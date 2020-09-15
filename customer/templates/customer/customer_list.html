@@ -262,9 +262,6 @@
   $(document).on('submit', '#deleteCustomerForm', function (e) {    
     event.preventDefault();
     var form = $(this);
-
-    var table = $('#customer-list-table').DataTable();
-
     $.ajax({
       url: form.attr("action"),
       data: form.serialize(),
@@ -273,6 +270,7 @@
       success: function (data) {        
         if (data.form_is_valid) {
           $("#modal-customer").modal("hide");
+
           $(document).Toasts('create', {
             class: 'bg-success', 
             title: "{% trans 'Message' %}",
@@ -286,7 +284,9 @@
           });
           
           //location.reload();
-          history.go(0);
+          $("#modal-customer .modal-content").html("");
+          //$("#modal-customer .modal-content").html("Test");
+          //history.go(0);
         }
         else {
           $("#modal-customer").modal("hide");          

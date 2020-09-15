@@ -1,5 +1,5 @@
 {% for item in current_page %}
-    <tr>
+    <tr id="{{item.cus_id}}{{item.cus_brn}}">
         <td>{{item.cus_id}}</td>
         <td>{{item.cus_brn|stringformat:"03d"}}</td>
         <td><a href="{% url 'cus-main-update' item.cus_no %}">{{item.cus_name_th}}</a></td>
