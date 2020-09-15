@@ -1781,7 +1781,7 @@ def update_all_cus_tabs(request):
                     district_obj = TDistrict.objects.get(dist_id=cus_main_cus_district_id)
                     if district_obj:
                         cus_main_city_id = district_obj.city_id_id
-                        city_obj = TCity.objects.get(city_id=city_id)
+                        city_obj = TCity.objects.get(city_id=cus_main_city_id)
                         cus_main_country_id = city_obj.country_id_id
                 except TDistrict.DoesNotExist:
                     cus_main_cus_district_id = None
