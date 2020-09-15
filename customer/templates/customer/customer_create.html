@@ -111,7 +111,7 @@
                   <div class="btn-group">
                     <button id="btnCopyToSite" type="button" class="btn btn-default btn-sm"><i class="far fa-copy"></i>&nbsp;&nbsp;Copy to Site</button>
                     &nbsp;&nbsp;
-                    <button id="btnCopyToBIll" type="button" class="btn btn-default btn-sm"><i class="far fa-copy"></i>&nbsp;&nbsp;Copy to Bill</button>
+                    <button id="btnCopyToBill" type="button" class="btn btn-default btn-sm"><i class="far fa-copy"></i>&nbsp;&nbsp;Copy to Bill</button>
                   </div>
 
                   <div class="float-right">
@@ -478,7 +478,7 @@
 
                 <div class="mailbox-controls">
                   <div class="btn-group">
-                    <button id="btnCopyToBIll" type="button" class="btn btn-default btn-sm"><i class="far fa-copy"></i>&nbsp;&nbsp;Copy to Bill</button>
+                    <button id="btnCopyToBill" type="button" class="btn btn-default btn-sm"><i class="far fa-copy"></i>&nbsp;&nbsp;Copy to Bill</button>
                   </div>
 
                   <div class="float-right">
@@ -1261,6 +1261,68 @@
     $('#id_cus_site_cus_contact_con_fname_th').val(cus_main_cus_contact_con_fname_th);
     $('#id_cus_site_cus_contact_con_lname_th').val(cus_main_cus_contact_con_lname_th);
     $('#id_cus_site_site_contact_con_position_th').val(cus_main_cus_contact_con_position_th);
+  });
+
+  $('#btnCopyToBill').on('click', function (e) {
+    cus_main_cus_name_th = $('#id_cus_main_cus_name_th').val();
+    cus_main_cus_add1_th = $('#id_cus_main_cus_add1_th').val();
+    cus_main_cus_add2_th = $('#id_cus_main_cus_add2_th').val();
+    cus_main_cus_subdist_th = $('#id_cus_main_cus_subdist_th').val();      
+    cus_main_cus_district_dist_th = $('#id_cus_main_cus_district_dist_th').val();
+    cus_main_cus_city_th = $('#id_cus_main_cus_city_th').val();
+    cus_main_cus_country_th = $('#id_cus_main_cus_country_th').val();
+
+    cus_main_cus_name_en = $('#id_cus_main_cus_name_en').val();      
+    cus_main_cus_add1_en = $('#id_cus_main_cus_add1_en').val();
+    cus_main_cus_add2_en = $('#id_cus_main_cus_add2_en').val();
+    cus_main_cus_subdist_en = $('#id_cus_main_cus_subdist_en').val();      
+    id_cus_main_cus_district_en = $('#id_cus_main_cus_district_en').val();
+    cus_main_cus_city_en = $('#id_cus_main_cus_city_en').val();
+    cus_main_cus_country_en = $('#id_cus_main_cus_country_en').val();
+    cus_main_cus_zip = $('#id_cus_main_cus_zip').val();
+    cus_main_cus_tel = $('#id_cus_main_cus_tel').val();
+    cus_main_cus_fax = $('#id_cus_main_cus_fax').val();
+    cus_main_cus_email = $('#id_cus_main_cus_email').val();
+    
+    cus_main_select_district_id = $('#id_cus_main_select_district_id').val();
+    cus_main_cus_zone = $('#id_cus_main_cus_zone').val();
+
+    cus_main_cus_contact_id = $('#id_cus_main_cus_contact_id').val();
+    cus_main_cus_contact_cus_title = $('#id_cus_main_cus_contact_cus_title').val();
+    cus_main_cus_contact_con_fname_th = $('#id_cus_main_cus_contact_con_fname_th').val();
+    cus_main_cus_contact_con_lname_th = $('#id_cus_main_cus_contact_con_lname_th').val();
+    cus_main_cus_contact_con_position_th = $('#id_cus_main_cus_contact_con_position_th').val();
+
+    $('#id_cus_bill_cus_name_th').val(cus_main_cus_name_th);
+    $('#id_cus_bill_cus_add1_th').val(cus_main_cus_add1_th);
+    $('#id_cus_bill_cus_add2_th').val(cus_main_cus_add2_th);
+    $('#id_cus_bill_cus_subdist_th').val(cus_main_cus_subdist_th);
+    $('#id_cus_bill_cus_district_dist_th').val(cus_main_cus_district_dist_th);
+    $('#id_cus_bill_cus_city_th').val(cus_main_cus_city_th);
+    $('#id_cus_bill_cus_country_th').val(cus_main_cus_country_th);
+
+    $('#id_cus_bill_cus_name_en').val(cus_main_cus_name_en);
+    $('#id_cus_bill_cus_add1_en').val(cus_main_cus_add1_en);
+    $('#id_cus_bill_cus_add2_en').val(cus_main_cus_add2_en);
+    $('#id_cus_bill_cus_subdist_en').val(cus_main_cus_subdist_en);
+    $('#id_cus_bill_cus_district_en').val(id_cus_main_cus_district_en);
+    $('#id_cus_bill_cus_city_en').val(cus_main_cus_city_en);
+    $('#id_cus_bill_cus_country_en').val(cus_main_cus_country_en);
+
+    $('#id_cus_bill_select_district_id').val(cus_main_select_district_id);
+    $('#id_cus_bill_cus_district_dist_th').val(cus_main_cus_district_dist_th);
+
+    $('#id_cus_bill_cus_zip').val(cus_main_cus_zip);
+    $('#id_cus_bill_cus_tel').val(cus_main_cus_tel);
+    $('#id_cus_bill_cus_fax').val(cus_main_cus_fax);
+    $('#id_cus_bill_cus_email').val(cus_main_cus_email);
+    $('#id_cus_bill_cus_zone').val(cus_main_cus_zone);
+
+    $('#id_cus_bill_cus_contact_id').val(cus_main_cus_contact_id);
+    $('#id_cus_bill_cus_contact_cus_title').val(cus_main_cus_contact_cus_title);
+    $('#id_cus_bill_cus_contact_con_fname_th').val(cus_main_cus_contact_con_fname_th);
+    $('#id_cus_bill_cus_contact_con_lname_th').val(cus_main_cus_contact_con_lname_th);
+    $('#id_cus_bill_cus_contact_con_position_th').val(cus_main_cus_contact_con_position_th);
   });
 
   $('#checkboxMainOfficeForSite').on('change', function(){
