@@ -1374,6 +1374,7 @@
     cus_site_cus_subdist_th = $('#id_cus_site_cus_subdist_th').val();      
     cus_site_cus_district_dist_th = $('#id_cus_site_cus_district_dist_th').val();
     cus_site_cus_city_th = $('#id_cus_site_cus_city_th').val();
+    alert(cus_site_cus_city_th);
     cus_site_cus_country_th = $('#id_cus_site_cus_country_th').val();
 
     cus_site_cus_name_en = $('#id_cus_site_cus_name_en').val();      
@@ -1391,11 +1392,11 @@
     cus_main_select_district_id = $('#id_cus_main_select_district_id').val();
     cus_site_cus_zone = $('#id_cus_site_cus_zone').val();
 
-    cus_site_cus_contact_id = $('#id_cus_site_cus_contact_id').val();
-    cus_site_cus_contact_cus_title = $('#id_cus_site_cus_contact_cus_title_th').val();
-    cus_site_cus_contact_con_fname_th = $('#id_cus_site_cus_contact_con_fname_th').val();
-    cus_site_cus_contact_con_lname_th = $('#id_cus_site_cus_contact_con_lname_th').val();
-    cus_site_cus_contact_con_position_th = $('#id_cus_site_cus_contact_con_position_th').val();
+    cus_site_site_contact_id = $('#id_cus_site_site_contact_id').val();
+    cus_site_site_contact_cus_title = $('#id_cus_site_site_contact_title_th').val();
+    cus_site_site_contact_con_fname_th = $('#id_cus_site_site_contact_fname_th').val();
+    cus_site_site_contact_con_lname_th = $('#id_cus_site_site_contact_lname_th').val();
+    cus_site_site_contact_con_position_th = $('#id_cus_site_site_contact_position_th').val();    
 
     $('#id_cus_bill_cus_name_th').val(cus_site_cus_name_th);
     $('#id_cus_bill_cus_add1_th').val(cus_site_cus_add1_th);
@@ -1423,11 +1424,11 @@
     $('#id_cus_bill_cus_zone').val(cus_site_cus_zone);
 
     // Bill Cotact Information
-    $('#id_cus_bill_cus_contact_id').val(cus_site_cus_contact_id);        
-    $('#id_cus_bill_cus_contact_cus_title').val(cus_site_cus_contact_cus_title);
-    $('#id_cus_bill_cus_contact_con_fname_th').val(cus_site_cus_contact_con_fname_th);
-    $('#id_cus_bill_cus_contact_con_lname_th').val(cus_site_cus_contact_con_lname_th);
-    $('#id_cus_bill_cus_contact_con_position_th').val(cus_site_cus_contact_con_position_th);
+    $('#id_cus_bill_cus_contact_id').val(cus_site_site_contact_id);        
+    $('#id_cus_bill_cus_contact_cus_title').val(cus_site_site_contact_cus_title);
+    $('#id_cus_bill_cus_contact_con_fname_th').val(cus_site_site_contact_con_fname_th);
+    $('#id_cus_bill_cus_contact_con_lname_th').val(cus_site_site_contact_con_lname_th);
+    $('#id_cus_bill_cus_contact_con_position_th').val(cus_site_site_contact_con_position_th);
   });
 
   $(document).on('keyup keypress', '#cus_site_search_district_modal_form input[type="text"]', function(e) {
