@@ -1100,6 +1100,7 @@ def CustomerDelete(request, pk):
     data = dict()
 
     if request.method == 'POST':
+        print("aaaaPOST")
         # TODO
         # customer.delete()
         if customer:
@@ -1114,11 +1115,13 @@ def CustomerDelete(request, pk):
             'customer_list': customer_list
         })
         data['message'] = "ทำรายการสำเร็จ"
+        context = {'customer': customer_list, "results": 'ลบรายการสำเร็จ', "success": False}
     else:
-        data['message'] = "ไม่สามารถทำรายการได้..!"
-        context = {'customer': customer}        
+        print("aaaaaaGET")
+        data['message'] = ""
+        context = {'customer': customer, "results": 'Error!', "success": False}
         data['html_form'] = render_to_string('customer/partial_customer_delete.html', context, request=request)
-    
+        
     return JsonResponse(data)
 
 

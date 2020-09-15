@@ -1,6 +1,6 @@
 {% load widget_tweaks %}
 
-<form method="post" action="{% url 'customer-delete' customer.cus_no %}" class="js-customer-delete-form">
+<form id="deleteCustomerForm" method="post" action="{% url 'customer-delete' customer.cus_no %}" class="js-customer-delete-form">
   {% csrf_token %}
   
   <div class="modal-header">
@@ -17,7 +17,7 @@
 
   <div class="modal-footer align-right">
     <button type="button" class="btn btn-default" data-dismiss="modal">ยกเลิก</button>
-    <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i>&nbsp;&nbsp;ยืนยัน</button>
+    <button type="submit" id="btnDeleteCustomer" class="btn btn-danger"><i class="fas fa-trash"></i>&nbsp;&nbsp;ยืนยัน</button>
   </div>
 
 </form>
