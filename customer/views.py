@@ -1099,9 +1099,9 @@ def CustomerDelete(request, pk):
     customer = get_object_or_404(Customer, pk=pk)
     data = dict()
 
-    if request.method == 'POST':
-        print("aaaaPOST")
-        # TODO
+    if request.method == 'POST':        
+        cus_no = request.POST.get('cus_no')        
+        
         # customer.delete()
         if customer:
             customer.upd_flag = 'D'
@@ -1114,8 +1114,9 @@ def CustomerDelete(request, pk):
         data['html_customer_list'] = render_to_string('customer/partial_customer_list.html', {
             'customer_list': customer_list
         })
-        data['message'] = "ทำรายการสำเร็จ"
-        context = {'customer': customer_list, "results": 'ลบรายการสำเร็จ', "success": False}
+        data['message'] = ""
+        data['cus_no'] = cus_no
+        context = {'customer': customer_list}
     else:
         print("aaaaaaGET")
         data['message'] = ""

@@ -262,9 +262,14 @@
   $(document).on('submit', '#deleteCustomerForm', function (e) {    
     event.preventDefault();
     var form = $(this);
+    var cus_no = $('#cus_no').val();
     $.ajax({
       url: form.attr("action"),
-      data: form.serialize(),
+      //data: form.serialize(),
+      data : {          
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        cus_no: cus_no,
+      },      
       type: form.attr("method"),
       dataType: 'json',
       success: function (data) {        
@@ -277,19 +282,17 @@
             subtitle: '',
             autohide: true,
             delay: 2000,
-            body: data.message + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+            body: "ลบรายการ " + data.cus_no + " สำเร็จ" + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
             autoDismiss: true,
             close: true,
             autoremove: true,
-          });
+          });        
           
-          //location.reload();
-          $("#modal-customer .modal-content").html("");
-          //$("#modal-customer .modal-content").html("Test");
-          //history.go(0);
+          // TODO
+          $('#' + cus_no).remove();
         }
         else {
-          $("#modal-customer").modal("hide");          
+          $("#modal-customer").modal("hide");                    
         }
       }
     });
