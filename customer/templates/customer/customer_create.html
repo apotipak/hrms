@@ -444,25 +444,6 @@
               <div class="float-left">&nbsp;</div>
               <div class="float-right">
 
-                {% comment %}
-                <div class="float-left pt-2">
-                  <div class="form-check d-inline">
-                    <input class="form-check-input" id="checkboxSiteForBill" type="checkbox">
-                    <label class="form-check-label">Copy to Bill</label>&nbsp;&nbsp;&nbsp;&nbsp;
-                  </div>              
-                </div>              
-
-                <label class="switch">                                 
-                  {% if customer.cus_active|default_if_none:0 %}
-                  <input type="checkbox" id="id_cus_site_cus_active" name="cus_site_cus_active" value=1 checked>
-                  {% else %}
-                  <input type="checkbox" id="id_cus_site_cus_active" name="cus_site_cus_active" value=0>
-                  {% endif %}                  
-                  <div class="slider"></div>
-                </label>
-                {% endcomment %}
-
-
                 <div class="mailbox-controls">
                   <div class="btn-group">
                     <button id="btnSiteCopyToBill" type="button" class="btn btn-default btn-sm"><i class="far fa-copy"></i>&nbsp;&nbsp;Copy to Bill</button>
