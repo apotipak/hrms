@@ -453,8 +453,8 @@
                       </div>
 
                       <div class="form-group col-md-2">
-                        <label for="id_cus_main_cus_title">{% trans 'Title' %}</label>
-                          <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_contact_cus_title" name="cus_main_cus_contact_cus_title" value="{{ cus_main.cus_contact.con_title|default_if_none:'' }}" readonly>
+                        <label for="id_cus_main_cus_contact_cus_title_th">{% trans 'Title' %}</label>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_contact_cus_title_th" name="cus_main_cus_contact_cus_title_th" value="{{ cus_main.cus_contact.con_title|default_if_none:'' }}" readonly>
                       </div>
 
                       <div class="form-group col-md-2">
@@ -537,7 +537,7 @@
                     </div>
                   </div>
                 </div>
-                
+
 
               </div>
             </div>            
@@ -606,9 +606,9 @@
                         </div>
 
                         <div class="input-group">
-                          <label for="id_cus_city" class="col-sm-4 col-form-label form-control-sm">{% trans 'City' %}</label>
+                          <label for="id_cus_site_cus_city_th" class="col-sm-4 col-form-label form-control-sm">{% trans 'City' %}</label>
                           <div class="col-sm-8">                            
-                            <input type="text" id="id_cus_site_cus_city" name="cus_site_cus_city" class="form-control form-control-sm" value="{{ customer.cus_city|default_if_none:'' }}" readonly>
+                            <input type="text" id="id_cus_site_cus_city_th" name="cus_site_cus_city_th" class="form-control form-control-sm" value="{{ customer.cus_city|default_if_none:'' }}" readonly>
                           </div>
                         </div>
 
@@ -782,23 +782,23 @@
 
 
                         <div class="form-group col-md-2">
-                          <label for="id_cus_site_cus_title">{% trans 'Title' %}</label>
-                            <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_contact_cus_title" name="cus_site_cus_contact_cus_title" value="{{ customer.site_contact.con_title|default_if_none:'' }}" readonly>
+                          <label for="id_cus_site_site_contact_title_th">{% trans 'Title' %}</label>                          
+                            <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_title_th" name="cus_site_site_contact_title_th" value="{{ customer.site_contact.con_title|default_if_none:'' }}" readonly>
                         </div>
 
                         <div class="form-group col-md-2">
-                          <label for="id_cus_site_cus_contact_con_fname_th">{% trans 'First Name' %}</label>
-                          <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_contact_con_fname_th" name="cus_site_cus_contact_con_fname_th" value="{{ cus_site.site_contact.con_fname_th|default_if_none:'' }}" readonly>
+                          <label for="id_cus_site_site_contact_fname_th">{% trans 'First Name' %}</label>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_fname_th" name="cus_site_site_contact_fname_th" value="{{ cus_site.site_contact.con_fname_th|default_if_none:'' }}" readonly>
                         </div>
 
                         <div class="form-group col-md-3">
-                          <label for="id_cus_site_cus_contact_con_lname_th">{% trans 'Last Name' %}</label>
-                          <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_contact_con_lname_th" name="cus_site_cus_contact_con_fname_th" value="{{ cus_site.site_contact.con_lname_th|default_if_none:'' }}" readonly>
+                          <label for="id_cus_site_site_contact_lname_th">{% trans 'Last Name' %}</label>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_lname_th" name="cus_site_cus_contact_con_fname_th" value="{{ cus_site.site_contact.con_lname_th|default_if_none:'' }}" readonly>
                         </div>
 
                         <div class="form-group col-md-3">
-                          <label for="id_cus_site_site_contact_con_position_th">{% trans 'Position' %}</label>
-                          <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_con_position_th" name="cus_site_site_contact_con_position_th" value="{{ cus_site.site_contact.con_position_th|default_if_none:'' }}" readonly>
+                          <label for="id_cus_site_site_contact_position_th">{% trans 'Position' %}</label>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_position_th" name="cus_site_site_contact_position_th" value="{{ cus_site.site_contact.con_position_th|default_if_none:'' }}" readonly>
                         </div>
 
                       </div>
@@ -1098,7 +1098,7 @@
                         </div>
 
                         <div class="form-group col-md-2">
-                          <label for="id_cus_bill_cus_title">{% trans 'Title' %}</label>
+                          <label for="id_cus_bill_cus_contact_cus_title">{% trans 'Title' %}</label>
                             <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_contact_cus_title" name="cus_bill_cus_contact_cus_title" value="{{ cus_bill.cus_contact.con_title|default_if_none:'' }}" readonly>
                         </div>
 
@@ -1248,7 +1248,7 @@
     cus_main_cus_add1_th = $('#id_cus_main_cus_add1_th').val();
     cus_main_cus_add2_th = $('#id_cus_main_cus_add2_th').val();
     cus_main_cus_subdist_th = $('#id_cus_main_cus_subdist_th').val();      
-    cus_main_cus_district_dist_th = $('#id_cus_main_cus_district_dist_th').val();
+    cus_main_cus_district_dist_th = $('#id_cus_main_cus_district_dist_th').val();    
     cus_main_cus_city_th = $('#id_cus_main_cus_city_th').val();
     cus_main_cus_country_th = $('#id_cus_main_cus_country_th').val();
     cus_main_cus_name_en = $('#id_cus_main_cus_name_en').val();      
@@ -1266,9 +1266,8 @@
     cus_main_cus_zone = $('#id_cus_main_cus_zone').val();
 
     cus_main_cus_contact_id = $('#id_cus_main_cus_contact_id').val();    
-    cus_main_cus_contact_cus_title = $('#id_cus_main_cus_contact_cus_title_th').val();
-
-    cus_main_cus_contact_con_fname_th = $('#id_cus_main_cus_contact_con_fname_th').val();
+    cus_main_cus_contact_cus_title_th = $('#id_cus_main_cus_contact_cus_title_th').val();        
+    cus_main_cus_contact_con_fname_th = $('#id_cus_main_cus_contact_con_fname_th').val();  
     cus_main_cus_contact_con_lname_th = $('#id_cus_main_cus_contact_con_lname_th').val();
     cus_main_cus_contact_con_position_th = $('#id_cus_main_cus_contact_con_position_th').val();
 
@@ -1299,7 +1298,7 @@
 
     // Site - Contact Information
     $('#id_cus_site_site_contact_id').val(cus_main_cus_contact_id);
-    $('#id_cus_site_site_contact_title_th').val(cus_main_cus_contact_cus_title);
+    $('#id_cus_site_site_contact_title_th').val(cus_main_cus_contact_cus_title_th);
     $('#id_cus_site_site_contact_fname_th').val(cus_main_cus_contact_con_fname_th);
     $('#id_cus_site_site_contact_lname_th').val(cus_main_cus_contact_con_lname_th);
     $('#id_cus_site_site_contact_position_th').val(cus_main_cus_contact_con_position_th);
@@ -1328,12 +1327,12 @@
     
     cus_main_select_district_id = $('#id_cus_main_select_district_id').val();
     cus_main_cus_zone = $('#id_cus_main_cus_zone').val();
-
     cus_main_cus_contact_id = $('#id_cus_main_cus_contact_id').val();
     cus_main_cus_contact_cus_title = $('#id_cus_main_cus_contact_cus_title_th').val();
     cus_main_cus_contact_con_fname_th = $('#id_cus_main_cus_contact_con_fname_th').val();
     cus_main_cus_contact_con_lname_th = $('#id_cus_main_cus_contact_con_lname_th').val();
     cus_main_cus_contact_con_position_th = $('#id_cus_main_cus_contact_con_position_th').val();
+
 
     $('#id_cus_bill_cus_name_th').val(cus_main_cus_name_th);
     $('#id_cus_bill_cus_add1_th').val(cus_main_cus_add1_th);
