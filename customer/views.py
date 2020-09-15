@@ -68,12 +68,6 @@ def ajax_check_exist_cus_main(request):
         cus_id = request.POST.get('cus_id')
         cus_brn = request.POST.get('cus_brn')        
 
-        '''
-        print("cus_id = " + str(cus_id))
-        print("cus_brn = " + str(cus_brn))
-        print("**************************")
-        '''
-
         form = CustomerCodeCreateForm(request.POST)        
         pickup_records=[]
         business_type_list = []
@@ -82,19 +76,9 @@ def ajax_check_exist_cus_main(request):
         customer_option = []
 
         if form.is_valid():
-            # print("form is valid")            
-
             try:                
                 cus_main = CusMain.objects.get(pk=cus_id)
                 
-                '''
-                print("cus_main.cus_contact_id = " + str(cus_main.cus_contact_id))
-                print(cus_main.cus_contact.con_title.title_en)
-                print(cus_main.cus_contact.con_fname_th)
-                print(cus_main.cus_contact.con_lname_th)
-                print(cus_main.cus_contact.con_position_th)
-                '''
-
                 if cus_main:
 
                     if not cus_main.cus_district:
@@ -799,7 +783,7 @@ def CustomerUpdate(request, pk):
         cus_site_form = CusSiteForm(instance=cus_site)
         cus_bill_form = CusBillForm(instance=cus_bill)
 
-    # print("customer cus_active = " + str(customer.cus_active))
+    # Business Type
     business_type_list = CustomerOption.objects.values_list('btype', flat=True).exclude(btype=None).order_by('btype').distinct()
     group_1_list = CustomerOption.objects.values_list('op2', flat=True).exclude(op2=None).order_by('op2').distinct()
     group_2_list = CustomerOption.objects.values_list('op3', flat=True).exclude(op2=None).order_by('op3').distinct()
@@ -811,7 +795,6 @@ def CustomerUpdate(request, pk):
     except CustomerOption.DoesNotExist:
         business_type = ""
         print("Insert complete")
-
 
     context = {
         'page_title': settings.PROJECT_NAME,
