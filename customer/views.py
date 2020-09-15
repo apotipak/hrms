@@ -118,16 +118,16 @@ def ajax_check_exist_cus_main(request):
                         cus_main_cus_country_th = cus_main.cus_country.country_th
                         cus_main_cus_country_en = cus_main.cus_country.country_en
 
-                    if not cus_main.site_contact_id:
-                        cus_main_site_contact_title_th = ""
-                        cus_main_site_contact_fname_th = ""
-                        cus_main_site_contact_lname_th = ""
-                        cus_main_site_contact_position_th = "" 
+                    if not cus_main.cus_contact_id:
+                        cus_main_cus_contact_title_th = ""
+                        cus_main_cus_contact_fname_th = ""
+                        cus_main_cus_contact_lname_th = ""
+                        cus_main_cus_contact_position_th = "" 
                     else:
-                        cus_main_site_contact_title_th = cus_main.site_contact.con_title.title_th
-                        cus_main_site_contact_fname_th = cus_main.site_contact.con_fname_th
-                        cus_main_site_contact_lname_th = cus_main.site_contact.con_lname_th,
-                        cus_main_site_contact_position_th = cus_main.site_contact.con_position_th
+                        cus_main_cus_contact_title_th = cus_main.cus_contact.con_title.title_th
+                        cus_main_cus_contact_fname_th = cus_main.cus_contact.con_fname_th
+                        cus_main_cus_contact_lname_th = cus_main.cus_contact.con_lname_th,
+                        cus_main_cus_contact_position_th = cus_main.cus_contact.con_position_th
 
                     record = {
                         "cus_id": cus_main.cus_id,
@@ -154,12 +154,11 @@ def ajax_check_exist_cus_main(request):
                         "cus_fax": cus_main.cus_fax,
                         "cus_email": cus_main.cus_email,
                         "cus_zone": cus_main.cus_zone_id,
-
                         "cus_contact_id": cus_main.cus_contact_id,
-                        "cus_contact_title_th": cus_main_site_contact_title_th,
-                        "cus_contact_fname_th": cus_main_site_contact_fname_th,
-                        "cus_contact_lname_th": cus_main_site_contact_lname_th,
-                        "cus_contact_position_th": cus_main_site_contact_position_th,
+                        "cus_contact_title_th": cus_main_cus_contact_title_th,
+                        "cus_contact_fname_th": cus_main_cus_contact_fname_th,
+                        "cus_contact_lname_th": cus_main_cus_contact_lname_th,
+                        "cus_contact_position_th": cus_main_cus_contact_position_th,
                     }
                     pickup_records.append(record)
                 
