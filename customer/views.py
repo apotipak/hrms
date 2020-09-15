@@ -567,6 +567,23 @@ def ajax_check_exist_cus_bill(request):
 
 
 @permission_required('customer.view_customer', login_url='/accounts/login/')
+def CustomerDashboard(request):
+    page_title = settings.PROJECT_NAME
+    db_server = settings.DATABASES['default']['HOST']
+    project_name = settings.PROJECT_NAME
+    project_version = settings.PROJECT_VERSION
+    today_date = settings.TODAY_DATE    
+    item_per_page = 50
+    context = {
+        'page_title': page_title, 
+        'db_server': db_server, 'today_date': today_date,
+        'project_name': project_name, 
+        'project_version': project_version,         
+    }
+    return render(request, 'customer/customer_dashboard.html', context)
+
+
+@permission_required('customer.view_customer', login_url='/accounts/login/')
 def CustomerList(request):
     page_title = settings.PROJECT_NAME
     db_server = settings.DATABASES['default']['HOST']

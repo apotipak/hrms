@@ -5,6 +5,7 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.CustomerList, name='customer-list'),
+    url(r'^customer-dashboard/', views.CustomerDashboard, name='customer-dashboard'),
     path('customer/create', views.CustomerCreate, name='customer-create'),
     path('customer/<int:pk>/update', views.CustomerUpdate, name='cus-main-update'),
    	path('customer/<int:pk>/delete', views.CustomerDelete, name='customer-delete'),
