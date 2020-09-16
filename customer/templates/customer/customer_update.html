@@ -121,9 +121,9 @@
 
                 <div class="mailbox-controls">
                   <div class="btn-group">
-                    <button id="btnCopyToSite" type="button" class="btn btn-default btn-sm"><i class="far fa-copy"></i>&nbsp;&nbsp;Copy to Site</button>
+                    <button id="btnCopyToSite" type="button" class="btn btn-outline-primary btn-sm"><i class="far fa-copy"></i>&nbsp;&nbsp;Copy to Site</button>
                     &nbsp;&nbsp;
-                    <button id="btnCopyToBill" type="button" class="btn btn-default btn-sm"><i class="far fa-copy"></i>&nbsp;&nbsp;Copy to Bill</button>
+                    <button id="btnCopyToBill" type="button" class="btn btn-outline-primary btn-sm"><i class="far fa-copy"></i>&nbsp;&nbsp;Copy to Bill</button>
                   </div>
 
                   <div class="float-right">
@@ -520,7 +520,7 @@
 
                 <div class="mailbox-controls">
                   <div class="btn-group">
-                    <button id="btnSiteCopyToBill" type="button" class="btn btn-default btn-sm"><i class="far fa-copy"></i>&nbsp;&nbsp;Copy to Bill</button>
+                    <button id="btnSiteCopyToBill" type="button" class="btn btn-outline-primary btn-sm"><i class="far fa-copy"></i>&nbsp;&nbsp;Copy to Bill</button>
                   </div>
 
                   <div class="float-right">
@@ -1302,6 +1302,18 @@
     $('#id_cus_site_site_contact_fname_th').val(cus_main_cus_contact_con_fname_th);
     $('#id_cus_site_site_contact_lname_th').val(cus_main_cus_contact_con_lname_th);
     $('#id_cus_site_site_contact_position_th').val(cus_main_cus_contact_con_position_th);
+
+    $(document).Toasts('create', {
+      class: 'bg-success', 
+      title: "{% trans 'Message' %}",
+      subtitle: '',
+      autohide: true,
+      delay: 2000,      
+      body: "Copy to site successfully.",
+      autoDismiss: true,
+      close: true,
+      autoremove: true,
+    });    
   });
 
   $('#btnCopyToBill').on('click', function (e) {
@@ -1332,7 +1344,6 @@
     cus_main_cus_contact_con_fname_th = $('#id_cus_main_cus_contact_con_fname_th').val();
     cus_main_cus_contact_con_lname_th = $('#id_cus_main_cus_contact_con_lname_th').val();
     cus_main_cus_contact_con_position_th = $('#id_cus_main_cus_contact_con_position_th').val();
-
 
     $('#id_cus_bill_cus_name_th').val(cus_main_cus_name_th);
     $('#id_cus_bill_cus_add1_th').val(cus_main_cus_add1_th);
@@ -1365,6 +1376,18 @@
     $('#id_cus_bill_cus_contact_con_fname_th').val(cus_main_cus_contact_con_fname_th);
     $('#id_cus_bill_cus_contact_con_lname_th').val(cus_main_cus_contact_con_lname_th);
     $('#id_cus_bill_cus_contact_con_position_th').val(cus_main_cus_contact_con_position_th);
+
+    $(document).Toasts('create', {
+      class: 'bg-success', 
+      title: "{% trans 'Message' %}",
+      subtitle: '',
+      autohide: true,
+      delay: 2000,      
+      body: "Copy to bill successfully.",
+      autoDismiss: true,
+      close: true,
+      autoremove: true,
+    });    
   });
 
   $('#btnSiteCopyToBill').on('click', function (e) {
@@ -1428,6 +1451,18 @@
     $('#id_cus_bill_cus_contact_con_fname_th').val(cus_site_site_contact_con_fname_th);
     $('#id_cus_bill_cus_contact_con_lname_th').val(cus_site_site_contact_con_lname_th);
     $('#id_cus_bill_cus_contact_con_position_th').val(cus_site_site_contact_con_position_th);
+
+    $(document).Toasts('create', {
+      class: 'bg-success', 
+      title: "{% trans 'Message' %}",
+      subtitle: '',
+      autohide: true,
+      delay: 2000,      
+      body: "Copy to bill successfully.",
+      autoDismiss: true,
+      close: true,
+      autoremove: true,
+    });    
   });
 
   $(document).on('keyup keypress', '#cus_site_search_district_modal_form input[type="text"]', function(e) {
