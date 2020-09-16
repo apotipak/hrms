@@ -1920,6 +1920,8 @@ def update_all_cus_tabs(request):
             cus_site_cus_zone = request.POST.get('cus_site_cus_zone')
             
             cus_site_cus_district_id = request.POST.get('cus_site_cus_district_id')
+            print("cus_site_cus_district_id = " + str(cus_site_cus_district_id))
+            
             if cus_site_cus_district_id:
                 print("debug 1")
                 try:

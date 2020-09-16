@@ -2100,7 +2100,7 @@
             result += "    <label for='id_cus_bill_search_district' class='sr-only'>Search</label>";            
             result += "    <input type='text' class='form-control form-control-sm' id='id_cus_bill_cus_district_search_text' name='cus_bill_cus_district_search_text' placeholder=''>";
             result += "  </div>";
-            result += "<a href='javascript:cus_bill_search_district_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search123</a>";            
+            result += "<a href='javascript:cus_bill_search_district_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";            
             result += "</form>";
             result += "</div>";
 
@@ -2270,7 +2270,7 @@
     cus_site_cus_add1_th = $('#id_cus_site_cus_add1_th').val();
     cus_site_cus_add2_th = $('#id_cus_site_cus_add2_th').val();    
     cus_site_cus_subdist_th = $('#id_cus_site_cus_subdist_th').val();
-    cus_site_cus_district_id = $('#id_cus_site_cus_district_id').val();
+    cus_site_cus_district_id = $('#id_cus_site_select_district_id').val();    
     cus_site_cus_district_th = $('#id_cus_bill_cus_district_dist_th').val();
     cus_site_cus_name_en = $('#id_cus_site_cus_name_en').val();    
     cus_site_cus_add1_en = $('#id_cus_site_cus_add1_en').val();
@@ -3482,7 +3482,7 @@
             result += "    <label for='id_cus_bill_search_district' class='sr-only'>Search</label>";            
             result += "    <input type='text' class='form-control form-control-sm' id='id_cus_bill_cus_district_search_text' name='cus_bill_cus_district_search_text' placeholder=''>";
             result += "  </div>";
-            result += "<a href='javascript:cus_bill_search_district_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search1</a>";            
+            result += "<a href='javascript:cus_bill_search_district_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";            
             result += "</form>";
             result += "</div>";
 
@@ -3512,7 +3512,7 @@
             result += "<td>" + dist_name_th + "</td>";
             result += "<td>" + city_name_th + "</td>";
             
-            result += "<td><a href='javascript:cus_bill_select_district(" + dist_id + ",\"" + dist_name_th + "\",\"" + city_name_th + "\",\"" + dist_name_en + "\",\"" + city_name_en + "\");' type='button' class='btn btn-outline-primary btn-sm'>Select1</a></td>";
+            result += "<td><a href='javascript:cus_bill_select_district(" + dist_id + ",\"" + dist_name_th + "\",\"" + city_name_th + "\",\"" + dist_name_en + "\",\"" + city_name_en + "\");' type='button' class='btn btn-outline-primary btn-sm'>Select</a></td>";
 
             result += "</tr>";              
           }
