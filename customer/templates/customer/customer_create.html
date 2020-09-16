@@ -295,6 +295,7 @@
                         <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_email" name="cus_main_cus_email" value="{{ cus_main.cus_email|default_if_none:'' }}">
                       </div>
 
+                      <!-- Main Office Zone -->
                       <div class="form-group col-md-3">
                         <label for="cus_main_cus_zone">{% trans 'Zone' %}</label>
                           {% render_field customer_code_create_form.cus_main_cus_zone class="form-control col-sm-12 form-control-sm" %}
@@ -658,6 +659,7 @@
                           <input type="text" class="form-control form-control-sm" id="id_cus_site_cus_email" name="cus_site_cus_email" value="{{ customer.cus_email|default_if_none:'' }}">
                         </div>
 
+                        <!-- Site Zone -->
                         <div class="form-group col-md-3">
                           <label for="cus_site_cus_zone">{% trans 'Zone' %}</label>
                           {% render_field customer_code_create_form.cus_site_cus_zone class="form-control col-sm-12 form-control-sm" %}
@@ -967,6 +969,14 @@
                           <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_email" name="cus_bill_cus_email" value="{{ cus_bill.cus_email|default_if_none:'' }}">
                         </div>
 
+
+
+                        <div class="form-group col-md-3">
+                          <label for="cus_site_cus_zone">{% trans 'Zone' %}</label>
+                          {% render_field customer_code_create_form.cus_site_cus_zone class="form-control col-sm-12 form-control-sm" %}
+                        </div>
+
+                        {% comment %}
                         <div class="form-group col-md-3">
                           <label for="cus_main_cus_zone">{% trans 'Zone' %}</label>
                           {% if cus_bill_form.cus_bill_cus_zone.errors %}                
@@ -980,7 +990,8 @@
                             {% render_field cus_bill_form.cus_bill_cus_zone class="form-control col-sm-12 form-control-sm" %}
                           {% endif %}      
                         </div>
-
+                        {% endcomment %}
+                        
                       </div>
                     </div>
                   </div>
