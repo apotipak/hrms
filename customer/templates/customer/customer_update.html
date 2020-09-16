@@ -495,11 +495,13 @@
 
 
 
-
+            {% comment %}
             <div class="float-right">
               <input type="button" class="btn btn-secondary btn-md" value="Cancel" onClick="this.form.reset()" />
               <a href="#" id="cusMainSaveButton" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
             </div>
+            {% endcomment %}
+
             </form>
 
           </div>        
@@ -822,11 +824,12 @@
                 </div>
               </div>
 
-
+            {% comment %}
             <div class="float-right">              
               <input type="button" class="btn btn-secondary btn-md" value="Cancel" onClick="this.form.reset()" />
               <a href="#" id="cusSiteSaveButton" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
             </div>
+            {% endcomment %}
 
             </form>
 
@@ -1139,11 +1142,12 @@
               </div>
 
 
-
+            {% comment %}
             <div class="float-right">
               <input type="button" class="btn btn-secondary btn-md" value="Cancel" onClick="this.form.reset()" />
               <a href="#" id="cusBillSaveButton" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
             </div>
+            {% endcomment %}
 
             </form>
 
@@ -1156,6 +1160,11 @@
 
 
         </div>
+
+            <div class="float-right">
+              <a href="#" id="saveAllCustomerTabs" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
+            </div>
+
         <!-- /.end tabs -->
       </div>
 
@@ -2147,12 +2156,8 @@
   });
 
   $("#cusMainSaveButton").click( function() {
-    event.preventDefault();
-    
+    event.preventDefault();    
     update_cus_main();
-    //update_cus_site();
-    //update_cus_bill();
-
   });
 
   $("#cusSiteSaveButton").click( function() {
@@ -2165,6 +2170,248 @@
     update_cus_bill();
   });
 
+  //TODO
+  $("#saveAllCustomerTabs").click( function() {
+    event.preventDefault();
+    
+    var cus_main_cus_id = "{{cus_main.cus_id}}";
+    var cus_site_cus_no = "{{customer.cus_no}}";
+    var cus_bill_cus_no = "{{cus_bill.cus_no}}";
+
+    //console.log(cus_main_cus_id + "," + cus_site_cus_no + "," + cus_bill_cus_no);
+
+    if(cus_main_cus_id=='' || cus_site_cus_no=='' || cus_bill_cus_no=='') {      
+      alert("Customer ID is required.");
+    }
+    else {
+      //alert("todo : " + cus_no);      
+      update_all_customer_tabs(cus_main_cus_id, cus_site_cus_no, cus_bill_cus_no);
+    }
+  });
+
+  function update_all_customer_tabs(cus_main_cus_id, cus_site_cus_no, cus_bill_cus_no) {
+    //console.log(cus_main_cus_id + "," + cus_site_cus_no + "," + cus_bill_cus_no);    
+
+    // CUS_MAIN
+    if ($('#id_cus_main_cus_active').is(":checked"))
+      cus_main_cus_active = 1;
+    else
+      cus_main_cus_active = 0; 
+    cus_main_cus_name_th = $('#id_cus_main_cus_name_th').val();
+    cus_main_cus_add1_th = $('#id_cus_main_cus_add1_th').val();
+    cus_main_cus_add2_th = $('#id_cus_main_cus_add2_th').val();    
+    cus_main_cus_subdist_th = $('#id_cus_main_cus_subdist_th').val();
+    cus_main_cus_district_id = $('#id_cus_main_select_district_id').val();
+    cus_main_cus_district_th = $('#id_cus_main_cus_district_dist_th').val();    
+    cus_main_cus_name_en = $('#id_cus_main_cus_name_en').val();
+    cus_main_cus_add1_en = $('#id_cus_main_cus_add1_en').val();
+    cus_main_cus_add2_en = $('#id_cus_main_cus_add2_en').val();
+    cus_main_cus_subdist_en = $('#id_cus_main_cus_subdist_en').val();
+    cus_main_cus_zip = $('#id_cus_main_cus_zip').val();
+    cus_main_cus_tel = $('#id_cus_main_cus_tel').val();
+    cus_main_cus_fax = $('#id_cus_main_cus_fax').val();
+    cus_main_cus_email = $('#id_cus_main_cus_email').val();
+    cus_main_cus_zone = $('#id_cus_main_cus_zone').val();
+    customer_option_btype = $('#id_cus_main_business_type').val();
+    customer_option_op1 = $('#id_cus_main_customer_option_op1').val();
+    customer_option_op2 = $('#id_cus_main_customer_option_op2').val();
+    customer_option_op3 = $('#id_cus_main_customer_option_op3').val();
+    customer_option_op4 = $('#id_cus_main_customer_option_op4').val();
+    cus_main_cus_contact_id = $('#id_cus_main_cus_contact_id').val();
+    if(cus_main_cus_contact_id == null)
+      cus_main_cus_contact_id = null;
+
+    console.log(
+      cus_main_cus_active + "\n" +
+      cus_main_cus_name_th + "\n" + 
+      cus_main_cus_add1_th + "\n" + 
+      cus_main_cus_add2_th + "\n" +
+      cus_main_cus_subdist_th + "\n" + 
+      cus_main_cus_district_id + "\n" + 
+      cus_main_cus_district_th + "\n" + 
+      cus_main_cus_name_en + "\n" + 
+      cus_main_cus_add1_en + "\n" + 
+      cus_main_cus_add2_en + "\n" +
+      cus_main_cus_subdist_en + "\n" +   
+      cus_main_cus_zip + "\n" + 
+      cus_main_cus_tel + "\n" + 
+      cus_main_cus_email + "\n" + 
+      cus_main_cus_zone + "\n" + 
+      customer_option_btype + "\n" + 
+      customer_option_op1 + "\n" + 
+      customer_option_op2 + "\n" + 
+      customer_option_op3 + "\n" + 
+      customer_option_op4 + "\n" + 
+      cus_main_cus_contact_id + "\n"
+    );
+
+
+    /*
+    // CUS_SITE
+    if ($('#id_cus_site_cus_active').is(":checked"))
+      cus_site_cus_active = 1;
+    else
+      cus_site_cus_active = 0;
+    cus_site_cus_name_th = $('#id_cus_site_cus_name_th').val();
+    cus_site_cus_add1_th = $('#id_cus_site_cus_add1_th').val();
+    cus_site_cus_add2_th = $('#id_cus_site_cus_add2_th').val();    
+    cus_site_cus_subdist_th = $('#id_cus_site_cus_subdist_th').val();
+    cus_site_cus_district_id = $('#id_cus_site_cus_district_id').val();
+    cus_site_cus_name_en = $('#id_cus_site_cus_name_en').val();    
+    cus_site_cus_add1_en = $('#id_cus_site_cus_add1_en').val();
+    cus_site_cus_add2_en = $('#id_cus_site_cus_add2_en').val();    
+    cus_site_cus_subdist_en = $('#id_cus_site_cus_subdist_en').val();
+    cus_site_cus_zip = $('#id_cus_site_cus_zip').val();
+    cus_site_cus_tel = $('#id_cus_site_cus_tel').val();
+    cus_site_cus_fax = $('#id_cus_site_cus_fax').val();
+    cus_site_cus_email = $('#id_cus_site_cus_email').val();
+    cus_site_cus_zone = $('#id_cus_site_cus_zone').val();    
+    cus_site_site_contact_id = $('#id_cus_site_site_contact_id').val();
+
+    // CUS_BILL
+    if ($('#id_cus_bill_cus_active').is(":checked"))
+      cus_bill_cus_active = 1;
+    else
+      cus_bill_cus_active = 0;
+
+    cus_bill_cus_name_th = $('#id_cus_bill_cus_name_th').val();    
+    cus_bill_cus_add1_th = $('#id_cus_bill_cus_add1_th').val();
+    cus_bill_cus_add2_th = $('#id_cus_bill_cus_add2_th').val();    
+    cus_bill_cus_subdist_th = $('#id_cus_bill_cus_subdist_th').val();
+    cus_bill_cus_district_id = $('#id_cus_bill_select_district_id').val();
+    cus_bill_cus_district = $('#id_cus_bill_cus_district').val();
+    cus_bill_cus_name_en = $('#id_cus_bill_cus_name_en').val();
+    cus_bill_cus_add1_en = $('#id_cus_bill_cus_add1_en').val();
+    cus_bill_cus_add2_en = $('#id_cus_bill_cus_add2_en').val();
+    cus_bill_cus_subdist_en = $('#id_cus_bill_cus_subdist_en').val();
+    cus_bill_cus_zip = $('#id_cus_bill_cus_zip').val();
+    cus_bill_cus_tel = $('#id_cus_bill_cus_tel').val();
+    cus_bill_cus_fax = $('#id_cus_bill_cus_fax').val();
+    cus_bill_cus_email = $('#id_cus_bill_cus_email').val();
+    cus_bill_cus_zone = $('#id_cus_bill_cus_zone').val();    
+    cus_bill_cus_contact_id = $('#id_cus_bill_cus_contact_id').val();
+
+    $.ajax({
+      url : "/customer/ajax/update_all_cus_tabs/",
+      type : "POST",
+      data : {          
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        cus_id: cus_id,
+        cus_brn: cus_brn,
+
+        // CUS_MAIN
+        cus_main_cus_active: cus_main_cus_active,        
+        cus_main_cus_name_th: cus_main_cus_name_th,
+        cus_main_cus_add1_th: cus_main_cus_add1_th,
+        cus_main_cus_add2_th: cus_main_cus_add2_th,
+        cus_main_cus_subdist_th: cus_main_cus_subdist_th,
+        cus_main_cus_district_id: cus_main_cus_district_id,        
+        cus_main_cus_name_en: cus_main_cus_name_en,
+        cus_main_cus_add1_en: cus_main_cus_add1_en,
+        cus_main_cus_add2_en: cus_main_cus_add2_en,
+        cus_main_cus_subdist_en: cus_main_cus_subdist_en,        
+        cus_main_cus_zip: cus_main_cus_zip,
+        cus_main_cus_tel: cus_main_cus_tel,
+        cus_main_cus_fax: cus_main_cus_fax,
+        cus_main_cus_email: cus_main_cus_email,
+        cus_main_cus_zone: cus_main_cus_zone,
+        cus_main_business_type: customer_option_btype,
+        cus_main_customer_option_op1: customer_option_op1,
+        cus_main_customer_option_op2: customer_option_op2,
+        cus_main_customer_option_op3: customer_option_op3,
+        cus_main_customer_option_op4: customer_option_op4,
+        cus_main_cus_contact_id: cus_main_cus_contact_id,
+
+        // CUS_SITE
+        cus_site_cus_active: cus_site_cus_active,
+        cus_site_cus_name_th: cus_site_cus_name_th,
+        cus_site_cus_add1_th: cus_site_cus_add1_th,
+        cus_site_cus_add2_th: cus_site_cus_add2_th,
+        cus_site_cus_subdist_th: cus_site_cus_subdist_th,
+        cus_site_cus_name_en: cus_site_cus_name_en,
+        cus_site_cus_add1_en: cus_site_cus_add1_en,
+        cus_site_cus_add2_en: cus_site_cus_add2_en,
+        cus_site_cus_subdist_en: cus_site_cus_subdist_en,        
+        cus_site_cus_district_id: cus_site_cus_district_id,
+        cus_site_cus_zip: cus_site_cus_zip,
+        cus_site_cus_tel: cus_site_cus_tel,
+        cus_site_cus_fax: cus_site_cus_fax,
+        cus_site_cus_email: cus_site_cus_email,
+        cus_site_cus_zone: cus_site_cus_zone,
+        cus_site_site_contact_id: cus_site_site_contact_id,
+
+        // CUS_BILL
+        cus_bill_cus_active: cus_bill_cus_active,
+        cus_bill_cus_name_th: cus_bill_cus_name_th,
+        cus_bill_cus_add1_th: cus_bill_cus_add1_th,
+        cus_bill_cus_add2_th: cus_bill_cus_add2_th,
+        cus_bill_cus_subdist_th: cus_bill_cus_subdist_th,
+        cus_bill_cus_name_en: cus_bill_cus_name_en,
+        cus_bill_cus_add1_en: cus_bill_cus_add1_en,
+        cus_bill_cus_add2_en: cus_bill_cus_add2_en,
+        cus_bill_cus_subdist_en: cus_bill_cus_subdist_en,        
+        cus_bill_cus_district_id: cus_bill_cus_district_id,
+        cus_bill_cus_zip: cus_bill_cus_zip,
+        cus_bill_cus_tel: cus_bill_cus_tel,
+        cus_bill_cus_fax: cus_bill_cus_fax,
+        cus_bill_cus_email: cus_bill_cus_email,
+        cus_bill_cus_zone: cus_bill_cus_zone,
+        cus_bill_cus_contact_id: cus_bill_cus_contact_id,        
+      },
+      success : function(json) {        
+        if(json.form_is_valid) {
+          $(document).Toasts('create', {
+            class: 'bg-success', 
+            title: "{% trans 'Message' %}",
+            subtitle: '',
+            autohide: true,
+            delay: 2000,
+            body: json.result + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+            autoDismiss: true,
+            close: true,
+            autoremove: true,
+          });
+
+          $.each($('.is-valid'), function() {
+            $('.is-valid').removeClass('is-valid');              
+          });            
+
+          $.each($('.is-invalid'), function() {
+            $('.is-invalid').addClass('is-valid');  
+            $('.is-invalid').removeClass('is-invalid');              
+          });           
+
+        }
+        else {          
+          //alert("b");          
+
+          $(document).Toasts('create', {
+            class: 'bg-danger', 
+            title: "{% trans 'Error' %}",
+            subtitle: '',
+            autohide: true,
+            delay: 5000,
+            body: json.message,
+            autoDismiss: true,
+            close: true,
+            autoremove: true,
+            preventDuplicates: true,       
+          });
+
+          $.each($('.is-invalid'), function() {
+            $('.is-invalid').removeClass('is-invalid');
+          });            
+
+          for(error in json.errors) {
+            $("#id_" + error).addClass("is-invalid");         
+          };            
+
+
+        }
+      },
+    });
+    */
+  }
 
   function update_cus_main() {
     cus_id = "{{customer.cus_id|stringformat:'04d'}}";

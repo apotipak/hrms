@@ -744,35 +744,46 @@ def CustomerList(request):
 # Load all 3 forms (cus_main, cus_site, cus_bill)
 
 def CustomerUpdate(request, pk):
-    # print("check")
-    # print("pk = " + str(pk))
+    print("pk = " + str(pk))
 
     template_name = 'customer/customer_update.html'
-    
     cus_no = pk
+    cus_id = None
+    cus_brn = None
     customer = get_object_or_404(Customer, pk=pk)
     cus_main = None
     cus_site = None
     cus_bill = None
-
+    
     if customer:
         try:
             cus_main = CusMain.objects.get(pk=customer.cus_id)
+            # print("cus_id = " + str(customer.cus_id))
+            # print("cus_brn = " + str(customer.cus_brn).zfill(3))
+            cus_id = cus_main.cus_id            
         except CusMain.DoesNotExist:
             cus_main = None
-
+            cus_main_cus_id = None
         try:
             cus_site = Customer.objects.get(pk=pk)
+            cus_site_cus_no = cus_site.cus_no
+            cus_site_cus_id = cus_site.cus_id
+            cus_site_cus_brn = cus_site.cus_brn
         except Customer.DoesNotExist:
             cus_site = None
-
+            cus_site_cus_no = None
+            cus_site_cus_id = None
+            cus_site_cus_brn = None
         try:
             cus_bill = CusBill.objects.get(pk=pk)
-
-            # print("check cus_subdist_th")
-            # print(cus_bill.cus_subdist_th)
+            cus_bill_cus_no = cus_bill.cus_no
+            cus_bill_cus_id = cus_bill.cus_id
+            cus_bill_cus_brn = cus_bill.cus_brn
         except CusBill.DoesNotExist:
             cus_bill = None
+            cus_bill_cus_no = None
+            cus_bill_cus_id = None
+            cus_bill_cus_brn = None
 
     if request.method == 'POST':        
         cus_main_form = CusMainForm(request.POST, instance=cus_main, cus_no=pk)
