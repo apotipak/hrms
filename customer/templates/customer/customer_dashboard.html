@@ -31,22 +31,39 @@
       <!-- Default box -->
       <div class="card">
 
-        {% comment %}
-        <div class="card-header">
-          <h3 class="card-title"><!--<b>Performance Information</b>--></h3>
-
-          <!--
-          <div class="card-tools">
-            <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
-              <i class="fas fa-minus"></i></button>
-            <button type="button" class="btn btn-tool" data-card-widget="remove" data-toggle="tooltip" title="Remove">
-              <i class="fas fa-times"></i></button>
-          </div>
-          -->
-        </div>
-        {% endcomment %}
         <div class="card-body">
-          &nbsp;
+
+          <div class="row">
+            <div class="col-lg-3 col-3">
+              <!-- small box -->
+              <div class="small-box bg-success">
+                <div class="inner">
+                  <h3>{{no_of_active_customer}}</h3>
+                  <p>Active Customers</p>
+                </div>
+                <div class="icon">                
+                  <i class="ion ion-person-stalker"></i>
+                </div>
+                <!--<a href="{% url 'customer-list' %}" class="small-box-footer">Customer list <i class="fas fa-arrow-circle-right"></i></a>-->
+              </div>
+            </div>          
+
+            <div class="col-lg-3 col-3">
+              <!-- small box -->
+              <div class="small-box bg-info">
+                <div class="inner">
+                  <h3>{{no_of_pending_customer}}</h3>
+                  <p>Pending Customers</p>
+                </div>
+                <div class="icon">                
+                  <i class="ion ion-person-stalker"></i>
+                </div>
+                <!--<a href="{% url 'customer-list' %}" class="small-box-footer">Customer list <i class="fas fa-arrow-circle-right"></i></a>-->
+              </div>
+            </div>                  
+          </div>
+
+
         </div>
         <!-- /.card-body -->
 
@@ -60,9 +77,62 @@
       </div>
       <!-- /.card -->
 
+
+      <div class="card">
+        <div class="card-header border-transparent">
+          <h3 class="card-title"><i class="fas fa-xs fa-history"></i>&nbsp;&nbsp;History Logs</h3>
+
+          <div class="card-tools">
+            <!--<button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>-->
+            <button type="button" class="btn btn-tool"><i class="fas fa-sync"></i></button>            
+          </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table m-0 table-sm table-striped">
+              <thead>
+              <tr>
+                <th>User</th>
+                <th>Description</th>
+                <th>Date</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td><a href="#">Amnaj</a></td>
+                <td>Add new customer - 1000</td>
+                <td>16/09/2020 08:00</td>
+              </tr>
+              <tr>
+                <td><a href="#">Amnaj</a></td>
+                <td>Edit customer - 1000</td>
+                <td>16/09/2020 08:00</td>
+              </tr>
+              <tr>
+                <td><a href="#">Amnaj</a></td>
+                <td>Delete customer - 1000</td>
+                <td>16/09/2020 08:00</td>
+              </tr>
+              <tr>
+                <td><a href="pages/examples/invoice.html">Amnaj</a></td>
+                <td>Edit customer - 1009</td>
+                <td>16/09/2020 08:00</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- /.table-responsive -->
+        </div>
+      </div>
+
+
+    <div class="container">
+      <div class="row"></div>
+    </div>
+
     </section>
     <!-- /.content -->
-
   </div>
   <!-- /.content-wrapper -->
 

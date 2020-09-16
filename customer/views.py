@@ -556,12 +556,17 @@ def CustomerDashboard(request):
     project_name = settings.PROJECT_NAME
     project_version = settings.PROJECT_VERSION
     today_date = settings.TODAY_DATE    
-    item_per_page = 50
+
+    no_of_active_customer = 580
+    no_of_pending_customer = 89
+
     context = {
         'page_title': page_title, 
         'db_server': db_server, 'today_date': today_date,
         'project_name': project_name, 
-        'project_version': project_version,         
+        'project_version': project_version,
+        'no_of_active_customer': no_of_active_customer,
+        'no_of_pending_customer': no_of_pending_customer,
     }
     return render(request, 'customer/customer_dashboard.html', context)
 
@@ -1921,7 +1926,7 @@ def update_all_cus_tabs(request):
             
             cus_site_cus_district_id = request.POST.get('cus_site_cus_district_id')
             print("cus_site_cus_district_id = " + str(cus_site_cus_district_id))
-            
+
             if cus_site_cus_district_id:
                 print("debug 1")
                 try:
