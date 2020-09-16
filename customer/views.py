@@ -1822,6 +1822,7 @@ def update_all_cus_tabs(request):
 
             try:
                 cus_main = CusMain.objects.get(pk=cus_id)
+
                 if cus_main:
                     cus_main.cus_active = cus_main_cus_active
                     cus_main.cus_name_th = cus_main_cus_name_th
@@ -1842,7 +1843,9 @@ def update_all_cus_tabs(request):
                     if cus_main.upd_flag == 'A':
                         cus_main.upd_flag = 'E'
                     cus_main.upd_by = request.user.first_name
-                    cus_main.upd_date = timezone.now()        
+                    cus_main.upd_date = timezone.now()
+
+
                     cus_main.save()
 
                     # CUS_MAIN Business Type
@@ -2173,6 +2176,9 @@ def update_all_cus_tabs(request):
         
             print("Error!")
             print("****************************")
+
+        # TODO
+        response_data['modified_fields'] = ""
 
         return JsonResponse(response_data)
     else:

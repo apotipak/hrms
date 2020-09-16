@@ -41,7 +41,6 @@ class CusMain(models.Model):
         managed = True
         db_table = 'CUS_MAIN'
 
-
 class CusBill(models.Model):
     cus_no = models.DecimalField(db_column='cus_no', max_digits=10, decimal_places=0,primary_key=True)
     cus_id = models.DecimalField(max_digits=7, decimal_places=0)

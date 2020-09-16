@@ -212,7 +212,7 @@ class CustomerSearchForm(forms.ModelForm):
 
 class CusAllTabsForm(forms.ModelForm):
     # Customer Main Office
-    cus_main_cus_name_th = forms.CharField(required=False)
+    cus_main_cus_name_th = forms.CharField(required=True)
     cus_main_cus_name_en = forms.CharField(required=False)    
     cus_main_cus_active = forms.BooleanField(label='', required=False, widget=forms.CheckboxInput())
     cus_main_cus_city_th = forms.CharField(required=False)
