@@ -557,8 +557,14 @@ def CustomerDashboard(request):
     project_version = settings.PROJECT_VERSION
     today_date = settings.TODAY_DATE    
 
-    no_of_active_customer = 580
-    no_of_pending_customer = 89
+    # Get number of active customer    
+    no_of_active_customer = Customer.objects.filter(cus_active=1).exclude(upd_flag='D').count()
+
+    # Get number of pending customer    
+    no_of_pending_customer = Customer.objects.filter(cus_active=0).exclude(upd_flag='D').count()
+
+    # Get number of delete customer    
+    no_of_delete_customer = Customer.objects.filter(upd_flag='D').count()
 
     context = {
         'page_title': page_title, 
@@ -567,6 +573,7 @@ def CustomerDashboard(request):
         'project_version': project_version,
         'no_of_active_customer': no_of_active_customer,
         'no_of_pending_customer': no_of_pending_customer,
+        'no_of_delete_customer': no_of_delete_customer,
     }
     return render(request, 'customer/customer_dashboard.html', context)
 

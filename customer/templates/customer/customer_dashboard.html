@@ -34,12 +34,12 @@
         <div class="card-body">
 
           <div class="row">
-            <div class="col-lg-3 col-3">
+            <div class="col-lg-4 col-4">
               <!-- small box -->
               <div class="small-box bg-success">
                 <div class="inner">
                   <h3>{{no_of_active_customer}}</h3>
-                  <p>Active Customers</p>
+                  <p>Active Customer</p>
                 </div>
                 <div class="icon">                
                   <i class="ion ion-person-stalker"></i>
@@ -48,19 +48,34 @@
               </div>
             </div>          
 
-            <div class="col-lg-3 col-3">
+            <div class="col-lg-4 col-4">
               <!-- small box -->
-              <div class="small-box bg-info">
+              <div class="small-box bg-danger">
                 <div class="inner">
                   <h3>{{no_of_pending_customer}}</h3>
-                  <p>Pending Customers</p>
+                  <p>Pending Customer</p>
                 </div>
                 <div class="icon">                
                   <i class="ion ion-person-stalker"></i>
                 </div>
                 <!--<a href="{% url 'customer-list' %}" class="small-box-footer">Customer list <i class="fas fa-arrow-circle-right"></i></a>-->
               </div>
-            </div>                  
+            </div>     
+
+            <div class="col-lg-4 col-4">
+              <!-- small box -->
+              <div class="small-box bg-warning">
+                <div class="inner">
+                  <h3>{{no_of_delete_customer}}</h3>
+                  <p>Delete Customer</p>
+                </div>
+                <div class="icon">                
+                  <i class="ion ion-person-stalker"></i>
+                </div>
+                <!--<a href="{% url 'customer-list' %}" class="small-box-footer">Customer list <i class="fas fa-arrow-circle-right"></i></a>-->
+              </div>
+            </div>   
+
           </div>
 
 
