@@ -1373,8 +1373,7 @@
     cus_site_cus_add2_th = $('#id_cus_site_cus_add2_th').val();
     cus_site_cus_subdist_th = $('#id_cus_site_cus_subdist_th').val();      
     cus_site_cus_district_dist_th = $('#id_cus_site_cus_district_dist_th').val();
-    cus_site_cus_city_th = $('#id_cus_site_cus_city_th').val();
-    alert(cus_site_cus_city_th);
+    cus_site_cus_city_th = $('#id_cus_site_cus_city_th').val();    
     cus_site_cus_country_th = $('#id_cus_site_cus_country_th').val();
 
     cus_site_cus_name_en = $('#id_cus_site_cus_name_en').val();      
@@ -1466,6 +1465,12 @@
     }
   });  
 
+  $(document).on('keyup keypress', '#id_cus_main_cus_district_search_text input[type="text"]', function(e) {
+    if(e.which == 13) {
+      e.preventDefault();
+      return false;
+    }
+  });  
 
   $(document).ready(function(){
     $('#cus_main_contact_lookup').on('click', function (e) {
