@@ -754,7 +754,7 @@ def CustomerUpdate(request, pk):
     cus_main = None
     cus_site = None
     cus_bill = None
-    
+
     if customer:
         try:
             cus_main = CusMain.objects.get(pk=customer.cus_id)
@@ -1756,7 +1756,10 @@ def update_all_cus_tabs(request):
             cus_main_cus_name_en = request.POST.get('cus_main_cus_name_en')                          
             cus_main_cus_add1_en = request.POST.get('cus_main_cus_add1_en')
             cus_main_cus_add2_en = request.POST.get('cus_main_cus_add2_en')
-            cus_main_cus_district_id = request.POST.get('id_cus_main_cus_district_id')
+            
+            # cus_main_cus_district_id = request.POST.get('cus_main_cus_district_id')
+            # print("cus_main_cus_district_id = " + str(cus_main_cus_district_id))
+
             cus_main_cus_subdist_en = request.POST.get('cus_main_cus_subdist_en')
             cus_main_cus_zip = request.POST.get('cus_main_cus_zip')
             if not cus_main_cus_zip:
@@ -1794,13 +1797,15 @@ def update_all_cus_tabs(request):
             else:
                 cus_main_cus_contact_id = None
 
+            '''
             print("------ Print CUS_MAIN data -------")
             print("cus_main_business_type = " + str(cus_main_business_type))
             print("cus_main_customer_option_op1 = " + str(cus_main_customer_option_op1))
             print("cus_main_customer_option_op2 = " + str(cus_main_customer_option_op2))
             print("cus_main_customer_option_op3 = " + str(cus_main_customer_option_op3))
             print("cus_main_customer_option_op4 = " + str(cus_main_customer_option_op4))
-            
+            '''
+
             try:
                 cus_main = CusMain.objects.get(pk=cus_id)
                 if cus_main:
@@ -1809,6 +1814,7 @@ def update_all_cus_tabs(request):
                     cus_main.cus_add1_th = cus_main_cus_add1_th
                     cus_main.cus_add2_th = cus_main_cus_add2_th
                     cus_main.cus_subdist_th = cus_main_cus_subdist_th
+                    cus_main.cus_district_id = cus_main_cus_district_id
                     cus_main.cus_name_en = cus_main_cus_name_en
                     cus_main.cus_add1_en = cus_main_cus_add1_en
                     cus_main.cus_add2_en = cus_main_cus_add2_en
