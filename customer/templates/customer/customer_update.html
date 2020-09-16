@@ -2178,18 +2178,29 @@
     var cus_site_cus_no = "{{customer.cus_no}}";
     var cus_bill_cus_no = "{{cus_bill.cus_no}}";
 
-    //console.log(cus_main_cus_id + "," + cus_site_cus_no + "," + cus_bill_cus_no);
+    var cus_id = "{{customer.cus_id}}";
+    var cus_brn = "{{customer.cus_brn}}";
+
+    if(cus_id=='' || cus_brn=='') {
+      alert("Customer Number is required.");
+    } else {
+      update_all_customer_tabs(cus_id, cus_brn);
+    }
+
+    /*
+    console.log(cus_main_cus_id + "," + cus_site_cus_no + "," + cus_bill_cus_no);
 
     if(cus_main_cus_id=='' || cus_site_cus_no=='' || cus_bill_cus_no=='') {      
       alert("Customer ID is required.");
     }
     else {
-      //alert("todo : " + cus_no);      
       update_all_customer_tabs(cus_main_cus_id, cus_site_cus_no, cus_bill_cus_no);
     }
+    */
   });
 
-  function update_all_customer_tabs(cus_main_cus_id, cus_site_cus_no, cus_bill_cus_no) {
+  //function update_all_customer_tabs(cus_main_cus_id, cus_site_cus_no, cus_bill_cus_no) {
+  function update_all_customer_tabs(cus_id, cus_brn) {
     //console.log(cus_main_cus_id + "," + cus_site_cus_no + "," + cus_bill_cus_no);    
 
     // CUS_MAIN
@@ -2221,6 +2232,7 @@
     if(cus_main_cus_contact_id == null)
       cus_main_cus_contact_id = null;
 
+    /*
     console.log(
       cus_main_cus_active + "\n" +
       cus_main_cus_name_th + "\n" + 
@@ -2244,9 +2256,8 @@
       customer_option_op4 + "\n" + 
       cus_main_cus_contact_id + "\n"
     );
+    */
 
-
-    /*
     // CUS_SITE
     if ($('#id_cus_site_cus_active').is(":checked"))
       cus_site_cus_active = 1;
@@ -2257,6 +2268,7 @@
     cus_site_cus_add2_th = $('#id_cus_site_cus_add2_th').val();    
     cus_site_cus_subdist_th = $('#id_cus_site_cus_subdist_th').val();
     cus_site_cus_district_id = $('#id_cus_site_cus_district_id').val();
+    cus_site_cus_district_th = $('#id_cus_bill_cus_district_dist_th').val();
     cus_site_cus_name_en = $('#id_cus_site_cus_name_en').val();    
     cus_site_cus_add1_en = $('#id_cus_site_cus_add1_en').val();
     cus_site_cus_add2_en = $('#id_cus_site_cus_add2_en').val();    
@@ -2267,6 +2279,28 @@
     cus_site_cus_email = $('#id_cus_site_cus_email').val();
     cus_site_cus_zone = $('#id_cus_site_cus_zone').val();    
     cus_site_site_contact_id = $('#id_cus_site_site_contact_id').val();
+
+    /*
+    console.log(
+      cus_site_cus_active + "\n" +
+      cus_site_cus_name_th + "\n" + 
+      cus_site_cus_add1_th + "\n" + 
+      cus_site_cus_add2_th + "\n" +
+      cus_site_cus_subdist_th + "\n" + 
+      cus_site_cus_district_id + "\n" + 
+      cus_site_cus_district_th + "\n" + 
+      cus_site_cus_name_en + "\n" + 
+      cus_site_cus_add1_en + "\n" + 
+      cus_site_cus_add2_en + "\n" +
+      cus_site_cus_subdist_en + "\n" +   
+      cus_site_cus_zip + "\n" + 
+      cus_site_cus_tel + "\n" + 
+      cus_site_cus_email + "\n" + 
+      cus_site_cus_zone + "\n" + 
+      cus_site_site_contact_id + "\n"
+    );
+    */
+
 
     // CUS_BILL
     if ($('#id_cus_bill_cus_active').is(":checked"))
@@ -2279,7 +2313,7 @@
     cus_bill_cus_add2_th = $('#id_cus_bill_cus_add2_th').val();    
     cus_bill_cus_subdist_th = $('#id_cus_bill_cus_subdist_th').val();
     cus_bill_cus_district_id = $('#id_cus_bill_select_district_id').val();
-    cus_bill_cus_district = $('#id_cus_bill_cus_district').val();
+    cus_bill_cus_district_th = $('#id_cus_bill_cus_city_th').val();
     cus_bill_cus_name_en = $('#id_cus_bill_cus_name_en').val();
     cus_bill_cus_add1_en = $('#id_cus_bill_cus_add1_en').val();
     cus_bill_cus_add2_en = $('#id_cus_bill_cus_add2_en').val();
@@ -2290,6 +2324,27 @@
     cus_bill_cus_email = $('#id_cus_bill_cus_email').val();
     cus_bill_cus_zone = $('#id_cus_bill_cus_zone').val();    
     cus_bill_cus_contact_id = $('#id_cus_bill_cus_contact_id').val();
+
+    /*
+    console.log(
+      cus_bill_cus_active + "\n" +
+      cus_bill_cus_name_th + "\n" + 
+      cus_bill_cus_add1_th + "\n" + 
+      cus_bill_cus_add2_th + "\n" +
+      cus_bill_cus_subdist_th + "\n" + 
+      cus_bill_cus_district_id + "\n" + 
+      cus_bill_cus_district_th + "\n" + 
+      cus_bill_cus_name_en + "\n" + 
+      cus_bill_cus_add1_en + "\n" + 
+      cus_bill_cus_add2_en + "\n" +
+      cus_bill_cus_subdist_en + "\n" +   
+      cus_bill_cus_zip + "\n" + 
+      cus_bill_cus_tel + "\n" + 
+      cus_bill_cus_email + "\n" + 
+      cus_bill_cus_zone + "\n" + 
+      cus_bill_cus_contact_id + "\n"
+    );
+    */
 
     $.ajax({
       url : "/customer/ajax/update_all_cus_tabs/",
@@ -2410,7 +2465,6 @@
         }
       },
     });
-    */
   }
 
   function update_cus_main() {
