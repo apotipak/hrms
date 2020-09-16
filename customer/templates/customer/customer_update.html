@@ -510,7 +510,6 @@
 
           <!-- Site Tab -->
           <div class="tab-pane" id="site" role="tabpanel" aria-labelledby="site-tab">
-          <!--<div class="tab-pane fade show active" id="site" role="tabpanel" aria-labelledby="site-tab">-->
 
             <form id="cus_site_form" method="POST" action="{% url 'update_cus_site' %}">
             {% csrf_token %}
@@ -529,7 +528,7 @@
                     &nbsp;&nbsp;&nbsp;
                     <div class="btn-group">
                       <label class="switch">                                 
-                        {% if cus_main.cus_active|default_if_none:0 %}
+                        {% if customer.cus_active|default_if_none:0 %}
                         <input type="checkbox" id="id_cus_site_cus_active" name="cus_site_cus_active" value=1 checked>
                         {% else %}
                         <input type="checkbox" id="id_cus_site_cus_active" name="cus_site_cus_active" value=0>

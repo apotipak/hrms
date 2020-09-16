@@ -1916,7 +1916,11 @@ def update_all_cus_tabs(request):
             # ******************************************
             # **************  CUS_SITE  ****************
             # ******************************************
-            cus_site_cus_active = request.POST.get('cus_site_cus_active')            
+            cus_site_cus_active = request.POST.get('cus_site_cus_active')
+            print("********************************")
+            print("cus_site_cus_active = " + str(cus_site_cus_active))
+            print("********************************")
+            
             cus_site_cus_name_th = request.POST.get('cus_site_cus_name_th')
             cus_site_cus_add1_th = request.POST.get('cus_site_cus_add1_th')
             cus_site_cus_add2_th = request.POST.get('cus_site_cus_add2_th')
