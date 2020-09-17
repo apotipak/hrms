@@ -38,7 +38,7 @@
     
     <div class="card card-default collapsed-card">
       <div class="card-header">
-        <h3 class="card-title"><strong>{{ customer.cus_name_th }}&nbsp;&nbsp;-&nbsp;&nbsp;{{customer.cus_zone.zone_en}}</strong></h3>
+        <h1 class="card-title"><strong>{{contract.cnt_id}} - {{ customer.cus_name_th }}</strong></h1>
 
         <div class="card-tools">
           <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i></button>
@@ -238,7 +238,8 @@
 
 
       <div class="card-header">                
-        <div class="float-left"><h2 class="m-0 text-dark">{{contract.cnt_id}}</h2></div>
+        <!--<div class="float-left"><h2 class="m-0 text-dark">{{contract.cnt_id}}</h2></div>-->
+        
         <div class="card-tools">
 
           <div class="float-left pt-2">
@@ -273,10 +274,26 @@
               <label class="form-check-label text-danger">Auto expire</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </div>                        
 
+            <div class="float-right d-inline">
+              <div class="btn-group">
+                <label class="switch">                                 
+                  {% if contract.cnt_active|default_if_none:0 %}
+                  <input type="checkbox" id="id_cnt_active" name="cnt_active" value=1 checked>
+                  {% else %}
+                  <input type="checkbox" id="id_cnt_active" name="cnt_active" value=0>
+                  {% endif %}                  
+                  <div class="slider"></div>
+                </label>  
+              </div>
+            </div>
+
           </div>
 
+          {% comment %}
           &nbsp;        
           {% render_field form.cnt_active id="id_cnt_active" class="form-control" type="checkbox" data-toggle="toggle" data-on="Active" data-off="Pending" data-onstyle="success" data-offstyle="danger"%}
+          {% endcomment %}
+
         </div>
       </div>
       <!-- /.card-header -->
@@ -347,7 +364,7 @@
         </div>
         <!-- /.row -->     
 
-        <div class="float-right"><a href="javascript:void(0);" type="button" onclick="customerupdateform.submit()" class="btn btn-outline-success btn-sm"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
+        <div class="float-right"><a href="javascript:void(0);" type="button" onclick="customerupdateform.submit()" class="btn btn-primary btn-md"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
         </div>
 
       </div>

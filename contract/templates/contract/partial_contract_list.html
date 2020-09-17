@@ -3,6 +3,8 @@
         <td>{{item.cnt_id}}</td>
         <td><a href="{% url 'contract-update' item.cnt_id %}">{{item.cus_name_th}}</a></td>
         <td>{{item.cus_name_en}}</td>
+
+        {% comment %}
         <td>
           {% if item.cnt_active %}
           <span class="badge badge-success">Active</span>
@@ -10,6 +12,7 @@
           <span class="badge badge-secondary">Pending</span>
           {%endif%}
         </td>
+        {% endcomment %}
         <td class="text-right py-0 align-middle">
           <div class="btn-group btn-group-sm">
             <a href="{% url 'contract-update' item.cnt_id %}" type="button" class="btn btn-info btn-xs js-update-customer" data-url="{% url 'contract-update' item.cnt_id %}">
