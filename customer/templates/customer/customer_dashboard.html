@@ -113,26 +113,15 @@
               </tr>
               </thead>
               <tbody>
+
+              {% for item in history_log %}
               <tr>
-                <td>Amnaj</td>
-                <td>Add new customer - 1000</td>
-                <td>16/09/2020 08:00</td>
+                <td>{{item.log_by}}</td>
+                <td>{{item.log_table}} [{{item.log_field}}] from <b>{{item.old_value}}</b> to <b class="text-success">{{item.new_value}}</b></td>
+                <td>{{item.log_date|naturaltime}}</td>
               </tr>
-              <tr>
-                <td>Amnaj</td>
-                <td>Edit customer - 1000</td>
-                <td>16/09/2020 08:00</td>
-              </tr>
-              <tr>
-                <td>Amnaj</td>
-                <td>Delete customer - 1000</td>
-                <td>16/09/2020 08:00</td>
-              </tr>
-              <tr>
-                <td>Amnaj</td>
-                <td>Edit customer - 1009</td>
-                <td>16/09/2020 08:00</td>
-              </tr>
+              {% endfor %}
+
               </tbody>
             </table>
           </div>

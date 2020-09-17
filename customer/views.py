@@ -560,14 +560,15 @@ def CustomerDashboard(request):
 
     # Get number of active customer    
     no_of_active_customer = Customer.objects.filter(cus_active=1).exclude(upd_flag='D').count()
-
     # Get number of pending customer    
     no_of_pending_customer = Customer.objects.filter(cus_active=0).exclude(upd_flag='D').count()
-
     # Get number of delete customer    
     no_of_delete_customer = Customer.objects.filter(upd_flag='D').count()
-
     total_customer = no_of_active_customer+no_of_pending_customer+no_of_delete_customer
+
+    # History Logs
+    history_log = HrmsNewLog.objects.all();
+
     context = {
         'page_title': page_title, 
         'db_server': db_server, 'today_date': today_date,
@@ -577,6 +578,7 @@ def CustomerDashboard(request):
         'no_of_pending_customer': no_of_pending_customer,
         'no_of_delete_customer': no_of_delete_customer,
         'total_customer': total_customer,
+        'history_log': history_log,
     }
     return render(request, 'customer/customer_dashboard.html', context)
 
