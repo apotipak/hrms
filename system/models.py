@@ -281,5 +281,5 @@ class NewHrmsLog(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'Hrms_Log'
+        db_table = 'new_hrms_log'
         unique_together = (('log_id', 'log_date'),)
