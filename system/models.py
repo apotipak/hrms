@@ -270,7 +270,7 @@ class CusGroup(models.Model):
 
 
 class HrmsNewLog(models.Model):
-    log_id = models.IntegerField(db_column='Log_ID', primary_key=True)  # Field name made lowercase.
+    log_id = models.IntegerField(db_column='Log_ID')  # Field name made lowercase.    
     log_date = models.DateTimeField(db_column='Log_Date', auto_now_add=True)  # Field name made lowercase.
     log_emptype = models.CharField(db_column='Log_EmpType', max_length=50, blank=True, null=True)  # Field name made lowercase.
     log_empid = models.DecimalField(db_column='Log_EmpID', max_digits=15, decimal_places=0, blank=True, null=True)  # Field name made lowercase.
