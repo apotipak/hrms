@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.views import generic
 from .models import Customer, CusMain, CusBill, CustomerOption
+from system.models import HrmsNewLog
 from .forms import CustomerCreateForm, CusMainForm, CusSiteForm, CusBillForm, CusAllTabsForm
 from .forms import CustomerCodeCreateForm
 from .forms import CustomerSearchForm
@@ -1256,6 +1257,7 @@ def update_cus_main(request):
 
     template_name = 'customer/customer_update.html'    
     response_data = {}
+    modified_records=[]
 
     if request.method == 'POST':
         form = CusMainForm(request.POST)
@@ -1748,8 +1750,9 @@ def update_all_cus_tabs(request):
     print("FUNCTION: update_all_cus_tabs")
     # print("****************************")
 
-    template_name = 'customer/customer_update.html'    
+    template_name = 'customer/customer_update.html'        
     response_data = {}
+    modified_records = []
 
     if request.method == 'POST':
         form = CusAllTabsForm(request.POST)
@@ -2178,7 +2181,22 @@ def update_all_cus_tabs(request):
             print("****************************")
 
         # TODO
-        response_data['modified_fields'] = ""
+        for data in modified_records:
+            print(data['log_id'])
+            print(data['log_date'])
+
+
+        new_log = HrmsNewLog(
+            log_id = 1,
+            log_date = timezone.now(),
+            log_emptype = "CUSTOMER",
+            log_desc = "Test",
+            log_type = "E",
+            upd_by = "Amnaj",
+            upd_date = timezone.now(),
+            )
+        new_log.save()    
+        # TODO:END
 
         return JsonResponse(response_data)
     else:
