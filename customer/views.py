@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.views import generic
 from .models import Customer, CusMain, CusBill, CustomerOption
-from system.models import HrmsNewLog
+# from system.models import HrmsNewLog
 from .forms import CustomerCreateForm, CusMainForm, CusSiteForm, CusBillForm, CusAllTabsForm
 from .forms import CustomerCodeCreateForm
 from .forms import CustomerSearchForm
@@ -1826,9 +1826,27 @@ def update_all_cus_tabs(request):
             try:
                 cus_main = CusMain.objects.get(pk=cus_id)
 
-                if cus_main:
+                if cus_main:                    
                     cus_main.cus_active = cus_main_cus_active
-                    cus_main.cus_name_th = cus_main_cus_name_th
+                    
+                    
+                    # CUS_NAME_TH
+                    cus_name_th_old = cus_main.cus_name_th
+                    cus_name_th_new = cus_main_cus_name_th
+                    if cus_name_th_old != cus_main_cus_name_th:
+                        cus_main.cus_name_th = cus_main_cus_name_th
+                        record = {
+                            "log_id": 1,
+                            "log_date": timezone.now(),
+                            "log_emptype": "CUSTOMER",
+                            "log_empid": request.user.username,
+                            "log_desc": "Change " + 'cus_name_th' + " to " + cus_main_cus_name_th,
+                            "log_type": 'E',
+                            "upd_by": request.user.first_name,
+                            "upd_date": timezone.now()
+                        }
+                        modified_records.append(record)
+
                     cus_main.cus_add1_th = cus_main_cus_add1_th
                     cus_main.cus_add2_th = cus_main_cus_add2_th
                     cus_main.cus_subdist_th = cus_main_cus_subdist_th
@@ -1848,9 +1866,25 @@ def update_all_cus_tabs(request):
                     cus_main.upd_by = request.user.first_name
                     cus_main.upd_date = timezone.now()
 
-
                     cus_main.save()
 
+                    # History Log                    
+                    '''
+                    for data in modified_records:
+                        new_log = HrmsNewLog(
+                            log_id = data['log_id'],
+                            log_date = data['log_date'],
+                            log_emptype = data['log_emptype'],
+                            log_empid = data['log_empid'],
+                            log_desc = data['log_desc'],
+                            log_type = data['log_type'],
+                            upd_by = data['upd_by'],
+                            upd_date = data['upd_date'],
+                            )
+                        new_log.save()                            
+                    # ./History Log 
+                    '''
+                    
                     # CUS_MAIN Business Type
                     try:
                         customer_option = CustomerOption.objects.get(cus_no=cus_no)
@@ -2179,24 +2213,6 @@ def update_all_cus_tabs(request):
         
             print("Error!")
             print("****************************")
-
-        # TODO
-        for data in modified_records:
-            print(data['log_id'])
-            print(data['log_date'])
-
-
-        new_log = HrmsNewLog(
-            log_id = 1,
-            log_date = timezone.now(),
-            log_emptype = "CUSTOMER",
-            log_desc = "Test",
-            log_type = "E",
-            upd_by = "Amnaj",
-            upd_date = timezone.now(),
-            )
-        new_log.save()    
-        # TODO:END
 
         return JsonResponse(response_data)
     else:
