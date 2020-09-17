@@ -269,7 +269,7 @@ class CusGroup(models.Model):
         db_table = 'CUS_GROUP'
 
 
-class NewHrmsLog(models.Model):
+class HrmsNewLog(models.Model):
     log_id = models.IntegerField(db_column='Log_ID', primary_key=True)  # Field name made lowercase.
     log_date = models.DateTimeField(db_column='Log_Date', auto_now_add=True)  # Field name made lowercase.
     log_emptype = models.CharField(db_column='Log_EmpType', max_length=50, blank=True, null=True)  # Field name made lowercase.
@@ -280,6 +280,6 @@ class NewHrmsLog(models.Model):
     upd_date = models.DateTimeField(db_column='Upd_Date', blank=True, null=True, auto_now_add=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
-        db_table = 'new_hrms_log'
+        managed = True
+        db_table = 'hrms_new_log'
         unique_together = (('log_id', 'log_date'),)
