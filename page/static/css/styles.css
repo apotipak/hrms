@@ -130,7 +130,7 @@ input:checked + .slider:before {
 }
 
 .slider:after {
-  content:' Pending  ';
+  content:' PENDING  ';
   color: white;
   display: block;
   position: absolute;
@@ -141,7 +141,7 @@ input:checked + .slider:before {
   font-family: Verdana, sans-serif;
 }
 input:checked + .slider:after {
-  content:'Active  ';
+  content:'ACTIVE  ';
 }
 
 
