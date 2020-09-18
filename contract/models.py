@@ -19,8 +19,8 @@ class CusContract(models.Model):
     cnt_guard_amt = models.DecimalField(max_digits=4, decimal_places=0, blank=True, null=True)
     cnt_sale_amt = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     
-    # cnt_wage_id = models.DecimalField(max_digits=2, decimal_places=0, blank=True, null=True)
-    cnt_wage_id = models.ForeignKey(TWagezone, db_column='cnt_wage_id', to_field='wage_id', on_delete=models.SET_NULL, null=True)
+    cnt_wage_id = models.DecimalField(max_digits=2, decimal_places=0, blank=True, null=True)
+    # cnt_wage_id = models.ForeignKey(TWagezone, db_column='cnt_wage_id', to_field='wage_id', on_delete=models.SET_NULL, null=True)
     
     cnt_zone = models.DecimalField(max_digits=4, decimal_places=0, blank=True, null=True)
     cnt_autoexpire = models.BooleanField(blank=True, null=True)

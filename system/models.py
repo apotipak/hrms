@@ -46,7 +46,7 @@ class TCountry(models.Model):
     upd_flag = models.CharField(max_length=1, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'T_COUNTRY'
 
     def __str__(self):
@@ -66,7 +66,7 @@ class TCity(models.Model):
     upd_flag = models.CharField(max_length=1, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'T_CITY'
 
     def __str__(self):
@@ -86,7 +86,7 @@ class TDistrict(models.Model):
     upd_flag = models.CharField(max_length=1, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'T_DISTRICT'
 
     def __str__(self):
@@ -138,7 +138,8 @@ class ComDepartment(models.Model):
     upd_flag = models.CharField(max_length=1, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
+        # managed = False
         db_table = 'COM_DEPARTMENT'
 
 
@@ -182,7 +183,7 @@ class Company(models.Model):
     upd_flag = models.CharField(max_length=1, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'COMPANY'
 
 
@@ -226,7 +227,7 @@ class Groupbill(models.Model):
     groupcom = models.CharField(db_column='GroupCom', max_length=255, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'groupbill'
 
 
@@ -250,7 +251,7 @@ class TWagezone(models.Model):
     upd_flag = models.CharField(max_length=1, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'T_WAGEZONE'
 
 
@@ -265,13 +266,13 @@ class CusGroup(models.Model):
     op3 = models.CharField(max_length=10, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'CUS_GROUP'
-
 
 class HrmsNewLog(models.Model):
     log_table = models.CharField(db_column='log_table', max_length=50, blank=True, null=True)  # Field name made lowercase.
-    log_field = models.CharField(db_column='log_field', max_length=500, blank=True, null=True)  # Field name made lowercase.
+    log_key = models.CharField(db_column='log_key', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    log_field = models.CharField(db_column='log_field', max_length=50, blank=True, null=True)  # Field name made lowercase.
     old_value = models.CharField(db_column='old_value', max_length=500, blank=True, null=True)  # Field name made lowercase.
     new_value = models.CharField(db_column='new_value', max_length=500, blank=True, null=True)  # Field name made lowercase.
     log_type = models.CharField(db_column='log_type', max_length=1, blank=True, null=True)  # Field name made lowercase.
@@ -282,3 +283,4 @@ class HrmsNewLog(models.Model):
         managed = True
         db_table = 'hrms_new_log'
         unique_together = (('id', 'log_date'),)
+

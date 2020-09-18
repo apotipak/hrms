@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.views import generic
 from .models import Customer, CusMain, CusBill, CustomerOption
-from system.models import HrmsNewLog
+# from system.models import HrmsNewLog
 from .forms import CustomerCreateForm, CusMainForm, CusSiteForm, CusBillForm, CusAllTabsForm
 from .forms import CustomerCodeCreateForm
 from .forms import CustomerSearchForm
@@ -560,14 +560,15 @@ def CustomerDashboard(request):
 
     # Get number of active customer    
     no_of_active_customer = Customer.objects.filter(cus_active=1).exclude(upd_flag='D').count()
-    # Get number of pending customer    
+    # Get number of pending customer
     no_of_pending_customer = Customer.objects.filter(cus_active=0).exclude(upd_flag='D').count()
-    # Get number of delete customer    
+    # Get number of delete customer   
     no_of_delete_customer = Customer.objects.filter(upd_flag='D').count()
     total_customer = no_of_active_customer+no_of_pending_customer+no_of_delete_customer
 
     # History Logs
-    history_log = HrmsNewLog.objects.all();
+    # history_log = HrmsNewLog.objects.all().order_by('-log_date')[:25]
+    history_log = None
 
     context = {
         'page_title': page_title, 
@@ -1745,11 +1746,12 @@ def update_cus_bill(request):
     return render(request, template_name, context)    
 
 
-def check_modified_field(table_name, field_name, old_value, new_value, log_type, request):
+def check_modified_field(table_name, field_name, log_title, old_value, new_value, log_type, request):
     record = {}
     if old_value != new_value:
         record = {
             "log_table": table_name,
+            "log_title": log_title,
             "log_field": field_name,
             "old_value": old_value,
             "new_value": new_value,
@@ -1839,47 +1841,43 @@ def update_all_cus_tabs(request):
                     cus_main.cus_active = cus_main_cus_active                    
                     
                     # CUS_NAME_TH                    
-                    field_is_modified, record = check_modified_field("CUS_MAIN", "cus_name_th", cus_main.cus_name_th, cus_main_cus_name_th, "E", request)
+                    field_is_modified, record = check_modified_field("CUS_MAIN", "cus_name_th", "", cus_main.cus_name_th, cus_main_cus_name_th, "E", request)
                     if field_is_modified:
                         cus_main.cus_name_th = cus_main_cus_name_th
                         modified_records.append(record)
 
                     # CUS_ADD1_TH
-                    field_is_modified, record = check_modified_field("CUS_MAIN", "cus_add1_th", cus_main.cus_add1_th, cus_main_cus_add1_th, "E", request)
+                    field_is_modified, record = check_modified_field("CUS_MAIN", "cus_add1_th", "", cus_main.cus_add1_th, cus_main_cus_add1_th, "E", request)
                     if field_is_modified:
                         cus_main.cus_add1_th = cus_main_cus_add1_th
                         modified_records.append(record)
 
                     # CUS_ADD2_TH
-                    field_is_modified, record = check_modified_field("CUS_MAIN", "cus_add2_th", cus_main.cus_add2_th, cus_main_cus_add2_th, "E", request)
+                    field_is_modified, record = check_modified_field("CUS_MAIN", "cus_add2_th", "", cus_main.cus_add2_th, cus_main_cus_add2_th, "E", request)
                     if field_is_modified:
                         cus_main.cus_add2_th = cus_main_cus_add2_th
                         modified_records.append(record)
 
                     # cus_main.cus_subdist_th = cus_main_cus_subdist_th
                     # CUS_SUBDIST_TH
-                    field_is_modified, record = check_modified_field("CUS_MAIN", "cus_subdist_th", cus_main.cus_subdist_th, cus_main_cus_subdist_th, "E", request)
+                    field_is_modified, record = check_modified_field("CUS_MAIN", "cus_subdist_th", "", cus_main.cus_subdist_th, cus_main_cus_subdist_th, "E", request)
                     if field_is_modified:
                         cus_main.cus_subdist_th = cus_main_cus_subdist_th
                         modified_records.append(record)
 
                     # cus_main.cus_district_id = cus_main_cus_district_id
                     # CUS_DISTRICT_ID
-                    # print("old_district_id = " + str(cus_main.cus_district_id.val()))
-                    # print("new_district_id = " + str(cus_main_cus_district_id))
-
-                    field_is_modified, record = check_modified_field("CUS_MAIN", "cus_district_id", int(cus_main.cus_district_id), int(cus_main_cus_district_id), "E", request)
+                    field_is_modified, record = check_modified_field("CUS_MAIN", "cus_district_id", "", int(cus_main.cus_district_id), int(cus_main_cus_district_id), "E", request)
                     if field_is_modified:
                         cus_main.cus_district_id = cus_main_cus_district_id
                         modified_records.append(record)
 
                     # cus_main.cus_name_en = cus_main_cus_name_en
                     # CUS_NAME_EN
-                    field_is_modified, record = check_modified_field("CUS_MAIN", "cus_name_en", cus_main.cus_name_en, cus_main_cus_name_en, "E", request)
+                    field_is_modified, record = check_modified_field("CUS_MAIN", "cus_name_en", "", cus_main.cus_name_en, cus_main_cus_name_en, "E", request)
                     if field_is_modified:
                         cus_main.cus_name_en = cus_main_cus_name_en
                         modified_records.append(record)
-
 
                     cus_main.cus_add1_en = cus_main_cus_add1_en
                     cus_main.cus_add2_en = cus_main_cus_add2_en
