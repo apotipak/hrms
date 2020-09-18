@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.views import generic
 from .models import Customer, CusMain, CusBill, CustomerOption
-# from system.models import HrmsNewLog
+from system.models import HrmsNewLog
 from .forms import CustomerCreateForm, CusMainForm, CusSiteForm, CusBillForm, CusAllTabsForm
 from .forms import CustomerCodeCreateForm
 from .forms import CustomerSearchForm
@@ -567,8 +567,9 @@ def CustomerDashboard(request):
     total_customer = no_of_active_customer+no_of_pending_customer+no_of_delete_customer
 
     # History Logs
-    # history_log = HrmsNewLog.objects.all().order_by('-log_date')[:25]
-    history_log = None
+    history_log = HrmsNewLog.objects.all().order_by('-log_date')[:25]
+    if not history_log:
+        history_log = None
 
     context = {
         'page_title': page_title, 
@@ -1867,10 +1868,11 @@ def update_all_cus_tabs(request):
 
                     # cus_main.cus_district_id = cus_main_cus_district_id
                     # CUS_DISTRICT_ID
-                    field_is_modified, record = check_modified_field("CUS_MAIN", "cus_district_id", "", int(cus_main.cus_district_id), int(cus_main_cus_district_id), "E", request)
-                    if field_is_modified:
-                        cus_main.cus_district_id = cus_main_cus_district_id
-                        modified_records.append(record)
+                    if cus_main_cus_district_id:
+                        field_is_modified, record = check_modified_field("CUS_MAIN", "cus_district_id", "", int(cus_main.cus_district_id), int(cus_main_cus_district_id), "E", request)
+                        if field_is_modified:
+                            cus_main.cus_district_id = cus_main_cus_district_id
+                            modified_records.append(record)
 
                     # cus_main.cus_name_en = cus_main_cus_name_en
                     # CUS_NAME_EN
