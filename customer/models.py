@@ -60,7 +60,7 @@ class CusBill(models.Model):
     cus_district = models.ForeignKey(TDistrict, related_name='cus_bill_t_district_fk', db_column='cus_district', to_field='dist_id', on_delete=models.SET_NULL, null=True)    
 
     # cus_city = models.DecimalField(max_digits=2, decimal_places=0, blank=True, null=True)
-    cus_city = models.ForeignKey(TCity, related_name='cus_bill_t_city_fk', db_column='cus_city_id', to_field='city_id', on_delete=models.SET_NULL, null=True)    
+    cus_city = models.ForeignKey(TCity, related_name='cus_bill_t_city_fk', db_column='cus_city', to_field='city_id', on_delete=models.SET_NULL, null=True)    
 
     cus_country = models.ForeignKey(TCountry, related_name='cus_bill_t_country_fk', db_column='cus_country', to_field='country_id', on_delete=models.SET_NULL, null=True)
 
