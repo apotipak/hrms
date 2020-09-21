@@ -484,9 +484,14 @@ class CusMainForm(forms.ModelForm):
 
         self.initial['cus_zip'] = instance.cus_zip
 
-        cus_main_cus_city_th = forms.CharField(required=False)
-        self.initial['cus_main_cus_city_th'] = instance.cus_city
+
+        '''
+        cus_main_cus_city_th = forms.CharField(required=False)                
         self.fields['cus_main_cus_city_th'].widget.attrs['readonly'] = True
+        if not instance.cus_city_id:
+            self.initial['cus_main_cus_city_th'] = instance.cus_city_id
+        else:
+            self.initial['cus_main_cus_city_th'] = "test"
 
         cus_main_cus_country_th = forms.CharField(required=False)
         self.fields['cus_main_cus_country_th'].initial = instance.cus_country        
@@ -508,11 +513,17 @@ class CusMainForm(forms.ModelForm):
         
         cus_main_cus_country_en = forms.CharField(required=False)
         self.fields['cus_main_cus_country_en'].widget.attrs['readonly'] = True
-        if instance.cus_district is not None:
-            self.fields['cus_main_cus_country_en'].initial = instance.cus_country.country_en
-        else:
-            self.fields['cus_main_cus_country_en'].initial = ""
+        if not instance.cus_district_id:
+            
+            if not instance.cus_country.country_en:
+                self.fields['cus_main_cus_country_en'].initial = instance.cus_country.country_en
+            else:
+                self.fields['cus_main_cus_country_en'].initial = ""
 
+        else:
+            self.initial['cus_main_cus_country_en'] = ""
+        '''
+        
         self.fields['cus_main_cus_zone'].queryset=ComZone.objects.all()
         self.initial['cus_main_cus_zone'] = instance.cus_zone_id
 

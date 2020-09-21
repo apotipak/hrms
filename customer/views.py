@@ -1025,8 +1025,8 @@ def get_district_list(request):
                 "dist_en": d.dist_en,
                 "city_th": d.city_id.city_th,
                 "city_en": d.city_id.city_en,
-                "country_name_th": d.city_id.country_id.country_th,
-                "country_name_en": d.city_id.country_id.country_en,
+                "country_name_th": d.dist_id.cus_country.country_th,
+                "country_name_en": d.dist_id.cus_country.country_en,
             }
             pickup_records.append(record)
 
@@ -1874,8 +1874,9 @@ def update_all_cus_tabs(request):
 
                     # cus_main.cus_district_id = cus_main_cus_district_id
                     # CUS_DISTRICT_ID
+                    print("xx : " + str(cus_main_cus_district_id))
                     if cus_main_cus_district_id:
-                        field_is_modified, record = check_modified_field("CUS_MAIN", cus_id, "cus_district_id", int(cus_main.cus_district_id), int(cus_main_cus_district_id), "E", request)
+                        field_is_modified, record = check_modified_field("CUS_MAIN", cus_id, "cus_district_id", int(0), int(cus_main_cus_district_id), "E", request)
                         if field_is_modified:
                             cus_main.cus_district_id = cus_main_cus_district_id
                             modified_records.append(record)
