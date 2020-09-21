@@ -122,8 +122,13 @@
                 {% else %}
                 <td>
                   {% if item.log_table == "CUS_MAIN" %}
-                  <b>Edit</b> CUSTOMER <b>{{item.log_key}}</b> - Main Office Tab, change [{{item.log_field}}]  from <b>{{item.old_value}}</b> to <b class="text-success">{{item.new_value}}</b>
+                  <b>Edit</b> CUSTOMER <b>{{item.log_key}}</b> - on Main Office tab, change [{{item.log_field}}]  from <b>{{item.old_value}}</b> to <b class="text-success">{{item.new_value}}</b>
                   {% endif %}
+
+                  {% if item.log_table == "CUS_SITE" %}
+                  <b>Edit</b> CUSTOMER <b>{{item.log_key}}</b> - on Site tab, change [{{item.log_field|default_if_none:'empty'}}]  from <b>{{item.old_value}}</b> to <b class="text-success">{{item.new_value}}</b>
+                  {% endif %}
+
                 </td>
                 {% endif %}
                 <td>{{item.log_date|naturaltime}}</td>
