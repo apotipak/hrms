@@ -1146,6 +1146,21 @@ def CustomerDelete(request, pk):
             customer.upd_date = timezone.now()
             customer.save()
 
+            # History Log                    
+            new_log = HrmsNewLog(
+                log_table = 'CUSTOMER',
+                log_key = cus_no,
+                log_field = None,
+                old_value = None,
+                new_value = None,
+                log_type = 'D',
+                log_by = request.user.username,
+                log_date = timezone.now(),
+                log_description = None
+                )
+            new_log.save()    
+            # ./History Log
+
         data['form_is_valid'] = True
         customer_list = Customer.objects.all()
         data['html_customer_list'] = render_to_string('customer/partial_customer_list.html', {
