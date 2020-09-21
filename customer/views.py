@@ -2104,11 +2104,9 @@ def update_all_cus_tabs(request):
                     )
                 new_customer_site.save()
 
-                # add_new_customer_history_status = add_new_customer_history_log("Customer", cus_no)
-
                 # History Log                    
                 new_log = HrmsNewLog(
-                    log_table = 'Customer',
+                    log_table = 'CUSTOMER',
                     log_key = cus_no,
                     log_field = None,
                     old_value = None,
