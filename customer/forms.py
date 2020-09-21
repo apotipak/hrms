@@ -457,7 +457,7 @@ class CusMainForm(forms.ModelForm):
     cus_main_cus_city_en = forms.CharField(required=False)
     cus_main_cus_district_en = forms.CharField(required=False)
     cus_main_cus_country_en = forms.CharField(required=False)
-    cus_main_cus_zone = forms.ModelChoiceField(queryset=None, required=True)
+    cus_main_cus_zone = forms.ModelChoiceField(queryset=None, required=False)
     cus_main_cus_zip = forms.CharField(required=False)
     cus_main_customer_option_op1 = forms.CharField(required=False)
     cus_main_customer_option_op4 = forms.CharField(required=False)
@@ -481,17 +481,16 @@ class CusMainForm(forms.ModelForm):
         instance = getattr(self, 'instance', None)
 
         self.initial['cus_main_cus_active'] = instance.cus_active
-
         self.initial['cus_zip'] = instance.cus_zip
 
 
-        '''
+
         cus_main_cus_city_th = forms.CharField(required=False)                
         self.fields['cus_main_cus_city_th'].widget.attrs['readonly'] = True
-        if not instance.cus_city_id:
-            self.initial['cus_main_cus_city_th'] = instance.cus_city_id
+        if (instance.cus_city is not None):
+            self.initial['cus_main_cus_city_th'] = instance.cus_city.city_th
         else:
-            self.initial['cus_main_cus_city_th'] = "test"
+            self.initial['cus_main_cus_city_th'] = None
 
         cus_main_cus_country_th = forms.CharField(required=False)
         self.fields['cus_main_cus_country_th'].initial = instance.cus_country        
@@ -510,20 +509,18 @@ class CusMainForm(forms.ModelForm):
             self.initial['cus_main_cus_district_en'] = instance.cus_district.dist_en
         else:
             self.initial['cus_main_cus_district_en'] = ""
-        
-        cus_main_cus_country_en = forms.CharField(required=False)
-        self.fields['cus_main_cus_country_en'].widget.attrs['readonly'] = True
-        if not instance.cus_district_id:
-            
-            if not instance.cus_country.country_en:
-                self.fields['cus_main_cus_country_en'].initial = instance.cus_country.country_en
-            else:
-                self.fields['cus_main_cus_country_en'].initial = ""
 
+
+                
+        self.fields['cus_main_cus_country_en'].widget.attrs['readonly'] = True
+        if (instance.cus_district is not None):
+            self.fields['cus_main_cus_country_en'].initial = instance.cus_country.country_en
         else:
             self.initial['cus_main_cus_country_en'] = ""
-        '''
-        
+
+
+
+
         self.fields['cus_main_cus_zone'].queryset=ComZone.objects.all()
         self.initial['cus_main_cus_zone'] = instance.cus_zone_id
 
