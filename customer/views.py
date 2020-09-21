@@ -1021,7 +1021,8 @@ def get_district_list(request):
         
         for d in current_page:
             if (d.dist_id is not None):
-                print(d.dist_id)
+                #print(d.dist_id)
+                print(d.city_id.country_id.country_th)
 
             record = {
                 "dist_id": d.dist_id,
@@ -1030,8 +1031,8 @@ def get_district_list(request):
                 "dist_en": d.dist_en,
                 "city_th": d.city_id.city_th,
                 "city_en": d.city_id.city_en,
-                "country_name_th": "a", #d.dist_id.cus_country.country_th,
-                "country_name_en": "b", #d.dist_id.cus_country.country_en,
+                "country_name_th": d.city_id.country_id.country_th,
+                "country_name_en": d.city_id.country_id.country_en,
             }
             pickup_records.append(record)
 
