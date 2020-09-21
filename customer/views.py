@@ -984,6 +984,7 @@ def get_district_list(request):
     else:
         print("method get")
         if current_district_id:
+            print("true")
             district_object = TDistrict.objects.filter(dist_id__exact=current_district_id).get()
             data = TDistrict.objects.select_related('city_id').filter(city_id__city_th__contains=district_object.city_id.city_th)
             if not data:
