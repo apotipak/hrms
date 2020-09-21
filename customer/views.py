@@ -1848,10 +1848,16 @@ def update_all_cus_tabs(request):
                 cus_main_cus_contact_id = None
 
             try:
+                modified_records = []
                 cus_main = CusMain.objects.get(pk=cus_id)
 
-                if cus_main:                    
-                    cus_main.cus_active = cus_main_cus_active                    
+                if (cus_main is not None):
+
+                    # CUS_ACTIVE
+                    field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "cus_active", int(cus_main.cus_active), int(cus_main_cus_active), "E", request)
+                    if field_is_modified:
+                        cus_main.cus_active = cus_main_cus_active
+                        modified_records.append(record)
                     
                     # CUS_NAME_TH                    
                     field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "cus_name_th", cus_main.cus_name_th, cus_main_cus_name_th, "E", request)
@@ -1871,83 +1877,67 @@ def update_all_cus_tabs(request):
                         cus_main.cus_add2_th = cus_main_cus_add2_th
                         modified_records.append(record)
 
-                    # cus_main.cus_subdist_th = cus_main_cus_subdist_th
                     # CUS_SUBDIST_TH
                     field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "cus_subdist_th", cus_main.cus_subdist_th, cus_main_cus_subdist_th, "E", request)
                     if field_is_modified:
                         cus_main.cus_subdist_th = cus_main_cus_subdist_th
                         modified_records.append(record)
 
-                    # cus_main.cus_district_id = cus_main_cus_district_id
                     # CUS_DISTRICT_ID
-                    print("xx : " + str(cus_main_cus_district_id))
                     if cus_main_cus_district_id:
                         field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "cus_district_id", int(0), int(cus_main_cus_district_id), "E", request)
                         if field_is_modified:
                             cus_main.cus_district_id = cus_main_cus_district_id
                             modified_records.append(record)
 
-                    # cus_main.cus_name_en = cus_main_cus_name_en
                     # CUS_NAME_EN
                     field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "cus_name_en", cus_main.cus_name_en, cus_main_cus_name_en, "E", request)
                     if field_is_modified:
                         cus_main.cus_name_en = cus_main_cus_name_en
                         modified_records.append(record)
 
-                    #cus_main.cus_add1_en = cus_main_cus_add1_en
                     # CUS_ADD1_EN
                     field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "cus_add1_en", cus_main.cus_add1_en, cus_main_cus_add1_en, "E", request)
                     if field_is_modified:
                         cus_main.cus_add1_en = cus_main_cus_add1_en
                         modified_records.append(record)
 
-                    #cus_main.cus_add2_en = cus_main_cus_add2_en
                     # CUS_ADD2_EN
                     field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "cus_add2_en", cus_main.cus_add2_en, cus_main_cus_add2_en, "E", request)
                     if field_is_modified:
                         cus_main.cus_add2_en = cus_main_cus_add2_en
                         modified_records.append(record)
 
-                    #cus_main.cus_subdist_en = cus_main_cus_subdist_en
                     # CUS_SUBDIST_EN
                     field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "cus_subdist_en", cus_main.cus_subdist_en, cus_main_cus_subdist_en, "E", request)
                     if field_is_modified:
                         cus_main.cus_subdist_en = cus_main_cus_subdist_en
                         modified_records.append(record)
 
-                    # cus_main.cus_zip = cus_zip
                     # CUS_ZIP
                     field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "cus_zip", cus_main.cus_zip, cus_main_cus_zip, "E", request)
                     if field_is_modified:
-                        cus_main.cus_zip = cus_main_cus_subdist_en
+                        cus_main.cus_zip = cus_main_cus_zip
                         modified_records.append(record)
 
-
-                    #cus_main.cus_tel = cus_main_cus_tel
                     # CUS_TEL
                     field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "cus_tel", cus_main.cus_tel, cus_main_cus_tel, "E", request)
                     if field_is_modified:
                         cus_main.cus_tel = cus_main_cus_subdist_en
                         modified_records.append(record)
 
-
-                    # cus_main.cus_fax = cus_main_cus_fax
                     # CUS_FAX
                     field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "cus_fax", cus_main.cus_fax, cus_main_cus_fax, "E", request)
                     if field_is_modified:
                         cus_main.cus_fax = cus_main_cus_subdist_en
                         modified_records.append(record)
 
-
-                    # cus_main.cus_email = cus_main_cus_email
                     # CUS_EMAIL
                     field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "cus_email", cus_main.cus_email, cus_main_cus_email, "E", request)
                     if field_is_modified:
                         cus_main.cus_email = cus_main_cus_subdist_en
                         modified_records.append(record)
 
-
-                    # cus_main.cus_zone_id = cus_main_cus_zone
                     # CUS_ZONE
                     if cus_main_cus_zone:
                         field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "cus_zone_id", int(cus_main.cus_zone_id), int(cus_main_cus_zone), "E", request)
@@ -1955,8 +1945,6 @@ def update_all_cus_tabs(request):
                             cus_main.cus_zone_id = cus_main_cus_zone
                             modified_records.append(record)
 
-
-                    # cus_main.cus_contact_id = cus_main_cus_contact_id
                     # CUS_CONTACT
                     if cus_main_cus_contact_id:
                         field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "cus_contact_id", int(cus_main.cus_contact_id), int(cus_main_cus_contact_id), "E", request)
@@ -1964,28 +1952,12 @@ def update_all_cus_tabs(request):
                             cus_main.cus_contact_id = cus_main_cus_contact_id
                             modified_records.append(record)
 
-
                     if cus_main.upd_flag == 'A':
                         cus_main.upd_flag = 'E'
                     cus_main.upd_by = request.user.first_name
                     cus_main.upd_date = timezone.now()
 
                     cus_main.save()
-
-                    # History Log                    
-                    for data in modified_records:
-                        new_log = HrmsNewLog(
-                            log_table = data['log_table'],
-                            log_key = data['log_key'],
-                            log_field = data['log_field'],
-                            old_value = data['old_value'],
-                            new_value = data['new_value'],
-                            log_type = data['log_type'],
-                            log_by = data['log_by'],
-                            log_date = data['log_date'],
-                            )
-                        new_log.save()    
-                    # ./History Log 
 
                     # CUS_MAIN Business Type
                     try:
@@ -2007,6 +1979,22 @@ def update_all_cus_tabs(request):
                             op3 = cus_main_customer_option_op3.replace('&amp;', '&'), # Group 2
                             op4 = cus_main_customer_option_op4)   # A/R Code
                         c.save()
+
+                    # History Log                    
+                    for data in modified_records:
+                        new_log = HrmsNewLog(
+                            log_table = data['log_table'],
+                            log_key = data['log_key'],
+                            log_field = data['log_field'],
+                            old_value = data['old_value'],
+                            new_value = data['new_value'],
+                            log_type = data['log_type'],
+                            log_by = data['log_by'],
+                            log_date = data['log_date'],
+                            )
+                        new_log.save()    
+                        modified_records = []
+                    # ./History Log 
 
             except CusMain.DoesNotExist:
                 new_customer_main = CusMain(
@@ -2054,7 +2042,6 @@ def update_all_cus_tabs(request):
                     c.save()
 
 
-
             # ******************************************
             # **************  CUS_SITE  ****************
             # ******************************************
@@ -2083,16 +2070,13 @@ def update_all_cus_tabs(request):
             print("cus_site_cus_district_id = " + str(cus_site_cus_district_id))
 
             if cus_site_cus_district_id:
-                print("debug 1")
                 try:
                     district_obj = TDistrict.objects.get(dist_id=cus_site_cus_district_id)
                     if district_obj:
-                        print("debug 2")
                         city_id = district_obj.city_id_id
                         city_obj = TCity.objects.get(city_id=city_id)
                         country_id = city_obj.country_id_id
                 except TDistrict.DoesNotExist:
-                    print("debug 3")
                     cus_site_cus_district_id = None
                     city_id = None
                     country_id = None
@@ -2121,9 +2105,26 @@ def update_all_cus_tabs(request):
             '''
 
             try:
+                modified_records = []
                 customer = Customer.objects.get(pk=cus_no)
+
                 customer.cus_active = cus_site_cus_active
-                customer.cus_name_th = cus_site_cus_name_th
+                '''
+                field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "cus_name_th", cus_main.cus_name_th, cus_main_cus_name_th, "E", request)
+                if field_is_modified:
+                    customer.cus_name_th = cus_main_cus_name_th
+                    modified_records.append(record)
+                '''
+
+                #customer.cus_name_th = cus_site_cus_name_th
+                # CUS_NAME_TH
+                field_is_modified, record = check_modified_field("CUS_SITE", cus_no, "cus_name_th", cus_main.cus_name_th, cus_site_cus_name_th, "E", request)
+                if field_is_modified:
+                    customer.cus_name_th = cus_site_cus_name_th
+                    modified_records.append(record)
+                print("aa")
+
+
                 customer.cus_add1_th = cus_site_cus_add1_th
                 customer.cus_add2_th = cus_site_cus_add2_th
                 customer.cus_subdist_th = cus_site_cus_subdist_th
@@ -2147,7 +2148,24 @@ def update_all_cus_tabs(request):
                 if customer.upd_flag == 'D':
                     customer.upd_flag = 'E'
                     
-                customer.save()                
+                customer.save()
+
+                # History Log                    
+                for data in modified_records:
+                    new_log = HrmsNewLog(
+                        log_table = data['log_table'],
+                        log_key = data['log_key'],
+                        log_field = data['log_field'],
+                        old_value = data['old_value'],
+                        new_value = data['new_value'],
+                        log_type = data['log_type'],
+                        log_by = data['log_by'],
+                        log_date = data['log_date'],
+                        )
+                    new_log.save()    
+                    modified_records = []
+                # ./History Log 
+
             except Customer.DoesNotExist:                
                 new_customer_site = Customer(
                     cus_active = cus_site_cus_active,
@@ -2192,6 +2210,8 @@ def update_all_cus_tabs(request):
             response_data['result'] = "Update complete."
             response_data['message'] = "ทำรายการสำเร็จ"
             response_data['form_is_valid'] = True
+
+
 
 
             # ******************************************
