@@ -134,11 +134,19 @@
                 <td>
                   <span class="text-sm">
                   {% if item.log_table == "CUS_MAIN" %}
-                  <b>Edit</b> CUSTOMER <b>{{item.log_key}}</b> - on Main Office tab, change <b>{{item.log_field}}</b> from <b>{{item.old_value}}</b> to <b class="text-success">{{item.new_value}}</b>
+                  <b>Edit</b> CUSTOMER <b>{{item.log_key}}</b> on Main Office tab, change <b>{{item.log_field}}</b> from 
+                  {% if item.old_value == "" %}
+                  <b>empty</b>
+                  {% else %}
+                  <b>{{item.old_value}}</b> 
+                  {% endif %}
+                  to <b class="text-success">{{item.new_value}}</b>
                   {% endif %}
 
                   {% if item.log_table == "CUS_SITE" %}
-                  <b>Edit</b> CUSTOMER <b>{{item.log_key}}</b> - on Site tab, change <b>{{item.log_field|default_if_none:'empty'}}</b> from <b>{{item.old_value}}</b> to <b class="text-success">{{item.new_value}}</b>
+                  <b>Edit</b> CUSTOMER <b>{{item.log_key}}</b> on Site tab, change <b>{{item.log_field|default_if_none:'empty'}}</b> from 
+                  <b>{{item.old_value}}</b> 
+                  to <b class="text-success">{{item.new_value}}</b>
                   {% endif %}
                   </span>
                 </td>

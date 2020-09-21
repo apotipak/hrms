@@ -1937,7 +1937,7 @@ def update_all_cus_tabs(request):
                     # CUS_ZIP
                     if (cus_main_cus_zip is not None):
                         if (cus_main_cus_zip != ""):
-                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Zip", cus_main.cus_zip, cus_main_cus_zip, "E", request)
+                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Zip", int(cus_main.cus_zip), int(cus_main_cus_zip), "E", request)
                             if field_is_modified:
                                 cus_main.cus_zip = cus_main_cus_zip
                                 modified_records.append(record)
@@ -1953,7 +1953,7 @@ def update_all_cus_tabs(request):
                     # CUS_FAX
                     if (cus_main_cus_fax is not None):
                         if (cus_main_cus_fax != ""):
-                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Fax", cus_main.cus_fax, cus_main_cus_tel, "E", request)
+                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Fax", cus_main.cus_fax, cus_main_cus_fax, "E", request)
                             if field_is_modified:
                                 cus_main.cus_fax = cus_main_cus_fax
                                 modified_records.append(record)
