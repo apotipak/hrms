@@ -987,7 +987,9 @@ def get_district_list(request):
             print("true")
             district_object = TDistrict.objects.filter(dist_id__exact=current_district_id).get()
             data = TDistrict.objects.select_related('city_id').filter(city_id__city_th__contains=district_object.city_id.city_th)
+            print("data")
             if not data:
+                print("not data")
                 data = TDistrict.objects.select_related('city_id').filter(city_id__city_en__contains=district_object.city_id.city_en)
         else:
             data = TDistrict.objects.select_related('city_id').all()
@@ -1018,6 +1020,9 @@ def get_district_list(request):
         pickup_records=[]
         
         for d in current_page:
+            if (d.dist_id is not None):
+                print(d.dist_id)
+
             record = {
                 "dist_id": d.dist_id,
                 "city_id": d.city_id_id,
@@ -1025,8 +1030,8 @@ def get_district_list(request):
                 "dist_en": d.dist_en,
                 "city_th": d.city_id.city_th,
                 "city_en": d.city_id.city_en,
-                "country_name_th": d.dist_id.cus_country.country_th,
-                "country_name_en": d.dist_id.cus_country.country_en,
+                "country_name_th": "a", #d.dist_id.cus_country.country_th,
+                "country_name_en": "b", #d.dist_id.cus_country.country_en,
             }
             pickup_records.append(record)
 
