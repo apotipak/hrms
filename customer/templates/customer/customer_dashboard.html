@@ -118,9 +118,9 @@
               <tr>
                 <td>{{item.log_by}}</td>
                 {% if item.log_type == 'A' %}
-                <td><b>Add</b> {{item.log_table}} with number is <b>{{item.log_field}}</b></td>
+                <td><b>Add</b> {{item.log_table}} <b>{{item.log_key}}</b></td>
                 {% else %}
-                <td><b>Edit</b> {{item.log_table}} [{{item.log_field}}] from <b>{{item.old_value}}</b> to <b class="text-success">{{item.new_value}}</b></td>
+                <td><b>Edit</b> {{item.log_table}} {{item.log_key}} [{{item.log_field}}] from <b>{{item.old_value}}</b> to <b class="text-success">{{item.new_value}}</b></td>
                 {% endif %}
                 <td>{{item.log_date|naturaltime}}</td>
               </tr>

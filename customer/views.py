@@ -1750,12 +1750,12 @@ def update_cus_bill(request):
     return render(request, template_name, context)    
 
 
-def check_modified_field(table_name, field_name, log_title, old_value, new_value, log_type, request):
+def check_modified_field(table_name, primary_key, field_name, old_value, new_value, log_type, request):
     record = {}
     if old_value != new_value:
         record = {
             "log_table": table_name,
-            "log_title": log_title,
+            "log_key": primary_key,
             "log_field": field_name,
             "old_value": old_value,
             "new_value": new_value,
@@ -1847,26 +1847,26 @@ def update_all_cus_tabs(request):
                     cus_main.cus_active = cus_main_cus_active                    
                     
                     # CUS_NAME_TH                    
-                    field_is_modified, record = check_modified_field("CUS_MAIN", "cus_name_th", "", cus_main.cus_name_th, cus_main_cus_name_th, "E", request)
+                    field_is_modified, record = check_modified_field("CUS_MAIN", cus_id, "cus_name_th", cus_main.cus_name_th, cus_main_cus_name_th, "E", request)
                     if field_is_modified:
                         cus_main.cus_name_th = cus_main_cus_name_th
                         modified_records.append(record)
 
                     # CUS_ADD1_TH
-                    field_is_modified, record = check_modified_field("CUS_MAIN", "cus_add1_th", "", cus_main.cus_add1_th, cus_main_cus_add1_th, "E", request)
+                    field_is_modified, record = check_modified_field("CUS_MAIN", cus_id, "cus_add1_th", cus_main.cus_add1_th, cus_main_cus_add1_th, "E", request)
                     if field_is_modified:
                         cus_main.cus_add1_th = cus_main_cus_add1_th
                         modified_records.append(record)
 
                     # CUS_ADD2_TH
-                    field_is_modified, record = check_modified_field("CUS_MAIN", "cus_add2_th", "", cus_main.cus_add2_th, cus_main_cus_add2_th, "E", request)
+                    field_is_modified, record = check_modified_field("CUS_MAIN", cus_id, "cus_add2_th", cus_main.cus_add2_th, cus_main_cus_add2_th, "E", request)
                     if field_is_modified:
                         cus_main.cus_add2_th = cus_main_cus_add2_th
                         modified_records.append(record)
 
                     # cus_main.cus_subdist_th = cus_main_cus_subdist_th
                     # CUS_SUBDIST_TH
-                    field_is_modified, record = check_modified_field("CUS_MAIN", "cus_subdist_th", "", cus_main.cus_subdist_th, cus_main_cus_subdist_th, "E", request)
+                    field_is_modified, record = check_modified_field("CUS_MAIN", cus_id, "cus_subdist_th", cus_main.cus_subdist_th, cus_main_cus_subdist_th, "E", request)
                     if field_is_modified:
                         cus_main.cus_subdist_th = cus_main_cus_subdist_th
                         modified_records.append(record)
@@ -1874,14 +1874,14 @@ def update_all_cus_tabs(request):
                     # cus_main.cus_district_id = cus_main_cus_district_id
                     # CUS_DISTRICT_ID
                     if cus_main_cus_district_id:
-                        field_is_modified, record = check_modified_field("CUS_MAIN", "cus_district_id", "", int(cus_main.cus_district_id), int(cus_main_cus_district_id), "E", request)
+                        field_is_modified, record = check_modified_field("CUS_MAIN", cus_id, "cus_district_id", int(cus_main.cus_district_id), int(cus_main_cus_district_id), "E", request)
                         if field_is_modified:
                             cus_main.cus_district_id = cus_main_cus_district_id
                             modified_records.append(record)
 
                     # cus_main.cus_name_en = cus_main_cus_name_en
                     # CUS_NAME_EN
-                    field_is_modified, record = check_modified_field("CUS_MAIN", "cus_name_en", "", cus_main.cus_name_en, cus_main_cus_name_en, "E", request)
+                    field_is_modified, record = check_modified_field("CUS_MAIN", cus_id, "cus_name_en", cus_main.cus_name_en, cus_main_cus_name_en, "E", request)
                     if field_is_modified:
                         cus_main.cus_name_en = cus_main_cus_name_en
                         modified_records.append(record)
@@ -1906,6 +1906,7 @@ def update_all_cus_tabs(request):
                     for data in modified_records:
                         new_log = HrmsNewLog(
                             log_table = data['log_table'],
+                            log_key = data['log_key'],
                             log_field = data['log_field'],
                             old_value = data['old_value'],
                             new_value = data['new_value'],
@@ -2108,7 +2109,8 @@ def update_all_cus_tabs(request):
                 # History Log                    
                 new_log = HrmsNewLog(
                     log_table = 'Customer',
-                    log_field = cus_no,
+                    log_key = cus_no,
+                    log_field = None,
                     old_value = None,
                     new_value = None,
                     log_type = 'A',
