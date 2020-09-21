@@ -107,6 +107,7 @@
             <table class="table m-0 table-sm table-striped">
               <thead>
               <tr>
+                <th>No.</th>
                 <th>User</th>
                 <th>Description</th>
                 <th>Date</th>
@@ -116,6 +117,7 @@
 
               {% for item in history_log %}
               <tr>
+                <td><span class="text-sm">{{item.id}}</span></td>
                 <td><span class="text-sm">{{item.log_by}}</span></td>
 
                 {% if item.log_type == 'A' or item.log_type == 'D' %}
