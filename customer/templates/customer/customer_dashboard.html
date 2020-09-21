@@ -116,22 +116,26 @@
 
               {% for item in history_log %}
               <tr>
-                <td>{{item.log_by}}</td>
-                {% if item.log_type == 'A' %}
-                <td><b>Add</b> {{item.log_table}} <b class="text-success">{{item.log_key}}</b></td>
+                <td><span class="text-sm">{{item.log_by}}</span></td>
+
+                {% if item.log_type == 'A' %}                
+                <td><span class="text-xs"><b>Add</b> {{item.log_table}} <b class="text-success">{{item.log_key}}</b></span></td>
                 {% else %}
                 <td>
+                  <span class="text-sm">
                   {% if item.log_table == "CUS_MAIN" %}
-                  <b>Edit</b> CUSTOMER <b>{{item.log_key}}</b> - on Main Office tab, change [{{item.log_field}}]  from <b>{{item.old_value}}</b> to <b class="text-success">{{item.new_value}}</b>
+                  <b>Edit</b> CUSTOMER <b>{{item.log_key}}</b> - on Main Office tab, change {{item.log_field}} from <b>{{item.old_value}}</b> to <b class="text-success">{{item.new_value}}</b>
                   {% endif %}
 
                   {% if item.log_table == "CUS_SITE" %}
-                  <b>Edit</b> CUSTOMER <b>{{item.log_key}}</b> - on Site tab, change [{{item.log_field|default_if_none:'empty'}}]  from <b>{{item.old_value}}</b> to <b class="text-success">{{item.new_value}}</b>
+                  <b>Edit</b> CUSTOMER <b>{{item.log_key}}</b> - on Site tab, change {{item.log_field|default_if_none:'empty'}} from <b>{{item.old_value}}</b> to <b class="text-success">{{item.new_value}}</b>
                   {% endif %}
-
+                  </span>
                 </td>
                 {% endif %}
-                <td>{{item.log_date|naturaltime}}</td>
+
+
+                <td><span class="text-sm">{{item.log_date|naturaltime}}</span></td>
               </tr>
               {% endfor %}
 
