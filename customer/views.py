@@ -823,8 +823,9 @@ def CustomerUpdate(request, pk):
         customer_option = CustomerOption.objects.get(cus_no=pk)
         business_type = customer_option.btype
     except CustomerOption.DoesNotExist:
-        business_type = ""
-        print("Insert complete")
+        business_type = None
+        customer_option = None
+        print("No customer_option")
 
     context = {
         'page_title': settings.PROJECT_NAME,
@@ -846,6 +847,8 @@ def CustomerUpdate(request, pk):
         'group_1_list': group_1_list,
         'group_2_list': group_2_list,
     }
+
+    # print("test")
     return render(request, template_name, context)
 
 

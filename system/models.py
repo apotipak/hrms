@@ -90,7 +90,10 @@ class TDistrict(models.Model):
         db_table = 'T_DISTRICT'
 
     def __str__(self):
-        return self.dist_th
+        if self.dist_th:            
+            return self.dist_th
+        else:
+            return ""
 
 
 class TAprove(models.Model):
