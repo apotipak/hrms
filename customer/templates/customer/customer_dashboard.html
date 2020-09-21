@@ -121,34 +121,33 @@
                 <td><span class="text-sm">{{item.log_by}}</span></td>
 
                 {% if item.log_type == 'A' or item.log_type == 'D' %}
-                <td>
-                  <span class="text-sm">
+                <td>                  
                   {% if item.log_type == 'A' %}
-                    <b>Add</b> {{item.log_table}} <b class="text-success">{{item.log_key}}</b>
+                    <span class="text-sm text-success"><b>Add</b> {{item.log_table}} <b class="text-success">{{item.log_key}}</b></span>
                   {% endif %}
 
                   {% if item.log_type == 'D' %}
-                    <b>Delete</b> {{item.log_table}} <b class="text-danger">{{item.log_key}}</b>
+                    <span class="text-sm text-danger"><b>Delete</b> {{item.log_table}} <b class="text-danger">{{item.log_key}}</b></span>
                   {% endif %}
-                  </span>
                 </td>
                 {% else %}  
                 <td>
-                  <span class="text-sm">
+                  <span class="text-sm text-info">
                   {% if item.log_table == "CUS_MAIN" %}
                   <b>Edit</b> CUSTOMER <b>{{item.log_key}}</b> on Main Office tab, change <b>{{item.log_field}}</b> from 
-                  {% if item.old_value == "" %}
+                  
+                  {% if item.old_value == "" or item.old_value is None %}
                   <b>empty</b>
                   {% else %}
                   <b>{{item.old_value}}</b> 
                   {% endif %}
-                  to <b class="text-success">{{item.new_value}}</b>
+                  to <b>{{item.new_value}}</b>
                   {% endif %}
 
                   {% if item.log_table == "CUS_SITE" %}
                   <b>Edit</b> CUSTOMER <b>{{item.log_key}}</b> on Site tab, change <b>{{item.log_field|default_if_none:'empty'}}</b> from 
                   <b>{{item.old_value}}</b> 
-                  to <b class="text-success">{{item.new_value}}</b>
+                  to <b>{{item.new_value}}</b>
                   {% endif %}
                   </span>
                 </td>
