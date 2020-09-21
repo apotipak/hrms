@@ -282,7 +282,7 @@ class HrmsNewLog(models.Model):
     log_type = models.CharField(db_column='log_type', max_length=1, blank=True, null=True)  # Field name made lowercase.
     log_by = models.CharField(db_column='log_by', max_length=20, blank=True, null=True)  # Field name made lowercase.
     log_date = models.DateTimeField(db_column='log_date', auto_now_add=True)  # Field name made lowercase.    
-
+    log_description = models.CharField(max_length=200, blank=True, null=True)
     class Meta:
         managed = True
         db_table = 'hrms_new_log'

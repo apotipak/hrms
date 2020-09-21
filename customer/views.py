@@ -1760,12 +1760,14 @@ def check_modified_field(table_name, field_name, log_title, old_value, new_value
             "old_value": old_value,
             "new_value": new_value,
             "log_type": log_type,
-            "log_by": request.user.first_name,
+            "log_by": request.user.username,
             "log_date": timezone.now(),
+            "log_description": None,
         }
         return True, record
     else: 
         return False, record
+
 
 @login_required(login_url='/accounts/login/')
 def update_all_cus_tabs(request):
@@ -1912,7 +1914,6 @@ def update_all_cus_tabs(request):
                             log_date = data['log_date'],
                             )
                         new_log.save()    
-
                     # ./History Log 
 
                     # CUS_MAIN Business Type
@@ -2100,7 +2101,24 @@ def update_all_cus_tabs(request):
                     cus_zone_id = cus_site_cus_zone,
                     site_contact_id = cus_site_site_contact_id,
                     )
-                new_customer_site.save()                
+                new_customer_site.save()
+
+                # add_new_customer_history_status = add_new_customer_history_log("Customer", cus_no)
+
+                # History Log                    
+                new_log = HrmsNewLog(
+                    log_table = 'Customer',
+                    log_field = cus_no,
+                    old_value = None,
+                    new_value = None,
+                    log_type = 'A',
+                    log_by = request.user.username,
+                    log_date = timezone.now(),
+                    log_description = None
+                    )
+                new_log.save()    
+                # ./History Log
+
             response_data['result'] = "Update complete."
             response_data['message'] = "ทำรายการสำเร็จ"
             response_data['form_is_valid'] = True

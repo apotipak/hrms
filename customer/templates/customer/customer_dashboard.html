@@ -117,7 +117,11 @@
               {% for item in history_log %}
               <tr>
                 <td>{{item.log_by}}</td>
-                <td>{{item.log_table}} [{{item.log_field}}] from <b>{{item.old_value}}</b> to <b class="text-success">{{item.new_value}}</b></td>
+                {% if item.log_type == 'A' %}
+                <td><b>Add</b> {{item.log_table}} with number is <b>{{item.log_field}}</b></td>
+                {% else %}
+                <td><b>Edit</b> {{item.log_table}} [{{item.log_field}}] from <b>{{item.old_value}}</b> to <b class="text-success">{{item.new_value}}</b></td>
+                {% endif %}
                 <td>{{item.log_date|naturaltime}}</td>
               </tr>
               {% endfor %}
