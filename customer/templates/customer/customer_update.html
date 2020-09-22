@@ -422,6 +422,11 @@
                         <input type="text" class="form-control form-control-sm" id="id_cus_main_customer_option_op4" name="cus_main_customer_option_op4" value="{{ customer_option.op4|default_if_none:'' }}">
                       </div>
 
+                      <div class="form-group col-md-3">
+                        <label for="id_cus_main_customer_option_opn1" class="text-danger">{% trans 'GP Margin' %}</label>
+                        <input type="text" class="form-control form-control-sm" id="id_cus_main_customer_option_opn1" name="cus_main_customer_option_opn1" value="{{ customer_option.opn1|default_if_none:0 }}">
+                      </div>
+
                     </div>
 
 
@@ -2211,7 +2216,8 @@
     if ($('#id_cus_main_cus_active').is(":checked"))
       cus_main_cus_active = 1;
     else
-      cus_main_cus_active = 0; 
+      cus_main_cus_active = 0;
+
     cus_main_cus_name_th = $('#id_cus_main_cus_name_th').val();
     cus_main_cus_add1_th = $('#id_cus_main_cus_add1_th').val();
     cus_main_cus_add2_th = $('#id_cus_main_cus_add2_th').val();    
@@ -2235,6 +2241,7 @@
     customer_option_op2 = $('#id_cus_main_customer_option_op2').val();
     customer_option_op3 = $('#id_cus_main_customer_option_op3').val();
     customer_option_op4 = $('#id_cus_main_customer_option_op4').val();
+    customer_option_opn1 = $('#id_cus_main_customer_option_opn1').val();
     cus_main_cus_contact_id = $('#id_cus_main_cus_contact_id').val();
     if(cus_main_cus_contact_id == null)
       cus_main_cus_contact_id = null;
@@ -2382,6 +2389,7 @@
         cus_main_customer_option_op2: customer_option_op2,
         cus_main_customer_option_op3: customer_option_op3,
         cus_main_customer_option_op4: customer_option_op4,
+        cus_main_customer_option_opn1: customer_option_opn1,
         cus_main_cus_contact_id: cus_main_cus_contact_id,
 
         // CUS_SITE

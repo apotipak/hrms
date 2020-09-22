@@ -1859,6 +1859,7 @@ def update_all_cus_tabs(request):
             cus_main_customer_option_op2 = request.POST.get('cus_main_customer_option_op2')
             cus_main_customer_option_op3 = request.POST.get('cus_main_customer_option_op3')
             cus_main_customer_option_op4 = request.POST.get('cus_main_customer_option_op4')
+            cus_main_customer_option_opn1 = request.POST.get('cus_main_customer_option_opn1')
             cus_main_cus_contact_id = request.POST.get('cus_main_cus_contact_id')
             if cus_main_cus_contact_id:
                 cus_main_cus_contact_id = cus_main_cus_contact_id
@@ -2035,6 +2036,11 @@ def update_all_cus_tabs(request):
                             field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "A/R Code", customer_option.op4, cus_main_customer_option_op4.replace('&amp;', '&'), "E", request)
                             if field_is_modified:
                                 customer_option.op4 = cus_main_customer_option_op4.replace('&amp;', '&') # A/R Code
+                                modified_records.append(record)
+
+                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "GP Margin", customer_option.opn1, cus_main_customer_option_opn1, "E", request)
+                            if field_is_modified:
+                                customer_option.opn1 = cus_main_customer_option_opn1 # GP Margin
                                 modified_records.append(record)
 
                             customer_option.save()
