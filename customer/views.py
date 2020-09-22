@@ -2207,7 +2207,7 @@ def update_all_cus_tabs(request):
                     
                     # CUS_ACTIVE
                     #customer.cus_active = cus_site_cus_active
-                    field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "cus_active", int(customer.cus_active), int(cus_site_cus_active), "E", request)
+                    field_is_modified, record = check_modified_field("CUS_SITE", cus_no, "cus_active", int(customer.cus_active), int(cus_site_cus_active), "E", request)
                     if field_is_modified:
                         customer.cus_active = cus_site_cus_active
                         modified_records.append(record)
@@ -2219,12 +2219,45 @@ def update_all_cus_tabs(request):
                         customer.cus_name_th = cus_site_cus_name_th
                         modified_records.append(record)
 
+                    # CUS_ADD1_TH
+                    # customer.cus_add1_th = cus_site_cus_add1_th
+                    if (cus_site_cus_add1_th is not None):
+                        if (cus_site_cus_add1_th != ""):
+                            field_is_modified, record = check_modified_field("CUS_SITE", cus_no, "Address1 TH", customer.cus_add1_th, cus_site_cus_add1_th, "E", request)
+                            if field_is_modified:
+                                customer.cus_add1_th = cus_site_cus_add1_th
+                                modified_records.append(record)                                
 
-                    customer.cus_add1_th = cus_site_cus_add1_th
-                    customer.cus_add2_th = cus_site_cus_add2_th
-                    customer.cus_subdist_th = cus_site_cus_subdist_th
-                    customer.cus_district_id = cus_site_cus_district_id
+                    # CUS_ADD2_EN
+                    #customer.cus_add2_th = cus_site_cus_add2_th
+                    if (cus_site_cus_add1_th is not None):
+                        if (cus_site_cus_add2_th != ""):
+                            field_is_modified, record = check_modified_field("CUS_SITE", cus_no, "Address2 TH", customer.cus_add2_th, cus_site_cus_add2_th, "E", request)
+                            if field_is_modified:
+                                customer.cus_add2_th = cus_site_cus_add2_th
+                                modified_records.append(record)                              
+
+                    # CUS_SUBDIST_TH
+                    # customer.cus_subdist_th = cus_site_cus_subdist_th
+                    if (cus_site_cus_subdist_th is not None):
+                        if (cus_site_cus_subdist_th != ""):
+                            field_is_modified, record = check_modified_field("CUS_SITE", cus_no, "Sub-District TH", customer.cus_subdist_th, cus_site_cus_subdist_th, "E", request)
+                            if field_is_modified:
+                                customer.cus_subdist_th = cus_site_cus_subdist_th
+                                modified_records.append(record)                              
+                    
+                    # CUS_DISTRICT_ID
+                    # customer.cus_district_id = cus_site_cus_district_id
+                    if (cus_site_cus_district_id is not None):
+                        if (cus_site_cus_district_id != ""):
+                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "District ID", int(customer.cus_district_id), int(cus_site_cus_district_id), "E", request)
+                            if field_is_modified:
+                                customer.cus_district_id = cus_site_cus_district_id
+                                modified_records.append(record)
+
+
                     customer.cus_city_id = city_id
+
                     customer.cus_country_id = country_id
                     customer.cus_name_en = cus_site_cus_name_en
                     customer.cus_add1_en = cus_site_cus_add1_en
