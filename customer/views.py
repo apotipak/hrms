@@ -1863,6 +1863,8 @@ def update_all_cus_tabs(request):
             cus_main_customer_option_op3 = request.POST.get('cus_main_customer_option_op3')
             cus_main_customer_option_op4 = request.POST.get('cus_main_customer_option_op4')
             cus_main_customer_option_opn1 = request.POST.get('cus_main_customer_option_opn1')
+            print("cus_main_customer_option_opn1 = " + str(cus_main_customer_option_opn1))
+
             cus_main_cus_contact_id = request.POST.get('cus_main_cus_contact_id')
             if cus_main_cus_contact_id:
                 cus_main_cus_contact_id = cus_main_cus_contact_id
@@ -2056,7 +2058,8 @@ def update_all_cus_tabs(request):
                             op1 = cus_main_customer_option_op1,   # Status
                             op2 = cus_main_customer_option_op2.replace('&amp;', '&'), # Group 1
                             op3 = cus_main_customer_option_op3.replace('&amp;', '&'), # Group 2
-                            op4 = cus_main_customer_option_op4)   # A/R Code
+                            op4 = cus_main_customer_option_op4, # A/R Code
+                            opn1 = cus_main_customer_option_opn1)
                         c.save()
 
                     # History Log                    
@@ -2117,7 +2120,8 @@ def update_all_cus_tabs(request):
                         op1 = cus_main_customer_option_op1,   # Status
                         op2 = cus_main_customer_option_op2.replace('&amp;', '&'), # Group 1
                         op3 = cus_main_customer_option_op3.replace('&amp;', '&'), # Group 2
-                        op4 = cus_main_customer_option_op4)   # A/R Code
+                        op4 = cus_main_customer_option_op4, # A/R Code
+                        opn1 = int(cus_main_customer_option_opn1))   # GP Margin
                     c.save()
 
 
