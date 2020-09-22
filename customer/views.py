@@ -1995,7 +1995,7 @@ def update_all_cus_tabs(request):
                     if cus_main_cus_zone is not None:
                         print("zone is not none")
                         if cus_main_cus_zone.isnumeric():
-                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Zone ID", float(cus_main.cus_zone_id), float(cus_main_cus_zone), "E", request)
+                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Zone ID", int(cus_main.cus_zone_id), int(cus_main_cus_zone), "E", request)
                             if field_is_modified:
                                 cus_main.cus_zone_id = cus_main_cus_zone
                                 modified_records.append(record)
@@ -2207,14 +2207,14 @@ def update_all_cus_tabs(request):
                     
                     # CUS_ACTIVE
                     #customer.cus_active = cus_site_cus_active
-                    field_is_modified, record = check_modified_field("CUS_SITE", cus_no, "cus_active", int(customer.cus_active), int(cus_site_cus_active), "E", request)
+                    field_is_modified, record = check_modified_field("CUS_SITE", cus_no, "Status", int(customer.cus_active), int(cus_site_cus_active), "E", request)
                     if field_is_modified:
                         customer.cus_active = cus_site_cus_active
                         modified_records.append(record)
                     
                     # CUS_NAME_TH
                     #customer.cus_name_th = cus_site_cus_name_th
-                    field_is_modified, record = check_modified_field("CUS_SITE", cus_no, "cus_name_th", customer.cus_name_th, cus_site_cus_name_th, "E", request)
+                    field_is_modified, record = check_modified_field("CUS_SITE", cus_no, "Name TH", customer.cus_name_th, cus_site_cus_name_th, "E", request)
                     if field_is_modified:
                         customer.cus_name_th = cus_site_cus_name_th
                         modified_records.append(record)
@@ -2228,7 +2228,7 @@ def update_all_cus_tabs(request):
                                 customer.cus_add1_th = cus_site_cus_add1_th
                                 modified_records.append(record)                                
 
-                    # CUS_ADD2_EN
+                    # CUS_ADD2_TH
                     #customer.cus_add2_th = cus_site_cus_add2_th
                     if (cus_site_cus_add1_th is not None):
                         if (cus_site_cus_add2_th != ""):
@@ -2246,29 +2246,99 @@ def update_all_cus_tabs(request):
                                 customer.cus_subdist_th = cus_site_cus_subdist_th
                                 modified_records.append(record)                              
                     
+                    # CUS_NAME_EN
+                    #customer.cus_name_en = cus_site_cus_name_en
+                    field_is_modified, record = check_modified_field("CUS_SITE", cus_no, "Name EN", customer.cus_name_en, cus_site_cus_name_en, "E", request)
+                    if field_is_modified:
+                        customer.cus_name_en = cus_site_cus_name_en
+                        modified_records.append(record)
+
+                    # CUS_ADD1_EN
+                    # customer.cus_add1_en = cus_site_cus_add1_en
+                    if (cus_site_cus_add1_en is not None):
+                        if (cus_site_cus_add1_en != ""):
+                            field_is_modified, record = check_modified_field("CUS_SITE", cus_no, "Address1 EN", customer.cus_add1_en, cus_site_cus_add1_en, "E", request)
+                            if field_is_modified:
+                                customer.cus_add1_en = cus_site_cus_add1_en
+                                modified_records.append(record)                                
+
+                    # CUS_ADD2_EN
+                    #customer.cus_add2_en = cus_site_cus_add2_en
+                    if (cus_site_cus_add1_en is not None):
+                        if (cus_site_cus_add2_en != ""):
+                            field_is_modified, record = check_modified_field("CUS_SITE", cus_no, "Address2 EN", customer.cus_add2_en, cus_site_cus_add2_en, "E", request)
+                            if field_is_modified:
+                                customer.cus_add2_en = cus_site_cus_add2_en
+                                modified_records.append(record)                              
+
+                    # CUS_SUBDIST_EN
+                    # customer.cus_subdist_en = cus_site_cus_subdist_en
+                    if (cus_site_cus_subdist_en is not None):
+                        if (cus_site_cus_subdist_en != ""):
+                            field_is_modified, record = check_modified_field("CUS_SITE", cus_no, "Sub-District EN", customer.cus_subdist_en, cus_site_cus_subdist_en, "E", request)
+                            if field_is_modified:
+                                customer.cus_subdist_en = cus_site_cus_subdist_en
+                                modified_records.append(record)   
+
+
+
+
                     # CUS_DISTRICT_ID
-                    # customer.cus_district_id = cus_site_cus_district_id
+                    customer.cus_district_id = cus_site_cus_district_id
+                    '''
                     if (cus_site_cus_district_id is not None):
                         if (cus_site_cus_district_id != ""):
                             field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "District ID", int(customer.cus_district_id), int(cus_site_cus_district_id), "E", request)
                             if field_is_modified:
                                 customer.cus_district_id = cus_site_cus_district_id
                                 modified_records.append(record)
-
-
+                    '''
                     customer.cus_city_id = city_id
-
                     customer.cus_country_id = country_id
-                    customer.cus_name_en = cus_site_cus_name_en
-                    customer.cus_add1_en = cus_site_cus_add1_en
-                    customer.cus_add2_en = cus_site_cus_add2_en
-                    customer.cus_subdist_en = cus_site_cus_subdist_en
-                    customer.cus_zip = cus_site_cus_zip
-                    customer.cus_tel = cus_site_cus_tel
-                    customer.cus_fax = cus_site_cus_fax
-                    customer.cus_email = cus_site_cus_email
+
+
+
+                    # CUS_ZIP
+                    # customer.cus_zip = cus_site_cus_zip
+                    if (cus_site_cus_zip is not None):
+                        if (cus_site_cus_zip != ""):
+                            field_is_modified, record = check_modified_field("CUS_SITE", cus_no, "Zip", int(customer.cus_zip), int(cus_site_cus_zip), "E", request)
+                            if field_is_modified:
+                                customer.cus_zip = cus_site_cus_zip
+                                modified_records.append(record)
+
+                    # CUS_TEL
+                    # customer.cus_tel = cus_site_cus_tel
+                    if (cus_site_cus_tel is not None):
+                        if (cus_site_cus_tel != ""):
+                            field_is_modified, record = check_modified_field("CUS_SITE", cus_no, "Telephone", customer.cus_tel, cus_site_cus_tel, "E", request)
+                            if field_is_modified:
+                                customer.cus_tel = cus_site_cus_tel
+                                modified_records.append(record)
+
+                    # CUS_FAX
+                    # customer.cus_fax = cus_site_cus_fax
+                    if (cus_site_cus_fax is not None):
+                        if (cus_site_cus_fax != ""):
+                            field_is_modified, record = check_modified_field("CUS_SITE", cus_no, "Fax", customer.cus_fax, cus_site_cus_fax, "E", request)
+                            if field_is_modified:
+                                customer.cus_fax = cus_site_cus_fax
+                                modified_records.append(record)
+
+                    # CUS_EMAIL
+                    # customer.cus_email = cus_site_cus_email
+                    if (cus_site_cus_email is not None):
+                        if (cus_site_cus_email != ""):
+                            field_is_modified, record = check_modified_field("CUS_SITE", cus_no, "Email", customer.cus_email, cus_site_cus_email, "E", request)
+                            if field_is_modified:
+                                customer.cus_email = cus_site_cus_email
+                                modified_records.append(record)
+
+
                     customer.cus_zone_id = cus_site_cus_zone
                     customer.site_contact_id = cus_site_site_contact_id
+
+                    # Group ID
                     customer.cus_taxid = customer_group_id
 
                     if customer.upd_flag == 'A':
