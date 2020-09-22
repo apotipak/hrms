@@ -145,17 +145,7 @@ input:checked + .slider:after {
 }
 
 
-.selectGroupID {
-    width: 240px;
-    height: 30px;
-    margin-left: -7px;
-}
-.groupIDTextBox {
-    width: 217px;
-    margin-left: -240px;
-    height: 25px;
-    border: none;
-}
+
 
 /*
 .selectBusinessType {
@@ -202,6 +192,18 @@ input:checked + .slider:after {
 
 
 /* TEST */
+.selectGroupID {
+    width: 180px;
+    height: 30px;
+    margin-left: -7px;
+}
+.groupIDTextBox {
+    width: 156px;
+    margin-left: -180px;
+    height: 25px;
+    border: none;
+}
+
 .selectBusinessType {
     width: 180px;
     height: 30px;
@@ -214,28 +216,26 @@ input:checked + .slider:after {
     border: none;
 }
 
-
 .selectGroup1 {
-    width: 240px;
+    width: 180px;
     height: 30px;
     margin-left: -7px;
 }
 .group1TextBox {
-    width: 217px;
-    margin-left: -240px;
+    width: 156px;
+    margin-left: -180px;
     height: 25px;
     border: none;
 }
 
-
 .selectGroup2 {
-    width: 240px;
+    width: 180px;
     height: 30px;
     margin-left: -7px;
 }
 .group2TextBox {
-    width: 217px;
-    margin-left: -240px;
+    width: 156px;
+    margin-left: -180px;
     height: 25px;
     border: none;
 }

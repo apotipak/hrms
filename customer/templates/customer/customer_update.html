@@ -356,7 +356,6 @@
                     <!-- Business Type -->
                     <div class="form-row">
 
-                      {% comment %}
                       <div class="form-group col-md-3">
                         <label for="id_cus_main_business_type">{% trans 'Group ID' %}</label>                          
                         <div class="container">
@@ -372,7 +371,6 @@
                           <input class="groupIDTextBox" id="id_cus_main_group_id" name="cus_main_group_id" value="{{customer.cus_taxid|default_if_none:''}}" />
                         </div>                        
                       </div>
-                      {% endcomment %}
 
                       <div class="form-group col-md-3">
                         <label for="id_cus_main_business_type">{% trans 'Business Type' %}</label>                          
@@ -390,8 +388,7 @@
                         </div>                        
                       </div>
 
-                      {% comment %}
-                      <div class="form-group col-md-4">
+                      <div class="form-group col-md-3">
                         <label for="id_cus_main_group_1">{% trans 'Group 1' %}</label>                          
                         <div class="container">
                           <select id="selectCustoemrOptionGroup1" name="cus_main_group_1" class="selectGroup1">
@@ -407,7 +404,7 @@
                         </div>                        
                       </div>
 
-                      <div class="form-group col-md-4">
+                      <div class="form-group col-md-3">
                         <label for="id_cus_main_group_2">{% trans 'Group 2' %}</label>                          
                         <div class="container">
                           <select id="selectCustoemrOptionGroup2" name="cus_main_group_2" class="selectGroup2">
@@ -422,7 +419,6 @@
                           <input class="group2TextBox" id="id_cus_main_customer_option_op3" name="cus_main_customer_option_op3" value="{{customer_option.op3|default_if_none:''}}" />
                         </div>
                       </div>
-                      {% endcomment %}
 
                     </div>
 
