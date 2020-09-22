@@ -2121,7 +2121,7 @@ def update_all_cus_tabs(request):
                         op2 = cus_main_customer_option_op2.replace('&amp;', '&'), # Group 1
                         op3 = cus_main_customer_option_op3.replace('&amp;', '&'), # Group 2
                         op4 = cus_main_customer_option_op4, # A/R Code
-                        opn1 = int(cus_main_customer_option_opn1))   # GP Margin
+                        opn1 = cus_main_customer_option_opn1)   # GP Margin
                     c.save()
 
 

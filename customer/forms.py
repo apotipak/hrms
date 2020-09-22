@@ -222,8 +222,9 @@ class CusAllTabsForm(forms.ModelForm):
     cus_main_cus_country_en = forms.CharField(required=False)
     cus_main_cus_zone = forms.ModelChoiceField(queryset=None, required=False)
     cus_main_cus_zip = forms.CharField(required=False)
-    cus_main_customer_option_op1 = forms.CharField(required=False)
+    cus_main_customer_option_op1 = forms.CharField(required=False)    
     cus_main_customer_option_op4 = forms.CharField(required=False)
+    cus_main_customer_option_opn1 = forms.DecimalField(required=False)
 
     # Customer Site
     #cus_site_cus_name_th = forms.CharField(required=True)
