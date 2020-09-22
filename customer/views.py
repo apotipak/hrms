@@ -775,7 +775,7 @@ def CustomerUpdate(request, pk):
     cus_site = None
     cus_bill = None
 
-    if customer:
+    if customer is not None:
         try:
             cus_main = CusMain.objects.get(pk=customer.cus_id)
             # print("cus_id = " + str(customer.cus_id))
@@ -2051,7 +2051,10 @@ def update_all_cus_tabs(request):
                             customer_option.save()
                             
                     except CustomerOption.DoesNotExist:
-                        # Insert                        
+                        # Insert
+                        if not cus_main_customer_option_opn1.isnumeric():
+                            cus_main_customer_option_opn1 = 0                        
+
                         c = CustomerOption(
                             cus_no = cus_no, 
                             btype = cus_main_business_type.replace('&amp;', '&'), 
@@ -2059,7 +2062,7 @@ def update_all_cus_tabs(request):
                             op2 = cus_main_customer_option_op2.replace('&amp;', '&'), # Group 1
                             op3 = cus_main_customer_option_op3.replace('&amp;', '&'), # Group 2
                             op4 = cus_main_customer_option_op4, # A/R Code
-                            opn1 = cus_main_customer_option_opn1)
+                            opn1 = float(cus_main_customer_option_opn1))
                         c.save()
 
                     # History Log                    
