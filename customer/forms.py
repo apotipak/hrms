@@ -403,11 +403,12 @@ class CusAllTabsForm(forms.ModelForm):
 
     def clean_cus_main_customer_option_opn1(self):
         data = self.data.get('cus_main_customer_option_opn1')
-        if data.isnumeric():            
-            if float(data) < 0:
-                raise ValidationError("GP Margin is less than zero.")
-            else:
-                return 1
+        if data:
+            if data.isnumeric():            
+                if float(data) < 0:
+                    raise ValidationError("GP Margin is less than zero.")
+                else:
+                    return 1
         else:
             return 0
 

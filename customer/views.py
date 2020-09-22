@@ -1884,7 +1884,7 @@ def update_all_cus_tabs(request):
             cus_main_customer_option_op3 = request.POST.get('cus_main_customer_option_op3')
             cus_main_customer_option_op4 = request.POST.get('cus_main_customer_option_op4')
             cus_main_customer_option_opn1 = request.POST.get('cus_main_customer_option_opn1')
-            # print("cus_main_customer_option_opn1 = " + str(cus_main_customer_option_opn1))
+            print("cus_main_customer_option_opn1 = " + str(cus_main_customer_option_opn1))
 
             cus_main_cus_contact_id = request.POST.get('cus_main_cus_contact_id')
             if cus_main_cus_contact_id:
@@ -2010,7 +2010,10 @@ def update_all_cus_tabs(request):
                     # CUS_ZONE
                     if cus_main_cus_zone is not None:
                         if cus_main_cus_zone.isnumeric():
-                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Zone ID", int(cus_main.cus_zone_id), int(cus_main_cus_zone), "E", request)
+                            if cus_main.cus_zone_id is not None: 
+                                field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Zone ID", int(cus_main.cus_zone_id), int(cus_main_cus_zone), "E", request)
+                            else:
+                                field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Zone ID", cus_main.cus_zone_id, int(cus_main_cus_zone), "E", request)
                             if field_is_modified:
                                 cus_main.cus_zone_id = cus_main_cus_zone
                                 modified_records.append(record)
@@ -2067,13 +2070,15 @@ def update_all_cus_tabs(request):
 
                             # GP Margin
                             if cus_main_customer_option_opn1 is not None:
-                                if cus_main_customer_option_opn1.isnumeric():
-                                    field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "GP Margin", customer_option.opn1, cus_main_customer_option_opn1, "E", request)
-                                    if field_is_modified:
-                                        customer_option.opn1 = cus_main_customer_option_opn1 # GP Margin
-                                        modified_records.append(record)
+                                if customer_option.opn1 is not None:
+                                    field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "GP Margin", float(customer_option.opn1), float(cus_main_customer_option_opn1), "E", request)
                                 else:
-                                    customer_option.opn1 = 0                                        
+                                    field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "GP Margin", customer_option.opn1, float(cus_main_customer_option_opn1), "E", request)                                    
+                                    
+                                if field_is_modified:
+                                    customer_option.opn1 = cus_main_customer_option_opn1 # GP Margin
+                                    modified_records.append(record)
+
                             customer_option.save()
                             
                     except CustomerOption.DoesNotExist:
@@ -2365,6 +2370,7 @@ def update_all_cus_tabs(request):
 
                     # Group ID
                     customer_group_id = request.POST.get('customer_group_id')
+                    print("customer_group_id : " + customer_group_id)
                     customer.cus_taxid = customer_group_id
 
                     if customer.upd_flag == 'A':
