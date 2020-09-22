@@ -348,7 +348,7 @@
 
                       <div class="form-group col-md-3">
                         <label for="id_cus_main_customer_option_opn1" class="text-danger">{% trans 'GP Margin' %}</label>
-                        <input type="text" class="form-control form-control-sm" id="id_cus_main_customer_option_opn1" name="cus_main_customer_option_opn1" value="{{ customer_option.opn1.strip }}">
+                        {% render_field customer_code_create_form.cus_main_customer_option_opn1 class="form-control form-control-sm" %}
                       </div>
 
                     </div>

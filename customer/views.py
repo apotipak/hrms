@@ -32,6 +32,7 @@ def CustomerCreate(request):
     response_data = dict()
 
     if request.method == "POST":
+        print("POST: CustomerCreate()")
         if form.is_valid():          
             cus_site_form = CusSiteCreateForm(request.POST, user=request.user)
             response_data['form_is_valid'] = True            
@@ -40,7 +41,7 @@ def CustomerCreate(request):
 
         return JsonResponse(response_data)     
     else:
-        print("GET")
+        print("GET: CustomerCreate()")
         customer_code_create_form = CustomerCodeCreateForm()
         
 
@@ -1803,6 +1804,8 @@ def update_all_cus_tabs(request):
     modified_records = []
 
     if request.method == 'POST':
+        print("POST: update_all_cus_tabs()")
+
         form = CusAllTabsForm(request.POST)
 
         if form.is_valid():            
@@ -1984,7 +1987,7 @@ def update_all_cus_tabs(request):
 
                     # CUS_ZONE
                     if cus_main_cus_zone is not None:
-                        field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Zone ID", int(cus_main.cus_zone_id), int(cus_main_cus_zone), "E", request)
+                        field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Zone ID", cus_main.cus_zone_id, cus_main_cus_zone, "E", request)
                         if field_is_modified:
                             cus_main.cus_zone_id = cus_main_cus_zone
                             modified_records.append(record)

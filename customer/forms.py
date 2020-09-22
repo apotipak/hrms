@@ -17,6 +17,7 @@ class CustomerCodeCreateForm(forms.Form):
     customer_option_btype = forms.ModelChoiceField(queryset=None, required=False)
     customer_option_op2 = forms.ModelChoiceField(queryset=None, required=False)
     customer_option_op3 = forms.ModelChoiceField(queryset=None, required=False)
+    cus_main_customer_option_opn1 = forms.IntegerField(required=False)
 
     # Customer Site
     cus_site_cus_zone = forms.ModelChoiceField(queryset=None, required=False)
@@ -32,8 +33,11 @@ class CustomerCodeCreateForm(forms.Form):
         self.fields['customer_option_btype'].queryset = CustomerOption.objects.values_list('btype', flat=True).exclude(btype=None).order_by('btype').distinct()
         self.fields['customer_option_op2'].queryset = CustomerOption.objects.values_list('op2', flat=True).exclude(op2=None).order_by('op2').distinct()
         self.fields['customer_option_op3'].queryset = CustomerOption.objects.values_list('op3', flat=True).exclude(op2=None).order_by('op3').distinct()
-
+        
         self.fields['cus_site_cus_zone'].queryset=ComZone.objects.all()
+
+        self.fields['cus_main_customer_option_opn1'].initial = 0.00
+
 
     def clean_cus_id(self):
         data = self.data.get('cus_id')
@@ -57,11 +61,7 @@ class CustomerCodeCreateForm(forms.Form):
                 return data
             else:
                 raise ValidationError("Customer Branch is not correct!")
-    '''
-    def clean_cus_main_cus_zone(self):
-        data = self.data.get('cus_main_cus_zone')
-        return data
-    '''
+
 
 class CusSiteCreateForm(forms.ModelForm):
     cus_site_cus_id = forms.CharField()
@@ -220,7 +220,7 @@ class CusAllTabsForm(forms.ModelForm):
     cus_main_cus_city_en = forms.CharField(required=False)
     cus_main_cus_district_en = forms.CharField(required=False)
     cus_main_cus_country_en = forms.CharField(required=False)
-    cus_main_cus_zone = forms.ModelChoiceField(queryset=None, required=True)
+    cus_main_cus_zone = forms.ModelChoiceField(queryset=None, required=False)
     cus_main_cus_zip = forms.CharField(required=False)
     cus_main_customer_option_op1 = forms.CharField(required=False)
     cus_main_customer_option_op4 = forms.CharField(required=False)
