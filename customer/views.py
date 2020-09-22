@@ -1847,15 +1847,17 @@ def update_all_cus_tabs(request):
             cus_main_cus_district_id_new = request.POST.get('cus_main_cus_district_id')
             print("cus_main_cus_district_id_new = " + str(cus_main_cus_district_id_new))
 
+            # Fulfill district, city, country
             cus_main_cus_district_id = None
             cus_main_city_id = None
             cus_main_country_id = None    
             cus_main_cus_district_id = request.POST.get('cus_main_cus_district_id')
             if (cus_main_cus_district_id is not None):
-                if (cus_main_cus_district_id != ""):
+                if (cus_main_cus_district_id.isnumeric()):
                     try:
                         district_obj = TDistrict.objects.get(dist_id=cus_main_cus_district_id)
-                        if district_obj:
+
+                        if district_obj is not None:
                             cus_main_city_id = district_obj.city_id_id
                             city_obj = TCity.objects.get(city_id=cus_main_city_id)
                             cus_main_country_id = city_obj.country_id_id
@@ -1867,6 +1869,12 @@ def update_all_cus_tabs(request):
                 cus_main_cus_district_id = None
                 cus_main_city_id = None
                 cus_main_country_id = None            
+
+            print("------------------------------")
+            print("cus_main_cus_district_id = " + str(cus_main_cus_district_id))
+            print("cus_main_city_id = " + str(cus_main_city_id))
+            print("cus_main_country_id = " + str(cus_main_country_id))
+            print("------------------------------")
 
             cus_main_business_type = request.POST.get('cus_main_business_type')            
             cus_main_customer_option_op1 = request.POST.get('cus_main_customer_option_op1')
@@ -1927,11 +1935,17 @@ def update_all_cus_tabs(request):
                                 modified_records.append(record)
 
                     # CUS_DISTRICT_ID
+                    print("cus_main.cus_district_id 1: " + str(cus_main.cus_district_id))
+                    print("cus_main_cus_district_id 2: " + str(cus_main_cus_district_id))
+
                     if (cus_main_cus_district_id is not None):
-                        if (cus_main_cus_district_id != ""):
-                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "District ID", cus_main.cus_district_id, cus_main_cus_district_id, "E", request)
+                        if (cus_main_cus_district_id.isnumeric()):
+                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "District ID", int(cus_main.cus_district_id), int(cus_main_cus_district_id), "E", request)
                             if field_is_modified:
                                 cus_main.cus_district_id = cus_main_cus_district_id
+                                cus_main.cus_city_id = cus_main_city_id
+                                cus_main.cus_country_id = cus_main_country_id
+
                                 modified_records.append(record)
 
                     # CUS_NAME_EN
@@ -2057,11 +2071,15 @@ def update_all_cus_tabs(request):
                                 customer_option.op4 = cus_main_customer_option_op4.replace('&amp;', '&') # A/R Code
                                 modified_records.append(record)
 
-                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "GP Margin", float(customer_option.opn1), float(cus_main_customer_option_opn1), "E", request)
-                            if field_is_modified:
-                                customer_option.opn1 = cus_main_customer_option_opn1 # GP Margin
-                                modified_records.append(record)
-
+                            # GP Margin
+                            if cus_main_customer_option_opn1 is not None:
+                                if cus_main_customer_option_opn1.isnumeric():
+                                    field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "GP Margin", customer_option.opn1, cus_main_customer_option_opn1, "E", request)
+                                    if field_is_modified:
+                                        customer_option.opn1 = cus_main_customer_option_opn1 # GP Margin
+                                        modified_records.append(record)
+                                else:
+                                    customer_option.opn1 = 0                                        
                             customer_option.save()
                             
                     except CustomerOption.DoesNotExist:
