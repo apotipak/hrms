@@ -2005,15 +2005,42 @@ def update_all_cus_tabs(request):
                     # CUS_MAIN Business Type
                     try:
                         customer_option = CustomerOption.objects.get(cus_no=cus_no)
-                        customer_option.btype = cus_main_business_type.replace('&amp;', '&')
-                        customer_option.op1 = cus_main_customer_option_op1.rstrip() # Status
-                        customer_option.op2 = cus_main_customer_option_op2.replace('&amp;', '&') # Group 1
-                        customer_option.op3 = cus_main_customer_option_op3.replace('&amp;', '&') # Group 2
-                        customer_option.op4 = cus_main_customer_option_op4.rstrip() # A/R Code
-                        customer_option.save()
-                        print("save cus_main_customer_option")
+
+                        if customer_option is not None:
+                            # customer_option.btype = cus_main_business_type.replace('&amp;', '&')
+                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Business Type", customer_option.btype, cus_main_business_type.replace('&amp;', '&'), "E", request)
+                            if field_is_modified:
+                                customer_option.btype = cus_main_business_type.replace('&amp;', '&')
+                                modified_records.append(record)
+
+                            # customer_option.op1 = cus_main_customer_option_op1.rstrip() # Status
+                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Status", customer_option.op1, cus_main_customer_option_op1.rstrip(), "E", request)
+                            if field_is_modified:
+                                customer_option.op1 = cus_main_customer_option_op1.rstrip() # Status
+                                modified_records.append(record)
+
+                            # customer_option.op2 = cus_main_customer_option_op2.replace('&amp;', '&') # Group 1
+                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Group 1", customer_option.op2, cus_main_customer_option_op2.replace('&amp;', '&'), "E", request)
+                            if field_is_modified:
+                                customer_option.op2 = cus_main_customer_option_op2.replace('&amp;', '&') # Group 1
+                                modified_records.append(record)
+
+                            # customer_option.op3 = cus_main_customer_option_op3.replace('&amp;', '&') # Group 2
+                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Group 2", customer_option.op3, cus_main_customer_option_op3.replace('&amp;', '&'), "E", request)
+                            if field_is_modified:
+                                customer_option.op3 = cus_main_customer_option_op3.replace('&amp;', '&') # Group 2
+                                modified_records.append(record)
+
+                            # customer_option.op4 = cus_main_customer_option_op4.rstrip() # A/R Code
+                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "A/R Code", customer_option.op4, cus_main_customer_option_op4.replace('&amp;', '&'), "E", request)
+                            if field_is_modified:
+                                customer_option.op4 = cus_main_customer_option_op4.replace('&amp;', '&') # A/R Code
+                                modified_records.append(record)
+
+                            customer_option.save()
+                            
                     except CustomerOption.DoesNotExist:
-                        # Insert
+                        # Insert                        
                         c = CustomerOption(
                             cus_no = cus_no, 
                             btype = cus_main_business_type.replace('&amp;', '&'), 
