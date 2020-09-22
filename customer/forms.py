@@ -27,6 +27,7 @@ class CustomerCodeCreateForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super(CustomerCodeCreateForm, self).__init__(*args, **kwargs)
+        
         self.fields['cus_id'].widget.attrs={'class': 'form-control form-control-sm'}
         self.fields['cus_brn'].widget.attrs={'class': 'form-control form-control-sm'}
         self.fields['cus_main_cus_zone'].queryset=ComZone.objects.all()
@@ -41,6 +42,10 @@ class CustomerCodeCreateForm(forms.Form):
         # GP Margin
         self.fields['cus_main_customer_option_opn1'].initial = 0.00
 
+        self.fields['customer_group_id'].empty_label = None
+        self.fields['customer_option_btype'].empty_label = None
+        self.fields['customer_option_op2'].empty_label = None
+        self.fields['customer_option_op3'].empty_label = None
 
     def clean_cus_id(self):
         data = self.data.get('cus_id')
