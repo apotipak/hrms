@@ -14,6 +14,7 @@ class CustomerCodeCreateForm(forms.Form):
 
     # Customer Main Office    
     cus_main_cus_zone = forms.ModelChoiceField(queryset=None, required=False)
+    customer_group_id = forms.ModelChoiceField(queryset=None, required=False)
     customer_option_btype = forms.ModelChoiceField(queryset=None, required=False)
     customer_option_op2 = forms.ModelChoiceField(queryset=None, required=False)
     customer_option_op3 = forms.ModelChoiceField(queryset=None, required=False)
@@ -30,12 +31,14 @@ class CustomerCodeCreateForm(forms.Form):
         self.fields['cus_brn'].widget.attrs={'class': 'form-control form-control-sm'}
         self.fields['cus_main_cus_zone'].queryset=ComZone.objects.all()
 
+        self.fields['customer_group_id'].queryset = Customer.objects.values_list('cus_taxid', flat=True).exclude(cus_taxid=None).order_by('cus_taxid').distinct()
         self.fields['customer_option_btype'].queryset = CustomerOption.objects.values_list('btype', flat=True).exclude(btype=None).order_by('btype').distinct()
         self.fields['customer_option_op2'].queryset = CustomerOption.objects.values_list('op2', flat=True).exclude(op2=None).order_by('op2').distinct()
         self.fields['customer_option_op3'].queryset = CustomerOption.objects.values_list('op3', flat=True).exclude(op2=None).order_by('op3').distinct()
         
         self.fields['cus_site_cus_zone'].queryset=ComZone.objects.all()
 
+        # GP Margin
         self.fields['cus_main_customer_option_opn1'].initial = 0.00
 
 

@@ -307,7 +307,15 @@
                     <!-- Business Type -->
                     <div class="form-row">
 
-                      <div class="form-group col-md-4">
+                      <div class="form-group col-md-3">
+                        <label for="id_cus_main_group_id">{% trans 'Group ID' %}</label>                          
+                        <div class="container">
+                          {% render_field customer_code_create_form.customer_group_id class="selectGroupID" %}
+                          <input class="groupIDTextBox" id="id_cus_main_group_id" name="cus_main_group_id" value="{{customer.cus_taxid|default_if_none:''}}" />
+                        </div>                        
+                      </div>
+
+                      <div class="form-group col-md-3">
                         <label for="id_cus_main_business_type">{% trans 'Business Type' %}</label>                          
                         <div class="container">
                           {% render_field customer_code_create_form.customer_option_btype class="selectBusinessType" %}
@@ -315,7 +323,7 @@
                         </div>                        
                       </div>
 
-                      <div class="form-group col-md-4">
+                      <div class="form-group col-md-3">
                         <label for="id_cus_main_group_1">{% trans 'Group 1' %}</label>                          
                         <div class="container">
                           {% render_field customer_code_create_form.customer_option_op2 class="selectBusinessType" %}
@@ -323,14 +331,13 @@
                         </div>                        
                       </div>
 
-                      <div class="form-group col-md-4">
+                      <div class="form-group col-md-3">
                         <label for="id_cus_main_group_2">{% trans 'Group 2' %}</label>                          
                         <div class="container">
                           {% render_field customer_code_create_form.customer_option_op3 class="selectBusinessType" %}
                           <input class="group2TextBox" id="id_cus_main_customer_option_op3" name="cus_main_customer_option_op3" value="{{customer_option.op3|default_if_none:''}}" />
                         </div>
                       </div>
-
                     </div>
 
 
