@@ -990,15 +990,22 @@ def get_district_list(request):
         print("method get")
         if current_district_id is not None:
             if current_district_id != "":
-                district_object = TDistrict.objects.filter(dist_id__exact=current_district_id).get()
-                data = TDistrict.objects.select_related('city_id').filter(city_id__city_th__contains=district_object.city_id.city_th)
-                if not data:
-                    data = TDistrict.objects.select_related('city_id').filter(city_id__city_en__contains=district_object.city_id.city_en)
+                if current_district_id.isnumeric():
+                    print("debug1")
+                    district_object = TDistrict.objects.filter(dist_id__exact=current_district_id).get()
+                    data = TDistrict.objects.select_related('city_id').filter(city_id__city_th__contains=district_object.city_id.city_th)
+                    if not data:
+                        print("debug2")
+                        data = TDistrict.objects.select_related('city_id').filter(city_id__city_en__contains=district_object.city_id.city_en)
+                else:
+                    print("debug3")
+                    data = TDistrict.objects.all()
             else:
+                print("debug4")
                 data = TDistrict.objects.all()
         else:
+            print("debug5")
             data = TDistrict.objects.all()
-
 
         paginator = Paginator(data, item_per_page)
         is_paginated = True if paginator.num_pages > 1 else False
@@ -1922,7 +1929,7 @@ def update_all_cus_tabs(request):
                     # CUS_DISTRICT_ID
                     if (cus_main_cus_district_id is not None):
                         if (cus_main_cus_district_id != ""):
-                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "District ID", int(cus_main.cus_district_id), int(cus_main_cus_district_id), "E", request)
+                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "District ID", cus_main.cus_district_id, cus_main_cus_district_id, "E", request)
                             if field_is_modified:
                                 cus_main.cus_district_id = cus_main_cus_district_id
                                 modified_records.append(record)

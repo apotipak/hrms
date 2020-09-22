@@ -520,7 +520,7 @@ class CusMainForm(forms.ModelForm):
         if instance.cus_city is not None:
             self.initial['cus_main_cus_city_en'] = instance.cus_city.city_en
         else:
-            self.initial['cus_main_cus_city_en'] = ""
+            self.initial['cus_main_cus_city_en'] = None
         
         cus_main_cus_district_en = forms.CharField(required=False)
         self.fields['cus_main_cus_district_en'].widget.attrs['readonly'] = True
@@ -533,7 +533,7 @@ class CusMainForm(forms.ModelForm):
                 
         self.fields['cus_main_cus_country_en'].widget.attrs['readonly'] = True
         if (instance.cus_district is not None):
-            self.fields['cus_main_cus_country_en'].initial = instance.cus_country.country_en
+            self.fields['cus_main_cus_country_en'].initial = instance.cus_district.dist_en
         else:
             self.initial['cus_main_cus_country_en'] = ""
 
