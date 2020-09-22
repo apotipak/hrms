@@ -2024,7 +2024,7 @@ def update_all_cus_tabs(request):
                     # CUS_CONTACT
                     if cus_main_cus_contact_id is not None:
                         if cus_main_cus_contact_id.isnumeric():                  
-                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Contact ID", cus_main.cus_contact_id, cus_main_cus_contact_id, "E", request)
+                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Contact ID", int(cus_main.cus_contact_id), int(cus_main_cus_contact_id), "E", request)
                             if field_is_modified:
                                 cus_main.cus_contact_id = cus_main_cus_contact_id
                                 modified_records.append(record)
@@ -2209,15 +2209,6 @@ def update_all_cus_tabs(request):
                 cus_site_city_id = None
                 cus_site_country_id = None       
 
-            # Customer contact information
-            cus_site_site_contact_id = request.POST.get('cus_site_site_contact_id')
-            if cus_site_site_contact_id:
-                cus_site_site_contact_id = cus_site_site_contact_id
-            else:
-                cus_site_site_contact_id = None
-
-            customer_group_id = request.POST.get('customer_group_id')
-
             '''
             print("------ Print CUS_SITE data -------")
             print("cus_no = " + str(cus_no))
@@ -2361,10 +2352,28 @@ def update_all_cus_tabs(request):
                                 modified_records.append(record)
 
 
+
                     customer.cus_zone_id = cus_site_cus_zone
-                    customer.site_contact_id = cus_site_site_contact_id
+
+
+                    # CUS_CONTACT
+                    cus_site_site_contact_id = request.POST.get('cus_site_site_contact_id')                    
+                    print("old cus_site_site_contact_id : " + str(customer.site_contact_id))
+                    print("new cus_site_site_contact_id : " + str(cus_site_site_contact_id))
+
+                    if cus_site_site_contact_id is not None:
+                        if cus_site_site_contact_id.isnumeric():
+                            if (customer.cus_contact_id is None):
+                                field_is_modified, record = check_modified_field("CUS_SITE", cus_no, "Contact ID", customer.site_contact_id, int(cus_site_site_contact_id), "E", request)
+                            else:
+                                field_is_modified, record = check_modified_field("CUS_SITE", cus_no, "Contact ID", int(customer.site_contact_id), int(cus_site_site_contact_id), "E", request)
+
+                            if field_is_modified:
+                                customer.site_contact_id = cus_site_site_contact_id
+                                modified_records.append(record)
 
                     # Group ID
+                    customer_group_id = request.POST.get('customer_group_id')
                     customer.cus_taxid = customer_group_id
 
                     if customer.upd_flag == 'A':
