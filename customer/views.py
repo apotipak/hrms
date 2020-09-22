@@ -1845,7 +1845,7 @@ def update_all_cus_tabs(request):
             cus_main_cus_zone = request.POST.get('cus_main_cus_zone')                
 
             cus_main_cus_district_id_new = request.POST.get('cus_main_cus_district_id')
-            print("cus_main_cus_district_id_new = " + str(cus_main_cus_district_id_new))
+            # print("cus_main_cus_district_id_new = " + str(cus_main_cus_district_id_new))
 
             # Fulfill district, city, country
             cus_main_cus_district_id = None
@@ -1870,11 +1870,13 @@ def update_all_cus_tabs(request):
                 cus_main_city_id = None
                 cus_main_country_id = None            
 
+            '''
             print("------------------------------")
             print("cus_main_cus_district_id = " + str(cus_main_cus_district_id))
             print("cus_main_city_id = " + str(cus_main_city_id))
             print("cus_main_country_id = " + str(cus_main_country_id))
             print("------------------------------")
+            '''
 
             cus_main_business_type = request.POST.get('cus_main_business_type')            
             cus_main_customer_option_op1 = request.POST.get('cus_main_customer_option_op1')
@@ -1882,7 +1884,7 @@ def update_all_cus_tabs(request):
             cus_main_customer_option_op3 = request.POST.get('cus_main_customer_option_op3')
             cus_main_customer_option_op4 = request.POST.get('cus_main_customer_option_op4')
             cus_main_customer_option_opn1 = request.POST.get('cus_main_customer_option_opn1')
-            print("cus_main_customer_option_opn1 = " + str(cus_main_customer_option_opn1))
+            # print("cus_main_customer_option_opn1 = " + str(cus_main_customer_option_opn1))
 
             cus_main_cus_contact_id = request.POST.get('cus_main_cus_contact_id')
             if cus_main_cus_contact_id:
@@ -1935,9 +1937,8 @@ def update_all_cus_tabs(request):
                                 modified_records.append(record)
 
                     # CUS_DISTRICT_ID
-                    print("cus_main.cus_district_id 1: " + str(cus_main.cus_district_id))
-                    print("cus_main_cus_district_id 2: " + str(cus_main_cus_district_id))
-
+                    # print("cus_main.cus_district_id 1: " + str(cus_main.cus_district_id))
+                    # print("cus_main_cus_district_id 2: " + str(cus_main_cus_district_id))
                     if (cus_main_cus_district_id is not None):
                         if (cus_main_cus_district_id.isnumeric()):
                             field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "District ID", int(cus_main.cus_district_id), int(cus_main_cus_district_id), "E", request)
@@ -1945,7 +1946,6 @@ def update_all_cus_tabs(request):
                                 cus_main.cus_district_id = cus_main_cus_district_id
                                 cus_main.cus_city_id = cus_main_city_id
                                 cus_main.cus_country_id = cus_main_country_id
-
                                 modified_records.append(record)
 
                     # CUS_NAME_EN
@@ -2186,23 +2186,30 @@ def update_all_cus_tabs(request):
             
             cus_site_cus_district_id = request.POST.get('cus_site_cus_district_id')
             print("cus_site_cus_district_id = " + str(cus_site_cus_district_id))
-
-            if cus_site_cus_district_id:
-                try:
-                    district_obj = TDistrict.objects.get(dist_id=cus_site_cus_district_id)
-                    if district_obj:
-                        city_id = district_obj.city_id_id
-                        city_obj = TCity.objects.get(city_id=city_id)
-                        country_id = city_obj.country_id_id
-                except TDistrict.DoesNotExist:
-                    cus_site_cus_district_id = None
-                    city_id = None
-                    country_id = None
+            
+            # Fulfill district, city, country
+            cus_site_cus_district_id = None
+            cus_site_city_id = None
+            cus_site_country_id = None    
+            cus_site_cus_district_id = request.POST.get('cus_site_cus_district_id')
+            if (cus_site_cus_district_id is not None):
+                if (cus_site_cus_district_id.isnumeric()):
+                    try:
+                        district_obj = TDistrict.objects.get(dist_id=cus_site_cus_district_id)
+                        if district_obj is not None:
+                            cus_site_city_id = district_obj.city_id_id
+                            city_obj = TCity.objects.get(city_id=cus_site_city_id)
+                            cus_site_country_id = city_obj.country_id_id
+                    except TDistrict.DoesNotExist:
+                        cus_site_cus_district_id = None
+                        cus_site_city_id = None
+                        cus_site_country_id = None
             else:
                 cus_site_cus_district_id = None
-                city_id = None
-                country_id = None
+                cus_site_city_id = None
+                cus_site_country_id = None       
 
+            # Customer contact information
             cus_site_site_contact_id = request.POST.get('cus_site_site_contact_id')
             if cus_site_site_contact_id:
                 cus_site_site_contact_id = cus_site_site_contact_id
@@ -2306,21 +2313,15 @@ def update_all_cus_tabs(request):
                                 modified_records.append(record)   
 
 
-
-
                     # CUS_DISTRICT_ID
-                    customer.cus_district_id = cus_site_cus_district_id
-                    '''
                     if (cus_site_cus_district_id is not None):
-                        if (cus_site_cus_district_id != ""):
-                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "District ID", int(customer.cus_district_id), int(cus_site_cus_district_id), "E", request)
+                        if (cus_site_cus_district_id.isnumeric()):
+                            field_is_modified, record = check_modified_field("CUS_SITE", cus_no, "District ID", int(customer.cus_district_id), int(cus_site_cus_district_id), "E", request)
                             if field_is_modified:
                                 customer.cus_district_id = cus_site_cus_district_id
+                                customer.cus_city_id = cus_site_city_id
+                                customer.cus_country_id = cus_site_country_id
                                 modified_records.append(record)
-                    '''
-                    customer.cus_city_id = city_id
-                    customer.cus_country_id = country_id
-
 
 
                     # CUS_ZIP
