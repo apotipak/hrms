@@ -1861,7 +1861,7 @@ def update_all_cus_tabs(request):
                 cus_main_city_id = None
                 cus_main_country_id = None            
 
-            cus_main_business_type = request.POST.get('cus_main_business_type')
+            cus_main_business_type = request.POST.get('cus_main_business_type')            
             cus_main_customer_option_op1 = request.POST.get('cus_main_customer_option_op1')
             cus_main_customer_option_op2 = request.POST.get('cus_main_customer_option_op2')
             cus_main_customer_option_op3 = request.POST.get('cus_main_customer_option_op3')
@@ -2181,6 +2181,8 @@ def update_all_cus_tabs(request):
             else:
                 cus_site_site_contact_id = None
 
+            customer_group_id = request.POST.get('customer_group_id')
+
             '''
             print("------ Print CUS_SITE data -------")
             print("cus_no = " + str(cus_no))
@@ -2230,6 +2232,7 @@ def update_all_cus_tabs(request):
                 customer.cus_email = cus_site_cus_email
                 customer.cus_zone_id = cus_site_cus_zone
                 customer.site_contact_id = cus_site_site_contact_id
+                customer.cus_taxid = customer_group_id
 
                 if customer.upd_flag == 'A':
                     customer.upd_flag = 'E'
@@ -2278,6 +2281,7 @@ def update_all_cus_tabs(request):
                     cus_email = cus_site_cus_email,
                     cus_zone_id = cus_site_cus_zone,
                     site_contact_id = cus_site_site_contact_id,
+                    cus_taxid = customer_group_id,
                     )
                 new_customer_site.save()
 

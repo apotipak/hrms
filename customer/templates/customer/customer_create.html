@@ -308,10 +308,10 @@
                     <div class="form-row">
 
                       <div class="form-group col-md-3">
-                        <label for="id_cus_main_group_id">{% trans 'Group ID' %}</label>                          
+                        <label for="id_customer_group_id">{% trans 'Group ID' %}</label>                          
                         <div class="container">
                           {% render_field customer_code_create_form.customer_group_id class="selectGroupID" %}
-                          <input class="groupIDTextBox" id="id_cus_main_group_id" name="cus_main_group_id" value="{{customer.cus_taxid|default_if_none:''}}" />
+                          <input class="groupIDTextBox" id="id_customer_group_id" name="customer_group_id" value="{{customer.cus_taxid|default_if_none:''}}" />
                         </div>                        
                       </div>
 
@@ -1845,7 +1845,7 @@
     cus_main_cus_tel = $('#id_cus_main_cus_tel').val();
     cus_main_cus_fax = $('#id_cus_main_cus_fax').val();
     cus_main_cus_email = $('#id_cus_main_cus_email').val();
-    cus_main_cus_zone = $('#id_cus_main_cus_zone').val();
+    cus_main_cus_zone = $('#id_cus_main_cus_zone').val();    
     customer_option_btype = $('#id_cus_main_business_type').val();
     customer_option_op1 = $('#id_cus_main_customer_option_op1').val();
     customer_option_op2 = $('#id_cus_main_customer_option_op2').val();
@@ -1876,6 +1876,8 @@
     cus_site_cus_email = $('#id_cus_site_cus_email').val();
     cus_site_cus_zone = $('#id_cus_site_cus_zone').val();    
     cus_site_site_contact_id = $('#id_cus_site_site_contact_id').val();
+    customer_group_id = $('#id_customer_group_id').val();
+    //alert(customer_group_id);
 
     // CUS_BILL
     if ($('#id_cus_bill_cus_active').is(":checked"))
@@ -1924,6 +1926,7 @@
         cus_main_cus_fax: cus_main_cus_fax,
         cus_main_cus_email: cus_main_cus_email,
         cus_main_cus_zone: cus_main_cus_zone,
+        customer_group_id: customer_group_id,
         cus_main_business_type: customer_option_btype,
         cus_main_customer_option_op1: customer_option_op1,
         cus_main_customer_option_op2: customer_option_op2,
@@ -2877,6 +2880,9 @@
 
 
   $(document).ready(function(){
+    $("#id_customer_group_id").change(function(){         
+      $(".groupIDTextBox").val($("#id_customer_group_id option:selected").html());
+    });
 
     $("#id_customer_option_btype").change(function(){         
       $(".businessTypeTextBox").val($("#id_customer_option_btype option:selected").html());
