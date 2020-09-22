@@ -72,6 +72,7 @@ def ajax_check_exist_cus_main(request):
 
         form = CustomerCodeCreateForm(request.POST)        
         pickup_records=[]
+        groupt_id =  []
         business_type_list = []
         group_1_list = []
         group_2_list = []
@@ -207,6 +208,7 @@ def ajax_check_exist_cus_site(request):
 
     response_data = {}
     pickup_records=[]
+    group_id = []
     business_type_list = []
     group_1_list = []
     group_2_list = []
@@ -815,6 +817,7 @@ def CustomerUpdate(request, pk):
         cus_bill_form = CusBillForm(instance=cus_bill)
 
     # Business Type
+    group_id = Customer.objects.values_list('cus_taxid', flat=True).exclude(cus_taxid=None).order_by('cus_taxid').distinct()
     business_type_list = CustomerOption.objects.values_list('btype', flat=True).exclude(btype=None).order_by('btype').distinct()
     group_1_list = CustomerOption.objects.values_list('op2', flat=True).exclude(op2=None).order_by('op2').distinct()
     group_2_list = CustomerOption.objects.values_list('op3', flat=True).exclude(op2=None).order_by('op3').distinct()
@@ -844,6 +847,7 @@ def CustomerUpdate(request, pk):
         'customer': customer,        
         'request': request,
         'customer_option': customer_option,
+        'group_id': group_id,
         'business_type_list': business_type_list,
         'group_1_list': group_1_list,
         'group_2_list': group_2_list,
