@@ -1993,17 +1993,20 @@ def update_all_cus_tabs(request):
 
                     # CUS_ZONE
                     if cus_main_cus_zone is not None:
-                        field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Zone ID", cus_main.cus_zone_id, cus_main_cus_zone, "E", request)
-                        if field_is_modified:
-                            cus_main.cus_zone_id = cus_main_cus_zone
-                            modified_records.append(record)
+                        print("zone is not none")
+                        if cus_main_cus_zone.isnumeric():
+                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Zone ID", float(cus_main.cus_zone_id), float(cus_main_cus_zone), "E", request)
+                            if field_is_modified:
+                                cus_main.cus_zone_id = cus_main_cus_zone
+                                modified_records.append(record)
 
                     # CUS_CONTACT
                     if cus_main_cus_contact_id is not None:
-                        field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Contact ID", int(cus_main.cus_contact_id), int(cus_main_cus_contact_id), "E", request)
-                        if field_is_modified:
-                            cus_main.cus_contact_id = cus_main_cus_contact_id
-                            modified_records.append(record)
+                        if cus_main_cus_contact_id.isnumeric():                  
+                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Contact ID", cus_main.cus_contact_id, cus_main_cus_contact_id, "E", request)
+                            if field_is_modified:
+                                cus_main.cus_contact_id = cus_main_cus_contact_id
+                                modified_records.append(record)
 
                     if cus_main.upd_flag == 'A':
                         cus_main.upd_flag = 'E'
@@ -2047,7 +2050,7 @@ def update_all_cus_tabs(request):
                                 customer_option.op4 = cus_main_customer_option_op4.replace('&amp;', '&') # A/R Code
                                 modified_records.append(record)
 
-                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "GP Margin", customer_option.opn1, cus_main_customer_option_opn1, "E", request)
+                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "GP Margin", float(customer_option.opn1), float(cus_main_customer_option_opn1), "E", request)
                             if field_is_modified:
                                 customer_option.opn1 = cus_main_customer_option_opn1 # GP Margin
                                 modified_records.append(record)
@@ -2200,47 +2203,48 @@ def update_all_cus_tabs(request):
                 modified_records = []
                 customer = Customer.objects.get(pk=cus_no)
 
-                customer.cus_active = cus_site_cus_active
-                '''
-                field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "cus_name_th", cus_main.cus_name_th, cus_main_cus_name_th, "E", request)
-                if field_is_modified:
-                    customer.cus_name_th = cus_main_cus_name_th
-                    modified_records.append(record)
-                '''
-
-                #customer.cus_name_th = cus_site_cus_name_th
-                # CUS_NAME_TH
-                field_is_modified, record = check_modified_field("CUS_SITE", cus_no, "cus_name_th", customer.cus_name_th, cus_site_cus_name_th, "E", request)
-                if field_is_modified:
-                    customer.cus_name_th = cus_site_cus_name_th
-                    modified_records.append(record)
-
-
-                customer.cus_add1_th = cus_site_cus_add1_th
-                customer.cus_add2_th = cus_site_cus_add2_th
-                customer.cus_subdist_th = cus_site_cus_subdist_th
-                customer.cus_district_id = cus_site_cus_district_id
-                customer.cus_city_id = city_id
-                customer.cus_country_id = country_id
-                customer.cus_name_en = cus_site_cus_name_en
-                customer.cus_add1_en = cus_site_cus_add1_en
-                customer.cus_add2_en = cus_site_cus_add2_en
-                customer.cus_subdist_en = cus_site_cus_subdist_en
-                customer.cus_zip = cus_site_cus_zip
-                customer.cus_tel = cus_site_cus_tel
-                customer.cus_fax = cus_site_cus_fax
-                customer.cus_email = cus_site_cus_email
-                customer.cus_zone_id = cus_site_cus_zone
-                customer.site_contact_id = cus_site_site_contact_id
-                customer.cus_taxid = customer_group_id
-
-                if customer.upd_flag == 'A':
-                    customer.upd_flag = 'E'
-
-                if customer.upd_flag == 'D':
-                    customer.upd_flag = 'E'
+                if customer is not None:
                     
-                customer.save()
+                    # CUS_ACTIVE
+                    #customer.cus_active = cus_site_cus_active
+                    field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "cus_active", int(customer.cus_active), int(cus_site_cus_active), "E", request)
+                    if field_is_modified:
+                        customer.cus_active = cus_site_cus_active
+                        modified_records.append(record)
+                    
+                    # CUS_NAME_TH
+                    #customer.cus_name_th = cus_site_cus_name_th
+                    field_is_modified, record = check_modified_field("CUS_SITE", cus_no, "cus_name_th", customer.cus_name_th, cus_site_cus_name_th, "E", request)
+                    if field_is_modified:
+                        customer.cus_name_th = cus_site_cus_name_th
+                        modified_records.append(record)
+
+
+                    customer.cus_add1_th = cus_site_cus_add1_th
+                    customer.cus_add2_th = cus_site_cus_add2_th
+                    customer.cus_subdist_th = cus_site_cus_subdist_th
+                    customer.cus_district_id = cus_site_cus_district_id
+                    customer.cus_city_id = city_id
+                    customer.cus_country_id = country_id
+                    customer.cus_name_en = cus_site_cus_name_en
+                    customer.cus_add1_en = cus_site_cus_add1_en
+                    customer.cus_add2_en = cus_site_cus_add2_en
+                    customer.cus_subdist_en = cus_site_cus_subdist_en
+                    customer.cus_zip = cus_site_cus_zip
+                    customer.cus_tel = cus_site_cus_tel
+                    customer.cus_fax = cus_site_cus_fax
+                    customer.cus_email = cus_site_cus_email
+                    customer.cus_zone_id = cus_site_cus_zone
+                    customer.site_contact_id = cus_site_site_contact_id
+                    customer.cus_taxid = customer_group_id
+
+                    if customer.upd_flag == 'A':
+                        customer.upd_flag = 'E'
+
+                    if customer.upd_flag == 'D':
+                        customer.upd_flag = 'E'
+                        
+                    customer.save()
 
                 # History Log                    
                 for data in modified_records:
