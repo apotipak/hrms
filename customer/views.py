@@ -1976,18 +1976,22 @@ def update_all_cus_tabs(request):
 
                     # CUS_ZIP
                     if (cus_main_cus_zip is not None):
-                        field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Zip", int(cus_main.cus_zip), int(cus_main_cus_zip), "E", request)
-                        if field_is_modified:
-                            cus_main.cus_zip = cus_main_cus_zip
-                            modified_records.append(record)
+                        if cus_main_cus_zip.isnumeric():
+                            if cus_main.cus_zip is not None:
+                                field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Zip", int(cus_main.cus_zip), int(cus_main_cus_zip), "E", request)
+                            else:
+                                field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Zip", cus_main.cus_zip, int(cus_main_cus_zip), "E", request)
+
+                            if field_is_modified:
+                                cus_main.cus_zip = cus_main_cus_zip
+                                modified_records.append(record)
 
                     # CUS_TEL
                     if (cus_main_cus_tel is not None):
-                        if (cus_main_cus_tel != ""):
-                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Telephone", cus_main.cus_tel, cus_main_cus_tel, "E", request)
-                            if field_is_modified:
-                                cus_main.cus_tel = cus_main_cus_tel
-                                modified_records.append(record)
+                        field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Telephone", cus_main.cus_tel, cus_main_cus_tel, "E", request)
+                        if field_is_modified:
+                            cus_main.cus_tel = cus_main_cus_tel
+                            modified_records.append(record)
 
                     # CUS_FAX
                     if (cus_main_cus_fax is not None):
@@ -2301,8 +2305,16 @@ def update_all_cus_tabs(request):
 
                     # CUS_ZIP
                     # customer.cus_zip = cus_site_cus_zip
+                    print("old cus_site_cus_zip : " + str(customer.cus_zip))
+                    print("new cus_site_cus_zip : " + str(cus_site_cus_zip))
+
                     if (cus_site_cus_zip is not None):
-                        field_is_modified, record = check_modified_field("CUS_SITE", cus_no, "Zip", int(customer.cus_zip), int(cus_site_cus_zip), "E", request)
+                        if customer.cus_zip is not None:
+                            if cus_site_cus_zip.isnumeric():
+                                field_is_modified, record = check_modified_field("CUS_SITE", cus_no, "Zip", int(customer.cus_zip), int(cus_site_cus_zip), "E", request)
+                        else:
+                            field_is_modified, record = check_modified_field("CUS_SITE", cus_no, "Zip", customer.cus_zip, int(cus_site_cus_zip), "E", request)
+
                         if field_is_modified:
                             customer.cus_zip = cus_site_cus_zip
                             modified_records.append(record)
