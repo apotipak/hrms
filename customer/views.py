@@ -988,16 +988,17 @@ def get_district_list(request):
 
     else:
         print("method get")
-        if current_district_id:
-            print("true")
-            district_object = TDistrict.objects.filter(dist_id__exact=current_district_id).get()
-            data = TDistrict.objects.select_related('city_id').filter(city_id__city_th__contains=district_object.city_id.city_th)
-            print("data")
-            if not data:
-                print("not data")
-                data = TDistrict.objects.select_related('city_id').filter(city_id__city_en__contains=district_object.city_id.city_en)
+        if current_district_id is not None:
+            if current_district_id != "":
+                district_object = TDistrict.objects.filter(dist_id__exact=current_district_id).get()
+                data = TDistrict.objects.select_related('city_id').filter(city_id__city_th__contains=district_object.city_id.city_th)
+                if not data:
+                    data = TDistrict.objects.select_related('city_id').filter(city_id__city_en__contains=district_object.city_id.city_en)
+            else:
+                data = TDistrict.objects.all()
         else:
-            data = TDistrict.objects.select_related('city_id').all()
+            data = TDistrict.objects.all()
+
 
         paginator = Paginator(data, item_per_page)
         is_paginated = True if paginator.num_pages > 1 else False
@@ -1025,10 +1026,9 @@ def get_district_list(request):
         pickup_records=[]
         
         for d in current_page:
-            # if (d.dist_id is not None):
-                # print(d.dist_id)
-                # print(d.city_id.country_id.country_th)
-
+            country_name_th = d.city_id.country_id.country_th
+            country_name_en = d.city_id.country_id.country_en
+            
             record = {
                 "dist_id": d.dist_id,
                 "city_id": d.city_id_id,
@@ -1036,8 +1036,8 @@ def get_district_list(request):
                 "dist_en": d.dist_en,
                 "city_th": d.city_id.city_th,
                 "city_en": d.city_id.city_en,
-                "country_name_th": d.city_id.country_id.country_th,
-                "country_name_en": d.city_id.country_id.country_en,
+                "country_name_th": country_name_th,
+                "country_name_en": country_name_th, 
             }
             pickup_records.append(record)
 
