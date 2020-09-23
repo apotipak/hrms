@@ -131,7 +131,9 @@
                   {% endif %}
                 </td>
                 {% else %}  
-                <td>                  
+                <td>
+
+                  <!-- CUS_MAIN_OFFICE TAB -->
                   {% if item.log_table == "CUS_MAIN" %}
                   <span class="text-sm text-info">
                   <b>Edit</b> CUSTOMER <b>{{item.log_key}}</b> 
@@ -149,7 +151,7 @@
                   </span>
                   {% endif %}
 
-
+                  <!-- CUS_SITE TAB -->
                   {% if item.log_table == "CUS_SITE" %}
                   <span class="text-sm text-info">
                   <b>Edit</b> CUSTOMER <b>{{item.log_key}}</b> 
@@ -161,6 +163,20 @@
                   to <span class="text-sm text-info"><b><b>{{item.new_value}}</b></span>
                   {% endif %}
                   </span>
+
+                  <!-- CUS_BILL TAB -->
+                  {% if item.log_table == "CUS_BILL" %}
+                  <span class="text-sm text-info">
+                  <b>Edit</b> CUSTOMER <b>{{item.log_key}}</b> 
+                  </span>
+
+                  <span class="text-sm text-dark">
+                  on Billing tab, change <b>{{item.log_field|default_if_none:'empty'}}</b> from 
+                  <b>{{item.old_value}}</b> 
+                  to <span class="text-sm text-info"><b><b>{{item.new_value}}</b></span>
+                  {% endif %}
+                  </span>
+
                 </td>
                 {% endif %}
 

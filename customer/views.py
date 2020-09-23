@@ -2184,7 +2184,7 @@ def update_all_cus_tabs(request):
             cus_site_cus_zone = request.POST.get('cus_site_cus_zone')
             
             cus_site_cus_district_id = request.POST.get('cus_site_cus_district_id')
-            print("cus_site_cus_district_id = " + str(cus_site_cus_district_id))
+            # print("cus_site_cus_district_id = " + str(cus_site_cus_district_id))
             
             # Fulfill district, city, country
             cus_site_cus_district_id = None
@@ -2514,27 +2514,122 @@ def update_all_cus_tabs(request):
             try:
                 cusbill = CusBill.objects.get(pk=cus_no)
 
-                cusbill.cus_active = cus_bill_cus_active
-                cusbill.cus_name_th = cus_bill_cus_name_th
-                cusbill.cus_add1_th = cus_bill_cus_add1_th
-                cusbill.cus_add2_th = cus_bill_cus_add2_th
-                cusbill.cus_subdist_th = cus_bill_cus_subdist_th
-                cusbill.cus_district_id = cus_bill_cus_district_id
-                cusbill.cus_city_id = city_id
-                cusbill.cus_country_id = country_id
-                cusbill.cus_name_en = cus_bill_cus_name_en
-                cusbill.cus_add1_en = cus_bill_cus_add1_en
-                cusbill.cus_add2_en = cus_bill_cus_add2_en
-                cusbill.cus_subdist_en = cus_bill_cus_subdist_en
-                cusbill.cus_zip = cus_bill_cus_zip
-                cusbill.cus_tel = cus_bill_cus_tel
-                cusbill.cus_fax = cus_bill_cus_fax
-                cusbill.cus_email = cus_bill_cus_email
-                cusbill.cus_zone_id = cus_bill_cus_zone
-                cusbill.cus_contact_id = cus_bill_cus_contact_id
-                cusbill.site_contact_id = cus_bill_cus_contact_id
-                cusbill.save()
-                print("update cus_bill")
+                if cusbill is not None:
+                    
+
+                    # CUS_ACTIVE
+                    # cusbill.cus_active = cus_bill_cus_active
+                    field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Status", int(cusbill.cus_active), int(cus_bill_cus_active), "E", request)
+                    if field_is_modified:
+                        cusbill.cus_active = cus_bill_cus_active
+                        modified_records.append(record)
+                    
+                    # CUS_NAME_TH                    
+                    # cusbill.cus_name_th = cus_bill_cus_name_th
+                    field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Name TH", cusbill.cus_name_th, cus_bill_cus_name_th, "E", request)
+                    if field_is_modified:
+                        cusbill.cus_name_th = cus_bill_cus_name_th
+                        modified_records.append(record)
+                                
+                    # CUS_ADD1_TH                    
+                    # cusbill.cus_add1_th = cus_bill_cus_add1_th
+                    if (cus_bill_cus_add1_th is not None):
+                        field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Address1 TH", cusbill.cus_add1_th, cus_bill_cus_add1_th, "E", request)
+                        if field_is_modified:
+                            cusbill.cus_add1_th = cus_bill_cus_add1_th
+                            modified_records.append(record)                                
+
+                    # CUS_ADD2_TH
+                    # cusbill.cus_add2_th = cus_bill_cus_add2_th
+                    if (cus_bill_cus_add2_th is not None):
+                        field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Address2 TH", cusbill.cus_add2_th, cus_bill_cus_add2_th, "E", request)
+                        if field_is_modified:
+                            cusbill.cus_add2_th = cus_bill_cus_add2_th
+                            modified_records.append(record)                              
+
+                    # CUS_SUBDIST_TH                    
+                    # cusbill.cus_subdist_th = cus_bill_cus_subdist_th                    
+                    if (cus_bill_cus_subdist_th is not None):
+                        field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Sub-District TH", cusbill.cus_subdist_th, cus_bill_cus_subdist_th, "E", request)
+                        if field_is_modified:
+                            cusbill.cus_subdist_th = cus_bill_cus_subdist_th
+                            modified_records.append(record)                             
+                                        
+                    # CUS_NAME_EN
+                    # cusbill.cus_name_en = cus_bill_cus_name_en
+                    field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Name EN", cusbill.cus_name_en, cus_bill_cus_name_en, "E", request)
+                    if field_is_modified:
+                        cusbill.cus_name_en = cus_bill_cus_name_en
+                        modified_records.append(record)
+                                
+                    # CUS_ADD1_EN
+                    # cusbill.cus_add1_en = cus_bill_cus_add1_en
+                    if (cus_bill_cus_add1_en is not None):
+                        field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Address1 EN", cusbill.cus_add1_en, cus_bill_cus_add1_en, "E", request)
+                        if field_is_modified:
+                            cusbill.cus_add1_en = cus_bill_cus_add1_en
+                            modified_records.append(record)                                
+
+                    # CUS_ADD2_EN
+                    # cusbill.cus_add2_en = cus_bill_cus_add2_en
+                    if (cus_bill_cus_add2_en is not None):
+                        field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Address2 EN", cusbill.cus_add2_en, cus_bill_cus_add2_en, "E", request)
+                        if field_is_modified:
+                            cusbill.cus_add2_en = cus_bill_cus_add2_en
+                            modified_records.append(record)                              
+
+                    # CUS_SUBDIST_EN 
+                    # cusbill.cus_subdist_en = cus_bill_cus_subdist_en                 
+                    if (cus_bill_cus_subdist_en is not None):
+                        field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Sub-District EN", cusbill.cus_subdist_en, cus_bill_cus_subdist_en, "E", request)
+                        if field_is_modified:
+                            cusbill.cus_subdist_en = cus_bill_cus_subdist_en
+                            modified_records.append(record)                             
+
+                    
+                    # CUS_DISTRICT_ID
+                    # print("cus_bill.cus_district_id 1: " + str(cus_bill.cus_district_id))
+                    # print("cus_bill_cus_district_id 2: " + str(cus_bill_cus_district_id))
+                    # cusbill.cus_district_id = cus_bill_cus_district_id
+                    if (cus_bill_cus_district_id is not None):
+                        if (cus_bill_cus_district_id.isnumeric()):
+                            field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "District ID", int(cus_main.cus_district_id), int(cus_bill_cus_district_id), "E", request)
+                            if field_is_modified:
+                                cus_main.cus_district_id = cus_bill_cus_district_id
+                                cus_main.cus_city_id = cus_main_city_id
+                                cus_main.cus_country_id = cus_main_country_id
+                                modified_records.append(record)
+
+
+                    cusbill.cus_city_id = city_id
+                    cusbill.cus_country_id = country_id
+                    cusbill.cus_zip = cus_bill_cus_zip
+                    cusbill.cus_tel = cus_bill_cus_tel
+                    cusbill.cus_fax = cus_bill_cus_fax
+                    cusbill.cus_email = cus_bill_cus_email
+                    cusbill.cus_zone_id = cus_bill_cus_zone
+                    cusbill.cus_contact_id = cus_bill_cus_contact_id
+                    cusbill.site_contact_id = cus_bill_cus_contact_id
+                    cusbill.save()
+
+                    # History Log                    
+                    for data in modified_records:
+                        new_log = HrmsNewLog(
+                            log_table = data['log_table'],
+                            log_key = data['log_key'],
+                            log_field = data['log_field'],
+                            old_value = data['old_value'],
+                            new_value = data['new_value'],
+                            log_type = data['log_type'],
+                            log_by = data['log_by'],
+                            log_date = data['log_date'],
+                            )
+                        new_log.save()    
+                        modified_records = []
+                    # ./History Log 
+                
+                    print("update cus_bill")
+
             except CusBill.DoesNotExist:
                 new_cusbill = CusBill(
                     cus_active = cus_bill_cus_active,
