@@ -2182,7 +2182,7 @@ def update_all_cus_tabs(request):
             cus_site_cus_fax = request.POST.get('cus_site_cus_fax')
             cus_site_cus_email = request.POST.get('cus_site_cus_email')
             cus_site_cus_zone = request.POST.get('cus_site_cus_zone')
-            
+            customer_group_id = request.POST.get('customer_group_id')
             cus_site_cus_district_id = request.POST.get('cus_site_cus_district_id')
             # print("cus_site_cus_district_id = " + str(cus_site_cus_district_id))
             
@@ -2207,6 +2207,8 @@ def update_all_cus_tabs(request):
                 cus_site_cus_district_id = None
                 cus_site_city_id = None
                 cus_site_country_id = None       
+
+            cus_site_site_contact_id = request.POST.get('cus_site_site_contact_id')
 
             '''
             print("------ Print CUS_SITE data -------")
@@ -2357,7 +2359,7 @@ def update_all_cus_tabs(request):
                                 modified_records.append(record)
 
                     # CUS_CONTACT
-                    cus_site_site_contact_id = request.POST.get('cus_site_site_contact_id')                    
+                                        
                     # print("old cus_site_site_contact_id : " + str(customer.site_contact_id))
                     # print("new cus_site_site_contact_id : " + str(cus_site_site_contact_id))
                     if cus_site_site_contact_id is not None:
@@ -2372,8 +2374,8 @@ def update_all_cus_tabs(request):
                                 modified_records.append(record)
 
                     # Group ID
-                    customer_group_id = request.POST.get('customer_group_id')
-                    print("customer_group_id : " + customer_group_id)
+                    # customer_group_id = request.POST.get('customer_group_id')
+                    # print("customer_group_id : " + customer_group_id)
                     customer.cus_taxid = customer_group_id
 
                     if customer.upd_flag == 'A':
@@ -2411,8 +2413,8 @@ def update_all_cus_tabs(request):
                     cus_add2_th = cus_site_cus_add2_th,
                     cus_subdist_th = cus_site_cus_subdist_th,
                     cus_district_id = cus_site_cus_district_id,
-                    cus_city_id = city_id,
-                    cus_country_id = country_id,
+                    cus_city_id = cus_site_city_id,
+                    cus_country_id = cus_site_country_id,
                     cus_name_en = cus_site_cus_name_en,
                     cus_add1_en = cus_site_cus_add1_en,
                     cus_add2_en = cus_site_cus_add2_en,
@@ -2708,8 +2710,8 @@ def update_all_cus_tabs(request):
                     cus_add2_th = cus_bill_cus_add2_th,
                     cus_subdist_th = cus_bill_cus_subdist_th,
                     cus_district_id = cus_bill_cus_district_id,
-                    cus_city_id = city_id,
-                    cus_country_id = country_id,
+                    cus_city_id = cus_bill_city_id,
+                    cus_country_id = cus_bill_country_id,
                     cus_name_en = cus_bill_cus_name_en,
                     cus_add1_en = cus_bill_cus_add1_en,
                     cus_add2_en = cus_bill_cus_add2_en,
