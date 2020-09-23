@@ -2358,9 +2358,8 @@ def update_all_cus_tabs(request):
 
                     # CUS_CONTACT
                     cus_site_site_contact_id = request.POST.get('cus_site_site_contact_id')                    
-                    print("old cus_site_site_contact_id : " + str(customer.site_contact_id))
-                    print("new cus_site_site_contact_id : " + str(cus_site_site_contact_id))
-
+                    # print("old cus_site_site_contact_id : " + str(customer.site_contact_id))
+                    # print("new cus_site_site_contact_id : " + str(cus_site_site_contact_id))
                     if cus_site_site_contact_id is not None:
                         if cus_site_site_contact_id.isnumeric():
                             if (customer.cus_contact_id is None):
@@ -2660,8 +2659,24 @@ def update_all_cus_tabs(request):
                                 cusbill.cus_zone_id = cus_bill_cus_zone
                                 modified_records.append(record)                                
 
-                    cusbill.cus_contact_id = cus_bill_cus_contact_id
-                    cusbill.site_contact_id = cus_bill_cus_contact_id
+
+
+                    # CUS_CONTACT
+                    cus_bill_cus_contact_id = request.POST.get('cus_bill_cus_contact_id')                    
+                    # cusbill.cus_contact_id = cus_bill_cus_contact_id
+                    # cusbill.site_contact_id = cus_bill_cus_contact_id
+                    if cus_bill_cus_contact_id is not None:
+                        if cus_bill_cus_contact_id.isnumeric():
+                            if (cusbill.cus_contact_id is None):
+                                field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Contact ID", cusbill.site_contact_id, int(cus_bill_cus_contact_id), "E", request)
+                            else:
+                                field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Contact ID", int(cusbill.site_contact_id), int(cus_bill_cus_contact_id), "E", request)
+
+                            if field_is_modified:
+                                cusbill.cus_contact_id = cus_bill_cus_contact_id
+                                cusbill.site_contact_id = cus_bill_cus_contact_id
+                                modified_records.append(record)
+
                     cusbill.save()
 
                     # History Log                    
