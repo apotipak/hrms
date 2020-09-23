@@ -2307,12 +2307,7 @@ def update_all_cus_tabs(request):
                                 customer.cus_country_id = cus_site_country_id
                                 modified_records.append(record)
 
-
                     # CUS_ZIP
-                    # customer.cus_zip = cus_site_cus_zip
-                    print("old cus_site_cus_zip : " + str(customer.cus_zip))
-                    print("new cus_site_cus_zip : " + str(cus_site_cus_zip))
-
                     if (cus_site_cus_zip is not None):
                         if customer.cus_zip is not None:
                             if cus_site_cus_zip.isnumeric():
@@ -2348,9 +2343,18 @@ def update_all_cus_tabs(request):
                             customer.cus_email = cus_site_cus_email
                             modified_records.append(record)
 
-
-                    customer.cus_zone_id = cus_site_cus_zone
-
+                    
+                    # CUS_ZONE
+                    # customer.cus_zone_id = cus_site_cus_zone
+                    if cus_site_cus_zone is not None:
+                        if cus_site_cus_zone.isnumeric():
+                            if customer.cus_zone_id is not None: 
+                                field_is_modified, record = check_modified_field("CUS_SITE", cus_no, "Zone ID", int(customer.cus_zone_id), int(cus_site_cus_zone), "E", request)
+                            else:
+                                field_is_modified, record = check_modified_field("CUS_SITE", cus_no, "Zone ID", customer.cus_zone_id, int(cus_site_cus_zone), "E", request)
+                            if field_is_modified:
+                                customer.cus_zone_id = cus_site_cus_zone
+                                modified_records.append(record)
 
                     # CUS_CONTACT
                     cus_site_site_contact_id = request.POST.get('cus_site_site_contact_id')                    
@@ -2595,26 +2599,67 @@ def update_all_cus_tabs(request):
                         if field_is_modified:
                             cusbill.cus_subdist_en = cus_bill_cus_subdist_en
                             modified_records.append(record)                             
-
                     
                     # CUS_DISTRICT_ID
-                    # print("cus_bill.cus_district_id 1: " + str(cus_bill.cus_district_id))
-                    # print("cus_bill_cus_district_id 2: " + str(cus_bill_cus_district_id))
                     # cusbill.cus_district_id = cus_bill_cus_district_id
                     if (cus_bill_cus_district_id is not None):
                         if (cus_bill_cus_district_id.isnumeric()):
-                            field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "District ID", int(cus_main.cus_district_id), int(cus_bill_cus_district_id), "E", request)
+                            field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "District ID", int(cusbill.cus_district_id), int(cus_bill_cus_district_id), "E", request)
                             if field_is_modified:
                                 cusbill.cus_district_id = cus_bill_cus_district_id
                                 cusbill.cus_city_id = cus_bill_city_id
                                 cusbill.cus_country_id = cus_bill_country_id
                                 modified_records.append(record)
 
-                    cusbill.cus_zip = cus_bill_cus_zip
-                    cusbill.cus_tel = cus_bill_cus_tel
-                    cusbill.cus_fax = cus_bill_cus_fax
-                    cusbill.cus_email = cus_bill_cus_email
-                    cusbill.cus_zone_id = cus_bill_cus_zone
+                    # CUS_ZIP
+                    # cusbill.cus_zip = cus_bill_cus_zip
+                    if (cus_site_cus_zip is not None):
+                        if cusbill.cus_zip is not None:
+                            if cus_bill_cus_zip.isnumeric():
+                                field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Zip", int(cusbill.cus_zip), int(cus_bill_cus_zip), "E", request)
+                        else:
+                            field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Zip", cusbill.cus_zip, int(cus_bill_cus_zip), "E", request)
+
+                        if field_is_modified:
+                            cusbill.cus_zip = cus_bill_cus_zip
+                            modified_records.append(record)
+
+                    # CUS_TEL
+                    # cusbill.cus_tel = cus_bill_cus_tel
+                    if (cus_bill_cus_tel is not None):
+                        field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Telephone", cusbill.cus_tel, cus_bill_cus_tel, "E", request)
+                        if field_is_modified:
+                            cusbill.cus_tel = cus_bill_cus_tel
+                            modified_records.append(record)
+
+                    # CUS_FAX                    
+                    # cusbill.cus_fax = cus_bill_cus_fax
+                    if (cus_bill_cus_fax is not None):
+                        field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Fax", cusbill.cus_fax, cus_bill_cus_fax, "E", request)
+                        if field_is_modified:
+                            cusbill.cus_fax = cus_bill_cus_fax
+                            modified_records.append(record)
+
+                    # CUS_EMAIL
+                    # cusbill.cus_email = cus_bill_cus_email
+                    if (cus_bill_cus_email is not None):
+                        field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Email", cusbill.cus_email, cus_bill_cus_email, "E", request)
+                        if field_is_modified:
+                            cusbill.cus_email = cus_bill_cus_email
+                            modified_records.append(record)
+                    
+                    # CUS_ZONE
+                    # cusbill.cus_zone_id = cus_bill_cus_zone
+                    if cus_bill_cus_zone is not None:
+                        if cus_bill_cus_zone.isnumeric():
+                            if cusbill.cus_zone_id is not None: 
+                                field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Zone ID", int(cusbill.cus_zone_id), int(cus_bill_cus_zone), "E", request)
+                            else:
+                                field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Zone ID", cusbill.cus_zone_id, int(cus_bill_cus_zone), "E", request)
+                            if field_is_modified:
+                                cusbill.cus_zone_id = cus_bill_cus_zone
+                                modified_records.append(record)                                
+
                     cusbill.cus_contact_id = cus_bill_cus_contact_id
                     cusbill.site_contact_id = cus_bill_cus_contact_id
                     cusbill.save()
