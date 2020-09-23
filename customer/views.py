@@ -1884,7 +1884,7 @@ def update_all_cus_tabs(request):
             cus_main_customer_option_op3 = request.POST.get('cus_main_customer_option_op3')
             cus_main_customer_option_op4 = request.POST.get('cus_main_customer_option_op4')
             cus_main_customer_option_opn1 = request.POST.get('cus_main_customer_option_opn1')
-            print("cus_main_customer_option_opn1 = " + str(cus_main_customer_option_opn1))
+            # print("cus_main_customer_option_opn1 = " + str(cus_main_customer_option_opn1))
 
             cus_main_cus_contact_id = request.POST.get('cus_main_cus_contact_id')
             if cus_main_cus_contact_id:
@@ -2629,12 +2629,11 @@ def update_all_cus_tabs(request):
                         if cus_bill_cus_zip.isnumeric():
                             if cusbill.cus_zip is not None:                            
                                 field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Zip", int(cusbill.cus_zip), int(cus_bill_cus_zip), "E", request)
-                        else:
-                            field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Zip", cusbill.cus_zip, int(cus_bill_cus_zip), "E", request)
-
-                        if field_is_modified:
-                            cusbill.cus_zip = cus_bill_cus_zip
-                            modified_records.append(record)
+                            else:
+                                field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Zip", cusbill.cus_zip, int(cus_bill_cus_zip), "E", request)
+                            if field_is_modified:
+                                cusbill.cus_zip = cus_bill_cus_zip
+                                modified_records.append(record)
 
                     # CUS_TEL
                     # cusbill.cus_tel = cus_bill_cus_tel
