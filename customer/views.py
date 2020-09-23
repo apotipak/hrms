@@ -2671,12 +2671,8 @@ def update_all_cus_tabs(request):
                                 cusbill.cus_zone_id = cus_bill_cus_zone
                                 modified_records.append(record)                                
 
-
-
                     # CUS_CONTACT
                     cus_bill_cus_contact_id = request.POST.get('cus_bill_cus_contact_id')                    
-                    # cusbill.cus_contact_id = cus_bill_cus_contact_id
-                    # cusbill.site_contact_id = cus_bill_cus_contact_id
                     if cus_bill_cus_contact_id is not None:
                         if cus_bill_cus_contact_id.isnumeric():
                             if (cusbill.cus_contact_id is None):
