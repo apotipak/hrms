@@ -2454,7 +2454,9 @@ def update_all_cus_tabs(request):
             cus_bill_cus_add1_th = request.POST.get('cus_bill_cus_add1_th')
             cus_bill_cus_add2_th = request.POST.get('cus_bill_cus_add2_th')
             cus_bill_cus_subdist_th = request.POST.get('cus_bill_cus_subdist_th')            
-            cus_bill_cus_district_id = request.POST.get('cus_bill_cus_district_id') 
+            cus_bill_cus_district_id = request.POST.get('cus_bill_cus_district_id')
+            print("debug : cus_bill_cus_district_id = " + str(cus_bill_cus_district_id))
+
             cus_bill_cus_name_en = request.POST.get('cus_bill_cus_name_en')
             cus_bill_cus_add1_en = request.POST.get('cus_bill_cus_add1_en')
             cus_bill_cus_add2_en = request.POST.get('cus_bill_cus_add2_en')
@@ -2469,23 +2471,31 @@ def update_all_cus_tabs(request):
             cus_bill_cus_email = request.POST.get('cus_bill_cus_email')
             cus_bill_cus_zone = request.POST.get('cus_bill_cus_zone')
 
+            # District
+            # Fulfill district, city, country
+            cus_bill_cus_district_id = None
+            cus_bill_city_id = None
+            cus_bill_country_id = None    
             cus_bill_cus_district_id = request.POST.get('cus_bill_cus_district_id')
-            if cus_bill_cus_district_id:
-                try:
-                    district_obj = TDistrict.objects.get(dist_id=cus_bill_cus_district_id)
-                    if district_obj:
-                        city_id = district_obj.city_id_id
-                        city_obj = TCity.objects.get(city_id=city_id)
-                        country_id = city_obj.country_id_id
-                except TDistrict.DoesNotExist:
-                    cus_bill_cus_district_id = None
-                    city_id = None
-                    country_id = None
+            if (cus_bill_cus_district_id is not None):
+                if (cus_bill_cus_district_id.isnumeric()):
+                    try:
+                        district_obj = TDistrict.objects.get(dist_id=cus_bill_cus_district_id)
+                        if district_obj is not None:
+                            cus_bill_city_id = district_obj.city_id_id
+                            city_obj = TCity.objects.get(city_id=cus_bill_city_id)
+                            cus_bill_country_id = city_obj.country_id_id
+                    except TDistrict.DoesNotExist:
+                        cus_bill_cus_district_id = None
+                        cus_bill_city_id = None
+                        cus_bill_country_id = None
             else:
                 cus_bill_cus_district_id = None
-                city_id = None
-                country_id = None
+                cus_bill_city_id = None
+                cus_bill_country_id = None       
 
+
+            # Billing Tab - Contact Information
             cus_bill_cus_contact_id = request.POST.get('cus_bill_cus_contact_id')
             if cus_bill_cus_contact_id:
                 cus_bill_cus_contact_id = cus_bill_cus_contact_id
@@ -2595,14 +2605,11 @@ def update_all_cus_tabs(request):
                         if (cus_bill_cus_district_id.isnumeric()):
                             field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "District ID", int(cus_main.cus_district_id), int(cus_bill_cus_district_id), "E", request)
                             if field_is_modified:
-                                cus_main.cus_district_id = cus_bill_cus_district_id
-                                cus_main.cus_city_id = cus_main_city_id
-                                cus_main.cus_country_id = cus_main_country_id
+                                cusbill.cus_district_id = cus_bill_cus_district_id
+                                cusbill.cus_city_id = cus_bill_city_id
+                                cusbill.cus_country_id = cus_bill_country_id
                                 modified_records.append(record)
 
-
-                    cusbill.cus_city_id = city_id
-                    cusbill.cus_country_id = country_id
                     cusbill.cus_zip = cus_bill_cus_zip
                     cusbill.cus_tel = cus_bill_cus_tel
                     cusbill.cus_fax = cus_bill_cus_fax
