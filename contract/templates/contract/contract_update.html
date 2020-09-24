@@ -125,7 +125,7 @@
 
                   <div class="form-group col-md-4">
                     <label for="cus_contact">{% trans 'Contact' %}</label>
-                    <input type="text" class="form-control form-control-sm" readonly value="{{customer.site_contact_id}} {{customer.site_contact.con_fname_th}}&nbsp;{{customer.site_contact.con_lname_th}}">
+                    <input type="text" class="form-control form-control-sm" readonly value="No. {{customer.site_contact_id}} {{customer.site_contact.con_fname_th}}&nbsp;{{customer.site_contact.con_lname_th}}">
                   </div>
 
                   <div class="form-group col-md-2">
@@ -194,16 +194,9 @@
 
                 <div class="form-row"> 
 
-                  {% comment %}
                   <div class="form-group col-md-4">
                     <label for="cus_contact">{% trans 'Contact' %}</label>
-                    <input type="text" class="form-control form-control-sm" readonly value="{{customer.site_contact_id}} {{customer.site_contact.con_fname_en}}&nbsp;{{customer.cus_contact.con_lname_en}}">
-                  </div>    
-                  {% endcomment %}
-
-                  <div class="form-group col-md-4">
-                    <label for="cus_contact">{% trans 'Contact' %}</label>
-                    <input type="text" class="form-control form-control-sm" readonly value="{{customer.site_contact_id}} {{customer.site_contact.con_fname_en}}&nbsp;{{customer.site_contact.con_lname_en}}">
+                    <input type="text" class="form-control form-control-sm" readonly value="No. {{customer.site_contact_id}} {{customer.site_contact.con_fname_en}}&nbsp;{{customer.site_contact.con_lname_en}}">
                   </div>
 
 
