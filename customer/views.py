@@ -1795,7 +1795,8 @@ def check_modified_field(table_name, primary_key, field_name, old_value, new_val
             "old_value": old_value,
             "new_value": new_value,
             "log_type": log_type,
-            "log_by": request.user.username,
+            #"log_by": request.user.username,
+            "log_by": request.user.first_name,
             "log_date": timezone.now(),
             "log_description": None,
         }
