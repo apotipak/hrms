@@ -797,7 +797,7 @@ def CustomerUpdate(request, pk):
             cus_site_cus_id = None
             cus_site_cus_brn = None
         try:
-            cus_bill = CusBill.objects.get(pk=pk)
+            cus_bill = CusBill.objects.get(pk=pk).order_by('cus_no').distinct('cus_no')
             cus_bill_cus_no = cus_bill.cus_no
             cus_bill_cus_id = cus_bill.cus_id
             cus_bill_cus_brn = cus_bill.cus_brn
