@@ -1900,7 +1900,7 @@ def update_all_cus_tabs(request):
                 if (cus_main is not None):
 
                     # CUS_ACTIVE
-                    field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Status", int(cus_main.cus_active), int(cus_main_cus_active), "E", request)
+                    field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Active Status", int(cus_main.cus_active), int(cus_main_cus_active), "E", request)
                     if field_is_modified:
                         cus_main.cus_active = cus_main_cus_active
                         modified_records.append(record)
@@ -2051,31 +2051,36 @@ def update_all_cus_tabs(request):
                                 customer_option.btype = cus_main_business_type.replace('&amp;', '&')
                                 modified_records.append(record)
 
+                            # Business Status
                             # customer_option.op1 = cus_main_customer_option_op1.rstrip() # Status
-                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Status", customer_option.op1, cus_main_customer_option_op1.rstrip(), "E", request)
-                            if field_is_modified:
-                                customer_option.op1 = cus_main_customer_option_op1.rstrip() # Status
-                                modified_records.append(record)
+                            if (cus_main_customer_option_op1 is not None):
+                                field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Status", customer_option.op1, cus_main_customer_option_op1, "E", request)
+                                if field_is_modified:
+                                    customer_option.op1 = cus_main_customer_option_op1
+                                    modified_records.append(record)
 
+                            # Business Group 1
                             # customer_option.op2 = cus_main_customer_option_op2.replace('&amp;', '&') # Group 1
                             field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Group 1", customer_option.op2, cus_main_customer_option_op2.replace('&amp;', '&'), "E", request)
                             if field_is_modified:
                                 customer_option.op2 = cus_main_customer_option_op2.replace('&amp;', '&') # Group 1
                                 modified_records.append(record)
 
+                            # Business Group 2
                             # customer_option.op3 = cus_main_customer_option_op3.replace('&amp;', '&') # Group 2
                             field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Group 2", customer_option.op3, cus_main_customer_option_op3.replace('&amp;', '&'), "E", request)
                             if field_is_modified:
                                 customer_option.op3 = cus_main_customer_option_op3.replace('&amp;', '&') # Group 2
                                 modified_records.append(record)
 
+                            # Business A/R Code
                             # customer_option.op4 = cus_main_customer_option_op4.rstrip() # A/R Code
                             field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "A/R Code", customer_option.op4, cus_main_customer_option_op4.replace('&amp;', '&'), "E", request)
                             if field_is_modified:
                                 customer_option.op4 = cus_main_customer_option_op4.replace('&amp;', '&') # A/R Code
                                 modified_records.append(record)
 
-                            # GP Margin
+                            # Business GP Margin
                             if cus_main_customer_option_opn1 is not None:
                                 if customer_option.opn1 is not None:
                                     field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "GP Margin", float(customer_option.opn1), float(cus_main_customer_option_opn1), "E", request)
