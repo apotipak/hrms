@@ -5,12 +5,14 @@
     	{{ today_date|date:"d M Y" }}
     </div>
     <!-- Default to the left -->
-    v. <a href="#"><b>{{ project_version }}</b></a> | 
+    v. <b>{{ project_version }}</b>
 
-    {% if db_server == 'KTHBNL808\SQLEXPRESS' %}
-    Dev
-    {% else %}
-    {{ db_server }}
+    {% if db_server == "KTHBNL808\SQLEXPRESS" %}
+      <span class="text-primary"><b>Dev</b></span>
+    {% endif %}
+
+    {% if db_server == "10.176.68.27" %}
+      on <span class="text-primary"><b>Staging</b></span>
     {% endif %}
     
   </footer>
