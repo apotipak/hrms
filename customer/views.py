@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.views import generic
@@ -22,6 +23,7 @@ import json
 import sys, locale
 
 @login_required(login_url='/accounts/login/')
+@permission_required('customer.view_customer', login_url='/accounts/login/')
 def CustomerCreate(request):
     template_name = 'customer/customer_create.html'
     page_title = settings.PROJECT_NAME
@@ -764,7 +766,7 @@ def CustomerList(request):
 
 
 # Load all 3 forms (cus_main, cus_site, cus_bill)
-
+@permission_required('customer.view_customer', login_url='/accounts/login/')
 def CustomerUpdate(request, pk):
     print("pk = " + str(pk))
 
@@ -1145,6 +1147,7 @@ def CustomerCreate(request):
 
 
 @login_required(login_url='/accounts/login/')
+@permission_required('customer.view_customer', login_url='/accounts/login/')
 def CustomerDelete(request, pk):
     customer = get_object_or_404(Customer, pk=pk)
     data = dict()

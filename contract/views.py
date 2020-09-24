@@ -17,6 +17,7 @@ from decimal import Decimal
 
 
 @login_required(login_url='/accounts/login/')
+@permission_required('contract.view_cuscontract', login_url='/accounts/login/')
 def ContractList(request):
     page_title = settings.PROJECT_NAME
     db_server = settings.DATABASES['default']['HOST']
@@ -99,6 +100,7 @@ def ContractList(request):
 
 
 @login_required(login_url='/accounts/login/')
+@permission_required('contract.view_cuscontract', login_url='/accounts/login/')
 def ContractUpdate(request, pk):
     template_name = 'contract/contract_update.html'
     
@@ -180,8 +182,8 @@ def ContractUpdate(request, pk):
 
 
 @login_required(login_url='/accounts/login/')
-def SearchContractNumber(request):
-	
+@permission_required('contract.view_cuscontract', login_url='/accounts/login/')
+def SearchContractNumber(request):	
 	data = dict()
 	data['cus_name_th'] = ""
 	data['cus_name_en'] = ""
