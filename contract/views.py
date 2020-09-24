@@ -12,7 +12,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils.translation import ugettext_lazy as _
 from .forms import ContractForm, ContractUpdateForm
 from .models import CusContract, CusService
-from customer.models import Customer
+from customer.models import CusMain, Customer
 from decimal import Decimal
 
 
@@ -109,9 +109,11 @@ def ContractUpdate(request, pk):
     #contract = CusContract.objects.raw("select con.cnt_id, con.cus_id, con.cus_brn from cus_contract con join customer cus on con.cus_id=cus.cus_id and con.cus_brn=cus.cus_brn and con.cnt_id='2771002001'") or None
     if cus_contract is not None:
         print("wage_en = " + str(cus_contract.cnt_wage_id.wage_en))
+        cusmain = CusMain.objects.filter(cus_id=cus_contract.cus_id).get()
         customer = Customer.objects.filter(cus_id=cus_contract.cus_id, cus_brn=cus_contract.cus_brn).get()
         cus_service = CusService.objects.filter(cnt_id=cus_contract.cnt_id).order_by('-srv_active')
     else:
+        cusmain = []
         customer = []
         cus_contract = []
         cus_service = []
