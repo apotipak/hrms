@@ -141,8 +141,7 @@ class ComDepartment(models.Model):
     upd_flag = models.CharField(max_length=1, blank=True, null=True)
 
     class Meta:
-        managed = True
-        # managed = False
+        managed = False
         db_table = 'COM_DEPARTMENT'
 
 
@@ -272,6 +271,7 @@ class CusGroup(models.Model):
     class Meta:
         managed = True
         db_table = 'CUS_GROUP'
+
 
 class HrmsNewLog(models.Model):
     log_table = models.CharField(db_column='log_table', max_length=50, blank=True, null=True)  # Field name made lowercase.

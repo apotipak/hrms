@@ -39,7 +39,7 @@ class CusMain(models.Model):
     upd_flag = models.CharField(max_length=1, blank=True, null=True)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'CUS_MAIN'
 
 class CusBill(models.Model):
@@ -88,7 +88,7 @@ class CusBill(models.Model):
     upd_flag = models.CharField(max_length=1, blank=True, null=True)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'CUS_BILL'
 
 
@@ -131,7 +131,7 @@ class Customer(models.Model):
     upd_flag = models.CharField(max_length=1, blank=True, null=True)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'CUSTOMER'
         ordering = ['cus_no']
 
@@ -171,5 +171,5 @@ class CustomerOption(models.Model):
     opn15 = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'Customer_option'

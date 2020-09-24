@@ -40,7 +40,7 @@ class CusContract(models.Model):
     cus_rewrite = models.DateTimeField(blank=True, null=True)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'CUS_CONTRACT'
 
 
@@ -75,5 +75,5 @@ class CusService(models.Model):
     op3 = models.CharField(max_length=10, blank=True, null=True)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'CUS_SERVICE'
