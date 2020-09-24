@@ -284,6 +284,7 @@ class CusContract(models.Model):
     cnt_guard_amt = models.DecimalField(max_digits=4, decimal_places=0, blank=True, null=True)
     cnt_sale_amt = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     cnt_wage = models.ForeignKey('TWagezone', models.DO_NOTHING, blank=True, null=True)
+    cus_zone = models.ForeignKey(ComZone, models.DO_NOTHING, db_column='cus_zone', blank=True, null=True)
     cnt_zone = models.DecimalField(max_digits=4, decimal_places=0, blank=True, null=True)
     cnt_autoexpire = models.BooleanField(blank=True, null=True)
     cnt_then = models.CharField(max_length=1, blank=True, null=True)
