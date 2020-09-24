@@ -1,9 +1,11 @@
 from django.shortcuts import render
+from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 
 
 @login_required(login_url='/accounts/login/')
+@permission_required('monitoring.view_monitoring', login_url='/accounts/login/')
 def MonitoringList(request):
 	page_title = settings.PROJECT_NAME
 	db_server = settings.DATABASES['default']['HOST']

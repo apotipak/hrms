@@ -14,6 +14,7 @@ from django.utils import timezone
 
 
 @login_required(login_url='/accounts/login/')
+@permission_required('system.view_system', login_url='/accounts/login/')
 def Index(request):
 	page_title = settings.PROJECT_NAME
 	db_server = settings.DATABASES['default']['HOST']

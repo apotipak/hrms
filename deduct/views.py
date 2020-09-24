@@ -4,6 +4,7 @@ from django.conf import settings
 
 
 @login_required(login_url='/accounts/login/')
+@permission_required('deduct.view_deduct', login_url='/accounts/login/')
 def DeductList(request):
 	page_title = settings.PROJECT_NAME
 	return render(request, 'deduct/deduct_list.html', {'page_title': page_title})
