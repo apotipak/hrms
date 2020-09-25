@@ -37,6 +37,10 @@
   <section class="content pt-2">
     
     <div class="card card-default collapsed-card">
+
+      <form id="contractupdateform" method="POST">
+      {% csrf_token %}
+      
       <div class="card-header">
         <h1 class="card-title"><strong>{{contract.cnt_id}} - {{ customer.cus_name_th }}</strong></h1>
 
@@ -524,7 +528,7 @@
     <div class="modal-content">
       
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;<strong>{% trans 'Add New Service' %}</strong></h5>
+        <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;<strong>{% trans 'Add new service' %}</strong></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -759,10 +763,7 @@
       data : {          
         csrfmiddlewaretoken: '{{ csrf_token }}',
         cnt_id: cnt_id,
-
-        cus_main_cus_active: cus_main_cus_active,        
-        cus_main_cus_name_th: cus_main_cus_name_th,
-        cus_main_cus_add1_th: cus_main_cus_add1_th,  
+        cnt_active: cnt_active,
       },
       success : function(json) {        
         if(json.form_is_valid) {
@@ -789,8 +790,6 @@
 
         }
         else {          
-          //alert("b");          
-
           $(document).Toasts('create', {
             class: 'bg-danger', 
             title: "{% trans 'Error' %}",
@@ -810,8 +809,7 @@
 
           for(error in json.errors) {
             $("#id_" + error).addClass("is-invalid");         
-          };            
-
+          };
 
         }
       },

@@ -6,12 +6,7 @@ from django.utils.translation import gettext_lazy as _
 
 
 class ContractForm(forms.ModelForm):
-    '''
-    cus_id = forms.DecimalField(label='Customer ID', required=True, max_value=9999999, initial=2600)
-    cus_brn = forms.DecimalField(label='Branch', required=True, max_value=999, min_value=0, initial=0)
-    cus_vol = forms.DecimalField(label='Volume', required=True, max_value=999, min_value=0, initial=1)
-    '''
-
+    print("debug ContractForm")
     cus_id = forms.DecimalField(label='Customer ID', required=False, max_value=9999999)
     cus_brn = forms.DecimalField(label='Branch', required=False, max_value=999, min_value=0)
     cus_vol = forms.DecimalField(label='Volume', required=False, max_value=999, min_value=0)
@@ -27,7 +22,7 @@ class ContractForm(forms.ModelForm):
         self.fields['cus_id'].error_messages = {'required': _('กรุณาป้อนข้อมูล'), 'max_value': _('รหัสสัญญาเกิน 7 หลัก')}
 
         self.fields['cus_brn'].widget.attrs={'class': 'form-control form-control-sm', 'placeholder': _('Branch')}
-        self.fields['cus_brn'].error_messages = {'required': _('กรุณาป้อนข้อมูล'), 'max_value': _('รหัสสาขาเกิน 3 หลัก'), 'min_value': _('ป้อนข้อมูลน้อยกว่า 0')}
+        self.fields['cus_brn']._messages = {'required': _('กรุณาป้อนข้อมูล'), 'max_value': _('รหัสสาขาเกิน 3 หลัก'), 'min_value': _('ป้อนข้อมูลน้อยกว่า 0')}
 
         self.fields['cus_vol'].widget.attrs={'class': 'form-control form-control-sm', 'placeholder': _('Volume')}
         self.fields['cus_vol'].error_messages = {'required': _('กรุณาป้อนข้อมูล'), 'max_value': _('รหัสลำดับสัญญาเกิน 3 หลัก'), 'min_value': _('ป้อนข้อมูลน้อยกว่า 0')}
@@ -51,20 +46,43 @@ class ContractForm(forms.ModelForm):
             return self.fields['cus_vol']
 
 
-class ContractUpdateForm(forms.ModelForm):    
+class ContractUpdateForm(forms.ModelForm):
+    # cnt_id = forms.CharField(required=False)
     cnt_active = forms.BooleanField(label='', required=False, widget=forms.CheckboxInput())
-    #cus_name_th = forms.CharField(required=False)
-    #cus_name_en = forms.CharField(required=False)
+    cnt_doc_no = forms.CharField(required=False)    
+    # cnt_wage_id = forms.CharField(required=False) 
+    # cnt_apr_by = forms.CharField(required=False)
+
+    print("debug ContractUpdateForm")
 
     class Meta:
         model = CusContract        
         fields = '__all__'
+        exclude = ['cnt_id'],
 
     def __init__(self, *args, **kwargs):
         super(ContractUpdateForm, self).__init__(*args, **kwargs)        
         instance = getattr(self, 'instance', None)
 
-        #cus_name_th = forms.CharField(required=False)
-        #self.initial['cus_name_th'] = instance.customer.cus_name_th
-        #self.fields['cus_name_th'].widget.attrs['readonly'] = True
+        # self.fields['cnt_doc_no'].error_messages = {'required': _('กรุณาป้อนข้อมูล'), 'max_value': _('รหัสสัญญาเกิน 7 หลัก')}
+        # self.fields['cnt_doc_no'].error_messages = {'required': _('Contract Ref. is required.')}
+
+    '''
+    def clean_cnt_id(self):
+        data = self.data.get('cnt_id')        
+        return data
+    '''
+    def clean(self):
+        data = self.cleaned_data
+        return data
+
+    '''
+    def clean_cnt_wage_id(self):
+        data = self.data.get('cnt_wage_id')
+        return data
+
+    def clean_cnt_apr_by(self):
+        data = self.data.get('cnt_apr_by')
+        return data
+    '''
 

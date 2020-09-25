@@ -105,10 +105,10 @@ def ContractUpdate(request, pk):
     template_name = 'contract/contract_update.html'
     
     cus_contract = get_object_or_404(CusContract, pk=pk)
+    # contract = CusContract.objects.raw("select con.cnt_id, con.cus_id, con.cus_brn from cus_contract con join customer cus on con.cus_id=cus.cus_id and con.cus_brn=cus.cus_brn and con.cnt_id='2771002001'") or None
 
-    #contract = CusContract.objects.raw("select con.cnt_id, con.cus_id, con.cus_brn from cus_contract con join customer cus on con.cus_id=cus.cus_id and con.cus_brn=cus.cus_brn and con.cnt_id='2771002001'") or None
     if cus_contract is not None:
-        print("wage_en = " + str(cus_contract.cnt_wage_id.wage_en))
+        # print("wage_en = " + str(cus_contract.cnt_wage_id.wage_en))
         cusmain = CusMain.objects.filter(cus_id=cus_contract.cus_id).get()
         customer = Customer.objects.filter(cus_id=cus_contract.cus_id, cus_brn=cus_contract.cus_brn).get()
         cus_service = CusService.objects.filter(cnt_id=cus_contract.cnt_id).order_by('-srv_active')
@@ -118,53 +118,16 @@ def ContractUpdate(request, pk):
         cus_contract = []
         cus_service = []
         
-
-    '''
-    if cus_contract:
-        cnt_id = cus_contract.cnt_id
-        cus_id = cus_contract.cus_id
-        cus_brn = cus_contract.cus_brn
-    else:
-        cnt_id = None
-        cus_id = None
-        cus_brn = None
-
-    print("cnt_id = " + str(cnt_id))
-    print("cus_id = " + str(cus_id))
-    print("cus_brn = " + str(cus_brn))
-    '''
-
     if request.method == 'POST':
+        print("debug method post")
         form = ContractUpdateForm(request.POST, instance=cus_contract)
     else:
+        print("debug method get")
         form = ContractUpdateForm(instance=cus_contract)
 
     data = dict()
     form_is_valid = False
     update_message = ""
-
-    '''
-    if request.method == 'POST':
-        if form.is_valid():
-            obj = form.save(commit=False)
-            
-            if request.user.is_superuser:
-                obj.upd_by = 'Superuser'
-            else:
-                obj.upd_by = request.user.first_name
-
-            if obj.upd_flag == 'A':
-                obj.upd_flag = 'E'
-
-            obj.upd_date = timezone.now()
-
-            obj.save()
-            form_is_valid = True            
-            update_message = "ทำรายการสำเร็จ"
-        else:
-            form_is_valid = False
-            update_message = "ไม่สามารถทำรายการได้..!"
-    '''
 
     context = {
         'page_title': settings.PROJECT_NAME,
@@ -180,6 +143,7 @@ def ContractUpdate(request, pk):
         'form_is_valid': form_is_valid,
         'update_message': update_message,
     }
+
     return render(request, template_name, context)
 
 
@@ -199,3 +163,43 @@ def SearchContractNumber(request):
 	print("json")
 
 	return JsonResponse(data)
+
+
+@login_required(login_url='/accounts/login/')
+@permission_required('contract.view_cuscontract', login_url='/accounts/login/')
+def SaveContract(request):
+
+    print("****************************")
+    print("FUNCTION: save_contract")
+    # print("****************************")
+
+    template_name = 'contract/contract_update.html'
+    response_data = {}
+    modified_records = []
+
+    if request.method == 'POST':
+        # form = ContractUpdateForm(request.POST, instance=CusContract)
+        form = ContractUpdateForm(request.POST)
+        if form.is_valid():            
+            cnt_id = request.POST.get('cnt_id')
+            cnt_active = request.POST.get('cnt_active')
+        else:
+            print("form is invalid")
+            response_data['form_is_valid'] = False
+            response_data['message'] = ""
+
+            if form.errors:
+                for field in form:
+                    for error in field.errors:
+                        print(error)
+                        response_data['message'] += error + "<br>"
+
+                response_data['errors'] = form.errors
+            else:
+                response_data['message'] = "ไม่สามารถทำรายการได้..!"
+        
+            print("Error!")
+            print("****************************")
+
+    
+    return JsonResponse(response_data)            
