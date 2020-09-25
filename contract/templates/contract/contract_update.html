@@ -41,7 +41,7 @@
         <h1 class="card-title"><strong>{{contract.cnt_id}} - {{ customer.cus_name_th }}</strong></h1>
 
         <div class="card-tools">
-          <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i></button>
+          <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus text-primary"></i></button>
         </div>
       </div>
 
@@ -250,32 +250,39 @@
 
           <div class="float-left pt-2">
 
+            <!-- Use new report condition | N or empty -->
             <div class="form-check d-inline">
-              {% if contract.cnt_new %}
-              <input class="form-check-input" id="checkboxNewReport" type="checkbox" checked>
+              {% if contract.cnt_new == 'N' %}
+              <input class="form-check-input" id="id_cnt_new" name="cnt_new" type="checkbox" checked>
               {% else %}
-              <input class="form-check-input" id="checkboxNewReport" type="checkbox">
+              <input class="form-check-input" id="id_cnt_new" name="cnt_new" type="checkbox">
               {% endif %}
               <label class="form-check-label">New Report</label>&nbsp;&nbsp;&nbsp;&nbsp;
             </div>
+
+            <!-- Amendment Flag -->
             <div class="form-check d-inline">
-              <input class="form-check-input" id="checkboxAmendment" type="checkbox">
+              <input class="form-check-input" id="id_amendment" name="amendment" type="checkbox">
               <label class="form-check-label">Amendment</label>&nbsp;&nbsp;&nbsp;&nbsp;
             </div>
+
+            <!-- Display Address condition | C or S -->
             <div class="form-check d-inline">
               {% if contract.cnt_print == 'C' %}
-              <input class="form-check-input" id="checkboxCustomer" type="checkbox" checked>
-              <label class="form-check-label">Customer</label>&nbsp;&nbsp;&nbsp;&nbsp;
+              <input class="form-check-input" id="id_cnt_print" name="cnt_print" type="checkbox" checked>
+              <label id="id_cnt_print_label" class="form-check-label">Customer</label>&nbsp;&nbsp;&nbsp;&nbsp;
               {% else %}
-              <input class="form-check-input" id="checkboxCustomer" type="checkbox" checked>
-              <label class="form-check-label">Site Address</label>&nbsp;&nbsp;&nbsp;&nbsp;
+              <input class="form-check-input" id="id_cnt_print" name="cnt_print" type="checkbox">
+              <label id="id_cnt_print_label" class="form-check-label">Site Address</label>&nbsp;&nbsp;&nbsp;&nbsp;
               {% endif %}
             </div>
+
+            <!-- Auto expired | 0 or 1-->
             <div class="form-check d-inline">
               {% if contract.cnt_autoexpire %}
-              <input class="form-check-input" id="checkboxAutoexpire" type="checkbox" checked>
+              <input class="form-check-input" id="id_cnt_autoexpire" name="cnt_autoexpire" type="checkbox" checked>
               {% else %}
-              <input class="form-check-input" id="checkboxAutoexpire" type="checkbox">
+              <input class="form-check-input" id="id_cnt_autoexpire" name="cnt_autoexpire" type="checkbox">
               {% endif %}
               <label class="form-check-label text-danger">Auto expire</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </div>                        
@@ -312,65 +319,85 @@
           <div class="col-12">
 
             <div class="form-row">
-              <div class="form-group col-md-6">
-                <label for="cus_zip">{% trans 'Contract Ref.' %}</label>
-                <input type="text" class="form-control form-control-sm" value={{contract.cnt_doc_no}}>
+
+              <!-- cnt_doc_no -->
+              <div class="form-group col-md-3">
+                <label for="id_cnt_doc_no">{% trans 'Contract Ref.' %}</label>
+                <input id="id_cnt_doc_no" name="cnt_doc_no" type="text" class="form-control form-control-sm" value={{contract.cnt_doc_no}}>
               </div>
-              <div class="form-group col-md-6">
-                <label for="cus_tel">{% trans 'Created Date' %}</label>
-                <input type="text" class="form-control form-control-sm" value="{{contract.cnt_doc_date|date:'d/m/Y'}}" placeholder="Created Date">
+              
+              <!-- cnt_doc_date -->
+              <div class="form-group col-md-3">
+                <label>&nbsp;</label>
+                <div class="docdate input-group mb-3">                    
+                  <input class="form-control form-control-sm docdate" type="text" placeholder="Contract Date" id="id_cnt_doc_date" name="cnt_doc_date" value="{{contract.cnt_doc_date|date:'d/m/Y'}}">                                          
+                  <button id="docdate_calendar" type="button" class="btn btn-outline-primary btn-sm"><i class="fa fa-calendar-alt"></i></button>
+                </div>
               </div>
+
+              <!-- cnt_eff_frm -->
+              <div class="form-group col-md-3">
+                <label for="id_cnt_eff_frm">{% trans 'Effect Term' %}</label>
+                <input type="text" id="id_cnt_eff_frm" name="cnt_eff_frm" class="form-control form-control-sm" value="{{contract.cnt_eff_frm|date:'d/m/Y'}}" placeholder="From">
+              </div>
+              
+              <!-- cnt_eff_to -->
+              <div class="form-group col-md-3">
+                <label for="id_cnt_eff_to">&nbsp;</label>
+                <input type="text" id="id_cnt_eff_to" name="cnt_eff_to" class="form-control form-control-sm" value="{{contract.cnt_eff_to|date:'d/m/Y'}}" placeholder="To">
+              </div>
+              
             </div>
 
-            <div class="form-row">
-              <div class="form-group col-md-3">
-                <label for="cus_zip">{% trans 'Effect Term From' %}</label>
-                <input type="text" class="form-control form-control-sm" value="{{contract.cnt_eff_frm|date:'d/m/Y'}}" placeholder="From">
-              </div>
-              <div class="form-group col-md-3">
-                <label for="cus_tel">{% trans 'Effect Term To' %}</label>
-                <input type="text" class="form-control form-control-sm" value="{{contract.cnt_eff_to|date:'d/m/Y'}}" placeholder="To">
-              </div>
-              <div class="form-group col-md-3">
-                <label for="cus_zip">{% trans 'Contract Term From' %}</label>
-                <input type="text" class="form-control form-control-sm" value="{{contract.cnt_sign_frm|date:'d/m/Y'}}" placeholder="From">
-              </div>
-              <div class="form-group col-md-3">
-                <label for="cus_tel">{% trans 'Contract Term To' %}</label>
-                <input type="text" class="form-control form-control-sm" value="{{contract.cnt_sign_to|date:'d/m/Y'}}" placeholder="To">
-              </div>              
-            </div>
 
             <div class="form-row">
-              <div class="form-group col-md-4">
+              <div class="form-group col-md-2">
+                <label for="id_cnt_sign_frm">{% trans 'Contract Term' %}</label>
+                <input type="text" id="id_cnt_sign_frm" name="cnt_sign_frm" class="form-control form-control-sm" value="{{contract.cnt_sign_frm|date:'d/m/Y'}}" placeholder="From">
+              </div>
 
-                <label for="cus_zip">{% trans 'Wage Rate' %}</label>
+              <div class="form-group col-md-2">
+                <label for="id_cnt_sign_to">&nbsp;</label>
+                <input type="text" id="id_cnt_sign_to" name="cnt_sign_to" class="form-control form-control-sm" value="{{contract.cnt_sign_to|date:'d/m/Y'}}" placeholder="To">
+              </div>   
+
+              <div class="form-group col-md-6">
+                <label for="id_cnt_wage_id">{% trans 'Wage Rate' %}</label>
                 <div class="input-group-append">
-                <input type="text" class="form-control form-control-sm" value="{{contract.cnt_wage_id.wage_en}}&nbsp;&nbsp;|&nbsp;&nbsp;{{contract.cnt_wage_id.wage_8hr}}" readonly>
                 
-                  <button id="wage_rate_lookup" type="button" class="btn btn-outline-secondary btn-sm" data-toggle="modal" data-url=""><i class="fas fa-search fa-sm"></i></button>
+                  <input type="text" id="id_cnt_wage_id" name="cnt_wage_id" class="form-control form-control-sm" value="{{contract.cnt_wage_id.wage_en}}&nbsp;&nbsp;|&nbsp;&nbsp;{{contract.cnt_wage_id.wage_8hr}}" readonly>
+                
+                  <button id="wage_rate_lookup" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url=""><i class="fas fa-search fa-sm"></i></button>
+
                 </div>                
               </div>
+
               <div class="form-group col-md-2">
-                <label for="cus_zip">{% trans 'Guard Amount' %}</label>
-                <input type="text" class="form-control form-control-sm" value="{{contract.cnt_guard_amt}}" readonly>
+                <label for="id_cnt_guard_amt">{% trans 'Guard Amount' %}</label>
+                <input type="text" id="id_cnt_guard_amt" name="cnt_guard_amt" class="form-control form-control-sm" value="{{contract.cnt_guard_amt}}" readonly>
               </div>
-              <div class="form-group col-md-2">
-                <label for="cus_tel">{% trans 'Sale Amount' %}</label>
-                <input type="text" class="form-control form-control-sm text-right" value="{{contract.cnt_sale_amt}}" readonly>
-              </div>
-              <div class="form-group col-md-4">
-                <label>{% trans 'Authorized by' %}</label>
-                <input type="text" class="form-control form-control-sm" value="{{contract.cnt_apr_by.apr_name_en}}&nbsp;&nbsp;({{contract.cnt_apr_by.apr_name_th}})" readonly>
-              </div>                               
+
             </div>
 
+            <div class="form-row">
+              <div class="form-group col-md-2">
+                <label for="id_cnt_sale_amt">{% trans 'Sale Amount' %}</label>
+                <input type="text" id="id_cnt_sale_amt" name="cnt_sale_amt" class="form-control form-control-sm text-right" value="{{contract.cnt_sale_amt}}" readonly>
+              </div>
+
+              <div class="form-group col-md-4">
+                <label for="id_cnt_apr_by">{% trans 'Authorized by' %}</label>
+                <input type="text" id="id_cnt_apr_by" name="cnt_apr_by" class="form-control form-control-sm" value="{{contract.cnt_apr_by.apr_name_en}}&nbsp;&nbsp;({{contract.cnt_apr_by.apr_name_th}})" readonly>
+              </div>                               
+            </div>
           </div>
           
         </div>
         <!-- /.row -->     
 
-        <div class="float-right"><a href="javascript:void(0);" type="button" onclick="customerupdateform.submit()" class="btn btn-primary btn-md"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
+        <div class="float-right">
+          <a href="javascript:void(0);" type="button" class="btn btn-info btn-md"><i class="fas fa-print fa-sm"></i>&nbsp;&nbsp;{% trans 'Print' %}</a>
+          <a href="javascript:void(0);" id="saveContract" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
         </div>
 
       </div>
@@ -386,7 +413,7 @@
       <div class="card-header">
         <h1 class="card-title pt-1"><strong>{% trans 'Service List' %}</strong></h1>
         <div class="card-tools">        
-          <button id="add_service_button" type="button" class="btn btn-outline-success btn-sm" data-toggle="modal" data-url="{% url 'get_district_list' %}"><i class="fas fa-plus fa-sm"></i>&nbsp;{% trans 'New' %}</button>
+          <button id="add_service_button" type="button" class="btn btn-outline-success btn-md" data-toggle="modal" data-url="{% url 'get_district_list' %}"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;{% trans 'New service' %}</button>
         </div>        
       </div>
 
@@ -656,58 +683,148 @@
 
 {% block javascript %}
 <script>
+  $('#id_cnt_print').on('click', function (e) {
+    if ($('#id_cnt_print').is(":checked"))
+      $('#id_cnt_print_label').text('Customer');
+    else
+      $('#id_cnt_print_label').text('Site Address');
+  });
+
+  $("#saveContract").click( function() {
+    event.preventDefault();    
+    var cnt_id = "{{contract.cnt_id}}";
+    if(cnt_id=='' || cnt_id==null) {
+      alert("Contract ID is required!");
+    } else {      
+      contract_form_validation(cnt_id);
+    }
+  });
+
+  function contract_form_validation(cnt_id) {
+
+    // cnt_active
+    if ($('#id_cnt_active').is(":checked"))
+      cnt_active = true;
+    else
+      cnt_active = false;
+    
+    // cnt_new
+    if ($('#id_cnt_new').is(":checked"))
+      cnt_new = 'N';
+    else
+      cnt_new = '';
+
+    // amendment
+    if ($('#id_amendment').is(":checked"))
+      amendment_flag = true;
+    else
+      amendment_flag = false;
+
+    // cnt_print
+    if ($('#id_cnt_print').is(":checked"))
+      cnt_print = 'C';
+    else
+      cnt_print = 'S';
+
+    // cnt_auto_expire
+    if ($('#id_cnt_autoexpire').is(":checked"))
+      cnt_autoexpire = true;
+    else
+      cnt_autoexpire = false;
+
+    // cnt_doc_no
+    cnt_doc = $('#id_cnt_autoexpire').val();
+    // cnt_doc_date
+    cnt_doc_date = $('#id_cnt_doc_date').val();
+    // cnt_eff_frm
+    cnt_eff_frm = $('#id_cnt_eff_frm').val();
+    // cnt_eff_to
+    cnt_eff_to = $('#id_cnt_eff_to').val();
+    // cnt_sign_frm
+    cnt_sign_frm = $('#id_cnt_sign_frm').val();
+    // cnt_sign_to
+    cnt_sign_to = $('#id_cnt_sign_to').val();
+    // cnt_wage_id
+    cnt_wage_id = $('#id_cnt_wage_id').val();
+    // cnt_sale_amt
+    cnt_sale_amt = $('#id_cnt_sale_amt').val();
+    //cnt_apr_by
+    cnt_apr_by = $('#id_cnt_apr_by').val(); 
+
+    console.log(cnt_new + ", " + amendment_flag + ", " + cnt_print + ", " + cnt_autoexpire + ", " + cnt_active);
+  
+    $.ajax({
+      url : "/contract/ajax/save_contract/",
+      type : "POST",
+      data : {          
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        cnt_id: cnt_id,
+
+        cus_main_cus_active: cus_main_cus_active,        
+        cus_main_cus_name_th: cus_main_cus_name_th,
+        cus_main_cus_add1_th: cus_main_cus_add1_th,  
+      },
+      success : function(json) {        
+        if(json.form_is_valid) {
+          $(document).Toasts('create', {
+            class: 'bg-success', 
+            title: "{% trans 'Message' %}",
+            subtitle: '',
+            autohide: true,
+            delay: 2000,
+            body: json.result + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+            autoDismiss: true,
+            close: true,
+            autoremove: true,
+          });
+
+          $.each($('.is-valid'), function() {
+            $('.is-valid').removeClass('is-valid');              
+          });            
+
+          $.each($('.is-invalid'), function() {
+            $('.is-invalid').addClass('is-valid');  
+            $('.is-invalid').removeClass('is-invalid');              
+          });           
+
+        }
+        else {          
+          //alert("b");          
+
+          $(document).Toasts('create', {
+            class: 'bg-danger', 
+            title: "{% trans 'Error' %}",
+            subtitle: '',
+            autohide: true,
+            delay: 5000,
+            body: json.message,
+            autoDismiss: true,
+            close: true,
+            autoremove: true,
+            preventDuplicates: true,       
+          });
+
+          $.each($('.is-invalid'), function() {
+            $('.is-invalid').removeClass('is-invalid');
+          });            
+
+          for(error in json.errors) {
+            $("#id_" + error).addClass("is-invalid");         
+          };            
+
+
+        }
+      },
+    });
+
+  };
+
   $(document).ready(function(){    
 
     $('#add_service_button').on('click', function (e) {
       var obj = $(this);      
       $("#service_list_modal").modal("show");
-
-      /*
-      $.ajax({
-        url: obj.attr("data-url"),
-        type: 'get',          
-        dataType: 'json',
-        beforeSend: function () {
-          $("#wageratemodal").modal("show");
-        },
-        success: function (data) {
-          var result = ""
-          var count = data.results.length;
-          var dist_id = data.results[0]["dist_id"];
-
-          result += "<table class='table table-hover table-sm'>";
-          result += " <thead>";
-          result += "   <tr>";
-          result += "     <th scope='col'>{% trans 'ID' %}</th>";
-          result += "     <th scope='col'>{% trans 'Name' %}</th>";
-          result += "     <th scope='col'>{% trans 'City' %}</th>";
-          result += "   </tr>";
-          result += " </thead>";
-          result += " <tbody>";
-
-          for(var i=0; i<count; i++) {              
-            var dist_id = data.results[i]["dist_id"];
-            var dist_name_th = data.results[i]["dist_th"];
-            var city_name_th = data.results[i]["city_th"];
-
-            result += "<tr>";
-            result += "<td>" + dist_id + "</td>";        
-            result += "<td>" + dist_name_th + "</td>";
-            result += "<td>" + city_name_th + "</td>";
-            result += "</td>";
-            result += "</tr>";              
-          }
-          result += " </tbody>";
-          result += "</table>";
-          
-          $("#districtmodal .modal-body").html(result);            
-        },
-        error: function(data){
-          $("#districtmodal .modal-body").html("{% trans 'There is no data.' %}");
-        }          
-      });
-      */
-   });
+    });
 
     $('#wage_rate_lookup').on('click', function (e) {
       var obj = $(this);      
@@ -754,9 +871,19 @@
             $("#districtmodal .modal-body").html("{% trans 'There is no data.' %}");
           }          
       });
-   });
+    });
+  });
 
- });
+  //TODO
+  $('#id_cnt_doc_date').datepicker({
+    showButtonPanel: true,
+    dateFormat: 'mm-dd-yy',
+    beforeShow: function(){    
+      $(".ui-datepicker").css('font-size', 8)
+    }    
+  });
 
 </script>
+
+
 {% endblock %}
