@@ -74,7 +74,7 @@ def ajax_check_exist_cus_main(request):
 
         form = CustomerCodeCreateForm(request.POST)        
         pickup_records=[]
-        groupt_id =  []
+        group_id =  []
         business_type_list = []
         group_1_list = []
         group_2_list = []
@@ -1890,8 +1890,8 @@ def update_all_cus_tabs(request):
             cus_main_customer_option_opn1 = request.POST.get('cus_main_customer_option_opn1')
             # print("cus_main_customer_option_opn1 = " + str(cus_main_customer_option_opn1))
 
-            cus_main_cus_taxid = request.POST.get('cus_main_cus_taxid')            
-            print("aeiouxyz : " +  str(cus_main_cus_taxid))
+            cus_main_cus_taxid = request.POST.get('cus_main_cus_taxid')
+            # print("aeiouxyz : " +  str(cus_main_cus_taxid))
 
 
             cus_main_cus_contact_id = request.POST.get('cus_main_cus_contact_id')
@@ -2143,6 +2143,7 @@ def update_all_cus_tabs(request):
                         modified_records = []
                     # ./History Log 
 
+
             except CusMain.DoesNotExist:
                 new_customer_main = CusMain(
                     cus_active = cus_main_cus_active,
@@ -2162,7 +2163,7 @@ def update_all_cus_tabs(request):
                     cus_tel = cus_main_cus_tel,
                     cus_fax = cus_main_cus_fax,
                     cus_email = cus_main_cus_email,
-                    cus_taxid = customer_group_id,
+                    cus_taxid = cus_main_cus_taxid,
                     cus_zone_id = cus_main_cus_zone,
                     site_contact_id = cus_main_cus_contact_id,
                     upd_date = timezone.now(),
@@ -2462,10 +2463,10 @@ def update_all_cus_tabs(request):
                     cus_tel = cus_site_cus_tel,
                     cus_fax = cus_site_cus_fax,
                     cus_email = cus_site_cus_email,
-                    cus_taxid = customer_group_id,
+                    cus_taxid = cus_main_cus_taxid,
                     cus_zone_id = cus_site_cus_zone,
                     site_contact_id = cus_site_site_contact_id,
-                    update_date = timezone.now(),
+                    upd_date = timezone.now(),
                     upd_by = request.user.first_name,
                     upd_flag = 'A'
                     )
@@ -2787,11 +2788,11 @@ def update_all_cus_tabs(request):
                     cus_tel = cus_bill_cus_tel,
                     cus_fax = cus_bill_cus_fax,
                     cus_email = cus_bill_cus_email,
-                    cus_taxid = customer_group_id,
+                    cus_taxid = cus_main_cus_taxid,
                     cus_zone_id = cus_bill_cus_zone,
                     cus_contact_id = cus_bill_cus_contact_id,
                     site_contact_id = cus_bill_cus_contact_id,
-                    update_date = timezone.now(),
+                    upd_date = timezone.now(),
                     upd_by = request.user.first_name,
                     upd_flag = 'A'                    
                     )

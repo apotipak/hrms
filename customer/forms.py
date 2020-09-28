@@ -23,7 +23,8 @@ class CustomerCodeCreateForm(forms.Form):
     # Customer Site
     cus_site_cus_zone = forms.ModelChoiceField(queryset=None, required=False)
 
-    # Customer Site
+    # Customer Billing
+    cus_bill_cus_zone = forms.ModelChoiceField(queryset=None, required=False)
 
     def __init__(self, *args, **kwargs):
         super(CustomerCodeCreateForm, self).__init__(*args, **kwargs)
@@ -38,6 +39,7 @@ class CustomerCodeCreateForm(forms.Form):
         self.fields['customer_option_op3'].queryset = CustomerOption.objects.values_list('op3', flat=True).exclude(op2=None).order_by('op3').distinct()
         
         self.fields['cus_site_cus_zone'].queryset=ComZone.objects.all()
+        self.fields['cus_bill_cus_zone'].queryset=ComZone.objects.all()
 
         # GP Margin
         self.fields['cus_main_customer_option_opn1'].initial = 0.00
