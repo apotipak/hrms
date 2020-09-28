@@ -40,7 +40,7 @@
 
       <form id="contractupdateform" method="POST">
       {% csrf_token %}
-      
+
       <div class="card-header">
         <h1 class="card-title"><strong>{{contract.cnt_id}} - {{ customer.cus_name_th }}</strong></h1>
 
@@ -369,8 +369,10 @@
                 <label for="id_cnt_wage_id">{% trans 'Wage Rate' %}</label>
                 <div class="input-group-append">
                 
-                  <input type="text" id="id_cnt_wage_id" name="cnt_wage_id" class="form-control form-control-sm" value="{{contract.cnt_wage_id.wage_en}}&nbsp;&nbsp;|&nbsp;&nbsp;{{contract.cnt_wage_id.wage_8hr}}" readonly>
+                  <input type="text" id="id_cnt_wage_id_text" name="cnt_wage_id" class="form-control form-control-sm" value="{{contract.cnt_wage_id.wage_en}}&nbsp;&nbsp;|&nbsp;&nbsp;{{contract.cnt_wage_id.wage_8hr}}" readonly>
                 
+                  <input type="hidden" id="id_cnt_wage_id" name="cnt_wage_id" value="{{ contract.cnt_wage_id_id|default_if_none:'' }}">
+
                   <button id="wage_rate_lookup" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url=""><i class="fas fa-search fa-sm"></i></button>
 
                 </div>                
@@ -390,8 +392,11 @@
               </div>
 
               <div class="form-group col-md-4">
-                <label for="id_cnt_apr_by">{% trans 'Authorized by' %}</label>
-                <input type="text" id="id_cnt_apr_by" name="cnt_apr_by" class="form-control form-control-sm" value="{{contract.cnt_apr_by.apr_name_en}}&nbsp;&nbsp;({{contract.cnt_apr_by.apr_name_th}})" readonly>
+                <label for="id_cnt_apr_by_text">{% trans 'Authorized by' %}</label>
+                <input type="text" id="id_cnt_apr_by_text" name="cnt_apr_by_text" class="form-control form-control-sm" value="{{contract.cnt_apr_by.apr_name_en}}&nbsp;&nbsp;({{contract.cnt_apr_by.apr_name_th}})" readonly>
+
+                <input type="hidden" id="id_cnt_apr_by_id" name="id_cnt_apr_by_id" value="{{ contract.cnt_apr_by_id|default_if_none:None }}">
+
               </div>                               
             </div>
           </div>
@@ -737,7 +742,7 @@
       cnt_autoexpire = false;
 
     // cnt_doc_no
-    cnt_doc = $('#id_cnt_autoexpire').val();
+    cnt_doc_no = $('#id_cnt_autoexpire').val();
     // cnt_doc_date
     cnt_doc_date = $('#id_cnt_doc_date').val();
     // cnt_eff_frm
@@ -752,8 +757,11 @@
     cnt_wage_id = $('#id_cnt_wage_id').val();
     // cnt_sale_amt
     cnt_sale_amt = $('#id_cnt_sale_amt').val();
-    //cnt_apr_by
-    cnt_apr_by = $('#id_cnt_apr_by').val(); 
+
+    //cnt_apr_by_id
+    cnt_apr_by_id = $('#id_cnt_apr_by_id').val(); 
+    //cnt_apr_by_text
+    cnt_apr_by_text = $('#id_cnt_apr_by_text').val(); 
 
     console.log(cnt_new + ", " + amendment_flag + ", " + cnt_print + ", " + cnt_autoexpire + ", " + cnt_active);
   
@@ -764,6 +772,19 @@
         csrfmiddlewaretoken: '{{ csrf_token }}',
         cnt_id: cnt_id,
         cnt_active: cnt_active,
+        cnt_new: cnt_new,
+        cnt_print: cnt_print,
+        cnt_autoexpire: cnt_autoexpire,
+        cnt_doc_no: cnt_doc_no,
+        cnt_doc_date: cnt_doc_date,
+        cnt_eff_frm: cnt_eff_frm,
+        cnt_eff_to: cnt_eff_to,
+        cnt_sign_frm: cnt_sign_frm,
+        cnt_sign_to: cnt_sign_to,
+        cnt_wage_id: cnt_wage_id,
+        cnt_sale_amt: cnt_sale_amt,
+        cnt_apr_by_id: cnt_apr_by_id,
+        cnt_apr_by_text: cnt_apr_by_text
       },
       success : function(json) {        
         if(json.form_is_valid) {

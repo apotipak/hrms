@@ -178,11 +178,16 @@ def SaveContract(request):
     modified_records = []
 
     if request.method == 'POST':
+        print("SaveContract - Post method")
         # form = ContractUpdateForm(request.POST, instance=CusContract)
         form = ContractUpdateForm(request.POST)
-        if form.is_valid():            
+        if form.is_valid():
+            print("Form valid")
             cnt_id = request.POST.get('cnt_id')
             cnt_active = request.POST.get('cnt_active')
+
+            # TODO
+            
         else:
             print("form is invalid")
             response_data['form_is_valid'] = False

@@ -49,32 +49,46 @@ class ContractForm(forms.ModelForm):
 class ContractUpdateForm(forms.ModelForm):
     # cnt_id = forms.CharField(required=False)
     cnt_active = forms.BooleanField(label='', required=False, widget=forms.CheckboxInput())
-    cnt_doc_no = forms.CharField(required=False)    
+    cnt_doc_no = forms.CharField(required=True)
     # cnt_wage_id = forms.CharField(required=False) 
-    # cnt_apr_by = forms.CharField(required=False)
+    cnt_apr_by_id = forms.CharField(required=False)
 
     print("debug ContractUpdateForm")
 
     class Meta:
         model = CusContract        
         fields = '__all__'
-        exclude = ['cnt_id'],
+        exclude = ['cnt_id']
+        widgets = {'cnt_apr_by_id': forms.HiddenInput()}
 
     def __init__(self, *args, **kwargs):
         super(ContractUpdateForm, self).__init__(*args, **kwargs)        
         instance = getattr(self, 'instance', None)
 
-        # self.fields['cnt_doc_no'].error_messages = {'required': _('กรุณาป้อนข้อมูล'), 'max_value': _('รหัสสัญญาเกิน 7 หลัก')}
-        # self.fields['cnt_doc_no'].error_messages = {'required': _('Contract Ref. is required.')}
+        self.fields['cnt_doc_no'].error_messages = {'required': _('<b>Contract Ref.</b> is required.'), 'max_value': _('ความยาวเกิน 25 ตัวอักษร')}
+        # self.fields['cnt_doc_no'].error_messages = {'required': _('<b>Contract Ref.</b> is required.')}
+        # self.fields['cnt_doc_no'].error_messages = {'max_value': _('ความยาวเกิน 25 ตัวอักษร')}
+        
+
+    def clean_cnt_doc_no(self):
+        data = self.data.get('cnt_doc_no')
+        return data
+
+    def clean_cnt_apr_by_id(self):
+        data = self.data.get('cnt_apr_by_id')
+        return 100000
 
     '''
     def clean_cnt_id(self):
         data = self.data.get('cnt_id')        
         return data
     '''
+
+    '''
     def clean(self):
         data = self.cleaned_data
         return data
+    '''
 
     '''
     def clean_cnt_wage_id(self):
