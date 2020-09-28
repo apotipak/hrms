@@ -1798,7 +1798,6 @@ def check_modified_field(table_name, primary_key, field_name, old_value, new_val
             "old_value": old_value,
             "new_value": new_value,
             "log_type": log_type,
-            #"log_by": request.user.username,
             "log_by": request.user.first_name,
             "log_date": timezone.now(),
             "log_description": None,
@@ -2044,6 +2043,7 @@ def update_all_cus_tabs(request):
 
                     cus_main.save()
 
+
                     # CUS_MAIN Business Type
                     try:
                         customer_option = CustomerOption.objects.get(cus_no=cus_no)
@@ -2149,8 +2149,12 @@ def update_all_cus_tabs(request):
                     cus_tel = cus_main_cus_tel,
                     cus_fax = cus_main_cus_fax,
                     cus_email = cus_main_cus_email,
+                    #cus_taxid = cus_
                     cus_zone_id = cus_main_cus_zone,
                     site_contact_id = cus_main_cus_contact_id,
+                    upd_date = timezone.now(),
+                    upd_flag = 'A',
+                    upd_by = request.user.first_name
                     )
                 new_customer_main.save()                     
 
@@ -2393,8 +2397,19 @@ def update_all_cus_tabs(request):
 
                     # Group ID
                     # customer_group_id = request.POST.get('customer_group_id')
-                    # print("customer_group_id : " + customer_group_id)
+                    print("customer_group_id : " + customer_group_id)
                     customer.cus_taxid = customer_group_id
+
+                    '''
+                    if (cus_site_cus_fax is not None):
+                        field_is_modified, record = check_modified_field("CUS_SITE", cus_no, "Fax", customer.cus_fax, cus_site_cus_fax, "E", request)
+                        if field_is_modified:
+                            customer.cus_fax = cus_site_cus_fax
+                            modified_records.append(record)
+                    '''
+
+
+                    # TODO xyz
 
                     if customer.upd_flag == 'A':
                         customer.upd_flag = 'E'
