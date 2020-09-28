@@ -1832,6 +1832,7 @@ def update_all_cus_tabs(request):
             # **************  CUS_MAIN  ****************
             # ******************************************            
             cus_main_cus_active = request.POST.get('cus_main_cus_active')
+            
             cus_main_cus_name_th = request.POST.get('cus_main_cus_name_th')            
             cus_main_cus_add1_th = request.POST.get('cus_main_cus_add1_th')
             cus_main_cus_add2_th = request.POST.get('cus_main_cus_add2_th')
@@ -1911,7 +1912,12 @@ def update_all_cus_tabs(request):
                     if field_is_modified:
                         cus_main.cus_active = cus_main_cus_active
                         modified_records.append(record)
-                    
+
+                        if cus_main_cus_active == 1:
+                            cus_main.cus_main = 1
+                        else
+                            cus_main.cus_main = 0
+
                     # CUS_NAME_TH                    
                     if (cus_main_cus_name_th is not None):
                         if (cus_main_cus_name_th != ""):
@@ -2145,8 +2151,14 @@ def update_all_cus_tabs(request):
 
 
             except CusMain.DoesNotExist:
+                if cus_main_cus_active == 1:
+                    cus_main = 1
+                else
+                    cus_main = 0
+
                 new_customer_main = CusMain(
                     cus_active = cus_main_cus_active,
+                    cus_main = cus_main,
                     cus_id = cus_id,
                     cus_name_th = cus_main_cus_name_th,
                     cus_add1_th = cus_main_cus_add1_th,
@@ -2271,7 +2283,12 @@ def update_all_cus_tabs(request):
                     if field_is_modified:
                         customer.cus_active = cus_site_cus_active
                         modified_records.append(record)
-                    
+
+                        if cus_site_cus_active == 1:
+                            customer.cus_main = 1
+                        else
+                            customer.cus_main = 0
+
                     # CUS_NAME_TH
                     #customer.cus_name_th = cus_site_cus_name_th
                     field_is_modified, record = check_modified_field("CUS_SITE", cus_no, "Name TH", customer.cus_name_th, cus_site_cus_name_th, "E", request)
@@ -2443,6 +2460,11 @@ def update_all_cus_tabs(request):
                 # ./History Log 
 
             except Customer.DoesNotExist:                
+                if cus_site_cus_active == 1:
+                    cus_site = 1
+                else
+                    cus_site = 0
+
                 new_customer_site = Customer(
                     cus_active = cus_site_cus_active,
                     cus_no = cus_no,
@@ -2582,6 +2604,11 @@ def update_all_cus_tabs(request):
                         cusbill.cus_active = cus_bill_cus_active
                         modified_records.append(record)
                     
+                        if cus_bill_cus_active == 1:
+                            cusbill.cus_main = 1
+                        else
+                            cusbill.cus_main = 0
+
                     # CUS_NAME_TH                    
                     # cusbill.cus_name_th = cus_bill_cus_name_th
                     field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Name TH", cusbill.cus_name_th, cus_bill_cus_name_th, "E", request)
@@ -2768,6 +2795,11 @@ def update_all_cus_tabs(request):
                     print("update cus_bill")
 
             except CusBill.DoesNotExist:
+                if cus_bill_cus_active == 1:
+                    cus_bill = 1
+                else
+                    cus_bill = 0
+                    
                 new_cusbill = CusBill(
                     cus_active = cus_bill_cus_active,
                     cus_no = cus_no,
