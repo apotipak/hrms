@@ -820,7 +820,7 @@ def CustomerUpdate(request, pk):
         cus_bill_form = CusBillForm(instance=cus_bill)
 
     # Business Type
-    group_id = Customer.objects.values_list('cus_taxid', flat=True).exclude(cus_taxid=None).order_by('cus_taxid').distinct()
+    group_id = CusMain.objects.values_list('cus_taxid', flat=True).exclude(cus_taxid=None).order_by('cus_taxid').distinct()
     business_type_list = CustomerOption.objects.values_list('btype', flat=True).exclude(btype=None).order_by('btype').distinct()
     group_1_list = CustomerOption.objects.values_list('op2', flat=True).exclude(op2=None).order_by('op2').distinct()
     group_2_list = CustomerOption.objects.values_list('op3', flat=True).exclude(op2=None).order_by('op3').distinct()
@@ -1846,8 +1846,8 @@ def update_all_cus_tabs(request):
             cus_main_cus_tel = request.POST.get('cus_main_cus_tel')
             cus_main_cus_fax = request.POST.get('cus_main_cus_fax')
             cus_main_cus_email = request.POST.get('cus_main_cus_email')
-            cus_main_cus_zone = request.POST.get('cus_main_cus_zone')                
 
+            cus_main_cus_zone = request.POST.get('cus_main_cus_zone')                
             cus_main_cus_district_id_new = request.POST.get('cus_main_cus_district_id')
             # print("cus_main_cus_district_id_new = " + str(cus_main_cus_district_id_new))
 
@@ -1889,6 +1889,10 @@ def update_all_cus_tabs(request):
             cus_main_customer_option_op4 = request.POST.get('cus_main_customer_option_op4')
             cus_main_customer_option_opn1 = request.POST.get('cus_main_customer_option_opn1')
             # print("cus_main_customer_option_opn1 = " + str(cus_main_customer_option_opn1))
+
+            customer_group_id = request.POST.get('cus_main_cus_taxid')            
+            # print("xyz : " +  str(customer_group_id))
+
 
             cus_main_cus_contact_id = request.POST.get('cus_main_cus_contact_id')
             if cus_main_cus_contact_id:
@@ -2014,6 +2018,14 @@ def update_all_cus_tabs(request):
                             cus_main.cus_email = cus_main_cus_email
                             modified_records.append(record)
 
+                    # Group ID - cus_taxid
+                    print("cus_main - customer_group_id = " + str(customer_group_id))
+                    if (customer_group_id is not None):
+                        field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Group ID", cus_main.cus_taxid, customer_group_id, "E", request)
+                        if field_is_modified:
+                            cus_main.cus_taxid = customer_group_id
+                            modified_records.append(record)
+
                     # CUS_ZONE
                     if cus_main_cus_zone is not None:
                         if cus_main_cus_zone.isnumeric():
@@ -2035,6 +2047,7 @@ def update_all_cus_tabs(request):
                             if field_is_modified:
                                 cus_main.cus_contact_id = cus_main_cus_contact_id
                                 modified_records.append(record)
+
 
                     if cus_main.upd_flag == 'A':
                         cus_main.upd_flag = 'E'
@@ -2149,7 +2162,7 @@ def update_all_cus_tabs(request):
                     cus_tel = cus_main_cus_tel,
                     cus_fax = cus_main_cus_fax,
                     cus_email = cus_main_cus_email,
-                    #cus_taxid = cus_
+                    cus_taxid = customer_group_id,
                     cus_zone_id = cus_main_cus_zone,
                     site_contact_id = cus_main_cus_contact_id,
                     upd_date = timezone.now(),
@@ -2370,7 +2383,18 @@ def update_all_cus_tabs(request):
                             customer.cus_email = cus_site_cus_email
                             modified_records.append(record)
 
-                    
+                    # Group ID - cus_taxid
+                    '''
+                    if (customer_group_id is not None):
+                        field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Group ID", customer.cus_taxid, customer_group_id, "E", request)
+                        if field_is_modified:
+                            customer.cus_taxid = customer_group_id
+                            modified_records.append(record)
+                    '''
+
+                    print("customer : save customer_group_id " + str(customer_group_id))
+                    customer.cus_taxid = customer_group_id
+
                     # CUS_ZONE
                     # customer.cus_zone_id = cus_site_cus_zone
                     if cus_site_cus_zone is not None:
@@ -2395,22 +2419,8 @@ def update_all_cus_tabs(request):
                                 customer.site_contact_id = cus_site_site_contact_id
                                 modified_records.append(record)
 
-                    # Group ID
-                    # customer_group_id = request.POST.get('customer_group_id')
-                    print("customer_group_id : " + customer_group_id)
-                    customer.cus_taxid = customer_group_id
-
-                    '''
-                    if (cus_site_cus_fax is not None):
-                        field_is_modified, record = check_modified_field("CUS_SITE", cus_no, "Fax", customer.cus_fax, cus_site_cus_fax, "E", request)
-                        if field_is_modified:
-                            customer.cus_fax = cus_site_cus_fax
-                            modified_records.append(record)
-                    '''
-
-
-                    # TODO xyz
-
+                    customer.upd_date = timezone.now()
+                    customer.upd_by = request.user.first_name                    
                     if customer.upd_flag == 'A':
                         customer.upd_flag = 'E'
 
@@ -2456,9 +2466,12 @@ def update_all_cus_tabs(request):
                     cus_tel = cus_site_cus_tel,
                     cus_fax = cus_site_cus_fax,
                     cus_email = cus_site_cus_email,
+                    cus_taxid = customer_group_id,
                     cus_zone_id = cus_site_cus_zone,
                     site_contact_id = cus_site_site_contact_id,
-                    cus_taxid = customer_group_id,
+                    update_date = timezone.now(),
+                    upd_by = request.user.first_name,
+                    upd_flag = 'A'
                     )
                 new_customer_site.save()
 
@@ -2493,7 +2506,7 @@ def update_all_cus_tabs(request):
             cus_bill_cus_add2_th = request.POST.get('cus_bill_cus_add2_th')
             cus_bill_cus_subdist_th = request.POST.get('cus_bill_cus_subdist_th')            
             cus_bill_cus_district_id = request.POST.get('cus_bill_cus_district_id')
-            print("debug : cus_bill_cus_district_id = " + str(cus_bill_cus_district_id))
+            # print("debug : cus_bill_cus_district_id = " + str(cus_bill_cus_district_id))
 
             cus_bill_cus_name_en = request.POST.get('cus_bill_cus_name_en')
             cus_bill_cus_add1_en = request.POST.get('cus_bill_cus_add1_en')
@@ -2683,7 +2696,18 @@ def update_all_cus_tabs(request):
                         if field_is_modified:
                             cusbill.cus_email = cus_bill_cus_email
                             modified_records.append(record)
-                    
+
+                    # Group ID - cus_taxid
+                    '''
+                    if (customer_group_id is not None):
+                        field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Group ID", customer.cus_taxid, customer_group_id, "E", request)
+                        if field_is_modified:
+                            customer.cus_taxid = customer_group_id
+                            modified_records.append(record)
+                    '''
+                    print("cusbill : save customer_group_id " + str(customer_group_id))
+                    cusbill.cus_taxid = customer_group_id
+
                     # CUS_ZONE
                     # cusbill.cus_zone_id = cus_bill_cus_zone
                     if cus_bill_cus_zone is not None:
@@ -2751,6 +2775,7 @@ def update_all_cus_tabs(request):
                     cus_tel = cus_bill_cus_tel,
                     cus_fax = cus_bill_cus_fax,
                     cus_email = cus_bill_cus_email,
+                    cus_taxid = customer_group_id,
                     cus_zone_id = cus_bill_cus_zone,
                     cus_contact_id = cus_bill_cus_contact_id,
                     site_contact_id = cus_bill_cus_contact_id,
