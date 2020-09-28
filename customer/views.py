@@ -2738,6 +2738,14 @@ def update_all_cus_tabs(request):
                                 cusbill.site_contact_id = cus_bill_cus_contact_id
                                 modified_records.append(record)
 
+                    cusbill.upd_date = timezone.now()
+                    cusbill.upd_by = request.user.first_name                    
+                    if cusbill.upd_flag == 'A':
+                        cusbill.upd_flag = 'E'
+
+                    if cusbill.upd_flag == 'D':
+                        cusbill.upd_flag = 'E'
+
                     cusbill.save()
 
                     # History Log                    
@@ -2783,6 +2791,9 @@ def update_all_cus_tabs(request):
                     cus_zone_id = cus_bill_cus_zone,
                     cus_contact_id = cus_bill_cus_contact_id,
                     site_contact_id = cus_bill_cus_contact_id,
+                    update_date = timezone.now(),
+                    upd_by = request.user.first_name,
+                    upd_flag = 'A'                    
                     )
                 new_cusbill.save()
                 print("insert cus_bill")
