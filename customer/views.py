@@ -1920,9 +1920,7 @@ def update_all_cus_tabs(request):
                     if field_is_modified:
                         cus_main.cus_active = cus_main_cus_active
                         modified_records.append(record)
-                        cus_main.cus_main = cus_main
-                        customer.cus_main = cus_site
-                        customber.cus_bill = cus_bill
+                        cus_main.cus_main = 1
 
                     # CUS_NAME_TH                    
                     if (cus_main_cus_name_th is not None):
@@ -2159,7 +2157,7 @@ def update_all_cus_tabs(request):
             except CusMain.DoesNotExist:
                 cus_main_cus_taxid = request.POST.get('cus_main_cus_taxid')            
                 print("cus_main_cus_taxid " + str(cus_main_cus_taxid))
-                
+
                 new_customer_main = CusMain(
                     cus_active = cus_main_cus_active,
                     cus_main = cus_main,
@@ -2293,10 +2291,10 @@ def update_all_cus_tabs(request):
                         customer.cus_active = cus_site_cus_active
                         modified_records.append(record)
 
-                        if cus_site_cus_active == 1:
-                            customer.cus_site = cus_site
+                        if cus_site_cus_active:
+                            customer.cus_site = 1
                         else:
-                            customer.cus_site = cus_site
+                            customer.cus_site = 0
 
                     # CUS_NAME_TH
                     #customer.cus_name_th = cus_site_cus_name_th
@@ -2606,18 +2604,23 @@ def update_all_cus_tabs(request):
                 cusbill = CusBill.objects.get(pk=cus_no)
 
                 if cusbill is not None:
-                    
+                    cusbill.cus_bill = 0
+
                     # CUS_ACTIVE
                     # cusbill.cus_active = cus_bill_cus_active
                     field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Status", int(cusbill.cus_active), int(cus_bill_cus_active), "E", request)
                     if field_is_modified:
+                        print("aabbccc")
                         cusbill.cus_active = cus_bill_cus_active
-                        modified_records.append(record)
-                    
+                        modified_records.append(record)                    
+
+                        print("cus_bill_cus_active = " + cus_bill_cus_active)
+
                         if cus_bill_cus_active == 1:
-                            cusbill.cus_bill = cus_bill
+                            cusbill.cus_bill = 1
                         else:
-                            cusbill.cus_bill = cus_bill
+                            cusbill.cus_bill = 0
+
 
                     # CUS_NAME_TH                    
                     # cusbill.cus_name_th = cus_bill_cus_name_th
