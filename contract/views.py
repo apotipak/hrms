@@ -236,6 +236,7 @@ def SaveContract(request):
             print("")
             print("")
 
+
             # TODO
             response_data['form_is_valid'] = True
             response_data['result'] = "Saved succes."

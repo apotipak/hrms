@@ -36,7 +36,7 @@
       <!-- Default box -->
       <div class="card">
 
-        <div class="col-sm-8 offset-sm-2 col-md-8 offset-md-2 pt-4 pl-4 pr-4"> 
+        <div class="col-sm-8 offset-sm-2 col-md-8 offset-md-3 pt-4 pl-4 pr-4"> 
 
           <form class="form-row" method="post" autocomplete="off">
             {% csrf_token %}
@@ -54,7 +54,7 @@
                   {% render_field form.cus_id class="form-control form-control-sm" %}
                 {% endif %}
               </div>
-
+              
               <div class="col-3">
                 {% if form.cus_brn.errors %}                
                   {% render_field form.cus_brn class="form-control form-control-sm is-invalid" %}
