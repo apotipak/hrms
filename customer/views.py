@@ -2154,8 +2154,12 @@ def update_all_cus_tabs(request):
 
 
             except CusMain.DoesNotExist:
-                cus_main_cus_taxid = request.POST.get('cus_main_cus_taxid')            
-                print("cus_main_cus_taxid " + str(cus_main_cus_taxid))
+                cus_main_cus_taxid = request.POST.get('cus_main_cus_taxid')
+
+                if int(cus_main_cus_active) == 1:
+                    cus_main = 1
+                else:
+                    cus_main = 0
 
                 new_customer_main = CusMain(
                     cus_active = cus_main_cus_active,
@@ -2461,6 +2465,11 @@ def update_all_cus_tabs(request):
                 # ./History Log 
 
             except Customer.DoesNotExist:
+                if int(cus_site_cus_active) == 1:
+                    cus_site = 1
+                else:
+                    cus_site = 0
+
                 new_customer_site = Customer(
                     cus_active = cus_site_cus_active,
                     cus_site = cus_site,
@@ -2597,7 +2606,6 @@ def update_all_cus_tabs(request):
                     # cusbill.cus_active = cus_bill_cus_active
                     field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Status", int(cusbill.cus_active), int(cus_bill_cus_active), "E", request)
                     if field_is_modified:
-                        print("aabbccc")
                         cusbill.cus_active = cus_bill_cus_active
                         modified_records.append(record)                    
 
@@ -2782,7 +2790,7 @@ def update_all_cus_tabs(request):
                     print("update cus_bill")
 
             except CusBill.DoesNotExist:
-                if cus_bill_cus_active == 1:
+                if int(cus_bill_cus_active) == 1:
                     cus_bill = 1
                 else:
                     cus_bill = 0
