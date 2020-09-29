@@ -54,7 +54,7 @@ class ContractUpdateForm(forms.ModelForm):
     class Meta:
         model = CusContract        
         fields = '__all__'
-        exclude = ['cnt_id']
+        exclude = ['cnt_id', 'cus_brn', 'cus_vol']
 
     def __init__(self, *args, **kwargs):
         super(ContractUpdateForm, self).__init__(*args, **kwargs)        
