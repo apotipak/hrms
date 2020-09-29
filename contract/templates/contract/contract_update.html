@@ -35,11 +35,11 @@
 
   <!-- Main content -->  
   <section class="content pt-2">
-    
-    <div class="card card-default collapsed-card">
-
       <form id="contractupdateform" method="POST">
       {% csrf_token %}
+
+    
+    <div class="card card-default collapsed-card">
 
       <div class="card-header">
         <h1 class="card-title"><strong>{{contract.cnt_id}} - {{ customer.cus_name_th }}</strong></h1>
