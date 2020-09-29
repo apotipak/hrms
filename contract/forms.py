@@ -50,7 +50,7 @@ class ContractUpdateForm(forms.ModelForm):
     cnt_active = forms.BooleanField(required=False, widget=forms.CheckboxInput())
     cnt_doc_no = forms.CharField(required=False)
     cnt_apr_by_id = forms.CharField(required=False)
-    cnt_doc_date = forms.DateField(widget=forms.DateInput(format='%d/%m/%Y'), input_formats=('%d/%m/%Y', ))
+    cnt_doc_date = forms.DateField(required=True, widget=forms.DateInput(format='%d/%m/%Y'), input_formats=('%d/%m/%Y', ))
     cnt_eff_frm = forms.DateField(widget=forms.DateInput(format='%d/%m/%Y'), input_formats=('%d/%m/%Y', ))
     cnt_eff_to = forms.DateField(widget=forms.DateInput(format='%d/%m/%Y'), input_formats=('%d/%m/%Y', ))
     cnt_sign_frm = forms.DateField(widget=forms.DateInput(format='%d/%m/%Y'), input_formats=('%d/%m/%Y', ))
@@ -65,15 +65,16 @@ class ContractUpdateForm(forms.ModelForm):
         super(ContractUpdateForm, self).__init__(*args, **kwargs)        
         instance = getattr(self, 'instance', None)        
         self.fields['cnt_doc_no'].error_messages = {'required': _('<b>Contract Ref.</b> is required.')}
-        self.fields['cnt_doc_date'].widget.attrs.update({'class': 'form-control form-control-sm', 'id': 'id_cnt_doc_date'})
-        self.fields['cnt_eff_frm'].widget.attrs.update({'class': 'form-control form-control-sm', 'id': 'id_cnt_eff_frm'})
-        self.fields['cnt_eff_to'].widget.attrs.update({'class': 'form-control form-control-sm', 'id': 'id_cnt_eff_to'})
-        self.fields['cnt_sign_frm'].widget.attrs.update({'class': 'form-control form-control-sm', 'id': 'id_cnt_sign_frm'})
-        self.fields['cnt_sign_to'].widget.attrs.update({'class': 'form-control form-control-sm', 'id': 'id_cnt_sign_to'})
+        self.fields['cnt_doc_date'].error_messages = {'required': _('<b>Contract Date</b> is required.')}
+                
+        self.fields['cnt_doc_date'].widget.attrs.update({'class': 'form-control form-control-sm', 'id': 'id_cnt_doc_date', 'placeholder': _('')})
+        self.fields['cnt_eff_frm'].widget.attrs.update({'class': 'form-control form-control-sm', 'id': 'id_cnt_eff_frm', 'placeholder': _('dd/mm/yyyy')})
+        self.fields['cnt_eff_to'].widget.attrs.update({'class': 'form-control form-control-sm', 'id': 'id_cnt_eff_to', 'placeholder': _('dd/mm/yyyy')})
+        self.fields['cnt_sign_frm'].widget.attrs.update({'class': 'form-control form-control-sm', 'id': 'id_cnt_sign_frm', 'placeholder': _('dd/mm/yyyy')})
+        self.fields['cnt_sign_to'].widget.attrs.update({'class': 'form-control form-control-sm', 'id': 'id_cnt_sign_to', 'placeholder': _('dd/mm/yyyy')})
         
     def clean_cnt_doc_no(self):
         data = self.data.get('cnt_doc_no')
         if len(data) == '0':
             raise ValidationError("Contrct Ref. is required.")
-
         return data
