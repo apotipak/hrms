@@ -70,33 +70,8 @@ class ContractUpdateForm(forms.ModelForm):
         # self.fields['cnt_doc_no'].error_messages = {'max_value': _('ความยาวเกิน 25 ตัวอักษร')}
         
 
+    '''
     def clean_cnt_doc_no(self):
         data = self.data.get('cnt_doc_no')
         return data
-
-    def clean_cnt_apr_by_id(self):
-        data = self.data.get('cnt_apr_by_id')
-        return 100000
-
     '''
-    def clean_cnt_id(self):
-        data = self.data.get('cnt_id')        
-        return data
-    '''
-
-    '''
-    def clean(self):
-        data = self.cleaned_data
-        return data
-    '''
-
-    '''
-    def clean_cnt_wage_id(self):
-        data = self.data.get('cnt_wage_id')
-        return data
-
-    def clean_cnt_apr_by(self):
-        data = self.data.get('cnt_apr_by')
-        return data
-    '''
-
