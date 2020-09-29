@@ -2604,7 +2604,7 @@ def update_all_cus_tabs(request):
                 cusbill = CusBill.objects.get(pk=cus_no)
 
                 if cusbill is not None:
-                    cusbill.cus_bill = 0
+                    # cusbill.cus_bill = 0
 
                     # CUS_ACTIVE
                     # cusbill.cus_active = cus_bill_cus_active
@@ -2616,7 +2616,7 @@ def update_all_cus_tabs(request):
 
                         print("cus_bill_cus_active = " + cus_bill_cus_active)
 
-                        if cus_bill_cus_active == 1:
+                        if cus_bill_cus_active:
                             cusbill.cus_bill = 1
                         else:
                             cusbill.cus_bill = 0
@@ -2742,16 +2742,6 @@ def update_all_cus_tabs(request):
                         if field_is_modified:
                             cusbill.cus_taxid = cus_main_cus_taxid
                             modified_records.append(record)
-
-
-                    # CUS_TAXID
-                    cus_main_cus_taxid = request.POST.get('cus_main_cus_taxid')            
-                    if (cus_main_cus_taxid is not None):
-                        field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Group ID", cusbill.cus_taxid, cus_main_cus_taxid, "E", request)
-                        if field_is_modified:
-                            cusbill.cus_taxid = cus_main_cus_taxid
-                            modified_records.append(record)
-
 
                     # CUS_ZONE
                     # cusbill.cus_zone_id = cus_bill_cus_zone
