@@ -367,18 +367,30 @@
               
             </div>
 
+
+
             <div class="form-row">
-              <div class="form-group col-md-2">
+              <div class="form-group col-md-3">
                 <label for="id_cnt_sign_frm">{% trans 'Contract Term' %}</label>
-                <input type="text" id="id_cnt_sign_frm" name="cnt_sign_frm" class="form-control form-control-sm" value="{{contract.cnt_sign_frm|date:'d/m/Y'}}" placeholder="From">
+                <div class="input-group date" id="dtp_cnt_sign_frm" data-target-input="nearest">
+                  {{ form.cnt_sign_frm }}
+                  <div class="input-group-append" data-target="#dtp_cnt_sign_frm" data-toggle="datepicker">
+                    <div class="input-group-text text-primary"><i class="fa fa-calendar"></i></div>
+                  </div>
+                </div>
               </div>
 
-              <div class="form-group col-md-2">
+              <div class="form-group col-md-3">
                 <label for="id_cnt_sign_to">&nbsp;</label>
-                <input type="text" id="id_cnt_sign_to" name="cnt_sign_to" class="form-control form-control-sm" value="{{contract.cnt_sign_to|date:'d/m/Y'}}" placeholder="To">
+                <div class="input-group date" id="dtp_cnt_sign_to" data-target-input="nearest">
+                  {{ form.cnt_sign_to }}
+                  <div class="input-group-append" data-target="#dtp_cnt_sign_to" data-toggle="datepicker">
+                    <div class="input-group-text text-primary"><i class="fa fa-calendar"></i></div>
+                  </div>
+                </div>                
               </div>   
 
-              <div class="form-group col-md-6">
+              <div class="form-group col-md-4">
                 <label for="id_cnt_wage_id">{% trans 'Wage Rate' %}</label>
                 <div class="input-group-append">
                 
