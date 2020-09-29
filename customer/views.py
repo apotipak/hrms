@@ -1903,12 +1903,6 @@ def update_all_cus_tabs(request):
             else:
                 cus_main_cus_contact_id = None
 
-
-            if cus_main_cus_active == 1:
-                cus_main = 1
-            else:
-                cus_main = 0
-
             try:
                 modified_records = []
                 cus_main = CusMain.objects.get(pk=cus_id)
@@ -1921,6 +1915,11 @@ def update_all_cus_tabs(request):
                         cus_main.cus_active = cus_main_cus_active
                         modified_records.append(record)
                         cus_main.cus_main = 1
+
+                        if int(cus_main_cus_active) == 1:
+                            cus_main.cus_main = 1
+                        else:
+                            cus_main.cus_main = 0
 
                     # CUS_NAME_TH                    
                     if (cus_main_cus_name_th is not None):
@@ -2273,11 +2272,6 @@ def update_all_cus_tabs(request):
             print("------------------------")
             '''
 
-            if cus_site_cus_active == 1:
-                cus_site = 1
-            else:
-                cus_site = 0
-
             try:
                 modified_records = []
                 customer = Customer.objects.get(pk=cus_no)
@@ -2291,7 +2285,7 @@ def update_all_cus_tabs(request):
                         customer.cus_active = cus_site_cus_active
                         modified_records.append(record)
 
-                        if cus_site_cus_active:
+                        if int(cus_site_cus_active) == 1:
                             customer.cus_site = 1
                         else:
                             customer.cus_site = 0
@@ -2616,9 +2610,11 @@ def update_all_cus_tabs(request):
 
                         print("cus_bill_cus_active = " + cus_bill_cus_active)
 
-                        if cus_bill_cus_active:
+                        if int(cus_bill_cus_active) == 1:
+                            print("set cus_bill = 1")
                             cusbill.cus_bill = 1
                         else:
+                            print("set cus_bill = 0")
                             cusbill.cus_bill = 0
 
 
