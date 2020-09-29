@@ -333,41 +333,39 @@
               <!-- cnt_doc_date -->
               <div class="form-group col-md-3">
                 <label>&nbsp;</label>
-                <div class="docdate input-group mb-3">                    
-                  {% comment %}
-                  <input class="form-control form-control-sm docdate" type="text" data-provide="datepicker" placeholder="Contract Date" id="id_cnt_doc_date" name="cnt_doc_date" value="{{contract.cnt_doc_date}}">
-                  {% endcomment %}
-
-
-                  {% comment %}
-                  <input class="form-control form-control-sm datepicker" id="id_cnt_doc_date" name="cnt_doc_date" type="text" value="25/12/2018">
-                  <button id="docdate_calendar" type="button" class="btn btn-outline-primary btn-sm"><i class="fa fa-calendar-alt"></i></button>
-                  {% endcomment %}
-
-                  <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                <div class="docdate input-group mb-3">
+                  <div class="input-group date" id="dtp_cnt_doc_date" data-target-input="nearest">
                     {{ form.cnt_doc_date }}
-                    <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datepicker">
-                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    <div class="input-group-append" data-target="#dtp_cnt_doc_date" data-toggle="datepicker">
+                      <div class="input-group-text text-primary"><i class="fa fa-calendar"></i></div>
                     </div>
                   </div>
-
                 </div>
               </div>
 
               <!-- cnt_eff_frm -->
               <div class="form-group col-md-3">
                 <label for="id_cnt_eff_frm">{% trans 'Effect Term' %}</label>
-                <input type="text" id="id_cnt_eff_frm" name="cnt_eff_frm" class="form-control form-control-sm" value="{{contract.cnt_eff_frm|date:'d/m/Y'}}" placeholder="From">
+                <div class="input-group date" id="dtp_cnt_eff_frm" data-target-input="nearest">
+                  {{ form.cnt_eff_frm }}
+                  <div class="input-group-append" data-target="#dtp_cnt_eff_frm" data-toggle="datepicker">
+                    <div class="input-group-text text-primary"><i class="fa fa-calendar"></i></div>
+                  </div>
+                </div>
               </div>
               
               <!-- cnt_eff_to -->
               <div class="form-group col-md-3">
                 <label for="id_cnt_eff_to">&nbsp;</label>
-                <input type="text" id="id_cnt_eff_to" name="cnt_eff_to" class="form-control form-control-sm" value="{{contract.cnt_eff_to|date:'d/m/Y'}}" placeholder="To">
+                <div class="input-group date" id="dtp_cnt_eff_to" data-target-input="nearest">
+                  {{ form.cnt_eff_to }}
+                  <div class="input-group-append" data-target="#dtp_cnt_eff_to" data-toggle="datepicker">
+                    <div class="input-group-text text-primary"><i class="fa fa-calendar"></i></div>
+                  </div>
+                </div>
               </div>
               
             </div>
-
 
             <div class="form-row">
               <div class="form-group col-md-2">
@@ -952,9 +950,35 @@
 
 <script>
   $(function () {
-    $("#datetimepicker1").datepicker({
+    $("#dtp_cnt_doc_date").datepicker({
       format: 'dd/mm/yyyy',
+      autoclose: true,
+      orientation: "bottom"
     });
+
+    $("#dtp_cnt_eff_frm").datepicker({
+      format: 'dd/mm/yyyy',
+      autoclose: true,
+      orientation: "bottom"
+    });
+
+    $("#dtp_cnt_eff_to").datepicker({
+      format: 'dd/mm/yyyy',
+      autoclose: true,
+      orientation: "bottom"
+    });
+
+    $("#dtp_cnt_sign_frm").datepicker({
+      format: 'dd/mm/yyyy',
+      autoclose: true,
+      orientation: "bottom"
+    });
+
+    $("#dtp_cnt_sign_to").datepicker({
+      format: 'dd/mm/yyyy',
+      autoclose: true,
+      orientation: "bottom"
+    });    
   });
 </script>
 
