@@ -1,6 +1,5 @@
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import render
-#from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
@@ -14,6 +13,7 @@ from .forms import ContractForm, ContractUpdateForm
 from .models import CusContract, CusService
 from customer.models import CusMain, Customer
 from decimal import Decimal
+from django.utils import timezone
 
 
 @login_required(login_url='/accounts/login/')
@@ -207,9 +207,9 @@ def SaveContract(request):
             cnt_then = request.POST.get('cnt_then')
             cnt_print = request.POST.get('cnt_print')
             cnt_new = request.POST.get('cnt_new')
-            upd_date = request.POST.get('upd_date')
-            upd_by = request.POST.get('upd_by')
-            upd_flag = request.POST.get('upd_flag')
+            upd_date = timezone.now()
+            upd_by = request.user.first_name
+            upd_flag = 'E'
 
             print("")
             print("")
@@ -235,7 +235,7 @@ def SaveContract(request):
             print("--------- END  ------------")
             print("")
             print("")
-            
+
             # TODO
             response_data['form_is_valid'] = True
             response_data['result'] = "Saved succes."

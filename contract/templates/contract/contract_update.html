@@ -334,8 +334,23 @@
               <div class="form-group col-md-3">
                 <label>&nbsp;</label>
                 <div class="docdate input-group mb-3">                    
-                  <input class="form-control form-control-sm docdate" type="text" placeholder="Contract Date" id="id_cnt_doc_date" name="cnt_doc_date" value="{{contract.cnt_doc_date|date:'d/m/Y'}}">                                          
+                  {% comment %}
+                  <input class="form-control form-control-sm docdate" type="text" data-provide="datepicker" placeholder="Contract Date" id="id_cnt_doc_date" name="cnt_doc_date" value="{{contract.cnt_doc_date}}">
+                  {% endcomment %}
+
+
+                  {% comment %}
+                  <input class="form-control form-control-sm datepicker" id="id_cnt_doc_date" name="cnt_doc_date" type="text" value="25/12/2018">
                   <button id="docdate_calendar" type="button" class="btn btn-outline-primary btn-sm"><i class="fa fa-calendar-alt"></i></button>
+                  {% endcomment %}
+
+                  <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                    {{ form.cnt_doc_date }}
+                    <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datepicker">
+                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                  </div>
+
                 </div>
               </div>
 
@@ -909,15 +924,38 @@
   });
 
   //TODO
+  /*
   $('#id_cnt_doc_date').datepicker({
     showButtonPanel: true,
-    dateFormat: 'mm-dd-yy',
+    dateFormat: 'dd-mm-yy',
     beforeShow: function(){    
-      $(".ui-datepicker").css('font-size', 8)
+      alert("todo");
     }    
   });
 
+  $(function () {
+      $('.datepicker').datepicker({
+          //format: 'yyyy-mm-dd'
+          dateFormat: 'dd-mm-yy'
+      });
+  });
+
+  $('#id_cnt_doc_date').datepicker({
+    locale: {
+      format: 'DD/MM/YYYY'
+    }
+  });
+  */
+
 </script>
 
+
+<script>
+  $(function () {
+    $("#datetimepicker1").datepicker({
+      format: 'dd/mm/yyyy',
+    });
+  });
+</script>
 
 {% endblock %}
