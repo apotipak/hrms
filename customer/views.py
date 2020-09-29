@@ -2588,18 +2588,11 @@ def update_all_cus_tabs(request):
             print("cus_bill_cus_zone = " + str(cus_bill_cus_zone))
             print("cus_bill_cus_contact_id = " + str(cus_bill_cus_contact_id))
             '''
-            
-            if cus_bill_cus_active == 1:
-                cus_bill = 1
-            else:
-                cus_bill = 0
-            
+
             try:
                 cusbill = CusBill.objects.get(pk=cus_no)
 
                 if cusbill is not None:
-                    # cusbill.cus_bill = 0
-
                     # CUS_ACTIVE
                     # cusbill.cus_active = cus_bill_cus_active
                     field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Status", int(cusbill.cus_active), int(cus_bill_cus_active), "E", request)
@@ -2608,15 +2601,10 @@ def update_all_cus_tabs(request):
                         cusbill.cus_active = cus_bill_cus_active
                         modified_records.append(record)                    
 
-                        print("cus_bill_cus_active = " + cus_bill_cus_active)
-
                         if int(cus_bill_cus_active) == 1:
-                            print("set cus_bill = 1")
                             cusbill.cus_bill = 1
                         else:
-                            print("set cus_bill = 0")
                             cusbill.cus_bill = 0
-
 
                     # CUS_NAME_TH                    
                     # cusbill.cus_name_th = cus_bill_cus_name_th
