@@ -47,31 +47,23 @@ class ContractForm(forms.ModelForm):
 
 
 class ContractUpdateForm(forms.ModelForm):
-    # cnt_id = forms.CharField(required=False)
-    cnt_active = forms.BooleanField(label='', required=False, widget=forms.CheckboxInput())
-    cnt_doc_no = forms.CharField(required=True)
-    # cnt_wage_id = forms.CharField(required=False) 
+    cnt_active = forms.BooleanField(required=False, widget=forms.CheckboxInput())
+    cnt_doc_no = forms.CharField(required=False)
     cnt_apr_by_id = forms.CharField(required=False)
-
-    print("debug ContractUpdateForm")
 
     class Meta:
         model = CusContract        
         fields = '__all__'
         exclude = ['cnt_id']
-        widgets = {'cnt_apr_by_id': forms.HiddenInput()}
 
     def __init__(self, *args, **kwargs):
         super(ContractUpdateForm, self).__init__(*args, **kwargs)        
-        instance = getattr(self, 'instance', None)
-
-        self.fields['cnt_doc_no'].error_messages = {'required': _('<b>Contract Ref.</b> is required.'), 'max_value': _('ความยาวเกิน 25 ตัวอักษร')}
-        # self.fields['cnt_doc_no'].error_messages = {'required': _('<b>Contract Ref.</b> is required.')}
-        # self.fields['cnt_doc_no'].error_messages = {'max_value': _('ความยาวเกิน 25 ตัวอักษร')}
+        instance = getattr(self, 'instance', None)        
+        self.fields['cnt_doc_no'].error_messages = {'required': _('<b>Contract Ref.</b> is required.')}
         
-
-    '''
     def clean_cnt_doc_no(self):
         data = self.data.get('cnt_doc_no')
+        if len(data) == '0':
+            raise ValidationError("Contrct Ref. is required.")
+
         return data
-    '''

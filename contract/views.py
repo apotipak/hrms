@@ -179,15 +179,22 @@ def SaveContract(request):
 
     if request.method == 'POST':
         print("SaveContract - Post method")
+        
         # form = ContractUpdateForm(request.POST, instance=CusContract)
         form = ContractUpdateForm(request.POST)
+
         if form.is_valid():
-            print("Form valid")
+            print("Form is valid")
             cnt_id = request.POST.get('cnt_id')
             cnt_active = request.POST.get('cnt_active')
+            cnt_doc_no = request.POST.get('cnt_doc_no')
+
+            # Dump data
+            print("cnt_doc_no = " + str(cnt_doc_no))
 
             # TODO
-            
+            response_data['form_is_valid'] = True
+            response_data['result'] = "Saved succes."
         else:
             print("form is invalid")
             response_data['form_is_valid'] = False
@@ -202,9 +209,5 @@ def SaveContract(request):
                 response_data['errors'] = form.errors
             else:
                 response_data['message'] = "ไม่สามารถทำรายการได้..!"
-        
-            print("Error!")
-            print("****************************")
-
-    
+            
     return JsonResponse(response_data)            

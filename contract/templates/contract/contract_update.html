@@ -327,7 +327,7 @@
               <!-- cnt_doc_no -->
               <div class="form-group col-md-3">
                 <label for="id_cnt_doc_no">{% trans 'Contract Ref.' %}</label>
-                <input id="id_cnt_doc_no" name="cnt_doc_no" type="text" class="form-control form-control-sm" value={{contract.cnt_doc_no}}>
+                <input id="id_cnt_doc_no" name="cnt_doc_no" type="text" class="form-control form-control-sm" value="{{contract.cnt_doc_no|default_if_none:''}}">
               </div>
               
               <!-- cnt_doc_date -->
@@ -742,7 +742,7 @@
       cnt_autoexpire = false;
 
     // cnt_doc_no
-    cnt_doc_no = $('#id_cnt_autoexpire').val();
+    cnt_doc_no = $('#id_cnt_doc_no').val();
     // cnt_doc_date
     cnt_doc_date = $('#id_cnt_doc_date').val();
     // cnt_eff_frm
@@ -790,7 +790,7 @@
         if(json.form_is_valid) {
           $(document).Toasts('create', {
             class: 'bg-success', 
-            title: "{% trans 'Message' %}",
+            title: "{% trans 'System message' %}",
             subtitle: '',
             autohide: true,
             delay: 2000,
