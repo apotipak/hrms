@@ -757,11 +757,22 @@
     cnt_wage_id = $('#id_cnt_wage_id').val();
     // cnt_sale_amt
     cnt_sale_amt = $('#id_cnt_sale_amt').val();
-
+    // cnt_guard_amt
+    cnt_guard_amt = $('#id_cnt_guard_amt').val();
     //cnt_apr_by_id
     cnt_apr_by_id = $('#id_cnt_apr_by_id').val(); 
     //cnt_apr_by_text
     cnt_apr_by_text = $('#id_cnt_apr_by_text').val(); 
+
+    // zone
+    // cnt_zone_id = $('#id_cnt_zone_id').val();
+
+    // cnt_th_en
+    // cnt_then = $('#id_cnt_then').val();
+
+    // cnt_print
+    // cnt_print = $('#id_cnt_print').val();
+
 
     console.log(cnt_new + ", " + amendment_flag + ", " + cnt_print + ", " + cnt_autoexpire + ", " + cnt_active);
   
@@ -783,8 +794,12 @@
         cnt_sign_to: cnt_sign_to,
         cnt_wage_id: cnt_wage_id,
         cnt_sale_amt: cnt_sale_amt,
+        cnt_guard_amt: cnt_guard_amt,
         cnt_apr_by_id: cnt_apr_by_id,
-        cnt_apr_by_text: cnt_apr_by_text
+        cnt_apr_by_text: cnt_apr_by_text,
+        // cnt_zone_id: cnt_zone_id,
+        // cnt_then: cnt_then,
+        // cnt_print: cnt_print,        
       },
       success : function(json) {        
         if(json.form_is_valid) {

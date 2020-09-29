@@ -185,12 +185,33 @@ def SaveContract(request):
 
         if form.is_valid():
             print("Form is valid")
+
+
+            # Get values
             cnt_id = request.POST.get('cnt_id')
+            # cus_brn
+            # cus_vol
             cnt_active = request.POST.get('cnt_active')
             cnt_doc_no = request.POST.get('cnt_doc_no')
+            cnt_doc_date = request.POST.get('cnt_doc_date')
+            cnt_eff_frm = request.POST.get('cnt_eff_frm')
+            cnt_eff_to = request.POST.get('cnt_eff_to')
+            cnt_sign_frm = request.POST.get('cnt_sign_frm')
+            cnt_sign_to = request.POST.get('cnt_sign_to')
+            cnt_apr_by = request.POST.get('cnt_apr_by_id')
+            
+            cnt_guard_amt = request.POST.get('cnt_guard_amt')
+            cnt_sale_amt = request.POST.get('cnt_sale_amt')
+            cnt_wage_id = request.POST.get('cnt_wage_id')
+            # cnt_zone = request.POST.get('cnt_zone_id')
+            cnt_autoexpire = request.POST.get('cnt_autoexpire')
+            cnt_then = request.POST.get('cnt_then')
 
-            # Dump data
-            print("cnt_doc_no = " + str(cnt_doc_no))
+            cnt_print = request.POST.get('cnt_print')
+            cnt_new = request.POST.get('cnt_new')
+            upd_date = request.POST.get('upd_date')
+            upd_by = request.POST.get('upd_by')
+            upd_flag = request.POST.get('upd_flag')
 
             # TODO
             response_data['form_is_valid'] = True
