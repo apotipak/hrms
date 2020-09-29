@@ -2136,7 +2136,7 @@ def update_all_cus_tabs(request):
                             opn1 = float(cus_main_customer_option_opn1))
                         c.save()
 
-                    # History Log                    
+                    # Save History Log                    
                     for data in modified_records:
                         new_log = HrmsNewLog(
                             log_table = data['log_table'],
@@ -2150,7 +2150,7 @@ def update_all_cus_tabs(request):
                             )
                         new_log.save()    
                         modified_records = []
-                    # ./History Log 
+                    # ./ Save History Log 
 
 
             except CusMain.DoesNotExist:

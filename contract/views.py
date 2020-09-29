@@ -11,10 +11,30 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils.translation import ugettext_lazy as _
 from .forms import ContractForm, ContractUpdateForm
 from .models import CusContract, CusService
+from system.models import HrmsNewLog
 from customer.models import CusMain, Customer
 from decimal import Decimal
 from django.utils import timezone
 import datetime
+
+
+def check_modified_field(table_name, primary_key, field_name, old_value, new_value, log_type, request):
+    record = {}
+    if old_value != new_value:
+        record = {
+            "log_table": table_name,
+            "log_key": primary_key,
+            "log_field": field_name,
+            "old_value": old_value,
+            "new_value": new_value,
+            "log_type": log_type,
+            "log_by": request.user.first_name,
+            "log_date": timezone.now(),
+            "log_description": None,
+        }
+        return True, record
+    else: 
+        return False, record
 
 
 @login_required(login_url='/accounts/login/')
@@ -239,8 +259,15 @@ def SaveContract(request):
 
             # TODO
             try:
+                modified_records = []
                 cuscontract = CusContract.objects.get(cnt_id=cnt_id)
-                cuscontract.cnt_doc_no = cnt_doc_no
+                
+                # Contract Ref.
+                # cuscontract.cnt_doc_no = cnt_doc_no
+                field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "Contract Ref.", cuscontract.cnt_doc_no, cnt_doc_no, "E", request)
+                if field_is_modified:
+                    cuscontract.cnt_doc_no = cnt_doc_no
+                    modified_records.append(record)
 
                 # Modified user                
                 now = datetime.datetime.now()
@@ -250,6 +277,23 @@ def SaveContract(request):
                 cuscontract.upd_by = request.user.first_name
 
                 cuscontract.save()
+
+                # History Log                    
+                for data in modified_records:
+                    new_log = HrmsNewLog(
+                        log_table = data['log_table'],
+                        log_key = data['log_key'],
+                        log_field = data['log_field'],
+                        old_value = data['old_value'],
+                        new_value = data['new_value'],
+                        log_type = data['log_type'],
+                        log_by = data['log_by'],
+                        log_date = data['log_date'],
+                        )
+                    new_log.save()    
+                    modified_records = []
+                # ./History Log 
+
                 print("updated complete.")
             except CustomerOption.DoesNotExist:
                 # Insert
