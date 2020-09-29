@@ -289,9 +289,18 @@
               <input class="form-check-input" id="id_cnt_autoexpire" name="cnt_autoexpire" type="checkbox">
               {% endif %}
               <label class="form-check-label text-danger">Auto expire</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <!--<label class="form-check-label text-danger">Auto expire</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
             </div>                        
 
-            <div class="float-right d-inline">
+            <div class="float-right">
+
+              {% if contract.cnt_active|default_if_none:0 %}
+                <input id="id_cnt_active" name="cnt_active" type="checkbox" data-toggle="toggle" data-on="Active" data-off="Pending" data-onstyle="success" data-size="normal" checked>
+              {% else %}
+                <input id="id_cnt_active" name="cnt_active" type="checkbox" data-toggle="toggle" data-on="Active" data-off="Pending" data-onstyle="success" data-size="normal">
+              {% endif %}
+
+              <!--
               <div class="btn-group">
                 <label class="switch">                                 
                   {% if contract.cnt_active|default_if_none:0 %}
@@ -302,7 +311,12 @@
                   <div class="slider"></div>
                 </label>  
               </div>
+              -->
+
             </div>
+
+
+
 
           </div>
 
@@ -436,10 +450,27 @@
         </div>
         <!-- /.row -->     
 
+        <!--
         <div class="float-right">
           <a href="javascript:void(0);" type="button" class="btn btn-info btn-md"><i class="fas fa-print fa-sm"></i>&nbsp;&nbsp;{% trans 'Print' %}</a>
           <a href="javascript:void(0);" id="saveContract" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
         </div>
+        -->
+
+        <div class="btn-group float-right">
+          <button type="button" class="btn btn-default text-info"><i class="fas fa-print fa-sm"></i>&nbsp;&nbsp;Print</button>
+          <button type="button" class="btn btn-default text-info dropdown-toggle dropdown-icon" data-toggle="dropdown">
+            <span class="sr-only">Toggle Dropdown</span>
+            <div class="dropdown-menu" role="menu">
+              <a class="dropdown-item" href="#">Thai</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">English</a>
+            </div>
+          </button>
+          &nbsp;&nbsp;
+          <a href="javascript:void(0);" id="saveContract" type="button" class="btn btn-primary"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>                
+        </div>
+
 
       </div>
       <!-- /.card-body -->
@@ -565,7 +596,7 @@
     <div class="modal-content">
       
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;<strong>{% trans 'Add new service' %}</strong></h5>
+        <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;<strong>{% trans 'Add a new service' %}</strong></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -689,8 +720,8 @@
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">{% trans 'Cancel' %}</button>
-        <button type="button" class="btn btn-success btn-sm">{% trans 'Add' %}</button>
+        <button type="button" class="btn btn-secondary btn-md" data-dismiss="modal">{% trans 'Cancel' %}</button>
+        <button type="button" class="btn btn-success btn-md">&nbsp;&nbsp;{% trans 'Add' %}&nbsp;&nbsp;</button>
       </div>
     </div>
   </div>
@@ -702,7 +733,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">{% trans 'Wage Rate Lookup' %}</h5>
+        <h5 class="modal-title" id="exampleModalLongTitle">{% trans 'Select a Wage Rate' %}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
