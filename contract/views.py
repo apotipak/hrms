@@ -260,48 +260,52 @@ def SaveContract(request):
             # TODO
             try:
                 modified_records = []
+                field_is_modified_count = 0
                 cuscontract = CusContract.objects.get(cnt_id=cnt_id)
                 
                 # Contract Ref.
                 # cuscontract.cnt_doc_no = cnt_doc_no
-                field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "Contract Ref.", cuscontract.cnt_doc_no, cnt_doc_no, "E", request)
-                if field_is_modified:
-                    cuscontract.cnt_doc_no = cnt_doc_no
-                    modified_records.append(record)
+                if (cnt_doc_no is not None):
+                    field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "Contract Ref.", cuscontract.cnt_doc_no, cnt_doc_no, "E", request)
+                    if field_is_modified:
+                        cuscontract.cnt_doc_no = cnt_doc_no
+                        modified_records.append(record)
+                        field_is_modified_count = field_is_modified_count + 1
 
-                # Modified user                
-                now = datetime.datetime.now()
+                # Modified user
+                if field_is_modified_count > 0:
+                    cuscontract.upd_date = datetime.datetime.now()
+                    cuscontract.upd_flag = 'E'
+                    cuscontract.upd_by = request.user.first_name
 
-                cuscontract.upd_date = now
-                cuscontract.upd_flag = 'E'
-                cuscontract.upd_by = request.user.first_name
+                    cuscontract.save()
 
-                cuscontract.save()
+                    # History Log                    
+                    for data in modified_records:
+                        new_log = HrmsNewLog(
+                            log_table = data['log_table'],
+                            log_key = data['log_key'],
+                            log_field = data['log_field'],
+                            old_value = data['old_value'],
+                            new_value = data['new_value'],
+                            log_type = data['log_type'],
+                            log_by = data['log_by'],
+                            log_date = data['log_date'],
+                            )
+                        new_log.save()    
+                        modified_records = []
+                    # ./History Log                     
 
-                # History Log                    
-                for data in modified_records:
-                    new_log = HrmsNewLog(
-                        log_table = data['log_table'],
-                        log_key = data['log_key'],
-                        log_field = data['log_field'],
-                        old_value = data['old_value'],
-                        new_value = data['new_value'],
-                        log_type = data['log_type'],
-                        log_by = data['log_by'],
-                        log_date = data['log_date'],
-                        )
-                    new_log.save()    
-                    modified_records = []
-                # ./History Log 
-
-                print("updated complete.")
+                    response_data['form_is_valid'] = True
+                    response_data['result'] = "Saved success."                    
+                else:
+                    response_data['form_is_valid'] = True
+                    response_data['result'] = "Update nothing."
+               
             except CustomerOption.DoesNotExist:
                 # Insert
-                print("insert new record.")
-
-            # Ajax Response
-            response_data['form_is_valid'] = True
-            response_data['result'] = "Saved success."
+                response_data['form_is_valid'] = True
+                response_data['result'] = "Pending to save data"
         else:
             print("form is invalid")
             response_data['form_is_valid'] = False
