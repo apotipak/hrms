@@ -14,6 +14,7 @@ from .models import CusContract, CusService
 from customer.models import CusMain, Customer
 from decimal import Decimal
 from django.utils import timezone
+import datetime
 
 
 @login_required(login_url='/accounts/login/')
@@ -236,10 +237,27 @@ def SaveContract(request):
             print("")
             print("")
 
-
             # TODO
+            try:
+                cuscontract = CusContract.objects.get(cnt_id=cnt_id)
+                cuscontract.cnt_doc_no = cnt_doc_no
+
+                # Modified user                
+                now = datetime.datetime.now()
+
+                cuscontract.upd_date = now
+                cuscontract.upd_flag = 'E'
+                cuscontract.upd_by = request.user.first_name
+
+                cuscontract.save()
+                print("updated complete.")
+            except CustomerOption.DoesNotExist:
+                # Insert
+                print("insert new record.")
+
+            # Ajax Response
             response_data['form_is_valid'] = True
-            response_data['result'] = "Saved succes."
+            response_data['result'] = "Saved success."
         else:
             print("form is invalid")
             response_data['form_is_valid'] = False
