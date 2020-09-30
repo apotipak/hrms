@@ -1,6 +1,6 @@
 from django.db import models
 from customer.models import Customer
-from system.models import CusContact, TAprove, TWagezone, TShift
+from system.models import CusContact, TAprove, TWagezone, ComRank, TShift
 
 
 class CusContract(models.Model):

@@ -11,7 +11,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils.translation import ugettext_lazy as _
 from .forms import ContractForm, ContractUpdateForm
 from .models import CusContract, CusService
-from system.models import HrmsNewLog, TWagezone
+from system.models import HrmsNewLog, TWagezone, ComRank, TShift
 from customer.models import CusMain, Customer
 from decimal import Decimal
 from django.utils import timezone
@@ -662,6 +662,28 @@ def update_customer_service(request):
             op2 = data.op2
             op3 = data.op3
 
+            # Get com_rank
+            comrank = ComRank.objects.all().exclude(upd_flag='D')
+            pickup_comrank_record =[]            
+            for d in comrank:
+                record = {
+                    "rank_id": d.rank_id,
+                    "rank_th": d.rank_th,
+                    "rank_en": d.rank_en,                    
+                }
+                pickup_comrank_record.append(record)
+
+            # Get t_shift
+            # TODO
+            tshift = TShift.objects.all()
+            pickup_tshift_record =[]            
+            for d in tshift:
+                record = {
+                    "shf_id": d.shf_id,
+                    "shf_desc": d.shf_desc,
+                }
+                pickup_tshift_record.append(record)
+
             response = JsonResponse(data={
                 "success": True,
                 "srv_id": data.srv_id,
@@ -689,7 +711,9 @@ def update_customer_service(request):
                 "srv_cost_change": data.srv_cost_change,
                 "op1": data.op1,
                 "op2": data.op2,
-                "op3": data.op3
+                "op3": data.op3,
+                "com_rank_list": list(pickup_comrank_record),
+                "t_shift_list": list(pickup_tshift_record),
             })
             response.status_code = 200
             return response

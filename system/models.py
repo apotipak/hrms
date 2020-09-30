@@ -304,3 +304,20 @@ class TShift(models.Model):
     class Meta:
         managed = False
         db_table = 'T_SHIFT'
+
+
+class ComRank(models.Model):
+    rank_id = models.CharField(primary_key=True, max_length=3)
+    rank_th = models.CharField(max_length=30, blank=True, null=True)
+    rank_en = models.CharField(max_length=30, blank=True, null=True)
+    rank_type = models.CharField(max_length=3, blank=True, null=True)
+    rank_start = models.DateTimeField(blank=True, null=True)
+    rank_grd = models.DecimalField(max_digits=2, decimal_places=0, blank=True, null=True)
+    rank_promot = models.DecimalField(max_digits=2, decimal_places=0, blank=True, null=True)
+    upd_date = models.DateTimeField(blank=True, null=True)
+    upd_by = models.CharField(max_length=10, blank=True, null=True)
+    upd_flag = models.CharField(max_length=1, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'COM_RANK'
