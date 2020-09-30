@@ -531,3 +531,99 @@ def get_wagerate_list(request):
 
     return JsonResponse(data={"success": False, "results": ""})
 
+
+@login_required(login_url='/accounts/login/')
+def get_wagerate_list_modal(request):
+
+    print("**********************************")    
+    print("FUNCTION: get_wagerate_list_modal")
+    print("**********************************")
+
+    data = []
+    item_per_page = 100
+    page_no = request.GET["page_no"]
+    current_wagerate_id = request.GET["current_wage_id"]
+    search_option = request.GET["search_option"]
+    search_text = request.GET["search_text"]
+
+    print(current_wagerate_id)
+    print(search_option)
+    print(search_text)
+
+    if search_option == '1':
+        data = TWagezone.objects.all().filter(wage_id__exact=search_text)
+
+    if search_option == '2':
+        data = TWagezone.objects.all().filter(wage_th__contains=search_text)
+
+    if search_option == '3':
+        data = TWagezone.objects.all().filter(wage_en__contains=search_text)
+
+    if data is not None:
+        print("not null")
+        page = int(page_no)
+
+        next_page = page + 1
+        if page >= 1:
+            previous_page = page - 1
+        else:
+            previous_page = 0
+
+
+        paginator = Paginator(data, item_per_page)
+        is_paginated = True if paginator.num_pages > 1 else False        
+
+        try:
+            current_page = paginator.get_page(page)
+        except InvalidPage as e:
+            raise Http404(str(e))
+
+        if current_page:
+
+            current_page_number = current_page.number
+            current_page_paginator_num_pages = current_page.paginator.num_pages
+
+            pickup_dict = {}
+            pickup_records=[]
+            
+            for d in current_page:
+                record = {
+                    "wage_id": d.wage_id,
+                    "wage_th": d.wage_th,
+                    "wage_en": d.wage_en,
+                    "wage_8hr": d.wage_8hr,
+                }
+                pickup_records.append(record)
+
+            response = JsonResponse(data={
+                "success": True,
+                "is_paginated": is_paginated,
+                "page" : page,
+                "next_page" : next_page,
+                "previous_page" : previous_page,
+                "current_page_number" : current_page_number,
+                "current_page_paginator_num_pages" : current_page_paginator_num_pages,
+                "results": list(pickup_records)         
+                })
+            response.status_code = 200
+            return response
+        else:
+            # print("not found")      
+            response = JsonResponse(data={
+                "success": False,
+                "results": [],
+            })
+            response.status_code = 403
+            return response
+    else:        
+        print("not found 2")
+        response = JsonResponse(data={
+            "success": False,
+            "error"
+            "results": [],
+        })
+        response.status_code = 403
+        return response
+
+    return JsonResponse(data={"success": False, "results": ""})
+
