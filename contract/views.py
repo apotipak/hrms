@@ -509,6 +509,7 @@ def get_wagerate_list(request):
                 "wage_id": d.wage_id,
                 "wage_th": d.wage_th,
                 "wage_en": d.wage_en,
+                "wage_8hr": d.wage_8hr
             }
             pickup_records.append(record)
 

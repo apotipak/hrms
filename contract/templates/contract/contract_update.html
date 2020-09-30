@@ -951,11 +951,12 @@
               var wage_id = data.results[i]["wage_id"];
               var wage_th = data.results[i]["wage_th"];
               var wage_en = data.results[i]["wage_en"];
+              var wage_8hr = data.results[i]["wage_8hr"];
 
               result += "<tr>";
               result += "<td>" + wage_id + "</td>";        
-              result += "<td>" + wage_th + "</td>";
-              result += "<td>" + wage_en + "</td>";
+              result += "<td>" + wage_th + "&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;" + "<strong>" + wage_8hr + "</strong></td>";
+              result += "<td>" + wage_en + "&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;" + "<strong>" + wage_8hr + "</strong></td>";
               result += "</td>";
               result += "</tr>";              
             }
