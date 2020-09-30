@@ -869,7 +869,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary btn-md" data-dismiss="modal">{% trans 'Cancel' %}</button>
-        <button type="button" class="btn btn-success btn-md">&nbsp;&nbsp;{% trans 'Add' %}&nbsp;&nbsp;</button>
+        <button type="button" class="btn btn-success btn-md"><i class='fas fa-save'></i>&nbsp;&nbsp;{% trans 'Save' %}&nbsp;&nbsp;</button>
       </div>
     </div>
   </div>
@@ -1225,55 +1225,55 @@
             result += "        </div>";
             result += "        <div class='form-group col-md-3'>";
             result += "          <label for='cus_tel'>{% trans 'Shift' %}</label>";
-            result += "          <input type='text' class='form-control form-control-sm' value='" + data.srv_shift_id + "'>";
+            result += "          <input type='text' class='form-control form-control-sm' value='" + data.srv_shif_id + "'>";
             result += "        </div>";
             result += "     </div>";
             result += "      <div class='form-row'>";
             result += "        <div class='form-row col-6'>";
             result += "          <div class='form-group col-3'>";
-            result += "            <label for='cus_zip'>{% trans 'Mon' %}</label>";
-            result += "            <input type='text' class='form-control form-control-sm' value=''>";
+            result += "            <label for='srv_mon'>{% trans 'Mon' %}</label>";
+            result += "            <input type='text' class='form-control form-control-sm' value='" + data.srv_mon + "'>";
             result += "          </div>";
             result += "          <div class='form-group col-3'>";
             result += "            <label for='cus_zip'>{% trans 'Tue' %}</label>";
-            result += "           <input type='text' class='form-control form-control-sm' value=''>";
+            result += "           <input type='text' class='form-control form-control-sm' value='" + data.srv_tue + "'>";
             result += "          </div>";
             result += "          <div class='form-group col-3'>";
             result += "            <label for='cus_zip'>{% trans 'Wed' %}</label>";
-            result += "            <input type='text' class='form-control form-control-sm' value=''>";
+            result += "            <input type='text' class='form-control form-control-sm' value='" + data.srv_wed + "'>";
             result += "          </div>";
             result += "          <div class='form-group col-3'>";
             result += "            <label for='cus_zip'>{% trans 'Thu' %}</label>";
-            result += "            <input type='text' class='form-control form-control-sm' value=''>";
+            result += "            <input type='text' class='form-control form-control-sm' value='" + data.srv_thu + "'>";
             result += "          </div>";
             result += "        </div>";
             result += "        <div class='form-row col-6'>";
             result += "          <div class='form-group col-3'>";
             result += "            <label for='cus_zip'>{% trans 'Fri' %}</label>";
-            result += "            <input type='text' class='form-control form-control-sm' value=''>";
+            result += "            <input type='text' class='form-control form-control-sm' value='" + data.srv_fri + "'>";
             result += "          </div>";
             result += "          <div class='form-group col-3'>";
             result += "            <label for='cus_zip'>{% trans 'Sat' %}</label>";
-            result += "            <input type='text' class='form-control form-control-sm' value=''>";
+            result += "            <input type='text' class='form-control form-control-sm' value='" + data.srv_sat + "'>";
             result += "          </div>";
             result += "          <div class='form-group col-3'>";
             result += "            <label for='cus_zip'>{% trans 'Sun' %}</label>";
-            result += "            <input type='text' class='form-control form-control-sm' value=''>";
+            result += "            <input type='text' class='form-control form-control-sm' value='" + data.srv_sun + "'>";
             result += "          </div>";
             result += "          <div class='form-group col-3'>";
             result += "            <label for='cus_zip'>{% trans 'Pub' %}</label>";
-            result += "            <input type='text' class='form-control form-control-sm' value=''>";
+            result += "            <input type='text' class='form-control form-control-sm' value='" + data.srv_pub + "'>";
             result += "          </div>";
             result += "        </div>";
             result += "      </div>";
             result += "      <div class='form-row'>";
             result += "        <div class='form-group col-md-3'>";
             result += "          <label for='cus_zip'>{% trans 'QTY' %}</label>";
-            result += "          <input type='text' class='form-control form-control-sm' value=''>";
+            result += "          <input type='text' class='form-control form-control-sm' value='" + data.srv_qty + "'>";
             result += "        </div>";
             result += "        <div class='form-group col-md-3'>";
             result += "          <label for='cus_tel'>{% trans 'Cost' %}</label>";
-            result += "          <input type='text' class='form-control form-control-sm' value=''>";
+            result += "          <input type='text' class='form-control form-control-sm' value='" + data.srv_cost + "'>";
             result += "        </div>";
             result += "        <div class='form-group col-md-3'>";
             result += "          <label for='cus_zip'>{% trans 'Total Cost' %}</label>";
@@ -1291,11 +1291,11 @@
             result += "      <div class='form-row'>";
             result += "        <div class='form-group col-md-6'>";
             result += "          <label for='cus_zip'>{% trans 'Remark' %}</label>";
-            result += "          <input type='text' class='form-control form-control-sm' value=''>";
+            result += "          <input type='text' class='form-control form-control-sm' value='" + data.srv_rem + "'>";
             result += "        </div>";
             result += "        <div class='form-group col-md-6'>";
             result += "          <label for='cus_tel'>{% trans 'Cost Rate' %}</label>";
-            result += "          <input type='text' class='form-control form-control-sm' value=''>";
+            result += "          <input type='text' class='form-control form-control-sm' value='" + data.srv_cost_rate + "'>";
             result += "        </div>";
             result += "      </div>";   
             result += "    </div>";
