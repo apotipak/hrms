@@ -361,17 +361,36 @@ def SaveContract(request):
                         field_is_modified_count = field_is_modified_count + 1
 
                 # Wage Rate
-                # TODO
+                if (cnt_wage_id is not None):
+                    field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "Wage Rate", int(cuscontract.cnt_wage_id_id), int(cnt_wage_id), "E", request)
+                    if field_is_modified:
+                        cuscontract.cnt_wage_id_id = int(cnt_wage_id_id)
+                        modified_records.append(record)
+                        field_is_modified_count = field_is_modified_count + 1
 
                 # Guard Amount
-                # TODO
+                if (cnt_guard_amt is not None):
+                    field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "Guard Amount", int(cuscontract.cnt_guard_amt), int(cnt_guard_amt), "E", request)
+                    if field_is_modified:
+                        cuscontract.cnt_guard_amt = int(cnt_guard_amt)
+                        modified_records.append(record)
+                        field_is_modified_count = field_is_modified_count + 1
 
                 # Sale Amount
-                # TODO
-                
-                # Authorized by
-                # TODO
+                if (cnt_sale_amt is not None):
+                    field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "Sale Amount", float(cuscontract.cnt_sale_amt), float(cnt_sale_amt), "E", request)
+                    if field_is_modified:
+                        cuscontract.cnt_sale_amt = int(cnt_sale_amt)
+                        modified_records.append(record)
+                        field_is_modified_count = field_is_modified_count + 1
 
+                # Authorized by
+                if (cnt_apr_by is not None):
+                    field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "Approved By", int(cuscontract.cnt_apr_by_id), int(cnt_apr_by), "E", request)
+                    if field_is_modified:
+                        cuscontract.cnt_apr_by_id = int(cnt_apr_by)
+                        modified_records.append(record)
+                        field_is_modified_count = field_is_modified_count + 1
 
                 # Modified user
                 if field_is_modified_count > 0:
