@@ -627,3 +627,88 @@ def get_wagerate_list_modal(request):
 
     return JsonResponse(data={"success": False, "results": ""})
 
+
+def update_customer_service(request):
+    service_id = request.GET["service_id"]
+
+    if service_id is not None:
+        try:                
+            data = CusService.objects.filter(srv_id__exact=service_id).get()
+            srv_id = data.srv_id
+            cnt_id = data.cnt_id_id
+            srv_rank = data.srv_rank
+            srv_shif_id = data.srv_shif_id
+            srv_eff_frm = data.srv_eff_frm
+            srv_eff_to = data.srv_eff_to
+            srv_qty = data.srv_qty
+            srv_mon = data.srv_mon
+            srv_tue = data.srv_tue
+            srv_wed = data.srv_wed
+            srv_thu = data.srv_thu
+            srv_fri = data.srv_fri
+            srv_sat = data.srv_sat
+            srv_sun = data.srv_sun
+            srv_pub = data.srv_pub
+            srv_active = data.srv_active
+            srv_rate = data.srv_rate
+            srv_cost = data.srv_cost
+            srv_rem = data.srv_rem
+            upd_date = data.upd_date
+            upd_flag = data.upd_flag
+            srv_cost_rate = data.srv_cost_rate
+            srv_cost_change = data.srv_cost_change
+            op1 = data.op1
+            op2 = data.op2
+            op3 = data.op3
+
+            response = JsonResponse(data={
+                "success": True,
+                "srv_id": data.srv_id,
+                "cnt_id": data.cnt_id_id,
+                "srv_rank": data.srv_rank,
+                "srv_shif_id": data.srv_shif_id,
+                "srv_eff_frm": data.srv_eff_frm,
+                "srv_eff_to": data.srv_eff_to,
+                "srv_qty": data.srv_qty,
+                "srv_mon": data.srv_mon,
+                "srv_tue": data.srv_tue,
+                "srv_wed": data.srv_wed,
+                "srv_thu": data.srv_thu,
+                "srv_fri": data.srv_fri,
+                "srv_sat": data.srv_sat,
+                "srv_sun": data.srv_sun,
+                "srv_pub": data.srv_pub,
+                "srv_active": data.srv_active,
+                "srv_rate": data.srv_rate,
+                "srv_cost": data.srv_cost,
+                "srv_rem": data.srv_rem,
+                "upd_date": data.upd_date,
+                "upd_flag": data.upd_flag,
+                "srv_cost_rate": data.srv_cost_rate,
+                "srv_cost_change": data.srv_cost_change,
+                "op1": data.op1,
+                "op2": data.op2,
+                "op3": data.op3
+            })
+            response.status_code = 200
+            return response
+
+        except CusService.DoesNotExist:
+            response = JsonResponse(data={
+                "success": False,
+                "message": "Service ID not found.",
+                "results": [],
+            })
+            response.status_code = 403
+            return response
+
+    else:
+        response = JsonResponse(data={
+            "success": False,
+            "message": "Service ID not found.",
+            "results": [],
+        })
+        response.status_code = 403
+        return response    
+
+

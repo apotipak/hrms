@@ -9,4 +9,6 @@ urlpatterns = [
     url(r'^ajax/save_contract/$', views.SaveContract, name='save-contract'),
     url(r'^ajax/get_wagerate_list/$', views.get_wagerate_list, name='get_wagerate_list'),
     url(r'^ajax/get_wagerate_list_modal/$', views.get_wagerate_list_modal, name='get_wagerate_list_modal'),
+    url(r'^ajax/update_customer_service/$',views.update_customer_service, name='update_customer_service'),
+    # path('customer_service_update/$', views.customer_service_update, name='customer_service_update'),
 ]

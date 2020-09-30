@@ -485,7 +485,9 @@
       <div class="card-header">
         <h1 class="card-title pt-1"><strong>{% trans 'Service List' %}</strong></h1>
         <div class="card-tools">        
+          <!--
           <button id="add_service_button" type="button" class="btn btn-outline-success btn-md" data-toggle="modal" data-url="{% url 'get_district_list' %}"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;{% trans 'New service' %}</button>
+          -->
         </div>        
       </div>
 
@@ -559,12 +561,19 @@
                   <td>
                     <div class="btn-group btn-group-sm nowrap">
                       <small>
+                      
+                      <!--
                       <a href="javascript:void(0);" type="button" class="btn btn-info btn-xs js-update-contract-service">
                         &nbsp;<i class="fas fa-pen fa-xs"></i>&nbsp;
                       </a>
+                      -->
+
+                      <button id="update_service_button" type="button" onclick="update_customer_service('{{item.srv_id}}')" class="btn btn-info btn-xs js-update-contract-service" data-toggle="modal">&nbsp;<i class="fas fa-pen fa-xs"></i>&nbsp;</button>
+
                       <button type="button" class="btn btn-danger btn-xs js-delete-contract-service">
                         &nbsp;<i class="fas fa-trash fa-xs"></i>&nbsp;
                       </button>
+
                       </small>
                     </div>
                   </td>
@@ -619,6 +628,145 @@
                   </div>
                   <div class="form-group col-md-3">
                     <label for="cus_tel">{% trans 'Effect Term To' %}</label>
+                    <input type="text" class="form-control form-control-sm" value="">
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label for="cus_zip">{% trans 'Rank' %}</label>
+                    <input type="text" class="form-control form-control-sm" value="">
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label for="cus_tel">{% trans 'Shift' %}</label>
+                    <input type="text" class="form-control form-control-sm" value="">
+                  </div>                  
+                </div>
+      
+                <div class="form-row">
+
+                  <div class="form-row col-6">
+                    <div class="form-group col-3">
+                      <label for="cus_zip">{% trans 'Mon' %}</label>
+                      <input type="text" class="form-control form-control-sm" value="">
+                    </div>
+                    <div class="form-group col-3">
+                      <label for="cus_zip">{% trans 'Tue' %}</label>
+                      <input type="text" class="form-control form-control-sm" value="">
+                    </div>
+                    <div class="form-group col-3">
+                      <label for="cus_zip">{% trans 'Wed' %}</label>
+                      <input type="text" class="form-control form-control-sm" value="">
+                    </div>
+                    <div class="form-group col-3">
+                      <label for="cus_zip">{% trans 'Thu' %}</label>                        
+                      <input type="text" class="form-control form-control-sm" value="">
+                    </div>
+                  </div>
+
+                  <div class="form-row col-6">
+                    <div class="form-group col-3">
+                      <label for="cus_zip">{% trans 'Fri' %}</label>
+                      <input type="text" class="form-control form-control-sm" value="">
+                    </div>
+                    <div class="form-group col-3">
+                      <label for="cus_zip">{% trans 'Sat' %}</label>
+                      <input type="text" class="form-control form-control-sm" value="">
+                    </div>
+                    <div class="form-group col-3">
+                      <label for="cus_zip">{% trans 'Sun' %}</label>
+                      <input type="text" class="form-control form-control-sm" value="">
+                    </div>
+                    <div class="form-group col-3">
+                      <label for="cus_zip">{% trans 'Pub' %}</label>                        
+                      <input type="text" class="form-control form-control-sm" value="">
+                    </div>
+                  </div>
+
+                </div>              
+
+                <div class="form-row">
+                  <div class="form-group col-md-3">
+                    <label for="cus_zip">{% trans 'QTY' %}</label>
+                    <input type="text" class="form-control form-control-sm" value="">
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label for="cus_tel">{% trans 'Cost' %}</label>
+                    <input type="text" class="form-control form-control-sm" value="">
+                  </div>
+
+                  <div class="form-group col-md-3">
+                    <label for="cus_zip">{% trans 'Total Cost' %}</label>
+                    <input type="text" class="form-control form-control-sm" readonly>
+                  </div>
+
+
+                  <div class="form-group col-md-3 text-center">
+                    <label for="cus_zip">&nbsp;</label>
+                    <div class="form-check">
+                      <!--<input class="form-check-input" type="checkbox" checked>-->
+                      <input class="form-check-input" type="checkbox">
+                      <label class="form-check-label">{% trans 'Active' %}</label>
+                    </div>                                                
+                  </div>
+
+                </div>   
+
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="cus_zip">{% trans 'Remark' %}</label>
+                    <input type="text" class="form-control form-control-sm" value="">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="cus_tel">{% trans 'Cost Rate' %}</label>
+                    <input type="text" class="form-control form-control-sm" value="">
+                  </div>
+                </div>   
+
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        <!-- /.row --> 
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-md" data-dismiss="modal">{% trans 'Cancel' %}</button>
+        <button type="button" class="btn btn-success btn-md">&nbsp;&nbsp;{% trans 'Add' %}&nbsp;&nbsp;</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Update Service Modal -->
+<div class="modal fade" id="update_service_modal" tabindex="-1" role="dialog">
+
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;<strong>{% trans 'Update a service' %}</strong></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        
+
+        <!-- Service List Modal -->
+        <div class="row">
+          <div class="col-12">
+            <div class="card card-info">
+
+              <div class="card-body">
+
+                <div class="form-row">
+                  <div class="form-group col-md-3">
+                    <label for="cus_zip">{% trans 'Effect From' %}</label>
+                    <input type="text" class="form-control form-control-sm" value="">
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label for="cus_tel">{% trans 'Effect To' %}</label>
                     <input type="text" class="form-control form-control-sm" value="">
                   </div>
                   <div class="form-group col-md-3">
@@ -1043,8 +1191,138 @@
     });
   }
 
+  function update_customer_service(service_id) {
+    if (service_id != null) {
+      $.ajax({
+          url : "/contract/ajax/update_customer_service",
+          type: 'get',          
+          dataType: 'json',
+          data: {
+            service_id: service_id
+          },
+          beforeSend: function () {
+            $("#update_service_modal").modal("show");
+          },    
+          success: function (data) {
+
+            var result = "";
+            result += "<div class='row'>";
+            result += "<div class='col-12'>";
+            result += "  <div class='card card-info'>";
+            result += "    <div class='card-body'>";
+            result += "      <div class='form-row'>";
+            result += "        <div class='form-group col-md-3'>";
+            result += "          <label for='cus_zip'>{% trans 'Effect From' %}</label>";
+            result += "          <input type='text' class='form-control form-control-sm' value='" + data.srv_eff_frm + "'>";
+            result += "        </div>";
+            result += "        <div class='form-group col-md-3'>";
+            result += "          <label for='cus_tel'>{% trans 'Effect To' %}</label>";
+            result += "          <input type='text' class='form-control form-control-sm' value='" + data.srv_eff_to + "'>";
+            result += "        </div>";
+            result += "        <div class='form-group col-md-3'>";
+            result += "          <label for='cus_zip'>{% trans 'Rank' %}</label>";
+            result += "          <input type='text' class='form-control form-control-sm' value='" + data.srv_rank + "'>";
+            result += "        </div>";
+            result += "        <div class='form-group col-md-3'>";
+            result += "          <label for='cus_tel'>{% trans 'Shift' %}</label>";
+            result += "          <input type='text' class='form-control form-control-sm' value='" + data.srv_shift_id + "'>";
+            result += "        </div>";
+            result += "     </div>";
+            result += "      <div class='form-row'>";
+            result += "        <div class='form-row col-6'>";
+            result += "          <div class='form-group col-3'>";
+            result += "            <label for='cus_zip'>{% trans 'Mon' %}</label>";
+            result += "            <input type='text' class='form-control form-control-sm' value=''>";
+            result += "          </div>";
+            result += "          <div class='form-group col-3'>";
+            result += "            <label for='cus_zip'>{% trans 'Tue' %}</label>";
+            result += "           <input type='text' class='form-control form-control-sm' value=''>";
+            result += "          </div>";
+            result += "          <div class='form-group col-3'>";
+            result += "            <label for='cus_zip'>{% trans 'Wed' %}</label>";
+            result += "            <input type='text' class='form-control form-control-sm' value=''>";
+            result += "          </div>";
+            result += "          <div class='form-group col-3'>";
+            result += "            <label for='cus_zip'>{% trans 'Thu' %}</label>";
+            result += "            <input type='text' class='form-control form-control-sm' value=''>";
+            result += "          </div>";
+            result += "        </div>";
+            result += "        <div class='form-row col-6'>";
+            result += "          <div class='form-group col-3'>";
+            result += "            <label for='cus_zip'>{% trans 'Fri' %}</label>";
+            result += "            <input type='text' class='form-control form-control-sm' value=''>";
+            result += "          </div>";
+            result += "          <div class='form-group col-3'>";
+            result += "            <label for='cus_zip'>{% trans 'Sat' %}</label>";
+            result += "            <input type='text' class='form-control form-control-sm' value=''>";
+            result += "          </div>";
+            result += "          <div class='form-group col-3'>";
+            result += "            <label for='cus_zip'>{% trans 'Sun' %}</label>";
+            result += "            <input type='text' class='form-control form-control-sm' value=''>";
+            result += "          </div>";
+            result += "          <div class='form-group col-3'>";
+            result += "            <label for='cus_zip'>{% trans 'Pub' %}</label>";
+            result += "            <input type='text' class='form-control form-control-sm' value=''>";
+            result += "          </div>";
+            result += "        </div>";
+            result += "      </div>";
+            result += "      <div class='form-row'>";
+            result += "        <div class='form-group col-md-3'>";
+            result += "          <label for='cus_zip'>{% trans 'QTY' %}</label>";
+            result += "          <input type='text' class='form-control form-control-sm' value=''>";
+            result += "        </div>";
+            result += "        <div class='form-group col-md-3'>";
+            result += "          <label for='cus_tel'>{% trans 'Cost' %}</label>";
+            result += "          <input type='text' class='form-control form-control-sm' value=''>";
+            result += "        </div>";
+            result += "        <div class='form-group col-md-3'>";
+            result += "          <label for='cus_zip'>{% trans 'Total Cost' %}</label>";
+            result += "          <input type='text' class='form-control form-control-sm' readonly>";
+            result += "        </div>";
+            result += "        <div class='form-group col-md-3 text-center'>";
+            result += "          <label for='cus_zip'>&nbsp;</label>";
+            result += "          <div class='form-check'>";
+            result += "            <!--<input class='form-check-input' type='checkbox' checked>-->";
+            result += "            <input class='form-check-input' type='checkbox'>";
+            result += "            <label class='form-check-label'>{% trans 'Active' %}</label>";
+            result += "          </div>";
+            result += "        </div>";
+            result += "      </div>";
+            result += "      <div class='form-row'>";
+            result += "        <div class='form-group col-md-6'>";
+            result += "          <label for='cus_zip'>{% trans 'Remark' %}</label>";
+            result += "          <input type='text' class='form-control form-control-sm' value=''>";
+            result += "        </div>";
+            result += "        <div class='form-group col-md-6'>";
+            result += "          <label for='cus_tel'>{% trans 'Cost Rate' %}</label>";
+            result += "          <input type='text' class='form-control form-control-sm' value=''>";
+            result += "        </div>";
+            result += "      </div>";   
+            result += "    </div>";
+            result += "  </div>";
+            result += "</div>";          
+            result += "</div>";
+
+            $("#update_service_modal .modal-body").html(result);            
+          },
+          error: function(data){
+            $("#update_service_modal .modal-body").html("{% trans 'There is no data.' %}");
+          }
+      });
+    }    
+    else {
+      alert("service id is null");
+    }      
+  };
 
   $(document).ready(function(){    
+
+    /*
+    $('#update_service_button').on('click', function (e) {
+      var obj = $(this);      
+      $("#update_service_modal").modal("show");
+    });
+    */    
 
     $('#add_service_button').on('click', function (e) {
       var obj = $(this);      
