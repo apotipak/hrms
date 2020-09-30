@@ -363,7 +363,7 @@ def SaveContract(request):
                 if (cnt_wage_id is not None):
                     field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "Wage Rate", int(cuscontract.cnt_wage_id_id), int(cnt_wage_id), "E", request)
                     if field_is_modified:
-                        cuscontract.cnt_wage_id_id = int(cnt_wage_id_id)
+                        cuscontract.cnt_wage_id_id = int(cnt_wage_id)
                         modified_records.append(record)
                         field_is_modified_count = field_is_modified_count + 1
 
