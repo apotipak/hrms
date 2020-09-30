@@ -212,7 +212,7 @@ def SaveContract(request):
             cnt_id = request.POST.get('cnt_id')
             # cus_brn
             # cus_vol
-            cnt_active = request.POST.get('cnt_active')
+            cnt_active = request.POST.get('cnt_active')            
             cnt_doc_no = request.POST.get('cnt_doc_no')
             cnt_doc_date = request.POST.get('cnt_doc_date')
             cnt_eff_frm = request.POST.get('cnt_eff_frm')
@@ -263,14 +263,79 @@ def SaveContract(request):
                 field_is_modified_count = 0
                 cuscontract = CusContract.objects.get(cnt_id=cnt_id)
                 
+                # New Report checkbox
+                if (cnt_new is not None):
+                    field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "New Report", cuscontract.cnt_new, cnt_new, "E", request)
+                    if field_is_modified:
+                        cuscontract.cnt_new = cnt_new
+                        modified_records.append(record)
+                        field_is_modified_count = field_is_modified_count + 1
+
+                # Customer checkbox
+                if (cnt_print is not None):
+                    field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "Customer", cuscontract.cnt_print, cnt_print, "E", request)
+                    if field_is_modified:
+                        cuscontract.cnt_print = cnt_print
+                        modified_records.append(record)
+                        field_is_modified_count = field_is_modified_count + 1
+
+                # Auto expire
+                if (cnt_autoexpire is not None):
+                    field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "Auto expired", int(cuscontract.cnt_autoexpire), int(cnt_autoexpire), "E", request)
+                    if field_is_modified:
+                        cuscontract.cnt_autoexpire = cnt_autoexpire
+                        modified_records.append(record)
+                        field_is_modified_count = field_is_modified_count + 1
+
+                # Active
+                if (cnt_active is not None):
+                    field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "Customer", int(cuscontract.cnt_active), int(cnt_active), "E", request)
+                    if field_is_modified:
+                        cuscontract.cnt_active = cnt_active
+                        modified_records.append(record)
+                        field_is_modified_count = field_is_modified_count + 1
+
                 # Contract Ref.
-                # cuscontract.cnt_doc_no = cnt_doc_no
                 if (cnt_doc_no is not None):
                     field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "Contract Ref.", cuscontract.cnt_doc_no, cnt_doc_no, "E", request)
                     if field_is_modified:
                         cuscontract.cnt_doc_no = cnt_doc_no
                         modified_records.append(record)
                         field_is_modified_count = field_is_modified_count + 1
+
+                # Contract Date
+                # TODO
+
+                    
+                # Effect Term From
+                # TODO
+
+
+                # Effect Term To
+                # TODO
+
+                # Contract Term From
+                # TODO
+
+
+                # Contract Term To
+                # TODO
+
+
+                # Wage Rate
+                # TODO
+
+
+                # Guard Amount
+                # TODO
+
+                # Sale Amount
+                # TODO
+
+                
+                # Authorized by
+                # TODO
+
 
                 # Modified user
                 if field_is_modified_count > 0:
@@ -297,19 +362,23 @@ def SaveContract(request):
                     # ./History Log                     
 
                     response_data['form_is_valid'] = True
-                    response_data['result'] = "Saved success."                    
+                    response_data['result'] = "Saved success."
+                    response_data['class'] = "bg-success"
                 else:
                     response_data['form_is_valid'] = True
-                    response_data['result'] = "Update nothing."
+                    response_data['result'] = "Oops! Nothing to update."
+                    response_data['class'] = "bg-warning"
                
             except CustomerOption.DoesNotExist:
                 # Insert
                 response_data['form_is_valid'] = True
                 response_data['result'] = "Pending to save data"
+                response_data['class'] = "bg-success"
         else:
             print("form is invalid")
             response_data['form_is_valid'] = False
-            response_data['message'] = ""
+            response_data['class'] = "bg-danger"
+            response_data['message'] = "<b>Problem in cus_contract function</b>. Please inform IT department to support this case."
 
             if form.errors:
                 for field in form:
@@ -318,7 +387,9 @@ def SaveContract(request):
                         response_data['message'] += error + "<br>"
 
                 response_data['errors'] = form.errors
+                response_data['class'] = "bg-danger"
             else:
-                response_data['message'] = "ไม่สามารถทำรายการได้..!"
+                response_data['message'] = "<b>Problem in cus_contract function.</b>. Please inform IT department to support this case."
+                response_data['class'] = "bg-danger"
             
     return JsonResponse(response_data)            

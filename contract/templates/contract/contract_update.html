@@ -776,9 +776,9 @@
 
     // cnt_active
     if ($('#id_cnt_active').is(":checked"))
-      cnt_active = true;
+      cnt_active = 1;
     else
-      cnt_active = false;
+      cnt_active = 0;
     
     // cnt_new
     if ($('#id_cnt_new').is(":checked"))
@@ -800,9 +800,9 @@
 
     // cnt_auto_expire
     if ($('#id_cnt_autoexpire').is(":checked"))
-      cnt_autoexpire = true;
+      cnt_autoexpire = 1;
     else
-      cnt_autoexpire = false;
+      cnt_autoexpire = 0;
 
     // cnt_doc_no
     cnt_doc_no = $('#id_cnt_doc_no').val();
@@ -867,7 +867,7 @@
       success : function(json) {        
         if(json.form_is_valid) {
           $(document).Toasts('create', {
-            class: 'bg-success', 
+            class: json.class, 
             title: "{% trans 'System message' %}",
             subtitle: '',
             autohide: true,
@@ -890,7 +890,7 @@
         }
         else {          
           $(document).Toasts('create', {
-            class: 'bg-danger', 
+            class: json.class,
             title: "{% trans 'Error' %}",
             subtitle: '',
             autohide: true,
