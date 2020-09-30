@@ -744,7 +744,7 @@
     <div class="modal-content">
       
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;<strong>{% trans 'Update a service' %}</strong></h5>
+        <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-pen fa-sm"></i>&nbsp;&nbsp;<strong>{% trans 'Update a service' %}</strong></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -1230,10 +1230,22 @@
             result += "  </div>";
 
 
-            result += "        <div class='form-group col-md-3'>";
-            result += "          <label for='cus_tel'>{% trans 'Effect To' %}</label>";
-            result += "          <input type='text' class='form-control form-control-sm' value='" + data.srv_eff_to + "'>";
-            result += "        </div>";
+            //result += "        <div class='form-group col-md-3'>";
+            //result += "          <label for='cus_tel'>{% trans 'Effect To' %}</label>";
+            //result += "          <input type='text' class='form-control form-control-sm' value='" + data.srv_eff_to + "'>";
+            //result += "        </div>";
+
+            result += "  <div class='form-group col-md-3'>";
+            result += "    <label>Effect To</label>";
+            result += "    <div class='input-group date' id='dtp_srv_eff_to_date' data-target-input='nearest'>";                        
+            result += "      <input type='text' name='srv_eff_to' value='" + data.srv_eff_to + "' class='form-control form-control-sm' id='id_cnt_eff_to' placeholder='dd/mm/yyyy' required=''>";
+            result += "      <div class='input-group-append' data-target='#dtp_srv_eff_to_date' data-toggle='datepicker'>";
+            result += "        <div class='input-group-text text-primary'><i class='fa fa-calendar'></i></div>";
+            result += "      </div>";
+            result += "    </div>";            
+            result += "  </div>";
+
+
             result += "        <div class='form-group col-md-3'>";
             result += "          <label for='cus_zip'>{% trans 'Rank' %}</label>";
             result += "          <input type='text' class='form-control form-control-sm' value='" + data.srv_rank + "'>";
@@ -1458,6 +1470,13 @@
         autoclose: true,
         orientation: "bottom"
       }); 
+
+      $("#dtp_srv_eff_to_date").datepicker({
+        format: 'dd/mm/yyyy',
+        autoclose: true,
+        orientation: "bottom"
+      }); 
+
     });
 
   });
