@@ -666,7 +666,7 @@ def update_customer_service(request):
                 "srv_id": data.srv_id,
                 "cnt_id": data.cnt_id_id,
                 "srv_rank": data.srv_rank,
-                "srv_shif_id": data.srv_shif_id,
+                "srv_shif_id": data.srv_shif_id_id,
                 "srv_eff_frm": data.srv_eff_frm,
                 "srv_eff_to": data.srv_eff_to,
                 "srv_qty": data.srv_qty,

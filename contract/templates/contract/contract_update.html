@@ -523,7 +523,7 @@
                   {% if item.srv_active %}
                   <td><small><a href="javascript:void(0);">{{item.srv_eff_frm|date:'d/m/Y'}}</a></small></td>
                   <td><small><a href="javascript:void(0);">{{item.srv_eff_to|date:'d/m/Y'}}</a></small></td>
-                  <td><small><a href="javascript:void(0);">{{item.srv_shif_id}}</a></small></td>
+                  <td><small><a href="javascript:void(0);">{{item.srv_shif_id.shf_desc}}</a></small></td>
                   <td><small><a href="javascript:void(0);">{{item.srv_qty}}</a></small></td>
                   <td><small><a href="javascript:void(0);">{{item.srv_rank}}</a></small></td>
                   <td><small><a href="javascript:void(0);">{{item.srv_rate}}</a></small></td>
@@ -541,7 +541,7 @@
                   {% else %}
                   <td><small>{{item.srv_eff_frm|date:'d/m/Y'}}</small></td>
                   <td><small>{{item.srv_eff_to|date:'d/m/Y'}}</small></td>
-                  <td><small>{{item.srv_shif_id}}</small></td>
+                  <td><small>{{item.srv_shif_id.shf_desc}}</small></td>
                   <td><small>{{item.srv_qty}}</small></td>
                   <td><small>{{item.srv_rank}}</small></td>
                   <td><small>{{item.srv_rate}}</small></td>

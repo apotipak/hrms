@@ -1,6 +1,6 @@
 from django.db import models
 from customer.models import Customer
-from system.models import CusContact, TAprove, TWagezone
+from system.models import CusContact, TAprove, TWagezone, TShift
 
 
 class CusContract(models.Model):
@@ -45,7 +45,10 @@ class CusService(models.Model):
     # cnt_id = models.DecimalField(max_digits=13, decimal_places=0, blank=True, null=True)
     cnt_id = models.ForeignKey(CusContract, db_column='cnt_id', to_field='cnt_id', on_delete=models.SET_NULL, null=True)
     srv_rank = models.CharField(max_length=3, blank=True, null=True)
-    srv_shif_id = models.SmallIntegerField(blank=True, null=True)
+    
+    # srv_shif_id = models.SmallIntegerField(blank=True, null=True)
+    srv_shif_id = models.ForeignKey(TShift, db_column='srv_shif_id', to_field='shf_id', on_delete=models.SET_NULL, null=True)
+
     srv_eff_frm = models.DateTimeField(blank=True, null=True)
     srv_eff_to = models.DateTimeField(blank=True, null=True)
     srv_qty = models.DecimalField(max_digits=4, decimal_places=0, blank=True, null=True)

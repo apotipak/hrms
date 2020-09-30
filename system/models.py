@@ -288,3 +288,19 @@ class HrmsNewLog(models.Model):
         db_table = 'hrms_new_log'
         unique_together = (('id', 'log_date'),)
 
+
+class TShift(models.Model):
+    shf_id = models.DecimalField(primary_key=True, max_digits=4, decimal_places=0)
+    shf_type = models.CharField(max_length=1, blank=True, null=True)
+    shf_desc = models.CharField(max_length=30, blank=True, null=True)
+    shf_time_frm = models.DecimalField(max_digits=5, decimal_places=0, blank=True, null=True)
+    shf_time_to = models.DecimalField(max_digits=5, decimal_places=0, blank=True, null=True)
+    shf_amt_hr = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    shf_order = models.DecimalField(max_digits=2, decimal_places=0, blank=True, null=True)
+    upd_date = models.DateTimeField(blank=True, null=True)
+    upd_by = models.CharField(max_length=10, blank=True, null=True)
+    upd_flag = models.CharField(max_length=1, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'T_SHIFT'
