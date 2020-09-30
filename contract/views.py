@@ -214,11 +214,27 @@ def SaveContract(request):
             # cus_vol
             cnt_active = request.POST.get('cnt_active')            
             cnt_doc_no = request.POST.get('cnt_doc_no')
+
             cnt_doc_date = request.POST.get('cnt_doc_date')
+            if cnt_doc_date is not None:
+                cnt_doc_date = datetime.datetime.strptime(cnt_doc_date, "%d/%m/%Y")
+
             cnt_eff_frm = request.POST.get('cnt_eff_frm')
+            if cnt_eff_frm is not None:
+                cnt_eff_frm = datetime.datetime.strptime(cnt_eff_frm, "%d/%m/%Y")
+
             cnt_eff_to = request.POST.get('cnt_eff_to')
+            if cnt_eff_to is not None:
+                cnt_eff_to = datetime.datetime.strptime(cnt_eff_to, "%d/%m/%Y")
+
             cnt_sign_frm = request.POST.get('cnt_sign_frm')
+            if cnt_sign_frm is not None:
+                cnt_sign_frm = datetime.datetime.strptime(cnt_sign_frm, "%d/%m/%Y")
+
             cnt_sign_to = request.POST.get('cnt_sign_to')
+            if cnt_sign_to is not None:
+                cnt_sign_to = datetime.datetime.strptime(cnt_sign_to, "%d/%m/%Y")
+
             cnt_apr_by = request.POST.get('cnt_apr_by_id')        
             cnt_guard_amt = request.POST.get('cnt_guard_amt')
             cnt_sale_amt = request.POST.get('cnt_sale_amt')
@@ -265,7 +281,7 @@ def SaveContract(request):
                 
                 # New Report checkbox
                 if (cnt_new is not None):
-                    field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "New Report", cuscontract.cnt_new, cnt_new, "E", request)
+                    field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "New Report Checkbox", cuscontract.cnt_new, cnt_new, "E", request)
                     if field_is_modified:
                         cuscontract.cnt_new = cnt_new
                         modified_records.append(record)
@@ -273,7 +289,7 @@ def SaveContract(request):
 
                 # Customer checkbox
                 if (cnt_print is not None):
-                    field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "Customer", cuscontract.cnt_print, cnt_print, "E", request)
+                    field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "Customer Checkbox", cuscontract.cnt_print, cnt_print, "E", request)
                     if field_is_modified:
                         cuscontract.cnt_print = cnt_print
                         modified_records.append(record)
@@ -281,7 +297,7 @@ def SaveContract(request):
 
                 # Auto expire
                 if (cnt_autoexpire is not None):
-                    field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "Auto expired", int(cuscontract.cnt_autoexpire), int(cnt_autoexpire), "E", request)
+                    field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "Auto Expired", int(cuscontract.cnt_autoexpire), int(cnt_autoexpire), "E", request)
                     if field_is_modified:
                         cuscontract.cnt_autoexpire = cnt_autoexpire
                         modified_records.append(record)
@@ -289,7 +305,7 @@ def SaveContract(request):
 
                 # Active
                 if (cnt_active is not None):
-                    field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "Customer", int(cuscontract.cnt_active), int(cnt_active), "E", request)
+                    field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "Active Status", int(cuscontract.cnt_active), int(cnt_active), "E", request)
                     if field_is_modified:
                         cuscontract.cnt_active = cnt_active
                         modified_records.append(record)
@@ -304,34 +320,54 @@ def SaveContract(request):
                         field_is_modified_count = field_is_modified_count + 1
 
                 # Contract Date
-                # TODO
-
+                if (cnt_doc_date is not None):
+                    field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "Contract Date", cuscontract.cnt_doc_date, cnt_doc_date, "E", request)
+                    if field_is_modified:
+                        cuscontract.cnt_doc_date = cnt_doc_date
+                        modified_records.append(record)
+                        field_is_modified_count = field_is_modified_count + 1
                     
                 # Effect Term From
                 # TODO
-
+                if (cnt_eff_frm is not None):
+                    field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "Effect Term From", cuscontract.cnt_eff_frm, cnt_eff_frm, "E", request)
+                    if field_is_modified:
+                        cuscontract.cnt_eff_frm = cnt_eff_frm
+                        modified_records.append(record)
+                        field_is_modified_count = field_is_modified_count + 1
 
                 # Effect Term To
-                # TODO
+                if (cnt_eff_to is not None):
+                    field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "Effect Term To", cuscontract.cnt_eff_to, cnt_eff_to, "E", request)
+                    if field_is_modified:
+                        cuscontract.cnt_eff_to = cnt_eff_to
+                        modified_records.append(record)
+                        field_is_modified_count = field_is_modified_count + 1
 
                 # Contract Term From
-                # TODO
-
+                if (cnt_sign_frm is not None):
+                    field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "Contract Term From", cuscontract.cnt_sign_frm, cnt_sign_frm, "E", request)
+                    if field_is_modified:
+                        cuscontract.cnt_sign_frm = cnt_sign_frm
+                        modified_records.append(record)
+                        field_is_modified_count = field_is_modified_count + 1
 
                 # Contract Term To
-                # TODO
-
+                if (cnt_sign_to is not None):
+                    field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "Contract Term To", cuscontract.cnt_sign_to, cnt_sign_to, "E", request)
+                    if field_is_modified:
+                        cuscontract.cnt_sign_to = cnt_sign_to
+                        modified_records.append(record)
+                        field_is_modified_count = field_is_modified_count + 1
 
                 # Wage Rate
                 # TODO
-
 
                 # Guard Amount
                 # TODO
 
                 # Sale Amount
                 # TODO
-
                 
                 # Authorized by
                 # TODO
