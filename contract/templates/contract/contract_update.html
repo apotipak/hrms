@@ -936,13 +936,17 @@
             var result = ""
             var count = data.results.length;
             var wage_id = data.results[0]["wage_id"];
+            var wage_th = data.results[0]["wage_th"];
+            var wage_en = data.results[0]["wage_en"];
 
+            /*
             result += "<table class='table table-hover table-sm'>";
             result += " <thead>";
             result += "   <tr>";
             result += "     <th scope='col'>{% trans 'Wage ID' %}</th>";
             result += "     <th scope='col'>{% trans 'Wage (TH)' %}</th>";
             result += "     <th scope='col'>{% trans 'Wage (EN)' %}</th>";
+            result += "     <th scope='col'>&nbsp;</th>";
             result += "   </tr>";
             result += " </thead>";
             result += " <tbody>";
@@ -957,12 +961,60 @@
               result += "<td>" + wage_id + "</td>";        
               result += "<td>" + wage_th + "&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;" + "<strong>" + wage_8hr + "</strong></td>";
               result += "<td>" + wage_en + "&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;" + "<strong>" + wage_8hr + "</strong></td>";
+              result += "<td><a href='javascript:cus_contract_select_wagerate(" + wage_id + ",\"" + wage_th + "\",\"" + wage_en + "\");' type='button' class='btn btn-outline-primary btn-sm'>Select</a></td>";
               result += "</td>";
               result += "</tr>";              
             }
             result += " </tbody>";
             result += "</table>";
-            
+            */
+
+            result += "<div class='row col-12'>";
+            result += "<div class='col-8 offset-3 pb-2'>";
+            result += "<form id='cus_main_search_district_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
+            result += "  <div class='form-group mx-sm-3 mb-2'>";
+            result += "  <select name='cus_main_cus_district_option' class='form-control form-control-sm' required id='id_cus_main_cus_district_option'>";
+            result += "    <option value='1' selected>Wage ID</option>";
+            result += "    <option value='2'>Wage (TH)</option>";
+            result += "    <option value='3'>Wage (EN)</option>";
+            result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";
+            result += "    <label for='id_cus_main_search_district' class='sr-only'>Search</label>";            
+            result += "    <input type='text' class='form-control form-control-sm' id='id_cus_main_cus_district_search_text' name='cus_main_cus_district_search_text' placeholder=''>";
+            result += "  </div>";
+            result += "<a href='javascript:cus_main_search_district_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";            
+            result += "</form>";
+            result += "</div>";
+
+            result += "<div class='row col-12'>";
+            result += "<table class='table table-hover table-sm'>";
+            result += " <thead>";
+            result += "   <tr>";
+            result += "     <th scope='col'>{% trans 'Wage ID' %}</th>";
+            result += "     <th scope='col'>{% trans 'Wage (TH)' %}</th>";
+            result += "     <th scope='col'>{% trans 'Wage (EN)' %}</th>";
+            result += "     <th scope='col'>&nbsp;</th>";
+            result += "   </tr>";
+            result += " </thead>";
+            result += "<tbody>";
+            result += "</div>";
+            result += "<div>";
+
+            for(var i=0; i<count; i++) {              
+              var wage_id = data.results[i]["wage_id"];
+              var wage_th = data.results[i]["wage_th"];
+              var wage_en = data.results[i]["wage_en"];
+              var wage_8hr = data.results[i]["wage_8hr"];
+
+              result += "<tr>";
+              result += "<td>" + wage_id + "</td>";        
+              result += "<td>" + wage_th + "</td>";
+              result += "<td>" + wage_en + "</td>";
+              result += "<td><a href='javascript:cus_contract_select_wagerate(" + wage_id + ",\"" + wage_th + "\",\"" + wage_en + "\");' type='button' class='btn btn-outline-primary btn-sm'>Select</a></td>";
+              result += "</tr>";              
+            }
+            result += " </tbody>";
+            result += "</table>";
+
             $("#wageratemodal .modal-body").html(result);            
           },
           error: function(data){
