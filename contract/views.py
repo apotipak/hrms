@@ -11,7 +11,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils.translation import ugettext_lazy as _
 from .forms import ContractForm, ContractUpdateForm
 from .models import CusContract, CusService
-from system.models import HrmsNewLog
+from system.models import HrmsNewLog, TWagezone
 from customer.models import CusMain, Customer
 from decimal import Decimal
 from django.utils import timezone
@@ -447,3 +447,88 @@ def SaveContract(request):
                 response_data['class'] = "bg-danger"
             
     return JsonResponse(response_data)            
+
+
+@login_required(login_url='/accounts/login/')
+def get_wagerate_list(request):
+
+    print("****************************")
+    print("FUNCTION: get_wagerate_list")
+    print("****************************")
+
+    current_wagerate_id = request.POST.get('cnt_wage_id')
+    print("current_wagerate_id : " + str(current_wagerate_id))
+
+    item_per_page = 100
+
+    if request.method == "POST":
+        data = TDistrict.objects.filter('wage_id=current_wagerate_id')
+        page = 1
+        paginator = Paginator(data, item_per_page)
+        is_paginated = True if paginator.num_pages > 1 else False        
+
+        try:
+            current_page = paginator.get_page(page)
+        except InvalidPage as e:
+            raise Http404(str(e))
+
+    else:
+        print("method get")
+        if current_wagerate_id is not None:
+            if current_wagerate_id != "":
+                if current_wagerate_id.isnumeric():
+                    print("debug1")
+                    data = TWagezone.objects.all()
+                else:
+                    print("debug3")
+                    data = TWagezone.objects.all()
+            else:
+                print("debug4")
+                data = TWagezone.objects.all()
+        else:
+            print("debug5")
+            data = TWagezone.objects.all()
+
+        paginator = Paginator(data, item_per_page)
+        is_paginated = True if paginator.num_pages > 1 else False
+        page = request.GET.get('page', 1) or 1
+        try:
+            current_page = paginator.get_page(page)
+        except InvalidPage as e:
+            raise Http404(str(e))   
+
+    if current_page:
+        current_page_number = current_page.number
+        current_page_paginator_num_pages = current_page.paginator.num_pages
+
+        pickup_dict = {}
+        pickup_records=[]
+        
+        for d in current_page:
+            wage_th = "test"            
+            
+            record = {
+                "dist_id": d.wage_id,
+                "wage_th": d.wage_th,
+                "wage_en": d.wage_en,
+            }
+            pickup_records.append(record)
+
+        response = JsonResponse(data={
+            "success": True,
+            "is_paginated": is_paginated,
+            "page" : page,
+            "next_page" : page + 1,
+            "current_page_number" : current_page_number,
+            "current_page_paginator_num_pages" : current_page_paginator_num_pages,
+            "results": list(pickup_records)         
+            })
+        response.status_code = 200
+        return response
+    else:
+        response = JsonResponse({"error": "there was an error"})
+        response.status_code = 403
+        return response
+
+    return JsonResponse(data={"success": False, "results": ""})
+
