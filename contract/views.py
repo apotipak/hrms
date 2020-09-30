@@ -504,11 +504,9 @@ def get_wagerate_list(request):
         pickup_dict = {}
         pickup_records=[]
         
-        for d in current_page:
-            wage_th = "test"            
-            
+        for d in current_page:            
             record = {
-                "dist_id": d.wage_id,
+                "wage_id": d.wage_id,
                 "wage_th": d.wage_th,
                 "wage_en": d.wage_en,
             }
