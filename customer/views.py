@@ -572,7 +572,9 @@ def CustomerDashboard(request):
     total_customer = no_of_active_customer+no_of_pending_customer+no_of_delete_customer
 
     # History Logs
-    history_log = HrmsNewLog.objects.all().order_by('-log_date')[:25]
+    # history_log = HrmsNewLog.objects.all().order_by('-log_date')[:25]
+    history_log = HrmsNewLog.objects.filter(log_table__in=('CUSTOMER','CUS_MAIN','CUS_BILL')).order_by('-log_date')[:25]    
+
     if not history_log:
         history_log = None
 
