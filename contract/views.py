@@ -328,7 +328,6 @@ def SaveContract(request):
                         field_is_modified_count = field_is_modified_count + 1
                     
                 # Effect Term From
-                # TODO
                 if (cnt_eff_frm is not None):
                     field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "Effect Term From", cuscontract.cnt_eff_frm, cnt_eff_frm, "E", request)
                     if field_is_modified:
