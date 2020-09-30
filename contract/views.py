@@ -16,6 +16,7 @@ from customer.models import CusMain, Customer
 from decimal import Decimal
 from django.utils import timezone
 import datetime
+from django.utils import formats
 
 
 def check_modified_field(table_name, primary_key, field_name, old_value, new_value, log_type, request):
@@ -667,8 +668,8 @@ def update_customer_service(request):
                 "cnt_id": data.cnt_id_id,
                 "srv_rank": data.srv_rank,
                 "srv_shif_id": data.srv_shif_id_id,
-                "srv_eff_frm": data.srv_eff_frm,
-                "srv_eff_to": data.srv_eff_to,
+                "srv_eff_frm": data.srv_eff_frm.strftime('%d/%m/%Y'),
+                "srv_eff_to": data.srv_eff_to.strftime('%d/%m/%Y'),
                 "srv_qty": data.srv_qty,
                 "srv_mon": data.srv_mon,
                 "srv_tue": data.srv_tue,
