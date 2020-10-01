@@ -756,8 +756,10 @@ def save_customer_service_item(request):
     srv_active = request.GET["srv_active"]
     srv_rate = request.GET["srv_rate"]
     srv_cost = request.GET["srv_cost"]
+    srv_cost_rate = request.GET["srv_cost_rate"]
     srv_rem = request.GET["srv_rem"]
 
+    #TODO - all print below will be comment
     print("START")
     print("srv_id = " + str(srv_id))
     print("srv_eff_frm = " + str(srv_eff_from))
@@ -776,17 +778,28 @@ def save_customer_service_item(request):
     print("srv_active = " + str(srv_active))
     print("srv_rate = " + str(srv_rate))
     print("srv_cost = " + str(srv_cost))
+    print("srv_cost_rate = " + str(srv_cost_rate))
     print("srv_rem = " + str(srv_rem))
     print("END")
 
     if srv_id is not None:
         try:                
             data = CusService.objects.filter(srv_id__exact=srv_id).get()
+            data.srv_rem = srv_rem
+            
+            # History log
+            data.upd_date = datetime.datetime.now()
+            data.upd_by = request.user.first_name
+            data.upd_flat = 'E'
+            data.save()
+
             response = JsonResponse(data={
                 "success": True,
                 "message": "Success.",           
             })            
+
             response.status_code = 200
+
             return response            
         except CusService.DoesNotExist:
             response = JsonResponse(data={

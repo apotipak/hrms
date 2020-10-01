@@ -971,7 +971,6 @@
     $("#wageratemodal").modal("hide");    
   };
 
-  // amnaj
   function cus_contract_search_wagerate_modal() {
     current_wage_id = $('#id_cnt_wage_id').val();
     search_option = $('#id_cus_contract_wagerate_option').val();
@@ -1245,7 +1244,7 @@
             num = parseFloat(data.srv_cost);
             result += "        <div class='form-group col-md-3'>";
             result += "          <label for='cus_zip'>{% trans 'Total Cost' %}</label>";
-            result += "          <input id='id_srv_cost' type='text' class='form-control form-control-sm' value='" + num.toLocaleString() + "' readonly>";
+            result += "          <input id='id_srv_cost' type='text' class='form-control form-control-sm' value='" + num.toFixed(0) + "' readonly>";
             result += "        </div>";
             
             // SRV_ACTIVE
@@ -1343,6 +1342,7 @@
           srv_active: srv_active,
           srv_rate: srv_rate,
           srv_cost: srv_cost,
+          srv_cost_rate: srv_cost_rate,
           srv_rem: srv_rem,
         },
         beforeSend: function () {
@@ -1555,7 +1555,8 @@
         var cost = $(this);
         if(e.which === 13){
           total = cost.val() * $('#id_srv_qty').val();
-          $('#id_srv_cost').val(total.toLocaleString());
+          //$('#id_srv_cost').val(total.toLocaleString());
+          $('#id_srv_cost').val(total);
           $('#id_srv_rem').focus();
           event.preventDefault();
           return false;        
