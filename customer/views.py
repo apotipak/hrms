@@ -256,6 +256,8 @@ def ajax_check_exist_cus_site(request):
                     customer_option_op2 = ""
                     customer_option_op3 = ""
                     customer_option_op4 = ""
+                    customer_option_op5 = ""
+                    customer_option_op6 = ""
 
                 # 2.Bind customer site on Site tab
                 # cus_site_cus_district_id = customer_site.cus_district_id
@@ -1835,8 +1837,7 @@ def update_all_cus_tabs(request):
             # ******************************************            
             cus_main_cus_active = request.POST.get('cus_main_cus_active')
             cus_customer_cus_active = request.POST.get('customer_cus_active')
-            cus_bill_cus_active = request.POST.get('cus_bill_cus_active')            
-            
+            cus_bill_cus_active = request.POST.get('cus_bill_cus_active')                        
             cus_main_cus_name_th = request.POST.get('cus_main_cus_name_th')            
             cus_main_cus_add1_th = request.POST.get('cus_main_cus_add1_th')
             cus_main_cus_add2_th = request.POST.get('cus_main_cus_add2_th')
@@ -1892,6 +1893,8 @@ def update_all_cus_tabs(request):
             cus_main_customer_option_op2 = request.POST.get('cus_main_customer_option_op2')
             cus_main_customer_option_op3 = request.POST.get('cus_main_customer_option_op3')
             cus_main_customer_option_op4 = request.POST.get('cus_main_customer_option_op4')
+            cus_main_customer_option_op5 = request.POST.get('cus_main_customer_option_op5')
+            cus_main_customer_option_op6 = request.POST.get('cus_main_customer_option_op6')
             cus_main_customer_option_opn1 = request.POST.get('cus_main_customer_option_opn1')
             # print("cus_main_customer_option_opn1 = " + str(cus_main_customer_option_opn1))
 
@@ -2065,6 +2068,11 @@ def update_all_cus_tabs(request):
                     cus_main.upd_by = request.user.first_name
                     cus_main.upd_date = timezone.now()
 
+
+                    # NULL Field Issue
+                    cus_main.cus_sht_th = ""
+                    cus_main.cus_sht_en = ""            
+
                     cus_main.save()
 
 
@@ -2121,6 +2129,10 @@ def update_all_cus_tabs(request):
                             else:
                                 customer_option.opn1 = 0
 
+                            # NULL Field Issue
+                            customer_option.op5 = cus_main_customer_option_op5
+                            customer_option.op6 = cus_main_customer_option_op6
+
                             customer_option.save()
                             
                     except CustomerOption.DoesNotExist:
@@ -2135,6 +2147,8 @@ def update_all_cus_tabs(request):
                             op2 = cus_main_customer_option_op2.replace('&amp;', '&'), # Group 1
                             op3 = cus_main_customer_option_op3.replace('&amp;', '&'), # Group 2
                             op4 = cus_main_customer_option_op4, # A/R Code
+                            op5 = cus_main_customer_option_op5,
+                            op6 = cus_main_customer_option_op6,
                             opn1 = float(cus_main_customer_option_opn1))
                         c.save()
 
@@ -2187,7 +2201,9 @@ def update_all_cus_tabs(request):
                     site_contact_id = cus_main_cus_contact_id,
                     upd_date = timezone.now(),
                     upd_flag = 'A',
-                    upd_by = request.user.first_name
+                    upd_by = request.user.first_name,
+                    cus_sht_th = "",
+                    cus_sht_en = "",
                     )
                 new_customer_main.save()                     
 
@@ -2199,6 +2215,8 @@ def update_all_cus_tabs(request):
                     customer_option.op2 = cus_main_customer_option_op2.replace('&amp;', '&') # Group 1
                     customer_option.op3 = cus_main_customer_option_op3.replace('&amp;', '&') # Group 2
                     customer_option.op4 = cus_main_customer_option_op4.rstrip() # A/R Code
+                    customer_option.op5 = cus_main_customer_option_op5
+                    customer_option.op6 = cus_main_customer_option_op6
                     customer_option.save()
                     print("save cus_main_customer_option")
                 except CustomerOption.DoesNotExist:
@@ -2210,6 +2228,8 @@ def update_all_cus_tabs(request):
                         op2 = cus_main_customer_option_op2.replace('&amp;', '&'), # Group 1
                         op3 = cus_main_customer_option_op3.replace('&amp;', '&'), # Group 2
                         op4 = cus_main_customer_option_op4, # A/R Code
+                        op5 = "",
+                        op6 = "",
                         opn1 = cus_main_customer_option_opn1)   # GP Margin
                     c.save()
 
@@ -2447,6 +2467,11 @@ def update_all_cus_tabs(request):
 
                     if customer.upd_flag == 'D':
                         customer.upd_flag = 'E'
+
+
+                    # NULL Field Issue
+                    customer.cus_sht_th = ""
+                    customer.cus_sht_en = ""            
                         
                     customer.save()
 
@@ -2498,7 +2523,9 @@ def update_all_cus_tabs(request):
                     site_contact_id = cus_site_site_contact_id,
                     upd_date = timezone.now(),
                     upd_by = request.user.first_name,
-                    upd_flag = 'A'
+                    upd_flag = 'A',
+                    cus_sht_th = '',
+                    cus_sht_en = '',
                     )
                 new_customer_site.save()
 
