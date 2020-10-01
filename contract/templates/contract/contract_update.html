@@ -570,7 +570,7 @@
 
                       <button id="update_service_button" type="button" onclick="update_customer_service('{{item.srv_id}}')" class="btn btn-info btn-xs js-update-contract-service" data-toggle="modal">&nbsp;<i class="fas fa-pen fa-xs"></i>&nbsp;</button>
 
-                      <button type="button" class="btn btn-danger btn-xs js-delete-contract-service">
+                      <button id="delete_service_button" type="button" onclick="delete_customer_service('{{item.srv_id}}')" class="btn btn-danger btn-xs js-delete-contract-service">
                         &nbsp;<i class="fas fa-trash fa-xs"></i>&nbsp;
                       </button>
 
@@ -1090,6 +1090,16 @@
     });
   }
 
+  function delete_customer_service(service_id) {
+
+    alert(service_id);
+    
+    if (service_id != null) {
+    
+    }
+
+  }
+
   function update_customer_service(service_id) {
     if (service_id != null) {
 
@@ -1384,13 +1394,6 @@
   }
 
   $(document).ready(function(){    
-
-    /*
-    $('#update_service_button').on('click', function (e) {
-      var obj = $(this);      
-      $("#update_service_modal").modal("show");
-    });
-    */    
 
     $('#add_service_button').on('click', function (e) {
       var obj = $(this);      
