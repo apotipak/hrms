@@ -524,36 +524,36 @@
                   <td><small><a href="javascript:void(0);">{{item.srv_eff_frm|date:'d/m/Y'}}</a></small></td>
                   <td><small><a href="javascript:void(0);">{{item.srv_eff_to|date:'d/m/Y'}}</a></small></td>
                   <td><small><a href="javascript:void(0);">{{item.srv_shif_id.shf_desc}}</a></small></td>
-                  <td><small><a href="javascript:void(0);">{{item.srv_qty}}</a></small></td>
+                  <td align="center"><small><a href="javascript:void(0);">{{item.srv_qty}}</a></small></td>
                   <td><small><a href="javascript:void(0);">{{item.srv_rank}}</a></small></td>
-                  <td><small><a href="javascript:void(0);">{{item.srv_rate|stringformat:".0f"}}</a></small></td>
-                  <td><small><a href="javascript:void(0);">{{item.srv_cost|stringformat:".0f"}}</a></small></td>
-                  <td><small><a href="javascript:void(0);">{{item.srv_mon}}</a></small></td>
-                  <td><small><a href="javascript:void(0);">{{item.srv_tue}}</a></small></td>
-                  <td><small><a href="javascript:void(0);">{{item.srv_wed}}</a></small></td>
-                  <td><small><a href="javascript:void(0);">{{item.srv_thu}}</a></small></td>
-                  <td><small><a href="javascript:void(0);">{{item.srv_fri}}</a></small></td>
-                  <td><small><a href="javascript:void(0);">{{item.srv_sat}}</a></small></td>
-                  <td><small><a href="javascript:void(0);">{{item.srv_sun}}</a></small></td>
-                  <td><small><a href="javascript:void(0);">{{item.srv_pub}}</a></small></td>
+                  <td align="right"><small><a href="javascript:void(0);">{{item.srv_rate|stringformat:".0f"}}</a></small></td>
+                  <td align="right"><small><a href="javascript:void(0);">{{item.srv_cost|stringformat:".0f"}}</a></small></td>
+                  <td align="center"><small><a href="javascript:void(0);">{{item.srv_mon}}</a></small></td>
+                  <td align="center"><small><a href="javascript:void(0);">{{item.srv_tue}}</a></small></td>
+                  <td align="center"><small><a href="javascript:void(0);">{{item.srv_wed}}</a></small></td>
+                  <td align="center"><small><a href="javascript:void(0);">{{item.srv_thu}}</a></small></td>
+                  <td align="center"><small><a href="javascript:void(0);">{{item.srv_fri}}</a></small></td>
+                  <td align="center"><small><a href="javascript:void(0);">{{item.srv_sat}}</a></small></td>
+                  <td align="center"><small><a href="javascript:void(0);">{{item.srv_sun}}</a></small></td>
+                  <td align="center"><small><a href="javascript:void(0);">{{item.srv_pub}}</a></small></td>
                   <td><small><a href="javascript:void(0);">{{item.srv_rem}}</a></small></td>
                   <td><span class="badge badge-success">{% trans 'Active' %}</span></td>
                   {% else %}
                   <td><small>{{item.srv_eff_frm|date:'d/m/Y'}}</small></td>
                   <td><small>{{item.srv_eff_to|date:'d/m/Y'}}</small></td>
                   <td><small>{{item.srv_shif_id.shf_desc}}</small></td>
-                  <td><small>{{item.srv_qty}}</small></td>
+                  <td align="center"><small>{{item.srv_qty}}</small></td>
                   <td><small>{{item.srv_rank}}</small></td>
-                  <td><small>{{item.srv_rate|stringformat:".0f"}}</small></td>
-                  <td><small>{{item.srv_cost|stringformat:".0f"}}</small></td>
-                  <td><small>{{item.srv_mon}}</small></td>
-                  <td><small>{{item.srv_tue}}</small></td>
-                  <td><small>{{item.srv_wed}}</small></td>
-                  <td><small>{{item.srv_thu}}</small></td>
-                  <td><small>{{item.srv_fri}}</small></td>
-                  <td><small>{{item.srv_sat}}</small></td>
-                  <td><small>{{item.srv_sun}}</small></td>
-                  <td><small>{{item.srv_pub}}</small></td>
+                  <td align="right"><small>{{item.srv_rate|stringformat:".0f"}}</small></td>
+                  <td align="right"><small>{{item.srv_cost|stringformat:".0f"}}</small></td>
+                  <td align="center"><small>{{item.srv_mon}}</small></td>
+                  <td align="center"><small>{{item.srv_tue}}</small></td>
+                  <td align="center"><small>{{item.srv_wed}}</small></td>
+                  <td align="center"><small>{{item.srv_thu}}</small></td>
+                  <td align="center"><small>{{item.srv_fri}}</small></td>
+                  <td align="center"><small>{{item.srv_sat}}</small></td>
+                  <td align="center"><small>{{item.srv_sun}}</small></td>
+                  <td align="center"><small>{{item.srv_pub}}</small></td>
                   <td><small>{{item.srv_rem}}</small></td>                  
                   <td><span class="badge badge-secondary">{% trans 'Pending' %}</span></td>
                   {% endif %}
@@ -749,28 +749,23 @@
         </button>
       </div>
 
-      <div class="modal-body">
-        
-
-        <!-- Service List Modal -->
+      <div class="modal-body">      
         <div class="row">
           <div class="col-12">
             <div class="card card-info">
-
               <div class="card-body">
                 Loading...
               </div>
             </div>
-          </div>
-          
+          </div>          
         </div>
-        <!-- /.row --> 
-
       </div>
+
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary btn-md" data-dismiss="modal">{% trans 'Cancel' %}</button>
-        <button type="button" class="btn btn-success btn-md"><i class='fas fa-save'></i>&nbsp;&nbsp;{% trans 'Savea' %}&nbsp;&nbsp;</button>
+        <button type="button" class="btn btn-success btn-md"><i class='fas fa-save'></i>&nbsp;&nbsp;{% trans 'Save' %}&nbsp;&nbsp;</button>
       </div>
+
     </div>
   </div>
 </div>
