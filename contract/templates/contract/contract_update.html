@@ -1272,76 +1272,109 @@
             result += " </select>";
             result += "        </div>";
 
-            // SRV_MON
+            
             result += "      <div class='form-row'>";
             result += "        <div class='form-row col-6'>";
+
+            // SRV_MON
             result += "          <div class='form-group col-3'>";
             result += "            <label for='srv_mon'>{% trans 'Mon' %}</label>";
-            result += "            <input type='text' class='form-control form-control-sm' value='" + data.srv_mon + "'>";
+            result += "            <input id='id_srv_mon' type='text' class='form-control form-control-sm' value='" + data.srv_mon + "'>";
             result += "          </div>";
+
+            // SRV_TUE
             result += "          <div class='form-group col-3'>";
             result += "            <label for='cus_zip'>{% trans 'Tue' %}</label>";
-            result += "           <input type='text' class='form-control form-control-sm' value='" + data.srv_tue + "'>";
+            result += "           <input id='id_srv_tue' type='text' class='form-control form-control-sm' value='" + data.srv_tue + "'>";
             result += "          </div>";
+
+            // SRV_WED
             result += "          <div class='form-group col-3'>";
             result += "            <label for='cus_zip'>{% trans 'Wed' %}</label>";
-            result += "            <input type='text' class='form-control form-control-sm' value='" + data.srv_wed + "'>";
+            result += "            <input id='id_srv_wed' type='text' class='form-control form-control-sm' value='" + data.srv_wed + "'>";
             result += "          </div>";
+
+            // SRV_THU
             result += "          <div class='form-group col-3'>";
             result += "            <label for='cus_zip'>{% trans 'Thu' %}</label>";
-            result += "            <input type='text' class='form-control form-control-sm' value='" + data.srv_thu + "'>";
+            result += "            <input id='id_srv_thu' type='text' class='form-control form-control-sm' value='" + data.srv_thu + "'>";
             result += "          </div>";
             result += "        </div>";
+
             result += "        <div class='form-row col-6'>";
+
+            // SRV_FRI
             result += "          <div class='form-group col-3'>";
             result += "            <label for='cus_zip'>{% trans 'Fri' %}</label>";
-            result += "            <input type='text' class='form-control form-control-sm' value='" + data.srv_fri + "'>";
+            result += "            <input id='id_srv_fri' type='text' class='form-control form-control-sm' value='" + data.srv_fri + "'>";
             result += "          </div>";
+
+            // SRV_SAT
             result += "          <div class='form-group col-3'>";
             result += "            <label for='cus_zip'>{% trans 'Sat' %}</label>";
-            result += "            <input type='text' class='form-control form-control-sm' value='" + data.srv_sat + "'>";
+            result += "            <input id='id_srv_sat' type='text' class='form-control form-control-sm' value='" + data.srv_sat + "'>";
             result += "          </div>";
+
+            // SRV_SUN
             result += "          <div class='form-group col-3'>";
             result += "            <label for='cus_zip'>{% trans 'Sun' %}</label>";
-            result += "            <input type='text' class='form-control form-control-sm' value='" + data.srv_sun + "'>";
+            result += "            <input id='id_srv_sun' type='text' class='form-control form-control-sm' value='" + data.srv_sun + "'>";
             result += "          </div>";
+
+            // SRV_PUB
             result += "          <div class='form-group col-3'>";
             result += "            <label for='cus_zip'>{% trans 'Pub' %}</label>";
-            result += "            <input type='text' class='form-control form-control-sm' value='" + data.srv_pub + "'>";
+            result += "            <input id='id_srv_pub' type='text' class='form-control form-control-sm' value='" + data.srv_pub + "'>";
             result += "          </div>";
+
             result += "        </div>";
             result += "      </div>";
+
             result += "      <div class='form-row'>";
+
+            // SRV_QTY
             result += "        <div class='form-group col-md-3'>";
             result += "          <label for='cus_zip'>{% trans 'QTY' %}</label>";
-            result += "          <input type='text' class='form-control form-control-sm' value='" + data.srv_qty + "'>";
+            result += "          <input id='id_srv_qty' type='text' class='form-control form-control-sm' value='" + data.srv_qty + "'>";
             result += "        </div>";
+
+            // SRV_COST
             result += "        <div class='form-group col-md-3'>";
             result += "          <label for='cus_tel'>{% trans 'Cost' %}</label>";
-            result += "          <input type='text' class='form-control form-control-sm' value='" + data.srv_cost + "'>";
+            result += "          <input id='id_srv_cost' type='text' class='form-control form-control-sm' value='" + data.srv_cost + "'>";
             result += "        </div>";
+
+            // SRV_TOTAL_COST
             result += "        <div class='form-group col-md-3'>";
             result += "          <label for='cus_zip'>{% trans 'Total Cost' %}</label>";
-            result += "          <input type='text' class='form-control form-control-sm' readonly>";
+            result += "          <input id='id_srv_total_cost' type='text' class='form-control form-control-sm' readonly>";
             result += "        </div>";
+            
+            // SRV_ACTIVE
             result += "        <div class='form-group col-md-3 text-center'>";
-            result += "          <label for='cus_zip'>&nbsp;</label>";
+            result += "          <label for='id_srv_active'>&nbsp;</label>";
             result += "          <div class='form-check'>";
             result += "            <!--<input class='form-check-input' type='checkbox' checked>-->";
-            result += "            <input class='form-check-input' type='checkbox'>";
+            result += "            <input id='id_srv_active' class='form-check-input' type='checkbox'>";
             result += "            <label class='form-check-label'>{% trans 'Active' %}</label>";
             result += "          </div>";
             result += "        </div>";
+
             result += "      </div>";
             result += "      <div class='form-row'>";
+
+            // SRV_REM
             result += "        <div class='form-group col-md-6'>";
             result += "          <label for='cus_zip'>{% trans 'Remark' %}</label>";
-            result += "          <input type='text' class='form-control form-control-sm' value='" + data.srv_rem + "'>";
+            result += "          <input id='id_srv_rem' type='text' class='form-control form-control-sm' value='" + data.srv_rem + "'>";
             result += "        </div>";
+
+            // SRV_COST_RATE
             result += "        <div class='form-group col-md-6'>";
             result += "          <label for='cus_tel'>{% trans 'Cost Rate' %}</label>";
             result += "          <input type='text' class='form-control form-control-sm' value='" + data.srv_cost_rate + "'>";
             result += "        </div>";
+
             result += "      </div>";   
             result += "    </div>";
             result += "  </div>";
@@ -1482,18 +1515,128 @@
       orientation: "bottom"
     });    
 
+    // Service Modal    
     $('#update_service_modal').on('shown.bs.modal', function (e) {
+
+      // SRV_EFF_FRM
       $("#dtp_srv_eff_frm_date").datepicker({
         format: 'dd/mm/yyyy',
         autoclose: true,
         orientation: "bottom"
       }); 
 
+      // SRV_EFF_TO
       $("#dtp_srv_eff_to_date").datepicker({
         format: 'dd/mm/yyyy',
         autoclose: true,
         orientation: "bottom"
       }); 
+
+      // SRV_QTY
+      $('#id_srv_qty').on('keypress', function (e) {
+        var qty = $(this);
+        if(e.which === 13) {
+          if(qty.val() > 0) {
+            day = qty.val();
+            $('#id_srv_mon').val(day);
+            $('#id_srv_tue').val(day);
+            $('#id_srv_wed').val(day);
+            $('#id_srv_thu').val(day);
+            $('#id_srv_fri').val(day);
+            $('#id_srv_sat').val(day);
+            $('#id_srv_sun').val(day);
+            $('#id_srv_pub').val(day);
+          } else {
+            day = 1;
+            $('#id_srv_mon').val(day);
+            $('#id_srv_tue').val(day);
+            $('#id_srv_wed').val(day);
+            $('#id_srv_thu').val(day);
+            $('#id_srv_fri').val(day);
+            $('#id_srv_sat').val(day);
+            $('#id_srv_sun').val(day);
+            $('#id_srv_pub').val(day);            
+          }
+
+          $('#id_srv_cost').focus();
+          event.preventDefault();
+          return false;        
+        }
+      });
+
+      // SRV_COST
+      $('#id_srv_cost').on('keypress', function (e) {
+        var cost = $(this);
+        if(e.which === 13){
+          total = cost.val() * $('#id_srv_qty').val();
+          $('#id_srv_total_cost').val(total);
+          $('#id_srv_rem').focus();
+          event.preventDefault();
+          return false;        
+        }
+      });
+
+      // SRV_MON
+      $('#id_srv_mon').on('keypress', function (e) {
+        if(e.which === 13){
+          $('#id_srv_tue').focus();
+          event.preventDefault();
+          return false;        
+        }
+      });
+
+      // SRV_TUE
+      $('#id_srv_tue').on('keypress', function (e) {
+        if(e.which === 13){
+          $('#id_srv_wed').focus();
+          event.preventDefault();
+          return false;        
+        }
+      });
+
+      // SRV_WED
+      $('#id_srv_wed').on('keypress', function (e) {
+        if(e.which === 13){
+          $('#id_srv_thu').focus();
+          event.preventDefault();
+          return false;        
+        }
+      });
+
+      $('#id_srv_thu').on('keypress', function (e) {
+        if(e.which === 13){
+          $('#id_srv_fri').focus();
+          event.preventDefault();
+          return false;        
+        }
+      });
+
+      // SRV_FRI
+      $('#id_srv_fri').on('keypress', function (e) {
+        if(e.which === 13){
+          $('#id_srv_sat').focus();
+          event.preventDefault();
+          return false;        
+        }
+      });
+
+      // SRV_SAT
+      $('#id_srv_sat').on('keypress', function (e) {
+        if(e.which === 13){
+          $('#id_srv_sun').focus();
+          event.preventDefault();
+          return false;        
+        }
+      });
+
+      // SRV_SUN
+      $('#id_srv_sun').on('keypress', function (e) {
+        if(e.which === 13){
+          $('#id_srv_pub').focus();
+          event.preventDefault();
+          return false;        
+        }
+      });
 
     });
 
