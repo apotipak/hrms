@@ -421,7 +421,7 @@ def SaveContract(request):
                     response_data['class'] = "bg-success"
                 else:
                     response_data['form_is_valid'] = True
-                    response_data['result'] = "Sorry! Nothing to update."
+                    response_data['result'] = "Sorry, nothing to update."
                     response_data['class'] = "bg-warning"
                
             except CustomerOption.DoesNotExist:
@@ -791,7 +791,7 @@ def save_customer_service_item(request):
 
             # SRV_RANK
             if (srv_rank is not None):
-                field_is_modified, record = check_modified_field("CUS_SERVICE", srv_id, "Remark", str(data.srv_rank), srv_rank, "E", request)
+                field_is_modified, record = check_modified_field("CUS_SERVICE", srv_id, "Rank", str(data.srv_rank), srv_rank, "E", request)
                 if field_is_modified:
                     data.srv_rank = srv_rank
                     modified_records.append(record)
@@ -799,7 +799,7 @@ def save_customer_service_item(request):
 
             # SRV_SHIFT_ID
             if (srv_shift_id is not None):
-                field_is_modified, record = check_modified_field("CUS_SERVICE", srv_id, "Remark", int(data.srv_shif_id_id), int(srv_shift_id), "E", request)
+                field_is_modified, record = check_modified_field("CUS_SERVICE", srv_id, "Shift", int(data.srv_shif_id_id), int(srv_shift_id), "E", request)
                 if field_is_modified:
                     data.srv_shif_id_id = srv_shift_id
                     modified_records.append(record)
@@ -818,6 +818,102 @@ def save_customer_service_item(request):
                 field_is_modified, record = check_modified_field("CUS_SERVICE", srv_id, "Eff From", data.srv_eff_to, datetime.datetime.strptime(srv_eff_to, "%d/%m/%Y"), "E", request)
                 if field_is_modified:
                     data.srv_eff_to = datetime.datetime.strptime(srv_eff_to, "%d/%m/%Y")
+                    modified_records.append(record)
+                    field_is_modified_count = field_is_modified_count + 1
+
+            # SRV_QTY
+            if (srv_qty is not None):
+                field_is_modified, record = check_modified_field("CUS_SERVICE", srv_id, "QTY", int(data.srv_qty), int(srv_qty), "E", request)
+                if field_is_modified:
+                    data.srv_qty = srv_qty
+                    modified_records.append(record)
+                    field_is_modified_count = field_is_modified_count + 1
+
+            # SRV_MON
+            if (srv_mon is not None):
+                field_is_modified, record = check_modified_field("CUS_SERVICE", srv_id, "SRV_MON", int(data.srv_mon), int(srv_mon), "E", request)
+                if field_is_modified:
+                    data.srv_mon = srv_mon
+                    modified_records.append(record)
+                    field_is_modified_count = field_is_modified_count + 1
+
+            # SRV_TUE
+            if (srv_tue is not None):
+                field_is_modified, record = check_modified_field("CUS_SERVICE", srv_id, "SRV_TUE", int(data.srv_tue), int(srv_tue), "E", request)
+                if field_is_modified:
+                    data.srv_tue = srv_tue
+                    modified_records.append(record)
+                    field_is_modified_count = field_is_modified_count + 1
+
+            # SRV_WED
+            if (srv_wed is not None):
+                field_is_modified, record = check_modified_field("CUS_SERVICE", srv_id, "SRV_WED", int(data.srv_wed), int(srv_wed), "E", request)
+                if field_is_modified:
+                    data.srv_wed = srv_wed
+                    modified_records.append(record)
+                    field_is_modified_count = field_is_modified_count + 1
+
+            # SRV_THU
+            if (srv_thu is not None):
+                field_is_modified, record = check_modified_field("CUS_SERVICE", srv_id, "SRV_THU", int(data.srv_thu), int(srv_thu), "E", request)
+                if field_is_modified:
+                    data.srv_thu = srv_thu
+                    modified_records.append(record)
+                    field_is_modified_count = field_is_modified_count + 1
+
+            # SRV_FRI
+            if (srv_fri is not None):
+                field_is_modified, record = check_modified_field("CUS_SERVICE", srv_id, "SRV_FRI", int(data.srv_fri), int(srv_fri), "E", request)
+                if field_is_modified:
+                    data.srv_fri = srv_fri
+                    modified_records.append(record)
+                    field_is_modified_count = field_is_modified_count + 1
+
+            # SRV_SAT
+            if (srv_sat is not None):
+                field_is_modified, record = check_modified_field("CUS_SERVICE", srv_id, "SRV_SAT", int(data.srv_sat), int(srv_sat), "E", request)
+                if field_is_modified:
+                    data.srv_sat = srv_sat
+                    modified_records.append(record)
+                    field_is_modified_count = field_is_modified_count + 1
+
+            # SRV_SUN
+            if (srv_sun is not None):
+                field_is_modified, record = check_modified_field("CUS_SERVICE", srv_id, "SRV_SUN", int(data.srv_sun), int(srv_sun), "E", request)
+                if field_is_modified:
+                    data.srv_sun = srv_sun
+                    modified_records.append(record)
+                    field_is_modified_count = field_is_modified_count + 1
+
+            # SRV_PUB
+            if (srv_pub is not None):
+                field_is_modified, record = check_modified_field("CUS_SERVICE", srv_id, "SRV_PUB", int(data.srv_pub), int(srv_pub), "E", request)
+                if field_is_modified:
+                    data.srv_pub = srv_pub
+                    modified_records.append(record)
+                    field_is_modified_count = field_is_modified_count + 1
+
+            # SRV_ACTIVE
+            if (srv_active is not None):
+                field_is_modified, record = check_modified_field("CUS_SERVICE", srv_id, "SRV_ACTIVE", int(data.srv_active), int(srv_active), "E", request)
+                if field_is_modified:
+                    data.srv_active = srv_active
+                    modified_records.append(record)
+                    field_is_modified_count = field_is_modified_count + 1
+
+            # SRV_RATE
+            if (srv_rate is not None):
+                field_is_modified, record = check_modified_field("CUS_SERVICE", srv_id, "SRV_ACTIVE", int(data.srv_rate), int(srv_rate), "E", request)
+                if field_is_modified:
+                    data.srv_rate = srv_rate
+                    modified_records.append(record)
+                    field_is_modified_count = field_is_modified_count + 1
+
+            # SRV_COST
+            if (srv_cost is not None):
+                field_is_modified, record = check_modified_field("CUS_SERVICE", srv_id, "SRV_ACTIVE", int(data.srv_cost), int(srv_cost), "E", request)
+                if field_is_modified:
+                    data.srv_rate = srv_cost
                     modified_records.append(record)
                     field_is_modified_count = field_is_modified_count + 1
 
@@ -862,7 +958,7 @@ def save_customer_service_item(request):
             else:
                 response = JsonResponse(data={
                     "success": True,
-                    "message": "Sorry! Nothing to update.",
+                    "message": "Sorry, nothing to update.",
                     "class": "bg-warning",
                 })            
                 response.status_code = 200

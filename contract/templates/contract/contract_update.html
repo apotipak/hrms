@@ -1314,7 +1314,12 @@
       srv_sat = $('#id_srv_sat').val();
       srv_sun = $('#id_srv_sun').val();
       srv_pub = $('#id_srv_pub').val();
-      srv_active = $('#id_srv_active').val();
+            
+      if ($('#id_srv_active').is(":checked"))
+        srv_active = 1;
+      else
+        srv_active = 0;
+
       srv_rate = $('#id_srv_rate').val();
       srv_cost = $('#id_srv_cost').val();
       srv_cost_rate = $('#id_srv_cost_rate').val();
