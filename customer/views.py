@@ -1174,7 +1174,7 @@ def CustomerDelete(request, pk):
                 old_value = None,
                 new_value = None,
                 log_type = 'D',
-                log_by = request.user.username,
+                log_by = request.user.first_name,
                 log_date = timezone.now(),
                 log_description = None
                 )
@@ -2537,7 +2537,7 @@ def update_all_cus_tabs(request):
                     old_value = None,
                     new_value = None,
                     log_type = 'A',
-                    log_by = request.user.username,
+                    log_by = request.user.first_name,
                     log_date = timezone.now(),
                     log_description = None
                     )
