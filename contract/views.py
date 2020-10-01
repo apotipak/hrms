@@ -705,7 +705,7 @@ def update_customer_service(request):
                 "srv_active": data.srv_active,
                 "srv_rate": data.srv_rate,
                 "srv_cost": data.srv_cost,
-                "srv_total_cost": data.srv_qty * data.srv_cost,
+                "srv_total_cost": data.srv_qty * data.srv_rate,
                 "srv_rem": data.srv_rem,
                 "upd_date": data.upd_date,
                 "upd_flag": data.upd_flag,
@@ -743,15 +743,39 @@ def save_customer_service_item(request):
     srv_eff_from = request.GET["srv_eff_frm"]
     srv_eff_to = request.GET["srv_eff_to"]
     srv_rank = request.GET["srv_rank"]
-    srv_shift_id = request.GET["srv_shift_id"] 
+    srv_shift_id = request.GET["srv_shift_id"]     
+    srv_qty = request.GET["srv_qty"]
+    srv_mon = request.GET["srv_mon"]
+    srv_tue = request.GET["srv_tue"]
+    srv_wed = request.GET["srv_wed"]
+    srv_thu = request.GET["srv_thu"]
+    srv_fri = request.GET["srv_fri"]
+    srv_sat = request.GET["srv_sat"]
+    srv_sun = request.GET["srv_sun"]
+    srv_pub = request.GET["srv_pub"]
+    srv_active = request.GET["srv_active"]
+    srv_rate = request.GET["srv_rate"]
+    srv_cost = request.GET["srv_cost"]
     srv_rem = request.GET["srv_rem"]
-    
+
     print("START")
     print("srv_id = " + str(srv_id))
     print("srv_eff_frm = " + str(srv_eff_from))
     print("srv_eff_to = " + str(srv_eff_to))
     print("srv_rank = " + str(srv_rank))
     print("srv_shift_id = " + str(srv_shift_id))
+    print("srv_qty = " + str(srv_qty))
+    print("srv_mon = " + str(srv_mon))
+    print("srv_tue = " + str(srv_tue))
+    print("srv_wed = " + str(srv_wed))
+    print("srv_thu = " + str(srv_thu))
+    print("srv_fri = " + str(srv_fri))
+    print("srv_sat = " + str(srv_sat))
+    print("srv_sun = " + str(srv_sun))
+    print("srv_pub = " + str(srv_pub))
+    print("srv_active = " + str(srv_active))
+    print("srv_rate = " + str(srv_rate))
+    print("srv_cost = " + str(srv_cost))
     print("srv_rem = " + str(srv_rem))
     print("END")
 

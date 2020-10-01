@@ -1237,15 +1237,15 @@
             // SRV_COST
             result += "        <div class='form-group col-md-3'>";
             result += "          <label for='cus_tel'>{% trans 'Cost' %}</label>";
-            num = parseFloat(data.srv_cost);
-            result += "          <input id='id_srv_cost' type='text' class='form-control form-control-sm' value='" + num.toFixed(0) + "'>";
+            num = parseFloat(data.srv_rate);
+            result += "          <input id='id_srv_rate' type='text' class='form-control form-control-sm' value='" + num.toFixed(0) + "'>";
             result += "        </div>";
 
             // SRV_TOTAL_COST
-            num = parseFloat(data.srv_total_cost);
+            num = parseFloat(data.srv_cost);
             result += "        <div class='form-group col-md-3'>";
             result += "          <label for='cus_zip'>{% trans 'Total Cost' %}</label>";
-            result += "          <input id='id_srv_total_cost' type='text' class='form-control form-control-sm' value='" + num.toLocaleString() + "' readonly>";
+            result += "          <input id='id_srv_cost' type='text' class='form-control form-control-sm' value='" + num.toLocaleString() + "' readonly>";
             result += "        </div>";
             
             // SRV_ACTIVE
@@ -1274,7 +1274,7 @@
             num = parseFloat(data.srv_cost_rate);
             result += "        <div class='form-group col-md-6'>";
             result += "          <label for='cus_tel'>{% trans 'Cost Rate' %}</label>";
-            result += "          <input type='text' class='form-control form-control-sm' value='" + num + "'>";
+            result += "          <input id='id_srv_cost_rate' type='text' class='form-control form-control-sm' value='" + num + "'>";
             result += "        </div>";
 
             result += "      </div>";   
@@ -1304,21 +1304,21 @@
     } else {
       srv_eff_frm = $('#id_srv_eff_frm').val();
       srv_eff_to = $('#id_srv_eff_to').val();
-      srv_qty = $('#id_srv_qty').val();
-      
-      /*
-      srv_mon = 
-      srv_tue = 
-      srv_wed = 
-      srv_thu = 
-      srv_fri = 
-      srv_sat = 
-      srv_sun = 
-      srv_pub = 
-      */
-      
       srv_rank = $('#id_cus_service_srv_rank').val(); 
-      srv_shift_id = $('#id_cus_service_srv_shift').val();
+      srv_shift_id = $('#id_cus_service_srv_shift').val();      
+      srv_qty = $('#id_srv_qty').val();        
+      srv_mon = $('#id_srv_mon').val();
+      srv_tue = $('#id_srv_tue').val();
+      srv_wed = $('#id_srv_wed').val();
+      srv_thu = $('#id_srv_thu').val();
+      srv_fri = $('#id_srv_fri').val();
+      srv_sat = $('#id_srv_sat').val();
+      srv_sun = $('#id_srv_sun').val();
+      srv_pub = $('#id_srv_pub').val();
+      srv_active = $('#id_srv_active').val();
+      srv_rate = $('#id_srv_rate').val();
+      srv_cost = $('#id_srv_cost').val();
+      srv_cost_rate = $('#id_srv_cost_rate').val();
       srv_rem = $('#id_srv_rem').val();
 
       $.ajax({
@@ -1331,6 +1331,18 @@
           srv_eff_to: srv_eff_to,
           srv_rank: srv_rank,
           srv_shift_id: srv_shift_id,
+          srv_qty: srv_qty,
+          srv_mon: srv_mon,
+          srv_tue: srv_tue,
+          srv_wed: srv_wed,
+          srv_thu: srv_thu,
+          srv_fri: srv_fri,
+          srv_sat: srv_sat,          
+          srv_sun: srv_sun,
+          srv_pub: srv_pub,
+          srv_active: srv_active,
+          srv_rate: srv_rate,
+          srv_cost: srv_cost,
           srv_rem: srv_rem,
         },
         beforeSend: function () {
@@ -1532,18 +1544,18 @@
             $('#id_srv_pub').val(day);            
           }
 
-          $('#id_srv_cost').focus();
+          $('#id_srv_rate').focus();
           event.preventDefault();
           return false;        
         }
       });
 
       // SRV_COST
-      $('#id_srv_cost').on('keypress', function (e) {
+      $('#id_srv_rate').on('keypress', function (e) {
         var cost = $(this);
         if(e.which === 13){
           total = cost.val() * $('#id_srv_qty').val();
-          $('#id_srv_total_cost').val(total.toLocaleString());          
+          $('#id_srv_cost').val(total.toLocaleString());
           $('#id_srv_rem').focus();
           event.preventDefault();
           return false;        
