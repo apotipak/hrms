@@ -1295,8 +1295,12 @@
 
   function save_customer_service_item() {
     service_number = $('#id_select_customer_service_number').val();
-    alert(service_number);
-
+    if(service_number == null || service_number == "") {
+      alert("Service Number not found!");      
+    } else {
+      //alert(service_number);
+      // TODO
+    }
   }
 
   $(document).ready(function(){    

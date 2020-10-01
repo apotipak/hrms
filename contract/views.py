@@ -635,6 +635,7 @@ def update_customer_service(request):
     if service_id is not None:
         try:                
             data = CusService.objects.filter(srv_id__exact=service_id).get()
+            
             srv_id = data.srv_id
             cnt_id = data.cnt_id_id
             srv_rank = data.srv_rank
