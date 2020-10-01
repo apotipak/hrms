@@ -789,6 +789,22 @@ def save_customer_service_item(request):
             modified_records = []
             data = CusService.objects.filter(srv_id__exact=srv_id).get()
 
+            # SRV_RANK
+            if (srv_rank is not None):
+                field_is_modified, record = check_modified_field("CUS_SERVICE", srv_id, "Remark", str(data.srv_rank), srv_rank, "E", request)
+                if field_is_modified:
+                    data.srv_rank = srv_rank
+                    modified_records.append(record)
+                    field_is_modified_count = field_is_modified_count + 1
+
+            # SRV_SHIFT_ID
+            if (srv_shift_id is not None):
+                field_is_modified, record = check_modified_field("CUS_SERVICE", srv_id, "Remark", int(data.srv_shif_id_id), int(srv_shift_id), "E", request)
+                if field_is_modified:
+                    data.srv_shif_id_id = srv_shift_id
+                    modified_records.append(record)
+                    field_is_modified_count = field_is_modified_count + 1
+ 
             # SRV_EFF_FROM
             if (srv_eff_from is not None):
                 field_is_modified, record = check_modified_field("CUS_SERVICE", srv_id, "Eff From", data.srv_eff_frm, datetime.datetime.strptime(srv_eff_from, "%d/%m/%Y"), "E", request)
@@ -812,7 +828,6 @@ def save_customer_service_item(request):
                     data.srv_rem = srv_rem
                     modified_records.append(record)
                     field_is_modified_count = field_is_modified_count + 1
-
 
 
             # Modified user
