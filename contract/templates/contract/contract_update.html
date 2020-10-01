@@ -1350,12 +1350,12 @@
         },    
         success: function (data) {
           $(document).Toasts('create', {
-            class: 'bg-success', 
+            class: data.class, 
             title: "{% trans 'System Message' %}",
             subtitle: '',
             autohide: true,
             delay: 2000,      
-            body: "Saved success.",
+            body: data.message,
             autoDismiss: true,
             close: true,
             autoremove: true,

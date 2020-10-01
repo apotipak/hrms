@@ -30,7 +30,7 @@ def check_modified_field(table_name, primary_key, field_name, old_value, new_val
             "new_value": new_value,
             "log_type": log_type,
             "log_by": request.user.first_name,
-            "log_date": timezone.now(),
+            "log_date": datetime.datetime.now(),
             "log_description": None,
         }
         return True, record
@@ -421,7 +421,7 @@ def SaveContract(request):
                     response_data['class'] = "bg-success"
                 else:
                     response_data['form_is_valid'] = True
-                    response_data['result'] = "Oops! Nothing to update."
+                    response_data['result'] = "Sorry! Nothing to update."
                     response_data['class'] = "bg-warning"
                
             except CustomerOption.DoesNotExist:
@@ -738,6 +738,7 @@ def update_customer_service(request):
         response.status_code = 403
         return response    
 
+
 def save_customer_service_item(request):
     srv_id = request.GET["srv_id"]
     srv_eff_from = request.GET["srv_eff_frm"]
@@ -784,21 +785,72 @@ def save_customer_service_item(request):
 
     if srv_id is not None:
         try:                
+            field_is_modified_count = 0
+            modified_records = []
             data = CusService.objects.filter(srv_id__exact=srv_id).get()
-            data.srv_rem = srv_rem
-            
-            # History log
-            data.upd_date = datetime.datetime.now()
-            data.upd_by = request.user.first_name
-            data.upd_flat = 'E'
-            data.save()
 
-            response = JsonResponse(data={
-                "success": True,
-                "message": "Success.",           
-            })            
+            # SRV_EFF_FROM
+            if (srv_eff_from is not None):
+                field_is_modified, record = check_modified_field("CUS_SERVICE", srv_id, "Eff From", data.srv_eff_frm, datetime.datetime.strptime(srv_eff_from, "%d/%m/%Y"), "E", request)
+                if field_is_modified:
+                    data.srv_eff_frm = datetime.datetime.strptime(srv_eff_from, "%d/%m/%Y")
+                    modified_records.append(record)
+                    field_is_modified_count = field_is_modified_count + 1
 
-            response.status_code = 200
+            # SRV_EFF_TO
+            if (srv_eff_to is not None):
+                field_is_modified, record = check_modified_field("CUS_SERVICE", srv_id, "Eff From", data.srv_eff_to, datetime.datetime.strptime(srv_eff_to, "%d/%m/%Y"), "E", request)
+                if field_is_modified:
+                    data.srv_eff_to = datetime.datetime.strptime(srv_eff_to, "%d/%m/%Y")
+                    modified_records.append(record)
+                    field_is_modified_count = field_is_modified_count + 1
+
+            # SRV_REM
+            if (srv_rem is not None):
+                field_is_modified, record = check_modified_field("CUS_SERVICE", srv_id, "Remark", data.srv_rem, srv_rem, "E", request)
+                if field_is_modified:
+                    data.srv_rem = srv_rem
+                    modified_records.append(record)
+                    field_is_modified_count = field_is_modified_count + 1
+
+
+
+            # Modified user
+            if field_is_modified_count > 0:
+                data.upd_date = datetime.datetime.now()
+                data.upd_by = request.user.first_name
+                data.upd_flat = 'E'
+                data.save()
+
+                # History Log
+                for data in modified_records:
+                    new_log = HrmsNewLog(
+                        log_table = data['log_table'],
+                        log_key = data['log_key'],
+                        log_field = data['log_field'],
+                        old_value = data['old_value'],
+                        new_value = data['new_value'],
+                        log_type = data['log_type'],
+                        log_by = data['log_by'],
+                        log_date = data['log_date'],
+                        )
+                    new_log.save()                
+                # ./History Log                     
+
+                response = JsonResponse(data={
+                    "success": True,
+                    "message": "Success.",
+                    "class": "bg-success",
+                })            
+                response.status_code = 200
+
+            else:
+                response = JsonResponse(data={
+                    "success": True,
+                    "message": "Sorry! Nothing to update.",
+                    "class": "bg-warning",
+                })            
+                response.status_code = 200
 
             return response            
         except CusService.DoesNotExist:
