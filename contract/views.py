@@ -635,7 +635,7 @@ def update_customer_service(request):
     if service_id is not None:
         try:                
             data = CusService.objects.filter(srv_id__exact=service_id).get()
-            
+
             srv_id = data.srv_id
             cnt_id = data.cnt_id_id
             srv_rank = data.srv_rank
@@ -738,4 +738,45 @@ def update_customer_service(request):
         response.status_code = 403
         return response    
 
+def save_customer_service_item(request):
+    srv_id = request.GET["srv_id"]
+    srv_eff_from = request.GET["srv_eff_frm"]
+    srv_eff_to = request.GET["srv_eff_to"]
+    srv_rank = request.GET["srv_rank"]
+    srv_shift_id = request.GET["srv_shift_id"] 
+    srv_rem = request.GET["srv_rem"]
+    
+    print("START")
+    print("srv_id = " + str(srv_id))
+    print("srv_eff_frm = " + str(srv_eff_from))
+    print("srv_eff_to = " + str(srv_eff_to))
+    print("srv_rank = " + str(srv_rank))
+    print("srv_shift_id = " + str(srv_shift_id))
+    print("srv_rem = " + str(srv_rem))
+    print("END")
 
+    if srv_id is not None:
+        try:                
+            data = CusService.objects.filter(srv_id__exact=srv_id).get()
+            response = JsonResponse(data={
+                "success": True,
+                "message": "Success.",           
+            })            
+            response.status_code = 200
+            return response            
+        except CusService.DoesNotExist:
+            response = JsonResponse(data={
+                "success": False,
+                "message": "Service ID not found.",
+                "results": [],
+            })
+            response.status_code = 403
+            return response
+    else:
+        response = JsonResponse(data={
+            "success": False,
+            "message": "Service ID not found.",
+            "results": [],
+        })
+        response.status_code = 403
+        return response          

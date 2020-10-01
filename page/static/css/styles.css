@@ -248,3 +248,10 @@ overflow: auto;
 .table-wrapper-scroll-y {
 display: block;
 }
+
+
+/*
+.ui.toast-container {
+  z-index: 999999;
+}
+*/
