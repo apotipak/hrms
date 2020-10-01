@@ -743,7 +743,10 @@
     <div class="modal-content">
       
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-pen fa-sm"></i>&nbsp;&nbsp;<strong>{% trans 'Update a service' %}</strong></h5>
+        <h5 class="modal-title" id="exampleModalLongTitle">
+          <i class="fas fa-pen fa-sm"></i>&nbsp;&nbsp;<strong>{% trans 'Update Service' %}</strong>
+          <input id="id_select_customer_service_number" type="hidden" readonly>
+        </h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -762,8 +765,10 @@
       </div>
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary btn-md" data-dismiss="modal">{% trans 'Cancel' %}</button>
-        <button type="button" class="btn btn-success btn-md"><i class='fas fa-save'></i>&nbsp;&nbsp;{% trans 'Save' %}&nbsp;&nbsp;</button>
+        <button type="button" class="btn btn-secondary btn-md" data-dismiss="modal">{% trans 'Cancel' %}</button>      
+
+        <button type="button" onclick="save_customer_service_item()" class="btn btn-primary btn-md">&nbsp;<i class="fas fa-save"></i>&nbsp;Save&nbsp;</button>
+
       </div>
 
     </div>
@@ -1088,6 +1093,9 @@
 
   function update_customer_service(service_id) {
     if (service_id != null) {
+
+      $('#id_select_customer_service_number').val(service_id);
+
       $.ajax({
           url : "/contract/ajax/update_customer_service",
           type: 'get',          
@@ -1145,15 +1153,6 @@
             result += "        </div>";
 
             // T_SHIFT
-            /*
-            result += "        <div class='form-group col-md-3'>";
-            result += "          <label for='cus_tel'>{% trans 'Shift' %}</label>";
-            result += "          <input type='text' class='form-control form-control-sm' value='" + data.srv_shif_id + "'>";
-            result += "        </div>";
-            result += "     </div>";
-            */
-
-            // TODO
             result += "        <div class='form-group col-md-3'>";
             result += "          <label for='cus_zip'>{% trans 'Shift' %}</label>";
             result += " <select name='cus_service_srv_shift' class='form-control col-sm-12 form-control-sm' id='id_cus_service_srv_shift'>";
@@ -1293,6 +1292,12 @@
       alert("service id is null");
     }      
   };
+
+  function save_customer_service_item() {
+    service_number = $('#id_select_customer_service_number').val();
+    alert(service_number);
+
+  }
 
   $(document).ready(function(){    
 
@@ -1539,10 +1544,11 @@
           return false;        
         }
       });
-
+      
     });
 
   });
+
 </script>
 
 {% endblock %}
