@@ -704,6 +704,7 @@ def update_customer_service(request):
                 "srv_active": data.srv_active,
                 "srv_rate": data.srv_rate,
                 "srv_cost": data.srv_cost,
+                "srv_total_cost": data.srv_qty * data.srv_cost,
                 "srv_rem": data.srv_rem,
                 "upd_date": data.upd_date,
                 "upd_flag": data.upd_flag,

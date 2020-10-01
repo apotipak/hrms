@@ -1347,15 +1347,18 @@
             // SRV_TOTAL_COST
             result += "        <div class='form-group col-md-3'>";
             result += "          <label for='cus_zip'>{% trans 'Total Cost' %}</label>";
-            result += "          <input id='id_srv_total_cost' type='text' class='form-control form-control-sm' readonly>";
+            result += "          <input id='id_srv_total_cost' type='text' class='form-control form-control-sm' value='" + data.srv_total_cost + "' readonly>";
             result += "        </div>";
             
             // SRV_ACTIVE
             result += "        <div class='form-group col-md-3 text-center'>";
             result += "          <label for='id_srv_active'>&nbsp;</label>";
-            result += "          <div class='form-check'>";
-            result += "            <!--<input class='form-check-input' type='checkbox' checked>-->";
-            result += "            <input id='id_srv_active' class='form-check-input' type='checkbox'>";
+            result += "          <div class='form-check'>";            
+            if(data.srv_active==1) {
+              result += "            <input id='id_srv_active' class='form-check-input' type='checkbox' checked>";
+            } else {
+              result += "            <input id='id_srv_active' class='form-check-input' type='checkbox'>";
+            }            
             result += "            <label class='form-check-label'>{% trans 'Active' %}</label>";
             result += "          </div>";
             result += "        </div>";
