@@ -1236,14 +1236,15 @@
             // SRV_COST
             result += "        <div class='form-group col-md-3'>";
             result += "          <label for='cus_tel'>{% trans 'Cost' %}</label>";
-            num = data.srv_cost;
-            result += "          <input id='id_srv_cost' type='text' class='form-control form-control-sm' value='" + num + "'>";
+            num = parseFloat(data.srv_cost);
+            result += "          <input id='id_srv_cost' type='text' class='form-control form-control-sm' value='" + num.toFixed(0) + "'>";
             result += "        </div>";
 
             // SRV_TOTAL_COST
+            num = parseFloat(data.srv_total_cost);
             result += "        <div class='form-group col-md-3'>";
             result += "          <label for='cus_zip'>{% trans 'Total Cost' %}</label>";
-            result += "          <input id='id_srv_total_cost' type='text' class='form-control form-control-sm' value='" + data.srv_total_cost + "' readonly>";
+            result += "          <input id='id_srv_total_cost' type='text' class='form-control form-control-sm' value='" + num.toLocaleString() + "' readonly>";
             result += "        </div>";
             
             // SRV_ACTIVE
@@ -1269,9 +1270,10 @@
             result += "        </div>";
 
             // SRV_COST_RATE
+            num = parseFloat(data.srv_cost_rate);
             result += "        <div class='form-group col-md-6'>";
             result += "          <label for='cus_tel'>{% trans 'Cost Rate' %}</label>";
-            result += "          <input type='text' class='form-control form-control-sm' value='" + data.srv_cost_rate + "'>";
+            result += "          <input type='text' class='form-control form-control-sm' value='" + num + "'>";
             result += "        </div>";
 
             result += "      </div>";   
@@ -1469,7 +1471,7 @@
         var cost = $(this);
         if(e.which === 13){
           total = cost.val() * $('#id_srv_qty').val();
-          $('#id_srv_total_cost').val(total);
+          $('#id_srv_total_cost').val(total.toLocaleString());          
           $('#id_srv_rem').focus();
           event.preventDefault();
           return false;        
