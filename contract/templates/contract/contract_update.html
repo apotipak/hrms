@@ -1241,20 +1241,38 @@
             result += " <select name='cus_service_srv_rank' class='form-control col-sm-12 form-control-sm' id='id_cus_service_srv_rank'>";
             result += "  <option value=''>---------</option>";
             for(var i=0; i<com_rank_count; i++) {              
-              result += "  <option value='" + data.com_rank_list[i]["rank_id"] + "'>" + data.com_rank_list[i]["rank_en"] + "</option>";
+              if(data.srv_rank == data.com_rank_list[i]["rank_id"])
+                result += "  <option value='" + data.com_rank_list[i]["rank_id"] + "' selected>" + data.com_rank_list[i]["rank_id"] + " # " + data.com_rank_list[i]["rank_en"] + "</option>";
+              else
+                result += "  <option value='" + data.com_rank_list[i]["rank_id"] + "'>" + data.com_rank_list[i]["rank_id"] + " # " + data.com_rank_list[i]["rank_en"] + "</option>";
             }
             result += " </select>";
             result += "        </div>";
 
             // T_SHIFT
+            /*
             result += "        <div class='form-group col-md-3'>";
             result += "          <label for='cus_tel'>{% trans 'Shift' %}</label>";
             result += "          <input type='text' class='form-control form-control-sm' value='" + data.srv_shif_id + "'>";
             result += "        </div>";
             result += "     </div>";
+            */
+
             // TODO
+            result += "        <div class='form-group col-md-3'>";
+            result += "          <label for='cus_zip'>{% trans 'Shift' %}</label>";
+            result += " <select name='cus_service_srv_shift' class='form-control col-sm-12 form-control-sm' id='id_cus_service_srv_shift'>";
+            result += "  <option value=''>---------</option>";
+            for(var i=0; i<t_shift_count; i++) {              
+              if(data.srv_shif_id == data.t_shift_list[i]["shf_id"])
+                result += "  <option value='" + data.t_shift_list[i]["shf_id"] + "' selected>" + data.t_shift_list[i]["shf_desc"] + "</option>";
+              else
+                result += "  <option value='" + data.t_shift_list[i]["shf_id"] + "'>" + data.t_shift_list[i]["shf_desc"] + "</option>";
+            }
+            result += " </select>";
+            result += "        </div>";
 
-
+            // SRV_MON
             result += "      <div class='form-row'>";
             result += "        <div class='form-row col-6'>";
             result += "          <div class='form-group col-3'>";
