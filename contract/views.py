@@ -175,11 +175,12 @@ def get_cus_contract(request):
     try:                
         customer = Customer.objects.filter(cus_id=cus_id, cus_brn=cus_brn).get()
         print("d1")
+        print(cnt_id)
         if cnt_id is not None:
-            try:  
+            try:                 
                 cuscontract = CusContract.objects.filter(cnt_id=cnt_id).get()
                 cnt_doc_no = cuscontract.cnt_doc_no
-
+                print("existed")
                 response = JsonResponse(data={
                     "success": True,
                     "class": "bg_danger",
@@ -190,11 +191,13 @@ def get_cus_contract(request):
                 response.status_code = 200
                 return response
             except CusContract.DoesNotExist:
+                print("not existed")
                 response = JsonResponse(data={
                     "success": True,
                     "class": "bg_danger",
                     "message": "",
                     "is_existed": False,
+                    "customer_not_existed": False,
                     "cnt_doc_no": "",
                 })
                 response.status_code = 200

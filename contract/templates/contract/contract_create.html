@@ -910,7 +910,10 @@
             //
             // $('#customer_name_title').html("<strong>" + json.cus_name_th + "</strong>");
             //
-            alert("existing contract");
+            //alert("existing contract");
+
+            $("#main-content :input").attr("disabled", false);
+            $("#contract_number_form :input").attr("disabled", true);            
             $("#id_cnt_doc_no").focus();
           } else {
 
@@ -920,8 +923,13 @@
               $("#main-content :input").attr("disabled", true);
               $("#contract_number_form :input").attr("disabled", false);
               $("#id_cus_brn").focus();
+            } else {
+              //alert("new contract")
+              $("#main-content :input").attr("disabled", false);
+              $("#contract_number_form :input").attr("disabled", true);            
+              $("#id_cnt_doc_no").focus();              
             }
-            //alert("todo");
+
           }             
         },
       });      
