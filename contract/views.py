@@ -168,12 +168,10 @@ def get_customer(request):
 def get_cus_contract(request):
     cus_id = request.POST.get('cus_id')
     cus_brn = request.POST.get('cus_brn')
-    cus_vol = request.POST.get('cus_vol')
-
-    # cus_brn = request.POST.get('cus_brn').zfill(3)
-    cnt_id = cus_id + cus_brn + cus_vol
+    cus_vol = request.POST.get('cus_vol')    
+    cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
+    
     print("cnt_id = " + str(cnt_id))
-
 
     if cnt_id is not None:
         try:  
@@ -189,7 +187,7 @@ def get_cus_contract(request):
             })
             response.status_code = 200
             return response
-        except CusMain.DoesNotExist:
+        except CusContract.DoesNotExist:
             response = JsonResponse(data={
                 "success": True,
                 "class": "bg_danger",

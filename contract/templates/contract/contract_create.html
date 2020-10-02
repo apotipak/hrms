@@ -808,21 +808,25 @@
 
       // TODO - check existing cus_main
       cus_id = $("#id_cus_id").val();
-      $.ajax({
-        url : "/contract/ajax/get_cus_main/",
-        type : "POST",
-        data : {          
-          csrfmiddlewaretoken: '{{ csrf_token }}',
-          cus_id: cus_id,
-        },
-        success : function(json) {        
-          if(json.is_existed)
-            $('#customer_name_title').html("<strong>" + json.cus_name_th + "</strong>");
-        },
-      });
 
+      if(cus_id=="") {
+        $('#id_cus_id').focus();
+      } else {
+        $.ajax({
+          url : "/contract/ajax/get_cus_main/",
+          type : "POST",
+          data : {          
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            cus_id: cus_id,
+          },
+          success : function(json) {        
+            if(json.is_existed)
+              $('#customer_name_title').html("<strong>" + json.cus_name_th + "</strong>");
+          },
+        });
 
-      $('#id_cus_brn').focus();
+        $('#id_cus_brn').focus();
+      }
     }
   });
 
@@ -832,7 +836,15 @@
 
       // TODO - check existing customer
       cus_id = $("#id_cus_id").val();
-      cus_brn = $("#id_cus_brn").val();
+      cus_brn_text = $("#id_cus_brn").val();
+
+      if(cus_brn_text=="") {
+        $("#id_cus_brn").val('000');
+        cus_brn = 0
+      }
+      else {
+        cus_brn = cus_brn_text;
+      }
 
       $.ajax({
         url : "/contract/ajax/get_customer/",
@@ -858,7 +870,7 @@
 
       var cnt_id = $('#id_cus_id').val();
       var cus_brn = $('#id_cus_brn').val();
-      var cus_vol = $('#id_cus_vol').val();
+      var cus_vol_text = $('#id_cus_vol').val();
 
       if(cnt_id=='' || cnt_id==null) {
         alert("Contract ID is required!");
@@ -866,42 +878,40 @@
       } else if(cus_brn=='' || cus_brn==null) {
         alert("Customer Branch is required");
         $('#id_cus_brn').focus();
-      } else if(cus_vol=='' || cus_vol==null) {
-        alert("Customer Volume is required");
-        $('#id_cus_vol').focus();
-      } else {
-
-        $("#main-content :input").attr("disabled", false);
-        $("#contract_number_form :input").attr("disabled", true);
-
-        // TODO - check existing cnt_id
-        $.ajax({
-          url : "/contract/ajax/get_cus_contract/",
-          type : "POST",
-          data : {          
-            csrfmiddlewaretoken: '{{ csrf_token }}',
-            cus_id: cus_id,
-            cus_brn: cus_brn,
-            cus_vol: cus_vol,
-          },
-          success : function(json) {        
-            if(json.is_existed) {
-              //
-              // $('#customer_name_title').html("<strong>" + json.cus_name_th + "</strong>");
-              //
-              alert("existing contract");
-            } else {
-              alert("new contract");
-            }             
-          },
-        });
-
-
-        $("#id_cnt_doc_no").focus();
-
-        // TODO - form validation        
-        //contract_form_validation(cnt_id);
+      } else if(cus_vol_text=='' || cus_vol_text==null) {    
+        $("#id_cus_vol").val('000');        
+        cus_vol = 0;
       }
+      else {
+        cus_vol = cus_vol_text;
+      }
+      
+      $("#main-content :input").attr("disabled", false);
+      $("#contract_number_form :input").attr("disabled", true);
+
+      // TODO - check existing cnt_id
+      $.ajax({
+        url : "/contract/ajax/get_cus_contract/",
+        type : "POST",
+        data : {          
+          csrfmiddlewaretoken: '{{ csrf_token }}',
+          cus_id: cus_id,
+          cus_brn: cus_brn,
+          cus_vol: cus_vol,
+        },
+        success : function(json) {        
+          if(json.is_existed) {
+            //
+            // $('#customer_name_title').html("<strong>" + json.cus_name_th + "</strong>");
+            //
+            alert("existing contract");
+          } else {
+            alert("new contract");
+          }             
+        },
+      });      
+
+      $("#id_cnt_doc_no").focus();
     }
   });  
 
