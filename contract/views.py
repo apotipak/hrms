@@ -76,8 +76,7 @@ def contract_create(request):
 @login_required(login_url='/accounts/login/')
 @permission_required('contract.view_cuscontract', login_url='/accounts/login/')
 def get_cus_main(request):
-    cus_id = request.POST.get('cus_id')
-    print("cus_id = " + str(cus_id))
+    cus_id = request.POST.get('cus_id')    
 
     if cus_id is not None:
         try:                
@@ -100,7 +99,7 @@ def get_cus_main(request):
                 "success": True,
                 "class": "bg_danger",
                 "message": "",
-                "is_existed": True,
+                "is_existed": False,
                 "cus_name_th": "",
                 "cus_name_en": "",
             })
@@ -140,12 +139,12 @@ def get_customer(request):
             })
             response.status_code = 200
             return response
-        except CusMain.DoesNotExist:
+        except Customer.DoesNotExist:            
             response = JsonResponse(data={
                 "success": True,
                 "class": "bg_danger",
                 "message": "",
-                "is_existed": True,
+                "is_existed": False,
                 "cus_name_th": "",
                 "cus_name_en": "",
             })
@@ -155,8 +154,8 @@ def get_customer(request):
     response = JsonResponse(data={
         "success": True,
         "class": "bg_danger",
-        "message": "33",
-        "is_existed": True,
+        "message": "",
+        "is_existed": False,
         "cus_name_th": "",
         "cus_name_en": "",
     })
@@ -171,37 +170,52 @@ def get_cus_contract(request):
     cus_vol = request.POST.get('cus_vol')    
     cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
     
-    print("cnt_id = " + str(cnt_id))
+    print("cus_brn = " + str(cus_brn))
+    # Double check if customer is existed
+    try:                
+        customer = Customer.objects.filter(cus_id=cus_id, cus_brn=cus_brn).get()
+        print("d1")
+        if cnt_id is not None:
+            try:  
+                cuscontract = CusContract.objects.filter(cnt_id=cnt_id).get()
+                cnt_doc_no = cuscontract.cnt_doc_no
 
-    if cnt_id is not None:
-        try:  
-            cuscontract = CusContract.objects.filter(cnt_id=cnt_id).get()
-            cnt_doc_no = cuscontract.cnt_doc_no
-
-            response = JsonResponse(data={
-                "success": True,
-                "class": "bg_danger",
-                "message": "",
-                "is_existed": True,
-                "cnt_doc_no": cnt_doc_no,
-            })
-            response.status_code = 200
-            return response
-        except CusContract.DoesNotExist:
-            response = JsonResponse(data={
-                "success": True,
-                "class": "bg_danger",
-                "message": "",
-                "is_existed": False,
-                "cnt_doc_no": "",
-            })
-            response.status_code = 200
-            return response            
-
+                response = JsonResponse(data={
+                    "success": True,
+                    "class": "bg_danger",
+                    "message": "",
+                    "is_existed": True,
+                    "cnt_doc_no": cnt_doc_no,
+                })
+                response.status_code = 200
+                return response
+            except CusContract.DoesNotExist:
+                response = JsonResponse(data={
+                    "success": True,
+                    "class": "bg_danger",
+                    "message": "",
+                    "is_existed": False,
+                    "cnt_doc_no": "",
+                })
+                response.status_code = 200
+                return response            
+    except Customer.DoesNotExist:
+        print("d2")
+        response = JsonResponse(data={
+            "success": True,
+            "class": "bg_danger",
+            "message": "",
+            "is_existed": False,
+            "customer_not_existed": True,
+            "cnt_doc_no": "",
+        })
+        response.status_code = 200
+        return response  
+        
     response = JsonResponse(data={
         "success": True,
         "class": "bg_danger",
-        "message": "33",
+        "message": "",
         "is_existed": False,
         "cnt_doc_no": "",
     })

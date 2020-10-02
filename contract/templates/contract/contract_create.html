@@ -820,12 +820,15 @@
             cus_id: cus_id,
           },
           success : function(json) {        
-            if(json.is_existed)
+            if(json.is_existed) {
               $('#customer_name_title').html("<strong>" + json.cus_name_th + "</strong>");
+              $('#id_cus_brn').focus();
+            } else {
+              alert("Customer " + cus_id + " does not existed. Please create a new customer.");
+              $('#id_cus_id').focus();
+            }
           },
-        });
-
-        $('#id_cus_brn').focus();
+        });        
       }
     }
   });
@@ -855,12 +858,18 @@
           cus_brn: cus_brn,
         },
         success : function(json) {        
-          if(json.is_existed)
+          if(json.is_existed) {
             $('#customer_name_title').html("<strong>" + json.cus_name_th + "</strong>");
+            $('#id_cus_vol').focus();
+          }
+          else {
+            alert("Customer " + cus_id + " Branch " + cus_brn + " does not existed. Please create a new customer.");
+            $('#id_cus_brn').focus();
+          }
         },
       });
 
-      $('#id_cus_vol').focus();
+      
     }
   });
 
@@ -886,9 +895,6 @@
         cus_vol = cus_vol_text;
       }
       
-      $("#main-content :input").attr("disabled", false);
-      $("#contract_number_form :input").attr("disabled", true);
-
       // TODO - check existing cnt_id
       $.ajax({
         url : "/contract/ajax/get_cus_contract/",
@@ -905,13 +911,22 @@
             // $('#customer_name_title').html("<strong>" + json.cus_name_th + "</strong>");
             //
             alert("existing contract");
+            $("#id_cnt_doc_no").focus();
           } else {
-            alert("new contract");
+
+            if(json.customer_not_existed) {
+              //alert("Customer Branch " + cus_brn + " does not existed. Please create a new customer.");
+              alert("Customer " + cus_id + " Branch " + cus_brn + " does not existed. Please create a new customer.");
+              $("#main-content :input").attr("disabled", true);
+              $("#contract_number_form :input").attr("disabled", false);
+              $("#id_cus_brn").focus();
+            }
+            //alert("todo");
           }             
         },
       });      
 
-      $("#id_cnt_doc_no").focus();
+      
     }
   });  
 
