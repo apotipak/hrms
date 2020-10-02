@@ -118,8 +118,6 @@ def get_cus_main(request):
     return response
 
 
-# cus_brn = request.POST.get('cus_brn').zfill(3)
-
 @login_required(login_url='/accounts/login/')
 @permission_required('contract.view_cuscontract', login_url='/accounts/login/')
 def get_customer(request):
@@ -161,6 +159,53 @@ def get_customer(request):
         "is_existed": True,
         "cus_name_th": "",
         "cus_name_en": "",
+    })
+    return response
+
+
+@login_required(login_url='/accounts/login/')
+@permission_required('contract.view_cuscontract', login_url='/accounts/login/')
+def get_cus_contract(request):
+    cus_id = request.POST.get('cus_id')
+    cus_brn = request.POST.get('cus_brn')
+    cus_vol = request.POST.get('cus_vol')
+
+    # cus_brn = request.POST.get('cus_brn').zfill(3)
+    cnt_id = cus_id + cus_brn + cus_vol
+    print("cnt_id = " + str(cnt_id))
+
+
+    if cnt_id is not None:
+        try:  
+            cuscontract = CusContract.objects.filter(cnt_id=cnt_id).get()
+            cnt_doc_no = cuscontract.cnt_doc_no
+
+            response = JsonResponse(data={
+                "success": True,
+                "class": "bg_danger",
+                "message": "",
+                "is_existed": True,
+                "cnt_doc_no": cnt_doc_no,
+            })
+            response.status_code = 200
+            return response
+        except CusMain.DoesNotExist:
+            response = JsonResponse(data={
+                "success": True,
+                "class": "bg_danger",
+                "message": "",
+                "is_existed": False,
+                "cnt_doc_no": "",
+            })
+            response.status_code = 200
+            return response            
+
+    response = JsonResponse(data={
+        "success": True,
+        "class": "bg_danger",
+        "message": "33",
+        "is_existed": False,
+        "cnt_doc_no": "",
     })
     return response
 

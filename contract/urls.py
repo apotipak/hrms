@@ -15,4 +15,5 @@ urlpatterns = [
 
     url(r'^ajax/get_cus_main/$', views.get_cus_main, name='get_cus_main'),
     url(r'^ajax/get_customer/$', views.get_customer, name='get_customer'),
+    url(r'^ajax/get_cus_contract/$', views.get_cus_contract, name='get_cus_contract'),
 ]

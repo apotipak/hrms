@@ -875,6 +875,28 @@
         $("#contract_number_form :input").attr("disabled", true);
 
         // TODO - check existing cnt_id
+        $.ajax({
+          url : "/contract/ajax/get_cus_contract/",
+          type : "POST",
+          data : {          
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            cus_id: cus_id,
+            cus_brn: cus_brn,
+            cus_vol: cus_vol,
+          },
+          success : function(json) {        
+            if(json.is_existed) {
+              //
+              // $('#customer_name_title').html("<strong>" + json.cus_name_th + "</strong>");
+              //
+              alert("existing contract");
+            } else {
+              alert("new contract");
+            }             
+          },
+        });
+
+
         $("#id_cnt_doc_no").focus();
 
         // TODO - form validation        
@@ -927,7 +949,7 @@
     // TODO - disable Active button when click Cancel button
     $("#id_cnt_active").prop("active", false);
 
-    $("#id_cnt_id").focus();
+    $("#id_cus_id").focus();
   });
 
 
