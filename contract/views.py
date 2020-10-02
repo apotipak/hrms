@@ -9,7 +9,7 @@ from django.http import HttpResponseRedirect
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils.translation import ugettext_lazy as _
-from .forms import ContractForm, ContractUpdateForm
+from .forms import ContractForm, ContractUpdateForm, ContractCreateForm
 from .models import CusContract, CusService
 from system.models import HrmsNewLog, TWagezone, ComRank, TShift
 from customer.models import CusMain, Customer
@@ -36,6 +36,41 @@ def check_modified_field(table_name, primary_key, field_name, old_value, new_val
         return True, record
     else: 
         return False, record
+
+
+@login_required(login_url='/accounts/login/')
+@permission_required('contract.view_contract', login_url='/accounts/login/')
+def contract_create(request):
+    template_name = 'contract/contract_create.html'
+    page_title = settings.PROJECT_NAME
+    db_server = settings.DATABASES['default']['HOST']
+    project_name = settings.PROJECT_NAME
+    project_version = settings.PROJECT_VERSION  
+    today_date = settings.TODAY_DATE
+    response_data = dict()
+
+    if request.method == "POST":
+        print("POST: contract_create()")
+        if form.is_valid():          
+            contract_form = ContractCreateForm(request.POST, user=request.user)
+            response_data['form_is_valid'] = True            
+        else:            
+            response_data['form_is_valid'] = False
+
+        return JsonResponse(response_data)     
+    else:
+        print("GET: contract_create()")
+        customer_code_create_form = ContractCreateForm()
+        
+    return render(request, 'contract/contract_create.html', 
+        {
+        'page_title': page_title, 
+        'project_name': project_name, 
+        'project_version': project_version, 
+        'db_server': db_server, 
+        'today_date': today_date,
+        'customer_code_create_form': customer_code_create_form,
+        })
 
 
 @login_required(login_url='/accounts/login/')

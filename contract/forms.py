@@ -78,3 +78,12 @@ class ContractUpdateForm(forms.ModelForm):
         if len(data) == '0':
             raise ValidationError("Contrct Ref. is required.")
         return data
+
+
+class ContractCreateForm(forms.ModelForm):
+    print("debug ContractForm")
+    cnt_id = forms.DecimalField(label='Contract ID', required=False, max_value=9999999)
+    class Meta:
+        model = CusContract  
+        fields = '__all__'
+        exclude = ['cnt_id', 'cus_brn', 'cus_vol']

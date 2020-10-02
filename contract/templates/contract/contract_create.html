@@ -1,0 +1,1661 @@
+{% extends "page_generic.html" %}
+
+{% load i18n %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}{{ page_title}} - {% trans 'Create New Contract' %} {% endblock %}
+
+{% block content %}
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+
+
+    <form id="customer_code_form" method="POST">
+    {% csrf_token %}
+
+    <div class="">
+      <div class="row mb-2">
+        <!--
+        <div class="col-xs-4">          
+          <h4 class="display-6 m-0 text-dark">Add New Customer</h4>
+        </div>
+        -->
+        <div class="col-8 offset-2">
+
+          <div class="form-row">
+
+            <div class="col-4 mt-1 text-nowrap text-right">
+              <strong>Contract No</strong>&nbsp;&nbsp;&nbsp;
+            </div>
+
+            <div class="col-4">              
+              {% render_field customer_code_create_form.cus_id %}
+            </div>
+            
+            <div class="col-4">
+              <!--<input type="text" class="form-control form-control-sm" id="id_cus_site_cus_brn" name="cus_site_cus_brn">-->
+              {% render_field customer_code_create_form.cus_brn %}
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    </form>
+
+  </div>
+
+  <!-- Main content -->  
+  <section class="content pt-2">
+      <form id="contractupdateform" method="POST">
+      {% csrf_token %}
+
+    
+    <div class="card card-default collapsed-card">
+
+      <div class="card-header">
+        <h1 class="card-title"><strong>{{contract.cnt_id}} - {{ customer.cus_name_th }}</strong></h1>
+
+        <div class="card-tools">
+          <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus text-primary"></i></button>
+        </div>
+      </div>
+
+      <div class="card-body">
+
+        <div class="" id="show-error">
+        {% if form.errors %}
+            {% for field in form %}                
+                {% for error in field.errors %}
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation"></i>&nbsp;&nbsp;Your data is not correct. {{ field.name }} - {{ error }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        {% else %}
+          {% if form_is_valid %}
+            <div class="alert alert-success">
+                <i class="fas fa-save"></i>&nbsp;&nbsp;Saved complete. Back to <a href="{% url 'customer-list' %}">Customer List</a>
+            </div>
+          {% endif %}
+        {% endif %}
+        </div>
+
+
+        <div class="row">
+
+          <div class="col-12">
+
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link active" id="thai-tab" data-toggle="tab" href="#thai" role="tab" aria-controls="thai" aria-selected="true">TH</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="english-tab" data-toggle="tab" href="#english" role="tab" aria-controls="english" aria-selected="false">EN</a>
+              </li>
+            </ul>
+
+            <div class="tab-content" id="myTabContent">
+
+              <div class="tab-pane fade show active" id="thai" role="tabpanel" aria-labelledby="thai-tab">
+
+                <div class="form-row">
+                  <div class="form-group col-md-4">
+                    <label for="cus_name_th">{% trans 'Company' %}</label>
+                    <input type="text" class="form-control form-control-sm" id="id_cus_name_th" name="cus_name_th" readonly value="{{ customer.cus_name_th }}">
+                  </div>
+                  <div class="form-group col-md-2">
+                    <label for="cus_tel">{% trans 'Site Name' %}</label>
+                    <input type="text" class="form-control form-control-sm" readonly value="">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="cus_address_th">{% trans 'Address' %}</label>
+                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_add1_th }}&nbsp;{{ customer.cus_add2_th }}">
+                  </div>                  
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col-md-4">
+                    <label for="cus_subdist_th">{% trans 'Sub-District' %}</label>
+                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_subdist_th }}">
+                  </div>
+                  <div class="form-group col-md-2">
+                    <label for="cus_district">{% trans 'District' %}</label>
+                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_district }}">
+                  </div>
+                  <div class="form-group col-md-2">
+                    <label for="cus_city">{% trans 'City' %}</label>
+                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_city }}">
+                  </div>                  
+                  <div class="form-group col-md-2">
+                    <label for="cus_country">{% trans 'Country' %}</label>
+                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_country }}">
+                  </div>                  
+                  <div class="form-group col-md-2">
+                    <label for="cus_country">{% trans 'Zip' %}</label>
+                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_zip }}">
+                  </div>                                    
+                </div>
+
+                <div class="form-row">
+
+                  <div class="form-group col-md-4">
+                    <label for="cus_contact">{% trans 'Contact' %}</label>
+                    <input type="text" class="form-control form-control-sm" readonly value="No. {{customer.site_contact_id}} {{customer.site_contact.con_fname_th}}&nbsp;{{customer.site_contact.con_lname_th}}">
+                  </div>
+
+                  <div class="form-group col-md-2">
+                    <label for="cus_contact_position">{% trans 'Position' %}</label>
+                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.site_contact.con_position_th }}">
+                  </div>                  
+
+                  <div class="form-group col-md-2">
+                    <label for="cus_tel">{% trans 'Phone' %}</label>
+                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_tel }}">
+                  </div>
+                  <div class="form-group col-md-2">
+                    <label for="cus_fax">{% trans 'Fax' %}</label>
+                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_fax }}">
+                  </div>
+
+                  <div class="form-group col-md-2">
+                    <label for="cus_email">{% trans 'Email' %}</label>
+                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_email }}">
+                  </div>
+                </div>
+
+              </div>
+
+
+              <div class="tab-pane fade" id="english" role="tabpanel" aria-labelledby="english-tab">
+
+
+                <div class="form-row">
+                  <div class="form-group col-md-4">
+                    <label for="cus_name_en">{% trans 'Company' %}</label>
+                    <input type="text" class="form-control form-control-sm" id="id_cus_name_en" name="cus_name_en" readonly value="{{ customer.cus_name_en }}">
+                  </div>
+                  <div class="form-group col-md-2">
+                    <label for="cus_tel">{% trans 'Site Name' %}</label>
+                    <input type="text" class="form-control form-control-sm" readonly value="">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="cus_address_en">{% trans 'Address' %}</label>
+                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_add1_en }}&nbsp;{{ customer.cus_add2_en }}">
+                  </div>                  
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col-md-4">
+                    <label for="cus_subdist_en">{% trans 'Sub-District' %}</label>
+                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_subdist_en }}">
+                  </div>
+                  <div class="form-group col-md-2">
+                    <label for="cus_district">{% trans 'District' %}</label>
+                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_district.dist_en }}">
+                  </div>
+                  <div class="form-group col-md-2">
+                    <label for="cus_city">{% trans 'City' %}</label>
+                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_city.city_en }}">
+                  </div>                  
+                  <div class="form-group col-md-2">
+                    <label for="cus_country">{% trans 'Country' %}</label>
+                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_country.country_en }}">
+                  </div>                  
+                  <div class="form-group col-md-2">
+                    <label for="cus_country">{% trans 'Zip' %}</label>
+                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_zip }}">
+                  </div>                                    
+                </div>
+
+                <div class="form-row"> 
+
+                  <div class="form-group col-md-4">
+                    <label for="cus_contact">{% trans 'Contact' %}</label>
+                    <input type="text" class="form-control form-control-sm" readonly value="No. {{customer.site_contact_id}} {{customer.site_contact.con_fname_en}}&nbsp;{{customer.site_contact.con_lname_en}}">
+                  </div>
+
+
+
+                  <div class="form-group col-md-2">
+                    <label for="cus_contact_position">{% trans 'Position' %}</label>
+                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_contact.con_position_en }}">
+                  </div>                  
+
+                  <div class="form-group col-md-2">
+                    <label for="cus_tel">{% trans 'Phone' %}</label>
+                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_tel }}">
+                  </div>
+                  <div class="form-group col-md-2">
+                    <label for="cus_fax">{% trans 'Fax' %}</label>
+                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_fax }}">
+                  </div>
+
+                  <div class="form-group col-md-2">
+                    <label for="cus_email">{% trans 'Email' %}</label>
+                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_email }}">
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+
+
+
+
+
+
+
+    <div class="card card-default">
+
+
+
+      <div class="card-header">                
+        <!--<div class="float-left"><h2 class="m-0 text-dark">{{contract.cnt_id}}</h2></div>-->
+        
+        <div class="card-tools">
+
+          <div class="float-left pt-2">
+
+            <!-- Use new report condition | N or empty -->
+            <div class="form-check d-inline">
+              {% if contract.cnt_new == 'N' %}
+              <input class="form-check-input" id="id_cnt_new" name="cnt_new" type="checkbox" checked>
+              {% else %}
+              <input class="form-check-input" id="id_cnt_new" name="cnt_new" type="checkbox">
+              {% endif %}
+              <label class="form-check-label">New Report</label>&nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+
+            <!-- Amendment Flag -->
+            <div class="form-check d-inline">
+              <input class="form-check-input" id="id_amendment" name="amendment" type="checkbox">
+              <label class="form-check-label">Amendment</label>&nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+
+            <!-- Display Address condition | C or S -->
+            <div class="form-check d-inline">
+              {% if contract.cnt_print == 'C' %}
+              <input class="form-check-input" id="id_cnt_print" name="cnt_print" type="checkbox" checked>
+              <label id="id_cnt_print_label" class="form-check-label">Customer</label>&nbsp;&nbsp;&nbsp;&nbsp;
+              {% else %}
+              <input class="form-check-input" id="id_cnt_print" name="cnt_print" type="checkbox">
+              <label id="id_cnt_print_label" class="form-check-label">Site Address</label>&nbsp;&nbsp;&nbsp;&nbsp;
+              {% endif %}
+            </div>
+
+            <!-- Auto expired | 0 or 1-->
+            <div class="form-check d-inline">
+              {% if contract.cnt_autoexpire %}
+              <input class="form-check-input" id="id_cnt_autoexpire" name="cnt_autoexpire" type="checkbox" checked>
+              {% else %}
+              <input class="form-check-input" id="id_cnt_autoexpire" name="cnt_autoexpire" type="checkbox">
+              {% endif %}
+              <label class="form-check-label text-danger">Auto expire</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <!--<label class="form-check-label text-danger">Auto expire</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
+            </div>                        
+
+            <div class="float-right">
+
+              {% if contract.cnt_active|default_if_none:0 %}
+                <input id="id_cnt_active" name="cnt_active" type="checkbox" data-toggle="toggle" data-on="Active" data-off="Pending" data-onstyle="success" data-size="normal" checked>
+              {% else %}
+                <input id="id_cnt_active" name="cnt_active" type="checkbox" data-toggle="toggle" data-on="Active" data-off="Pending" data-onstyle="success" data-size="normal">
+              {% endif %}
+
+              <!--
+              <div class="btn-group">
+                <label class="switch">                                 
+                  {% if contract.cnt_active|default_if_none:0 %}
+                  <input type="checkbox" id="id_cnt_active" name="cnt_active" value=1 checked>
+                  {% else %}
+                  <input type="checkbox" id="id_cnt_active" name="cnt_active" value=0>
+                  {% endif %}                  
+                  <div class="slider"></div>
+                </label>  
+              </div>
+              -->
+
+            </div>
+
+
+
+
+          </div>
+
+          {% comment %}
+          &nbsp;        
+          {% render_field form.cnt_active id="id_cnt_active" class="form-control" type="checkbox" data-toggle="toggle" data-on="Active" data-off="Pending" data-onstyle="success" data-offstyle="danger"%}
+          {% endcomment %}
+
+        </div>
+      </div>
+      <!-- /.card-header -->
+
+      <div class="card-body">
+
+
+        <div class="row">
+
+          <div class="col-6">
+
+            <div class="form-row">
+              <!-- cnt_doc_no -->
+              <div class="form-group col-md-6">
+                <label for="id_cnt_doc_no">{% trans 'Contract Ref.' %}</label>
+                <input id="id_cnt_doc_no" name="cnt_doc_no" type="text" class="form-control form-control-sm" value="{{contract.cnt_doc_no|default_if_none:''}}">
+              </div>
+              
+              <!-- cnt_doc_date -->
+              <div class="form-group col-md-6">
+                <label>&nbsp;</label>                
+                <div class="input-group date" id="dtp_cnt_doc_date" data-target-input="nearest">
+                  {{ form.cnt_doc_date }}
+                  <div class="input-group-append" data-target="#dtp_cnt_doc_date" data-toggle="datepicker">
+                    <div class="input-group-text text-primary"><i class="fa fa-calendar"></i></div>
+                  </div>
+                </div>                
+              </div>
+
+            </div>
+
+            <div class="form-row">
+              <!-- cnt_eff_frm -->
+              <div class="form-group col-md-6">
+                <label for="id_cnt_eff_frm">{% trans 'Effect Term' %}</label>
+                <div class="input-group date" id="dtp_cnt_eff_frm" data-target-input="nearest">
+                  {{ form.cnt_eff_frm }}
+                  <div class="input-group-append" data-target="#dtp_cnt_eff_frm" data-toggle="datepicker">
+                    <div class="input-group-text text-primary"><i class="fa fa-calendar"></i></div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- cnt_eff_to -->
+              <div class="form-group col-md-6">
+                <label for="id_cnt_eff_to">&nbsp;</label>
+                <div class="input-group date" id="dtp_cnt_eff_to" data-target-input="nearest">
+                  {{ form.cnt_eff_to }}
+                  <div class="input-group-append" data-target="#dtp_cnt_eff_to" data-toggle="datepicker">
+                    <div class="input-group-text text-primary"><i class="fa fa-calendar"></i></div>
+                  </div>
+                </div>
+              </div>              
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="id_cnt_sign_frm">{% trans 'Contract Term' %}</label>
+                <div class="input-group date" id="dtp_cnt_sign_frm" data-target-input="nearest">
+                  {{ form.cnt_sign_frm }}
+                  <div class="input-group-append" data-target="#dtp_cnt_sign_frm" data-toggle="datepicker">
+                    <div class="input-group-text text-primary"><i class="fa fa-calendar"></i></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group col-md-6">
+                <label for="id_cnt_sign_to">&nbsp;</label>
+                <div class="input-group date" id="dtp_cnt_sign_to" data-target-input="nearest">
+                  {{ form.cnt_sign_to }}
+                  <div class="input-group-append" data-target="#dtp_cnt_sign_to" data-toggle="datepicker">
+                    <div class="input-group-text text-primary"><i class="fa fa-calendar"></i></div>
+                  </div>
+                </div>                
+              </div>   
+            </div>
+
+          </div>
+
+
+
+          <div class="col-6">
+
+            <div class="form-row">
+              <div class="form-group col-md-12">
+                <label for="id_cnt_wage_id">{% trans 'Wage Rate' %}</label>
+                <div class="input-group-append">
+                
+                  <input type="text" id="id_cnt_wage_id_text" name="cnt_wage_id" class="form-control form-control-sm" value="{{contract.cnt_wage_id.wage_en}}&nbsp;&nbsp;|&nbsp;&nbsp;{{contract.cnt_wage_id.wage_8hr}}" readonly>
+                
+                  <input type="hidden" id="id_cnt_wage_id" name="cnt_wage_id" value="{{ contract.cnt_wage_id_id|default_if_none:'' }}">
+
+                  <button id="wage_rate_lookup" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url="{% url 'get_wagerate_list' %}"><i class="fas fa-search fa-sm"></i></button>
+                                  
+                </div>                
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="id_cnt_guard_amt">{% trans 'Guard Amount' %}</label>
+                <input type="text" id="id_cnt_guard_amt" name="cnt_guard_amt" class="form-control form-control-sm" value="{{contract.cnt_guard_amt}}" readonly>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="id_cnt_sale_amt">{% trans 'Sale Amount' %}</label>
+                <input type="text" id="id_cnt_sale_amt" name="cnt_sale_amt" class="form-control form-control-sm text-right" value="{{contract.cnt_sale_amt}}" readonly>
+              </div>              
+            </div>
+
+
+
+            <div class="form-row">
+              <div class="form-group col-md-12">
+                <label for="id_cnt_apr_by_text">{% trans 'Authorized by' %}</label>
+                <input type="text" id="id_cnt_apr_by_text" name="cnt_apr_by_text" class="form-control form-control-sm" value="{{contract.cnt_apr_by.apr_name_en}}&nbsp;&nbsp;({{contract.cnt_apr_by.apr_name_th}})" readonly>
+
+                <input type="hidden" id="id_cnt_apr_by_id" name="id_cnt_apr_by_id" value="{{ contract.cnt_apr_by_id|default_if_none:None }}">
+
+              </div>                               
+            </div>
+          </div>
+          
+        </div>
+        <!-- /.row -->     
+
+        <!--
+        <div class="float-right">
+          <a href="javascript:void(0);" type="button" class="btn btn-info btn-md"><i class="fas fa-print fa-sm"></i>&nbsp;&nbsp;{% trans 'Print' %}</a>
+          <a href="javascript:void(0);" id="saveContract" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
+        </div>
+        -->
+
+        <div class="btn-group float-right">
+          <button type="button" class="btn btn-default text-info"><i class="fas fa-print fa-sm"></i>&nbsp;&nbsp;Print</button>
+          <button type="button" class="btn btn-default text-info dropdown-toggle dropdown-icon" data-toggle="dropdown">
+            <span class="sr-only">Toggle Dropdown</span>
+            <div class="dropdown-menu" role="menu">
+              <a class="dropdown-item" href="#">Thai</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">English</a>
+            </div>
+          </button>
+          &nbsp;&nbsp;
+          <a href="javascript:void(0);" id="saveContract" type="button" class="btn btn-primary"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>                
+        </div>
+
+
+      </div>
+      <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+
+
+
+
+    <div class="card card-default">
+
+      <div class="card-header">
+        <h1 class="card-title pt-1"><strong>{% trans 'Service List' %}</strong></h1>
+        <div class="card-tools">        
+          <!--
+          <button id="add_service_button" type="button" class="btn btn-outline-success btn-md" data-toggle="modal" data-url="{% url 'get_district_list' %}"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;{% trans 'New service' %}</button>
+          -->
+        </div>        
+      </div>
+
+      <!-- Service List -->
+      <div class="card-body">        
+        <div class="row">
+          
+          <div class="col-md-12 table-responsive">
+            <table id="customer-list-table1" class="table table-bordered table-sm">
+              <tr class="table-secondary">
+                <th>{% trans 'Eff Frm' %}</th>
+                <th scope="col">{% trans 'Eff To' %}</th>            
+                <th scope="col" nowrap>{% trans 'Shift Time' %}</th>
+                <th scope="col">{% trans 'Qty' %}</th>
+                <th scope="col">{% trans 'Rank' %}</th>
+                <th scope="col">{% trans 'Rate' %}</th>
+                <th scope="col">{% trans 'Ext.Cost' %}</th>
+                <th scope="col">{% trans 'MON' %}</th>
+                <th scope="col">{% trans 'TUE' %}</th>
+                <th scope="col">{% trans 'WED' %}</th>
+                <th scope="col">{% trans 'THU' %}</th>
+                <th scope="col">{% trans 'FRI' %}</th>
+                <th scope="col">{% trans 'SAT' %}</th>
+                <th scope="col">{% trans 'SUN' %}</th>
+                <th scope="col">{% trans 'PUB' %}</th>
+                <th scope="col">{% trans 'Remark' %}</th>
+                <th scope="col">{% trans 'Active' %}</th>
+                <th>&nbsp;</th>
+              </tr>
+              <tbody>
+                {% for item in cus_service %}
+                  <tr>
+                  {% if item.srv_active %}
+                  <td><small><a href="javascript:void(0);">{{item.srv_eff_frm|date:'d/m/Y'}}</a></small></td>
+                  <td><small><a href="javascript:void(0);">{{item.srv_eff_to|date:'d/m/Y'}}</a></small></td>
+                  <td><small><a href="javascript:void(0);">{{item.srv_shif_id.shf_desc}}</a></small></td>
+                  <td align="center"><small><a href="javascript:void(0);">{{item.srv_qty}}</a></small></td>
+                  <td><small><a href="javascript:void(0);">{{item.srv_rank}}</a></small></td>
+                  <td align="right"><small><a href="javascript:void(0);">{{item.srv_rate|stringformat:".0f"}}</a></small></td>
+                  <td align="right"><small><a href="javascript:void(0);">{{item.srv_cost|stringformat:".0f"}}</a></small></td>
+                  <td align="center"><small><a href="javascript:void(0);">{{item.srv_mon}}</a></small></td>
+                  <td align="center"><small><a href="javascript:void(0);">{{item.srv_tue}}</a></small></td>
+                  <td align="center"><small><a href="javascript:void(0);">{{item.srv_wed}}</a></small></td>
+                  <td align="center"><small><a href="javascript:void(0);">{{item.srv_thu}}</a></small></td>
+                  <td align="center"><small><a href="javascript:void(0);">{{item.srv_fri}}</a></small></td>
+                  <td align="center"><small><a href="javascript:void(0);">{{item.srv_sat}}</a></small></td>
+                  <td align="center"><small><a href="javascript:void(0);">{{item.srv_sun}}</a></small></td>
+                  <td align="center"><small><a href="javascript:void(0);">{{item.srv_pub}}</a></small></td>
+                  <td><small><a href="javascript:void(0);">{{item.srv_rem}}</a></small></td>
+                  <td><span class="badge badge-success">{% trans 'Active' %}</span></td>
+                  {% else %}
+                  <td><small>{{item.srv_eff_frm|date:'d/m/Y'}}</small></td>
+                  <td><small>{{item.srv_eff_to|date:'d/m/Y'}}</small></td>
+                  <td><small>{{item.srv_shif_id.shf_desc}}</small></td>
+                  <td align="center"><small>{{item.srv_qty}}</small></td>
+                  <td><small>{{item.srv_rank}}</small></td>
+                  <td align="right"><small>{{item.srv_rate|stringformat:".0f"}}</small></td>
+                  <td align="right"><small>{{item.srv_cost|stringformat:".0f"}}</small></td>
+                  <td align="center"><small>{{item.srv_mon}}</small></td>
+                  <td align="center"><small>{{item.srv_tue}}</small></td>
+                  <td align="center"><small>{{item.srv_wed}}</small></td>
+                  <td align="center"><small>{{item.srv_thu}}</small></td>
+                  <td align="center"><small>{{item.srv_fri}}</small></td>
+                  <td align="center"><small>{{item.srv_sat}}</small></td>
+                  <td align="center"><small>{{item.srv_sun}}</small></td>
+                  <td align="center"><small>{{item.srv_pub}}</small></td>
+                  <td><small>{{item.srv_rem}}</small></td>                  
+                  <td><span class="badge badge-secondary">{% trans 'Pending' %}</span></td>
+                  {% endif %}
+
+                  <td>
+                    <div class="btn-group btn-group-sm nowrap">
+                      <small>
+                      
+                      <!--
+                      <a href="javascript:void(0);" type="button" class="btn btn-info btn-xs js-update-contract-service">
+                        &nbsp;<i class="fas fa-pen fa-xs"></i>&nbsp;
+                      </a>
+                      -->
+
+                      <button id="update_service_button" type="button" onclick="update_customer_service('{{item.srv_id}}')" class="btn btn-info btn-xs js-update-contract-service" data-toggle="modal">&nbsp;<i class="fas fa-pen fa-xs"></i>&nbsp;</button>
+
+                      <button id="delete_service_button" type="button" onclick="delete_customer_service('{{item.srv_id}}')" class="btn btn-danger btn-xs js-delete-contract-service">
+                        &nbsp;<i class="fas fa-trash fa-xs"></i>&nbsp;
+                      </button>
+
+                      </small>
+                    </div>
+                  </td>
+                  </tr>
+
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="container">
+      <div class="row"></div>
+    </div>
+
+  </section>
+  </form>
+<!-- /.content -->
+</div>
+
+
+<!-- Service List Modal -->
+<div class="modal fade" id="service_list_modal" tabindex="-1" role="dialog">
+
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;<strong>{% trans 'Add a new service' %}</strong></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        
+
+        <!-- Service List Modal -->
+        <div class="row">
+          <div class="col-12">
+            <div class="card card-info">
+
+              <div class="card-body">
+
+                <div class="form-row">
+                  <div class="form-group col-md-3">
+                    <label for="cus_zip">{% trans 'Effect Term From' %}</label>
+                    <input type="text" class="form-control form-control-sm" value="">
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label for="cus_tel">{% trans 'Effect Term To' %}</label>
+                    <input type="text" class="form-control form-control-sm" value="">
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label for="cus_zip">{% trans 'Rank' %}</label>
+                    <input type="text" class="form-control form-control-sm" value="">
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label for="cus_tel">{% trans 'Shift' %}</label>
+                    <input type="text" class="form-control form-control-sm" value="">
+                  </div>                  
+                </div>
+      
+                <div class="form-row">
+
+                  <div class="form-row col-6">
+                    <div class="form-group col-3">
+                      <label for="cus_zip">{% trans 'Mon' %}</label>
+                      <input type="text" class="form-control form-control-sm" value="">
+                    </div>
+                    <div class="form-group col-3">
+                      <label for="cus_zip">{% trans 'Tue' %}</label>
+                      <input type="text" class="form-control form-control-sm" value="">
+                    </div>
+                    <div class="form-group col-3">
+                      <label for="cus_zip">{% trans 'Wed' %}</label>
+                      <input type="text" class="form-control form-control-sm" value="">
+                    </div>
+                    <div class="form-group col-3">
+                      <label for="cus_zip">{% trans 'Thu' %}</label>                        
+                      <input type="text" class="form-control form-control-sm" value="">
+                    </div>
+                  </div>
+
+                  <div class="form-row col-6">
+                    <div class="form-group col-3">
+                      <label for="cus_zip">{% trans 'Fri' %}</label>
+                      <input type="text" class="form-control form-control-sm" value="">
+                    </div>
+                    <div class="form-group col-3">
+                      <label for="cus_zip">{% trans 'Sat' %}</label>
+                      <input type="text" class="form-control form-control-sm" value="">
+                    </div>
+                    <div class="form-group col-3">
+                      <label for="cus_zip">{% trans 'Sun' %}</label>
+                      <input type="text" class="form-control form-control-sm" value="">
+                    </div>
+                    <div class="form-group col-3">
+                      <label for="cus_zip">{% trans 'Pub' %}</label>                        
+                      <input type="text" class="form-control form-control-sm" value="">
+                    </div>
+                  </div>
+
+                </div>              
+
+                <div class="form-row">
+                  <div class="form-group col-md-3">
+                    <label for="cus_zip">{% trans 'QTY' %}</label>
+                    <input type="text" class="form-control form-control-sm" value="">
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label for="cus_tel">{% trans 'Cost' %}</label>
+                    <input type="text" class="form-control form-control-sm" value="">
+                  </div>
+
+                  <div class="form-group col-md-3">
+                    <label for="cus_zip">{% trans 'Total Cost' %}</label>
+                    <input type="text" class="form-control form-control-sm" readonly>
+                  </div>
+
+
+                  <div class="form-group col-md-3 text-center">
+                    <label for="cus_zip">&nbsp;</label>
+                    <div class="form-check">
+                      <!--<input class="form-check-input" type="checkbox" checked>-->
+                      <input class="form-check-input" type="checkbox">
+                      <label class="form-check-label">{% trans 'Active' %}</label>
+                    </div>                                                
+                  </div>
+
+                </div>   
+
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="cus_zip">{% trans 'Remark' %}</label>
+                    <input type="text" class="form-control form-control-sm" value="">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="cus_tel">{% trans 'Cost Rate' %}</label>
+                    <input type="text" class="form-control form-control-sm" value="">
+                  </div>
+                </div>   
+
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        <!-- /.row --> 
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-md" data-dismiss="modal">{% trans 'Cancel' %}</button>
+        <button type="button" class="btn btn-success btn-md">&nbsp;&nbsp;{% trans 'Add' %}&nbsp;&nbsp;</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Update Service Modal -->
+<div class="modal fade" id="update_service_modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">
+          <i class="fas fa-pen fa-sm"></i>&nbsp;&nbsp;<strong>{% trans 'Update Service' %}</strong>
+          <input id="id_select_customer_service_id" type="hidden" readonly>
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">      
+        <div class="row">
+          <div class="col-12">
+            <div class="card card-info">
+              <div class="card-body">
+                Loading...
+              </div>
+            </div>
+          </div>          
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-md" data-dismiss="modal">{% trans 'Close' %}</button>      
+
+        <button type="button" onclick="save_customer_service_item()" class="btn btn-primary btn-md">&nbsp;<i class="fas fa-save"></i>&nbsp;Save&nbsp;</button>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- Wage Rate Modal -->
+<div class="modal fade" id="wageratemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">{% trans 'Select a Wage Rate' %}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {% trans 'Loading...' %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">{% trans 'Close' %}</button>
+        <button type="button" class="btn btn-success btn-sm">{% trans 'Select' %}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /.content-wrapper -->
+{% endblock %}
+
+
+
+{% block javascript %}
+<script>
+  $('#id_cnt_print').on('click', function (e) {
+    if ($('#id_cnt_print').is(":checked"))
+      $('#id_cnt_print_label').text('Customer');
+    else
+      $('#id_cnt_print_label').text('Site Address');
+  });
+
+  $("#saveContract").click( function() {
+    event.preventDefault();    
+    var cnt_id = "{{contract.cnt_id}}";
+    if(cnt_id=='' || cnt_id==null) {
+      alert("Contract ID is required!");
+    } else {      
+      contract_form_validation(cnt_id);
+    }
+  });
+
+  function contract_form_validation(cnt_id) {
+
+    // cnt_active
+    if ($('#id_cnt_active').is(":checked"))
+      cnt_active = 1;
+    else
+      cnt_active = 0;
+    
+    // cnt_new
+    if ($('#id_cnt_new').is(":checked"))
+      cnt_new = 'N';
+    else
+      cnt_new = '';
+
+    // amendment
+    if ($('#id_amendment').is(":checked"))
+      amendment_flag = true;
+    else
+      amendment_flag = false;
+
+    // cnt_print
+    if ($('#id_cnt_print').is(":checked"))
+      cnt_print = 'C';
+    else
+      cnt_print = 'S';
+
+    // cnt_auto_expire
+    if ($('#id_cnt_autoexpire').is(":checked"))
+      cnt_autoexpire = 1;
+    else
+      cnt_autoexpire = 0;
+
+    // cnt_doc_no
+    cnt_doc_no = $('#id_cnt_doc_no').val();
+    // cnt_doc_date
+    cnt_doc_date = $('#id_cnt_doc_date').val();
+    // cnt_eff_frm
+    cnt_eff_frm = $('#id_cnt_eff_frm').val();
+    // cnt_eff_to
+    cnt_eff_to = $('#id_cnt_eff_to').val();
+    // cnt_sign_frm
+    cnt_sign_frm = $('#id_cnt_sign_frm').val();
+    // cnt_sign_to
+    cnt_sign_to = $('#id_cnt_sign_to').val();
+    // cnt_wage_id
+    cnt_wage_id = $('#id_cnt_wage_id').val();
+    // cnt_sale_amt
+    cnt_sale_amt = $('#id_cnt_sale_amt').val();
+    // cnt_guard_amt
+    cnt_guard_amt = $('#id_cnt_guard_amt').val();
+    //cnt_apr_by_id
+    cnt_apr_by_id = $('#id_cnt_apr_by_id').val(); 
+    //cnt_apr_by_text
+    cnt_apr_by_text = $('#id_cnt_apr_by_text').val(); 
+
+    // zone
+    // cnt_zone_id = $('#id_cnt_zone_id').val();
+
+    // cnt_th_en
+    // cnt_then = $('#id_cnt_then').val();
+
+    // cnt_print
+    // cnt_print = $('#id_cnt_print').val();
+
+
+    console.log(cnt_new + ", " + amendment_flag + ", " + cnt_print + ", " + cnt_autoexpire + ", " + cnt_active);
+  
+    $.ajax({
+      url : "/contract/ajax/save_contract/",
+      type : "POST",
+      data : {          
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        cnt_id: cnt_id,
+        cnt_active: cnt_active,
+        cnt_new: cnt_new,
+        cnt_print: cnt_print,
+        cnt_autoexpire: cnt_autoexpire,
+        cnt_doc_no: cnt_doc_no,
+        cnt_doc_date: cnt_doc_date,
+        cnt_eff_frm: cnt_eff_frm,
+        cnt_eff_to: cnt_eff_to,
+        cnt_sign_frm: cnt_sign_frm,
+        cnt_sign_to: cnt_sign_to,
+        cnt_wage_id: cnt_wage_id,
+        cnt_sale_amt: cnt_sale_amt,
+        cnt_guard_amt: cnt_guard_amt,
+        cnt_apr_by_id: cnt_apr_by_id,
+        cnt_apr_by_text: cnt_apr_by_text,
+        // cnt_zone_id: cnt_zone_id,
+        // cnt_then: cnt_then,
+        // cnt_print: cnt_print,        
+      },
+      success : function(json) {        
+        if(json.form_is_valid) {
+          $(document).Toasts('create', {
+            class: json.class, 
+            title: "{% trans 'System message' %}",
+            subtitle: '',
+            autohide: true,
+            delay: 2000,
+            body: json.result + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+            autoDismiss: true,
+            close: true,
+            autoremove: true,
+          });
+
+          $.each($('.is-valid'), function() {
+            $('.is-valid').removeClass('is-valid');              
+          });            
+
+          $.each($('.is-invalid'), function() {
+            $('.is-invalid').addClass('is-valid');  
+            $('.is-invalid').removeClass('is-invalid');              
+          });           
+
+        }
+        else {          
+          $(document).Toasts('create', {
+            class: json.class,
+            title: "{% trans 'Error' %}",
+            subtitle: '',
+            autohide: true,
+            delay: 5000,
+            body: json.message,
+            autoDismiss: true,
+            close: true,
+            autoremove: true,
+            preventDuplicates: true,       
+          });
+
+          $.each($('.is-invalid'), function() {
+            $('.is-invalid').removeClass('is-invalid');
+          });            
+
+          for(error in json.errors) {
+            $("#id_" + error).addClass("is-invalid");         
+          };
+
+        }
+      },
+    });
+
+  };
+
+
+  function cus_contract_select_wagerate(wage_id, wage_th, wage_en, wage_8hr) {
+    $("#id_cnt_wage_id_text").val(wage_th + "    |    " + wage_8hr);
+    $("#id_cnt_wage_id").val(wage_id);
+    $("#wageratemodal").modal("hide");    
+  };
+
+  function cus_contract_search_wagerate_modal() {
+    current_wage_id = $('#id_cnt_wage_id').val();
+    search_option = $('#id_cus_contract_wagerate_option').val();
+    search_text = $('#id_cus_contract_wagerate_search_text').val();
+    page_no = 1;
+
+    $.ajax({
+        url : "/contract/ajax/get_wagerate_list_modal",
+        type: 'get',   
+        dataType: 'json',
+        data : {          
+          page_no : page_no,
+          wage_th : search_text,
+          search_option : search_option,          
+          search_text : search_text,
+          current_wage_id : current_wage_id,
+        },
+        success: function (data) {
+          var result = ""
+          var count = data.results.length;
+          var wage_id = data.results[0]["wage_id"];
+          var wage_th = data.results[0]["wage_th"];
+          var wage_en = data.results[0]["wage_en"];
+          var wage_8hr = data.results[0]["wage_8hr"];
+
+          result += "<div class='row col-12'>";
+          result += "<div class='col-8 offset-3 pb-2'>";
+          result += "<form id='cus_contract_search_wagerate_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
+          result += "  <div class='form-group mx-sm-3 mb-2'>";
+          result += "  <select name='cus_contract_wagerate_option' class='form-control form-control-sm' required id='id_cus_contract_wagerate_option'>";
+          result += "    <option value='1' selected>Wage ID</option>";
+          result += "    <option value='2'>Wage (TH)</option>";
+          result += "    <option value='3'>Wage (EN)</option>";
+          result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";
+          result += "    <label for='id_cus_contract_wagerate_search_text' class='sr-only'>Search</label>";            
+          result += "    <input type='text' class='form-control form-control-sm' id='id_cus_contract_wagerate_search_text' name='cus_contract_wagerate_search_text' placeholder=''>";
+          result += "  </div>";
+          result += "<a href='javascript:cus_contract_search_wagerate_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";
+          result += "</form>";
+          result += "</div>";
+
+          result += "<div class='row col-12'>";
+          result += "<table class='table table-hover table-sm'>";
+          result += " <thead>";
+          result += "   <tr>";
+          result += "     <th scope='col'>{% trans 'Wage ID' %}</th>";
+          result += "     <th scope='col'>{% trans 'Wage (TH)' %}</th>";
+          result += "     <th scope='col'>{% trans 'Wage (EN)' %}</th>";
+          result += "     <th scope='col'>&nbsp;</th>";
+          result += "   </tr>";
+          result += " </thead>";
+          result += "<tbody>";
+          result += "</div>";
+          result += "<div>";
+
+          for(var i=0; i<count; i++) {              
+            var wage_id = data.results[i]["wage_id"];
+            var wage_th = data.results[i]["wage_th"];
+            var wage_en = data.results[i]["wage_en"];
+            var wage_8hr = data.results[i]["wage_8hr"];
+
+            result += "<tr>";
+            result += "<td>" + wage_id + "</td>";        
+            result += "<td>" + wage_th + "</td>";
+            result += "<td>" + wage_en + "</td>";
+            
+            result += "<td><a href='javascript:cus_contract_select_wagerate(" + wage_id + ",\"" + wage_th + "\",\"" + wage_en + "\",\"" + wage_8hr + "\");' type='button' class='btn btn-outline-primary btn-sm'>Select</a></td>";
+
+            result += "</tr>";              
+          }
+          result += " </tbody>";
+          result += "</table>";
+
+          if(data.is_paginated) {
+            result += "<div>";
+            result += "  <span>";
+            if(data.previous_page != 0) {
+              result += " <a href='javascript:get_cus_main_district_lookup(" + data.previous_page + ");'>" + "<i class='fas fa-arrow-circle-left'></i></a> ";
+            }
+            result += data.current_page_number + " / " + data.current_page_paginator_num_pages;
+            result += " <a href='javascript:get_cus_main_district_lookup(" + data.next_page + ");'>" + "<i class='fas fa-arrow-circle-right'></i></a>";
+            result += "    </span>";
+            result += "</div>";
+          }
+          
+          $("#wageratemodal .modal-body").html(result);          
+        },
+        error: function(data){
+          result = "";
+          result += "<div class='row col-12'>";
+          result += "<div class='col-8 offset-3 pb-2'>";
+          result += "<form id='cus_main_search_district_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
+          result += "  <div class='form-group mx-sm-3 mb-2'>";
+          result += "  <select name='cus_contract_wagerate_option' class='form-control form-control-sm' required id='id_cus_contract_wagerate_option'>";
+          result += "    <option value='1' selected>Wage ID</option>";
+          result += "    <option value='2'>Wage (TH)</option>";
+          result += "    <option value='3'>Wage (EN)</option>";
+          result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";
+          result += "    <label for='id_cus_contract_search_wagerate' class='sr-only'>Search</label>";            
+          result += "    <input type='text' class='form-control form-control-sm' id='id_cus_contract_wagerate_search_text' name='cus_contract_wagerate_search_text' placeholder=''>";
+          result += "  </div>";
+          result += "<a href='javascript:cus_contract_search_wagerate_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";            
+          result += "</form>";
+          result += "</div>";
+
+          result += "<table class='table table-hover table-sm'>";
+          result += " <thead>";
+          result += "   <tr>";
+          result += "     <td colspan='4' class='text-center'><br>Not found.<br><br></td>";
+          result += "   </tr>";
+          result += " </thead>";
+          result += "</tbody>";
+          result += "</table>";
+
+          $("#wageratemodal .modal-body").html(result);
+        }          
+    });
+  }
+
+  function delete_customer_service(service_id) {
+
+    alert(service_id);
+    
+    if (service_id != null) {
+    
+    }
+
+  }
+
+  function update_customer_service(service_id) {
+    if (service_id != null) {
+
+      $('#id_select_customer_service_id').val(service_id);
+
+      $.ajax({
+          url : "/contract/ajax/update_customer_service",
+          type: 'get',          
+          dataType: 'json',
+          data: {
+            service_id: service_id
+          },
+          beforeSend: function () {
+            $("#update_service_modal").modal("show");
+          },    
+          success: function (data) {
+
+            var com_rank_count = data.com_rank_list.length;
+            var t_shift_count = data.t_shift_list.length;
+
+            var result = "";
+            result += "<div class='row'>";
+            result += "<div class='col-12'>";
+            result += "  <div class='card card-info'>";
+            result += "    <div class='card-body'>";
+            result += "      <div class='form-row'>";
+        
+          // SRV_EFF_FROM
+            result += "  <div class='form-group col-md-3'>";
+            result += "    <label>Effect From</label>";
+            result += "    <div class='input-group date' id='dtp_srv_eff_frm_date' data-target-input='nearest'>";                        
+            result += "      <input type='text' name='srv_eff_frm' value='" + data.srv_eff_frm + "' class='form-control form-control-sm' id='id_srv_eff_frm' placeholder='dd/mm/yyyy' required=''>";
+            result += "      <div class='input-group-append' data-target='#dtp_srv_eff_frm_date' data-toggle='datepicker'>";
+            result += "        <div class='input-group-text text-primary'><i class='fa fa-calendar'></i></div>";
+            result += "      </div>";
+            result += "    </div>";            
+            result += "  </div>";
+
+            // SRV_EFF_TO
+            result += "  <div class='form-group col-md-3'>";
+            result += "    <label>Effect To</label>";
+            result += "    <div class='input-group date' id='dtp_srv_eff_to_date' data-target-input='nearest'>";                        
+            result += "      <input type='text' name='srv_eff_to' value='" + data.srv_eff_to + "' class='form-control form-control-sm' id='id_srv_eff_to' placeholder='dd/mm/yyyy' required=''>";
+            result += "      <div class='input-group-append' data-target='#dtp_srv_eff_to_date' data-toggle='datepicker'>";
+            result += "        <div class='input-group-text text-primary'><i class='fa fa-calendar'></i></div>";
+            result += "      </div>";
+            result += "    </div>";            
+            result += "  </div>";
+
+            // COM_RANK
+            result += "        <div class='form-group col-md-3'>";
+            result += "          <label for='cus_zip'>{% trans 'Rank' %}</label>";
+            result += " <select name='cus_service_srv_rank' class='form-control col-sm-12 form-control-sm' id='id_cus_service_srv_rank'>";
+            result += "  <option value=''>---------</option>";
+            for(var i=0; i<com_rank_count; i++) {              
+              if(data.srv_rank == data.com_rank_list[i]["rank_id"])
+                result += "  <option value='" + data.com_rank_list[i]["rank_id"] + "' selected>" + data.com_rank_list[i]["rank_id"] + " # " + data.com_rank_list[i]["rank_en"] + "</option>";
+              else
+                result += "  <option value='" + data.com_rank_list[i]["rank_id"] + "'>" + data.com_rank_list[i]["rank_id"] + " # " + data.com_rank_list[i]["rank_en"] + "</option>";
+            }
+            result += " </select>";
+            result += "        </div>";
+
+            // T_SHIFT
+            result += "        <div class='form-group col-md-3'>";
+            result += "          <label for='cus_zip'>{% trans 'Shift' %}</label>";
+            result += " <select name='cus_service_srv_shift' class='form-control col-sm-12 form-control-sm' id='id_cus_service_srv_shift'>";
+            result += "  <option value=''>---------</option>";
+            for(var i=0; i<t_shift_count; i++) {              
+              if(data.srv_shif_id == data.t_shift_list[i]["shf_id"])
+                result += "  <option value='" + data.t_shift_list[i]["shf_id"] + "' selected>" + data.t_shift_list[i]["shf_desc"] + "</option>";
+              else
+                result += "  <option value='" + data.t_shift_list[i]["shf_id"] + "'>" + data.t_shift_list[i]["shf_desc"] + "</option>";
+            }
+            result += " </select>";
+            result += "        </div>";
+
+            
+            result += "      <div class='form-row'>";
+            result += "        <div class='form-row col-6'>";
+
+            // SRV_MON
+            result += "          <div class='form-group col-3'>";
+            result += "            <label for='srv_mon'>{% trans 'Mon' %}</label>";
+            result += "            <input id='id_srv_mon' type='text' class='form-control form-control-sm' value='" + data.srv_mon + "'>";
+            result += "          </div>";
+
+            // SRV_TUE
+            result += "          <div class='form-group col-3'>";
+            result += "            <label for='cus_zip'>{% trans 'Tue' %}</label>";
+            result += "           <input id='id_srv_tue' type='text' class='form-control form-control-sm' value='" + data.srv_tue + "'>";
+            result += "          </div>";
+
+            // SRV_WED
+            result += "          <div class='form-group col-3'>";
+            result += "            <label for='cus_zip'>{% trans 'Wed' %}</label>";
+            result += "            <input id='id_srv_wed' type='text' class='form-control form-control-sm' value='" + data.srv_wed + "'>";
+            result += "          </div>";
+
+            // SRV_THU
+            result += "          <div class='form-group col-3'>";
+            result += "            <label for='cus_zip'>{% trans 'Thu' %}</label>";
+            result += "            <input id='id_srv_thu' type='text' class='form-control form-control-sm' value='" + data.srv_thu + "'>";
+            result += "          </div>";
+            result += "        </div>";
+
+            result += "        <div class='form-row col-6'>";
+
+            // SRV_FRI
+            result += "          <div class='form-group col-3'>";
+            result += "            <label for='cus_zip'>{% trans 'Fri' %}</label>";
+            result += "            <input id='id_srv_fri' type='text' class='form-control form-control-sm' value='" + data.srv_fri + "'>";
+            result += "          </div>";
+
+            // SRV_SAT
+            result += "          <div class='form-group col-3'>";
+            result += "            <label for='cus_zip'>{% trans 'Sat' %}</label>";
+            result += "            <input id='id_srv_sat' type='text' class='form-control form-control-sm' value='" + data.srv_sat + "'>";
+            result += "          </div>";
+
+            // SRV_SUN
+            result += "          <div class='form-group col-3'>";
+            result += "            <label for='cus_zip'>{% trans 'Sun' %}</label>";
+            result += "            <input id='id_srv_sun' type='text' class='form-control form-control-sm' value='" + data.srv_sun + "'>";
+            result += "          </div>";
+
+            // SRV_PUB
+            result += "          <div class='form-group col-3'>";
+            result += "            <label for='cus_zip'>{% trans 'Pub' %}</label>";
+            result += "            <input id='id_srv_pub' type='text' class='form-control form-control-sm' value='" + data.srv_pub + "'>";
+            result += "          </div>";
+
+            result += "        </div>";
+            result += "      </div>";
+
+            result += "      <div class='form-row'>";
+
+            // SRV_QTY
+            result += "        <div class='form-group col-md-3'>";
+            result += "          <label for='cus_zip'>{% trans 'QTY' %}</label>";
+            result += "          <input id='id_srv_qty' type='text' class='form-control form-control-sm' value='" + data.srv_qty + "'>";
+            result += "        </div>";
+
+            // SRV_COST
+            result += "        <div class='form-group col-md-3'>";
+            result += "          <label for='cus_tel'>{% trans 'Cost' %}</label>";
+            num = parseFloat(data.srv_rate);
+            result += "          <input id='id_srv_rate' type='text' class='form-control form-control-sm' value='" + num.toFixed(0) + "'>";
+            result += "        </div>";
+
+            // SRV_TOTAL_COST
+            num = parseFloat(data.srv_cost);
+            result += "        <div class='form-group col-md-3'>";
+            result += "          <label for='cus_zip'>{% trans 'Total Cost' %}</label>";
+            result += "          <input id='id_srv_cost' type='text' class='form-control form-control-sm' value='" + num.toFixed(0) + "' readonly>";
+            result += "        </div>";
+            
+            // SRV_ACTIVE
+            result += "        <div class='form-group col-md-3 text-center'>";
+            result += "          <label for='id_srv_active'>&nbsp;</label>";
+            result += "          <div class='form-check'>";            
+            if(data.srv_active==1) {
+              result += "            <input id='id_srv_active' class='form-check-input' type='checkbox' checked>";
+            } else {
+              result += "            <input id='id_srv_active' class='form-check-input' type='checkbox'>";
+            }            
+            result += "            <label class='form-check-label'>{% trans 'Active' %}</label>";
+            result += "          </div>";
+            result += "        </div>";
+
+            result += "      </div>";
+            result += "      <div class='form-row'>";
+
+            // SRV_REM
+            result += "        <div class='form-group col-md-6'>";
+            result += "          <label for='cus_zip'>{% trans 'Remark' %}</label>";
+            result += "          <input id='id_srv_rem' type='text' class='form-control form-control-sm' value='" + data.srv_rem + "'>";
+            result += "        </div>";
+
+            // SRV_COST_RATE
+            num = parseFloat(data.srv_cost_rate);
+            result += "        <div class='form-group col-md-6'>";
+            result += "          <label for='cus_tel'>{% trans 'Cost Rate' %}</label>";
+            result += "          <input id='id_srv_cost_rate' type='text' class='form-control form-control-sm' value='" + num + "'>";
+            result += "        </div>";
+
+            result += "      </div>";   
+            result += "    </div>";
+            result += "  </div>";
+            result += "</div>";          
+            result += "</div>";
+
+            $("#update_service_modal .modal-body").html(result);            
+          },
+          error: function(data){
+            $("#update_service_modal .modal-body").html("{% trans 'There is no data.' %}");
+          }
+      });
+    }    
+    else {
+      alert("service id is null");
+    }      
+  };
+
+  // amnaj
+  function save_customer_service_item() {
+    srv_id = $('#id_select_customer_service_id').val();    
+
+    if(srv_id == null || srv_id == "") {
+      alert("Service ID not found!");      
+    } else {
+      srv_eff_frm = $('#id_srv_eff_frm').val();
+      srv_eff_to = $('#id_srv_eff_to').val();
+      srv_rank = $('#id_cus_service_srv_rank').val(); 
+      srv_shift_id = $('#id_cus_service_srv_shift').val();      
+      srv_qty = $('#id_srv_qty').val();        
+      srv_mon = $('#id_srv_mon').val();
+      srv_tue = $('#id_srv_tue').val();
+      srv_wed = $('#id_srv_wed').val();
+      srv_thu = $('#id_srv_thu').val();
+      srv_fri = $('#id_srv_fri').val();
+      srv_sat = $('#id_srv_sat').val();
+      srv_sun = $('#id_srv_sun').val();
+      srv_pub = $('#id_srv_pub').val();
+            
+      if ($('#id_srv_active').is(":checked"))
+        srv_active = 1;
+      else
+        srv_active = 0;
+
+      srv_rate = $('#id_srv_rate').val();
+      srv_cost = $('#id_srv_cost').val();
+      srv_cost_rate = $('#id_srv_cost_rate').val();
+      srv_rem = $('#id_srv_rem').val();
+
+      $.ajax({
+        url : "/contract/ajax/save_customer_service_item",
+        type: 'get',          
+        dataType: 'json',
+        data: {
+          srv_id: srv_id,
+          srv_eff_frm: srv_eff_frm,
+          srv_eff_to: srv_eff_to,
+          srv_rank: srv_rank,
+          srv_shift_id: srv_shift_id,
+          srv_qty: srv_qty,
+          srv_mon: srv_mon,
+          srv_tue: srv_tue,
+          srv_wed: srv_wed,
+          srv_thu: srv_thu,
+          srv_fri: srv_fri,
+          srv_sat: srv_sat,          
+          srv_sun: srv_sun,
+          srv_pub: srv_pub,
+          srv_active: srv_active,
+          srv_rate: srv_rate,
+          srv_cost: srv_cost,
+          srv_cost_rate: srv_cost_rate,
+          srv_rem: srv_rem,
+        },
+        beforeSend: function () {
+          
+        },    
+        success: function (data) {
+          $(document).Toasts('create', {
+            class: data.class, 
+            title: "{% trans 'System Message' %}",
+            subtitle: '',
+            autohide: true,
+            delay: 2000,      
+            body: data.message,
+            autoDismiss: true,
+            close: true,
+            autoremove: true,
+          });
+        },
+        error: function(data){
+          $(document).Toasts('create', {
+            class: 'bg-danger', 
+            title: "{% trans 'System Message' %}",
+            subtitle: '',
+            autohide: true,
+            delay: 2000,      
+            body: "Cannot save " + srv_id,
+            autoDismiss: true,
+            close: true,
+            autoremove: true,
+          });          
+        }
+      });            
+    }
+  }
+
+  $(document).ready(function(){    
+
+    $('#add_service_button').on('click', function (e) {
+      var obj = $(this);      
+      $("#service_list_modal").modal("show");
+    });
+
+    $('#wage_rate_lookup').on('click', function (e) {
+      var obj = $(this);  
+      $.ajax({
+          url: obj.attr("data-url"),
+          type: 'get',          
+          dataType: 'json',
+          beforeSend: function () {
+            $("#wageratemodal").modal("show");
+          },
+          success: function (data) {
+            var result = ""
+            var count = data.results.length;
+            var wage_id = data.results[0]["wage_id"];
+            var wage_th = data.results[0]["wage_th"];
+            var wage_en = data.results[0]["wage_en"];
+
+            result += "<div class='row col-12'>";
+            result += "<div class='col-8 offset-3 pb-2'>";
+            result += "<form id='cus_main_search_district_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
+            result += "  <div class='form-group mx-sm-3 mb-2'>";
+            result += "  <select name='cus_contract_wagerate_option' class='form-control form-control-sm' required id='id_cus_contract_wagerate_option'>";
+            result += "    <option value='1'>Wage ID</option>";
+            result += "    <option value='2' selected>Wage (TH)</option>";
+            result += "    <option value='3'>Wage (EN)</option>";
+            result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";
+            result += "    <label for='id_cus_main_search_district' class='sr-only'>Search</label>";            
+            result += "    <input type='text' class='form-control form-control-sm' id='id_cus_contract_wagerate_search_text' name='cus_contract_wagerate_search_text' placeholder=''>";
+            result += "  </div>";
+            result += "<a href='javascript:cus_contract_search_wagerate_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";            
+            result += "</form>";
+            result += "</div>";
+
+            result += "<div class='row col-12'>";
+            result += "<table class='table table-hover table-sm'>";
+            result += " <thead>";
+            result += "   <tr>";
+            result += "     <th scope='col'>{% trans 'Wage ID' %}</th>";
+            result += "     <th scope='col'>{% trans 'Wage (TH)' %}</th>";
+            result += "     <th scope='col'>{% trans 'Wage (EN)' %}</th>";
+            result += "     <th scope='col'>&nbsp;</th>";
+            result += "   </tr>";
+            result += " </thead>";
+            result += "<tbody>";
+            result += "</div>";
+            result += "<div>";
+
+            for(var i=0; i<count; i++) {              
+              var wage_id = data.results[i]["wage_id"];
+              var wage_th = data.results[i]["wage_th"];
+              var wage_en = data.results[i]["wage_en"];
+              var wage_8hr = data.results[i]["wage_8hr"];
+
+              result += "<tr>";
+              result += "<td>" + wage_id + "</td>";        
+              result += "<td>" + wage_th + "</td>";
+              result += "<td>" + wage_en + "</td>";
+              result += "<td><a href='javascript:cus_contract_select_wagerate(" + wage_id + ",\"" + wage_th + "\",\"" + wage_en + "\",\"" + wage_8hr + "\");' type='button' class='btn btn-outline-primary btn-sm'>Select</a></td>";
+              result += "</tr>";              
+            }
+            result += " </tbody>";
+            result += "</table>";
+
+            $("#wageratemodal .modal-body").html(result);            
+
+
+          },
+          error: function(data){
+            $("#wageratemodal .modal-body").html("{% trans 'There is no data.' %}");
+          }          
+      });
+    });
+  });
+
+</script>
+
+
+<script>
+  $(function () {
+    $("#dtp_cnt_doc_date").datepicker({
+      format: 'dd/mm/yyyy',
+      autoclose: true,
+      orientation: "bottom"
+    });
+
+    $("#dtp_cnt_eff_frm").datepicker({
+      format: 'dd/mm/yyyy',
+      autoclose: true,
+      orientation: "bottom"
+    });
+
+    $("#dtp_cnt_eff_to").datepicker({
+      format: 'dd/mm/yyyy',
+      autoclose: true,
+      orientation: "bottom"
+    });
+
+    $("#dtp_cnt_sign_frm").datepicker({
+      format: 'dd/mm/yyyy',
+      autoclose: true,
+      orientation: "bottom"
+    });
+
+    $("#dtp_cnt_sign_to").datepicker({
+      format: 'dd/mm/yyyy',
+      autoclose: true,
+      orientation: "bottom"
+    });    
+
+    // Service Modal    
+    $('#update_service_modal').on('shown.bs.modal', function (e) {
+
+      // SRV_EFF_FRM
+      $("#dtp_srv_eff_frm_date").datepicker({
+        format: 'dd/mm/yyyy',
+        autoclose: true,
+        orientation: "bottom"
+      }); 
+
+      // SRV_EFF_TO
+      $("#dtp_srv_eff_to_date").datepicker({
+        format: 'dd/mm/yyyy',
+        autoclose: true,
+        orientation: "bottom"
+      }); 
+
+      // SRV_QTY
+      $('#id_srv_qty').on('keypress', function (e) {
+        var qty = $(this);
+        if(e.which === 13) {
+          if(qty.val() > 0) {
+            day = qty.val();
+            $('#id_srv_mon').val(day);
+            $('#id_srv_tue').val(day);
+            $('#id_srv_wed').val(day);
+            $('#id_srv_thu').val(day);
+            $('#id_srv_fri').val(day);
+            $('#id_srv_sat').val(day);
+            $('#id_srv_sun').val(day);
+            $('#id_srv_pub').val(day);
+          } else {
+            $(this).val(1);
+            day = 1;
+            $('#id_srv_mon').val(day);
+            $('#id_srv_tue').val(day);
+            $('#id_srv_wed').val(day);
+            $('#id_srv_thu').val(day);
+            $('#id_srv_fri').val(day);
+            $('#id_srv_sat').val(day);
+            $('#id_srv_sun').val(day);
+            $('#id_srv_pub').val(day);            
+          }
+
+          $('#id_srv_rate').focus();
+          event.preventDefault();
+          return false;        
+        }
+      });
+
+      // SRV_COST
+      $('#id_srv_rate').on('keypress', function (e) {
+        var cost = $(this);
+        if(e.which === 13){
+          total = cost.val() * $('#id_srv_qty').val();
+          //$('#id_srv_cost').val(total.toLocaleString());
+          $('#id_srv_cost').val(total);
+          $('#id_srv_rem').focus();
+          event.preventDefault();
+          return false;        
+        }
+      });
+
+      // SRV_MON
+      $('#id_srv_mon').on('keypress', function (e) {
+        if(e.which === 13){
+          $('#id_srv_tue').focus();
+          event.preventDefault();
+          return false;        
+        }
+      });
+
+      // SRV_TUE
+      $('#id_srv_tue').on('keypress', function (e) {
+        if(e.which === 13){
+          $('#id_srv_wed').focus();
+          event.preventDefault();
+          return false;        
+        }
+      });
+
+      // SRV_WED
+      $('#id_srv_wed').on('keypress', function (e) {
+        if(e.which === 13){
+          $('#id_srv_thu').focus();
+          event.preventDefault();
+          return false;        
+        }
+      });
+
+      $('#id_srv_thu').on('keypress', function (e) {
+        if(e.which === 13){
+          $('#id_srv_fri').focus();
+          event.preventDefault();
+          return false;        
+        }
+      });
+
+      // SRV_FRI
+      $('#id_srv_fri').on('keypress', function (e) {
+        if(e.which === 13){
+          $('#id_srv_sat').focus();
+          event.preventDefault();
+          return false;        
+        }
+      });
+
+      // SRV_SAT
+      $('#id_srv_sat').on('keypress', function (e) {
+        if(e.which === 13){
+          $('#id_srv_sun').focus();
+          event.preventDefault();
+          return false;        
+        }
+      });
+
+      // SRV_SUN
+      $('#id_srv_sun').on('keypress', function (e) {
+        if(e.which === 13){
+          $('#id_srv_pub').focus();
+          event.preventDefault();
+          return false;        
+        }
+      });
+      
+    });
+
+  });
+
+</script>
+
+{% endblock %}
