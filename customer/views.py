@@ -2147,8 +2147,8 @@ def update_all_cus_tabs(request):
                             op2 = cus_main_customer_option_op2.replace('&amp;', '&'), # Group 1
                             op3 = cus_main_customer_option_op3.replace('&amp;', '&'), # Group 2
                             op4 = cus_main_customer_option_op4, # A/R Code
-                            op5 = cus_main_customer_option_op5,
-                            op6 = cus_main_customer_option_op6,
+                            op5 = "",
+                            op6 = "",
                             opn1 = float(cus_main_customer_option_opn1))
                         c.save()
 
