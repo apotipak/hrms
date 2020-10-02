@@ -19,7 +19,7 @@
       <div class="form-row">
         <div class="form-group">
           <label for="inputPassword6">Contract No</label>&nbsp;&nbsp;
-          {% render_field contract_create_form.cnt_id %}&nbsp;
+          {% render_field contract_create_form.cus_id %}&nbsp;
           {% render_field contract_create_form.cus_brn %}&nbsp;&nbsp;
           <label for="inputPassword6">Vol</label>&nbsp;&nbsp;
           {% render_field contract_create_form.cus_vol %}
@@ -38,9 +38,8 @@
     <div class="card card-default collapsed-card">
 
       <div class="card-header">
-        {% if contract.cnt_id is not None %}
-        <h1 class="card-title"><strong>{{contract.cnt_id}} - {{ customer.cus_name_th }}</strong></h1>        
-        {% endif %}
+        <h1 class="card-title"><div id="customer_name_title"><strong>{{contract.cnt_id}} - {{ customer.cus_name_th }}</strong></div></h1>
+
         <div class="card-tools">
           <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus text-primary"></i></button>
         </div>
@@ -797,70 +796,28 @@
 <script>
 
   $(document).ready(function(){
-    $('#id_cnt_id').focus();
-    $("#main-content :input").attr("disabled", true);    
+    $('#id_cus_id').focus();
+    $('#customer_name_title').html("");
+    $("#main-content :input").attr("disabled", true);
+
   });
 
-  $(document).on('keypress', '#id_cnt_id', function(e) {
+  $(document).on('keypress', '#id_cus_id', function(e) {
     if(e.which == 13) {      
       e.preventDefault();
 
-      // TODO - check existing customer
+      // TODO - check existing cus_main
       cus_id = $("#id_cus_id").val();
       $.ajax({
-        url : "/contract/ajax/get_customer/",
+        url : "/contract/ajax/get_cus_main/",
         type : "POST",
         data : {          
           csrfmiddlewaretoken: '{{ csrf_token }}',
           cus_id: cus_id,
         },
         success : function(json) {        
-          if(json.form_is_valid) {
-            $(document).Toasts('create', {
-              class: json.class, 
-              title: "{% trans 'System message' %}",
-              subtitle: '',
-              autohide: true,
-              delay: 2000,
-              body: json.result + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
-              autoDismiss: true,
-              close: true,
-              autoremove: true,
-            });
-
-            $.each($('.is-valid'), function() {
-              $('.is-valid').removeClass('is-valid');              
-            });            
-
-            $.each($('.is-invalid'), function() {
-              $('.is-invalid').addClass('is-valid');  
-              $('.is-invalid').removeClass('is-invalid');              
-            });           
-
-          }
-          else {          
-            $(document).Toasts('create', {
-              class: json.class,
-              title: "{% trans 'System message' %}",
-              subtitle: '',
-              autohide: true,
-              delay: 5000,
-              body: json.message,
-              autoDismiss: true,
-              close: true,
-              autoremove: true,
-              preventDuplicates: true,       
-            });
-
-            $.each($('.is-invalid'), function() {
-              $('.is-invalid').removeClass('is-invalid');
-            });            
-
-            for(error in json.errors) {
-              $("#id_" + error).addClass("is-invalid");         
-            };
-
-          }
+          if(json.is_existed)
+            $('#customer_name_title').html("<strong>" + json.cus_name_th + "</strong>");
         },
       });
 
@@ -872,6 +829,25 @@
   $(document).on('keypress', '#id_cus_brn', function(e) {
     if(e.which == 13) {      
       e.preventDefault();
+
+      // TODO - check existing customer
+      cus_id = $("#id_cus_id").val();
+      cus_brn = $("#id_cus_brn").val();
+
+      $.ajax({
+        url : "/contract/ajax/get_customer/",
+        type : "POST",
+        data : {          
+          csrfmiddlewaretoken: '{{ csrf_token }}',
+          cus_id: cus_id,
+          cus_brn: cus_brn,
+        },
+        success : function(json) {        
+          if(json.is_existed)
+            $('#customer_name_title').html("<strong>" + json.cus_name_th + "</strong>");
+        },
+      });
+
       $('#id_cus_vol').focus();
     }
   });
@@ -880,13 +856,13 @@
     if(e.which == 13) {      
       e.preventDefault();
 
-      var cnt_id = $('#id_cnt_id').val();
+      var cnt_id = $('#id_cus_id').val();
       var cus_brn = $('#id_cus_brn').val();
       var cus_vol = $('#id_cus_vol').val();
 
       if(cnt_id=='' || cnt_id==null) {
         alert("Contract ID is required!");
-        $('#id_cnt_id').focus();
+        $('#id_cus_id').focus();
       } else if(cus_brn=='' || cus_brn==null) {
         alert("Customer Branch is required");
         $('#id_cus_brn').focus();
@@ -917,13 +893,13 @@
   $("#saveContract").click( function() {
     event.preventDefault();
 
-    var cnt_id = $('#id_cnt_id').val();
+    var cus_id = $('#id_cus_id').val();
     var cus_brn = $('#id_cus_brn').val();
     var cus_vol = $('#id_cus_vol').val();
 
-    if(cnt_id=='' || cnt_id==null) {
+    if(cus_id=='' || cus_id==null) {
       alert("Contract ID is required!");
-      $('#id_cnt_id').focus();
+      $('#id_cus_id').focus();
     } else if(cus_brn=='' || cus_brn==null) {
       alert("Customer Branch is required");
       $('#id_cus_brn').focus();

@@ -81,7 +81,6 @@ class ContractUpdateForm(forms.ModelForm):
 
 
 class ContractCreateForm(forms.ModelForm):
-    print("debug ContractForm")
     cnt_id = forms.DecimalField(label='Contract ID', required=False)
     cus_id = forms.DecimalField(label='Customer ID', required=False)
     cus_brn = forms.DecimalField(label='Customer Branch', required=False)
@@ -90,11 +89,11 @@ class ContractCreateForm(forms.ModelForm):
     class Meta:
         model = CusContract  
         fields = '__all__'
-        exclude = ['cnt_id', 'cus_brn', 'cus_vol']
+        # exclude = ['cnt_id', 'cus_id', 'cus_brn', 'cus_vol']
 
     def __init__(self, *args, **kwargs):
         super(ContractCreateForm, self).__init__(*args, **kwargs)        
         instance = getattr(self, 'instance', None)                        
-        self.fields['cnt_id'].widget.attrs.update({'class': 'form-control form-control-sm col-3', 'placeholder': _('')})
+        self.fields['cus_id'].widget.attrs.update({'class': 'form-control form-control-sm col-3', 'placeholder': _('')})
         self.fields['cus_brn'].widget.attrs.update({'class': 'form-control form-control-sm col-2', 'placeholder': _('')})
         self.fields['cus_vol'].widget.attrs.update({'class': 'form-control form-control-sm col-2', 'placeholder': _('')})

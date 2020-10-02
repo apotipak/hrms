@@ -72,15 +72,97 @@ def contract_create(request):
         'contract_create_form': contract_create_form,
         })
 
+
+@login_required(login_url='/accounts/login/')
+@permission_required('contract.view_cuscontract', login_url='/accounts/login/')
+def get_cus_main(request):
+    cus_id = request.POST.get('cus_id')
+    print("cus_id = " + str(cus_id))
+
+    if cus_id is not None:
+        try:                
+            cusmain = CusMain.objects.filter(cus_id__exact=cus_id).get()
+            cus_name_th = cusmain.cus_name_th
+            cus_name_en = cusmain.cus_name_en
+
+            response = JsonResponse(data={
+                "success": True,
+                "class": "bg_danger",
+                "message": "",
+                "is_existed": True,
+                "cus_name_th": cus_name_th,
+                "cus_name_en": cus_name_en,
+            })
+            response.status_code = 200
+            return response
+        except CusMain.DoesNotExist:
+            response = JsonResponse(data={
+                "success": True,
+                "class": "bg_danger",
+                "message": "",
+                "is_existed": True,
+                "cus_name_th": "",
+                "cus_name_en": "",
+            })
+            response.status_code = 200
+            return response            
+
+    response = JsonResponse(data={
+        "success": True,
+        "class": "bg_danger",
+        "message": "",
+        "is_existed": True,
+        "cus_name_th": "",
+        "cus_name_en": "",
+    })
+    return response
+
+
+# cus_brn = request.POST.get('cus_brn').zfill(3)
+
 @login_required(login_url='/accounts/login/')
 @permission_required('contract.view_cuscontract', login_url='/accounts/login/')
 def get_customer(request):
+    cus_id = request.POST.get('cus_id')
+    cus_brn = request.POST.get('cus_brn')
 
-        
-    data = dict()
-    data['message'] = _("...")
-    data['class'] = "bg-success"
-    return JsonResponse(data)
+    if cus_id is not None and cus_brn is not None:
+        try:                
+            customer = Customer.objects.filter(cus_id=cus_id, cus_brn=cus_brn).get()
+            cus_name_th = customer.cus_name_th
+            cus_name_en = customer.cus_name_en
+
+            response = JsonResponse(data={
+                "success": True,
+                "class": "bg_danger",
+                "message": "",
+                "is_existed": True,
+                "cus_name_th": cus_name_th,
+                "cus_name_en": cus_name_en,
+            })
+            response.status_code = 200
+            return response
+        except CusMain.DoesNotExist:
+            response = JsonResponse(data={
+                "success": True,
+                "class": "bg_danger",
+                "message": "",
+                "is_existed": True,
+                "cus_name_th": "",
+                "cus_name_en": "",
+            })
+            response.status_code = 200
+            return response            
+
+    response = JsonResponse(data={
+        "success": True,
+        "class": "bg_danger",
+        "message": "33",
+        "is_existed": True,
+        "cus_name_th": "",
+        "cus_name_en": "",
+    })
+    return response
 
 
 @login_required(login_url='/accounts/login/')
