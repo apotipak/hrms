@@ -479,16 +479,16 @@ def get_wagerate_list(request):
             if current_wagerate_id != "":
                 if current_wagerate_id.isnumeric():
                     print("debug1")
-                    data = TWagezone.objects.all()
+                    data = TWagezone.objects.all().filter(w2004=1)
                 else:
                     print("debug3")
-                    data = TWagezone.objects.all()
+                    data = TWagezone.objects.all().filter(w2004=1)
             else:
                 print("debug4")
-                data = TWagezone.objects.all()
+                data = TWagezone.objects.all().filter(w2004=1)
         else:
             print("debug5")
-            data = TWagezone.objects.all()
+            data = TWagezone.objects.all().filter(w2004=1)
 
         paginator = Paginator(data, item_per_page)
         is_paginated = True if paginator.num_pages > 1 else False
@@ -552,13 +552,13 @@ def get_wagerate_list_modal(request):
     print(search_text)
 
     if search_option == '1':
-        data = TWagezone.objects.all().filter(wage_id__exact=search_text)
+        data = TWagezone.objects.all().filter(wage_id__exact=search_text).filter(w2004=1)
 
     if search_option == '2':
-        data = TWagezone.objects.all().filter(wage_th__contains=search_text)
+        data = TWagezone.objects.all().filter(wage_th__contains=search_text).filter(w2004=1)
 
     if search_option == '3':
-        data = TWagezone.objects.all().filter(wage_en__contains=search_text)
+        data = TWagezone.objects.all().filter(wage_en__contains=search_text).filter(w2004=1)
 
     if data is not None:
         print("not null")
