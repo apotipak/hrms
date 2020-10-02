@@ -60,7 +60,7 @@ def contract_create(request):
         return JsonResponse(response_data)     
     else:
         print("GET: contract_create()")
-        customer_code_create_form = ContractCreateForm()
+        contract_create_form = ContractCreateForm()
         
     return render(request, 'contract/contract_create.html', 
         {
@@ -69,8 +69,18 @@ def contract_create(request):
         'project_version': project_version, 
         'db_server': db_server, 
         'today_date': today_date,
-        'customer_code_create_form': customer_code_create_form,
+        'contract_create_form': contract_create_form,
         })
+
+@login_required(login_url='/accounts/login/')
+@permission_required('contract.view_cuscontract', login_url='/accounts/login/')
+def get_customer(request):
+
+        
+    data = dict()
+    data['message'] = _("...")
+    data['class'] = "bg-success"
+    return JsonResponse(data)
 
 
 @login_required(login_url='/accounts/login/')

@@ -11,5 +11,7 @@ urlpatterns = [
     url(r'^ajax/get_wagerate_list/$', views.get_wagerate_list, name='get_wagerate_list'),
     url(r'^ajax/get_wagerate_list_modal/$', views.get_wagerate_list_modal, name='get_wagerate_list_modal'),
     url(r'^ajax/update_customer_service/$',views.update_customer_service, name='update_customer_service'),
-    url(r'^ajax/save_customer_service_item/$',views.save_customer_service_item, name='save_customer_service_item'),    
+    url(r'^ajax/save_customer_service_item/$',views.save_customer_service_item, name='save_customer_service_item'),
+
+    url(r'^ajax/get_customer/$', views.get_customer, name='get_customer'),
 ]

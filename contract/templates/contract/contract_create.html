@@ -11,49 +11,26 @@
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
   
-  <!-- Content Header (Page header) -->
   <div class="content-header">
-
-
-    <form id="customer_code_form" method="POST">
+    <div class="col-6 offset-3">
+    <form id="contract_number_form" method="POST" class="form-inline">
     {% csrf_token %}
 
-    <div class="">
-      <div class="row mb-2">
-        <!--
-        <div class="col-xs-4">          
-          <h4 class="display-6 m-0 text-dark">Add New Customer</h4>
-        </div>
-        -->
-        <div class="col-8 offset-2">
-
-          <div class="form-row">
-
-            <div class="col-4 mt-1 text-nowrap text-right">
-              <strong>Contract No</strong>&nbsp;&nbsp;&nbsp;
-            </div>
-
-            <div class="col-4">              
-              {% render_field customer_code_create_form.cus_id %}
-            </div>
-            
-            <div class="col-4">
-              <!--<input type="text" class="form-control form-control-sm" id="id_cus_site_cus_brn" name="cus_site_cus_brn">-->
-              {% render_field customer_code_create_form.cus_brn %}
-            </div>
-
-          </div>
-
+      <div class="form-row">
+        <div class="form-group">
+          <label for="inputPassword6">Contract No</label>&nbsp;&nbsp;
+          {% render_field contract_create_form.cnt_id %}&nbsp;
+          {% render_field contract_create_form.cus_brn %}&nbsp;&nbsp;
+          <label for="inputPassword6">Vol</label>&nbsp;&nbsp;
+          {% render_field contract_create_form.cus_vol %}
         </div>
       </div>
-    </div>
-
     </form>
-
+    </div>
   </div>
 
   <!-- Main content -->  
-  <section class="content pt-2">
+  <section class="content pt-2" id="main-content">
       <form id="contractupdateform" method="POST">
       {% csrf_token %}
 
@@ -61,8 +38,9 @@
     <div class="card card-default collapsed-card">
 
       <div class="card-header">
-        <h1 class="card-title"><strong>{{contract.cnt_id}} - {{ customer.cus_name_th }}</strong></h1>
-
+        {% if contract.cnt_id is not None %}
+        <h1 class="card-title"><strong>{{contract.cnt_id}} - {{ customer.cus_name_th }}</strong></h1>        
+        {% endif %}
         <div class="card-tools">
           <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus text-primary"></i></button>
         </div>
@@ -469,13 +447,6 @@
         </div>
         <!-- /.row -->     
 
-        <!--
-        <div class="float-right">
-          <a href="javascript:void(0);" type="button" class="btn btn-info btn-md"><i class="fas fa-print fa-sm"></i>&nbsp;&nbsp;{% trans 'Print' %}</a>
-          <a href="javascript:void(0);" id="saveContract" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
-        </div>
-        -->
-
         <div class="btn-group float-right">
           <button type="button" class="btn btn-default text-info"><i class="fas fa-print fa-sm"></i>&nbsp;&nbsp;Print</button>
           <button type="button" class="btn btn-default text-info dropdown-toggle dropdown-icon" data-toggle="dropdown">
@@ -487,7 +458,9 @@
             </div>
           </button>
           &nbsp;&nbsp;
-          <a href="javascript:void(0);" id="saveContract" type="button" class="btn btn-primary"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>                
+          <button id="cancelCreateContract" type="reset" class="btn btn-default pull-right">Cancel</button>
+          &nbsp;&nbsp;
+          <button id="saveContract" class="btn btn-primary"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</button>
         </div>
 
 
@@ -822,6 +795,118 @@
 
 {% block javascript %}
 <script>
+
+  $(document).ready(function(){
+    $('#id_cnt_id').focus();
+    $("#main-content :input").attr("disabled", true);    
+  });
+
+  $(document).on('keypress', '#id_cnt_id', function(e) {
+    if(e.which == 13) {      
+      e.preventDefault();
+
+      // TODO - check existing customer
+      cus_id = $("#id_cus_id").val();
+      $.ajax({
+        url : "/contract/ajax/get_customer/",
+        type : "POST",
+        data : {          
+          csrfmiddlewaretoken: '{{ csrf_token }}',
+          cus_id: cus_id,
+        },
+        success : function(json) {        
+          if(json.form_is_valid) {
+            $(document).Toasts('create', {
+              class: json.class, 
+              title: "{% trans 'System message' %}",
+              subtitle: '',
+              autohide: true,
+              delay: 2000,
+              body: json.result + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+              autoDismiss: true,
+              close: true,
+              autoremove: true,
+            });
+
+            $.each($('.is-valid'), function() {
+              $('.is-valid').removeClass('is-valid');              
+            });            
+
+            $.each($('.is-invalid'), function() {
+              $('.is-invalid').addClass('is-valid');  
+              $('.is-invalid').removeClass('is-invalid');              
+            });           
+
+          }
+          else {          
+            $(document).Toasts('create', {
+              class: json.class,
+              title: "{% trans 'System message' %}",
+              subtitle: '',
+              autohide: true,
+              delay: 5000,
+              body: json.message,
+              autoDismiss: true,
+              close: true,
+              autoremove: true,
+              preventDuplicates: true,       
+            });
+
+            $.each($('.is-invalid'), function() {
+              $('.is-invalid').removeClass('is-invalid');
+            });            
+
+            for(error in json.errors) {
+              $("#id_" + error).addClass("is-invalid");         
+            };
+
+          }
+        },
+      });
+
+
+      $('#id_cus_brn').focus();
+    }
+  });
+
+  $(document).on('keypress', '#id_cus_brn', function(e) {
+    if(e.which == 13) {      
+      e.preventDefault();
+      $('#id_cus_vol').focus();
+    }
+  });
+
+  $(document).on('keypress', '#id_cus_vol', function(e) {
+    if(e.which == 13) {      
+      e.preventDefault();
+
+      var cnt_id = $('#id_cnt_id').val();
+      var cus_brn = $('#id_cus_brn').val();
+      var cus_vol = $('#id_cus_vol').val();
+
+      if(cnt_id=='' || cnt_id==null) {
+        alert("Contract ID is required!");
+        $('#id_cnt_id').focus();
+      } else if(cus_brn=='' || cus_brn==null) {
+        alert("Customer Branch is required");
+        $('#id_cus_brn').focus();
+      } else if(cus_vol=='' || cus_vol==null) {
+        alert("Customer Volume is required");
+        $('#id_cus_vol').focus();
+      } else {
+
+        $("#main-content :input").attr("disabled", false);
+        $("#contract_number_form :input").attr("disabled", true);
+
+        // TODO - check existing cnt_id
+        $("#id_cnt_doc_no").focus();
+
+        // TODO - form validation        
+        //contract_form_validation(cnt_id);
+      }
+    }
+  });  
+
   $('#id_cnt_print').on('click', function (e) {
     if ($('#id_cnt_print').is(":checked"))
       $('#id_cnt_print_label').text('Customer');
@@ -830,14 +915,45 @@
   });
 
   $("#saveContract").click( function() {
-    event.preventDefault();    
-    var cnt_id = "{{contract.cnt_id}}";
+    event.preventDefault();
+
+    var cnt_id = $('#id_cnt_id').val();
+    var cus_brn = $('#id_cus_brn').val();
+    var cus_vol = $('#id_cus_vol').val();
+
     if(cnt_id=='' || cnt_id==null) {
       alert("Contract ID is required!");
-    } else {      
-      contract_form_validation(cnt_id);
+      $('#id_cnt_id').focus();
+    } else if(cus_brn=='' || cus_brn==null) {
+      alert("Customer Branch is required");
+      $('#id_cus_brn').focus();
+    } else if(cus_vol=='' || cus_vol==null) {
+      alert("Customer Volume is required");
+      $('#id_cus_vol').focus();
+    } else {
+      //contract_form_validation(cnt_id);
+      alert("Todo");
     }
   });
+
+  $("#cancelCreateContract").click( function() {
+    event.preventDefault();
+
+    //$('#contract_number_form')[0].reset();
+    $('#contract_number_form').trigger("reset");
+    
+    //$('#contractupdateform')[0].reset();
+    $('#contractupdateform').trigger("reset");
+
+    $("#main-content :input").attr("disabled", true);
+    $("#contract_number_form :input").attr("disabled", false);
+
+    // TODO - disable Active button when click Cancel button
+    $("#id_cnt_active").prop("active", false);
+
+    $("#id_cnt_id").focus();
+  });
+
 
   function contract_form_validation(cnt_id) {
 
