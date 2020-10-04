@@ -89,135 +89,132 @@
                     <input type="text" class="form-control form-control-sm" id="id_cus_name_th" name="cus_name_th" readonly value="{{ customer.cus_name_th }}">
                   </div>
                   <div class="form-group col-md-2">
-                    <label for="cus_tel">{% trans 'Site Name' %}</label>
-                    <input type="text" class="form-control form-control-sm" readonly value="">
+                    <label for="id_cus_sht_th">{% trans 'Site Name' %}</label>
+                    <input type="text" class="form-control form-control-sm" id="id_cus_sht_th" name="cus_sht_th" readonly value="">
                   </div>
                   <div class="form-group col-md-6">
-                    <label for="cus_address_th">{% trans 'Address' %}</label>
-                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_add1_th }}&nbsp;{{ customer.cus_add2_th }}">
+                    <label for="cus_add_th">{% trans 'Address' %}</label>
+                    <input type="text" class="form-control form-control-sm" id="id_cus_add_th" name="cus_add1_th" readonly value="{{ customer.cus_add1_th }}">
                   </div>                  
                 </div>
 
                 <div class="form-row">
                   <div class="form-group col-md-4">
-                    <label for="cus_subdist_th">{% trans 'Sub-District' %}</label>
-                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_subdist_th }}">
+                    <label for="id_cus_subdist_th">{% trans 'Sub-District' %}</label>
+                    <input type="text" class="form-control form-control-sm" id="id_cus_subdist_th" name="cus_subdist_th" readonly value="{{ customer.cus_subdist_th }}">
                   </div>
                   <div class="form-group col-md-2">
-                    <label for="cus_district">{% trans 'District' %}</label>
-                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_district }}">
+                    <label for="id_cus_district_th">{% trans 'District' %}</label>
+                    <input type="text" class="form-control form-control-sm" id="id_cus_district_th" name="cus_district_th" readonly value="{{ customer.cus_district }}">
                   </div>
                   <div class="form-group col-md-2">
-                    <label for="cus_city">{% trans 'City' %}</label>
-                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_city }}">
+                    <label for="id_cus_city_th">{% trans 'City' %}</label>
+                    <input type="text" class="form-control form-control-sm" id="id_cus_city_th" name="cus_city_th" readonly value="{{ customer.cus_city }}">
                   </div>                  
                   <div class="form-group col-md-2">
-                    <label for="cus_country">{% trans 'Country' %}</label>
-                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_country }}">
+                    <label for="id_cus_country_th">{% trans 'Country' %}</label>
+                    <input type="text" class="form-control form-control-sm" id="id_cus_country_th" name="cus_country_th" readonly value="{{ customer.cus_country }}">
                   </div>                  
                   <div class="form-group col-md-2">
-                    <label for="cus_country">{% trans 'Zip' %}</label>
-                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_zip }}">
+                    <label for="id_cus_zip_th">{% trans 'Zip' %}</label>
+                    <input type="text" class="form-control form-control-sm" id="id_cus_zip_th" name="cus_zip_th" readonly value="{{ customer.cus_zip }}">
                   </div>                                    
                 </div>
 
+                <!-- CONTACT -->
                 <div class="form-row">
-
                   <div class="form-group col-md-4">
-                    <label for="cus_contact">{% trans 'Contact' %}</label>
-                    <input type="text" class="form-control form-control-sm" readonly value="No. {{customer.site_contact_id}} {{customer.site_contact.con_fname_th}}&nbsp;{{customer.site_contact.con_lname_th}}">
+                    <label for="id_site_contact_con_th">{% trans 'Contact' %}</label>
+                    <input type="text" class="form-control form-control-sm" id="id_site_contact_con_th" name="site_contact_con_th" readonly value="No. {{customer.site_contact_id}} {{customer.site_contact.con_fname_th}}&nbsp;{{customer.site_contact.con_lname_th}}">
                   </div>
 
                   <div class="form-group col-md-2">
-                    <label for="cus_contact_position">{% trans 'Position' %}</label>
-                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.site_contact.con_position_th }}">
+                    <label for="id_site_contact_con_position_th">{% trans 'Position' %}</label>
+                    <input type="text" class="form-control form-control-sm" id="id_site_contact_con_position_th" name="site_contact_con_position_th" readonly value="{{ customer.site_contact.con_position_th }}">
                   </div>                  
 
                   <div class="form-group col-md-2">
-                    <label for="cus_tel">{% trans 'Phone' %}</label>
-                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_tel }}">
+                    <label for="site_contact_con_mobile_th">{% trans 'Phone' %}</label>
+                    <input type="text" class="form-control form-control-sm" id="id_site_contact_con_mobile_th" name="site_contact_con_mobile_th" readonly value="{{ customer.cus_tel }}">
                   </div>
                   <div class="form-group col-md-2">
-                    <label for="cus_fax">{% trans 'Fax' %}</label>
-                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_fax }}">
+                    <label for="customer_site_contact_fax">{% trans 'Fax' %}</label>
+                    <input type="text" class="form-control form-control-sm" id="id_customer_site_contact_fax" name="customer_site_contact_fax" readonly value="{{ customer.cus_fax }}">
                   </div>
 
                   <div class="form-group col-md-2">
-                    <label for="cus_email">{% trans 'Email' %}</label>
-                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_email }}">
+                    <label for="id_site_contact_con_email_th">{% trans 'Email' %}</label>
+                    <input type="text" class="form-control form-control-sm" id="id_site_contact_con_email_th" name="site_contact_con_email_th" readonly value="{{ customer.cus_email }}">
                   </div>
                 </div>
 
               </div>
 
 
+              <!-- EN Tab -->
               <div class="tab-pane fade" id="english" role="tabpanel" aria-labelledby="english-tab">
-
-
                 <div class="form-row">
                   <div class="form-group col-md-4">
-                    <label for="cus_name_en">{% trans 'Company' %}</label>
+                    <label for="id_cus_name_en">{% trans 'Company' %}</label>
                     <input type="text" class="form-control form-control-sm" id="id_cus_name_en" name="cus_name_en" readonly value="{{ customer.cus_name_en }}">
                   </div>
                   <div class="form-group col-md-2">
-                    <label for="cus_tel">{% trans 'Site Name' %}</label>
-                    <input type="text" class="form-control form-control-sm" readonly value="">
+                    <label for="id_cus_sht_en">{% trans 'Site Name' %}</label>
+                    <input type="text" class="form-control form-control-sm" id="id_cus_sht_en" name="cus_sht_en" readonly value="">
                   </div>
                   <div class="form-group col-md-6">
-                    <label for="cus_address_en">{% trans 'Address' %}</label>
-                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_add1_en }}&nbsp;{{ customer.cus_add2_en }}">
+                    <label for="id_cus_add_en">{% trans 'Address' %}</label>
+                    <input type="text" class="form-control form-control-sm" id="id_cus_add_en" name="cus_add_en" readonly value="{{ customer.cus_add1_en }}&nbsp;{{ customer.cus_add2_en }}">
                   </div>                  
                 </div>
 
                 <div class="form-row">
                   <div class="form-group col-md-4">
-                    <label for="cus_subdist_en">{% trans 'Sub-District' %}</label>
-                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_subdist_en }}">
+                    <label for="id_cus_subdist_en">{% trans 'Sub-District' %}</label>
+                    <input type="text" class="form-control form-control-sm" id="id_cus_subdist_en" name="cus_subdist_en" readonly value="{{ customer.cus_subdist_en }}">
                   </div>
                   <div class="form-group col-md-2">
                     <label for="cus_district">{% trans 'District' %}</label>
-                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_district.dist_en }}">
+                    <input type="text" class="form-control form-control-sm" id="id_cus_district_en" name="cus_district_en" readonly value="{{ customer.cus_district.dist_en }}">
                   </div>
                   <div class="form-group col-md-2">
                     <label for="cus_city">{% trans 'City' %}</label>
-                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_city.city_en }}">
+                    <input type="text" class="form-control form-control-sm" id="id_cus_city_en" name="cus_city_en" id_cus_districtreadonly value="{{ customer.cus_city.city_en }}">
                   </div>                  
                   <div class="form-group col-md-2">
                     <label for="cus_country">{% trans 'Country' %}</label>
-                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_country.country_en }}">
+                    <input type="text" class="form-control form-control-sm" id="id_cus_country_en" name="cus_country_en" readonly value="{{ customer.cus_country.country_en }}">
                   </div>                  
                   <div class="form-group col-md-2">
                     <label for="cus_country">{% trans 'Zip' %}</label>
-                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_zip }}">
+                    <input type="text" class="form-control form-control-sm" id="id_cus_zip_en" name="cus_zip_en" readonly value="{{ customer.cus_zip }}">
                   </div>                                    
                 </div>
 
-                <div class="form-row"> 
-
+                <!-- Contact EN -->
+                <div class="form-row">
                   <div class="form-group col-md-4">
-                    <label for="cus_contact">{% trans 'Contact' %}</label>
-                    <input type="text" class="form-control form-control-sm" readonly value="No. {{customer.site_contact_id}} {{customer.site_contact.con_fname_en}}&nbsp;{{customer.site_contact.con_lname_en}}">
+                    <label for="id_site_contact_con_en">{% trans 'Contact' %}</label>
+                    <input type="text" class="form-control form-control-sm" id="id_site_contact_con_en" name="site_contact_con_en" readonly value="No. {{customer.site_contact_id}} {{customer.site_contact.con_fname_en}}&nbsp;{{customer.site_contact.con_lname_en}}">
                   </div>
 
-
-
                   <div class="form-group col-md-2">
-                    <label for="cus_contact_position">{% trans 'Position' %}</label>
-                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_contact.con_position_en }}">
+                    <label for="id_site_contact_con_position_en">{% trans 'Position' %}</label>
+                    <input type="text" class="form-control form-control-sm" id="id_site_contact_con_position_en" name="site_contact_con_position_en" readonly value="{{ customer.site_contact.con_position_en }}">
                   </div>                  
 
                   <div class="form-group col-md-2">
-                    <label for="cus_tel">{% trans 'Phone' %}</label>
-                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_tel }}">
+                    <label for="site_contact_con_mobile_en">{% trans 'Phone' %}</label>
+                    <input type="text" class="form-control form-control-sm" id="id_site_contact_con_mobile_en" name="site_contact_con_mobile_en" readonly value="{{ customer.cus_tel }}">
                   </div>
                   <div class="form-group col-md-2">
-                    <label for="cus_fax">{% trans 'Fax' %}</label>
-                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_fax }}">
+                    <label for="customer_site_contact_fax">{% trans 'Fax' %}</label>
+                    <input type="text" class="form-control form-control-sm" id="id_customer_site_contact_fax" name="customer_site_contact_fax" readonly value="{{ customer.cus_fax }}">
                   </div>
 
                   <div class="form-group col-md-2">
-                    <label for="cus_email">{% trans 'Email' %}</label>
-                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_email }}">
+                    <label for="id_site_contact_con_email_en">{% trans 'Email' %}</label>
+                    <input type="text" class="form-control form-control-sm" id="id_site_contact_con_email_en" name="site_contact_con_email_en" readonly value="{{ customer.cus_email }}">
                   </div>
                 </div>
 
@@ -860,6 +857,37 @@
         success : function(json) {        
           if(json.is_existed) {
             $('#customer_name_title').html("<strong>" + json.cus_name_th + "</strong>");
+            
+            $('#id_cus_name_th').val(json.cus_name_th);
+            $('#id_cus_sht_th').val(json.cus_sht_th);
+            $('#id_cus_add_th').val(json.cus_add_th);
+            $('#id_cus_subdist_th').val(json.cus_subdist_th);
+            $('#id_cus_zip_th').val(json.cus_zip_th);        
+            $('#id_cus_district_th').val(json.cus_district_th);
+            $('#id_cus_city_th').val(json.cus_city_th);
+            $('#id_cus_country_th').val(json.cus_country_th);
+            $('#id_site_contact_id_th').val(json.site_contact_id_th);
+            $('#id_site_contact_con_th').val(json.site_contact_con_th);
+            $('#id_site_contact_con_position_th').val(json.site_contact_con_position_th);
+            $('#id_site_contact_con_mobile_th').val(json.site_contact_con_mobile_th);
+            $('#id_site_contact_con_email_th').val(json.site_contact_con_email_th);
+
+            // EN
+            $('#id_cus_name_en').val(json.cus_name_en);
+            $('#id_cus_sht_en').val(json.cus_sht_en);
+            $('#id_cus_add_en').val(json.cus_add_en);
+            $('#id_cus_subdist_en').val(json.cus_subdist_en);
+            $('#id_cus_zip_en').val(json.cus_zip_en);        
+            $('#id_cus_district_en').val(json.cus_district_en);
+            $('#id_cus_city_en').val(json.cus_city_en);
+            $('#id_cus_country_en').val(json.cus_country_en);
+            $('#id_site_contact_id_en').val(json.site_contact_id_en);
+            $('#id_site_contact_con_en').val(json.site_contact_con_en);
+            $('#id_site_contact_con_position_en').val(json.site_contact_con_position_en);
+            $('#id_site_contact_con_mobile_en').val(json.site_contact_con_mobile_en);
+            $('#id_site_contact_con_email_en').val(json.site_contact_con_email_en);
+                        
+            //$('#id_').val(json.);
             $('#id_cus_vol').focus();
           }
           else {
