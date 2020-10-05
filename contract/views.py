@@ -349,15 +349,27 @@ def ContractList(request):
         data = dict()
         form = ContractForm(request.POST)
         cus_id = request.POST.get('cus_id')
-        cus_brn = request.POST.get('cus_brn')
-        cus_vol = request.POST.get('cus_vol')
-        cnt_id = Decimal(request.POST['cus_id'] + request.POST.get('cus_brn').zfill(3) + request.POST.get('cus_vol').zfill(3))
-        print("cnt_id_123 = " + str(cnt_id))
+        # cus_brn = request.POST.get('cus_brn')
+        # cus_vol = request.POST.get('cus_vol')
+        # cnt_id = Decimal(request.POST['cus_id'] + request.POST.get('cus_brn').zfill(3) + request.POST.get('cus_vol').zfill(3))
+        # print("cnt_id_123 = " + str(cnt_id))
+        print("cus_id = " + str(cus_id))
 
         if form.is_valid():
-            rawsql = "select * from customer cus join cus_contract con on cus.cus_id=con.cus_id and cus.cus_brn=con.cus_brn "
-            contract_list = CusContract.objects.raw(rawsql + " where cus.cus_id="+cus_id+" order by con.cnt_active desc")
+            # rawsql = "select * from customer cus join cus_contract con on cus.cus_id=con.cus_id and cus.cus_brn=con.cus_brn "
+            # contract_list = CusContract.objects.raw(rawsql + " where cus.cus_id="+cus_id+" order by con.cnt_active desc")
+
+            try:
+                int(cus_id)
+                if cus_id is not None or cus_id != '':
+                    contract_list = CusContract.objects.all().filter(cus_id=cus_id)
+                else:
+                    contract_list = CusContract.objects.all()
+            except ValueError:
+                contract_list = CusContract.objects.all()
+
         else:    		    		
+            contract_list = []
             form = ContractForm(request.POST)
             print("invalid..")
             for field, errors in form.errors.items():
@@ -397,10 +409,6 @@ def ContractList(request):
         except InvalidPage as e:
             raise Http404(str(e))
 
-    print("cus_id = " + str(cus_id))
-    print("cus_brn = " + str(cus_brn))
-    print("cus_vol = " + str(cus_vol))
-
     context = {
         'page_title': page_title, 
         'db_server': db_server, 'today_date': today_date,
@@ -411,8 +419,8 @@ def ContractList(request):
         'is_paginated': is_paginated,
         'form': form,
         'cus_id': cus_id,
-        'cus_brn': cus_brn,
-        'cus_vol': cus_vol
+        # 'cus_brn': cus_brn,
+        # 'cus_vol': cus_vol
     }
 
     return render(request, 'contract/contract_list.html', context)

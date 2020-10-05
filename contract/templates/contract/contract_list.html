@@ -36,13 +36,13 @@
       <!-- Default box -->
       <div class="card">
 
-        <div class="col-sm-8 offset-sm-2 col-md-8 offset-md-3 pt-4 pl-4 pr-4"> 
+        <div class="col-sm-10 offset-sm-2 col-md-10 offset-md-3 pt-4 pl-4 pr-4"> 
 
           <form class="form-row" method="post" autocomplete="off">
             {% csrf_token %}
             <div class="form-row">
 
-              <div class="col-3">
+              <div class="col-6">
                 {% if form.cus_id.errors %}                
                   {% render_field form.cus_id class="form-control form-control-sm is-invalid" %}                
                   {% for error in form.cus_id.errors %}
@@ -55,6 +55,7 @@
                 {% endif %}
               </div>
               
+              {% comment %}
               <div class="col-3">
                 {% if form.cus_brn.errors %}                
                   {% render_field form.cus_brn class="form-control form-control-sm is-invalid" %}
@@ -67,7 +68,9 @@
                   {% render_field form.cus_brn class="form-control form-control-sm" %}
                 {% endif %}              
               </div>
+              {% endcomment %}
 
+              {% comment %}
               <div class="col-3">
                 {% if form.cus_vol.errors %}                
                   {% render_field form.cus_vol class="form-control form-control-sm is-invalid" %}
@@ -80,10 +83,10 @@
                   {% render_field form.cus_vol class="form-control form-control-sm" %}
                 {% endif %}              
               </div>
+              {% endcomment %}
 
               <div colass="col-2">
-                <button type="submit" class="btn btn-sm btn-primary col-xs-2">&nbsp;&nbsp;{% trans '?' %}&nbsp;&nbsp;</button>
-                <!--<button type="reset" class="btn btn-sm btn-outline-secondary col-xs-2">{% trans 'Clear' %}</button>-->
+                <button type="submit" class="btn btn-sm btn-primary col-xs-2"><i class="fas fa-search fa-sm"></i>&nbsp;{% trans 'Search' %}</button>
               </div>
 
             </div>
@@ -269,8 +272,8 @@
           url:'{% url "contract_create" %}',
           data:{
               cus_id:$('#id_cus_id').val(),
-              cus_brn:$('#id_cus_brn').val(),
-              cus_vol:$('#id_cus_vol').val(),
+              //cus_brn:$('#id_cus_brn').val(),
+              //cus_vol:$('#id_cus_vol').val(),
               csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
               action: 'post'
           },

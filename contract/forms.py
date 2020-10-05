@@ -29,7 +29,7 @@ class ContractForm(forms.ModelForm):
         self.fields['cus_vol'].error_messages = {'required': _('กรุณาป้อนข้อมูล'), 'max_value': _('รหัสลำดับสัญญาเกิน 3 หลัก'), 'min_value': _('ป้อนข้อมูลน้อยกว่า 0')}
 
     def clean_cus_id(self):
-        if self.instance: 
+        if self.instance:
             return self.instance.cus_id
         else: 
             return self.fields['cus_id']
