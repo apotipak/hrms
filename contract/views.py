@@ -258,11 +258,32 @@ def get_cus_contract(request):
                     cnt_active = 0                
 
                 cnt_doc_no = cuscontract.cnt_doc_no                
-                cnt_doc_date = cuscontract.cnt_doc_date.strftime("%d/%m/%Y")
-                cnt_eff_frm = cuscontract.cnt_eff_frm.strftime("%d/%m/%Y")
-                cnt_eff_to = cuscontract.cnt_eff_to.strftime("%d/%m/%Y")
-                cnt_sign_frm = cuscontract.cnt_sign_frm.strftime("%d/%m/%Y")
-                cnt_sign_to = cuscontract.cnt_sign_to.strftime("%d/%m/%Y")
+                
+                if cuscontract.cnt_doc_date is not None:
+                    cnt_doc_date = cuscontract.cnt_doc_date.strftime("%d/%m/%Y")
+                else:
+                    cnt_doc_date = datetime.datetime.now().strftime("%d/%m/%Y")
+                
+                if cuscontract.cnt_eff_frm is not None:
+                    cnt_eff_frm = cuscontract.cnt_eff_frm.strftime("%d/%m/%Y")
+                else:
+                    cnt_eff_frm = datetime.datetime.now().strftime("%d/%m/%Y")
+
+                if cuscontract.cnt_eff_to is not None:
+                    cnt_eff_to = cuscontract.cnt_eff_to.strftime("%d/%m/%Y")
+                else:
+                    cnt_eff_to = datetime.datetime.now().strftime("%d/%m/%Y")
+
+                if cuscontract.cnt_sign_frm is not None:
+                    cnt_sign_frm = cuscontract.cnt_sign_frm.strftime("%d/%m/%Y")
+                else:
+                    cnt_sign_frm = datetime.datetime.now().strftime("%d/%m/%Y")
+
+                if cuscontract.cnt_sign_to is not None:
+                    cnt_sign_to = cuscontract.cnt_sign_to.strftime("%d/%m/%Y")
+                else:
+                    cnt_sign_to = datetime.datetime.now().strftime("%d/%m/%Y")
+
                 cnt_wage_id = cuscontract.cnt_wage_id_id
                 cnt_wage_text = str(cuscontract.cnt_wage_id_id) + "  |  " + str(cuscontract.cnt_wage_id.wage_en) + "    " + str(cuscontract.cnt_wage_id.wage_8hr)
                 cnt_guard_amt = cuscontract.cnt_guard_amt
@@ -515,27 +536,36 @@ def UpdateContract(request):
             cnt_doc_no = request.POST.get('cnt_doc_no')
 
             cnt_doc_date = request.POST.get('cnt_doc_date')
-            if cnt_doc_date is not None:
+            if cnt_doc_date is not None and cnt_doc_date != "":
                 cnt_doc_date = datetime.datetime.strptime(cnt_doc_date, "%d/%m/%Y")
+            else:
+                cnt_doc_date = None
 
             cnt_eff_frm = request.POST.get('cnt_eff_frm')
-            if cnt_eff_frm is not None:
+            if cnt_eff_frm is not None and cnt_eff_frm != "":
                 cnt_eff_frm = datetime.datetime.strptime(cnt_eff_frm, "%d/%m/%Y")
+            else:
+                cnt_eff_frm = None
 
             cnt_eff_to = request.POST.get('cnt_eff_to')
-            if cnt_eff_to is not None:
+            if cnt_eff_to is not None and cnt_eff_to != "":
                 cnt_eff_to = datetime.datetime.strptime(cnt_eff_to, "%d/%m/%Y")
+            else:
+                cnt_eff_to = None
 
             cnt_sign_frm = request.POST.get('cnt_sign_frm')
-            if cnt_sign_frm is not None:
+            if cnt_sign_frm is not None and cnt_sign_frm != "":
                 cnt_sign_frm = datetime.datetime.strptime(cnt_sign_frm, "%d/%m/%Y")
+            else:
+                cnt_sign_frm = None
 
             cnt_sign_to = request.POST.get('cnt_sign_to')
-            if cnt_sign_to is not None:
+            if cnt_sign_to is not None and cnt_sign_to != "":
                 cnt_sign_to = datetime.datetime.strptime(cnt_sign_to, "%d/%m/%Y")
+            else:
+                cnt_sign_to = None
 
-            cnt_apr_by = request.POST.get('cnt_apr_by_id')
-            
+            cnt_apr_by = request.POST.get('cnt_apr_by_id')            
             cnt_guard_amt = request.POST.get('cnt_guard_amt')
             cnt_sale_amt = request.POST.get('cnt_sale_amt')
             cnt_wage_id = request.POST.get('cnt_wage_id')
@@ -544,7 +574,8 @@ def UpdateContract(request):
             cnt_then = request.POST.get('cnt_then')
             cnt_print = request.POST.get('cnt_print')
             cnt_new = request.POST.get('cnt_new')
-            upd_date = timezone.now()
+            # upd_date = timezone.now()
+            upd_date = datetime.datetime.now()
             upd_by = request.user.first_name
             upd_flag = 'E'
 
@@ -620,44 +651,55 @@ def UpdateContract(request):
                         field_is_modified_count = field_is_modified_count + 1
 
                 # Contract Date
-                if (cnt_doc_date is not None):
+                if (cnt_doc_date is not None and cnt_doc_date != ""):
                     field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "Contract Date", cuscontract.cnt_doc_date, cnt_doc_date, "E", request)
                     if field_is_modified:
                         cuscontract.cnt_doc_date = cnt_doc_date
                         modified_records.append(record)
                         field_is_modified_count = field_is_modified_count + 1
+                else:
+                    cuscontract.cnt_doc_date = None
                     
                 # Effect Term From
-                if (cnt_eff_frm is not None):
+                if (cnt_eff_frm is not None and cnt_eff_frm != ""):
                     field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "Effect Term From", cuscontract.cnt_eff_frm, cnt_eff_frm, "E", request)
                     if field_is_modified:
                         cuscontract.cnt_eff_frm = cnt_eff_frm
                         modified_records.append(record)
                         field_is_modified_count = field_is_modified_count + 1
+                else:
+                    cuscontract.cnt_eff_frm = None
 
                 # Effect Term To
-                if (cnt_eff_to is not None):
+                print("aaaaaaa")
+                if (cnt_eff_to is not None and cnt_eff_to != ""):
                     field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "Effect Term To", cuscontract.cnt_eff_to, cnt_eff_to, "E", request)
                     if field_is_modified:
                         cuscontract.cnt_eff_to = cnt_eff_to
                         modified_records.append(record)
                         field_is_modified_count = field_is_modified_count + 1
+                else:
+                    cuscontract.cnt_eff_to = None
 
                 # Contract Term From
-                if (cnt_sign_frm is not None):
+                if (cnt_sign_frm is not None and cnt_sign_frm != ""):
                     field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "Contract Term From", cuscontract.cnt_sign_frm, cnt_sign_frm, "E", request)
                     if field_is_modified:
                         cuscontract.cnt_sign_frm = cnt_sign_frm
                         modified_records.append(record)
                         field_is_modified_count = field_is_modified_count + 1
+                else:
+                    cuscontract.cnt_sign_frm = None
 
                 # Contract Term To
-                if (cnt_sign_to is not None):
+                if (cnt_sign_to is not None and cnt_sign_to != ""):
                     field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "Contract Term To", cuscontract.cnt_sign_to, cnt_sign_to, "E", request)
                     if field_is_modified:
                         cuscontract.cnt_sign_to = cnt_sign_to
                         modified_records.append(record)
                         field_is_modified_count = field_is_modified_count + 1
+                else:
+                    cuscontract.cnt_sign_to = None
 
                 # Wage Rate
                 if (cnt_wage_id is not None):
@@ -728,6 +770,17 @@ def UpdateContract(request):
                 response_data['form_is_valid'] = True
                 response_data['result'] = "Pending to save data"
                 response_data['class'] = "bg-success"
+
+                # amnaj 1
+                '''
+                c = CusContract(
+                    cnt_id = cnt_id,
+                    cus_id = cus_id,
+                    cus_brn = cus_brn,
+                    cus_vol = cus_vol,
+                )
+                c.save()                
+                '''
         else:
             print("form is invalid")
             response_data['form_is_valid'] = False
@@ -808,7 +861,8 @@ def CreateContract(request):
             cnt_then = request.POST.get('cnt_then')
             cnt_print = request.POST.get('cnt_print')
             cnt_new = request.POST.get('cnt_new')
-            upd_date = timezone.now()
+            # upd_date = timezone.now()
+            upd_date = datetime.datetime.now()
             upd_by = request.user.first_name
             upd_flag = 'E'
 
@@ -989,8 +1043,33 @@ def CreateContract(request):
                
             except CusContract.DoesNotExist:
                 # Insert
+                # amnaj 2
+                c = CusContract(
+                    cnt_id = cnt_id,
+                    cus_id = cus_id,
+                    cus_brn = cus_brn,
+                    cus_vol = cus_vol,
+                    cnt_active = cnt_active,
+                    cnt_sign_frm = cnt_sign_frm,
+                    cnt_sign_to = cnt_sign_to,
+                    cnt_eff_to = cnt_eff_to,
+                    cnt_doc_no = cnt_doc_no,
+                    cnt_doc_date = cnt_doc_date,
+                    cnt_apr_by_id = int(cnt_apr_by),
+                    cnt_guard_amt = cnt_guard_amt,
+                    cnt_sale_amt = cnt_sale_amt,
+                    cnt_wage_id_id = 1,
+                    cnt_zone = 0,
+                    cnt_autoexpire = cnt_autoexpire,
+                    cnt_then = 'T',
+                    upd_date = datetime.datetime.now(),
+                    upd_by = request.user.first_name,
+                    upd_flag = 'A',
+
+                )
+                c.save()                
                 response_data['form_is_valid'] = True
-                response_data['result'] = "Pending to save data"
+                response_data['result'] = "Saved success."
                 response_data['class'] = "bg-success"
         else:
             print("form is invalid")

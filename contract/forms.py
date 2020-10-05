@@ -52,10 +52,10 @@ class ContractUpdateForm(forms.ModelForm):
     cnt_doc_no = forms.CharField(required=False)
     cnt_apr_by_id = forms.CharField(required=False)
     cnt_doc_date = forms.DateField(required=True, widget=forms.DateInput(format='%d/%m/%Y'), input_formats=('%d/%m/%Y', ))
-    cnt_eff_frm = forms.DateField(widget=forms.DateInput(format='%d/%m/%Y'), input_formats=('%d/%m/%Y', ))
-    cnt_eff_to = forms.DateField(widget=forms.DateInput(format='%d/%m/%Y'), input_formats=('%d/%m/%Y', ))
-    cnt_sign_frm = forms.DateField(widget=forms.DateInput(format='%d/%m/%Y'), input_formats=('%d/%m/%Y', ))
-    cnt_sign_to = forms.DateField(widget=forms.DateInput(format='%d/%m/%Y'), input_formats=('%d/%m/%Y', ))
+    cnt_eff_frm = forms.DateField(required=False, widget=forms.DateInput(format='%d/%m/%Y'), input_formats=('%d/%m/%Y', ))
+    cnt_eff_to = forms.DateField(required=False, widget=forms.DateInput(format='%d/%m/%Y'), input_formats=('%d/%m/%Y', ))
+    cnt_sign_frm = forms.DateField(required=False, widget=forms.DateInput(format='%d/%m/%Y'), input_formats=('%d/%m/%Y', ))
+    cnt_sign_to = forms.DateField(required=False, widget=forms.DateInput(format='%d/%m/%Y'), input_formats=('%d/%m/%Y', ))
 
     class Meta:
         model = CusContract  
