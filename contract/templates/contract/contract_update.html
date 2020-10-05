@@ -1520,13 +1520,13 @@
             result += "</div>";
 
             result += "<div class='form-group col-md-3'>";
-            result += "<label for='id_srv_cost_new'>{% trans 'Cost' %}</label>";
-            result += "<input id='id_srv_cost_new' type='text' class='form-control form-control-sm' value=''>";
+            result += "<label for='id_srv_rate_new'>{% trans 'Cost' %}</label>";
+            result += "<input id='id_srv_rate_new' type='text' class='form-control form-control-sm' value=''>";
             result += "</div>";
 
             result += "<div class='form-group col-md-3'>";
-            result += "<label for='id_srv_total_cost_new'>{% trans 'Total Cost' %}</label>";
-            result += "<input id='id_srv_total_cost_new' type='text' class='form-control form-control-sm' readonly>";
+            result += "<label for='id_srv_cost_new'>{% trans 'Total Cost' %}</label>";
+            result += "<input id='id_srv_cost_new' type='text' class='form-control form-control-sm' readonly>";
             result += "</div>";
 
             result += "<div class='form-group col-md-3 text-center'>";
@@ -1679,6 +1679,7 @@
 
     // Add new service modal
     $('#add_new_service_list_modal').on('shown.bs.modal', function (e) {
+
       $("#id_dtp_cnt_eff_frm_new").datepicker({
         format: 'dd/mm/yyyy',
         autoclose: true,
@@ -1690,7 +1691,6 @@
         autoclose: true,
         orientation: "bottom"
       });
-
 
       // SRV_QTY_NEW
       $('#id_srv_qty_new').on('keypress', function (e) {
@@ -1720,6 +1720,19 @@
           }
 
           $('#id_srv_rate_new').focus();
+
+          event.preventDefault();
+          return false;        
+        }
+      });
+
+      // SRV_COST_NEW
+      $('#id_srv_rate_new').on('keypress', function (e) {
+        var cost = $(this);
+        if(e.which === 13){
+          total = cost.val() * $('#id_srv_qty_new').val();
+          $('#id_srv_cost_new').val(total);
+          $('#id_srv_rem_new').focus();
           event.preventDefault();
           return false;        
         }
