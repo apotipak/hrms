@@ -294,13 +294,14 @@
 
             <div class="float-right">
 
+              {% comment %}
               {% if contract.cnt_active|default_if_none:0 %}
                 <input id="id_cnt_active" name="cnt_active" type="checkbox" data-toggle="toggle" data-on="Active" data-off="Pending" data-onstyle="success" data-size="normal" checked>
               {% else %}
                 <input id="id_cnt_active" name="cnt_active" type="checkbox" data-toggle="toggle" data-on="Active" data-off="Pending" data-onstyle="success" data-size="normal">
               {% endif %}
+              {% endcomment %}
 
-              <!--
               <div class="btn-group">
                 <label class="switch">                                 
                   {% if contract.cnt_active|default_if_none:0 %}
@@ -311,7 +312,6 @@
                   <div class="slider"></div>
                 </label>  
               </div>
-              -->
 
             </div>
 
