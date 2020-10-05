@@ -1166,7 +1166,7 @@
             // SRV_COST_RATE
             num = parseFloat(data.srv_cost_rate);
             result += "        <div class='form-group col-md-6'>";
-            result += "          <label for='cus_tel'>{% trans 'Cost Rate' %}</label>";
+            result += "          <label for='id_srv_cost_rate'>{% trans 'Cost Rate' %}</label>";
             result += "          <input id='id_srv_cost_rate' type='text' class='form-control form-control-sm' value='" + num + "'>";
             result += "        </div>";
 
@@ -1293,13 +1293,19 @@
     srv_sun_new = $('#id_srv_sun_new').val();
     srv_pub_new = $('#id_srv_pub_new').val();
 
+    srv_qty_new = $('#id_srv_qty_new').val();
+    srv_rate_new = $('#id_srv_rate_new').val();
+    srv_cost_new = $('#id_srv_cost_new').val();
+    srv_cost_rate_new = $('#id_srv_cost_rate_new').val();
+
     // amnaj
 
     //alert(srv_eff_frm_new);
     //alert(srv_eff_to_new);
     //alert(srv_rank_id_new);
     //alert(srv_shift_id_new);
-    alert(srv_mon_new);
+    //alert(srv_pub_new);
+    alert(srv_cost_rate_new);
 
 
     /*
@@ -1545,8 +1551,8 @@
             result += "</div>";
 
             result += "<div class='form-group col-md-6'>";
-            result += "<label for='cus_tel'>{% trans 'Cost Rate' %}</label>";
-            result += "<input type='text' class='form-control form-control-sm' value=''>";
+            result += "<label for='id_srv_cost_rate_new'>{% trans 'Cost Rate' %}</label>";
+            result += "<input id='id_srv_cost_rate_new' type='text' class='form-control form-control-sm' value=''>";
             result += "</div>";
             result += "</div>";
             result += "</div>";
