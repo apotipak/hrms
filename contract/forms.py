@@ -85,11 +85,12 @@ class ContractCreateForm(forms.ModelForm):
     cus_id = forms.DecimalField(label='Customer ID', required=False)
     cus_brn = forms.DecimalField(label='Customer Branch', required=False)
     cus_vol = forms.DecimalField(label='Customer Volume', required=False)
+    
+    cnt_doc_date = forms.DateField(required=True, widget=forms.DateInput(format='%d/%m/%Y'), input_formats=('%d/%m/%Y', ))
 
     class Meta:
         model = CusContract  
         fields = '__all__'
-        # exclude = ['cnt_id', 'cus_id', 'cus_brn', 'cus_vol']
 
     def __init__(self, *args, **kwargs):
         super(ContractCreateForm, self).__init__(*args, **kwargs)        
