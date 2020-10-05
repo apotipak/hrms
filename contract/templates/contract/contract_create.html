@@ -942,7 +942,6 @@
         },
         success : function(json) {        
           if(json.is_existed) {
-            // amnaj
             cnt_id = json.cnt_id;       
 
             $("#id_cnt_doc_no").val(json.cnt_doc_no);
@@ -952,6 +951,27 @@
             $("#id_cnt_sign_frm").val(json.cnt_sign_frm);
             $("#id_cnt_sign_to").val(json.cnt_sign_to);
             $("#id_cnt_wage_id_text").val(json.cnt_wage_text);
+
+            // amnaj
+            if(json.cnt_new=='N') {
+              $("#id_cnt_new").prop("checked", true);
+            } else {
+              $("#id_cnt_new").prop("checked", false);
+            }
+
+            if(json.cnt_print=='C') {
+              $("#id_cnt_print").prop("checked", true);
+              $('#id_cnt_print_label').text('Customer');
+            } else {
+              $("#id_cnt_print").prop("checked", false);
+              $('#id_cnt_print_label').text('Site Address');
+            }
+
+            if(json.cnt_autoexpire) {
+              $("#id_cnt_autoexpire").prop("checked", true);
+            } else {
+              $("#id_cnt_autoexpire").prop("checked", false);
+            }
 
             $("#main-content :input").attr("disabled", false);
             $("#contract_number_form :input").attr("disabled", true);            

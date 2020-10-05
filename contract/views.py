@@ -262,6 +262,18 @@ def get_cus_contract(request):
                 cnt_sign_to = cuscontract.cnt_sign_to.strftime("%d/%m/%Y")
                 cnt_wage_id = cuscontract.cnt_wage_id_id
                 cnt_wage_text = str(cuscontract.cnt_wage_id_id) + "  |  " + str(cuscontract.cnt_wage_id.wage_en) + "    " + str(cuscontract.cnt_wage_id.wage_8hr)
+                cnt_new = cuscontract.cnt_new
+                cnt_print = cuscontract.cnt_print
+                cnt_autoexpire = cuscontract.cnt_autoexpire
+
+                if cnt_autoexpire:
+                    cnt_autoexpire = 1
+                else:
+                    cnt_autoexpire = 0
+
+                print("cnt_new = " + str(cnt_new))
+                print("cnt_print = " + str(cnt_print))
+                print('cnt_autoexpire = ' + str(cnt_autoexpire))
 
                 response = JsonResponse(data={
                     "success": True,
@@ -277,7 +289,11 @@ def get_cus_contract(request):
                     "cnt_sign_to": cnt_sign_to,
                     "cnt_wage_id": cnt_wage_id,
                     "cnt_wage_text": cnt_wage_text,
+                    "cnt_new": cnt_new,
+                    "cnt_print": cnt_print,
+                    "cnt_autoexpire": cnt_autoexpire,
                 })
+
                 response.status_code = 200
                 return response
             except CusContract.DoesNotExist:
