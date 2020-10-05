@@ -1622,3 +1622,54 @@ def save_customer_service_item(request):
         })
         response.status_code = 403
         return response          
+
+
+@login_required(login_url='/accounts/login/')
+def get_rank_shift_list(request):
+
+    print("****************************")
+    print("FUNCTION: get_rank_list")
+    print("****************************")
+
+    # COM_RANK
+    if request.method == "POST":
+        data = ComRank.objects.all()
+    else:
+        data = ComRank.objects.all()
+
+    # no_of_active_customer = Customer.objects.filter(cus_active=1).exclude(upd_flag='D').count()
+
+    com_rank_list=[]
+    for d in data:
+        record = {
+            "rank_id": d.rank_id,
+            "rank_th": d.rank_th,
+            "rank_en": d.rank_en,
+        }
+        com_rank_list.append(record)
+
+
+    # T_SHIFT
+    if request.method == "POST":
+        data = TShift.objects.all()
+    else:
+        data = TShift.objects.all()
+
+    t_shift_list=[]
+    for d in data:
+        record = {
+            "shf_id": d.shf_id,
+            "shf_desc": d.shf_desc,
+        }
+        t_shift_list.append(record)
+
+    response = JsonResponse(data={
+        "success": True,
+        "com_rank_list": list(com_rank_list),
+        "t_shift_list": list(t_shift_list),
+    })
+
+    response.status_code = 200
+    return response
+
+

@@ -485,9 +485,7 @@
       <div class="card-header">
         <h1 class="card-title pt-1"><strong>{% trans 'Service List' %}</strong></h1>
         <div class="card-tools">        
-          <!--
           <button id="add_service_button" type="button" class="btn btn-outline-success btn-md" data-toggle="modal" data-url="{% url 'get_district_list' %}"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;{% trans 'New service' %}</button>
-          -->
         </div>        
       </div>
 
@@ -598,14 +596,15 @@
 </div>
 
 
-<!-- Service List Modal -->
-<div class="modal fade" id="service_list_modal" tabindex="-1" role="dialog">
+
+<!-- Add new service modal -->
+<div class="modal fade" id="add_new_service_list_modal" tabindex="-1" role="dialog">
 
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;<strong>{% trans 'Add a new service' %}</strong></h5>
+        <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;<strong>{% trans 'Add new service' %}</strong></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -613,118 +612,8 @@
 
       <div class="modal-body">
         
-
         <!-- Service List Modal -->
-        <div class="row">
-          <div class="col-12">
-            <div class="card card-info">
 
-              <div class="card-body">
-
-                <div class="form-row">
-                  <div class="form-group col-md-3">
-                    <label for="cus_zip">{% trans 'Effect Term From' %}</label>
-                    <input type="text" class="form-control form-control-sm" value="">
-                  </div>
-                  <div class="form-group col-md-3">
-                    <label for="cus_tel">{% trans 'Effect Term To' %}</label>
-                    <input type="text" class="form-control form-control-sm" value="">
-                  </div>
-                  <div class="form-group col-md-3">
-                    <label for="cus_zip">{% trans 'Rank' %}</label>
-                    <input type="text" class="form-control form-control-sm" value="">
-                  </div>
-                  <div class="form-group col-md-3">
-                    <label for="cus_tel">{% trans 'Shift' %}</label>
-                    <input type="text" class="form-control form-control-sm" value="">
-                  </div>                  
-                </div>
-      
-                <div class="form-row">
-
-                  <div class="form-row col-6">
-                    <div class="form-group col-3">
-                      <label for="cus_zip">{% trans 'Mon' %}</label>
-                      <input type="text" class="form-control form-control-sm" value="">
-                    </div>
-                    <div class="form-group col-3">
-                      <label for="cus_zip">{% trans 'Tue' %}</label>
-                      <input type="text" class="form-control form-control-sm" value="">
-                    </div>
-                    <div class="form-group col-3">
-                      <label for="cus_zip">{% trans 'Wed' %}</label>
-                      <input type="text" class="form-control form-control-sm" value="">
-                    </div>
-                    <div class="form-group col-3">
-                      <label for="cus_zip">{% trans 'Thu' %}</label>                        
-                      <input type="text" class="form-control form-control-sm" value="">
-                    </div>
-                  </div>
-
-                  <div class="form-row col-6">
-                    <div class="form-group col-3">
-                      <label for="cus_zip">{% trans 'Fri' %}</label>
-                      <input type="text" class="form-control form-control-sm" value="">
-                    </div>
-                    <div class="form-group col-3">
-                      <label for="cus_zip">{% trans 'Sat' %}</label>
-                      <input type="text" class="form-control form-control-sm" value="">
-                    </div>
-                    <div class="form-group col-3">
-                      <label for="cus_zip">{% trans 'Sun' %}</label>
-                      <input type="text" class="form-control form-control-sm" value="">
-                    </div>
-                    <div class="form-group col-3">
-                      <label for="cus_zip">{% trans 'Pub' %}</label>                        
-                      <input type="text" class="form-control form-control-sm" value="">
-                    </div>
-                  </div>
-
-                </div>              
-
-                <div class="form-row">
-                  <div class="form-group col-md-3">
-                    <label for="cus_zip">{% trans 'QTY' %}</label>
-                    <input type="text" class="form-control form-control-sm" value="">
-                  </div>
-                  <div class="form-group col-md-3">
-                    <label for="cus_tel">{% trans 'Cost' %}</label>
-                    <input type="text" class="form-control form-control-sm" value="">
-                  </div>
-
-                  <div class="form-group col-md-3">
-                    <label for="cus_zip">{% trans 'Total Cost' %}</label>
-                    <input type="text" class="form-control form-control-sm" readonly>
-                  </div>
-
-
-                  <div class="form-group col-md-3 text-center">
-                    <label for="cus_zip">&nbsp;</label>
-                    <div class="form-check">
-                      <!--<input class="form-check-input" type="checkbox" checked>-->
-                      <input class="form-check-input" type="checkbox">
-                      <label class="form-check-label">{% trans 'Active' %}</label>
-                    </div>                                                
-                  </div>
-
-                </div>   
-
-                <div class="form-row">
-                  <div class="form-group col-md-6">
-                    <label for="cus_zip">{% trans 'Remark' %}</label>
-                    <input type="text" class="form-control form-control-sm" value="">
-                  </div>
-                  <div class="form-group col-md-6">
-                    <label for="cus_tel">{% trans 'Cost Rate' %}</label>
-                    <input type="text" class="form-control form-control-sm" value="">
-                  </div>
-                </div>   
-
-              </div>
-            </div>
-          </div>
-          
-        </div>
         <!-- /.row --> 
 
       </div>
@@ -744,7 +633,7 @@
       
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLongTitle">
-          <i class="fas fa-pen fa-sm"></i>&nbsp;&nbsp;<strong>{% trans 'Update Service' %}</strong>
+          <i class="fas fa-pen fa-sm"></i>&nbsp;&nbsp;<strong>{% trans 'Edit service' %}</strong>
           <input id="id_select_customer_service_id" type="hidden" readonly>
         </h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -1393,11 +1282,170 @@
     }
   }
 
-  $(document).ready(function(){    
 
+  // Add new service
+  $(document).ready(function(){    
     $('#add_service_button').on('click', function (e) {
-      var obj = $(this);      
-      $("#service_list_modal").modal("show");
+      var obj = $(this);
+
+      // Get rank list
+      $.ajax({
+          url: obj.attr("data-url"),
+          url: "/contract/ajax/get_rank_shift_list/",
+          type: 'get',          
+          dataType: 'json',
+          beforeSend: function () {
+            
+          },
+          success: function (data) {
+            var com_rank_count = data.com_rank_list.length;
+            var t_shift_count = data.t_shift_list.length;
+
+            var result = ""
+            result += "";
+
+            result += "<div class='row'>";
+            result += "<div class='col-12'>";
+            result += "<div class='card card-info'>";
+            result += "<div class='card-body'>";
+            result += "<div class='form-row'>";                  
+            result += "<div class='form-group col-md-3'>";
+            result += "<label for='id_dtp_cnt_eff_frm_new'>{% trans 'Effect Term From' %}</label>";
+            result += "<div class='input-group date' id='id_dtp_cnt_eff_frm_new' data-target-input='nearest'>";
+            result += "<input type='text' name='dtp_cnt_eff_frm_new' class='form-control form-control-sm' id='id_dtp_cnt_eff_frm_new' placeholder='dd/mm/yyyy'>";
+            result += "<div class='input-group-append' data-target='#dtp_cnt_eff_frm_new' data-toggle='datepicker'>";
+            result += "<div class='input-group-text text-primary'><i class='fa fa-calendar'></i></div>";
+            result += "</div>";
+            result += "</div>";              
+            result += "</div>";
+
+            result += "<div class='form-group col-md-3'>";
+            result += "<label for='id_dtp_cnt_eff_to_new'>{% trans 'Effect Term From' %}</label>";
+            result += "<div class='input-group date' id='id_dtp_cnt_eff_to_new' data-target-input='nearest'>";
+            result += "<input type='text' name='dtp_cnt_eff_to_new' class='form-control form-control-sm' id='id_dtp_cnt_eff_to_new' placeholder='dd/mm/yyyy'>";
+            result += "<div class='input-group-append' data-target='#dtp_cnt_eff_to_new' data-toggle='datepicker'>";
+            result += "<div class='input-group-text text-primary'><i class='fa fa-calendar'></i></div>";
+            result += "</div>";
+            result += "</div>";              
+            result += "</div>";
+
+            // COM_RANK
+            result += "        <div class='form-group col-md-3'>";
+            result += "          <label for='id_com_rank_rank_id_new'>{% trans 'Rank' %}</label>";
+            result += " <select name='com_rank_rank_id_new' class='form-control col-sm-12 form-control-sm' id='com_rank_rank_id_new'>";
+            result += "  <option value=''>---------</option>";
+            for(var i=0; i<com_rank_count; i++) {              
+              if(data.srv_rank == data.com_rank_list[i]["rank_id"])
+                result += "  <option value='" + data.com_rank_list[i]["rank_id"] + "' selected>" + data.com_rank_list[i]["rank_id"] + " # " + data.com_rank_list[i]["rank_en"] + "</option>";
+              else
+                result += "  <option value='" + data.com_rank_list[i]["rank_id"] + "'>" + data.com_rank_list[i]["rank_id"] + " # " + data.com_rank_list[i]["rank_en"] + "</option>";
+            }
+            result += " </select>";
+            result += "        </div>";
+
+
+            // T_SHIFT
+            result += "        <div class='form-group col-md-3'>";
+            result += "          <label for='cus_zip'>{% trans 'Shift' %}</label>";
+            result += " <select name='cus_service_srv_shift' class='form-control col-sm-12 form-control-sm' id='id_cus_service_srv_shift'>";
+            result += "  <option value=''>---------</option>";
+            for(var i=0; i<t_shift_count; i++) {              
+              if(data.srv_shif_id == data.t_shift_list[i]["shf_id"])
+                result += "  <option value='" + data.t_shift_list[i]["shf_id"] + "' selected>" + data.t_shift_list[i]["shf_desc"] + "</option>";
+              else
+                result += "  <option value='" + data.t_shift_list[i]["shf_id"] + "'>" + data.t_shift_list[i]["shf_desc"] + "</option>";
+            }
+            result += " </select>";
+            result += "        </div>";
+
+
+
+            result += "<div class='form-row'>";
+            result += "<div class='form-row col-6'>";
+            result += "<div class='form-group col-3'>";
+            result += "<label for=''>{% trans 'Mon' %}</label>";
+            result += "<input type='text' class='form-control form-control-sm' value=''>";
+            result += "</div>";
+
+            result += "<div class='form-group col-3'>";
+            result += "<label for='cus_zip'>{% trans 'Tue' %}</label>";
+            result += "<input type='text' class='form-control form-control-sm' value=''>";
+            result += "</div>";
+            result += "<div class='form-group col-3'>";
+            result += "<label for='cus_zip'>{% trans 'Wed' %}</label>";
+            result += "<input type='text' class='form-control form-control-sm' value=''>";
+            result += "</div>";
+            result += "<div class='form-group col-3'>";
+            result += "<label for='cus_zip'>{% trans 'Thu' %}</label>";
+            result += "<input type='text' class='form-control form-control-sm' value=''>";
+            result += "</div>";
+            result += "</div>";
+            result += "<div class='form-row col-6'>";
+            result += "<div class='form-group col-3'>";
+            result += "<label for='cus_zip'>{% trans 'Fri' %}</label>";
+            result += "<input type='text' class='form-control form-control-sm' value=''>";
+            result += "</div>";
+            result += "<div class='form-group col-3'>";
+            result += "<label for='cus_zip'>{% trans 'Sat' %}</label>";
+            result += "<input type='text' class='form-control form-control-sm' value=''>";
+            result += "</div>";
+            result += "<div class='form-group col-3'>";
+            result += "<label for='cus_zip'>{% trans 'Sun' %}</label>";
+            result += "<input type='text' class='form-control form-control-sm' value=''>";
+            result += "</div>";
+            result += "<div class='form-group col-3'>";
+            result += "<label for='cus_zip'>{% trans 'Pub' %}</label>";
+            result += "<input type='text' class='form-control form-control-sm' value=''>";
+            result += "</div>";
+            result += "</div>";
+            result += "</div>";
+            result += "<div class='form-row'>";
+            result += "<div class='form-group col-md-3'>";
+            result += "<label for='cus_zip'>{% trans 'QTY' %}</label>";
+            result += "<input type='text' class='form-control form-control-sm' value=''>";
+            result += "</div>";
+            result += "<div class='form-group col-md-3'>";
+            result += "<label for='cus_tel'>{% trans 'Cost' %}</label>";
+            result += "<input type='text' class='form-control form-control-sm' value=''>";
+            result += "</div>";
+            result += "<div class='form-group col-md-3'>";
+            result += "<label for='cus_zip'>{% trans 'Total Cost' %}</label>";
+            result += "<input type='text' class='form-control form-control-sm' readonly>";
+            result += "</div>";
+            result += "<div class='form-group col-md-3 text-center'>";
+            result += "<label for='cus_zip'>&nbsp;</label>";
+            result += "<div class='form-check'>";
+            result += "<input class='form-check-input' type='checkbox'>";
+            result += "<label class='form-check-label'>{% trans 'Active' %}</label>";
+            result += "</div>";                                              
+            result += "</div>";
+            result += "</div>";
+            result += "<div class='form-row'>";
+            result += "<div class='form-group col-md-6'>";
+            result += "<label for='cus_zip'>{% trans 'Remark' %}</label>";
+            result += "<input type='text' class='form-control form-control-sm' value=''>";
+            result += "</div>";
+            result += "<div class='form-group col-md-6'>";
+            result += "<label for='cus_tel'>{% trans 'Cost Rate' %}</label>";
+            result += "<input type='text' class='form-control form-control-sm' value=''>";
+            result += "</div>";
+            result += "</div>";
+            result += "</div>";
+            result += "</div>";
+            result += "</div>";          
+            result += "</div>";
+
+            $("#add_new_service_list_modal .modal-body").html(result);            
+          },
+          error: function(data){
+            $("#add_new_service_list_modal .modal-body").html("{% trans 'There is no data.' %}");
+          }
+      });
+
+
+      $("#add_new_service_list_modal").modal("show");
+
+
     });
 
     $('#wage_rate_lookup').on('click', function (e) {
@@ -1478,6 +1526,7 @@
 
 <script>
   $(function () {
+
     $("#dtp_cnt_doc_date").datepicker({
       format: 'dd/mm/yyyy',
       autoclose: true,
@@ -1508,7 +1557,23 @@
       orientation: "bottom"
     });    
 
-    // Service Modal    
+
+    // Add new service modal
+    $('#add_new_service_list_modal').on('shown.bs.modal', function (e) {
+      $("#id_dtp_cnt_eff_frm_new").datepicker({
+        format: 'dd/mm/yyyy',
+        autoclose: true,
+        orientation: "bottom"
+      });
+
+      $("#id_dtp_cnt_eff_to_new").datepicker({
+        format: 'dd/mm/yyyy',
+        autoclose: true,
+        orientation: "bottom"
+      });
+    });
+
+    // Update service modal
     $('#update_service_modal').on('shown.bs.modal', function (e) {
 
       // SRV_EFF_FRM
