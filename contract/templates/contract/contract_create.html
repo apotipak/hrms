@@ -288,13 +288,14 @@
 
             <div class="float-right">
 
+              {% comment %}
               {% if contract.cnt_active|default_if_none:0 %}
                 <input id="id_cnt_active" name="cnt_active" type="checkbox" data-toggle="toggle" data-on="Active" data-off="Pending" data-onstyle="success" data-size="normal" checked>
               {% else %}
                 <input id="id_cnt_active" name="cnt_active" type="checkbox" data-toggle="toggle" data-on="Active" data-off="Pending" data-onstyle="success" data-size="normal">
               {% endif %}
+              {% endcomment %}
 
-              <!--
               <div class="btn-group">
                 <label class="switch">                                 
                   {% if contract.cnt_active|default_if_none:0 %}
@@ -305,7 +306,6 @@
                   <div class="slider"></div>
                 </label>  
               </div>
-              -->
 
             </div>
 
@@ -944,6 +944,13 @@
           if(json.is_existed) {
             cnt_id = json.cnt_id;       
 
+            // amnaj
+            if(json.cnt_active) {
+              $("#id_cnt_active").prop("checked", true);
+            } else {
+              $("#id_cnt_active").prop("checked", false);
+            }
+
             $("#id_cnt_doc_no").val(json.cnt_doc_no);
             $("#id_cnt_doc_date").val(json.cnt_doc_date);
             $("#id_cnt_eff_frm").val(json.cnt_eff_frm);
@@ -952,7 +959,6 @@
             $("#id_cnt_sign_to").val(json.cnt_sign_to);
             $("#id_cnt_wage_id_text").val(json.cnt_wage_text);
 
-            // amnaj
             if(json.cnt_new=='N') {
               $("#id_cnt_new").prop("checked", true);
             } else {

@@ -254,7 +254,13 @@ def get_cus_contract(request):
             try:                 
                 cuscontract = CusContract.objects.filter(cnt_id=cnt_id).get()
 
-                cnt_doc_no = cuscontract.cnt_doc_no
+                cnt_active = cuscontract.cnt_active
+                if cnt_active:
+                    cnt_active = 1
+                else:
+                    cnt_active = 0                
+                    
+                cnt_doc_no = cuscontract.cnt_doc_no                
                 cnt_doc_date = cuscontract.cnt_doc_date.strftime("%d/%m/%Y")
                 cnt_eff_frm = cuscontract.cnt_eff_frm.strftime("%d/%m/%Y")
                 cnt_eff_to = cuscontract.cnt_eff_to.strftime("%d/%m/%Y")
@@ -274,6 +280,7 @@ def get_cus_contract(request):
                 print("cnt_new = " + str(cnt_new))
                 print("cnt_print = " + str(cnt_print))
                 print('cnt_autoexpire = ' + str(cnt_autoexpire))
+                print("cnt_active = " + str(cnt_active))
 
                 response = JsonResponse(data={
                     "success": True,
@@ -281,6 +288,7 @@ def get_cus_contract(request):
                     "message": "",
                     "is_existed": True,
                     "cnt_id": cnt_id,
+                    "cnt_active": cnt_active,
                     "cnt_doc_no": cnt_doc_no,
                     "cnt_doc_date": cnt_doc_date,
                     "cnt_eff_frm": cnt_eff_frm,
