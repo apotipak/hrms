@@ -36,22 +36,25 @@
       <!-- Default box -->
       <div class="card">
 
-        <div class="col-sm-10 offset-sm-2 col-md-10 offset-md-3 pt-4 pl-4 pr-4"> 
+        <div class="col-8 offset-4 pt-4"> 
 
-          <form class="form-row" method="post" autocomplete="off">
+          <form id="search_contract_form" class="form-row" method="post" autocomplete="off">
             {% csrf_token %}
             <div class="form-row">
 
-              <div class="col-6">
+              <div class="col-8">
                 {% if form.cus_id.errors %}                
                   {% render_field form.cus_id class="form-control form-control-sm is-invalid" %}                
+
                   {% for error in form.cus_id.errors %}
                   <div class="invalid-feedback">
                     {{error}}
                   </div>
                   {% endfor %}
                 {% else %}
+
                   {% render_field form.cus_id class="form-control form-control-sm" %}
+
                 {% endif %}
               </div>
               
@@ -86,7 +89,7 @@
               {% endcomment %}
 
               <div colass="col-2">
-                <button type="submit" class="btn btn-sm btn-primary col-xs-2"><i class="fas fa-search fa-sm"></i>&nbsp;{% trans 'Search' %}</button>
+                <button id="search_contract_button" type="button" class="btn btn-sm btn-primary col-xs-2"><i class="fas fa-search fa-sm"></i>&nbsp;{% trans 'Search' %}</button>
               </div>
 
             </div>
@@ -220,9 +223,54 @@
 {% endblock %}
 
 
-{% block scripts %}
+{% block javascript %}
 <script>
 
+  $('#id_cus_id').focus();
+
+  $(document).on('keypress', '#id_cus_id', function(e) {
+    if(e.which == 13) {      
+      e.preventDefault();
+      cus_id = $("#id_cus_id").val();
+
+      if(cus_id <= 0) {
+        $('#id_cus_id').focus();              
+      } else {
+        $("#search_contract_form").submit();
+      }
+    }
+  });
+
+
+  /*
+  $(document).on('keypress', '#id_cus_brn', function(e) {
+    if(e.which == 13) {      
+      e.preventDefault();
+      
+      cus_id = $("#id_cus_id").val();
+      cus_brn = $("#id_cus_brn").val();
+    
+      if(cus_id <= 0)
+        $('#id_cus_id').focus();
+
+      if(cus_id < 0)
+        $('#id_cus_brn').focus();
+      else {
+        if(cus_brn=="")
+          $('#id_cus_brn').val(0);
+
+         $("#search_contract_form").submit();
+      }
+
+    }
+  });
+  */
+
+  $(document).on('click', '#search_contract_button', function(event) {
+    $("#search_contract_form").submit();
+  });
+
+  /*
   $(document).on('click', '#vert-tabs-contract-en-tab', function(event) {
     cus_name_en = jQuery('#customer_name_en').val();
     $(".card-title").html(cus_name_en);
@@ -238,10 +286,11 @@
   $('#id_cus_id').focus();
 
   $('#id_cus_id').on('keypress', function (e) {
-    if(e.which === 13){
-      $('#id_cus_brn').focus();
+    if(e.which === 13){      
       event.preventDefault();
-      return false;        
+      alert("a");
+      //$('#id_cus_brn').focus();
+      //return false;     
     }
   });
 
@@ -252,6 +301,7 @@
       return false;        
     }
   });
+  */
 
   /*
   $('#id_cus_vol').on('keypress', function (e) {

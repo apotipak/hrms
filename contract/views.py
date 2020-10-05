@@ -343,30 +343,25 @@ def ContractList(request):
     project_name = settings.PROJECT_NAME
     project_version = settings.PROJECT_VERSION
     today_date = settings.TODAY_DATE
-    item_per_page = 25
+    item_per_page = 15
 
     if request.method == "POST":    	
         data = dict()
         form = ContractForm(request.POST)
         cus_id = request.POST.get('cus_id')
-        # cus_brn = request.POST.get('cus_brn')
-        # cus_vol = request.POST.get('cus_vol')
-        # cnt_id = Decimal(request.POST['cus_id'] + request.POST.get('cus_brn').zfill(3) + request.POST.get('cus_vol').zfill(3))
-        # print("cnt_id_123 = " + str(cnt_id))
-        print("cus_id = " + str(cus_id))
 
-        if form.is_valid():
-            # rawsql = "select * from customer cus join cus_contract con on cus.cus_id=con.cus_id and cus.cus_brn=con.cus_brn "
-            # contract_list = CusContract.objects.raw(rawsql + " where cus.cus_id="+cus_id+" order by con.cnt_active desc")
-
+        if form.is_valid():            
             try:
                 int(cus_id)
                 if cus_id is not None or cus_id != '':
-                    contract_list = CusContract.objects.all().filter(cus_id=cus_id)
+                    rawsql = "select * from customer cus join cus_contract con on cus.cus_id=con.cus_id and cus.cus_brn=con.cus_brn "
+                    contract_list = CusContract.objects.raw(rawsql + " where cus.cus_id="+cus_id+" order by con.cnt_active desc")                    
                 else:
-                    contract_list = CusContract.objects.all()
+                    contract_list = []
+                    contract_list = CusContract.objects.raw("select * from customer cus join cus_contract con on cus.cus_id=con.cus_id and cus.cus_brn=con.cus_brn")
             except ValueError:
-                contract_list = CusContract.objects.all()
+                contract_list = []
+                contract_list = CusContract.objects.raw("select * from customer cus join cus_contract con on cus.cus_id=con.cus_id and cus.cus_brn=con.cus_brn")
 
         else:    		    		
             contract_list = []
