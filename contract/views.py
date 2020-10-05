@@ -484,12 +484,274 @@ def SearchContractNumber(request):
 	return JsonResponse(data)
 
 
+
 @login_required(login_url='/accounts/login/')
 @permission_required('contract.view_cuscontract', login_url='/accounts/login/')
-def SaveContract(request):
+def UpdateContract(request):
 
     print("****************************")
-    print("FUNCTION: save_contract")
+    print("FUNCTION: update_contract")
+    # print("****************************")
+
+    template_name = 'contract/contract_update.html'
+    response_data = {}
+    modified_records = []
+
+    if request.method == 'POST':
+        print("SaveContract - Post method")
+        
+        # form = ContractUpdateForm(request.POST, instance=CusContract)
+        form = ContractUpdateForm(request.POST)
+
+        if form.is_valid():
+            print("Form is valid")
+
+            # Get values
+            cnt_id = request.POST.get('cnt_id')
+            cnt_active = request.POST.get('cnt_active')            
+            cnt_doc_no = request.POST.get('cnt_doc_no')
+
+            cnt_doc_date = request.POST.get('cnt_doc_date')
+            if cnt_doc_date is not None:
+                cnt_doc_date = datetime.datetime.strptime(cnt_doc_date, "%d/%m/%Y")
+
+            cnt_eff_frm = request.POST.get('cnt_eff_frm')
+            if cnt_eff_frm is not None:
+                cnt_eff_frm = datetime.datetime.strptime(cnt_eff_frm, "%d/%m/%Y")
+
+            cnt_eff_to = request.POST.get('cnt_eff_to')
+            if cnt_eff_to is not None:
+                cnt_eff_to = datetime.datetime.strptime(cnt_eff_to, "%d/%m/%Y")
+
+            cnt_sign_frm = request.POST.get('cnt_sign_frm')
+            if cnt_sign_frm is not None:
+                cnt_sign_frm = datetime.datetime.strptime(cnt_sign_frm, "%d/%m/%Y")
+
+            cnt_sign_to = request.POST.get('cnt_sign_to')
+            if cnt_sign_to is not None:
+                cnt_sign_to = datetime.datetime.strptime(cnt_sign_to, "%d/%m/%Y")
+
+            cnt_apr_by = request.POST.get('cnt_apr_by_id')
+            
+            cnt_guard_amt = request.POST.get('cnt_guard_amt')
+            cnt_sale_amt = request.POST.get('cnt_sale_amt')
+            cnt_wage_id = request.POST.get('cnt_wage_id')
+            # cnt_zone = request.POST.get('cnt_zone_id')
+            cnt_autoexpire = request.POST.get('cnt_autoexpire')
+            cnt_then = request.POST.get('cnt_then')
+            cnt_print = request.POST.get('cnt_print')
+            cnt_new = request.POST.get('cnt_new')
+            upd_date = timezone.now()
+            upd_by = request.user.first_name
+            upd_flag = 'E'
+
+            print("")
+            print("")
+            print("----------- START ------------")
+            print("cnt_active = " + str(cnt_active))
+            print("cnt_doc_no = " + str(cnt_doc_no))
+            print("cnt_doc_date = " + str(cnt_doc_date))
+            print("cnt_eff_frm = " + str(cnt_eff_frm))
+            print("cnt_eff_to = " + str(cnt_eff_to))
+            print("cnt_sign_frm = " + str(cnt_sign_frm))
+            print("cnt_sign_to = " + str(cnt_sign_to))
+            print("cnt_apr_by = " + str(cnt_apr_by))
+            print("cnt_guard_amt = " + str(cnt_guard_amt))
+            print("cnt_sale_amt = " + str(cnt_sale_amt))
+            print("cnt_wage_id = " + str(cnt_wage_id))
+            print("cnt_autoexpire = " + str(cnt_autoexpire))
+            print("cnt_then = " + str(cnt_then))
+            print("cnt_print = " + str(cnt_print))
+            print("cnt_new = " + str(cnt_new))
+            print("upd_date  = " + str(upd_date))
+            print("upd_by  = " + str(upd_by))
+            print("upd_flag  = " + str(upd_flag))
+            print("--------- END  ------------")
+            print("")
+            print("")
+
+            # TODO
+            try:
+                modified_records = []
+                field_is_modified_count = 0
+                cuscontract = CusContract.objects.get(cnt_id=cnt_id)
+                
+                # New Report checkbox
+                if (cnt_new is not None):
+                    field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "New Report Checkbox", cuscontract.cnt_new, cnt_new, "E", request)
+                    if field_is_modified:
+                        cuscontract.cnt_new = cnt_new
+                        modified_records.append(record)
+                        field_is_modified_count = field_is_modified_count + 1
+
+                # Customer checkbox
+                if (cnt_print is not None):
+                    field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "Customer Checkbox", cuscontract.cnt_print, cnt_print, "E", request)
+                    if field_is_modified:
+                        cuscontract.cnt_print = cnt_print
+                        modified_records.append(record)
+                        field_is_modified_count = field_is_modified_count + 1
+
+                # Auto expire
+                if (cnt_autoexpire is not None):
+                    field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "Auto Expired", int(cuscontract.cnt_autoexpire), int(cnt_autoexpire), "E", request)
+                    if field_is_modified:
+                        cuscontract.cnt_autoexpire = cnt_autoexpire
+                        modified_records.append(record)
+                        field_is_modified_count = field_is_modified_count + 1
+
+                # Active
+                if (cnt_active is not None):
+                    field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "Active Status", int(cuscontract.cnt_active), int(cnt_active), "E", request)
+                    if field_is_modified:
+                        cuscontract.cnt_active = cnt_active
+                        modified_records.append(record)
+                        field_is_modified_count = field_is_modified_count + 1
+
+                # Contract Ref.
+                if (cnt_doc_no is not None):
+                    field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "Contract Ref.", cuscontract.cnt_doc_no, cnt_doc_no, "E", request)
+                    if field_is_modified:
+                        cuscontract.cnt_doc_no = cnt_doc_no
+                        modified_records.append(record)
+                        field_is_modified_count = field_is_modified_count + 1
+
+                # Contract Date
+                if (cnt_doc_date is not None):
+                    field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "Contract Date", cuscontract.cnt_doc_date, cnt_doc_date, "E", request)
+                    if field_is_modified:
+                        cuscontract.cnt_doc_date = cnt_doc_date
+                        modified_records.append(record)
+                        field_is_modified_count = field_is_modified_count + 1
+                    
+                # Effect Term From
+                if (cnt_eff_frm is not None):
+                    field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "Effect Term From", cuscontract.cnt_eff_frm, cnt_eff_frm, "E", request)
+                    if field_is_modified:
+                        cuscontract.cnt_eff_frm = cnt_eff_frm
+                        modified_records.append(record)
+                        field_is_modified_count = field_is_modified_count + 1
+
+                # Effect Term To
+                if (cnt_eff_to is not None):
+                    field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "Effect Term To", cuscontract.cnt_eff_to, cnt_eff_to, "E", request)
+                    if field_is_modified:
+                        cuscontract.cnt_eff_to = cnt_eff_to
+                        modified_records.append(record)
+                        field_is_modified_count = field_is_modified_count + 1
+
+                # Contract Term From
+                if (cnt_sign_frm is not None):
+                    field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "Contract Term From", cuscontract.cnt_sign_frm, cnt_sign_frm, "E", request)
+                    if field_is_modified:
+                        cuscontract.cnt_sign_frm = cnt_sign_frm
+                        modified_records.append(record)
+                        field_is_modified_count = field_is_modified_count + 1
+
+                # Contract Term To
+                if (cnt_sign_to is not None):
+                    field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "Contract Term To", cuscontract.cnt_sign_to, cnt_sign_to, "E", request)
+                    if field_is_modified:
+                        cuscontract.cnt_sign_to = cnt_sign_to
+                        modified_records.append(record)
+                        field_is_modified_count = field_is_modified_count + 1
+
+                # Wage Rate
+                if (cnt_wage_id is not None):
+                    field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "Wage Rate", int(cuscontract.cnt_wage_id_id), int(cnt_wage_id), "E", request)
+                    if field_is_modified:
+                        cuscontract.cnt_wage_id_id = int(cnt_wage_id)
+                        modified_records.append(record)
+                        field_is_modified_count = field_is_modified_count + 1
+
+                # Guard Amount
+                if (cnt_guard_amt is not None):
+                    field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "Guard Amount", int(cuscontract.cnt_guard_amt), int(cnt_guard_amt), "E", request)
+                    if field_is_modified:
+                        cuscontract.cnt_guard_amt = int(cnt_guard_amt)
+                        modified_records.append(record)
+                        field_is_modified_count = field_is_modified_count + 1
+
+                # Sale Amount
+                if (cnt_sale_amt is not None):
+                    field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "Sale Amount", float(cuscontract.cnt_sale_amt), float(cnt_sale_amt), "E", request)
+                    if field_is_modified:
+                        cuscontract.cnt_sale_amt = int(cnt_sale_amt)
+                        modified_records.append(record)
+                        field_is_modified_count = field_is_modified_count + 1
+
+                # Authorized by
+                if (cnt_apr_by is not None):
+                    field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "Approved By", int(cuscontract.cnt_apr_by_id), int(cnt_apr_by), "E", request)
+                    if field_is_modified:
+                        cuscontract.cnt_apr_by_id = int(cnt_apr_by)
+                        modified_records.append(record)
+                        field_is_modified_count = field_is_modified_count + 1
+
+                # Modified user
+                if field_is_modified_count > 0:
+                    cuscontract.upd_date = datetime.datetime.now()
+                    cuscontract.upd_flag = 'E'
+                    cuscontract.upd_by = request.user.first_name
+
+                    cuscontract.save()
+
+                    # History Log                    
+                    for data in modified_records:
+                        new_log = HrmsNewLog(
+                            log_table = data['log_table'],
+                            log_key = data['log_key'],
+                            log_field = data['log_field'],
+                            old_value = data['old_value'],
+                            new_value = data['new_value'],
+                            log_type = data['log_type'],
+                            log_by = data['log_by'],
+                            log_date = data['log_date'],
+                            )
+                        new_log.save()    
+                        modified_records = []
+                    # ./History Log                     
+
+                    response_data['form_is_valid'] = True
+                    response_data['result'] = "Saved success."
+                    response_data['class'] = "bg-success"
+                else:
+                    response_data['form_is_valid'] = True
+                    response_data['result'] = "Sorry, nothing to update."
+                    response_data['class'] = "bg-warning"
+               
+            except CusContract.DoesNotExist:
+                # Insert
+                response_data['form_is_valid'] = True
+                response_data['result'] = "Pending to save data"
+                response_data['class'] = "bg-success"
+        else:
+            print("form is invalid")
+            response_data['form_is_valid'] = False
+            response_data['class'] = "bg-danger"
+            response_data['message'] = "<b>Problem in cus_contract function</b>. Please inform IT department to support this case."
+
+            if form.errors:
+                for field in form:
+                    for error in field.errors:
+                        print(error)
+                        response_data['message'] += error + "<br>"
+
+                response_data['errors'] = form.errors
+                response_data['class'] = "bg-danger"
+            else:
+                response_data['message'] = "<b>Problem in cus_contract function.</b>. Please inform IT department to support this case."
+                response_data['class'] = "bg-danger"
+            
+    return JsonResponse(response_data)            
+
+
+@login_required(login_url='/accounts/login/')
+@permission_required('contract.view_cuscontract', login_url='/accounts/login/')
+def CreateContract(request):
+
+    print("****************************")
+    print("FUNCTION: create_contract")
     # print("****************************")
 
     template_name = 'contract/contract_update.html'
@@ -534,7 +796,7 @@ def SaveContract(request):
                 cnt_sign_to = datetime.datetime.strptime(cnt_sign_to, "%d/%m/%Y")
 
             cnt_apr_by = request.POST.get('cnt_apr_by_id')
-            
+
             cnt_guard_amt = request.POST.get('cnt_guard_amt')
             cnt_sale_amt = request.POST.get('cnt_sale_amt')
             cnt_wage_id = request.POST.get('cnt_wage_id')

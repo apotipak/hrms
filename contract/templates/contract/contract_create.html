@@ -1126,7 +1126,7 @@
     console.log(cnt_new + ", " + amendment_flag + ", " + cnt_print + ", " + cnt_autoexpire + ", " + cnt_active);
   
     $.ajax({
-      url : "/contract/ajax/save_contract/",
+      url : "/contract/ajax/create_contract/",
       type : "POST",
       data : {          
         csrfmiddlewaretoken: '{{ csrf_token }}',
