@@ -428,13 +428,11 @@
               </div>              
             </div>
 
-
-
             <div class="form-row">
               <div class="form-group col-md-12">
-                <label for="id_cnt_apr_by_text">{% trans 'Authorized by' %}</label>
+                <label for="id_cnt_apr_by_id">{% trans 'Authorized by' %}</label>
                 {{ contract_create_form.cnt_apr_by_text }}
-                <input type="hidden" id="id_cnt_apr_by_id" name="id_cnt_apr_by_id" value="1000">
+                <input type="hidden" id="id_cnt_apr_by_id" name="cnt_apr_by_id" value=100000>
 
               </div>                               
             </div>
@@ -1111,7 +1109,7 @@
     // cnt_guard_amt
     cnt_guard_amt = $('#id_cnt_guard_amt').val();
     //cnt_apr_by_id
-    cnt_apr_by_id = $('#id_cnt_apr_by_id').val(); 
+    cnt_apr_by_id = $('#id_cnt_apr_by_id').val();     
     //cnt_apr_by_text
     cnt_apr_by_text = $('#id_cnt_apr_by_text').val(); 
 

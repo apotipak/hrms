@@ -272,7 +272,7 @@ def get_cus_contract(request):
                 cnt_autoexpire = cuscontract.cnt_autoexpire
 
                 print("cnt_guard_amt = " + str(cnt_guard_amt))
-                
+
                 if cnt_autoexpire:
                     cnt_autoexpire = 1
                 else:
@@ -533,7 +533,8 @@ def SaveContract(request):
             if cnt_sign_to is not None:
                 cnt_sign_to = datetime.datetime.strptime(cnt_sign_to, "%d/%m/%Y")
 
-            cnt_apr_by = request.POST.get('cnt_apr_by_id')        
+            cnt_apr_by = request.POST.get('cnt_apr_by_id')
+            
             cnt_guard_amt = request.POST.get('cnt_guard_amt')
             cnt_sale_amt = request.POST.get('cnt_sale_amt')
             cnt_wage_id = request.POST.get('cnt_wage_id')
