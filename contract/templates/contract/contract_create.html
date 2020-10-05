@@ -123,6 +123,20 @@
 
                 <!-- CONTACT -->
                 <div class="form-row">
+
+                  <div class="form-group col-md-2">
+                    <label for="id_cus_tel_th">{% trans 'Phone' %}</label>
+                    <input type="text" class="form-control form-control-sm" id="id_cus_tel_th" name="cus_tel_th" readonly value="{{ customer.cus_tel }}">
+                  </div>
+                  <div class="form-group col-md-2">
+                    <label for="id_cus_fax_th">{% trans 'Fax' %}</label>
+                    <input type="text" class="form-control form-control-sm" id="id_cus_fax_th" name="cus_fax_th" readonly value="{{ customer.cus_fax }}">
+                  </div>
+                  <div class="form-group col-md-2">
+                    <label for="id_cus_email_th">{% trans 'Email' %}</label>
+                    <input type="text" class="form-control form-control-sm" id="id_cus_email_th" name="cus_email_th" readonly value="{{ customer.cus_email }}">
+                  </div>                  
+
                   <div class="form-group col-md-4">
                     <label for="id_site_contact_con_th">{% trans 'Contact' %}</label>
                     <input type="text" class="form-control form-control-sm" id="id_site_contact_con_th" name="site_contact_con_th" readonly value="No. {{customer.site_contact_id}} {{customer.site_contact.con_fname_th}}&nbsp;{{customer.site_contact.con_lname_th}}">
@@ -133,19 +147,7 @@
                     <input type="text" class="form-control form-control-sm" id="id_site_contact_con_position_th" name="site_contact_con_position_th" readonly value="{{ customer.site_contact.con_position_th }}">
                   </div>                  
 
-                  <div class="form-group col-md-2">
-                    <label for="site_contact_con_mobile_th">{% trans 'Phone' %}</label>
-                    <input type="text" class="form-control form-control-sm" id="id_site_contact_con_mobile_th" name="site_contact_con_mobile_th" readonly value="{{ customer.cus_tel }}">
-                  </div>
-                  <div class="form-group col-md-2">
-                    <label for="customer_site_contact_fax">{% trans 'Fax' %}</label>
-                    <input type="text" class="form-control form-control-sm" id="id_customer_site_contact_fax" name="customer_site_contact_fax" readonly value="{{ customer.cus_fax }}">
-                  </div>
 
-                  <div class="form-group col-md-2">
-                    <label for="id_site_contact_con_email_th">{% trans 'Email' %}</label>
-                    <input type="text" class="form-control form-control-sm" id="id_site_contact_con_email_th" name="site_contact_con_email_th" readonly value="{{ customer.cus_email }}">
-                  </div>
                 </div>
 
               </div>
@@ -193,6 +195,18 @@
 
                 <!-- Contact EN -->
                 <div class="form-row">
+                  <div class="form-group col-md-2">
+                    <label for="id_cus_tel_en">{% trans 'Phone' %}</label>
+                    <input type="text" class="form-control form-control-sm" id="id_cus_tel_en" name="cus_tel_en" readonly value="{{ customer.cus_tel }}">
+                  </div>
+                  <div class="form-group col-md-2">
+                    <label for="id_cus_fax_en">{% trans 'Fax' %}</label>
+                    <input type="text" class="form-control form-control-sm" id="id_cus_fax_en" name="cus_fax_en" readonly value="{{ customer.cus_fax }}">
+                  </div>
+                  <div class="form-group col-md-2">
+                    <label for="id_cus_email_en">{% trans 'Email' %}</label>
+                    <input type="text" class="form-control form-control-sm" id="id_cus_email_en" name="cus_email_en" readonly value="{{ customer.cus_email }}">
+                  </div>                  
                   <div class="form-group col-md-4">
                     <label for="id_site_contact_con_en">{% trans 'Contact' %}</label>
                     <input type="text" class="form-control form-control-sm" id="id_site_contact_con_en" name="site_contact_con_en" readonly value="No. {{customer.site_contact_id}} {{customer.site_contact.con_fname_en}}&nbsp;{{customer.site_contact.con_lname_en}}">
@@ -203,19 +217,6 @@
                     <input type="text" class="form-control form-control-sm" id="id_site_contact_con_position_en" name="site_contact_con_position_en" readonly value="{{ customer.site_contact.con_position_en }}">
                   </div>                  
 
-                  <div class="form-group col-md-2">
-                    <label for="site_contact_con_mobile_en">{% trans 'Phone' %}</label>
-                    <input type="text" class="form-control form-control-sm" id="id_site_contact_con_mobile_en" name="site_contact_con_mobile_en" readonly value="{{ customer.cus_tel }}">
-                  </div>
-                  <div class="form-group col-md-2">
-                    <label for="customer_site_contact_fax">{% trans 'Fax' %}</label>
-                    <input type="text" class="form-control form-control-sm" id="id_customer_site_contact_fax" name="customer_site_contact_fax" readonly value="{{ customer.cus_fax }}">
-                  </div>
-
-                  <div class="form-group col-md-2">
-                    <label for="id_site_contact_con_email_en">{% trans 'Email' %}</label>
-                    <input type="text" class="form-control form-control-sm" id="id_site_contact_con_email_en" name="site_contact_con_email_en" readonly value="{{ customer.cus_email }}">
-                  </div>
                 </div>
 
               </div>
@@ -886,7 +887,14 @@
             $('#id_site_contact_con_position_en').val(json.site_contact_con_position_en);
             $('#id_site_contact_con_mobile_en').val(json.site_contact_con_mobile_en);
             $('#id_site_contact_con_email_en').val(json.site_contact_con_email_en);
-                        
+          
+            $('#id_cus_tel_th').val(json.cus_tel);
+            $('#id_cus_fax_th').val(json.cus_fax);
+            $('#id_cus_email_th').val(json.cus_email);
+            $('#id_cus_tel_en').val(json.cus_tel);
+            $('#id_cus_fax_en').val(json.cus_fax);
+            $('#id_cus_email_en').val(json.cus_email);
+
             //$('#id_').val(json.);
             $('#id_cus_vol').focus();
           }

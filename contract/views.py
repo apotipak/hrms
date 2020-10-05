@@ -147,6 +147,10 @@ def get_customer(request):
             cus_country_th = customer.cus_country.country_th
             cus_country_en = customer.cus_country.country_en
             
+            cus_tel = customer.cus_tel
+            cus_fax = customer.cus_fax
+            cus_email = customer.cus_email
+            
             site_contact_id_th = customer.site_contact_id
             site_contact_con_fname_th = customer.site_contact.con_fname_th
             site_contact_con_lname_th = customer.site_contact.con_lname_th
@@ -156,9 +160,7 @@ def get_customer(request):
             site_contact_con_fname_en = customer.site_contact.con_fname_en
             site_contact_con_lname_en = customer.site_contact.con_lname_en
             site_contact_con_position_en = customer.site_contact.con_position_en
-            site_contact_con_mobile = customer.site_contact.con_mobile
-            site_contact_con_email = customer.site_contact.con_email
-
+            
             response = JsonResponse(data={
                 # TH
                 "success": True,
@@ -177,8 +179,6 @@ def get_customer(request):
                 "site_contact_id_th": site_contact_id_th,
                 "site_contact_con_th": str(site_contact_id_th) + " | " + str(site_contact_con_fname_th) + " " + str(site_contact_con_lname_th),
                 "site_contact_con_position_th": site_contact_con_position_th,
-                "site_contact_con_mobile_th": site_contact_con_mobile,
-                "site_contact_con_email_th": site_contact_con_email,
                 
                 # EN
                 "cus_name_en": cus_name_en,
@@ -193,8 +193,11 @@ def get_customer(request):
                 "site_contact_id_en": site_contact_id_en,
                 "site_contact_con_en": str(site_contact_id_en) + " | " + str(site_contact_con_fname_en) + " " + str(site_contact_con_lname_en),
                 "site_contact_con_position_en": site_contact_con_position_en,                
-                "site_contact_con_mobile_en": site_contact_con_mobile,
-                "site_contact_con_email_en": site_contact_con_email,
+
+                "cus_tel": cus_tel,
+                "cus_fax": cus_fax,
+                "cus_email": cus_email,
+
             })
             response.status_code = 200
             return response
