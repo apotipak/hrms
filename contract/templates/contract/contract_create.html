@@ -951,6 +951,7 @@
             $("#id_cnt_eff_to").val(json.cnt_eff_to);
             $("#id_cnt_sign_frm").val(json.cnt_sign_frm);
             $("#id_cnt_sign_to").val(json.cnt_sign_to);
+            $("#id_cnt_wage_id_text").val(json.cnt_wage_text);
 
             $("#main-content :input").attr("disabled", false);
             $("#contract_number_form :input").attr("disabled", true);            
@@ -1171,9 +1172,8 @@
 
   };
 
-
   function cus_contract_select_wagerate(wage_id, wage_th, wage_en, wage_8hr) {
-    $("#id_cnt_wage_id_text").val(wage_th + "    |    " + wage_8hr);
+    $("#id_cnt_wage_id_text").val(wage_id + "  |  " + wage_th + "    " + wage_8hr);
     $("#id_cnt_wage_id").val(wage_id);
     $("#wageratemodal").modal("hide");    
   };

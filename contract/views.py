@@ -253,12 +253,15 @@ def get_cus_contract(request):
         if cnt_id is not None:
             try:                 
                 cuscontract = CusContract.objects.filter(cnt_id=cnt_id).get()
+
                 cnt_doc_no = cuscontract.cnt_doc_no
                 cnt_doc_date = cuscontract.cnt_doc_date.strftime("%d/%m/%Y")
                 cnt_eff_frm = cuscontract.cnt_eff_frm.strftime("%d/%m/%Y")
                 cnt_eff_to = cuscontract.cnt_eff_to.strftime("%d/%m/%Y")
                 cnt_sign_frm = cuscontract.cnt_sign_frm.strftime("%d/%m/%Y")
                 cnt_sign_to = cuscontract.cnt_sign_to.strftime("%d/%m/%Y")
+                cnt_wage_id = cuscontract.cnt_wage_id_id
+                cnt_wage_text = str(cuscontract.cnt_wage_id_id) + "  |  " + str(cuscontract.cnt_wage_id.wage_en) + "    " + str(cuscontract.cnt_wage_id.wage_8hr)
 
                 response = JsonResponse(data={
                     "success": True,
@@ -272,6 +275,8 @@ def get_cus_contract(request):
                     "cnt_eff_to": cnt_eff_to,
                     "cnt_sign_frm": cnt_sign_frm,
                     "cnt_sign_to": cnt_sign_to,
+                    "cnt_wage_id": cnt_wage_id,
+                    "cnt_wage_text": cnt_wage_text,
                 })
                 response.status_code = 200
                 return response
