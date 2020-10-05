@@ -942,10 +942,15 @@
         },
         success : function(json) {        
           if(json.is_existed) {
-            //
-            // $('#customer_name_title').html("<strong>" + json.cus_name_th + "</strong>");
-            //
-            //alert("existing contract");
+            // amnaj
+            cnt_id = json.cnt_id;       
+
+            $("#id_cnt_doc_no").val(json.cnt_doc_no);
+            $("#id_cnt_doc_date").val(json.cnt_doc_date);
+            $("#id_cnt_eff_frm").val(json.cnt_eff_frm);
+            $("#id_cnt_eff_to").val(json.cnt_eff_to);
+            $("#id_cnt_sign_frm").val(json.cnt_sign_frm);
+            $("#id_cnt_sign_to").val(json.cnt_sign_to);
 
             $("#main-content :input").attr("disabled", false);
             $("#contract_number_form :input").attr("disabled", true);            
@@ -958,10 +963,10 @@
               $("#main-content :input").attr("disabled", true);
               $("#contract_number_form :input").attr("disabled", false);
               $("#id_cus_brn").focus();
-            } else {
-              //alert("new contract")
+            } else {              
+              alert("new contract")
               $("#main-content :input").attr("disabled", false);
-              $("#contract_number_form :input").attr("disabled", true);            
+              $("#contract_number_form :input").attr("disabled", true);
               $("#id_cnt_doc_no").focus();              
             }
 
@@ -999,7 +1004,6 @@
     } else {
       //contract_form_validation(cnt_id);
 
-      // amnaj
       alert("Todo");
     }
   });

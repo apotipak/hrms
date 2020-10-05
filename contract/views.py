@@ -254,13 +254,24 @@ def get_cus_contract(request):
             try:                 
                 cuscontract = CusContract.objects.filter(cnt_id=cnt_id).get()
                 cnt_doc_no = cuscontract.cnt_doc_no
-                print("existed")
+                cnt_doc_date = cuscontract.cnt_doc_date.strftime("%d/%m/%Y")
+                cnt_eff_frm = cuscontract.cnt_eff_frm.strftime("%d/%m/%Y")
+                cnt_eff_to = cuscontract.cnt_eff_to.strftime("%d/%m/%Y")
+                cnt_sign_frm = cuscontract.cnt_sign_frm.strftime("%d/%m/%Y")
+                cnt_sign_to = cuscontract.cnt_sign_to.strftime("%d/%m/%Y")
+
                 response = JsonResponse(data={
                     "success": True,
                     "class": "bg_danger",
                     "message": "",
                     "is_existed": True,
+                    "cnt_id": cnt_id,
                     "cnt_doc_no": cnt_doc_no,
+                    "cnt_doc_date": cnt_doc_date,
+                    "cnt_eff_frm": cnt_eff_frm,
+                    "cnt_eff_to": cnt_eff_to,
+                    "cnt_sign_frm": cnt_sign_frm,
+                    "cnt_sign_to": cnt_sign_to,
                 })
                 response.status_code = 200
                 return response
