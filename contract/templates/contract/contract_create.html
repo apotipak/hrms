@@ -433,9 +433,8 @@
             <div class="form-row">
               <div class="form-group col-md-12">
                 <label for="id_cnt_apr_by_text">{% trans 'Authorized by' %}</label>
-                <input type="text" id="id_cnt_apr_by_text" name="cnt_apr_by_text" class="form-control form-control-sm" value="{{contract.cnt_apr_by.apr_name_en}}&nbsp;&nbsp;({{contract.cnt_apr_by.apr_name_th}})" readonly>
-
-                <input type="hidden" id="id_cnt_apr_by_id" name="id_cnt_apr_by_id" value="{{ contract.cnt_apr_by_id|default_if_none:None }}">
+                {{ contract_create_form.cnt_apr_by_text }}
+                <input type="hidden" id="id_cnt_apr_by_id" name="id_cnt_apr_by_id" value="1000">
 
               </div>                               
             </div>
@@ -1508,7 +1507,6 @@
     }      
   };
 
-  // amnaj
   function save_customer_service_item() {
     srv_id = $('#id_select_customer_service_id').val();    
 

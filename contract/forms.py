@@ -86,6 +86,7 @@ class ContractCreateForm(forms.ModelForm):
     cus_id = forms.DecimalField(label='Customer ID', required=False)
     cus_brn = forms.DecimalField(label='Customer Branch', required=False)
     cus_vol = forms.DecimalField(label='Customer Volume', required=False)
+    cnt_apr_by_text = forms.CharField(required=False)
 
     # Date format
     cnt_doc_date = forms.DateField(required=True, widget=forms.DateInput(format='%d/%m/%Y'), input_formats=('%d/%m/%Y', ))
@@ -110,6 +111,7 @@ class ContractCreateForm(forms.ModelForm):
         self.fields['cnt_eff_to'].widget.attrs.update({'class': 'form-control form-control-sm', 'id': 'id_cnt_eff_to', 'placeholder': _('dd/mm/yyyy')})
         self.fields['cnt_sign_frm'].widget.attrs.update({'class': 'form-control form-control-sm', 'id': 'id_cnt_sign_frm', 'placeholder': _('dd/mm/yyyy')})
         self.fields['cnt_sign_to'].widget.attrs.update({'class': 'form-control form-control-sm', 'id': 'id_cnt_sign_to', 'placeholder': _('dd/mm/yyyy')})
+        self.fields['cnt_apr_by_text'].widget.attrs.update({'class': 'form-control form-control-sm', 'id': 'id_cnt_apr_by_text'})
 
         # Initial value
         self.fields['cnt_doc_date'].initial = datetime.date.today
@@ -117,3 +119,4 @@ class ContractCreateForm(forms.ModelForm):
         self.fields['cnt_eff_to'].initial = datetime.date.today
         self.fields['cnt_sign_frm'].initial = datetime.date.today
         self.fields['cnt_sign_to'].initial = datetime.date.today
+        self.fields['cnt_apr_by_text'].initial = "ดร.ชนัต สุขสุวรรณธร (Dr.Chanat Suksuwannatorn)"
