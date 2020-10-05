@@ -609,17 +609,12 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+      
+      <div class="modal-body"></div>
 
-      <div class="modal-body">
-        
-        <!-- Service List Modal -->
-
-        <!-- /.row --> 
-
-      </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary btn-md" data-dismiss="modal">{% trans 'Cancel' %}</button>
-        <button type="button" class="btn btn-success btn-md">&nbsp;&nbsp;{% trans 'Add' %}&nbsp;&nbsp;</button>
+        <button id="save_new_service_button" onclick="save_new_service()" type="button" class="btn btn-success btn-md"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}&nbsp;&nbsp;</button>
       </div>
     </div>
   </div>
@@ -1193,7 +1188,6 @@
     }      
   };
 
-  // amnaj
   function save_customer_service_item() {
     srv_id = $('#id_select_customer_service_id').val();    
 
@@ -1283,6 +1277,121 @@
   }
 
 
+  // Save new service
+  function save_new_service() {
+
+    srv_eff_frm_new = $('#id_dtp_cnt_eff_frm_new').val();
+    srv_eff_to_new = $('#id_dtp_cnt_eff_to_new').val();
+    srv_rank_id_new = $('#id_com_rank_rank_id_new').val(); 
+    srv_shift_id_new = $('#id_t_shift_id_new').val();      
+    srv_mon_new = $('#id_srv_mon_new').val();
+    srv_tue_new = $('#id_srv_tue_new').val();
+    srv_wed_new = $('#id_srv_wed_new').val();
+    srv_thu_new = $('#id_srv_thu_new').val();
+    srv_fri_new = $('#id_srv_fri_new').val();
+    srv_sat_new = $('#id_srv_sat_new').val();
+    srv_sun_new = $('#id_srv_sun_new').val();
+    srv_pub_new = $('#id_srv_pub_new').val();
+
+    // amnaj
+
+    //alert(srv_eff_frm_new);
+    //alert(srv_eff_to_new);
+    //alert(srv_rank_id_new);
+    //alert(srv_shift_id_new);
+    alert(srv_mon_new);
+
+
+    /*
+    srv_id = $('#id_select_customer_service_id').val();    
+
+    if(srv_id == null || srv_id == "") {
+      alert("Service ID not found!");      
+    } else {
+      srv_eff_frm = $('#id_srv_eff_frm').val();
+      srv_eff_to = $('#id_srv_eff_to').val();
+      srv_rank = $('#id_cus_service_srv_rank').val(); 
+      srv_shift_id = $('#id_cus_service_srv_shift').val();      
+      srv_qty = $('#id_srv_qty').val();        
+      srv_mon = $('#id_srv_mon').val();
+      srv_tue = $('#id_srv_tue').val();
+      srv_wed = $('#id_srv_wed').val();
+      srv_thu = $('#id_srv_thu').val();
+      srv_fri = $('#id_srv_fri').val();
+      srv_sat = $('#id_srv_sat').val();
+      srv_sun = $('#id_srv_sun').val();
+      srv_pub = $('#id_srv_pub').val();
+            
+      if ($('#id_srv_active').is(":checked"))
+        srv_active = 1;
+      else
+        srv_active = 0;
+
+      srv_rate = $('#id_srv_rate').val();
+      srv_cost = $('#id_srv_cost').val();
+      srv_cost_rate = $('#id_srv_cost_rate').val();
+      srv_rem = $('#id_srv_rem').val();
+
+      $.ajax({
+        url : "/contract/ajax/save_customer_service_item",
+        type: 'get',          
+        dataType: 'json',
+        data: {
+          srv_id: srv_id,
+          srv_eff_frm: srv_eff_frm,
+          srv_eff_to: srv_eff_to,
+          srv_rank: srv_rank,
+          srv_shift_id: srv_shift_id,
+          srv_qty: srv_qty,
+          srv_mon: srv_mon,
+          srv_tue: srv_tue,
+          srv_wed: srv_wed,
+          srv_thu: srv_thu,
+          srv_fri: srv_fri,
+          srv_sat: srv_sat,          
+          srv_sun: srv_sun,
+          srv_pub: srv_pub,
+          srv_active: srv_active,
+          srv_rate: srv_rate,
+          srv_cost: srv_cost,
+          srv_cost_rate: srv_cost_rate,
+          srv_rem: srv_rem,
+        },
+        beforeSend: function () {
+          
+        },    
+        success: function (data) {
+          $(document).Toasts('create', {
+            class: data.class, 
+            title: "{% trans 'System Message' %}",
+            subtitle: '',
+            autohide: true,
+            delay: 2000,      
+            body: data.message,
+            autoDismiss: true,
+            close: true,
+            autoremove: true,
+          });
+        },
+        error: function(data){
+          $(document).Toasts('create', {
+            class: 'bg-danger', 
+            title: "{% trans 'System Message' %}",
+            subtitle: '',
+            autohide: true,
+            delay: 2000,      
+            body: "Cannot save " + srv_id,
+            autoDismiss: true,
+            close: true,
+            autoremove: true,
+          });          
+        }
+      });            
+    }
+    */
+
+  }
+
   // Add new service
   $(document).ready(function(){    
     $('#add_service_button').on('click', function (e) {
@@ -1311,7 +1420,7 @@
             result += "<div class='form-row'>";                  
             result += "<div class='form-group col-md-3'>";
             result += "<label for='id_dtp_cnt_eff_frm_new'>{% trans 'Effect Term From' %}</label>";
-            result += "<div class='input-group date' id='id_dtp_cnt_eff_frm_new' data-target-input='nearest'>";
+            result += "<div class='input-group date' data-target-input='nearest'>";
             result += "<input type='text' name='dtp_cnt_eff_frm_new' class='form-control form-control-sm' id='id_dtp_cnt_eff_frm_new' placeholder='dd/mm/yyyy'>";
             result += "<div class='input-group-append' data-target='#dtp_cnt_eff_frm_new' data-toggle='datepicker'>";
             result += "<div class='input-group-text text-primary'><i class='fa fa-calendar'></i></div>";
@@ -1321,7 +1430,7 @@
 
             result += "<div class='form-group col-md-3'>";
             result += "<label for='id_dtp_cnt_eff_to_new'>{% trans 'Effect Term From' %}</label>";
-            result += "<div class='input-group date' id='id_dtp_cnt_eff_to_new' data-target-input='nearest'>";
+            result += "<div class='input-group date' data-target-input='nearest'>";
             result += "<input type='text' name='dtp_cnt_eff_to_new' class='form-control form-control-sm' id='id_dtp_cnt_eff_to_new' placeholder='dd/mm/yyyy'>";
             result += "<div class='input-group-append' data-target='#dtp_cnt_eff_to_new' data-toggle='datepicker'>";
             result += "<div class='input-group-text text-primary'><i class='fa fa-calendar'></i></div>";
@@ -1332,7 +1441,7 @@
             // COM_RANK
             result += "        <div class='form-group col-md-3'>";
             result += "          <label for='id_com_rank_rank_id_new'>{% trans 'Rank' %}</label>";
-            result += " <select name='com_rank_rank_id_new' class='form-control col-sm-12 form-control-sm' id='com_rank_rank_id_new'>";
+            result += " <select name='com_rank_rank_id_new' class='form-control col-sm-12 form-control-sm' id='id_com_rank_rank_id_new'>";
             result += "  <option value=''>---------</option>";
             for(var i=0; i<com_rank_count; i++) {              
               if(data.srv_rank == data.com_rank_list[i]["rank_id"])
@@ -1343,11 +1452,10 @@
             result += " </select>";
             result += "        </div>";
 
-
             // T_SHIFT
             result += "        <div class='form-group col-md-3'>";
-            result += "          <label for='cus_zip'>{% trans 'Shift' %}</label>";
-            result += " <select name='cus_service_srv_shift' class='form-control col-sm-12 form-control-sm' id='id_cus_service_srv_shift'>";
+            result += "          <label for='id_t_shift_id_new'>{% trans 'Shift' %}</label>";
+            result += " <select name='id_t_shift_id_new' class='form-control col-sm-12 form-control-sm' id='id_t_shift_id_new'>";
             result += "  <option value=''>---------</option>";
             for(var i=0; i<t_shift_count; i++) {              
               if(data.srv_shif_id == data.t_shift_list[i]["shf_id"])
@@ -1358,73 +1466,84 @@
             result += " </select>";
             result += "        </div>";
 
-
-
             result += "<div class='form-row'>";
             result += "<div class='form-row col-6'>";
             result += "<div class='form-group col-3'>";
-            result += "<label for=''>{% trans 'Mon' %}</label>";
-            result += "<input type='text' class='form-control form-control-sm' value=''>";
+            result += "<label for='id_srv_mon_new'>{% trans 'Mon' %}</label>";
+            result += "<input id='id_srv_mon_new' type='text' class='form-control form-control-sm' value=''>";
             result += "</div>";
 
             result += "<div class='form-group col-3'>";
-            result += "<label for='cus_zip'>{% trans 'Tue' %}</label>";
-            result += "<input type='text' class='form-control form-control-sm' value=''>";
+            result += "<label for='id_srv_tue_new'>{% trans 'Tue' %}</label>";
+            result += "<input id='id_srv_tue_new' type='text' class='form-control form-control-sm' value=''>";
             result += "</div>";
+
             result += "<div class='form-group col-3'>";
-            result += "<label for='cus_zip'>{% trans 'Wed' %}</label>";
-            result += "<input type='text' class='form-control form-control-sm' value=''>";
+            result += "<label for='id_srv_wed_new'>{% trans 'Wed' %}</label>";
+            result += "<input id='id_srv_wed_new' type='text' class='form-control form-control-sm' value=''>";
             result += "</div>";
+
             result += "<div class='form-group col-3'>";
-            result += "<label for='cus_zip'>{% trans 'Thu' %}</label>";
-            result += "<input type='text' class='form-control form-control-sm' value=''>";
+            result += "<label for='id_srv_thu_new'>{% trans 'Thu' %}</label>";
+            result += "<input id='id_srv_thu_new' type='text' class='form-control form-control-sm' value=''>";
             result += "</div>";
+
             result += "</div>";
             result += "<div class='form-row col-6'>";
             result += "<div class='form-group col-3'>";
-            result += "<label for='cus_zip'>{% trans 'Fri' %}</label>";
-            result += "<input type='text' class='form-control form-control-sm' value=''>";
+            result += "<label for='id_srv_fri_new'>{% trans 'Fri' %}</label>";
+            result += "<input id='id_srv_fri_new' type='text' class='form-control form-control-sm' value=''>";
             result += "</div>";
+
             result += "<div class='form-group col-3'>";
-            result += "<label for='cus_zip'>{% trans 'Sat' %}</label>";
-            result += "<input type='text' class='form-control form-control-sm' value=''>";
+            result += "<label for='id_srv_sat_new'>{% trans 'Sat' %}</label>";
+            result += "<input id='id_srv_sat_new' type='text' class='form-control form-control-sm' value=''>";
             result += "</div>";
+
             result += "<div class='form-group col-3'>";
-            result += "<label for='cus_zip'>{% trans 'Sun' %}</label>";
-            result += "<input type='text' class='form-control form-control-sm' value=''>";
+            result += "<label for='id_srv_sun_new'>{% trans 'Sun' %}</label>";
+            result += "<input id='id_srv_sun_new' type='text' class='form-control form-control-sm' value=''>";
             result += "</div>";
+
             result += "<div class='form-group col-3'>";
-            result += "<label for='cus_zip'>{% trans 'Pub' %}</label>";
-            result += "<input type='text' class='form-control form-control-sm' value=''>";
+            result += "<label for='id_srv_pub_new'>{% trans 'Pub' %}</label>";
+            result += "<input id='id_srv_pub_new' type='text' class='form-control form-control-sm' value=''>";
+            result += "</div>";
+
             result += "</div>";
             result += "</div>";
-            result += "</div>";
+
             result += "<div class='form-row'>";
             result += "<div class='form-group col-md-3'>";
-            result += "<label for='cus_zip'>{% trans 'QTY' %}</label>";
-            result += "<input type='text' class='form-control form-control-sm' value=''>";
+            result += "<label for='id_srv_qty_new'>{% trans 'QTY' %}</label>";
+            result += "<input id='id_srv_qty_new' type='text' class='form-control form-control-sm' value=''>";
             result += "</div>";
+
             result += "<div class='form-group col-md-3'>";
-            result += "<label for='cus_tel'>{% trans 'Cost' %}</label>";
-            result += "<input type='text' class='form-control form-control-sm' value=''>";
+            result += "<label for='id_srv_cost_new'>{% trans 'Cost' %}</label>";
+            result += "<input id='id_srv_cost_new' type='text' class='form-control form-control-sm' value=''>";
             result += "</div>";
+
             result += "<div class='form-group col-md-3'>";
-            result += "<label for='cus_zip'>{% trans 'Total Cost' %}</label>";
-            result += "<input type='text' class='form-control form-control-sm' readonly>";
+            result += "<label for='id_srv_total_cost_new'>{% trans 'Total Cost' %}</label>";
+            result += "<input id='id_srv_total_cost_new' type='text' class='form-control form-control-sm' readonly>";
             result += "</div>";
+
             result += "<div class='form-group col-md-3 text-center'>";
-            result += "<label for='cus_zip'>&nbsp;</label>";
+            result += "<label for='id_srv_active_new'>&nbsp;</label>";
             result += "<div class='form-check'>";
-            result += "<input class='form-check-input' type='checkbox'>";
+            result += "<input id='id_srv_active_new' class='form-check-input' type='checkbox'>";
             result += "<label class='form-check-label'>{% trans 'Active' %}</label>";
             result += "</div>";                                              
             result += "</div>";
             result += "</div>";
+
             result += "<div class='form-row'>";
             result += "<div class='form-group col-md-6'>";
-            result += "<label for='cus_zip'>{% trans 'Remark' %}</label>";
-            result += "<input type='text' class='form-control form-control-sm' value=''>";
+            result += "<label for='id_srv_rem_new'>{% trans 'Remark' %}</label>";
+            result += "<input id='id_srv_rem_new' type='text' class='form-control form-control-sm' value=''>";
             result += "</div>";
+
             result += "<div class='form-group col-md-6'>";
             result += "<label for='cus_tel'>{% trans 'Cost Rate' %}</label>";
             result += "<input type='text' class='form-control form-control-sm' value=''>";
@@ -1571,6 +1690,41 @@
         autoclose: true,
         orientation: "bottom"
       });
+
+
+      // SRV_QTY_NEW
+      $('#id_srv_qty_new').on('keypress', function (e) {
+        var qty = $(this);
+        if(e.which === 13) {
+          if(qty.val() > 0) {
+            day = qty.val();
+            $('#id_srv_mon_new').val(day);
+            $('#id_srv_tue_new').val(day);
+            $('#id_srv_wed_new').val(day);
+            $('#id_srv_thu_new').val(day);
+            $('#id_srv_fri_new').val(day);
+            $('#id_srv_sat_new').val(day);
+            $('#id_srv_sun_new').val(day);
+            $('#id_srv_pub_new').val(day);
+          } else {
+            $(this).val(1);
+            day = 1;
+            $('#id_srv_mon_new').val(day);
+            $('#id_srv_tue_new').val(day);
+            $('#id_srv_wed_new').val(day);
+            $('#id_srv_thu_new').val(day);
+            $('#id_srv_fri_new').val(day);
+            $('#id_srv_sat_new').val(day);
+            $('#id_srv_sun_new').val(day);
+            $('#id_srv_pub_new').val(day);            
+          }
+
+          $('#id_srv_rate_new').focus();
+          event.preventDefault();
+          return false;        
+        }
+      });
+
     });
 
     // Update service modal
