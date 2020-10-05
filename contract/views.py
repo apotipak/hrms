@@ -244,12 +244,9 @@ def get_cus_contract(request):
     cus_vol = request.POST.get('cus_vol')    
     cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
     
-    print("cus_brn = " + str(cus_brn))
     # Double check if customer is existed
     try:                
         customer = Customer.objects.filter(cus_id=cus_id, cus_brn=cus_brn).get()
-        print("d1")
-        print(cnt_id)
         if cnt_id is not None:
             try:                 
                 cuscontract = CusContract.objects.filter(cnt_id=cnt_id).get()
@@ -259,7 +256,7 @@ def get_cus_contract(request):
                     cnt_active = 1
                 else:
                     cnt_active = 0                
-                    
+
                 cnt_doc_no = cuscontract.cnt_doc_no                
                 cnt_doc_date = cuscontract.cnt_doc_date.strftime("%d/%m/%Y")
                 cnt_eff_frm = cuscontract.cnt_eff_frm.strftime("%d/%m/%Y")
@@ -268,19 +265,18 @@ def get_cus_contract(request):
                 cnt_sign_to = cuscontract.cnt_sign_to.strftime("%d/%m/%Y")
                 cnt_wage_id = cuscontract.cnt_wage_id_id
                 cnt_wage_text = str(cuscontract.cnt_wage_id_id) + "  |  " + str(cuscontract.cnt_wage_id.wage_en) + "    " + str(cuscontract.cnt_wage_id.wage_8hr)
+                cnt_guard_amt = cuscontract.cnt_guard_amt
+                cnt_sale_amt = cuscontract.cnt_sale_amt
                 cnt_new = cuscontract.cnt_new
                 cnt_print = cuscontract.cnt_print
                 cnt_autoexpire = cuscontract.cnt_autoexpire
 
+                print("cnt_guard_amt = " + str(cnt_guard_amt))
+                
                 if cnt_autoexpire:
                     cnt_autoexpire = 1
                 else:
                     cnt_autoexpire = 0
-
-                print("cnt_new = " + str(cnt_new))
-                print("cnt_print = " + str(cnt_print))
-                print('cnt_autoexpire = ' + str(cnt_autoexpire))
-                print("cnt_active = " + str(cnt_active))
 
                 response = JsonResponse(data={
                     "success": True,
@@ -297,6 +293,8 @@ def get_cus_contract(request):
                     "cnt_sign_to": cnt_sign_to,
                     "cnt_wage_id": cnt_wage_id,
                     "cnt_wage_text": cnt_wage_text,
+                    "cnt_guard_amt": cnt_guard_amt,
+                    "cnt_sale_amt": cnt_sale_amt,
                     "cnt_new": cnt_new,
                     "cnt_print": cnt_print,
                     "cnt_autoexpire": cnt_autoexpire,
@@ -305,7 +303,6 @@ def get_cus_contract(request):
                 response.status_code = 200
                 return response
             except CusContract.DoesNotExist:
-                print("not existed")
                 response = JsonResponse(data={
                     "success": True,
                     "class": "bg_danger",
@@ -317,7 +314,6 @@ def get_cus_contract(request):
                 response.status_code = 200
                 return response            
     except Customer.DoesNotExist:
-        print("d2")
         response = JsonResponse(data={
             "success": True,
             "class": "bg_danger",
@@ -509,11 +505,11 @@ def SaveContract(request):
         if form.is_valid():
             print("Form is valid")
 
-
             # Get values
-            cnt_id = request.POST.get('cnt_id')
-            # cus_brn
-            # cus_vol
+            cus_id = request.POST.get('cus_id')
+            cus_brn = request.POST.get('cus_brn')
+            cus_vol = request.POST.get('cus_vol')
+            cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
             cnt_active = request.POST.get('cnt_active')            
             cnt_doc_no = request.POST.get('cnt_doc_no')
 
@@ -725,7 +721,7 @@ def SaveContract(request):
                     response_data['result'] = "Sorry, nothing to update."
                     response_data['class'] = "bg-warning"
                
-            except CustomerOption.DoesNotExist:
+            except CusContract.DoesNotExist:
                 # Insert
                 response_data['form_is_valid'] = True
                 response_data['result'] = "Pending to save data"

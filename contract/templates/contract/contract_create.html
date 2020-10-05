@@ -420,11 +420,11 @@
             <div class="form-row">
               <div class="form-group col-md-6">
                 <label for="id_cnt_guard_amt">{% trans 'Guard Amount' %}</label>
-                <input type="text" id="id_cnt_guard_amt" name="cnt_guard_amt" class="form-control form-control-sm" value="{{contract.cnt_guard_amt}}" readonly>
+                {{ contract_create_form.cnt_guard_amt }}
               </div>
               <div class="form-group col-md-6">
                 <label for="id_cnt_sale_amt">{% trans 'Sale Amount' %}</label>
-                <input type="text" id="id_cnt_sale_amt" name="cnt_sale_amt" class="form-control form-control-sm text-right" value="{{contract.cnt_sale_amt}}" readonly>
+                {{ contract_create_form.cnt_sale_amt }}
               </div>              
             </div>
 
@@ -944,7 +944,6 @@
           if(json.is_existed) {
             cnt_id = json.cnt_id;       
 
-            // amnaj
             if(json.cnt_active) {
               $("#id_cnt_active").prop("checked", true);
             } else {
@@ -957,7 +956,11 @@
             $("#id_cnt_eff_to").val(json.cnt_eff_to);
             $("#id_cnt_sign_frm").val(json.cnt_sign_frm);
             $("#id_cnt_sign_to").val(json.cnt_sign_to);
+            $("#id_cnt_wage_id").val(json.cnt_wage_id);
             $("#id_cnt_wage_id_text").val(json.cnt_wage_text);
+
+            $("#id_cnt_guard_amt").val(json.cnt_guard_amt);
+            $("#id_cnt_sale_amt").val(json.cnt_sale_amt);
 
             if(json.cnt_new=='N') {
               $("#id_cnt_new").prop("checked", true);
@@ -982,16 +985,19 @@
             $("#main-content :input").attr("disabled", false);
             $("#contract_number_form :input").attr("disabled", true);            
             $("#id_cnt_doc_no").focus();
+
           } else {
 
             if(json.customer_not_existed) {
-              //alert("Customer Branch " + cus_brn + " does not existed. Please create a new customer.");
               alert("Customer " + cus_id + " Branch " + cus_brn + " does not existed. Please create a new customer.");
+
               $("#main-content :input").attr("disabled", true);
               $("#contract_number_form :input").attr("disabled", false);
               $("#id_cus_brn").focus();
             } else {              
+              
               alert("new contract")
+              
               $("#main-content :input").attr("disabled", false);
               $("#contract_number_form :input").attr("disabled", true);
               $("#id_cnt_doc_no").focus();              
@@ -999,9 +1005,7 @@
 
           }             
         },
-      });      
-
-      
+      });       
     }
   });  
 
@@ -1029,9 +1033,11 @@
       alert("Customer Volume is required");
       $('#id_cus_vol').focus();
     } else {
-      //contract_form_validation(cnt_id);
+      
+      // amnaj
+      //alert("Todo");
+      contract_form_validation(cus_id, cus_brn, cus_vol);
 
-      alert("Todo");
     }
   });
 
@@ -1054,7 +1060,7 @@
   });
 
 
-  function contract_form_validation(cnt_id) {
+  function contract_form_validation(cus_id, cus_brn, cus_vol) {
 
     // cnt_active
     if ($('#id_cnt_active').is(":checked"))
@@ -1126,7 +1132,9 @@
       type : "POST",
       data : {          
         csrfmiddlewaretoken: '{{ csrf_token }}',
-        cnt_id: cnt_id,
+        cus_id: cus_id,
+        cus_brn: cus_brn,
+        cus_vol: cus_vol,
         cnt_active: cnt_active,
         cnt_new: cnt_new,
         cnt_print: cnt_print,
@@ -1142,9 +1150,6 @@
         cnt_guard_amt: cnt_guard_amt,
         cnt_apr_by_id: cnt_apr_by_id,
         cnt_apr_by_text: cnt_apr_by_text,
-        // cnt_zone_id: cnt_zone_id,
-        // cnt_then: cnt_then,
-        // cnt_print: cnt_print,        
       },
       success : function(json) {        
         if(json.form_is_valid) {

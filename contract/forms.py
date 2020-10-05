@@ -95,6 +95,9 @@ class ContractCreateForm(forms.ModelForm):
     cnt_sign_frm = forms.DateField(required=True, widget=forms.DateInput(format='%d/%m/%Y'), input_formats=('%d/%m/%Y', ))
     cnt_sign_to = forms.DateField(required=True, widget=forms.DateInput(format='%d/%m/%Y'), input_formats=('%d/%m/%Y', ))
 
+    cnt_guard_amt = forms.DecimalField(required=False, min_value=0)
+    cnt_sale_amt = forms.DecimalField(required=False, min_value=0)
+
     class Meta:
         model = CusContract  
         fields = '__all__'
@@ -112,6 +115,10 @@ class ContractCreateForm(forms.ModelForm):
         self.fields['cnt_sign_frm'].widget.attrs.update({'class': 'form-control form-control-sm', 'id': 'id_cnt_sign_frm', 'placeholder': _('dd/mm/yyyy')})
         self.fields['cnt_sign_to'].widget.attrs.update({'class': 'form-control form-control-sm', 'id': 'id_cnt_sign_to', 'placeholder': _('dd/mm/yyyy')})
         self.fields['cnt_apr_by_text'].widget.attrs.update({'class': 'form-control form-control-sm', 'id': 'id_cnt_apr_by_text'})
+        self.fields['cnt_guard_amt'].widget.attrs.update({'class': 'form-control form-control-sm text-right', 'id': 'id_cnt_guard_amt'})
+        self.fields['cnt_sale_amt'].widget.attrs.update({'class': 'form-control form-control-sm text-right', 'id': 'id_cnt_sale_amt'})
+        self.fields['cnt_guard_amt'].widget.attrs['readonly'] = True
+        self.fields['cnt_sale_amt'].widget.attrs['readonly'] = True
 
         # Initial value
         self.fields['cnt_doc_date'].initial = datetime.date.today
@@ -120,3 +127,6 @@ class ContractCreateForm(forms.ModelForm):
         self.fields['cnt_sign_frm'].initial = datetime.date.today
         self.fields['cnt_sign_to'].initial = datetime.date.today
         self.fields['cnt_apr_by_text'].initial = "ดร.ชนัต สุขสุวรรณธร (Dr.Chanat Suksuwannatorn)"
+        self.fields['cnt_guard_amt'].initial = 0
+        self.fields['cnt_sale_amt'].initial = 0
+
