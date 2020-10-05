@@ -139,7 +139,7 @@
 
                   <div class="form-group col-md-4">
                     <label for="id_site_contact_con_th">{% trans 'Contact' %}</label>
-                    <input type="text" class="form-control form-control-sm" id="id_site_contact_con_th" name="site_contact_con_th" readonly value="No. {{customer.site_contact_id}} {{customer.site_contact.con_fname_th}}&nbsp;{{customer.site_contact.con_lname_th}}">
+                    <input type="text" class="form-control form-control-sm" id="id_site_contact_con_th" name="site_contact_con_th" readonly value="{customer.site_contact_id}} {{customer.site_contact.con_fname_th}}&nbsp;{{customer.site_contact.con_lname_th}}">
                   </div>
 
                   <div class="form-group col-md-2">
@@ -209,7 +209,7 @@
                   </div>                  
                   <div class="form-group col-md-4">
                     <label for="id_site_contact_con_en">{% trans 'Contact' %}</label>
-                    <input type="text" class="form-control form-control-sm" id="id_site_contact_con_en" name="site_contact_con_en" readonly value="No. {{customer.site_contact_id}} {{customer.site_contact.con_fname_en}}&nbsp;{{customer.site_contact.con_lname_en}}">
+                    <input type="text" class="form-control form-control-sm" id="id_site_contact_con_en" name="site_contact_con_en" readonly value="{{customer.site_contact_id}} {{customer.site_contact.con_fname_en}}&nbsp;{{customer.site_contact.con_lname_en}}">
                   </div>
 
                   <div class="form-group col-md-2">
@@ -999,6 +999,8 @@
       $('#id_cus_vol').focus();
     } else {
       //contract_form_validation(cnt_id);
+
+      // amnaj
       alert("Todo");
     }
   });
