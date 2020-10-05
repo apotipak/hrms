@@ -39,7 +39,7 @@ def check_modified_field(table_name, primary_key, field_name, old_value, new_val
 
 
 @login_required(login_url='/accounts/login/')
-@permission_required('contract.view_contract', login_url='/accounts/login/')
+@permission_required('contract.view_cuscontract', login_url='/accounts/login/')
 def contract_create(request):
     template_name = 'contract/contract_create.html'
     page_title = settings.PROJECT_NAME
