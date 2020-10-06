@@ -544,7 +544,7 @@
                   <td align="center"><small>{{item.srv_qty}}</small></td>
                   <td><small>{{item.srv_rank}}</small></td>
                   <td align="right"><small>{{item.srv_rate|stringformat:".0f"}}</small></td>
-                  <td align="right"><small>{{item.srv_cost|stringformat:".0f"}}</small></td>
+                  <td align="right"><small>{{item.srv_cost_rate|stringformat:".0f"}}</small></td>
                   <td align="center"><small>{{item.srv_mon}}</small></td>
                   <td align="center"><small>{{item.srv_tue}}</small></td>
                   <td align="center"><small>{{item.srv_wed}}</small></td>
@@ -2054,21 +2054,15 @@
         }
       });
 
+      // amnaj
       $('#id_srv_qty').on('keyup', function (e) {
         var qty = $(this);
-
         if(e.which === 13){
-          event.preventDefault();
           total = qty * $('#id_srv_rate').val();
           $('#id_srv_cost').val(total);
-          //$('#id_srv_rate').focus();  
-
-          return false;        
         } else {
-          event.preventDefault();
           total = $(this).val() * $('#id_srv_rate').val();
           $('#id_srv_cost').val(total); 
-          return false;         
         }
       });
 
@@ -2077,18 +2071,14 @@
         if(e.which === 13){
           total = cost.val() * $('#id_srv_qty').val();
           $('#id_srv_cost').val(total);
-          //$('#id_srv_rem').focus();
-          event.preventDefault();
-          return false;
         } else {
           total = $(this).val() * $('#id_srv_qty').val();
           $('#id_srv_cost').val(total);
         }
       });
       $('#id_srv_rate').on('keypress', function (e) {        
-        if(e.which === 13){
-          $('#id_srv_rem').focus();
-        }
+        if(e.which === 13)
+          $('#id_srv_rem').focus();        
       });
 
 

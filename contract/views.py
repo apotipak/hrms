@@ -1352,7 +1352,7 @@ def update_customer_service(request):
                 "srv_rem": data.srv_rem,
                 "upd_date": data.upd_date,
                 "upd_flag": data.upd_flag,
-                "srv_cost_rate": data.srv_cost_rate,
+                "srv_cost_rate": data.srv_qty * data.srv_rate,
                 "srv_cost_change": data.srv_cost_change,
                 "op1": data.op1,
                 "op2": data.op2,
@@ -1405,17 +1405,24 @@ def save_new_service(request):
     srv_active = request.GET["srv_active_new"]
     srv_rate = request.GET["srv_rate_new"]
     srv_cost = request.GET["srv_cost_new"]
-    srv_cost_rate = float(srv_cost) * int(srv_qty)
+    srv_cost_rate = float(srv_rate) * int(srv_qty)
     srv_rem = request.GET["srv_rem_new"]
 
+    print("qty = " + str(srv_qty))
+    print("cost = " + str(srv_cost))
     print("srv_rank = " + str(srv_rank))
     print("srv_shift_id = " + str(srv_shift_id))
     print("srv_cost_rate = " + str(srv_cost_rate))
 
     # amnaj 
     # Get latest service id
-    lastest_servce_number = CusService.objects.filter(cnt_id=cnt_id).aggregate(Max('srv_id'))
-    new_service_number = lastest_servce_number['srv_id__max'] + 1    
+    latest_service_number = CusService.objects.filter(cnt_id=cnt_id).aggregate(Max('srv_id'))
+    print("latest_service_number" + str(latest_service_number))
+
+    if not CusService.objects.filter(cnt_id=cnt_id).aggregate(Max('srv_id')):
+        new_service_number = latest_service_number['srv_id__max'] + 1    
+    else:
+        new_service_number = str(cnt_id) + "00001"
 
     s = CusService(
         srv_id = new_service_number,
@@ -1814,6 +1821,7 @@ def reload_service_list(request):
             "srv_qty": d.srv_qty,
             "srv_rate": d.srv_rate,
             "srv_cost": d.srv_cost,
+            "srv_cost_rate": d.srv_cost_rate,
             "srv_mon": d.srv_mon,
             "srv_tue": d.srv_tue,
             "srv_wed": d.srv_wed,
