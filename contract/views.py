@@ -1672,25 +1672,29 @@ def save_customer_service_item(request):
                 # Recalculate cnt_guard_amt, cnt_sale_amt
                 # start
                 cus_service_list = CusService.objects.all().filter(cnt_id=cnt_id)
-                temp_cnt_guard_amt = 0
-                temp_cnt_sale_amt = 0
+                active_cnt_guard_amt = 0
+                active_cnt_sale_amt = 0
                 for item in cus_service_list:
                     if item.srv_active:                        
-                        temp_cnt_guard_amt += item.srv_qty
-                        temp_cnt_sale_amt += item.srv_rate * item.srv_qty
+                        active_cnt_guard_amt += item.srv_qty
+                        active_cnt_sale_amt += item.srv_rate * item.srv_qty
                 c = CusContract.objects.get(cnt_id=cnt_id)
-                c.cnt_guard_amt = temp_cnt_guard_amt
-                c.cnt_sale_amt = temp_cnt_sale_amt
+                c.cnt_guard_amt = active_cnt_guard_amt
+                c.cnt_sale_amt = active_cnt_sale_amt
                 c.save()
 
                 # end
                 
                 # Return result
+                print("active_cnt_guard_amt = " + str(active_cnt_guard_amt))
+                print("active_cnt_sale_amt = " + str(active_cnt_sale_amt))
                 response = JsonResponse(data={
                     "success": True,
                     "message": "Saved success.",
                     "class": "bg-success",
                     "cnt_id": cnt_id,
+                    "active_cnt_guard_amt": active_cnt_guard_amt,
+                    "active_cnt_sale_amt": active_cnt_sale_amt,
                 })            
                 response.status_code = 200
 

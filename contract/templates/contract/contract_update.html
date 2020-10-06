@@ -1260,8 +1260,9 @@
             autoremove: true,
           });
 
-          
-          $("#update_service_modal").modal("hide");
+          // Refresh Guard Amount, Sale Amount value
+          $('#id_cnt_guard_amt').val(data.active_cnt_guard_amt);
+          $('#id_cnt_sale_amt').val(data.active_cnt_sale_amt);
 
           // Reloade service list table
           $.ajax({
@@ -1366,6 +1367,8 @@
               result += "</div>";
 
               $("#service_list .card-body").html(result);
+              $("#update_service_modal").modal("hide");
+
             },
             error: function(data){
               // do nothing        
