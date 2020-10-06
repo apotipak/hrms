@@ -1447,7 +1447,6 @@ def save_new_service(request):
     )
     s.save()
 
-    # TODO
     # Recalculate cnt_guard_amt, cnt_sale_amt
     # start
     cus_service_list = CusService.objects.all().filter(cnt_id=cnt_id)
@@ -1830,6 +1829,47 @@ def reload_service_list(request):
     response = JsonResponse(data={
         "success": True,
         "cus_service_list": list(cus_service_list),
+    })
+
+    response.status_code = 200
+    return response
+
+
+@login_required(login_url='/accounts/login/')
+def delete_customer_service(request):
+
+    print("*******************************")
+    print("FUNCTION: delete_customer_service")
+    print("*******************************")
+
+    srv_id = request.GET["srv_id"]
+
+    data = CusService.objects.filter(srv_id=srv_id).get() 
+    cnt_id = data.cnt_id_id
+    data.delete()
+
+    # Recalculate cnt_guard_amt, cnt_sale_amt
+    # start
+    cus_service_list = CusService.objects.all().filter(cnt_id=cnt_id)
+    active_cnt_guard_amt = 0
+    active_cnt_sale_amt = 0
+    for item in cus_service_list:
+        if item.srv_active:                        
+            active_cnt_guard_amt += item.srv_qty
+            active_cnt_sale_amt += item.srv_rate * item.srv_qty
+    c = CusContract.objects.get(cnt_id=cnt_id)
+    c.cnt_guard_amt = active_cnt_guard_amt
+    c.cnt_sale_amt = active_cnt_sale_amt
+    c.save()
+    # end
+
+    response = JsonResponse(data={
+        "success": True,
+        "message": "Service ID " + srv_id + " has been deleted.",
+        "class": "bg-danger",
+        "cnt_id": cnt_id,
+        "active_cnt_guard_amt": active_cnt_guard_amt,
+        "active_cnt_sale_amt": active_cnt_sale_amt,        
     })
 
     response.status_code = 200

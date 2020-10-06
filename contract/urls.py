@@ -19,4 +19,5 @@ urlpatterns = [
     url(r'^ajax/get_cus_contract/$', views.get_cus_contract, name='get_cus_contract'),
     url(r'^ajax/get_rank_shift_list/$', views.get_rank_shift_list, name='get_rank_shift_list'),
     url(r'^ajax/reload_service_list/$', views.reload_service_list, name='reload_service_list'),
+    url(r'^ajax/delete_customer_service/$', views.delete_customer_service, name='delete_customer_service'),
 ]
