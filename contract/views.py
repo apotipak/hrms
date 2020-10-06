@@ -17,6 +17,7 @@ from decimal import Decimal
 from django.utils import timezone
 import datetime
 from django.utils import formats
+from django.db.models import Max
 
 
 def check_modified_field(table_name, primary_key, field_name, old_value, new_value, log_type, request):
@@ -1380,6 +1381,82 @@ def update_customer_service(request):
         response.status_code = 403
         return response    
 
+def save_new_service(request):
+    cnt_id = request.GET["cnt_id"]
+
+    # srv_eff_from = request.GET["srv_eff_frm_new"]
+    print("srv_eff_frm = " + str(request.GET["srv_eff_frm_new"]))
+    srv_eff_from = datetime.datetime.strptime(request.GET["srv_eff_frm_new"], "%d/%m/%Y").date()
+
+    # srv_eff_to = request.GET["srv_eff_to_new"].strftime("%d/%m/%Y")
+    srv_eff_to = datetime.datetime.strptime(request.GET["srv_eff_to_new"], "%d/%m/%Y").date()
+
+    srv_rank = request.GET["srv_rank_new"]
+    srv_shift_id = request.GET["srv_shift_id_new"]
+    srv_qty = request.GET["srv_qty_new"]
+    srv_mon = request.GET["srv_mon_new"]
+    srv_tue = request.GET["srv_tue_new"]
+    srv_wed = request.GET["srv_wed_new"]
+    srv_thu = request.GET["srv_thu_new"]
+    srv_fri = request.GET["srv_fri_new"]
+    srv_sat = request.GET["srv_sat_new"]
+    srv_sun = request.GET["srv_sun_new"]
+    srv_pub = request.GET["srv_pub_new"]
+    srv_active = request.GET["srv_active_new"]
+    srv_rate = request.GET["srv_rate_new"]
+    srv_cost = request.GET["srv_cost_new"]
+    srv_cost_rate = float(srv_cost) * int(srv_qty)
+    srv_rem = request.GET["srv_rem_new"]
+
+    print("srv_rank = " + str(srv_rank))
+    print("srv_shift_id = " + str(srv_shift_id))
+    print("srv_cost_rate = " + str(srv_cost_rate))
+
+    # amnaj 
+    # Get latest service id
+    lastest_servce_number = CusService.objects.filter(cnt_id=cnt_id).aggregate(Max('srv_id'))
+    new_service_number = lastest_servce_number['srv_id__max'] + 1    
+
+    s = CusService(
+        srv_id = new_service_number,
+        cnt_id_id = cnt_id,
+        srv_rank = srv_rank,
+        srv_shif_id_id = srv_shift_id,
+        srv_eff_frm = srv_eff_from,
+        srv_eff_to = srv_eff_to,
+        srv_qty = srv_qty,
+        srv_mon = srv_mon,
+        srv_tue = srv_tue,
+        srv_wed = srv_wed,
+        srv_thu = srv_thu,
+        srv_fri = srv_fri,
+        srv_sat = srv_sat,
+        srv_sun = srv_sun,
+        srv_pub = srv_pub,
+        srv_active = srv_active,
+        srv_rate = float(srv_rate),
+        srv_cost = float(srv_cost),
+        srv_rem = srv_rem,
+        srv_cost_rate = float(srv_cost_rate),
+        upd_date = datetime.datetime.now(),
+        upd_by = request.user.first_name,
+        upd_flag = 'A',
+        srv_cost_change = 0,
+        op1 = 0,
+        op2 = 0,
+        op3 = 0,
+    )
+    s.save()
+
+    response = JsonResponse(data={
+        "success": True,
+        "message": "Success.",
+        "class": "bg-success",
+    })
+
+    response.status_code = 200
+    return response
+
 
 def save_customer_service_item(request):
     srv_id = request.GET["srv_id"]
@@ -1430,6 +1507,8 @@ def save_customer_service_item(request):
             field_is_modified_count = 0
             modified_records = []
             data = CusService.objects.filter(srv_id__exact=srv_id).get()
+            cnt_id = data.cnt_id_id
+            print("cnt_id = " + str(cnt_id))
 
             # SRV_RANK
             if (srv_rank is not None):
@@ -1592,8 +1671,9 @@ def save_customer_service_item(request):
 
                 response = JsonResponse(data={
                     "success": True,
-                    "message": "Success.",
+                    "message": "Saved success.",
                     "class": "bg-success",
+                    "cnt_id": cnt_id,
                 })            
                 response.status_code = 200
 
@@ -1633,9 +1713,9 @@ def get_rank_shift_list(request):
 
     # COM_RANK
     if request.method == "POST":
-        data = ComRank.objects.all()
+        data = ComRank.objects.all().exclude(upd_flag='D')
     else:
-        data = ComRank.objects.all()
+        data = ComRank.objects.all().exclude(upd_flag='D')
 
     # no_of_active_customer = Customer.objects.filter(cus_active=1).exclude(upd_flag='D').count()
 
@@ -1672,4 +1752,48 @@ def get_rank_shift_list(request):
     response.status_code = 200
     return response
 
+
+@login_required(login_url='/accounts/login/')
+def reload_service_list(request):
+
+    print("*******************************")
+    print("FUNCTION: reload_service_list")
+    print("*******************************")
+
+    cnt_id = request.GET["cnt_id"]
+
+    data = CusService.objects.all().filter(cnt_id=cnt_id)
+    
+    cus_service_list=[]
+    for d in data:
+        record = {
+            "srv_id": d.srv_id,
+            "cnt_id": d.cnt_id_id,
+            "srv_rank": d.srv_rank,
+            "srv_shif_id": d.srv_shif_id_id,
+            "srv_eff_from": d.srv_eff_frm,
+            "srv_eff_to": d.srv_eff_to,
+            "srv_qty": d.srv_qty,
+            "srv_rate": d.srv_rate,
+            "srv_cost": d.srv_cost,
+            "srv_mon": d.srv_mon,
+            "srv_tue": d.srv_tue,
+            "srv_wed": d.srv_wed,
+            "srv_thu": d.srv_thu,
+            "srv_fri": d.srv_fri,
+            "srv_sat": d.srv_sat,
+            "srv_sun": d.srv_sun,
+            "srv_pub": d.srv_pub,
+            "srv_rem": d.srv_rem,
+            "srv_active": d.srv_active,
+        }
+        cus_service_list.append(record)
+
+    response = JsonResponse(data={
+        "success": True,
+        "cus_service_list": list(cus_service_list),
+    })
+
+    response.status_code = 200
+    return response
 

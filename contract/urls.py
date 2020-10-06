@@ -11,12 +11,12 @@ urlpatterns = [
     url(r'^ajax/create_contract/$', views.CreateContract, name='create-contract'),
     url(r'^ajax/get_wagerate_list/$', views.get_wagerate_list, name='get_wagerate_list'),    
     url(r'^ajax/get_wagerate_list_modal/$', views.get_wagerate_list_modal, name='get_wagerate_list_modal'),
-    url(r'^ajax/update_customer_service/$',views.update_customer_service, name='update_customer_service'),
-    url(r'^ajax/save_customer_service_item/$',views.save_customer_service_item, name='save_customer_service_item'),
-
+    url(r'^ajax/update_customer_service/$', views.update_customer_service, name='update_customer_service'),
+    url(r'^ajax/save_new_service/$', views.save_new_service, name='save_new_service'),
+    url(r'^ajax/save_customer_service_item/$', views.save_customer_service_item, name='save_customer_service_item'),
     url(r'^ajax/get_cus_main/$', views.get_cus_main, name='get_cus_main'),
     url(r'^ajax/get_customer/$', views.get_customer, name='get_customer'),
     url(r'^ajax/get_cus_contract/$', views.get_cus_contract, name='get_cus_contract'),
-
-    url(r'^ajax/get_rank_shift_list/$', views.get_rank_shift_list, name='get_rank_shift_list'),    
+    url(r'^ajax/get_rank_shift_list/$', views.get_rank_shift_list, name='get_rank_shift_list'),
+    url(r'^ajax/reload_service_list/$', views.reload_service_list, name='reload_service_list'),
 ]

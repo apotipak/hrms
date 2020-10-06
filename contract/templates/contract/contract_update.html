@@ -480,12 +480,12 @@
 
 
 
-    <div class="card card-default">
+    <div id="service_list" class="card card-default">
 
       <div class="card-header">
         <h1 class="card-title pt-1"><strong>{% trans 'Service List' %}</strong></h1>
         <div class="card-tools">        
-          <button id="add_service_button" type="button" class="btn btn-outline-success btn-md" data-toggle="modal" data-url="{% url 'get_district_list' %}"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;{% trans 'New service' %}</button>
+          <button id="add_service_button" type="button" class="btn btn-outline-success btn-md" data-toggle="modal" data-url="{% url 'get_district_list' %}"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;{% trans 'Add new service' %}</button>
         </div>        
       </div>
 
@@ -613,8 +613,8 @@
       <div class="modal-body"></div>
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary btn-md" data-dismiss="modal">{% trans 'Cancel' %}</button>
-        <button id="save_new_service_button" onclick="save_new_service()" type="button" class="btn btn-success btn-md"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}&nbsp;&nbsp;</button>
+        <button type="button" class="btn btn-secondary btn-md" data-dismiss="modal">{% trans 'Close' %}</button>
+        <button id="save_new_service_button" onclick="save_new_service()" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}&nbsp;&nbsp;</button>
       </div>
     </div>
   </div>
@@ -1258,19 +1258,32 @@
             close: true,
             autoremove: true,
           });
+
+          
+          $("#update_service_modal").modal("hide");
+
+          // amnaj
+          // Reloade service list table
+          $.ajax({
+            url : "/contract/ajax/reload_service_list",
+            type: 'get',          
+            dataType: 'json',
+            data: {
+              cnt_id: data.cnt_id,
+            },
+            beforeSend: function () {
+              
+            },    
+            success: function (data) {
+              $("#service_list .card-body").html("Reload");
+            },
+            error: function(data){
+              // do nothing        
+            }
+          });          
         },
         error: function(data){
-          $(document).Toasts('create', {
-            class: 'bg-danger', 
-            title: "{% trans 'System Message' %}",
-            subtitle: '',
-            autohide: true,
-            delay: 2000,      
-            body: "Cannot save " + srv_id,
-            autoDismiss: true,
-            close: true,
-            autoremove: true,
-          });          
+          // do nothing          
         }
       });            
     }
@@ -1279,7 +1292,7 @@
 
   // Save new service
   function save_new_service() {
-
+    cnt_id = "{{contract.cnt_id}}";
     srv_eff_frm_new = $('#id_dtp_cnt_eff_frm_new').val();
     srv_eff_to_new = $('#id_dtp_cnt_eff_to_new').val();
     srv_rank_id_new = $('#id_com_rank_rank_id_new').val(); 
@@ -1293,108 +1306,135 @@
     srv_sun_new = $('#id_srv_sun_new').val();
     srv_pub_new = $('#id_srv_pub_new').val();
 
+    //srv_active_new = $('#id_srv_active_new').val();
+    if ($('#id_srv_active_new').is(":checked"))
+      srv_active_new = 1;
+    else
+      srv_active_new = 0;
+
     srv_qty_new = $('#id_srv_qty_new').val();
     srv_rate_new = $('#id_srv_rate_new').val();
     srv_cost_new = $('#id_srv_cost_new').val();
     srv_cost_rate_new = $('#id_srv_cost_rate_new').val();
+    srv_rem_new = $('#id_srv_rem_new').val();    
 
-    // amnaj
-
-    //alert(srv_eff_frm_new);
-    //alert(srv_eff_to_new);
-    //alert(srv_rank_id_new);
-    //alert(srv_shift_id_new);
-    //alert(srv_pub_new);
-    alert(srv_cost_rate_new);
-
-
-    /*
-    srv_id = $('#id_select_customer_service_id').val();    
-
-    if(srv_id == null || srv_id == "") {
-      alert("Service ID not found!");      
-    } else {
-      srv_eff_frm = $('#id_srv_eff_frm').val();
-      srv_eff_to = $('#id_srv_eff_to').val();
-      srv_rank = $('#id_cus_service_srv_rank').val(); 
-      srv_shift_id = $('#id_cus_service_srv_shift').val();      
-      srv_qty = $('#id_srv_qty').val();        
-      srv_mon = $('#id_srv_mon').val();
-      srv_tue = $('#id_srv_tue').val();
-      srv_wed = $('#id_srv_wed').val();
-      srv_thu = $('#id_srv_thu').val();
-      srv_fri = $('#id_srv_fri').val();
-      srv_sat = $('#id_srv_sat').val();
-      srv_sun = $('#id_srv_sun').val();
-      srv_pub = $('#id_srv_pub').val();
-            
-      if ($('#id_srv_active').is(":checked"))
-        srv_active = 1;
-      else
-        srv_active = 0;
-
-      srv_rate = $('#id_srv_rate').val();
-      srv_cost = $('#id_srv_cost').val();
-      srv_cost_rate = $('#id_srv_cost_rate').val();
-      srv_rem = $('#id_srv_rem').val();
-
-      $.ajax({
-        url : "/contract/ajax/save_customer_service_item",
-        type: 'get',          
-        dataType: 'json',
-        data: {
-          srv_id: srv_id,
-          srv_eff_frm: srv_eff_frm,
-          srv_eff_to: srv_eff_to,
-          srv_rank: srv_rank,
-          srv_shift_id: srv_shift_id,
-          srv_qty: srv_qty,
-          srv_mon: srv_mon,
-          srv_tue: srv_tue,
-          srv_wed: srv_wed,
-          srv_thu: srv_thu,
-          srv_fri: srv_fri,
-          srv_sat: srv_sat,          
-          srv_sun: srv_sun,
-          srv_pub: srv_pub,
-          srv_active: srv_active,
-          srv_rate: srv_rate,
-          srv_cost: srv_cost,
-          srv_cost_rate: srv_cost_rate,
-          srv_rem: srv_rem,
-        },
-        beforeSend: function () {
-          
-        },    
-        success: function (data) {
-          $(document).Toasts('create', {
-            class: data.class, 
-            title: "{% trans 'System Message' %}",
-            subtitle: '',
-            autohide: true,
-            delay: 2000,      
-            body: data.message,
-            autoDismiss: true,
-            close: true,
-            autoremove: true,
-          });
-        },
-        error: function(data){
-          $(document).Toasts('create', {
-            class: 'bg-danger', 
-            title: "{% trans 'System Message' %}",
-            subtitle: '',
-            autohide: true,
-            delay: 2000,      
-            body: "Cannot save " + srv_id,
-            autoDismiss: true,
-            close: true,
-            autoremove: true,
-          });          
-        }
-      });            
+    // Validation
+    if(srv_rank_id_new=='') {
+      $(document).Toasts('create', {
+        class: 'bg-danger', 
+        title: "{% trans 'System Message' %}",
+        subtitle: '',
+        autohide: true,
+        delay: 2000,      
+        body: "Please select Rank.",
+        autoDismiss: true,
+        close: true,
+        autoremove: true,
+      });
+      return false;
     }
-    */
+    
+    if(srv_shift_id_new=='') {
+      $(document).Toasts('create', {
+        class: 'bg-danger', 
+        title: "{% trans 'System Message' %}",
+        subtitle: '',
+        autohide: true,
+        delay: 2000,      
+        body: "Please select Shift.",
+        autoDismiss: true,
+        close: true,
+        autoremove: true,
+      });
+      return false;
+    }      
+
+    if(srv_qty_new=='') {
+      $(document).Toasts('create', {
+        class: 'bg-danger', 
+        title: "{% trans 'System Message' %}",
+        subtitle: '',
+        autohide: true,
+        delay: 2000,      
+        body: "Please enter Quantity.",
+        autoDismiss: true,
+        close: true,
+        autoremove: true,
+      });
+      return false;
+    } 
+
+    if(srv_rate_new=='') {
+      $(document).Toasts('create', {
+        class: 'bg-danger', 
+        title: "{% trans 'System Message' %}",
+        subtitle: '',
+        autohide: true,
+        delay: 2000,      
+        body: "Please enter Cost.",
+        autoDismiss: true,
+        close: true,
+        autoremove: true,
+      });
+      return false;
+    } 
+
+    $.ajax({
+      url : "/contract/ajax/save_new_service",
+      type: 'get',          
+      dataType: 'json',
+      data: {
+        cnt_id: cnt_id,
+        srv_eff_frm_new: srv_eff_frm_new,
+        srv_eff_to_new: srv_eff_to_new,
+        srv_rank_new: srv_rank_id_new,
+        srv_shift_id_new: srv_shift_id_new,
+        srv_qty_new: srv_qty_new,
+        srv_mon_new: srv_mon_new,
+        srv_tue_new: srv_tue_new,
+        srv_wed_new: srv_wed_new,
+        srv_thu_new: srv_thu_new,
+        srv_fri_new: srv_fri_new,
+        srv_sat_new: srv_sat_new,        
+        srv_sun_new: srv_sun_new,
+        srv_pub_new: srv_pub_new,
+        srv_active_new: srv_active_new,
+        srv_rate_new: srv_rate_new,
+        srv_cost_new: srv_cost_new,
+        srv_cost_rate_new: srv_cost_rate_new,
+        srv_rem_new: srv_rem_new,
+      },
+      beforeSend: function () {
+        //
+      },    
+      success: function (data) {
+        $(document).Toasts('create', {
+          class: data.class, 
+          title: "{% trans 'System Message' %}",
+          subtitle: '',
+          autohide: true,
+          delay: 2000,      
+          body: data.message,
+          autoDismiss: true,
+          close: true,
+          autoremove: true,
+        });
+        
+      },
+      error: function(data){
+        $(document).Toasts('create', {
+          class: 'bg-danger', 
+          title: "{% trans 'System Message' %}",
+          subtitle: '',
+          autohide: true,
+          delay: 2000,      
+          body: "Cannot save ",
+          autoDismiss: true,
+          close: true,
+          autoremove: true,
+        });          
+      }
+    });            
 
   }
 
@@ -1402,13 +1442,18 @@
   $(document).ready(function(){    
     $('#add_service_button').on('click', function (e) {
       var obj = $(this);
+      cnt_eff_frm = $('#id_cnt_eff_frm').val();
+      cnt_eff_to = $('#id_cnt_eff_to').val();
 
       // Get rank list
       $.ajax({
-          url: obj.attr("data-url"),
           url: "/contract/ajax/get_rank_shift_list/",
           type: 'get',          
           dataType: 'json',
+          data: {
+            cnt_eff_frm: cnt_eff_frm,
+            cnt_eff_to: cnt_eff_to,
+          },          
           beforeSend: function () {
             
           },
@@ -1427,7 +1472,7 @@
             result += "<div class='form-group col-md-3'>";
             result += "<label for='id_dtp_cnt_eff_frm_new'>{% trans 'Effect Term From' %}</label>";
             result += "<div class='input-group date' data-target-input='nearest'>";
-            result += "<input type='text' name='dtp_cnt_eff_frm_new' class='form-control form-control-sm' id='id_dtp_cnt_eff_frm_new' placeholder='dd/mm/yyyy'>";
+            result += "<input type='text' name='dtp_cnt_eff_frm_new' class='form-control form-control-sm' id='id_dtp_cnt_eff_frm_new' placeholder='dd/mm/yyyy' value='" + cnt_eff_frm + "'>";
             result += "<div class='input-group-append' data-target='#dtp_cnt_eff_frm_new' data-toggle='datepicker'>";
             result += "<div class='input-group-text text-primary'><i class='fa fa-calendar'></i></div>";
             result += "</div>";
@@ -1435,9 +1480,9 @@
             result += "</div>";
 
             result += "<div class='form-group col-md-3'>";
-            result += "<label for='id_dtp_cnt_eff_to_new'>{% trans 'Effect Term From' %}</label>";
+            result += "<label for='id_dtp_cnt_eff_to_new'>{% trans 'Effect Term To' %}</label>";
             result += "<div class='input-group date' data-target-input='nearest'>";
-            result += "<input type='text' name='dtp_cnt_eff_to_new' class='form-control form-control-sm' id='id_dtp_cnt_eff_to_new' placeholder='dd/mm/yyyy'>";
+            result += "<input type='text' name='dtp_cnt_eff_to_new' class='form-control form-control-sm' id='id_dtp_cnt_eff_to_new' placeholder='dd/mm/yyyy' value='" + cnt_eff_to + "'>";
             result += "<div class='input-group-append' data-target='#dtp_cnt_eff_to_new' data-toggle='datepicker'>";
             result += "<div class='input-group-text text-primary'><i class='fa fa-calendar'></i></div>";
             result += "</div>";
@@ -1567,9 +1612,7 @@
           }
       });
 
-
       $("#add_new_service_list_modal").modal("show");
-
 
     });
 
