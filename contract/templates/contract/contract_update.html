@@ -1301,40 +1301,65 @@
               result += "      </tr>";
               result += "      <tbody>";
 
-              
               // amnaj
               for(var i=0; i<data.cus_service_list.length; i++) {            
-              result += "          <tr>";
-              result += "          <td><small>" + data.cus_service_list[i]["srv_eff_frm"] + "</small></td>";
-              result += "          <td><small>{{item.srv_eff_to|date:'d/m/Y'}}</small></td>";
-              result += "          <td><small>{{item.srv_shif_id.shf_desc}}</small></td>";
-              result += "          <td align='center'><small>{{item.srv_qty}}</small></td>";
-              result += "          <td><small>{{item.srv_rank}}</small></td>";
-              result += "          <td align='right'><small>{{item.srv_rate|stringformat:'.0f'}}</small></td>";
-              result += "          <td align='right'><small>{{item.srv_cost|stringformat:'.0f'}}</small></td>";
-              result += "          <td align='center'><small>{{item.srv_mon}}</small></td>";
-              result += "          <td align='center'><small>{{item.srv_tue}}</small></td>";
-              result += "          <td align='center'><small>{{item.srv_wed}}</small></td>";
-              result += "          <td align='center'><small>{{item.srv_thu}}</small></td>";
-              result += "          <td align='center'><small>{{item.srv_fri}}</small></td>";
-              result += "          <td align='center'><small>{{item.srv_sat}}</small></td>";
-              result += "          <td align='center'><small>{{item.srv_sun}}</small></td>";
-              result += "          <td align='center'><small>{{item.srv_pub}}</small></td>";
-              result += "          <td><small>{{item.srv_rem}}</small></td>";
-              result += "          <td><span class='badge badge-secondary'>{% trans 'Pending' %}</span></td>";
-              result += "          <td>";
-              result += "            <div class='btn-group btn-group-sm nowrap'>";
-              result += "              <small>";
-              result += "              <button id='update_service_button' type='button' onclick='update_customer_service('{{item.srv_id}}')' class='btn btn-info btn-xs js-update-contract-service' data-toggle='modal'>&nbsp;<i class='fas fa-pen fa-xs'></i>&nbsp;</button>";
+                result += "          <tr>";
+                if(data.cus_service_list[i]["srv_active"]==1) {
+                  result += "          <td><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_eff_frm"] + "</small></a></td>";
+                  result += "          <td><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_eff_to"] + "</small></a></td>";
+                  result += "          <td><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_shift_text"] + "</small></a></td>";
+                  result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_qty"] + "</small></a></td>";
+                  result += "          <td><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_rank"] + "</small></td>";
+                  result += "          <td align='right'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_rate"] + "</small></a></td>";
+                  result += "          <td align='right'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_cost"] + "</small></a></td>";
+                  result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_mon"] + "</small></a></td>";
+                  result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_tue"] + "</small></a></td>";
+                  result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_wed"] + "</small></a></td>";
+                  result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_thu"] + "</small></a></td>";
+                  result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_fri"] + "</small></a></td>";
+                  result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_sat"] + "</small></a></td>";
+                  result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_sun"] + "</small></a></td>";
+                  result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_pub"] + "</small></a></td>";
+                  result += "          <td><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_rem"] + "</small></a></td>";
+                  }
+                else {
+                  result += "          <td><small>" + data.cus_service_list[i]["srv_eff_frm"] + "</small></td>";
+                  result += "          <td><small>" + data.cus_service_list[i]["srv_eff_to"] + "</small></td>";
+                  result += "          <td><small>" + data.cus_service_list[i]["srv_shift_text"] + "</small></td>";
+                  result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_qty"] + "</small></td>";
+                  result += "          <td><small>" + data.cus_service_list[i]["srv_rank"] + "</small></td>";
+                  result += "          <td align='right'><small>" + data.cus_service_list[i]["srv_rate"] + "</small></td>";
+                  result += "          <td align='right'><small>" + data.cus_service_list[i]["srv_cost"] + "</small></td>";
+                  result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_mon"] + "</small></td>";
+                  result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_tue"] + "</small></td>";
+                  result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_wed"] + "</small></td>";
+                  result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_thu"] + "</small></td>";
+                  result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_fri"] + "</small></td>";
+                  result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_sat"] + "</small></td>";
+                  result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_sun"] + "</small></td>";
+                  result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_pub"] + "</small></td>";
+                  result += "          <td><small>" + data.cus_service_list[i]["srv_rem"] + "</small></td>";
+                }
 
-              result += "              <button id='delete_service_button' type='button' onclick='delete_customer_service('{{item.srv_id}}')' class='btn btn-danger btn-xs js-delete-contract-service'>";
-              result += "                &nbsp;<i class='fas fa-trash fa-xs'></i>&nbsp;";
-              result += "              </button>";
-              result += "              </small>";
-              result += "            </div>";
-              result += "          </td>";
-              result += "          </tr>";
+                if(data.cus_service_list[i]["srv_active"]==1)
+                  result += "          <td><span class='badge badge-success'>{% trans 'Active' %}</span></td>";
+                else
+                  result += "          <td><span class='badge badge-secondary'>{% trans 'Pending' %}</span></td>";
+              
+                result += "          <td>";
+                result += "            <div class='btn-group btn-group-sm nowrap'>";
+                result += "              <small>";
+                result += "              <button type='button' onclick='update_customer_service(" + data.cus_service_list[i]["srv_id"] + ")' class='btn btn-info btn-xs js-update-contract-service' data-toggle='modal'>&nbsp;<i class='fas fa-pen fa-xs'></i>&nbsp;</button>";
+
+                result += "              <button type='button' onclick='delete_customer_service(" + data.cus_service_list[i]["srv_id"] + ")' class='btn btn-danger btn-xs js-delete-contract-service'>";
+                result += "                &nbsp;<i class='fas fa-trash fa-xs'></i>&nbsp;";
+                result += "              </button>";
+                result += "              </small>";
+                result += "            </div>";
+                result += "          </td>";
               }
+                result += "          </tr>";
+              
               result += "      </tbody>";
               result += "    </table>";
               result += "  </div>";

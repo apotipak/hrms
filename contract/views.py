@@ -1762,7 +1762,7 @@ def reload_service_list(request):
 
     cnt_id = request.GET["cnt_id"]
 
-    data = CusService.objects.all().filter(cnt_id=cnt_id)
+    data = CusService.objects.all().filter(cnt_id=cnt_id).order_by('-srv_active')
     
     cus_service_list=[]
     for d in data:
@@ -1771,6 +1771,7 @@ def reload_service_list(request):
             "cnt_id": d.cnt_id_id,
             "srv_rank": d.srv_rank,
             "srv_shif_id": d.srv_shif_id_id,
+            "srv_shift_text": d.srv_shif_id.shf_desc,
             "srv_eff_frm": d.srv_eff_frm.strftime("%d/%m/%Y"),
             "srv_eff_to": d.srv_eff_to.strftime("%d/%m/%Y"),
             "srv_qty": d.srv_qty,
