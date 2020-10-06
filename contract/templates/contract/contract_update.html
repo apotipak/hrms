@@ -1069,25 +1069,25 @@
             // SRV_MON
             result += "          <div class='form-group col-3'>";
             result += "            <label for='srv_mon'>{% trans 'Mon' %}</label>";
-            result += "            <input id='id_srv_mon' type='text' class='form-control form-control-sm' value='" + data.srv_mon + "'>";
+            result += "            <input id='id_srv_mon' type='number' class='form-control form-control-sm' value='" + data.srv_mon + "'>";
             result += "          </div>";
 
             // SRV_TUE
             result += "          <div class='form-group col-3'>";
             result += "            <label for='cus_zip'>{% trans 'Tue' %}</label>";
-            result += "           <input id='id_srv_tue' type='text' class='form-control form-control-sm' value='" + data.srv_tue + "'>";
+            result += "           <input id='id_srv_tue' type='number' class='form-control form-control-sm' value='" + data.srv_tue + "'>";
             result += "          </div>";
 
             // SRV_WED
             result += "          <div class='form-group col-3'>";
             result += "            <label for='cus_zip'>{% trans 'Wed' %}</label>";
-            result += "            <input id='id_srv_wed' type='text' class='form-control form-control-sm' value='" + data.srv_wed + "'>";
+            result += "            <input id='id_srv_wed' type='number' class='form-control form-control-sm' value='" + data.srv_wed + "'>";
             result += "          </div>";
 
             // SRV_THU
             result += "          <div class='form-group col-3'>";
             result += "            <label for='cus_zip'>{% trans 'Thu' %}</label>";
-            result += "            <input id='id_srv_thu' type='text' class='form-control form-control-sm' value='" + data.srv_thu + "'>";
+            result += "            <input id='id_srv_thu' type='number' class='form-control form-control-sm' value='" + data.srv_thu + "'>";
             result += "          </div>";
             result += "        </div>";
 
@@ -1096,25 +1096,25 @@
             // SRV_FRI
             result += "          <div class='form-group col-3'>";
             result += "            <label for='cus_zip'>{% trans 'Fri' %}</label>";
-            result += "            <input id='id_srv_fri' type='text' class='form-control form-control-sm' value='" + data.srv_fri + "'>";
+            result += "            <input id='id_srv_fri' type='number' class='form-control form-control-sm' value='" + data.srv_fri + "'>";
             result += "          </div>";
 
             // SRV_SAT
             result += "          <div class='form-group col-3'>";
             result += "            <label for='cus_zip'>{% trans 'Sat' %}</label>";
-            result += "            <input id='id_srv_sat' type='text' class='form-control form-control-sm' value='" + data.srv_sat + "'>";
+            result += "            <input id='id_srv_sat' type='number' class='form-control form-control-sm' value='" + data.srv_sat + "'>";
             result += "          </div>";
 
             // SRV_SUN
             result += "          <div class='form-group col-3'>";
             result += "            <label for='cus_zip'>{% trans 'Sun' %}</label>";
-            result += "            <input id='id_srv_sun' type='text' class='form-control form-control-sm' value='" + data.srv_sun + "'>";
+            result += "            <input id='id_srv_sun' type='number' class='form-control form-control-sm' value='" + data.srv_sun + "'>";
             result += "          </div>";
 
             // SRV_PUB
             result += "          <div class='form-group col-3'>";
             result += "            <label for='cus_zip'>{% trans 'Pub' %}</label>";
-            result += "            <input id='id_srv_pub' type='text' class='form-control form-control-sm' value='" + data.srv_pub + "'>";
+            result += "            <input id='id_srv_pub' type='number' class='form-control form-control-sm' value='" + data.srv_pub + "'>";
             result += "          </div>";
 
             result += "        </div>";
@@ -1125,21 +1125,21 @@
             // SRV_QTY
             result += "        <div class='form-group col-md-3'>";
             result += "          <label for='cus_zip'>{% trans 'QTY' %}</label>";
-            result += "          <input id='id_srv_qty' type='text' class='form-control form-control-sm' value='" + data.srv_qty + "'>";
+            result += "          <input id='id_srv_qty' type='number' class='form-control form-control-sm' value='" + data.srv_qty + "'>";
             result += "        </div>";
 
             // SRV_COST
             result += "        <div class='form-group col-md-3'>";
             result += "          <label for='cus_tel'>{% trans 'Cost' %}</label>";
             num = parseFloat(data.srv_rate);
-            result += "          <input id='id_srv_rate' type='text' class='form-control form-control-sm' value='" + num.toFixed(0) + "'>";
+            result += "          <input id='id_srv_rate' type='number' class='form-control form-control-sm' value='" + num.toFixed(0) + "'>";
             result += "        </div>";
 
             // SRV_TOTAL_COST
             num = parseFloat(data.srv_cost);
             result += "        <div class='form-group col-md-3'>";
             result += "          <label for='cus_zip'>{% trans 'Total Cost' %}</label>";
-            result += "          <input id='id_srv_cost' type='text' class='form-control form-control-sm' value='" + num.toFixed(0) + "' readonly>";
+            result += "          <input id='id_srv_cost' type='number' class='form-control form-control-sm' value='" + num.toFixed(0) + "' readonly>";
             result += "        </div>";
             
             // SRV_ACTIVE
@@ -1168,7 +1168,7 @@
             num = parseFloat(data.srv_cost_rate);
             result += "        <div class='form-group col-md-6'>";
             result += "          <label for='id_srv_cost_rate'>{% trans 'Cost Rate' %}</label>";
-            result += "          <input id='id_srv_cost_rate' type='text' class='form-control form-control-sm' value='" + num + "'>";
+            result += "          <input id='id_srv_cost_rate' type='number' class='form-control form-control-sm' value='" + num + "'>";
             result += "        </div>";
 
             result += "      </div>";   
@@ -1996,7 +1996,7 @@
           return false;   
         } else {
 
-
+          // amnaj
           $('#id_srv_cost_new').val($(this).val());
 
         }
