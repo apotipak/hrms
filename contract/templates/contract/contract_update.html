@@ -491,8 +491,9 @@
 
       <!-- Service List -->
       <div class="card-body">        
+       
         <div class="row">
-          
+        
           <div class="col-md-12 table-responsive">
             <table id="customer-list-table1" class="table table-bordered table-sm">
               <tr class="table-secondary">
@@ -1262,7 +1263,6 @@
           
           $("#update_service_modal").modal("hide");
 
-          // amnaj
           // Reloade service list table
           $.ajax({
             url : "/contract/ajax/reload_service_list",
@@ -1275,7 +1275,72 @@
               
             },    
             success: function (data) {
-              $("#service_list .card-body").html("Reload");
+              result = "";
+              result += "<div class='row'>";
+              result += "  <div class='col-md-12 table-responsive'>";
+              result += "    <table id='customer-list-table1' class='table table-bordered table-sm'>";
+              result += "      <tr class='table-secondary'>";
+              result += "        <th>{% trans 'Eff Frm' %}</th>";
+              result += "        <th scope='col'>{% trans 'Eff To' %}</th>";
+              result += "        <th scope='col' nowrap>{% trans 'Shift Time' %}</th>";
+              result += "        <th scope='col'>{% trans 'Qty' %}</th>";
+              result += "        <th scope='col'>{% trans 'Rank' %}</th>";
+              result += "        <th scope='col'>{% trans 'Rate' %}</th>";
+              result += "        <th scope='col'>{% trans 'Ext.Cost' %}</th>";
+              result += "        <th scope='col'>{% trans 'MON' %}</th>";
+              result += "        <th scope='col'>{% trans 'TUE' %}</th>";
+              result += "        <th scope='col'>{% trans 'WED' %}</th>";
+              result += "        <th scope='col'>{% trans 'THU' %}</th>";
+              result += "        <th scope='col'>{% trans 'FRI' %}</th>";
+              result += "        <th scope='col'>{% trans 'SAT' %}</th>";
+              result += "        <th scope='col'>{% trans 'SUN' %}</th>";
+              result += "        <th scope='col'>{% trans 'PUB' %}</th>";
+              result += "        <th scope='col'>{% trans 'Remark' %}</th>";
+              result += "        <th scope='col'>{% trans 'Active' %}</th>";
+              result += "        <th>&nbsp;</th>";
+              result += "      </tr>";
+              result += "      <tbody>";
+
+              
+              // amnaj
+              for(var i=0; i<data.cus_service_list.length; i++) {            
+              result += "          <tr>";
+              result += "          <td><small>" + data.cus_service_list[i]["srv_eff_frm"] + "</small></td>";
+              result += "          <td><small>{{item.srv_eff_to|date:'d/m/Y'}}</small></td>";
+              result += "          <td><small>{{item.srv_shif_id.shf_desc}}</small></td>";
+              result += "          <td align='center'><small>{{item.srv_qty}}</small></td>";
+              result += "          <td><small>{{item.srv_rank}}</small></td>";
+              result += "          <td align='right'><small>{{item.srv_rate|stringformat:'.0f'}}</small></td>";
+              result += "          <td align='right'><small>{{item.srv_cost|stringformat:'.0f'}}</small></td>";
+              result += "          <td align='center'><small>{{item.srv_mon}}</small></td>";
+              result += "          <td align='center'><small>{{item.srv_tue}}</small></td>";
+              result += "          <td align='center'><small>{{item.srv_wed}}</small></td>";
+              result += "          <td align='center'><small>{{item.srv_thu}}</small></td>";
+              result += "          <td align='center'><small>{{item.srv_fri}}</small></td>";
+              result += "          <td align='center'><small>{{item.srv_sat}}</small></td>";
+              result += "          <td align='center'><small>{{item.srv_sun}}</small></td>";
+              result += "          <td align='center'><small>{{item.srv_pub}}</small></td>";
+              result += "          <td><small>{{item.srv_rem}}</small></td>";
+              result += "          <td><span class='badge badge-secondary'>{% trans 'Pending' %}</span></td>";
+              result += "          <td>";
+              result += "            <div class='btn-group btn-group-sm nowrap'>";
+              result += "              <small>";
+              result += "              <button id='update_service_button' type='button' onclick='update_customer_service('{{item.srv_id}}')' class='btn btn-info btn-xs js-update-contract-service' data-toggle='modal'>&nbsp;<i class='fas fa-pen fa-xs'></i>&nbsp;</button>";
+
+              result += "              <button id='delete_service_button' type='button' onclick='delete_customer_service('{{item.srv_id}}')' class='btn btn-danger btn-xs js-delete-contract-service'>";
+              result += "                &nbsp;<i class='fas fa-trash fa-xs'></i>&nbsp;";
+              result += "              </button>";
+              result += "              </small>";
+              result += "            </div>";
+              result += "          </td>";
+              result += "          </tr>";
+              }
+              result += "      </tbody>";
+              result += "    </table>";
+              result += "  </div>";
+              result += "</div>";
+
+              $("#service_list .card-body").html(result);
             },
             error: function(data){
               // do nothing        
