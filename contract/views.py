@@ -1408,19 +1408,11 @@ def save_new_service(request):
     srv_cost_rate = float(srv_rate) * int(srv_qty)
     srv_rem = request.GET["srv_rem_new"]
 
-    print("qty = " + str(srv_qty))
-    print("cost = " + str(srv_cost))
-    print("srv_rank = " + str(srv_rank))
-    print("srv_shift_id = " + str(srv_shift_id))
-    print("srv_cost_rate = " + str(srv_cost_rate))
-
-    # amnaj 
-    # Get latest service id
     latest_service_number = CusService.objects.filter(cnt_id=cnt_id).aggregate(Max('srv_id'))
-    print("latest_service_number" + str(latest_service_number))
+    latest_service_number = latest_service_number['srv_id__max']
 
-    if not CusService.objects.filter(cnt_id=cnt_id).aggregate(Max('srv_id')):
-        new_service_number = latest_service_number['srv_id__max'] + 1    
+    if latest_service_number is not None:
+        new_service_number = latest_service_number + 1
     else:
         new_service_number = str(cnt_id) + "00001"
 
