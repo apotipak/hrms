@@ -1669,6 +1669,11 @@ def save_customer_service_item(request):
                     new_log.save()                
                 # ./History Log                     
 
+                # TODO
+                # Recalculate cnt_guard_amt, cnt_sale_amt
+                
+
+
                 response = JsonResponse(data={
                     "success": True,
                     "message": "Saved success.",
