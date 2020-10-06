@@ -1276,6 +1276,7 @@
               
             },    
             success: function (data) {
+
               result = "";
               result += "<div class='row'>";
               result += "  <div class='col-md-12 table-responsive'>";
@@ -1513,6 +1514,122 @@
           autoremove: true,
         });
         
+        // Refresh Guard Amount, Sale Amount value
+        $('#id_cnt_guard_amt').val(data.active_cnt_guard_amt);
+        $('#id_cnt_sale_amt').val(data.active_cnt_sale_amt);
+
+        // Reloade service list table
+        $.ajax({
+          url : "/contract/ajax/reload_service_list",
+          type: 'get',          
+          dataType: 'json',
+          data: {
+            cnt_id: data.cnt_id,
+          },
+          beforeSend: function () {
+            
+          },    
+          success: function (data) {
+
+            result = "";
+            result += "<div class='row'>";
+            result += "  <div class='col-md-12 table-responsive'>";
+            result += "    <table id='customer-list-table1' class='table table-bordered table-sm'>";
+            result += "      <tr class='table-secondary'>";
+            result += "        <th>{% trans 'Eff Frm' %}</th>";
+            result += "        <th scope='col'>{% trans 'Eff To' %}</th>";
+            result += "        <th scope='col' nowrap>{% trans 'Shift Time' %}</th>";
+            result += "        <th scope='col'>{% trans 'Qty' %}</th>";
+            result += "        <th scope='col'>{% trans 'Rank' %}</th>";
+            result += "        <th scope='col'>{% trans 'Rate' %}</th>";
+            result += "        <th scope='col'>{% trans 'Ext.Cost' %}</th>";
+            result += "        <th scope='col'>{% trans 'MON' %}</th>";
+            result += "        <th scope='col'>{% trans 'TUE' %}</th>";
+            result += "        <th scope='col'>{% trans 'WED' %}</th>";
+            result += "        <th scope='col'>{% trans 'THU' %}</th>";
+            result += "        <th scope='col'>{% trans 'FRI' %}</th>";
+            result += "        <th scope='col'>{% trans 'SAT' %}</th>";
+            result += "        <th scope='col'>{% trans 'SUN' %}</th>";
+            result += "        <th scope='col'>{% trans 'PUB' %}</th>";
+            result += "        <th scope='col'>{% trans 'Remark' %}</th>";
+            result += "        <th scope='col'>{% trans 'Active' %}</th>";
+            result += "        <th>&nbsp;</th>";
+            result += "      </tr>";
+            result += "      <tbody>";
+
+            // amnaj
+            for(var i=0; i<data.cus_service_list.length; i++) {            
+              result += "          <tr>";
+              if(data.cus_service_list[i]["srv_active"]==1) {
+                result += "          <td><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_eff_frm"] + "</small></a></td>";
+                result += "          <td><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_eff_to"] + "</small></a></td>";
+                result += "          <td><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_shift_text"] + "</small></a></td>";
+                result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_qty"] + "</small></a></td>";
+                result += "          <td><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_rank"] + "</small></td>";
+                result += "          <td align='right'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_rate"] + "</small></a></td>";
+                result += "          <td align='right'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_cost"] + "</small></a></td>";
+                result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_mon"] + "</small></a></td>";
+                result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_tue"] + "</small></a></td>";
+                result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_wed"] + "</small></a></td>";
+                result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_thu"] + "</small></a></td>";
+                result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_fri"] + "</small></a></td>";
+                result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_sat"] + "</small></a></td>";
+                result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_sun"] + "</small></a></td>";
+                result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_pub"] + "</small></a></td>";
+                result += "          <td><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_rem"] + "</small></a></td>";
+                }
+              else {
+                result += "          <td><small>" + data.cus_service_list[i]["srv_eff_frm"] + "</small></td>";
+                result += "          <td><small>" + data.cus_service_list[i]["srv_eff_to"] + "</small></td>";
+                result += "          <td><small>" + data.cus_service_list[i]["srv_shift_text"] + "</small></td>";
+                result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_qty"] + "</small></td>";
+                result += "          <td><small>" + data.cus_service_list[i]["srv_rank"] + "</small></td>";
+                result += "          <td align='right'><small>" + data.cus_service_list[i]["srv_rate"] + "</small></td>";
+                result += "          <td align='right'><small>" + data.cus_service_list[i]["srv_cost"] + "</small></td>";
+                result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_mon"] + "</small></td>";
+                result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_tue"] + "</small></td>";
+                result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_wed"] + "</small></td>";
+                result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_thu"] + "</small></td>";
+                result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_fri"] + "</small></td>";
+                result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_sat"] + "</small></td>";
+                result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_sun"] + "</small></td>";
+                result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_pub"] + "</small></td>";
+                result += "          <td><small>" + data.cus_service_list[i]["srv_rem"] + "</small></td>";
+              }
+
+              if(data.cus_service_list[i]["srv_active"]==1)
+                result += "          <td><span class='badge badge-success'>{% trans 'Active' %}</span></td>";
+              else
+                result += "          <td><span class='badge badge-secondary'>{% trans 'Pending' %}</span></td>";
+            
+              result += "          <td>";
+              result += "            <div class='btn-group btn-group-sm nowrap'>";
+              result += "              <small>";
+              result += "              <button type='button' onclick='update_customer_service(" + data.cus_service_list[i]["srv_id"] + ")' class='btn btn-info btn-xs js-update-contract-service' data-toggle='modal'>&nbsp;<i class='fas fa-pen fa-xs'></i>&nbsp;</button>";
+
+              result += "              <button type='button' onclick='delete_customer_service(" + data.cus_service_list[i]["srv_id"] + ")' class='btn btn-danger btn-xs js-delete-contract-service'>";
+              result += "                &nbsp;<i class='fas fa-trash fa-xs'></i>&nbsp;";
+              result += "              </button>";
+              result += "              </small>";
+              result += "            </div>";
+              result += "          </td>";
+            }
+              result += "          </tr>";
+            
+            result += "      </tbody>";
+            result += "    </table>";
+            result += "  </div>";
+            result += "</div>";
+
+            $("#service_list .card-body").html(result);
+            $("#update_service_modal").modal("hide");
+
+          },
+          error: function(data){
+            // do nothing        
+          }
+        });          
+
       },
       error: function(data){
         $(document).Toasts('create', {
