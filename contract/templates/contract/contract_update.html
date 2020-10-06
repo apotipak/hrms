@@ -1983,8 +1983,21 @@
           return false;        
         }
       });
+      //
+      $('#id_srv_qty_new').on('keyup', function (e) {
+        var qty = $(this);
+        if(e.which === 13){
+          total = qty * $('#id_srv_rate_new').val();
+          $('#id_srv_cost_new').val(total);
+        } else {
+          total = $(this).val() * $('#id_srv_rate_new').val();
+          $('#id_srv_cost_new').val(total); 
+        }
+      });
+
 
       // SRV_COST_NEW
+      /*
       $('#id_srv_rate_new').on('keypress', function (e) {
         var cost = $(this);
         if(e.which === 13){
@@ -1999,6 +2012,24 @@
 
         }
       });
+      */
+      // amnaj
+      $('#id_srv_rate_new').on('keyup', function (e) {        
+        var cost = $(this);
+        if(e.which === 13){
+          total = cost.val() * $('#id_srv_qty_new').val();
+          $('#id_srv_cost_new').val(total);
+        } else {
+          total = $(this).val() * $('#id_srv_qty_new').val();
+          $('#id_srv_cost_new').val(total);
+        }
+      });
+      $('#id_srv_rate_new').on('keypress', function (e) {        
+        if(e.which === 13)
+          $('#id_srv_rem_new').focus();      
+      });
+
+
 
     });
 
@@ -2063,6 +2094,11 @@
         }
       });
 
+
+
+
+
+      // amnaj
       $('#id_srv_rate').on('keyup', function (e) {        
         var cost = $(this);
         if(e.which === 13){
@@ -2073,10 +2109,14 @@
           $('#id_srv_cost').val(total);
         }
       });
+
       $('#id_srv_rate').on('keypress', function (e) {        
         if(e.which === 13)
-          $('#id_srv_rem').focus();        
+          $('#id_srv_rem').focus();      
       });
+
+
+
 
 
       // SRV_MON
