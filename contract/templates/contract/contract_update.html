@@ -1303,7 +1303,6 @@
               result += "      </tr>";
               result += "      <tbody>";
 
-              // amnaj
               for(var i=0; i<data.cus_service_list.length; i++) {            
                 result += "          <tr>";
                 if(data.cus_service_list[i]["srv_active"]==1) {
@@ -1557,7 +1556,6 @@
             result += "      </tr>";
             result += "      <tbody>";
 
-            // amnaj
             for(var i=0; i<data.cus_service_list.length; i++) {            
               result += "          <tr>";
               if(data.cus_service_list[i]["srv_active"]==1) {
@@ -1621,8 +1619,9 @@
             result += "  </div>";
             result += "</div>";
 
+            //amnaj
             $("#service_list .card-body").html(result);
-            $("#update_service_modal").modal("hide");
+            $("#add_new_service_list_modal").modal("hide");
 
           },
           error: function(data){
@@ -1996,7 +1995,6 @@
           return false;   
         } else {
 
-          // amnaj
           $('#id_srv_cost_new').val($(this).val());
 
         }
@@ -2054,7 +2052,6 @@
         }
       });
 
-      // amnaj
       $('#id_srv_qty').on('keyup', function (e) {
         var qty = $(this);
         if(e.which === 13){
