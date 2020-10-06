@@ -1508,7 +1508,6 @@ def save_customer_service_item(request):
             modified_records = []
             data = CusService.objects.filter(srv_id__exact=srv_id).get()
             cnt_id = data.cnt_id_id
-            print("cnt_id = " + str(cnt_id))
 
             # SRV_RANK
             if (srv_rank is not None):
@@ -1671,9 +1670,22 @@ def save_customer_service_item(request):
 
                 # TODO
                 # Recalculate cnt_guard_amt, cnt_sale_amt
+                # start
+                cus_service_list = CusService.objects.all().filter(cnt_id=cnt_id)
+                temp_cnt_guard_amt = 0
+                temp_cnt_sale_amt = 0
+                for item in cus_service_list:
+                    if item.srv_active:                        
+                        temp_cnt_guard_amt += item.srv_qty
+                        temp_cnt_sale_amt += item.srv_rate * item.srv_qty
+                c = CusContract.objects.get(cnt_id=cnt_id)
+                c.cnt_guard_amt = temp_cnt_guard_amt
+                c.cnt_sale_amt = temp_cnt_sale_amt
+                c.save()
+
+                # end
                 
-
-
+                # Return result
                 response = JsonResponse(data={
                     "success": True,
                     "message": "Saved success.",
