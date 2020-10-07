@@ -2009,13 +2009,20 @@ def reload_contract_list(request):
     print("*******************************")
 
     cnt_id = request.GET["cnt_id"]
+    cus_id = request.GET["cus_id"]
+    print("cus_id = " + str(cus_id))
 
-    data = CusContract.objects.all().filter(cnt_id=cnt_id).exclude(upd_flag='D').order_by('-cnt_active')
+    data = CusContract.objects.all().filter(cus_id=cus_id).exclude(upd_flag='D').order_by('-cnt_active')
     
+    for item in data:
+        print(item.cnt_id)
+
     cus_contract_list=[]
     for d in data:
         record = {
-            "cnt_id": d.cnt_id_id,
+            "cnt_id": d.cnt_id,
+            "cus_name_th": "aa",
+            "cus_name_en": "bb",
         }
         cus_contract_list.append(record)
 
@@ -2039,6 +2046,8 @@ def delete_customer_contract(request):
 
     data = CusContract.objects.filter(cnt_id=cnt_id).get() 
     data.upd_flag = 'D'
+    data.upd_date = datetime.datetime.now()
+    data.upd_by = request.user.first_name    
     cnt_id = data.cnt_id 
     data.save()
 
