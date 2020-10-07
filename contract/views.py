@@ -870,8 +870,19 @@ def CreateContract(request):
 
             cnt_apr_by = request.POST.get('cnt_apr_by_id')
 
-            cnt_guard_amt = request.POST.get('cnt_guard_amt')
+
+            cnt_guard_amt = request.POST.get('cnt_guard_amt')    
+            if cnt_guard_amt == "":
+                cnt_guard_amt = 0
+            else:
+                cnt_guard_amt = int(cnt_guard_amt)
+
             cnt_sale_amt = request.POST.get('cnt_sale_amt')
+            if cnt_sale_amt == "":
+                cnt_sale_amt = 0
+            else:
+                cnt_sale_amt = float(cnt_sale_amt)
+
             cnt_wage_id = request.POST.get('cnt_wage_id')
             # cnt_zone = request.POST.get('cnt_zone_id')
             cnt_autoexpire = request.POST.get('cnt_autoexpire')
