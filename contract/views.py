@@ -2012,10 +2012,14 @@ def reload_contract_list(request):
     cus_id = request.GET["cus_id"]
     print("cus_id = " + str(cus_id))
 
-    data = CusContract.objects.all().filter(cus_id=cus_id).exclude(upd_flag='D').order_by('-cnt_active')
+    if cus_id != "":
+        data = CusContract.objects.all().filter(cus_id=cus_id).exclude(upd_flag='D').order_by('-cnt_active')
+    else:
+        # data = CusContract.objects.all().exclude(upd_flag='D').order_by('-cnt_active')
+        data = []
     
-    for item in data:
-        print(item.cnt_id)
+    # for item in data:
+    #    print(item.cnt_id)
 
     cus_contract_list=[]
     for d in data:
