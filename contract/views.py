@@ -1403,6 +1403,21 @@ def add_new_service(request):
     cus_vol = request.GET["cus_vol"]
     cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
 
+    # Check if cus_contract is existed
+    # amnaj
+    try:
+        data = CusContract.objects.filter(cnt_id=cnt_id).get()       
+    except CusContract.DoesNotExist:
+        response = JsonResponse(data={
+            "success": True,
+            "message": "Please save contract first.",
+            "class": "bg-danger",
+            "cnt_id": cnt_id,
+        })
+
+        response.status_code = 200
+        return response
+
     # srv_eff_from = request.GET["srv_eff_frm_new"]
     print("srv_eff_frm = " + str(request.GET["srv_eff_frm_new"]))
     srv_eff_from = datetime.datetime.strptime(request.GET["srv_eff_frm_new"], "%d/%m/%Y").date()
