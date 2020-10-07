@@ -525,8 +525,8 @@
                   <td><small><a href="javascript:void(0);">{{item.srv_shif_id.shf_desc}}</a></small></td>
                   <td align="center"><small><a href="javascript:void(0);">{{item.srv_qty}}</a></small></td>
                   <td><small><a href="javascript:void(0);">{{item.srv_rank}}</a></small></td>
-                  <td align="right"><small><a href="javascript:void(0);">{{item.srv_rate|stringformat:".0f"}}</a></small></td>
                   <td align="right"><small><a href="javascript:void(0);">{{item.srv_cost|stringformat:".0f"}}</a></small></td>
+                  <td align="right"><small><a href="javascript:void(0);">{{item.srv_rate|stringformat:".0f"}}</a></small></td>
                   <td align="center"><small><a href="javascript:void(0);">{{item.srv_mon}}</a></small></td>
                   <td align="center"><small><a href="javascript:void(0);">{{item.srv_tue}}</a></small></td>
                   <td align="center"><small><a href="javascript:void(0);">{{item.srv_wed}}</a></small></td>
@@ -1324,12 +1324,12 @@
             // SRV_COST
             result += "        <div class='form-group col-md-3'>";
             result += "          <label for='cus_tel'>{% trans 'Cost' %}</label>";
-            num = parseFloat(data.srv_rate);
+            num = parseFloat(data.srv_cost);
             result += "          <input id='id_srv_rate' type='number' class='form-control form-control-sm' value='" + num.toFixed(0) + "'>";
             result += "        </div>";
 
             // SRV_TOTAL_COST
-            num = parseFloat(data.srv_cost);
+            num = parseFloat(data.srv_rate);
             result += "        <div class='form-group col-md-3'>";
             result += "          <label for='cus_zip'>{% trans 'Total Cost' %}</label>";
             result += "          <input id='id_srv_cost' type='number' class='form-control form-control-sm' value='" + num.toFixed(0) + "' readonly>";

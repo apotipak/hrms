@@ -1347,12 +1347,12 @@ def update_customer_service(request):
                 "srv_pub": data.srv_pub,
                 "srv_active": data.srv_active,
                 "srv_rate": data.srv_rate,
-                "srv_cost": data.srv_cost,
+                "srv_cost": data.srv_qty * data.srv_rate,
                 "srv_total_cost": data.srv_qty * data.srv_rate,
                 "srv_rem": data.srv_rem,
                 "upd_date": data.upd_date,
                 "upd_flag": data.upd_flag,
-                "srv_cost_rate": data.srv_qty * data.srv_rate,
+                "srv_cost_rate": data.srv_cost_rate,
                 "srv_cost_change": data.srv_cost_change,
                 "op1": data.op1,
                 "op2": data.op2,
@@ -1404,8 +1404,8 @@ def save_new_service(request):
     srv_pub = request.GET["srv_pub_new"]
     srv_active = request.GET["srv_active_new"]
     srv_rate = request.GET["srv_rate_new"]
-    srv_cost = request.GET["srv_cost_new"]
-    srv_cost_rate = float(srv_rate) * int(srv_qty)
+    srv_cost = request.GET["srv_cost_new"]    
+    srv_cost_rate = request.GET["srv_cost_rate_new"]
     srv_rem = request.GET["srv_rem_new"]
 
     latest_service_number = CusService.objects.filter(cnt_id=cnt_id).aggregate(Max('srv_id'))
@@ -1434,9 +1434,9 @@ def save_new_service(request):
         srv_pub = srv_pub,
         srv_active = srv_active,
         srv_rate = float(srv_rate),
-        srv_cost = float(srv_cost),
+        srv_cost = int(srv_qty) * float(srv_rate),
         srv_rem = srv_rem,
-        srv_cost_rate = float(srv_cost_rate),
+        srv_cost_rate = float(srv_cost),
         upd_date = datetime.datetime.now(),
         upd_by = request.user.first_name,
         upd_flag = 'A',
@@ -1650,7 +1650,7 @@ def save_customer_service_item(request):
             if (srv_cost is not None):
                 field_is_modified, record = check_modified_field("CUS_SERVICE", srv_id, "SRV_COST", int(data.srv_cost), int(srv_cost), "E", request)
                 if field_is_modified:
-                    data.srv_rate = srv_cost
+                    data.srv_cost = int(srv_qty) * float(srv_rate)
                     modified_records.append(record)
                     field_is_modified_count = field_is_modified_count + 1
 
@@ -1667,7 +1667,7 @@ def save_customer_service_item(request):
             if field_is_modified_count > 0:
                 data.upd_date = datetime.datetime.now()
                 data.upd_by = request.user.first_name
-                data.upd_flat = 'E'
+                data.upd_flag = 'E'
                 data.save()
 
                 # History Log
