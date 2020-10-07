@@ -377,13 +377,13 @@ def ContractList(request):
                 int(cus_id)
                 if cus_id is not None or cus_id != '':
                     rawsql = "select * from customer cus join cus_contract con on cus.cus_id=con.cus_id and cus.cus_brn=con.cus_brn "
-                    contract_list = CusContract.objects.raw(rawsql + " where cus.cus_id="+cus_id+" order by con.cnt_active desc")                    
+                    contract_list = CusContract.objects.raw(rawsql + " where cus.cus_id="+cus_id+ " and con.upd_flag!='D'" + " order by con.cnt_active desc")                    
                 else:
                     contract_list = []
-                    contract_list = CusContract.objects.raw("select * from customer cus join cus_contract con on cus.cus_id=con.cus_id and cus.cus_brn=con.cus_brn")
+                    contract_list = CusContract.objects.raw("select * from customer cus join cus_contract con on cus.cus_id=con.cus_id and cus.cus_brn=con.cus_brn where con.upd_flag!='D'")
             except ValueError:
                 contract_list = []
-                contract_list = CusContract.objects.raw("select * from customer cus join cus_contract con on cus.cus_id=con.cus_id and cus.cus_brn=con.cus_brn")
+                contract_list = CusContract.objects.raw("select * from customer cus join cus_contract con on cus.cus_id=con.cus_id and cus.cus_brn=con.cus_brn where con.upd_flag!='D'")
 
         else:    		    		
             contract_list = []
@@ -412,7 +412,7 @@ def ContractList(request):
 
         # contract_list = CusContract.objects.all().order_by('-cnt_active','cus_id','cus_brn','cus_vol')
         contract_list = []
-        contract_list = CusContract.objects.raw("select * from customer cus join cus_contract con on cus.cus_id=con.cus_id and cus.cus_brn=con.cus_brn")
+        contract_list = CusContract.objects.raw("select * from customer cus join cus_contract con on cus.cus_id=con.cus_id and cus.cus_brn=con.cus_brn where con.upd_flag!='D'")
 
         # cus_no = Decimal(request.POST['cus_id'] + request.POST.get('cus_brn').zfill(3))
         # contract_list = CusContract.objects.select_related('customer').all()
