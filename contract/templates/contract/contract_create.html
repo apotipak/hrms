@@ -751,7 +751,7 @@
       
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLongTitle">
-          <i class="fas fa-pen fa-sm"></i>&nbsp;&nbsp;<strong>{% trans 'Update Service' %}</strong>
+          <i class="fas fa-pen fa-sm"></i>&nbsp;&nbsp;<strong>{% trans 'Edit service' %}</strong>
           <input id="id_select_customer_service_id" type="hidden" readonly>
         </h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -782,6 +782,43 @@
   </div>
 </div>
 
+<!-- Delete Service Modal -->
+<div class="modal fade" id="delete_service_modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">
+          <i class="fas fa-trash fa-sm text-secondary"></i>&nbsp;&nbsp;<strong>{% trans 'Delete service' %}</strong>
+          <input id="id_select_customer_service_id" type="hidden" readonly>
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">      
+        <div class="row">
+          <div class="col-12">
+            <div class="card card-info">
+              <div class="card-body">
+                Loading...
+              </div>
+            </div>
+          </div>          
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-md" data-dismiss="modal">{% trans 'Cancel' %}</button>      
+
+        <button type="button" onclick="delete_customer_service_item()" class="btn btn-danger btn-md">&nbsp;<i class="fas fa-trash"></i>&nbsp;&nbsp;Delete&nbsp;</button>
+
+      </div>
+
+    </div>
+  </div>
+</div>
 
 <!-- Wage Rate Modal -->
 <div class="modal fade" id="wageratemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -1464,11 +1501,13 @@
   }
 
   function delete_customer_service(service_id) {
+    $('#id_select_customer_service_id').val(service_id);
 
-    alert(service_id);
-    
     if (service_id != null) {
-    
+      result = "";
+      result += "<div>Do you want to delete service ID <b>" + service_id + " </b></div>";
+      $("#delete_service_modal .modal-body").html(result);
+      $("#delete_service_modal").modal("show");
     }
 
   }
@@ -2211,6 +2250,7 @@
 
   }
 
+
   function save_customer_service_item() {
     srv_id = $('#id_select_customer_service_id').val();    
 
@@ -2281,23 +2321,284 @@
             close: true,
             autoremove: true,
           });
+
+          // Refresh Guard Amount, Sale Amount value
+          $('#id_cnt_guard_amt').val(data.active_cnt_guard_amt);
+          $('#id_cnt_sale_amt').val(data.active_cnt_sale_amt);
+
+          // Reloade service list table
+          $.ajax({
+            url : "/contract/ajax/reload_service_list",
+            type: 'get',          
+            dataType: 'json',
+            data: {
+              cnt_id: data.cnt_id,
+            },
+            beforeSend: function () {
+              
+            },    
+            success: function (data) {
+
+              result = "";
+              result += "<div class='row'>";
+              result += "  <div class='col-md-12 table-responsive'>";
+              result += "    <table id='customer-list-table1' class='table table-bordered table-sm'>";
+              result += "      <tr class='table-secondary'>";
+              result += "        <th>{% trans 'Eff Frm' %}</th>";
+              result += "        <th scope='col'>{% trans 'Eff To' %}</th>";
+              result += "        <th scope='col' nowrap>{% trans 'Shift Time' %}</th>";
+              result += "        <th scope='col'>{% trans 'Qty' %}</th>";
+              result += "        <th scope='col'>{% trans 'Rank' %}</th>";
+              result += "        <th scope='col'>{% trans 'Rate' %}</th>";
+              result += "        <th scope='col'>{% trans 'Ext.Cost' %}</th>";
+              result += "        <th scope='col'>{% trans 'MON' %}</th>";
+              result += "        <th scope='col'>{% trans 'TUE' %}</th>";
+              result += "        <th scope='col'>{% trans 'WED' %}</th>";
+              result += "        <th scope='col'>{% trans 'THU' %}</th>";
+              result += "        <th scope='col'>{% trans 'FRI' %}</th>";
+              result += "        <th scope='col'>{% trans 'SAT' %}</th>";
+              result += "        <th scope='col'>{% trans 'SUN' %}</th>";
+              result += "        <th scope='col'>{% trans 'PUB' %}</th>";
+              result += "        <th scope='col'>{% trans 'Remark' %}</th>";
+              result += "        <th scope='col'>{% trans 'Active' %}</th>";
+              result += "        <th>&nbsp;</th>";
+              result += "      </tr>";
+              result += "      <tbody>";
+
+              for(var i=0; i<data.cus_service_list.length; i++) {            
+                result += "          <tr>";
+                if(data.cus_service_list[i]["srv_active"]==1) {
+                  result += "          <td><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_eff_frm"] + "</small></a></td>";
+                  result += "          <td><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_eff_to"] + "</small></a></td>";
+                  result += "          <td><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_shift_text"] + "</small></a></td>";
+                  result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_qty"] + "</small></a></td>";
+                  result += "          <td><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_rank"] + "</small></td>";
+                  result += "          <td align='right'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_rate"] + "</small></a></td>";
+                  result += "          <td align='right'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_cost"] + "</small></a></td>";
+                  result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_mon"] + "</small></a></td>";
+                  result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_tue"] + "</small></a></td>";
+                  result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_wed"] + "</small></a></td>";
+                  result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_thu"] + "</small></a></td>";
+                  result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_fri"] + "</small></a></td>";
+                  result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_sat"] + "</small></a></td>";
+                  result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_sun"] + "</small></a></td>";
+                  result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_pub"] + "</small></a></td>";
+                  result += "          <td><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_rem"] + "</small></a></td>";
+                  }
+                else {
+                  result += "          <td><small>" + data.cus_service_list[i]["srv_eff_frm"] + "</small></td>";
+                  result += "          <td><small>" + data.cus_service_list[i]["srv_eff_to"] + "</small></td>";
+                  result += "          <td><small>" + data.cus_service_list[i]["srv_shift_text"] + "</small></td>";
+                  result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_qty"] + "</small></td>";
+                  result += "          <td><small>" + data.cus_service_list[i]["srv_rank"] + "</small></td>";
+                  result += "          <td align='right'><small>" + data.cus_service_list[i]["srv_rate"] + "</small></td>";
+                  result += "          <td align='right'><small>" + data.cus_service_list[i]["srv_cost"] + "</small></td>";
+                  result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_mon"] + "</small></td>";
+                  result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_tue"] + "</small></td>";
+                  result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_wed"] + "</small></td>";
+                  result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_thu"] + "</small></td>";
+                  result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_fri"] + "</small></td>";
+                  result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_sat"] + "</small></td>";
+                  result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_sun"] + "</small></td>";
+                  result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_pub"] + "</small></td>";
+                  result += "          <td><small>" + data.cus_service_list[i]["srv_rem"] + "</small></td>";
+                }
+
+                if(data.cus_service_list[i]["srv_active"]==1)
+                  result += "          <td><span class='badge badge-success'>{% trans 'Active' %}</span></td>";
+                else
+                  result += "          <td><span class='badge badge-secondary'>{% trans 'Pending' %}</span></td>";
+              
+                result += "          <td>";
+                result += "            <div class='btn-group btn-group-sm nowrap'>";
+                result += "              <small>";
+                result += "              <button type='button' onclick='update_customer_service(" + data.cus_service_list[i]["srv_id"] + ")' class='btn btn-info btn-xs js-update-contract-service' data-toggle='modal'>&nbsp;<i class='fas fa-pen fa-xs'></i>&nbsp;</button>";
+
+                result += "              <button type='button' onclick='delete_customer_service(" + data.cus_service_list[i]["srv_id"] + ")' class='btn btn-danger btn-xs js-delete-contract-service'>";
+                result += "                &nbsp;<i class='fas fa-trash fa-xs'></i>&nbsp;";
+                result += "              </button>";
+                result += "              </small>";
+                result += "            </div>";
+                result += "          </td>";
+              }
+                result += "          </tr>";
+              
+              result += "      </tbody>";
+              result += "    </table>";
+              result += "  </div>";
+              result += "</div>";
+
+              $("#service_list_table .card-body").html(result);
+              $("#update_service_modal").modal("hide");
+
+            },
+            error: function(data){
+              // do nothing        
+            }
+          });          
         },
         error: function(data){
-          $(document).Toasts('create', {
-            class: 'bg-danger', 
-            title: "{% trans 'System Message' %}",
-            subtitle: '',
-            autohide: true,
-            delay: 2000,      
-            body: "Cannot save " + srv_id,
-            autoDismiss: true,
-            close: true,
-            autoremove: true,
-          });          
+          // do nothing          
         }
       });            
     }
   }
+
+
+
+  function delete_customer_service_item() {
+    srv_id = $('#id_select_customer_service_id').val();
+
+    $.ajax({
+        url : "/contract/ajax/delete_customer_service",
+        type: 'get',
+        dataType: 'json',
+        data: {
+          srv_id: srv_id
+        },
+        beforeSend: function () {
+          
+        },    
+        success: function (data) {
+          $("#delete_service_modal").modal("hide");
+
+          $(document).Toasts('create', {
+            class: data.class, 
+            title: "{% trans 'System Message' %}",
+            subtitle: '',
+            autohide: true,
+            delay: 2000,      
+            body: data.message,
+            autoDismiss: true,
+            close: true,
+            autoremove: true,
+          });                    
+
+          // amnaj
+          // Refresh Guard Amount, Sale Amount value
+          $('#id_cnt_guard_amt').val(data.active_cnt_guard_amt);
+          $('#id_cnt_sale_amt').val(data.active_cnt_sale_amt);
+
+
+        // Reloade service list table
+        $.ajax({
+          url : "/contract/ajax/reload_service_list",
+          type: 'get',          
+          dataType: 'json',
+          data: {
+            cnt_id: data.cnt_id,
+          },
+          beforeSend: function () {
+            
+          },    
+          success: function (data) {
+
+            result = "";
+            result += "<div class='row'>";
+            result += "  <div class='col-md-12 table-responsive'>";
+            result += "    <table id='customer-list-table1' class='table table-bordered table-sm'>";
+            result += "      <tr class='table-secondary'>";
+            result += "        <th>{% trans 'Eff Frm' %}</th>";
+            result += "        <th scope='col'>{% trans 'Eff To' %}</th>";
+            result += "        <th scope='col' nowrap>{% trans 'Shift Time' %}</th>";
+            result += "        <th scope='col'>{% trans 'Qty' %}</th>";
+            result += "        <th scope='col'>{% trans 'Rank' %}</th>";
+            result += "        <th scope='col'>{% trans 'Rate' %}</th>";
+            result += "        <th scope='col'>{% trans 'Ext.Cost' %}</th>";
+            result += "        <th scope='col'>{% trans 'MON' %}</th>";
+            result += "        <th scope='col'>{% trans 'TUE' %}</th>";
+            result += "        <th scope='col'>{% trans 'WED' %}</th>";
+            result += "        <th scope='col'>{% trans 'THU' %}</th>";
+            result += "        <th scope='col'>{% trans 'FRI' %}</th>";
+            result += "        <th scope='col'>{% trans 'SAT' %}</th>";
+            result += "        <th scope='col'>{% trans 'SUN' %}</th>";
+            result += "        <th scope='col'>{% trans 'PUB' %}</th>";
+            result += "        <th scope='col'>{% trans 'Remark' %}</th>";
+            result += "        <th scope='col'>{% trans 'Active' %}</th>";
+            result += "        <th>&nbsp;</th>";
+            result += "      </tr>";
+            result += "      <tbody>";
+
+            for(var i=0; i<data.cus_service_list.length; i++) {            
+              result += "          <tr>";
+              if(data.cus_service_list[i]["srv_active"]==1) {
+                result += "          <td><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_eff_frm"] + "</small></a></td>";
+                result += "          <td><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_eff_to"] + "</small></a></td>";
+                result += "          <td><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_shift_text"] + "</small></a></td>";
+                result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_qty"] + "</small></a></td>";
+                result += "          <td><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_rank"] + "</small></td>";
+                result += "          <td align='right'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_rate"] + "</small></a></td>";
+                result += "          <td align='right'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_cost"] + "</small></a></td>";
+                result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_mon"] + "</small></a></td>";
+                result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_tue"] + "</small></a></td>";
+                result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_wed"] + "</small></a></td>";
+                result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_thu"] + "</small></a></td>";
+                result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_fri"] + "</small></a></td>";
+                result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_sat"] + "</small></a></td>";
+                result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_sun"] + "</small></a></td>";
+                result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_pub"] + "</small></a></td>";
+                result += "          <td><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_rem"] + "</small></a></td>";
+                }
+              else {
+                result += "          <td><small>" + data.cus_service_list[i]["srv_eff_frm"] + "</small></td>";
+                result += "          <td><small>" + data.cus_service_list[i]["srv_eff_to"] + "</small></td>";
+                result += "          <td><small>" + data.cus_service_list[i]["srv_shift_text"] + "</small></td>";
+                result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_qty"] + "</small></td>";
+                result += "          <td><small>" + data.cus_service_list[i]["srv_rank"] + "</small></td>";
+                result += "          <td align='right'><small>" + data.cus_service_list[i]["srv_rate"] + "</small></td>";
+                result += "          <td align='right'><small>" + data.cus_service_list[i]["srv_cost"] + "</small></td>";
+                result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_mon"] + "</small></td>";
+                result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_tue"] + "</small></td>";
+                result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_wed"] + "</small></td>";
+                result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_thu"] + "</small></td>";
+                result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_fri"] + "</small></td>";
+                result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_sat"] + "</small></td>";
+                result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_sun"] + "</small></td>";
+                result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_pub"] + "</small></td>";
+                result += "          <td><small>" + data.cus_service_list[i]["srv_rem"] + "</small></td>";
+              }
+
+              if(data.cus_service_list[i]["srv_active"]==1)
+                result += "          <td><span class='badge badge-success'>{% trans 'Active' %}</span></td>";
+              else
+                result += "          <td><span class='badge badge-secondary'>{% trans 'Pending' %}</span></td>";
+            
+              result += "          <td>";
+              result += "            <div class='btn-group btn-group-sm nowrap'>";
+              result += "              <small>";
+              result += "              <button type='button' onclick='update_customer_service(" + data.cus_service_list[i]["srv_id"] + ")' class='btn btn-info btn-xs js-update-contract-service' data-toggle='modal'>&nbsp;<i class='fas fa-pen fa-xs'></i>&nbsp;</button>";
+
+              result += "              <button type='button' onclick='delete_customer_service(" + data.cus_service_list[i]["srv_id"] + ")' class='btn btn-danger btn-xs js-delete-contract-service'>";
+              result += "                &nbsp;<i class='fas fa-trash fa-xs'></i>&nbsp;";
+              result += "              </button>";
+              result += "              </small>";
+              result += "            </div>";
+              result += "          </td>";
+            }
+              result += "          </tr>";
+            
+            result += "      </tbody>";
+            result += "    </table>";
+            result += "  </div>";
+            result += "</div>";
+
+            //amnaj
+            $("#service_list_table .card-body").html(result);
+            $("#add_new_service_list_modal").modal("hide");
+
+          },
+          error: function(data){
+            // do nothing        
+          }
+        });    
+
+        },
+        error: function(data){
+          alert("error!");
+        }
+    });
+  }
+
 
   $(document).ready(function(){    
 

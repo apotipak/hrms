@@ -1024,6 +1024,7 @@
 
   }
 
+
   function delete_customer_service_item() {
     srv_id = $('#id_select_customer_service_id').val();
 
@@ -1175,8 +1176,8 @@
           alert("error!");
         }
     });
-
   }
+
 
   function update_customer_service(service_id) {
     if (service_id != null) {
@@ -1381,6 +1382,8 @@
       alert("service id is null");
     }      
   };
+
+
 
   function save_customer_service_item() {
     srv_id = $('#id_select_customer_service_id').val();    
@@ -1843,7 +1846,7 @@
 
   // Add new service
   $(document).ready(function(){
-    
+
     $('#add_service_button').on('click', function (e) {
       var obj = $(this);
       cnt_eff_frm = $('#id_cnt_eff_frm').val();
