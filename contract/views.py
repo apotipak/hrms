@@ -2000,3 +2000,56 @@ def delete_customer_service(request):
     response.status_code = 200
     return response
 
+
+@login_required(login_url='/accounts/login/')
+def reload_contract_list(request):
+
+    print("*******************************")
+    print("FUNCTION: reload_contract_list")
+    print("*******************************")
+
+    cnt_id = request.GET["cnt_id"]
+
+    data = CusContract.objects.all().filter(cnt_id=cnt_id).exclude(upd_flag='D').order_by('-cnt_active')
+    
+    cus_contract_list=[]
+    for d in data:
+        record = {
+            "cnt_id": d.cnt_id_id,
+        }
+        cus_contract_list.append(record)
+
+    response = JsonResponse(data={
+        "success": True,
+        "cus_contract_list": list(cus_contract_list),
+    })
+
+    response.status_code = 200
+    return response
+
+
+@login_required(login_url='/accounts/login/')
+def delete_customer_contract(request):
+
+    print("************************************")
+    print("FUNCTION: delete_customer_contract")
+    print("************************************")
+
+    cnt_id = request.GET["cnt_id"]
+
+    data = CusContract.objects.filter(cnt_id=cnt_id).get() 
+    data.upd_flag = 'D'
+    cnt_id = data.cnt_id 
+    data.save()
+
+    response = JsonResponse(data={
+        "success": True,
+        "message": "Contract ID " + str(cnt_id) + " has been deleted.",
+        "class": "bg-danger",
+        "cnt_id": cnt_id,
+    })
+
+    response.status_code = 200
+    return response
+
+
