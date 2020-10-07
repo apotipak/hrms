@@ -2204,24 +2204,7 @@
       });
 
 
-      // SRV_COST_NEW
-      /*
-      $('#id_srv_rate_new').on('keypress', function (e) {
-        var cost = $(this);
-        if(e.which === 13){
-          total = cost.val() * $('#id_srv_qty_new').val();
-          $('#id_srv_cost_new').val(total);
-          $('#id_srv_rem_new').focus();
-          event.preventDefault();
-          return false;   
-        } else {
 
-          $('#id_srv_cost_new').val($(this).val());
-
-        }
-      });
-      */
-      // amnaj
       $('#id_srv_rate_new').on('keyup', function (e) {        
         var cost = $(this);
         if(e.which === 13){
@@ -2236,8 +2219,6 @@
         if(e.which === 13)
           $('#id_srv_rem_new').focus();      
       });
-
-
 
     });
 

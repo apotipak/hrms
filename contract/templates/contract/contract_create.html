@@ -2968,6 +2968,7 @@
         }
       });
 
+
       $('#id_srv_rate_new').on('keyup', function (e) {        
         var cost = $(this);
         if(e.which === 13){
@@ -3035,17 +3036,31 @@
         }
       });
 
-      // SRV_COST
-      $('#id_srv_rate').on('keypress', function (e) {
+      $('#id_srv_qty').on('keyup', function (e) {
+        var qty = $(this);
+        if(e.which === 13){
+          total = qty * $('#id_srv_rate').val();
+          $('#id_srv_cost').val(total);
+        } else {
+          total = $(this).val() * $('#id_srv_rate').val();
+          $('#id_srv_cost').val(total); 
+        }
+      });
+
+      $('#id_srv_rate').on('keyup', function (e) {        
         var cost = $(this);
         if(e.which === 13){
           total = cost.val() * $('#id_srv_qty').val();
-          //$('#id_srv_cost').val(total.toLocaleString());
           $('#id_srv_cost').val(total);
-          $('#id_srv_rem').focus();
-          event.preventDefault();
-          return false;        
+        } else {
+          total = $(this).val() * $('#id_srv_qty').val();
+          $('#id_srv_cost').val(total);
         }
+      });
+
+      $('#id_srv_rate').on('keypress', function (e) {        
+        if(e.which === 13)
+          $('#id_srv_rem').focus();      
       });
 
       // SRV_MON
