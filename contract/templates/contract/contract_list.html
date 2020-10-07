@@ -220,6 +220,45 @@
 
   </div>
 
+
+<!-- Delete Contract Modal -->
+<div class="modal fade" id="delete_contract_modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">
+          <i class="fas fa-trash fa-sm text-secondary"></i>&nbsp;&nbsp;<strong>{% trans 'Delete service' %}</strong>
+          <input id="id_select_customer_service_id" type="hidden" readonly>
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">      
+        <div class="row">
+          <div class="col-12">
+            <div class="card card-info">
+              <div class="card-body">
+                Loading...
+              </div>
+            </div>
+          </div>          
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-md" data-dismiss="modal">{% trans 'Cancel' %}</button>      
+
+        <button type="button" onclick="delete_customer_service_item()" class="btn btn-danger btn-md">&nbsp;<i class="fas fa-trash"></i>&nbsp;&nbsp;Delete&nbsp;</button>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
 {% endblock %}
 
 
@@ -384,15 +423,13 @@
     
     alert(cnt_id);
 
-    /*
-    if (service_id != null) {
+    if (cnt_id != null) {
       result = "";
-      result += "<div>Do you want to delete service ID <b>" + service_id + " </b></div>";
-      $("#delete_service_modal .modal-body").html(result);
-      $("#delete_service_modal").modal("show");
+      result += "<div>Would you like to delete the Service ID <b>" + service_id + " </b></div>";
+      $("#delete_contract_modal .modal-body").html(result);
+      $("#delete_contract_modal").modal("show");
     }
-    */
-    
+
   }
 
 
