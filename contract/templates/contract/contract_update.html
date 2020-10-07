@@ -1325,12 +1325,12 @@
             // SRV_COST
             result += "        <div class='form-group col-md-3'>";
             result += "          <label for='cus_tel'>{% trans 'Cost' %}</label>";
-            num = parseFloat(data.srv_cost);
+            num = parseFloat(data.srv_rate);
             result += "          <input id='id_srv_rate' type='number' class='form-control form-control-sm' value='" + num.toFixed(0) + "'>";
             result += "        </div>";
 
             // SRV_TOTAL_COST
-            num = parseFloat(data.srv_rate);
+            num = parseFloat(data.srv_cost);
             result += "        <div class='form-group col-md-3'>";
             result += "          <label for='cus_zip'>{% trans 'Total Cost' %}</label>";
             result += "          <input id='id_srv_cost' type='number' class='form-control form-control-sm' value='" + num.toFixed(0) + "' readonly>";
