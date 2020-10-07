@@ -886,6 +886,16 @@
     }
   });
 
+  $("#id_cus_id").on('click', function(){
+    $("#id_cus_id").select();
+  });
+  $("#id_cus_brn").on('click', function(){
+    $("#id_cus_brn").select();
+  });
+  $("#id_cus_vol").on('click', function(){
+    $("#id_cus_vol").select();
+  });
+
   $(document).on('keypress', '#id_cus_brn', function(e) {
     if(e.which == 13) {      
       e.preventDefault();
