@@ -119,6 +119,7 @@ class ContractCreateForm(forms.ModelForm):
         self.fields['cnt_sale_amt'].widget.attrs.update({'class': 'form-control form-control-sm text-right', 'id': 'id_cnt_sale_amt'})
         self.fields['cnt_guard_amt'].widget.attrs['readonly'] = True
         self.fields['cnt_sale_amt'].widget.attrs['readonly'] = True
+        self.fields['cnt_apr_by_text'].widget.attrs['readonly'] = True
 
         # Initial value
         self.fields['cnt_doc_date'].initial = datetime.date.today

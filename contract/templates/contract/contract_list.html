@@ -227,18 +227,25 @@
 <script>
 
   $('#id_cus_id').focus();
-
+  $("#id_cus_id").select();
+  
   $(document).on('keypress', '#id_cus_id', function(e) {
     if(e.which == 13) {      
       e.preventDefault();
       cus_id = $("#id_cus_id").val();
 
       if(cus_id <= 0) {
-        $('#id_cus_id').focus();              
+        $('#id_cus_id').focus();        
       } else {
         $("#search_contract_form").submit();
+        $("#id_cus_id").select();
       }
     }
+  });
+
+  $("#id_cus_id").on('click', function(){
+    //$(this).select();
+    $("#id_cus_id").select();
   });
 
 
@@ -268,6 +275,7 @@
 
   $(document).on('click', '#search_contract_button', function(event) {
     $("#search_contract_form").submit();
+    $("#id_cus_id").select();
   });
 
   /*
@@ -361,6 +369,8 @@
                 }
               }
             }
+
+            $("#id_cus_id").select();
           },
           error : function(xhr,errmsg,err) {
           console.log(xhr.status + ": " + xhr.responseText);
