@@ -1320,7 +1320,7 @@ def update_customer_service(request):
             op1 = data.op1
             op2 = data.op2
             op3 = data.op3
-            
+
             # Get com_rank
             comrank = ComRank.objects.all().exclude(upd_flag='D')
             pickup_comrank_record =[]            
@@ -1396,6 +1396,110 @@ def update_customer_service(request):
         response.status_code = 403
         return response    
 
+
+def add_new_service(request):    
+    cus_id = request.GET["cus_id"]
+    cus_brn = request.GET["cus_brn"]
+    cus_vol = request.GET["cus_vol"]
+    cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
+
+    # srv_eff_from = request.GET["srv_eff_frm_new"]
+    print("srv_eff_frm = " + str(request.GET["srv_eff_frm_new"]))
+    srv_eff_from = datetime.datetime.strptime(request.GET["srv_eff_frm_new"], "%d/%m/%Y").date()
+
+    # srv_eff_to = request.GET["srv_eff_to_new"].strftime("%d/%m/%Y")
+    srv_eff_to = datetime.datetime.strptime(request.GET["srv_eff_to_new"], "%d/%m/%Y").date()
+
+    srv_rank = request.GET["srv_rank_new"]
+    srv_shift_id = request.GET["srv_shift_id_new"]
+    srv_qty = request.GET["srv_qty_new"]
+    srv_mon = request.GET["srv_mon_new"]
+    srv_tue = request.GET["srv_tue_new"]
+    srv_wed = request.GET["srv_wed_new"]
+    srv_thu = request.GET["srv_thu_new"]
+    srv_fri = request.GET["srv_fri_new"]
+    srv_sat = request.GET["srv_sat_new"]
+    srv_sun = request.GET["srv_sun_new"]
+    srv_pub = request.GET["srv_pub_new"]
+    srv_active = request.GET["srv_active_new"]
+    srv_rate = request.GET["srv_rate_new"]
+    srv_cost = request.GET["srv_cost_new"]    
+    srv_cost_rate = request.GET["srv_cost_rate_new"]
+    srv_rem = request.GET["srv_rem_new"]
+
+    print("----------------------------")
+    print("cnt_id = " + str(cnt_id))
+    print("----------------------------")
+
+    # amnaj
+    latest_service_number = CusService.objects.filter(cnt_id=cnt_id).aggregate(Max('srv_id'))
+    latest_service_number = latest_service_number['srv_id__max']
+
+    if latest_service_number is not None:
+        new_service_number = latest_service_number + 1
+    else:
+        new_service_number = str(cnt_id) + "00001"
+
+
+    s = CusService(
+        srv_id = new_service_number,
+        cnt_id_id = cnt_id,
+        srv_rank = srv_rank,
+        srv_shif_id_id = srv_shift_id,
+        srv_eff_frm = srv_eff_from,
+        srv_eff_to = srv_eff_to,
+        srv_qty = srv_qty,
+        srv_mon = srv_mon,
+        srv_tue = srv_tue,
+        srv_wed = srv_wed,
+        srv_thu = srv_thu,
+        srv_fri = srv_fri,
+        srv_sat = srv_sat,
+        srv_sun = srv_sun,
+        srv_pub = srv_pub,
+        srv_active = srv_active,
+        srv_rate = float(srv_rate),
+        srv_cost = int(srv_qty) * float(srv_rate),
+        srv_rem = srv_rem,
+        srv_cost_rate = float(srv_cost),
+        upd_date = datetime.datetime.now(),
+        upd_by = request.user.first_name,
+        upd_flag = 'A',
+        srv_cost_change = 0,
+        op1 = 0,
+        op2 = 0,
+        op3 = 0,
+    )
+    s.save()
+
+    # Recalculate cnt_guard_amt, cnt_sale_amt
+    # start
+    cus_service_list = CusService.objects.all().filter(cnt_id=cnt_id)
+    active_cnt_guard_amt = 0
+    active_cnt_sale_amt = 0
+    for item in cus_service_list:
+        if item.srv_active:                        
+            active_cnt_guard_amt += item.srv_qty
+            active_cnt_sale_amt += item.srv_rate * item.srv_qty
+    c = CusContract.objects.get(cnt_id=cnt_id)
+    c.cnt_guard_amt = active_cnt_guard_amt
+    c.cnt_sale_amt = active_cnt_sale_amt
+    c.save()
+    # end
+
+    response = JsonResponse(data={
+        "success": True,
+        "message": "Success.",
+        "class": "bg-success",
+        "cnt_id": cnt_id,
+        "active_cnt_guard_amt": active_cnt_guard_amt,
+        "active_cnt_sale_amt": active_cnt_sale_amt,        
+    })
+
+    response.status_code = 200
+    return response
+
+
 def save_new_service(request):
     cnt_id = request.GET["cnt_id"]
 
@@ -1423,6 +1527,11 @@ def save_new_service(request):
     srv_cost_rate = request.GET["srv_cost_rate_new"]
     srv_rem = request.GET["srv_rem_new"]
 
+    print("----------------------------")
+    print("cnt_id = " + str(cnt_id))
+    print("----------------------------")
+
+    # amnaj
     latest_service_number = CusService.objects.filter(cnt_id=cnt_id).aggregate(Max('srv_id'))
     latest_service_number = latest_service_number['srv_id__max']
 
@@ -1430,6 +1539,7 @@ def save_new_service(request):
         new_service_number = latest_service_number + 1
     else:
         new_service_number = str(cnt_id) + "00001"
+
 
     s = CusService(
         srv_id = new_service_number,
