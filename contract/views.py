@@ -293,12 +293,28 @@ def get_cus_contract(request):
                 cnt_print = cuscontract.cnt_print
                 cnt_autoexpire = cuscontract.cnt_autoexpire
 
-                print("cnt_guard_amt = " + str(cnt_guard_amt))
+                # print("cnt_guard_amt = " + str(cnt_guard_amt))
 
                 if cnt_autoexpire:
                     cnt_autoexpire = 1
                 else:
                     cnt_autoexpire = 0
+
+                # amnaj
+                # Check if cus_service is existed
+                # start
+                cus_service_list = []
+                pickup_record = []
+                try:                 
+                    cus_service_list = CusService.objects.all().filter(cnt_id=cnt_id)
+                    for item in cus_service_list:
+                        record = {
+                            "srv_id": item.srv_id,
+                        }
+                        pickup_record.append(record)
+                except CusService.DoesNotExist:
+                    cus_service_list = []        
+                # end
 
                 response = JsonResponse(data={
                     "success": True,
@@ -320,6 +336,7 @@ def get_cus_contract(request):
                     "cnt_new": cnt_new,
                     "cnt_print": cnt_print,
                     "cnt_autoexpire": cnt_autoexpire,
+                    "cus_service_list": list(pickup_record)
                 })
 
                 response.status_code = 200
@@ -772,7 +789,6 @@ def UpdateContract(request):
                 response_data['result'] = "Pending to save data"
                 response_data['class'] = "bg-success"
 
-                # amnaj 1
                 '''
                 c = CusContract(
                     cnt_id = cnt_id,
@@ -1044,7 +1060,6 @@ def CreateContract(request):
                
             except CusContract.DoesNotExist:
                 # Insert
-                # amnaj 2
                 c = CusContract(
                     cnt_id = cnt_id,
                     cus_id = cus_id,
@@ -1305,7 +1320,7 @@ def update_customer_service(request):
             op1 = data.op1
             op2 = data.op2
             op3 = data.op3
-
+            
             # Get com_rank
             comrank = ComRank.objects.all().exclude(upd_flag='D')
             pickup_comrank_record =[]            

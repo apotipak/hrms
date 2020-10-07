@@ -982,6 +982,12 @@
             $("#contract_number_form :input").attr("disabled", true);            
             $("#id_cnt_doc_no").focus();
 
+            // Show cus_service if existed.
+            if(json.cus_service_list.length > 0) {
+              alert("todo");
+              // amnaj
+            }
+
           } else {
 
             if(json.customer_not_existed) {
@@ -1030,8 +1036,6 @@
       $('#id_cus_vol').focus();
     } else {
       
-      // amnaj
-      //alert("Todo");
       contract_form_validation(cus_id, cus_brn, cus_vol);
 
     }
