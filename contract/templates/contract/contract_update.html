@@ -42,7 +42,7 @@
     <div class="card card-default collapsed-card">
 
       <div class="card-header">
-        <h1 class="card-title pt-2"><strong>{{contract.cnt_id}} - {{ customer.cus_name_th }}</strong></h1>
+        <h1 class="card-title pt-2"><i class="fas fa-user-edit"></i>&nbsp;&nbsp;<strong>{{contract.cnt_id}} - {{ customer.cus_name_th }}</strong></h1>
 
         <div class="card-tools">
 
@@ -537,7 +537,7 @@
     <div id="service_list" class="card card-default">
 
       <div class="card-header">
-        <h1 class="card-title pt-1"><strong>{% trans 'Service List' %}</strong></h1>
+        <h1 class="card-title pt-2"><i class="fas fa-user-clock"></i>&nbsp;&nbsp;<strong>{% trans 'Service List' %}</strong></h1>
         <div class="card-tools">        
           <button id="add_service_button" type="button" class="btn btn-outline-success btn-md" data-toggle="modal"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;{% trans 'Add new service' %}</button>
         </div>        

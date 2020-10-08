@@ -38,7 +38,7 @@
     <div class="card card-default collapsed-card">
 
       <div class="card-header">
-        <h1 class="card-title pt-2"><div id="customer_name_title"><strong>{{contract.cnt_id}} - {{ customer.cus_name_th }}</strong></div></h1>
+        <h1 class="card-title pt-2"><div id="customer_name_title"><i class="fas fa-user-edit"></i>&nbsp;&nbsp;<strong>{{contract.cnt_id}} - {{ customer.cus_name_th }}</strong></div></h1>
 
         <div class="card-tools">
 
@@ -494,7 +494,7 @@
     <div id="service_list_table" class="card card-default">
 
       <div class="card-header">
-        <h1 class="card-title pt-1"><strong>{% trans 'Service List' %}</strong></h1>
+        <h1 class="card-title pt-1"><i class="fas fa-user-clock"></i>&nbsp;&nbsp;<strong>{% trans 'Service List' %}</strong></h1>
         <div class="card-tools">        
           <button id="add_service_button" type="button" class="btn btn-outline-success btn-md" data-toggle="modal"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;{% trans 'Add new service' %}</button>
         </div>        
@@ -899,7 +899,7 @@
           },
           success : function(json) {        
             if(json.is_existed) {
-              $('#customer_name_title').html("<strong>" + json.cus_name_th + "</strong>");
+              $('#customer_name_title').html("<i class='fas fa-user-edit'></i>&nbsp;&nbsp;<strong>" + json.cus_name_th + "</strong>");
               $('#id_cus_brn').focus();
             } else {
               alert("Customer " + cus_id + " does not existed. Please create a new customer.");
@@ -947,7 +947,7 @@
         },
         success : function(json) {        
           if(json.is_existed) {
-            $('#customer_name_title').html("<strong>" + json.cus_name_th + "</strong>");
+            $('#customer_name_title').html("<i class='fas fa-user-edit'></i>&nbsp;&nbsp;<strong>" + json.cus_name_th + "</strong>");
             
             $('#id_cus_name_th').val(json.cus_name_th);
             $('#id_cus_sht_th').val(json.cus_sht_th);
