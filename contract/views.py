@@ -19,7 +19,7 @@ import datetime
 from django.utils import formats
 from django.db.models import Max
 from hrms.settings import MEDIA_ROOT
-# from docxtpl import DocxTemplate
+from docxtpl import DocxTemplate
 
 
 def check_modified_field(table_name, primary_key, field_name, old_value, new_value, log_type, request):
