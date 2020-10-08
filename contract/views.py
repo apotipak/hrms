@@ -2111,6 +2111,23 @@ def generate_contract(request):
         'customer_address': 'เลขที่ 37/2 ถนนสุทธิสารวินิจฉัย แขวงสามเสนนอก เขตห้วยขวาง กรุงเทพมหานคร 10320',
     }
 
+    '''
+    context = {
+        'name': 'linana',
+        'gender':'female',
+        'birthday':'19920520',
+        'items' : [
+            {'desc' : 'Python interpreters', 'qty' : 2, 'price' : 'FREE' },
+            {'desc' : 'Django projects', 'qty' : 5403, 'price' : 'FREE' },
+            {'desc' : 'Guido', 'qty' : 1, 'price' : '100,000,000.00' },
+        ],
+        'in_europe' : True,
+        'is_paid': False,
+        'company_name' : 'The World Wide company',
+        'total_price' : '100,000,000.00'
+    }
+    '''
+    
     shift_labels = ['Name', 'Age', 'Gender', 'Enrollment Date']
     context['shift_labels'] = shift_labels
     shift_dict1 = {'number': 1, 'cols': [' ', '27', 'male', '2019-03-28']}
