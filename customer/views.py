@@ -566,16 +566,19 @@ def CustomerDashboard(request):
     today_date = settings.TODAY_DATE    
 
     # Get number of active customer    
-    no_of_active_customer = Customer.objects.filter(cus_active=1).exclude(upd_flag='D').count()
+    no_of_active_customer = 0
     # Get number of pending customer
-    no_of_pending_customer = Customer.objects.filter(cus_active=0).exclude(upd_flag='D').count()
-    # Get number of delete customer   
-    no_of_delete_customer = Customer.objects.filter(upd_flag='D').count()
-    total_customer = no_of_active_customer+no_of_pending_customer+no_of_delete_customer
+    
+    no_of_pending_customer = 0
+    # no_of_pending_customer = Customer.objects.filter(cus_active=0).exclude(upd_flag='D').count()
 
-    # History Logs
+    # Get number of delete customer   
+    no_of_delete_customer = 0
+    total_customer = no_of_active_customer + no_of_pending_customer + no_of_delete_customer
+
+    # History Logs will be shown top 25 records
     # history_log = HrmsNewLog.objects.all().order_by('-log_date')[:25]
-    history_log = HrmsNewLog.objects.filter(log_table__in=('CUSTOMER','CUS_MAIN','CUS_BILL')).order_by('-log_date')[:25]    
+    history_log = HrmsNewLog.objects.filter(log_table__in=('CUSTOMER','CUS_MAIN','CUS_BILL')).order_by('-log_date')[:25]
 
     if not history_log:
         history_log = None

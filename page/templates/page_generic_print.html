@@ -59,10 +59,11 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition layout-top-nav">
 
 <div class="wrapper">
 
+  {% comment %}
   {% include "menu_bar_generic.html" %}
 
   <!-- Main Sidebar Container -->
@@ -89,10 +90,14 @@
   {% elif request.path|slice:":16" == '/user-language' %}
     {% include "left_menu_user_profile.html" %}
   {% endif %}
+  {% endcomment %}
+
 
   {% block content %}{% endblock %}
 
+  {% comment %}
   {% include "footer_generic.html" %}
+  {% endcomment %}
   
   <div class="modal hide" id="waitingDialog" data-backdrop="static" data-keyboard="false">
       <div class="modal-body">
@@ -141,8 +146,6 @@
 
 <!-- Bootstrap Datepicker 1.9 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
-<!-- Bootstrap Datepicker 1.8 -->
-<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>-->
 
 
 <!-- Tempusdominus Bootstrap 4 -->

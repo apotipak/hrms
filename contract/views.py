@@ -20,6 +20,7 @@ from django.utils import formats
 from django.db.models import Max
 from hrms.settings import MEDIA_ROOT
 from docxtpl import DocxTemplate
+from django.views.static import serve
 
 
 def check_modified_field(table_name, primary_key, field_name, old_value, new_value, log_type, request):
@@ -2099,35 +2100,82 @@ def delete_customer_contract(request):
 
 
 @login_required(login_url='/accounts/login/')
-def generate_contract(request):
+@permission_required('contract.view_cuscontract', login_url='/accounts/login/')
+def generate_contract(request, *args, **kwargs):
+    cnt_id = kwargs['cnt_id']
+    if cnt_id is not None:
+        try:                
+            # Get Contract information
+            cus_contract = CusContract.objects.filter(cnt_id__exact=cnt_id).get()
+            cus_contract_cus_id = cus_contract.cus_id
+            cus_contract_cus_brn = cus_contract.cus_brn
+
+            # Get Customer information
+            customer = Customer.objects.filter(cus_id=cus_contract_cus_id).filter(cus_brn=cus_contract_cus_brn).get()
+
+            context = {
+                'cnt_doc_no': cus_contract.cnt_doc_no,
+                'today_date': datetime.datetime.now().strftime("%d/%m/%Y"),
+                'customer_name': customer.cus_name_th,
+                'customer_address': customer.cus_add1_th,
+                'name': 'linana',
+                'gender':'female',
+                'birthday':'19920520',
+                'items' : [
+                    {'desc' : 'Python interpreters', 'qty' : 2, 'price' : 'FREE' },
+                    {'desc' : 'Django projects', 'qty' : 5403, 'price' : 'FREE' },
+                    {'desc' : 'Guido', 'qty' : 1, 'price' : '100,000,000.00' },
+                ],
+                'in_europe' : True,
+                'is_paid': False,
+                'company_name' : 'The World Wide company',
+                'total_price' : '100,000,000.00'
+            }
+        except CusContract.DoesNotExist:
+            context = {
+                'cnt_doc_no': cnt_id,
+                'today_date': datetime.datetime.now().strftime("%d/%m/%Y"),
+                'customer_name': 'บริษัท แอ็ดวานซ์ อินฟอร์เมชั่น เทคโนโลยี จำกัด (มหาชน) (ผู้ว่าจ้าง)',
+                'customer_address': 'เลขที่ 37/2 ถนนสุทธิสารวินิจฉัย แขวงสามเสนนอก เขตห้วยขวาง กรุงเทพมหานคร 10320',    
+                'name': 'linana',
+                'gender':'female',
+                'birthday':'19920520',
+                'items' : [
+                    {'desc' : 'Python interpreters', 'qty' : 2, 'price' : 'FREE' },
+                    {'desc' : 'Django projects', 'qty' : 5403, 'price' : 'FREE' },
+                    {'desc' : 'Guido', 'qty' : 1, 'price' : '100,000,000.00' },
+                ],
+                'in_europe' : True,
+                'is_paid': False,
+                'company_name' : 'The World Wide company',
+                'total_price' : '100,000,000.00'
+            }            
+    else:
+        context = {
+            'cnt_doc_no': cnt_id,
+            'today_date': datetime.datetime.now().strftime("%d/%m/%Y"),
+            'customer_name': 'บริษัท แอ็ดวานซ์ อินฟอร์เมชั่น เทคโนโลยี จำกัด (มหาชน) (ผู้ว่าจ้าง)',
+            'customer_address': 'เลขที่ 37/2 ถนนสุทธิสารวินิจฉัย แขวงสามเสนนอก เขตห้วยขวาง กรุงเทพมหานคร 10320',    
+            'name': 'linana',
+            'gender':'female',
+            'birthday':'19920520',
+            'items' : [
+                {'desc' : 'Python interpreters', 'qty' : 2, 'price' : 'FREE' },
+                {'desc' : 'Django projects', 'qty' : 5403, 'price' : 'FREE' },
+                {'desc' : 'Guido', 'qty' : 1, 'price' : '100,000,000.00' },
+            ],
+            'in_europe' : True,
+            'is_paid': False,
+            'company_name' : 'The World Wide company',
+            'total_price' : '100,000,000.00'
+        }
+
     base_url = MEDIA_ROOT + '/contract/template/'
     asset_url = base_url + 'ReNC102_TH.docx'
     
     tpl = DocxTemplate(asset_url)
-    context = {
-        'cnt_doc_no': '2526-15',
-        'today_date': datetime.datetime.now().strftime("%d/%m/%Y"),
-        'customer_name': 'บริษัท แอ็ดวานซ์ อินฟอร์เมชั่น เทคโนโลยี จำกัด (มหาชน) (ผู้ว่าจ้าง)',
-        'customer_address': 'เลขที่ 37/2 ถนนสุทธิสารวินิจฉัย แขวงสามเสนนอก เขตห้วยขวาง กรุงเทพมหานคร 10320',
-    }
 
     '''
-    context = {
-        'name': 'linana',
-        'gender':'female',
-        'birthday':'19920520',
-        'items' : [
-            {'desc' : 'Python interpreters', 'qty' : 2, 'price' : 'FREE' },
-            {'desc' : 'Django projects', 'qty' : 5403, 'price' : 'FREE' },
-            {'desc' : 'Guido', 'qty' : 1, 'price' : '100,000,000.00' },
-        ],
-        'in_europe' : True,
-        'is_paid': False,
-        'company_name' : 'The World Wide company',
-        'total_price' : '100,000,000.00'
-    }
-    '''
-
     shift_labels = ['Name', 'Age', 'Gender', 'Enrollment Date']
     context['shift_labels'] = shift_labels
     shift_dict1 = {'number': 1, 'cols': [' ', '27', 'male', '2019-03-28']}
@@ -2136,8 +2184,23 @@ def generate_contract(request):
     shift_list = []
     shift_list.append(shift_dict1)
     shift_list.append(shift_dict2)
+    '''
 
     tpl.render(context)
-    tpl.save(base_url + '/download/test.docx')    
+    tpl.save(base_url + '/download/test.docx')
+
     return render(request, 'contract/generate_contract.html', context)
+
+
+@login_required(login_url='/accounts/login/')
+@permission_required('contract.view_cuscontract', login_url='/accounts/login/')
+def download_contract(request, *args, **kwargs):
+    path = ""
+    file_path = os.path.join(settings.MEDIA_ROOT, path)
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as fh:
+            response = HttpResponse(fh.read(), content_type="application/vnd.ms-word")
+            response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+            return response
+    raise Http404
 
