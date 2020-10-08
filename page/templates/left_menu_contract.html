@@ -19,16 +19,26 @@
         <!-- Customer -->
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="true">
           <li class="nav-item has-treeview">
+            
             <a href="#" class="nav-link">
               <i class="nav-icon fa fa-handshake"></i><p>Contract<i class="right fas fa-angle-left"></i></p>
             </a>
+
             <ul class="nav nav-treeview">
+
+              <li class="nav-item">
+                <a href="#" onclick="underconstruction()" class="nav-link"><i class="fas fa-tachometer-alt nav-icon"></i><p>Dashboard</p></a>
+              </li>
+
               <li class="nav-item">
                 <a href="{% url 'contract-list' %}" class="nav-link"><i class="fas fa-caret-right nav-icon"></i><p>{% trans 'Contract List' %}</p></a>
               </li>
+
+              <!--              
               <li class="nav-item">
                 <a href="#" class="nav-link"><i class="fas fa-caret-right nav-icon"></i><p>Inquiry & Report</p></a>
               </li>
+              -->
             </ul>
           </li> 
         </ul>
@@ -42,13 +52,19 @@
 
 {% block scripts %}
 <script type='text/javascript'>
-$(document).ready(function() {
-  var pathname = window.location.pathname;
-  
-  $('.nav-treeview > li > a[href="'+pathname+'"]').addClass('active');
-  $('.nav-treeview > li > a[href="'+pathname+'"]').closest('.has-treeview').addClass('has-treeview menu-open');
-  $('.nav-treeview > li > a[href="'+pathname+'"]').parents('li.has-treeview').children().addClass('active');
-  
-})
+  function underconstruction() {
+    alert("This area is underconstruction.");
+  }
+
+  $(document).ready(function() {
+    var pathname = window.location.pathname;
+    
+    $('.nav-treeview > li > a[href="'+pathname+'"]').addClass('active');
+    $('.nav-treeview > li > a[href="'+pathname+'"]').closest('.has-treeview').addClass('has-treeview menu-open');
+    $('.nav-treeview > li > a[href="'+pathname+'"]').parents('li.has-treeview').children().addClass('active');
+    
+  });
+
 </script>
+
 {% endblock %}
