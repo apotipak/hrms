@@ -42,6 +42,7 @@ def check_modified_field(table_name, primary_key, field_name, old_value, new_val
 @login_required(login_url='/accounts/login/')
 @permission_required('contract.view_cuscontract', login_url='/accounts/login/')
 def contract_create(request):
+
     template_name = 'contract/contract_create.html'
     page_title = settings.PROJECT_NAME
     db_server = settings.DATABASES['default']['HOST']
@@ -162,6 +163,10 @@ def get_customer(request):
             site_contact_con_lname_en = customer.site_contact.con_lname_en
             site_contact_con_position_en = customer.site_contact.con_position_en
             
+            site_contact_cus_zone_id = customer.cus_zone_id
+            site_contact_cus_zone_th = customer.cus_zone.zone_th
+            site_contact_cus_zone_en = customer.cus_zone.zone_en
+
             response = JsonResponse(data={
                 # TH
                 "success": True,
@@ -198,7 +203,9 @@ def get_customer(request):
                 "cus_tel": cus_tel,
                 "cus_fax": cus_fax,
                 "cus_email": cus_email,
-
+                "cus_zone_id": site_contact_cus_zone_id,
+                "cus_zone_th": site_contact_cus_zone_th,
+                "cus_zone_en": site_contact_cus_zone_en,
             })
             response.status_code = 200
             return response
@@ -300,7 +307,6 @@ def get_cus_contract(request):
                 else:
                     cnt_autoexpire = 0
 
-                # amnaj
                 # Check if cus_service is existed
                 # start
                 cus_service_list = []
@@ -1415,7 +1421,6 @@ def add_new_service(request):
     cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
 
     # Check if cus_contract is existed
-    # amnaj
     try:
         data = CusContract.objects.filter(cnt_id=cnt_id).get()       
     except CusContract.DoesNotExist:
@@ -1453,11 +1458,11 @@ def add_new_service(request):
     srv_cost_rate = request.GET["srv_cost_rate_new"]
     srv_rem = request.GET["srv_rem_new"]
 
-    print("----------------------------")
-    print("cnt_id = " + str(cnt_id))
-    print("----------------------------")
 
-    # amnaj
+    # print("----------------------------")
+    # print("cnt_id = " + str(cnt_id))
+    # print("----------------------------")
+
     latest_service_number = CusService.objects.filter(cnt_id=cnt_id).aggregate(Max('srv_id'))
     latest_service_number = latest_service_number['srv_id__max']
 
@@ -1553,11 +1558,10 @@ def save_new_service(request):
     srv_cost_rate = request.GET["srv_cost_rate_new"]
     srv_rem = request.GET["srv_rem_new"]
 
-    print("----------------------------")
-    print("cnt_id = " + str(cnt_id))
-    print("----------------------------")
-
-    # amnaj
+    # print("----------------------------")
+    # print("cnt_id = " + str(cnt_id))
+    # print("----------------------------")
+    
     latest_service_number = CusService.objects.filter(cnt_id=cnt_id).aggregate(Max('srv_id'))
     latest_service_number = latest_service_number['srv_id__max']
 

@@ -133,11 +133,6 @@
                     <input type="text" class="form-control form-control-sm" id="id_cus_fax_th" name="cus_fax_th" readonly value="{{ customer.cus_fax }}">
                   </div>
                   <div class="form-group col-md-2">
-                    <label for="id_cus_email_th">{% trans 'Email' %}</label>
-                    <input type="text" class="form-control form-control-sm" id="id_cus_email_th" name="cus_email_th" readonly value="{{ customer.cus_email }}">
-                  </div>                  
-
-                  <div class="form-group col-md-4">
                     <label for="id_site_contact_con_th">{% trans 'Contact' %}</label>
                     <input type="text" class="form-control form-control-sm" id="id_site_contact_con_th" name="site_contact_con_th" readonly value="{customer.site_contact_id}} {{customer.site_contact.con_fname_th}}&nbsp;{{customer.site_contact.con_lname_th}}">
                   </div>
@@ -146,7 +141,14 @@
                     <label for="id_site_contact_con_position_th">{% trans 'Position' %}</label>
                     <input type="text" class="form-control form-control-sm" id="id_site_contact_con_position_th" name="site_contact_con_position_th" readonly value="{{ customer.site_contact.con_position_th }}">
                   </div>                  
-
+                  <div class="form-group col-md-2">
+                    <label for="id_cus_email_th">{% trans 'Email' %}</label>
+                    <input type="text" class="form-control form-control-sm" id="id_cus_email_th" name="cus_email_th" readonly value="{{ customer.cus_email }}">
+                  </div>                  
+                  <div class="form-group col-md-2">
+                    <label for="id_cus_zone_th">{% trans 'Zone' %}</label>
+                    <input id="id_cus_zone_th" type="text" class="form-control form-control-sm" readonly>
+                  </div>                  
 
                 </div>
 
@@ -204,17 +206,20 @@
                     <input type="text" class="form-control form-control-sm" id="id_cus_fax_en" name="cus_fax_en" readonly value="{{ customer.cus_fax }}">
                   </div>
                   <div class="form-group col-md-2">
-                    <label for="id_cus_email_en">{% trans 'Email' %}</label>
-                    <input type="text" class="form-control form-control-sm" id="id_cus_email_en" name="cus_email_en" readonly value="{{ customer.cus_email }}">
-                  </div>                  
-                  <div class="form-group col-md-4">
                     <label for="id_site_contact_con_en">{% trans 'Contact' %}</label>
                     <input type="text" class="form-control form-control-sm" id="id_site_contact_con_en" name="site_contact_con_en" readonly value="{{customer.site_contact_id}} {{customer.site_contact.con_fname_en}}&nbsp;{{customer.site_contact.con_lname_en}}">
                   </div>
-
                   <div class="form-group col-md-2">
                     <label for="id_site_contact_con_position_en">{% trans 'Position' %}</label>
                     <input type="text" class="form-control form-control-sm" id="id_site_contact_con_position_en" name="site_contact_con_position_en" readonly value="{{ customer.site_contact.con_position_en }}">
+                  </div>                  
+                  <div class="form-group col-md-2">
+                    <label for="id_cus_email_en">{% trans 'Email' %}</label>
+                    <input type="text" class="form-control form-control-sm" id="id_cus_email_en" name="cus_email_en" readonly value="{{ customer.cus_email }}">
+                  </div>                  
+                  <div class="form-group col-md-2">
+                    <label for="id_cus_zone_en">{% trans 'Zone' %}</label>
+                    <input id="id_cus_zone_en" type="text" class="form-control form-control-sm" readonly>
                   </div>                  
 
                 </div>
@@ -960,6 +965,10 @@
             $('#id_cus_fax_en').val(json.cus_fax);
             $('#id_cus_email_en').val(json.cus_email);
 
+            // amnaj
+            $('#id_cus_zone_th').val(json.cus_zone_id + " | " + json.cus_zone_th);
+            $('#id_cus_zone_en').val(json.cus_zone_id + " | " + json.cus_zone_en);
+
             //$('#id_').val(json.);
             $('#id_cus_vol').focus();
           }
@@ -1054,7 +1063,6 @@
 
             // Show cus_service if existed.
             if(json.cus_service_list.length > 0) {              
-              // amnaj
               // Reloade service list table
               $.ajax({
                 url : "/contract/ajax/reload_service_list",
@@ -1157,7 +1165,6 @@
                   result += "  </div>";
                   result += "</div>";
 
-                  //amnaj
                   $("#service_list_table .card-body").html(result);
                 },
                 error: function(data){
@@ -1860,7 +1867,6 @@
           autoremove: true,
         });
 
-        // amnaj        
         // Refresh Guard Amount, Sale Amount value
         $('#id_cnt_guard_amt').val(data.active_cnt_guard_amt);
         $('#id_cnt_sale_amt').val(data.active_cnt_sale_amt);
@@ -1967,7 +1973,6 @@
             result += "  </div>";
             result += "</div>";
 
-            //amnaj
             $("#service_list_table .card-body").html(result);
             $("#add_new_service_list_modal").modal("hide");      
 
@@ -2125,7 +2130,6 @@
           autoremove: true,
         });
 
-        // amnaj        
         // Refresh Guard Amount, Sale Amount value
         $('#id_cnt_guard_amt').val(data.active_cnt_guard_amt);
         $('#id_cnt_sale_amt').val(data.active_cnt_sale_amt);
@@ -2232,7 +2236,6 @@
             result += "  </div>";
             result += "</div>";
 
-            //amnaj
             $("#service_list .card-body").html(result);
             $("#add_new_service_list_modal").modal("hide");      
 
@@ -2484,7 +2487,6 @@
             autoremove: true,
           });                    
 
-          // amnaj
           // Refresh Guard Amount, Sale Amount value
           $('#id_cnt_guard_amt').val(data.active_cnt_guard_amt);
           $('#id_cnt_sale_amt').val(data.active_cnt_sale_amt);
@@ -2592,7 +2594,6 @@
             result += "  </div>";
             result += "</div>";
 
-            //amnaj
             $("#service_list_table .card-body").html(result);
             $("#add_new_service_list_modal").modal("hide");
 

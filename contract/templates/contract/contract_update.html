@@ -127,16 +127,6 @@
 
                 <div class="form-row">
 
-                  <div class="form-group col-md-4">
-                    <label for="cus_contact">{% trans 'Contact' %}</label>
-                    <input type="text" class="form-control form-control-sm" readonly value="{{customer.site_contact_id}} | {{customer.site_contact.con_fname_th}}&nbsp;{{customer.site_contact.con_lname_th}}">
-                  </div>
-
-                  <div class="form-group col-md-2">
-                    <label for="cus_contact_position">{% trans 'Position' %}</label>
-                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.site_contact.con_position_th }}">
-                  </div>                  
-
                   <div class="form-group col-md-2">
                     <label for="cus_tel">{% trans 'Phone' %}</label>
                     <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_tel }}">
@@ -147,9 +137,25 @@
                   </div>
 
                   <div class="form-group col-md-2">
+                    <label for="cus_contact">{% trans 'Contact' %}</label>
+                    <input type="text" class="form-control form-control-sm" readonly value="{{customer.site_contact_id}} | {{customer.site_contact.con_fname_th}}&nbsp;{{customer.site_contact.con_lname_th}}">
+                  </div>
+
+                  <div class="form-group col-md-2">
+                    <label for="cus_contact_position">{% trans 'Position' %}</label>
+                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.site_contact.con_position_th }}">
+                  </div>
+
+                  <div class="form-group col-md-2">
                     <label for="cus_email">{% trans 'Email' %}</label>
                     <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_email }}">
                   </div>
+
+                  <div class="form-group col-md-2">
+                    <label for="id_cus_zone">{% trans 'Zone' %}</label>
+                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_zone_id }} | {{ customer.cus_zone.zone_th }}">
+                  </div>                  
+
                 </div>
 
               </div>
@@ -198,18 +204,6 @@
 
                 <div class="form-row"> 
 
-                  <div class="form-group col-md-4">
-                    <label for="cus_contact">{% trans 'Contact' %}</label>
-                    <input type="text" class="form-control form-control-sm" readonly value="{{customer.site_contact_id}} | {{customer.site_contact.con_fname_en}}&nbsp;{{customer.site_contact.con_lname_en}}">
-                  </div>
-
-
-
-                  <div class="form-group col-md-2">
-                    <label for="cus_contact_position">{% trans 'Position' %}</label>
-                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_contact.con_position_en }}">
-                  </div>                  
-
                   <div class="form-group col-md-2">
                     <label for="cus_tel">{% trans 'Phone' %}</label>
                     <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_tel }}">
@@ -220,9 +214,25 @@
                   </div>
 
                   <div class="form-group col-md-2">
+                    <label for="cus_contact">{% trans 'Contact' %}</label>
+                    <input type="text" class="form-control form-control-sm" readonly value="{{customer.site_contact_id}} | {{customer.site_contact.con_fname_en}}&nbsp;{{customer.site_contact.con_lname_en}}">
+                  </div>
+
+                  <div class="form-group col-md-2">
+                    <label for="cus_contact_position">{% trans 'Position' %}</label>
+                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_contact.con_position_en }}">
+                  </div>                  
+
+                  <div class="form-group col-md-2">
                     <label for="cus_email">{% trans 'Email' %}</label>
                     <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_email }}">
                   </div>
+
+                  <div class="form-group col-md-2">
+                    <label for="id_cus_zone">{% trans 'Zone' %}</label>
+                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_zone_id }} | {{ customer.cus_zone.zone_th }}">
+                  </div>                  
+
                 </div>
 
               </div>
