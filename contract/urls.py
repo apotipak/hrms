@@ -23,4 +23,6 @@ urlpatterns = [
     url(r'^ajax/reload_contract_list/$', views.reload_contract_list, name='reload_contract_list'),
     url(r'^ajax/delete_customer_service/$', views.delete_customer_service, name='delete_customer_service'),
     url(r'^ajax/delete_customer_contract/$', views.delete_customer_contract, name='delete_customer_contract'),
+    
+    path('contract/generate_contract', views.generate_contract, name='generate_contract'),
 ]

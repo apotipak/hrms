@@ -18,6 +18,8 @@ from django.utils import timezone
 import datetime
 from django.utils import formats
 from django.db.models import Max
+from hrms.settings import MEDIA_ROOT
+from docxtpl import DocxTemplate
 
 
 def check_modified_field(table_name, primary_key, field_name, old_value, new_value, log_type, request):
@@ -2095,4 +2097,30 @@ def delete_customer_contract(request):
     response.status_code = 200
     return response
 
+
+@login_required(login_url='/accounts/login/')
+def generate_contract(request):
+    base_url = MEDIA_ROOT + '/contract/template/'
+    asset_url = base_url + 'ReNC102_TH.docx'
+    
+    tpl = DocxTemplate(asset_url)
+    context = {
+        'cnt_doc_no': '2526-15',
+        'today_date': datetime.datetime.now().strftime("%d/%m/%Y"),
+        'customer_name': 'บริษัท แอ็ดวานซ์ อินฟอร์เมชั่น เทคโนโลยี จำกัด (มหาชน) (ผู้ว่าจ้าง)',
+        'customer_address': 'เลขที่ 37/2 ถนนสุทธิสารวินิจฉัย แขวงสามเสนนอก เขตห้วยขวาง กรุงเทพมหานคร 10320',
+    }
+
+    shift_labels = ['Name', 'Age', 'Gender', 'Enrollment Date']
+    context['shift_labels'] = shift_labels
+    shift_dict1 = {'number': 1, 'cols': [' ', '27', 'male', '2019-03-28']}
+    shift_dict2 = {'number': 2, 'cols': [' ', '27', 'female', '2019-03-28']}
+    
+    shift_list = []
+    shift_list.append(shift_dict1)
+    shift_list.append(shift_dict2)
+
+    tpl.render(context)
+    tpl.save(base_url + '/download/test.docx')    
+    return render(request, 'contract/generate_contract.html', context)
 
