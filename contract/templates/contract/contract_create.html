@@ -38,11 +38,28 @@
     <div class="card card-default collapsed-card">
 
       <div class="card-header">
-        <h1 class="card-title"><div id="customer_name_title"><strong>{{contract.cnt_id}} - {{ customer.cus_name_th }}</strong></div></h1>
+        <h1 class="card-title pt-2"><div id="customer_name_title"><strong>{{contract.cnt_id}} - {{ customer.cus_name_th }}</strong></div></h1>
 
         <div class="card-tools">
+
+          <button class="btn btn-outline-info btn-md dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-print fa-sm"></i>&nbsp;&nbsp;Print
+          </button>
+
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+            <a class="dropdown-item" href="#">Thai</a>
+            <a class="dropdown-item" href="#">English</a>
+          </div>
+          &nbsp;&nbsp;
+          <button id="cancelCreateContract" type="reset" class="btn btn-md btn-default pull-right">Cancel</button>
+          <button id="saveContract" class="btn btn-md btn-primary"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</button>
+
+
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus text-primary"></i></button>
         </div>
+
+
       </div>
 
       <div class="card-body">
@@ -447,6 +464,7 @@
         <!-- /.row -->     
 
         <div class="btn-group float-right">
+          <!--
           <button type="button" class="btn btn-default text-info"><i class="fas fa-print fa-sm"></i>&nbsp;&nbsp;Print</button>
           <button type="button" class="btn btn-default text-info dropdown-toggle dropdown-icon" data-toggle="dropdown">
             <span class="sr-only">Toggle Dropdown</span>
@@ -460,6 +478,8 @@
           <button id="cancelCreateContract" type="reset" class="btn btn-default pull-right">Cancel</button>
           &nbsp;&nbsp;
           <button id="saveContract" class="btn btn-primary"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</button>
+
+          -->
         </div>
 
 
