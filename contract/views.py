@@ -19,7 +19,7 @@ import datetime
 from django.utils import formats
 from django.db.models import Max
 from hrms.settings import MEDIA_ROOT
-from docxtpl import DocxTemplate
+# from docxtpl import DocxTemplate
 
 
 def check_modified_field(table_name, primary_key, field_name, old_value, new_value, log_type, request):
@@ -2127,7 +2127,7 @@ def generate_contract(request):
         'total_price' : '100,000,000.00'
     }
     '''
-    
+
     shift_labels = ['Name', 'Age', 'Gender', 'Enrollment Date']
     context['shift_labels'] = shift_labels
     shift_dict1 = {'number': 1, 'cols': [' ', '27', 'male', '2019-03-28']}
