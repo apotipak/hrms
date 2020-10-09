@@ -14,10 +14,10 @@
     <div class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
-          <div class="col-sm-6">
+          <div class="col-sm-8">
             <h1 class="m-0 pt-2 text-dark">{% trans 'Preview #' %} {{ cnt_id}} - {{customer.cus_name_th}}</h1>
           </div>
-          <div class="col-sm-6 pt-2">
+          <div class="col-sm-4 pt-2">
             <div class="float-right">
               <button type="button" class="btn btn-secondary btn-sm" onclick="closetab()">&nbsp;&nbsp;{% trans 'Close' %}&nbsp;&nbsp;</button>
               <a type="button" class="btn btn-info btn-sm" href="{% url 'download-contract' file_name %}"><i class="fas fa-download"></i>&nbsp;&nbsp;{% trans 'Download MS Word' %}</a>
@@ -36,18 +36,29 @@
 
         <div class="card-body">                  
           <div class='col-8 offset-2'>
-            <div class="text-center"><strong>บริษัท การ์ดฟอร์ซ ซิเคียวริตี้ เซอร์วิสเซส (ประเทศไทย) จำกัด ('การ์ดฟอร์ซ')</strong></div>
-            <div class="text-center"><strong>การให้บริการรักษาความปลอดภัย</strong></div>            
             
-            {% comment %}
-            <div>{{ customer.cus_name_th}}</div>
-            {% endcomment %}
-
+            <div class="text-center"><strong>บริษัท การ์ดฟอร์ซ ซิเคียวริตี้ เซอร์วิสเซส (ประเทศไทย) จำกัด ('การ์ดฟอร์ซ')</strong></div>
+            
+            <div class="text-center"><strong>การให้บริการรักษาความปลอดภัย</strong></div>
+            <div>&nbsp;</div>
+            <div class="float-right">
+              <table>
+                <tr><td>เลขที่</td><td>{{cnt_doc_no}}</td></tr>
+                <tr><td>วันที่</td><td>{{today_date}}</td></tr>
+              </table>
+            </div>
+            <br><br><br><br>
+            <div>1. ชื่อลูกค้า: <strong>{{customer_name}}</strong></div><br>
+            <div>
+              2. ที่อยู่ ที่สามารถเรียกเก็บเงินของลูกค้า(ในใบแจ้งหนี้ / ใบกำกับภาษี / ใบเสร็จรับเงิน):<br>
+              <strong>{{ customer_address }}</strong>
+            </div>
+            <br>
+            <div>3. รายละเอียดการให้บริการโดยทางบริษัทการ์ดฟอร์ซ ซิเคียวริตี้ เซอร์วิส (ประเทศไทย) จำกัด (‘การ์ดฟอร์ซ’) การให้บริการรักษาความปลอดภัย</div>
+            <br>
           </div>
         </div>        
-
-    </div>
-
+      </div>
     </section>
 
   </div>
