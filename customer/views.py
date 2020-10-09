@@ -569,9 +569,8 @@ def CustomerDashboard(request):
 
     # Get number of active customer    
     no_of_active_customer = Customer.objects.filter(cus_active__contains=1).exclude(upd_flag='D').count()
-    # Get number of pending customer
     
-    #no_of_pending_customer = 0    
+    # Get number of pending customer    
     no_of_pending_customer = Customer.objects.filter(cus_active__contains=0).exclude(upd_flag='D').count()
 
     # Get number of delete customer   
