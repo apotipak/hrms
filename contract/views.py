@@ -2128,7 +2128,7 @@ def generate_contract(request, *args, **kwargs):
                 'today_date': datetime.datetime.now().strftime("%d/%B/%Y"),
                 'customer_name': customer.cus_name_th,
                 'customer_address': customer.cus_add1_th,
-                'customer_site': customer.cus_name_th,
+                'customer_site': customer.cus_add1_th,
                 'effect_from': cus_contract.cnt_eff_frm,
                 'effect_to': cus_contract.cnt_eff_frm,
                 'items' : [
