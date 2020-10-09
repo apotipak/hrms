@@ -2109,11 +2109,15 @@ def delete_customer_contract(request):
 def generate_contract(request, *args, **kwargs):
     cnt_id = kwargs['cnt_id']
     language_option = kwargs['language_option']
+    print(language_option)
+    base_url = MEDIA_ROOT + '/contract/template/'
 
     if language_option == 'T':
         file_name = request.user.username + "_" + cnt_id + "_TH.docx"
+        template_language = base_url + 'ReNC102_TH.docx'
     else:
-        file_name = request.user.username + "_" + cnt_id + "_TH.docx"
+        file_name = request.user.username + "_" + cnt_id + "_EN.docx"
+        template_language = base_url + 'ReNC102_EN.docx'
 
     if cnt_id is not None:
         try:                
@@ -2128,10 +2132,12 @@ def generate_contract(request, *args, **kwargs):
             context = {
                 'customer': customer,
                 'file_name': file_name,
-                'cnt_id': cnt_id,                
+                'language_option': language_option,
+                'cnt_id': cnt_id,               
                 'cnt_doc_no': cus_contract.cnt_doc_no,
                 'today_date': datetime.datetime.now().strftime("%d/%B/%Y"),
-                'customer_name': customer.cus_name_th,
+                'customer_name_th': customer.cus_name_th,
+                'customer_name_en': customer.cus_name_en,
                 'customer_address': customer.cus_add1_th,
                 'customer_site': customer.cus_add1_th,
                 'effective_from': cus_contract.cnt_eff_frm.now().strftime("%d/%B/%Y"),
@@ -2178,23 +2184,8 @@ def generate_contract(request, *args, **kwargs):
                 ],
                 'is_changed' : True,
         }
-
-    base_url = MEDIA_ROOT + '/contract/template/'
-    asset_url = base_url + 'ReNC102_TH.docx'
     
-    tpl = DocxTemplate(asset_url)
-
-    '''
-    shift_labels = ['Name', 'Age', 'Gender', 'Enrollment Date']
-    context['shift_labels'] = shift_labels
-    shift_dict1 = {'number': 1, 'cols': [' ', '27', 'male', '2019-03-28']}
-    shift_dict2 = {'number': 2, 'cols': [' ', '27', 'female', '2019-03-28']}
-    
-    shift_list = []
-    shift_list.append(shift_dict1)
-    shift_list.append(shift_dict2)
-    '''
-
+    tpl = DocxTemplate(template_language)
     tpl.render(context)
     tpl.save(MEDIA_ROOT + '/contract/download/' + file_name)
 

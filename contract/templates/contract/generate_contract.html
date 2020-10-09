@@ -15,7 +15,11 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-8">
+            {% if language_option == 'T' %}
             <h5 class="m-0 pt-2 text-dark">{{ cnt_id}} - {{customer.cus_name_th}}</h5>
+            {% else %}
+            <h5 class="m-0 pt-2 text-dark">{{ cnt_id}} - {{customer.cus_name_en}}</h5>
+            {% endif %}
           </div>
           <div class="col-sm-4 pt-2">
             <div class="float-right">
@@ -34,11 +38,11 @@
       <!-- Default box -->
       <div id="contract_list" class="card">
 
-        <div class="card-body">                  
-          <div class='col-8 offset-2'>
-            
-            <div class="text-center"><strong>บริษัท การ์ดฟอร์ซ ซิเคียวริตี้ เซอร์วิสเซส (ประเทศไทย) จำกัด ('การ์ดฟอร์ซ')</strong></div>
-            
+        <div class="card-body">
+
+          {% if language_option == 'T' %}
+          <div class='col-8 offset-2'>            
+            <div class="text-center"><strong>บริษัท การ์ดฟอร์ซ ซิเคียวริตี้ เซอร์วิสเซส (ประเทศไทย) จำกัด ('การ์ดฟอร์ซ')</strong></div>            
             <div class="text-center"><strong>การให้บริการรักษาความปลอดภัย</strong></div>
             <div>&nbsp;</div>
             <div class="float-right">
@@ -48,7 +52,7 @@
               </table>
             </div>
             <br><br><br><br>
-            <div>1. ชื่อลูกค้า: <strong>{{customer_name}}</strong></div><br>
+            <div>1. ชื่อลูกค้า: <strong>{{customer_name_th}}</strong></div><br>
             <div>
               2. ที่อยู่ ที่สามารถเรียกเก็บเงินของลูกค้า(ในใบแจ้งหนี้ / ใบกำกับภาษี / ใบเสร็จรับเงิน):<br>
               <strong>{{ customer_address }}</strong>
@@ -69,7 +73,43 @@
             <div>7.1  คำสั่งประจำตำแหน่งที่ได้ตกลงไว้โดย บริษัท การ์ดฟอร์ซ ซิเคียวริตี้ เซอร์วิสเซส (ประเทศไทย) จำกัด (‘การ์ดฟอร์ซ’) กับผู้ว่าจ้าง</div>
             <div>7.2  กฏและระเบียบของพนักงานรักษาความปลอดภัย บริษัท การ์ดฟอร์ซ ซิเคียวริตี้ เซอร์วิสเซส (ประเทศไทย) จำกัด (‘การ์ดฟอร์ซ’)</div>
           </div>
+          {% else %}
+          <div class='col-8 offset-2'>            
+            <div class="text-center"><strong>GUARDFORCE SECURITY SERVICES (THAILAND) COMPANY LIMITED</strong></div>
+            <div class="text-center"><strong>GUARDING SERVICES</strong></div>
+            <div>&nbsp;</div>
+            <div class="float-right">
+              <table>
+                <tr><td>No:</td><td><strong>{{cnt_doc_no}}</strong></td></tr>
+                <tr><td>Date:</td><td>{{today_date}}</td></tr>
+              </table>
+            </div>
+            <br><br><br><br>
+            <div>1. Name of Customer: <strong>{{customer_name_en}}</strong></div><br>
+            <div>
+              2. Customer's billing address (Invoice / Tax Invoice / Receipt):<br>
+              <strong>{{ customer_address }}</strong>
+            </div>
+            <br>
+            <div>3. รายละเอียดการให้บริการโดยทางบริษัทการ์ดฟอร์ซ ซิเคียวริตี้ เซอร์วิส (ประเทศไทย) จำกัด (‘การ์ดฟอร์ซ’) การให้บริการรักษาความปลอดภัย</div>
+            <br>
+            <div>
+              4. ที่อยู่ของสถานที่ที่จะให้บริการ<br>
+              <strong>{{ customer_address }}</strong>
+            </div>
+            <br>
+            <div>5. วันเริ่มให้บริการ&nbsp;&nbsp;&nbsp;<strong>{{ effective_from }}</strong>&nbsp;&nbsp;&nbsp;ถึงวันที่&nbsp;&nbsp;&nbsp;<strong>{{ effective_to }}</strong></div>            
+            <br>
+            <div>6. การให้บริการจะเป็นระยะเวลา 1 ปีและจะต่อสัญญาไปจนกว่าฝ่ายใดฝ่ายหนึ่งจะยกเลิกสัญญาตามอนุประโยคที่ 19</div>
+            <br>
+            <div><strong>7. เงื่อนไขพิเศษ</strong></div>
+            <div>7.1  คำสั่งประจำตำแหน่งที่ได้ตกลงไว้โดย บริษัท การ์ดฟอร์ซ ซิเคียวริตี้ เซอร์วิสเซส (ประเทศไทย) จำกัด (‘การ์ดฟอร์ซ’) กับผู้ว่าจ้าง</div>
+            <div>7.2  กฏและระเบียบของพนักงานรักษาความปลอดภัย บริษัท การ์ดฟอร์ซ ซิเคียวริตี้ เซอร์วิสเซส (ประเทศไทย) จำกัด (‘การ์ดฟอร์ซ’)</div>
+          </div>
+          {% endif %}
+
         </div>        
+
       </div>
     </section>
 
