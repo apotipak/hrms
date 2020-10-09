@@ -1,7 +1,7 @@
 {% extends "page_generic_print.html" %}
 
 {% load i18n %}
-{% block title %} Download File {% endblock %}
+{% block title %} Download Contract {% endblock %}
 {% load static %}
 {% load widget_tweaks %}
 
@@ -55,14 +55,14 @@
             <div>1. ชื่อลูกค้า: <strong>{{customer_name_th}}</strong></div><br>
             <div>
               2. ที่อยู่ ที่สามารถเรียกเก็บเงินของลูกค้า(ในใบแจ้งหนี้ / ใบกำกับภาษี / ใบเสร็จรับเงิน):<br>
-              <strong>{{ customer_address }}</strong>
+              <strong>{{ customer_address_th }}</strong>
             </div>
             <br>
             <div>3. รายละเอียดการให้บริการโดยทางบริษัทการ์ดฟอร์ซ ซิเคียวริตี้ เซอร์วิส (ประเทศไทย) จำกัด (‘การ์ดฟอร์ซ’) การให้บริการรักษาความปลอดภัย</div>
-            <br>
+            <br><br><br><br><br><br>
             <div>
               4. ที่อยู่ของสถานที่ที่จะให้บริการ<br>
-              <strong>{{ customer_address }}</strong>
+              <strong>{{ customer_address_th }}</strong>
             </div>
             <br>
             <div>5. วันเริ่มให้บริการ&nbsp;&nbsp;&nbsp;<strong>{{ effective_from }}</strong>&nbsp;&nbsp;&nbsp;ถึงวันที่&nbsp;&nbsp;&nbsp;<strong>{{ effective_to }}</strong></div>            
@@ -84,27 +84,27 @@
                 <tr><td>Date:</td><td>{{today_date}}</td></tr>
               </table>
             </div>
-            <br><br><br><br>
+            <br><br><br><br><br><br>
             <div>1. Name of Customer: <strong>{{customer_name_en}}</strong></div><br>
             <div>
               2. Customer's billing address (Invoice / Tax Invoice / Receipt):<br>
-              <strong>{{ customer_address }}</strong>
+              <strong>{{ customer_address_en }}</strong>
             </div>
             <br>
-            <div>3. รายละเอียดการให้บริการโดยทางบริษัทการ์ดฟอร์ซ ซิเคียวริตี้ เซอร์วิส (ประเทศไทย) จำกัด (‘การ์ดฟอร์ซ’) การให้บริการรักษาความปลอดภัย</div>
-            <br>
+            <div>3. Description of Service to be provided by Guardforce Security Services (Thailand) Company Limited:</div>
+            <br><br><br><br><br><br>
             <div>
-              4. ที่อยู่ของสถานที่ที่จะให้บริการ<br>
-              <strong>{{ customer_address }}</strong>
+              4. Address of Premises at which Services are to be provided:<br>
+              <strong>{{ customer_address_en }}</strong>
             </div>
             <br>
-            <div>5. วันเริ่มให้บริการ&nbsp;&nbsp;&nbsp;<strong>{{ effective_from }}</strong>&nbsp;&nbsp;&nbsp;ถึงวันที่&nbsp;&nbsp;&nbsp;<strong>{{ effective_to }}</strong></div>            
+            <div>5. Commencement Date:&nbsp;&nbsp;&nbsp;<strong>{{ effective_from }}</strong>&nbsp;&nbsp;&nbsp;ถึงวันที่&nbsp;&nbsp;&nbsp;<strong>{{ effective_to }}</strong></div>            
             <br>
-            <div>6. การให้บริการจะเป็นระยะเวลา 1 ปีและจะต่อสัญญาไปจนกว่าฝ่ายใดฝ่ายหนึ่งจะยกเลิกสัญญาตามอนุประโยคที่ 19</div>
+            <div>6. Service to be for one year and will then continue until terminated by either party in accordance with clause 19.</div>
             <br>
-            <div><strong>7. เงื่อนไขพิเศษ</strong></div>
-            <div>7.1  คำสั่งประจำตำแหน่งที่ได้ตกลงไว้โดย บริษัท การ์ดฟอร์ซ ซิเคียวริตี้ เซอร์วิสเซส (ประเทศไทย) จำกัด (‘การ์ดฟอร์ซ’) กับผู้ว่าจ้าง</div>
-            <div>7.2  กฏและระเบียบของพนักงานรักษาความปลอดภัย บริษัท การ์ดฟอร์ซ ซิเคียวริตี้ เซอร์วิสเซส (ประเทศไทย) จำกัด (‘การ์ดฟอร์ซ’)</div>
+            <div><strong>7. Special Conditions</strong></div>
+            <div>7.1 Post Standing Orders as agreed by Guardforce Security Services (Thailand) Company Limited and the customer.</div>
+            <div>7.2 Guardforce Security Services (Thailand) Company Limited Rules And Regulations for Security Guards.</div>
           </div>
           {% endif %}
 

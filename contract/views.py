@@ -2138,8 +2138,10 @@ def generate_contract(request, *args, **kwargs):
                 'today_date': datetime.datetime.now().strftime("%d/%B/%Y"),
                 'customer_name_th': customer.cus_name_th,
                 'customer_name_en': customer.cus_name_en,
-                'customer_address': customer.cus_add1_th,
-                'customer_site': customer.cus_add1_th,
+                'customer_address_th': customer.cus_add1_th,
+                'customer_address_en': customer.cus_add1_en,
+                'customer_site_th': customer.cus_add1_th,
+                'customer_site_en': customer.cus_add1_en,
                 'effective_from': cus_contract.cnt_eff_frm.now().strftime("%d/%B/%Y"),
                 'effective_to': cus_contract.cnt_eff_frm.now().strftime("%d/%B/%Y"),
                 'items' : [
