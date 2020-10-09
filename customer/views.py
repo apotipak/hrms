@@ -21,6 +21,8 @@ from django.core import serializers
 from decimal import Decimal
 import json
 import sys, locale
+from django.db.models import Count, Case, When
+
 
 @login_required(login_url='/accounts/login/')
 @permission_required('customer.view_customer', login_url='/accounts/login/')
@@ -566,14 +568,15 @@ def CustomerDashboard(request):
     today_date = settings.TODAY_DATE    
 
     # Get number of active customer    
-    no_of_active_customer = 0
+    no_of_active_customer = Customer.objects.filter(cus_active__contains=1).exclude(upd_flag='D').count()
     # Get number of pending customer
     
-    no_of_pending_customer = 0
-    # no_of_pending_customer = Customer.objects.filter(cus_active=0).exclude(upd_flag='D').count()
+    #no_of_pending_customer = 0    
+    no_of_pending_customer = Customer.objects.filter(cus_active__contains=0).exclude(upd_flag='D').count()
 
     # Get number of delete customer   
-    no_of_delete_customer = 0
+    no_of_delete_customer = Customer.objects.filter(upd_flag='D').count()
+
     total_customer = no_of_active_customer + no_of_pending_customer + no_of_delete_customer
 
     # History Logs will be shown top 25 records
@@ -2262,8 +2265,10 @@ def update_all_cus_tabs(request):
             cus_site_cus_zone = request.POST.get('cus_site_cus_zone')
             # customer_group_id = request.POST.get('customer_group_id')
             cus_site_cus_district_id = request.POST.get('cus_site_cus_district_id')
-            # print("cus_site_cus_district_id = " + str(cus_site_cus_district_id))
-            
+            print("aaaa")
+            print("cus_site_cus_district_id = " + str(cus_site_cus_district_id))
+            print("aaaa")
+
             # Fulfill district, city, country
             cus_site_cus_district_id = None
             cus_site_city_id = None
@@ -2394,6 +2399,7 @@ def update_all_cus_tabs(request):
                                 customer.cus_city_id = cus_site_city_id
                                 customer.cus_country_id = cus_site_country_id
                                 modified_records.append(record)
+
 
                     # CUS_ZIP
                     if (cus_site_cus_zip is not None):
