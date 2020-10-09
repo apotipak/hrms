@@ -2108,7 +2108,12 @@ def delete_customer_contract(request):
 @permission_required('contract.view_cuscontract', login_url='/accounts/login/')
 def generate_contract(request, *args, **kwargs):
     cnt_id = kwargs['cnt_id']
-    file_name = request.user.username + "_" + cnt_id + ".docx"
+    language_option = kwargs['language_option']
+
+    if language_option == 'T':
+        file_name = request.user.username + "_" + cnt_id + "_TH.docx"
+    else:
+        file_name = request.user.username + "_" + cnt_id + "_TH.docx"
 
     if cnt_id is not None:
         try:                

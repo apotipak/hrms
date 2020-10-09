@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^ajax/delete_customer_service/$', views.delete_customer_service, name='delete_customer_service'),
     url(r'^ajax/delete_customer_contract/$', views.delete_customer_contract, name='delete_customer_contract'),
     
-    url(r'^generate-contract/(?P<cnt_id>\d+)/$', views.generate_contract, name='generate_contract'),
+    # url(r'^generate-contract/(?P<cnt_id>\d+)/$', views.generate_contract, name='generate_contract'),
+    url(r'^generate-contract/(?P<cnt_id>\d+)/(?P<language_option>\w+)/$', views.generate_contract, name='generate-contract'),
     url(r'^download-contract/(?P<file_name>[-\w_\\-\\.]+)$', views.download_contract, name='download-contract'),
 ]

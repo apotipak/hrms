@@ -1,7 +1,7 @@
 {% extends "page_generic_print.html" %}
 
 {% load i18n %}
-{% block title %} {{ page_title}} - {% trans 'Contract Document' %} {% endblock %}
+{% block title %} Download File {% endblock %}
 {% load static %}
 {% load widget_tweaks %}
 
@@ -15,12 +15,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-8">
-            <h2 class="m-0 pt-2 text-dark">{% trans 'Preview #' %} {{ cnt_id}} - {{customer.cus_name_th}}</h2>
+            <h5 class="m-0 pt-2 text-dark">{{ cnt_id}} - {{customer.cus_name_th}}</h5>
           </div>
           <div class="col-sm-4 pt-2">
             <div class="float-right">
               <button type="button" class="btn btn-secondary btn-sm" onclick="closetab()">&nbsp;&nbsp;{% trans 'Close' %}&nbsp;&nbsp;</button>
-              <a type="button" class="btn btn-info btn-sm" href="{% url 'download-contract' file_name %}"><i class="fas fa-download"></i>&nbsp;&nbsp;{% trans 'Download MS Word' %}</a>
+              <a type="button" class="btn btn-info btn-sm" href="{% url 'download-contract' file_name %}"><i class="fas fa-download"></i>&nbsp;&nbsp;{% trans 'Download file' %}</a>
             </div>
           </div>
         </div>
