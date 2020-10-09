@@ -21,6 +21,11 @@ from django.db.models import Max
 from hrms.settings import MEDIA_ROOT
 from docxtpl import DocxTemplate
 from django.views.static import serve
+import mimetypes
+import os
+from django.conf import settings
+from wsgiref.util import FileWrapper
+from django.http import HttpResponse, Http404
 
 
 def check_modified_field(table_name, primary_key, field_name, old_value, new_value, log_type, request):
@@ -2103,6 +2108,8 @@ def delete_customer_contract(request):
 @permission_required('contract.view_cuscontract', login_url='/accounts/login/')
 def generate_contract(request, *args, **kwargs):
     cnt_id = kwargs['cnt_id']
+    file_name = request.user.username + "_" + cnt_id + ".docx"
+
     if cnt_id is not None:
         try:                
             # Get Contract information
@@ -2114,60 +2121,57 @@ def generate_contract(request, *args, **kwargs):
             customer = Customer.objects.filter(cus_id=cus_contract_cus_id).filter(cus_brn=cus_contract_cus_brn).get()
 
             context = {
+                'customer': customer,
+                'file_name': file_name,
+                'cnt_id': cnt_id,                
                 'cnt_doc_no': cus_contract.cnt_doc_no,
-                'today_date': datetime.datetime.now().strftime("%d/%m/%Y"),
+                'today_date': datetime.datetime.now().strftime("%d/%B/%Y"),
                 'customer_name': customer.cus_name_th,
                 'customer_address': customer.cus_add1_th,
-                'name': 'linana',
-                'gender':'female',
-                'birthday':'19920520',
+                'customer_site': customer.cus_name_th,
+                'effect_from': cus_contract.cnt_eff_frm,
+                'effect_to': cus_contract.cnt_eff_frm,
                 'items' : [
-                    {'desc' : 'Python interpreters', 'qty' : 2, 'price' : 'FREE' },
-                    {'desc' : 'Django projects', 'qty' : 5403, 'price' : 'FREE' },
-                    {'desc' : 'Guido', 'qty' : 1, 'price' : '100,000,000.00' },
+                    {'desc' : 'test1', 'qty' : 2, 'price' : '0.00' },
+                    {'desc' : 'test2', 'qty' : 2, 'price' : '0.00' },
                 ],
-                'in_europe' : True,
-                'is_paid': False,
-                'company_name' : 'The World Wide company',
-                'total_price' : '100,000,000.00'
+                'is_changed' : True,
             }
         except CusContract.DoesNotExist:
             context = {
-                'cnt_doc_no': cnt_id,
-                'today_date': datetime.datetime.now().strftime("%d/%m/%Y"),
-                'customer_name': 'บริษัท แอ็ดวานซ์ อินฟอร์เมชั่น เทคโนโลยี จำกัด (มหาชน) (ผู้ว่าจ้าง)',
-                'customer_address': 'เลขที่ 37/2 ถนนสุทธิสารวินิจฉัย แขวงสามเสนนอก เขตห้วยขวาง กรุงเทพมหานคร 10320',    
-                'name': 'linana',
-                'gender':'female',
-                'birthday':'19920520',
+                'customer': "",
+                'file_name': "",
+                'cnt_id': "",
+                'cnt_doc_no': "",
+                'today_date': datetime.datetime.now().strftime("%d/%B/%Y"),
+                'customer_name': "",
+                'customer_address': "",
+                'customer_site': "",
+                'effect_from': "",
+                'effect_to': "",
                 'items' : [
-                    {'desc' : 'Python interpreters', 'qty' : 2, 'price' : 'FREE' },
-                    {'desc' : 'Django projects', 'qty' : 5403, 'price' : 'FREE' },
-                    {'desc' : 'Guido', 'qty' : 1, 'price' : '100,000,000.00' },
+                    {'desc' : 'test1', 'qty' : 2, 'price' : '0.00' },
+                    {'desc' : 'test2', 'qty' : 2, 'price' : '0.00' },
                 ],
-                'in_europe' : True,
-                'is_paid': False,
-                'company_name' : 'The World Wide company',
-                'total_price' : '100,000,000.00'
+                'is_changed' : True,
             }            
     else:
         context = {
-            'cnt_doc_no': cnt_id,
-            'today_date': datetime.datetime.now().strftime("%d/%m/%Y"),
-            'customer_name': 'บริษัท แอ็ดวานซ์ อินฟอร์เมชั่น เทคโนโลยี จำกัด (มหาชน) (ผู้ว่าจ้าง)',
-            'customer_address': 'เลขที่ 37/2 ถนนสุทธิสารวินิจฉัย แขวงสามเสนนอก เขตห้วยขวาง กรุงเทพมหานคร 10320',    
-            'name': 'linana',
-            'gender':'female',
-            'birthday':'19920520',
-            'items' : [
-                {'desc' : 'Python interpreters', 'qty' : 2, 'price' : 'FREE' },
-                {'desc' : 'Django projects', 'qty' : 5403, 'price' : 'FREE' },
-                {'desc' : 'Guido', 'qty' : 1, 'price' : '100,000,000.00' },
-            ],
-            'in_europe' : True,
-            'is_paid': False,
-            'company_name' : 'The World Wide company',
-            'total_price' : '100,000,000.00'
+                'customer': "",
+                'file_name': "",
+                'cnt_id': "",
+                'cnt_doc_no': "",
+                'today_date': datetime.datetime.now().strftime("%d/%B/%Y"),
+                'customer_name': "",
+                'customer_address': "",
+                'customer_site': "",
+                'effect_from': "",
+                'effect_to': "",
+                'items' : [
+                    {'desc' : 'test1', 'qty' : 2, 'price' : '0.00' },
+                    {'desc' : 'test2', 'qty' : 2, 'price' : '0.00' },
+                ],
+                'is_changed' : True,
         }
 
     base_url = MEDIA_ROOT + '/contract/template/'
@@ -2187,20 +2191,19 @@ def generate_contract(request, *args, **kwargs):
     '''
 
     tpl.render(context)
-    tpl.save(base_url + '/download/test.docx')
+    tpl.save(MEDIA_ROOT + '/contract/download/' + file_name)
 
     return render(request, 'contract/generate_contract.html', context)
 
 
 @login_required(login_url='/accounts/login/')
 @permission_required('contract.view_cuscontract', login_url='/accounts/login/')
-def download_contract(request, *args, **kwargs):
-    path = ""
-    file_path = os.path.join(settings.MEDIA_ROOT, path)
+def download_contract(request, *args, **kwargs):    
+    file_name = kwargs['file_name']
+    file_path = "media/contract/download/" + file_name
     if os.path.exists(file_path):
         with open(file_path, 'rb') as fh:
             response = HttpResponse(fh.read(), content_type="application/vnd.ms-word")
             response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
             return response
     raise Http404
-

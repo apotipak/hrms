@@ -15,12 +15,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">{% trans 'Contract' %}</h1>
+            <h1 class="m-0 pt-2 text-dark">{% trans 'Preview #' %} {{ cnt_id}} - {{customer.cus_name_th}}</h1>
           </div>
           <div class="col-sm-6 pt-2">
             <div class="float-right">
               <button type="button" class="btn btn-secondary btn-sm" onclick="closetab()">&nbsp;&nbsp;{% trans 'Close' %}&nbsp;&nbsp;</button>
-              <a type="button" class="btn btn-info btn-sm" href="{% url 'download-contract' 'test.docx' %}"><i class="fas fa-download"></i>&nbsp;&nbsp;{% trans 'Download' %}</a>
+              <a type="button" class="btn btn-info btn-sm" href="{% url 'download-contract' file_name %}"><i class="fas fa-download"></i>&nbsp;&nbsp;{% trans 'Download MS Word' %}</a>
             </div>
           </div>
         </div>
@@ -34,23 +34,17 @@
       <!-- Default box -->
       <div id="contract_list" class="card">
 
-        <!--
-        <div class="card-header" style="vertical-align: middle;">
-          <div class="card-tools">
-            <button type="button" class="btn btn-info btn-sm js-create-customer" data-url=""><i class="fas fa-download"></i>&nbsp;&nbsp;{% trans 'Download' %}</button>            
-          </div>
-        </div>
-        -->
-
         <div class="card-body">                  
-          TODO
-        </div>        
+          <div class='col-8 offset-2'>
+            <div class="text-center"><strong>บริษัท การ์ดฟอร์ซ ซิเคียวริตี้ เซอร์วิสเซส (ประเทศไทย) จำกัด ('การ์ดฟอร์ซ')</strong></div>
+            <div class="text-center"><strong>การให้บริการรักษาความปลอดภัย</strong></div>            
+            
+            {% comment %}
+            <div>{{ customer.cus_name_th}}</div>
+            {% endcomment %}
 
-        <!--
-        <div class="card-footer">
-          &nbsp;
-        </div>
-        -->
+          </div>
+        </div>        
 
     </div>
 
@@ -58,9 +52,6 @@
 
   </div>
 {% endblock %}
-
-
-
 
 {% block javascript %}
 <script>
