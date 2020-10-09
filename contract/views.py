@@ -2129,8 +2129,8 @@ def generate_contract(request, *args, **kwargs):
                 'customer_name': customer.cus_name_th,
                 'customer_address': customer.cus_add1_th,
                 'customer_site': customer.cus_add1_th,
-                'effect_from': cus_contract.cnt_eff_frm,
-                'effect_to': cus_contract.cnt_eff_frm,
+                'effective_from': cus_contract.cnt_eff_frm.now().strftime("%d/%B/%Y"),
+                'effective_to': cus_contract.cnt_eff_frm.now().strftime("%d/%B/%Y"),
                 'items' : [
                     {'desc' : 'test1', 'qty' : 2, 'price' : '0.00' },
                     {'desc' : 'test2', 'qty' : 2, 'price' : '0.00' },
