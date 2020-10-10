@@ -666,6 +666,14 @@ def UpdateContract(request):
                         modified_records.append(record)
                         field_is_modified_count = field_is_modified_count + 1
 
+                # Print Options radio
+                if (cnt_then is not None):
+                    field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "Print Options", cuscontract.cnt_then, cnt_then, "E", request)
+                    if field_is_modified:
+                        cuscontract.cnt_then = cnt_then
+                        modified_records.append(record)
+                        field_is_modified_count = field_is_modified_count + 1
+
                 # Active
                 if (cnt_active is not None):
                     field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "Active Status", int(cuscontract.cnt_active), int(cnt_active), "E", request)

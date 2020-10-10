@@ -42,7 +42,7 @@
     <div class="card card-default collapsed-card">
 
       <div class="card-header">
-        <h1 class="card-title pt-2"><i class="fas fa-user-edit text-secondary"></i>&nbsp;&nbsp;<strong>{{contract.cnt_id}} - {{ customer.cus_name_th }}</strong></h1>
+        <h1 class="card-title pt-2">{{ customer.cus_name_th }}</strong></h1>
 
         <div class="card-tools">
 
@@ -297,11 +297,14 @@
 
 
       <div class="card-header">                
-        <!--<div class="float-left"><h2 class="m-0 text-dark">{{contract.cnt_id}}</h2></div>-->
-        
+        <div class="float-left"><h3 class="m-0 text-dark">No.&nbsp;</small>{{contract.cnt_id}}</h3></div>
+
         <div class="card-tools">
 
+
           <div class="float-left pt-2">
+
+
 
             <!-- Use new report condition | N or empty -->
             <div class="form-check d-inline">
@@ -852,6 +855,9 @@
     else
       cnt_autoexpire = 0;
 
+    // amnaj
+    var printOptionValue = $("input[name='printOptions']:checked").val();
+
     // cnt_doc_no
     cnt_doc_no = $('#id_cnt_doc_no').val();
     // cnt_doc_date
@@ -897,6 +903,7 @@
         cnt_new: cnt_new,
         cnt_print: cnt_print,
         cnt_autoexpire: cnt_autoexpire,
+        cnt_then: printOptionValue,
         cnt_doc_no: cnt_doc_no,
         cnt_doc_date: cnt_doc_date,
         cnt_eff_frm: cnt_eff_frm,
