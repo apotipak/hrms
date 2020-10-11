@@ -26,9 +26,11 @@
 
             <ul class="nav nav-treeview">
 
+              {% comment %}
               <li class="nav-item">
                 <a href="#" onclick="underconstruction()" class="nav-link"><i class="fas fa-tachometer-alt nav-icon"></i><p>Dashboard</p></a>
               </li>
+              {% endcomment %}
 
               <li class="nav-item">
                 <a href="{% url 'contract-list' %}" class="nav-link"><i class="fas fa-caret-right nav-icon"></i><p>{% trans 'Contract List' %}</p></a>
