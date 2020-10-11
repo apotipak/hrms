@@ -2122,7 +2122,7 @@ def update_all_cus_tabs(request):
                                 modified_records.append(record)
 
                             # Business GP Margin
-                            if cus_main_customer_option_opn1 is not None:
+                            if cus_main_customer_option_opn1 is not None and cus_main_customer_option_opn1 != "":
                                 if customer_option.opn1 is not None:
                                     field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "GP Margin", float(customer_option.opn1), float(cus_main_customer_option_opn1), "E", request)
                                 else:
