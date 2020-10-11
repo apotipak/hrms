@@ -47,6 +47,8 @@
           </a>
 
           <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">            
+
+            {% comment %}
             <div class="dropdown-divider"></div>
             <a href="{% url 'user-profile' %}" class="dropdown-item">
               <i class="fas fa-user-alt text-secondary"></i>&nbsp;&nbsp;{% trans 'View Profile' %}
@@ -56,6 +58,7 @@
             <a href="{% url 'user-language' %}" class="dropdown-item">
               <i class="fas fa-font text-secondary"></i>&nbsp;&nbsp;{% trans 'Switch Lanuage' %}
             </a>
+            {% endcomment %}
 
             <div class="dropdown-divider"></div>
             <a href="{% url 'user-password' %}" class="dropdown-item">
