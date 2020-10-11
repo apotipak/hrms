@@ -24,10 +24,12 @@
               <li class="nav-item">
                 <a href="{% url 'user-profile' %}" class="nav-link"><i class="fas fa-user"></i>&nbsp;&nbsp;{% trans 'User Profile' %}</a>
               </li>
-              {% endcomment %}
+              
               <li class="nav-item">
                 <a href="{% url 'user-language' %}" class="nav-link"><i class="fas fa-font"></i>&nbsp;&nbsp;{% trans 'Change Language' %}</a>
               </li>
+              {% endcomment %}
+              
               <li class="nav-item">
                 <a href="{% url 'user-password' %}" class="nav-link"><i class="fas fa-key"></i>&nbsp;&nbsp;{% trans 'Change Password' %}</a>
               </li>              
