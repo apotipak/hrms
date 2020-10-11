@@ -70,7 +70,8 @@ def userpassword(request):
             u = User.objects.get(username__exact=request.user)
             u.set_password(new_password)
             u.save()            
-            return HttpResponseRedirect('/user-profile')
+            # return HttpResponseRedirect('/user-profile')
+            return HttpResponseRedirect('/')
     else:
         form = ChangePasswordForm(user=request.user)   
 
