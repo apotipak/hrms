@@ -64,16 +64,16 @@
 
               {% if count_shift_day > 0 %}
               <table width="100%" border="0">
-                <th width="15%"><u>ผลัดกลางวัน</u></th>
+                <th width="12%"><u>ผลัดกลางวัน</u></th>
+                <th width="45%"></th>
                 <th width="35%"></th>
-                <th width="40%"></th>
-                <th width="20%" class="text-right"><u><b>บาท/เดือน</b></u></th>                            
+                <th width="10%" class="text-right" nowrap><u><b>บาท/เดือน</b></u></th>                            
                 {% for item in shift_list_day %}
                 <tr>
                 <td >{{ item.shf_time_frm }} - {{ item.shf_time_to }}</td>
                 <td>{{item.srv_qty}}&nbsp;&nbsp; x {{item.srv_rank_th}} ({{item.srv_rate|add:item.srv_qty|floatformat:2|intcomma}})</td>
                 <td class="text-left" nowrap>{{item.srv_rem}}</td>
-                <td class="text-right">{{ item.srv_rate_qty|floatformat:2|intcomma }}.-</td>
+                <td class="text-right" nowrap>{{ item.srv_rate_qty|floatformat:2|intcomma }}.-</td>
                 </tr>
                 {% endfor %}              
               </table>
@@ -90,20 +90,16 @@
               {% if count_shift_night > 0 %}
               
               <table width="100%" border="0">
-                <th width="15%"><u>ผลัดกลางคืน</u></th>
-                <th width="35%"></th>
+                <th width="12%"><u>ผลัดกลางคืน</u></th>
                 <th width="40%"></th>
-                <th width="20%" class="text-right">&nbsp;</th>
+                <th width="40%"></th>
+                <th width="10%" class="text-right">&nbsp;</th>
                 {% for item in shift_list_night %}
-                <tr>
-                
-                <td >{{ item.shf_time_frm }} - {{ item.shf_time_to }}</td>
-                <!--  3     # D07:00-19:00 HR12  -->
-                <!--<td>{{ item.shf_desc|slice:':9' }}</td>-->
-                
+                <tr>                
+                <td >{{ item.shf_time_frm }} - {{ item.shf_time_to }}</td>                
                 <td>{{item.srv_qty}}&nbsp;&nbsp; x {{item.srv_rank_th}} ({{item.srv_rate|floatformat:2|intcomma}})</td>
                 <td class="text-left" nowrap>{{item.srv_rem}}</td>
-                <td class="text-right">{{item.srv_rate_qty|floatformat:2|intcomma}}.-</td>
+                <td class="text-right" nowrap>{{item.srv_rate_qty|floatformat:2|intcomma}}.-</td>
                 </tr>
                 {% endfor %}              
               </table>
