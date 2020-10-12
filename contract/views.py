@@ -2137,6 +2137,30 @@ def generate_contract(request, *args, **kwargs):
             # Get Customer information
             customer = Customer.objects.filter(cus_id=cus_contract_cus_id).filter(cus_brn=cus_contract_cus_brn).get()
 
+            # Get Cutomer Service information
+            pickup_record = []
+            number_of_shift_list = 0
+            try:                 
+                cus_service_list = CusService.objects.all().filter(cnt_id=cnt_id)
+                for item in cus_service_list:
+                    if item.srv_active:
+                        number_of_shift_list = number_of_shift_list + 1
+                        record = {
+                            "srv_id": item.srv_id,
+                            "srv_rank_id": item.srv_rank,
+                            "srv_rank_th": "rank_th",
+                            "srv_shif_id": item.srv_shif_id,
+                            "shf_time_frm": item.srv_shif_id.shf_time_frm,
+                            "shf_time_to": item.srv_shif_id.shf_time_to,
+                            "shf_type": item.srv_shif_id.shf_type,
+                            "srv_qty": item.srv_qty,
+                            "srv_rate": item.srv_rate,
+                        }
+                        pickup_record.append(record)
+
+            except CusService.DoesNotExist:
+                cus_service_list = [] 
+
             context = {
                 'customer': customer,
                 'file_name': file_name,
@@ -2152,11 +2176,13 @@ def generate_contract(request, *args, **kwargs):
                 'customer_site_en': customer.cus_add1_en,
                 'effective_from': cus_contract.cnt_eff_frm.now().strftime("%d/%B/%Y"),
                 'effective_to': cus_contract.cnt_eff_frm.now().strftime("%d/%B/%Y"),
-                'items' : [
-                    {'desc' : 'test1', 'qty' : 2, 'price' : '0.00' },
-                    {'desc' : 'test2', 'qty' : 2, 'price' : '0.00' },
-                ],
-                'is_changed' : True,
+                'number_of_shift_list' : number_of_shift_list,
+                'shift_list': list(pickup_record),
+                'total': 0.00,
+                'shift_list_temp' : [
+                    {'shf_type' : 'D', 'shf_time_frm' : '0700', 'shf_time_to' : '1900', 'rank_th' : 'พนักงานรักษาความปลอดภัย', 'srv_rate' : '26674.00' },
+                    {'shf_type' : 'N', 'shf_time_frm' : '1900', 'shf_time_to' : '0700', 'rank_th' : 'พนักงานรักษาความปลอดภัย', 'srv_rate' : '26674.00' },
+                ],                
             }
         except CusContract.DoesNotExist:
             context = {
