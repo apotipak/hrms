@@ -2139,21 +2139,24 @@ def generate_contract(request, *args, **kwargs):
             customer = Customer.objects.filter(cus_id=cus_contract_cus_id).filter(cus_brn=cus_contract_cus_brn).get()
 
             # Get Cutomer Service information
-            pickup_record = []
-            number_of_shift_list = 0
+            pickup_record_day = []
+            pickup_record_night = []
             try:                 
                 # cus_service_list = CusService.objects.all().filter(cnt_id=cnt_id).order_by('-srv_rank', '-srv_shif_id')
                 
                 # Test
                 cursor = connection.cursor()
                 try:        
-                    cursor.execute("select cus_name_th, cus_name_en, shf_type, shf_time_frm,shf_time_to,srv_qty,rank_th,srv_rem,srv_rate from V_CONTRACT where cnt_id=" + cnt_id + " and srv_active=1 order by shf_type,srv_rank desc")
-                    cus_service_list = cursor.fetchall()
+                    cursor.execute("select cus_name_th, cus_name_en, shf_type, shf_time_frm,shf_time_to,srv_qty,rank_th,srv_rem,srv_rate from V_CONTRACT where cnt_id=" + cnt_id + " and srv_active=1 and shf_type='D' order by shf_type,srv_rank desc")
+                    cus_service_list_day = cursor.fetchall()
+
+                    cursor.execute("select cus_name_th, cus_name_en, shf_type, shf_time_frm,shf_time_to,srv_qty,rank_th,srv_rem,srv_rate from V_CONTRACT where cnt_id=" + cnt_id + " and srv_active=1 and shf_type='N' order by shf_type,srv_rank desc")
+                    cus_service_list_night = cursor.fetchall()
+
                 finally:
                     cursor.close()
                 
-                for (cus_name_th, cus_name_en, shf_type, shf_time_frm,shf_time_to,srv_qty,rank_th,srv_rem,srv_rate) in cus_service_list:
-                    number_of_shift_list = number_of_shift_list + 1
+                for (cus_name_th, cus_name_en, shf_type, shf_time_frm,shf_time_to,srv_qty,rank_th,srv_rem,srv_rate) in cus_service_list_day:                    
                     record = {
                         "cus_name_th": cus_name_th,
                         "cus_name_en": cus_name_en,
@@ -2165,11 +2168,25 @@ def generate_contract(request, *args, **kwargs):
                         "srv_rem": srv_rem,
                         "srv_rate": srv_rate,                    
                     }
-                    pickup_record.append(record)
+                    pickup_record_day.append(record)
+
+                for (cus_name_th, cus_name_en, shf_type, shf_time_frm,shf_time_to,srv_qty,rank_th,srv_rem,srv_rate) in cus_service_list_night: 
+                    record = {
+                        "cus_name_th": cus_name_th,
+                        "cus_name_en": cus_name_en,
+                        "shf_type": shf_type,
+                        "shf_time_frm": shf_time_frm,
+                        "shf_time_to": shf_time_to,
+                        "srv_qty": srv_qty,
+                        "srv_rank_th": rank_th,
+                        "srv_rem": srv_rem,
+                        "srv_rate": srv_rate,                    
+                    }
+                    pickup_record_night.append(record)
 
             except CusService.DoesNotExist:
-                cus_service_list = [] 
-
+                cus_service_list_day = []
+                cus_service_list_night = []
             context = {
                 'customer': customer,
                 'file_name': file_name,
@@ -2185,13 +2202,9 @@ def generate_contract(request, *args, **kwargs):
                 'customer_site_en': customer.cus_add1_en,
                 'effective_from': cus_contract.cnt_eff_frm.now().strftime("%d %B %Y"),
                 'effective_to': cus_contract.cnt_eff_frm.now().strftime("%d %B %Y"),
-                'number_of_shift_list' : number_of_shift_list,
-                'shift_list': list(pickup_record),
+                'shift_list_day': list(pickup_record_day),
+                'shift_list_night': list(pickup_record_night),
                 'total': 0.00,
-                'shift_list_temp' : [
-                    {'shf_type' : 'D', 'shf_time_frm' : '0700', 'shf_time_to' : '1900', 'rank_th' : 'พนักงานรักษาความปลอดภัย', 'srv_rate' : '26674.00' },
-                    {'shf_type' : 'N', 'shf_time_frm' : '1900', 'shf_time_to' : '0700', 'rank_th' : 'พนักงานรักษาความปลอดภัย', 'srv_rate' : '26674.00' },
-                ],                
             }
         except CusContract.DoesNotExist:
             context = {

@@ -61,25 +61,45 @@
             <div>3. รายละเอียดการให้บริการโดยทางบริษัทการ์ดฟอร์ซ ซิเคียวริตี้ เซอร์วิส (ประเทศไทย) จำกัด (‘การ์ดฟอร์ซ’) การให้บริการรักษาความปลอดภัย</div>
             <br>
 
-            {% if number_of_shift_list > 0 %}
             <div class='col-12'>
-            <table>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th class="text-right">บาท/เดือน</th>            
-            {% for item in shift_list %}
-            <tr>
-            <td width="15%">{{ item.shf_time_frm }} - {{ item.shf_time_to }}</td>
-            <td width="40%">{{item.srv_qty}} x {{item.srv_rank_th}}</td>
-            <td width="35%" nowrap>{{item.srv_rem}}</td>
-            <td class="text-right" width="20%">{{item.srv_rate}}.-</td>
-            </tr>
-            {% endfor %}
-            </table>
+
+              <table width="100%">
+                <th width="15%">ผลัดกลางวัน</th>
+                <th width="40%"></th>
+                <th width="35%"></th>
+                <th width="20%" class="text-right">บาท/เดือน</th>                            
+                {% for item in shift_list_day %}
+                <tr>
+                <td >{{ item.shf_time_frm }} - {{ item.shf_time_to }} | {{item.shf_type}}</td>
+                <td>{{item.srv_qty}} x {{item.srv_rank_th}}</td>
+                <td nowrap>{{item.srv_rem}}</td>
+                <td class="text-right">{{item.srv_rate}}.-</td>
+                </tr>
+                {% endfor %}              
+              </table>
+
+
+              <table width="100%">
+                <th width="15%">ผลัดกลางคืน</th>
+                <th width="40%"></th>
+                <th width="35%"></th>
+                <th width="20%" class="text-right">&nbsp;</th>
+                {% for item in shift_list_night %}
+                <tr>
+                <td >{{ item.shf_time_frm }} - {{ item.shf_time_to }} | {{item.shf_type}}</td>
+                <td>{{item.srv_qty}} x {{item.srv_rank_th}}</td>
+                <td nowrap>{{item.srv_rem}}</td>
+                <td class="text-right">{{item.srv_rate}}.-</td>
+                </tr>
+                {% endfor %}              
+              </table>
+              
+              </table>
+
+
             </div>
-            {% endif %}
-            <br><br>
+
+            <br>
             <div>
               4. ที่อยู่ของสถานที่ที่จะให้บริการ<br>
               <strong>{{ customer_address_th }}</strong>
