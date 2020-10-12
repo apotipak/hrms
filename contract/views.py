@@ -2154,7 +2154,7 @@ def generate_contract(request, *args, **kwargs):
                 # Test
                 cursor = connection.cursor()
                 try:        
-                    cursor.execute("select cus_name_th, cus_name_en, shf_type, shf_time_frm, shf_time_to, srv_qty, rank_th, srv_rem, srv_rate, shf_desc from V_CONTRACT where cnt_id=" + cnt_id + " and srv_active=1 and shf_type='D' order by shf_type,srv_rank desc")
+                    cursor.execute("select cus_name_th, cus_name_en, shf_type, shf_time_frm, shf_time_to, srv_qty, rank_th, srv_rem, srv_rate, shf_desc, rank_en from V_CONTRACT where cnt_id=" + cnt_id + " and srv_active=1 and shf_type='D' order by shf_type,srv_rank desc")
                     cus_service_list_day = cursor.fetchall()
                     count_shift_day = len(cus_service_list_day)
                     for row in cus_service_list_day:                        
@@ -2162,7 +2162,7 @@ def generate_contract(request, *args, **kwargs):
 
 
 
-                    cursor.execute("select cus_name_th, cus_name_en, shf_type, shf_time_frm, shf_time_to, srv_qty, rank_th, srv_rem, srv_rate, shf_desc from V_CONTRACT where cnt_id=" + cnt_id + " and srv_active=1 and shf_type='N' order by shf_type,srv_rank desc")
+                    cursor.execute("select cus_name_th, cus_name_en, shf_type, shf_time_frm, shf_time_to, srv_qty, rank_th, srv_rem, srv_rate, shf_desc, rank_en from V_CONTRACT where cnt_id=" + cnt_id + " and srv_active=1 and shf_type='N' order by shf_type,srv_rank desc")
                     cus_service_list_night = cursor.fetchall()
                     count_shift_night = len(cus_service_list_night)
                     for row in cus_service_list_night:
@@ -2172,7 +2172,7 @@ def generate_contract(request, *args, **kwargs):
                     cursor.close()
                 
 
-                for (cus_name_th, cus_name_en, shf_type, shf_time_frm,shf_time_to,srv_qty,rank_th,srv_rem,srv_rate,shf_desc) in cus_service_list_day:
+                for (cus_name_th, cus_name_en, shf_type, shf_time_frm,shf_time_to,srv_qty,rank_th,srv_rem,srv_rate,shf_desc,rank_en) in cus_service_list_day:
                     
                     shf_time_frm = str(shf_time_frm).zfill(4)
                     shf_time_frm = shf_time_frm[:2] + ':' + shf_time_frm[2:]
@@ -2187,6 +2187,7 @@ def generate_contract(request, *args, **kwargs):
                         "shf_time_to": shf_time_to,
                         "srv_qty": srv_qty,
                         "srv_rank_th": rank_th,
+                        "srv_rank_en": rank_en,
                         "srv_rem": srv_rem,
                         "srv_rate": srv_rate,
                         "srv_rate_qty": srv_rate * srv_qty,
@@ -2194,12 +2195,12 @@ def generate_contract(request, *args, **kwargs):
                     }
                     pickup_record_day.append(record)                
 
-                for (cus_name_th, cus_name_en, shf_type, shf_time_frm,shf_time_to,srv_qty,rank_th,srv_rem,srv_rate,shf_desc) in cus_service_list_night: 
+                for (cus_name_th, cus_name_en, shf_type, shf_time_frm,shf_time_to,srv_qty,rank_th,srv_rem,srv_rate,shf_desc,rank_en) in cus_service_list_night: 
                     shf_time_frm = str(shf_time_frm).zfill(4)
                     shf_time_frm = shf_time_frm[:2] + ':' + shf_time_frm[2:]
                     shf_time_to = str(shf_time_to).zfill(4)
                     shf_time_to = shf_time_to[:2] + ':' + shf_time_to[2:]
-                    
+
                     record = {
                         "cus_name_th": cus_name_th,
                         "cus_name_en": cus_name_en,
@@ -2208,6 +2209,7 @@ def generate_contract(request, *args, **kwargs):
                         "shf_time_to": shf_time_to,
                         "srv_qty": srv_qty,
                         "srv_rank_th": rank_th,
+                        "srv_rank_en": rank_en,
                         "srv_rem": srv_rem,
                         "srv_rate": srv_rate,
                         "srv_rate_qty": srv_rate * srv_qty,
