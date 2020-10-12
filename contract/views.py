@@ -12,7 +12,7 @@ from django.utils.translation import ugettext_lazy as _
 from .forms import ContractForm, ContractUpdateForm, ContractCreateForm
 from .models import CusContract, CusService
 from system.models import HrmsNewLog, TWagezone, ComRank, TShift
-from customer.models import CusMain, Customer
+from customer.models import CusMain, Customer, CusBill
 from decimal import Decimal
 from django.utils import timezone
 import datetime
@@ -2137,6 +2137,7 @@ def generate_contract(request, *args, **kwargs):
 
             # Get Customer information
             customer = Customer.objects.filter(cus_id=cus_contract_cus_id).filter(cus_brn=cus_contract_cus_brn).get()
+            cusbill = CusBill.objects.filter(cus_id=cus_contract_cus_id).filter(cus_brn=cus_contract_cus_brn).get()
 
             # Get Cutomer Service information
             pickup_record_day = []
@@ -2201,6 +2202,13 @@ def generate_contract(request, *args, **kwargs):
                 cus_service_list_day = []
                 cus_service_list_night = []
 
+
+
+    # cus_district = models.ForeignKey(TDistrict, related_name='cus_site_t_district_fk', db_column='cus_district', to_field='dist_id', on_delete=models.SET_NULL, null=True)    
+    # cus_city = models.ForeignKey(TCity, related_name='cus_site_cus_city_fk', db_column='cus_city', to_field='city_id', on_delete=models.SET_NULL, null=True)
+    # cus_country = models.ForeignKey(TCountry, related_name='cus_site_t_country_fk', db_column='cus_country', to_field='country_id', on_delete=models.SET_NULL, null=True)
+    # cus_zip = models.DecimalField(max_digits=5, decimal_places=0, blank=True, null=True)
+
             context = {
                 'customer': customer,
                 'file_name': file_name,
@@ -2208,12 +2216,36 @@ def generate_contract(request, *args, **kwargs):
                 'cnt_id': cnt_id,               
                 'cnt_doc_no': cus_contract.cnt_doc_no,
                 'today_date': datetime.datetime.now().strftime("%d %B %Y"),
+
+                'cusbill_name_th': cusbill.cus_name_th,
+                'cusbill_name_en': cusbill.cus_name_en,
+                'cusbill_address_th': cusbill.cus_add1_th,
+                'cusbill_address_en': cusbill.cus_add1_en,                
+                'cusbill_site_th': cusbill.cus_add1_th,
+                'cusbill_site_en': cusbill.cus_add1_en,
+                'cusbill_site_cus_subdist_th': cusbill.cus_subdist_th,
+                'cusbill_site_cus_subdist_en': cusbill.cus_subdist_en,
+                'cusbill_site_cus_district_th': cusbill.cus_district.dist_th,
+                'cusbill_site_cus_district_en': cusbill.cus_district.dist_en,
+                'cusbill_site_cus_city_th': cusbill.cus_city.city_th,
+                'cusbill_site_cus_city_en': cusbill.cus_city.city_en,
+                'cusbill_site_cus_zip': cusbill.cus_zip,
+
                 'customer_name_th': customer.cus_name_th,
                 'customer_name_en': customer.cus_name_en,
                 'customer_address_th': customer.cus_add1_th,
-                'customer_address_en': customer.cus_add1_en,
+                'customer_address_en': customer.cus_add1_en,                
                 'customer_site_th': customer.cus_add1_th,
                 'customer_site_en': customer.cus_add1_en,
+                'customer_site_cus_subdist_th': customer.cus_subdist_th,
+                'customer_site_cus_subdist_en': customer.cus_subdist_en,
+                'customer_site_cus_district_th': customer.cus_district.dist_th,
+                'customer_site_cus_district_en': customer.cus_district.dist_en,
+                'customer_site_cus_city_th': customer.cus_city.city_th,
+                'customer_site_cus_city_en': customer.cus_city.city_en,
+                'customer_site_cus_zip': customer.cus_zip,
+
+
                 'effective_from': cus_contract.cnt_eff_frm.now().strftime("%d %B %Y"),
                 'effective_to': cus_contract.cnt_eff_frm.now().strftime("%d %B %Y"),
                 'shift_list_day': list(pickup_record_day),
