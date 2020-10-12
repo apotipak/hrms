@@ -2155,6 +2155,7 @@ def generate_contract(request, *args, **kwargs):
                             "shf_type": item.srv_shif_id.shf_type,
                             "srv_qty": item.srv_qty,
                             "srv_rate": item.srv_rate,
+                            "srv_rem": item.srv_rem,
                         }
                         pickup_record.append(record)
 
