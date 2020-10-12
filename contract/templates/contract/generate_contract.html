@@ -59,12 +59,11 @@
             </div>
             <br>
             <div>3. รายละเอียดการให้บริการโดยทางบริษัทการ์ดฟอร์ซ ซิเคียวริตี้ เซอร์วิส (ประเทศไทย) จำกัด (‘การ์ดฟอร์ซ’) การให้บริการรักษาความปลอดภัย</div>
-            <br>
-
             <div class='col-12'>
 
+              {% if count_shift_day > 0 %}
               <table width="100%">
-                <th width="15%">ผลัดกลางวัน</th>
+                <th width="15%"><u>ผลัดกลางวัน</u></th>
                 <th width="40%"></th>
                 <th width="35%"></th>
                 <th width="20%" class="text-right">บาท/เดือน</th>                            
@@ -78,9 +77,18 @@
                 {% endfor %}              
               </table>
 
+              {% else %}
 
               <table width="100%">
-                <th width="15%">ผลัดกลางคืน</th>
+                <th colspan="4"></th>
+                <tr><td colspan="4"><u><b>ผลัดกลางวัน</b></u> - ยังไม่เปิดบริการ</td></tr>
+              </table>
+              {% endif %}
+
+              {% if count_shift_night > 0 %}
+              <br>
+              <table width="100%">
+                <th width="15%"><u>ผลัดกลางคืน</u></th>
                 <th width="40%"></th>
                 <th width="35%"></th>
                 <th width="20%" class="text-right">&nbsp;</th>
@@ -93,9 +101,12 @@
                 </tr>
                 {% endfor %}              
               </table>
-              
+              {% else %}
+              <table width="100%">
+                <th colspan="4"></th>
+                <tr><td colspan="4"><u><b>ผลัดกลางคืน</b></u> - ยังไม่เปิดบริการ</td></tr>
               </table>
-
+              {% endif %}              
 
             </div>
 
