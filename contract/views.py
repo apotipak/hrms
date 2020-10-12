@@ -2249,8 +2249,11 @@ def generate_contract(request, *args, **kwargs):
                 'customer_site_cus_zip': customer.cus_zip,
 
 
-                'effective_from': cus_contract.cnt_eff_frm.now().strftime("%d %B %Y"),
-                'effective_to': cus_contract.cnt_eff_frm.now().strftime("%d %B %Y"),
+                'effective_from': cus_contract.cnt_eff_frm.strftime("%d %B %Y"),
+                'effective_to': cus_contract.cnt_eff_frm.strftime("%d %B %Y"),
+                'sign_from': cus_contract.cnt_sign_frm.strftime("%d %B %Y"),
+                'sign_to': cus_contract.cnt_sign_to.strftime("%d %B %Y"),
+
                 'shift_list_day': list(pickup_record_day),
                 'shift_list_night': list(pickup_record_night),
                 'count_shift_day': count_shift_day,
