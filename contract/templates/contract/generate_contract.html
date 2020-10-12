@@ -71,7 +71,7 @@
                 {% for item in shift_list_day %}
                 <tr>
                 <td >{{ item.shf_time_frm }} - {{ item.shf_time_to }}</td>
-                <td>{{item.srv_qty}} x {{item.srv_rank_th}} ({{item.srv_rate|add:item.srv_qty}})</td>
+                <td>{{item.srv_qty}}&nbsp;&nbsp; x {{item.srv_rank_th}} ({{item.srv_rate|add:item.srv_qty}})</td>
                 <td class="text-left" nowrap>{{item.srv_rem}}</td>
                 <td class="text-right">{{ item.srv_rate_qty }}.-</td>
                 </tr>
@@ -97,7 +97,7 @@
                 {% for item in shift_list_night %}
                 <tr>
                 <td >{{ item.shf_time_frm }} - {{ item.shf_time_to }}</td>
-                <td>{{item.srv_qty}} x {{item.srv_rank_th}} ({{item.srv_rate|floatformat:2|intcomma}})</td>
+                <td>{{item.srv_qty}}&nbsp;&nbsp; x {{item.srv_rank_th}} ({{item.srv_rate|floatformat:2|intcomma}})</td>
                 <td class="text-left" nowrap>{{item.srv_rem}}</td>
                 <td class="text-right">{{item.srv_rate_qty}}.-</td>
                 </tr>
