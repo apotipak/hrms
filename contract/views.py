@@ -26,6 +26,7 @@ import os
 from django.conf import settings
 from wsgiref.util import FileWrapper
 from django.http import HttpResponse, Http404
+from django.db import connection
 
 
 def check_modified_field(table_name, primary_key, field_name, old_value, new_value, log_type, request):
@@ -2141,23 +2142,30 @@ def generate_contract(request, *args, **kwargs):
             pickup_record = []
             number_of_shift_list = 0
             try:                 
-                cus_service_list = CusService.objects.all().filter(cnt_id=cnt_id)
-                for item in cus_service_list:
-                    if item.srv_active:
-                        number_of_shift_list = number_of_shift_list + 1
-                        record = {
-                            "srv_id": item.srv_id,
-                            "srv_rank_id": item.srv_rank,
-                            "srv_rank_th": "rank_th",
-                            "srv_shif_id": item.srv_shif_id,
-                            "shf_time_frm": item.srv_shif_id.shf_time_frm,
-                            "shf_time_to": item.srv_shif_id.shf_time_to,
-                            "shf_type": item.srv_shif_id.shf_type,
-                            "srv_qty": item.srv_qty,
-                            "srv_rate": item.srv_rate,
-                            "srv_rem": item.srv_rem,
-                        }
-                        pickup_record.append(record)
+                # cus_service_list = CusService.objects.all().filter(cnt_id=cnt_id).order_by('-srv_rank', '-srv_shif_id')
+                
+                # Test
+                cursor = connection.cursor()
+                try:        
+                    cursor.execute("select cus_name_th, cus_name_en, shf_type, shf_time_frm,shf_time_to,srv_qty,rank_th,srv_rem,srv_rate from V_CONTRACT where cnt_id=" + cnt_id + " and srv_active=1 order by shf_type,srv_rank desc")
+                    cus_service_list = cursor.fetchall()
+                finally:
+                    cursor.close()
+                
+                for (cus_name_th, cus_name_en, shf_type, shf_time_frm,shf_time_to,srv_qty,rank_th,srv_rem,srv_rate) in cus_service_list:
+                    number_of_shift_list = number_of_shift_list + 1
+                    record = {
+                        "cus_name_th": cus_name_th,
+                        "cus_name_en": cus_name_en,
+                        "shf_type": shf_type,
+                        "shf_time_frm": shf_time_frm,
+                        "shf_time_to": shf_time_to,
+                        "srv_qty": srv_qty,
+                        "srv_rank_th": rank_th,
+                        "srv_rem": srv_rem,
+                        "srv_rate": srv_rate,                    
+                    }
+                    pickup_record.append(record)
 
             except CusService.DoesNotExist:
                 cus_service_list = [] 
@@ -2168,15 +2176,15 @@ def generate_contract(request, *args, **kwargs):
                 'language_option': language_option,
                 'cnt_id': cnt_id,               
                 'cnt_doc_no': cus_contract.cnt_doc_no,
-                'today_date': datetime.datetime.now().strftime("%d/%B/%Y"),
+                'today_date': datetime.datetime.now().strftime("%d %B %Y"),
                 'customer_name_th': customer.cus_name_th,
                 'customer_name_en': customer.cus_name_en,
                 'customer_address_th': customer.cus_add1_th,
                 'customer_address_en': customer.cus_add1_en,
                 'customer_site_th': customer.cus_add1_th,
                 'customer_site_en': customer.cus_add1_en,
-                'effective_from': cus_contract.cnt_eff_frm.now().strftime("%d/%B/%Y"),
-                'effective_to': cus_contract.cnt_eff_frm.now().strftime("%d/%B/%Y"),
+                'effective_from': cus_contract.cnt_eff_frm.now().strftime("%d %B %Y"),
+                'effective_to': cus_contract.cnt_eff_frm.now().strftime("%d %B %Y"),
                 'number_of_shift_list' : number_of_shift_list,
                 'shift_list': list(pickup_record),
                 'total': 0.00,

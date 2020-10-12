@@ -185,7 +185,7 @@ class Company(models.Model):
     upd_flag = models.CharField(max_length=1, blank=True, null=True)
 
     class Meta:
-        managed = True
+        managed = False
         db_table = 'COMPANY'
 
 

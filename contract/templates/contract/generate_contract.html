@@ -67,13 +67,13 @@
             <th></th>
             <th></th>
             <th></th>
-            <th>บาท/เดือน</th>            
+            <th class="text-right">บาท/เดือน</th>            
             {% for item in shift_list %}
             <tr>
-            <td>{{ item.shf_time_frm }} - {{ item.shf_time_to }}</td>
-            <td>{{item.srv_qty}} x {{item.srv_rank_id}}</td>
-            <td>{{item.srv_rem}}</td>
-            <td>{{item.srv_rate}}.-</td>
+            <td width="15%">{{ item.shf_time_frm }} - {{ item.shf_time_to }}</td>
+            <td width="40%">{{item.srv_qty}} x {{item.srv_rank_th}}</td>
+            <td width="35%" nowrap>{{item.srv_rem}}</td>
+            <td class="text-right" width="20%">{{item.srv_rate}}.-</td>
             </tr>
             {% endfor %}
             </table>

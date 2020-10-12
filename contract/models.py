@@ -44,8 +44,10 @@ class CusService(models.Model):
     srv_id = models.DecimalField(primary_key=True, max_digits=16, decimal_places=0)
     # cnt_id = models.DecimalField(max_digits=13, decimal_places=0, blank=True, null=True)
     cnt_id = models.ForeignKey(CusContract, db_column='cnt_id', to_field='cnt_id', on_delete=models.SET_NULL, null=True)
-    srv_rank = models.CharField(max_length=3, blank=True, null=True)
     
+    # srv_rank = models.CharField(max_length=3, blank=True, null=True)
+    srv_rank = models.ForeignKey(ComRank, db_column='srv_rank', to_field='rank_id', on_delete=models.SET_NULL, null=True)
+
     # srv_shif_id = models.SmallIntegerField(blank=True, null=True)
     srv_shif_id = models.ForeignKey(TShift, db_column='srv_shif_id', to_field='shf_id', on_delete=models.SET_NULL, null=True)
 
