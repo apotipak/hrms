@@ -41,8 +41,8 @@
     
     <div class="card card-default collapsed-card">
 
-      <div class="card-header">
-        <h1 class="card-title pt-2">{{ customer.cus_name_th }}</strong></h1>
+      <div class="card-header">        
+        <div class="float-left"><h3 class="m-0 text-dark">{{customer.cus_name_th}}<small>&nbsp;&nbsp; | &nbsp;{{ customer.cus_zone.zone_en }}</small></h3></div>
 
         <div class="card-tools">
 
@@ -192,7 +192,7 @@
 
                   <div class="form-group col-md-2">
                     <label for="id_cus_zone">{% trans 'Zone' %}</label>
-                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_zone_id }} | {{ customer.cus_zone.zone_th }}">
+                    <input type="text" class="form-control form-control-sm" readonly value="{{ customer.cus_zone_id }} | {{ customer.cus_zone.zone_en }}">
                   </div>                  
 
                 </div>
@@ -297,7 +297,7 @@
 
 
       <div class="card-header">                
-        <div class="float-left"><h3 class="m-0 text-dark">No.&nbsp;</small>{{contract.cnt_id}}</h3></div>
+        <div class="float-left"><h4 class="m-0 text-dark">No.&nbsp;</small>{{contract.cnt_id}}</h4></div>
 
         <div class="card-tools">
 
