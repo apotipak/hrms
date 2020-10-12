@@ -1,6 +1,7 @@
 {% extends "page_generic_print.html" %}
 
 {% load i18n %}
+{% load humanize %}
 {% block title %} Download Contract {% endblock %}
 {% load static %}
 {% load widget_tweaks %}
@@ -62,52 +63,66 @@
             <div class='col-12'>
 
               {% if count_shift_day > 0 %}
-              <table width="100%">
+              <table width="100%" border="0">
                 <th width="15%"><u>ผลัดกลางวัน</u></th>
-                <th width="40%"></th>
                 <th width="35%"></th>
+                <th width="40%"></th>
                 <th width="20%" class="text-right">บาท/เดือน</th>                            
                 {% for item in shift_list_day %}
                 <tr>
-                <td >{{ item.shf_time_frm }} - {{ item.shf_time_to }} | {{item.shf_type}}</td>
+                <td >{{ item.shf_time_frm }} - {{ item.shf_time_to }}</td>
                 <td>{{item.srv_qty}} x {{item.srv_rank_th}}</td>
-                <td nowrap>{{item.srv_rem}}</td>
+                <td class="text-left" nowrap>{{item.srv_rem}}</td>
                 <td class="text-right">{{item.srv_rate}}.-</td>
                 </tr>
                 {% endfor %}              
               </table>
 
               {% else %}
-
+              <!--
               <table width="100%">
                 <th colspan="4"></th>
                 <tr><td colspan="4"><u><b>ผลัดกลางวัน</b></u> - ยังไม่เปิดบริการ</td></tr>
               </table>
+              -->
               {% endif %}
 
               {% if count_shift_night > 0 %}
-              <br>
-              <table width="100%">
+              
+              <table width="100%" border="0">
                 <th width="15%"><u>ผลัดกลางคืน</u></th>
-                <th width="40%"></th>
                 <th width="35%"></th>
+                <th width="40%"></th>
                 <th width="20%" class="text-right">&nbsp;</th>
                 {% for item in shift_list_night %}
                 <tr>
-                <td >{{ item.shf_time_frm }} - {{ item.shf_time_to }} | {{item.shf_type}}</td>
+                <td >{{ item.shf_time_frm }} - {{ item.shf_time_to }}</td>
                 <td>{{item.srv_qty}} x {{item.srv_rank_th}}</td>
-                <td nowrap>{{item.srv_rem}}</td>
+                <td class="text-left" nowrap>{{item.srv_rem}}</td>
                 <td class="text-right">{{item.srv_rate}}.-</td>
                 </tr>
                 {% endfor %}              
               </table>
               {% else %}
+              <!--
               <table width="100%">
                 <th colspan="4"></th>
                 <tr><td colspan="4"><u><b>ผลัดกลางคืน</b></u> - ยังไม่เปิดบริการ</td></tr>
               </table>
-              {% endif %}              
+              -->
+              {% endif %}
 
+              {% if total_count_shift > 0 %}
+              <br>
+              <table width="100%">
+                <tr>
+                <td width="50%">&nbsp;</td>
+                <td width="10%">&nbsp;</td>
+                <td width="30%" class="text-center"><b>รวมอัตราค่าบริการทั้งสิ้น</b><br>(ยังไม่รวมภาษีมูลค่าเพิ่ม)</td>                
+                <td width="10%" class="text-right" style="vertical-align:top"><b>{{ srv_rate_total|floatformat:2|intcomma }}.-</b></td>
+                </tr>
+              </table>
+              {% endif %}
             </div>
 
             <br>

@@ -2143,6 +2143,10 @@ def generate_contract(request, *args, **kwargs):
             pickup_record_night = []
             count_shift_day = 0
             count_shift_night = 0
+            srv_rate_day = 0
+            srv_rate_night = 0
+            srv_rate_total = 0
+
             try:                 
                 # cus_service_list = CusService.objects.all().filter(cnt_id=cnt_id).order_by('-srv_rank', '-srv_shif_id')
                 
@@ -2152,11 +2156,16 @@ def generate_contract(request, *args, **kwargs):
                     cursor.execute("select cus_name_th, cus_name_en, shf_type, shf_time_frm,shf_time_to,srv_qty,rank_th,srv_rem,srv_rate from V_CONTRACT where cnt_id=" + cnt_id + " and srv_active=1 and shf_type='D' order by shf_type,srv_rank desc")
                     cus_service_list_day = cursor.fetchall()
                     count_shift_day = len(cus_service_list_day)
+                    for row in cus_service_list_day:
+                        srv_rate_day = srv_rate_day + int(row[8]) # row[8] = srv_rate
+
 
                     cursor.execute("select cus_name_th, cus_name_en, shf_type, shf_time_frm,shf_time_to,srv_qty,rank_th,srv_rem,srv_rate from V_CONTRACT where cnt_id=" + cnt_id + " and srv_active=1 and shf_type='N' order by shf_type,srv_rank desc")
                     cus_service_list_night = cursor.fetchall()
                     count_shift_night = len(cus_service_list_night)
-                    
+                    for row in cus_service_list_night:
+                        srv_rate_night = srv_rate_night + int(row[8]) # row[8] = srv_rate
+
                 finally:
                     cursor.close()
                 
@@ -2192,9 +2201,6 @@ def generate_contract(request, *args, **kwargs):
                 cus_service_list_day = []
                 cus_service_list_night = []
 
-            print("count_shift_day = " + str(count_shift_day))
-            print("count_shift_night = " + str(count_shift_night))
-            
             context = {
                 'customer': customer,
                 'file_name': file_name,
@@ -2214,7 +2220,8 @@ def generate_contract(request, *args, **kwargs):
                 'shift_list_night': list(pickup_record_night),
                 'count_shift_day': count_shift_day,
                 'count_shift_night': count_shift_night,
-                'total': 0.00,
+                'total_count_shift': count_shift_day + count_shift_night,
+                'srv_rate_total': srv_rate_day + srv_rate_night,
             }
         except CusContract.DoesNotExist:
             context = {
