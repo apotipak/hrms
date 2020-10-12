@@ -73,7 +73,7 @@
                 <td >{{ item.shf_time_frm }} - {{ item.shf_time_to }}</td>
                 <td>{{item.srv_qty}} x {{item.srv_rank_th}}</td>
                 <td class="text-left" nowrap>{{item.srv_rem}}</td>
-                <td class="text-right">{{item.srv_rate}}.-</td>
+                <td class="text-right">{{item.srv_rate|floatformat:2|intcomma}}.-</td>
                 </tr>
                 {% endfor %}              
               </table>
@@ -99,7 +99,7 @@
                 <td >{{ item.shf_time_frm }} - {{ item.shf_time_to }}</td>
                 <td>{{item.srv_qty}} x {{item.srv_rank_th}}</td>
                 <td class="text-left" nowrap>{{item.srv_rem}}</td>
-                <td class="text-right">{{item.srv_rate}}.-</td>
+                <td class="text-right">{{item.srv_rate|floatformat:2|intcomma}}.-</td>
                 </tr>
                 {% endfor %}              
               </table>
