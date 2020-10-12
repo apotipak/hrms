@@ -2154,7 +2154,7 @@ def generate_contract(request, *args, **kwargs):
                 # Test
                 cursor = connection.cursor()
                 try:        
-                    cursor.execute("select cus_name_th, cus_name_en, shf_type, shf_time_frm, shf_time_to, srv_qty, rank_th, srv_rem, srv_rate from V_CONTRACT where cnt_id=" + cnt_id + " and srv_active=1 and shf_type='D' order by shf_type,srv_rank desc")
+                    cursor.execute("select cus_name_th, cus_name_en, shf_type, shf_time_frm, shf_time_to, srv_qty, rank_th, srv_rem, srv_rate, shf_desc from V_CONTRACT where cnt_id=" + cnt_id + " and srv_active=1 and shf_type='D' order by shf_type,srv_rank desc")
                     cus_service_list_day = cursor.fetchall()
                     count_shift_day = len(cus_service_list_day)
                     for row in cus_service_list_day:                        
@@ -2162,7 +2162,7 @@ def generate_contract(request, *args, **kwargs):
 
 
 
-                    cursor.execute("select cus_name_th, cus_name_en, shf_type, shf_time_frm,shf_time_to,srv_qty,rank_th,srv_rem,srv_rate from V_CONTRACT where cnt_id=" + cnt_id + " and srv_active=1 and shf_type='N' order by shf_type,srv_rank desc")
+                    cursor.execute("select cus_name_th, cus_name_en, shf_type, shf_time_frm, shf_time_to, srv_qty, rank_th, srv_rem, srv_rate, shf_desc from V_CONTRACT where cnt_id=" + cnt_id + " and srv_active=1 and shf_type='N' order by shf_type,srv_rank desc")
                     cus_service_list_night = cursor.fetchall()
                     count_shift_night = len(cus_service_list_night)
                     for row in cus_service_list_night:
@@ -2171,7 +2171,14 @@ def generate_contract(request, *args, **kwargs):
                 finally:
                     cursor.close()
                 
-                for (cus_name_th, cus_name_en, shf_type, shf_time_frm,shf_time_to,srv_qty,rank_th,srv_rem,srv_rate) in cus_service_list_day:                    
+
+                for (cus_name_th, cus_name_en, shf_type, shf_time_frm,shf_time_to,srv_qty,rank_th,srv_rem,srv_rate,shf_desc) in cus_service_list_day:
+                    
+                    shf_time_frm = str(shf_time_frm).zfill(4)
+                    shf_time_frm = shf_time_frm[:2] + ':' + shf_time_frm[2:]
+                    shf_time_to = str(shf_time_to).zfill(4)
+                    shf_time_to = shf_time_to[:2] + ':' + shf_time_to[2:]
+
                     record = {
                         "cus_name_th": cus_name_th,
                         "cus_name_en": cus_name_en,
@@ -2183,34 +2190,34 @@ def generate_contract(request, *args, **kwargs):
                         "srv_rem": srv_rem,
                         "srv_rate": srv_rate,
                         "srv_rate_qty": srv_rate * srv_qty,
+                        "shf_desc": shf_desc,
                     }
                     pickup_record_day.append(record)                
 
-                for (cus_name_th, cus_name_en, shf_type, shf_time_frm,shf_time_to,srv_qty,rank_th,srv_rem,srv_rate) in cus_service_list_night: 
+                for (cus_name_th, cus_name_en, shf_type, shf_time_frm,shf_time_to,srv_qty,rank_th,srv_rem,srv_rate,shf_desc) in cus_service_list_night: 
+                    shf_time_frm = str(shf_time_frm).zfill(4)
+                    shf_time_frm = shf_time_frm[:2] + ':' + shf_time_frm[2:]
+                    shf_time_to = str(shf_time_to).zfill(4)
+                    shf_time_to = shf_time_to[:2] + ':' + shf_time_to[2:]
+                    
                     record = {
                         "cus_name_th": cus_name_th,
                         "cus_name_en": cus_name_en,
                         "shf_type": shf_type,
-                        "shf_time_frm": shf_time_frm,
+                        "shf_time_frm": str(shf_time_frm).zfill(4),
                         "shf_time_to": shf_time_to,
                         "srv_qty": srv_qty,
                         "srv_rank_th": rank_th,
                         "srv_rem": srv_rem,
                         "srv_rate": srv_rate,
                         "srv_rate_qty": srv_rate * srv_qty,
+                        "shf_desc": shf_desc,
                     }
                     pickup_record_night.append(record)                
 
             except CusService.DoesNotExist:
                 cus_service_list_day = []
                 cus_service_list_night = []
-
-
-
-    # cus_district = models.ForeignKey(TDistrict, related_name='cus_site_t_district_fk', db_column='cus_district', to_field='dist_id', on_delete=models.SET_NULL, null=True)    
-    # cus_city = models.ForeignKey(TCity, related_name='cus_site_cus_city_fk', db_column='cus_city', to_field='city_id', on_delete=models.SET_NULL, null=True)
-    # cus_country = models.ForeignKey(TCountry, related_name='cus_site_t_country_fk', db_column='cus_country', to_field='country_id', on_delete=models.SET_NULL, null=True)
-    # cus_zip = models.DecimalField(max_digits=5, decimal_places=0, blank=True, null=True)
 
             context = {
                 'customer': customer,
@@ -2259,7 +2266,7 @@ def generate_contract(request, *args, **kwargs):
                 'count_shift_day': count_shift_day,
                 'count_shift_night': count_shift_night,
                 'total_count_shift': count_shift_day + count_shift_night,
-                'srv_rate_total': srv_rate_day + srv_rate_night,
+                'srv_rate_total': srv_rate_day + srv_rate_night,                
             }
         except CusContract.DoesNotExist:
             context = {

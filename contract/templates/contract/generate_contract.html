@@ -96,7 +96,11 @@
                 <th width="20%" class="text-right">&nbsp;</th>
                 {% for item in shift_list_night %}
                 <tr>
+                
                 <td >{{ item.shf_time_frm }} - {{ item.shf_time_to }}</td>
+                <!--  3     # D07:00-19:00 HR12  -->
+                <!--<td>{{ item.shf_desc|slice:':9' }}</td>-->
+                
                 <td>{{item.srv_qty}}&nbsp;&nbsp; x {{item.srv_rank_th}} ({{item.srv_rate|floatformat:2|intcomma}})</td>
                 <td class="text-left" nowrap>{{item.srv_rem}}</td>
                 <td class="text-right">{{item.srv_rate_qty}}.-</td>
@@ -125,8 +129,9 @@
               {% endif %}
             </div>
 
+            {{shf_desc}}
             <br>
-            <div>
+            <div>              
               4. ที่อยู่ของสถานที่ที่จะให้บริการ<br>
               <strong>{{ customer_address_th }} {{customer_site_cus_subdist_th}} {{customer_site_cus_district_th}} {{customer_site_cus_city_th}} {{ customer_site_cus_zip }}</strong>
             </div>
