@@ -1833,6 +1833,8 @@ def update_all_cus_tabs(request):
         form = CusAllTabsForm(request.POST)
 
         if form.is_valid():            
+            count_modified_field = 0
+
             cus_id = request.POST.get('cus_id')
             cus_brn = request.POST.get('cus_brn').zfill(3)
             cus_no = str(cus_id) + str(cus_brn)
@@ -1917,7 +1919,7 @@ def update_all_cus_tabs(request):
                 modified_records = []
                 cus_main = CusMain.objects.get(pk=cus_id)
 
-                count_modified_field = 0
+                
                 if (cus_main is not None):
 
                     # CUS_ACTIVE
@@ -2052,7 +2054,7 @@ def update_all_cus_tabs(request):
                             modified_records.append(record)
                             count_modified_field = count_modified_field + 1
 
-                    # Group ID - cus_taxid
+                    # Group ID - cus_taxid                    
                     cus_main_cus_taxid = request.POST.get('cus_main_cus_taxid')            
                     if (cus_main_cus_taxid is not None):
                         field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Group ID", cus_main.cus_taxid, cus_main_cus_taxid, "E", request)
@@ -2099,51 +2101,59 @@ def update_all_cus_tabs(request):
 
                         cus_main.save()
 
+                    print("amnaj")
+                    print("count_modified_field 11 = " + str(count_modified_field))
+                    print("amnaj")  
+
 
                     # CUS_MAIN Business Type
                     try:
                         customer_option = CustomerOption.objects.get(cus_no=cus_no)
 
                         if customer_option is not None:
-                            # customer_option.btype = cus_main_business_type.replace('&amp;', '&')
-                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Business Type", customer_option.btype, cus_main_business_type.replace('&amp;', '&'), "E", request)
-                            if field_is_modified:
-                                customer_option.btype = cus_main_business_type.replace('&amp;', '&')
-                                modified_records.append(record)
-                                count_modified_field = count_modified_field + 1
+                            cus_main_business_type = cus_main_business_type.replace('&amp;', '&')
+                            if cus_main_business_type != "":
+                                field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Business Type", str(customer_option.btype), cus_main_business_type, "E", request)
+                                if field_is_modified:
+                                    customer_option.btype = cus_main_business_type.replace('&amp;', '&')
+                                    modified_records.append(record)
+                                    count_modified_field = count_modified_field + 1
 
                             # Business Status
                             # customer_option.op1 = cus_main_customer_option_op1.rstrip() # Status
-                            if (cus_main_customer_option_op1 is not None):
-                                field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Status", customer_option.op1, cus_main_customer_option_op1, "E", request)
+                            if (cus_main_customer_option_op1 is not None and cus_main_customer_option_op1 != ""):
+                                field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Status", str(customer_option.op1), str(cus_main_customer_option_op1), "E", request)
                                 if field_is_modified:
                                     customer_option.op1 = cus_main_customer_option_op1
                                     modified_records.append(record)
                                     count_modified_field = count_modified_field + 1
 
                             # Business Group 1
-                            # customer_option.op2 = cus_main_customer_option_op2.replace('&amp;', '&') # Group 1
-                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Group 1", customer_option.op2, cus_main_customer_option_op2.replace('&amp;', '&'), "E", request)
-                            if field_is_modified:
-                                customer_option.op2 = cus_main_customer_option_op2.replace('&amp;', '&') # Group 1
-                                modified_records.append(record)
-                                count_modified_field = count_modified_field + 1
+                            cus_main_customer_option_op2 = cus_main_customer_option_op2.replace('&amp;', '&') # Group 1
+                            if (cus_main_customer_option_op2 is not None and cus_main_customer_option_op2 != ""):
+                                field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Group 1", customer_option.op2, cus_main_customer_option_op2, "E", request)
+                                if field_is_modified:
+                                    customer_option.op2 = cus_main_customer_option_op2
+                                    modified_records.append(record)
+                                    count_modified_field = count_modified_field + 1
 
                             # Business Group 2
-                            # customer_option.op3 = cus_main_customer_option_op3.replace('&amp;', '&') # Group 2
-                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Group 2", customer_option.op3, cus_main_customer_option_op3.replace('&amp;', '&'), "E", request)
-                            if field_is_modified:
-                                customer_option.op3 = cus_main_customer_option_op3.replace('&amp;', '&') # Group 2
-                                modified_records.append(record)
-                                count_modified_field = count_modified_field + 1
+                            cus_main_customer_option_op3 = cus_main_customer_option_op3.replace('&amp;', '&') # Group 2
+                            if (cus_main_customer_option_op3 is not None and cus_main_customer_option_op3 != ""):
+                                field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Group 2", customer_option.op3, cus_main_customer_option_op3, "E", request)
+                                if field_is_modified:
+                                    customer_option.op3 = cus_main_customer_option_op3 # Group 2
+                                    modified_records.append(record)
+                                    count_modified_field = count_modified_field + 1
 
                             # Business A/R Code
-                            # customer_option.op4 = cus_main_customer_option_op4.rstrip() # A/R Code
-                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "A/R Code", customer_option.op4, cus_main_customer_option_op4.replace('&amp;', '&'), "E", request)
-                            if field_is_modified:
-                                customer_option.op4 = cus_main_customer_option_op4.replace('&amp;', '&') # A/R Code
-                                modified_records.append(record)
-                                count_modified_field = count_modified_field + 1
+                            cus_main_customer_option_op4 = cus_main_customer_option_op4.rstrip() # A/R Code
+                            if (cus_main_customer_option_op4 is not None and cus_main_customer_option_op4 != ""):
+                                field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "A/R Code", customer_option.op4, cus_main_customer_option_op4.replace('&amp;', '&'), "E", request)
+                                if field_is_modified:
+                                    customer_option.op4 = cus_main_customer_option_op4 # A/R Code
+                                    modified_records.append(record)
+                                    count_modified_field = count_modified_field + 1
 
                             # Business GP Margin
                             if cus_main_customer_option_opn1 is not None and cus_main_customer_option_opn1 != "":
@@ -2164,7 +2174,11 @@ def update_all_cus_tabs(request):
                                 customer_option.op5 = cus_main_customer_option_op5
                                 customer_option.op6 = cus_main_customer_option_op6
                                 customer_option.save()
-                            
+
+                        print("amnaj")
+                        print("count_modified_field 22 = " + str(count_modified_field))
+                        print("amnaj")  
+
                     except CustomerOption.DoesNotExist:
                         # Insert
                         if not cus_main_customer_option_opn1.isnumeric():
@@ -2198,7 +2212,6 @@ def update_all_cus_tabs(request):
                             new_log.save()    
                             modified_records = []
                     # ./ Save History Log 
-
 
             except CusMain.DoesNotExist:
                 cus_main_cus_taxid = request.POST.get('cus_main_cus_taxid')
@@ -2265,6 +2278,7 @@ def update_all_cus_tabs(request):
                     c.save()
 
 
+
             # ******************************************
             # **************  CUS_SITE  ****************
             # ******************************************
@@ -2272,7 +2286,9 @@ def update_all_cus_tabs(request):
             print("********************************")
             print("cus_site_cus_active = " + str(cus_site_cus_active))
             print("********************************")
-            
+           
+
+
             cus_site_cus_name_th = request.POST.get('cus_site_cus_name_th')
             cus_site_cus_add1_th = request.POST.get('cus_site_cus_add1_th')
             cus_site_cus_add2_th = request.POST.get('cus_site_cus_add2_th')
@@ -2351,7 +2367,7 @@ def update_all_cus_tabs(request):
                         count_modified_field = count_modified_field + 1
 
                     print("amnaj")
-                    print("count_modified_field = " + str(count_modified_field))
+                    print("count_modified_field 1 = " + str(count_modified_field))
                     print("amnaj")                    
 
                     # CUS_NAME_TH
@@ -2363,7 +2379,7 @@ def update_all_cus_tabs(request):
                         count_modified_field = count_modified_field + 1
 
                     print("amnaj")
-                    print("count_modified_field = " + str(count_modified_field))
+                    print("count_modified_field 2 = " + str(count_modified_field))
                     print("amnaj")
 
                     # CUS_ADD1_TH
@@ -2483,13 +2499,15 @@ def update_all_cus_tabs(request):
                             count_modified_field = count_modified_field + 1
 
                     # CUS_TAXID
+                    '''
                     cus_main_cus_taxid = request.POST.get('cus_main_cus_taxid')            
                     if (cus_main_cus_taxid is not None):
-                        field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Group ID", customer.cus_taxid, cus_main_cus_taxid, "E", request)
+                        field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Group ID11", customer.cus_taxid, cus_main_cus_taxid, "E", request)
                         if field_is_modified:
                             customer.cus_taxid = cus_main_cus_taxid
                             modified_records.append(record)
                             count_modified_field = count_modified_field + 1
+                    '''
 
                     # CUS_ZONE
                     # customer.cus_zone_id = cus_site_cus_zone
@@ -2679,6 +2697,11 @@ def update_all_cus_tabs(request):
             print("cus_bill_cus_contact_id = " + str(cus_bill_cus_contact_id))
             '''
 
+            print("amnaj")
+            print("count_modified_field 3 = " + str(count_modified_field))
+            print("amnaj")
+
+
             try:
                 cusbill = CusBill.objects.get(pk=cus_no)
 
@@ -2823,6 +2846,7 @@ def update_all_cus_tabs(request):
                             count_modified_field = count_modified_field + 1
 
                     # CUS_TAXID
+                    '''
                     cus_main_cus_taxid = request.POST.get('cus_main_cus_taxid')            
                     if (cus_main_cus_taxid is not None):
                         field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Group ID", cusbill.cus_taxid, cus_main_cus_taxid, "E", request)
@@ -2830,6 +2854,7 @@ def update_all_cus_tabs(request):
                             cusbill.cus_taxid = cus_main_cus_taxid
                             modified_records.append(record)
                             count_modified_field = count_modified_field + 1
+                    '''
 
                     # CUS_ZONE
                     # cusbill.cus_zone_id = cus_bill_cus_zone
@@ -2929,6 +2954,15 @@ def update_all_cus_tabs(request):
             print("OK")
             print("****************************")
 
+            if count_modified_field > 0:
+                response_data['result'] = "Update complete1."
+                response_data['form_is_valid'] = True
+                response_data['class'] = 'bg-success'
+            else:
+                response_data['result'] = "Sorry, nothing to update."
+                response_data['form_is_valid'] = True
+                response_data['class'] = 'bg-warning'
+
         else:
             print("form is invalid")
 
@@ -2948,14 +2982,7 @@ def update_all_cus_tabs(request):
             print("****************************")
 
 
-        if count_modified_field > 0:
-            response_data['result'] = "Update complete."
-            response_data['form_is_valid'] = True
-            response_data['class'] = 'bg-success'
-        else:
-            response_data['result'] = "Sorry, nothing to update."
-            response_data['form_is_valid'] = True
-            response_data['class'] = 'bg-warning'
+
 
         return JsonResponse(response_data)
     else:
