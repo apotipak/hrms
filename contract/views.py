@@ -2259,7 +2259,7 @@ def generate_contract(request, *args, **kwargs):
 
 
                 'effective_from': cus_contract.cnt_eff_frm.strftime("%d %B %Y"),
-                'effective_to': cus_contract.cnt_eff_frm.strftime("%d %B %Y"),
+                'effective_to': cus_contract.cnt_eff_to.strftime("%d %B %Y"),
                 'sign_from': cus_contract.cnt_sign_frm.strftime("%d %B %Y"),
                 'sign_to': cus_contract.cnt_sign_to.strftime("%d %B %Y"),
 
