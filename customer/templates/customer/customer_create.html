@@ -1851,8 +1851,7 @@
     cus_main_cus_tel = $('#id_cus_main_cus_tel').val();
     cus_main_cus_fax = $('#id_cus_main_cus_fax').val();
     cus_main_cus_email = $('#id_cus_main_cus_email').val();
-    cus_main_cus_taxid = $('#id_customer_group_id').val();
-    //alert(cus_main_cus_taxid);
+    cus_main_cus_taxid = $('#id_customer_group_id').val();    
     cus_main_cus_zone = $('#id_cus_main_cus_zone').val();    
     customer_option_btype = $('#id_cus_main_business_type').val();
     customer_option_op1 = $('#id_cus_main_customer_option_op1').val();
@@ -1986,7 +1985,7 @@
       success : function(json) {        
         if(json.form_is_valid) {
           $(document).Toasts('create', {
-            class: 'bg-success', 
+            class: json.class, 
             title: "{% trans 'Message' %}",
             subtitle: '',
             autohide: true,
@@ -2011,7 +2010,7 @@
           //alert("b");          
 
           $(document).Toasts('create', {
-            class: 'bg-danger', 
+            class: json.class,
             title: "{% trans 'Error' %}",
             subtitle: '',
             autohide: true,
