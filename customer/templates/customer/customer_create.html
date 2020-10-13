@@ -1610,6 +1610,7 @@
       var cus_brn = obj.val();
       var cus_id = $('#id_cus_id').val();
 
+      // amnaj todo
       $.ajax({
         url: "/customer/ajax/ajax_check_exist_cus_site/",
         type: "POST",
@@ -1864,7 +1865,6 @@
       cus_main_cus_contact_id = null;
 
 
-    // amnaj
     // CUS_SITE
     if ($('#id_cus_site_cus_active').is(":checked"))
       cus_site_cus_active = 1;

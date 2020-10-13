@@ -206,6 +206,7 @@ def ajax_check_exist_cus_main(request):
 @login_required(login_url='/accounts/login/')
 def ajax_check_exist_cus_site(request):
 
+    # amnaj todo
     print("************************************************")
     print("FUNCTION: ajax_check_exist_cus_site")
     print("************************************************")
@@ -2101,11 +2102,6 @@ def update_all_cus_tabs(request):
 
                         cus_main.save()
 
-                    print("amnaj")
-                    print("count_modified_field 11 = " + str(count_modified_field))
-                    print("amnaj")  
-
-
                     # CUS_MAIN Business Type
                     try:
                         customer_option = CustomerOption.objects.get(cus_no=cus_no)
@@ -2174,10 +2170,6 @@ def update_all_cus_tabs(request):
                                 customer_option.op5 = cus_main_customer_option_op5
                                 customer_option.op6 = cus_main_customer_option_op6
                                 customer_option.save()
-
-                        print("amnaj")
-                        print("count_modified_field 22 = " + str(count_modified_field))
-                        print("amnaj")  
 
                     except CustomerOption.DoesNotExist:
                         # Insert
@@ -2366,10 +2358,6 @@ def update_all_cus_tabs(request):
                             customer.cus_site = 0
                         count_modified_field = count_modified_field + 1
 
-                    print("amnaj")
-                    print("count_modified_field 1 = " + str(count_modified_field))
-                    print("amnaj")                    
-
                     # CUS_NAME_TH
                     #customer.cus_name_th = cus_site_cus_name_th
                     field_is_modified, record = check_modified_field("CUSTOMER", cus_no, "Name TH", customer.cus_name_th, cus_site_cus_name_th, "E", request)
@@ -2377,10 +2365,6 @@ def update_all_cus_tabs(request):
                         customer.cus_name_th = cus_site_cus_name_th
                         modified_records.append(record)
                         count_modified_field = count_modified_field + 1
-
-                    print("amnaj")
-                    print("count_modified_field 2 = " + str(count_modified_field))
-                    print("amnaj")
 
                     # CUS_ADD1_TH
                     # customer.cus_add1_th = cus_site_cus_add1_th
@@ -2696,11 +2680,6 @@ def update_all_cus_tabs(request):
             print("cus_bill_cus_zone = " + str(cus_bill_cus_zone))
             print("cus_bill_cus_contact_id = " + str(cus_bill_cus_contact_id))
             '''
-
-            print("amnaj")
-            print("count_modified_field 3 = " + str(count_modified_field))
-            print("amnaj")
-
 
             try:
                 cusbill = CusBill.objects.get(pk=cus_no)
