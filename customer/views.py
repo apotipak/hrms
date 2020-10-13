@@ -1917,6 +1917,7 @@ def update_all_cus_tabs(request):
                 modified_records = []
                 cus_main = CusMain.objects.get(pk=cus_id)
 
+                count_modified_field = 0
                 if (cus_main is not None):
 
                     # CUS_ACTIVE
@@ -1930,6 +1931,7 @@ def update_all_cus_tabs(request):
                             cus_main.cus_main = 1
                         else:
                             cus_main.cus_main = 0
+                            count_modified_field = count_modified_field + 1
 
                     # CUS_NAME_TH                    
                     if (cus_main_cus_name_th is not None):
@@ -1938,6 +1940,7 @@ def update_all_cus_tabs(request):
                             if field_is_modified:
                                 cus_main.cus_name_th = cus_main_cus_name_th
                                 modified_records.append(record)                                
+                                count_modified_field = count_modified_field + 1
 
                     # CUS_ADD1_TH
                     if (cus_main_cus_add1_th is not None):
@@ -1946,6 +1949,7 @@ def update_all_cus_tabs(request):
                             if field_is_modified:
                                 cus_main.cus_add1_th = cus_main_cus_add1_th
                                 modified_records.append(record)  
+                                count_modified_field = count_modified_field + 1
 
                     # CUS_ADD2_TH
                     if (cus_main_cus_add2_th is not None):
@@ -1953,6 +1957,7 @@ def update_all_cus_tabs(request):
                         if field_is_modified:
                             cus_main.cus_add2_th = cus_main_cus_add2_th
                             modified_records.append(record)                           
+                            count_modified_field = count_modified_field + 1
 
                     # CUS_SUBDIST_TH
                     if (cus_main_cus_subdist_th is not None):
@@ -1960,6 +1965,7 @@ def update_all_cus_tabs(request):
                         if field_is_modified:
                             cus_main.cus_subdist_th = cus_main_cus_subdist_th
                             modified_records.append(record)
+                            count_modified_field = count_modified_field + 1
 
                     # CUS_DISTRICT_ID
                     # print("cus_main.cus_district_id 1: " + str(cus_main.cus_district_id))
@@ -1975,6 +1981,7 @@ def update_all_cus_tabs(request):
                                 cus_main.cus_city_id = cus_main_city_id
                                 cus_main.cus_country_id = cus_main_country_id
                                 modified_records.append(record)
+                                count_modified_field = count_modified_field + 1
 
                     # CUS_NAME_EN
                     if (cus_main_cus_name_en is not None):
@@ -1982,6 +1989,7 @@ def update_all_cus_tabs(request):
                         if field_is_modified:
                             cus_main.cus_name_en = cus_main_cus_name_en
                             modified_records.append(record)
+                            count_modified_field = count_modified_field + 1
 
                     # CUS_ADD1_EN
                     if (cus_main_cus_add1_en is not None):
@@ -1989,6 +1997,7 @@ def update_all_cus_tabs(request):
                         if field_is_modified:
                             cus_main.cus_add1_en = cus_main_cus_add1_en
                             modified_records.append(record)                                
+                            count_modified_field = count_modified_field + 1
 
                     # CUS_ADD2_EN
                     if (cus_main_cus_add2_en is not None):
@@ -1996,6 +2005,7 @@ def update_all_cus_tabs(request):
                         if field_is_modified:
                             cus_main.cus_add2_en = cus_main_cus_add2_en
                             modified_records.append(record)                                
+                            count_modified_field = count_modified_field + 1
 
                     # CUS_SUBDIST_EN
                     if (cus_main_cus_subdist_en is not None):
@@ -2003,6 +2013,7 @@ def update_all_cus_tabs(request):
                         if field_is_modified:
                             cus_main.cus_subdist_en = cus_main_cus_subdist_en
                             modified_records.append(record)
+                            count_modified_field = count_modified_field + 1
 
                     # CUS_ZIP
                     if (cus_main_cus_zip is not None):
@@ -2015,6 +2026,7 @@ def update_all_cus_tabs(request):
                             if field_is_modified:
                                 cus_main.cus_zip = cus_main_cus_zip
                                 modified_records.append(record)
+                                count_modified_field = count_modified_field + 1
 
                     # CUS_TEL
                     if (cus_main_cus_tel is not None):
@@ -2022,6 +2034,7 @@ def update_all_cus_tabs(request):
                         if field_is_modified:
                             cus_main.cus_tel = cus_main_cus_tel
                             modified_records.append(record)
+                            count_modified_field = count_modified_field + 1
 
                     # CUS_FAX
                     if (cus_main_cus_fax is not None):
@@ -2029,6 +2042,7 @@ def update_all_cus_tabs(request):
                         if field_is_modified:
                             cus_main.cus_fax = cus_main_cus_fax
                             modified_records.append(record)
+                            count_modified_field = count_modified_field + 1
 
                     # CUS_EMAIL
                     if (cus_main_cus_email is not None):
@@ -2036,6 +2050,7 @@ def update_all_cus_tabs(request):
                         if field_is_modified:
                             cus_main.cus_email = cus_main_cus_email
                             modified_records.append(record)
+                            count_modified_field = count_modified_field + 1
 
                     # Group ID - cus_taxid
                     cus_main_cus_taxid = request.POST.get('cus_main_cus_taxid')            
@@ -2044,6 +2059,7 @@ def update_all_cus_tabs(request):
                         if field_is_modified:
                             cus_main.cus_taxid = cus_main_cus_taxid
                             modified_records.append(record)
+                            count_modified_field = count_modified_field + 1
 
                     # CUS_ZONE
                     if cus_main_cus_zone is not None:
@@ -2055,6 +2071,7 @@ def update_all_cus_tabs(request):
                             if field_is_modified:
                                 cus_main.cus_zone_id = cus_main_cus_zone
                                 modified_records.append(record)
+                                count_modified_field = count_modified_field + 1
 
                     # CUS_CONTACT
                     if cus_main_cus_contact_id is not None:
@@ -2063,22 +2080,24 @@ def update_all_cus_tabs(request):
                                 field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Contact ID", int(cus_main.cus_contact_id), int(cus_main_cus_contact_id), "E", request)
                             else:
                                 field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Contact ID", cus_main.cus_contact_id, int(cus_main_cus_contact_id), "E", request)
+                            
                             if field_is_modified:
                                 cus_main.cus_contact_id = cus_main_cus_contact_id
                                 modified_records.append(record)
+                                count_modified_field = count_modified_field + 1
+
+                    if count_modified_field > 0:
+                        if cus_main.upd_flag == 'A':
+                            cus_main.upd_flag = 'E'
+                        cus_main.upd_by = request.user.first_name
+                        cus_main.upd_date = timezone.now()
 
 
-                    if cus_main.upd_flag == 'A':
-                        cus_main.upd_flag = 'E'
-                    cus_main.upd_by = request.user.first_name
-                    cus_main.upd_date = timezone.now()
+                        # NULL Field Issue
+                        cus_main.cus_sht_th = ""
+                        cus_main.cus_sht_en = ""            
 
-
-                    # NULL Field Issue
-                    cus_main.cus_sht_th = ""
-                    cus_main.cus_sht_en = ""            
-
-                    cus_main.save()
+                        cus_main.save()
 
 
                     # CUS_MAIN Business Type
@@ -2091,6 +2110,7 @@ def update_all_cus_tabs(request):
                             if field_is_modified:
                                 customer_option.btype = cus_main_business_type.replace('&amp;', '&')
                                 modified_records.append(record)
+                                count_modified_field = count_modified_field + 1
 
                             # Business Status
                             # customer_option.op1 = cus_main_customer_option_op1.rstrip() # Status
@@ -2099,6 +2119,7 @@ def update_all_cus_tabs(request):
                                 if field_is_modified:
                                     customer_option.op1 = cus_main_customer_option_op1
                                     modified_records.append(record)
+                                    count_modified_field = count_modified_field + 1
 
                             # Business Group 1
                             # customer_option.op2 = cus_main_customer_option_op2.replace('&amp;', '&') # Group 1
@@ -2106,6 +2127,7 @@ def update_all_cus_tabs(request):
                             if field_is_modified:
                                 customer_option.op2 = cus_main_customer_option_op2.replace('&amp;', '&') # Group 1
                                 modified_records.append(record)
+                                count_modified_field = count_modified_field + 1
 
                             # Business Group 2
                             # customer_option.op3 = cus_main_customer_option_op3.replace('&amp;', '&') # Group 2
@@ -2113,6 +2135,7 @@ def update_all_cus_tabs(request):
                             if field_is_modified:
                                 customer_option.op3 = cus_main_customer_option_op3.replace('&amp;', '&') # Group 2
                                 modified_records.append(record)
+                                count_modified_field = count_modified_field + 1
 
                             # Business A/R Code
                             # customer_option.op4 = cus_main_customer_option_op4.rstrip() # A/R Code
@@ -2120,6 +2143,7 @@ def update_all_cus_tabs(request):
                             if field_is_modified:
                                 customer_option.op4 = cus_main_customer_option_op4.replace('&amp;', '&') # A/R Code
                                 modified_records.append(record)
+                                count_modified_field = count_modified_field + 1
 
                             # Business GP Margin
                             if cus_main_customer_option_opn1 is not None and cus_main_customer_option_opn1 != "":
@@ -2131,14 +2155,15 @@ def update_all_cus_tabs(request):
                                 if field_is_modified:
                                     customer_option.opn1 = cus_main_customer_option_opn1 # GP Margin
                                     modified_records.append(record)
+                                    count_modified_field = count_modified_field + 1
                             else:
                                 customer_option.opn1 = 0
 
-                            # NULL Field Issue
-                            customer_option.op5 = cus_main_customer_option_op5
-                            customer_option.op6 = cus_main_customer_option_op6
-
-                            customer_option.save()
+                            if count_modified_field > 0:
+                                # NULL Field Issue
+                                customer_option.op5 = cus_main_customer_option_op5
+                                customer_option.op6 = cus_main_customer_option_op6
+                                customer_option.save()
                             
                     except CustomerOption.DoesNotExist:
                         # Insert
@@ -2157,20 +2182,21 @@ def update_all_cus_tabs(request):
                             opn1 = float(cus_main_customer_option_opn1))
                         c.save()
 
-                    # Save History Log                    
-                    for data in modified_records:
-                        new_log = HrmsNewLog(
-                            log_table = data['log_table'],
-                            log_key = data['log_key'],
-                            log_field = data['log_field'],
-                            old_value = data['old_value'],
-                            new_value = data['new_value'],
-                            log_type = data['log_type'],
-                            log_by = data['log_by'],
-                            log_date = data['log_date'],
-                            )
-                        new_log.save()    
-                        modified_records = []
+                    # Save History Log
+                    if count_modified_field > 0:                
+                        for data in modified_records:
+                            new_log = HrmsNewLog(
+                                log_table = data['log_table'],
+                                log_key = data['log_key'],
+                                log_field = data['log_field'],
+                                old_value = data['old_value'],
+                                new_value = data['new_value'],
+                                log_type = data['log_type'],
+                                log_by = data['log_by'],
+                                log_date = data['log_date'],
+                                )
+                            new_log.save()    
+                            modified_records = []
                     # ./ Save History Log 
 
 
@@ -2322,13 +2348,23 @@ def update_all_cus_tabs(request):
                             customer.cus_site = 1
                         else:
                             customer.cus_site = 0
+                        count_modified_field = count_modified_field + 1
+
+                    print("amnaj")
+                    print("count_modified_field = " + str(count_modified_field))
+                    print("amnaj")                    
 
                     # CUS_NAME_TH
                     #customer.cus_name_th = cus_site_cus_name_th
-                    field_is_modified, record = check_modified_field("CUS_SITE", cus_no, "Name TH", customer.cus_name_th, cus_site_cus_name_th, "E", request)
+                    field_is_modified, record = check_modified_field("CUSTOMER", cus_no, "Name TH", customer.cus_name_th, cus_site_cus_name_th, "E", request)
                     if field_is_modified:
                         customer.cus_name_th = cus_site_cus_name_th
                         modified_records.append(record)
+                        count_modified_field = count_modified_field + 1
+
+                    print("amnaj")
+                    print("count_modified_field = " + str(count_modified_field))
+                    print("amnaj")
 
                     # CUS_ADD1_TH
                     # customer.cus_add1_th = cus_site_cus_add1_th
@@ -2337,6 +2373,7 @@ def update_all_cus_tabs(request):
                         if field_is_modified:
                             customer.cus_add1_th = cus_site_cus_add1_th
                             modified_records.append(record)                                
+                            count_modified_field = count_modified_field + 1
 
                     # CUS_ADD2_TH
                     #customer.cus_add2_th = cus_site_cus_add2_th
@@ -2344,7 +2381,8 @@ def update_all_cus_tabs(request):
                         field_is_modified, record = check_modified_field("CUS_SITE", cus_no, "Address2 TH", customer.cus_add2_th, cus_site_cus_add2_th, "E", request)
                         if field_is_modified:
                             customer.cus_add2_th = cus_site_cus_add2_th
-                            modified_records.append(record)                              
+                            modified_records.append(record)
+                            count_modified_field = count_modified_field + 1                            
 
                     # CUS_SUBDIST_TH
                     # customer.cus_subdist_th = cus_site_cus_subdist_th
@@ -2352,7 +2390,8 @@ def update_all_cus_tabs(request):
                         field_is_modified, record = check_modified_field("CUS_SITE", cus_no, "Sub-District TH", customer.cus_subdist_th, cus_site_cus_subdist_th, "E", request)
                         if field_is_modified:
                             customer.cus_subdist_th = cus_site_cus_subdist_th
-                            modified_records.append(record)                              
+                            modified_records.append(record)
+                            count_modified_field = count_modified_field + 1                             
                     
                     # CUS_NAME_EN
                     #customer.cus_name_en = cus_site_cus_name_en
@@ -2360,6 +2399,7 @@ def update_all_cus_tabs(request):
                     if field_is_modified:
                         customer.cus_name_en = cus_site_cus_name_en
                         modified_records.append(record)
+                        count_modified_field = count_modified_field + 1
 
                     # CUS_ADD1_EN
                     # customer.cus_add1_en = cus_site_cus_add1_en
@@ -2367,7 +2407,8 @@ def update_all_cus_tabs(request):
                         field_is_modified, record = check_modified_field("CUS_SITE", cus_no, "Address1 EN", customer.cus_add1_en, cus_site_cus_add1_en, "E", request)
                         if field_is_modified:
                             customer.cus_add1_en = cus_site_cus_add1_en
-                            modified_records.append(record)                                
+                            modified_records.append(record)
+                            count_modified_field = count_modified_field + 1
 
                     # CUS_ADD2_EN
                     #customer.cus_add2_en = cus_site_cus_add2_en
@@ -2375,7 +2416,8 @@ def update_all_cus_tabs(request):
                         field_is_modified, record = check_modified_field("CUS_SITE", cus_no, "Address2 EN", customer.cus_add2_en, cus_site_cus_add2_en, "E", request)
                         if field_is_modified:
                             customer.cus_add2_en = cus_site_cus_add2_en
-                            modified_records.append(record)                              
+                            modified_records.append(record)
+                            count_modified_field = count_modified_field + 1                           
 
                     # CUS_SUBDIST_EN
                     # customer.cus_subdist_en = cus_site_cus_subdist_en
@@ -2383,8 +2425,8 @@ def update_all_cus_tabs(request):
                         field_is_modified, record = check_modified_field("CUS_SITE", cus_no, "Sub-District EN", customer.cus_subdist_en, cus_site_cus_subdist_en, "E", request)
                         if field_is_modified:
                             customer.cus_subdist_en = cus_site_cus_subdist_en
-                            modified_records.append(record)   
-
+                            modified_records.append(record)
+                            count_modified_field = count_modified_field + 1
 
                     # CUS_DISTRICT_ID
                     if (cus_site_cus_district_id is not None):
@@ -2398,7 +2440,7 @@ def update_all_cus_tabs(request):
                                 customer.cus_city_id = cus_site_city_id
                                 customer.cus_country_id = cus_site_country_id
                                 modified_records.append(record)
-
+                                count_modified_field = count_modified_field + 1
 
                     # CUS_ZIP
                     if (cus_site_cus_zip is not None):
@@ -2411,6 +2453,7 @@ def update_all_cus_tabs(request):
                         if field_is_modified:
                             customer.cus_zip = cus_site_cus_zip
                             modified_records.append(record)
+                            count_modified_field = count_modified_field + 1
 
                     # CUS_TEL
                     # customer.cus_tel = cus_site_cus_tel
@@ -2419,6 +2462,7 @@ def update_all_cus_tabs(request):
                         if field_is_modified:
                             customer.cus_tel = cus_site_cus_tel
                             modified_records.append(record)
+                            count_modified_field = count_modified_field + 1
 
                     # CUS_FAX
                     # customer.cus_fax = cus_site_cus_fax
@@ -2427,6 +2471,7 @@ def update_all_cus_tabs(request):
                         if field_is_modified:
                             customer.cus_fax = cus_site_cus_fax
                             modified_records.append(record)
+                            count_modified_field = count_modified_field + 1
 
                     # CUS_EMAIL
                     # customer.cus_email = cus_site_cus_email
@@ -2435,6 +2480,7 @@ def update_all_cus_tabs(request):
                         if field_is_modified:
                             customer.cus_email = cus_site_cus_email
                             modified_records.append(record)
+                            count_modified_field = count_modified_field + 1
 
                     # CUS_TAXID
                     cus_main_cus_taxid = request.POST.get('cus_main_cus_taxid')            
@@ -2443,6 +2489,7 @@ def update_all_cus_tabs(request):
                         if field_is_modified:
                             customer.cus_taxid = cus_main_cus_taxid
                             modified_records.append(record)
+                            count_modified_field = count_modified_field + 1
 
                     # CUS_ZONE
                     # customer.cus_zone_id = cus_site_cus_zone
@@ -2455,6 +2502,7 @@ def update_all_cus_tabs(request):
                             if field_is_modified:
                                 customer.cus_zone_id = cus_site_cus_zone
                                 modified_records.append(record)
+                                count_modified_field = count_modified_field + 1
 
                     # CUS_CONTACT
                     if cus_site_site_contact_id is not None:
@@ -2467,37 +2515,40 @@ def update_all_cus_tabs(request):
                             if field_is_modified:
                                 customer.site_contact_id = cus_site_site_contact_id
                                 modified_records.append(record)
+                                count_modified_field = count_modified_field + 1
 
-                    customer.upd_date = timezone.now()
-                    customer.upd_by = request.user.first_name                    
-                    if customer.upd_flag == 'A':
-                        customer.upd_flag = 'E'
+                    if count_modified_field > 0:
+                        customer.upd_date = timezone.now()
+                        customer.upd_by = request.user.first_name                    
+                        if customer.upd_flag == 'A':
+                            customer.upd_flag = 'E'
 
-                    if customer.upd_flag == 'D':
-                        customer.upd_flag = 'E'
+                        if customer.upd_flag == 'D':
+                            customer.upd_flag = 'E'
 
 
-                    # NULL Field Issue
-                    customer.cus_sht_th = ""
-                    customer.cus_sht_en = ""            
-                        
-                    customer.save()
+                        # NULL Field Issue
+                        customer.cus_sht_th = ""
+                        customer.cus_sht_en = ""            
+                            
+                        customer.save()
 
-                # History Log                    
-                for data in modified_records:
-                    new_log = HrmsNewLog(
-                        log_table = data['log_table'],
-                        log_key = data['log_key'],
-                        log_field = data['log_field'],
-                        old_value = data['old_value'],
-                        new_value = data['new_value'],
-                        log_type = data['log_type'],
-                        log_by = data['log_by'],
-                        log_date = data['log_date'],
-                        )
-                    new_log.save()    
-                    modified_records = []
-                # ./History Log 
+                # History Log
+                if count_modified_field > 0:                 
+                    for data in modified_records:
+                        new_log = HrmsNewLog(
+                            log_table = data['log_table'],
+                            log_key = data['log_key'],
+                            log_field = data['log_field'],
+                            old_value = data['old_value'],
+                            new_value = data['new_value'],
+                            log_type = data['log_type'],
+                            log_by = data['log_by'],
+                            log_date = data['log_date'],
+                            )
+                        new_log.save()    
+                        modified_records = []
+                    # ./History Log 
 
             except Customer.DoesNotExist:
                 if int(cus_site_cus_active) == 1:
@@ -2551,13 +2602,6 @@ def update_all_cus_tabs(request):
                     )
                 new_log.save()    
                 # ./History Log
-
-            response_data['result'] = "Update complete."
-            response_data['message'] = "ทำรายการสำเร็จ"
-            response_data['form_is_valid'] = True
-
-
-
 
             # ******************************************
             # **************  CUS_BILL  ****************
@@ -2651,13 +2695,16 @@ def update_all_cus_tabs(request):
                         else:
                             cusbill.cus_bill = 0
 
+                        count_modified_field = count_modified_field + 1
+
                     # CUS_NAME_TH                    
                     # cusbill.cus_name_th = cus_bill_cus_name_th
                     field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Name TH", cusbill.cus_name_th, cus_bill_cus_name_th, "E", request)
                     if field_is_modified:
                         cusbill.cus_name_th = cus_bill_cus_name_th
                         modified_records.append(record)
-                                
+                        count_modified_field = count_modified_field + 1
+
                     # CUS_ADD1_TH                    
                     # cusbill.cus_add1_th = cus_bill_cus_add1_th
                     if (cus_bill_cus_add1_th is not None):
@@ -2665,6 +2712,7 @@ def update_all_cus_tabs(request):
                         if field_is_modified:
                             cusbill.cus_add1_th = cus_bill_cus_add1_th
                             modified_records.append(record)                                
+                            count_modified_field = count_modified_field + 1
 
                     # CUS_ADD2_TH
                     # cusbill.cus_add2_th = cus_bill_cus_add2_th
@@ -2672,7 +2720,8 @@ def update_all_cus_tabs(request):
                         field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Address2 TH", cusbill.cus_add2_th, cus_bill_cus_add2_th, "E", request)
                         if field_is_modified:
                             cusbill.cus_add2_th = cus_bill_cus_add2_th
-                            modified_records.append(record)                              
+                            modified_records.append(record)
+                            count_modified_field = count_modified_field + 1                             
 
                     # CUS_SUBDIST_TH                    
                     # cusbill.cus_subdist_th = cus_bill_cus_subdist_th                    
@@ -2680,7 +2729,8 @@ def update_all_cus_tabs(request):
                         field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Sub-District TH", cusbill.cus_subdist_th, cus_bill_cus_subdist_th, "E", request)
                         if field_is_modified:
                             cusbill.cus_subdist_th = cus_bill_cus_subdist_th
-                            modified_records.append(record)                             
+                            modified_records.append(record)    
+                            count_modified_field = count_modified_field + 1                         
                                         
                     # CUS_NAME_EN
                     # cusbill.cus_name_en = cus_bill_cus_name_en
@@ -2688,6 +2738,7 @@ def update_all_cus_tabs(request):
                     if field_is_modified:
                         cusbill.cus_name_en = cus_bill_cus_name_en
                         modified_records.append(record)
+                        count_modified_field = count_modified_field + 1
                                 
                     # CUS_ADD1_EN
                     # cusbill.cus_add1_en = cus_bill_cus_add1_en
@@ -2695,7 +2746,8 @@ def update_all_cus_tabs(request):
                         field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Address1 EN", cusbill.cus_add1_en, cus_bill_cus_add1_en, "E", request)
                         if field_is_modified:
                             cusbill.cus_add1_en = cus_bill_cus_add1_en
-                            modified_records.append(record)                                
+                            modified_records.append(record)
+                            count_modified_field = count_modified_field + 1                            
 
                     # CUS_ADD2_EN
                     # cusbill.cus_add2_en = cus_bill_cus_add2_en
@@ -2703,7 +2755,8 @@ def update_all_cus_tabs(request):
                         field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Address2 EN", cusbill.cus_add2_en, cus_bill_cus_add2_en, "E", request)
                         if field_is_modified:
                             cusbill.cus_add2_en = cus_bill_cus_add2_en
-                            modified_records.append(record)                              
+                            modified_records.append(record)                
+                            count_modified_field = count_modified_field + 1              
 
                     # CUS_SUBDIST_EN 
                     # cusbill.cus_subdist_en = cus_bill_cus_subdist_en                 
@@ -2711,7 +2764,8 @@ def update_all_cus_tabs(request):
                         field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Sub-District EN", cusbill.cus_subdist_en, cus_bill_cus_subdist_en, "E", request)
                         if field_is_modified:
                             cusbill.cus_subdist_en = cus_bill_cus_subdist_en
-                            modified_records.append(record)                             
+                            modified_records.append(record)  
+                            count_modified_field = count_modified_field + 1                           
                     
                     # CUS_DISTRICT_ID
                     # cusbill.cus_district_id = cus_bill_cus_district_id
@@ -2726,6 +2780,7 @@ def update_all_cus_tabs(request):
                                 cusbill.cus_city_id = cus_bill_city_id
                                 cusbill.cus_country_id = cus_bill_country_id
                                 modified_records.append(record)
+                                count_modified_field = count_modified_field + 1
 
                     # CUS_ZIP
                     # cusbill.cus_zip = cus_bill_cus_zip
@@ -2738,6 +2793,7 @@ def update_all_cus_tabs(request):
                             if field_is_modified:
                                 cusbill.cus_zip = cus_bill_cus_zip
                                 modified_records.append(record)
+                                count_modified_field = count_modified_field + 1
 
                     # CUS_TEL
                     # cusbill.cus_tel = cus_bill_cus_tel
@@ -2746,6 +2802,7 @@ def update_all_cus_tabs(request):
                         if field_is_modified:
                             cusbill.cus_tel = cus_bill_cus_tel
                             modified_records.append(record)
+                            count_modified_field = count_modified_field + 1
 
                     # CUS_FAX                    
                     # cusbill.cus_fax = cus_bill_cus_fax
@@ -2754,6 +2811,7 @@ def update_all_cus_tabs(request):
                         if field_is_modified:
                             cusbill.cus_fax = cus_bill_cus_fax
                             modified_records.append(record)
+                            count_modified_field = count_modified_field + 1
 
                     # CUS_EMAIL
                     # cusbill.cus_email = cus_bill_cus_email
@@ -2762,7 +2820,7 @@ def update_all_cus_tabs(request):
                         if field_is_modified:
                             cusbill.cus_email = cus_bill_cus_email
                             modified_records.append(record)
-
+                            count_modified_field = count_modified_field + 1
 
                     # CUS_TAXID
                     cus_main_cus_taxid = request.POST.get('cus_main_cus_taxid')            
@@ -2771,6 +2829,7 @@ def update_all_cus_tabs(request):
                         if field_is_modified:
                             cusbill.cus_taxid = cus_main_cus_taxid
                             modified_records.append(record)
+                            count_modified_field = count_modified_field + 1
 
                     # CUS_ZONE
                     # cusbill.cus_zone_id = cus_bill_cus_zone
@@ -2782,7 +2841,8 @@ def update_all_cus_tabs(request):
                                 field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Zone ID", cusbill.cus_zone_id, int(cus_bill_cus_zone), "E", request)
                             if field_is_modified:
                                 cusbill.cus_zone_id = cus_bill_cus_zone
-                                modified_records.append(record)                                
+                                modified_records.append(record) 
+                                count_modified_field = count_modified_field + 1                               
 
                     # CUS_CONTACT
                     cus_bill_cus_contact_id = request.POST.get('cus_bill_cus_contact_id')                    
@@ -2797,34 +2857,36 @@ def update_all_cus_tabs(request):
                                 cusbill.cus_contact_id = cus_bill_cus_contact_id
                                 cusbill.site_contact_id = cus_bill_cus_contact_id
                                 modified_records.append(record)
+                                count_modified_field = count_modified_field + 1
 
-                    cusbill.upd_date = timezone.now()
-                    cusbill.upd_by = request.user.first_name                    
-                    if cusbill.upd_flag == 'A':
-                        cusbill.upd_flag = 'E'
+                    if count_modified_field > 0:
+                        cusbill.upd_date = timezone.now()
+                        cusbill.upd_by = request.user.first_name                    
+                        if cusbill.upd_flag == 'A':
+                            cusbill.upd_flag = 'E'
 
-                    if cusbill.upd_flag == 'D':
-                        cusbill.upd_flag = 'E'
+                        if cusbill.upd_flag == 'D':
+                            cusbill.upd_flag = 'E'
 
-                    cusbill.save()
+                        cusbill.save()
 
-                    # History Log                    
-                    for data in modified_records:
-                        new_log = HrmsNewLog(
-                            log_table = data['log_table'],
-                            log_key = data['log_key'],
-                            log_field = data['log_field'],
-                            old_value = data['old_value'],
-                            new_value = data['new_value'],
-                            log_type = data['log_type'],
-                            log_by = data['log_by'],
-                            log_date = data['log_date'],
-                            )
-                        new_log.save()    
-                        modified_records = []
-                    # ./History Log 
+                        # History Log                    
+                        for data in modified_records:
+                            new_log = HrmsNewLog(
+                                log_table = data['log_table'],
+                                log_key = data['log_key'],
+                                log_field = data['log_field'],
+                                old_value = data['old_value'],
+                                new_value = data['new_value'],
+                                log_type = data['log_type'],
+                                log_by = data['log_by'],
+                                log_date = data['log_date'],
+                                )
+                            new_log.save()    
+                            modified_records = []
+                        # ./History Log 
                 
-                    print("update cus_bill")
+                        print("update cus_bill")
 
             except CusBill.DoesNotExist:
                 if int(cus_bill_cus_active) == 1:
@@ -2884,6 +2946,16 @@ def update_all_cus_tabs(request):
         
             print("Error!")
             print("****************************")
+
+
+        if count_modified_field > 0:
+            response_data['result'] = "Update complete."
+            response_data['form_is_valid'] = True
+            response_data['class'] = 'bg-success'
+        else:
+            response_data['result'] = "Sorry, nothing to update."
+            response_data['form_is_valid'] = True
+            response_data['class'] = 'bg-warning'
 
         return JsonResponse(response_data)
     else:

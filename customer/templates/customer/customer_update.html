@@ -2305,6 +2305,7 @@
     else
       cus_site_cus_active = 0;
     cus_site_cus_name_th = $('#id_cus_site_cus_name_th').val();
+    //alert(cus_site_cus_name_th);
     cus_site_cus_add1_th = $('#id_cus_site_cus_add1_th').val();
     cus_site_cus_add2_th = $('#id_cus_site_cus_add2_th').val();    
     cus_site_cus_subdist_th = $('#id_cus_site_cus_subdist_th').val();
@@ -2479,7 +2480,7 @@
       success : function(json) {        
         if(json.form_is_valid) {
           $(document).Toasts('create', {
-            class: 'bg-success', 
+            class: json.class, 
             title: "{% trans 'Message' %}",
             subtitle: '',
             autohide: true,
