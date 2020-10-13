@@ -17,26 +17,29 @@
   
     <div class="">
       <div class="row mb-2">
-        <div class="col-8">
+        <div class="col-8 pt-2">
           {% comment %}
            <h4 class="display-6 m-0 text-dark">{{customer.cus_name_th}} <span> - {{customer.cus_id|stringformat:"04d"}}{{customer.cus_brn|stringformat:"03d"}}</span></h4>
           {% endcomment %}
 
           {% if customer.cus_name_th != '' %}
-          <h4 class="display-6 m-0 text-dark">{{cus_no}} <span> - {{ customer.cus_name_th }}</span></h4>
+          <h3 class="display-6 m-0 text-dark">{{cus_no}} <span> - {{ customer.cus_name_th }}</span></h3>
           {% else %}
-          <h4 class="display-6 m-0 text-dark">No Site Name <span> - {{ cus_no }}</span></h4>
+          <h3 class="display-6 m-0 text-dark">No Site Name <span> - {{ cus_no }}</span></h3>
           {% endif %}
 
         </div>
-        <div class="col-4">
-          {% comment %}
+        <div class="col-4 pt-1">
+          
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item active">
-            {% render_field form.cus_active id="id_cus_active" class="form-control" type="checkbox" data-toggle="toggle" data-on="ACTIVE" data-off="Pending" data-onstyle="success" data-offstyle="danger"%}
+            <div class="float-right">
+              <a href="#" id="saveAllCustomerTabs" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
+            </div>
+            
             </li>
           </ol>
-          {% endcomment %}
+          
         </div>
       </div>
     </div>
@@ -1182,9 +1185,12 @@
 
         </div>
 
-            <div class="float-right">
-              <a href="#" id="saveAllCustomerTabs" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
-            </div>
+          amnaj
+          {% comment %}
+          <div class="float-right">
+            <a href="#" id="saveAllCustomerTabs" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
+          </div>
+          {% endcomment %}
 
         <!-- /.end tabs -->
       </div>
