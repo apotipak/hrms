@@ -1381,7 +1381,7 @@ def update_customer_service(request):
                 "success": True,
                 "srv_id": data.srv_id,
                 "cnt_id": data.cnt_id_id,
-                "srv_rank": data.srv_rank,
+                "srv_rank": data.srv_rank_id,
                 "srv_shif_id": data.srv_shif_id_id,
                 "srv_eff_frm": data.srv_eff_frm.strftime('%d/%m/%Y'),
                 "srv_eff_to": data.srv_eff_to.strftime('%d/%m/%Y'),
