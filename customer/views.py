@@ -1479,7 +1479,7 @@ def update_cus_site(request):
     # print("*************************")
 
     template_name = 'customer/customer_update.html'    
-    response_data = {}
+    response_data = {}    
 
     if request.method == 'POST':
         form = CusSiteForm(request.POST)
@@ -1827,6 +1827,7 @@ def update_all_cus_tabs(request):
     template_name = 'customer/customer_update.html'        
     response_data = {}
     modified_records = []
+    insert_status = False
 
     if request.method == 'POST':
         print("POST: update_all_cus_tabs()")
@@ -2206,6 +2207,7 @@ def update_all_cus_tabs(request):
                     # ./ Save History Log 
 
             except CusMain.DoesNotExist:
+                insert_status = True
                 cus_main_cus_taxid = request.POST.get('cus_main_cus_taxid')
 
                 if int(cus_main_cus_active) == 1:
@@ -2553,6 +2555,8 @@ def update_all_cus_tabs(request):
                     # ./History Log 
 
             except Customer.DoesNotExist:
+                insert_status = True
+
                 if int(cus_site_cus_active) == 1:
                     cus_site = 1
                 else:
@@ -2893,6 +2897,7 @@ def update_all_cus_tabs(request):
                         print("update cus_bill")
 
             except CusBill.DoesNotExist:
+                insert_status = True
                 if int(cus_bill_cus_active) == 1:
                     cus_bill = 1
                 else:
@@ -2933,14 +2938,20 @@ def update_all_cus_tabs(request):
             print("OK")
             print("****************************")
 
-            if count_modified_field > 0:
-                response_data['result'] = "Update complete1."
+            if insert_status:
+                response_data['result'] = "Added complete."
                 response_data['form_is_valid'] = True
                 response_data['class'] = 'bg-success'
+
             else:
-                response_data['result'] = "Sorry, nothing to update."
-                response_data['form_is_valid'] = True
-                response_data['class'] = 'bg-warning'
+                if count_modified_field > 0:
+                    response_data['result'] = "Updated complete."
+                    response_data['form_is_valid'] = True
+                    response_data['class'] = 'bg-success'
+                else:
+                    response_data['result'] = "Sorry, nothing to update."
+                    response_data['form_is_valid'] = True
+                    response_data['class'] = 'bg-warning'
 
         else:
             print("form is invalid")
