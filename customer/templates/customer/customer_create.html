@@ -53,8 +53,7 @@
   </div>
 
   <!-- Main content -->  
-  <section class="content">
-
+  <section class="content" id="main-content">
     <!-- Default box -->
     <div class="card">
 
@@ -1104,7 +1103,7 @@
 
 
             <div class="float-right">
-              <a href="#" id="saveAllCustomerTabs" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
+              <button id="saveAllCustomerTabs" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</button>            
             </div>
 
 
@@ -1195,6 +1194,11 @@
 
 {% block javascript %}
 <script>
+  // amnaj
+  $(document).ready(function(){
+    $('#id_cus_id').focus();
+    $("#main-content :input").attr("disabled", true);    
+  });
 
   $(document).on('keyup keypress', '#cus_site_search_district_modal_form input[type="text"]', function(e) {
     if(e.which == 13) {
@@ -1491,10 +1495,6 @@
       return false;
     }
     */
-  });
-
-  $(document).ready(function(){
-    $('#id_cus_id').focus();    
   });
 
   // Update Main Office
