@@ -1739,7 +1739,7 @@ def save_customer_service_item(request):
             if (srv_rank is not None):
                 field_is_modified, record = check_modified_field("CUS_SERVICE", srv_id, "Rank", str(data.srv_rank), srv_rank, "E", request)
                 if field_is_modified:
-                    data.srv_rank = srv_rank
+                    data.srv_rank_id = srv_rank
                     modified_records.append(record)
                     field_is_modified_count = field_is_modified_count + 1
 
@@ -2276,10 +2276,14 @@ def generate_contract(request, *args, **kwargs):
                 'cusbill_site_en': cusbill.cus_add1_en,
                 'cusbill_site_cus_subdist_th': cusbill.cus_subdist_th,
                 'cusbill_site_cus_subdist_en': cusbill.cus_subdist_en,
+
+
                 'cusbill_site_cus_district_th': cusbill.cus_district.dist_th,
                 'cusbill_site_cus_district_en': cusbill.cus_district.dist_en,
+
                 'cusbill_site_cus_city_th': cusbill.cus_city.city_th,
                 'cusbill_site_cus_city_en': cusbill.cus_city.city_en,
+
                 'cusbill_site_cus_zip': cusbill.cus_zip,
 
                 'customer_name_th': customer.cus_name_th,
