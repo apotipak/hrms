@@ -1610,7 +1610,6 @@
       var cus_brn = obj.val();
       var cus_id = $('#id_cus_id').val();
 
-      // amnaj todo
       $.ajax({
         url: "/customer/ajax/ajax_check_exist_cus_site/",
         type: "POST",
@@ -1831,7 +1830,7 @@
     cus_id = $('#id_cus_id').val();
     cus_brn = $('#id_cus_brn').val();
 
-    // CUS_MAIN
+    // CUS_MAIN_CUS_ACTIVE
     if ($('#id_cus_main_cus_active').is(":checked"))
       cus_main_cus_active = 1;
     else
@@ -1841,8 +1840,7 @@
     cus_main_cus_add2_th = $('#id_cus_main_cus_add2_th').val();    
     cus_main_cus_subdist_th = $('#id_cus_main_cus_subdist_th').val();
     cus_main_cus_district_id = $('#id_cus_main_select_district_id').val();
-    //alert(cus_main_cus_district_id);
-
+    
     cus_main_cus_district = $('#id_cus_main_cus_district').val();
     cus_main_cus_name_en = $('#id_cus_main_cus_name_en').val();
     cus_main_cus_add1_en = $('#id_cus_main_cus_add1_en').val();
@@ -1860,9 +1858,13 @@
     customer_option_op3 = $('#id_cus_main_customer_option_op3').val();
     customer_option_op4 = $('#id_cus_main_customer_option_op4').val();
     customer_option_opn1 = $('#id_cus_main_customer_option_opn1').val();
+
+    // amnaj
     cus_main_cus_contact_id = $('#id_cus_main_cus_contact_id').val();
-    if(cus_main_cus_contact_id == null)
-      cus_main_cus_contact_id = null;
+    //alert(cus_main_cus_contact_id);
+    // amnaj todo:
+    //if(cus_main_cus_contact_id is null || cus_main_cus_contact_id=="")
+    //  cus_main_cus_contact_id = null;
 
 
     // CUS_SITE

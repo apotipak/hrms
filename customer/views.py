@@ -206,7 +206,6 @@ def ajax_check_exist_cus_main(request):
 @login_required(login_url='/accounts/login/')
 def ajax_check_exist_cus_site(request):
 
-    # amnaj todo
     print("************************************************")
     print("FUNCTION: ajax_check_exist_cus_site")
     print("************************************************")
@@ -1845,11 +1844,6 @@ def update_all_cus_tabs(request):
             # **************  CUS_MAIN  ****************
             # ******************************************            
             cus_main_cus_active = request.POST.get('cus_main_cus_active')
-
-            print("amnaj")
-            print("cus_main_cus_active =  " + str(cus_main_cus_active))
-            print("amnaj")
-
             cus_customer_cus_active = request.POST.get('customer_cus_active')
             cus_bill_cus_active = request.POST.get('cus_bill_cus_active')                        
             cus_main_cus_name_th = request.POST.get('cus_main_cus_name_th')            
@@ -1913,13 +1907,18 @@ def update_all_cus_tabs(request):
             # print("cus_main_customer_option_opn1 = " + str(cus_main_customer_option_opn1))
 
             cus_main_cus_taxid = request.POST.get('cus_main_cus_taxid')
-            # print("aeiouxyz : " +  str(cus_main_cus_taxid))
 
-
+            # amnaj
             cus_main_cus_contact_id = request.POST.get('cus_main_cus_contact_id')
-            if cus_main_cus_contact_id:
+            print("debug")
+            print("cus_main_cus_contact_id = " + str(cus_main_cus_contact_id))            
+            print("debug")
+
+            if cus_main_cus_contact_id is not None:
+                print("not none")
                 cus_main_cus_contact_id = cus_main_cus_contact_id
             else:
+                print("none")
                 cus_main_cus_contact_id = None
 
             try:
@@ -1935,11 +1934,14 @@ def update_all_cus_tabs(request):
                     else:
                         cus_main_cus_active_temp = 0                       
 
+                    '''
                     print("-------------------------------")
                     print("cus_main_cus_active_temp = " + str(cus_main_cus_active_temp))
                     print("cus_main_cus_active = " + str(cus_main_cus_active))
                     print("-------------------------------")
+                    '''
 
+                    # CUS_ACTIVE
                     field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Active Status", int(cus_main_cus_active_temp), int(cus_main_cus_active), "E", request)
                     if field_is_modified:
                         cus_main.cus_active = cus_main_cus_active
@@ -2087,18 +2089,25 @@ def update_all_cus_tabs(request):
                                 modified_records.append(record)
                                 count_modified_field = count_modified_field + 1
 
+                    # amnaj
                     # CUS_CONTACT
+                    print("before 0")
                     if cus_main_cus_contact_id is not None:
+                        print("0")
                         if cus_main_cus_contact_id.isnumeric():                  
                             if cus_main.cus_contact_id is not None:
+                                print("1")
                                 field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Contact ID", int(cus_main.cus_contact_id), int(cus_main_cus_contact_id), "E", request)
                             else:
-                                field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Contact ID", cus_main.cus_contact_id, int(cus_main_cus_contact_id), "E", request)
+                                print("2")
+                                field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Contact ID", int(cus_main.cus_contact_id), int(cus_main_cus_contact_id), "E", request)
                             
                             if field_is_modified:
+                                print("3")
                                 cus_main.cus_contact_id = cus_main_cus_contact_id
                                 modified_records.append(record)
                                 count_modified_field = count_modified_field + 1
+
 
                     if count_modified_field > 0:
                         if cus_main.upd_flag == 'A':
@@ -2246,6 +2255,7 @@ def update_all_cus_tabs(request):
                     cus_email = cus_main_cus_email,
                     cus_taxid = cus_main_cus_taxid,
                     cus_zone_id = cus_main_cus_zone,
+                    cus_contact_id = cus_main_cus_contact_id,
                     site_contact_id = cus_main_cus_contact_id,
                     upd_date = timezone.now(),
                     upd_flag = 'A',
@@ -2287,14 +2297,6 @@ def update_all_cus_tabs(request):
             # **************  CUS_SITE  ****************
             # ******************************************
             cus_site_cus_active = request.POST.get('cus_site_cus_active')
-
-            '''
-            print("********************************")
-            print("cus_site_cus_active = " + str(cus_site_cus_active))
-            print("********************************")
-            '''
-
-
             cus_site_cus_name_th = request.POST.get('cus_site_cus_name_th')
             cus_site_cus_add1_th = request.POST.get('cus_site_cus_add1_th')
             cus_site_cus_add2_th = request.POST.get('cus_site_cus_add2_th')
@@ -2313,11 +2315,6 @@ def update_all_cus_tabs(request):
             # customer_group_id = request.POST.get('customer_group_id')
             cus_site_cus_district_id = request.POST.get('cus_site_cus_district_id')
 
-            '''
-            print("aaaa")
-            print("cus_site_cus_district_id = " + str(cus_site_cus_district_id))
-            print("aaaa")
-            '''
 
             # Fulfill district, city, country
             cus_site_cus_district_id = None
@@ -2523,6 +2520,7 @@ def update_all_cus_tabs(request):
                                 modified_records.append(record)
                                 count_modified_field = count_modified_field + 1
 
+                    # amnaj
                     # CUS_CONTACT
                     if cus_site_site_contact_id is not None:
                         if cus_site_site_contact_id.isnumeric():
@@ -2600,6 +2598,7 @@ def update_all_cus_tabs(request):
                     cus_email = cus_site_cus_email,
                     cus_taxid = cus_main_cus_taxid,
                     cus_zone_id = cus_site_cus_zone,
+                    cus_contact_id = cus_main_cus_contact_id,
                     site_contact_id = cus_site_site_contact_id,
                     upd_date = timezone.now(),
                     upd_by = request.user.first_name,
