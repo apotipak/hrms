@@ -242,8 +242,7 @@ class CusAllTabsForm(forms.ModelForm):
     
     # District ID
     cus_main_cus_district_id = forms.CharField(required=False)
-    #cus_site_cus_district_id = forms.CharField(required=False)
-
+    # cus_site_cus_district_id = forms.CharField(required=False)
     #cus_site_cus_zone = forms.CharField(required=True)
     #cus_site_cus_zip = forms.CharField(required=True)
 
