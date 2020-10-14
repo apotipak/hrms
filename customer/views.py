@@ -204,8 +204,6 @@ def ajax_check_exist_cus_main(request):
             return response
 
 
-
-#amnaj
 @login_required(login_url='/accounts/login/')
 def ajax_undelete_customer(request):
     cus_no = request.POST.get('cus_no')

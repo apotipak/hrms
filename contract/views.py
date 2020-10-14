@@ -343,6 +343,7 @@ def get_cus_contract(request):
                 cnt_new = cuscontract.cnt_new
                 cnt_print = cuscontract.cnt_print
                 cnt_autoexpire = cuscontract.cnt_autoexpire
+                cnt_upd_flag = cuscontract.upd_flag
 
                 # print("cnt_guard_amt = " + str(cnt_guard_amt))
 
@@ -386,7 +387,8 @@ def get_cus_contract(request):
                     "cnt_new": cnt_new,
                     "cnt_print": cnt_print,
                     "cnt_autoexpire": cnt_autoexpire,
-                    "cus_service_list": list(pickup_record)
+                    "cus_service_list": list(pickup_record),
+                    "cnt_upd_flag": cnt_upd_flag
                 })
 
                 response.status_code = 200
@@ -1527,7 +1529,7 @@ def add_new_service(request):
     s = CusService(
         srv_id = new_service_number,
         cnt_id_id = cnt_id,
-        srv_rank = srv_rank,
+        srv_rank_id = srv_rank,
         srv_shif_id_id = srv_shift_id,
         srv_eff_frm = srv_eff_from,
         srv_eff_to = srv_eff_to,
@@ -2011,7 +2013,7 @@ def reload_service_list(request):
         record = {
             "srv_id": d.srv_id,
             "cnt_id": d.cnt_id_id,
-            "srv_rank": d.srv_rank,
+            "srv_rank": d.srv_rank_id,
             "srv_shif_id": d.srv_shif_id_id,
             "srv_shift_text": d.srv_shif_id.shf_desc,
             "srv_eff_frm": d.srv_eff_frm.strftime("%d/%m/%Y"),
@@ -2136,6 +2138,8 @@ def delete_customer_contract(request):
     data.upd_by = request.user.first_name    
     cnt_id = data.cnt_id 
     data.save()
+
+    cus_service_data = CusService.objects.all().filter(cnt_id=cnt_id).delete()
 
     response = JsonResponse(data={
         "success": True,
@@ -2360,3 +2364,39 @@ def download_contract(request, *args, **kwargs):
             response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
             return response
     raise Http404
+
+
+@login_required(login_url='/accounts/login/')
+def ajax_undelete_contract(request):
+    cnt_id = request.POST.get('cnt_id')
+
+    print("cnt_id = " + str(cnt_id))
+
+
+    try:
+        cus_contract = CusContract.objects.get(cnt_id=cnt_id)
+        cus_contract.upd_flag = 'R'
+        cus_contract.save()
+
+        new_log = HrmsNewLog(
+            log_table = "cus_contract",
+            log_key = cnt_id,
+            log_field = "upd_flag",
+            old_value = "D",
+            new_value = "R",
+            log_type = "R",
+            log_by = request.user.first_name,
+            log_date = datetime.datetime.now(),
+            )
+        new_log.save()   
+
+    except CusContract.DoesNotExist:
+        print("not saved")
+        cus_service = None
+
+    response = JsonResponse({
+        "success": "Form is valid", 
+        })
+
+    response.status_code = 200
+    return response   

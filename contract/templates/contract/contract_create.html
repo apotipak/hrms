@@ -985,11 +985,9 @@
             $('#id_cus_fax_en').val(json.cus_fax);
             $('#id_cus_email_en').val(json.cus_email);
 
-            // amnaj
             $('#id_cus_zone_th').val(json.cus_zone_id + " | " + json.cus_zone_th);
             $('#id_cus_zone_en').val(json.cus_zone_id + " | " + json.cus_zone_en);
 
-            //$('#id_').val(json.);
             $('#id_cus_vol').focus();
           }
           else {
@@ -1036,6 +1034,38 @@
           cus_vol: cus_vol,
         },
         success : function(json) {        
+
+          // amnaj 
+          // check if contract used to be deleted          
+          var upd_flag = json.cnt_upd_flag;
+          var cnt_id = json.cnt_id;
+          
+          if(upd_flag=='D') {    
+            var retVal = confirm("Would you like to undelete Contract No." + cnt_id + " ?");
+                      
+            if( retVal == true ) {
+              // Change upd_flag to 'R'
+              $.ajax({
+                url: "/contract/ajax/ajax_undelete_contract/",
+                type: "POST",
+                data: {        
+                  csrfmiddlewaretoken: '{{ csrf_token }}',
+                  cnt_id: cnt_id,
+                },
+                success: function(data) {
+                  
+                },
+                error: function(data) {
+                  
+                },
+              });
+            } else {
+
+            }
+          } else {
+
+          }
+
           if(json.is_existed) {
             cnt_id = json.cnt_id;       
 

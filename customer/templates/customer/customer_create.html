@@ -1669,8 +1669,8 @@
         success: function(data) {
           // amnaj
           // Check Deleted status
-          var upd_flag = data.results[0]["upd_flag"];
-          var cus_no = data.results[0]["cus_no"];
+          var upd_flag = data.upd_flag;
+          var cus_no = data.cus_no;
 
           if(upd_flag=='D') {    
 
