@@ -150,31 +150,62 @@ def get_customer(request):
             cus_subdist_en = customer.cus_subdist_en
 
             cus_zip = customer.cus_zip
-            cus_district_id = customer.cus_district_id
-            cus_district_th = customer.cus_district.dist_th
-            cus_district_en = customer.cus_district.dist_en
-            cus_city_th = customer.cus_city.city_th
-            cus_city_en = customer.cus_city.city_en
-            cus_country_th = customer.cus_country.country_th
-            cus_country_en = customer.cus_country.country_en
+
+            if customer.cus_district_id is not None:
+                cus_district_id = customer.cus_district_id
+                cus_district_th = customer.cus_district.dist_th
+                cus_district_en = customer.cus_district.dist_en
+            else:
+                cus_district_id = 0
+                cus_district_th = ""
+                cus_district_en = ""
+
+            if customer.cus_city_id is not None:
+                cus_city_th = customer.cus_city.city_th
+                cus_city_en = customer.cus_city.city_en
+            else:
+                cus_city_id = 0
+                cus_city_th = ""
+                cus_city_en = ""
+
+            if customer.cus_country_id is not None:
+                cus_country_th = customer.cus_country.country_th
+                cus_country_en = customer.cus_country.country_en
+            else:
+                cus_country_id = 0
+                cus_country_th = ""
+                cus_country_en = ""
             
             cus_tel = customer.cus_tel
             cus_fax = customer.cus_fax
             cus_email = customer.cus_email
             
-            site_contact_id_th = customer.site_contact_id
-            site_contact_con_fname_th = customer.site_contact.con_fname_th
-            site_contact_con_lname_th = customer.site_contact.con_lname_th
-            site_contact_con_position_th = customer.site_contact.con_position_th
+            if customer.site_contact_id is not None:
+                site_contact_id_th = customer.site_contact_id
+                site_contact_con_fname_th = customer.site_contact.con_fname_th
+                site_contact_con_lname_th = customer.site_contact.con_lname_th
+                site_contact_con_position_th = customer.site_contact.con_position_th
 
-            site_contact_id_en = customer.site_contact_id
-            site_contact_con_fname_en = customer.site_contact.con_fname_en
-            site_contact_con_lname_en = customer.site_contact.con_lname_en
-            site_contact_con_position_en = customer.site_contact.con_position_en
-            
-            site_contact_cus_zone_id = customer.cus_zone_id
-            site_contact_cus_zone_th = customer.cus_zone.zone_th
-            site_contact_cus_zone_en = customer.cus_zone.zone_en
+                site_contact_id_en = customer.site_contact_id
+                site_contact_con_fname_en = customer.site_contact.con_fname_en
+                site_contact_con_lname_en = customer.site_contact.con_lname_en
+                site_contact_con_position_en = customer.site_contact.con_position_en
+            else:
+                site_contact_id_th = 0
+                site_contact_con_fname_th = ""
+                site_contact_con_lname_th = ""
+                site_contact_con_position_th = ""
+
+                site_contact_id_en = 0
+                site_contact_con_fname_en = ""
+                site_contact_con_lname_en = ""
+                site_contact_con_position_en = ""
+
+
+            if customer.cus_zone_id is not None:            
+                site_contact_cus_zone_id = customer.cus_zone_id
+                site_contact_cus_zone_th = customer.cus_zone.zone_th
+                site_contact_cus_zone_en = customer.cus_zone.zone_en
 
             response = JsonResponse(data={
                 # TH
