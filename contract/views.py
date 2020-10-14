@@ -1591,7 +1591,7 @@ def save_new_service(request):
     s = CusService(
         srv_id = new_service_number,
         cnt_id_id = cnt_id,
-        srv_rank = srv_rank,
+        srv_rank_id = srv_rank,
         srv_shif_id_id = srv_shift_id,
         srv_eff_frm = srv_eff_from,
         srv_eff_to = srv_eff_to,
