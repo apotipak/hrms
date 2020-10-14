@@ -290,11 +290,11 @@
 
           $(document).Toasts('create', {
             class: 'bg-success', 
-            title: "{% trans 'Message' %}",
+            title: "{% trans 'System message' %}",
             subtitle: '',
             autohide: true,
             delay: 2000,
-            body: "ลบรายการ " + data.cus_no + " สำเร็จ" + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+            body: "Customer " + data.cus_no + " has been deleted." + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
             autoDismiss: true,
             close: true,
             autoremove: true,
