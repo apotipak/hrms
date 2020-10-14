@@ -206,6 +206,10 @@ def get_customer(request):
                 site_contact_cus_zone_id = customer.cus_zone_id
                 site_contact_cus_zone_th = customer.cus_zone.zone_th
                 site_contact_cus_zone_en = customer.cus_zone.zone_en
+            else:
+                site_contact_cus_zone_id = 0
+                site_contact_cus_zone_th = ""
+                site_contact_cus_zone_en = ""
 
             response = JsonResponse(data={
                 # TH
