@@ -1930,17 +1930,22 @@ def update_all_cus_tabs(request):
                 if (cus_main is not None):
 
                     # CUS_ACTIVE
-                    field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Active Status", int(cus_main.cus_active), int(cus_main_cus_active), "E", request)
+                    if cus_main.cus_active:
+                        cus_main_cus_active_temp = 1
+                    else:
+                        cus_main_cus_active_temp = 0                       
+
+                    print("-------------------------------")
+                    print("cus_main_cus_active_temp = " + str(cus_main_cus_active_temp))
+                    print("cus_main_cus_active = " + str(cus_main_cus_active))
+                    print("-------------------------------")
+
+                    field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Active Status", int(cus_main_cus_active_temp), int(cus_main_cus_active), "E", request)
                     if field_is_modified:
                         cus_main.cus_active = cus_main_cus_active
                         modified_records.append(record)
                         cus_main.cus_main = 1
-
-                        if int(cus_main_cus_active) == 1:
-                            cus_main.cus_main = 1
-                        else:
-                            cus_main.cus_main = 0
-                            count_modified_field = count_modified_field + 1
+                        count_modified_field = count_modified_field + 1
 
                     # CUS_NAME_TH                    
                     if (cus_main_cus_name_th is not None):
@@ -2313,7 +2318,7 @@ def update_all_cus_tabs(request):
             print("cus_site_cus_district_id = " + str(cus_site_cus_district_id))
             print("aaaa")
             '''
-            
+
             # Fulfill district, city, country
             cus_site_cus_district_id = None
             cus_site_city_id = None
