@@ -1845,6 +1845,11 @@ def update_all_cus_tabs(request):
             # **************  CUS_MAIN  ****************
             # ******************************************            
             cus_main_cus_active = request.POST.get('cus_main_cus_active')
+
+            print("amnaj")
+            print("cus_main_cus_active =  " + str(cus_main_cus_active))
+            print("amnaj")
+
             cus_customer_cus_active = request.POST.get('customer_cus_active')
             cus_bill_cus_active = request.POST.get('cus_bill_cus_active')                        
             cus_main_cus_name_th = request.POST.get('cus_main_cus_name_th')            
@@ -2277,10 +2282,12 @@ def update_all_cus_tabs(request):
             # **************  CUS_SITE  ****************
             # ******************************************
             cus_site_cus_active = request.POST.get('cus_site_cus_active')
+
+            '''
             print("********************************")
             print("cus_site_cus_active = " + str(cus_site_cus_active))
             print("********************************")
-           
+            '''
 
 
             cus_site_cus_name_th = request.POST.get('cus_site_cus_name_th')
@@ -2300,10 +2307,13 @@ def update_all_cus_tabs(request):
             cus_site_cus_zone = request.POST.get('cus_site_cus_zone')
             # customer_group_id = request.POST.get('customer_group_id')
             cus_site_cus_district_id = request.POST.get('cus_site_cus_district_id')
+
+            '''
             print("aaaa")
             print("cus_site_cus_district_id = " + str(cus_site_cus_district_id))
             print("aaaa")
-
+            '''
+            
             # Fulfill district, city, country
             cus_site_cus_district_id = None
             cus_site_city_id = None
