@@ -144,7 +144,7 @@
                   on Main Office tab, change <b>{{item.log_field}}</b> from 
                   
                   {% if item.old_value == "" or item.old_value is None %}
-                  <b>empty</b>
+                  <b>""</b>
                   {% else %}
                   <b>{{item.old_value}}</b> 
                   {% endif %}
@@ -159,7 +159,7 @@
                   </span>
 
                   <span class="text-sm text-dark">
-                  on Site tab, change <b>{{item.log_field|default_if_none:'empty'}}</b> from 
+                  on Site tab, change <b>{{item.log_field|default_if_none:''}}</b> from 
                   <b>{{item.old_value}}</b> 
                   to <span class="text-sm text-info"><b><b>{{item.new_value}}</b></span>
                   {% endif %}
@@ -172,7 +172,7 @@
                   </span>
 
                   <span class="text-sm text-dark">
-                  on Billing tab, change <b>{{item.log_field|default_if_none:'empty'}}</b> from 
+                  on Billing tab, change <b>{{item.log_field|default_if_none:''}}</b> from 
                   <b>{{item.old_value}}</b> 
                   to <span class="text-sm text-info"><b><b>{{item.new_value}}</b></span>
                   {% endif %}

@@ -2089,7 +2089,7 @@ def update_all_cus_tabs(request):
                             if cus_main.cus_contact_id is not None:
                                 field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Contact ID", int(cus_main.cus_contact_id), int(cus_main_cus_contact_id), "E", request)
                             else:
-                                field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Contact ID", int(cus_main.cus_contact_id), int(cus_main_cus_contact_id), "E", request)
+                                field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Contact ID", cus_main.cus_contact_id, int(cus_main_cus_contact_id), "E", request)
                             
                             if field_is_modified:
                                 cus_main.cus_contact_id = cus_main_cus_contact_id

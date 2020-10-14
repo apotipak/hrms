@@ -1243,6 +1243,11 @@
   });  
 
   $('#btnCopyToSite').on('click', function (e) {
+    if ($('#id_cus_main_cus_active').is(":checked"))
+      cus_main_cus_active = 1;
+    else
+      cus_main_cus_active = 0;
+
     cus_main_cus_name_th = $('#id_cus_main_cus_name_th').val();
     cus_main_cus_add1_th = $('#id_cus_main_cus_add1_th').val();
     cus_main_cus_add2_th = $('#id_cus_main_cus_add2_th').val();
@@ -1270,6 +1275,11 @@
     cus_main_cus_contact_con_fname_th = $('#id_cus_main_cus_contact_con_fname_th').val();
     cus_main_cus_contact_con_lname_th = $('#id_cus_main_cus_contact_con_lname_th').val();
     cus_main_cus_contact_con_position_th = $('#id_cus_main_cus_contact_con_position_th').val();
+
+    if(cus_main_cus_active==1)
+      $('#id_cus_site_cus_active').prop('checked', true);
+    else
+      $('#id_cus_site_cus_active').prop('checked', false);
 
     $('#id_cus_site_cus_name_th').val(cus_main_cus_name_th);
     $('#id_cus_site_cus_add1_th').val(cus_main_cus_add1_th);
@@ -1317,6 +1327,11 @@
   });
 
   $('#btnCopyToBill').on('click', function (e) {
+    if ($('#id_cus_main_cus_active').is(":checked"))
+      cus_main_cus_active = 1;
+    else
+      cus_main_cus_active = 0;
+
     cus_main_cus_name_th = $('#id_cus_main_cus_name_th').val();
     cus_main_cus_add1_th = $('#id_cus_main_cus_add1_th').val();
     cus_main_cus_add2_th = $('#id_cus_main_cus_add2_th').val();
@@ -1345,6 +1360,11 @@
     cus_main_cus_contact_con_fname_th = $('#id_cus_main_cus_contact_con_fname_th').val();
     cus_main_cus_contact_con_lname_th = $('#id_cus_main_cus_contact_con_lname_th').val();
     cus_main_cus_contact_con_position_th = $('#id_cus_main_cus_contact_con_position_th').val();
+
+    if(cus_main_cus_active==1)
+      $('#id_cus_bill_cus_active').prop('checked', true);
+    else
+      $('#id_cus_bill_cus_active').prop('checked', false);
 
     $('#id_cus_bill_cus_name_th').val(cus_main_cus_name_th);
     $('#id_cus_bill_cus_add1_th').val(cus_main_cus_add1_th);
@@ -1393,6 +1413,11 @@
 
 
   $('#btnSiteCopyToBill').on('click', function (e) {
+    if ($('#id_cus_site_cus_active').is(":checked"))
+      cus_site_cus_active = 1;
+    else
+      cus_site_cus_active = 0;
+
     cus_site_cus_name_th = $('#id_cus_site_cus_name_th').val();
     cus_site_cus_add1_th = $('#id_cus_site_cus_add1_th').val();
     cus_site_cus_add2_th = $('#id_cus_site_cus_add2_th').val();
@@ -1422,6 +1447,11 @@
     cus_site_cus_contact_con_lname_th = $('#id_cus_site_cus_contact_con_lname_th').val();
     cus_site_cus_contact_con_position_th = $('#id_cus_site_cus_contact_con_position_th').val();
 
+    if(cus_site_cus_active==1)
+      $('#id_cus_bill_cus_active').prop('checked', true);
+    else
+      $('#id_cus_bill_cus_active').prop('checked', false);
+    
     $('#id_cus_bill_cus_name_th').val(cus_site_cus_name_th);
     $('#id_cus_bill_cus_add1_th').val(cus_site_cus_add1_th);
     $('#id_cus_bill_cus_add2_th').val(cus_site_cus_add2_th);
@@ -1609,6 +1639,18 @@
       var obj = $(this);      
       var cus_brn = obj.val();
       var cus_id = $('#id_cus_id').val();
+
+      if(cus_id == "" || cus_id==null){
+        alert("Customer Code is required!");
+        $("#id_cus_id").focus();
+        return false;
+      } else if(cus_brn=="" || cus_brn==null){
+        $("#id_cus_brn").val("000");
+        $("#id_cus_brn").focus();
+      }
+
+      $("#main-content :input").attr("disabled", false);
+      $("#id_cus_main_cus_name_th").focus();
 
       $.ajax({
         url: "/customer/ajax/ajax_check_exist_cus_site/",
