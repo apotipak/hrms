@@ -230,6 +230,7 @@ def ajax_check_exist_cus_site(request):
         print("**************************")
         '''
 
+        # amnaj
         if form.is_valid():
             # print("form is valid")
 
@@ -322,6 +323,8 @@ def ajax_check_exist_cus_site(request):
                     "cus_fax": customer_site.cus_fax,
                     "cus_email": customer_site.cus_email,
                     "cus_zone": customer_site.cus_zone_id,
+
+                    "upd_flag": customer_site.upd_flag,
 
                     "cus_site_site_contact_id": customer_site.site_contact_id,
                     "cus_site_site_contact_title_th": cus_site_site_contact_title_th,
@@ -2150,9 +2153,9 @@ def update_all_cus_tabs(request):
                                     count_modified_field = count_modified_field + 1
 
                             # Business A/R Code
-                            cus_main_customer_option_op4 = cus_main_customer_option_op4.rstrip() # A/R Code
+                            cus_main_customer_option_op4 = cus_main_customer_option_op4 # A/R Code
                             if (cus_main_customer_option_op4 is not None and cus_main_customer_option_op4 != ""):
-                                field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "A/R Code", customer_option.op4, cus_main_customer_option_op4.replace('&amp;', '&'), "E", request)
+                                field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "A/R Code", customer_option.op4, cus_main_customer_option_op4, "E", request)
                                 if field_is_modified:
                                     customer_option.op4 = cus_main_customer_option_op4 # A/R Code
                                     modified_records.append(record)
