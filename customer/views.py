@@ -2385,7 +2385,7 @@ def update_all_cus_tabs(request):
                     
                     # CUS_ACTIVE
                     #customer.cus_active = cus_site_cus_active
-                    field_is_modified, record = check_modified_field("CUSTOMER", cus_no, "Status", int(customer.cus_active), int(cus_site_cus_active), "E", request)
+                    field_is_modified, record = check_modified_field("CUSTOMER", cus_no, "Active Status", int(customer.cus_active), int(cus_site_cus_active), "E", request)
                     if field_is_modified:
                         customer.cus_active = cus_site_cus_active
                         modified_records.append(record)
@@ -2728,7 +2728,7 @@ def update_all_cus_tabs(request):
                 if cusbill is not None:
                     # CUS_ACTIVE
                     # cusbill.cus_active = cus_bill_cus_active
-                    field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Status", int(cusbill.cus_active), int(cus_bill_cus_active), "E", request)
+                    field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Active Status", int(cusbill.cus_active), int(cus_bill_cus_active), "E", request)
                     if field_is_modified:
                         cusbill.cus_active = cus_bill_cus_active
                         modified_records.append(record)                    
