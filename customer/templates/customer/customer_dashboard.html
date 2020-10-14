@@ -121,14 +121,18 @@
                 <td><span class="text-sm">{{item.id}}</span></td>
                 <td><span class="text-sm">{{item.log_by}}</span></td>
 
-                {% if item.log_type == 'A' or item.log_type == 'D' %}
+                {% if item.log_type == 'A' or item.log_type == 'D' or item.log_type == 'R' %}
                 <td>                  
                   {% if item.log_type == 'A' %}
-                    <span class="text-sm text-success"><b>Add</b> {{item.log_table}} <b class="text-success">{{item.log_key}}</b></span>
+                    <span class="text-sm text-success"><b>Add</b> {{item.log_table}} <b>{{item.log_key}}</b></span>
                   {% endif %}
 
                   {% if item.log_type == 'D' %}
-                    <span class="text-sm text-danger"><b>Delete</b> {{item.log_table}} <b class="text-danger">{{item.log_key}}</b></span>
+                    <span class="text-sm text-danger"><b>Delete</b> {{item.log_table}} <b>{{item.log_key}}</b></span>
+                  {% endif %}
+
+                  {% if item.log_type == 'R' %}
+                    <span class="text-sm text-warning"><b>Undelete</b> {{item.log_table}} <b>{{item.log_key}}</b></span>
                   {% endif %}
                 </td>
                 {% else %}  
