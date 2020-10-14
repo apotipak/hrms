@@ -1908,17 +1908,11 @@ def update_all_cus_tabs(request):
 
             cus_main_cus_taxid = request.POST.get('cus_main_cus_taxid')
 
-            # amnaj
             cus_main_cus_contact_id = request.POST.get('cus_main_cus_contact_id')
-            print("debug")
-            print("cus_main_cus_contact_id = " + str(cus_main_cus_contact_id))            
-            print("debug")
 
             if cus_main_cus_contact_id is not None:
-                print("not none")
                 cus_main_cus_contact_id = cus_main_cus_contact_id
             else:
-                print("none")
                 cus_main_cus_contact_id = None
 
             try:
@@ -2089,25 +2083,18 @@ def update_all_cus_tabs(request):
                                 modified_records.append(record)
                                 count_modified_field = count_modified_field + 1
 
-                    # amnaj
                     # CUS_CONTACT
-                    print("before 0")
                     if cus_main_cus_contact_id is not None:
-                        print("0")
                         if cus_main_cus_contact_id.isnumeric():                  
                             if cus_main.cus_contact_id is not None:
-                                print("1")
                                 field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Contact ID", int(cus_main.cus_contact_id), int(cus_main_cus_contact_id), "E", request)
                             else:
-                                print("2")
                                 field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Contact ID", int(cus_main.cus_contact_id), int(cus_main_cus_contact_id), "E", request)
                             
                             if field_is_modified:
-                                print("3")
                                 cus_main.cus_contact_id = cus_main_cus_contact_id
                                 modified_records.append(record)
                                 count_modified_field = count_modified_field + 1
-
 
                     if count_modified_field > 0:
                         if cus_main.upd_flag == 'A':
@@ -2520,7 +2507,6 @@ def update_all_cus_tabs(request):
                                 modified_records.append(record)
                                 count_modified_field = count_modified_field + 1
 
-                    # amnaj
                     # CUS_CONTACT
                     if cus_site_site_contact_id is not None:
                         if cus_site_site_contact_id.isnumeric():
