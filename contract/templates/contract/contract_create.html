@@ -42,14 +42,20 @@
 
         <div class="card-tools">
 
-          <button class="btn btn-outline-info btn-md dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+          <button class="btn btn-outline-info btn-md dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-print fa-sm"></i>&nbsp;&nbsp;Print
           </button>
-
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-            <a class="dropdown-item" href="#">Thai</a>
-            <a class="dropdown-item" href="#">English</a>
+            
+            <a class="dropdown-item" href="#" onclick="print_contract()"><i class="fa fa-eye text-secondary" aria-hidden="true"></i>&nbsp;&nbsp;Display on screen</a>
+            
+            <input type="hidden" id="id_cnt_id_temp" name="cnt_id_temp" value="">
+
+            <!--
+            <a class="dropdown-item" href="#" onclick="download_contract('{{contract.cnt_id}}')"><i class="fas fa-download text-secondary"></i>&nbsp;&nbsp;Download file</a>-->
           </div>
+
           &nbsp;&nbsp;
           <button id="cancelCreateContract" type="reset" class="btn btn-md btn-default pull-right">Cancel</button>
           <button id="saveContract" class="btn btn-md btn-primary"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</button>
@@ -265,7 +271,7 @@
 
       <div class="card-header">                
         <!--<div class="float-left"><h2 class="m-0 text-dark">{{contract.cnt_id}}</h2></div>-->
-        <div class="float-left"><h4 class="m-0 text-dark">No.&nbsp;</small>{{contract.cnt_id}}</h4></div>
+        <div class="float-left"><h4 class="m-0 text-dark"><span id="id_contract_number"></span></h4></div>
         
         <div class="card-tools">
 
@@ -307,6 +313,30 @@
               {% endif %}
               <label class="form-check-label text-danger">Auto expire</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <!--<label class="form-check-label text-danger">Auto expire</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
+
+            &nbsp;|&nbsp;
+            {% if contract.cnt_then == 'T' %}
+            <div class="form-check form-check-inline">
+              Print &nbsp;&nbsp;&nbsp;              
+              <input class="form-check-input" type="radio" name="printOptions" id="id_print_th" value="T" checked>
+              <label class="form-check-label" for="id_print_th">Thai</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="printOptions" id="id_print_en" value="E">
+              <label class="form-check-label" for="id_print_en">English</label>
+            </div>
+            {% else %}
+            <div class="form-check form-check-inline">
+              Print &nbsp;&nbsp;&nbsp;              
+              <input class="form-check-input" type="radio" name="printOptions" id="id_print_th" value="T">
+              <label class="form-check-label" for="id_print_th">Thai</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="printOptions" id="id_print_en" value="E" checked>
+              <label class="form-check-label" for="id_print_en">English</label>
+            </div>
+            {% endif %}
+                          
             </div>                        
 
             <div class="float-right">
@@ -1039,7 +1069,10 @@
           // check if contract used to be deleted          
           var upd_flag = json.cnt_upd_flag;
           var cnt_id = json.cnt_id;
-          
+
+          $("#id_cnt_id_temp").val(cnt_id);
+          $("#id_contract_number").text("No." + cnt_id);
+
           if(upd_flag=='D') {    
             var retVal = confirm("Would you like to undelete Contract No." + cnt_id + " ?");
                       
@@ -3179,6 +3212,17 @@
     });
 
   });
+
+
+  function print_contract() {
+    cnt_id = $("#id_cnt_id_temp").val();    
+    language_option = $("input[name=printOptions]:checked").val();
+    var href = "/contract/generate-contract/" + cnt_id + "/" + language_option;
+    window.open(
+      href,
+      '_blank'
+    );
+  }
 
 </script>
 
