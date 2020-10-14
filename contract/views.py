@@ -97,7 +97,7 @@ def get_cus_main(request):
 
             response = JsonResponse(data={
                 "success": True,
-                "class": "bg_danger",
+                "class": "bg-danger",
                 "message": "",
                 "is_existed": True,
                 "cus_name_th": cus_name_th,
@@ -108,7 +108,7 @@ def get_cus_main(request):
         except CusMain.DoesNotExist:
             response = JsonResponse(data={
                 "success": True,
-                "class": "bg_danger",
+                "class": "bg-danger",
                 "message": "",
                 "is_existed": False,
                 "cus_name_th": "",
@@ -119,7 +119,7 @@ def get_cus_main(request):
 
     response = JsonResponse(data={
         "success": True,
-        "class": "bg_danger",
+        "class": "bg-danger",
         "message": "",
         "is_existed": True,
         "cus_name_th": "",
@@ -179,7 +179,7 @@ def get_customer(request):
             response = JsonResponse(data={
                 # TH
                 "success": True,
-                "class": "bg_danger",
+                "class": "bg-danger",
                 "message": "",
                 "is_existed": True,
                 "cus_name_th": cus_name_th,
@@ -221,7 +221,7 @@ def get_customer(request):
         except Customer.DoesNotExist:            
             response = JsonResponse(data={
                 "success": True,
-                "class": "bg_danger",
+                "class": "bg-danger",
                 "message": "",
                 "is_existed": False,
                 "cus_name_th": "",
@@ -244,7 +244,7 @@ def get_customer(request):
 
     response = JsonResponse(data={
         "success": True,
-        "class": "bg_danger",
+        "class": "bg-danger",
         "message": "",
         "is_existed": False,
         "cus_name_th": "",
@@ -333,7 +333,7 @@ def get_cus_contract(request):
 
                 response = JsonResponse(data={
                     "success": True,
-                    "class": "bg_danger",
+                    "class": "bg-danger",
                     "message": "",
                     "is_existed": True,
                     "cnt_id": cnt_id,
@@ -359,7 +359,7 @@ def get_cus_contract(request):
             except CusContract.DoesNotExist:
                 response = JsonResponse(data={
                     "success": True,
-                    "class": "bg_danger",
+                    "class": "bg-danger",
                     "message": "",
                     "is_existed": False,
                     "customer_not_existed": False,
@@ -370,7 +370,7 @@ def get_cus_contract(request):
     except Customer.DoesNotExist:
         response = JsonResponse(data={
             "success": True,
-            "class": "bg_danger",
+            "class": "bg-danger",
             "message": "",
             "is_existed": False,
             "customer_not_existed": True,
@@ -381,7 +381,7 @@ def get_cus_contract(request):
         
     response = JsonResponse(data={
         "success": True,
-        "class": "bg_danger",
+        "class": "bg-danger",
         "message": "",
         "is_existed": False,
         "cnt_doc_no": "",

@@ -1821,7 +1821,7 @@ def check_modified_field(table_name, primary_key, field_name, old_value, new_val
 def update_all_cus_tabs(request):
 
     print("****************************")
-    print("FUNCTION: update_all_cus_tabs")
+    print("FUNCTION: update_all_cus_tabs()")
     # print("****************************")
 
     template_name = 'customer/customer_update.html'        
@@ -2951,12 +2951,14 @@ def update_all_cus_tabs(request):
                 for field in form:
                     for error in field.errors:
                         # response_data['message'] += field.name + " | " + error + "<br>"
-                        response_data['message'] += error + "<br>"
-
+                        response_data['message'] += error + "<br>"                                        
                 response_data['errors'] = form.errors
             else:
                 response_data['message'] = "ไม่สามารถทำรายการได้..!"
-        
+                response_data['errors'] = form.errors
+
+            response_data['class'] = "bg-danger"
+
             print("Error!")
             print("****************************")
 
