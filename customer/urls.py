@@ -39,6 +39,7 @@ urlpatterns += [
   url(r'^ajax/ajax_check_exist_cus_main/$', views.ajax_check_exist_cus_main, name='ajax_check_exist_cus_main'),
   url(r'^ajax/ajax_check_exist_cus_site/$', views.ajax_check_exist_cus_site, name='ajax_check_exist_cus_site'),
   url(r'^ajax/ajax_check_exist_cus_bill/$', views.ajax_check_exist_cus_bill, name='ajax_check_exist_cus_bill'),
+  url(r'^ajax/ajax_undelete_customer/$', views.ajax_undelete_customer, name='ajax_undelete_customer'),
 ]
 
 

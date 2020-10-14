@@ -1670,12 +1670,30 @@
           // amnaj
           // Check Deleted status
           var upd_flag = data.results[0]["upd_flag"];
+          var cus_no = data.results[0]["cus_no"];
+
           if(upd_flag=='D') {    
 
-            var retVal = confirm("Would you like to get this customer item back again?");
-            
-            if( retVal == true ) {        
-              // If completedly fillin the Customer Code
+            var retVal = confirm("Would you like to undelete Customer No." + cus_no + " ?");
+                      
+            if( retVal == true ) {
+              
+              // Change upd_flag to 'R'
+              $.ajax({
+                url: "/customer/ajax/ajax_undelete_customer/",
+                type: "POST",
+                data: {        
+                  csrfmiddlewaretoken: '{{ csrf_token }}',
+                  cus_no: cus_no,
+                },
+                success: function(data) {
+                  
+                },
+                error: function(data) {
+                  
+                },
+              });
+
               $("#main-content :input").attr("disabled", false);
               $("#id_cus_main_cus_name_th").focus();
 

@@ -14,6 +14,7 @@ from .forms import CustomerSearchForm
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from django.utils import timezone
+import datetime
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 from system.models import TDistrict, TCity, CusContact
@@ -201,6 +202,41 @@ def ajax_check_exist_cus_main(request):
             response = JsonResponse({ "error": "Customer ID is not correct.", "results": list(pickup_records) })
             response.status_code = 403
             return response
+
+
+
+#amnaj
+@login_required(login_url='/accounts/login/')
+def ajax_undelete_customer(request):
+    cus_no = request.POST.get('cus_no')
+    print("cus_no - " + str(cus_no))
+    try:
+        customer_site = Customer.objects.get(pk=cus_no)
+        customer_site.upd_flag = 'R'
+        customer_site.save()
+
+        new_log = HrmsNewLog(
+            log_table = "CUSTOMER",
+            log_key = cus_no,
+            log_field = "upd_flag",
+            old_value = "D",
+            new_value = "R",
+            log_type = "R",
+            log_by = request.user.first_name,
+            log_date = datetime.datetime.now(),
+            )
+        new_log.save()   
+
+    except Customer.DoesNotExist:
+        print("not saved")
+        customer_site = None
+
+    response = JsonResponse({
+        "success": "Form is valid", 
+        })
+
+    response.status_code = 200
+    return response            
 
 
 @login_required(login_url='/accounts/login/')
@@ -1110,7 +1146,7 @@ def save_customer_form(request, form, template_name):
             obj.cus_no = cus_no
 
             # Get current date time
-            obj.upd_date = timezone.now()
+            obj.upd_date = datetime.datetime.now()
             obj.cus_active = 1
             
             obj.save()
@@ -1171,7 +1207,7 @@ def CustomerDelete(request, pk):
         if customer:
             customer.upd_flag = 'D'
             customer.upd_by = request.user.first_name
-            customer.upd_date = timezone.now()
+            customer.upd_date = datetime.datetime.now()
             customer.save()
 
             # History Log                    
@@ -1183,7 +1219,7 @@ def CustomerDelete(request, pk):
                 new_value = None,
                 log_type = 'D',
                 log_by = request.user.first_name,
-                log_date = timezone.now(),
+                log_date = datetime.datetime.now(),
                 log_description = None
                 )
             new_log.save()    
@@ -1402,7 +1438,7 @@ def update_cus_main(request):
             if cus_main.upd_flag == 'A':
                 cus_main.upd_flag = 'E'
             cus_main.upd_by = request.user.first_name
-            cus_main.upd_date = timezone.now()
+            cus_main.upd_date = datetime.datetime.now()
             
             cus_main.save()
 
@@ -1563,7 +1599,7 @@ def update_cus_site(request):
                 customer.upd_flag = 'E'
 
             customer.upd_by = request.user.first_name
-            customer.upd_date = timezone.now()
+            customer.upd_date = datetime.datetime.now()
             
             customer.save()
 
@@ -1698,7 +1734,7 @@ def update_cus_bill(request):
                     cus_bill.upd_flag = 'E'
 
                 cus_bill.upd_by = request.user.first_name
-                cus_bill.upd_date = timezone.now()
+                cus_bill.upd_date = datetime.datetime.now()
 
                 cus_bill.cus_zip = cus_zip
 
@@ -1759,7 +1795,7 @@ def update_cus_bill(request):
 
                     upd_flag = 'A',
                     upd_by = request.user.first_name,
-                    upd_date = timezone.now()
+                    upd_date = datetime.datetime.now()
                 )
                 new_cus_bill.save()                
 
@@ -1811,7 +1847,7 @@ def check_modified_field(table_name, primary_key, field_name, old_value, new_val
             "new_value": new_value,
             "log_type": log_type,
             "log_by": request.user.first_name,
-            "log_date": timezone.now(),
+            "log_date": datetime.datetime.now(),
             "log_description": None,
         }
         return True, record
@@ -2103,7 +2139,7 @@ def update_all_cus_tabs(request):
                         if cus_main.upd_flag == 'A':
                             cus_main.upd_flag = 'E'
                         cus_main.upd_by = request.user.first_name
-                        cus_main.upd_date = timezone.now()
+                        cus_main.upd_date = datetime.datetime.now()
 
 
                         # NULL Field Issue
@@ -2247,7 +2283,7 @@ def update_all_cus_tabs(request):
                     cus_zone_id = cus_main_cus_zone,
                     cus_contact_id = cus_main_cus_contact_id,
                     site_contact_id = cus_main_cus_contact_id,
-                    upd_date = timezone.now(),
+                    upd_date = datetime.datetime.now(),
                     upd_flag = 'A',
                     upd_by = request.user.first_name,
                     cus_sht_th = "",
@@ -2524,7 +2560,7 @@ def update_all_cus_tabs(request):
                                 count_modified_field = count_modified_field + 1
 
                     if count_modified_field > 0:
-                        customer.upd_date = timezone.now()
+                        customer.upd_date = datetime.datetime.now()
                         customer.upd_by = request.user.first_name                    
                         if customer.upd_flag == 'A':
                             customer.upd_flag = 'E'
@@ -2589,7 +2625,7 @@ def update_all_cus_tabs(request):
                     cus_zone_id = cus_site_cus_zone,
                     cus_contact_id = cus_main_cus_contact_id,
                     site_contact_id = cus_site_site_contact_id,
-                    upd_date = timezone.now(),
+                    upd_date = datetime.datetime.now(),
                     upd_by = request.user.first_name,
                     upd_flag = 'A',
                     cus_sht_th = '',
@@ -2606,7 +2642,7 @@ def update_all_cus_tabs(request):
                     new_value = None,
                     log_type = 'A',
                     log_by = request.user.first_name,
-                    log_date = timezone.now(),
+                    log_date = datetime.datetime.now(),
                     log_description = None
                     )
                 new_log.save()    
@@ -2871,7 +2907,7 @@ def update_all_cus_tabs(request):
                                 count_modified_field = count_modified_field + 1
 
                     if count_modified_field > 0:
-                        cusbill.upd_date = timezone.now()
+                        cusbill.upd_date = datetime.datetime.now()
                         cusbill.upd_by = request.user.first_name                    
                         if cusbill.upd_flag == 'A':
                             cusbill.upd_flag = 'E'
@@ -2931,7 +2967,7 @@ def update_all_cus_tabs(request):
                     cus_zone_id = cus_bill_cus_zone,
                     cus_contact_id = cus_bill_cus_contact_id,
                     site_contact_id = cus_bill_cus_contact_id,
-                    upd_date = timezone.now(),
+                    upd_date = datetime.datetime.now(),
                     upd_by = request.user.first_name,
                     upd_flag = 'A'                    
                     )
