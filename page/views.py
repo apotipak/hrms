@@ -50,7 +50,7 @@ def userprofile(request):
         'user_language': user_language,
         'employee_profile': employee_profile,
     })
-
+    
 
 @login_required(login_url='/accounts/login/')
 def userpassword(request):

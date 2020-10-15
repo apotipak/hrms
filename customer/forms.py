@@ -855,3 +855,32 @@ class CusBillForm(forms.ModelForm):
         else:
             raise ValidationError("Zip is not correct.") 
     '''
+
+class ContactSearchForm(forms.ModelForm):
+    customer_no = forms.CharField(max_length=4, required=False, error_messages={'max_length': _('Too long')}, widget=forms.TextInput(attrs={'autocomplete':'off', 'type':'number'}))
+    contact_id = forms.CharField(max_length=4, required=False, error_messages={'max_length': _('Too long')}, widget=forms.TextInput(attrs={'autocomplete':'off','type':'number'}))
+
+    class Meta:
+        model = CusContact
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user')      
+        super(ContactSearchForm, self).__init__(*args, **kwargs)
+        self.fields['customer_no'].widget.attrs={'class': 'form-control', 'placeholder': _('Customer Code')}
+        self.fields['contact_id'].widget.attrs={'class': 'form-control', 'placeholder': _('Contact ID')}
+        
+
+    def clean_customer_id(self):        
+        cus_id = self.data.get('customer_no')
+        if len(cus_id) > 4:
+            raise forms.ValidationError('Maximum 4 characters required')
+        data = self.cleaned_data['customer_no']        
+        return data
+
+    def clean_contact_id(self):
+        cus_brn = self.data.get('contact_id')
+        if len(cus_brn) > 4:
+            raise forms.ValidationError('Maximum 4 characters required')
+        data = self.cleaned_data['contact_id']        
+        return data

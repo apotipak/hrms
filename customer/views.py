@@ -11,6 +11,7 @@ from system.models import HrmsNewLog
 from .forms import CustomerCreateForm, CusMainForm, CusSiteForm, CusBillForm, CusAllTabsForm
 from .forms import CustomerCodeCreateForm
 from .forms import CustomerSearchForm
+from .forms import ContactSearchForm
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from django.utils import timezone
@@ -59,7 +60,6 @@ def CustomerCreate(request):
         'today_date': today_date,
         'customer_code_create_form': customer_code_create_form,
         })
-
 
 
 @login_required(login_url='/accounts/login/')
@@ -638,6 +638,71 @@ def CustomerDashboard(request):
     return render(request, 'customer/customer_dashboard.html', context)
 
 
+
+@login_required(login_url='/accounts/login/')
+@permission_required('customer.view_customer', login_url='/accounts/login/')
+def ContactList(request):
+    page_title = settings.PROJECT_NAME
+    db_server = settings.DATABASES['default']['HOST']
+    project_name = settings.PROJECT_NAME
+    project_version = settings.PROJECT_VERSION
+    today_date = settings.TODAY_DATE    
+    item_per_page = 50
+
+
+    if request.method == "POST":
+        form = ContactSearchForm(request.POST, user=request.user)
+        customer_no = request.POST.get('customer_no')
+        contact_id = request.POST.get('contact_id')        
+        try:
+            contact_list = CusContact.objects.all();
+        except CusContact.DoesNotExist:
+            contact_list = None        
+
+        page = 1
+        paginator = Paginator(contact_list, item_per_page)
+        is_paginated = True if paginator.num_pages > 1 else False        
+
+        try:
+            current_page = paginator.get_page(page)            
+        except InvalidPage as e:
+            raise Http404(str(e))       
+    else:
+        contact_search_form = ContactSearchForm(user=request.user)                    
+        customer_no = request.GET.get('customer_no', '')
+        contact_id = request.GET.get('contact_id', '')
+
+        try:
+            contact_list = CusContact.objects.all();
+        except CusContact.DoesNotExist:
+            contact_list = None        
+
+        paginator = Paginator(contact_list, item_per_page)
+        is_paginated = True if paginator.num_pages > 1 else False
+        page = request.GET.get('page', '1') or 1
+
+        try:
+            current_page = paginator.get_page(page)
+        except InvalidPage as e:
+            raise Http404(str(e))
+
+    context = {
+        'page_title': page_title, 
+        'db_server': db_server, 'today_date': today_date,
+        'project_name': project_name, 
+        'project_version': project_version,         
+        'current_page': current_page,
+        'is_paginated': is_paginated,
+        'contact_list': contact_list,
+        'contact_search_form': contact_search_form,
+        'customer_no': customer_no,
+        'contact_id': contact_id,
+    }
+
+    return render(request, 'customer/contact_list.html', context)
+
+
+@login_required(login_url='/accounts/login/')
 @permission_required('customer.view_customer', login_url='/accounts/login/')
 def CustomerList(request):
     page_title = settings.PROJECT_NAME

@@ -1,0 +1,295 @@
+{% extends "page_generic.html" %}
+
+{% load i18n %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}{{ page_title}} - {% trans 'Contact List' %} {% endblock %}
+
+{% block content %}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0 text-dark">{% trans 'Contact List' %}</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item active">&nbsp;.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /.content-header -->
+
+  <!-- Main content -->
+  <section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+
+      <div class="col-sm-8 offset-sm-4 col-md-8 offset-md-4 pt-4 pl-4 pr-4">
+        <form id="contact_search_form" class="form-row" method="post" autocomplete="off">
+          {% csrf_token %}
+          <div class="form-row">
+
+            <div class="col-4">
+              {% if contact_search_form.customer_no.errors %}                
+                {% render_field contact_search_form.customer_no class="form-control form-control-sm is-invalid" %}
+                {% for error in contact_search_form.customer_no.errors %}
+                <div class="invalid-feedback">
+                  {{error}}
+                </div>
+                {% endfor %}
+              {% else %}
+                {% render_field contact_search_form.customer_no class="form-control form-control-sm" %}
+              {% endif %}
+            </div>
+
+            <div class="col-3">
+              {% if contact_search_form.contact_id.errors %}                
+                {% render_field contact_search_form.contact_id class="form-control form-control-sm is-invalid" %}                
+                {% for error in contact_search_form.contact_id.errors %}
+                <div class="invalid-feedback">
+                  {{error}}
+                </div>
+                {% endfor %}
+              {% else %}
+                {% render_field contact_search_form.contact_id class="form-control form-control-sm" %}
+              {% endif %}
+            </div>
+
+            <div colass="col-2">
+              <button type="submit" class="btn btn-sm btn-primary col-xs-2"><i class="fas fa-search fa-sm"></i>&nbsp;{% trans 'Search' %}</button>
+              <!--<button type="reset" class="btn btn-sm btn-outline-secondary col-xs-2">{% trans 'Clear' %}</button>-->
+            </div>
+
+          </div>
+        </form>
+
+      </div>
+
+      <div class="card-header" style="vertical-align: middle;">
+        <div class="card-tools">
+          <!--
+          <button type="button" class="btn btn-success btn-sm js-create-customer" data-url="{% url 'customer-create' %}"><i class="fas fa-plus"></i>&nbsp;&nbsp;{% trans 'Add' %}</button>
+          -->          
+          <!--
+          <div class="float-right"><a href="{% url 'customer-create' %}" type="button" class="btn btn-success btn-sm float-right"><i class="fas fa-plus fa-xs"></i>&nbsp;&nbsp;{% trans 'Add' %}</a></div>-->          
+        </div>
+      </div>
+      
+      <div class="card-body">
+        
+        <div class="float-right pb-3"><a href="{% url 'customer-create' %}" type="button" class="btn btn-success btn-md"><i class="fas fa-plus fa-xs"></i>&nbsp;&nbsp;{% trans 'New Contact' %}</a></div>
+
+        {% if current_page %}
+          <table id="contact-list-table" class="table table-bordered table-striped table-sm">
+            <thead>
+            <tr>
+              <th scope="col">{% trans 'Contact ID' %}</th>
+              <th scope="col">{% trans 'Customer Branch' %}</th>
+              <th scope="col">{% trans 'Name' %}</th>
+              <th scope="col">{% trans 'Position' %}</th>
+              <th scope="col">{% trans 'Mobile' %}</th>
+              <th scope="col">{% trans 'Email' %}</th>
+              <th scope="col">&nbsp;</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in current_page %}
+                <tr id="{{item.con_id}}">
+                    <td>{{item.con_id}}</td>
+                    <td>{{item.cus_brn|stringformat:"03d"}}</td>
+                    <td>{{item.con_fname_th}}</td>
+                    <td>{{item.con_position_th}}</td>
+                    <td>{{item.con_mobile}}</td>
+                    <td>{{item.con_email}}</td>
+                    <td class="text-right py-0 align-middle">
+                      <div class="btn-group btn-group-sm">
+                        <a href="" type="button" class="btn btn-info btn-xs js-update-customer" data-url="">
+                          <i class="fas fa-pen fa-xs"></i>
+                        </a>
+                        &nbsp;
+                        <button type="button" id="btn_delete_customer" class="btn btn-danger btn-xs js-delete-customer" data-url="">
+                          <i class="fas fa-trash fa-xs"></i>
+                        </button>
+                      </div>
+                    </td>                    
+                </tr>
+            {% endfor %}              
+            </tbody>
+          </table>
+
+          {% if is_paginated %}
+          <div>
+              <span>
+                  {% if current_page.has_previous %}
+                      <a href="?page={{current_page.previous_page_number}}&cusname={{cus_name|default:''}}&cusid={{cus_id|default:'' }}&cusbrn={{cus_brn|default:''}}"><i class="fas fa-arrow-circle-left"></i></a>
+                  {% endif %}
+                  &nbsp;
+                  <span>
+                      {% trans 'Page' %} {{ current_page.number }} {% trans '/' %} {{ current_page.paginator.num_pages }}
+                  </span>
+                  &nbsp;
+                  {% if current_page.has_next %}
+                      <a href="?page={{ current_page.next_page_number }}&cusname={{cus_name|default:''}}&cusid={{cus_id|default:'' }}&cusbrn={{cus_brn|default:'' }}"><i class="fas fa-arrow-circle-right"></i></a>
+                  {% endif %}
+              </span>
+          </div>
+          {% endif %}
+        
+        {% else %}
+        <div class="table-responsive">
+          <table class="table table-bordered text-secondary table-striped table-sm table-condensed">
+            <thead>
+            <tr>
+              <th scope="col">{% trans 'Customer Code' %}</th>
+              <th scope="col">{% trans 'Branch' %}</th>
+              <th scope="col">{% trans 'Name' %}</th>            
+              <th scope="col">{% trans 'Zone' %}</th>
+              <th scope="col">{% trans 'Status' %}</th>
+            </tr>
+            </thead>
+            <tbody>            
+              <tr class="bg-warning">
+                <td colspan="5" align="center"><br>{% trans 'There is no customer.' %}<br><br></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        {% endif %}
+     
+      </div>
+      <!-- /.card-body -->
+
+      <!--
+      <div class="card-footer">
+        &nbsp;
+      </div>
+      -->
+
+      <!-- /.card-footer-->
+
+  </div>
+  <!-- /.card -->
+
+  <div class="modal fade" id="modal-customer">
+    <div class="modal-dialog">
+      <div class="modal-content"></div>
+    </div>
+  </div>
+
+
+</section>
+<!-- /.content -->
+
+</div>
+<!-- /.content-wrapper -->
+
+{% endblock %}
+
+
+{% block javascript %}
+
+<script>
+  $(document).ready(function() {
+    $('#id_cus_id').focus();
+
+    $('#id_cus_name').on('keypress', function (e) {
+      if(e.which === 13){
+        $('#id_cus_id').focus();
+        event.preventDefault();
+        return false;        
+      }
+    });    
+
+    $('#id_cus_id').on('keypress', function (e) {      
+      if(e.which === 13){
+        $('#id_cus_brn').focus();
+        event.preventDefault();
+        return false;        
+      }
+    });
+
+    $('#id_cus_brn').on('keypress', function (e) {      
+      if(e.which === 13){        
+        event.preventDefault();
+        
+        if($('#id_cus_brn').val() == "")
+          $('#id_cus_brn').val("000");
+
+        $('#customer_search_form').submit();
+        return false;        
+      }
+    });
+
+  });
+  
+  $('.js-delete-customer').on('click', function (e) {      
+    var btn = $(this);
+
+    $.ajax({
+      url: btn.attr("data-url"),
+      type: 'get',
+      dataType: 'json',
+      beforeSend: function () {
+        $("#modal-customer .modal-content").html("");
+        $("#modal-customer").modal("show");
+      },
+      success: function (data) {
+        $("#modal-customer .modal-content").html(data.html_form);
+        $("#modal-customer").modal("hide");
+      }
+    });
+  });
+
+  $(document).on('submit', '#deleteCustomerForm', function (e) {    
+    event.preventDefault();
+    var form = $(this);
+    var cus_no = $('#cus_no').val();
+    $.ajax({
+      url: form.attr("action"),
+      //data: form.serialize(),
+      data : {          
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        cus_no: cus_no,
+      },      
+      type: form.attr("method"),
+      dataType: 'json',
+      success: function (data) {        
+        if (data.form_is_valid) {
+          $("#modal-customer").modal("hide");
+
+          $(document).Toasts('create', {
+            class: 'bg-success', 
+            title: "{% trans 'System message' %}",
+            subtitle: '',
+            autohide: true,
+            delay: 2000,
+            body: "Customer " + data.cus_no + " has been deleted." + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+            autoDismiss: true,
+            close: true,
+            autoremove: true,
+          });        
+          
+          // TODO
+          $('#' + cus_no).remove();
+        }
+        else {
+          $("#modal-customer").modal("hide");                    
+        }
+      }
+    });
+
+  });
+
+</script>
+
+
+{% endblock %}
