@@ -42,201 +42,42 @@
         <div class="card-body">
 
           {% if language_option == 'T' %}
-          <div class='col-8 offset-2'>            
-            <div class="text-center"><strong>บริษัท การ์ดฟอร์ซ ซิเคียวริตี้ เซอร์วิสเซส (ประเทศไทย) จำกัด ('การ์ดฟอร์ซ')</strong></div>            
-            <div class="text-center"><strong>การให้บริการรักษาความปลอดภัย</strong></div>
-            <div>&nbsp;</div>
-            <div class="float-right">
-              <table>
-                <tr><td>เลขที่</td><td><strong>{{cnt_doc_no}}</strong></td></tr>
-                <tr><td>วันที่</td><td>{{today_date}}</td></tr>
-              </table>
-            </div>
-            <br><br><br><br>
-            <div>1. ชื่อลูกค้า: <strong>{{customer_name_th}}</strong></div><br>
-            <div>
-              2. ที่อยู่ ที่สามารถเรียกเก็บเงินของลูกค้า(ในใบแจ้งหนี้ / ใบกำกับภาษี / ใบเสร็จรับเงิน):<br>
-              <strong>{{ cusbill_address_th }} {{cusbill_site_cus_subdist_th}} {{cusbill_site_cus_district_th}} {{cusbill_site_cus_city_th}} {{ cusbill_site_cus_zip }}</strong>
-            </div>
-            <br>
-            <div>3. รายละเอียดการให้บริการโดยทางบริษัทการ์ดฟอร์ซ ซิเคียวริตี้ เซอร์วิส (ประเทศไทย) จำกัด (‘การ์ดฟอร์ซ’) การให้บริการรักษาความปลอดภัย</div>
-            <div class='col-12'>
-
-              {% if count_shift_day > 0 %}
-              <table width="100%" border="0">
-                <th width="12%"><u>ผลัดกลางวัน</u></th>
-                <th width="45%"></th>
-                <th width="35%"></th>
-                <th width="10%" class="text-right" nowrap><u><b>บาท/เดือน</b></u></th>                            
-                {% for item in shift_list_day %}
-                <tr>
-                <td >{{ item.shf_time_frm }} - {{ item.shf_time_to }}</td>
-                <td>{{item.srv_qty}}&nbsp;&nbsp; x {{item.srv_rank_th}} ({{item.srv_rate|add:item.srv_qty|floatformat:2|intcomma}})</td>
-                <td class="text-left" nowrap>{{item.srv_rem}}</td>
-                <td class="text-right" nowrap>{{ item.srv_rate_qty|floatformat:2|intcomma }}.-</td>
-                </tr>
-                {% endfor %}              
-              </table>
-
+            {% if is_new_report == '1' %}
+              {% if is_amendment == '1' %}
+                <!-- Guarding Services Addendum -->
+                {% include 'contract/reports/renc102a_th.html' %}                
               {% else %}
-              <!--
-              <table width="100%">
-                <th colspan="4"></th>
-                <tr><td colspan="4"><u><b>ผลัดกลางวัน</b></u> - ยังไม่เปิดบริการ</td></tr>
-              </table>
-              -->
+                <!-- Guarding Services -->
+                {% include 'contract/reports/renc102_th.html' %}
               {% endif %}
-
-              {% if count_shift_night > 0 %}
-              
-              <table width="100%" border="0">
-                <th width="12%"><u>ผลัดกลางคืน</u></th>
-                <th width="40%"></th>
-                <th width="40%"></th>
-                <th width="10%" class="text-right">&nbsp;</th>
-                {% for item in shift_list_night %}
-                <tr>                
-                <td >{{ item.shf_time_frm }} - {{ item.shf_time_to }}</td>                
-                <td>{{item.srv_qty}}&nbsp;&nbsp; x {{item.srv_rank_th}} ({{item.srv_rate|floatformat:2|intcomma}})</td>
-                <td class="text-left" nowrap>{{item.srv_rem}}</td>
-                <td class="text-right" nowrap>{{item.srv_rate_qty|floatformat:2|intcomma}}.-</td>
-                </tr>
-                {% endfor %}              
-              </table>
+            {% else %}
+              {% if is_amendment == '1' %}
+                <!-- Service Agreement Amendment -->
+                {% include 'contract/reports/rec102a_th.html' %}
               {% else %}
-              <!--
-              <table width="100%">
-                <th colspan="4"></th>
-                <tr><td colspan="4"><u><b>ผลัดกลางคืน</b></u> - ยังไม่เปิดบริการ</td></tr>
-              </table>
-              -->
+                <!-- Service Agreement -->
+                {% include 'contract/reports/rec102_th.html' %}
               {% endif %}
-
-              {% if total_count_shift > 0 %}
-              <br>
-              <table width="100%">
-                <tr>
-                <td width="50%">&nbsp;</td>
-                <td width="10%">&nbsp;</td>
-                <td width="30%" class="text-center"><b>รวมอัตราค่าบริการทั้งสิ้น</b><br>(ยังไม่รวมภาษีมูลค่าเพิ่ม)</td>                
-                <td width="10%" class="text-right" style="vertical-align:top"><b>{{ srv_rate_total|floatformat:2|intcomma }}.-</b></td>
-                </tr>
-              </table>
-              {% endif %}
-            </div>
-            <br>
-            <div>              
-              4. ที่อยู่ของสถานที่ที่จะให้บริการ<br>
-              <strong>{{ customer_address_th }} {{customer_site_cus_subdist_th}} {{customer_site_cus_district_th}} {{customer_site_cus_city_th}} {{ customer_site_cus_zip }}</strong>
-            </div>
-            <br>
-            <div>5. วันเริ่มให้บริการ&nbsp;&nbsp;&nbsp;<strong>{{ sign_from }}</strong>&nbsp;&nbsp;&nbsp;ถึงวันที่&nbsp;&nbsp;&nbsp;<strong>{{ sign_to }}</strong></div>            
-            <br>
-            <div>6. การให้บริการจะเป็นระยะเวลา 1 ปีและจะต่อสัญญาไปจนกว่าฝ่ายใดฝ่ายหนึ่งจะยกเลิกสัญญาตามอนุประโยคที่ 19</div>
-            <br>
-            <div><strong>7. เงื่อนไขพิเศษ</strong></div>
-            <div>7.1  คำสั่งประจำตำแหน่งที่ได้ตกลงไว้โดย บริษัท การ์ดฟอร์ซ ซิเคียวริตี้ เซอร์วิสเซส (ประเทศไทย) จำกัด (‘การ์ดฟอร์ซ’) กับผู้ว่าจ้าง</div>
-            <div>7.2  กฏและระเบียบของพนักงานรักษาความปลอดภัย บริษัท การ์ดฟอร์ซ ซิเคียวริตี้ เซอร์วิสเซส (ประเทศไทย) จำกัด (‘การ์ดฟอร์ซ’)</div>
-          </div>
+            {% endif %}
           {% else %}
-          <div class='col-8 offset-2'>            
-            <div class="text-center"><strong>GUARDFORCE SECURITY SERVICES (THAILAND) COMPANY LIMITED</strong></div>            
-            <div class="text-center"><strong>GUARDING SERVICES</strong></div>
-            <div>&nbsp;</div>
-            <div class="float-right">
-              <table>
-                <tr><td>No:</td><td><strong>{{cnt_doc_no}}</strong></td></tr>
-                <tr><td>Date:</td><td>{{today_date}}</td></tr>
-              </table>
-            </div>
-            <br><br><br><br>
-            <div>1. Name of Customer: <strong>{{customer_name_en}}</strong></div><br>
-            <div>
-              2. Customer's billing address (Invoice / Tax Invoice / Receipt):<br>
-              <strong>{{ cusbill_address_en }} {{cusbill_site_cus_subdist_en}} {{cusbill_site_cus_district_en}} {{cusbill_site_cus_city_en}} {{ cusbill_site_cus_zip }}</strong>
-            </div>
-
-            <div>3. Description of Service to be provided by Guardforce Security Services (Thailand) Company Limited:</div>
-            <div class='col-12'>
-
-              {% if count_shift_day > 0 %}
-              <table width="100%" border="0">
-                <th width="12%"><u>DAY-SHIFT</u></th>
-                <th width="45%"></th>
-                <th width="35%"></th>
-                <th width="10%" class="text-right" nowrap><u><b>Baht/Month</b></u></th>                            
-                {% for item in shift_list_day %}
-                <tr>
-                <td >{{ item.shf_time_frm }} - {{ item.shf_time_to }}</td>
-                <td>{{item.srv_qty}}&nbsp;&nbsp; x {{item.srv_rank_en}} ({{item.srv_rate|add:item.srv_qty|floatformat:2|intcomma}})</td>
-                <td class="text-left" nowrap>{{item.srv_rem}}</td>
-                <td class="text-right" nowrap>{{ item.srv_rate_qty|floatformat:2|intcomma }}.-</td>
-                </tr>
-                {% endfor %}              
-              </table>
-
+            {% if is_new_report == '1' %}
+              {% if is_amendment == '1' %}
+                <!-- GUARDING SERVICES ADDENDUM -->                
+                {% include 'contract/reports/renc102a_en.html' %}
               {% else %}
-              <!--
-              <table width="100%">
-                <th colspan="4"></th>
-                <tr><td colspan="4"><u><b>ผลัดกลางวัน</b></u> - ยังไม่เปิดบริการ</td></tr>
-              </table>
-              -->
+                <!-- GUARDING SERVICES -->
+                {% include 'contract/reports/renc102_en.html' %}
               {% endif %}
-
-              {% if count_shift_night > 0 %}
-              
-              <table width="100%" border="0">
-                <th width="12%"><u>NIGHT-SHIFT</u></th>
-                <th width="40%"></th>
-                <th width="40%"></th>
-                <th width="10%" class="text-right">&nbsp;</th>
-                {% for item in shift_list_night %}
-                <tr>                
-                <td >{{ item.shf_time_frm }} - {{ item.shf_time_to }}</td>                
-                <td>{{item.srv_qty}}&nbsp;&nbsp; x {{item.srv_rank_en}} ({{item.srv_rate|floatformat:2|intcomma}})</td>
-                <td class="text-left" nowrap>{{item.srv_rem}}</td>
-                <td class="text-right" nowrap>{{item.srv_rate_qty|floatformat:2|intcomma}}.-</td>
-                </tr>
-                {% endfor %}              
-              </table>
+            {% else %}
+              {% if is_amendment == '1' %}
+              <!-- SERVICE AGREEMENT AMENDMENT -->
+                {% include 'contract/reports/rec102a_en.html' %}
               {% else %}
-              <!--
-              <table width="100%">
-                <th colspan="4"></th>
-                <tr><td colspan="4"><u><b>ผลัดกลางคืน</b></u> - ยังไม่เปิดบริการ</td></tr>
-              </table>
-              -->
+                <!-- SERVICE AGREEMENT -->
+                {% include 'contract/reports/rec102_en.html' %}
               {% endif %}
-
-              {% if total_count_shift > 0 %}
-              <br>
-              <table width="100%">
-                <tr>
-                <td width="50%">&nbsp;</td>
-                <td width="10%">&nbsp;</td>
-                <td width="30%" class="text-center"><b>TOTAL MONTHLY SERVICE CHARGE</b><br>(VAT. NOT INCLUDED)</td>                
-                <td width="10%" class="text-right" style="vertical-align:top"><b>{{ srv_rate_total|floatformat:2|intcomma }}.-</b></td>
-                </tr>
-              </table>
-              {% endif %}
-            </div>
-            <br>
-            <div>
-              4. Address of Premises at which Services are to be provided:<br>
-              <strong>{{ customer_address_en }}</strong>
-            </div>
-            <br>
-            <div>5. Commencement Date:&nbsp;&nbsp;&nbsp;<strong>{{ effective_from }}</strong>&nbsp;&nbsp;&nbsp;ถึงวันที่&nbsp;&nbsp;&nbsp;<strong>{{ effective_to }}</strong></div>            
-            <br>
-            <div>6. Service to be for one year and will then continue until terminated by either party in accordance with clause 19.</div>
-            <br>
-            <div><strong>7. Special Conditions</strong></div>
-            <div>7.1 Post Standing Orders as agreed by Guardforce Security Services (Thailand) Company Limited and the customer.</div>
-            <div>7.2 Guardforce Security Services (Thailand) Company Limited Rules And Regulations for Security Guards.</div>
-          </div>
-          {% endif %}
-
+            {% endif %}
+          {% endif %}        
         </div>        
 
       </div>

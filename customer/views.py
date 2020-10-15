@@ -1938,8 +1938,15 @@ def update_all_cus_tabs(request):
             cus_main_customer_option_op2 = request.POST.get('cus_main_customer_option_op2')
             cus_main_customer_option_op3 = request.POST.get('cus_main_customer_option_op3')
             cus_main_customer_option_op4 = request.POST.get('cus_main_customer_option_op4')
+
             cus_main_customer_option_op5 = request.POST.get('cus_main_customer_option_op5')
+            if cus_main_customer_option_op5 is None:
+                cus_main_customer_option_op5 = ""
+
             cus_main_customer_option_op6 = request.POST.get('cus_main_customer_option_op6')
+            if cus_main_customer_option_op6 is None:
+                cus_main_customer_option_op6 = ""
+
             cus_main_customer_option_opn1 = request.POST.get('cus_main_customer_option_opn1')
             # print("cus_main_customer_option_opn1 = " + str(cus_main_customer_option_opn1))
 

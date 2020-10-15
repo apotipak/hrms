@@ -2154,18 +2154,58 @@ def delete_customer_contract(request):
 
 @login_required(login_url='/accounts/login/')
 @permission_required('contract.view_cuscontract', login_url='/accounts/login/')
-def generate_contract(request, *args, **kwargs):
-    cnt_id = kwargs['cnt_id']
-    language_option = kwargs['language_option']
-    print(language_option)
+def generate_contract(request, *args, **kwargs):    
     base_url = MEDIA_ROOT + '/contract/template/'
 
-    if language_option == 'T':
+    # Identify which template to be used
+    cnt_id = kwargs['cnt_id']
+    language_option = kwargs['language_option']
+    is_new_report = kwargs['is_new_report']
+    is_amendment = kwargs['is_amendment']
+    is_customer_address = kwargs['is_customer_address']
+
+    print("-----------------------")
+    print("language_option = " + str(language_option)) 
+    print("is_new_report = " + str(is_new_report))
+    print("is_amendment = " + str(is_amendment))
+    # print("is_customer_address = " + str(is_customer_address))
+    print("-----------------------")
+
+    template_name = None
+    if language_option=='T':
+        if is_new_report=='1':
+            if is_amendment=='1':
+                print("Guarding Services Addendum - TH")                
+                template_name = base_url + 'ReNC102A_TH.docx'
+            else:
+                print("Guarding Services - TH")                
+                template_name = base_url + 'ReNC102_TH.docx'
+        else:
+            if is_amendment=='1':
+                print("Service Agreement Amendment - TH")                
+                template_name = base_url + 'ReC102A_TH.docx'
+            else:
+                print("Service Agreement - TH")
+                template_name = base_url + 'ReC102_TH.docx' 
+
         file_name = request.user.username + "_" + cnt_id + "_TH.docx"
-        template_language = base_url + 'ReNC102_TH.docx'
     else:
+        if is_new_report=='1':
+            if is_amendment=='1':
+                print("Guarding Services Addendum - EN")
+                template_name = base_url + 'ReNC102A_EN.docx'
+            else:
+                print("Guarding Services - EN")
+                template_name = base_url + 'ReNC102_EN.docx'
+        else:
+            if is_amendment=='1':
+                print("Service Agreement Amendment - EN")
+                template_name = base_url + 'ReC102A_EN.docx'
+            else:
+                print("Service Agreement - EN")
+                template_name = base_url + 'ReC102_EN.docx'                        
+
         file_name = request.user.username + "_" + cnt_id + "_EN.docx"
-        template_language = base_url + 'ReNC102_EN.docx'
 
     if cnt_id is not None:
         try:                
@@ -2187,10 +2227,8 @@ def generate_contract(request, *args, **kwargs):
             srv_rate_night = 0
             srv_rate_total = 0
 
-            try:                 
-                # cus_service_list = CusService.objects.all().filter(cnt_id=cnt_id).order_by('-srv_rank', '-srv_shif_id')
-                
-                # Test
+            try:
+                # get data from view V_CONTRACT
                 cursor = connection.cursor()
                 try:        
                     cursor.execute("select cus_name_th, cus_name_en, shf_type, shf_time_frm, shf_time_to, srv_qty, rank_th, srv_rem, srv_rate, shf_desc, rank_en from V_CONTRACT where cnt_id=" + cnt_id + " and srv_active=1 and shf_type='D' order by shf_type,srv_rank desc")
@@ -2263,7 +2301,10 @@ def generate_contract(request, *args, **kwargs):
             context = {
                 'customer': customer,
                 'file_name': file_name,
+                'template_name': template_name,
                 'language_option': language_option,
+                'is_new_report': is_new_report,
+                'is_amendment': is_amendment,
                 'cnt_id': cnt_id,               
                 'cnt_doc_no': cus_contract.cnt_doc_no,
                 'today_date': datetime.datetime.now().strftime("%d %B %Y"),
@@ -2350,7 +2391,7 @@ def generate_contract(request, *args, **kwargs):
                 'is_changed' : True,
         }
     
-    tpl = DocxTemplate(template_language)
+    tpl = DocxTemplate(template_name)
     tpl.render(context)
     tpl.save(MEDIA_ROOT + '/contract/download/' + file_name)
 
