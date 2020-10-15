@@ -1393,7 +1393,8 @@ def update_customer_service(request):
             op3 = data.op3
 
             # Get com_rank
-            comrank = ComRank.objects.all().exclude(upd_flag='D')
+            # comrank = ComRank.objects.all().exclude(upd_flag='D')
+            comrank = ComRank.objects.all().filter(rank_type='CNT')
             pickup_comrank_record =[]            
             for d in comrank:
                 record = {
