@@ -1,8 +1,8 @@
 {% load humanize %}
 
 <div class='col-8 offset-2'>            
-<div class="text-center"><strong>บริษัท การ์ดฟอร์ซ ซิเคียวริตี้ เซอร์วิสเซส (ประเทศไทย) จำกัด ('การ์ดฟอร์ซ')</strong></div>            
-<div class="text-center"><strong>การให้บริการรักษาความปลอดภัย</strong></div>
+<!--<div class="text-center"><h4>บริษัท การ์ดฟอร์ซ ซิเคียวริตี้ เซอร์วิสเซส (ประเทศไทย) จำกัด ('การ์ดฟอร์ซ')</h4></div>-->
+<div class="text-center"><h3>การให้บริการรักษาความปลอดภัย</h3></div>
 <div>&nbsp;</div>
 <div class="float-right">
   <table>
@@ -22,14 +22,14 @@
 
   {% if count_shift_day > 0 %}
   <table width="100%" border="0">
-    <th width="12%"><u>ผลัดกลางวัน</u></th>
-    <th width="45%"></th>
-    <th width="35%"></th>
-    <th width="10%" class="text-right" nowrap><u><b>บาท/เดือน</b></u></th>                            
+    <th width="20%"><u>ผลัดกลางวัน</u></th>
+    <th width="40%"></th>
+    <th width="15%"></th>
+    <th width="25%" class="text-right" nowrap><u><b>บาท/เดือน</b></u></th>                            
     {% for item in shift_list_day %}
     <tr>
     <td >{{ item.shf_time_frm }} - {{ item.shf_time_to }}</td>
-    <td>{{item.srv_qty}}&nbsp;&nbsp; x {{item.srv_rank_th}} ({{item.srv_rate|add:item.srv_qty|floatformat:2|intcomma}})</td>
+    <td>{{item.srv_qty}}&nbsp;&nbsp; x {{item.srv_rank_th}} ({{item.srv_rate|floatformat:2|intcomma}})</td>
     <td class="text-left" nowrap>{{item.srv_rem}}</td>
     <td class="text-right" nowrap>{{ item.srv_rate_qty|floatformat:2|intcomma }}.-</td>
     </tr>
@@ -48,10 +48,10 @@
   {% if count_shift_night > 0 %}
   
   <table width="100%" border="0">
-    <th width="12%"><u>ผลัดกลางคืน</u></th>
+    <th width="20%"><u>ผลัดกลางคืน</u></th>
     <th width="40%"></th>
-    <th width="40%"></th>
-    <th width="10%" class="text-right">&nbsp;</th>
+    <th width="15%"></th>
+    <th width="25%" class="text-right">&nbsp;</th>
     {% for item in shift_list_night %}
     <tr>                
     <td >{{ item.shf_time_frm }} - {{ item.shf_time_to }}</td>                
