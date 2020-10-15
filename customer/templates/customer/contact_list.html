@@ -92,9 +92,9 @@
           <table id="contact-list-table" class="table table-bordered table-striped table-sm">
             <thead>
             <tr>
-              <th scope="col">{% trans 'Contact ID' %}</th>
-              <th scope="col">{% trans 'Customer Branch' %}</th>
-              <th scope="col">{% trans 'Name' %}</th>
+              <th scope="col">{% trans 'ID' %}</th>
+              <th scope="col">{% trans 'Customer Code' %}</th>
+              <th scope="col">{% trans 'Fullname' %}</th>
               <th scope="col">{% trans 'Position' %}</th>
               <th scope="col">{% trans 'Mobile' %}</th>
               <th scope="col">{% trans 'Email' %}</th>
@@ -105,8 +105,8 @@
             {% for item in current_page %}
                 <tr id="{{item.con_id}}">
                     <td>{{item.con_id}}</td>
-                    <td>{{item.cus_brn|stringformat:"03d"}}</td>
-                    <td>{{item.con_fname_th}}</td>
+                    <td>{{item.cus_id|stringformat:"03d"}}</td>
+                    <td>{{item.con_fname_th}} {{item.con_lname_th}}</td>
                     <td>{{item.con_position_th}}</td>
                     <td>{{item.con_mobile}}</td>
                     <td>{{item.con_email}}</td>
