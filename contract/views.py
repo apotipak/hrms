@@ -1956,10 +1956,13 @@ def get_rank_shift_list(request):
     print("****************************")
 
     # COM_RANK
+    # select * from com_rank where rank_type='CNT'    
     if request.method == "POST":
-        data = ComRank.objects.all().exclude(upd_flag='D')
+        # data = ComRank.objects.all().exclude(upd_flag='D').filter(rank_type='CNT')
+        data = ComRank.objects.all().filter(rank_type='CNT')
     else:
-        data = ComRank.objects.all().exclude(upd_flag='D')
+        # data = ComRank.objects.all().exclude(upd_flag='D').filter(rank_type='CNT')
+        data = ComRank.objects.all().filter(rank_type='CNT')
 
     # no_of_active_customer = Customer.objects.filter(cus_active=1).exclude(upd_flag='D').count()
 
