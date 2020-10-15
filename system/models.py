@@ -216,8 +216,8 @@ class CusContact(models.Model):
     con_lname_en = models.CharField(max_length=40, blank=True, null=True)
     con_position_en = models.CharField(max_length=80, blank=True, null=True)
 
-    con_nation = models.SmallIntegerField(blank=True, null=True)
-    # con_nation = models.ForeignKey(TNation, db_column='con_nation', to_field='nation_id', on_delete=models.SET_NULL, null=True)
+    # con_nation = models.SmallIntegerField(blank=True, null=True)
+    con_nation = models.ForeignKey(TNation, db_column='con_nation', to_field='nation_id', on_delete=models.SET_NULL, null=True)
 
     con_sex = models.CharField(max_length=1, blank=True, null=True)
     con_mobile = models.CharField(max_length=30, blank=True, null=True)
