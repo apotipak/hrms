@@ -1,3 +1,117 @@
 {% load humanize %}
+<div class='col-8 offset-2'>            
+<div class="text-center"><h3>SERVICE AGREEMENT</h3></div>
+<div class="text-center"><h3>AMENDMENT</h3></div>
+<div>&nbsp;</div>
+<div class="float-right">
+  <table>
+    <tr><td><b>No.</b>&nbsp;&nbsp;&nbsp;</td><td><strong>{{cnt_doc_no}}</strong></td></tr>
+    <tr><td>Dated:&nbsp;&nbsp;&nbsp;</td><td>{{today_date}}</td></tr>
+  </table>
+</div>
+<br><br><br><br>
+<div align="center">This AGREEMENT for the provision of security services is made between</div><br>
+<div align="center"><b>GUARDFORCE SECURITY SERVICES (THAILAND) COMPANY LIMITED. (The Company)<br>
+1780 Teo Hong Bangna Building, Bangna Trad Road, Kwang Bangna, Khet Bangna, Bangkok 10260.</b>
+</div>
+<div align="center">and</div>
+<div align="center"><b>{{customer_name_en}} (The Client)</b></div>
 
-SERVICE AGREEMENT AMENDMENT
+<div align="center"><strong>{{ customer_address_en }} {{customer_site_cus_subdist_en}} {{customer_site_cus_district_en}} {{customer_site_cus_city_en}} {{ customer_site_cus_zip }}</strong></div><br>
+
+<div><strong>1. Service to be provided</strong></div>
+<div class='col-12'>
+  {% if count_shift_day > 0 %}
+  <table width="100%" border="0">
+    <th width="20%">DAY-SHIFT</th>
+    <th width="40%"></th>
+    <th width="25%"></th>
+    <th width="15%" class="text-right" nowrap><b>Baht/Month</b></th>                            
+    {% for item in shift_list_day %}
+    <tr>
+    <td >{{ item.shf_time_frm }} - {{ item.shf_time_to }}</td>
+    <td>{{item.srv_qty}}&nbsp;&nbsp; x {{item.srv_rank_en}} ({{item.srv_rate|floatformat:2|intcomma}})</td>
+    <td class="text-left" nowrap>{{item.srv_rem}}</td>
+    <td class="text-right" nowrap>{{ item.srv_rate_qty|floatformat:2|intcomma }}.-</td>
+    </tr>
+    {% endfor %}              
+  </table>
+
+  {% else %}
+  <!--
+  <table width="100%">
+    <th colspan="4"></th>
+    <tr><td colspan="4"><u><b>ผลัดกลางวัน</b></u> - ยังไม่เปิดบริการ</td></tr>
+  </table>
+  -->
+  {% endif %}
+
+  {% if count_shift_night > 0 %}
+  
+  <table width="100%" border="0">
+    <th width="20%">NIGHT-SHIFT</th>
+    <th width="40%"></th>
+    <th width="25%"></th>
+    <th width="15%" class="text-right">&nbsp;</th>
+    {% for item in shift_list_night %}
+    <tr>                
+    <td >{{ item.shf_time_frm }} - {{ item.shf_time_to }}</td>                
+    <td>{{item.srv_qty}}&nbsp;&nbsp; x {{item.srv_rank_en}} ({{item.srv_rate|floatformat:2|intcomma}})</td>
+    <td class="text-left" nowrap>{{item.srv_rem}}</td>
+    <td class="text-right" nowrap>{{item.srv_rate_qty|floatformat:2|intcomma}}.-</td>
+    </tr>
+    {% endfor %}              
+  </table>
+  {% else %}
+  <!--
+  <table width="100%">
+    <th colspan="4"></th>
+    <tr><td colspan="4"><u><b>ผลัดกลางคืน</b></u> - ยังไม่เปิดบริการ</td></tr>
+  </table>
+  -->
+  {% endif %}
+
+  {% if total_count_shift > 0 %}
+  <br>
+  <table width="100%">
+    <tr>
+    <td width="40%">&nbsp;</td>
+    <td width="10%">&nbsp;</td>
+    <td width="40%" class="text-left"><b>TOTAL MONTHLY SERVICE CHARGE</b><br>(VAT NOT INCLUDED)</td>                
+    <td width="10%" class="text-right" style="vertical-align:top"><b>{{ srv_rate_total|floatformat:2|intcomma }}.-</b></td>
+    </tr>
+  </table>
+  {% endif %}
+</div>
+<br>
+<div>              
+  <b>2. Cost to Services</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;For the sum of Baht&nbsp;&nbsp;&nbsp;&nbsp;{{ srv_rate_total|floatformat:2|intcomma }}<b> per month</b><br>
+</div>
+<br>
+<div><b>3. Period of Agreement From</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{{ sign_from }}&nbsp;&nbsp;&nbsp;To&nbsp;&nbsp;&nbsp;{{ sign_to }}</strong><br>
+and to continue thereafter until terminated by one party giving 30 days  prior notice in writing to the other or until a renewal of the Agreement has been negotiated
+</div>            
+<br>
+<div><b>4.	Location</b><br>
+	<strong>{{ cusbill_address_en }} {{cusbill_site_cus_subdist_en}} {{cusbill_site_cus_district_en}} {{cusbill_site_cus_city_en}} {{ cusbill_site_cus_zip }}</strong>
+</div>
+<br>
+<div><b>5. Special Conditions</b></div>
+<div>As per original contract&nbsp;&nbsp;&nbsp;<b>No.&nbsp;&nbsp;&nbsp;{{cnt_doc_no}}</b></div>
+<br><br><br><br>
+
+<div>
+  <table width="100%">
+    <tr>
+      <td><b>Dr.Chanat Suksuwwannatorn<br>Managing Director</b></td>
+      <td>
+        <b>Acknowledgement by :</b><br><br>
+        __________________________<br><br>
+        __________________________<br>
+      </td>
+    </tr>
+
+  </table>
+</div>
+
+</div>
