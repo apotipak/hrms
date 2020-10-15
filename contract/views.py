@@ -357,7 +357,7 @@ def get_cus_contract(request):
                 cus_service_list = []
                 pickup_record = []
                 try:                 
-                    cus_service_list = CusService.objects.all().filter(cnt_id=cnt_id)
+                    cus_service_list = CusService.objects.all().exclude(upd_flag='D').filter(cnt_id=cnt_id)
                     for item in cus_service_list:
                         record = {
                             "srv_id": item.srv_id,
@@ -524,7 +524,7 @@ def ContractUpdate(request, pk):
         # print("wage_en = " + str(cus_contract.cnt_wage_id.wage_en))
         cusmain = CusMain.objects.filter(cus_id=cus_contract.cus_id).get()
         customer = Customer.objects.filter(cus_id=cus_contract.cus_id, cus_brn=cus_contract.cus_brn).get()
-        cus_service = CusService.objects.filter(cnt_id=cus_contract.cnt_id).order_by('-srv_active')
+        cus_service = CusService.objects.filter(cnt_id=cus_contract.cnt_id).exclude(upd_flag='D').order_by('-srv_active')
     else:
         cusmain = []
         customer = []
@@ -1363,7 +1363,7 @@ def update_customer_service(request):
 
     if service_id is not None:
         try:                
-            data = CusService.objects.filter(srv_id__exact=service_id).get()
+            data = CusService.objects.filter(srv_id__exact=service_id).exclude(upd_flag='D').get()
 
             srv_id = data.srv_id
             cnt_id = data.cnt_id_id
@@ -1560,7 +1560,7 @@ def add_new_service(request):
 
     # Recalculate cnt_guard_amt, cnt_sale_amt
     # start
-    cus_service_list = CusService.objects.all().filter(cnt_id=cnt_id)
+    cus_service_list = CusService.objects.all().exclude(upd_flag='D').filter(cnt_id=cnt_id)
     active_cnt_guard_amt = 0
     active_cnt_sale_amt = 0
     for item in cus_service_list:
@@ -1659,7 +1659,7 @@ def save_new_service(request):
 
     # Recalculate cnt_guard_amt, cnt_sale_amt
     # start
-    cus_service_list = CusService.objects.all().filter(cnt_id=cnt_id)
+    cus_service_list = CusService.objects.all().exclude(upd_flag='D').filter(cnt_id=cnt_id)
     active_cnt_guard_amt = 0
     active_cnt_sale_amt = 0
     for item in cus_service_list:
@@ -1733,7 +1733,7 @@ def save_customer_service_item(request):
         try:                
             field_is_modified_count = 0
             modified_records = []
-            data = CusService.objects.filter(srv_id__exact=srv_id).get()
+            data = CusService.objects.filter(srv_id__exact=srv_id).exclude(upd_flag='D').get()
             cnt_id = data.cnt_id_id
 
             # SRV_RANK
@@ -1898,7 +1898,7 @@ def save_customer_service_item(request):
                 # TODO
                 # Recalculate cnt_guard_amt, cnt_sale_amt
                 # start
-                cus_service_list = CusService.objects.all().filter(cnt_id=cnt_id)
+                cus_service_list = CusService.objects.all().exclude(upd_flag='D').filter(cnt_id=cnt_id)
                 active_cnt_guard_amt = 0
                 active_cnt_sale_amt = 0
                 for item in cus_service_list:
@@ -2010,7 +2010,7 @@ def reload_service_list(request):
 
     cnt_id = request.GET["cnt_id"]
 
-    data = CusService.objects.all().filter(cnt_id=cnt_id).order_by('-srv_active')
+    data = CusService.objects.all().exclude(upd_flag='D').filter(cnt_id=cnt_id).order_by('-srv_active')
     
     cus_service_list=[]
     for d in data:
@@ -2057,13 +2057,13 @@ def delete_customer_service(request):
 
     srv_id = request.GET["srv_id"]
 
-    data = CusService.objects.filter(srv_id=srv_id).get() 
+    data = CusService.objects.exclude(upd_flag='D').filter(srv_id=srv_id).get() 
     cnt_id = data.cnt_id_id
     data.delete()
 
     # Recalculate cnt_guard_amt, cnt_sale_amt
     # start
-    cus_service_list = CusService.objects.all().filter(cnt_id=cnt_id)
+    cus_service_list = CusService.objects.all().exclude(upd_flag='D').filter(cnt_id=cnt_id)
     active_cnt_guard_amt = 0
     active_cnt_sale_amt = 0
     for item in cus_service_list:
@@ -2143,7 +2143,16 @@ def delete_customer_contract(request):
     cnt_id = data.cnt_id 
     data.save()
 
-    cus_service_data = CusService.objects.all().filter(cnt_id=cnt_id).delete()
+    # amnaj delete
+    # cus_service_data = CusService.objects.all().filter(cnt_id=cnt_id).delete()
+
+    try:
+        cus_service_data = CusService.objects.all().filter(cnt_id=cnt_id)
+        for item in cus_service_data:
+            item.upd_flag = 'D'
+            item.save()
+    except CusService.DoesNotExist:
+        print("Contact administrator!")
 
     response = JsonResponse(data={
         "success": True,
