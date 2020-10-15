@@ -331,6 +331,8 @@ def ajax_check_exist_cus_site(request):
                     cus_site_site_contact_lname_th = customer_site.site_contact.con_lname_th,
                     cus_site_site_contact_position_th = customer_site.site_contact.con_position_th
 
+                print("upd_flag = " + customer_site.upd_flag)
+
                 record = {
                     "cus_no": customer_site.cus_no,
                     "cus_active": customer_site.cus_active,
@@ -2567,12 +2569,13 @@ def update_all_cus_tabs(request):
                     if count_modified_field > 0:
                         customer.upd_date = datetime.datetime.now()
                         customer.upd_by = request.user.first_name                    
-                        if customer.upd_flag == 'A':
+                        if customer.upd_flag == 'A' or customer.upd_flag == 'R':
                             customer.upd_flag = 'E'
 
+                        '''
                         if customer.upd_flag == 'D':
                             customer.upd_flag = 'E'
-
+                        '''
 
                         # NULL Field Issue
                         customer.cus_sht_th = ""
