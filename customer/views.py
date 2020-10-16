@@ -647,17 +647,32 @@ def ContactList(request):
     project_name = settings.PROJECT_NAME
     project_version = settings.PROJECT_VERSION
     today_date = settings.TODAY_DATE    
-    item_per_page = 50
+    item_per_page = 10
 
+    customer_no = None
+    contact_id = None
 
     if request.method == "POST":
-        form = ContactSearchForm(request.POST, user=request.user)
-        customer_no = request.POST.get('customer_no')
-        contact_id = request.POST.get('contact_id')        
-        try:
-            contact_list = CusContact.objects.all();
-        except CusContact.DoesNotExist:
-            contact_list = None        
+        contact_search_form = ContactSearchForm(request.POST, user=request.user)
+        if contact_search_form.is_valid():
+            # contact_search_form = ContactSearchForm(request.POST, user=request.user)
+            
+            contact_id = request.POST.get('contact_id')
+            print("contact_id = " + str(contact_id))
+
+            customer_no = request.POST.get('customer_no')        
+            print("customer_no = " + str(customer_no))
+
+            try:
+                if customer_no is not None and customer_no != "":
+                    contact_list = CusContact.objects.filter(cus_id=customer_no).all()
+                else:
+                    contact_list = CusContact.objects.all()
+            except CusContact.DoesNotExist:
+                contact_list = None        
+        else:
+            print("form is invalid")
+            contact_list = []
 
         page = 1
         paginator = Paginator(contact_list, item_per_page)
@@ -666,7 +681,7 @@ def ContactList(request):
         try:
             current_page = paginator.get_page(page)            
         except InvalidPage as e:
-            raise Http404(str(e))       
+            raise Http404(str(e))
     else:
         contact_search_form = ContactSearchForm(user=request.user)                    
         customer_no = request.GET.get('customer_no', '')
@@ -710,7 +725,7 @@ def CustomerList(request):
     project_name = settings.PROJECT_NAME
     project_version = settings.PROJECT_VERSION
     today_date = settings.TODAY_DATE    
-    item_per_page = 50
+    item_per_page = 25
 
     if request.method == "POST":
         form = CustomerSearchForm(request.POST, user=request.user)

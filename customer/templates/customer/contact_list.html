@@ -34,8 +34,9 @@
     <div class="card">
 
       <div class="col-sm-8 offset-sm-4 col-md-8 offset-md-4 pt-4 pl-4 pr-4">
-        <form id="contact_search_form" class="form-row" method="post" autocomplete="off">
+        <form id="contact_search_form" action="" class="form-row" method="post" autocomplete="off">
           {% csrf_token %}
+
           <div class="form-row">
 
             <div class="col-4">
@@ -51,7 +52,7 @@
               {% endif %}
             </div>
 
-            <div class="col-3">
+            <div class="col-4">
               {% if contact_search_form.contact_id.errors %}                
                 {% render_field contact_search_form.contact_id class="form-control form-control-sm is-invalid" %}                
                 {% for error in contact_search_form.contact_id.errors %}
@@ -86,7 +87,11 @@
       
       <div class="card-body">
         
-        <div class="float-right pb-3"><a href="{% url 'customer-create' %}" type="button" class="btn btn-success btn-md"><i class="fas fa-plus fa-xs"></i>&nbsp;&nbsp;{% trans 'New Contact' %}</a></div>
+        <div class="float-right pb-3">
+          
+          <button id="add_contact_button" type="button" class="btn btn-outline-success btn-md" data-toggle="modal"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;{% trans 'Add new contact' %}</button>
+
+        </div>
 
         {% if current_page %}
           <table id="contact-list-table" class="table table-bordered table-striped table-sm">
@@ -94,7 +99,7 @@
             <tr>
               <th scope="col">{% trans 'ID' %}</th>
               <th scope="col">{% trans 'Customer Code' %}</th>
-              <th scope="col">{% trans 'Fullname' %}</th>
+              <th scope="col">{% trans 'Full Name' %}</th>
               <th scope="col">{% trans 'Position' %}</th>
               <th scope="col">{% trans 'Mobile' %}</th>
               <th scope="col">{% trans 'Email' %}</th>
@@ -158,7 +163,7 @@
             </thead>
             <tbody>            
               <tr class="bg-warning">
-                <td colspan="5" align="center"><br>{% trans 'There is no customer.' %}<br><br></td>
+                <td colspan="5" align="center"><br>{% trans 'There is no contact.' %}<br><br></td>
               </tr>
             </tbody>
           </table>
@@ -179,12 +184,80 @@
   </div>
   <!-- /.card -->
 
-  <div class="modal fade" id="modal-customer">
-    <div class="modal-dialog">
-      <div class="modal-content"></div>
+  <!-- Add contact modal -->
+  <div class="modal fade" id="add_contact_modal" tabindex="-1" role="dialog">
+
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        
+        <div class="modal-header">
+          <h5 class="modal-title" id="id_add_contact_title"><i class="fas fa-plus fa-sm text-secondary"></i>&nbsp;&nbsp;<strong>{% trans 'Add new contac1t' %}</strong></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        
+        <div class="modal-body">
+
+
+
+<form>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="id_first_name">First name</label>
+      <input type="text" class="form-control" id="id_first_name" placeholder="First name">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="id_last_name">Last name</label>
+      <input type="text" class="form-control" id="id_last_name" placeholder="Last name">
     </div>
   </div>
+  <div class="form-group">
+    <label for="id_position">Position</label>
+    <input type="text" class="form-control" id="id_position" placeholder="Position">
+  </div>
+  <div class="form-group">
+    <label for="inputAddress2">Address 2</label>
+    <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="inputCity">City</label>
+      <input type="text" class="form-control" id="inputCity">
+    </div>
+    <div class="form-group col-md-4">
+      <label for="inputState">State</label>
+      <select id="inputState" class="form-control">
+        <option selected>Choose...</option>
+        <option>...</option>
+      </select>
+    </div>
+    <div class="form-group col-md-2">
+      <label for="inputZip">Zip</label>
+      <input type="text" class="form-control" id="inputZip">
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="gridCheck">
+      <label class="form-check-label" for="gridCheck">
+        Check me out
+      </label>
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary">Sign in</button>
+</form>
+       
 
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-md" data-dismiss="modal">{% trans 'Close' %}</button>
+          <button onclick="add_new_contact()" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}&nbsp;&nbsp;</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </section>
 <!-- /.content -->
@@ -289,6 +362,53 @@
 
   });
 
+
+
+  $(document).ready(function(){    
+
+    $('#add_contact_button').on('click', function (e) {      
+      var obj = $(this);
+      customer_no = $('#id_customer_no').val();
+      contact_id = $('#id_contact_no').val();
+
+
+      /*
+      $.ajax({
+          url: "/contract/ajax/get_rank_shift_list/",
+          type: 'get',          
+          dataType: 'json',
+          data: {
+            customer_no: customer_no,
+            contact_id: contact_id,
+          },          
+          beforeSend: function () {
+            
+          },
+          success: function (data) {
+            var com_rank_count = data.com_rank_list.length;
+            var t_shift_count = data.t_shift_list.length;
+
+            var result = ""
+            result += "";
+
+            result += "<div class='row'>";
+            result += "<div class='col-12'>";
+            result += "TODO";
+            result += "</div>";          
+            result += "</div>";
+
+            //$("#add_contact_modal .modal-body").html(result);            
+          },
+          error: function(data){
+            $("#add_contact_modal .modal-body").html("{% trans 'There is no data.' %}");
+          }
+      });
+      */
+
+      $("#add_contact_modal").modal("show");
+
+    });
+  });
 </script>
 
 
