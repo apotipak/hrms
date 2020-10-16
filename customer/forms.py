@@ -685,11 +685,11 @@ class CusSiteForm(forms.ModelForm):
         # print("cus_contact = " + str(instance.cus_contact_id))
 
         # sex_object = CusContact.objects.filter(con_id=instance.cus_contact_id).get()
-        sex_object = CusContact.objects.filter(con_id=0).get()
+        # sex_object = CusContact.objects.filter(con_id=0).get()
 
         # print("sex = " + str(sex_object.con_sex))
         # self.fields['cus_site_cus_contact_con_sex'].widget.attrs={'class': 'radio-inline'}
-        self.initial['cus_site_cus_contact_con_sex'] = sex_object.con_sex
+        # self.initial['cus_site_cus_contact_con_sex'] = sex_object.con_sex
 
     def clean_cus_active(self):
         data = self.data.get('cus_site_cus_active')
@@ -857,26 +857,28 @@ class CusBillForm(forms.ModelForm):
     '''
 
 class ContactSearchForm(forms.Form):
-    customer_no = forms.CharField(max_length=4, required=False, error_messages={'max_length': _('This Customer Code is too long.')}, widget=forms.TextInput(attrs={'autocomplete':'off', 'type':'number'}))
-    contact_id = forms.CharField(max_length=4, required=False, error_messages={'max_length': _('This Contact ID is too long.')}, widget=forms.TextInput(attrs={'autocomplete':'off','type':'number'}))
+    cus_id = forms.CharField(max_length=4, required=False, error_messages={'max_length': _('This Customer ID is too long.')}, widget=forms.TextInput(attrs={'autocomplete':'off', 'type':'number'}))
+    # con_id = forms.CharField(max_length=4, required=False, error_messages={'max_length': _('This Contact ID is too long.')}, widget=forms.TextInput(attrs={'autocomplete':'off','type':'number'}))
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')      
         super(ContactSearchForm, self).__init__(*args, **kwargs)
-        self.fields['customer_no'].widget.attrs={'class': 'form-control', 'placeholder': _('Customer Code')}
-        self.fields['contact_id'].widget.attrs={'class': 'form-control', 'placeholder': _('Contact ID')}
+        self.fields['cus_id'].widget.attrs={'class': 'form-control', 'placeholder': _('Enter Customer ID')}
+        # self.fields['con_id'].widget.attrs={'class': 'form-control', 'placeholder': _('Contact ID')}
         
 
-    def clean_customer_no(self):        
-        customer_no = self.data.get('customer_no')
-        if len(customer_no) > 4:
+    def clean_cus_id(self):        
+        cus_id = self.data.get('cus_id')
+        if len(cus_id) > 4:
             raise forms.ValidationError('Maximum 4 characters required')
-        data = self.cleaned_data['customer_no']        
+        data = self.cleaned_data['cus_id']        
         return data
 
-    def clean_contact_id(self):
-        contact_id = self.data.get('contact_id')
-        if len(contact_id) > 4:
+    '''
+    def clean_con_id(self):
+        con_id = self.data.get('con_id')
+        if len(con_id) > 4:
             raise forms.ValidationError('Maximum 4 characters required')
-        data = self.cleaned_data['contact_id']        
+        data = self.cleaned_data['con_id']        
         return data
+    '''

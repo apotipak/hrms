@@ -33,42 +33,46 @@
     <!-- Default box -->
     <div class="card">
 
-      <div class="col-sm-8 offset-sm-4 col-md-8 offset-md-4 pt-4 pl-4 pr-4">
+      <div class="col-sm-6 offset-sm-5 col-md-6 offset-md-5 pt-4 pl-4 pr-4">
         <form id="contact_search_form" action="" class="form-row" method="post" autocomplete="off">
           {% csrf_token %}
 
           <div class="form-row">
 
-            <div class="col-4">
-              {% if contact_search_form.customer_no.errors %}                
-                {% render_field contact_search_form.customer_no class="form-control form-control-sm is-invalid" %}
-                {% for error in contact_search_form.customer_no.errors %}
+            <div class="col-12">              
+              {% if contact_search_form.cus_id.errors %}                
+                {% render_field contact_search_form.cus_id class="form-control form-control-sm is-invalid" %}
+                {% for error in contact_search_form.cus_id.errors %}
                 <div class="invalid-feedback">
                   {{error}}
                 </div>
                 {% endfor %}
               {% else %}
-                {% render_field contact_search_form.customer_no class="form-control form-control-sm" %}
+                {% render_field contact_search_form.cus_id class="form-control form-control-sm" %}
               {% endif %}
             </div>
 
+            <!--
             <div class="col-4">
-              {% if contact_search_form.contact_id.errors %}                
-                {% render_field contact_search_form.contact_id class="form-control form-control-sm is-invalid" %}                
-                {% for error in contact_search_form.contact_id.errors %}
+              {% if contact_search_form.con_id.errors %}                
+                {% render_field contact_search_form.con_id class="form-control form-control-sm is-invalid" %}                
+                {% for error in contact_search_form.con_id.errors %}
                 <div class="invalid-feedback">
                   {{error}}
                 </div>
                 {% endfor %}
               {% else %}
-                {% render_field contact_search_form.contact_id class="form-control form-control-sm" %}
+                {% render_field contact_search_form.con_id class="form-control form-control-sm" %}
               {% endif %}
             </div>
+            -->
 
+            <!--
             <div colass="col-2">
               <button type="submit" class="btn btn-sm btn-primary col-xs-2"><i class="fas fa-search fa-sm"></i>&nbsp;{% trans 'Search' %}</button>
-              <!--<button type="reset" class="btn btn-sm btn-outline-secondary col-xs-2">{% trans 'Clear' %}</button>-->
+              <button type="reset" class="btn btn-sm btn-outline-secondary col-xs-2">{% trans 'Clear' %}</button>
             </div>
+            -->
 
           </div>
         </form>
@@ -97,8 +101,8 @@
           <table id="contact-list-table" class="table table-bordered table-striped table-sm">
             <thead>
             <tr>
-              <th scope="col">{% trans 'ID' %}</th>
-              <th scope="col">{% trans 'Customer Code' %}</th>
+              <th scope="col">{% trans 'Contact ID' %}</th>
+              <th scope="col">{% trans 'Customer ID' %}</th>
               <th scope="col">{% trans 'Full Name' %}</th>
               <th scope="col">{% trans 'Position' %}</th>
               <th scope="col">{% trans 'Mobile' %}</th>
@@ -154,7 +158,7 @@
           <table class="table table-bordered text-secondary table-striped table-sm table-condensed">
             <thead>
             <tr>
-              <th scope="col">{% trans 'Customer Code' %}</th>
+              <th scope="col">{% trans 'Customer ID' %}</th>
               <th scope="col">{% trans 'Branch' %}</th>
               <th scope="col">{% trans 'Name' %}</th>            
               <th scope="col">{% trans 'Zone' %}</th>
@@ -191,7 +195,7 @@
       <div class="modal-content">
         
         <div class="modal-header">
-          <h5 class="modal-title" id="id_add_contact_title"><i class="fas fa-plus fa-sm text-secondary"></i>&nbsp;&nbsp;<strong>{% trans 'Add new contac1t' %}</strong></h5>
+          <h5 class="modal-title" id="id_add_contact_title"><i class="fas fa-plus fa-sm text-secondary"></i>&nbsp;&nbsp;<strong>{% trans 'Add new contact' %}</strong></h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -203,37 +207,36 @@
 
 <form>
   <div class="form-row">
-    <div class="form-group col-md-6">
-      <label for="id_first_name">First name</label>
-      <input type="text" class="form-control" id="id_first_name" placeholder="First name">
-    </div>
-    <div class="form-group col-md-6">
-      <label for="id_last_name">Last name</label>
-      <input type="text" class="form-control" id="id_last_name" placeholder="Last name">
-    </div>
-  </div>
-  <div class="form-group">
-    <label for="id_position">Position</label>
-    <input type="text" class="form-control" id="id_position" placeholder="Position">
-  </div>
-  <div class="form-group">
-    <label for="inputAddress2">Address 2</label>
-    <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
-  </div>
-  <div class="form-row">
-    <div class="form-group col-md-6">
-      <label for="inputCity">City</label>
-      <input type="text" class="form-control" id="inputCity">
-    </div>
-    <div class="form-group col-md-4">
-      <label for="inputState">State</label>
+    <div class="form-group col-md-2">
+      <label for="inputState">Title (TH)</label>
       <select id="inputState" class="form-control">
         <option selected>Choose...</option>
         <option>...</option>
       </select>
     </div>
+
+    <div class="form-group col-md-3">
+      <label for="id_first_name">First name (TH)</label>
+      <input type="text" class="form-control" id="id_first_name" placeholder="First name">
+    </div>
+    <div class="form-group col-md-4">
+      <label for="id_last_name">Last name (TH)</label>
+      <input type="text" class="form-control" id="id_last_name" placeholder="Last name">
+    </div>
+    <div class="form-group col-md-3">
+      <label for="id_position">Position (TH)</label>
+      <input type="text" class="form-control" id="id_position" placeholder="Position">
+    </div>
+
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="inputCity">Phone</label>
+      <input type="text" class="form-control" id="inputCity">
+    </div>
     <div class="form-group col-md-2">
-      <label for="inputZip">Zip</label>
+      <label for="inputZip">Email</label>
       <input type="text" class="form-control" id="inputZip">
     </div>
   </div>
@@ -271,39 +274,32 @@
 {% block javascript %}
 
 <script>
+
   $(document).ready(function() {
     $('#id_cus_id').focus();
 
-    $('#id_cus_name').on('keypress', function (e) {
-      if(e.which === 13){
-        $('#id_cus_id').focus();
-        event.preventDefault();
-        return false;        
-      }
-    });    
+    $("#id_cus_id").on('click', function(){
+      $("#id_cus_id").select();
+    });
 
     $('#id_cus_id').on('keypress', function (e) {      
       if(e.which === 13){
-        $('#id_cus_brn').focus();
         event.preventDefault();
-        return false;        
-      }
-    });
 
-    $('#id_cus_brn').on('keypress', function (e) {      
-      if(e.which === 13){        
-        event.preventDefault();
-        
-        if($('#id_cus_brn').val() == "")
-          $('#id_cus_brn').val("000");
-
-        $('#customer_search_form').submit();
-        return false;        
+        $('#contact_search_form').submit();
       }
     });
 
   });
   
+
+
+
+
+
+
+
+  /*
   $('.js-delete-customer').on('click', function (e) {      
     var btn = $(this);
 
@@ -361,15 +357,15 @@
     });
 
   });
-
+  */
 
 
   $(document).ready(function(){    
 
     $('#add_contact_button').on('click', function (e) {      
       var obj = $(this);
-      customer_no = $('#id_customer_no').val();
-      contact_id = $('#id_contact_no').val();
+      cus_id = $('#id_cus_id').val();
+      con_id = $('#id_contact_no').val();
 
 
       /*
@@ -378,8 +374,8 @@
           type: 'get',          
           dataType: 'json',
           data: {
-            customer_no: customer_no,
-            contact_id: contact_id,
+            cus_id: cus_id,
+            con_id: con_id,
           },          
           beforeSend: function () {
             
@@ -409,6 +405,9 @@
 
     });
   });
+
+
+
 </script>
 
 

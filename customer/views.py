@@ -24,6 +24,7 @@ from decimal import Decimal
 import json
 import sys, locale
 from django.db.models import Count, Case, When
+from django.db.models import Max
 
 
 @login_required(login_url='/accounts/login/')
@@ -264,7 +265,6 @@ def ajax_check_exist_cus_site(request):
         print("**************************")
         '''
 
-        # amnaj
         if form.is_valid():
             # print("form is valid")
 
@@ -649,23 +649,16 @@ def ContactList(request):
     today_date = settings.TODAY_DATE    
     item_per_page = 10
 
-    customer_no = None
-    contact_id = None
+    cus_id = None
+    con_id = None
 
     if request.method == "POST":
         contact_search_form = ContactSearchForm(request.POST, user=request.user)
-        if contact_search_form.is_valid():
-            # contact_search_form = ContactSearchForm(request.POST, user=request.user)
-            
-            contact_id = request.POST.get('contact_id')
-            print("contact_id = " + str(contact_id))
-
-            customer_no = request.POST.get('customer_no')        
-            print("customer_no = " + str(customer_no))
-
+        if contact_search_form.is_valid():            
+            cus_id = request.POST.get('cus_id')        
             try:
-                if customer_no is not None and customer_no != "":
-                    contact_list = CusContact.objects.filter(cus_id=customer_no).all()
+                if cus_id is not None and cus_id != "":
+                    contact_list = CusContact.objects.filter(cus_id=cus_id).all()
                 else:
                     contact_list = CusContact.objects.all()
             except CusContact.DoesNotExist:
@@ -684,8 +677,8 @@ def ContactList(request):
             raise Http404(str(e))
     else:
         contact_search_form = ContactSearchForm(user=request.user)                    
-        customer_no = request.GET.get('customer_no', '')
-        contact_id = request.GET.get('contact_id', '')
+        cus_id = request.GET.get('cus_id', '')
+        con_id = request.GET.get('con_id', '')
 
         try:
             contact_list = CusContact.objects.all();
@@ -710,8 +703,8 @@ def ContactList(request):
         'is_paginated': is_paginated,
         'contact_list': contact_list,
         'contact_search_form': contact_search_form,
-        'customer_no': customer_no,
-        'contact_id': contact_id,
+        'cus_id': cus_id,
+        'con_id': con_id,
     }
 
     return render(request, 'customer/contact_list.html', context)
@@ -2034,7 +2027,13 @@ def update_all_cus_tabs(request):
 
             cus_main_cus_taxid = request.POST.get('cus_main_cus_taxid')
 
+            # amnaj
+            # Contact
             cus_main_cus_contact_id = request.POST.get('cus_main_cus_contact_id')
+            cus_main_cus_contact_cus_title_th = request.POST.get('cus_main_cus_contact_cus_title_th')
+            cus_main_cus_contact_con_fname_th = request.POST.get('cus_main_cus_contact_con_fname_th')
+            cus_main_cus_contact_con_lname_th= request.POST.get('cus_main_cus_contact_con_lname_th')
+            cus_main_cus_contact_con_position_th = request.POST.get('cus_main_cus_contact_con_position_th')
 
             if cus_main_cus_contact_id is not None:
                 cus_main_cus_contact_id = cus_main_cus_contact_id
@@ -2045,6 +2044,7 @@ def update_all_cus_tabs(request):
                 modified_records = []
                 cus_main = CusMain.objects.get(pk=cus_id)
 
+                cus_main_new_contact_id = cus_main_cus_contact_id
                 
                 if (cus_main is not None):
 
@@ -2210,6 +2210,7 @@ def update_all_cus_tabs(request):
                                 count_modified_field = count_modified_field + 1
 
                     # CUS_CONTACT
+                    '''
                     if cus_main_cus_contact_id is not None:
                         if cus_main_cus_contact_id.isnumeric():                  
                             if cus_main.cus_contact_id is not None:
@@ -2221,6 +2222,87 @@ def update_all_cus_tabs(request):
                                 cus_main.cus_contact_id = cus_main_cus_contact_id
                                 modified_records.append(record)
                                 count_modified_field = count_modified_field + 1
+                    '''
+                    # amnaj
+                    # TODO
+                    if len(cus_main_cus_contact_con_fname_th) > 0 or len(cus_main_cus_contact_con_lname_th) > 0:
+                        try:
+                            # contact_list = CusContact.objects.filter(cus_id=1009, con_fname_th=cus_main_cus_contact_con_fname_th, con_lname_th=cus_main_cus_contact_con_lname_th).get()
+                            contact_list = CusContact.objects.filter(cus_id=cus_id, con_fname_th=cus_main_cus_contact_con_fname_th, con_lname_th=cus_main_cus_contact_con_lname_th)[:1].get()
+                            print("update old contact")
+                            
+                            contact_list = CusContact.objects.filter(con_id=cus_main_cus_contact_id).get()
+                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Contact first name", contact_list.con_fname_th, cus_main_cus_contact_con_fname_th, "E", request)
+                            if field_is_modified:                                
+                                contact_list.con_fname_th = cus_main_cus_contact_con_fname_th
+                                modified_records.append(record)
+                                count_modified_field = count_modified_field + 1
+
+                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Contact last name", contact_list.con_lname_th, cus_main_cus_contact_con_lname_th, "E", request)
+                            if field_is_modified:                                
+                                contact_list.con_lname_th = cus_main_cus_contact_con_lname_th
+                                modified_records.append(record)
+                                count_modified_field = count_modified_field + 1
+
+                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Contact position", contact_list.con_position_th, cus_main_cus_contact_con_position_th, "E", request)
+                            if field_is_modified:                                                                
+                                contact_list.con_position_th = cus_main_cus_contact_con_position_th
+                                modified_records.append(record)
+                                count_modified_field = count_modified_field + 1
+                            
+                            contact_list.save()
+
+                        except CusContact.DoesNotExist:                            
+                            print("add new contact")
+
+                            latest_contact_number = CusContact.objects.aggregate(Max('con_id'))
+                            latest_contact_number = latest_contact_number['con_id__max']
+                            if latest_contact_number is not None:
+
+                                cus_main_new_contact_id = latest_contact_number + 1                                
+                                cus_id = cus_id
+                                cus_brn = cus_brn
+                                con_title_id = 129
+                                con_fname_th = cus_main_cus_contact_con_fname_th
+                                con_lname_th = cus_main_cus_contact_con_lname_th
+                                con_position_th = cus_main_cus_contact_con_position_th
+                                con_fname_en = ""
+                                con_lname_en = ""
+                                con_position_en = ""
+                                con_nation = 99
+                                con_sex = 'M'
+                                con_mobile = ''
+                                con_email = ''
+                                upd_date = datetime.datetime.now()
+                                upd_by = request.user.first_name
+                                upd_flag = 'A'
+
+                                new_contact = CusContact(
+                                    con_id = cus_main_new_contact_id,
+                                    cus_id = cus_id,
+                                    cus_brn = cus_brn,
+                                    con_title_id = con_title_id,
+                                    con_fname_th = con_fname_th,
+                                    con_lname_th = con_lname_th,
+                                    con_position_th = con_position_th,
+                                    con_fname_en = con_fname_en,
+                                    con_lname_en = con_lname_en,
+                                    con_position_en = con_position_en,
+                                    )
+                                new_contact.save()
+
+                                if cus_main_cus_contact_id is not None:
+                                    field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Contact", "", cus_main_new_contact_id, "A", request)
+                                else:
+                                    field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Contact", int(cus_main.cus_contact_id), int(cus_main_new_contact_id), "A", request)
+
+                                if field_is_modified:
+                                    cus_main.cus_contact_id = cus_main_new_contact_id
+                                    modified_records.append(record)
+                                    count_modified_field = count_modified_field + 1                                
+                    else:
+                        print("Contact is not changed")
+
 
                     if count_modified_field > 0:
                         if cus_main.upd_flag == 'A':
@@ -2340,13 +2422,62 @@ def update_all_cus_tabs(request):
 
             except CusMain.DoesNotExist:
                 insert_status = True
-                cus_main_cus_taxid = request.POST.get('cus_main_cus_taxid')
+                cus_main_cus_taxid = request.POST.get('cus_main_cus_taxid')                
 
                 if int(cus_main_cus_active) == 1:
                     cus_main = 1
                 else:
                     cus_main = 0
 
+
+
+                # CONTACT
+                # amnaj
+                # TODO
+                if len(cus_main_cus_contact_con_fname_th) > 0 or len(cus_main_cus_contact_con_lname_th) > 0:
+                    latest_contact_number = CusContact.objects.aggregate(Max('con_id'))
+                    latest_contact_number = latest_contact_number['con_id__max']
+                    if latest_contact_number is not None:
+                        cus_main_new_contact_id = latest_contact_number + 1
+                        cus_id = cus_id
+                        cus_brn = cus_brn
+                        con_title_id = 129
+                        con_fname_th = cus_main_cus_contact_con_fname_th
+                        con_lname_th = cus_main_cus_contact_con_lname_th
+                        con_position_th = cus_main_cus_contact_con_position_th
+                        con_fname_en = ""
+                        con_lname_en = ""
+                        con_position_en = ""
+                        con_nation = 99
+                        con_sex = 'M'
+                        con_mobile = ''
+                        con_email = ''
+                        upd_date = datetime.datetime.now()
+                        upd_by = request.user.first_name
+                        upd_flag = 'A'
+
+                        new_contact = CusContact(
+                            con_id = cus_main_new_contact_id,
+                            cus_id = cus_id,
+                            cus_brn = cus_brn,
+                            con_title_id = con_title_id,
+                            con_fname_th = con_fname_th,
+                            con_lname_th = con_lname_th,
+                            con_position_th = con_position_th,
+                            con_fname_en = con_fname_en,
+                            con_lname_en = con_lname_en,
+                            con_position_en = con_position_en,
+                            con_nation_id = 99,
+                            con_sex = 'M',
+                            con_mobile = '',
+                            con_email = '',
+                            upd_date = datetime.datetime.now(),
+                            upd_by = request.user.first_name,
+                            upd_flag = 'A',         
+                            )
+                        new_contact.save()
+                    cus_main_cus_contact_id = cus_main_new_contact_id
+                           
                 new_customer_main = CusMain(
                     cus_active = cus_main_cus_active,
                     cus_main = cus_main,
@@ -3069,12 +3200,18 @@ def update_all_cus_tabs(request):
                 response_data['result'] = "Added complete."
                 response_data['form_is_valid'] = True
                 response_data['class'] = 'bg-success'
-
+                # amnaj
+                response_data['is_cus_main_has_new_contact'] = True
+                response_data['cus_main_new_contact_id'] = cus_main_new_contact_id
             else:
                 if count_modified_field > 0:
                     response_data['result'] = "Updated complete."
                     response_data['form_is_valid'] = True
                     response_data['class'] = 'bg-success'
+
+                    # amnaj
+                    response_data['is_cus_main_has_new_contact'] = True
+                    response_data['cus_main_new_contact_id'] = cus_main_new_contact_id
                 else:
                     response_data['result'] = "Sorry, nothing to update."
                     response_data['form_is_valid'] = True
@@ -3083,6 +3220,7 @@ def update_all_cus_tabs(request):
         else:
             print("form is invalid")
 
+            # amnaj
             response_data['form_is_valid'] = False
             response_data['message'] = ""
             if form.errors:
