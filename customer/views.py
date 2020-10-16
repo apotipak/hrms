@@ -468,19 +468,16 @@ def ajax_check_exist_cus_bill(request):
 
             try:
                 customer_bill = CusBill.objects.get(pk=cus_no)
-                print(customer_bill.cus_district)
             except CusBill.DoesNotExist:
                 customer_bill = None
 
-            if customer_bill:
+            if customer_bill is not None:
                 if not customer_bill.cus_district:
                     cus_bill_cus_district_th = None
                     cus_bill_cus_district_en = None
                 else:
                     cus_bill_cus_district_th = customer_bill.cus_district.dist_th
                     cus_bill_cus_district_en = customer_bill.cus_district.dist_en
-
-                print("debug 2 : " + str(cus_bill_cus_district_th))
 
                 if not customer_bill.cus_city:
                     cus_bill_cus_city_th = None
@@ -489,8 +486,6 @@ def ajax_check_exist_cus_bill(request):
                     cus_bill_cus_city_th = customer_bill.cus_city.city_th
                     cus_bill_cus_city_en = customer_bill.cus_city.city_en
 
-                print("debug 3 : " + str(cus_bill_cus_city_en))
-
                 if not customer_bill.cus_country:
                     cus_bill_cus_country_th = None
                     cus_bill_cus_country_en = None
@@ -498,16 +493,19 @@ def ajax_check_exist_cus_bill(request):
                     cus_bill_cus_country_th = customer_bill.cus_country.country_th
                     cus_bill_cus_country_en = customer_bill.cus_country.country_en
 
-                if not customer_bill.cus_contact_id:
-                    cus_bill_cus_contact_title_th = ""
-                    cus_bill_cus_contact_fname_th = ""
-                    cus_bill_cus_contact_lname_th = ""
-                    cus_bill_cus_contact_position_th = "" 
-                else:
+                print(customer_bill.cus_contact_id)
+                if customer_bill.cus_contact_id is not None:
+                    print("not none")
                     cus_bill_cus_contact_title_th = customer_bill.cus_contact.con_title.title_th
                     cus_bill_cus_contact_fname_th = customer_bill.cus_contact.con_fname_th
                     cus_bill_cus_contact_lname_th = customer_bill.cus_contact.con_lname_th,
                     cus_bill_cus_contact_position_th = customer_bill.cus_contact.con_position_th
+                else:                    
+                    print("none")
+                    cus_bill_cus_contact_title_th = ""
+                    cus_bill_cus_contact_fname_th = ""
+                    cus_bill_cus_contact_lname_th = ""
+                    cus_bill_cus_contact_position_th = "" 
 
                 record = {
                     "cus_no": customer_bill.cus_no,
@@ -539,7 +537,7 @@ def ajax_check_exist_cus_bill(request):
                     "cus_bill_cus_contact_title_th": cus_bill_cus_contact_title_th,
                     "cus_bill_cus_contact_fname_th": cus_bill_cus_contact_fname_th,
                     "cus_bill_cus_contact_lname_th": cus_bill_cus_contact_lname_th,
-                    "cus_bill_cis_contact_position_th": cus_bill_cus_contact_position_th,
+                    "cus_bill_cus_contact_position_th": cus_bill_cus_contact_position_th,
                 }
 
                 pickup_records.append(record)
@@ -2227,7 +2225,6 @@ def update_all_cus_tabs(request):
                     # TODO
                     if len(cus_main_cus_contact_con_fname_th) > 0 or len(cus_main_cus_contact_con_lname_th) > 0:
                         try:
-                            # contact_list = CusContact.objects.filter(cus_id=1009, con_fname_th=cus_main_cus_contact_con_fname_th, con_lname_th=cus_main_cus_contact_con_lname_th).get()
                             contact_list = CusContact.objects.filter(cus_id=cus_id, con_fname_th=cus_main_cus_contact_con_fname_th, con_lname_th=cus_main_cus_contact_con_lname_th)[:1].get()
                             print("update old contact")
                             
@@ -2583,6 +2580,8 @@ def update_all_cus_tabs(request):
                 cus_site_country_id = None       
 
             cus_site_site_contact_id = request.POST.get('cus_site_site_contact_id')
+            print("cus_site_site_contact_id = " + str(cus_site_site_contact_id))
+
 
             '''
             print("------ Print CUS_SITE data -------")
@@ -2770,7 +2769,10 @@ def update_all_cus_tabs(request):
                             if (customer.cus_contact_id is None):
                                 field_is_modified, record = check_modified_field("CUSTOMER", cus_no, "Contact ID", customer.site_contact_id, int(cus_site_site_contact_id), "E", request)
                             else:
-                                field_is_modified, record = check_modified_field("CUSTOMER", cus_no, "Contact ID", int(customer.site_contact_id), int(cus_site_site_contact_id), "E", request)
+                                if customer.site_contact_id is not None:
+                                    field_is_modified, record = check_modified_field("CUSTOMER", cus_no, "Contact ID", int(customer.site_contact_id), int(cus_site_site_contact_id), "E", request)
+                                else:
+                                    field_is_modified, record = check_modified_field("CUSTOMER", cus_no, "Contact ID", customer.site_contact_id, int(cus_site_site_contact_id), "E", request)
 
                             if field_is_modified:
                                 customer.site_contact_id = cus_site_site_contact_id
@@ -2918,7 +2920,10 @@ def update_all_cus_tabs(request):
 
             # Billing Tab - Contact Information
             cus_bill_cus_contact_id = request.POST.get('cus_bill_cus_contact_id')
-            if cus_bill_cus_contact_id:
+            print("cus_bill_cus_contact_id = " + str(cus_bill_cus_contact_id))
+
+
+            if cus_bill_cus_contact_id is not None:
                 cus_bill_cus_contact_id = cus_bill_cus_contact_id
             else:
                 cus_bill_cus_contact_id = None
@@ -3110,20 +3115,31 @@ def update_all_cus_tabs(request):
                                 modified_records.append(record) 
                                 count_modified_field = count_modified_field + 1                               
 
+                    # amnaj aa
                     # CUS_CONTACT
-                    cus_bill_cus_contact_id = request.POST.get('cus_bill_cus_contact_id')                    
                     if cus_bill_cus_contact_id is not None:
                         if cus_bill_cus_contact_id.isnumeric():
                             if (cusbill.cus_contact_id is None):
-                                field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Contact ID", cusbill.site_contact_id, int(cus_bill_cus_contact_id), "E", request)
+                                field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Contact ID", cusbill.cus_contact_id, int(cus_bill_cus_contact_id), "E", request)
+                                # field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Contact ID", cusbill.site_contact_id, int(cus_bill_cus_contact_id), "E", request)
                             else:
-                                field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Contact ID", int(cusbill.site_contact_id), int(cus_bill_cus_contact_id), "E", request)
+                                if cusbill.site_contact_id is not None:
+                                    field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Contact ID", int(cusbill.site_contact_id), int(cus_bill_cus_contact_id), "E", request)
+                                else:
+                                    field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Contact ID", cusbill.site_contact_id, int(cus_bill_cus_contact_id), "E", request)
 
+                                '''
+                                if cus_bill.cus_contact_id is not None:
+                                    field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Contact ID", int(cusbill.cus_contact_id), int(cus_bill_cus_contact_id), "E", request)
+                                else:
+                                    field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Contact ID", cusbill.cus_contact_id, int(cus_bill_cus_contact_id), "E", request)
+                                '''
                             if field_is_modified:
                                 cusbill.cus_contact_id = cus_bill_cus_contact_id
                                 cusbill.site_contact_id = cus_bill_cus_contact_id
                                 modified_records.append(record)
                                 count_modified_field = count_modified_field + 1
+
 
                     if count_modified_field > 0:
                         cusbill.upd_date = datetime.datetime.now()

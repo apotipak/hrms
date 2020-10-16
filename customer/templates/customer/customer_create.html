@@ -713,22 +713,22 @@
 
                         <div class="form-group col-md-2">
                           <label for="id_cus_site_cus_title">{% trans 'Title' %}</label>
-                            <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_title_th" name="cus_site_site_contact_title_th" value="" readonly>
+                            <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_title_th" name="cus_site_site_contact_title_th" readonly>
                         </div>
 
                         <div class="form-group col-md-2">
                           <label for="id_cus_site_site_contact_fname_th">{% trans 'First Name' %}</label>
-                          <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_fname_th" name="cus_site_site_contact_fname_th" value="" readonly>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_fname_th" name="cus_site_site_contact_fname_th">
                         </div>
 
                         <div class="form-group col-md-3">
                           <label for="id_cus_site_site_contact_lname_th">{% trans 'Last Name' %}</label>
-                          <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_lname_th" name="cus_site_site_contact_fname_th" value="" readonly>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_lname_th" name="cus_site_site_contact_fname_th">
                         </div>
 
                         <div class="form-group col-md-3">
                           <label for="id_cus_site_site_contact_position_th">{% trans 'Position' %}</label>
-                          <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_position_th" name="cus_site_site_contact_position_th" value="" readonly>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_position_th" name="cus_site_site_contact_position_th">
                         </div>
 
                       </div>
@@ -1042,23 +1042,23 @@
                         </div>
 
                         <div class="form-group col-md-2">
-                          <label for="id_cus_bill_cus_title">{% trans 'Title' %}</label>
-                            <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_contact_cus_title" name="cus_bill_cus_contact_cus_title" value="{{ cus_bill.cus_contact.con_title|default_if_none:'' }}" readonly>
+                          <label for="id_cus_bill_cus_title_th">{% trans 'Title' %}</label>
+                            <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_contact_cus_title_th" name="cus_bill_cus_contact_cus_title_th" value="{{ cus_bill.cus_contact.con_title|default_if_none:'' }}" readonly>
                         </div>
 
                         <div class="form-group col-md-2">
                           <label for="id_cus_bill_cus_contact_con_fname_th">{% trans 'First Name' %}</label>
-                          <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_contact_con_fname_th" name="cus_bill_cus_contact_con_fname_th" value="" readonly>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_contact_con_fname_th" name="cus_bill_cus_contact_con_fname_th">
                         </div>
 
                         <div class="form-group col-md-3">
                           <label for="id_cus_bill_cus_contact_con_lname_th">{% trans 'Last Name' %}</label>
-                          <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_contact_con_lname_th" name="cus_bill_cus_contact_con_fname_th" value="" readonly>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_contact_con_lname_th" name="cus_bill_cus_contact_con_fname_th">
                         </div>
 
                         <div class="form-group col-md-3">
                           <label for="id_cus_bill_cus_contact_con_position_th">{% trans 'Position' %}</label>
-                          <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_contact_con_position_th" name="cus_bill_cus_contact_con_position_th" value="" readonly>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_contact_con_position_th" name="cus_bill_cus_contact_con_position_th">
                         </div>
 
                       </div>
@@ -1667,7 +1667,6 @@
           cus_brn: cus_brn,
         },
         success: function(data) {
-          // amnaj
           // Check Deleted status
           var upd_flag = data.results[0]["upd_flag"];
           var cus_no = data.results[0]["cus_no"];
@@ -1887,7 +1886,7 @@
 
           while (cus_brn.length < 3) 
             cus_brn = "0" + cus_brn;
-          $('#id_cus_brn').val(cus_brn);
+            $('#id_cus_brn').val(cus_brn);
           
           // Customer Site
           var cus_bill_cus_active = data.results[0]["cus_active"];
@@ -1920,12 +1919,13 @@
           var cus_bill_cus_email = data.results[0]["cus_email"];
           var cus_bill_cus_zone = data.results[0]["cus_zone"];
 
-          var cus_bill_cus_contact_id = data.results[0]["cus_bill_site_contact_id"];
+          // amnaj
+          var cus_bill_cus_contact_id = data.results[0]["cus_bill_cus_contact_id"];                    
           var cus_bill_cus_contact_title_th = data.results[0]["cus_bill_cus_contact_title_th"];
           var cus_bill_cus_contact_fname_th = data.results[0]["cus_bill_cus_contact_fname_th"];
           var cus_bill_cus_contact_lname_th = data.results[0]["cus_bill_cus_contact_lname_th"];
           var cus_bill_cus_contact_position_th = data.results[0]["cus_bill_cus_contact_position_th"];
-
+          
           $('#id_cus_bill_cus_name_th').val(cus_bill_cus_name_th);
           $('#id_cus_bill_cus_add1_th').val(cus_bill_cus_add1_th);
           $('#id_cus_bill_cus_add2_th').val(cus_bill_cus_add2_th);
@@ -1950,11 +1950,12 @@
           $('#id_cus_bill_cus_email').val(cus_bill_cus_email);
           $('#id_cus_bill_cus_zone').val(cus_bill_cus_zone);
 
-          $('#id_cus_bill_site_contact_id').val(cus_bill_cus_contact_id);
-          $('#id_cus_bill_site_contact_title_th').val(cus_bill_cus_contact_title_th);
-          $('#id_cus_bill_site_contact_fname_th').val(cus_bill_cus_contact_fname_th);
-          $('#id_cus_bill_site_contact_lname_th').val(cus_bill_cus_contact_lname_th);
-          $('#id_cus_bill_site_contact_position_th').val(cus_bill_cus_contact_position_th);
+          $('#id_cus_bill_cus_contact_id').val(cus_bill_cus_contact_id);
+          $('#id_cus_bill_cus_contact_cus_title_th').val(cus_bill_cus_contact_title_th);
+          $('#id_cus_bill_cus_contact_con_fname_th').val(cus_bill_cus_contact_fname_th);
+          $('#id_cus_bill_cus_contact_con_lname_th').val(cus_bill_cus_contact_lname_th);
+          $('#id_cus_bill_cus_contact_con_position_th').val(cus_bill_cus_contact_position_th);
+
         },
         error: function(data) {
           alert(data.responseJSON.error);          
@@ -2053,6 +2054,8 @@
     cus_site_cus_email = $('#id_cus_site_cus_email').val();    
     cus_site_cus_zone = $('#id_cus_site_cus_zone').val();    
     cus_site_site_contact_id = $('#id_cus_site_site_contact_id').val();
+    //alert(cus_site_site_contact_id);
+
     customer_group_id = $('#id_customer_group_id').val();
     //alert(customer_group_id);
     //alert(cus_site_cus_district_id);
@@ -2079,6 +2082,7 @@
     cus_bill_cus_email = $('#id_cus_bill_cus_email').val();
     cus_bill_cus_zone = $('#id_cus_bill_cus_zone').val();    
     cus_bill_cus_contact_id = $('#id_cus_bill_cus_contact_id').val();
+    //alert(cus_bill_cus_contact_id);
 
     $.ajax({
       url : "/customer/ajax/update_all_cus_tabs/",
