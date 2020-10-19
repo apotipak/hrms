@@ -176,7 +176,7 @@ def ajax_check_exist_cus_main(request):
                         "cus_contact_position_en": cus_main_cus_contact_position_en,
                         "cus_contact_con_nationality_id": cus_main_cus_contact_nationality_id,
                         "cus_contact_con_mobile": cus_main_cus_contact_con_mobile,
-                        "cus_main_cus_contact_con_email": cus_main_cus_contact_con_email,
+                        "cus_contact_con_email": cus_main_cus_contact_con_email,
                     }
                     pickup_records.append(record)
                 
@@ -2350,6 +2350,7 @@ def update_all_cus_tabs(request):
                         except CusContact.DoesNotExist:                            
                             print("add new contact")
 
+
                             latest_contact_number = CusContact.objects.aggregate(Max('con_id'))
                             latest_contact_number = latest_contact_number['con_id__max']
                             if latest_contact_number is not None:
@@ -2361,13 +2362,13 @@ def update_all_cus_tabs(request):
                                 con_fname_th = cus_main_cus_contact_con_fname_th
                                 con_lname_th = cus_main_cus_contact_con_lname_th
                                 con_position_th = cus_main_cus_contact_con_position_th
-                                con_fname_en = ""
-                                con_lname_en = ""
-                                con_position_en = ""
-                                con_nation = 99
-                                con_sex = 'M'
-                                con_mobile = ''
-                                con_email = ''
+                                con_fname_en = cus_main_cus_contact_con_fname_en
+                                con_lname_en = cus_main_cus_contact_con_lname_th                            
+                                con_position_en = cus_main_cus_contact_con_position_en
+                                con_nation = cus_main_cus_contact_con_nationality_id
+                                con_sex = cus_main_cus_contact_title_sex
+                                con_mobile = cus_main_cus_contact_con_mobile
+                                con_email = cus_main_cus_contact_con_email
                                 upd_date = datetime.datetime.now()
                                 upd_by = request.user.first_name
                                 upd_flag = 'A'
@@ -2383,6 +2384,9 @@ def update_all_cus_tabs(request):
                                     con_fname_en = con_fname_en,
                                     con_lname_en = con_lname_en,
                                     con_position_en = con_position_en,
+                                    con_nation_id = con_nation,
+                                    con_mobile = con_mobile,
+                                    con_email = con_email,
                                     )
                                 new_contact.save()
 
@@ -2411,6 +2415,10 @@ def update_all_cus_tabs(request):
                         cus_main.cus_sht_en = ""            
 
                         cus_main.save()
+
+
+
+
 
                     # CUS_MAIN Business Type
                     try:
@@ -2539,10 +2547,11 @@ def update_all_cus_tabs(request):
                         con_fname_en = cus_main_cus_contact_con_fname_en
                         con_lname_en = cus_main_cus_contact_con_lname_en
                         con_position_en = cus_main_cus_contact_con_position_en
-                        con_nation = 99
+                        con_nation = cus_main_cus_contact_con_nationality_id
                         con_sex = cus_main_cus_contact_title_sex
-                        con_mobile = ''
-                        con_email = ''
+                        con_mobile = cus_main_cus_contact_con_mobile
+                        con_email = cus_main_cus_contact_con_email
+
                         upd_date = datetime.datetime.now()
                         upd_by = request.user.first_name
                         upd_flag = 'A'
@@ -2558,13 +2567,13 @@ def update_all_cus_tabs(request):
                             con_fname_en = con_fname_en,
                             con_lname_en = con_lname_en,
                             con_position_en = con_position_en,
-                            con_nation_id = 99,
+                            con_nation_id = con_nation,
                             con_sex = con_sex,
-                            con_mobile = '',
-                            con_email = '',
+                            con_mobile = con_mobile,
+                            con_email = con_email,
                             upd_date = datetime.datetime.now(),
                             upd_by = request.user.first_name,
-                            upd_flag = 'A',         
+                            upd_flag = 'A',   
                             )
                         new_contact.save()
                     cus_main_cus_contact_id = cus_main_new_contact_id
