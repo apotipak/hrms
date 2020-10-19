@@ -365,6 +365,9 @@
               </div>
             </div>
 
+
+
+
             <!-- Main Office Tab - Contact Information -->
             <div class="row">
               <div class="col-md-12">
@@ -391,10 +394,6 @@
                       <div class="form-group col-md-2">
                         <label for="id_cus_main_selected_contact_title">{% trans 'Title (TH)' %}</label>                          
                         <div class="container">
-
-                          {% comment %}
-                          {% render_field customer_code_create_form.contact_title_list class="form-control col-sm-12 form-control-sm" %}
-                          {% endcomment %}
 
                           <select name="cus_main_cus_contact_title_list" class="form-control form-control-sm" required="" id="id_cus_main_cus_contact_title_list">
                             {% for choice in customer_code_create_form.contact_title_list.field.queryset %}
@@ -425,10 +424,12 @@
 
 
 
+
+                    <!-- amnaj cus_main -->
                     <div class="form-row">
                       
                       <div class="form-group col-md-2">
-                        <label for="id_cus_site_site_contact_id" class="col-sm-12 col-form-label form-control-sm">{% trans 'Sex' %}</label>
+                        <label for="id_cus_main_cus_contact_id" class="col-sm-12 col-form-label form-control-sm">{% trans 'Sex' %}</label>
 
                         <div class="row">                              
                           <div class="col-12 input-group">
@@ -473,8 +474,6 @@
 
 
 
-                    <!-- amnaj -->
-
                     <div class="form-row">
                       
                       <div class="form-group col-md-2">
@@ -499,35 +498,14 @@
                         <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_contact_con_email" name="cus_main_cus_contact_con_email">
                       </div>
 
-
                     </div>
                     
 
-
-                    {% comment %}
-                    <div class="form-group">                              
-                      <div class="col-sm-3">
-                          <label for="input-type">Sex</label>
-                          <div id="input-type" class="row">
-
-                              {% render_field cus_site_form.cus_site_cus_contact_con_sex class="radio-inline" %}
-
-                          </div>
-                      </div>
-                    </div>
-                    {% endcomment %}
 
                   </div>
                 </div>
               </div>
             </div>
-
-            {% comment %}
-            <div class="float-right">
-              <input type="button" class="btn btn-secondary btn-md" value="Cancel" onClick="this.form.reset()" />
-              <a href="#" id="saveAllCustomerTabs" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
-            </div>
-            {% endcomment %}
 
             </form>
 
@@ -803,10 +781,26 @@
 
 
 
+                        <!--
                         <div class="form-group col-md-2">
                           <label for="id_cus_site_cus_title">{% trans 'Title' %}</label>
                             <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_title_th" name="cus_site_site_contact_title_th" readonly>
                         </div>
+                        -->
+
+                        <div class="form-group col-md-2">
+                          <label for="id_cus_main_selected_contact_title">{% trans 'Title (TH)' %}</label>                          
+                          <div class="container">
+
+                            <select name="cus_site_cus_contact_title_list" class="form-control form-control-sm" required="" id="id_cus_site_cus_contact_title_list">
+                              {% for choice in customer_code_create_form.contact_title_list.field.queryset %}
+                                <option value="{{ choice.pk }}">{{ choice.title_th}}</option> 
+                              {% endfor %}
+                            </select>
+
+                          </div>
+                        </div>
+
 
                         <div class="form-group col-md-2">
                           <label for="id_cus_site_site_contact_fname_th">{% trans 'First Name' %}</label>
@@ -822,45 +816,93 @@
                           <label for="id_cus_site_site_contact_position_th">{% trans 'Position' %}</label>
                           <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_position_th" name="cus_site_site_contact_position_th">
                         </div>
+                      </div>
+                      
+
+
+                        <!-- amnaj cus_site -->
+                      <div class="form-row">
+                        
+                        <div class="form-group col-md-2">
+                          <label for="cus_site_sex_options" class="col-sm-12 col-form-label form-control-sm">{% trans 'Sex' %}</label>
+
+                          <div class="row">                              
+                            <div class="col-12 input-group">
+
+                              <div class="form-check form-check-inline pl-1">
+                                <input class="form-check-input" type="radio" name="cus_site_sex_options" id="id_sex_male" value="M" checked>
+                                <label class="form-check-label" for="id_cus_site_sex_male">Male</label>
+                              </div>
+                              <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="cus_site_sex_options" id="id_sex_female" value="F">
+                                <label class="form-check-label" for="id_cus_site_sex_female">Female</label>
+                              </div>
+
+                            </div>
+
+                          </div>                          
+                        </div>
+
+                        <div class="form-group col-md-2">
+                          <label for="id_cus_site_site_contact_cus_title_en">{% trans 'Title (EN)' %}</label>                          
+                            {% render_field customer_code_create_form.cus_site_site_contact_cus_title_en class="form-control form-control-sm" %}
+                        </div>
+
+                        <div class="form-group col-md-2">
+                          <label for="id_cus_site_site_contact_con_fname_en">{% trans 'First Name (EN)' %}</label>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_con_fname_en" name="cus_main_cus_contact_con_fname_en">
+                        </div>
+
+                        <div class="form-group col-md-3">
+                          <label for="id_cus_site_site_contact_con_lname_en">{% trans 'Last Name (EN)' %}</label>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_con_lname_en" name="cus_site_cus_contact_con_lname_en">
+                        </div>
+
+                        <div class="form-group col-md-3">
+                          <label for="id_cus_site_site_contact_con_position_en">{% trans 'Position (EN)' %}</label>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_con_position_en" name="cus_site_cus_contact_con_position_en">
+                        </div>
 
                       </div>
                       
 
-                      {% comment %}
-                      <div class="form-group">                              
-                        <div class="col-sm-3">
-                            <label for="input-type">Sex</label>
-                            <div id="input-type" class="row">
+                      <div class="form-row">
+                        
+                        <div class="form-group col-md-2">
 
-                                {% render_field cus_site_form.cus_site_cus_contact_con_sex class="radio-inline" %}
+                          <label for="id_cus_site_cus_contact_cus_title_en">{% trans 'Nationality' %}</label>                          
+                          <select name="cus_site_cus_contact_nation_list" class="form-control form-control-sm" required="" id="id_cus_site_site_contact_nation_list">
+                            {% for choice in customer_code_create_form.contact_nation_list.field.queryset %}
+                              <option value="{{ choice.pk }}">{{ choice.nation_th}}</option> 
+                            {% endfor %}
+                          </select>
 
-                            </div>
                         </div>
+
+
+                        <div class="form-group col-md-3">
+                          <label for="id_cus_site_cus_contact_con_mobile">{% trans 'Mobile' %}</label>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_con_mobile" name="cus_site_cus_contact_con_mobile">
+                        </div>
+
+                        <div class="form-group col-md-3">
+                          <label for="id_cus_site_cus_contact_con_email">{% trans 'Email' %}</label>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_con_email" name="cus_site_cus_contact_con_email">
+                        </div>
+
                       </div>
-                      {% endcomment %}
+
 
                     </div>
                   </div>
                 </div>
               </div>
 
-
-            {% comment %}
-            <div class="float-right">              
-              <input type="button" class="btn btn-secondary btn-md" value="Cancel" onClick="this.form.reset()" />
-              <a href="#" id="cusSiteSaveButton" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
-            </div>
-            {% endcomment %}
-
             </form>
 
             </div>
 
           </div>
-
-
-
-
 
 
           <!-- Billing Tab -->
@@ -2128,12 +2170,13 @@
     else
       cus_main_cus_active = 0;
 
+
+    // CUS_MAIN
     cus_main_cus_name_th = $('#id_cus_main_cus_name_th').val();
     cus_main_cus_add1_th = $('#id_cus_main_cus_add1_th').val();
     cus_main_cus_add2_th = $('#id_cus_main_cus_add2_th').val();    
     cus_main_cus_subdist_th = $('#id_cus_main_cus_subdist_th').val();
-    cus_main_cus_district_id = $('#id_cus_main_select_district_id').val();
-    
+    cus_main_cus_district_id = $('#id_cus_main_select_district_id').val();    
     cus_main_cus_district = $('#id_cus_main_cus_district').val();
     cus_main_cus_name_en = $('#id_cus_main_cus_name_en').val();
     cus_main_cus_add1_en = $('#id_cus_main_cus_add1_en').val();
@@ -2152,6 +2195,7 @@
     customer_option_op4 = $('#id_cus_main_customer_option_op4').val();
     customer_option_opn1 = $('#id_cus_main_customer_option_opn1').val();
 
+
     // CUS_MAIN_CUS_CONTACT
     cus_main_cus_contact_id = $('#id_cus_main_cus_contact_id').val();
     cus_main_select_contact_title_id = $('#id_cus_main_cus_contact_title_list').val();
@@ -2165,12 +2209,11 @@
     cus_main_cus_contact_con_lname_en = $('#id_cus_main_cus_contact_con_lname_en').val();
     cus_main_cus_contact_con_position_en = $('#id_cus_main_cus_contact_con_position_en').val();
     cus_main_cus_contact_sex_option = $("input[name=sexOptions]:checked").val();
-
     cus_main_cus_contact_con_nationality_id = $("#id_cus_main_cus_contact_nation_list").val();
     cus_main_cus_contact_con_mobile = $("#id_cus_main_cus_contact_con_mobile").val();
     cus_main_cus_contact_con_email = $("#id_cus_main_cus_contact_con_email").val();
-
-    console.log(cus_main_cus_contact_con_nationality_id + "," + cus_main_cus_contact_con_mobile + "," + cus_main_cus_contact_con_email)
+    console.log("cus_main : cus_main_cus_contact_con_nationality_id = " + cus_main_cus_contact_con_nationality_id);
+    // + "," + cus_main_cus_contact_con_mobile + "," + cus_main_cus_contact_con_email)
 
     // CUS_SITE
     if ($('#id_cus_site_cus_active').is(":checked"))
@@ -2193,15 +2236,42 @@
     cus_site_cus_email = $('#id_cus_site_cus_email').val();    
     cus_site_cus_zone = $('#id_cus_site_cus_zone').val();    
 
+
+    // amnaj 
+    // CUS_SITE_CUS_CONTACT    
     cus_site_site_contact_id = $('#id_cus_site_site_contact_id').val();    
-    cus_site_site_contact_cus_title_th = $('#id_cus_site_site_contact_title_th').val();
+    //console.log("cus_site_site_contact_id = " + cus_site_site_contact_id)
+    cus_site_select_contact_title_id = $('#id_cus_site_cus_contact_title_list').val();    
+    //alert(cus_site_select_contact_title_id);
+    //console.log("cus_site_select_contact_title_id = " + cus_site_select_contact_title_id);
+
+    //cus_site_site_contact_cus_title_th = $('#id_cus_site_site_contact_title_th').val();
     cus_site_site_contact_con_fname_th = $('#id_cus_site_site_contact_fname_th').val();
-    cus_site_site_contact_con_lname_th= $('#id_cus_site_site_contact_lname_th').val();
-    cus_site_site_contact_con_position_th = $('#id_cus_site_site_contact_position_th').val();
+    cus_site_site_contact_con_lname_th= $('#id_cus_site_site_contact_lname_th').val();    
+    cus_site_site_contact_con_position_th = $('#id_cus_site_site_contact_position_th').val();    
+    //console.log(cus_site_site_contact_con_fname_th+","+cus_site_site_contact_con_lname_th+","+cus_site_site_contact_con_position_th)
+
+    cus_site_site_contact_sex_option = $("input[name=cus_site_sex_options]:checked").val();
+    //alert(cus_site_cus_contact_sex_option);
+
+    cus_site_site_contact_cus_title_en = $('#id_cus_site_site_contact_cus_title_en').val();
+    cus_site_site_contact_con_fname_en = $('#id_cus_site_site_contact_con_fname_en').val();
+    cus_site_site_contact_con_lname_en = $('#id_cus_site_site_contact_con_lname_en').val();
+    cus_site_site_contact_con_position_en = $('#id_cus_site_site_contact_con_position_en').val();
+    //alert(cus_site_cus_contact_cus_title_en + "," + cus_site_cus_contact_con_fname_en + "," + cus_site_cus_contact_con_lname_en + "," + cus_site_cus_contact_con_position_en);
+
+    //console.log(cus_site_site_contact_sex_option + "," + cus_site_site_contact_cus_title_en + "," + cus_site_site_contact_con_fname_en + "," + cus_site_site_contact_con_lname_en + "," + cus_site_site_contact_con_position_en);
+
+    // amnaj
+    cus_site_site_contact_con_nationality_id = $("#id_cus_site_site_contact_nation_list").val();
+    cus_site_site_contact_con_mobile = $("#id_cus_site_site_contact_con_mobile").val();
+    cus_site_site_contact_con_email = $("#id_cus_site_site_contact_con_email").val();
+    console.log("cus_site : cus_site_site_contact_con_nationality_id " + cus_site_site_contact_con_nationality_id);
+    // + "," + cus_site_site_contact_con_mobile + "," + cus_site_site_contact_con_email)
+
 
     customer_group_id = $('#id_customer_group_id').val();
-    //alert(customer_group_id);
-    //alert(cus_site_cus_district_id);
+
 
     // CUS_BILL
     if ($('#id_cus_bill_cus_active').is(":checked"))
@@ -2300,10 +2370,20 @@
         cus_site_cus_zone: cus_site_cus_zone,
 
         cus_site_site_contact_id: cus_site_site_contact_id,
-        cus_site_site_contact_cus_title_th: cus_site_site_contact_cus_title_th,
         cus_site_site_contact_con_fname_th: cus_site_site_contact_con_fname_th,
         cus_site_site_contact_con_lname_th: cus_site_site_contact_con_lname_th,
         cus_site_site_contact_con_position_th: cus_site_site_contact_con_position_th,
+        cus_site_select_contact_title_id: cus_site_select_contact_title_id,
+        cus_site_site_contact_sex_option: cus_site_site_contact_sex_option,
+        cus_site_site_contact_cus_title_en: cus_site_site_contact_cus_title_en,
+        cus_site_site_contact_con_fname_en: cus_site_site_contact_con_fname_en,
+        cus_site_site_contact_con_lname_en: cus_site_site_contact_con_lname_en,
+        cus_site_site_contact_con_position_en: cus_site_site_contact_con_position_en,
+        cus_site_site_contact_con_nationality_id: cus_site_site_contact_con_nationality_id,
+        cus_site_site_contact_con_mobile: cus_site_site_contact_con_mobile,
+        cus_site_site_contact_con_email: cus_site_site_contact_con_email,
+
+
 
         // CUS_BILL
         cus_bill_cus_active: cus_bill_cus_active,
@@ -3262,7 +3342,6 @@
       var contact_id = $("#id_cus_main_cus_contact_id").val();
       var title_id = $("#id_cus_main_cus_contact_title_list option:selected").val();
 
-      // amnaj
       $.ajax({
         url: "/customer/ajax/get_contact_title/",
         type: 'get',          

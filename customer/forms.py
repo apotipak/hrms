@@ -36,6 +36,10 @@ class CustomerCodeCreateForm(forms.Form):
     cus_main_cus_contact_nation_en = forms.CharField(required=False)
 
 
+    # Site Title
+    cus_site_site_contact_cus_title_en = forms.CharField(required=False)
+
+
     def __init__(self, *args, **kwargs):
         super(CustomerCodeCreateForm, self).__init__(*args, **kwargs)
         
@@ -74,6 +78,10 @@ class CustomerCodeCreateForm(forms.Form):
         self.fields['cus_main_cus_contact_nation_en'].initial = 'Thai'
         self.fields['cus_main_cus_contact_nation_en'].widget.attrs['readonly'] = True
 
+        # Site Contact Information
+        self.fields['cus_site_site_contact_cus_title_en'].initial = 'Khun'
+        self.fields['cus_site_site_contact_cus_title_en'].widget.attrs['readonly'] = True
+        
     def clean_cus_id(self):
         data = self.data.get('cus_id')
         if data.isnumeric():

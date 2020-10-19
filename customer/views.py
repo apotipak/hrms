@@ -2059,7 +2059,6 @@ def update_all_cus_tabs(request):
             cus_main_cus_contact_con_lname_en= request.POST.get('cus_main_cus_contact_con_lname_en')
             cus_main_cus_contact_con_position_en = request.POST.get('cus_main_cus_contact_con_position_en')
             cus_main_select_contact_title_id = request.POST.get('cus_main_select_contact_title_id')
-
             cus_main_cus_contact_con_nationality_id = request.POST.get('cus_main_cus_contact_con_nationality_id')
             cus_main_cus_contact_con_mobile = request.POST.get('cus_main_cus_contact_con_mobile')
             cus_main_cus_contact_con_email = request.POST.get('cus_main_cus_contact_con_email')
@@ -2077,7 +2076,6 @@ def update_all_cus_tabs(request):
             print("cus_main_cus_contact_con_fname_en = " + str(cus_main_cus_contact_con_fname_en))
             print("cus_main_cus_contact_con_lname_en = " + str(cus_main_cus_contact_con_lname_en))
             print("cus_main_cus_contact_con_position_en = " + str(cus_main_cus_contact_con_position_en))
-
             print("cus_main_cus_contact_con_nationality_id = " + str(cus_main_cus_contact_con_nationality_id))
             print("cus_main_cus_contact_con_mobile = " + str(cus_main_cus_contact_con_mobile))
             print("cus_main_cus_contact_con_email = " + str(cus_main_cus_contact_con_email))
@@ -2262,22 +2260,11 @@ def update_all_cus_tabs(request):
                                 count_modified_field = count_modified_field + 1
 
                     # CUS_CONTACT
-                    '''
-                    if cus_main_cus_contact_id is not None:
-                        if cus_main_cus_contact_id.isnumeric():                  
-                            if cus_main.cus_contact_id is not None:
-                                field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Contact ID", int(cus_main.cus_contact_id), int(cus_main_cus_contact_id), "E", request)
-                            else:
-                                field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Contact ID", cus_main.cus_contact_id, int(cus_main_cus_contact_id), "E", request)
-                            
-                            if field_is_modified:
-                                cus_main.cus_contact_id = cus_main_cus_contact_id
-                                modified_records.append(record)
-                                count_modified_field = count_modified_field + 1
-                    '''
                     if len(cus_main_cus_contact_con_fname_th) > 0 or len(cus_main_cus_contact_con_lname_th) > 0:
-                        print("abc")
+                        print("main_office - abc")
                         try:
+                            print("cus_id = " + str(cus_id))
+
                             contact_list = CusContact.objects.filter(cus_id=cus_id, con_fname_th=cus_main_cus_contact_con_fname_th, con_lname_th=cus_main_cus_contact_con_lname_th)[:1].get()
                             print("update old contact")
                             
@@ -2347,7 +2334,7 @@ def update_all_cus_tabs(request):
 
                             contact_list.save()
 
-                        except CusContact.DoesNotExist:                            
+                        except CusContact.DoesNotExist:          
                             print("add new contact")
 
 
@@ -2655,6 +2642,7 @@ def update_all_cus_tabs(request):
             cus_site_cus_add2_en = request.POST.get('cus_site_cus_add2_en')
             cus_site_cus_subdist_en = request.POST.get('cus_site_cus_subdist_en')            
             cus_site_cus_zip = request.POST.get('cus_site_cus_zip')
+
             if not cus_site_cus_zip:
                 cus_site_cus_zip = None
             cus_site_cus_tel = request.POST.get('cus_site_cus_tel')
@@ -2698,19 +2686,30 @@ def update_all_cus_tabs(request):
             cus_site_site_contact_con_fname_th = request.POST.get('cus_site_site_contact_con_fname_th')
             cus_site_site_contact_con_lname_th= request.POST.get('cus_site_site_contact_con_lname_th')
             cus_site_site_contact_con_position_th = request.POST.get('cus_site_site_contact_con_position_th')
+            cus_site_cus_contact_sex_option = request.POST.get('cus_site_cus_contact_sex_option')
+            cus_site_site_contact_cus_title_en = request.POST.get('cus_site_site_contact_cus_title_en')
+            cus_site_site_contact_con_fname_en = request.POST.get('cus_site_site_contact_con_fname_en')
+            cus_site_site_contact_con_lname_en = request.POST.get('cus_site_site_contact_con_lname_en')
+            cus_site_site_contact_con_position_en = request.POST.get('cus_site_site_contact_con_position_en')
+            cus_site_select_contact_title_id = request.POST.get('cus_site_select_contact_title_id')
+            cus_site_site_contact_con_nationality_id = request.POST.get('cus_site_site_contact_con_nationality_id')
+            cus_site_site_contact_con_mobile = request.POST.get('cus_site_site_contact_con_mobile')
+            cus_site_site_contact_con_email = request.POST.get('cus_site_site_contact_con_email')
 
-            '''
-            print("------ Print CUS_SITE data -------")
-            print("cus_no = " + str(cus_no))
-            print("cus_site_cus_active = " + str(cus_site_cus_active))
-            print("cus_site_cus_name = " + str(cus_site_cus_name_th))
-            print("cus_site_cus_district_id = " + str(cus_site_cus_district_id))
-            print("cus_site_city_id = " + str(city_id))
-            print("cus_site_country_id = " + str(country_id))
-            print("cus_site_cus_zip = " + str(cus_site_cus_zip))
-            print("cus_site_cus_zone = " + str(cus_site_cus_zone))
-            print("------------------------")
-            '''
+            print("cus_site_site_contact_id = " + str())
+            print("cus_site_site_contact_cus_title_th = " + str(cus_site_site_contact_cus_title_th))
+            print("cus_site_site_contact_con_fname_th = " + str(cus_site_site_contact_con_fname_th))
+            print("cus_site_site_contact_con_lname_th = " + str(cus_site_site_contact_con_lname_th))
+            print("cus_site_site_contact_con_position_th = " + str(cus_site_site_contact_con_position_th))
+            print("cus_site_cus_contact_sex_option = " + str(cus_site_cus_contact_sex_option))            
+            print("cus_site_site_contact_cus_title_en = " + str(cus_site_site_contact_cus_title_en))
+            print("cus_site_site_contact_con_fname_en = " + str(cus_site_site_contact_con_fname_en))
+            print("cus_site_site_contact_con_lname_en = " + str(cus_site_site_contact_con_lname_en))
+            print("cus_site_site_contact_con_position_en = " + str(cus_site_site_contact_con_position_en))        
+            print("cus_site_select_contact_title_id = " + str(cus_site_select_contact_title_id))
+            print("cus_site_site_contact_con_nationality_id = " + str(cus_site_site_contact_con_nationality_id))
+            print("cus_site_site_contact_con_mobile = " + str(cus_site_site_contact_con_mobile))
+            print("cus_site_site_contact_con_email = " + str(cus_site_site_contact_con_email))
 
             try:
                 modified_records = []
@@ -2882,6 +2881,144 @@ def update_all_cus_tabs(request):
 
 
                     # CUS_CONTACT
+                    if len(cus_site_site_contact_con_fname_th) > 0 or len(cus_site_site_contact_con_lname_th) > 0:
+                        print("site - abc")
+                        print("cus_id = " + str(cus_id))
+
+                        try:
+                            contact_list = CusContact.objects.filter(cus_id=cus_site_site_contact_id, con_fname_th=cus_site_site_contact_con_fname_th, con_lname_th=cus_site_site_contact_con_lname_th)[:1].get()
+                            print("site - update old contact")
+                            
+                            # amnaj
+                            contact_list = CusContact.objects.filter(cus_id=cus_site_site_contact_id).get()
+
+
+                            '''
+                            field_is_modified, record = check_modified_field("CUSTOMER", cus_no, "Contact first name (TH)", contact_list.con_fname_th, cus_site_site_contact_con_fname_th, "E", request)
+                            if field_is_modified:                                
+                                contact_list.con_fname_th = cus_site_site_contact_con_fname_th
+                                modified_records.append(record)
+                                count_modified_field = count_modified_field + 1
+                            '''
+
+
+                            '''
+                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Contact last name (TH)", contact_list.con_lname_th, cus_main_cus_contact_con_lname_th, "E", request)
+                            if field_is_modified:                                
+                                contact_list.con_lname_th = cus_main_cus_contact_con_lname_th
+                                modified_records.append(record)
+                                count_modified_field = count_modified_field + 1
+
+                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Contact position (TH)", contact_list.con_position_th, cus_main_cus_contact_con_position_th, "E", request)
+                            if field_is_modified:                                                                
+                                contact_list.con_position_th = cus_main_cus_contact_con_position_th
+                                modified_records.append(record)
+                                count_modified_field = count_modified_field + 1
+                                                        
+                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Sex", contact_list.con_sex, cus_main_cus_contact_title_sex, "E", request)
+                            if field_is_modified:                                                                
+                                contact_list.con_sex = cus_main_cus_contact_title_sex
+                                modified_records.append(record)
+                                count_modified_field = count_modified_field + 1
+
+                            # EN
+                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Contact first name (EN)", contact_list.con_fname_en, cus_main_cus_contact_con_fname_en, "E", request)
+                            if field_is_modified:                                
+                                contact_list.con_fname_en = cus_main_cus_contact_con_fname_en
+                                modified_records.append(record)
+                                count_modified_field = count_modified_field + 1
+
+                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Contact last name (EN)", contact_list.con_lname_en, cus_main_cus_contact_con_lname_en, "E", request)
+                            if field_is_modified:                                
+                                contact_list.con_lname_en = cus_main_cus_contact_con_lname_en
+                                modified_records.append(record)
+                                count_modified_field = count_modified_field + 1
+
+                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Contact position (EN)", contact_list.con_position_en, cus_main_cus_contact_con_position_en, "E", request)
+                            if field_is_modified:                                                                
+                                contact_list.con_position_en = cus_main_cus_contact_con_position_en
+                                modified_records.append(record)
+                                count_modified_field = count_modified_field + 1
+
+                            # amnaj
+                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Contact Nationality", str(contact_list.con_nation_id), str(cus_main_cus_contact_con_nationality_id), "E", request)
+                            if field_is_modified:                                                                
+                                contact_list.con_nation_id = cus_main_cus_contact_con_nationality_id
+                                modified_records.append(record)
+                                count_modified_field = count_modified_field + 1
+
+                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Contact Mobile", contact_list.con_mobile, cus_main_cus_contact_con_mobile, "E", request)
+                            if field_is_modified:                                                                
+                                contact_list.con_mobile = cus_main_cus_contact_con_mobile
+                                modified_records.append(record)
+                                count_modified_field = count_modified_field + 1
+                            
+                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Contact Email", contact_list.con_email, cus_main_cus_contact_con_email, "E", request)
+                            if field_is_modified:                                                                
+                                contact_list.con_email = cus_main_cus_contact_con_email
+                                modified_records.append(record)
+                                count_modified_field = count_modified_field + 1
+                            '''
+
+                            #contact_list.save()
+
+                        except CusContact.DoesNotExist:                            
+                            print("add new contact")
+
+                            '''
+                            latest_contact_number = CusContact.objects.aggregate(Max('con_id'))
+                            latest_contact_number = latest_contact_number['con_id__max']
+                            if latest_contact_number is not None:
+
+                                cus_main_new_contact_id = latest_contact_number + 1                                
+                                cus_id = cus_id
+                                cus_brn = cus_brn
+                                con_title_id = 129
+                                con_fname_th = cus_main_cus_contact_con_fname_th
+                                con_lname_th = cus_main_cus_contact_con_lname_th
+                                con_position_th = cus_main_cus_contact_con_position_th
+                                con_fname_en = cus_main_cus_contact_con_fname_en
+                                con_lname_en = cus_main_cus_contact_con_lname_th                            
+                                con_position_en = cus_main_cus_contact_con_position_en
+                                con_nation = cus_main_cus_contact_con_nationality_id
+                                con_sex = cus_main_cus_contact_title_sex
+                                con_mobile = cus_main_cus_contact_con_mobile
+                                con_email = cus_main_cus_contact_con_email
+                                upd_date = datetime.datetime.now()
+                                upd_by = request.user.first_name
+                                upd_flag = 'A'
+
+                                new_contact = CusContact(
+                                    con_id = cus_main_new_contact_id,
+                                    cus_id = cus_id,
+                                    cus_brn = cus_brn,
+                                    con_title_id = con_title_id,
+                                    con_fname_th = con_fname_th,
+                                    con_lname_th = con_lname_th,
+                                    con_position_th = con_position_th,
+                                    con_fname_en = con_fname_en,
+                                    con_lname_en = con_lname_en,
+                                    con_position_en = con_position_en,
+                                    con_nation_id = con_nation,
+                                    con_mobile = con_mobile,
+                                    con_email = con_email,
+                                    )
+                                new_contact.save()
+
+                                if cus_main_cus_contact_id is not None:
+                                    field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Contact", "", cus_main_new_contact_id, "A", request)
+                                else:
+                                    field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Contact", int(cus_main.cus_contact_id), int(cus_main_new_contact_id), "A", request)
+
+                                if field_is_modified:
+                                    cus_main.cus_contact_id = cus_main_new_contact_id
+                                    modified_records.append(record)
+                                    count_modified_field = count_modified_field + 1                                
+                            '''
+                    else:
+                        print("Contact is not changed")
+
+
                     '''
                     if cus_site_site_contact_id is not None:
                         if cus_site_site_contact_id.isnumeric():
@@ -2982,6 +3119,7 @@ def update_all_cus_tabs(request):
 
 
                     if count_modified_field > 0:
+                        
                         customer.upd_date = datetime.datetime.now()
                         customer.upd_by = request.user.first_name                    
                         if customer.upd_flag == 'A' or customer.upd_flag == 'R':
