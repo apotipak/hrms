@@ -66,7 +66,8 @@ class CustomerCodeCreateForm(forms.Form):
         self.fields['cus_main_cus_contact_cus_title_en'].widget.attrs['readonly'] = True
         
         # Contact Nation
-        self.fields['contact_nation_list'].queryset=TNation.objects.all().filter(nation_id__in=[0,1,4,5,11,9,29,44,46,47,97,99]).order_by('-nation_id')
+        # self.fields['contact_nation_list'].queryset=TNation.objects.all().filter(nation_id__in=[0,1,4,5,11,9,29,44,46,47,97,99]).order_by('-nation_id')
+        self.fields['contact_nation_list'].queryset=TNation.objects.all().order_by('-nation_id')
         self.fields['contact_nation_list'].initial = 99
         self.fields['cus_main_cus_contact_nation_th'].initial = 'ไทย'
         self.fields['cus_main_cus_contact_nation_th'].widget.attrs['readonly'] = True
