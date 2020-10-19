@@ -2327,7 +2327,7 @@ def update_all_cus_tabs(request):
                                 count_modified_field = count_modified_field + 1
 
                             # amnaj
-                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Contact Nationality", contact_list.con_nation, cus_main_cus_contact_con_nationality_id, "E", request)
+                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Contact Nationality", str(contact_list.con_nation_id), str(cus_main_cus_contact_con_nationality_id), "E", request)
                             if field_is_modified:                                                                
                                 contact_list.con_nation_id = cus_main_cus_contact_con_nationality_id
                                 modified_records.append(record)
