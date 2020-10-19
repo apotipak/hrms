@@ -111,7 +111,7 @@ def ajax_check_exist_cus_main(request):
                         cus_main_cus_country_th = cus_main.cus_country.country_th
                         cus_main_cus_country_en = cus_main.cus_country.country_en
 
-                    if not cus_main.cus_contact_id:
+                    if cus_main.cus_contact_id is None:
                         cus_main_cus_contact_title_th = ""
                         cus_main_cus_contact_fname_th = ""
                         cus_main_cus_contact_lname_th = ""
@@ -119,7 +119,8 @@ def ajax_check_exist_cus_main(request):
                         cus_main_cus_contact_title_en = ""
                         cus_main_cus_contact_fname_en = ""
                         cus_main_cus_contact_lname_en = ""
-                        cus_main_cus_contact_position_en = ""                         
+                        cus_main_cus_contact_position_en = ""
+                        cus_main_cus_contact_con_sex = ''
                     else:
                         cus_main_cus_contact_title_th = cus_main.cus_contact.con_title.title_th
                         cus_main_cus_contact_fname_th = cus_main.cus_contact.con_fname_th
@@ -129,6 +130,7 @@ def ajax_check_exist_cus_main(request):
                         cus_main_cus_contact_fname_en = cus_main.cus_contact.con_fname_en
                         cus_main_cus_contact_lname_en = cus_main.cus_contact.con_lname_en
                         cus_main_cus_contact_position_en = cus_main.cus_contact.con_position_en
+                        cus_main_cus_contact_con_sex = cus_main.cus_contact.con_sex
 
                     record = {
                         "cus_id": cus_main.cus_id,
@@ -160,6 +162,7 @@ def ajax_check_exist_cus_main(request):
                         "cus_contact_fname_th": cus_main_cus_contact_fname_th,
                         "cus_contact_lname_th": cus_main_cus_contact_lname_th,
                         "cus_contact_position_th": cus_main_cus_contact_position_th,
+                        "cus_contact_con_sex": cus_main_cus_contact_con_sex,
                         "cus_contact_title_en": cus_main_cus_contact_title_en,
                         "cus_contact_fname_en": cus_main_cus_contact_fname_en,
                         "cus_contact_lname_en": cus_main_cus_contact_lname_en,
@@ -2046,6 +2049,7 @@ def update_all_cus_tabs(request):
 
             print("")
             print("amnaj")
+            print("cus_main_cus_contact_id = " + str(cus_main_cus_contact_id))
             print("cus_main_select_contact_title_id = " + str(cus_main_select_contact_title_id))
             print("cus_main_cus_contact_cus_title_th = " + str(cus_main_cus_contact_cus_title_th))
             print("cus_main_cus_contact_con_fname_th = " + str(cus_main_cus_contact_con_fname_th))
@@ -2060,9 +2064,11 @@ def update_all_cus_tabs(request):
             print("")
 
 
-            if cus_main_cus_contact_id is not None:
+            if cus_main_cus_contact_id is not None and cus_main_cus_contact_id != "":
+                print("not none, not empty")
                 cus_main_cus_contact_id = cus_main_cus_contact_id
             else:
+                print("is none or empty")
                 cus_main_cus_contact_id = None
 
             try:
@@ -2250,6 +2256,7 @@ def update_all_cus_tabs(request):
                     '''
                     # amnaj 2
                     if len(cus_main_cus_contact_con_fname_th) > 0 or len(cus_main_cus_contact_con_lname_th) > 0:
+                        print("abc")
                         try:
                             contact_list = CusContact.objects.filter(cus_id=cus_id, con_fname_th=cus_main_cus_contact_con_fname_th, con_lname_th=cus_main_cus_contact_con_lname_th)[:1].get()
                             print("update old contact")
@@ -2470,6 +2477,7 @@ def update_all_cus_tabs(request):
                     # ./ Save History Log 
 
             except CusMain.DoesNotExist:
+                print("abcdefg")
                 insert_status = True
                 cus_main_cus_taxid = request.POST.get('cus_main_cus_taxid')                
 
@@ -2479,23 +2487,25 @@ def update_all_cus_tabs(request):
                     cus_main = 0
 
                 # Main Office CONTACT
-                # amnaj 3
+                # amnaj 3                
                 if len(cus_main_cus_contact_con_fname_th) > 0 or len(cus_main_cus_contact_con_lname_th) > 0:
+                    print("xx")
                     latest_contact_number = CusContact.objects.aggregate(Max('con_id'))
                     latest_contact_number = latest_contact_number['con_id__max']
                     if latest_contact_number is not None:
+                        print("yy")
                         cus_main_new_contact_id = latest_contact_number + 1
                         cus_id = cus_id
                         cus_brn = cus_brn
-                        con_title_id = 129
+                        con_title_id = cus_main_select_contact_title_id
                         con_fname_th = cus_main_cus_contact_con_fname_th
                         con_lname_th = cus_main_cus_contact_con_lname_th
                         con_position_th = cus_main_cus_contact_con_position_th
-                        con_fname_en = ""
-                        con_lname_en = ""
-                        con_position_en = ""
+                        con_fname_en = cus_main_cus_contact_con_fname_en
+                        con_lname_en = cus_main_cus_contact_con_lname_en
+                        con_position_en = cus_main_cus_contact_con_position_en
                         con_nation = 99
-                        con_sex = 'M'
+                        con_sex = cus_main_cus_contact_title_sex
                         con_mobile = ''
                         con_email = ''
                         upd_date = datetime.datetime.now()
@@ -2514,7 +2524,7 @@ def update_all_cus_tabs(request):
                             con_lname_en = con_lname_en,
                             con_position_en = con_position_en,
                             con_nation_id = 99,
-                            con_sex = 'M',
+                            con_sex = con_sex,
                             con_mobile = '',
                             con_email = '',
                             upd_date = datetime.datetime.now(),
@@ -2523,7 +2533,7 @@ def update_all_cus_tabs(request):
                             )
                         new_contact.save()
                     cus_main_cus_contact_id = cus_main_new_contact_id
-                           
+                
                 new_customer_main = CusMain(
                     cus_active = cus_main_cus_active,
                     cus_main = cus_main,
@@ -3019,6 +3029,7 @@ def update_all_cus_tabs(request):
 
                     cus_site_site_contact_id = cus_site_new_contact_id
                            
+                '''
                 new_customer_main = CusMain(
                     cus_active = cus_main_cus_active,
                     cus_main = cus_main,
@@ -3040,8 +3051,8 @@ def update_all_cus_tabs(request):
                     cus_email = cus_main_cus_email,
                     cus_taxid = cus_main_cus_taxid,
                     cus_zone_id = cus_main_cus_zone,
-                    # cus_contact_id = cus_main_cus_contact_id,
-                    # site_contact_id = cus_site_site_contact_id,
+                    cus_contact_id = cus_main_cus_contact_id,
+                    site_contact_id = cus_site_site_contact_id,
                     upd_date = datetime.datetime.now(),
                     upd_flag = 'A',
                     upd_by = request.user.first_name,
@@ -3049,7 +3060,7 @@ def update_all_cus_tabs(request):
                     cus_sht_en = "",
                     )
                 new_customer_main.save()                     
-
+                '''
 
                 new_customer_site = Customer(
                     cus_active = cus_site_cus_active,
