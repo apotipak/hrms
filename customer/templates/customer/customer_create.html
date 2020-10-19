@@ -376,7 +376,6 @@
 
                     <div class="form-row">
                       
-
                       <div class="form-group col-md-2">
                         <label for="id_cus_site_site_contact_id" class="col-sm-12 col-form-label form-control-sm">{% trans 'Contact ID' %}</label>
 
@@ -389,24 +388,82 @@
                         </div>                          
                       </div>
 
+                      <!--
                       <div class="form-group col-md-2">
-                        <label for="id_cus_main_cus_title">{% trans 'Title' %}</label>
+                        <label for="id_cus_main_cus_title">{% trans 'Title (TH)' %}</label>
                           <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_contact_cus_title_th" name="cus_main_cus_contact_cus_title_th" value="" readonly>
                       </div>
+                      -->
+
+                      <!-- amnaj -->
+                      <div class="form-group col-md-2">
+                        <label for="id_cus_main_selected_contact_title">{% trans 'Title (TH)' %}</label>                          
+                        <div class="container">
+                          {% render_field customer_code_create_form.contact_title_list class="form-control col-sm-12 form-control-sm" %}                          
+                        </div>
+                      </div>
+
 
                       <div class="form-group col-md-2">
-                        <label for="id_cus_main_cus_contact_con_fname_th">{% trans 'First Name' %}</label>
+                        <label for="id_cus_main_cus_contact_con_fname_th">{% trans 'First Name (TH)' %}</label>
                         <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_contact_con_fname_th" name="cus_main_cus_contact_con_fname_th">
                       </div>
 
                       <div class="form-group col-md-3">
-                        <label for="id_cus_main_cus_contact_con_lname_th">{% trans 'Last Name' %}</label>
+                        <label for="id_cus_main_cus_contact_con_lname_th">{% trans 'Last Name (TH)' %}</label>
                         <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_contact_con_lname_th" name="cus_main_cus_contact_con_fname_th">
                       </div>
 
                       <div class="form-group col-md-3">
-                        <label for="id_cus_main_cus_contact_con_position_th">{% trans 'Position' %}</label>
+                        <label for="id_cus_main_cus_contact_con_position_th">{% trans 'Position (TH)' %}</label>
                         <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_contact_con_position_th" name="cus_main_cus_contact_con_position_th">
+                      </div>
+
+                    </div>
+                    
+
+
+
+                    <div class="form-row">
+                      
+                      <div class="form-group col-md-2">
+                        <label for="id_cus_site_site_contact_id" class="col-sm-12 col-form-label form-control-sm">{% trans 'Sex' %}</label>
+
+                        <div class="row">                              
+                          <div class="col-12 input-group">
+
+                            <div class="form-check form-check-inline pl-1">
+                              <input class="form-check-input" type="radio" name="sexOptions" id="id_sex_male" value="M" checked>
+                              <label class="form-check-label" for="id_sex_male">Male</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="sexOptions" id="id_sex_female" value="F">
+                              <label class="form-check-label" for="id_sex_female">Female</label>
+                            </div>
+
+                          </div>
+
+                        </div>                          
+                      </div>
+
+                      <div class="form-group col-md-2">
+                        <label for="id_cus_main_cus_contact_cus_title_en">{% trans 'Title (EN)' %}</label>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_contact_cus_title_en" name="cus_main_cus_contact_cus_title_en" value="" readonly>
+                      </div>
+
+                      <div class="form-group col-md-2">
+                        <label for="id_cus_main_cus_contact_con_fname_en">{% trans 'First Name (EN)' %}</label>
+                        <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_contact_con_fname_en" name="cus_main_cus_contact_con_fname_en">
+                      </div>
+
+                      <div class="form-group col-md-3">
+                        <label for="id_cus_main_cus_contact_con_lname_en">{% trans 'Last Name (EN)' %}</label>
+                        <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_contact_con_lname_en" name="cus_main_cus_contact_con_lname_en">
+                      </div>
+
+                      <div class="form-group col-md-3">
+                        <label for="id_cus_main_cus_contact_con_position_en">{% trans 'Position (EN)' %}</label>
+                        <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_contact_con_position_en" name="cus_main_cus_contact_con_position_en">
                       </div>
 
                     </div>
@@ -1578,6 +1635,11 @@
           var cus_main_cus_contact_lname_th = data.results[0]["cus_contact_lname_th"];
           var cus_main_cus_contact_position_th = data.results[0]["cus_contact_position_th"];
 
+          var cus_main_cus_contact_title_en = data.results[0]["cus_contact_title_en"];
+          var cus_main_cus_contact_fname_en = data.results[0]["cus_contact_fname_en"];
+          var cus_main_cus_contact_lname_en = data.results[0]["cus_contact_lname_en"];
+          var cus_main_cus_contact_position_en = data.results[0]["cus_contact_position_en"];
+
           if(cus_main_cus_active==1) {
             $('#id_cus_main_cus_active').val(1);
             $('#id_cus_main_cus_active').prop("checked", true);
@@ -1615,6 +1677,11 @@
           $('#id_cus_main_cus_contact_con_fname_th').val(cus_main_cus_contact_fname_th);
           $('#id_cus_main_cus_contact_con_lname_th').val(cus_main_cus_contact_lname_th);
           $('#id_cus_main_cus_contact_con_position_th').val(cus_main_cus_contact_position_th);
+
+          $('#id_cus_main_cus_contact_cus_title_en').val(cus_main_cus_contact_title_en);
+          $('#id_cus_main_cus_contact_con_fname_en').val(cus_main_cus_contact_fname_en);
+          $('#id_cus_main_cus_contact_con_lname_en').val(cus_main_cus_contact_lname_en);
+          $('#id_cus_main_cus_contact_con_position_en').val(cus_main_cus_contact_position_en);
 
           return true; 
         },
@@ -1958,7 +2025,7 @@
 
         },
         error: function(data) {
-          alert(data.responseJSON.error);          
+          //alert(data.error);    
         },
       });      
 
@@ -2028,11 +2095,20 @@
     customer_option_op4 = $('#id_cus_main_customer_option_op4').val();
     customer_option_opn1 = $('#id_cus_main_customer_option_opn1').val();
 
+    // amnaj
+    // CUS_MAIN_CUS_CONTACT
     cus_main_cus_contact_id = $('#id_cus_main_cus_contact_id').val();
+    cus_main_select_contact_title_id = $('#id_contact_title_list').val();
     cus_main_cus_contact_cus_title_th = $('#id_cus_main_cus_contact_cus_title_th').val();
     cus_main_cus_contact_con_fname_th = $('#id_cus_main_cus_contact_con_fname_th').val();
-    cus_main_cus_contact_con_lname_th= $('#id_cus_main_cus_contact_con_lname_th').val();
+    cus_main_cus_contact_con_lname_th = $('#id_cus_main_cus_contact_con_lname_th').val();
     cus_main_cus_contact_con_position_th = $('#id_cus_main_cus_contact_con_position_th').val();
+    cus_main_cus_contact_title_sex = $("input[name='sexOptions']:checked").val();    
+    cus_main_cus_contact_cus_title_en = $('#id_cus_main_cus_contact_cus_title_en').val();
+    cus_main_cus_contact_con_fname_en = $('#id_cus_main_cus_contact_con_fname_en').val();
+    cus_main_cus_contact_con_lname_en = $('#id_cus_main_cus_contact_con_lname_en').val();
+    cus_main_cus_contact_con_position_en = $('#id_cus_main_cus_contact_con_position_en').val();
+    cus_main_cus_contact_sex_option = $("input[name=sexOptions]:checked").val();
 
     // CUS_SITE
     if ($('#id_cus_site_cus_active').is(":checked"))
@@ -2126,12 +2202,20 @@
         cus_main_customer_option_op3: customer_option_op3,
         cus_main_customer_option_op4: customer_option_op4,
         cus_main_customer_option_opn1: customer_option_opn1,
+        
         // CONTACT
         cus_main_cus_contact_id: cus_main_cus_contact_id,        
+        cus_main_select_contact_title_id: cus_main_select_contact_title_id,
         cus_main_cus_contact_cus_title_th: cus_main_cus_contact_cus_title_th,
         cus_main_cus_contact_con_fname_th: cus_main_cus_contact_con_fname_th,
         cus_main_cus_contact_con_lname_th: cus_main_cus_contact_con_lname_th,
         cus_main_cus_contact_con_position_th: cus_main_cus_contact_con_position_th,
+        cus_main_cus_contact_title_sex: cus_main_cus_contact_title_sex,
+        cus_main_cus_contact_cus_title_en: cus_main_cus_contact_cus_title_en,
+        cus_main_cus_contact_con_fname_en: cus_main_cus_contact_con_fname_en,
+        cus_main_cus_contact_con_lname_en: cus_main_cus_contact_con_lname_en,
+        cus_main_cus_contact_con_position_en: cus_main_cus_contact_con_position_en,
+        cus_main_cus_contact_sex_option: cus_main_cus_contact_sex_option,
 
         // CUS_SITE
         cus_site_cus_active: cus_site_cus_active,

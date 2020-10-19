@@ -26,6 +26,10 @@ class CustomerCodeCreateForm(forms.Form):
     # Customer Billing
     cus_bill_cus_zone = forms.ModelChoiceField(queryset=None, required=False)
 
+    # amnaj
+    # Contact Title
+    contact_title_list = forms.ModelChoiceField(queryset=None, required=False)
+
     def __init__(self, *args, **kwargs):
         super(CustomerCodeCreateForm, self).__init__(*args, **kwargs)
         
@@ -48,6 +52,10 @@ class CustomerCodeCreateForm(forms.Form):
         self.fields['customer_option_btype'].empty_label = None
         self.fields['customer_option_op2'].empty_label = None
         self.fields['customer_option_op3'].empty_label = None
+
+        # Contact Title
+        self.fields['contact_title_list'].queryset=TTitle.objects.all().filter(title_id__in=[3,4,5,129])
+        self.fields['contact_title_list'].initial = 129
 
     def clean_cus_id(self):
         data = self.data.get('cus_id')
