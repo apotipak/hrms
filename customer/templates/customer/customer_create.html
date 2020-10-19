@@ -388,11 +388,20 @@
                         </div>                          
                       </div>
 
-                      <!-- amnaj -->
                       <div class="form-group col-md-2">
                         <label for="id_cus_main_selected_contact_title">{% trans 'Title (TH)' %}</label>                          
                         <div class="container">
-                          {% render_field customer_code_create_form.contact_title_list class="form-control col-sm-12 form-control-sm" %}                          
+
+                          {% comment %}
+                          {% render_field customer_code_create_form.contact_title_list class="form-control col-sm-12 form-control-sm" %}
+                          {% endcomment %}
+
+                          <select name="cus_main_cus_contact_title_list" class="form-control form-control-sm" required="" id="id_cus_main_cus_contact_title_list">
+                            {% for choice in customer_code_create_form.contact_title_list.field.queryset %}
+                              <option value="{{ choice.pk }}">{{ choice.title_th}}</option> 
+                            {% endfor %}
+                          </select>
+
                         </div>
                       </div>
 
@@ -424,7 +433,6 @@
                         <div class="row">                              
                           <div class="col-12 input-group">
 
-                            <!-- amnaj -->
                             <div class="form-check form-check-inline pl-1">
                               <input class="form-check-input" type="radio" name="sexOptions" id="id_sex_male" value="M" checked>
                               <label class="form-check-label" for="id_sex_male">Male</label>
@@ -440,8 +448,8 @@
                       </div>
 
                       <div class="form-group col-md-2">
-                        <label for="id_cus_main_cus_contact_cus_title_en">{% trans 'Title (EN)' %}</label>
-                          <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_contact_cus_title_en" name="cus_main_cus_contact_cus_title_en" value="" readonly>
+                        <label for="id_cus_main_cus_contact_cus_title_en">{% trans 'Title (EN)' %}</label>                          
+                          {% render_field customer_code_create_form.cus_main_cus_contact_cus_title_en class="form-control form-control-sm" %}
                       </div>
 
                       <div class="form-group col-md-2">
@@ -1623,14 +1631,13 @@
           var cus_main_cus_zone = data.results[0]["cus_zone"];
 
           var cus_main_cus_contact_id = data.results[0]["cus_contact_id"];
+          var cus_main_cus_contact_con_title_id = data.results[0]["cus_contact_con_title_id"];          
           var cus_main_cus_contact_title_th = data.results[0]["cus_contact_title_th"];
           var cus_main_cus_contact_fname_th = data.results[0]["cus_contact_fname_th"];
           var cus_main_cus_contact_lname_th = data.results[0]["cus_contact_lname_th"];
           var cus_main_cus_contact_position_th = data.results[0]["cus_contact_position_th"];
 
-          // amnaj
           var cus_main_cus_contact_con_sex = data.results[0]["cus_contact_con_sex"];
-          alert(cus_main_cus_contact_con_sex);
 
           var cus_main_cus_contact_title_en = data.results[0]["cus_contact_title_en"];
           var cus_main_cus_contact_fname_en = data.results[0]["cus_contact_fname_en"];
@@ -1670,12 +1677,13 @@
           $('#id_cus_main_cus_zone').val(cus_main_cus_zone);
 
           $('#id_cus_main_cus_contact_id').val(cus_main_cus_contact_id);
+          $('#id_cus_main_cus_contact_title_list').val(cus_main_cus_contact_con_title_id);
+
           $('#id_cus_main_cus_contact_cus_title_th').val(cus_main_cus_contact_title_th);
           $('#id_cus_main_cus_contact_con_fname_th').val(cus_main_cus_contact_fname_th);
           $('#id_cus_main_cus_contact_con_lname_th').val(cus_main_cus_contact_lname_th);          
           $('#id_cus_main_cus_contact_con_position_th').val(cus_main_cus_contact_position_th);
 
-          // amnaj
           if(cus_main_cus_contact_con_sex=='M') {
             $('#id_sex_male').prop("checked", true);
             $('#id_sex_female').prop("checked", false);
@@ -1994,7 +2002,6 @@
           var cus_bill_cus_email = data.results[0]["cus_email"];
           var cus_bill_cus_zone = data.results[0]["cus_zone"];
 
-          // amnaj
           var cus_bill_cus_contact_id = data.results[0]["cus_bill_cus_contact_id"];                    
           var cus_bill_cus_contact_title_th = data.results[0]["cus_bill_cus_contact_title_th"];
           var cus_bill_cus_contact_fname_th = data.results[0]["cus_bill_cus_contact_fname_th"];
@@ -2103,10 +2110,9 @@
     customer_option_op4 = $('#id_cus_main_customer_option_op4').val();
     customer_option_opn1 = $('#id_cus_main_customer_option_opn1').val();
 
-    // amnaj
     // CUS_MAIN_CUS_CONTACT
     cus_main_cus_contact_id = $('#id_cus_main_cus_contact_id').val();
-    cus_main_select_contact_title_id = $('#id_contact_title_list').val();
+    cus_main_select_contact_title_id = $('#id_cus_main_cus_contact_title_list').val();
     cus_main_cus_contact_cus_title_th = $('#id_cus_main_cus_contact_cus_title_th').val();
     cus_main_cus_contact_con_fname_th = $('#id_cus_main_cus_contact_con_fname_th').val();
     cus_main_cus_contact_con_lname_th = $('#id_cus_main_cus_contact_con_lname_th').val();
@@ -3197,6 +3203,31 @@
 
     $("#id_customer_option_op3").change(function(){         
       $(".group2TextBox").val($("#id_customer_option_op3 option:selected").html());
+    });
+
+    $("#id_cus_main_cus_contact_title_list").change(function(){         
+      //$("#id_cus_main_cus_contact_cus_title_en").val($("#id_cus_main_cus_contact_title_list option:selected").html());
+      
+      var contact_id = $("#id_cus_main_cus_contact_id").val();
+      var title_id = $("#id_cus_main_cus_contact_title_list option:selected").val();
+
+      //amnaj
+      $.ajax({
+        url: "/customer/ajax/get_contact_title/",
+        type: 'get',          
+        dataType: 'json',
+        data : {          
+          title_id : title_id,
+        },
+        success: function (data) {
+          var title_en = data.title_en;
+          $("#id_cus_main_cus_contact_cus_title_en").val(title_en);
+        },
+        error: function(data){
+          alert("Error!");
+        }        
+      });
+
     });
 
   });

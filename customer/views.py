@@ -18,7 +18,7 @@ from django.utils import timezone
 import datetime
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
-from system.models import TDistrict, TCity, CusContact
+from system.models import TDistrict, TCity, CusContact, TTitle
 from django.core import serializers
 from decimal import Decimal
 import json
@@ -158,6 +158,7 @@ def ajax_check_exist_cus_main(request):
                         "cus_email": cus_main.cus_email,
                         "cus_zone": cus_main.cus_zone_id,
                         "cus_contact_id": cus_main.cus_contact_id,
+                        "cus_contact_con_title_id": cus_main.cus_contact.con_title_id,
                         "cus_contact_title_th": cus_main_cus_contact_title_th,
                         "cus_contact_fname_th": cus_main_cus_contact_fname_th,
                         "cus_contact_lname_th": cus_main_cus_contact_lname_th,
@@ -198,6 +199,7 @@ def ajax_check_exist_cus_main(request):
                     "cus_email": None,
                     "cus_zone": None,
                     "cus_contact_id": None,
+                    "cus_contact_con_title_id": None,
                     "cus_contact_title_th": None,
                     "cus_contact_fname_th": None,
                     "cus_contact_lname_th": None,
@@ -2033,7 +2035,6 @@ def update_all_cus_tabs(request):
 
             cus_main_cus_taxid = request.POST.get('cus_main_cus_taxid')
 
-            # amnaj 1
             # Main Office Contact Person
             cus_main_cus_contact_id = request.POST.get('cus_main_cus_contact_id')
             cus_main_cus_contact_cus_title_th = request.POST.get('cus_main_cus_contact_cus_title_th')
@@ -2254,7 +2255,6 @@ def update_all_cus_tabs(request):
                                 modified_records.append(record)
                                 count_modified_field = count_modified_field + 1
                     '''
-                    # amnaj 2
                     if len(cus_main_cus_contact_con_fname_th) > 0 or len(cus_main_cus_contact_con_lname_th) > 0:
                         print("abc")
                         try:
@@ -2477,7 +2477,6 @@ def update_all_cus_tabs(request):
                     # ./ Save History Log 
 
             except CusMain.DoesNotExist:
-                print("abcdefg")
                 insert_status = True
                 cus_main_cus_taxid = request.POST.get('cus_main_cus_taxid')                
 
@@ -2487,13 +2486,10 @@ def update_all_cus_tabs(request):
                     cus_main = 0
 
                 # Main Office CONTACT
-                # amnaj 3                
                 if len(cus_main_cus_contact_con_fname_th) > 0 or len(cus_main_cus_contact_con_lname_th) > 0:
-                    print("xx")
                     latest_contact_number = CusContact.objects.aggregate(Max('con_id'))
                     latest_contact_number = latest_contact_number['con_id__max']
                     if latest_contact_number is not None:
-                        print("yy")
                         cus_main_new_contact_id = latest_contact_number + 1
                         cus_id = cus_id
                         cus_brn = cus_brn
@@ -3799,13 +3795,11 @@ def get_contact_list(request):
 def get_contact(request):
 
     print("****************************")
-    print("FUNCTION: get_contact")
+    print("FUNCTION: get_contact()")
     print("****************************")
 
     contact_id = request.GET.get('contact_id')
     print("contact_id : " + str(contact_id))
-
-    #data = CusContact.objects.filter(con_id__exact=contact_id)
 
     data = CusContact.objects.select_related('con_title').filter(con_id__exact=contact_id)
 
@@ -3819,7 +3813,9 @@ def get_contact(request):
                 "con_fname_th": d.con_fname_th,
                 "con_lname_th": d.con_lname_th,
                 "con_position_th": d.con_position_th,
+                "con_position_en": d.con_position_en,
                 "con_title_th": d.con_title.title_th,
+                "con_title_en": d.con_title.title_en,
             }
             pickup_records.append(record)
 
@@ -3840,6 +3836,44 @@ def get_contact(request):
     
     return response        
 
+
+
+@login_required(login_url='/accounts/login/')
+def get_contact_title(request):
+
+    print("****************************")
+    print("FUNCTION: get_contact_title()")
+    print("****************************")
+
+    title_id = request.GET.get('title_id')
+    print("title_id : " + str(title_id))
+
+    # amnaj
+    data = TTitle.objects.get(title_id__exact=title_id)
+    print(data.title_en)
+
+    if data is not None:
+        title_th = data.title_th
+        title_en = data.title_en
+        
+        response = JsonResponse(data={
+            "success": True,            
+            "title_th": title_th,
+            "title_en": title_en,
+        })
+        response.status_code = 200
+    else:
+        print("error")
+        response = JsonResponse(data={
+            "success": False,
+            "title_en": "",  
+            "title_th": "",
+        })
+
+        response = JsonResponse({"error": "there was an error"})
+        response.status_code = 403
+    
+    return response  
 
 @login_required(login_url='/accounts/login/')
 def get_country(request):

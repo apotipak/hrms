@@ -29,6 +29,7 @@ class CustomerCodeCreateForm(forms.Form):
     # amnaj
     # Contact Title
     contact_title_list = forms.ModelChoiceField(queryset=None, required=False)
+    cus_main_cus_contact_cus_title_en = forms.CharField(required=False)
 
     def __init__(self, *args, **kwargs):
         super(CustomerCodeCreateForm, self).__init__(*args, **kwargs)
@@ -54,9 +55,11 @@ class CustomerCodeCreateForm(forms.Form):
         self.fields['customer_option_op3'].empty_label = None
 
         # Contact Title
-        self.fields['contact_title_list'].queryset=TTitle.objects.all().filter(title_id__in=[3,4,5,129])
+        self.fields['contact_title_list'].queryset=TTitle.objects.all().filter(title_id__in=[3,4,5,129]).order_by('-title_id')
         self.fields['contact_title_list'].initial = 129
-
+        self.fields['cus_main_cus_contact_cus_title_en'].initial = 'Khun'
+        self.fields['cus_main_cus_contact_cus_title_en'].widget.attrs['readonly'] = True
+        
     def clean_cus_id(self):
         data = self.data.get('cus_id')
         if data.isnumeric():
