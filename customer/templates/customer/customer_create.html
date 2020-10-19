@@ -3211,7 +3211,7 @@
       var contact_id = $("#id_cus_main_cus_contact_id").val();
       var title_id = $("#id_cus_main_cus_contact_title_list option:selected").val();
 
-      //amnaj
+      // amnaj
       $.ajax({
         url: "/customer/ajax/get_contact_title/",
         type: 'get',          
@@ -3221,7 +3221,20 @@
         },
         success: function (data) {
           var title_en = data.title_en;
+          var title_sex = data.title_sex;
+
           $("#id_cus_main_cus_contact_cus_title_en").val(title_en);
+
+          if(title_sex == 'M') {
+            $("#id_sex_male").prop("checked", true);
+            $("#id_sex_female").prop("checked", false);
+          }
+          
+          if(title_sex == 'F') {
+            $("#id_sex_male").prop("checked", false);
+            $("#id_sex_female").prop("checked", true);            
+          }
+          
         },
         error: function(data){
           alert("Error!");

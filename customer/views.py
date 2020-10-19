@@ -3855,11 +3855,13 @@ def get_contact_title(request):
     if data is not None:
         title_th = data.title_th
         title_en = data.title_en
+        title_sex = data.title_sex
         
         response = JsonResponse(data={
             "success": True,            
             "title_th": title_th,
             "title_en": title_en,
+            "title_sex": title_sex,
         })
         response.status_code = 200
     else:
@@ -3868,6 +3870,7 @@ def get_contact_title(request):
             "success": False,
             "title_en": "",  
             "title_th": "",
+            "title_sex": "M",
         })
 
         response = JsonResponse({"error": "there was an error"})
