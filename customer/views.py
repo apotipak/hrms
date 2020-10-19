@@ -2893,7 +2893,7 @@ def update_all_cus_tabs(request):
                             # amnaj
                             contact_list = CusContact.objects.filter(con_id=contact_list.con_id).get()
                             customer.site_contact_id = contact_list.con_id
-                            
+
                             '''
                             field_is_modified, record = check_modified_field("CUSTOMER", cus_no, "Contact First Name (TH)", contact_list.con_fname_th, cus_site_site_contact_con_fname_th, "E", request)
                             if field_is_modified:                                
@@ -3989,12 +3989,19 @@ def get_contact(request):
         for d in data:
             record = {
                 "con_id": d.con_id,
+                "con_title_id": d.con_title_id,
+                "con_title_th": d.con_title.title_th,
                 "con_fname_th": d.con_fname_th,
                 "con_lname_th": d.con_lname_th,
                 "con_position_th": d.con_position_th,
-                "con_position_en": d.con_position_en,
-                "con_title_th": d.con_title.title_th,
                 "con_title_en": d.con_title.title_en,
+                "con_fname_en": d.con_fname_en,
+                "con_lname_en": d.con_lname_en,                
+                "con_position_en": d.con_position_en,
+                "con_sex": d.con_sex,
+                "con_mobile": d.con_mobile,
+                "con_email": d.con_email,
+                "con_nation": d.con_nation_id,         
             }
             pickup_records.append(record)
 
