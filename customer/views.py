@@ -120,7 +120,10 @@ def ajax_check_exist_cus_main(request):
                         cus_main_cus_contact_fname_en = ""
                         cus_main_cus_contact_lname_en = ""
                         cus_main_cus_contact_position_en = ""
-                        cus_main_cus_contact_con_sex = ''
+                        cus_main_cus_contact_con_sex = ""
+                        cus_main_cus_contact_nationality_id = ""
+                        cus_main_cus_contact_con_mobile = ""
+                        cus_main_cus_contact_con_email = ""
                     else:
                         cus_main_cus_contact_title_th = cus_main.cus_contact.con_title.title_th
                         cus_main_cus_contact_fname_th = cus_main.cus_contact.con_fname_th
@@ -131,6 +134,9 @@ def ajax_check_exist_cus_main(request):
                         cus_main_cus_contact_lname_en = cus_main.cus_contact.con_lname_en
                         cus_main_cus_contact_position_en = cus_main.cus_contact.con_position_en
                         cus_main_cus_contact_con_sex = cus_main.cus_contact.con_sex
+                        cus_main_cus_contact_nationality_id = cus_main.cus_contact.con_nation_id
+                        cus_main_cus_contact_con_mobile = cus_main.cus_contact.con_mobile
+                        cus_main_cus_contact_con_email = cus_main.cus_contact.con_email
 
                     record = {
                         "cus_id": cus_main.cus_id,
@@ -168,6 +174,9 @@ def ajax_check_exist_cus_main(request):
                         "cus_contact_fname_en": cus_main_cus_contact_fname_en,
                         "cus_contact_lname_en": cus_main_cus_contact_lname_en,
                         "cus_contact_position_en": cus_main_cus_contact_position_en,
+                        "cus_contact_con_nationality_id": cus_main_cus_contact_nationality_id,
+                        "cus_contact_con_mobile": cus_main_cus_contact_con_mobile,
+                        "cus_main_cus_contact_con_email": cus_main_cus_contact_con_email,
                     }
                     pickup_records.append(record)
                 
@@ -204,7 +213,10 @@ def ajax_check_exist_cus_main(request):
                     "cus_contact_fname_th": None,
                     "cus_contact_lname_th": None,
                     "cus_contact_position_th": None,
-                }
+                    "cus_contact_con_nationality_id": None,
+                    "cus_contact_con_mobile": None,
+                    "cus_contact_con_email": None,
+                }   
                 pickup_records.append(record)      
             
             response = JsonResponse({"success": "Form is valid", 
@@ -2048,6 +2060,10 @@ def update_all_cus_tabs(request):
             cus_main_cus_contact_con_position_en = request.POST.get('cus_main_cus_contact_con_position_en')
             cus_main_select_contact_title_id = request.POST.get('cus_main_select_contact_title_id')
 
+            cus_main_cus_contact_con_nationality_id = request.POST.get('cus_main_cus_contact_con_nationality_id')
+            cus_main_cus_contact_con_mobile = request.POST.get('cus_main_cus_contact_con_mobile')
+            cus_main_cus_contact_con_email = request.POST.get('cus_main_cus_contact_con_email')
+
             print("")
             print("amnaj")
             print("cus_main_cus_contact_id = " + str(cus_main_cus_contact_id))
@@ -2061,6 +2077,10 @@ def update_all_cus_tabs(request):
             print("cus_main_cus_contact_con_fname_en = " + str(cus_main_cus_contact_con_fname_en))
             print("cus_main_cus_contact_con_lname_en = " + str(cus_main_cus_contact_con_lname_en))
             print("cus_main_cus_contact_con_position_en = " + str(cus_main_cus_contact_con_position_en))
+
+            print("cus_main_cus_contact_con_nationality_id = " + str(cus_main_cus_contact_con_nationality_id))
+            print("cus_main_cus_contact_con_mobile = " + str(cus_main_cus_contact_con_mobile))
+            print("cus_main_cus_contact_con_email = " + str(cus_main_cus_contact_con_email))
             print("amnaj")
             print("")
 
@@ -2303,6 +2323,25 @@ def update_all_cus_tabs(request):
                             field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Contact position (EN)", contact_list.con_position_en, cus_main_cus_contact_con_position_en, "E", request)
                             if field_is_modified:                                                                
                                 contact_list.con_position_en = cus_main_cus_contact_con_position_en
+                                modified_records.append(record)
+                                count_modified_field = count_modified_field + 1
+
+                            # amnaj
+                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Contact Nationality", contact_list.con_nation, cus_main_cus_contact_con_nationality_id, "E", request)
+                            if field_is_modified:                                                                
+                                contact_list.con_nation_id = cus_main_cus_contact_con_nationality_id
+                                modified_records.append(record)
+                                count_modified_field = count_modified_field + 1
+
+                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Contact Mobile", contact_list.con_mobile, cus_main_cus_contact_con_mobile, "E", request)
+                            if field_is_modified:                                                                
+                                contact_list.con_mobile = cus_main_cus_contact_con_mobile
+                                modified_records.append(record)
+                                count_modified_field = count_modified_field + 1
+                            
+                            field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Contact Email", contact_list.con_email, cus_main_cus_contact_con_email, "E", request)
+                            if field_is_modified:                                                                
+                                contact_list.con_email = cus_main_cus_contact_con_email
                                 modified_records.append(record)
                                 count_modified_field = count_modified_field + 1
 
@@ -2643,7 +2682,7 @@ def update_all_cus_tabs(request):
 
             # cus_site_site_contact_id = request.POST.get('cus_site_site_contact_id')
             # print("cus_site_site_contact_id = " + str(cus_site_site_contact_id))
-            # amnaj 1
+
             # Site Contact
             cus_site_site_contact_id = request.POST.get('cus_site_site_contact_id')
             cus_site_site_contact_cus_title_th = request.POST.get('cus_site_site_contact_cus_title_th')
@@ -2851,7 +2890,6 @@ def update_all_cus_tabs(request):
                                 count_modified_field = count_modified_field + 1
                     '''
     
-                    # amnaj 2
                     '''
                     if len(cus_site_site_contact_con_fname_th) > 0 or len(cus_site_site_contact_con_lname_th) > 0:
                         try:
@@ -2979,7 +3017,6 @@ def update_all_cus_tabs(request):
 
 
                 # Site CONTACT
-                # amnaj 3
                 if len(cus_site_site_contact_con_fname_th) > 0 or len(cus_site_site_contact_con_lname_th) > 0:
                     latest_contact_number = CusContact.objects.aggregate(Max('con_id'))
                     latest_contact_number = latest_contact_number['con_id__max']
@@ -3164,8 +3201,6 @@ def update_all_cus_tabs(request):
             cus_bill_cus_contact_id = request.POST.get('cus_bill_cus_contact_id')
             print("cus_bill_cus_contact_id = " + str(cus_bill_cus_contact_id))
 
-
-            # amnaj 1
             # Bill Contact
             cus_bill_cus_contact_id = request.POST.get('cus_bill_cus_contact_id')
             cus_bill_cus_contact_cus_title_th = request.POST.get('cus_bill_cus_contact_cus_title_th')
@@ -3369,7 +3404,6 @@ def update_all_cus_tabs(request):
                                 modified_records.append(record) 
                                 count_modified_field = count_modified_field + 1                               
 
-                    # amnaj aa
                     # BILL CUS_CONTACT
                     '''
                     if cus_bill_cus_contact_id is not None:
@@ -3389,7 +3423,6 @@ def update_all_cus_tabs(request):
                                 count_modified_field = count_modified_field + 1
                     '''
 
-                    # amnaj 2
                     '''
                     if len(cus_bill_cus_contact_con_fname_th) > 0 or len(cus_bill_cus_contact_con_lname_th) > 0:
                         try:
@@ -3548,7 +3581,6 @@ def update_all_cus_tabs(request):
                 response_data['result'] = "Added complete."
                 response_data['form_is_valid'] = True
                 response_data['class'] = 'bg-success'
-                # amnaj
                 response_data['is_cus_main_has_new_contact'] = True
                 response_data['cus_main_new_contact_id'] = cus_main_new_contact_id
             else:
@@ -3557,7 +3589,6 @@ def update_all_cus_tabs(request):
                     response_data['form_is_valid'] = True
                     response_data['class'] = 'bg-success'
 
-                    # amnaj
                     response_data['is_cus_main_has_new_contact'] = True
                     response_data['cus_main_new_contact_id'] = cus_main_new_contact_id
                 else:
@@ -3567,8 +3598,6 @@ def update_all_cus_tabs(request):
 
         else:
             print("form is invalid")
-
-            # amnaj
             response_data['form_is_valid'] = False
             response_data['message'] = ""
             if form.errors:
@@ -3846,17 +3875,14 @@ def get_contact_title(request):
     print("****************************")
 
     title_id = request.GET.get('title_id')
-    print("title_id : " + str(title_id))
 
-    # amnaj
     data = TTitle.objects.get(title_id__exact=title_id)
-    print(data.title_en)
-
+    
     if data is not None:
         title_th = data.title_th
         title_en = data.title_en
         title_sex = data.title_sex
-        
+
         response = JsonResponse(data={
             "success": True,            
             "title_th": title_th,

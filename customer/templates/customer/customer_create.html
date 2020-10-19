@@ -1678,6 +1678,10 @@
           var cus_main_cus_contact_lname_en = data.results[0]["cus_contact_lname_en"];
           var cus_main_cus_contact_position_en = data.results[0]["cus_contact_position_en"];
 
+          var cus_contact_con_nationality_id = data.results[0]["cus_contact_con_nationality_id"];
+          var cus_contact_con_mobile = data.results[0]["cus_contact_con_mobile"];
+          var cus_contact_con_email = data.results[0]["cus_contact_con_email"];
+
           if(cus_main_cus_active==1) {
             $('#id_cus_main_cus_active').val(1);
             $('#id_cus_main_cus_active').prop("checked", true);
@@ -1732,6 +1736,10 @@
           $('#id_cus_main_cus_contact_con_fname_en').val(cus_main_cus_contact_fname_en);
           $('#id_cus_main_cus_contact_con_lname_en').val(cus_main_cus_contact_lname_en);
           $('#id_cus_main_cus_contact_con_position_en').val(cus_main_cus_contact_position_en);
+
+          $('#id_cus_main_cus_contact_nation_list').val(cus_contact_con_nationality_id);
+          $('#id_cus_main_cus_contact_con_mobile').val(cus_contact_con_mobile);
+          $('#id_cus_main_cus_contact_con_email').val(cus_contact_con_email);
 
           return true; 
         },
@@ -2158,6 +2166,10 @@
     cus_main_cus_contact_con_position_en = $('#id_cus_main_cus_contact_con_position_en').val();
     cus_main_cus_contact_sex_option = $("input[name=sexOptions]:checked").val();
 
+    cus_main_cus_contact_con_nationality_id = $("#id_cus_main_cus_contact_nation_list").val();
+    cus_main_cus_contact_con_mobile = $("#id_cus_main_cus_contact_con_mobile").val();
+    cus_main_cus_contact_con_email = $("#id_cus_main_cus_contact_con_email").val();
+
     // CUS_SITE
     if ($('#id_cus_site_cus_active').is(":checked"))
       cus_site_cus_active = 1;
@@ -2250,8 +2262,7 @@
         cus_main_customer_option_op3: customer_option_op3,
         cus_main_customer_option_op4: customer_option_op4,
         cus_main_customer_option_opn1: customer_option_opn1,
-        
-        // CONTACT
+              
         cus_main_cus_contact_id: cus_main_cus_contact_id,        
         cus_main_select_contact_title_id: cus_main_select_contact_title_id,
         cus_main_cus_contact_cus_title_th: cus_main_cus_contact_cus_title_th,
@@ -2264,6 +2275,10 @@
         cus_main_cus_contact_con_lname_en: cus_main_cus_contact_con_lname_en,
         cus_main_cus_contact_con_position_en: cus_main_cus_contact_con_position_en,
         cus_main_cus_contact_sex_option: cus_main_cus_contact_sex_option,
+
+        cus_main_cus_contact_con_nationality_id: cus_main_cus_contact_con_nationality_id,
+        cus_main_cus_contact_con_mobile: cus_main_cus_contact_con_mobile,
+        cus_main_cus_contact_con_email: cus_main_cus_contact_con_email,
 
         // CUS_SITE
         cus_site_cus_active: cus_site_cus_active,
