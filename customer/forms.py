@@ -3,7 +3,7 @@ from .models import Customer, CusMain, CusBill, CustomerOption
 from django.contrib.auth.models import User
 from django.forms.widgets import HiddenInput
 from django.utils.translation import gettext_lazy as _
-from system.models import CusContact, ComZone, TTitle
+from system.models import CusContact, ComZone, TTitle, TNation
 from django.core.exceptions import ValidationError
 
 
@@ -26,10 +26,15 @@ class CustomerCodeCreateForm(forms.Form):
     # Customer Billing
     cus_bill_cus_zone = forms.ModelChoiceField(queryset=None, required=False)
 
-    # amnaj
     # Contact Title
     contact_title_list = forms.ModelChoiceField(queryset=None, required=False)
     cus_main_cus_contact_cus_title_en = forms.CharField(required=False)
+
+    # Contact Nation
+    contact_nation_list = forms.ModelChoiceField(queryset=None, required=False)
+    cus_main_cus_contact_nation_th = forms.CharField(required=False)
+    cus_main_cus_contact_nation_en = forms.CharField(required=False)
+
 
     def __init__(self, *args, **kwargs):
         super(CustomerCodeCreateForm, self).__init__(*args, **kwargs)
@@ -60,6 +65,14 @@ class CustomerCodeCreateForm(forms.Form):
         self.fields['cus_main_cus_contact_cus_title_en'].initial = 'Khun'
         self.fields['cus_main_cus_contact_cus_title_en'].widget.attrs['readonly'] = True
         
+        # Contact Nation
+        self.fields['contact_nation_list'].queryset=TNation.objects.all().filter(nation_id__in=[0,1,4,5,11,9,29,44,46,47,97,99]).order_by('-nation_id')
+        self.fields['contact_nation_list'].initial = 99
+        self.fields['cus_main_cus_contact_nation_th'].initial = 'ไทย'
+        self.fields['cus_main_cus_contact_nation_th'].widget.attrs['readonly'] = True
+        self.fields['cus_main_cus_contact_nation_en'].initial = 'Thai'
+        self.fields['cus_main_cus_contact_nation_en'].widget.attrs['readonly'] = True
+
     def clean_cus_id(self):
         data = self.data.get('cus_id')
         if data.isnumeric():

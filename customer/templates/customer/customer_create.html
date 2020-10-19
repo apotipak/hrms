@@ -470,6 +470,40 @@
                     </div>
                     
 
+
+
+
+                    <!-- amnaj -->
+
+                    <div class="form-row">
+                      
+                      <div class="form-group col-md-2">
+
+                        <label for="id_cus_main_cus_contact_cus_title_en">{% trans 'Nationality' %}</label>                          
+                        <select name="cus_main_cus_contact_nation_list" class="form-control form-control-sm" required="" id="id_cus_main_cus_contact_nation_list">
+                          {% for choice in customer_code_create_form.contact_nation_list.field.queryset %}
+                            <option value="{{ choice.pk }}">{{ choice.nation_th}}</option> 
+                          {% endfor %}
+                        </select>
+
+                      </div>
+
+
+                      <div class="form-group col-md-3">
+                        <label for="id_cus_main_cus_contact_con_mobile">{% trans 'Mobile' %}</label>
+                        <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_contact_con_mobile" name="cus_main_cus_contact_con_mobile">
+                      </div>
+
+                      <div class="form-group col-md-3">
+                        <label for="id_cus_main_cus_contact_con_email">{% trans 'Email' %}</label>
+                        <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_contact_con_email" name="cus_main_cus_contact_con_email">
+                      </div>
+
+
+                    </div>
+                    
+
+
                     {% comment %}
                     <div class="form-group">                              
                       <div class="col-sm-3">
