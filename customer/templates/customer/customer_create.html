@@ -1457,7 +1457,6 @@
     $('#id_cus_site_site_contact_lname_th').val(cus_main_cus_contact_con_lname_th);
     $('#id_cus_site_site_contact_position_th').val(cus_main_cus_contact_con_position_th);
   
-    // amnaj ++
     if(cus_main_cus_contact_title_sex == 'M') {
       $('#id_cus_site_sex_male').prop("checked", true);
       $('#id_cus_site_sex_female').prop("checked", false);
@@ -2045,6 +2044,7 @@
               var cus_site_cus_zone = data.results[0]["cus_zone"];
               var cus_site_site_contact_id = data.results[0]["cus_site_site_contact_id"];
               var cus_site_site_contact_title_th = data.results[0]["cus_site_site_contact_title_th"];
+              var cus_site_site_contact_con_sex = data.results[0]["cus_site_site_contact_con_sex"];
               var cus_site_site_contact_fname_th = data.results[0]["cus_site_site_contact_fname_th"];
               var cus_site_site_contact_lname_th = data.results[0]["cus_site_site_contact_lname_th"];
               var cus_site_site_contact_position_th = data.results[0]["cus_site_site_contact_position_th"];
@@ -2078,6 +2078,18 @@
               $('#id_cus_site_cus_zone').val(cus_site_cus_zone);
               $('#id_cus_site_site_contact_id').val(cus_site_site_contact_id);
               $('#id_cus_site_site_contact_title_th').val(cus_site_site_contact_title_th);
+
+              if(cus_site_site_contact_con_sex == 'M') {
+                $('#id_cus_site_sex_male').prop("checked", true);
+                $('#id_cus_site_sex_female').prop("checked", false);
+              }
+
+              if(cus_site_site_contact_con_sex == 'F') {
+                $('#id_cus_site_sex_male').prop("checked", false);
+                $('#id_cus_site_sex_female').prop("checked", true);
+              }
+
+
               $('#id_cus_site_site_contact_fname_th').val(cus_site_site_contact_fname_th);
               $('#id_cus_site_site_contact_lname_th').val(cus_site_site_contact_lname_th);
               $('#id_cus_site_site_contact_position_th').val(cus_site_site_contact_position_th);

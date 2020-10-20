@@ -428,11 +428,7 @@ def ajax_check_exist_cus_site(request):
                     "cus_site_site_contact_fname_th": cus_site_site_contact_fname_th,
                     "cus_site_site_contact_lname_th": cus_site_site_contact_lname_th,
                     "cus_site_site_contact_position_th": cus_site_site_contact_position_th,
-                    "cus_site_site_contact_title_en": cus_site_site_contact_title_en,
-                    "cus_site_site_contact_fname_en": cus_site_site_contact_fname_en,
-                    "cus_site_site_contact_lname_en": cus_site_site_contact_lname_en,
-                    "cus_site_site_contact_position_en": cus_site_site_contact_position_en,
-
+                    "cus_site_site_contact_con_sex": cus_site_site_contact_con_sex,
                     "cus_site_site_contact_title_en": cus_site_site_contact_title_en,
                     "cus_site_site_contact_fname_en": cus_site_site_contact_fname_en,
                     "cus_site_site_contact_lname_en": cus_site_site_contact_lname_en,
@@ -484,7 +480,16 @@ def ajax_check_exist_cus_site(request):
                     "cus_site_site_contact_fname_th": "",
                     "cus_site_site_contact_lname_th": "",
                     "cus_site_site_contact_position_th": "",
-                    
+
+                    "cus_site_site_contact_con_sex": "",
+                    "cus_site_site_contact_title_en": "",
+                    "cus_site_site_contact_fname_en": "",
+                    "cus_site_site_contact_lname_en": "",
+                    "cus_site_site_contact_position_en": "",
+                    "cus_site_site_contact_con_nationality_id": "",
+                    "cus_site_site_contact_con_mobile": "",
+                    "cus_site_site_contact_con_email": "",
+
                     "customer_option_btype": "",
                     "customer_option_op1": "",
                     "customer_option_op2": "",
