@@ -3741,8 +3741,8 @@ def update_all_cus_tabs(request):
                     cus_email = cus_bill_cus_email,
                     cus_taxid = cus_main_cus_taxid,
                     cus_zone_id = cus_bill_cus_zone,
-                    # cus_contact_id = cus_bill_cus_contact_id,
-                    # site_contact_id = cus_bill_cus_contact_id,
+                    cus_contact_id = cus_bill_cus_contact_id,
+                    site_contact_id = cus_bill_cus_contact_id,
                     upd_date = datetime.datetime.now(),
                     upd_by = request.user.first_name,
                     upd_flag = 'A'                    
