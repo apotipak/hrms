@@ -384,7 +384,8 @@
 
                         <div class="row">
                           <div class="col-12 input-group">
-                            <input type="text" id="id_cus_main_cus_contact_id" name="cus_main_cus_contact_id" class="form-control form-control-sm" value="{{ cus_main.cus_contact_id|default_if_none:None }}" readonly>                              
+                            <input type="text" id="id_cus_main_cus_contact_id" name="cus_main_cus_contact_id" class="form-control form-control-sm" value="0" readonly>                              
+
                             <button id="cus_main_contact_lookup" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url="{% url 'get_contact_list' %}"><i class="fas fa-search fa-sm"></i></button>
                             <input type="hidden" id="id_cus_main_select_cus_contact_id" name="cus_main_select_cus_contact_id" value="{{ cus_main.cus_contact_id }}">
                           </div>
@@ -397,7 +398,11 @@
 
                           <select name="cus_main_cus_contact_title_list" class="form-control form-control-sm" required="" id="id_cus_main_cus_contact_title_list">
                             {% for choice in customer_code_create_form.contact_title_list.field.queryset %}
+                              {% if choice.title_th == 'คุณ' %}
+                              <option value="{{ choice.pk }}" selected>{{ choice.title_th}}</option> 
+                              {% else %}
                               <option value="{{ choice.pk }}">{{ choice.title_th}}</option> 
+                              {% endif %}
                             {% endfor %}
                           </select>
 
@@ -481,7 +486,11 @@
                         <label for="id_cus_main_cus_contact_cus_title_en">{% trans 'Nationality' %}</label>                          
                         <select name="cus_main_cus_contact_nation_list" class="form-control form-control-sm" required="" id="id_cus_main_cus_contact_nation_list">
                           {% for choice in customer_code_create_form.contact_nation_list.field.queryset %}
+                            {% if choice.nation_th == "ไทย" %}
+                            <option value="{{ choice.pk }}" selected>{{ choice.nation_th}}</option> 
+                            {% else %}
                             <option value="{{ choice.pk }}">{{ choice.nation_th}}</option> 
+                            {% endif %}
                           {% endfor %}
                         </select>
 

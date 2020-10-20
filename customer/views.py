@@ -84,6 +84,7 @@ def ajax_check_exist_cus_main(request):
         group_2_list = []
         customer_option = []
 
+        print("test")
         if form.is_valid():
             try:                
                 cus_main = CusMain.objects.get(pk=cus_id)
@@ -112,19 +113,23 @@ def ajax_check_exist_cus_main(request):
                         cus_main_cus_country_en = cus_main.cus_country.country_en
 
                     if cus_main.cus_contact_id is None:
-                        cus_main_cus_contact_title_th = ""
+                        print("abc")
+                        cus_main_cus_contact_id = 0
+                        cus_main_cus_contact_title_th = "คุณ"
                         cus_main_cus_contact_fname_th = ""
                         cus_main_cus_contact_lname_th = ""
                         cus_main_cus_contact_position_th = "" 
-                        cus_main_cus_contact_title_en = ""
+                        cus_main_cus_contact_title_en = "Khun"
                         cus_main_cus_contact_fname_en = ""
                         cus_main_cus_contact_lname_en = ""
                         cus_main_cus_contact_position_en = ""
-                        cus_main_cus_contact_con_sex = ""
-                        cus_main_cus_contact_nationality_id = ""
+                        cus_main_cus_contact_con_sex = "M"
+                        cus_main_cus_contact_nationality_id = 99
                         cus_main_cus_contact_con_mobile = ""
                         cus_main_cus_contact_con_email = ""
                     else:
+                        print("xyz")
+                        cus_main_cus_contact_id = cus_main.cus_contact_id
                         cus_main_cus_contact_title_th = cus_main.cus_contact.con_title.title_th
                         cus_main_cus_contact_fname_th = cus_main.cus_contact.con_fname_th
                         cus_main_cus_contact_lname_th = cus_main.cus_contact.con_lname_th
@@ -206,16 +211,16 @@ def ajax_check_exist_cus_main(request):
                     "cus_fax": None,
                     "cus_email": None,
                     "cus_zone": None,
-                    "cus_contact_id": None,
-                    "cus_contact_con_title_id": None,
-                    "cus_contact_title_th": None,
+                    "cus_contact_id": 0,
+                    "cus_contact_con_title_id": 129,
+                    "cus_contact_title_th": "คุณ",
                     "cus_contact_fname_th": None,
                     "cus_contact_lname_th": None,
                     "cus_contact_position_th": None,
-                    "cus_contact_con_nationality_id": None,
+                    "cus_contact_con_nationality_id": 99,
                     "cus_contact_con_mobile": None,
                     "cus_contact_con_email": None,
-                    "cus_contact_title_en": None,
+                    "cus_contact_title_en": "Khun",
                     "cus_contact_fname_en": None,
                     "cus_contact_lname_en": None,
                     "cus_contact_position_en": None,
@@ -3780,7 +3785,8 @@ def update_all_cus_tabs(request):
                 response_data['form_is_valid'] = True
                 response_data['class'] = 'bg-success'
                 response_data['is_cus_main_has_new_contact'] = True
-                response_data['cus_main_new_contact_id'] = cus_main_new_contact_id
+                # amnaj
+                # response_data['cus_main_new_contact_id'] = cus_main_new_contact_id
             else:
                 if count_modified_field > 0:
                     response_data['result'] = "Updated complete."

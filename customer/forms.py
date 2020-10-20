@@ -63,26 +63,16 @@ class CustomerCodeCreateForm(forms.Form):
         self.fields['customer_option_op2'].empty_label = None
         self.fields['customer_option_op3'].empty_label = None
 
-        # Contact Title
-        self.fields['contact_title_list'].queryset=TTitle.objects.all().filter(title_id__in=[3,4,5,129]).order_by('-title_id')
-        self.fields['contact_title_list'].initial = 129
-        self.fields['cus_main_cus_contact_cus_title_en'].initial = 'Khun'
-        self.fields['cus_main_cus_contact_cus_title_en'].widget.attrs['readonly'] = True
-        
+
+        # Contact Title        
+        # self.fields['contact_title_list'].queryset=TTitle.objects.all().filter(title_id__in=[3,4,5,129,200]).order_by('-title_id')
+        self.fields['contact_title_list'].queryset=TTitle.objects.all().exclude(upd_flag='D').order_by('-title_id')
+
         # Contact Nation
         # self.fields['contact_nation_list'].queryset=TNation.objects.all().exclude(upd_flag='D').filter(nation_id__in=[0,1,4,5,11,9,29,44,46,47,97,99]).order_by('-nation_id')
-        self.fields['contact_nation_list'].queryset=TNation.objects.all().exclude(upd_flag='D').order_by('-nation_id')
-        
-        self.fields['contact_nation_list'].initial = 99
-        self.fields['cus_main_cus_contact_nation_th'].initial = 'ไทย'
-        self.fields['cus_main_cus_contact_nation_th'].widget.attrs['readonly'] = True
-        self.fields['cus_main_cus_contact_nation_en'].initial = 'Thai'
-        self.fields['cus_main_cus_contact_nation_en'].widget.attrs['readonly'] = True
+        self.fields['contact_nation_list'].queryset=TNation.objects.all().exclude(upd_flag='D').order_by('-nation_id')        
 
-        # Site Contact Information
-        self.fields['cus_site_site_contact_cus_title_en'].initial = 'Khun'
-        self.fields['cus_site_site_contact_cus_title_en'].widget.attrs['readonly'] = True
-        
+
     def clean_cus_id(self):
         data = self.data.get('cus_id')
         if data.isnumeric():
