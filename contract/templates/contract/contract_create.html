@@ -38,7 +38,12 @@
     <div class="card card-default collapsed-card">
 
       <div class="card-header">
-        <h1 class="card-title pt-2"><div id="customer_name_title"><i class="fas fa-user-edit"></i>&nbsp;&nbsp;<strong>{{contract.cnt_id}} - {{ customer.cus_name_th }}</strong></div></h1>
+        <h1 class="card-title pt-2">
+          <span id="customer_name_title">
+            <i class="fas fa-user-edit"></i>&nbsp;&nbsp;<strong>{{contract.cnt_id}} - {{ customer.cus_name_th }}</strong>            
+          </span>
+          <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-angle-down text-primary"></i></button>
+        </h1>
 
         <div class="card-tools">
 
@@ -60,9 +65,10 @@
           <button id="cancelCreateContract" type="reset" class="btn btn-md btn-default pull-right">Cancel</button>
           <button id="saveContract" class="btn btn-md btn-primary"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</button>
 
-
+          <!--
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus text-primary"></i></button>
+          -->
         </div>
 
 

@@ -425,7 +425,7 @@
 
 
 
-                    <!-- amnaj cus_main -->
+                    <!-- cus_main -->
                     <div class="form-row">
                       
                       <div class="form-group col-md-2">
@@ -820,7 +820,7 @@
                       
 
 
-                        <!-- amnaj cus_site -->
+                        <!-- cus_site -->
                       <div class="form-row">
                         
                         <div class="form-group col-md-2">
@@ -2306,38 +2306,21 @@
     cus_site_cus_zone = $('#id_cus_site_cus_zone').val();    
 
 
-    // amnaj 
+  
     // CUS_SITE_CUS_CONTACT    
     cus_site_site_contact_id = $('#id_cus_site_site_contact_id').val();    
-    //console.log("cus_site_site_contact_id = " + cus_site_site_contact_id)
     cus_site_select_contact_title_id = $('#id_cus_site_cus_contact_title_list').val();    
-    //alert(cus_site_select_contact_title_id);
-    //console.log("cus_site_select_contact_title_id = " + cus_site_select_contact_title_id);
-
-    //cus_site_site_contact_cus_title_th = $('#id_cus_site_site_contact_title_th').val();
     cus_site_site_contact_con_fname_th = $('#id_cus_site_site_contact_fname_th').val();
     cus_site_site_contact_con_lname_th= $('#id_cus_site_site_contact_lname_th').val();    
     cus_site_site_contact_con_position_th = $('#id_cus_site_site_contact_position_th').val();    
-    //console.log(cus_site_site_contact_con_fname_th+","+cus_site_site_contact_con_lname_th+","+cus_site_site_contact_con_position_th)
-
-    cus_site_site_contact_sex_option = $("input[name=cus_site_sex_options]:checked").val();
-    //alert(cus_site_cus_contact_sex_option);
-
+    cus_site_site_contact_con_sex = $("input[name=cus_site_sex_options]:checked").val();
     cus_site_site_contact_cus_title_en = $('#id_cus_site_site_contact_cus_title_en').val();
     cus_site_site_contact_con_fname_en = $('#id_cus_site_site_contact_con_fname_en').val();
     cus_site_site_contact_con_lname_en = $('#id_cus_site_site_contact_con_lname_en').val();
     cus_site_site_contact_con_position_en = $('#id_cus_site_site_contact_con_position_en').val();
-    //alert(cus_site_cus_contact_cus_title_en + "," + cus_site_cus_contact_con_fname_en + "," + cus_site_cus_contact_con_lname_en + "," + cus_site_cus_contact_con_position_en);
-
-    //console.log(cus_site_site_contact_sex_option + "," + cus_site_site_contact_cus_title_en + "," + cus_site_site_contact_con_fname_en + "," + cus_site_site_contact_con_lname_en + "," + cus_site_site_contact_con_position_en);
-
-    // amnaj
     cus_site_site_contact_con_nationality_id = $("#id_cus_site_site_contact_nation_list").val();
     cus_site_site_contact_con_mobile = $("#id_cus_site_site_contact_con_mobile").val();
     cus_site_site_contact_con_email = $("#id_cus_site_site_contact_con_email").val();
-    console.log("cus_site : cus_site_site_contact_con_nationality_id " + cus_site_site_contact_con_nationality_id);
-    // + "," + cus_site_site_contact_con_mobile + "," + cus_site_site_contact_con_email)
-
 
     customer_group_id = $('#id_customer_group_id').val();
 
@@ -2425,6 +2408,10 @@
         cus_main_cus_contact_con_mobile: cus_main_cus_contact_con_mobile,
         cus_main_cus_contact_con_email: cus_main_cus_contact_con_email,
 
+
+
+
+
         // CUS_SITE
         cus_site_cus_active: cus_site_cus_active,
         cus_site_cus_name_th: cus_site_cus_name_th,
@@ -2447,7 +2434,7 @@
         cus_site_site_contact_con_lname_th: cus_site_site_contact_con_lname_th,
         cus_site_site_contact_con_position_th: cus_site_site_contact_con_position_th,
         cus_site_select_contact_title_id: cus_site_select_contact_title_id,
-        cus_site_site_contact_sex_option: cus_site_site_contact_sex_option,
+        cus_site_site_contact_con_sex: cus_site_site_contact_con_sex,        
         cus_site_site_contact_cus_title_en: cus_site_site_contact_cus_title_en,
         cus_site_site_contact_con_fname_en: cus_site_site_contact_con_fname_en,
         cus_site_site_contact_con_lname_en: cus_site_site_contact_con_lname_en,
