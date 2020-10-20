@@ -2504,7 +2504,15 @@
           });
 
           if(json.is_cus_main_has_new_contact) {
-            $('#id_cus_main_cus_contact_id').val(json.cus_main_new_contact_id)
+            alert("a");
+            $('#id_cus_main_cus_contact_id').val(json.cus_main_new_contact_id);            
+            // $('#id_cus_main_cus_contact_id').val(1111);
+          }
+
+          if(json.is_cus_site_has_new_contact) {
+            alert("b");
+            $('#id_cus_site_site_contact_id').val(json.cus_site_new_contact_id);
+            // $('#id_cus_site_site_contact_id').val(2222);
           }
 
           $.each($('.is-valid'), function() {

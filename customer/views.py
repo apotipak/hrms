@@ -583,12 +583,13 @@ def ajax_check_exist_cus_bill(request):
                     cus_bill_cus_country_th = customer_bill.cus_country.country_th
                     cus_bill_cus_country_en = customer_bill.cus_country.country_en
 
-                print(cus_bill.cus_contact_id)
-                if cus_bill.cus_contact_id is not None:
+                print(customer_bill.cus_contact_id)
+
+                if customer_bill.cus_contact_id is not None:
                     print("not none")
 
-                    if cus_bill.cus_contact.con_title is not None:
-                        cus_bill_cus_contact_title_th = cus_bill.cus_contact.con_title.title_th
+                    if customer_bill.cus_contact.con_title is not None:
+                        cus_bill_cus_contact_title_th = customer_bill.cus_contact.con_title.title_th
                     else:
                         cus_bill_cus_contact_title_th = ""
 
@@ -2401,8 +2402,9 @@ def update_all_cus_tabs(request):
                             contact_list.save()
 
                         except CusContact.DoesNotExist:          
-                            print("add new contact")
                             # amnaj cus_main
+                            print("main - add new contact")
+
                             latest_contact_number = CusContact.objects.aggregate(Max('con_id'))
                             latest_contact_number = latest_contact_number['con_id__max']
                             if latest_contact_number is not None:
@@ -2576,6 +2578,7 @@ def update_all_cus_tabs(request):
                             modified_records = []
                     # ./ Save History Log 
 
+            #cat
             except CusMain.DoesNotExist:
                 insert_status = True
                 cus_main_cus_taxid = request.POST.get('cus_main_cus_taxid')                
@@ -2587,6 +2590,7 @@ def update_all_cus_tabs(request):
 
                 # Main Office CONTACT
                 if len(cus_main_cus_contact_con_fname_th) > 0 or len(cus_main_cus_contact_con_lname_th) > 0:
+
                     latest_contact_number = CusContact.objects.aggregate(Max('con_id'))
                     latest_contact_number = latest_contact_number['con_id__max']
                     if latest_contact_number is not None:
@@ -3073,10 +3077,10 @@ def update_all_cus_tabs(request):
                                     )
                                 new_contact.save()
 
-                                if cus_main_cus_contact_id is not None:
-                                    field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Contact", "", cus_main_new_contact_id, "A", request)
+                                if cus_site_site_contact_id is not None:
+                                    field_is_modified, record = check_modified_field("CUSTOMER", cus_no, "Contact", "", cus_site_new_contact_id, "A", request)
                                 else:
-                                    field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Contact", int(cus_main.cus_contact_id), int(cus_main_new_contact_id), "A", request)
+                                    field_is_modified, record = check_modified_field("CUSTOMER", cus_no, "Contact", int(customer.site_contact_id), int(cus_site_new_contact_id), "A", request)
 
                                 if field_is_modified:
                                     customer.site_contact_id = cus_site_new_contact_id
@@ -3118,7 +3122,10 @@ def update_all_cus_tabs(request):
                         modified_records = []
                     # ./History Log 
 
+            # dog
             except Customer.DoesNotExist:
+
+                print("dog")
                 insert_status = True
 
                 if int(cus_site_cus_active) == 1:
@@ -3659,11 +3666,15 @@ def update_all_cus_tabs(request):
                 response_data['result'] = "Added complete."
                 response_data['form_is_valid'] = True
                 response_data['class'] = 'bg-success'
-                response_data['is_cus_main_has_new_contact'] = True
                 
-                # response_data['cus_main_new_contact_id'] = cus_main_new_contact_id
+                response_data['is_cus_main_has_new_contact'] = True
                 response_data['cus_main_new_contact_id'] = cus_main_cus_contact_id
+                
+                response_data['is_cus_site_has_new_contact'] = True
+                print("test - " + str(cus_site_site_contact_id))                
                 response_data['cus_site_new_contact_id'] = cus_site_site_contact_id
+
+
             else:
                 if count_modified_field > 0:
                     response_data['result'] = "Updated complete."
