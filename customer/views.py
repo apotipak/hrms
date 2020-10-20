@@ -179,7 +179,6 @@ def ajax_check_exist_cus_main(request):
                         "cus_contact_con_email": cus_main_cus_contact_con_email,
                     }
                     pickup_records.append(record)
-                
                     cus_main_form = CusMainForm(instance=cus_main)
             except CusMain.DoesNotExist:
                 cus_main = None
@@ -216,6 +215,10 @@ def ajax_check_exist_cus_main(request):
                     "cus_contact_con_nationality_id": None,
                     "cus_contact_con_mobile": None,
                     "cus_contact_con_email": None,
+                    "cus_contact_title_en": None,
+                    "cus_contact_fname_en": None,
+                    "cus_contact_lname_en": None,
+                    "cus_contact_position_en": None,
                 }   
                 pickup_records.append(record)      
             
@@ -349,18 +352,47 @@ def ajax_check_exist_cus_site(request):
                     cus_site_cus_country_th = customer_site.cus_country.country_th
                     cus_site_cus_country_en = customer_site.cus_country.country_en
 
-                if not customer_site.site_contact_id:
+                # amnaj cus_site 1
+                if customer_site.site_contact_id is None or customer_site.site_contact_id == "":
                     cus_site_site_contact_title_th = ""
                     cus_site_site_contact_fname_th = ""
                     cus_site_site_contact_lname_th = ""
-                    cus_site_site_contact_position_th = "" 
+                    cus_site_site_contact_position_th = ""
+                    cus_site_site_contact_title_en = ""
+                    cus_site_site_contact_fname_en = ""
+                    cus_site_site_contact_lname_en = ""
+                    cus_site_site_contact_position_en = ""
+                    cus_site_site_contact_con_sex = ""
+                    cus_site_site_contact_nationality_id = ""
+                    cus_site_site_contact_con_mobile = ""
+                    cus_site_site_contact_con_email = ""                    
                 else:
                     cus_site_site_contact_title_th = customer_site.site_contact.con_title.title_th
                     cus_site_site_contact_fname_th = customer_site.site_contact.con_fname_th
                     cus_site_site_contact_lname_th = customer_site.site_contact.con_lname_th,
                     cus_site_site_contact_position_th = customer_site.site_contact.con_position_th
+                    cus_site_site_contact_title_en = customer_site.site_contact.con_title.title_en
+                    cus_site_site_contact_fname_en = customer_site.site_contact.con_fname_en
+                    cus_site_site_contact_lname_en = customer_site.site_contact.con_lname_en
+                    cus_site_site_contact_position_en = customer_site.site_contact.con_position_en
+                    cus_site_site_contact_con_sex = customer_site.site_contact.con_sex
+                    cus_site_site_contact_nationality_id = customer_site.site_contact.con_nation_id
+                    cus_site_site_contact_con_mobile = customer_site.site_contact.con_mobile
+                    cus_site_site_contact_con_email = customer_site.site_contact.con_email
 
-                print("upd_flag = " + customer_site.upd_flag)
+
+                print("")
+                print("__________________")
+                print("cus_site_site_contact_title_en = " + str(cus_site_site_contact_title_en))
+                print("cus_site_site_contact_fname_en = " + str(cus_site_site_contact_fname_en))
+                print("cus_site_site_contact_lname_en = " + str(cus_site_site_contact_lname_en))
+                print("cus_site_site_contact_position_en = " + str(cus_site_site_contact_position_en))
+                print("cus_site_site_contact_con_sex = " + str(cus_site_site_contact_con_sex))
+                print("cus_site_site_contact_nationality_id = " + str(cus_site_site_contact_nationality_id))
+                print("cus_site_site_contact_con_mobile = " + str(cus_site_site_contact_con_mobile))
+                print("cus_site_site_contact_con_email = " + str(cus_site_site_contact_con_email))
+                print("__________________")
+                print("")
 
                 record = {
                     "cus_no": customer_site.cus_no,
@@ -396,6 +428,18 @@ def ajax_check_exist_cus_site(request):
                     "cus_site_site_contact_fname_th": cus_site_site_contact_fname_th,
                     "cus_site_site_contact_lname_th": cus_site_site_contact_lname_th,
                     "cus_site_site_contact_position_th": cus_site_site_contact_position_th,
+                    "cus_site_site_contact_title_en": cus_site_site_contact_title_en,
+                    "cus_site_site_contact_fname_en": cus_site_site_contact_fname_en,
+                    "cus_site_site_contact_lname_en": cus_site_site_contact_lname_en,
+                    "cus_site_site_contact_position_en": cus_site_site_contact_position_en,
+
+                    "cus_site_site_contact_title_en": cus_site_site_contact_title_en,
+                    "cus_site_site_contact_fname_en": cus_site_site_contact_fname_en,
+                    "cus_site_site_contact_lname_en": cus_site_site_contact_lname_en,
+                    "cus_site_site_contact_position_en": cus_site_site_contact_position_en,
+                    "cus_site_site_contact_con_nationality_id": cus_site_site_contact_nationality_id,
+                    "cus_site_site_contact_con_mobile": cus_site_site_contact_con_mobile,
+                    "cus_site_site_contact_con_email": cus_site_site_contact_con_email,
 
                     "customer_option_btype": customer_option_btype,
                     "customer_option_op1": customer_option_op1,
@@ -2313,7 +2357,6 @@ def update_all_cus_tabs(request):
                                 modified_records.append(record)
                                 count_modified_field = count_modified_field + 1
 
-                            # amnaj
                             field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Contact Nationality", str(contact_list.con_nation_id), str(cus_main_cus_contact_con_nationality_id), "E", request)
                             if field_is_modified:                                                                
                                 contact_list.con_nation_id = cus_main_cus_contact_con_nationality_id
