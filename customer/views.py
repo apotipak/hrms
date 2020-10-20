@@ -312,10 +312,6 @@ def ajax_check_exist_cus_site(request):
 
             try:
                 customer_site = Customer.objects.get(pk=cus_no)
-            except Customer.DoesNotExist:
-                customer_site = None
-
-            if customer_site:
                 print("todo: update customer site")
 
                 # 1.Bind customer_option information on Main Office tab
@@ -375,7 +371,12 @@ def ajax_check_exist_cus_site(request):
                     cus_site_site_contact_con_email = ""                    
                 else:
                     cus_site_site_contact_id = customer_site.site_contact_id
-                    cus_site_site_contact_title_th = customer_site.site_contact.con_title.title_th
+
+                    if customer_site.site_contact.con_title is not None:
+                        cus_site_site_contact_title_th = customer_site.site_contact.con_title.title_th
+                    else:
+                        cus_site_site_contact_title_th = ""
+
                     cus_site_site_contact_fname_th = customer_site.site_contact.con_fname_th
                     cus_site_site_contact_lname_th = customer_site.site_contact.con_lname_th,
                     cus_site_site_contact_position_th = customer_site.site_contact.con_position_th
@@ -453,8 +454,8 @@ def ajax_check_exist_cus_site(request):
                 }
 
                 pickup_records.append(record)
-
-            else:
+            except Customer.DoesNotExist:
+                # customer_site = None
                 print("")
                 print("todo: add new customer site")
                 print("")
@@ -582,10 +583,15 @@ def ajax_check_exist_cus_bill(request):
                     cus_bill_cus_country_th = customer_bill.cus_country.country_th
                     cus_bill_cus_country_en = customer_bill.cus_country.country_en
 
-                print(customer_bill.cus_contact_id)
-                if customer_bill.cus_contact_id is not None:
+                print(cus_bill.cus_contact_id)
+                if cus_bill.cus_contact_id is not None:
                     print("not none")
-                    cus_bill_cus_contact_title_th = customer_bill.cus_contact.con_title.title_th
+
+                    if cus_bill.cus_contact.con_title is not None:
+                        cus_bill_cus_contact_title_th = cus_bill.cus_contact.con_title.title_th
+                    else:
+                        cus_bill_cus_contact_title_th = ""
+
                     cus_bill_cus_contact_fname_th = customer_bill.cus_contact.con_fname_th
                     cus_bill_cus_contact_lname_th = customer_bill.cus_contact.con_lname_th,
                     cus_bill_cus_contact_position_th = customer_bill.cus_contact.con_position_th
