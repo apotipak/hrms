@@ -1961,6 +1961,7 @@
               var cus_site_cus_fax = data.results[0]["cus_fax"];
               var cus_site_cus_email = data.results[0]["cus_email"];
               var cus_site_cus_zone = data.results[0]["cus_zone"];
+
               var cus_site_site_contact_id = data.results[0]["cus_site_site_contact_id"];
               var cus_site_site_contact_title_th = data.results[0]["cus_site_site_contact_title_th"];
               var cus_site_site_contact_fname_th = data.results[0]["cus_site_site_contact_fname_th"];
@@ -2059,7 +2060,10 @@
               var cus_site_cus_fax = data.results[0]["cus_fax"];
               var cus_site_cus_email = data.results[0]["cus_email"];
               var cus_site_cus_zone = data.results[0]["cus_zone"];
+
               var cus_site_site_contact_id = data.results[0]["cus_site_site_contact_id"];
+              
+
               var cus_site_site_contact_title_th = data.results[0]["cus_site_site_contact_title_th"];
               var cus_site_site_contact_con_sex = data.results[0]["cus_site_site_contact_con_sex"];
               var cus_site_site_contact_fname_th = data.results[0]["cus_site_site_contact_fname_th"];
@@ -2489,7 +2493,7 @@
         if(json.form_is_valid) {
           $(document).Toasts('create', {
             class: json.class, 
-            title: "{% trans 'System message' %}",
+            title: "{% trans 'System message1' %}",
             subtitle: '',
             autohide: true,
             delay: 2000,

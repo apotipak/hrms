@@ -64,6 +64,40 @@ def CustomerCreate(request):
 
 
 @login_required(login_url='/accounts/login/')
+def ajax_undelete_customer(request):
+    cus_no = request.POST.get('cus_no')
+    print("cus_no - " + str(cus_no))
+    try:
+        customer_site = Customer.objects.get(pk=cus_no)
+        customer_site.upd_flag = 'R'
+        customer_site.save()
+
+        new_log = HrmsNewLog(
+            log_table = "CUSTOMER",
+            log_key = cus_no,
+            log_field = "upd_flag",
+            old_value = "D",
+            new_value = "R",
+            log_type = "R",
+            log_by = request.user.first_name,
+            log_date = datetime.datetime.now(),
+            )
+        new_log.save()   
+
+    except Customer.DoesNotExist:
+        print("not saved")
+        customer_site = None
+
+    response = JsonResponse({
+        "success": "Form is valid", 
+        })
+
+    response.status_code = 200
+    return response            
+
+
+
+@login_required(login_url='/accounts/login/')
 def ajax_check_exist_cus_main(request):
 
     print("************************************************")
@@ -243,39 +277,6 @@ def ajax_check_exist_cus_main(request):
 
 
 @login_required(login_url='/accounts/login/')
-def ajax_undelete_customer(request):
-    cus_no = request.POST.get('cus_no')
-    print("cus_no - " + str(cus_no))
-    try:
-        customer_site = Customer.objects.get(pk=cus_no)
-        customer_site.upd_flag = 'R'
-        customer_site.save()
-
-        new_log = HrmsNewLog(
-            log_table = "CUSTOMER",
-            log_key = cus_no,
-            log_field = "upd_flag",
-            old_value = "D",
-            new_value = "R",
-            log_type = "R",
-            log_by = request.user.first_name,
-            log_date = datetime.datetime.now(),
-            )
-        new_log.save()   
-
-    except Customer.DoesNotExist:
-        print("not saved")
-        customer_site = None
-
-    response = JsonResponse({
-        "success": "Form is valid", 
-        })
-
-    response.status_code = 200
-    return response            
-
-
-@login_required(login_url='/accounts/login/')
 def ajax_check_exist_cus_site(request):
 
     print("************************************************")
@@ -288,7 +289,7 @@ def ajax_check_exist_cus_site(request):
     business_type_list = []
     group_1_list = []
     group_2_list = []
-    customer_option = []
+    customer_option = []    
 
     if request.method == "POST":
         form = CustomerCodeCreateForm(request.POST)
@@ -307,14 +308,15 @@ def ajax_check_exist_cus_site(request):
 
             # Get customer site information
             cus_no = str(cus_id) + str(cus_brn)            
-            # print("cus_no = " + str(cus_no))
+            print("cus_no = " + str(cus_no))
+
             try:
                 customer_site = Customer.objects.get(pk=cus_no)
             except Customer.DoesNotExist:
                 customer_site = None
 
             if customer_site:
-                # print("todo: update customer site")
+                print("todo: update customer site")
 
                 # 1.Bind customer_option information on Main Office tab
                 try:
@@ -358,19 +360,21 @@ def ajax_check_exist_cus_site(request):
                     cus_site_cus_country_en = customer_site.cus_country.country_en
 
                 if customer_site.site_contact_id is None or customer_site.site_contact_id == "":
-                    cus_site_site_contact_title_th = ""
+                    cus_site_site_contact_id = 0
+                    cus_site_site_contact_title_th = "คุณ"
                     cus_site_site_contact_fname_th = ""
                     cus_site_site_contact_lname_th = ""
                     cus_site_site_contact_position_th = ""
-                    cus_site_site_contact_title_en = ""
+                    cus_site_site_contact_title_en = "Khun"
                     cus_site_site_contact_fname_en = ""
                     cus_site_site_contact_lname_en = ""
                     cus_site_site_contact_position_en = ""
-                    cus_site_site_contact_con_sex = ""
-                    cus_site_site_contact_nationality_id = ""
+                    cus_site_site_contact_con_sex = "M"
+                    cus_site_site_contact_nationality_id = 99
                     cus_site_site_contact_con_mobile = ""
                     cus_site_site_contact_con_email = ""                    
                 else:
+                    cus_site_site_contact_id = customer_site.site_contact_id
                     cus_site_site_contact_title_th = customer_site.site_contact.con_title.title_th
                     cus_site_site_contact_fname_th = customer_site.site_contact.con_fname_th
                     cus_site_site_contact_lname_th = customer_site.site_contact.con_lname_th,
@@ -451,7 +455,10 @@ def ajax_check_exist_cus_site(request):
                 pickup_records.append(record)
 
             else:
+                print("")
                 print("todo: add new customer site")
+                print("")
+
                 # 1.Bind customer site on Site tab                
                 record = {
                     "cus_no": "",
@@ -479,18 +486,18 @@ def ajax_check_exist_cus_site(request):
                     "cus_email": "",
                     "cus_zone": "",
 
-                    "cus_site_contact_id": "",
-                    "cus_site_site_contact_title_th": "",
+                    "cus_site_site_contact_id": 0,
+                    "cus_site_site_contact_title_th": "คุณ",
                     "cus_site_site_contact_fname_th": "",
                     "cus_site_site_contact_lname_th": "",
                     "cus_site_site_contact_position_th": "",
 
                     "cus_site_site_contact_con_sex": "",
-                    "cus_site_site_contact_title_en": "",
+                    "cus_site_site_contact_title_en": "Khun",
                     "cus_site_site_contact_fname_en": "",
                     "cus_site_site_contact_lname_en": "",
                     "cus_site_site_contact_position_en": "",
-                    "cus_site_site_contact_con_nationality_id": "",
+                    "cus_site_site_contact_con_nationality_id": 99,
                     "cus_site_site_contact_con_mobile": "",
                     "cus_site_site_contact_con_email": "",
 
@@ -3218,7 +3225,6 @@ def update_all_cus_tabs(request):
                     cus_site = 0
 
 
-
                 # Site CONTACT
                 if len(cus_site_site_contact_con_fname_th) > 0 or len(cus_site_site_contact_con_lname_th) > 0:
                     latest_contact_number = CusContact.objects.aggregate(Max('con_id'))
@@ -3265,39 +3271,6 @@ def update_all_cus_tabs(request):
 
                     cus_site_site_contact_id = cus_site_new_contact_id
                            
-                '''
-                new_customer_main = CusMain(
-                    cus_active = cus_main_cus_active,
-                    cus_main = cus_main,
-                    cus_id = cus_id,
-                    cus_name_th = cus_main_cus_name_th,
-                    cus_add1_th = cus_main_cus_add1_th,
-                    cus_add2_th = cus_main_cus_add2_th,
-                    cus_subdist_th = cus_main_cus_subdist_th,
-                    cus_district_id = cus_main_cus_district_id,
-                    cus_city_id = cus_main_city_id,
-                    cus_country_id = cus_main_country_id,
-                    cus_name_en = cus_main_cus_name_en,
-                    cus_add1_en = cus_main_cus_add1_en,
-                    cus_add2_en = cus_main_cus_add2_en,
-                    cus_subdist_en = cus_main_cus_subdist_en,                    
-                    cus_zip = cus_main_cus_zip,
-                    cus_tel = cus_main_cus_tel,
-                    cus_fax = cus_main_cus_fax,
-                    cus_email = cus_main_cus_email,
-                    cus_taxid = cus_main_cus_taxid,
-                    cus_zone_id = cus_main_cus_zone,
-                    cus_contact_id = cus_main_cus_contact_id,
-                    site_contact_id = cus_site_site_contact_id,
-                    upd_date = datetime.datetime.now(),
-                    upd_flag = 'A',
-                    upd_by = request.user.first_name,
-                    cus_sht_th = "",
-                    cus_sht_en = "",
-                    )
-                new_customer_main.save()                     
-                '''
-
                 new_customer_site = Customer(
                     cus_active = cus_site_cus_active,
                     cus_site = cus_site,
@@ -3321,8 +3294,8 @@ def update_all_cus_tabs(request):
                     cus_email = cus_site_cus_email,
                     cus_taxid = cus_main_cus_taxid,
                     cus_zone_id = cus_site_cus_zone,
-                    # cus_contact_id = cus_site_site_contact_id,
-                    # site_contact_id = cus_site_site_contact_id,
+                    cus_contact_id = cus_site_site_contact_id,
+                    site_contact_id = cus_site_site_contact_id,
                     upd_date = datetime.datetime.now(),
                     upd_by = request.user.first_name,
                     upd_flag = 'A',
@@ -3787,6 +3760,8 @@ def update_all_cus_tabs(request):
                 response_data['is_cus_main_has_new_contact'] = True
                 # amnaj
                 # response_data['cus_main_new_contact_id'] = cus_main_new_contact_id
+                response_data['cus_main_new_contact_id'] = cus_main_cus_contact_id
+                response_data['cus_site_new_contact_id'] = cus_site_site_contact_id
             else:
                 if count_modified_field > 0:
                     response_data['result'] = "Updated complete."
