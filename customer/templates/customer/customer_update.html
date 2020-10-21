@@ -521,6 +521,7 @@
                         <div class="row">                              
                           <div class="col-12 input-group">
 
+                            {% if cus_main.cus_contact.con_sex == 'M' %}
                             <div class="form-check form-check-inline pl-1">
                               <input class="form-check-input" type="radio" name="sexOptions" id="id_sex_male" value="M" checked>
                               <label class="form-check-label" for="id_sex_male">Male</label>
@@ -529,6 +530,16 @@
                               <input class="form-check-input" type="radio" name="sexOptions" id="id_sex_female" value="F">
                               <label class="form-check-label" for="id_sex_female">Female</label>
                             </div>
+                            {% else %}
+                            <div class="form-check form-check-inline pl-1">
+                              <input class="form-check-input" type="radio" name="sexOptions" id="id_sex_male" value="M">
+                              <label class="form-check-label" for="id_sex_male">Male</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="sexOptions" id="id_sex_female" value="F" checked>
+                              <label class="form-check-label" for="id_sex_female">Female</label>
+                            </div>
+                            {% endif %}
 
                           </div>
 
@@ -900,10 +911,9 @@
                         <div class="form-group col-md-2">
                           <label for="id_cus_site_selected_contact_title">{% trans 'Title (TH)' %}</label>                          
                           <div class="container">
-
                             <select name="cus_site_cus_contact_title_list" class="form-control form-control-sm" required="" id="id_cus_site_cus_contact_title_list">
                               {% for choice in cus_site_form.contact_title_list.field.queryset %}
-                              {% if choice.title_th == customer.site_contact.con_title.title_th %}
+                              {% if choice.title_th == customer.site_contact.con_title.title_th %}                              
                                 <option value="{{ choice.pk }}" selected>{{ choice.title_th}}</option> 
                               {% else %}
                                 <option value="{{ choice.pk }}">{{ choice.title_th}}</option> 
@@ -941,14 +951,27 @@
                           <div class="row">                              
                             <div class="col-12 input-group">
 
-                              <div class="form-check form-check-inline pl-1">
-                                <input class="form-check-input" type="radio" name="cus_site_sex_options" id="id_cus_site_sex_male" value="M" checked>
-                                <label class="form-check-label" for="id_cus_site_sex_male">Male</label>
-                              </div>
-                              <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="cus_site_sex_options" id="id_cus_site_sex_female" value="F">
-                                <label class="form-check-label" for="id_cus_site_sex_female">Female</label>
-                              </div>
+                            {% if customer.site_contact.con_sex == 'M' %}
+                            <div class="form-check form-check-inline pl-1">
+                              <input class="form-check-input" type="radio" name="sexOptions" id="id_sex_male" value="M" checked>
+                              <label class="form-check-label" for="id_sex_male">Male</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="sexOptions" id="id_sex_female" value="F">
+                              <label class="form-check-label" for="id_sex_female">Female</label>
+                            </div>
+                            {% else %}
+                            <div class="form-check form-check-inline pl-1">
+                              <input class="form-check-input" type="radio" name="sexOptions" id="id_sex_male" value="M">
+                              <label class="form-check-label" for="id_sex_male">Male</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="sexOptions" id="id_sex_female" value="F" checked>
+                              <label class="form-check-label" for="id_sex_female">Female</label>
+                            </div>
+                            {% endif %}
+
+
 
                             </div>
 
@@ -982,10 +1005,10 @@
                         
                         <div class="form-group col-md-2">
 
-                          <label for="id_cus_site_site_contact_cus_title_en">{% trans 'Nationality' %}</label>                          
+                          <label for="id_cus_site_site_contact_cus_nation_en">{% trans 'Nationality' %}</label>                          
                           <select name="cus_site_site_contact_nation_list" class="form-control form-control-sm" required="" id="id_cus_site_site_contact_nation_list">
                             {% for choice in cus_site_form.contact_nation_list.field.queryset %}
-                            {% if choice.nation_th == customer.cus_contact.con_nation.nation_th %}
+                            {% if choice.nation_th == customer.site_contact.con_nation.nation_th %}
                               <option value="{{ choice.pk }}" selected>{{ choice.nation_th}}</option> 
                             {% else %}
                               <option value="{{ choice.pk }}">{{ choice.nation_th}}</option> 
@@ -1303,13 +1326,14 @@
                           </div>                          
                         </div>
 
+                        <!-- cus_bill -->
                         <div class="form-group col-md-2">
                           <label for="id_cus_bill_selected_contact_title">{% trans 'Title (TH)' %}</label>                          
                           <div class="container">
 
                             <select name="cus_bill_cus_contact_title_list" class="form-control form-control-sm" id="id_cus_bill_cus_contact_title_list">
-                              {% for choice in cus_bill_form.contact_title_list.field.queryset %}
-                                {% if choice.title_th == "คุณ" %}
+                              {% for choice in cus_bill_form.contact_title_list.field.queryset %}                                
+                                {% if choice.title_th == cus_bill.cus_contact.con_tilte.title_th %}
                                   <option value="{{ choice.pk }}" selected>{{ choice.title_th}}</option> 
                                 {% else %}
                                   <option value="{{ choice.pk }}">{{ choice.title_th}}</option> 
@@ -1344,15 +1368,26 @@
 
                           <div class="row">                              
                             <div class="col-12 input-group">
-
-                              <div class="form-check form-check-inline pl-1">
-                                <input class="form-check-input" type="radio" name="cus_bill_sex_options" id="id_cus_bill_sex_male" value="M" checked>
-                                <label class="form-check-label" for="id_cus_bill_sex_male">Male</label>
-                              </div>
-                              <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="cus_bill_sex_options" id="id_cus_bill_sex_female" value="F">
-                                <label class="form-check-label" for="id_cus_bill_sex_female">Female</label>
-                              </div>
+                            
+                            {% if cus_bill.cus_contact.con_sex == 'M' %}
+                            <div class="form-check form-check-inline pl-1">
+                              <input class="form-check-input" type="radio" name="sexOptions" id="id_sex_male" value="M" checked>
+                              <label class="form-check-label" for="id_sex_male">Male</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="sexOptions" id="id_sex_female" value="F">
+                              <label class="form-check-label" for="id_sex_female">Female</label>
+                            </div>
+                            {% else %}
+                            <div class="form-check form-check-inline pl-1">
+                              <input class="form-check-input" type="radio" name="sexOptions" id="id_sex_male" value="M">
+                              <label class="form-check-label" for="id_sex_male">Male</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="sexOptions" id="id_sex_female" value="F" checked>
+                              <label class="form-check-label" for="id_sex_female">Female</label>
+                            </div>
+                            {% endif %}
 
                             </div>
 
