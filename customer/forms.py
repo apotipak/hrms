@@ -26,6 +26,7 @@ class CustomerCodeCreateForm(forms.Form):
     # Customer Billing
     cus_bill_cus_zone = forms.ModelChoiceField(queryset=None, required=False)
 
+    # amnaj
     # Contact Title
     contact_title_list = forms.ModelChoiceField(queryset=None, required=False)
     
@@ -445,61 +446,6 @@ class CusAllTabsForm(forms.ModelForm):
         else:
             return 0
 
-    '''
-    def clean_cus_main_cus_zip(self):
-        data = self.data.get('cus_main_cus_zip')
-        if len(data) != 5:
-            raise ValidationError("Zip is not correct.")
-        else:
-            return data
-        if data.isnumeric():
-            return data
-        else:
-            raise ValidationError("Zip is not correct.")
-    '''
-
-    # Customer Site validation
-    '''
-    def clean_cus_site_cus_name_th(self):
-        data = self.data.get('cus_site_cus_name_th')        
-        if len(data) > 0:
-            return data
-        else:
-            raise ValidationError("Site Tab - Customer Name (TH) is required.")
-
-    def clean_cus_site_cus_name_en(self):
-        data = self.data.get('cus_site_cus_name_en')
-        if len(data) > 0:
-            return data
-        else:
-            raise ValidationError("Site Tab - Customer Name (EN) is required.")
-    '''
-
-    # def clean_cus_site_cud_district(self):
-    '''
-    def clean_cus_site_select_district_id(self):
-        data = self.data.get('cus_site_select_district_id')
-        if len(data) > 0:
-            return data
-        else:
-            raise ValidationError("Site Tab - District is required.")
-    '''
-
-    '''
-    def clean_cus_site_cus_zone(self):
-        data = self.data.get('cus_site_cus_zone')
-        if len(data) > 0:
-            return data
-        else:
-            raise ValidationError("Site Tab - Zone is required.")
-
-    def clean_cus_site_cus_zip(self):
-        data = self.data.get('cus_site_cus_zip')
-        if len(data) > 0:
-            return data
-        else:
-            raise ValidationError("Site Tab - Zip is required.")
-    '''
 
 class CusMainForm(forms.ModelForm):
     # Customer Main Office
@@ -515,8 +461,13 @@ class CusMainForm(forms.ModelForm):
     cus_main_customer_option_op1 = forms.CharField(required=False)
     cus_main_customer_option_op4 = forms.CharField(required=False)
 
-    # Customer Site
-    #cus_site_cus_name_th = forms.CharField(required=True)
+    # amnaj
+    contact_title_list = forms.ModelChoiceField(queryset=None, required=False)
+    contact_nation_list = forms.ModelChoiceField(queryset=TNation.objects.all().exclude(upd_flag='D').order_by('-nation_id'), required=False)
+
+    cus_main_cus_contact_cus_title_en = forms.CharField(required=False)
+    # cus_main_cus_contact_nation_th = forms.CharField(required=False)
+    # cus_main_cus_contact_nation_en = forms.CharField(required=False)
 
     class Meta:
         model = CusMain
@@ -535,8 +486,6 @@ class CusMainForm(forms.ModelForm):
 
         self.initial['cus_main_cus_active'] = instance.cus_active
         self.initial['cus_zip'] = instance.cus_zip
-
-
 
         cus_main_cus_city_th = forms.CharField(required=False)                
         self.fields['cus_main_cus_city_th'].widget.attrs['readonly'] = True
@@ -562,8 +511,6 @@ class CusMainForm(forms.ModelForm):
             self.initial['cus_main_cus_district_en'] = instance.cus_district.dist_en
         else:
             self.initial['cus_main_cus_district_en'] = ""
-
-
                 
         self.fields['cus_main_cus_country_en'].widget.attrs['readonly'] = True
         if (instance.cus_district is not None):
@@ -571,47 +518,15 @@ class CusMainForm(forms.ModelForm):
         else:
             self.initial['cus_main_cus_country_en'] = ""
 
-
-
-
         self.fields['cus_main_cus_zone'].queryset=ComZone.objects.all()
         self.initial['cus_main_cus_zone'] = instance.cus_zone_id
 
         self.fields['cus_main_customer_option_op1'].strip = False
         self.fields['cus_main_customer_option_op4'].strip = False
 
-    '''
-    def clean_cus_main_cus_name_th(self):
-        data = self.data.get('cus_main_cus_name_th')        
-        if len(data) > 0:
-            return data
-        else:
-            raise ValidationError("Customer Name (TH) is required.")
-    '''
+        self.fields['contact_title_list'].queryset=TTitle.objects.all().exclude(upd_flag='D').order_by('-title_id')
 
-    '''
-    def clean_cus_name_en(self):
-        data = self.data.get('cus_main_cus_name_en')
-        if len(data) > 0:
-            return data
-        else:
-            raise ValidationError("Customer Name (EN) is required.")
-    '''
-
-    '''
-    def clean_cus_main_cus_zip(self):
-        data = self.data.get('cus_main_cus_zip')
-
-        if len(data) != 5:
-            raise ValidationError("Zip is not correct.")
-        else:
-            return data
-
-        if data.isnumeric():
-            return data
-        else:
-            raise ValidationError("Zip is not correct.")
-    '''
+        self.fields['cus_main_cus_contact_cus_title_en'].initial = "Khun"
 
     def clean_cus_main_customer_option_op1(self):
         data = self.data.get('cus_main_customer_option_op1')
@@ -699,6 +614,11 @@ class CusSiteForm(forms.ModelForm):
     cus_site_cus_contact_con_sex = forms.ChoiceField(choices=sex_choices, widget=forms.RadioSelect(attrs={'class': 'inline'}), required=False)
     cus_site_cus_contact_cus_title = forms.ModelChoiceField(queryset=None, required=False)
 
+    contact_title_list = forms.ModelChoiceField(queryset=TTitle.objects.all().exclude(upd_flag='D').order_by('-title_id'), required=False)
+    contact_nation_list = forms.ModelChoiceField(queryset=TNation.objects.all().exclude(upd_flag='D').order_by('-nation_id'), required=False)
+
+    cus_site_site_contact_cus_title_en = forms.CharField(required=False)
+
     class Meta:
         model = Customer
         fields = '__all__'
@@ -714,14 +634,8 @@ class CusSiteForm(forms.ModelForm):
         self.initial['cus_site_cus_zone'] = instance.cus_zone_id
         
         self.initial['cus_site_cus_contact'] = instance.cus_contact
-        # print("cus_contact = " + str(instance.cus_contact_id))
 
-        # sex_object = CusContact.objects.filter(con_id=instance.cus_contact_id).get()
-        # sex_object = CusContact.objects.filter(con_id=0).get()
-
-        # print("sex = " + str(sex_object.con_sex))
-        # self.fields['cus_site_cus_contact_con_sex'].widget.attrs={'class': 'radio-inline'}
-        # self.initial['cus_site_cus_contact_con_sex'] = sex_object.con_sex
+        self.fields['cus_site_site_contact_cus_title_en'].initial = "Khun"
 
     def clean_cus_active(self):
         data = self.data.get('cus_site_cus_active')
@@ -838,6 +752,11 @@ class CusBillForm(forms.ModelForm):
     cus_bill_cus_email = forms.CharField(required=False)
     cus_bill_cus_zone = forms.ModelChoiceField(queryset=None, required=False)    
 
+    contact_title_list = forms.ModelChoiceField(queryset=TTitle.objects.all().exclude(upd_flag='D').order_by('-title_id'), required=False)
+    contact_nation_list = forms.ModelChoiceField(queryset=TNation.objects.all().exclude(upd_flag='D').order_by('-nation_id'), required=False)
+    
+    cus_bill_cus_contact_cus_title_en = forms.CharField(required=False)
+
     class Meta:
         model = CusBill
         fields = '__all__'
@@ -853,40 +772,14 @@ class CusBillForm(forms.ModelForm):
         self.initial['cus_bill_cus_zone'] = instance.cus_zone_id
         self.initial['cus_bill_cus_contact'] = instance.cus_contact
 
+        self.fields['cus_bill_cus_contact_cus_title_en'].initial = "Khun"
+
     def clean_cus_active(self):
         data = self.data.get('cus_bill_cus_active')
         if data != "1":
             return 0
         return 1 
 
-    '''
-    def clean_cus_bill_cus_name_th(self):
-        data = self.data.get('cus_bill_cus_name_th')        
-        if len(data) > 0:
-            return data
-        else:
-            raise ValidationError("Customer Name (TH) is required.")
-    '''
-
-    '''
-    def clean_cus_bill_cus_zone(self):
-        data = self.data.get('cus_bill_cus_zone')
-        # print("cus_bill_zone " + str(data))
-        return data
-    '''
-    
-    '''
-    def clean_cus_bill_cus_zip(self):
-        data = self.data.get('cus_bill_cus_zip')
-        if len(data) != 5:
-            raise ValidationError("Zip is not correct.")
-        else:
-            return data        
-        if data.isnumeric():
-            return data
-        else:
-            raise ValidationError("Zip is not correct.") 
-    '''
 
 class ContactSearchForm(forms.Form):
     cus_id = forms.CharField(max_length=4, required=False, error_messages={'max_length': _('This Customer ID is too long.')}, widget=forms.TextInput(attrs={'autocomplete':'off', 'type':'number'}))

@@ -478,27 +478,119 @@
                       </div>
 
                       <div class="form-group col-md-2">
-                        <label for="id_cus_main_cus_contact_cus_title_th">{% trans 'Title' %}</label>
-                          <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_contact_cus_title_th" name="cus_main_cus_contact_cus_title_th" value="{{ cus_main.cus_contact.con_title|default_if_none:'' }}" readonly>
+                        <label for="id_cus_main_selected_contact_title">{% trans 'Title (TH)' %}</label>                          
+                        <div class="container">
+
+                          <select name="cus_main_cus_contact_title_list" class="form-control form-control-sm" required="" id="id_cus_main_cus_contact_title_list">
+                            {% for choice in cus_main_form.contact_title_list.field.queryset %}
+                              {% if choice.title_th == 'คุณ' %}
+                              <option value="{{ choice.pk }}" selected>{{ choice.title_th}}</option> 
+                              {% else %}
+                              <option value="{{ choice.pk }}">{{ choice.title_th}}</option> 
+                              {% endif %}
+                            {% endfor %}
+                          </select>
+
+                        </div>
                       </div>
 
                       <div class="form-group col-md-2">
                         <label for="id_cus_main_cus_contact_con_fname_th">{% trans 'First Name' %}</label>
-                        <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_contact_con_fname_th" name="cus_main_cus_contact_con_fname_th" value="{{ cus_main.cus_contact.con_fname_th|default_if_none:'' }}" readonly>
+                        <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_contact_con_fname_th" name="cus_main_cus_contact_con_fname_th" value="{{ cus_main.cus_contact.con_fname_th|default_if_none:'' }}">
                       </div>
 
                       <div class="form-group col-md-3">
                         <label for="id_cus_main_cus_contact_con_lname_th">{% trans 'Last Name' %}</label>
-                        <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_contact_con_lname_th" name="cus_main_cus_contact_con_fname_th" value="{{ cus_main.cus_contact.con_lname_th|default_if_none:'' }}" readonly>
+                        <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_contact_con_lname_th" name="cus_main_cus_contact_con_fname_th" value="{{ cus_main.cus_contact.con_lname_th|default_if_none:'' }}">
                       </div>
 
                       <div class="form-group col-md-3">
                         <label for="id_cus_main_cus_contact_con_position_th">{% trans 'Position' %}</label>
-                        <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_contact_con_position_th" name="cus_main_cus_contact_con_position_th" value="{{ cus_main.cus_contact.con_position_th|default_if_none:'' }}" readonly>
+                        <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_contact_con_position_th" name="cus_main_cus_contact_con_position_th" value="{{ cus_main.cus_contact.con_position_th|default_if_none:'' }}">
                       </div>
 
                     </div>
                     
+
+
+                    <div class="form-row">
+                      
+                      <div class="form-group col-md-2">
+                        <label for="id_cus_main_cus_contact_id" class="col-sm-12 col-form-label form-control-sm">{% trans 'Sex' %}</label>
+
+                        <div class="row">                              
+                          <div class="col-12 input-group">
+
+                            <div class="form-check form-check-inline pl-1">
+                              <input class="form-check-input" type="radio" name="sexOptions" id="id_sex_male" value="M" checked>
+                              <label class="form-check-label" for="id_sex_male">Male</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="sexOptions" id="id_sex_female" value="F">
+                              <label class="form-check-label" for="id_sex_female">Female</label>
+                            </div>
+
+                          </div>
+
+                        </div>                          
+                      </div>
+
+                      <div class="form-group col-md-2">
+                        <label for="id_cus_main_cus_contact_cus_title_en">{% trans 'Title (EN)' %}</label>                          
+                          {% render_field cus_main_form.cus_main_cus_contact_cus_title_en class="form-control form-control-sm" %}
+                      </div>
+
+                      <div class="form-group col-md-2">
+                        <label for="id_cus_main_cus_contact_con_fname_en">{% trans 'First Name (EN)' %}</label>
+                        <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_contact_con_fname_en" name="cus_main_cus_contact_con_fname_en">
+                      </div>
+
+                      <div class="form-group col-md-3">
+                        <label for="id_cus_main_cus_contact_con_lname_en">{% trans 'Last Name (EN)' %}</label>
+                        <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_contact_con_lname_en" name="cus_main_cus_contact_con_lname_en">
+                      </div>
+
+                      <div class="form-group col-md-3">
+                        <label for="id_cus_main_cus_contact_con_position_en">{% trans 'Position (EN)' %}</label>
+                        <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_contact_con_position_en" name="cus_main_cus_contact_con_position_en">
+                      </div>
+
+                    </div>
+                    
+
+
+
+
+                    <div class="form-row">
+                      
+                      <div class="form-group col-md-2">
+
+                        <label for="id_cus_main_cus_contact_cus_title_en">{% trans 'Nationality' %}</label>                          
+                        <select name="cus_main_cus_contact_nation_list" class="form-control form-control-sm" required="" id="id_cus_main_cus_contact_nation_list">
+                          {% for choice in cus_main_form.contact_nation_list.field.queryset %}
+                            {% if choice.nation_th == "ไทย" %}
+                            <option value="{{ choice.pk }}" selected>{{ choice.nation_th}}</option> 
+                            {% else %}
+                            <option value="{{ choice.pk }}">{{ choice.nation_th}}</option> 
+                            {% endif %}
+                          {% endfor %}
+                        </select>
+
+                      </div>
+
+
+                      <div class="form-group col-md-3">
+                        <label for="id_cus_main_cus_contact_con_mobile">{% trans 'Mobile' %}</label>
+                        <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_contact_con_mobile" name="cus_main_cus_contact_con_mobile">
+                      </div>
+
+                      <div class="form-group col-md-3">
+                        <label for="id_cus_main_cus_contact_con_email">{% trans 'Email' %}</label>
+                        <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_contact_con_email" name="cus_main_cus_contact_con_email">
+                      </div>
+
+                    </div>
+
 
                     {% comment %}
                     <div class="form-group">                              
@@ -805,30 +897,117 @@
                           </div>                          
                         </div>
 
-
-
                         <div class="form-group col-md-2">
-                          <label for="id_cus_site_site_contact_title_th">{% trans 'Title' %}</label>                          
-                            <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_title_th" name="cus_site_site_contact_title_th" value="{{ customer.site_contact.con_title|default_if_none:'' }}" readonly>
+                          <label for="id_cus_site_selected_contact_title">{% trans 'Title (TH)' %}</label>                          
+                          <div class="container">
+
+                            <select name="cus_site_cus_contact_title_list" class="form-control form-control-sm" required="" id="id_cus_site_cus_contact_title_list">
+                              {% for choice in cus_site_form.contact_title_list.field.queryset %}
+                              {% if choice.title_th == "คุณ" %}
+                                <option value="{{ choice.pk }}" selected>{{ choice.title_th}}</option> 
+                              {% else %}
+                                <option value="{{ choice.pk }}">{{ choice.title_th}}</option> 
+                              {% endif %}
+                              {% endfor %}
+                            </select>
+
+                          </div>
                         </div>
 
                         <div class="form-group col-md-2">
                           <label for="id_cus_site_site_contact_fname_th">{% trans 'First Name' %}</label>
-                          <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_fname_th" name="cus_site_site_contact_fname_th" value="{{ cus_site.site_contact.con_fname_th|default_if_none:'' }}" readonly>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_fname_th" name="cus_site_site_contact_fname_th" value="{{ cus_site.site_contact.con_fname_th|default_if_none:'' }}" >
                         </div>
 
                         <div class="form-group col-md-3">
                           <label for="id_cus_site_site_contact_lname_th">{% trans 'Last Name' %}</label>
-                          <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_lname_th" name="cus_site_cus_contact_con_fname_th" value="{{ cus_site.site_contact.con_lname_th|default_if_none:'' }}" readonly>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_lname_th" name="cus_site_cus_contact_con_fname_th" value="{{ cus_site.site_contact.con_lname_th|default_if_none:'' }}" >
                         </div>
 
                         <div class="form-group col-md-3">
                           <label for="id_cus_site_site_contact_position_th">{% trans 'Position' %}</label>
-                          <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_position_th" name="cus_site_site_contact_position_th" value="{{ cus_site.site_contact.con_position_th|default_if_none:'' }}" readonly>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_position_th" name="cus_site_site_contact_position_th" value="{{ cus_site.site_contact.con_position_th|default_if_none:'' }}" >
+                        </div>
+
+                      </div>
+
+
+
+                      <div class="form-row">
+                        
+                        <div class="form-group col-md-2">
+                          <label for="cus_site_sex_options" class="col-sm-12 col-form-label form-control-sm">{% trans 'Sex' %}</label>
+
+                          <div class="row">                              
+                            <div class="col-12 input-group">
+
+                              <div class="form-check form-check-inline pl-1">
+                                <input class="form-check-input" type="radio" name="cus_site_sex_options" id="id_cus_site_sex_male" value="M" checked>
+                                <label class="form-check-label" for="id_cus_site_sex_male">Male</label>
+                              </div>
+                              <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="cus_site_sex_options" id="id_cus_site_sex_female" value="F">
+                                <label class="form-check-label" for="id_cus_site_sex_female">Female</label>
+                              </div>
+
+                            </div>
+
+                          </div>                          
+                        </div>
+
+                        <div class="form-group col-md-2">
+                          <label for="id_cus_site_site_contact_cus_title_en">{% trans 'Title (EN)' %}</label>                    
+                            {% render_field cus_site_form.cus_site_site_contact_cus_title_en class="form-control form-control-sm" %}
+                        </div>
+
+                        <div class="form-group col-md-2">
+                          <label for="id_cus_site_site_contact_con_fname_en">{% trans 'First Name (EN)' %}</label>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_con_fname_en" name="cus_site_site_contact_con_fname_en">
+                        </div>
+
+                        <div class="form-group col-md-3">
+                          <label for="id_cus_site_site_contact_con_lname_en">{% trans 'Last Name (EN)' %}</label>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_con_lname_en" name="cus_site_cus_contact_con_lname_en">
+                        </div>
+
+                        <div class="form-group col-md-3">
+                          <label for="id_cus_site_site_contact_con_position_en">{% trans 'Position (EN)' %}</label>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_con_position_en" name="cus_site_cus_contact_con_position_en">
                         </div>
 
                       </div>
                       
+
+                      <div class="form-row">
+                        
+                        <div class="form-group col-md-2">
+
+                          <label for="id_cus_site_site_contact_cus_title_en">{% trans 'Nationality' %}</label>                          
+                          <select name="cus_site_site_contact_nation_list" class="form-control form-control-sm" required="" id="id_cus_site_site_contact_nation_list">
+                            {% for choice in cus_site_form.contact_nation_list.field.queryset %}
+                            {% if choice.nation_th == "ไทย" %}
+                              <option value="{{ choice.pk }}" selected>{{ choice.nation_th}}</option> 
+                            {% else %}
+                              <option value="{{ choice.pk }}">{{ choice.nation_th}}</option> 
+                            {% endif %}
+                            {% endfor %}
+                          </select>
+
+                        </div>
+
+
+                        <div class="form-group col-md-3">
+                          <label for="id_cus_site_site_contact_con_mobile">{% trans 'Mobile' %}</label>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_con_mobile" name="cus_site_site_contact_con_mobile">
+                        </div>
+
+                        <div class="form-group col-md-3">
+                          <label for="id_cus_site_site_contact_con_email">{% trans 'Email' %}</label>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_con_email" name="cus_site_site_contact_con_email">
+                        </div>
+
+                      </div>
+
 
                       {% comment %}
                       <div class="form-group">                              
@@ -1125,8 +1304,20 @@
                         </div>
 
                         <div class="form-group col-md-2">
-                          <label for="id_cus_bill_cus_contact_cus_title">{% trans 'Title' %}</label>
-                            <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_contact_cus_title" name="cus_bill_cus_contact_cus_title" value="{{ cus_bill.cus_contact.con_title|default_if_none:'' }}" readonly>
+                          <label for="id_cus_bill_selected_contact_title">{% trans 'Title (TH)' %}</label>                          
+                          <div class="container">
+
+                            <select name="cus_bill_cus_contact_title_list" class="form-control form-control-sm" id="id_cus_bill_cus_contact_title_list">
+                              {% for choice in cus_bill_form.contact_title_list.field.queryset %}
+                                {% if choice.title_th == "คุณ" %}
+                                  <option value="{{ choice.pk }}" selected>{{ choice.title_th}}</option> 
+                                {% else %}
+                                  <option value="{{ choice.pk }}">{{ choice.title_th}}</option> 
+                                {% endif %}
+                              {% endfor %}
+                            </select>
+
+                          </div>
                         </div>
 
                         <div class="form-group col-md-2">
@@ -1146,6 +1337,77 @@
 
                       </div>
                       
+
+                      <div class="form-row">                        
+                        <div class="form-group col-md-2">
+                          <label for="cus_bill_sex_options" class="col-sm-12 col-form-label form-control-sm">{% trans 'Sex' %}</label>
+
+                          <div class="row">                              
+                            <div class="col-12 input-group">
+
+                              <div class="form-check form-check-inline pl-1">
+                                <input class="form-check-input" type="radio" name="cus_bill_sex_options" id="id_cus_bill_sex_male" value="M" checked>
+                                <label class="form-check-label" for="id_cus_bill_sex_male">Male</label>
+                              </div>
+                              <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="cus_bill_sex_options" id="id_cus_bill_sex_female" value="F">
+                                <label class="form-check-label" for="id_cus_bill_sex_female">Female</label>
+                              </div>
+
+                            </div>
+
+                          </div>                          
+                        </div>
+
+                        <div class="form-group col-md-2">
+                          <label for="id_cus_bill_cus_contact_cus_title_en">{% trans 'Title (EN)' %}</label>                          
+                            {% render_field cus_bill_form.cus_bill_cus_contact_cus_title_en class="form-control form-control-sm" %}
+                        </div>
+
+                        <div class="form-group col-md-2">
+                          <label for="id_cus_bill_cus_contact_con_fname_en">{% trans 'First Name (EN)' %}</label>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_contact_con_fname_en" name="cus_bill_cus_contact_con_fname_en">
+                        </div>
+
+                        <div class="form-group col-md-3">
+                          <label for="id_cus_site_site_contact_con_lname_en">{% trans 'Last Name (EN)' %}</label>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_contact_con_lname_en" name="cus_bill_cus_contact_con_lname_en">
+                        </div>
+
+                        <div class="form-group col-md-3">
+                          <label for="id_cus_bill_cus_contact_con_position_en">{% trans 'Position (EN)' %}</label>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_contact_con_position_en" name="cus_bill_cus_contact_con_position_en">
+                        </div>
+                      </div>
+
+
+                      <div class="form-row">                        
+                        <div class="form-group col-md-2">
+                          <label for="id_cus_bill_cus_contact_cus_title_en">{% trans 'Nationality' %}</label>                          
+                          <select name="cus_bill_cus_contact_nation_list" class="form-control form-control-sm" required="" id="id_cus_bill_cus_contact_nation_list">
+                            {% for choice in cus_bill_form.contact_nation_list.field.queryset %}
+                            {% if choice.nation_th == "ไทย" %}
+                              <option value="{{ choice.pk }}" selected>{{ choice.nation_th}}</option> 
+                            {% else %}
+                              <option value="{{ choice.pk }}">{{ choice.nation_th}}</option> 
+                            {% endif %}
+                            {% endfor %}
+                          </select>
+                        </div>
+
+
+                        <div class="form-group col-md-3">
+                          <label for="id_cus_cus_bill_cus_contact_con_mobile">{% trans 'Mobile' %}</label>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_contact_con_mobile" name="cus_bill_cus_contact_con_mobile">
+                        </div>
+
+                        <div class="form-group col-md-3">
+                          <label for="id_cus_bill_cus_contact_con_email">{% trans 'Email' %}</label>
+                          <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_contact_con_email" name="cus_bill_cus_contact_con_email">
+                        </div>
+                      </div>
+
+                    </div>
 
                       {% comment %}
                       <div class="form-group">                              
@@ -1278,8 +1540,8 @@
 
 {% block javascript %}
 <script>
-  $('#btnCopyToSite').on('click', function (e) {
-    
+  
+$('#btnCopyToSite').on('click', function (e) {
     if ($('#id_cus_main_cus_active').is(":checked"))
       cus_main_cus_active = 1;
     else
@@ -1289,7 +1551,7 @@
     cus_main_cus_add1_th = $('#id_cus_main_cus_add1_th').val();
     cus_main_cus_add2_th = $('#id_cus_main_cus_add2_th').val();
     cus_main_cus_subdist_th = $('#id_cus_main_cus_subdist_th').val();      
-    cus_main_cus_district_dist_th = $('#id_cus_main_cus_district_dist_th').val();    
+    cus_main_cus_district_dist_th = $('#id_cus_main_cus_district_dist_th').val();
     cus_main_cus_city_th = $('#id_cus_main_cus_city_th').val();
     cus_main_cus_country_th = $('#id_cus_main_cus_country_th').val();
     cus_main_cus_name_en = $('#id_cus_main_cus_name_en').val();      
@@ -1305,11 +1567,25 @@
     cus_main_cus_email = $('#id_cus_main_cus_email').val();
     cus_main_select_district_id = $('#id_cus_main_select_district_id').val();
     cus_main_cus_zone = $('#id_cus_main_cus_zone').val();
-    cus_main_cus_contact_id = $('#id_cus_main_cus_contact_id').val();    
-    cus_main_cus_contact_cus_title_th = $('#id_cus_main_cus_contact_cus_title_th').val();        
-    cus_main_cus_contact_con_fname_th = $('#id_cus_main_cus_contact_con_fname_th').val();  
+
+    cus_main_cus_contact_id = $('#id_cus_main_cus_contact_id').val();
+    cus_main_cus_contact_title_id = $('#id_cus_main_cus_contact_title_list').val();
+    cus_main_cus_contact_cus_title = $('#id_cus_main_cus_contact_cus_title_th').val();  
+    cus_main_cus_contact_con_fname_th = $('#id_cus_main_cus_contact_con_fname_th').val();
     cus_main_cus_contact_con_lname_th = $('#id_cus_main_cus_contact_con_lname_th').val();
     cus_main_cus_contact_con_position_th = $('#id_cus_main_cus_contact_con_position_th').val();
+
+    cus_main_cus_contact_title_sex = $("input[name='sexOptions']:checked").val();  
+
+    cus_main_cus_contact_cus_title_en = $('#id_cus_main_cus_contact_cus_title_en').val();
+    cus_main_cus_contact_con_fname_en = $('#id_cus_main_cus_contact_con_fname_en').val();
+    cus_main_cus_contact_con_lname_en = $('#id_cus_main_cus_contact_con_lname_en').val();
+    cus_main_cus_contact_con_position_en = $('#id_cus_main_cus_contact_con_position_en').val();
+    
+    cus_main_cus_contact_nation_list = $('#id_cus_main_cus_contact_nation_list').val();    
+    cus_main_cus_contact_con_mobile = $('#id_cus_main_cus_contact_con_mobile').val();
+    cus_main_cus_contact_con_email = $('#id_cus_main_cus_contact_con_email').val();
+
 
     if(cus_main_cus_active==1)
       $('#id_cus_site_cus_active').prop('checked', true);
@@ -1343,17 +1619,39 @@
 
     // Site - Contact Information
     $('#id_cus_site_site_contact_id').val(cus_main_cus_contact_id);
-    $('#id_cus_site_site_contact_title_th').val(cus_main_cus_contact_cus_title_th);
+    $('#id_cus_site_cus_contact_title_list').val(cus_main_cus_contact_title_id);
+    $('#id_cus_site_site_contact_title_th').val(cus_main_cus_contact_cus_title);
     $('#id_cus_site_site_contact_fname_th').val(cus_main_cus_contact_con_fname_th);
     $('#id_cus_site_site_contact_lname_th').val(cus_main_cus_contact_con_lname_th);
     $('#id_cus_site_site_contact_position_th').val(cus_main_cus_contact_con_position_th);
+  
+    if(cus_main_cus_contact_title_sex == 'M') {
+      $('#id_cus_site_sex_male').prop("checked", true);
+      $('#id_cus_site_sex_female').prop("checked", false);
+    }
+
+    if(cus_main_cus_contact_title_sex == 'F') {
+      $('#id_cus_site_sex_male').prop("checked", false);
+      $('#id_cus_site_sex_female').prop("checked", true);
+    }
+
+
+
+    $('#id_cus_site_site_contact_cus_title_en').val(cus_main_cus_contact_cus_title_en);
+    $('#id_cus_site_site_contact_con_fname_en').val(cus_main_cus_contact_con_fname_en);
+    $('#id_cus_site_site_contact_con_lname_en').val(cus_main_cus_contact_con_lname_en);
+    $('#id_cus_site_site_contact_con_position_en').val(cus_main_cus_contact_con_position_en);
+
+    $('#id_cus_site_site_contact_nation_list').val(cus_main_cus_contact_nation_list);
+    $('#id_cus_site_site_contact_con_mobile').val(cus_main_cus_contact_con_mobile);
+    $('#id_cus_site_site_contact_con_email').val(cus_main_cus_contact_con_email);
 
     $(document).Toasts('create', {
       class: 'bg-success', 
       title: "{% trans 'Message' %}",
       subtitle: '',
       autohide: true,
-      delay: 2000,      
+      delay: 2000,
       body: "Copy to site successfully.",
       autoDismiss: true,
       close: true,
@@ -1389,11 +1687,23 @@
     
     cus_main_select_district_id = $('#id_cus_main_select_district_id').val();
     cus_main_cus_zone = $('#id_cus_main_cus_zone').val();
-    cus_main_cus_contact_id = $('#id_cus_main_cus_contact_id').val();
-    cus_main_cus_contact_cus_title = $('#id_cus_main_cus_contact_cus_title_th').val();
+
+    cus_main_cus_contact_id = $('#id_cus_main_cus_contact_id').val();    
+    cus_main_cus_contact_title_id = $('#id_cus_main_cus_contact_title_list').val();
+    cus_main_cus_contact_cus_title = $('#id_cus_main_cus_contact_cus_title_th').val();  
     cus_main_cus_contact_con_fname_th = $('#id_cus_main_cus_contact_con_fname_th').val();
     cus_main_cus_contact_con_lname_th = $('#id_cus_main_cus_contact_con_lname_th').val();
     cus_main_cus_contact_con_position_th = $('#id_cus_main_cus_contact_con_position_th').val();
+    cus_main_cus_contact_title_sex = $("input[name='sexOptions']:checked").val();  
+    cus_main_cus_contact_cus_title_en = $('#id_cus_main_cus_contact_cus_title_en').val();
+    cus_main_cus_contact_con_fname_en = $('#id_cus_main_cus_contact_con_fname_en').val();
+    cus_main_cus_contact_con_lname_en = $('#id_cus_main_cus_contact_con_lname_en').val();
+    cus_main_cus_contact_con_position_en = $('#id_cus_main_cus_contact_con_position_en').val();    
+    cus_main_cus_contact_nation_list = $('#id_cus_main_cus_contact_nation_list').val();    
+    cus_main_cus_contact_con_mobile = $('#id_cus_main_cus_contact_con_mobile').val();
+    cus_main_cus_contact_con_email = $('#id_cus_main_cus_contact_con_email').val();
+
+    // amnaj
 
     if(cus_main_cus_active==1)
       $('#id_cus_bill_cus_active').prop('checked', true);
@@ -1426,18 +1736,38 @@
     $('#id_cus_bill_cus_zone').val(cus_main_cus_zone);
 
     // Bill Cotact Information
-    $('#id_cus_bill_cus_contact_id').val(cus_main_cus_contact_id);        
-    $('#id_cus_bill_cus_contact_cus_title').val(cus_main_cus_contact_cus_title);
+    $('#id_cus_bill_cus_contact_id').val(cus_main_cus_contact_id);
+    $('#id_cus_bill_cus_contact_title_list').val(cus_main_cus_contact_title_id);
+    $('#id_cus_bill_cus_contact_title_th').val(cus_main_cus_contact_cus_title);
     $('#id_cus_bill_cus_contact_con_fname_th').val(cus_main_cus_contact_con_fname_th);
     $('#id_cus_bill_cus_contact_con_lname_th').val(cus_main_cus_contact_con_lname_th);
     $('#id_cus_bill_cus_contact_con_position_th').val(cus_main_cus_contact_con_position_th);
+  
+    if(cus_main_cus_contact_title_sex == 'M') {
+      $('#id_cus_bill_sex_male').prop("checked", true);
+      $('#id_cus_bill_sex_female').prop("checked", false);
+    }
+
+    if(cus_main_cus_contact_title_sex == 'F') {
+      $('#id_cus_bill_sex_male').prop("checked", false);
+      $('#id_cus_bill_sex_female').prop("checked", true);
+    }
+
+    $('#id_cus_bill_cus_contact_cus_title_en').val(cus_main_cus_contact_cus_title_en);
+    $('#id_cus_bill_cus_contact_con_fname_en').val(cus_main_cus_contact_con_fname_en);
+    $('#id_cus_bill_cus_contact_con_lname_en').val(cus_main_cus_contact_con_lname_en);
+    $('#id_cus_bill_cus_contact_con_position_en').val(cus_main_cus_contact_con_position_en);
+
+    $('#id_cus_bill_cus_contact_nation_list').val(cus_main_cus_contact_nation_list);
+    $('#id_cus_bill_cus_contact_con_mobile').val(cus_main_cus_contact_con_mobile);
+    $('#id_cus_bill_cus_contact_con_email').val(cus_main_cus_contact_con_email);
 
     $(document).Toasts('create', {
       class: 'bg-success', 
       title: "{% trans 'Message' %}",
       subtitle: '',
       autohide: true,
-      delay: 2000,      
+      delay: 2000,
       body: "Copy to bill successfully.",
       autoDismiss: true,
       close: true,
@@ -1445,85 +1775,133 @@
     });    
   });
 
+
   $('#btnSiteCopyToBill').on('click', function (e) {
     if ($('#id_cus_site_cus_active').is(":checked"))
       cus_site_cus_active = 1;
     else
       cus_site_cus_active = 0;
 
-    cus_site_cus_name_th = $('#id_cus_site_cus_name_th').val();
-    cus_site_cus_add1_th = $('#id_cus_site_cus_add1_th').val();
-    cus_site_cus_add2_th = $('#id_cus_site_cus_add2_th').val();
-    cus_site_cus_subdist_th = $('#id_cus_site_cus_subdist_th').val();      
-    cus_site_cus_district_dist_th = $('#id_cus_site_cus_district_dist_th').val();
-    cus_site_cus_city_th = $('#id_cus_site_cus_city_th').val();    
-    cus_site_cus_country_th = $('#id_cus_site_cus_country_th').val();
+    cus_site_site_name_th = $('#id_cus_site_cus_name_th').val();
+    cus_site_site_add1_th = $('#id_cus_site_cus_add1_th').val();
+    cus_site_site_add2_th = $('#id_cus_site_cus_add2_th').val();
+    cus_site_site_subdist_th = $('#id_cus_site_cus_subdist_th').val();      
+    cus_site_site_district_dist_th = $('#id_cus_site_cus_district_dist_th').val();
+    cus_site_site_city_th = $('#id_cus_site_cus_city_th').val();
+    cus_site_site_country_th = $('#id_cus_site_cus_country_th').val();
 
-    cus_site_cus_name_en = $('#id_cus_site_cus_name_en').val();      
-    cus_site_cus_add1_en = $('#id_cus_site_cus_add1_en').val();
-    cus_site_cus_add2_en = $('#id_cus_site_cus_add2_en').val();
-    cus_site_cus_subdist_en = $('#id_cus_site_cus_subdist_en').val();      
-    id_cus_site_cus_district_en = $('#id_cus_site_cus_district_en').val();
-    cus_site_cus_city_en = $('#id_cus_site_cus_city_en').val();
-    cus_site_cus_country_en = $('#id_cus_site_cus_country_en').val();
-    cus_site_cus_zip = $('#id_cus_site_cus_zip').val();
-    cus_site_cus_tel = $('#id_cus_site_cus_tel').val();
-    cus_site_cus_fax = $('#id_cus_site_cus_fax').val();
-    cus_site_cus_email = $('#id_cus_site_cus_email').val();
-    
-    cus_main_select_district_id = $('#id_cus_main_select_district_id').val();
-    cus_site_cus_zone = $('#id_cus_site_cus_zone').val();
+    cus_site_site_name_en = $('#id_cus_site_cus_name_en').val();      
+    cus_site_site_add1_en = $('#id_cus_site_cus_add1_en').val();
+    cus_site_site_add2_en = $('#id_cus_site_cus_add2_en').val();
+    cus_site_site_subdist_en = $('#id_cus_site_cus_subdist_en').val();      
+    cus_site_site_district_en = $('#id_cus_site_cus_district_en').val();
+    cus_site_site_city_en = $('#id_cus_site_cus_city_en').val();
+    cus_site_site_country_en = $('#id_cus_site_cus_country_en').val();
+    cus_site_site_zip = $('#id_cus_site_cus_zip').val();
+    cus_site_site_tel = $('#id_cus_site_cus_tel').val();
+    cus_site_site_fax = $('#id_cus_site_cus_fax').val();
+    cus_site_site_email = $('#id_cus_site_cus_email').val();
 
+    cus_site_select_district_id = $('#id_cus_site_select_district_id').val();
+    cus_site_site_zone = $('#id_cus_site_cus_zone').val();
+
+    // amnaj
     cus_site_site_contact_id = $('#id_cus_site_site_contact_id').val();
-    cus_site_site_contact_cus_title = $('#id_cus_site_site_contact_title_th').val();
-    cus_site_site_contact_con_fname_th = $('#id_cus_site_site_contact_fname_th').val();
-    cus_site_site_contact_con_lname_th = $('#id_cus_site_site_contact_lname_th').val();
-    cus_site_site_contact_con_position_th = $('#id_cus_site_site_contact_position_th').val();    
+    cus_site_site_contact_cus_title_id = $("#id_cus_site_cus_contact_title_list").val();
+    cus_site_site_contact_con_fname_th = $("#id_cus_site_site_contact_fname_th").val();
+    cus_site_site_contact_con_lname_th = $("#id_cus_site_site_contact_lname_th").val();
+    cus_site_site_contact_con_position_th = $("#id_cus_site_site_contact_position_th").val();
+
+    cus_site_site_contact_title_sex = $("input[name='cus_site_sex_options']:checked").val();  
+    cus_site_site_contact_cus_title_en = $('#id_cus_site_site_contact_cus_title_en').val();
+    cus_site_site_contact_con_fname_en = $('#id_cus_site_site_contact_con_fname_en').val();
+    cus_site_site_contact_con_lname_en = $('#id_cus_site_site_contact_con_lname_en').val();
+    cus_site_site_contact_con_position_en = $('#id_cus_site_site_contact_con_position_en').val();    
+    cus_site_site_contact_nation_list = $('#id_cus_site_site_contact_nation_list').val();    
+    cus_site_site_contact_con_mobile = $('#id_cus_site_site_contact_con_mobile').val();
+    cus_site_site_contact_con_email = $('#id_cus_site_site_contact_con_email').val();
+
+    console.log(
+      cus_site_select_district_id + "," +
+      cus_site_site_contact_id + "," + 
+      cus_site_site_contact_cus_title_id + "," +
+      cus_site_site_contact_con_fname_th + "," +
+      cus_site_site_contact_con_lname_th + "," +
+      cus_site_site_contact_con_position_th + "," + 
+      cus_site_site_contact_title_sex + "," +
+      cus_site_site_contact_cus_title_en + "," +
+      cus_site_site_contact_con_fname_en + "," +
+      cus_site_site_contact_con_lname_en + "," +
+      cus_site_site_contact_con_position_en + "," +
+      cus_site_site_contact_nation_list + "," +
+      cus_site_site_contact_con_mobile + "," +
+      cus_site_site_contact_con_email
+      );
 
     if(cus_site_cus_active==1)
       $('#id_cus_bill_cus_active').prop('checked', true);
     else
       $('#id_cus_bill_cus_active').prop('checked', false);
+    
+    $('#id_cus_bill_cus_name_th').val(cus_site_site_name_th);
+    $('#id_cus_bill_cus_add1_th').val(cus_site_site_add1_th);
+    $('#id_cus_bill_cus_add2_th').val(cus_site_site_add2_th);
+    $('#id_cus_bill_cus_subdist_th').val(cus_site_site_subdist_th);
+    $('#id_cus_bill_cus_district_dist_th').val(cus_site_site_district_dist_th);
+    $('#id_cus_bill_cus_city_th').val(cus_site_site_city_th);
+    $('#id_cus_bill_cus_country_th').val(cus_site_site_country_th);
 
-    $('#id_cus_bill_cus_name_th').val(cus_site_cus_name_th);
-    $('#id_cus_bill_cus_add1_th').val(cus_site_cus_add1_th);
-    $('#id_cus_bill_cus_add2_th').val(cus_site_cus_add2_th);
-    $('#id_cus_bill_cus_subdist_th').val(cus_site_cus_subdist_th);
-    $('#id_cus_bill_cus_district_dist_th').val(cus_site_cus_district_dist_th);
-    $('#id_cus_bill_cus_city_th').val(cus_site_cus_city_th);
-    $('#id_cus_bill_cus_country_th').val(cus_site_cus_country_th);
+    $('#id_cus_bill_cus_name_en').val(cus_site_site_name_en);
+    $('#id_cus_bill_cus_add1_en').val(cus_site_site_add1_en);
+    $('#id_cus_bill_cus_add2_en').val(cus_site_site_add2_en);
+    $('#id_cus_bill_cus_subdist_en').val(cus_site_site_subdist_en);
+    $('#id_cus_bill_cus_district_en').val(cus_site_site_district_en);
+    $('#id_cus_bill_cus_city_en').val(cus_site_site_city_en);
+    $('#id_cus_bill_cus_country_en').val(cus_site_site_country_en);
 
-    $('#id_cus_bill_cus_name_en').val(cus_site_cus_name_en);
-    $('#id_cus_bill_cus_add1_en').val(cus_site_cus_add1_en);
-    $('#id_cus_bill_cus_add2_en').val(cus_site_cus_add2_en);
-    $('#id_cus_bill_cus_subdist_en').val(cus_site_cus_subdist_en);
-    $('#id_cus_bill_cus_district_en').val(id_cus_site_cus_district_en);
-    $('#id_cus_bill_cus_city_en').val(cus_site_cus_city_en);
-    $('#id_cus_bill_cus_country_en').val(cus_site_cus_country_en);
+    $('#id_cus_bill_select_district_id').val(cus_site_select_district_id);
+    $('#id_cus_bill_cus_district_dist_th').val(cus_site_site_district_dist_th);
 
-    $('#id_cus_bill_select_district_id').val(cus_main_select_district_id);
-    $('#id_cus_bill_cus_district_dist_th').val(cus_site_cus_district_dist_th);
-
-    $('#id_cus_bill_cus_zip').val(cus_site_cus_zip);
-    $('#id_cus_bill_cus_tel').val(cus_site_cus_tel);
-    $('#id_cus_bill_cus_fax').val(cus_site_cus_fax);
-    $('#id_cus_bill_cus_email').val(cus_site_cus_email);
-    $('#id_cus_bill_cus_zone').val(cus_site_cus_zone);
+    $('#id_cus_bill_cus_zip').val(cus_site_site_zip);
+    $('#id_cus_bill_cus_tel').val(cus_site_site_tel);
+    $('#id_cus_bill_cus_fax').val(cus_site_site_fax);
+    $('#id_cus_bill_cus_email').val(cus_site_site_email);
+    $('#id_cus_bill_cus_zone').val(cus_site_site_zone);
 
     // Bill Cotact Information
     $('#id_cus_bill_cus_contact_id').val(cus_site_site_contact_id);        
-    $('#id_cus_bill_cus_contact_cus_title').val(cus_site_site_contact_cus_title);
     $('#id_cus_bill_cus_contact_con_fname_th').val(cus_site_site_contact_con_fname_th);
     $('#id_cus_bill_cus_contact_con_lname_th').val(cus_site_site_contact_con_lname_th);
     $('#id_cus_bill_cus_contact_con_position_th').val(cus_site_site_contact_con_position_th);
+
+    if(cus_site_site_contact_title_sex == 'M') {
+      $('#id_cus_bill_sex_male').prop("checked", true);
+      $('#id_cus_bill_sex_female').prop("checked", false);
+    }
+
+    if(cus_site_site_contact_title_sex == 'F') {
+      $('#id_cus_bill_sex_male').prop("checked", false);
+      $('#id_cus_bill_sex_female').prop("checked", true);
+    }
+
+
+    $('#id_cus_bill_cus_contact_cus_title_en').val(cus_site_site_contact_cus_title_en);
+    $('#id_cus_bill_cus_contact_con_fname_en').val(cus_site_site_contact_con_fname_en);
+    $('#id_cus_bill_cus_contact_con_lname_en').val(cus_site_site_contact_con_lname_en);
+    $('#id_cus_bill_cus_contact_con_position_en').val(cus_site_site_contact_con_position_en);
+
+    $('#id_cus_bill_cus_contact_nation_list').val(cus_site_site_contact_nation_list);
+    $('#id_cus_bill_cus_contact_con_mobile').val(cus_site_site_contact_con_mobile);
+    $('#id_cus_bill_cus_contact_con_email').val(cus_site_site_contact_con_email);
+
 
     $(document).Toasts('create', {
       class: 'bg-success', 
       title: "{% trans 'Message' %}",
       subtitle: '',
       autohide: true,
-      delay: 2000,      
-      body: "Copy to bill successfully.",
+      delay: 2000,
+      body: "Copy to bill is successfully.",
       autoDismiss: true,
       close: true,
       autoremove: true,
@@ -2243,7 +2621,7 @@
     if(cus_id=='' || cus_brn=='') {
       alert("Customer Number is required.");
     } else {
-      update_all_customer_tabs(cus_id, cus_brn);
+      save_all_customer_tabs(cus_id, cus_brn);
     }
 
     /*
@@ -2253,13 +2631,13 @@
       alert("Customer ID is required.");
     }
     else {
-      update_all_customer_tabs(cus_main_cus_id, cus_site_cus_no, cus_bill_cus_no);
+      save_all_customer_tabs(cus_main_cus_id, cus_site_cus_no, cus_bill_cus_no);
     }
     */
   });
 
-  //function update_all_customer_tabs(cus_main_cus_id, cus_site_cus_no, cus_bill_cus_no) {
-  function update_all_customer_tabs(cus_id, cus_brn) {
+  //function save_all_customer_tabs(cus_main_cus_id, cus_site_cus_no, cus_bill_cus_no) {
+  function save_all_customer_tabs(cus_id, cus_brn) {
     //console.log(cus_main_cus_id + "," + cus_site_cus_no + "," + cus_bill_cus_no);    
 
     // CUS_MAIN
@@ -2298,9 +2676,27 @@
     customer_option_op5 = "";
     customer_option_op6 = "";
     customer_option_opn1 = $('#id_cus_main_customer_option_opn1').val();
+    
+
+    //cus_main_cus_contact_id = $('#id_cus_main_cus_contact_id').val();
+    //if(cus_main_cus_contact_id == null)
+    //  cus_main_cus_contact_id = null;
+
     cus_main_cus_contact_id = $('#id_cus_main_cus_contact_id').val();
-    if(cus_main_cus_contact_id == null)
-      cus_main_cus_contact_id = null;
+    cus_main_select_contact_title_id = $('#id_cus_main_cus_contact_title_list').val();    
+    cus_main_cus_contact_cus_title_th = $('#id_cus_main_cus_contact_cus_title_th').val();
+    cus_main_cus_contact_con_fname_th = $('#id_cus_main_cus_contact_con_fname_th').val();
+    cus_main_cus_contact_con_lname_th = $('#id_cus_main_cus_contact_con_lname_th').val();
+    cus_main_cus_contact_con_position_th = $('#id_cus_main_cus_contact_con_position_th').val();
+    cus_main_cus_contact_title_sex = $("input[name='sexOptions']:checked").val();        
+    cus_main_cus_contact_cus_title_en = $('#id_cus_main_cus_contact_cus_title_en').val();
+    cus_main_cus_contact_con_fname_en = $('#id_cus_main_cus_contact_con_fname_en').val();
+    cus_main_cus_contact_con_lname_en = $('#id_cus_main_cus_contact_con_lname_en').val();
+    cus_main_cus_contact_con_position_en = $('#id_cus_main_cus_contact_con_position_en').val();
+    cus_main_cus_contact_sex_option = $("input[name=sexOptions]:checked").val();
+    cus_main_cus_contact_con_nationality_id = $("#id_cus_main_cus_contact_nation_list").val();
+    cus_main_cus_contact_con_mobile = $("#id_cus_main_cus_contact_con_mobile").val();
+    cus_main_cus_contact_con_email = $("#id_cus_main_cus_contact_con_email").val();
 
     /*
     console.log(
@@ -2355,6 +2751,19 @@
 
     cus_site_cus_zone = $('#id_cus_site_cus_zone').val();    
     cus_site_site_contact_id = $('#id_cus_site_site_contact_id').val();
+    cus_site_select_contact_title_id = $('#id_cus_site_cus_contact_title_list').val();    
+    cus_site_site_contact_con_fname_th = $('#id_cus_site_site_contact_fname_th').val();
+    cus_site_site_contact_con_lname_th= $('#id_cus_site_site_contact_lname_th').val();    
+    cus_site_site_contact_con_position_th = $('#id_cus_site_site_contact_position_th').val();    
+    cus_site_site_contact_con_sex = $("input[name=cus_site_sex_options]:checked").val();
+    cus_site_site_contact_cus_title_en = $('#id_cus_site_site_contact_cus_title_en').val();
+    cus_site_site_contact_con_fname_en = $('#id_cus_site_site_contact_con_fname_en').val();
+    cus_site_site_contact_con_lname_en = $('#id_cus_site_site_contact_con_lname_en').val();
+    cus_site_site_contact_con_position_en = $('#id_cus_site_site_contact_con_position_en').val();
+    cus_site_site_contact_con_nationality_id = $("#id_cus_site_site_contact_nation_list").val();
+    cus_site_site_contact_con_mobile = $("#id_cus_site_site_contact_con_mobile").val();
+    cus_site_site_contact_con_email = $("#id_cus_site_site_contact_con_email").val();
+  
     customer_group_id = $('#id_customer_group_id').val();
     customer_option_opn1 = $('#id_cus_main_customer_option_opn1').val();
     //alert(customer_option_opn1);    
@@ -2409,7 +2818,19 @@
 
 
     cus_bill_cus_zone = $('#id_cus_bill_cus_zone').val();    
-    cus_bill_cus_contact_id = $('#id_cus_bill_cus_contact_id').val();
+    cus_bill_cus_contact_id = $('#id_cus_bill_cus_contact_id').val();    
+    cus_bill_select_contact_title_id = $('#id_cus_bill_cus_contact_title_list').val();
+    cus_bill_cus_contact_con_fname_th = $('#id_cus_bill_cus_contact_con_fname_th').val();
+    cus_bill_cus_contact_con_lname_th= $('#id_cus_bill_cus_contact_con_lname_th').val();    
+    cus_bill_cus_contact_con_position_th = $('#id_cus_bill_cus_contact_con_position_th').val();    
+    cus_bill_cus_contact_con_sex = $("input[name=cus_bill_sex_options]:checked").val();
+    cus_bill_cus_contact_cus_title_en = $('#id_cus_bill_cus_contact_cus_title_en').val();
+    cus_bill_cus_contact_con_fname_en = $('#id_cus_bill_cus_contact_con_fname_en').val();
+    cus_bill_cus_contact_con_lname_en = $('#id_cus_bill_cus_contact_con_lname_en').val();
+    cus_bill_cus_contact_con_position_en = $('#id_cus_bill_cus_contact_con_position_en').val();
+    cus_bill_cus_contact_con_nationality_id = $("#id_cus_bill_cus_contact_nation_list").val();
+    cus_bill_cus_contact_con_mobile = $("#id_cus_bill_cus_contact_con_mobile").val();
+    cus_bill_cus_contact_con_email = $("#id_cus_bill_cus_contact_con_email").val();
 
     /*
     console.log(
@@ -2433,7 +2854,8 @@
     */
 
     $.ajax({
-      url : "/customer/ajax/update_all_cus_tabs/",
+      //url : "/customer/ajax/update_all_cus_tabs/",
+      url : "/customer/ajax/save_all_cus_tabs/",
       type : "POST",
       data : {          
         csrfmiddlewaretoken: '{{ csrf_token }}',
@@ -2467,7 +2889,13 @@
         cus_main_customer_option_op5: customer_option_op5,
         cus_main_customer_option_op6: customer_option_op6,
         cus_main_customer_option_opn1: customer_option_opn1,
-        cus_main_cus_contact_id: cus_main_cus_contact_id,
+        cus_main_cus_contact_id: cus_main_cus_contact_id,        
+        cus_main_select_contact_title_id: cus_main_select_contact_title_id,
+        cus_main_cus_contact_cus_title_th: cus_main_cus_contact_cus_title_th,
+        cus_main_cus_contact_con_fname_th: cus_main_cus_contact_con_fname_th,
+        cus_main_cus_contact_con_lname_th: cus_main_cus_contact_con_lname_th,
+        cus_main_cus_contact_con_position_th: cus_main_cus_contact_con_position_th,
+
 
         // CUS_SITE
         cus_site_cus_active: cus_site_cus_active,
@@ -2485,7 +2913,13 @@
         cus_site_cus_fax: cus_site_cus_fax,
         cus_site_cus_email: cus_site_cus_email,
         cus_site_cus_zone: cus_site_cus_zone,
-        cus_site_site_contact_id: cus_site_site_contact_id,
+
+        cus_site_site_contact_id: cus_site_site_contact_id,        
+        cus_site_select_contact_title_id: cus_site_select_contact_title_id,
+        cus_site_site_contact_con_fname_th: cus_site_site_contact_con_fname_th,
+        cus_site_site_contact_con_lname_th: cus_site_site_contact_con_lname_th,
+        cus_site_site_contact_con_position_th: cus_site_site_contact_con_position_th,
+
         customer_group_id: customer_group_id,
 
         // CUS_BILL
@@ -2504,7 +2938,12 @@
         cus_bill_cus_fax: cus_bill_cus_fax,
         cus_bill_cus_email: cus_bill_cus_email,
         cus_bill_cus_zone: cus_bill_cus_zone,
+
         cus_bill_cus_contact_id: cus_bill_cus_contact_id,        
+        cus_bill_select_contact_title_id: cus_bill_select_contact_title_id,
+        cus_bill_cus_contact_con_fname_th: cus_bill_cus_contact_con_fname_th,
+        cus_bill_cus_contact_con_lname_th: cus_bill_cus_contact_con_lname_th,
+        cus_bill_cus_contact_con_position_th: cus_bill_cus_contact_con_position_th,
       },
       success : function(json) {        
         if(json.form_is_valid) {

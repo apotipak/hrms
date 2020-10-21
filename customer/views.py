@@ -2165,7 +2165,9 @@ def save_all_cus_tabs(request):
             # Main Office Contact Person
             cus_main_cus_contact_id = request.POST.get('cus_main_cus_contact_id')
             cus_main_cus_contact_cus_title_th = request.POST.get('cus_main_cus_contact_cus_title_th')
+            
             cus_main_cus_contact_con_fname_th = request.POST.get('cus_main_cus_contact_con_fname_th')
+
             cus_main_cus_contact_con_lname_th= request.POST.get('cus_main_cus_contact_con_lname_th')
             cus_main_cus_contact_con_position_th = request.POST.get('cus_main_cus_contact_con_position_th')
             cus_main_cus_contact_title_sex = request.POST.get('cus_main_cus_contact_title_sex')
@@ -2375,8 +2377,9 @@ def save_all_cus_tabs(request):
                                 count_modified_field = count_modified_field + 1
 
                     # CUS_CONTACT
-                    if len(cus_main_cus_contact_con_fname_th) > 0 or len(cus_main_cus_contact_con_lname_th) > 0:
-                        # print("main_office - abc")
+                    print("main_office - abc")
+                    print("cus_main_cus_contact_con_fname_th = " + str(cus_main_cus_contact_con_fname_th))
+                    if len(cus_main_cus_contact_con_fname_th) > 0 or len(cus_main_cus_contact_con_lname_th) > 0:                        
                         try:
                             # print("cus_id = " + str(cus_id))
 
