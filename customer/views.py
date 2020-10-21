@@ -3137,8 +3137,6 @@ def save_all_cus_tabs(request):
 
             # dog
             except Customer.DoesNotExist:
-
-                print("dog")
                 insert_status = True
 
                 if int(cus_site_cus_active) == 1:
@@ -3361,6 +3359,7 @@ def save_all_cus_tabs(request):
 
             try:
                 cusbill = CusBill.objects.get(pk=cus_no)
+                cus_bill_new_contact_id = cus_bill_cus_contact_id
 
                 if cusbill is not None:
                     # CUS_ACTIVE
@@ -3717,6 +3716,7 @@ def save_all_cus_tabs(request):
 
             except CusBill.DoesNotExist:
                 insert_status = True
+
                 if int(cus_bill_cus_active) == 1:
                     cus_bill = 1
                 else:
@@ -3773,14 +3773,17 @@ def save_all_cus_tabs(request):
                     response_data['form_is_valid'] = True
                     response_data['class'] = 'bg-success'
 
-                    response_data['is_cus_main_has_new_contact'] = True
-                    response_data['cus_main_new_contact_id'] = cus_main_new_contact_id
+                    if cus_main_new_contact_id is not None:
+                        response_data['is_cus_main_has_new_contact'] = True
+                        response_data['cus_main_new_contact_id'] = cus_main_new_contact_id
 
-                    response_data['is_cus_site_has_new_contact'] = True
-                    response_data['cus_site_new_contact_id'] = cus_site_new_contact_id
+                    if cus_site_new_contact_id is not None:
+                        response_data['is_cus_site_has_new_contact'] = True
+                        response_data['cus_site_new_contact_id'] = cus_site_new_contact_id
 
-                    response_data['is_cus_bill_has_new_contact'] = True
-                    response_data['cus_bill_new_contact_id'] = cus_bill_new_contact_id
+                    if cus_bill_new_contact_id is not None:
+                        response_data['is_cus_bill_has_new_contact'] = True
+                        response_data['cus_bill_new_contact_id'] = cus_bill_new_contact_id
 
                 else:
                     response_data['result'] = "Sorry, nothing to update."
