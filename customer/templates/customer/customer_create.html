@@ -2602,6 +2602,10 @@
             $('#id_cus_site_site_contact_id').val(json.cus_site_new_contact_id);
           }
 
+          if(json.is_cus_bill_has_new_contact) {
+            $('#id_cus_bill_cus_contact_id').val(json.cus_bill_new_contact_id);
+          }
+
           $.each($('.is-valid'), function() {
             $('.is-valid').removeClass('is-valid');              
           });            
