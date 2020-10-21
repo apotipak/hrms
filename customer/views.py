@@ -2334,7 +2334,7 @@ def update_all_cus_tabs(request):
                             # print("cus_id = " + str(cus_id))
 
                             contact_list = CusContact.objects.filter(cus_id=cus_id, con_fname_th=cus_main_cus_contact_con_fname_th, con_lname_th=cus_main_cus_contact_con_lname_th)[:1].get()
-                            # print("update old contact")
+                            print("update old contact")
                             
                             contact_list = CusContact.objects.filter(con_id=cus_main_cus_contact_id).get()
 
@@ -2403,7 +2403,7 @@ def update_all_cus_tabs(request):
 
                         except CusContact.DoesNotExist:          
                             # amnaj cus_main
-                            print("main - add new contact")
+                            print("main - add new contact...")
 
                             latest_contact_number = CusContact.objects.aggregate(Max('con_id'))
                             latest_contact_number = latest_contact_number['con_id__max']
@@ -2451,7 +2451,7 @@ def update_all_cus_tabs(request):
 
                                 if field_is_modified:
                                     cus_main.cus_contact_id = cus_main_new_contact_id
-                                    cus_main_site_contact_id = cus_main_new_contact_id
+                                    cus_main.site_contact_id = cus_main_new_contact_id
                                     modified_records.append(record)
                                     count_modified_field = count_modified_field + 1                                
                     else:
@@ -2782,9 +2782,19 @@ def update_all_cus_tabs(request):
             print("cus_site_site_contact_con_mobile = " + str(cus_site_site_contact_con_mobile))
             print("cus_site_site_contact_con_email = " + str(cus_site_site_contact_con_email))
 
+
+
+            if cus_site_site_contact_id is not None and cus_site_site_contact_id != "":
+                # print("not none, not empty")
+                cus_site_site_contact_id = cus_site_site_contact_id
+            else:
+                # print("is none or empty")
+                cus_site_site_contact_id = None
+
             try:
                 modified_records = []
                 customer = Customer.objects.get(pk=cus_no)
+                cus_site_new_contact_id = cus_site_site_contact_id
 
                 if customer is not None:
                     
@@ -3669,10 +3679,7 @@ def update_all_cus_tabs(request):
                 
                 response_data['is_cus_main_has_new_contact'] = True
                 response_data['cus_main_new_contact_id'] = cus_main_cus_contact_id
-                
-                response_data['is_cus_site_has_new_contact'] = True
-                print("test - " + str(cus_site_site_contact_id))                
-                response_data['cus_site_new_contact_id'] = cus_site_site_contact_id
+
 
 
             else:
@@ -3683,6 +3690,10 @@ def update_all_cus_tabs(request):
 
                     response_data['is_cus_main_has_new_contact'] = True
                     response_data['cus_main_new_contact_id'] = cus_main_new_contact_id
+
+                    response_data['is_cus_site_has_new_contact'] = True
+                    response_data['cus_site_new_contact_id'] = cus_site_new_contact_id
+
                 else:
                     response_data['result'] = "Sorry, nothing to update."
                     response_data['form_is_valid'] = True
