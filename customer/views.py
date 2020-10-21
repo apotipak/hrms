@@ -2185,7 +2185,6 @@ def save_all_cus_tabs(request):
             print("-----------------cus_main-------------")
             print("cus_main_cus_contact_id = " + str(cus_main_cus_contact_id))
             print("cus_main_select_contact_title_id = " + str(cus_main_select_contact_title_id))
-            print("cus_main_cus_contact_cus_title_th = " + str(cus_main_cus_contact_cus_title_th))
             print("cus_main_cus_contact_con_fname_th = " + str(cus_main_cus_contact_con_fname_th))
             print("cus_main_cus_contact_con_lname_th = " + str(cus_main_cus_contact_con_lname_th))
             print("cus_main_cus_contact_con_position_th = " + str(cus_main_cus_contact_con_position_th))
