@@ -40,7 +40,7 @@
       <div class="card-header">
         <h1 class="card-title pt-2">
           <span id="customer_name_title">
-            <i class="fas fa-user-edit"></i>&nbsp;&nbsp;<strong>{{contract.cnt_id}} - {{ customer.cus_name_th }}</strong>            
+            <!--<i class="fas fa-user-edit"></i>&nbsp;&nbsp;--><strong>{{contract.cnt_id}} - {{ customer.cus_name_th }}</strong>            
           </span>
           <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-angle-down text-primary"></i></button>
         </h1>
@@ -1077,7 +1077,8 @@
           var cnt_id = json.cnt_id;
 
           $("#id_cnt_id_temp").val(cnt_id);
-          $("#id_contract_number").text("No." + cnt_id);
+          // $("#id_contract_number").text("No." + cnt_id);
+          $("#id_contract_number").text("");
 
           if(upd_flag=='D') {    
             var retVal = confirm("Would you like to undelete Contract No." + cnt_id + " ?");

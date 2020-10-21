@@ -23,9 +23,9 @@
           {% endcomment %}
 
           {% if customer.cus_name_th != '' %}
-          <h3 class="display-6 m-0 text-dark">No.{{cus_no}} - {{ customer.cus_name_th }}</h3>
+          <h3 class="display-6 m-0 text-dark">{{cus_no}} - {{ customer.cus_name_th }}</h3>
           {% else %}
-          <h3 class="display-6 m-0 text-dark">No.{{ cus_no }} - No Site Name</h3>
+          <h3 class="display-6 m-0 text-dark">{{ cus_no }} - No Site Name</h3>
           {% endif %}
 
         </div>
