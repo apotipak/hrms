@@ -377,6 +377,7 @@ def ajax_check_exist_cus_site(request):
                     else:
                         cus_site_site_contact_title_th = ""
 
+                    # amnaj copy
                     cus_site_site_contact_fname_th = customer_site.site_contact.con_fname_th
                     cus_site_site_contact_lname_th = customer_site.site_contact.con_lname_th,
                     cus_site_site_contact_position_th = customer_site.site_contact.con_position_th
@@ -583,10 +584,24 @@ def ajax_check_exist_cus_bill(request):
                     cus_bill_cus_country_th = customer_bill.cus_country.country_th
                     cus_bill_cus_country_en = customer_bill.cus_country.country_en
 
-                print(customer_bill.cus_contact_id)
+                print("customer_bill.cus_contact_id = " + str(customer_bill.cus_contact_id))
 
-                if customer_bill.cus_contact_id is not None:
-                    print("not none")
+                if customer_bill.cus_contact_id is None or customer_bill.cus_contact_id == "":
+                    cus_bill_cus_contact_id = 0
+                    cus_bill_cus_contact_title_th = "คุณ"
+                    cus_bill_cus_contact_fname_th = ""
+                    cus_bill_cus_contact_lname_th = ""
+                    cus_bill_cus_contact_position_th = ""
+                    cus_bill_cus_contact_title_en = "Khun"
+                    cus_bill_cus_contact_fname_en = ""
+                    cus_bill_cus_contact_lname_en = ""
+                    cus_bill_cus_contact_position_en = ""
+                    cus_bill_cus_contact_con_sex = "M"
+                    cus_bill_cus_contact_nationality_id = 99
+                    cus_bill_cus_contact_con_mobile = ""
+                    cus_bill_cus_contact_con_email = ""                    
+                else:
+                    cus_bill_cus_contact_id = customer_bill.cus_contact_id
 
                     if customer_bill.cus_contact.con_title is not None:
                         cus_bill_cus_contact_title_th = customer_bill.cus_contact.con_title.title_th
@@ -596,12 +611,15 @@ def ajax_check_exist_cus_bill(request):
                     cus_bill_cus_contact_fname_th = customer_bill.cus_contact.con_fname_th
                     cus_bill_cus_contact_lname_th = customer_bill.cus_contact.con_lname_th,
                     cus_bill_cus_contact_position_th = customer_bill.cus_contact.con_position_th
-                else:                    
-                    print("none")
-                    cus_bill_cus_contact_title_th = ""
-                    cus_bill_cus_contact_fname_th = ""
-                    cus_bill_cus_contact_lname_th = ""
-                    cus_bill_cus_contact_position_th = "" 
+                    cus_bill_cus_contact_title_en = customer_bill.cus_contact.con_title.title_en
+                    cus_bill_cus_contact_fname_en = customer_bill.cus_contact.con_fname_en
+                    cus_bill_cus_contact_lname_en = customer_bill.cus_contact.con_lname_en
+                    cus_bill_cus_contact_position_en = customer_bill.cus_contact.con_position_en
+                    cus_bill_cus_contact_con_sex = customer_bill.cus_contact.con_sex
+                    cus_bill_cus_contact_nationality_id = customer_bill.cus_contact.con_nation_id
+                    cus_bill_cus_contact_con_mobile = customer_bill.cus_contact.con_mobile
+                    cus_bill_cus_contact_con_email = customer_bill.cus_contact.con_email
+
 
                 record = {
                     "cus_no": customer_bill.cus_no,
@@ -629,11 +647,26 @@ def ajax_check_exist_cus_bill(request):
                     "cus_email": customer_bill.cus_email,
                     "cus_zone": customer_bill.cus_zone_id,
 
+                    # amnaj copy
                     "cus_bill_cus_contact_id": customer_bill.cus_contact_id,
                     "cus_bill_cus_contact_title_th": cus_bill_cus_contact_title_th,
                     "cus_bill_cus_contact_fname_th": cus_bill_cus_contact_fname_th,
                     "cus_bill_cus_contact_lname_th": cus_bill_cus_contact_lname_th,
                     "cus_bill_cus_contact_position_th": cus_bill_cus_contact_position_th,
+
+                    "cus_bill_cus_contact_id": customer_bill.cus_contact_id,
+                    "cus_bill_cus_contact_title_th": cus_bill_cus_contact_title_th,
+                    "cus_bill_cus_contact_fname_th": cus_bill_cus_contact_fname_th,
+                    "cus_bill_cus_contact_lname_th": cus_bill_cus_contact_lname_th,
+                    "cus_bill_cus_contact_position_th": cus_bill_cus_contact_position_th,
+                    "cus_bill_cus_contact_con_sex": cus_bill_cus_contact_con_sex,
+                    "cus_bill_cus_contact_title_en": cus_bill_cus_contact_title_en,
+                    "cus_bill_cus_contact_fname_en": cus_bill_cus_contact_fname_en,
+                    "cus_bill_cus_contact_lname_en": cus_bill_cus_contact_lname_en,
+                    "cus_bill_cus_contact_position_en": cus_bill_cus_contact_position_en,
+                    "cus_bill_cus_contact_con_nationality_id": cus_bill_cus_contact_nationality_id,
+                    "cus_bill_cus_contact_con_mobile": cus_bill_cus_contact_con_mobile,
+                    "cus_bill_cus_contact_con_email": cus_bill_cus_contact_con_email,
                 }
 
                 pickup_records.append(record)
@@ -668,7 +701,15 @@ def ajax_check_exist_cus_bill(request):
                     "cus_bill_cus_contact_title_th": "",
                     "cus_bill_cus_contact_fname_th": "",
                     "cus_bill_cus_contact_lname_th": "",
-                    "cus_bill_cis_contact_position_th": "",
+                    "cus_bill_cus_contact_position_th": "",
+                    "cus_bill_cus_contact_con_sex": "",
+                    "cus_bill_cus_contact_title_en": "",
+                    "cus_bill_cus_contact_fname_en": "",
+                    "cus_bill_cus_contact_lname_en": "",
+                    "cus_bill_cus_contact_position_en": "",
+                    "cus_bill_cus_contact_con_nationality_id": 99,
+                    "cus_bill_cus_contact_con_mobile": "",
+                    "cus_bill_cus_contact_con_email": "",
                 }
                 pickup_records.append(record)
 
