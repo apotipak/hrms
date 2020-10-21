@@ -2402,7 +2402,6 @@ def save_all_cus_tabs(request):
                             contact_list.save()
 
                         except CusContact.DoesNotExist:          
-                            # amnaj cus_main
                             print("main - add new contact...")
 
                             latest_contact_number = CusContact.objects.aggregate(Max('con_id'))
@@ -2753,6 +2752,7 @@ def save_all_cus_tabs(request):
 
             # Site Tab - Contact Information
             cus_site_site_contact_id = request.POST.get('cus_site_site_contact_id')
+            cus_site_select_contact_title_id = request.POST.get('cus_site_select_contact_title_id')
             cus_site_site_contact_cus_title_th = request.POST.get('cus_site_site_contact_cus_title_th')
             cus_site_site_contact_con_fname_th = request.POST.get('cus_site_site_contact_con_fname_th')
             cus_site_site_contact_con_lname_th= request.POST.get('cus_site_site_contact_con_lname_th')
@@ -2767,8 +2767,10 @@ def save_all_cus_tabs(request):
             cus_site_site_contact_con_mobile = request.POST.get('cus_site_site_contact_con_mobile')
             cus_site_site_contact_con_email = request.POST.get('cus_site_site_contact_con_email')
             
+            print("")
+            print("-------------- CUS SITE -------------")            
             print("cus_site_site_contact_id = " + str(cus_site_site_contact_id))
-            print("cus_site_site_contact_cus_title_th = " + str(cus_site_site_contact_cus_title_th))
+            print("cus_site_select_contact_title_id = " + str(cus_site_select_contact_title_id))            
             print("cus_site_site_contact_con_fname_th = " + str(cus_site_site_contact_con_fname_th))
             print("cus_site_site_contact_con_lname_th = " + str(cus_site_site_contact_con_lname_th))
             print("cus_site_site_contact_con_position_th = " + str(cus_site_site_contact_con_position_th))            
@@ -2777,12 +2779,12 @@ def save_all_cus_tabs(request):
             print("cus_site_site_contact_con_fname_en = " + str(cus_site_site_contact_con_fname_en))
             print("cus_site_site_contact_con_lname_en = " + str(cus_site_site_contact_con_lname_en))
             print("cus_site_site_contact_con_position_en = " + str(cus_site_site_contact_con_position_en))        
-            print("cus_site_select_contact_title_id = " + str(cus_site_select_contact_title_id))
             print("cus_site_site_contact_con_nationality_id = " + str(cus_site_site_contact_con_nationality_id))
             print("cus_site_site_contact_con_mobile = " + str(cus_site_site_contact_con_mobile))
             print("cus_site_site_contact_con_email = " + str(cus_site_site_contact_con_email))
-
-
+            print("")
+            print("-------------- CUS SITE -------------")
+            print("")
 
             if cus_site_site_contact_id is not None and cus_site_site_contact_id != "":
                 # print("not none, not empty")
@@ -3045,7 +3047,6 @@ def save_all_cus_tabs(request):
                             contact_list.save()
 
                         except CusContact.DoesNotExist:
-                            # amnaj cus_site
                             print("site - add new contact")
 
                             latest_contact_number = CusContact.objects.aggregate(Max('con_id'))
@@ -3292,16 +3293,40 @@ def save_all_cus_tabs(request):
                 cus_bill_country_id = None       
 
 
-            # Billing Tab - Contact Information
-            cus_bill_cus_contact_id = request.POST.get('cus_bill_cus_contact_id')
-            print("cus_bill_cus_contact_id = " + str(cus_bill_cus_contact_id))
-
-            # Bill Contact
-            cus_bill_cus_contact_id = request.POST.get('cus_bill_cus_contact_id')
+            # Bill Tab - Contact Information
+            cus_bill_cus_contact_id = request.POST.get('cus_bill_cus_contact_id')            
+            cus_bill_select_contact_title_id = request.POST.get('cus_bill_select_contact_title_id')            
             cus_bill_cus_contact_cus_title_th = request.POST.get('cus_bill_cus_contact_cus_title_th')
             cus_bill_cus_contact_con_fname_th = request.POST.get('cus_bill_cus_contact_con_fname_th')
             cus_bill_cus_contact_con_lname_th= request.POST.get('cus_bill_cus_contact_con_lname_th')
             cus_bill_cus_contact_con_position_th = request.POST.get('cus_bill_cus_contact_con_position_th')
+            cus_bill_cus_contact_con_sex = request.POST.get('cus_bill_cus_contact_con_sex')
+            cus_bill_cus_contact_cus_title_en = request.POST.get('cus_bill_cus_contact_cus_title_en')
+            cus_bill_cus_contact_con_fname_en = request.POST.get('cus_bill_cus_contact_con_fname_en')
+            cus_bill_cus_contact_con_lname_en = request.POST.get('cus_bill_cus_contact_con_lname_en')
+            cus_bill_cus_contact_con_position_en = request.POST.get('cus_bill_cus_contact_con_position_en')
+            cus_bill_cus_contact_con_nationality_id = request.POST.get('cus_bill_cus_contact_con_nationality_id')
+            cus_bill_cus_contact_con_mobile = request.POST.get('cus_bill_cus_contact_con_mobile')
+            cus_bill_cus_contact_con_email = request.POST.get('cus_bill_cus_contact_con_email')
+            
+            print("")
+            print("-------------- CUS BILL -------------")
+            print("cus_bill_cus_contact_id = " + str(cus_bill_cus_contact_id))
+            print("cus_bill_select_contact_title_id test = " + str(cus_bill_select_contact_title_id))
+            print("cus_bill_cus_contact_con_fname_th = " + str(cus_bill_cus_contact_con_fname_th))
+            print("cus_bill_cus_contact_con_lname_th = " + str(cus_bill_cus_contact_con_lname_th))
+            print("cus_bill_cus_contact_con_position_th = " + str(cus_bill_cus_contact_con_position_th))            
+            print("cus_bill_cus_contact_con_sex = " + str(cus_bill_cus_contact_con_sex))            
+            print("cus_bill_cus_contact_cus_title_en = " + str(cus_bill_cus_contact_cus_title_en))
+            print("cus_bill_cus_contact_con_fname_en = " + str(cus_bill_cus_contact_con_fname_en))
+            print("cus_bill_cus_contact_con_lname_en = " + str(cus_bill_cus_contact_con_lname_en))
+            print("cus_bill_cus_contact_con_position_en = " + str(cus_bill_cus_contact_con_position_en))        
+            print("cus_bill_cus_contact_con_nationality_id = " + str(cus_bill_cus_contact_con_nationality_id))
+            print("cus_bill_cus_contact_con_mobile = " + str(cus_bill_cus_contact_con_mobile))
+            print("cus_site_site_contact_con_email = " + str(cus_bill_cus_contact_con_email))
+            print("")
+            print("-------------- CUS BILL -------------")
+
 
             '''
             if cus_bill_cus_contact_id is not None:
