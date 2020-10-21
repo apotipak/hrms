@@ -1484,7 +1484,8 @@
     cus_main_select_district_id = $('#id_cus_main_select_district_id').val();
     cus_main_cus_zone = $('#id_cus_main_cus_zone').val();
 
-    cus_main_cus_contact_id = $('#id_cus_main_cus_contact_id').val();    
+    cus_main_cus_contact_id = $('#id_cus_main_cus_contact_id').val();
+    cus_main_cus_contact_title_id = $('#id_cus_main_cus_contact_title_list').val();
     cus_main_cus_contact_cus_title = $('#id_cus_main_cus_contact_cus_title_th').val();  
     cus_main_cus_contact_con_fname_th = $('#id_cus_main_cus_contact_con_fname_th').val();
     cus_main_cus_contact_con_lname_th = $('#id_cus_main_cus_contact_con_lname_th').val();
@@ -1534,6 +1535,7 @@
 
     // Site - Contact Information
     $('#id_cus_site_site_contact_id').val(cus_main_cus_contact_id);
+    $('#id_cus_site_cus_contact_title_list').val(cus_main_cus_contact_title_id);
     $('#id_cus_site_site_contact_title_th').val(cus_main_cus_contact_cus_title);
     $('#id_cus_site_site_contact_fname_th').val(cus_main_cus_contact_con_fname_th);
     $('#id_cus_site_site_contact_lname_th').val(cus_main_cus_contact_con_lname_th);
@@ -1603,6 +1605,7 @@
     cus_main_cus_zone = $('#id_cus_main_cus_zone').val();
 
     cus_main_cus_contact_id = $('#id_cus_main_cus_contact_id').val();    
+    cus_main_cus_contact_title_id = $('#id_cus_main_cus_contact_title_list').val();
     cus_main_cus_contact_cus_title = $('#id_cus_main_cus_contact_cus_title_th').val();  
     cus_main_cus_contact_con_fname_th = $('#id_cus_main_cus_contact_con_fname_th').val();
     cus_main_cus_contact_con_lname_th = $('#id_cus_main_cus_contact_con_lname_th').val();
@@ -1650,6 +1653,7 @@
 
     // Bill Cotact Information
     $('#id_cus_bill_cus_contact_id').val(cus_main_cus_contact_id);
+    $('#id_cus_bill_cus_contact_title_list').val(cus_main_cus_contact_title_id);
     $('#id_cus_bill_cus_contact_title_th').val(cus_main_cus_contact_cus_title);
     $('#id_cus_bill_cus_contact_con_fname_th').val(cus_main_cus_contact_con_fname_th);
     $('#id_cus_bill_cus_contact_con_lname_th').val(cus_main_cus_contact_con_lname_th);
@@ -2317,11 +2321,8 @@
           var cus_bill_cus_email = data.results[0]["cus_email"];
           var cus_bill_cus_zone = data.results[0]["cus_zone"];
 
-          var cus_bill_cus_contact_id = data.results[0]["cus_bill_cus_contact_id"];                    
-          
+          var cus_bill_cus_contact_id = data.results[0]["cus_bill_cus_contact_id"];          
           var cus_bill_cus_contact_title_id = data.results[0]["cus_bill_cus_contact_title_id"];
-          alert(cus_bill_cus_contact_title_id);
-
           var cus_bill_cus_contact_title_th = data.results[0]["cus_bill_cus_contact_title_th"];
           var cus_bill_cus_contact_con_sex = data.results[0]["cus_bill_cus_contact_con_sex"];
           var cus_bill_cus_contact_fname_th = data.results[0]["cus_bill_cus_contact_fname_th"];
