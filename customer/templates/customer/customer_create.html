@@ -615,6 +615,7 @@
                                 
                                 <button id="cus_site_district_lookup" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url="{% url 'get_district_list' %}"><i class="fas fa-search fa-sm"></i></button>
 
+                                <!-- amnaj -->
                                 <input type="hidden" id="id_cus_site_select_district_id" name="cus_site_select_district_id" />
                               </div>
                             </div>
@@ -2311,10 +2312,10 @@
       $('#id_cus_id').focus();
     }
     else
-      add_all_customer_tabs();
+      save_all_cus_tabs();
   });
 
-  function add_all_customer_tabs() {
+  function save_all_cus_tabs() {
 
     cus_id = $('#id_cus_id').val();
     cus_brn = $('#id_cus_brn').val();
@@ -2367,8 +2368,6 @@
     cus_main_cus_contact_con_nationality_id = $("#id_cus_main_cus_contact_nation_list").val();
     cus_main_cus_contact_con_mobile = $("#id_cus_main_cus_contact_con_mobile").val();
     cus_main_cus_contact_con_email = $("#id_cus_main_cus_contact_con_email").val();
-    console.log("cus_main : cus_main_cus_contact_con_nationality_id = " + cus_main_cus_contact_con_nationality_id);
-    // + "," + cus_main_cus_contact_con_mobile + "," + cus_main_cus_contact_con_email)
 
     // CUS_SITE
     if ($('#id_cus_site_cus_active').is(":checked"))
@@ -2445,7 +2444,7 @@
 
 
     $.ajax({
-      url : "/customer/ajax/update_all_cus_tabs/",
+      url : "/customer/ajax/save_all_cus_tabs/",
       type : "POST",
       data : {          
         csrfmiddlewaretoken: '{{ csrf_token }}',
@@ -3860,9 +3859,13 @@
   };
 
   // CUS_SITE
-  function select_cus_site_district(dist_id, dist_name_th, city_name_th, dist_name_en, city_name_en, country_name_th, country_name_en) {
+  function select_cus_site_district(dist_id, dist_name_th, city_name_th, dist_name_en, city_name_en, country_name_th, country_name_en) {    
     $("#id_cus_site_cus_district_dist_th").val(dist_name_th);
-    $("#id_cus_site_cus_district_id").val(dist_id);    
+
+    // amnaj
+    //$("#id_cus_site_cus_district_id").val(dist_id);   
+    $("#id_cus_site_select_district_id").val(dist_id);
+    
     $("#id_cus_site_cus_city_th").val(city_name_th);    
     $("#id_cus_site_cus_district_en").val(dist_name_en);
     $("#id_cus_site_cus_city_en").val(city_name_en);

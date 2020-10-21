@@ -27,7 +27,7 @@ urlpatterns += [
   url(r'^ajax/update_cus_main/$', views.update_cus_main, name='update_cus_main'),
   url(r'^ajax/update_cus_site/$', views.update_cus_site, name='update_cus_site'),
   url(r'^ajax/update_cus_bill/$', views.update_cus_bill, name='update_cus_bill'),
-  url(r'^ajax/update_all_cus_tabs/$', views.update_all_cus_tabs, name='update_all_cus_tabs'),
+  url(r'^ajax/save_all_cus_tabs/$', views.save_all_cus_tabs, name='save_all_cus_tabs'),
 ]
 
 urlpatterns += [

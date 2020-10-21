@@ -2023,10 +2023,10 @@ def check_modified_field(table_name, primary_key, field_name, old_value, new_val
 
 
 @login_required(login_url='/accounts/login/')
-def update_all_cus_tabs(request):
+def save_all_cus_tabs(request):
 
     print("****************************")
-    print("FUNCTION: update_all_cus_tabs()")
+    print("FUNCTION: save_all_cus_tabs()")
     # print("****************************")
 
     template_name = 'customer/customer_update.html'        
@@ -2035,7 +2035,7 @@ def update_all_cus_tabs(request):
     insert_status = False
 
     if request.method == 'POST':
-        print("POST: update_all_cus_tabs()")
+        print("POST: save_all_cus_tabs()")
 
         form = CusAllTabsForm(request.POST)
 
