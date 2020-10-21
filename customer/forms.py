@@ -28,8 +28,10 @@ class CustomerCodeCreateForm(forms.Form):
 
     # Contact Title
     contact_title_list = forms.ModelChoiceField(queryset=None, required=False)
+    
     cus_main_cus_contact_cus_title_en = forms.CharField(required=False)
     cus_site_site_contact_cus_title_en = forms.CharField(required=False)
+    cus_bill_cus_contact_cus_title_en = forms.CharField(required=False)
 
     # Contact Nation
     contact_nation_list = forms.ModelChoiceField(queryset=None, required=False)
@@ -40,6 +42,8 @@ class CustomerCodeCreateForm(forms.Form):
     # Site Title
     cus_site_site_contact_cus_title_en = forms.CharField(required=False)
 
+    # Bill Title
+    cus_bill_cus_contact_cus_title_en = forms.CharField(required=False)
 
     def __init__(self, *args, **kwargs):
         super(CustomerCodeCreateForm, self).__init__(*args, **kwargs)
@@ -70,6 +74,7 @@ class CustomerCodeCreateForm(forms.Form):
         self.fields['contact_title_list'].queryset=TTitle.objects.all().exclude(upd_flag='D').order_by('-title_id')
         self.fields['cus_main_cus_contact_cus_title_en'].initial = "Khun"
         self.fields['cus_site_site_contact_cus_title_en'].initial = "Khun"
+        self.fields['cus_bill_cus_contact_cus_title_en'].initial = "Khun"
 
         # Contact Nation
         # self.fields['contact_nation_list'].queryset=TNation.objects.all().exclude(upd_flag='D').filter(nation_id__in=[0,1,4,5,11,9,29,44,46,47,97,99]).order_by('-nation_id')
