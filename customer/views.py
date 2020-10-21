@@ -3348,6 +3348,8 @@ def save_all_cus_tabs(request):
             cus_bill_cus_contact_con_mobile = request.POST.get('cus_bill_cus_contact_con_mobile')
             cus_bill_cus_contact_con_email = request.POST.get('cus_bill_cus_contact_con_email')
             
+            
+
             print("")
             print("-------------- CUS BILL -------------")
             print("cus_bill_cus_contact_id = " + str(cus_bill_cus_contact_id))
@@ -3623,7 +3625,6 @@ def save_all_cus_tabs(request):
                                 modified_records.append(record)
                                 count_modified_field = count_modified_field + 1
 
-                            '''
                             # CON_POSITION_EN
                             field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Contact position (EN)", contact_list.con_position_en, cus_bill_cus_contact_con_position_en, "E", request)
                             if field_is_modified:                                                                
@@ -3631,12 +3632,21 @@ def save_all_cus_tabs(request):
                                 modified_records.append(record)
                                 count_modified_field = count_modified_field + 1
 
-
+                            # amnaj
+                            # CON_NATIONALITY
+                            print("NATION")
+                            print("contact_list.con_nation_id = " + str(contact_list.con_nation_id))
+                            print("cus_bill_cus_contact_con_nationality_id = " + str(cus_bill_cus_contact_con_nationality_id))
                             field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Contact Nationality", str(contact_list.con_nation_id), str(cus_bill_cus_contact_con_nationality_id), "E", request)
-                            if field_is_modified:                                                                
+                            if field_is_modified:                                                           
+
                                 contact_list.con_nation_id = cus_bill_cus_contact_con_nationality_id
                                 modified_records.append(record)
                                 count_modified_field = count_modified_field + 1
+                                print("AA")
+                            else:
+                                print("BB")
+
 
                             field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Contact Mobile", contact_list.con_mobile, cus_bill_cus_contact_con_mobile, "E", request)
                             if field_is_modified:                                                                
@@ -3644,12 +3654,12 @@ def save_all_cus_tabs(request):
                                 modified_records.append(record)
                                 count_modified_field = count_modified_field + 1
                             
-                            field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Contact Email", contact_list.con_email, cus_site_site_contact_con_email, "E", request)
+                            field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Contact Email", contact_list.con_email, cus_bill_cus_contact_con_email, "E", request)
                             if field_is_modified:                                                                
                                 contact_list.con_email = cus_bill_cus_contact_con_email
                                 modified_records.append(record)
                                 count_modified_field = count_modified_field + 1
-                            '''
+                            
                             contact_list.save()
 
                         except CusContact.DoesNotExist:
