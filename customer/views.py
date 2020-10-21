@@ -377,7 +377,6 @@ def ajax_check_exist_cus_site(request):
                     else:
                         cus_site_site_contact_title_th = ""
 
-                    # amnaj copy
                     cus_site_site_contact_fname_th = customer_site.site_contact.con_fname_th
                     cus_site_site_contact_lname_th = customer_site.site_contact.con_lname_th,
                     cus_site_site_contact_position_th = customer_site.site_contact.con_position_th
@@ -391,6 +390,7 @@ def ajax_check_exist_cus_site(request):
                     cus_site_site_contact_con_email = customer_site.site_contact.con_email
 
 
+                '''
                 print("")
                 print("__________________")
                 print("cus_site_site_contact_title_en = " + str(cus_site_site_contact_title_en))
@@ -403,6 +403,7 @@ def ajax_check_exist_cus_site(request):
                 print("cus_site_site_contact_con_email = " + str(cus_site_site_contact_con_email))
                 print("__________________")
                 print("")
+                '''
 
                 record = {
                     "cus_no": customer_site.cus_no,
@@ -647,7 +648,6 @@ def ajax_check_exist_cus_bill(request):
                     "cus_email": customer_bill.cus_email,
                     "cus_zone": customer_bill.cus_zone_id,
 
-                    # amnaj copy
                     "cus_bill_cus_contact_id": customer_bill.cus_contact_id,
                     "cus_bill_cus_contact_title_th": cus_bill_cus_contact_title_th,
                     "cus_bill_cus_contact_fname_th": cus_bill_cus_contact_fname_th,
@@ -3004,8 +3004,6 @@ def save_all_cus_tabs(request):
                                 modified_records.append(record)
                                 count_modified_field = count_modified_field + 1
 
-
-                    # amnaj
                     # CUS_CONTACT
                     if len(cus_site_site_contact_con_fname_th) > 0 or len(cus_site_site_contact_con_lname_th) > 0:                        
                         print("site - cus_id = " + str(cus_id))                        
@@ -3567,7 +3565,6 @@ def save_all_cus_tabs(request):
                                 count_modified_field = count_modified_field + 1                               
 
 
-                    # amnaj
                     # BILL CUS_CONTACT
                     if len(cus_bill_cus_contact_con_fname_th) > 0 or len(cus_bill_cus_contact_con_lname_th) > 0:                        
                         print("bill - cus_id = " + str(cus_id))                        
@@ -3577,6 +3574,7 @@ def save_all_cus_tabs(request):
                         try:
                             contact_list = CusContact.objects.filter(cus_id=cus_id, con_fname_th=cus_bill_cus_contact_con_fname_th, con_lname_th=cus_bill_cus_contact_con_lname_th)[:1].get()
                             
+                            # amnaj
                             print("bill - update old contact")
 
                             contact_list = CusContact.objects.filter(con_id=cus_bill_cus_contact_id).get()

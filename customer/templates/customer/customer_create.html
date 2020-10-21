@@ -615,7 +615,6 @@
                                 
                                 <button id="cus_site_district_lookup" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url="{% url 'get_district_list' %}"><i class="fas fa-search fa-sm"></i></button>
 
-                                <!-- amnaj -->
                                 <input type="hidden" id="id_cus_site_select_district_id" name="cus_site_select_district_id" />
                               </div>
                             </div>
@@ -3948,8 +3947,6 @@
   function select_cus_site_district(dist_id, dist_name_th, city_name_th, dist_name_en, city_name_en, country_name_th, country_name_en) {    
     $("#id_cus_site_cus_district_dist_th").val(dist_name_th);
 
-    // amnaj
-    //$("#id_cus_site_cus_district_id").val(dist_id);   
     $("#id_cus_site_select_district_id").val(dist_id);
     
     $("#id_cus_site_cus_city_th").val(city_name_th);    
