@@ -2827,7 +2827,6 @@ def save_all_cus_tabs(request):
             cus_site_site_contact_con_mobile = request.POST.get('cus_site_site_contact_con_mobile')
             cus_site_site_contact_con_email = request.POST.get('cus_site_site_contact_con_email')
             
-            '''
             print("")
             print("-------------- CUS SITE -------------")            
             print("cus_site_site_contact_id = " + str(cus_site_site_contact_id))
@@ -2846,7 +2845,6 @@ def save_all_cus_tabs(request):
             print("")
             print("-------------- CUS SITE -------------")
             print("")
-            '''
 
             if cus_site_site_contact_id is not None and cus_site_site_contact_id != "":
                 # print("not none, not empty")
