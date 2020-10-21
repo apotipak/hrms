@@ -3588,65 +3588,65 @@ def save_all_cus_tabs(request):
                                 modified_records.append(record)
                                 count_modified_field = count_modified_field + 1
                             
-                            '''
                             # CON_LNAME_TH
-                            field_is_modified, record = check_modified_field("CUSTOMER", cus_no, "Contact Last Name (TH)", contact_list.con_lname_th, cus_site_site_contact_con_lname_th, "E", request)
+                            field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Contact Last Name (TH)", contact_list.con_lname_th, cus_bill_cus_contact_con_lname_th, "E", request)
                             if field_is_modified:                                
                                 contact_list.con_lname_th = cus_main_cus_contact_con_lname_th
                                 modified_records.append(record)
                                 count_modified_field = count_modified_field + 1
                             
                             # CON_POSITION_TH
-                            field_is_modified, record = check_modified_field("CUSTOMER", cus_no, "Contact Position (TH)", str(contact_list.con_position_th), cus_site_site_contact_con_position_th, "E", request)
+                            field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Contact Position (TH)", str(contact_list.con_position_th), cus_bill_cus_contact_con_position_th, "E", request)
                             if field_is_modified:                                                                
-                                contact_list.con_position_th = cus_site_site_contact_con_position_th
+                                contact_list.con_position_th = cus_bill_cus_contact_con_position_th
                                 modified_records.append(record)
                                 count_modified_field = count_modified_field + 1
                             
                             # CON_SEX                 
-                            field_is_modified, record = check_modified_field("CUSTOMER", cus_no, "Contact Sex", contact_list.con_sex, cus_site_site_contact_con_sex, "E", request)
+                            field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Contact Sex", contact_list.con_sex, cus_bill_cus_contact_con_sex, "E", request)
                             if field_is_modified:                                                                
-                                contact_list.con_sex = cus_site_site_contact_con_sex
+                                contact_list.con_sex = cus_bill_cus_contact_con_sex
                                 modified_records.append(record)
                                 count_modified_field = count_modified_field + 1
 
                             # CON_FNAME_EN
-                            field_is_modified, record = check_modified_field("CUSTOMER", cus_no, "Contact First Name (EN)", contact_list.con_fname_en, cus_site_site_contact_con_fname_en, "E", request)
+                            field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Contact First Name (EN)", contact_list.con_fname_en, cus_bill_cus_contact_con_fname_en, "E", request)
                             if field_is_modified:                                
-                                contact_list.con_fname_en = cus_site_site_contact_con_fname_en
+                                contact_list.con_fname_en = cus_bill_cus_contact_con_fname_en
                                 modified_records.append(record)
                                 count_modified_field = count_modified_field + 1
 
                             # CON_LNAME_EN
-                            field_is_modified, record = check_modified_field("CUSTOMER", cus_no, "Contact Last Name (EN)", contact_list.con_lname_en, cus_site_site_contact_con_lname_en, "E", request)
+                            field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Contact Last Name (EN)", contact_list.con_lname_en, cus_bill_cus_contact_con_lname_en, "E", request)
                             if field_is_modified:                                
-                                contact_list.con_lname_en = cus_site_site_contact_con_lname_en
+                                contact_list.con_lname_en = cus_bill_cus_contact_con_lname_en
                                 modified_records.append(record)
                                 count_modified_field = count_modified_field + 1
 
+                            '''
                             # CON_POSITION_EN
-                            field_is_modified, record = check_modified_field("CUSTOMER", cus_no, "Contact position (EN)", contact_list.con_position_en, cus_site_site_contact_con_position_en, "E", request)
+                            field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Contact position (EN)", contact_list.con_position_en, cus_bill_cus_contact_con_position_en, "E", request)
                             if field_is_modified:                                                                
-                                contact_list.con_position_en = cus_site_site_contact_con_position_en
+                                contact_list.con_position_en = cus_bill_cus_contact_con_position_en
                                 modified_records.append(record)
                                 count_modified_field = count_modified_field + 1
 
 
-                            field_is_modified, record = check_modified_field("CUSTOMER", cus_no, "Contact Nationality", str(contact_list.con_nation_id), str(cus_site_site_contact_con_nationality_id), "E", request)
+                            field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Contact Nationality", str(contact_list.con_nation_id), str(cus_bill_cus_contact_con_nationality_id), "E", request)
                             if field_is_modified:                                                                
-                                contact_list.con_nation_id = cus_site_site_contact_con_nationality_id
+                                contact_list.con_nation_id = cus_bill_cus_contact_con_nationality_id
                                 modified_records.append(record)
                                 count_modified_field = count_modified_field + 1
 
-                            field_is_modified, record = check_modified_field("CUSTOMER", cus_no, "Contact Mobile", contact_list.con_mobile, cus_site_site_contact_con_mobile, "E", request)
+                            field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Contact Mobile", contact_list.con_mobile, cus_bill_cus_contact_con_mobile, "E", request)
                             if field_is_modified:                                                                
-                                contact_list.con_mobile = cus_site_site_contact_con_mobile
+                                contact_list.con_mobile = cus_bill_cus_contact_con_mobile
                                 modified_records.append(record)
                                 count_modified_field = count_modified_field + 1
                             
-                            field_is_modified, record = check_modified_field("CUSTOMER", cus_no, "Contact Email", contact_list.con_email, cus_site_site_contact_con_email, "E", request)
+                            field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Contact Email", contact_list.con_email, cus_site_site_contact_con_email, "E", request)
                             if field_is_modified:                                                                
-                                contact_list.con_email = cus_site_site_contact_con_email
+                                contact_list.con_email = cus_bill_cus_contact_con_email
                                 modified_records.append(record)
                                 count_modified_field = count_modified_field + 1
                             '''

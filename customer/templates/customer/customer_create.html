@@ -2271,10 +2271,10 @@
 
           var cus_bill_cus_contact_id = data.results[0]["cus_bill_cus_contact_id"];                    
           var cus_bill_cus_contact_title_th = data.results[0]["cus_bill_cus_contact_title_th"];
+          var cus_bill_cus_contact_con_sex = data.results[0]["cus_bill_cus_contact_con_sex"];
           var cus_bill_cus_contact_fname_th = data.results[0]["cus_bill_cus_contact_fname_th"];
           var cus_bill_cus_contact_lname_th = data.results[0]["cus_bill_cus_contact_lname_th"];
-          var cus_bill_cus_contact_position_th = data.results[0]["cus_bill_cus_contact_position_th"];
-          
+          var cus_bill_cus_contact_position_th = data.results[0]["cus_bill_cus_contact_position_th"];          
           var cus_bill_cus_contact_title_en = data.results[0]["cus_bill_cus_contact_title_en"];
           var cus_bill_cus_contact_fname_en = data.results[0]["cus_bill_cus_contact_fname_en"];
           var cus_bill_cus_contact_lname_en = data.results[0]["cus_bill_cus_contact_lname_en"];
@@ -2309,10 +2309,20 @@
 
           $('#id_cus_bill_cus_contact_id').val(cus_bill_cus_contact_id);
           $('#id_cus_bill_cus_contact_cus_title_th').val(cus_bill_cus_contact_title_th);
+
+          if(cus_bill_cus_contact_con_sex == 'M') {
+            $('#id_cus_bill_sex_male').prop("checked", true);
+            $('#id_cus_bill_sex_female').prop("checked", false);
+          }
+
+          if(cus_bill_cus_contact_con_sex == 'F') {
+            $('#id_cus_bill_sex_male').prop("checked", false);
+            $('#id_cus_bill_sex_female').prop("checked", true);
+          }
+
           $('#id_cus_bill_cus_contact_con_fname_th').val(cus_bill_cus_contact_fname_th);
           $('#id_cus_bill_cus_contact_con_lname_th').val(cus_bill_cus_contact_lname_th);
           $('#id_cus_bill_cus_contact_con_position_th').val(cus_bill_cus_contact_position_th);
-
           $('#id_cus_bill_cus_contact_cus_title_en').val(cus_bill_cus_contact_title_en);
           $('#id_cus_bill_cus_contact_con_fname_en').val(cus_bill_cus_contact_fname_en);
           $('#id_cus_bill_cus_contact_con_lname_en').val(cus_bill_cus_contact_lname_en);
