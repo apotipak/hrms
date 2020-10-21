@@ -1331,12 +1331,12 @@
                           <label for="id_cus_bill_selected_contact_title">{% trans 'Title (TH)' %}</label>                          
                           <div class="container">
 
-                            <select name="cus_bill_cus_contact_title_list" class="form-control form-control-sm" id="id_cus_bill_cus_contact_title_list">
-                              {% for choice in cus_bill_form.contact_title_list.field.queryset %}                                
-                                {% if choice.title_th == cus_bill.cus_contact.con_tilte.title_th %}
-                                  <option value="{{ choice.pk }}" selected>{{ choice.title_th}}</option> 
+                            <select name="cus_bill_cus_contact_title_list" class="form-control form-control-sm" required="" id="id_cus_bill_cus_contact_title_list">
+                              {% for choice in cus_bill_form.contact_title_list.field.queryset %}
+                                {% if choice.title_th == cus_bill.cus_contact.con_title.title_th %}
+                                <option value="{{ choice.pk }}" selected>{{ choice.title_th}}</option> 
                                 {% else %}
-                                  <option value="{{ choice.pk }}">{{ choice.title_th}}</option> 
+                                <option value="{{ choice.pk }}">{{ choice.title_th}}</option> 
                                 {% endif %}
                               {% endfor %}
                             </select>
@@ -1368,7 +1368,7 @@
 
                           <div class="row">                              
                             <div class="col-12 input-group">
-                            
+
                             {% if cus_bill.cus_contact.con_sex == 'M' %}
                             <div class="form-check form-check-inline pl-1">
                               <input class="form-check-input" type="radio" name="sexOptions" id="id_sex_male" value="M" checked>
@@ -2847,6 +2847,7 @@ $('#btnCopyToSite').on('click', function (e) {
     cus_bill_cus_contact_con_nationality_id = $("#id_cus_bill_cus_contact_nation_list").val();
     cus_bill_cus_contact_con_mobile = $("#id_cus_bill_cus_contact_con_mobile").val();
     cus_bill_cus_contact_con_email = $("#id_cus_bill_cus_contact_con_email").val();
+    //alert(cus_bill_select_contact_title_id);
 
     /*
     console.log(
