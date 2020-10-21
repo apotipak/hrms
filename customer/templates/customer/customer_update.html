@@ -33,10 +33,11 @@
           
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item active">
+            {% comment %}
             <div class="float-right">
               <a href="#" id="saveAllCustomerTabs" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
             </div>
-            
+            {% endcomment %}
             </li>
           </ol>
           
@@ -1457,7 +1458,6 @@
                       </div>
                       {% endcomment %}
 
-                    </div>
                   </div>
                 </div>
               </div>
@@ -1482,11 +1482,9 @@
 
         </div>
 
-          {% comment %}
           <div class="float-right">
             <a href="#" id="saveAllCustomerTabs" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
           </div>
-          {% endcomment %}
 
         <!-- /.end tabs -->
       </div>
