@@ -483,7 +483,7 @@
 
                           <select name="cus_main_cus_contact_title_list" class="form-control form-control-sm" required="" id="id_cus_main_cus_contact_title_list">
                             {% for choice in cus_main_form.contact_title_list.field.queryset %}
-                              {% if choice.title_th == 'คุณ' %}
+                              {% if choice.title_th == cus_main.cus_contact.con_title.title_th %}
                               <option value="{{ choice.pk }}" selected>{{ choice.title_th}}</option> 
                               {% else %}
                               <option value="{{ choice.pk }}">{{ choice.title_th}}</option> 
@@ -542,17 +542,17 @@
 
                       <div class="form-group col-md-2">
                         <label for="id_cus_main_cus_contact_con_fname_en">{% trans 'First Name (EN)' %}</label>
-                        <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_contact_con_fname_en" name="cus_main_cus_contact_con_fname_en">
+                        <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_contact_con_fname_en" name="cus_main_cus_contact_con_fname_en" value="{{ cus_main.cus_contact.con_fname_th|default_if_none:'' }}">
                       </div>
 
                       <div class="form-group col-md-3">
                         <label for="id_cus_main_cus_contact_con_lname_en">{% trans 'Last Name (EN)' %}</label>
-                        <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_contact_con_lname_en" name="cus_main_cus_contact_con_lname_en">
+                        <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_contact_con_lname_en" name="cus_main_cus_contact_con_lname_en" value="{{ cus_main.cus_contact.con_lname_th|default_if_none:''}}">
                       </div>
 
                       <div class="form-group col-md-3">
                         <label for="id_cus_main_cus_contact_con_position_en">{% trans 'Position (EN)' %}</label>
-                        <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_contact_con_position_en" name="cus_main_cus_contact_con_position_en">
+                        <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_contact_con_position_en" name="cus_main_cus_contact_con_position_en" value="{{ cus_main.cus_contact.con_position_en|default_if_none:''}}">
                       </div>
 
                     </div>
@@ -568,7 +568,7 @@
                         <label for="id_cus_main_cus_contact_cus_title_en">{% trans 'Nationality' %}</label>                          
                         <select name="cus_main_cus_contact_nation_list" class="form-control form-control-sm" required="" id="id_cus_main_cus_contact_nation_list">
                           {% for choice in cus_main_form.contact_nation_list.field.queryset %}
-                            {% if choice.nation_th == "ไทย" %}
+                            {% if choice.nation_th == cus_main.cus_contact.con_nation.nation_th %}
                             <option value="{{ choice.pk }}" selected>{{ choice.nation_th}}</option> 
                             {% else %}
                             <option value="{{ choice.pk }}">{{ choice.nation_th}}</option> 
@@ -581,12 +581,12 @@
 
                       <div class="form-group col-md-3">
                         <label for="id_cus_main_cus_contact_con_mobile">{% trans 'Mobile' %}</label>
-                        <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_contact_con_mobile" name="cus_main_cus_contact_con_mobile">
+                        <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_contact_con_mobile" name="cus_main_cus_contact_con_mobile" value="{{ cus_main.cus_contact.con_mobile|default_if_none:''}}">
                       </div>
 
                       <div class="form-group col-md-3">
                         <label for="id_cus_main_cus_contact_con_email">{% trans 'Email' %}</label>
-                        <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_contact_con_email" name="cus_main_cus_contact_con_email">
+                        <input type="text" class="form-control form-control-sm" id="id_cus_main_cus_contact_con_email" name="cus_main_cus_contact_con_email" value="{{ cus_main.cus_contact.con_email|default_if_none:''}}">
                       </div>
 
                     </div>
@@ -903,7 +903,7 @@
 
                             <select name="cus_site_cus_contact_title_list" class="form-control form-control-sm" required="" id="id_cus_site_cus_contact_title_list">
                               {% for choice in cus_site_form.contact_title_list.field.queryset %}
-                              {% if choice.title_th == "คุณ" %}
+                              {% if choice.title_th == customer.site_contact.con_title.title_th %}
                                 <option value="{{ choice.pk }}" selected>{{ choice.title_th}}</option> 
                               {% else %}
                                 <option value="{{ choice.pk }}">{{ choice.title_th}}</option> 
@@ -915,17 +915,17 @@
                         </div>
 
                         <div class="form-group col-md-2">
-                          <label for="id_cus_site_site_contact_fname_th">{% trans 'First Name' %}</label>
+                          <label for="id_cus_site_site_contact_fname_th">{% trans 'First Name (TH)' %}</label>
                           <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_fname_th" name="cus_site_site_contact_fname_th" value="{{ cus_site.site_contact.con_fname_th|default_if_none:'' }}" >
                         </div>
 
                         <div class="form-group col-md-3">
-                          <label for="id_cus_site_site_contact_lname_th">{% trans 'Last Name' %}</label>
+                          <label for="id_cus_site_site_contact_lname_th">{% trans 'Last Name (TH)' %}</label>
                           <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_lname_th" name="cus_site_cus_contact_con_fname_th" value="{{ cus_site.site_contact.con_lname_th|default_if_none:'' }}" >
                         </div>
 
                         <div class="form-group col-md-3">
-                          <label for="id_cus_site_site_contact_position_th">{% trans 'Position' %}</label>
+                          <label for="id_cus_site_site_contact_position_th">{% trans 'Position (TH)' %}</label>
                           <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_position_th" name="cus_site_site_contact_position_th" value="{{ cus_site.site_contact.con_position_th|default_if_none:'' }}" >
                         </div>
 
@@ -962,17 +962,17 @@
 
                         <div class="form-group col-md-2">
                           <label for="id_cus_site_site_contact_con_fname_en">{% trans 'First Name (EN)' %}</label>
-                          <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_con_fname_en" name="cus_site_site_contact_con_fname_en">
+                          <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_con_fname_en" name="cus_site_site_contact_con_fname_en" value="{{ customer.site_contact.con_fname_en|default_if_none:'' }}">
                         </div>
 
                         <div class="form-group col-md-3">
                           <label for="id_cus_site_site_contact_con_lname_en">{% trans 'Last Name (EN)' %}</label>
-                          <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_con_lname_en" name="cus_site_cus_contact_con_lname_en">
+                          <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_con_lname_en" name="cus_site_cus_contact_con_lname_en" value="{{ customer.site_contact.con_lname_en|default_if_none:'' }}">
                         </div>
 
                         <div class="form-group col-md-3">
                           <label for="id_cus_site_site_contact_con_position_en">{% trans 'Position (EN)' %}</label>
-                          <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_con_position_en" name="cus_site_cus_contact_con_position_en">
+                          <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_con_position_en" name="cus_site_cus_contact_con_position_en" value="{{ customer.site_contact.con_position_en|default_if_none:'' }}">
                         </div>
 
                       </div>
@@ -985,7 +985,7 @@
                           <label for="id_cus_site_site_contact_cus_title_en">{% trans 'Nationality' %}</label>                          
                           <select name="cus_site_site_contact_nation_list" class="form-control form-control-sm" required="" id="id_cus_site_site_contact_nation_list">
                             {% for choice in cus_site_form.contact_nation_list.field.queryset %}
-                            {% if choice.nation_th == "ไทย" %}
+                            {% if choice.nation_th == customer.cus_contact.con_nation.nation_th %}
                               <option value="{{ choice.pk }}" selected>{{ choice.nation_th}}</option> 
                             {% else %}
                               <option value="{{ choice.pk }}">{{ choice.nation_th}}</option> 
@@ -998,12 +998,12 @@
 
                         <div class="form-group col-md-3">
                           <label for="id_cus_site_site_contact_con_mobile">{% trans 'Mobile' %}</label>
-                          <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_con_mobile" name="cus_site_site_contact_con_mobile">
+                          <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_con_mobile" name="cus_site_site_contact_con_mobile" value="{{ customer.site_contact.con_mobile|default_if_none:'' }}">
                         </div>
 
                         <div class="form-group col-md-3">
                           <label for="id_cus_site_site_contact_con_email">{% trans 'Email' %}</label>
-                          <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_con_email" name="cus_site_site_contact_con_email">
+                          <input type="text" class="form-control form-control-sm" id="id_cus_site_site_contact_con_email" name="cus_site_site_contact_con_email" value="{{ customer.site_contact.con_email|default_if_none:'' }}">
                         </div>
 
                       </div>
@@ -1366,17 +1366,17 @@
 
                         <div class="form-group col-md-2">
                           <label for="id_cus_bill_cus_contact_con_fname_en">{% trans 'First Name (EN)' %}</label>
-                          <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_contact_con_fname_en" name="cus_bill_cus_contact_con_fname_en">
+                          <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_contact_con_fname_en" name="cus_bill_cus_contact_con_fname_en" value="{{ cus_bill.cus_contact.con_fname_en|default_if_none:'' }}">
                         </div>
 
                         <div class="form-group col-md-3">
                           <label for="id_cus_site_site_contact_con_lname_en">{% trans 'Last Name (EN)' %}</label>
-                          <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_contact_con_lname_en" name="cus_bill_cus_contact_con_lname_en">
+                          <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_contact_con_lname_en" name="cus_bill_cus_contact_con_lname_en" value="{{ cus_bill.cus_contact.con_lname_en|default_if_none:'' }}">
                         </div>
 
                         <div class="form-group col-md-3">
                           <label for="id_cus_bill_cus_contact_con_position_en">{% trans 'Position (EN)' %}</label>
-                          <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_contact_con_position_en" name="cus_bill_cus_contact_con_position_en">
+                          <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_contact_con_position_en" name="cus_bill_cus_contact_con_position_en" value="{{ cus_bill.cus_contact.con_position_en|default_if_none:'' }}">
                         </div>
                       </div>
 
@@ -1386,7 +1386,7 @@
                           <label for="id_cus_bill_cus_contact_cus_title_en">{% trans 'Nationality' %}</label>                          
                           <select name="cus_bill_cus_contact_nation_list" class="form-control form-control-sm" required="" id="id_cus_bill_cus_contact_nation_list">
                             {% for choice in cus_bill_form.contact_nation_list.field.queryset %}
-                            {% if choice.nation_th == "ไทย" %}
+                            {% if choice.nation_th == cus_bill.cus_contact.con_nation.nation_th %}
                               <option value="{{ choice.pk }}" selected>{{ choice.nation_th}}</option> 
                             {% else %}
                               <option value="{{ choice.pk }}">{{ choice.nation_th}}</option> 
@@ -1398,12 +1398,12 @@
 
                         <div class="form-group col-md-3">
                           <label for="id_cus_cus_bill_cus_contact_con_mobile">{% trans 'Mobile' %}</label>
-                          <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_contact_con_mobile" name="cus_bill_cus_contact_con_mobile">
+                          <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_contact_con_mobile" name="cus_bill_cus_contact_con_mobile" value="{{ cus_bill.cus_contact.con_mobile|default_if_none:'' }}">
                         </div>
 
                         <div class="form-group col-md-3">
                           <label for="id_cus_bill_cus_contact_con_email">{% trans 'Email' %}</label>
-                          <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_contact_con_email" name="cus_bill_cus_contact_con_email">
+                          <input type="text" class="form-control form-control-sm" id="id_cus_bill_cus_contact_con_email" name="cus_bill_cus_contact_con_email" value="{{ cus_bill.cus_contact.con_fname_en|default_if_none:'' }}">
                         </div>
                       </div>
 
