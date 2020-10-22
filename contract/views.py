@@ -2165,6 +2165,43 @@ def delete_customer_contract(request):
     return response
 
 
+def convert_date_english_to_thai_format(date_en_format):
+    
+    date_en_format = datetime.datetime.now().strftime("%d %m %Y")
+    date_en_format = datetime.datetime.strptime(date_en_format, '%d %m %Y')
+    day = date_en_format.strftime("%d")
+    month = date_en_format.strftime("%m")
+    year = date_en_format.strftime("%Y")
+
+    if month == "1":
+        month = "มกราคม"
+    elif month == "2":
+        month = "กุมภาพันธ์"
+    elif month == "2":
+        month = "มีนาคม"
+    elif month == "4":
+        month = "เมษายน"
+    elif month == "5":
+        month = "พฤษภาคม"
+    elif month == "6":
+        month = "มิถุนายน"
+    elif month == "7":
+        month = "กรกฎาคม"
+    elif month == "8":
+        month = "สิงหาคม"
+    elif month == "9":
+        month = "กันยายน"
+    elif month == "10":
+        month = "ตุลาคม"        
+    elif month == "11":
+        month = "พฤศจิกายน"
+    elif month == "12":
+        month = "ธันวาคม"
+    else:
+        month = "xx"
+
+    return day + " " + month + " " + year
+    
 @login_required(login_url='/accounts/login/')
 @permission_required('contract.view_cuscontract', login_url='/accounts/login/')
 def generate_contract(request, *args, **kwargs):    
@@ -2219,6 +2256,10 @@ def generate_contract(request, *args, **kwargs):
                 template_name = base_url + 'ReC102_EN.docx'                        
 
         file_name = request.user.username + "_" + cnt_id + "_EN.docx"
+
+
+    today_date_en_format = datetime.datetime.now().strftime("%d %B %Y")
+    today_date_th_format = convert_date_english_to_thai_format(datetime.datetime.now().strftime("%d %B %Y"))
 
     if cnt_id is not None:
         try:                
@@ -2311,6 +2352,23 @@ def generate_contract(request, *args, **kwargs):
                 cus_service_list_day = []
                 cus_service_list_night = []
 
+
+            # TH EN Date format
+            effective_from_en_format = cus_contract.cnt_eff_frm.strftime("%d %B %Y")
+            effective_from_th_format = convert_date_english_to_thai_format(cus_contract.cnt_eff_frm.strftime("%d %B %Y"))            
+
+            effective_to_en_format = cus_contract.cnt_eff_to.strftime("%d %B %Y")
+            effective_to_th_format = convert_date_english_to_thai_format(cus_contract.cnt_eff_to.strftime("%d %B %Y"))
+
+            print("aa")
+            print(cus_contract.cnt_sign_frm.strftime("%d %B %Y"))
+
+            sign_from_en_format = cus_contract.cnt_sign_frm.strftime("%d %B %Y")
+            sign_from_th_format = convert_date_english_to_thai_format(cus_contract.cnt_sign_frm.strftime("%d %B %Y"))
+
+            sign_to_en_format = cus_contract.cnt_sign_to.strftime("%d %B %Y")
+            sign_to_th_format = convert_date_english_to_thai_format(cus_contract.cnt_sign_to.strftime("%d %B %Y"))
+
             context = {
                 'customer': customer,
                 'file_name': file_name,
@@ -2320,8 +2378,8 @@ def generate_contract(request, *args, **kwargs):
                 'is_amendment': is_amendment,
                 'cnt_id': cnt_id,               
                 'cnt_doc_no': cus_contract.cnt_doc_no,
-                'today_date': datetime.datetime.now().strftime("%d %B %Y"),
-
+                'today_date_en_format': today_date_en_format,
+                'today_date_th_format': today_date_th_format,
                 'cusbill_name_th': cusbill.cus_name_th,
                 'cusbill_name_en': cusbill.cus_name_en,
                 'cusbill_address_th': cusbill.cus_add1_th,
@@ -2330,7 +2388,6 @@ def generate_contract(request, *args, **kwargs):
                 'cusbill_site_en': cusbill.cus_add1_en,
                 'cusbill_site_cus_subdist_th': cusbill.cus_subdist_th,
                 'cusbill_site_cus_subdist_en': cusbill.cus_subdist_en,
-
 
                 'cusbill_site_cus_district_th': cusbill.cus_district.dist_th,
                 'cusbill_site_cus_district_en': cusbill.cus_district.dist_en,
@@ -2354,11 +2411,21 @@ def generate_contract(request, *args, **kwargs):
                 'customer_site_cus_city_en': customer.cus_city.city_en,
                 'customer_site_cus_zip': customer.cus_zip,
 
+                # 'effective_from': cus_contract.cnt_eff_frm.strftime("%d %B %Y"),
+                'effective_from_en_format': effective_from_en_format,
+                'effective_from_th_format': effective_from_th_format,
 
-                'effective_from': cus_contract.cnt_eff_frm.strftime("%d %B %Y"),
-                'effective_to': cus_contract.cnt_eff_to.strftime("%d %B %Y"),
-                'sign_from': cus_contract.cnt_sign_frm.strftime("%d %B %Y"),
-                'sign_to': cus_contract.cnt_sign_to.strftime("%d %B %Y"),
+                # 'effective_to': cus_contract.cnt_eff_to.strftime("%d %B %Y"),
+                'effective_to_en_format': effective_to_en_format,
+                'effective_to_th_format': effective_to_th_format,
+
+                # 'sign_from': cus_contract.cnt_sign_frm.strftime("%d %B %Y"),
+                'sign_from_en_format': sign_from_en_format,
+                'sign_from_th_format': sign_from_th_format,
+
+                # 'sign_to': cus_contract.cnt_sign_to.strftime("%d %B %Y"),
+                'sign_to_en_format': sign_to_en_format,
+                'sign_to_th_format': sign_to_th_format,
 
                 'shift_list_day': list(pickup_record_day),
                 'shift_list_night': list(pickup_record_night),
@@ -2373,7 +2440,8 @@ def generate_contract(request, *args, **kwargs):
                 'file_name': "",
                 'cnt_id': "",
                 'cnt_doc_no': "",
-                'today_date': datetime.datetime.now().strftime("%d/%B/%Y"),
+                'today_date_en_format': today_date_en_format,
+                'today_date_th_format': today_date_th_format,
                 'customer_name': "",
                 'customer_address': "",
                 'customer_site': "",
@@ -2391,7 +2459,8 @@ def generate_contract(request, *args, **kwargs):
                 'file_name': "",
                 'cnt_id': "",
                 'cnt_doc_no': "",
-                'today_date': datetime.datetime.now().strftime("%d/%B/%Y"),
+                'today_date_en_format': today_date_en_format,
+                'today_date_th_format': today_date_th_format,                
                 'customer_name': "",
                 'customer_address': "",
                 'customer_site': "",

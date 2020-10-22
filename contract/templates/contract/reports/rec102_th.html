@@ -6,7 +6,7 @@
 <div class="float-right">
   <table>
     <tr><td>เลขที่&nbsp;&nbsp;&nbsp;</td><td><strong>{{cnt_doc_no}}</strong></td></tr>
-    <tr><td>วันที่</td><td>{{today_date}}</td></tr>
+    <tr><td>วันที่</td><td>{{today_date_th_format}}</td></tr>
   </table>
 </div>
 <br><br><br><br>
@@ -86,7 +86,7 @@
   2.	ค่าบริการรักษาความปลอดภัยรวมเป็นเงินเดือนละจำนวนทั้งสิ้น&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>{{ srv_rate_total|floatformat:2|intcomma }}</b> บาท<br>
 </div>
 <br>
-<div>3. ระยะเวลาสัญญาว่าจ้างจาก &nbsp;&nbsp;&nbsp;<strong>{{ sign_from }}</strong>&nbsp;&nbsp;&nbsp;ถึงวันที่&nbsp;&nbsp;&nbsp;<strong>{{ sign_to }}</strong><br>
+<div>3. ระยะเวลาสัญญาว่าจ้างจาก &nbsp;&nbsp;&nbsp;<strong>{{ sign_from_th_format }}</strong>&nbsp;&nbsp;&nbsp;ถึงวันที่&nbsp;&nbsp;&nbsp;<strong>{{ sign_to_th_format }}</strong><br>
 และต่อไปจนกว่าฝ่ายใดฝ่ายหนึ่งจะยกเลิกสัญญา โดยแจ้งการยกเลิกเป็นลายลักษณ์อักษรให้อีกฝ่ายหนึ่งรับทราบล่วงหน้า 30 วัน หรือจนกว่าจะมีการเซ็นสัญญาฉบับใหม่แล้วเสร็จ
 </div>            
 <br>
