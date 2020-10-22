@@ -1483,6 +1483,7 @@
         </div>
 
           <div class="float-right">
+            <button id="cancelSaveAllCustomerTabs" type="button" class="btn btn-md btn-default pull-right">Cancel</button>
             <a href="#" id="saveAllCustomerTabs" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</a>
           </div>
 
@@ -1573,7 +1574,18 @@
 
 {% block javascript %}
 <script>
-  
+$(document).ready(function(){
+  $('#id_cus_main_cus_name_th').focus();
+
+  $('#cancelSaveAllCustomerTabs').on('click', function (e) {          
+    $('#cus_main_form').trigger("reset");
+    $('#cus_site_form').trigger("reset");
+    $('#cus_bill_form').trigger("reset");
+  });
+
+});
+
+
 $('#btnCopyToSite').on('click', function (e) {
     if ($('#id_cus_main_cus_active').is(":checked"))
       cus_main_cus_active = 1;
