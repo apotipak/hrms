@@ -22,12 +22,17 @@
               <i class="nav-icon fa fa-desktop"></i><p>Daily Monitoring<i class="right fas fa-angle-left"></i></p>
             </a>
             <ul class="nav nav-treeview">
+              {% comment %}
               <li class="nav-item">
                 <a href="{% url 'monitoring-list' %}" class="nav-link"><i class="fas fa-caret-right nav-icon"></i><p>Daily Monitoring List</p></a>
               </li>
+              {% endcomment %}
+
               <li class="nav-item">
-                <a href="#" class="nav-link"><i class="fas fa-caret-right nav-icon"></i><p>Schedule Maintenance</p></a>
+                <a href="{% url 'schedule-maintenance' %}" class="nav-link"><i class="fas fa-caret-right nav-icon"></i><p>Schedule Maintenance</p></a>
               </li>
+
+              {% comment %}
               <li class="nav-item">
                 <a href="#" class="nav-link"><i class="fas fa-caret-right nav-icon"></i><p>Daily Attendance</p></a>
               </li>
@@ -52,6 +57,8 @@
               <li class="nav-item">
                 <a href="#" class="nav-link"><i class="fas fa-caret-right nav-icon"></i><p>Inquiry & Report</p></a>
               </li>
+              {% endcomment %}
+
             </ul>
           </li> 
         </ul>
