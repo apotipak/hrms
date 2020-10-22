@@ -39,10 +39,10 @@
 
       <div class="card-header">
         <h1 class="card-title pt-2">
-          <span id="customer_name_title">
-            <!--<i class="fas fa-user-edit"></i>&nbsp;&nbsp;--><strong>{{contract.cnt_id}} - {{ customer.cus_name_th }}</strong>            
+          <span id="customer_name_title">            
+            <h3 class="m-0 text-dark">{{customer.cus_name_th}}<small>&nbsp;&nbsp;<button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-angle-down text-primary"></i></button></small></h3>            
           </span>
-          <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-angle-down text-primary"></i></button>
+          <!--<button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-angle-down text-primary"></i></button>-->
         </h1>
 
         <div class="card-tools">
@@ -935,7 +935,9 @@
           },
           success : function(json) {        
             if(json.is_existed) {
-              $('#customer_name_title').html("<i class='fas fa-user-edit'></i>&nbsp;&nbsp;<strong>" + json.cus_name_th + "</strong>");
+              //$('#customer_name_title').html("<i class='fas fa-user-edit'></i>&nbsp;&nbsp;<strong>" + json.cus_name_th + "</strong>");
+              $('#customer_name_title').html("<h3 class='m-0 text-dark'>" + json.cus_name_th + "<small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-primary'></i></button></small></h3>");
+
               $('#id_cus_brn').focus();
             } else {
               alert("Customer " + cus_id + " does not existed. Please create a new customer.");
@@ -983,7 +985,8 @@
         },
         success : function(json) {        
           if(json.is_existed) {
-            $('#customer_name_title').html("<i class='fas fa-user-edit'></i>&nbsp;&nbsp;<strong>" + json.cus_name_th + "</strong>");
+            //$('#customer_name_title').html("<i class='fas fa-user-edit'></i>&nbsp;&nbsp;<strong>" + json.cus_name_th + "</strong>");
+            $('#customer_name_title').html("<h3 class='m-0 text-dark'>" + json.cus_name_th + "<small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-primary'></i></button></small></h3>");
             
             $('#id_cus_name_th').val(json.cus_name_th);
             $('#id_cus_sht_th').val(json.cus_sht_th);
