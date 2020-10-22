@@ -2171,32 +2171,28 @@ def convert_date_english_to_thai_format(date_en_format):
     day = old_date.strftime('%d')
     month = old_date.strftime('%m')
     year = old_date.strftime('%Y')
+    
+    print("-----------")
+    print("month = " + month)
+    print("-----------")
 
-    '''
-    date_en_format = datetime.datetime.now().strftime("%d %m %Y")
-    date_en_format = datetime.datetime.strptime(date_en_format, '%d %m %Y')
-    day = date_en_format.strftime("%d")
-    month = date_en_format.strftime("%m")
-    year = date_en_format.strftime("%Y")
-    '''
-
-    if month == "1":
+    if month == "01":
         month = "มกราคม"
-    elif month == "2":
+    elif month == "02":
         month = "กุมภาพันธ์"
-    elif month == "2":
+    elif month == "03":
         month = "มีนาคม"
-    elif month == "4":
+    elif month == "04":
         month = "เมษายน"
-    elif month == "5":
+    elif month == "05":
         month = "พฤษภาคม"
-    elif month == "6":
+    elif month == "06":
         month = "มิถุนายน"
-    elif month == "7":
+    elif month == "07":
         month = "กรกฎาคม"
-    elif month == "8":
+    elif month == "08":
         month = "สิงหาคม"
-    elif month == "9":
+    elif month == "09":
         month = "กันยายน"
     elif month == "10":
         month = "ตุลาคม"        
