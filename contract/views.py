@@ -2167,11 +2167,18 @@ def delete_customer_contract(request):
 
 def convert_date_english_to_thai_format(date_en_format):
     
+    old_date = datetime.datetime.strptime(date_en_format, '%d %m %Y')
+    day = old_date.strftime('%d')
+    month = old_date.strftime('%m')
+    year = old_date.strftime('%Y')
+
+    '''
     date_en_format = datetime.datetime.now().strftime("%d %m %Y")
     date_en_format = datetime.datetime.strptime(date_en_format, '%d %m %Y')
     day = date_en_format.strftime("%d")
     month = date_en_format.strftime("%m")
     year = date_en_format.strftime("%Y")
+    '''
 
     if month == "1":
         month = "มกราคม"
@@ -2259,7 +2266,7 @@ def generate_contract(request, *args, **kwargs):
 
 
     today_date_en_format = datetime.datetime.now().strftime("%d %B %Y")
-    today_date_th_format = convert_date_english_to_thai_format(datetime.datetime.now().strftime("%d %B %Y"))
+    today_date_th_format = convert_date_english_to_thai_format(datetime.datetime.now().strftime("%d %m %Y"))
 
     if cnt_id is not None:
         try:                
@@ -2355,19 +2362,16 @@ def generate_contract(request, *args, **kwargs):
 
             # TH EN Date format
             effective_from_en_format = cus_contract.cnt_eff_frm.strftime("%d %B %Y")
-            effective_from_th_format = convert_date_english_to_thai_format(cus_contract.cnt_eff_frm.strftime("%d %B %Y"))            
+            effective_from_th_format = convert_date_english_to_thai_format(cus_contract.cnt_eff_frm.strftime("%d %m %Y"))            
 
             effective_to_en_format = cus_contract.cnt_eff_to.strftime("%d %B %Y")
-            effective_to_th_format = convert_date_english_to_thai_format(cus_contract.cnt_eff_to.strftime("%d %B %Y"))
-
-            print("aa")
-            print(cus_contract.cnt_sign_frm.strftime("%d %B %Y"))
+            effective_to_th_format = convert_date_english_to_thai_format(cus_contract.cnt_eff_to.strftime("%d %m %Y"))
 
             sign_from_en_format = cus_contract.cnt_sign_frm.strftime("%d %B %Y")
-            sign_from_th_format = convert_date_english_to_thai_format(cus_contract.cnt_sign_frm.strftime("%d %B %Y"))
+            sign_from_th_format = convert_date_english_to_thai_format(cus_contract.cnt_sign_frm.strftime("%d %m %Y"))
 
             sign_to_en_format = cus_contract.cnt_sign_to.strftime("%d %B %Y")
-            sign_to_th_format = convert_date_english_to_thai_format(cus_contract.cnt_sign_to.strftime("%d %B %Y"))
+            sign_to_th_format = convert_date_english_to_thai_format(cus_contract.cnt_sign_to.strftime("%d %m %Y"))
 
             context = {
                 'customer': customer,
