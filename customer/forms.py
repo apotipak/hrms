@@ -49,8 +49,8 @@ class CustomerCodeCreateForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(CustomerCodeCreateForm, self).__init__(*args, **kwargs)
         
-        self.fields['cus_id'].widget.attrs={'class': 'form-control form-control-sm'}
-        self.fields['cus_brn'].widget.attrs={'class': 'form-control form-control-sm'}
+        self.fields['cus_id'].widget.attrs={'class': 'form-control form-control-md'}
+        self.fields['cus_brn'].widget.attrs={'class': 'form-control form-control-md'}
         self.fields['cus_main_cus_zone'].queryset=ComZone.objects.all()
 
         self.fields['customer_group_id'].queryset = Customer.objects.values_list('cus_taxid', flat=True).exclude(cus_taxid=None).order_by('cus_taxid').distinct()
