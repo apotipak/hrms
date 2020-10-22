@@ -86,7 +86,7 @@
             <div class="tab-pane fade show active" id="mainoffice" role="tabpanel" aria-labelledby="mainoffice-tab">
             <!--<div class="tab-pane" id="mainoffice" role="tabpanel" aria-labelledby="mainoffice-tab">-->
 
-            <form id="cus_main_form_temp" method="POST">
+            <form id="cus_main_form" method="POST">
             {% csrf_token %}
             
             <div class="clearfix">
@@ -1319,6 +1319,7 @@
 
 
             <div class="float-right">
+              <button id="cancelSaveAllCustomerTabs" type="button" class="btn btn-md btn-default pull-right">Cancel</button>
               <button id="saveAllCustomerTabs" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</button>            
             </div>
 
@@ -1413,6 +1414,19 @@
   $(document).ready(function(){
     $('#id_cus_id').focus();
     $("#main-content :input").attr("disabled", true);    
+
+    $('#cancelSaveAllCustomerTabs').on('click', function (e) {      
+      
+      // todo: clear form
+      $('#customer_code_form').trigger("reset");
+      $('#cus_main_form').trigger("reset");
+      $('#cus_site_form').trigger("reset");
+      $('#cus_bill_form').trigger("reset");
+
+      $("#main-content :input").attr("disabled", true);
+
+    });
+
   });
 
   $(document).on('keyup keypress', '#cus_site_search_district_modal_form input[type="text"]', function(e) {
