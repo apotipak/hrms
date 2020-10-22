@@ -27,19 +27,22 @@
 
     <!-- Main content -->
     <section class="content">
-		<form id="contractupdateform" method="POST">
-      	{% csrf_token %}
-
+		
       	<!-- 1st Block -->
       	<div class="card">
+
 	    	<div class="card-header">
+
 		        <h1 class="card-title pt-2">
 		          <span id="customer_name_title">            
-		            <h3 class="m-0 text-dark">AAA<small>&nbsp;&nbsp;<button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-angle-down text-primary"></i></button></small></h3>            
+		            <h3 class="m-0 text-dark">Customer Information<small>&nbsp;&nbsp;<button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-angle-down text-primary"></i></button></small></h3>            
 		          </span>
 		        </h1>
 
-	        	<div class="card-tools">
+			<form id="contract_service_list_form" method="POST">
+      		{% csrf_token %}
+
+	        	<div class="card-tools float-right">
 
 
 		          <button class="btn btn-outline-info btn-md dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -51,36 +54,44 @@
 		            
 		            <input type="hidden" id="id_cnt_id_temp" name="cnt_id_temp" value="">
 		          </div>
-	          		<button id="cancelCreateContract" type="reset" class="btn btn-md btn-default pull-right">Cancel</button>
-	          		<button id="saveContract" class="btn btn-md btn-primary"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</button>
+	          		<button id="cancelCustomerServicePersonButton" type="reset" class="btn btn-md btn-default pull-right">Cancel</button>
+	          		<button id="saveCustomerServicePersonButton" class="btn btn-md btn-primary"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</button>
 	        	</div>
 	      	</div>
        
 	        <div class="card-body">
-	          Content
+	          <!-- TODO -->
 	        </div>
+	    	</form>    
+      	</div>
+      	
 
-	        <!--
+
+      	<!-- 2nd Block -->      	
+	    <div class="card card-default">
+	    	<form id="contract_service_person_list_form" method="POST">	
+	    	{% csrf_token %}
+	      	<div class="card-header">                
+	        	<div class="float-left"><h3 class="m-0 text-dark">Contact Service List</h3></div>
+	        	<div class="float-left"><h4 class="m-0 text-dark"><span id="id_contract_number"></span></h4></div>
+	        	<div class="card-tools">
+	          		<div class="float-left pt-2">&nbsp;</div>
+	        	</div>
+	      	</div>
+
+	      	<div class="card-body">
+	      		<!-- TODO -->
+	      	</div>
+
+	      	<!--
 	        <div class="card-footer">
 	          Footer
 	        </div>
-	        -->
-      	</div>
-
-
-
-      	<!-- 2nd Block -->
-	    <div class="card card-default">
-	      <div class="card-header">                
-	        <div class="float-left"><h2 class="m-0 text-dark">2nd</h2></div>
-	        <div class="float-left"><h4 class="m-0 text-dark"><span id="id_contract_number"></span></h4></div>	        
-	        <div class="card-tools">
-	          <div class="float-left pt-2">&nbsp;</div>
-	        </div>
-	      </div>
+			-->
+	      	</form>
 	    </div>
+  			
 
-  		</form>
     </section>
     <!-- /.content -->
 
@@ -95,42 +106,110 @@
 
 {% block javascript %}
 <script>
-	$(document).ready(function(){
-		//$("#schedule_maintenance_form :input").attr("disabled", true);
-		$('#id_cus_id').focus();
+$(document).ready(function(){
+	$("#contract_service_list_form :input").attr("disabled", true);
+	$("#contract_service_person_list_form :input").attr("disabled", true);
+	$("#id_cus_id").on('click', function(){
+		$("#id_cus_id").select();
+	});
+	$("#id_cus_brn").on('click', function(){
+		$("#id_cus_brn").select();
+	});
+	$("#id_cus_vol").on('click', function(){
+		$("#id_cus_vol").select();
+	});
+
+	$('#id_cus_id').focus();
+
+ 	$("#cancelCustomerServicePersonButton").click( function() {
+    	event.preventDefault();    	
+    	$('#contract_service_list_form').trigger("reset");
+    	$('#contract_service_persion_list_form').trigger("reset");		
+		$("#customer_name_title").html("");
+		$("#contract_service_list_form :input").attr("disabled", true);
+		$("#contract_service_person_list_form :input").attr("disabled", true);
+		$("#contract_service_list_form").trigger("reset");
+
+    	$("#id_cus_id").focus();
   	});
+});
 
-	$(document).on('keypress', '#id_cus_id', function(e) {
-		if(e.which == 13) {      
-			e.preventDefault();
+$(document).on('keypress', '#id_cus_id', function(e) {
+	if(e.which == 13) {      
+		e.preventDefault();
 
-      		// TODO: field validation
-      		//
+		// TODO: field validation
+		//
 
-			$('#id_cus_brn').focus();
-    	}
-  	});
+		$('#id_cus_brn').focus();
+	}
+});
 
-  	$(document).on('keypress', '#id_cus_brn', function(e) {
-		if(e.which == 13) {      
-			e.preventDefault();
-
-      		// TODO: field validation
-      		//
-
-      		$('#id_cus_vol').focus();
-    	}
-  	});
-
-	$(document).on('keypress', '#id_cus_vol', function(e) {
-    	if(e.which == 13) {      
-			e.preventDefault();
+$(document).on('keypress', '#id_cus_brn', function(e) {
+	if(e.which == 13) {      
+		e.preventDefault();
 
 			// TODO: field validation
 			//
-			alert("TODO");     
-    	}
-  });
+
+			$('#id_cus_vol').focus();
+	}
+});
+
+$(document).on('keypress', '#id_cus_vol', function(e) {
+	if(e.which == 13) {      
+		e.preventDefault();
+
+		// TODO: field validation
+		cus_id = $('#id_cus_id').val();
+		cus_brn = $('#id_cus_brn').val();
+		cus_vol = $('#id_cus_vol').val();
+		
+		if(cus_id=="") {
+			alert("Please entet Customer ID.");
+			$('#id_cus_id').focus();				
+			return false;
+		}
+
+		if(cus_brn=="") {
+			alert("Please entet Customer Branch.");
+			$('#id_cus_brn').focus();
+			return false;			
+		}
+
+		if(cus_vol=="") {
+			alert("Please entet Customer Volume.");
+			$('#id_cus_vol').focus();
+			return false;
+		}
+
+		$("#contract_service_list_form :input").attr("disabled", false);
+		$("#contract_service_person_list_form :input").attr("disabled", false);
+
+		// Get customer data (ajax)      	
+		$.ajax({
+        	url : "/monitoring/ajax/get_customer/",
+        	type : "POST",
+        	data : {          
+          	csrfmiddlewaretoken: '{{ csrf_token }}',
+          	cus_id: cus_id,
+          	cus_brn: cus_brn,
+          	cus_vol: cus_vol,
+        	},
+        	success : function(data) {				
+				cus_name_th = data.cus_name_th;
+				
+				result = "<h3 class='m-0 text-dark'>" + cus_name_th + "<small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-primary'></i></button></small></h3>";
+
+				$("#customer_name_title").html(result);
+        	},
+        	error: function(data){
+          		alert("error");
+        	}
+      	});
+      			
+	}
+});
 
 </script>
 {% endblock %}
