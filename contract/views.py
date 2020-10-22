@@ -884,7 +884,7 @@ def UpdateContract(request):
 def CreateContract(request):
 
     print("****************************")
-    print("FUNCTION: create_contract")
+    print("FUNCTION: create_contract()")
     # print("****************************")
 
     template_name = 'contract/contract_update.html'
