@@ -36,7 +36,7 @@
       <!-- Default box -->
       <div id="contract_list" class="card">
 
-        <div class="col-8 offset-4 pt-4"> 
+        <div class="col-8 offset-5 pt-4"> 
 
           <form id="search_contract_form" class="form-row" method="post" autocomplete="off">
             {% csrf_token %}
@@ -44,7 +44,7 @@
 
               <div class="col-8">
                 {% if form.cus_id.errors %}                
-                  {% render_field form.cus_id class="form-control form-control-sm is-invalid" %}                
+                  {% render_field form.cus_id class="form-control form-control-md is-invalid" %}                
 
                   {% for error in form.cus_id.errors %}
                   <div class="invalid-feedback">
@@ -53,7 +53,7 @@
                   {% endfor %}
                 {% else %}
 
-                  {% render_field form.cus_id class="form-control form-control-sm" %}
+                  {% render_field form.cus_id class="form-control form-control-md" %}
 
                 {% endif %}
               </div>
@@ -89,7 +89,7 @@
               {% endcomment %}
 
               <div colass="col-2">
-                <button id="search_contract_button" type="button" class="btn btn-sm btn-primary col-xs-2"><i class="fas fa-search fa-sm"></i>&nbsp;{% trans 'Search' %}</button>
+                <button id="search_contract_button" type="button" class="btn btn-md btn-primary col-xs-2"><i class="fas fa-search fa-md"></i>&nbsp;{% trans 'Search' %}</button>
               </div>
 
             </div>
