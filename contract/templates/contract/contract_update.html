@@ -42,7 +42,12 @@
     <div class="card card-default collapsed-card">
 
       <div class="card-header">        
+
+        {% comment %}
         <div class="float-left"><h3 class="m-0 text-dark">{{customer.cus_name_th}}<small>&nbsp;&nbsp; | &nbsp;{{ customer.cus_zone.zone_en }}<button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-angle-down text-primary"></i></button></small></h3></div>
+        {% endcomment %}
+
+        <div class="float-left"><h3 class="m-0 text-dark">{{customer.cus_name_th}}<small>&nbsp;&nbsp;<button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-angle-down text-primary"></i></button></small></h3></div>
 
         <div class="card-tools">
 
