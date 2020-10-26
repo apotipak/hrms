@@ -39,34 +39,77 @@
 		          </span>
 		        </h1>
 
-			<form id="contract_service_list_form" method="POST">
-      		{% csrf_token %}
+				<form id="contract_service_list_form" method="POST">
+	      		{% csrf_token %}
 
-	        	<div class="card-tools float-right">
+		        	<div class="card-tools float-right">
+			          <button class="btn btn-outline-info btn-md dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			            <i class="fas fa-print fa-sm"></i>&nbsp;&nbsp;Print
+			          </button>
+			          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">			            
+			            <a class="dropdown-item" href="#" onclick="print_contract()"><i class="fa fa-eye text-secondary" aria-hidden="true"></i>&nbsp;&nbsp;Display on screen</a>	
+			            <input type="hidden" id="id_cnt_id_temp" name="cnt_id_temp" value="">
+			          </div>
+		          		<button id="cancelCustomerServicePersonButton" type="button" class="btn btn-md btn-default pull-right">Cancel</button>
+		          		<button id="saveCustomerServicePersonButton" class="btn btn-md btn-primary"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</button>
+		        	</div>
+		      	</div>
+	       
+		        <div class="card-body">
 
+				  <div class="form-group row">
+				    <label for="id_cus_name" class="col-sm-2 col-form-label">Customer</label>
+				    <div class="col-sm-4">
+				      <input type="text" readonly class="form-control" id="id_cus_main_name_th">
+				    </div>
+				    <div class="col-sm-4">
+				      <input type="text" readonly class="form-control" id="id_cus_main_name_en">
+				    </div>
+				    <div class="col-sm-2">
+				      <input type="text" readonly class="form-control" id="id_cus_main_tel">
+				    </div>				    
+				  </div>
 
-		          <button class="btn btn-outline-info btn-md dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-		            <i class="fas fa-print fa-sm"></i>&nbsp;&nbsp;Print
-		          </button>
-		          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-		            
-		            <a class="dropdown-item" href="#" onclick="print_contract()"><i class="fa fa-eye text-secondary" aria-hidden="true"></i>&nbsp;&nbsp;Display on screen</a>
-		            
-		            <input type="hidden" id="id_cnt_id_temp" name="cnt_id_temp" value="">
-		          </div>
-	          		<button id="cancelCustomerServicePersonButton" type="button" class="btn btn-md btn-default pull-right">Cancel</button>
-	          		<button id="saveCustomerServicePersonButton" class="btn btn-md btn-primary"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</button>
-	        	</div>
-	      	</div>
-       
-	        <div class="card-body">
-	          <!-- TODO -->
-	        </div>
-	    	</form>    
+				  <!-- Site Name -->
+				  <div class="form-group row">
+				    <label for="id_cus_name" class="col-sm-2 col-form-label">Site Name</label>
+				    <div class="col-sm-4">
+				      <input type="text" readonly class="form-control" id="id_cus_site_name_th">
+				    </div>
+				    <div class="col-sm-4">
+				      <input type="text" readonly class="form-control" id="id_cus_site_name_en">
+				    </div>
+				    <div class="col-sm-2">
+				      <input type="text" readonly class="form-control" id="id_cus_site_tel">
+				    </div>
+				  </div>
+
+				  <!-- Site Address -->
+				  <div class="form-group row">
+				    <label for="id_cus_site_add" class="col-sm-2 col-form-label">Address</label>
+				    <div class="col-sm-10">
+				      <input type="text" readonly class="form-control" id="id_cus_site_add_th">
+				    </div>
+				  </div>
+
+				  <!-- Cnt.Ref. Address -->
+				  <div class="form-group row">
+				    <label for="id_cnt_doc_no" class="col-sm-2 col-form-label">Contract Reference</label>
+				    <div class="col-sm-4">
+				      <input type="text" readonly class="form-control" id="id_cnt_doc_no">
+				    </div>
+				    <div class="col-sm-4">
+				      <input type="text" readonly class="form-control" id="id_cus_site_contact_name_th">
+				    </div>
+				    <div class="col-sm-2">
+				      <input type="text" readonly class="form-control" id="id_cus_site_contact_position_th">
+				    </div>
+				  </div>
+
+		        </div>
+		    	</form>    
       	</div>
       	
-
-
       	<!-- 2nd Block -->      	
 	    <div class="card card-default">
 	    	<form id="contract_service_person_list_form" method="POST">	
@@ -131,6 +174,12 @@ $(document).ready(function(){
 		$("#contract_service_list_form :input").attr("disabled", true);
 		$("#contract_service_person_list_form :input").attr("disabled", true);
 		$("#contract_service_list_form").trigger("reset");
+
+		/*
+		$("#id_cus_id").val("");
+		$("#id_cus_brn").val("");
+		$("#id_cus_vol").val("");
+		*/
 
     	$("#id_cus_id").focus();
     	$("#id_cus_id").select();
@@ -197,14 +246,22 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
           	cus_vol: cus_vol,
         	},
         	success : function(data) {				
-				cus_name_th = data.cus_name_th;
 				
 				if(data.is_existed) {
 					$("#contract_service_list_form :input").attr("disabled", false);
 					$("#contract_service_person_list_form :input").attr("disabled", false);
 					$("#schedule_maintenance_form :input").attr("disabled", true);
 
-					result = "<h3 class='m-0 text-dark'>" + cus_name_th + "<small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-primary'></i></button></small></h3>";
+					result = "<h3 class='m-0 text-dark'>" + data.cus_site_name_th + "<small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-primary'></i></button></small></h3>";
+
+					$("#id_cnt_doc_no").val(data.cnt_doc_no);
+					$("#id_cus_site_name_th").val(data.cus_site_name_th);
+					$("#id_cus_site_name_en").val(data.cus_site_name_en);
+					$("#id_cus_site_add_th").val(data.cus_site_add_th + " " + data.cus_site_district_th + " " + data.cus_site_city_th + " " + data.cus_site_zip + " " + data.cus_site_country_th);
+					$("#id_cus_site_tel").val("Phone | " + data.cus_site_tel);
+					$("#id_cus_site_contact_name_th").val(data.cus_site_contact_name_th);
+					$("#id_cus_site_contact_position_th").val(data.cus_site_contact_position_th);
+
 				} else {
 					$("#contract_service_list_form :input").attr("disabled", true);
 					$("#contract_service_person_list_form :input").attr("disabled", true);
