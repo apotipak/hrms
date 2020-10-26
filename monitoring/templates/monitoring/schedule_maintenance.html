@@ -61,94 +61,121 @@
 
 	        <div class="card-body col-12">
 
+				<!-- Contract Active Status -->
+				<div class="row float-right">
+                    <div class="btn-group">
+                      <label class="switch">                                 
+                        <input type="checkbox" id="id_cnt_active" name="cnt_active" disabled="">
+                        <div class="slider"></div>
+                      </label>  
+                    </div>
+
+		            <div>&nbsp;</div>
+				</div>
+
+				<div class="clearfix">&nbsp;</div>
 
 
-			<div class="col-8 float-left">
+<div class="row">
+				<div class="col-8 float-left">
 
-			  <div class="form-group row">
-			    
-			    <label for="id_cus_main_cus_name" class="col-2 col-form-label">Customer</label>
-			    <div class="col-4">
-			      <input type="text" readonly class="form-control" style="font-size:10pt" id="id_cus_main_cus_name_th">
-			    </div>
-			    <div class="col-4">
-			      <input type="text" readonly class="form-control" style="font-size:10pt" id="id_cus_main_cus_name_en">
-			    </div>
-			    <div class="col-2">
-			      <input type="text" readonly class="form-control" style="font-size:10pt" id="id_cus_main_cus_tel" value="Phone |" >
-			    </div>
+				  <div class="form-group row">
+				    
+				    <label for="id_cus_main_cus_name" class="col-2 col-form-label">Customer</label>
+				    <div class="col-4">
+				      <input type="text" readonly class="form-control" style="font-size:10pt" id="id_cus_main_cus_name_th">
+				    </div>
+				    <div class="col-4">
+				      <input type="text" readonly class="form-control" style="font-size:10pt" id="id_cus_main_cus_name_en">
+				    </div>
+				    <div class="col-2">
+				      <input type="text" readonly class="form-control" style="font-size:10pt" id="id_cus_main_cus_tel" value="Phone |" >
+				    </div>
 
-			    <!--
-			    <div class="col-sm-2">
-			      <input type="text" readonly class="form-control-xs" style="font-size:10pt" id="id_cnt_wage_rate_name" value="Wage Rate |" >
-			    </div>
-			   	-->
-			  </div>
+				    <!--
+				    <div class="col-sm-2">
+				      <input type="text" readonly class="form-control-xs" style="font-size:10pt" id="id_cnt_wage_rate_name" value="Wage Rate |" >
+				    </div>
+				   	-->
+				  </div>
 
-			  <!-- Site Name -->
-			  <div class="form-group row">
-			    <label for="id_site_cus_name" class="col-sm-2 col-form-label">Site Name</label>
-			    <div class="col-sm-4">
-			      <input type="text" readonly class="form-control" style="font-size:10pt" id="id_cus_site_name_th">
-			    </div>
-			    <div class="col-sm-4">
-			      <input type="text" readonly class="form-control" style="font-size:10pt" id="id_cus_site_name_en">
-			    </div>
-			    <div class="col-sm-2">
-			      <input type="text" readonly class="form-control" style="font-size:10pt" id="id_cus_site_tel" value="Phone |" >
-			    </div>
-			    <!--
-			    <div class="col-sm-2">
-			      <input type="text" readonly class="form-control-xs" style="font-size:10pt" id="id_cnt_apr_by" value="Authorized by |" >
-			    </div>		    
-				-->
-			  </div>
+				  <!-- Site Name -->
+				  <div class="form-group row">
+				    <label for="id_site_cus_name" class="col-sm-2 col-form-label">Site Name</label>
+				    <div class="col-sm-4">
+				      <input type="text" readonly class="form-control" style="font-size:10pt" id="id_cus_site_name_th">
+				    </div>
+				    <div class="col-sm-4">
+				      <input type="text" readonly class="form-control" style="font-size:10pt" id="id_cus_site_name_en">
+				    </div>
+				    <div class="col-sm-2">
+				      <input type="text" readonly class="form-control" style="font-size:10pt" id="id_cus_site_tel" value="Phone |" >
+				    </div>
 
-			  <!-- Site Address -->
-			  <div class="form-group row">
-			    <label for="id_cus_site_add" class="col-sm-2 col-form-label">Address</label>
-			    <div class="col-sm-6">
-			      <input type="text" readonly class="form-control" style="font-size:10pt" id="id_cus_site_add_th">
-			    </div>
-			    <div class="col-sm-2">
-			      <input type="text" readonly class="form-control" style="font-size:10pt" id="id_cnt_eff_frm" >
-			    </div>
-			    <div class="col-sm-2">
-			      <input type="text" readonly class="form-control" style="font-size:10pt" id="id_cnt_eff_to" >
-			    </div>
-			  </div>
+				  </div>
 
-			  <!-- Cnt.Ref. Address -->
-			  <div class="form-group row">
-			    <label for="id_cnt_doc_no" class="col-sm-2 col-form-label">Contract Ref.</label>
-			    <div class="col-sm-4">
-			      <input type="text" readonly class="form-control" style="font-size:10pt" id="id_cnt_doc_no">
-			    </div>
-			    <div class="col-sm-4">
-			      <input type="text" readonly class="form-control" style="font-size:10pt" id="id_cus_site_contact_name_th">
-			    </div>
-			    <div class="col-sm-2">
-			      <input type="text" readonly class="form-control" style="font-size:10pt" id="id_cus_site_contact_position_th">
-			    </div>
-			  </div>
+				  <!-- Site Address -->
+				  <div class="form-group row">
+				    <label for="id_cus_site_add" class="col-sm-2 col-form-label">Address</label>
+				    <div class="col-sm-10">
+				      <input type="text" readonly class="form-control" style="font-size:10pt" id="id_cus_site_add_th">
+				    </div>
+				  </div>
+
+				  <!-- Cnt.Ref. Address -->
+				  <div class="form-group row">
+				    <label for="id_cnt_doc_no" class="col-sm-2 col-form-label">Contract Ref.</label>
+				    <div class="col-sm-4">
+				      <input type="text" readonly class="form-control" style="font-size:10pt" id="id_cnt_doc_no">
+				    </div>
+				    <div class="col-sm-6">
+				      <input type="text" readonly class="form-control" style="font-size:10pt" id="id_cus_site_contact_name_th">
+				    </div>
+				  </div>
+
+				</div>
+
+
+				<div class="col-4 float-right">
+
+				  <div class="form-group row">
+				    <label for="id_cnt_wage_name_en" class="col-4 col-form-label">Wage Rate</label>
+				    <div class="col-sm-8">
+				      <input type="text" readonly class="form-control" style="font-size:10pt" id="id_cnt_wage_name_en" >
+				    </div>
+				  </div>
+
+				  <div class="form-group row">
+				  	<label for="id_cnt_apr_by_name_en" class="col-4 col-form-label">Authorized by</label>
+				    <div class="col-sm-8">
+				      <input type="text" readonly class="form-control" style="font-size:10pt" id="id_cnt_apr_by_name_en" >
+				    </div>		    
+				  </div>
+
+				  <div class="form-group row">
+				  	<label for="id_cus_main_cus_name" class="col-4 col-form-label">Contract Term</label>
+				    <div class="col-sm-4">
+				      <input type="text" readonly class="form-control" style="font-size:10pt" id="id_cnt_sign_frm" >
+				    </div>
+				    <div class="col-sm-4">
+				      <input type="text" readonly class="form-control" style="font-size:10pt" id="id_cnt_sign_to" >
+				    </div>
+				  </div>
+
+				  <div class="form-group row">
+				  	<label for="id_cus_main_cus_name" class="col-4 col-form-label">Effective Term</label>
+				    <div class="col-sm-4">
+				      <input type="text" readonly class="form-control" style="font-size:10pt" id="id_cnt_eff_frm" >
+				    </div>
+				    <div class="col-sm-4">
+				      <input type="text" readonly class="form-control" style="font-size:10pt" id="id_cnt_eff_to" >
+				    </div>
+				  </div>
+				</div>
+</div>
+
 
 			</div>
-
-
-			<div class="col-4 float-right">
-
-			  <div class="form-group row">
-			    
-			    <label for="id_cus_main_cus_name" class="col-4 col-form-label">Wage Rate</label>
-			    <div class="col-sm-8">
-			      <input type="text" readonly class="form-control" style="font-size:10pt" id="id_cnt_wage_rate_name" >
-			    </div>
-
-			  </div>
-
-			</div>
-
-		</div>
 
 
 		   	</form>
@@ -303,20 +330,32 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 					result = "<h3 class='m-0 text-dark'>" + data.cus_site_name_th + "<small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-primary'></i></button></small></h3>";
 
 					$("#id_cnt_doc_no").val(data.cnt_doc_no);
+
+					var cnt_active = data.cnt_active;
+					if(cnt_active==1) {
+						$('#id_cnt_active').val(1);
+						$('#id_cnt_active').prop("checked", true);
+					} else {
+						$('#id_cnt_active').val(0);
+						$('#id_cnt_active').prop("checked", false);
+					}
+
+					$("#id_cnt_sign_frm").val(data.cnt_sign_frm);
+					$("#id_cnt_sign_to").val(data.cnt_sign_to);					
 					$("#id_cnt_eff_frm").val(data.cnt_eff_frm);
 					$("#id_cnt_eff_to").val(data.cnt_eff_to);
+					$("#id_cnt_wage_name_en").val(data.cnt_wage_name_en);
+					$("#id_cnt_apr_by_name_en").val(data.cnt_apr_by_name_en);
 
 					$("#id_cus_main_cus_name_th").val(data.cus_main_cus_name_th);
 					$("#id_cus_main_cus_name_en").val(data.cus_main_cus_name_en);
-					$("#id_cus_main_cus_tel").val(data.cus_main_cus_tel);
+					$("#id_cus_main_cus_tel").val("T: " + data.cus_main_cus_tel);
 
 					$("#id_cus_site_name_th").val(data.cus_site_name_th);
 					$("#id_cus_site_name_en").val(data.cus_site_name_en);
 					$("#id_cus_site_add_th").val(data.cus_site_add_th + " " + data.cus_site_district_th + " " + data.cus_site_city_th + " " + data.cus_site_zip + " " + data.cus_site_country_th);
-					$("#id_cus_site_tel").val(data.cus_site_tel);
-					$("#id_cus_site_contact_name_th").val(data.cus_site_contact_name_th);
-					$("#id_cus_site_contact_position_th").val(data.cus_site_contact_position_th);
-
+					$("#id_cus_site_tel").val("T: " + data.cus_site_tel);
+					$("#id_cus_site_contact_name_th").val(data.cus_site_contact_name_th + " (" + data.cus_site_contact_position_th + ")");
 				} else {
 					$("#contract_service_list_form :input").attr("disabled", true);
 					$("#contract_service_person_list_form :input").attr("disabled", true);

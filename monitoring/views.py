@@ -52,9 +52,16 @@ def ajax_get_customer(request):
 
 			# Contract
 			cus_contract = CusContract.objects.filter(cnt_id=cnt_id).get()
+
 			cnt_doc_no = cus_contract.cnt_doc_no
+			cnt_active = cus_contract.cnt_active
+			cnt_sign_frm = cus_contract.cnt_sign_frm.strftime("%d/%m/%Y")
+			cnt_sign_to = cus_contract.cnt_sign_to.strftime("%d/%m/%Y")			
 			cnt_eff_frm = cus_contract.cnt_eff_frm.strftime("%d/%m/%Y")
 			cnt_eff_to = cus_contract.cnt_eff_to.strftime("%d/%m/%Y")
+			cnt_wage_name_th = cus_contract.cnt_wage_id.wage_th
+			cnt_wage_name_en = cus_contract.cnt_wage_id.wage_en
+			cnt_apr_by_name_en = cus_contract.cnt_apr_by.apr_name_en
 
 			# CUS_MAIN
 			try:
@@ -150,8 +157,14 @@ def ajax_get_customer(request):
 			        "is_existed": True,
 
 			        "cnt_doc_no": cnt_doc_no,
+			        "cnt_active": cnt_active,
+			        "cnt_sign_frm": cnt_sign_frm,
+			        "cnt_sign_to": cnt_sign_to,			        
 			        "cnt_eff_frm": cnt_eff_frm,
 			        "cnt_eff_to": cnt_eff_to,
+			        "cnt_wage_name_th": cnt_wage_name_th,
+			        "cnt_wage_name_en": cnt_wage_name_en,
+			        "cnt_apr_by_name_en": cnt_apr_by_name_en,
 
 			        "cus_main_cus_name_th": cus_main_cus_name_th,
 			        "cus_main_cus_name_en": cus_main_cus_name_en,
