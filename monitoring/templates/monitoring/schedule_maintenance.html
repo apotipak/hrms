@@ -82,14 +82,18 @@
 				  <div class="form-group row">
 				    
 				    <label for="id_cus_main_cus_name" class="col-2 col-form-label">Customer</label>
-				    <div class="col-4">
+				    <div class="col-6">
 				      <input type="text" readonly class="form-control" style="font-size:10pt" id="id_cus_main_cus_name_th">
 				    </div>
+				    <!--
 				    <div class="col-4">
 				      <input type="text" readonly class="form-control" style="font-size:10pt" id="id_cus_main_cus_name_en">
 				    </div>
-				    <div class="col-2">
-				      <input type="text" readonly class="form-control" style="font-size:10pt" id="id_cus_main_cus_tel" value="" >
+					-->
+
+					<label for="id_cus_main_cus_name" class="col-1 col-form-label">Phone</label>
+				    <div class="col-3">
+				      <input type="text" readonly class="form-control" style="font-size:10pt" id="id_cus_main_cus_tel" >
 				    </div>
 
 				    <!--
@@ -102,14 +106,18 @@
 				  <!-- Site Name -->
 				  <div class="form-group row">
 				    <label for="id_site_cus_name" class="col-sm-2 col-form-label">Site Name</label>
-				    <div class="col-sm-4">
+				    <div class="col-sm-6">
 				      <input type="text" readonly class="form-control" style="font-size:10pt" id="id_cus_site_name_th">
 				    </div>
+				    <!--
 				    <div class="col-sm-4">
 				      <input type="text" readonly class="form-control" style="font-size:10pt" id="id_cus_site_name_en">
 				    </div>
-				    <div class="col-sm-2">
-				      <input type="text" readonly class="form-control" style="font-size:10pt" id="id_cus_site_tel" value="" >
+					-->
+
+					<label for="id_site_cus_name" class="col-sm-1 col-form-label">Phone</label>
+				    <div class="col-sm-3">
+				      <input type="text" readonly class="form-control" style="font-size:10pt" id="id_cus_site_tel" >
 				    </div>
 
 				  </div>
@@ -125,9 +133,10 @@
 				  <!-- Cnt.Ref. Address -->
 				  <div class="form-group row">
 				    <label for="id_cnt_doc_no" class="col-sm-2 col-form-label">Contract Ref.</label>
-				    <div class="col-sm-4">
+				    <div class="col-sm-2">
 				      <input type="text" readonly class="form-control" style="font-size:10pt" id="id_cnt_doc_no">
 				    </div>
+				    <label for="id_cnt_doc_no" class="col-sm-2 col-form-label">Contact Person</label>
 				    <div class="col-sm-6">
 				      <input type="text" readonly class="form-control" style="font-size:10pt" id="id_cus_site_contact_name_th">
 				    </div>
@@ -347,14 +356,15 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 					$("#id_cnt_wage_name_en").val(data.cnt_wage_name_en);
 					$("#id_cnt_apr_by_name_en").val(data.cnt_apr_by_name_en);
 
-					$("#id_cus_main_cus_name_th").val(data.cus_main_cus_name_th);
-					$("#id_cus_main_cus_name_en").val(data.cus_main_cus_name_en);
-					$("#id_cus_main_cus_tel").val("T: " + data.cus_main_cus_tel);
+					$("#id_cus_main_cus_name_th").val(data.cus_main_cus_name_th + " (" + data.cus_main_cus_name_en + ")");
+					//$("#id_cus_main_cus_name_en").val(data.cus_main_cus_name_en);
+					$("#id_cus_main_cus_tel").val(data.cus_main_cus_tel);
 
-					$("#id_cus_site_name_th").val(data.cus_site_name_th);
-					$("#id_cus_site_name_en").val(data.cus_site_name_en);
+					$("#id_cus_site_name_th").val(data.cus_site_name_th + " (" + data.cus_site_name_en + " )");
+					//$("#id_cus_site_name_en").val(data.cus_site_name_en);
+
 					$("#id_cus_site_add_th").val(data.cus_site_add_th + " " + data.cus_site_district_th + " " + data.cus_site_city_th + " " + data.cus_site_zip + " " + data.cus_site_country_th);
-					$("#id_cus_site_tel").val("T: " + data.cus_site_tel);
+					$("#id_cus_site_tel").val(data.cus_site_tel);
 					$("#id_cus_site_contact_name_th").val(data.cus_site_contact_name_th + " (" + data.cus_site_contact_position_th + ")");
 				} else {
 					$("#contract_service_list_form :input").attr("disabled", true);
