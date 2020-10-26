@@ -51,6 +51,18 @@ def ajax_get_customer(request):
 			cus_contract = CusContract.objects.filter(cnt_id=cnt_id).get()
 			cnt_doc_no = cus_contract.cnt_doc_no
 
+			# CUS_MAIN
+			try:
+			    cus_main = CusMain.objects.filter(cus_id=cus_id).get()
+			    cus_main_cus_name_th = cus_main.cus_name_th
+			    cus_main_cus_name_en = cus_main.cus_name_en
+			    cus_main_cus_tel = cus_main.cus_tel
+			except CusMain.DoesNotExist:
+				cus_main_cus_name_th = ""
+				cus_main_cus_name_en = ""
+				cus_main_cus_tel = ""
+
+			# CUS_SITE
 			try:
 			    customer = Customer.objects.filter(cus_id=cus_id, cus_brn=cus_brn).get()
 			    
@@ -133,6 +145,10 @@ def ajax_get_customer(request):
 			        "is_existed": True,
 
 			        "cnt_doc_no": cnt_doc_no,
+
+			        "cus_main_cus_name_th": cus_main_cus_name_th,
+			        "cus_main_cus_name_en": cus_main_cus_name_en,
+			        "cus_main_cus_tel": cus_main_cus_tel,
 
 			        "cus_site_name_th": cus_site_name_th,
 			        "cus_site_sht_th": cus_site_sht_th,
