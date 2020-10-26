@@ -6,6 +6,7 @@ from customer.models import CusMain, Customer, CusBill
 from contract.models import CusContract, CusService
 from .forms import ScheduleMaintenanceForm
 from django.http import JsonResponse
+import datetime
 
 
 @login_required(login_url='/accounts/login/')
@@ -48,8 +49,12 @@ def ajax_get_customer(request):
 	# if cus_id is not None and cus_brn is not None:
 	if cnt_id is not None:
 		try:
+
+			# Contract
 			cus_contract = CusContract.objects.filter(cnt_id=cnt_id).get()
 			cnt_doc_no = cus_contract.cnt_doc_no
+			cnt_eff_frm = cus_contract.cnt_eff_frm.strftime("%d/%m/%Y")
+			cnt_eff_to = cus_contract.cnt_eff_to.strftime("%d/%m/%Y")
 
 			# CUS_MAIN
 			try:
@@ -145,6 +150,8 @@ def ajax_get_customer(request):
 			        "is_existed": True,
 
 			        "cnt_doc_no": cnt_doc_no,
+			        "cnt_eff_frm": cnt_eff_frm,
+			        "cnt_eff_to": cnt_eff_to,
 
 			        "cus_main_cus_name_th": cus_main_cus_name_th,
 			        "cus_main_cus_name_en": cus_main_cus_name_en,
