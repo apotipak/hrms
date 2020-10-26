@@ -63,6 +63,18 @@ def ajax_get_customer(request):
 			cnt_wage_name_en = cus_contract.cnt_wage_id.wage_en
 			cnt_apr_by_name_en = cus_contract.cnt_apr_by.apr_name_en
 
+
+
+			# Contract Services
+			try:
+				cus_service = CusService.objects.all().exclude(upd_flag='D').exclude(srv_active=0).filter(cnt_id=cnt_id).order_by('-srv_active')
+				print("cus_service is found")
+
+				cus_service_list=[]
+			except CusService.DowsNotExist:
+				print("cus_service is not found")
+
+
 			# CUS_MAIN
 			try:
 			    cus_main = CusMain.objects.filter(cus_id=cus_id).get()
@@ -198,6 +210,8 @@ def ajax_get_customer(request):
 			        "cus_site_contact_cus_zone_id": cus_site_contact_cus_zone_id,
 			        "cus_site_contact_cus_zone_th": cus_site_contact_cus_zone_th,
 			        "cus_site_contact_cus_zone_en": cus_site_contact_cus_zone_en,
+
+					"cus_service_list": list(cus_service_list),
 			    })
 			    response.status_code = 200
 			except Customer.DoesNotExist:            
@@ -224,3 +238,49 @@ def ajax_get_customer(request):
 
 	return response
 
+
+
+@login_required(login_url='/accounts/login/')
+def get_customer_service_list(request):
+    print("*************************************")
+    print("FUNCTION: get_customer_service_list()")
+    print("*************************************")
+
+    cnt_id = request.GET["cnt_id"]
+
+    data = CusService.objects.all().exclude(upd_flag='D').filter(cnt_id=cnt_id).order_by('-srv_active')
+    
+    cus_service_list=[]
+    for d in data:
+        record = {
+            "srv_id": d.srv_id,
+            "cnt_id": d.cnt_id_id,
+            "srv_rank": d.srv_rank_id,
+            "srv_shif_id": d.srv_shif_id_id,
+            "srv_shift_text": d.srv_shif_id.shf_desc,
+            "srv_eff_frm": d.srv_eff_frm.strftime("%d/%m/%Y"),
+            "srv_eff_to": d.srv_eff_to.strftime("%d/%m/%Y"),
+            "srv_qty": d.srv_qty,
+            "srv_rate": d.srv_rate,
+            "srv_cost": d.srv_cost,
+            "srv_cost_rate": d.srv_cost_rate,
+            "srv_mon": d.srv_mon,
+            "srv_tue": d.srv_tue,
+            "srv_wed": d.srv_wed,
+            "srv_thu": d.srv_thu,
+            "srv_fri": d.srv_fri,
+            "srv_sat": d.srv_sat,
+            "srv_sun": d.srv_sun,
+            "srv_pub": d.srv_pub,
+            "srv_rem": d.srv_rem,
+            "srv_active": d.srv_active,
+        }
+        cus_service_list.append(record)
+
+    response = JsonResponse(data={
+        "success": True,
+        "cus_service_list": list(cus_service_list),
+    })
+
+    response.status_code = 200
+    return response
