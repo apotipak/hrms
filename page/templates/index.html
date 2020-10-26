@@ -43,15 +43,16 @@
           </div>
           <!-- /.col -->
 
-          {% if perms.leave.view_employee %}
+
+          {% if perms.leave.view_monitoring %}
           <div class="col-12 col-sm-12 col-md-6">
             <div class="info-box mb-4">
-              <span class="info-box-icon" style="background-color:#007bff !important;"><i class="fas fa-address-card text-white"></i></span>
+              <span class="info-box-icon" style="background-color:#007bff !important"><i class="fas fa-desktop text-white"></i></span>
               <div class="info-box-content">
                 <div class="col-12">
                   <h5>
-                    <span>{% trans 'Employee' %}</span>
-                    <a href="/employee" type="button" class="btn btn-outline-primary float-right">{% trans 'Open' %}</a>
+                    <span>{% trans 'Daily Monitoring' %}</span>
+                    <a href="{% url 'schedule-maintenance' %}" type="button" class="btn btn-outline-primary float-right">{% trans 'Open' %}</a>
                   </h5>
                 </div>
               </div>
@@ -62,15 +63,16 @@
           <!-- /.col -->
           {% endif %}
 
-          {% if perms.leave.view_monitoring %}
+
+          {% if perms.leave.view_employee %}
           <div class="col-12 col-sm-12 col-md-6">
             <div class="info-box mb-4">
-              <span class="info-box-icon" style="background-color:#28a745 !important"><i class="fas fa-desktop text-white"></i></span>
+              <span class="info-box-icon" style="background-color:#28a745 !important;"><i class="fas fa-address-card text-white"></i></span>
               <div class="info-box-content">
                 <div class="col-12">
                   <h5>
-                    <span>{% trans 'Daily Monitoring' %}</span>
-                    <a href="{% url 'schedule-maintenance' %}" type="button" class="btn btn-outline-primary float-right">{% trans 'Open' %}</a>
+                    <span>{% trans 'Employee' %}</span>
+                    <a href="/employee" type="button" class="btn btn-outline-primary float-right">{% trans 'Open' %}</a>
                   </h5>
                 </div>
               </div>
