@@ -347,49 +347,52 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 
 					// Contract Service List
 					result = "";
-					result += "<table class='table table-striped'>";
+					result += "<font size='2'>";
+					result += "<table class='table table-striped table-sm'>";
 					result += "  <thead>";
 					result += "    <tr>";
 					result += "      <th scope='col'>#</th>";
 					result += "      <th scope='col'>Rank</th>";
 					result += "      <th scope='col'>Shift</th>";
-					result += "      <th scope='col'>QTY</th>";
+					result += "      <th scope='col' class='text-center'>QTY</th>";
 					result += "      <th scope='col'>Eff From</th>";
 					result += "      <th scope='col'>Eff To</th>";
-					result += "      <th scope='col'>MON</th>";
-					result += "      <th scope='col'>TUE</th>";
-					result += "      <th scope='col'>WED</th>";
-					result += "      <th scope='col'>THU</th>";
-					result += "      <th scope='col'>FRI</th>";
-					result += "      <th scope='col'>SAT</th>";
-					result += "      <th scope='col'>SUN</th>";
-					result += "      <th scope='col'>PUB</th>";
-					result += "      <th scope='col'>Active</th>";
+					result += "      <th scope='col' class='text-center'>MON</th>";
+					result += "      <th scope='col' class='text-center'>TUE</th>";
+					result += "      <th scope='col' class='text-center'>WED</th>";
+					result += "      <th scope='col' class='text-center'>THU</th>";
+					result += "      <th scope='col' class='text-center'>FRI</th>";
+					result += "      <th scope='col' class='text-center'>SAT</th>";
+					result += "      <th scope='col' class='text-center'>SUN</th>";
+					result += "      <th scope='col' class='text-center'>PUB</th>";
+					result += "      <th scope='col' class='text-center'>Active</th>";
 					result += "      <th scope='col'>Remark</th>";
 					result += "    </tr>";
 					result += "  </thead>";
 					result += "  <tbody>";
 
 					if(data.cus_service_list.length>0) {
+						count = 1;
 						for(i=0; i<data.cus_service_list.length; i++) {
 							result += "    <tr>";
-							result += "      <th scope='row'>1</th>";
-							result += "      <td></td>";
-							result += "      <td></td>";
-							result += "      <td></td>";
-							result += "      <td></td>";
-							result += "      <td></td>";
-							result += "      <td></td>";
-							result += "      <td></td>";
-							result += "      <td></td>";
-							result += "      <td></td>";
-							result += "      <td></td>";
-							result += "      <td></td>";
-							result += "      <td></td>";
-							result += "      <td></td>";
-							result += "      <td></td>";
-							result += "      <td></td>";
+							result += "      <th scope='row'>" + count + "</th>";
+							result += "      <td>" + data.cus_service_list[i]["srv_rank"] + "</td>";							
+							result += "      <td>" + data.cus_service_list[i]["srv_shif_id"] + "</td>";
+							result += "      <td class='text-center'>" + data.cus_service_list[i]["srv_qty"] + "</td>";
+							result += "      <td>" + data.cus_service_list[i]["srv_eff_frm"] + "</td>";
+							result += "      <td>" + data.cus_service_list[i]["srv_eff_to"] + "</td>";
+							result += "      <td class='text-center'>" + data.cus_service_list[i]["srv_mon"] + "</td>";
+							result += "      <td class='text-center'>" + data.cus_service_list[i]["srv_tue"] + "</td>";
+							result += "      <td class='text-center'>" + data.cus_service_list[i]["srv_wed"] + "</td>";
+							result += "      <td class='text-center'>" + data.cus_service_list[i]["srv_thu"] + "</td>";
+							result += "      <td class='text-center'>" + data.cus_service_list[i]["srv_fri"] + "</td>";
+							result += "      <td class='text-center'>" + data.cus_service_list[i]["srv_sat"] + "</td>";
+							result += "      <td class='text-center'>" + data.cus_service_list[i]["srv_sun"] + "</td>";
+							result += "      <td class='text-center'>" + data.cus_service_list[i]["srv_pub"] + "</td>";
+							result += "      <td class='text-center'>" + data.cus_service_list[i]["srv_active"] + "</td>";
+							result += "      <td>" + data.cus_service_list[i]["srv_rem"] + "</td>";
 							result += "    </tr>";						
+							count++;
 						}
 					} else {
 						result += "<tr><td colspan='16' align='center'>There is no service available.</td></tr>";
@@ -397,6 +400,7 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 
 					result += "  </tbody>";
 					result += "</table>";
+					result += "</font>";
 					$(".card-contract-service-list .card-body").html(result);
 
 

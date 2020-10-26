@@ -67,12 +67,38 @@ def ajax_get_customer(request):
 
 			# Contract Services
 			try:
-				cus_service = CusService.objects.all().exclude(upd_flag='D').exclude(srv_active=0).filter(cnt_id=cnt_id).order_by('-srv_active')
+				cus_service = CusService.objects.all().filter(cnt_id=cnt_id).exclude(upd_flag='D').order_by('-srv_active')				
 				print("cus_service is found")
-
 				cus_service_list=[]
-			except CusService.DowsNotExist:
+				for d in cus_service:
+					if d.srv_active:
+						record = {
+						    "srv_id": d.srv_id,
+						    "cnt_id": d.cnt_id_id,
+						    "srv_rank": d.srv_rank_id,
+						    "srv_shif_id": d.srv_shif_id_id,
+						    "srv_shift_text": d.srv_shif_id.shf_desc,
+						    "srv_eff_frm": d.srv_eff_frm.strftime("%d/%m/%Y"),
+						    "srv_eff_to": d.srv_eff_to.strftime("%d/%m/%Y"),
+						    "srv_qty": d.srv_qty,
+						    "srv_rate": d.srv_rate,
+						    "srv_cost": d.srv_cost,
+						    "srv_cost_rate": d.srv_cost_rate,
+						    "srv_mon": d.srv_mon,
+						    "srv_tue": d.srv_tue,
+						    "srv_wed": d.srv_wed,
+						    "srv_thu": d.srv_thu,
+						    "srv_fri": d.srv_fri,
+						    "srv_sat": d.srv_sat,
+						    "srv_sun": d.srv_sun,
+						    "srv_pub": d.srv_pub,
+						    "srv_rem": d.srv_rem,
+						    "srv_active": "Y",
+						}
+						cus_service_list.append(record)		
+			except CusService.DoesNotExist:
 				print("cus_service is not found")
+				cus_service_list=[]
 
 
 			# CUS_MAIN
