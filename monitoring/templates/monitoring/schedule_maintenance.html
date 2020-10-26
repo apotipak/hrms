@@ -54,7 +54,7 @@
 		            
 		            <input type="hidden" id="id_cnt_id_temp" name="cnt_id_temp" value="">
 		          </div>
-	          		<button id="cancelCustomerServicePersonButton" type="reset" class="btn btn-md btn-default pull-right">Cancel</button>
+	          		<button id="cancelCustomerServicePersonButton" type="button" class="btn btn-md btn-default pull-right">Cancel</button>
 	          		<button id="saveCustomerServicePersonButton" class="btn btn-md btn-primary"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</button>
 	        	</div>
 	      	</div>
@@ -123,6 +123,8 @@ $(document).ready(function(){
 
  	$("#cancelCustomerServicePersonButton").click( function() {
     	event.preventDefault();    	
+
+    	$("#schedule_maintenance_form :input").attr("disabled", false);
     	$('#contract_service_list_form').trigger("reset");
     	$('#contract_service_persion_list_form').trigger("reset");		
 		$("#customer_name_title").html("");
@@ -184,9 +186,6 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 			return false;
 		}
 
-		$("#contract_service_list_form :input").attr("disabled", false);
-		$("#contract_service_person_list_form :input").attr("disabled", false);
-
 		// Get customer data (ajax)      	
 		$.ajax({
         	url : "/monitoring/ajax/get_customer/",
@@ -200,12 +199,22 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
         	success : function(data) {				
 				cus_name_th = data.cus_name_th;
 				
-				result = "<h3 class='m-0 text-dark'>" + cus_name_th + "<small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-primary'></i></button></small></h3>";
+				if(data.is_existed) {
+					$("#contract_service_list_form :input").attr("disabled", false);
+					$("#contract_service_person_list_form :input").attr("disabled", false);
+					$("#schedule_maintenance_form :input").attr("disabled", true);
+
+					result = "<h3 class='m-0 text-dark'>" + cus_name_th + "<small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-primary'></i></button></small></h3>";
+				} else {
+					$("#contract_service_list_form :input").attr("disabled", true);
+					$("#contract_service_person_list_form :input").attr("disabled", true);
+					result = "<h3 class='m-0 text-dark'>Not found<small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-primary'></i></button></small></h3>";
+				}
 
 				$("#customer_name_title").html(result);
         	},
         	error: function(data){
-          		alert("error");
+          		//alert("error");
         	}
       	});
       			
