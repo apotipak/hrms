@@ -256,8 +256,11 @@ $(document).on('keypress', '#id_cus_id', function(e) {
 	if(e.which == 13) {      
 		e.preventDefault();
 
-		// TODO: field validation
-		//
+		var obj = $(this);
+      	var id_cus_id = obj.val();
+      	while (id_cus_id.length < 7) 
+        	id_cus_id = "0" + id_cus_id;      	
+      	$('#id_cus_id').val(id_cus_id);
 
 		$('#id_cus_brn').focus();
 	}
@@ -267,10 +270,12 @@ $(document).on('keypress', '#id_cus_brn', function(e) {
 	if(e.which == 13) {      
 		e.preventDefault();
 
-			// TODO: field validation
-			//
-
-			$('#id_cus_vol').focus();
+		var obj = $(this);
+      	var id_cus_brn = obj.val();
+      	while (id_cus_brn.length < 3) 
+        	id_cus_brn = "0" + id_cus_brn;
+      	$('#id_cus_brn').val(id_cus_brn);
+		$('#id_cus_vol').focus();
 	}
 });
 
@@ -300,6 +305,12 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 			$('#id_cus_vol').focus();
 			return false;
 		}
+
+		var obj = $(this);
+      	var id_cus_vol = obj.val();
+      	while (id_cus_vol.length < 3) 
+        	id_cus_vol = "0" + id_cus_vol;
+      	$('#id_cus_vol').val(id_cus_vol);
 
 		// Get customer data (ajax)      	
 		$.ajax({

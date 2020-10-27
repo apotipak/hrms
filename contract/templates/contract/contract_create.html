@@ -920,7 +920,12 @@
     if(e.which == 13) {      
       e.preventDefault();
 
-      // TODO - check existing cus_main
+      var obj = $(this);
+      var id_cus_id = obj.val();
+      while (id_cus_id.length < 7) 
+        id_cus_id = "0" + id_cus_id;
+      $('#id_cus_id').val(id_cus_id);
+      
       cus_id = $("#id_cus_id").val();
 
       if(cus_id=="") {
@@ -964,6 +969,12 @@
       e.preventDefault();
 
       // TODO - check existing customer
+      var obj = $(this);
+      var id_cus_brn = obj.val();
+      while (id_cus_brn.length < 3) 
+        id_cus_brn = "0" + id_cus_brn;
+      $('#id_cus_brn').val(id_cus_brn);
+
       cus_id = $("#id_cus_id").val();
       cus_brn_text = $("#id_cus_brn").val();
 
@@ -1044,6 +1055,13 @@
     if(e.which == 13) {      
       e.preventDefault();
 
+      var obj = $(this);
+      var id_cus_vol = obj.val();
+      while (id_cus_vol.length < 3) 
+        id_cus_vol = "0" + id_cus_vol;
+      $('#id_cus_vol').val(id_cus_vol);
+      
+      
       var cnt_id = $('#id_cus_id').val();
       var cus_brn = $('#id_cus_brn').val();
       var cus_vol_text = $('#id_cus_vol').val();
