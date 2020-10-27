@@ -195,8 +195,6 @@
       	<!-- Security Guard List -->      	
 	    <div class="card card-security-guard-list">
 
-			<form id="security_guard_list_form" method="POST">
-      		{% csrf_token %}
 
 	      	<div class="card-header">                
 	        	<div class="float-left">
@@ -229,9 +227,38 @@
 	        	
 	      	</div>
 
+
+
+
+
+			<form id="security_guard_list_form" method="POST">
+      		{% csrf_token %}
+
 	      	<div class="card-body">
-	      		<div>section 1</div>
-				<div id="id_security_guard_list">section 2</div>
+
+				<div class="row" style="white-space:nowrap;">
+					
+					<div class="col-8 float-left">
+
+					  <div class="form-group row">					   
+					    <div class="col-2">
+					      <input type="text" readonly class="form-control-sm" id="id_cus_main_cus_name_th">
+					    </div>						
+					    <div class="col-2">
+					      <input type="text" readonly class="form-control-sm" id="id_cus_main_cus_tel" >
+					    </div>
+					  </div>
+
+					</div>
+
+					<div class="col-4 float-right">
+						TODO
+					</div>
+
+	      		</div>
+
+
+				<div id="id_security_guard_list"></div>
 	      	</div>
 
 	      	</form>
