@@ -271,12 +271,9 @@ $(document).ready(function(){
 		$("#contract_service_list_form").trigger("reset");
 
 		$(".card-contract-service-list .card-body").html("");
-
-		/*
-		$("#id_cus_id").val("");
-		$("#id_cus_brn").val("");
-		$("#id_cus_vol").val("");
-		*/
+		$(".card-security-guard-list .card-body").html("");
+		$("#contract_service_list_amount").html("Total 0");
+		$("#security_guard_list_amount").html("Total 0");
 
     	$("#id_cus_id").focus();
     	$("#id_cus_id").select();
@@ -502,8 +499,17 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_fri"] + "</td>";
 							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_sat"] + "</td>";
 							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_sun"] + "</td>";
-							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_active"] + "</td>";
-							result += "      <td class='text-center'>" + data.sch_plan_list[i]["relief"] + "</td>";
+
+							if(data.sch_plan_list[i]["sch_active"]==1)
+								result += "      <td class='text-center'>X</td>";
+							else
+								result += "      <td class='text-center'>&nbsp;</td>";
+
+							if(data.sch_plan_list[i]["relief"]==1)
+								result += "      <td class='text-center'>X</td>";
+							else
+								result += "      <td class='text-center'>&nbsp;</td>";
+
 							result += "      <td>" + data.sch_plan_list[i]["upd_date"] + "</td>";
 							result += "      <td>" + data.sch_plan_list[i]["upd_by"] + "</td>";
 							result += "      <td>" + data.sch_plan_list[i]["upd_flag"] + "</td>";

@@ -92,7 +92,7 @@ def ajax_get_customer(request):
 						    "srv_sun": d.srv_sun,
 						    "srv_pub": d.srv_pub,
 						    "srv_rem": d.srv_rem,
-						    "srv_active": "Y",
+						    "srv_active": "X",
 						}
 						cus_service_list.append(record)		
 			except CusService.DoesNotExist:
