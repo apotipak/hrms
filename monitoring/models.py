@@ -109,3 +109,30 @@ class DlyPlanHis(models.Model):
     class Meta:
         managed = False
         db_table = 'DLY_PLAN_HIS'
+
+
+class SchPlan(models.Model):
+    sch_no = models.DecimalField(primary_key=True, max_digits=20, decimal_places=0)
+    srv_id = models.DecimalField(max_digits=16, decimal_places=0, blank=True, null=True)
+    cnt_id = models.DecimalField(max_digits=13, decimal_places=0, blank=True, null=True)
+    emp_id = models.DecimalField(max_digits=7, decimal_places=0, blank=True, null=True)
+    sch_rank = models.CharField(max_length=3, blank=True, null=True)
+    relief = models.BooleanField(blank=True, null=True)
+    sch_date_frm = models.DateTimeField(blank=True, null=True)
+    sch_date_to = models.DateTimeField(blank=True, null=True)
+    sch_shf_mon = models.DecimalField(max_digits=4, decimal_places=0, blank=True, null=True)
+    sch_shf_tue = models.DecimalField(max_digits=4, decimal_places=0, blank=True, null=True)
+    sch_shf_wed = models.DecimalField(max_digits=4, decimal_places=0, blank=True, null=True)
+    sch_shf_thu = models.DecimalField(max_digits=4, decimal_places=0, blank=True, null=True)
+    sch_shf_fri = models.DecimalField(max_digits=4, decimal_places=0, blank=True, null=True)
+    sch_shf_sat = models.DecimalField(max_digits=4, decimal_places=0, blank=True, null=True)
+    sch_shf_sun = models.DecimalField(max_digits=4, decimal_places=0, blank=True, null=True)
+    sch_active = models.BooleanField(blank=True, null=True)
+    upd_date = models.DateTimeField(blank=True, null=True)
+    upd_by = models.CharField(max_length=10, blank=True, null=True)
+    upd_flag = models.CharField(max_length=1, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'SCH_PLAN'
+

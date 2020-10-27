@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
+from .models import DlyPlan
 from customer.models import CusMain, Customer, CusBill
 from contract.models import CusContract, CusService
 from .forms import ScheduleMaintenanceForm
@@ -52,7 +53,6 @@ def ajax_get_customer(request):
 
 			# Contract
 			cus_contract = CusContract.objects.filter(cnt_id=cnt_id).get()
-
 			cnt_doc_no = cus_contract.cnt_doc_no
 			cnt_active = cus_contract.cnt_active
 			cnt_sign_frm = cus_contract.cnt_sign_frm.strftime("%d/%m/%Y")
@@ -62,7 +62,6 @@ def ajax_get_customer(request):
 			cnt_wage_name_th = cus_contract.cnt_wage_id.wage_th
 			cnt_wage_name_en = cus_contract.cnt_wage_id.wage_en
 			cnt_apr_by_name_en = cus_contract.cnt_apr_by.apr_name_en
-
 
 
 			# Contract Services
@@ -100,6 +99,43 @@ def ajax_get_customer(request):
 				print("cus_service is not found")
 				cus_service_list=[]
 
+
+
+			# SCH_PLAN
+			# select * from sch_plan where cnt_id=1324000001 and sch_active=1 order by sch_no desc
+			
+			# DLY_PLAN
+			try:				
+			    dly_plan = DlyPlan.objects.all().filter(cnt_id=cnt_id)
+			    print("cus_service is found")
+			    dly_plan_list = []
+				for d in dly_plan:
+					record = {
+					    "cnt_id": d.cnt_id_id,
+					    "emp_id": d.emp_id,
+					    "srv_rank": d.sch_rank,
+					    "srv_shif_id": d.srv_shif_id_id,
+					    "srv_shift_text": d.srv_shif_id.shf_desc,
+					    "srv_eff_frm": d.srv_eff_frm.strftime("%d/%m/%Y"),
+					    "srv_eff_to": d.srv_eff_to.strftime("%d/%m/%Y"),
+					    "srv_qty": d.srv_qty,
+					    "srv_rate": d.srv_rate,
+					    "srv_cost": d.srv_cost,
+					    "srv_cost_rate": d.srv_cost_rate,
+					    "srv_mon": d.srv_mon,
+					    "srv_tue": d.srv_tue,
+					    "srv_wed": d.srv_wed,
+					    "srv_thu": d.srv_thu,
+					    "srv_fri": d.srv_fri,
+					    "srv_sat": d.srv_sat,
+					    "srv_sun": d.srv_sun,
+					    "srv_pub": d.srv_pub,
+					    "srv_rem": d.srv_rem,
+					    "srv_active": "Y",
+					}
+					dly_plan_list.append(record)				    
+			except DlyPlan.DoesNotExist:
+				dly_plan_list = []
 
 			# CUS_MAIN
 			try:
