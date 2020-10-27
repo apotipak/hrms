@@ -106,36 +106,37 @@ def ajax_get_customer(request):
 				print("sch_plan is found")
 				sch_plan_list = []
 				for d in sch_plan:
-					if d.relief:
-						relief = 1
-					else:
-						relief = 0 
-
 					if d.sch_active:
-						sch_active = 1
-					else:
-						sch_active = 0
+						if d.relief:
+							relief = 1
+						else:
+							relief = 0 
 
-					record = {
-					    "sch_no": d.sch_no,
-					    "emp_id": d.emp_id,
-					    "sch_rank": d.sch_rank,
-					    "sch_date_frm": d.sch_date_frm.strftime("%d/%m/%Y"),
-					    "sch_date_to": d.sch_date_to.strftime("%d/%m/%Y"),
-					    "sch_shf_mon": d.sch_shf_mon,
-					    "sch_shf_tue": d.sch_shf_tue,
-					    "sch_shf_wed": d.sch_shf_wed,
-					    "sch_shf_thu": d.sch_shf_thu,
-					    "sch_shf_fri": d.sch_shf_fri,
-					    "sch_shf_sat": d.sch_shf_sat,
-					    "sch_shf_sun": d.sch_shf_sun,
-					    "sch_active": sch_active,
-					    "relief": relief,
-					    "upd_date": d.upd_date.strftime("%d/%m/%Y %H:%M:%S"),
-					    "upd_by": d.upd_by,
-					    "upd_flag": d.upd_flag,
-					}
-					sch_plan_list.append(record)				    
+						if d.sch_active:
+							sch_active = 1
+						else:
+							sch_active = 0
+
+						record = {
+						    "sch_no": d.sch_no,
+						    "emp_id": d.emp_id,
+						    "sch_rank": d.sch_rank,
+						    "sch_date_frm": d.sch_date_frm.strftime("%d/%m/%Y"),
+						    "sch_date_to": d.sch_date_to.strftime("%d/%m/%Y"),
+						    "sch_shf_mon": d.sch_shf_mon,
+						    "sch_shf_tue": d.sch_shf_tue,
+						    "sch_shf_wed": d.sch_shf_wed,
+						    "sch_shf_thu": d.sch_shf_thu,
+						    "sch_shf_fri": d.sch_shf_fri,
+						    "sch_shf_sat": d.sch_shf_sat,
+						    "sch_shf_sun": d.sch_shf_sun,
+						    "sch_active": sch_active,
+						    "relief": relief,
+						    "upd_date": d.upd_date.strftime("%d/%m/%Y %H:%M:%S"),
+						    "upd_by": d.upd_by,
+						    "upd_flag": d.upd_flag,
+						}
+						sch_plan_list.append(record)			    
 			except DlyPlan.DoesNotExist:
 				print("sch_plan is not found")
 				sch_plan_list = []
