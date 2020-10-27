@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
-from .models import DlyPlan
+from .models import DlyPlan, SchPlan
 from customer.models import CusMain, Customer, CusBill
 from contract.models import CusContract, CusService
 from .forms import ScheduleMaintenanceForm
@@ -101,38 +101,34 @@ def ajax_get_customer(request):
 
 			# SCH_PLAN
 			# select * from sch_plan where cnt_id=1324000001 and sch_active=1 order by sch_no desc
-			# DLY_PLAN
 			try:
-				dly_plan = DlyPlan.objects.all().filter(cnt_id=cnt_id)
-				print("cus_service is found")
-				dly_plan_list = []
-				for d in dly_plan:
+				sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id)
+				print("sch_plan is found")
+				sch_plan_list = []
+				for d in sch_plan:
 					record = {
-					    "cnt_id": d.cnt_id_id,
+					    "sch_no": d.sch_no,
 					    "emp_id": d.emp_id,
-					    "srv_rank": d.sch_rank,
-					    "srv_shif_id": d.srv_shif_id_id,
-					    "srv_shift_text": d.srv_shif_id.shf_desc,
-					    "srv_eff_frm": d.srv_eff_frm.strftime("%d/%m/%Y"),
-					    "srv_eff_to": d.srv_eff_to.strftime("%d/%m/%Y"),
-					    "srv_qty": d.srv_qty,
-					    "srv_rate": d.srv_rate,
-					    "srv_cost": d.srv_cost,
-					    "srv_cost_rate": d.srv_cost_rate,
-					    "srv_mon": d.srv_mon,
-					    "srv_tue": d.srv_tue,
-					    "srv_wed": d.srv_wed,
-					    "srv_thu": d.srv_thu,
-					    "srv_fri": d.srv_fri,
-					    "srv_sat": d.srv_sat,
-					    "srv_sun": d.srv_sun,
-					    "srv_pub": d.srv_pub,
-					    "srv_rem": d.srv_rem,
-					    "srv_active": "Y",
+					    "sch_rank": d.sch_rank,
+					    "sch_date_frm": d.sch_date_frm,
+					    "sch_date_to": d.sch_date_to,
+					    "sch_shf_mon": d.sch_shf_mon,
+					    "sch_shf_tue": d.sch_shf_tue,
+					    "sch_shf_wed": d.sch_shf_wed,
+					    "sch_shf_thu": d.sch_shf_thu,
+					    "sch_shf_fri": d.sch_shf_fri,
+					    "sch_shf_sat": d.sch_shf_sat,
+					    "sch_shf_sun": d.sch_shf_sun,
+					    "sch_active": d.sch_active,
+					    "relief": d.relief,
+					    "upd_date": d.upd_date,
+					    "upd_by": d.upd_by,
+					    "upd_flag": d.upd_flag,
 					}
-					dly_plan_list.append(record)				    
+					sch_plan_list.append(record)				    
 			except DlyPlan.DoesNotExist:
-				dly_plan_list = []
+				print("sch_plan is not found")
+				sch_plan_list = []
 
 			# CUS_MAIN
 			try:
@@ -271,6 +267,7 @@ def ajax_get_customer(request):
 			        "cus_site_contact_cus_zone_en": cus_site_contact_cus_zone_en,
 
 					"cus_service_list": list(cus_service_list),
+					"sch_plan_list": list(sch_plan_list),
 			    })
 			    response.status_code = 200
 			except Customer.DoesNotExist:            

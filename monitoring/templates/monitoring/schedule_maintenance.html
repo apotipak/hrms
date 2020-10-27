@@ -479,7 +479,35 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 					result += "    </tr>";
 					result += "  </thead>";					
 					result += "  <tbody>";
-					result += "    <tr><td colspan='18' align='center'>There is no data available.</td></tr>";
+
+					if(data.sch_plan_list.length>0) {
+						count = 1;
+						for(i=0; i<data.sch_plan_list.length; i++) {
+							result += "    <tr>";
+							result += "      <th scope='row'>" + count + "</th>";
+							result += "      <td>" + data.sch_plan_list[i]["emp_id"] + "</td>";							
+							result += "      <td>" + data.sch_plan_list[i]["sch_rank"] + "</td>";
+							result += "      <td>" + data.sch_plan_list[i]["sch_date_frm"] + "</td>";
+							result += "      <td>" + data.sch_plan_list[i]["sch_date_to"] + "</td>";
+							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_mon"] + "</td>";
+							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_tue"] + "</td>";
+							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_wed"] + "</td>";
+							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_thu"] + "</td>";
+							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_fri"] + "</td>";
+							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_sat"] + "</td>";
+							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_sun"] + "</td>";
+							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_active"] + "</td>";
+							result += "      <td class='text-center'>" + data.sch_plan_list[i]["relief"] + "</td>";
+							result += "      <td>" + data.sch_plan_list[i]["upd_date"] + "</td>";
+							result += "      <td>" + data.sch_plan_list[i]["upd_by"] + "</td>";
+							result += "      <td>" + data.sch_plan_list[i]["upd_flag"] + "</td>";
+							result += "    </tr>";						
+							count++;
+						}
+					} else {
+						result += "<tr><td colspan='17' align='center'>There is no data available.</td></tr>";
+					}
+
 					result += "  </tbody>";
 					result += "</table>";
 					result += "</font>";
