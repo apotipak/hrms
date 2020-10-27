@@ -1,9 +1,9 @@
 from django.db import models
-
+from employee.models import Employee
 
 class DlyPlan(models.Model):
     cnt_id = models.DecimalField(primary_key=True, max_digits=13, decimal_places=0)
-    emp_id = models.DecimalField(max_digits=7, decimal_places=0)
+    emp_id = models.DecimalField(max_digits=7, decimal_places=0)    
     dly_date = models.DateTimeField()
     sch_shift = models.DecimalField(max_digits=4, decimal_places=0)
     sch_no = models.DecimalField(max_digits=20, decimal_places=0, blank=True, null=True)
@@ -59,7 +59,7 @@ class DlyPlan(models.Model):
 class DlyPlanHis(models.Model):
     trans_date = models.DateTimeField()
     cnt_id = models.DecimalField(max_digits=13, decimal_places=0)
-    emp_id = models.DecimalField(max_digits=7, decimal_places=0)
+    emp_id = models.DecimalField(max_digits=7, decimal_places=0)    
     dly_date = models.DateTimeField()
     sch_shift = models.DecimalField(max_digits=4, decimal_places=0)
     sch_no = models.DecimalField(max_digits=20, decimal_places=0, blank=True, null=True)
@@ -115,7 +115,10 @@ class SchPlan(models.Model):
     sch_no = models.DecimalField(primary_key=True, max_digits=20, decimal_places=0)
     srv_id = models.DecimalField(max_digits=16, decimal_places=0, blank=True, null=True)
     cnt_id = models.DecimalField(max_digits=13, decimal_places=0, blank=True, null=True)
-    emp_id = models.DecimalField(max_digits=7, decimal_places=0, blank=True, null=True)
+    
+    # emp_id = models.DecimalField(max_digits=7, decimal_places=0, blank=True, null=True)
+    emp_id = models.ForeignKey(Employee, related_name='sch_plan_employee_fk', db_column='emp_id', to_field='emp_id', on_delete=models.SET_NULL, null=True)
+
     sch_rank = models.CharField(max_length=3, blank=True, null=True)
     relief = models.BooleanField(blank=True, null=True)
     sch_date_frm = models.DateTimeField(blank=True, null=True)
@@ -133,5 +136,5 @@ class SchPlan(models.Model):
     upd_flag = models.CharField(max_length=1, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'SCH_PLAN'

@@ -120,7 +120,9 @@ def ajax_get_customer(request):
 
 						record = {
 						    "sch_no": d.sch_no,
-						    "emp_id": d.emp_id,
+						    "emp_id": d.emp_id_id,
+						    "emp_fname_th": d.emp_id.emp_fname_th,
+						    "emp_lname_th": d.emp_id.emp_lname_th,
 						    "sch_rank": d.sch_rank,
 						    "sch_date_frm": d.sch_date_frm.strftime("%d/%m/%Y"),
 						    "sch_date_to": d.sch_date_to.strftime("%d/%m/%Y"),
@@ -391,7 +393,9 @@ def ajax_get_customer_schedule_plan(request):
 
 	    			record = {
 	    				"sch_no": d.sch_no,
-	    				"emp_id": d.emp_id,
+	    				"emp_id": d.emp_id_id,
+					    "emp_fname_th": d.emp_id.emp_fname_th,
+					    "emp_lname_th": d.emp_id.emp_lname_th,	    				
 	    				"sch_rank": d.sch_rank,
 	    				"sch_date_frm": d.sch_date_frm.strftime("%d/%m/%Y"),
 	    				"sch_date_to": d.sch_date_to.strftime("%d/%m/%Y"),
@@ -424,7 +428,9 @@ def ajax_get_customer_schedule_plan(request):
 
 	    			record = {
 	    				"sch_no": d.sch_no,
-	    				"emp_id": d.emp_id,
+	    				"emp_id": d.emp_id_id,
+					    "emp_fname_th": d.emp_id.emp_fname_th,
+					    "emp_lname_th": d.emp_id.emp_lname_th,	    				
 	    				"sch_rank": d.sch_rank,
 	    				"sch_date_frm": d.sch_date_frm.strftime("%d/%m/%Y"),
 	    				"sch_date_to": d.sch_date_to.strftime("%d/%m/%Y"),
@@ -457,7 +463,9 @@ def ajax_get_customer_schedule_plan(request):
 
     			record = {
     				"sch_no": d.sch_no,
-    				"emp_id": d.emp_id,
+    				"emp_id": d.emp_id_id,
+				    "emp_fname_th": d.emp_id.emp_fname_th,
+				    "emp_lname_th": d.emp_id.emp_lname_th,    				
     				"sch_rank": d.sch_rank,
     				"sch_date_frm": d.sch_date_frm.strftime("%d/%m/%Y"),
     				"sch_date_to": d.sch_date_to.strftime("%d/%m/%Y"),
