@@ -5,6 +5,7 @@ from django.conf import settings
 from .models import DlyPlan, SchPlan
 from customer.models import CusMain, Customer, CusBill
 from contract.models import CusContract, CusService
+from employee.models import Employee
 from .forms import ScheduleMaintenanceForm
 from django.http import JsonResponse
 import datetime
@@ -102,7 +103,7 @@ def ajax_get_customer(request):
 
 			# SCH_PLAN			
 			try:
-				sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).order_by('-sch_no')
+				sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).exclude(upd_flag='D').order_by('emp_id')
 				print("sch_plan is found")
 				sch_plan_list = []
 				for d in sch_plan:
@@ -316,7 +317,7 @@ def get_customer_service_list(request):
 
     cnt_id = request.GET["cnt_id"]
 
-    data = CusService.objects.all().exclude(upd_flag='D').filter(cnt_id=cnt_id).order_by('-srv_active')
+    data = CusService.objects.all().exclude(upd_flag='D').filter(cnt_id=cnt_id).exclude(upd_flag='D').order_by('-srv_active')
     
     cus_service_list=[]
     for d in data:
@@ -370,9 +371,10 @@ def ajax_get_customer_schedule_plan(request):
     print("sch_active = " + str(sch_active))
 
     try:
-    	sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).order_by('-sch_no')
+    	sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).exclude(upd_flag='D').order_by('emp_id')
     	print("sch_plan is found")
     	sch_plan_list = []
+    	total = 0
 
     	if sch_active == '1':
 	    	for d in sch_plan:    		
@@ -441,7 +443,8 @@ def ajax_get_customer_schedule_plan(request):
 	    			}
 	    			sch_plan_list.append(record)
     	else:
-	    	for d in sch_plan:    		
+    		print("aaaa")
+	    	for d in sch_plan:
     			if d.relief:
     				relief = 1
     			else:
@@ -474,7 +477,7 @@ def ajax_get_customer_schedule_plan(request):
     			sch_plan_list.append(record)
 
     except SchPlan.DoesNotExist:
-    	print("sch_plan is not found")
+    	print("sch_plan is not found")    	
     	sch_plan_list = []
 
     response = JsonResponse(data={

@@ -347,9 +347,11 @@ $(document).ready(function(){
 	          		sch_active: this.value
 	        	},
 	        	success: function(data) {
-					if(data.sch_plan_list.length>0) {
+	        		total = data.sch_plan_list.length;
+
+					if(total>0) {
 						count = 1;
-						for(i=0; i<data.sch_plan_list.length; i++) {								
+						for(i=0; i<total; i++) {								
 							result += "    <tr>";
 							result += "      <th scope='row'>" + count + "</th>";
 							result += "      <td>" + data.sch_plan_list[i]["emp_id"] + "</td>";							
@@ -380,11 +382,30 @@ $(document).ready(function(){
 							result += "    </tr>";						
 							count++;
 						}
-					} else
+						result += "  </tbody>";
+						result += "</table>";
+						result += "</font>";
+						$(".card-security-guard-list .card-body").html(result);		
+						$("#security_guard_list_amount").html("<b>Total " + total + "</b>");
+
+					} else {
 						result += "<tr><td colspan='17' align='center'>There is no data available.</td></tr>";
+						result += "  </tbody>";
+						result += "</table>";
+						result += "</font>";
+						$(".card-security-guard-list .card-body").html(result);		
+						$("#security_guard_list_amount").html("<b>Total 0</b>");
+					}
 	        	},
 	        	error: function(data) {	        		
 	          		result += "<tr><td colspan='17' align='center'>There is no data available.</td></tr>";			
+					result += "  </tbody>";
+					result += "</table>";
+					result += "</font>";
+					if(count > 0)
+						count = count - 1;
+					$(".card-security-guard-list .card-body").html(result);		
+					$("#security_guard_list_amount").html("<b>Total 0</b>");		          		
 	        	}   	
 	        });	    	
 	    }
@@ -402,9 +423,10 @@ $(document).ready(function(){
 	          		sch_active: this.value
 	        	},
 	        	success: function(data) {
-					if(data.sch_plan_list.length>0) {
+	        		total = data.sch_plan_list.length;
+					if(total>0) {
 						count = 1;
-						for(i=0; i<data.sch_plan_list.length; i++) {								
+						for(i=0; i<total; i++) {								
 							result += "    <tr>";
 							result += "      <th scope='row'>" + count + "</th>";
 							result += "      <td>" + data.sch_plan_list[i]["emp_id"] + "</td>";							
@@ -435,15 +457,32 @@ $(document).ready(function(){
 							result += "    </tr>";						
 							count++;
 						}
-					} else
+						result += "  </tbody>";
+						result += "</table>";
+						result += "</font>";
+						$(".card-security-guard-list .card-body").html(result);		
+						$("#security_guard_list_amount").html("<b>Total " + total + "</b>");							
+					} else {
 						result += "<tr><td colspan='17' align='center'>There is no data available.</td></tr>";
+						result += "  </tbody>";
+						result += "</table>";
+						result += "</font>";
+						$(".card-security-guard-list .card-body").html(result);		
+						$("#security_guard_list_amount").html("<b>Total 0</b>");
+					}
 	        	},
 	        	error: function(data) {	        		
-	          		result += "<tr><td colspan='17' align='center'>There is no data available.</td></tr>";			
+	          		result += "<tr><td colspan='17' align='center'>There is no data available.</td></tr>";
+					result += "  </tbody>";
+					result += "</table>";
+					result += "</font>";
+					$(".card-security-guard-list .card-body").html(result);		
+					$("#security_guard_list_amount").html("<b>Total 0</b>");
 	        	}   	
 	        });
 
 	    } else if (this.value == '3') {
+
 			$.ajax({
 
 	        	url : "/monitoring/ajax/get_customer_schdule_plan/",
@@ -456,10 +495,11 @@ $(document).ready(function(){
 	          		cus_vol: $("#id_cus_vol").val(),
 	          		sch_active: this.value
 	        	},
-	        	success: function(data) {
-					if(data.sch_plan_list.length>0) {
-						count = 1;
-						for(i=0; i<data.sch_plan_list.length; i++) {								
+	        	success: function(data) {	        		
+	        		total = data.sch_plan_list.length;
+					if(total>0) {
+						count = 1;						
+						for(i=0; i<total; i++) {
 							result += "    <tr>";
 							result += "      <th scope='row'>" + count + "</th>";
 							result += "      <td>" + data.sch_plan_list[i]["emp_id"] + "</td>";							
@@ -490,24 +530,36 @@ $(document).ready(function(){
 							result += "    </tr>";						
 							count++;
 						}
-					} else
+						result += "  </tbody>";
+						result += "</table>";
+						result += "</font>";
+						$(".card-security-guard-list .card-body").html(result);		
+						$("#security_guard_list_amount").html("<b>Total " + total + "</b>");							
+					} else {
 						result += "<tr><td colspan='17' align='center'>There is no data available.</td></tr>";
+						result += "  </tbody>";
+						result += "</table>";
+						result += "</font>";
+						$("#security_guard_list_amount").html("<b>Total 0</b>");
+					}
 	        	},
 	        	error: function(data) {	        		
-	          		result += "<tr><td colspan='17' align='center'>There is no data available.</td></tr>";			
-	        	}   	
-	        });	    	
+	          		result += "<tr><td colspan='17' align='center'>There is no data available.</td></tr>";
+					result += "  </tbody>";
+					result += "</table>";
+					result += "</font>";
+					$(".card-security-guard-list .card-body").html(result);		
+					$("#security_guard_list_amount").html("<b>Total 0</b>");		          		
+	        	},	        
+	        });	  
 	    } else {
 	    	result += "<tr><td colspan='17' align='center'>There is no data available.</td></tr>";
-	    	count = 0;
+			result += "  </tbody>";
+			result += "</table>";
+			result += "</font>";
+			$(".card-security-guard-list .card-body").html(result);		
+			$("#security_guard_list_amount").html("<b>Total 0</b>");		    	
 	    }
-
-		result += "  </tbody>";
-		result += "</table>";
-		result += "</font>";
-		count = count - 1;
-		$(".card-security-guard-list .card-body").html(result);
-		$("#security_guard_list_amount").html("<b>Total " + count + "</b>");	
 	});
 
 });
