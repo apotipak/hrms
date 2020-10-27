@@ -99,16 +99,13 @@ def ajax_get_customer(request):
 				print("cus_service is not found")
 				cus_service_list=[]
 
-
-
 			# SCH_PLAN
 			# select * from sch_plan where cnt_id=1324000001 and sch_active=1 order by sch_no desc
-			
 			# DLY_PLAN
-			try:				
-			    dly_plan = DlyPlan.objects.all().filter(cnt_id=cnt_id)
-			    print("cus_service is found")
-			    dly_plan_list = []
+			try:
+				dly_plan = DlyPlan.objects.all().filter(cnt_id=cnt_id)
+				print("cus_service is found")
+				dly_plan_list = []
 				for d in dly_plan:
 					record = {
 					    "cnt_id": d.cnt_id_id,
