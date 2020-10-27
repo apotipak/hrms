@@ -8,6 +8,7 @@ from contract.models import CusContract, CusService
 from .forms import ScheduleMaintenanceForm
 from django.http import JsonResponse
 import datetime
+from django.db.models import Q
 
 
 @login_required(login_url='/accounts/login/')
@@ -99,8 +100,7 @@ def ajax_get_customer(request):
 				print("cus_service is not found")
 				cus_service_list=[]
 
-			# SCH_PLAN
-			# select * from sch_plan where cnt_id=1324000001 and sch_active=1 order by sch_no desc
+			# SCH_PLAN			
 			try:
 				sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).order_by('-sch_no')
 				print("sch_plan is found")
@@ -137,7 +137,7 @@ def ajax_get_customer(request):
 						    "upd_flag": d.upd_flag,
 						}
 						sch_plan_list.append(record)			    
-			except DlyPlan.DoesNotExist:
+			except SchPlan.DoesNotExist:
 				print("sch_plan is not found")
 				sch_plan_list = []
 
@@ -308,6 +308,7 @@ def ajax_get_customer(request):
 
 
 @login_required(login_url='/accounts/login/')
+@permission_required('contract.view_dlyplan', login_url='/accounts/login/')
 def get_customer_service_list(request):
     print("*************************************")
     print("FUNCTION: get_customer_service_list()")
@@ -347,6 +348,70 @@ def get_customer_service_list(request):
     response = JsonResponse(data={
         "success": True,
         "cus_service_list": list(cus_service_list),
+    })
+
+    response.status_code = 200
+    return response
+
+
+@login_required(login_url='/accounts/login/')
+@permission_required('contract.view_dlyplan', login_url='/accounts/login/')
+def ajax_get_customer_schedule_plan(request):
+    print("*************************************")
+    print("FUNCTION: ajax_get_customer_schedule_plan()")
+    print("*************************************")
+
+    cus_id = request.POST.get('cus_id')
+    cus_brn = request.POST.get('cus_brn')
+    cus_vol = request.POST.get('cus_vol')
+    sch_active = request.POST.get("sch_active")	
+    cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
+    print("cnt_id = " + str(cnt_id))
+    print("sch_active = " + str(sch_active))
+
+    try:
+    	sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).exclude(sch_active = 0).order_by('-sch_no')
+    	print("sch_plan is found")
+    	sch_plan_list = []
+    	for d in sch_plan:
+    		if d.sch_active:
+    			if d.relief:
+    				relief = 1
+    			else:
+    				relief = 0 
+
+    			if d.sch_active:
+    				sch_active = 1
+    			else:
+    				sch_active = 0
+
+    			record = {
+    				"sch_no": d.sch_no,
+    				"emp_id": d.emp_id,
+    				"sch_rank": d.sch_rank,
+    				"sch_date_frm": d.sch_date_frm.strftime("%d/%m/%Y"),
+    				"sch_date_to": d.sch_date_to.strftime("%d/%m/%Y"),
+    				"sch_shf_mon": d.sch_shf_mon,
+    				"sch_shf_tue": d.sch_shf_tue,
+    				"sch_shf_wed": d.sch_shf_wed,
+    				"sch_shf_thu": d.sch_shf_thu,
+    				"sch_shf_fri": d.sch_shf_fri,
+    				"sch_shf_sat": d.sch_shf_sat,
+    				"sch_shf_sun": d.sch_shf_sun,
+    				"sch_active": sch_active,
+    				"relief": relief,
+    				"upd_date": d.upd_date.strftime("%d/%m/%Y %H:%M:%S"),
+    				"upd_by": d.upd_by,
+    				"upd_flag": d.upd_flag,
+    			}
+    			sch_plan_list.append(record)			    
+    except SchPlan.DoesNotExist:
+    	print("sch_plan is not found")
+    	sch_plan_list = []
+
+    response = JsonResponse(data={
+        "success": True,
+        "sch_plan_list": list(sch_plan_list),
     })
 
     response.status_code = 200
