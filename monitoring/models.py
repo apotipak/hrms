@@ -127,7 +127,7 @@ class SchPlan(models.Model):
     sch_shf_fri = models.DecimalField(max_digits=4, decimal_places=0, blank=True, null=True)
     sch_shf_sat = models.DecimalField(max_digits=4, decimal_places=0, blank=True, null=True)
     sch_shf_sun = models.DecimalField(max_digits=4, decimal_places=0, blank=True, null=True)
-    sch_active = models.BooleanField(blank=False, null=False)
+    sch_active = models.BooleanField(blank=True, null=True)
     upd_date = models.DateTimeField(blank=True, null=True)
     upd_by = models.CharField(max_length=10, blank=True, null=True)
     upd_flag = models.CharField(max_length=1, blank=True, null=True)
@@ -135,4 +135,3 @@ class SchPlan(models.Model):
     class Meta:
         managed = False
         db_table = 'SCH_PLAN'
-
