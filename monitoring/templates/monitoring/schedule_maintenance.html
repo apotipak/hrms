@@ -52,7 +52,10 @@
 			            <input type="hidden" id="id_cnt_id_temp" name="cnt_id_temp" value="">
 			          </div>
 		          		<button id="cancelCustomerServicePersonButton" type="button" class="btn btn-md btn-default pull-right">Cancel</button>
+
+		          		<!--
 		          		<button id="saveCustomerServicePersonButton" class="btn btn-md btn-primary"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</button>
+		          		-->
 		        	</div>
 
 		    </div>
@@ -189,11 +192,19 @@
       	<!-- 3rd Block -->      	
 	    <div class="card card-security-guard-list">
 	      	<div class="card-header">                
+
+				<form id="security_guard_list_form" method="POST">
+	      		{% csrf_token %}
+
+
 	        	<div class="float-left"><h4 class="m-0 text-dark">Security Guard List</h4></div>
-	        	<div class="float-left">&nbsp;</div>
 	        	<div class="card-tools">
-	          		<div class="float-left pt-2">&nbsp;</div>
+		        	<div class="card-tools float-right">
+		          		<button id="saveSecurityGuardButton" class="btn btn-md btn-primary"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</button>
+		        	</div>
 	        	</div>
+
+	        	</form>
 	      	</div>
 
 	      	<div class="card-body">&nbsp;</div>
@@ -218,6 +229,8 @@
 $(document).ready(function(){
 	$("#contract_service_list_form :input").attr("disabled", true);
 	$("#contract_service_person_list_form :input").attr("disabled", true);
+	$("#security_guard_list_form :input").attr("disabled", true);	
+
 	$("#id_cus_id").on('click', function(){
 		$("#id_cus_id").select();
 	});
@@ -235,11 +248,14 @@ $(document).ready(function(){
 
     	$("#schedule_maintenance_form :input").attr("disabled", false);
     	$('#contract_service_list_form').trigger("reset");
-    	$('#contract_service_persion_list_form').trigger("reset");		
+    	$('#contract_service_persion_list_form').trigger("reset");		    	
 		$("#customer_name_title").html("");
 		$("#contract_service_list_form :input").attr("disabled", true);
 		$("#contract_service_person_list_form :input").attr("disabled", true);
+		$("#security_guard_list_form :input").attr("disabled", true);
 		$("#contract_service_list_form").trigger("reset");
+
+		$(".card-contract-service-list .card-body").html("");
 
 		/*
 		$("#id_cus_id").val("");
@@ -327,6 +343,8 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 				if(data.is_existed) {
 					$("#contract_service_list_form :input").attr("disabled", false);
 					$("#contract_service_person_list_form :input").attr("disabled", false);
+					$("#security_guard_list_form :input").attr("disabled", false);					
+
 					$("#schedule_maintenance_form :input").attr("disabled", true);
 					result_title = "";
 					result_title = "<h3 class='m-0 text-dark'>" + data.cus_site_name_th + "<small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-primary'></i></button></small></h3>";
