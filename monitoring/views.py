@@ -391,6 +391,7 @@ def ajax_get_customer_schedule_plan(request):
 	    			else:
 	    				sch_active = 0
 
+
 	    			record = {
 	    				"sch_no": d.sch_no,
 	    				"emp_id": d.emp_id_id,
@@ -448,8 +449,7 @@ def ajax_get_customer_schedule_plan(request):
 	    				"upd_flag": d.upd_flag,
 	    			}
 	    			sch_plan_list.append(record)
-    	else:
-    		print("aaaa")
+    	elif sch_active == '3':
 	    	for d in sch_plan:
     			if d.relief:
     				relief = 1
@@ -482,7 +482,10 @@ def ajax_get_customer_schedule_plan(request):
     				"upd_by": d.upd_by,
     				"upd_flag": d.upd_flag,
     			}
-    			sch_plan_list.append(record)
+    			sch_plan_list.append(record)	    	
+    	else:
+	    	print("sch_plan is not found")    	
+	    	sch_plan_list = []
 
     except SchPlan.DoesNotExist:
     	print("sch_plan is not found")    	

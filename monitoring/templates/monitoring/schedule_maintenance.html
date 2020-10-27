@@ -194,12 +194,11 @@
 
       	<!-- Security Guard List -->      	
 	    <div class="card card-security-guard-list">
+
+			<form id="security_guard_list_form" method="POST">
+      		{% csrf_token %}
+
 	      	<div class="card-header">                
-
-				<form id="security_guard_list_form" method="POST">
-	      		{% csrf_token %}
-
-
 	        	<div class="float-left">
 	        		<h4 class="m-0 text-dark">Security Guard List&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	        		<small><small>
@@ -223,26 +222,20 @@
 
 	        	<div class="card-tools">
 		        	<div class="card-tools float-right">
-		        		
-		        		<!--
-			          <button class="btn btn-outline-info btn-md dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			            <i class="fas fa-print fa-sm"></i>&nbsp;&nbsp;Print
-			          </button>
-			          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">			            
-			            <a class="dropdown-item" href="#" onclick="print_contract()"><i class="fa fa-eye text-secondary" aria-hidden="true"></i>&nbsp;&nbsp;Display on screen</a>	
-			            <input type="hidden" id="id_cnt_id_temp" name="cnt_id_temp" value="">
-			          </div>		        		
-		          		<button id="saveSecurityGuardButton" class="btn btn-md btn-primary"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</button>
-		          	-->
+		        		<button id="add_security_guard_button" type="button" class="btn btn-outline-success btn-md" data-toggle="modal"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;{% trans 'Add' %}</button>		        		
 		        	</div>
 	        	</div>
 
-	        	</form>
+	        	
 	      	</div>
 
+	      	<div class="card-body">
+	      		<div>section 1</div>
+				<div id="id_security_guard_list">section 2</div>
+	      	</div>
 
+	      	</form>
 
-	      	<div class="card-body">&nbsp;</div>
 	    </div>
 
 		<div class="clearfix">&nbsp;</div>
@@ -250,7 +243,28 @@
     </section>
     <!-- /.content -->
 
+	<!-- Add security guard modal -->
+	<div class="modal fade" id="add_security_guard_modal" tabindex="-1" role="dialog">
 
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+	    <div class="modal-content">
+	      
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-plus fa-sm text-secondary"></i>&nbsp;&nbsp;<strong>{% trans 'Add new guard' %}</strong></h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      
+	      <div class="modal-body"></div>
+
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary btn-md" data-dismiss="modal">{% trans 'Close' %}</button>
+	        <button id="save_security_guard_button" onclick="save_new_service()" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}&nbsp;&nbsp;</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 
 
   </div>
@@ -262,6 +276,14 @@
 {% block javascript %}
 <script>
 $(document).ready(function(){
+ 	$('#add_security_guard_button').on('click', function (e) { 		
+    	var obj = $(this);
+    	result = "";
+    	//alert(obj);
+    	$("#add_security_guard_modal .modal-body").html(result);
+    	$("#add_security_guard_modal").modal("show");
+    });
+
 	$("#contract_service_list_form :input").attr("disabled", true);
 	$("#contract_service_person_list_form :input").attr("disabled", true);
 	$("#security_guard_list_form :input").attr("disabled", true);	
@@ -292,7 +314,10 @@ $(document).ready(function(){
 		$("#contract_service_list_form").trigger("reset");
 
 		$(".card-contract-service-list .card-body").html("");
-		$(".card-security-guard-list .card-body").html("");
+		
+		//$(".card-security-guard-list .card-body").html("");
+		$("#id_security_guard_list").html("");
+
 		$("#contract_service_list_amount").html("Total 0");
 		$("#security_guard_list_amount").html("Total 0");
 
@@ -396,7 +421,10 @@ $(document).ready(function(){
 						result += "  </tbody>";
 						result += "</table>";
 						result += "</font>";
-						$(".card-security-guard-list .card-body").html(result);		
+						
+						//$(".card-security-guard-list .card-body").html(result);
+						$("#id_security_guard_list").html(result);
+
 						$("#security_guard_list_amount").html("<b>Total " + total + "</b>");
 
 					} else {
@@ -404,7 +432,10 @@ $(document).ready(function(){
 						result += "  </tbody>";
 						result += "</table>";
 						result += "</font>";
-						$(".card-security-guard-list .card-body").html(result);		
+						
+						//$(".card-security-guard-list .card-body").html(result);
+						$("#id_security_guard_list").html(result);
+
 						$("#security_guard_list_amount").html("<b>Total 0</b>");
 					}
 	        	},
@@ -415,7 +446,10 @@ $(document).ready(function(){
 					result += "</font>";
 					if(count > 0)
 						count = count - 1;
-					$(".card-security-guard-list .card-body").html(result);		
+
+					//$(".card-security-guard-list .card-body").html(result);
+					$("#id_security_guard_list").html(result);
+
 					$("#security_guard_list_amount").html("<b>Total 0</b>");		          		
 	        	}   	
 	        });	    	
@@ -480,14 +514,20 @@ $(document).ready(function(){
 						result += "  </tbody>";
 						result += "</table>";
 						result += "</font>";
-						$(".card-security-guard-list .card-body").html(result);		
+						
+						//$(".card-security-guard-list .card-body").html(result);
+						$("#id_security_guard_list").html(result);
+
 						$("#security_guard_list_amount").html("<b>Total " + total + "</b>");							
 					} else {
 						result += "<tr><td colspan='17' align='center'>There is no data available.</td></tr>";
 						result += "  </tbody>";
 						result += "</table>";
 						result += "</font>";
-						$(".card-security-guard-list .card-body").html(result);		
+
+						//$(".card-security-guard-list .card-body").html(result);
+						$("#id_security_guard_list").html(result);
+
 						$("#security_guard_list_amount").html("<b>Total 0</b>");
 					}
 	        	},
@@ -496,7 +536,10 @@ $(document).ready(function(){
 					result += "  </tbody>";
 					result += "</table>";
 					result += "</font>";
-					$(".card-security-guard-list .card-body").html(result);		
+					
+					//$(".card-security-guard-list .card-body").html(result);
+					$("#id_security_guard_list").html(result);
+					
 					$("#security_guard_list_amount").html("<b>Total 0</b>");
 	        	}   	
 	        });
@@ -562,7 +605,10 @@ $(document).ready(function(){
 						result += "  </tbody>";
 						result += "</table>";
 						result += "</font>";
-						$(".card-security-guard-list .card-body").html(result);		
+						
+						//$(".card-security-guard-list .card-body").html(result);
+						$("#id_security_guard_list").html(result);
+
 						$("#security_guard_list_amount").html("<b>Total " + total + "</b>");							
 					} else {
 						result += "<tr><td colspan='17' align='center'>There is no data available.</td></tr>";
@@ -577,7 +623,10 @@ $(document).ready(function(){
 					result += "  </tbody>";
 					result += "</table>";
 					result += "</font>";
-					$(".card-security-guard-list .card-body").html(result);		
+					
+					//$(".card-security-guard-list .card-body").html(result);
+					$("#id_security_guard_list").html(result);
+
 					$("#security_guard_list_amount").html("<b>Total 0</b>");		          		
 	        	},	        
 	        });	  
@@ -586,10 +635,15 @@ $(document).ready(function(){
 			result += "  </tbody>";
 			result += "</table>";
 			result += "</font>";
-			$(".card-security-guard-list .card-body").html(result);		
+			
+			//$(".card-security-guard-list .card-body").html(result);
+			$("#id_security_guard_list").html(result);
+
 			$("#security_guard_list_amount").html("<b>Total 0</b>");		    	
 	    }
 	});
+
+
 
 });
 
@@ -843,7 +897,10 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 					result += "  </tbody>";
 					result += "</table>";
 					result += "</font>";
-					$(".card-security-guard-list .card-body").html(result);
+					
+					//$(".card-security-guard-list .card-body").html(result);
+					$("#id_security_guard_list").html(result);
+					
 					$("#security_guard_list_amount").html("<b>Total " + data.sch_plan_list.length + "</b>");
 				} else {
 					result = "";
@@ -867,3 +924,4 @@ function update_sch_plan(sch_no) {
 }
 </script>
 {% endblock %}
+
