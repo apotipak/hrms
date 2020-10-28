@@ -535,6 +535,19 @@ def ajax_get_customer_schedule_plan(request):
     	else:
     		emp_term_date = ""
 
+    	if int(sch_plan.sch_shf_sat) == 99:
+    		# sch_shf_sat = "DAY OFF"
+    		sch_shf_sat = sch_plan.sch_shf_sat 
+    	else:
+    		sch_shf_sat = sch_plan.sch_shf_sat 
+
+
+    	if int(sch_plan.sch_shf_sun) == 99:
+    		# sch_shf_sun = "DAY OFF"
+    		sch_shf_sun = sch_plan.sch_shf_sun 
+    	else:
+    		sch_shf_sun = sch_plan.sch_shf_sun 
+
     	response = JsonResponse(data={
 	        "success": True,
 			"sch_no": sch_plan.sch_no,
@@ -554,8 +567,8 @@ def ajax_get_customer_schedule_plan(request):
 			"sch_shf_wed": sch_plan.sch_shf_wed,
 			"sch_shf_thu": sch_plan.sch_shf_thu,
 			"sch_shf_fri": sch_plan.sch_shf_fri,
-			"sch_shf_sat": sch_plan.sch_shf_sat,
-			"sch_shf_sun": sch_plan.sch_shf_sun,
+			"sch_shf_sat": sch_shf_sat,
+			"sch_shf_sun": sch_shf_sun,
 			"sch_active": sch_active,
 			"relief": relief,
 			"upd_date": sch_plan.upd_date.strftime("%d/%m/%Y %H:%M:%S"),
