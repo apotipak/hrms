@@ -78,6 +78,7 @@ def ajax_get_customer(request):
 						    "cnt_id": d.cnt_id_id,
 						    "srv_rank": d.srv_rank_id,
 						    "srv_shif_id": d.srv_shif_id_id,
+						    "srv_shift_name": d.srv_shif_id.shf_desc,
 						    "srv_shift_text": d.srv_shif_id.shf_desc,
 						    "srv_eff_frm": d.srv_eff_frm.strftime("%d/%m/%Y"),
 						    "srv_eff_to": d.srv_eff_to.strftime("%d/%m/%Y"),
@@ -118,11 +119,6 @@ def ajax_get_customer(request):
 						else:
 							sch_active = 0
 
-						if d.sch_shf_sat == 99:
-							sch_shf_sat = "<span class='text-danger'>DO</span>"
-						else:
-							sch_shf_sat = "99"
-
 						record = {
 						    "sch_no": d.sch_no,
 						    "emp_id": d.emp_id_id,
@@ -136,7 +132,7 @@ def ajax_get_customer(request):
 						    "sch_shf_wed": d.sch_shf_wed,
 						    "sch_shf_thu": d.sch_shf_thu,
 						    "sch_shf_fri": d.sch_shf_fri,
-						    "sch_shf_sat": sch_shf_sat,
+						    "sch_shf_sat": d.sch_shf_sat,
 						    "sch_shf_sun": d.sch_shf_sun,
 						    "sch_active": sch_active,
 						    "relief": relief,
@@ -590,3 +586,19 @@ def ajax_get_customer_schedule_plan(request):
 
     response.status_code = 200
     return response
+
+
+
+@login_required(login_url='/accounts/login/')
+@permission_required('contract.view_dlyplan', login_url='/accounts/login/')
+def ajax_save_customer_schedule_plan(request):
+    print("*************************************")
+    print("FUNCTION: ajax_save_customer_schedule_plan()")
+    print("*************************************")
+
+    cus_id = request.POST.get('cus_id')
+    cus_brn = request.POST.get('cus_brn')
+    cus_vol = request.POST.get('cus_vol')
+    sch_no = request.POST.get("sch_no")	
+    cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
+    

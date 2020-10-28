@@ -511,6 +511,11 @@ $(document).ready(function(){
 
 	$('#id_cus_id').focus();
 
+ 	$("#save_security_guard_button").click( function() {
+    	event.preventDefault();    	
+    	alert("save");
+    });
+
  	$("#cancelCustomerServicePersonButton").click( function() {
     	event.preventDefault();    	
 
@@ -1002,7 +1007,8 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 							result += "    <tr>";
 							result += "      <th scope='row'>" + count + "</th>";
 							result += "      <td>" + data.cus_service_list[i]["srv_rank"] + "</td>";							
-							result += "      <td>" + data.cus_service_list[i]["srv_shif_id"] + "</td>";
+							//result += "      <td>" + data.cus_service_list[i]["srv_shif_id"] + "</td>";
+							result += "      <td>" + data.cus_service_list[i]["srv_shift_name"] + "</td>";							
 							result += "      <td class='text-center'>" + data.cus_service_list[i]["srv_qty"] + "</td>";
 							result += "      <td>" + data.cus_service_list[i]["srv_eff_frm"] + "</td>";
 							result += "      <td>" + data.cus_service_list[i]["srv_eff_to"] + "</td>";
@@ -1011,7 +1017,7 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 							result += "      <td class='text-center'>" + data.cus_service_list[i]["srv_wed"] + "</td>";
 							result += "      <td class='text-center'>" + data.cus_service_list[i]["srv_thu"] + "</td>";
 							result += "      <td class='text-center'>" + data.cus_service_list[i]["srv_fri"] + "</td>";
-							result += "      <td class='text-center'>" + data.cus_service_list[i]["srv_sat"] + "</td>";
+							result += "      <td class='text-center'>N" + data.cus_service_list[i]["srv_sat"] + "</td>";
 							result += "      <td class='text-center'>" + data.cus_service_list[i]["srv_sun"] + "</td>";
 							result += "      <td class='text-center'>" + data.cus_service_list[i]["srv_pub"] + "</td>";
 							result += "      <td class='text-center'>" + data.cus_service_list[i]["srv_active"] + "</td>";
@@ -1066,13 +1072,43 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 							result += "      <td>" + data.sch_plan_list[i]["sch_rank"] + "</td>";
 							result += "      <td>" + data.sch_plan_list[i]["sch_date_frm"] + "</td>";
 							result += "      <td>" + data.sch_plan_list[i]["sch_date_to"] + "</td>";
-							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_mon"] + "</td>";
-							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_tue"] + "</td>";
-							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_wed"] + "</td>";
-							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_thu"] + "</td>";
-							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_fri"] + "</td>";
-							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_sat"] + "</td>";
-							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_sun"] + "</td>";
+
+
+							if(data.sch_plan_list[i]["sch_shf_mon"] == "99")
+								result += "      <td class='text-center text-danger'>" + data.sch_plan_list[i]["sch_shf_mon"] + "</td>";
+							else
+								result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_mon"] + "</td>";
+							
+							if(data.sch_plan_list[i]["sch_shf_tue"] == "99")
+								result += "      <td class='text-center text-danger'>" + data.sch_plan_list[i]["sch_shf_tue"] + "</td>";
+							else
+								result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_tue"] + "</td>";
+
+							if(data.sch_plan_list[i]["sch_shf_wed"] == "99")
+								result += "      <td class='text-center text-danger'>" + data.sch_plan_list[i]["sch_shf_wed"] + "</td>";
+							else
+								result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_wed"] + "</td>";
+
+							if(data.sch_plan_list[i]["sch_shf_thu"] == "99")
+								result += "      <td class='text-center text-danger'>" + data.sch_plan_list[i]["sch_shf_thu"] + "</td>";
+							else
+								result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_thu"] + "</td>";
+
+							if(data.sch_plan_list[i]["sch_shf_fri"] == "99")
+								result += "      <td class='text-center text-danger'>" + data.sch_plan_list[i]["sch_shf_fri"] + "</td>";
+							else
+								result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_fri"] + "</td>";
+							
+							if(data.sch_plan_list[i]["sch_shf_sat"] == "99")
+								result += "      <td class='text-center text-danger'>" + data.sch_plan_list[i]["sch_shf_sat"] + "</td>";
+							else
+								result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_sat"] + "</td>";
+							
+							if(data.sch_plan_list[i]["sch_shf_sun"] == "99")
+								result += "      <td class='text-center text-danger'>" + data.sch_plan_list[i]["sch_shf_sun"] + "</td>";
+							else
+								result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_sun"] + "</td>";
+
 
 							if(data.sch_plan_list[i]["sch_active"]==1)
 								result += "      <td class='text-center'>Y</td>";
