@@ -223,7 +223,8 @@
 
 	        	<div class="card-tools">
 		        	<div class="card-tools float-right">
-		        		<button id="add_security_guard_button" type="button" class="btn btn-outline-success btn-md" data-toggle="modal"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;{% trans 'Add' %}</button>		        		
+		        		<button id="add_security_guard_button" type="button" class="btn btn-outline-success btn-sm" data-toggle="modal"><i class="fas fa-plus fa-md"></i>&nbsp;&nbsp;{% trans 'Add' %}</button>&nbsp;
+		        		<button id="save_security_guard_button" type="button" class="btn btn-outline-success btn-sm" data-toggle="modal"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</button>
 		        	</div>
 	        	</div>
 
@@ -242,7 +243,7 @@
 	      		<font size='2pt'>
 				<div class="row" style="white-space:nowrap;">
 					
-					<div class="col-8 float-left">
+					<div class="col-9 float-left">
 
 					  <div class="form-group row">
 					    <div class="col-2">
@@ -262,7 +263,7 @@
 					      	<input type="text" class="form-control form-control-sm" id="id_sch_rank_dept" placeholder="Rank | Dept">
 					    </div>
 
-					    <div class="col-2">
+					    <div class="col-3">
 					    	<label class="form-check-label" for="id_sch_rank">Duration</label>
 					      	<input type="text" class="form-control form-control-sm" id="id_duration_from" placeholder="From">
 					    </div>
@@ -289,35 +290,110 @@
 					    <div class="col-2">
 					      <input type="text" class="form-control form-control-sm" id="id_emp_status" placeholder="Status">
 					    </div>
-					    <div class="col-2">					    	
+					    <div class="col-3">					    	
 					      	<input type="text" class="form-control form-control-sm" id="id_duration_to" placeholder="To">
 					    </div>					    		    
 					  </div>
 					</div>
 
-					<div class="col-4 float-right">
-						SHIFT / WEEK
-					</div>
+					<!--
+					<div class="col-3 float-left">
+						<div class="row text-left"><b>SHIFT / WEEK</b></div>
 
+						<div class="row form-inline">
+							<div class="text-left text-yellow">MON</div>&nbsp;&nbsp;&nbsp;
+							<div class="float-right text-right">
+                          	<select name="id_mon_shift" class="form-control form-control-sm" required="" id="id_mon_shift">
+	                          	<option value="99">99&nbsp;&nbsp;&nbsp;# DAY OFF </option> 
+                              	<option value="999" selected>999&nbsp;&nbsp;&nbsp;# ANOTHER SITE&nbsp;&nbsp;&nbsp;&nbsp;</option>
+                          	</select>
+                          	</div>
+                        </div>
+						<div class="row text-left form-inline">
+							<div class="text-left text-pink">TUE</div>&nbsp;&nbsp;&nbsp;
+							<div class="float-right text-right">
+                          	<select name="id_tue_shift" class="form-control form-control-sm" required="" id="id_tue_shift">
+	                          	<option value="99">99&nbsp;&nbsp;&nbsp;# DAY OFF </option> 
+                              	<option value="999" selected>999&nbsp;&nbsp;&nbsp;# ANOTHER SITE&nbsp;&nbsp;&nbsp;&nbsp;</option>
+                          	</select>
+                          	</div>
+                        </div>
+						<div class="row text-left form-inline">
+							<div class="text-left text-green">WED</div>&nbsp;&nbsp;&nbsp;
+							<div class="float-right">
+                          	<select name="id_wed_shift" class="form-control form-control-sm" required="" id="id_wed_shift">
+	                          	<option value="99">99&nbsp;&nbsp;&nbsp;# DAY OFF </option> 
+                              	<option value="999" selected>999&nbsp;&nbsp;&nbsp;# ANOTHER SITE&nbsp;&nbsp;&nbsp;&nbsp;</option>
+                          	</select>
+                          	</div>
+                        </div>
+						<div class="row text-left form-inline">
+							<div class="text-left text-orange">THU</div>&nbsp;&nbsp;&nbsp;
+							<div class="float-right">
+                          	<select name="id_thu_shift" class="form-control form-control-sm" required="" id="id_thu_shift">
+	                          	<option value="99">99&nbsp;&nbsp;&nbsp;# DAY OFF </option> 
+                              	<option value="999" selected>999&nbsp;&nbsp;&nbsp;# ANOTHER SITE&nbsp;&nbsp;&nbsp;&nbsp;</option>
+                          	</select>
+                          	</div>
+                        </div>
+						<div class="row text-left form-inline">
+							<div class="text-left text-blue">FRI</div>&nbsp;&nbsp;&nbsp;
+							<div class="float-right">
+                          	<select name="id_fri_shift" class="form-control form-control-sm" required="" id="id_fri_shift">
+	                          	<option value="99">99&nbsp;&nbsp;&nbsp;# DAY OFF </option> 
+                              	<option value="999" selected>999&nbsp;&nbsp;&nbsp;# ANOTHER SITE&nbsp;&nbsp;&nbsp;&nbsp;</option>
+                          	</select>
+                          	</div>
+                        </div>
+						<div class="row text-left form-inline">
+							<div class="text-left text-pink">SAT</div>&nbsp;&nbsp;&nbsp;
+							<div class="float-right">
+                          	<select name="id_sat_shift" class="form-control form-control-sm" required="" id="id_sat_shift">
+	                          	<option value="99">99&nbsp;&nbsp;&nbsp;# DAY OFF </option> 
+                              	<option value="999" selected>999&nbsp;&nbsp;&nbsp;# ANOTHER SITE&nbsp;&nbsp;&nbsp;&nbsp;</option>
+                          	</select>
+                          	</div>
+                        </div>
+						<div class="row text-left form-inline">
+							<div class="text-left text-red">SUN</div>&nbsp;&nbsp;&nbsp;
+							<div class="float-right">
+                          	<select name="id_sun_shift" class="form-control form-control-sm" required="" id="id_sun_shift">
+	                          	<option value="99">99&nbsp;&nbsp;&nbsp;# DAY OFF </option> 
+                              	<option value="999" selected>999&nbsp;&nbsp;&nbsp;# ANOTHER SITE&nbsp;&nbsp;&nbsp;&nbsp;</option>
+                          	</select>
+                          	</div>
+                        </div>                                                                                            
+					</div>
+					-->
 	      		</div> 
 
 	      		<hr>
 	      		<!-- Filter -->
-	      		<div class="row p-2">
-	      			<b>Filter</b>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
-					<div class="form-check form-check-inline">
-		              <input class="form-check-input" type="radio" name="security_guard_list_status_option" id="id_security_guard_list_option_active" value="1" checked>
-		              <label class="form-check-label" for="id_security_guard_list_option_active">Active</label>
-		            </div>
-		            <div class="form-check form-check-inline">
-		              <input class="form-check-input" type="radio" name="security_guard_list_status_option" id="id_security_guard_list_option_pending" value="2">
-		              <label class="form-check-label" for="id_security_guard_list_option_pending">Pending</label>
-		            </div>
-		            <div class="form-check form-check-inline">
-		              <input class="form-check-input" type="radio" name="security_guard_list_status_option" id="id_security_guard_list_option_all" value="3">
-		              <label class="form-check-label" for="id_security_guard_list_option_all">All</label>
-		            </div>
-		            &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<span id="security_guard_list_amount"><b>Total 0</b></span>
+	      		<div class="row">
+	      			
+	      			<div class="col-8 float-left pb-2">	      				
+
+						<div class="form-check form-check-inline">
+			              <input class="form-check-input" type="radio" name="security_guard_list_status_option" id="id_security_guard_list_option_active" value="1" checked>
+			              <label class="form-check-label" for="id_security_guard_list_option_active">Active</label>
+			            </div>
+			            <div class="form-check form-check-inline">
+			              <input class="form-check-input" type="radio" name="security_guard_list_status_option" id="id_security_guard_list_option_pending" value="2">
+			              <label class="form-check-label" for="id_security_guard_list_option_pending">Pending</label>
+			            </div>
+			            <div class="form-check form-check-inline">
+			              <input class="form-check-input" type="radio" name="security_guard_list_status_option" id="id_security_guard_list_option_all" value="3">
+			              <label class="form-check-label" for="id_security_guard_list_option_all">All</label>
+
+			              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<span id="security_guard_list_amount"><b>Total 0</b></span>
+			            </div>			            
+
+		        	</div>
+
+		        	<div class="col-4 card-tools float-right text-right">
+		        		<!--<button id="add_security_guard_button" type="button" class="btn btn-outline-success btn-sm" data-toggle="modal">{% trans 'Add' %}</button>-->
+		        	</div>
+
 	      		</div>
 
 
@@ -424,6 +500,8 @@ $(document).ready(function(){
  	 	
 	$('input[type=radio][name=security_guard_list_status_option]').change(function() {
 
+		$("#id_security_guard_list").html("");
+
 		// Security Guard List
 		result = "";
 		result += "<font size='2'>";
@@ -527,7 +605,6 @@ $(document).ready(function(){
 						
 						//$(".card-security-guard-list .card-body").html(result);
 						$("#id_security_guard_list").html(result);
-
 						$("#security_guard_list_amount").html("<b>Total 0</b>");
 					}
 	        	},
@@ -541,12 +618,14 @@ $(document).ready(function(){
 
 					//$(".card-security-guard-list .card-body").html(result);
 					$("#id_security_guard_list").html(result);
-
 					$("#security_guard_list_amount").html("<b>Total 0</b>");		          		
 	        	}   	
 	        });	    	
 	    }
 	    else if (this.value == '2') {
+			$("#id_security_guard_list").html("Loading...");
+			$("#security_guard_list_amount").html("<b>Total 0</b>");
+
 			$.ajax({
 
 	        	url : "/monitoring/ajax/get_customer_schdule_plan/",
