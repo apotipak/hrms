@@ -94,7 +94,7 @@ def ajax_get_customer(request):
 						    "srv_sun": d.srv_sun,
 						    "srv_pub": d.srv_pub,
 						    "srv_rem": d.srv_rem,
-						    "srv_active": "X",
+						    "srv_active": "Y",
 						}
 						cus_service_list.append(record)		
 			except CusService.DoesNotExist:
@@ -372,13 +372,13 @@ def ajax_get_customer_schedule_plan(request):
     print("cnt_id = " + str(cnt_id))
     print("sch_active = " + str(sch_active))
 
-    try:
-    	sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).exclude(upd_flag='D').order_by('emp_id')
+    try:    	
     	print("sch_plan is found")
     	sch_plan_list = []
     	total = 0
 
     	if sch_active == '1':
+    		sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).exclude(upd_flag='D').order_by('emp_id')
 	    	for d in sch_plan:    		
 	    		if d.sch_active:
 	    			if d.relief:
@@ -415,6 +415,7 @@ def ajax_get_customer_schedule_plan(request):
 	    			}
 	    			sch_plan_list.append(record)
     	elif sch_active == '2':
+    		sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).exclude(upd_flag='D').order_by('emp_id')
 	    	for d in sch_plan:    		
 	    		if d.sch_active == 0:
 	    			if d.relief:
@@ -450,6 +451,7 @@ def ajax_get_customer_schedule_plan(request):
 	    			}
 	    			sch_plan_list.append(record)
     	elif sch_active == '3':
+    		sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).exclude(upd_flag='D').order_by('-sch_active', 'emp_id')
 	    	for d in sch_plan:
     			if d.relief:
     				relief = 1

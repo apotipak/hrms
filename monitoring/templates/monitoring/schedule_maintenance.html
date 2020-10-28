@@ -198,7 +198,8 @@
 
 	      	<div class="card-header">                
 	        	<div class="float-left">
-	        		<h4 class="m-0 text-dark">Security Guard List&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	        		<h4 class="m-0 text-dark">Security Guard List&nbsp;&nbsp;
+	        		<!--
 	        		<small><small>
 					<div class="form-check form-check-inline">
 		              <input class="form-check-input" type="radio" name="security_guard_list_status_option" id="id_security_guard_list_option_active" value="1" checked>
@@ -213,8 +214,10 @@
 		              <label class="form-check-label" for="id_security_guard_list_option_all">All</label>
 		            </div>		            
 	            	</small></small>
-					&nbsp;|&nbsp;&nbsp;
-	        		<small><small><span id="security_guard_list_amount"><b>Total 0</b></span></small></small>
+	            	-->
+					<!--&nbsp;|&nbsp;&nbsp;	
+	        		<small><small>	        		
+	        		<span id="security_guard_list_amount"><b>Total 0</b></span></small></small>-->
 	        		</h4>
 	        	</div>
 
@@ -250,22 +253,23 @@
                             </div>
 					    </div>	
 
-					    <div class="col-2">
+					    <div class="col-4">
 					    	<label class="form-check-label" for="id_emp_name_th">Name</label>
 					      	<input type="text" class="form-control form-control-sm" id="id_emp_name_th" placeholder="Name">
 					    </div>
 					    <div class="col-2">
-					    	<label class="form-check-label" for="id_sch_rank">Rank</label>
-					      	<input type="text" class="form-control form-control-sm" id="id_sch_rank" placeholder="Rank">
+					    	<label class="form-check-label" for="id_sch_rank">Rank | Dept</label>
+					      	<input type="text" class="form-control form-control-sm" id="id_sch_rank_dept" placeholder="Rank | Dept">
 					    </div>
+
 					    <div class="col-2">
-					    	<label class="form-check-label" for="id_emp_type">Department</label>
-					      	<input type="text" class="form-control form-control-sm" id="id_emp_type" placeholder="Department">
+					    	<label class="form-check-label" for="id_sch_rank">Duration</label>
+					      	<input type="text" class="form-control form-control-sm" id="id_duration_from" placeholder="From">
 					    </div>
+
 					  </div>
 
 					  <div class="form-group row">	
-					  	
 					  	<div class="col-2 pt-2">	   
 							<div class="form-check form-check-inline">
 							  <input class="form-check-input" type="checkbox" id="id_service_active" value=1 checked>
@@ -276,7 +280,6 @@
 							  <label class="form-check-label" for="id_relief">Relief</label>
 							</div>
 						</div>
-
 					    <div class="col-2">
 					      <input type="text" class="form-control form-control-sm" id="id_emp_join_date" placeholder="Joined Date">
 					    </div>
@@ -285,9 +288,11 @@
 					    </div>
 					    <div class="col-2">
 					      <input type="text" class="form-control form-control-sm" id="id_emp_status" placeholder="Status">
-					    </div>					    
+					    </div>
+					    <div class="col-2">					    	
+					      	<input type="text" class="form-control form-control-sm" id="id_duration_to" placeholder="To">
+					    </div>					    		    
 					  </div>
-
 					</div>
 
 					<div class="col-4 float-right">
@@ -295,6 +300,27 @@
 					</div>
 
 	      		</div> 
+
+	      		<hr>
+	      		<!-- Filter -->
+	      		<div class="row p-2">
+	      			<b>Filter</b>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
+					<div class="form-check form-check-inline">
+		              <input class="form-check-input" type="radio" name="security_guard_list_status_option" id="id_security_guard_list_option_active" value="1" checked>
+		              <label class="form-check-label" for="id_security_guard_list_option_active">Active</label>
+		            </div>
+		            <div class="form-check form-check-inline">
+		              <input class="form-check-input" type="radio" name="security_guard_list_status_option" id="id_security_guard_list_option_pending" value="2">
+		              <label class="form-check-label" for="id_security_guard_list_option_pending">Pending</label>
+		            </div>
+		            <div class="form-check form-check-inline">
+		              <input class="form-check-input" type="radio" name="security_guard_list_status_option" id="id_security_guard_list_option_all" value="3">
+		              <label class="form-check-label" for="id_security_guard_list_option_all">All</label>
+		            </div>
+		            &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<span id="security_guard_list_amount"><b>Total 0</b></span>
+	      		</div>
+
+
 	      		</font>
 
 				<div id="id_security_guard_list"></div>
@@ -459,12 +485,12 @@ $(document).ready(function(){
 							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_sun"] + "</td>";
 
 							if(data.sch_plan_list[i]["sch_active"]==1)
-								result += "      <td class='text-center'>X</td>";
+								result += "      <td class='text-center'>Y</td>";
 							else
 								result += "      <td class='text-center'>&nbsp;</td>";
 
 							if(data.sch_plan_list[i]["relief"]==1)
-								result += "      <td class='text-center'>X</td>";
+								result += "      <td class='text-center'>Y</td>";
 							else
 								result += "      <td class='text-center'>&nbsp;</td>";
 
@@ -553,12 +579,12 @@ $(document).ready(function(){
 							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_sun"] + "</td>";
 
 							if(data.sch_plan_list[i]["sch_active"]==1)
-								result += "      <td class='text-center'>X</td>";
+								result += "      <td class='text-center'>Y</td>";
 							else
 								result += "      <td class='text-center'>&nbsp;</td>";
 
 							if(data.sch_plan_list[i]["relief"]==1)
-								result += "      <td class='text-center'>X</td>";
+								result += "      <td class='text-center'>Y</td>";
 							else
 								result += "      <td class='text-center'>&nbsp;</td>";
 
@@ -644,12 +670,12 @@ $(document).ready(function(){
 							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_sun"] + "</td>";
 
 							if(data.sch_plan_list[i]["sch_active"]==1)
-								result += "      <td class='text-center'>X</td>";
+								result += "      <td class='text-center'>Y</td>";
 							else
 								result += "      <td class='text-center'>&nbsp;</td>";
 
 							if(data.sch_plan_list[i]["relief"]==1)
-								result += "      <td class='text-center'>X</td>";
+								result += "      <td class='text-center'>Y</td>";
 							else
 								result += "      <td class='text-center'>&nbsp;</td>";
 
@@ -927,12 +953,12 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_sun"] + "</td>";
 
 							if(data.sch_plan_list[i]["sch_active"]==1)
-								result += "      <td class='text-center'>X</td>";
+								result += "      <td class='text-center'>Y</td>";
 							else
 								result += "      <td class='text-center'>&nbsp;</td>";
 
 							if(data.sch_plan_list[i]["relief"]==1)
-								result += "      <td class='text-center'>X</td>";
+								result += "      <td class='text-center'>Y</td>";
 							else
 								result += "      <td class='text-center'>&nbsp;</td>";
 
