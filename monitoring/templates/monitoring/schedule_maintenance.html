@@ -525,7 +525,7 @@ $(document).ready(function(){
 
 	    if (this.value == '1') {
 			$.ajax({
-	        	url : "/monitoring/ajax/get_customer_schdule_plan/",
+	        	url : "/monitoring/ajax/get_customer_schdule_plan_list/",
 	        	type : "POST",
 	        	async: false,
 	        	data : {          
@@ -621,7 +621,7 @@ $(document).ready(function(){
 
 			$.ajax({
 
-	        	url : "/monitoring/ajax/get_customer_schdule_plan/",
+	        	url : "/monitoring/ajax/get_customer_schdule_plan_list/",
 	        	type : "POST",
 	        	async: false,
 	        	data : {          
@@ -712,7 +712,7 @@ $(document).ready(function(){
 
 			$.ajax({
 
-	        	url : "/monitoring/ajax/get_customer_schdule_plan/",
+	        	url : "/monitoring/ajax/get_customer_schdule_plan_list/",
 	        	type : "POST",
 	        	async: false,
 	        	data : {          
@@ -1082,7 +1082,61 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 });
 
 function update_sch_plan(sch_no) {
-	alert(sch_no);	
+	cus_id = $('#id_cus_id').val();
+	cus_brn = $('#id_cus_brn').val();
+	cus_vol = $('#id_cus_vol').val();
+		
+	if(cus_id=="") {
+		alert("Please entet Customer ID.");
+		$('#id_cus_id').focus();				
+		return false;
+	}
+
+	if(cus_brn=="") {
+		alert("Please entet Customer Branch.");
+		$('#id_cus_brn').focus();
+		return false;			
+	}
+
+	if(cus_vol=="") {
+		alert("Please entet Customer Volume.");
+		$('#id_cus_vol').focus();
+		return false;
+	}
+
+	if(sch_no=="") {
+		return false;			
+	}
+
+	$.ajax({
+    	url : "/monitoring/ajax/get_customer_schdule_plan/",
+    	type : "POST",
+    	data : {          
+      	csrfmiddlewaretoken: '{{ csrf_token }}',
+      	cus_id: cus_id,
+      	cus_brn: cus_brn,
+      	cus_vol: cus_vol,
+      	sch_no: sch_no,
+    	},
+    	success: function(data) { 
+    		$("#id_emp_id").focus();
+    		$("#id_emp_id").val(data.emp_id);
+    		$("#id_sch_rank_dept").val(data.sch_rank);
+    		$("#id_duration_from").val(data.sch_date_frm);
+    		$("#id_duration_to").val(data.sch_date_to);
+    		if(data.sch_active=="1") {
+    			$("#id_security_guard_list_option_active").prop("checked", true);
+    			$("#id_security_guard_list_option_pending").prop("checked", false);
+    		}
+    		else {
+    			$("#id_security_guard_list_option_pending").prop("checked", true);
+    			$("#id_security_guard_list_option_active").prop("checked", false);
+    		}
+    	},
+    	error: function(data) {
+    		alert("0");
+    	},
+    });
 }
 </script>
 {% endblock %}

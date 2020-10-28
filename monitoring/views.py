@@ -359,9 +359,9 @@ def get_customer_service_list(request):
 
 @login_required(login_url='/accounts/login/')
 @permission_required('contract.view_dlyplan', login_url='/accounts/login/')
-def ajax_get_customer_schedule_plan(request):
+def ajax_get_customer_schedule_plan_list(request):
     print("*************************************")
-    print("FUNCTION: ajax_get_customer_schedule_plan()")
+    print("FUNCTION: ajax_get_customer_schedule_plan_list()")
     print("*************************************")
 
     cus_id = request.POST.get('cus_id')
@@ -497,6 +497,66 @@ def ajax_get_customer_schedule_plan(request):
         "success": True,
         "sch_plan_list": list(sch_plan_list),
     })
+
+    response.status_code = 200
+    return response
+
+
+@login_required(login_url='/accounts/login/')
+@permission_required('contract.view_dlyplan', login_url='/accounts/login/')
+def ajax_get_customer_schedule_plan(request):
+    print("*************************************")
+    print("FUNCTION: ajax_get_customer_schedule_plan()")
+    print("*************************************")
+
+    cus_id = request.POST.get('cus_id')
+    cus_brn = request.POST.get('cus_brn')
+    cus_vol = request.POST.get('cus_vol')
+    sch_no = request.POST.get("sch_no")	
+    cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
+    print("sch_no = " + str(sch_no))
+
+    try:
+    	sch_plan = SchPlan.objects.filter(sch_no=sch_no).get()
+
+    	print("debug : " + str(sch_plan.emp_id_id) + str(sch_plan.sch_rank))
+    	
+    	if sch_plan.relief:
+    		relief = 1
+    	else:
+    		relief = 0 
+    	if sch_plan.sch_active:
+    		sch_active = 1
+    	else:
+    		sch_active = 0
+
+    	response = JsonResponse(data={
+	        "success": True,
+			"sch_no": sch_plan.sch_no,
+			"emp_id": sch_plan.emp_id_id,
+		    "emp_fname_th": sch_plan.emp_id.emp_fname_th,
+		    "emp_lname_th": sch_plan.emp_id.emp_lname_th,    				
+			"sch_rank": sch_plan.sch_rank,
+			"sch_date_frm": sch_plan.sch_date_frm.strftime("%d/%m/%Y"),
+			"sch_date_to": sch_plan.sch_date_to.strftime("%d/%m/%Y"),
+			"sch_shf_mon": sch_plan.sch_shf_mon,
+			"sch_shf_tue": sch_plan.sch_shf_tue,
+			"sch_shf_wed": sch_plan.sch_shf_wed,
+			"sch_shf_thu": sch_plan.sch_shf_thu,
+			"sch_shf_fri": sch_plan.sch_shf_fri,
+			"sch_shf_sat": sch_plan.sch_shf_sat,
+			"sch_shf_sun": sch_plan.sch_shf_sun,
+			"sch_active": sch_active,
+			"relief": relief,
+			"upd_date": sch_plan.upd_date.strftime("%d/%m/%Y %H:%M:%S"),
+			"upd_by": sch_plan.upd_by,
+			"upd_flag": sch_plan.upd_flag,	        
+   		})					    		   
+    except SchPlan.DoesNotExist:
+	    response = JsonResponse(data={
+	        "success": True,
+	        "sch_plan": list(record),
+	    })
 
     response.status_code = 200
     return response
