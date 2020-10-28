@@ -451,6 +451,11 @@
     </section>
     <!-- /.content -->
 
+
+
+
+
+
 	<!-- Add security guard modal -->
 	<div class="modal fade" id="add_security_guard_modal" tabindex="-1" role="dialog">
 
@@ -510,8 +515,11 @@ $(document).ready(function(){
     	event.preventDefault();    	
 
     	$("#schedule_maintenance_form :input").attr("disabled", false);
+    	
     	$("#schedule_maintenance_form").trigger("reset");
-    	$('#contract_service_list_form').trigger("reset");
+    	$("#contract_service_list_form").trigger("reset");
+		$("#security_guard_list_form").trigger("reset");
+
     	$('#contract_service_persion_list_form').trigger("reset");		    	
 		$("#customer_name_title").html("");
 		$("#contract_service_list_form :input").attr("disabled", true);
