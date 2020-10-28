@@ -520,6 +520,8 @@ def ajax_get_customer_schedule_plan(request):
     	sch_plan = SchPlan.objects.filter(sch_no=sch_no).get()
 
     	print("debug : " + str(sch_plan.emp_id_id) + str(sch_plan.sch_rank))
+    	print("sch_active = " + str(sch_plan.sch_active))
+
 
     	if sch_plan.relief:
     		relief = 1

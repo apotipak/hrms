@@ -301,11 +301,11 @@
 					  	<div class="col-2">	   	
 					  		<div><label class="form-label" for="id_sch_rank"><b>Service Status</b></label></div>
 							<div class="form-check form-check-inline">
-							  <input class="form-check-input" type="checkbox" id="id_service_active" value=1 checked>
+							  <input class="form-check-input" type="checkbox" id="id_service_active" value="1">
 							  <label class="form-check-label" for="id_service_active"><b>Active</b></label>
 							</div>
 							<div class="form-check form-check-inline">
-							  <input class="form-check-input" type="checkbox" id="id_relief" value=0>
+							  <input class="form-check-input" type="checkbox" id="id_relief" value="0">
 							  <label class="form-check-label" for="id_relief"><b>Relief</b></label>
 							</div>
 						</div>
@@ -1170,14 +1170,16 @@ function update_sch_plan(sch_no) {
     		$("#id_sch_dept").val(data.emp_type);
     		$("#id_duration_from").val(data.sch_date_frm);
     		$("#id_duration_to").val(data.sch_date_to);
-    		if(data.sch_active=="1") {
-    			$("#id_security_guard_list_option_active").prop("checked", true);
-    			$("#id_security_guard_list_option_pending").prop("checked", false);
+
+    		if(data.sch_active==1) {
+    			$("#id_service_active").prop("checked", true);
+    			$("#id_relief").prop("checked", false);
     		}
     		else {
-    			$("#id_security_guard_list_option_pending").prop("checked", true);
-    			$("#id_security_guard_list_option_active").prop("checked", false);
+    			$("#id_service_active").prop("checked", false);
+    			$("#id_relief").prop("checked", true);
     		}
+
     		$("#id_emp_join_date").val(data.emp_join_date);
     		$("#id_emp_term_date").val(data.emp_term_date);
     		$("#id_emp_status").val(data.emp_status_id + " | " + data.emp_status);
