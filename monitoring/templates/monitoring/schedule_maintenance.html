@@ -236,27 +236,66 @@
 
 	      	<div class="card-body">
 
+	      		<font size='2pt'>
 				<div class="row" style="white-space:nowrap;">
 					
 					<div class="col-8 float-left">
 
-					  <div class="form-group row">					   
+					  <div class="form-group row">
 					    <div class="col-2">
-					      <input type="text" readonly class="form-control-sm" id="id_cus_main_cus_name_th">
-					    </div>						
+					    	<label class="form-check-label" for="id_emp_id">Employee ID</label>
+                            <div class="input-group">                            	
+                              	<input type="text" id="id_emp_id" name="id_emp_id" class="form-control form-control-sm" value="">
+                              	<button id="id_emp_id_lookup" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url=""><i class="fas fa-search fa-sm"></i></button>
+                            </div>
+					    </div>	
+
 					    <div class="col-2">
-					      <input type="text" readonly class="form-control-sm" id="id_cus_main_cus_tel" >
+					    	<label class="form-check-label" for="id_emp_name_th">Name</label>
+					      	<input type="text" class="form-control form-control-sm" id="id_emp_name_th" placeholder="Name">
 					    </div>
+					    <div class="col-2">
+					    	<label class="form-check-label" for="id_sch_rank">Rank</label>
+					      	<input type="text" class="form-control form-control-sm" id="id_sch_rank" placeholder="Rank">
+					    </div>
+					    <div class="col-2">
+					    	<label class="form-check-label" for="id_emp_type">Department</label>
+					      	<input type="text" class="form-control form-control-sm" id="id_emp_type" placeholder="Department">
+					    </div>
+					  </div>
+
+					  <div class="form-group row">	
+					  	
+					  	<div class="col-2 pt-2">	   
+							<div class="form-check form-check-inline">
+							  <input class="form-check-input" type="checkbox" id="id_service_active" value=1 checked>
+							  <label class="form-check-label" for="id_service_active">Active</label>
+							</div>
+							<div class="form-check form-check-inline">
+							  <input class="form-check-input" type="checkbox" id="id_relief" value=0>
+							  <label class="form-check-label" for="id_relief">Relief</label>
+							</div>
+						</div>
+
+					    <div class="col-2">
+					      <input type="text" class="form-control form-control-sm" id="id_emp_join_date" placeholder="Joined Date">
+					    </div>
+					    <div class="col-2">
+					      <input type="text" class="form-control form-control-sm" id="id_emp_term_date" placeholder="Terminated Date">
+					    </div>
+					    <div class="col-2">
+					      <input type="text" class="form-control form-control-sm" id="id_emp_status" placeholder="Status">
+					    </div>					    
 					  </div>
 
 					</div>
 
 					<div class="col-4 float-right">
-						TODO
+						SHIFT / WEEK
 					</div>
 
-	      		</div>
-
+	      		</div> 
+	      		</font>
 
 				<div id="id_security_guard_list"></div>
 	      	</div>
