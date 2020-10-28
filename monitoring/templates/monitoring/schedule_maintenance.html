@@ -195,8 +195,11 @@
       	<!-- Security Guard List -->      	
 	    <div class="card card-security-guard-list">
 
+			<form id="security_guard_list_form" method="POST">
+      		{% csrf_token %}
 
 	      	<div class="card-header">                
+
 	        	<div class="float-left">
 	        		<h4 class="m-0 text-dark">Security Guard List&nbsp;&nbsp;
 	        		<!--
@@ -231,18 +234,11 @@
 	        	
 	      	</div>
 
-
-
-
-
-			<form id="security_guard_list_form" method="POST">
-      		{% csrf_token %}
-
 	      	<div class="card-body">
 
 	      		<font size='2pt'>
 				<div class="row" style="white-space:nowrap;">
-					
+
 					<div class="col-9 float-left">
 
 					  <div class="form-group row">
@@ -447,14 +443,12 @@ $(document).ready(function(){
  	$('#add_security_guard_button').on('click', function (e) { 		
     	var obj = $(this);
     	result = "";
-    	//alert(obj);
     	$("#add_security_guard_modal .modal-body").html(result);
     	$("#add_security_guard_modal").modal("show");
     });
 
 	$("#contract_service_list_form :input").attr("disabled", true);
-	$("#contract_service_person_list_form :input").attr("disabled", true);
-	$("#security_guard_list_form :input").attr("disabled", true);	
+	$("#security_guard_list_form :input").prop("disabled", true);	
 
 	$("#id_cus_id").on('click', function(){
 		$("#id_cus_id").select();
@@ -477,7 +471,6 @@ $(document).ready(function(){
     	$('#contract_service_persion_list_form').trigger("reset");		    	
 		$("#customer_name_title").html("");
 		$("#contract_service_list_form :input").attr("disabled", true);
-		$("#contract_service_person_list_form :input").attr("disabled", true);
 		$("#security_guard_list_form :input").attr("disabled", true);
 		$("#contract_service_list_form").trigger("reset");
 
@@ -892,12 +885,10 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 				
 				if(data.is_existed) {
 					$("#contract_service_list_form :input").attr("disabled", false);
-					$("#contract_service_person_list_form :input").attr("disabled", false);
 					$("#security_guard_list_form :input").attr("disabled", false);					
 
 					$("#schedule_maintenance_form :input").attr("disabled", true);					
 					$("#cancelCustomerServicePersonButton").attr("disabled", false);
-
 
 					result_title = "";
 					result_title = "<h3 class='m-0 text-dark'>" + data.cus_site_name_th + "<small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-primary'></i></button></small></h3>";
@@ -1076,7 +1067,7 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 				} else {
 					result = "";
 					$("#contract_service_list_form :input").attr("disabled", true);
-					$("#contract_service_person_list_form :input").attr("disabled", true);
+					$("#security_guard_list_form :input").attr("disabled", true);
 					result = "<h3 class='m-0 text-dark'>Not found<small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-primary'></i></button></small></h3>";
 				}
 
