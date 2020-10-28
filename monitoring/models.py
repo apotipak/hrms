@@ -1,6 +1,7 @@
 from django.db import models
 from employee.models import Employee
 
+
 class DlyPlan(models.Model):
     cnt_id = models.DecimalField(primary_key=True, max_digits=13, decimal_places=0)
     emp_id = models.DecimalField(max_digits=7, decimal_places=0)    
@@ -117,7 +118,7 @@ class SchPlan(models.Model):
     cnt_id = models.DecimalField(max_digits=13, decimal_places=0, blank=True, null=True)
     
     # emp_id = models.DecimalField(max_digits=7, decimal_places=0, blank=True, null=True)
-    emp_id = models.ForeignKey(Employee, related_name='sch_plan_employee_fk', db_column='emp_id', to_field='emp_id', on_delete=models.SET_NULL, null=True)
+    emp_id = models.ForeignKey(Employee, related_name='sch_plan_employee_fk_1', db_column='emp_id', to_field='emp_id', on_delete=models.SET_NULL, null=True)
 
     sch_rank = models.CharField(max_length=3, blank=True, null=True)
     relief = models.BooleanField(blank=True, null=True)

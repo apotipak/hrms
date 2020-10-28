@@ -1,4 +1,5 @@
 from django.db import models
+from system.models import TEmpsts
 
 
 class Employee(models.Model):
@@ -35,7 +36,10 @@ class Employee(models.Model):
     emp_position = models.SmallIntegerField(blank=True, null=True)
     emp_rank = models.CharField(max_length=3, blank=True, null=True)
     emp_grade = models.SmallIntegerField(blank=True, null=True)
-    emp_status = models.SmallIntegerField(blank=True, null=True)
+    
+    # emp_status = models.SmallIntegerField(blank=True, null=True)
+    emp_status = models.ForeignKey(TEmpsts, related_name='employee_t_empsts_fk_1', db_column='emp_status', to_field='sts_id', on_delete=models.SET_NULL, null=True)
+
     emp_payid = models.SmallIntegerField(blank=True, null=True)
     salary_active = models.BooleanField(blank=True, null=True)
     emp_salary = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
