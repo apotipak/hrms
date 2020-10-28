@@ -334,3 +334,16 @@ class ComRank(models.Model):
     class Meta:
         managed = False
         db_table = 'COM_RANK'
+
+class TEmpsts(models.Model):
+    sts_id = models.SmallIntegerField(primary_key=True)
+    sts_th = models.CharField(max_length=50, blank=True, null=True)
+    sts_en = models.CharField(max_length=30, blank=True, null=True)
+    sts_flag = models.BooleanField(blank=True, null=True)
+    upd_date = models.DateTimeField(blank=True, null=True)
+    upd_by = models.CharField(max_length=10, blank=True, null=True)
+    upd_flag = models.CharField(max_length=1, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'T_EMPSTS'

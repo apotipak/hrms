@@ -520,7 +520,7 @@ def ajax_get_customer_schedule_plan(request):
     	sch_plan = SchPlan.objects.filter(sch_no=sch_no).get()
 
     	print("debug : " + str(sch_plan.emp_id_id) + str(sch_plan.sch_rank))
-    	
+
     	if sch_plan.relief:
     		relief = 1
     	else:
@@ -530,13 +530,22 @@ def ajax_get_customer_schedule_plan(request):
     	else:
     		sch_active = 0
 
+    	if sch_plan.emp_id.emp_term_date is not None:
+    		emp_term_date = sch_plan.emp_id.emp_term_date.strftime("%d/%m/%Y"),
+    	else:
+    		emp_term_date = ""
+
     	response = JsonResponse(data={
 	        "success": True,
 			"sch_no": sch_plan.sch_no,
 			"emp_id": sch_plan.emp_id_id,
 		    "emp_fname_th": sch_plan.emp_id.emp_fname_th,
-		    "emp_lname_th": sch_plan.emp_id.emp_lname_th,    				
+		    "emp_lname_th": sch_plan.emp_id.emp_lname_th,
+		    "emp_status": sch_plan.emp_id.emp_status,
+		    "emp_type": sch_plan.emp_id.emp_type,
 			"sch_rank": sch_plan.sch_rank,
+			"emp_join_date": sch_plan.emp_id.emp_join_date.strftime("%d/%m/%Y"),
+			"emp_term_date": emp_term_date,
 			"sch_date_frm": sch_plan.sch_date_frm.strftime("%d/%m/%Y"),
 			"sch_date_to": sch_plan.sch_date_to.strftime("%d/%m/%Y"),
 			"sch_shf_mon": sch_plan.sch_shf_mon,
