@@ -592,22 +592,104 @@ def ajax_get_customer_schedule_plan(request):
 @login_required(login_url='/accounts/login/')
 @permission_required('contract.view_dlyplan', login_url='/accounts/login/')
 def ajax_save_customer_schedule_plan(request):
-    print("*************************************")
-    print("FUNCTION: ajax_save_customer_schedule_plan()")
-    print("*************************************")
+	print("*************************************")
+	print("FUNCTION: ajax_save_customer_schedule_plan()")
+	print("*************************************")
 
-    cus_id = request.POST.get('cus_id')
-    cus_brn = request.POST.get('cus_brn')
-    cus_vol = request.POST.get('cus_vol')
-    selected_sch_no = request.POST.get("selected_sch_no")
-    cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
+	selected_sch_no = request.POST.get("selected_sch_no")
+	cus_id = request.POST.get('cus_id')
+	cus_brn = request.POST.get('cus_brn')
+	cus_vol = request.POST.get('cus_vol')    
+	cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
+	emp_id = request.POST.get("selected_sch_no")	
+	sch_active = request.POST.get("sch_active")
+	relief = request.POST.get("relief")
+	mon_shift = request.POST.get("mon_shift")
+	tue_shift = request.POST.get("tue_shift")
+	wed_shift = request.POST.get("wed_shift")
+	thu_shift = request.POST.get("thu_shift")
+	fri_shift = request.POST.get("fri_shift")
+	sat_shift = request.POST.get("sat_shift")
+	sun_shift = request.POST.get("sun_shift")
+	
+	print("relief = " + str(relief))
+	print("sat_shift = " + str(sat_shift))
+	print("sun_shift = " + str(sun_shift))
+	print("sch_active = " + str(sch_active))
+	
+	if len(selected_sch_no) > 0:
+		try:
+			sch_plan = SchPlan.objects.filter(sch_no=selected_sch_no).get()
+			sch_plan.sch_active = sch_active
+			sch_plan.relief = relief
+			sch_plan.sch_shf_mon = mon_shift
+			sch_plan.sch_shf_tue = tue_shift
+			sch_plan.sch_shf_wed = wed_shift
+			sch_plan.sch_shf_thu = thu_shift
+			sch_plan.sch_shf_fri = fri_shift
+			sch_plan.sch_shf_sat = sat_shift
+			sch_plan.sch_shf_sun = sun_shift
+			sch_plan.sch_upd_date = datetime.datetime.now()
+			sch_plan.upd_by = request.user.first_name
+			sch_plan.upd_flag = 'E'			
+			sch_plan.save()
 
-    print("Select sch_no = " + str(selected_sch_no))
+			# generate new security guard list		
+			sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).exclude(upd_flag='D').order_by('emp_id')
+			sch_plan_list = []
+			for d in sch_plan:
+				if d.sch_active:
+					if d.relief:
+						relief = 1
+					else:
+						relief = 0 
+
+					if d.sch_active:
+						sch_active = 1
+					else:
+						sch_active = 0
+
+					record = {
+					    "sch_no": d.sch_no,
+					    "emp_id": d.emp_id_id,
+					    "emp_fname_th": d.emp_id.emp_fname_th,
+					    "emp_lname_th": d.emp_id.emp_lname_th,
+					    "sch_rank": d.sch_rank,
+					    "sch_date_frm": d.sch_date_frm.strftime("%d/%m/%Y"),
+					    "sch_date_to": d.sch_date_to.strftime("%d/%m/%Y"),
+					    "sch_shf_mon": d.sch_shf_mon,
+					    "sch_shf_tue": d.sch_shf_tue,
+					    "sch_shf_wed": d.sch_shf_wed,
+					    "sch_shf_thu": d.sch_shf_thu,
+					    "sch_shf_fri": d.sch_shf_fri,
+					    "sch_shf_sat": d.sch_shf_sat,
+					    "sch_shf_sun": d.sch_shf_sun,
+					    "sch_active": sch_active,
+					    "relief": relief,
+					    "upd_date": d.upd_date.strftime("%d/%m/%Y %H:%M:%S"),
+					    "upd_by": d.upd_by,
+					    "upd_flag": d.upd_flag,
+					}
+					sch_plan_list.append(record)
+
+			response = JsonResponse(data={
+				"message": "Saved success.",
+				"class": "bg-success",
+				"sch_plan_list": list(sch_plan_list),
+			})
+		except SchPlan.DoesNotExist:
+			response = JsonResponse(data={
+				"message": "Schedule Number is not found.",
+				"class": "bg-danger",
+				"sch_plan_list": list(sch_plan_list),
+			})
+	else:
+		response = JsonResponse(data={
+			"message": "No data",
+			"class": "bg-danger",
+			"sch_plan_list": list(sch_plan_list),
+		})
     
-    response = JsonResponse(data={
-        "success": True,
-    })
-
-    response.status_code = 200
-    return response
+	response.status_code = 200
+	return response
     

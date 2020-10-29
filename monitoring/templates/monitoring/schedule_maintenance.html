@@ -307,7 +307,7 @@
 							  <label class="form-check-label" for="id_service_active"><b>Active</b></label>
 							</div>
 							<div class="form-check form-check-inline">
-							  <input class="form-check-input" type="checkbox" id="id_relief" value="0">
+							  <input class="form-check-input" type="checkbox" id="id_relief">
 							  <label class="form-check-label" for="id_relief"><b>Relief</b></label>
 							</div>
 						</div>
@@ -514,8 +514,21 @@ $(document).ready(function(){
 	$('#id_cus_id').focus();
 
  	$("#save_security_guard_button").click( function() {
-
     	event.preventDefault();    	
+
+
+    	if ($('#id_service_active').is(":checked")) {
+	    	service_active = 1;
+    	} else {
+    		service_active = 0;
+    	}
+
+    	if ($('#id_relief').is(":checked")) {
+	    	relief = 1;
+    	} else {
+    		relief = 0;
+    	}
+
 		$.ajax({
 	    	url : "/monitoring/ajax/save_customer_schdule_plan/",
 	    	type : "POST",
@@ -526,14 +539,159 @@ $(document).ready(function(){
 	      		cus_vol: $("#id_cus_vol").val(),
 	      		selected_sch_no: $("#id_selected_sch_no").val(),
 	      		emp_id: $("#id_emp_id").val(),
-	      		service_active: $("#id_service_active").val(),
-	      		relief: $("#id_relief").val(),
+	      		sch_active: service_active,
+	      		relief: relief,
+	      		mon_shift: $("#id_mon_shift").val(),
+	      		tue_shift: $("#id_tue_shift").val(),
+	      		wed_shift: $("#id_wed_shift").val(),
+	      		thu_shift: $("#id_thu_shift").val(),
+	      		fri_shift: $("#id_fri_shift").val(),
+	      		sat_shift: $("#id_sat_shift").val(),
+	      		sun_shift: $("#id_sun_shift").val(),
 	    	},
 	    	success: function(data) {
-	    		alert("success");
+			  	$(document).Toasts('create', {
+			    	class: data.class, 
+			    	title: "{% trans 'System message' %}",
+			    	subtitle: '',
+			    	autohide: true,
+			    	delay: 2000,
+			    	body: data.message + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+			    	autoDismiss: true,
+			    	close: true,
+			    	autoremove: true,
+			  	});
+
+			  	//alert("debug");
+
+				// Security Guard List
+				result = "";
+				result += "<font size='2'>";
+				result += "<table class='table table-striped table-sm'>";
+				result += "  <thead>";
+				result += "    <tr>";
+				result += "      <th scope='col'>No1.</th>";
+				result += "      <th scope='col'>Name</th>";
+				result += "      <th scope='col'>Rank</th>";
+				result += "      <th scope='col'>Eff From</th>";
+				result += "      <th scope='col'>Eff To</th>";
+				result += "      <th scope='col' class='text-center'>MON</th>";
+				result += "      <th scope='col' class='text-center'>TUE</th>";
+				result += "      <th scope='col' class='text-center'>WED</th>";
+				result += "      <th scope='col' class='text-center'>THU</th>";
+				result += "      <th scope='col' class='text-center'>FRI</th>";
+				result += "      <th scope='col' class='text-center'>SAT</th>";
+				result += "      <th scope='col' class='text-center'>SUN</th>";
+				result += "      <th scope='col' class='text-center'>Active</th>";
+				result += "      <th scope='col'>Relief</th>";
+				result += "      <th scope='col'>Upd Date</th>";
+				result += "      <th scope='col'>Upd By</th>";
+				result += "      <th scope='col'>Upd Flag</th>";
+				result += "		 <th scope='col'>&nbsp;</th>";
+				result += "    </tr>";
+				result += "  </thead>";					
+				result += "  <tbody>";
+
+				if(data.sch_plan_list.length>0) {
+					count = 1;
+					for(i=0; i<data.sch_plan_list.length; i++) {
+						result += "    <tr>";
+						result += "      <th scope='row'>" + count + "</th>";							
+						result += "      <td><b>" + data.sch_plan_list[i]["emp_id"] + "</b> | <b><a href=javascript:update_sch_plan('" + data.sch_plan_list[i]["sch_no"] +"'); type='button'>" + data.sch_plan_list[i]["emp_fname_th"] + " " + data.sch_plan_list[i]["emp_lname_th"] + "</a></b></td>";
+						result += "      <td>" + data.sch_plan_list[i]["sch_rank"] + "</td>";
+						result += "      <td>" + data.sch_plan_list[i]["sch_date_frm"] + "</td>";
+						result += "      <td>" + data.sch_plan_list[i]["sch_date_to"] + "</td>";
+
+
+						if(data.sch_plan_list[i]["sch_shf_mon"] == "99")
+							result += "      <td class='text-center text-danger'>" + data.sch_plan_list[i]["sch_shf_mon"] + "</td>";
+						else
+							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_mon"] + "</td>";
+						
+						if(data.sch_plan_list[i]["sch_shf_tue"] == "99")
+							result += "      <td class='text-center text-danger'>" + data.sch_plan_list[i]["sch_shf_tue"] + "</td>";
+						else
+							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_tue"] + "</td>";
+
+						if(data.sch_plan_list[i]["sch_shf_wed"] == "99")
+							result += "      <td class='text-center text-danger'>" + data.sch_plan_list[i]["sch_shf_wed"] + "</td>";
+						else
+							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_wed"] + "</td>";
+
+						if(data.sch_plan_list[i]["sch_shf_thu"] == "99")
+							result += "      <td class='text-center text-danger'>" + data.sch_plan_list[i]["sch_shf_thu"] + "</td>";
+						else
+							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_thu"] + "</td>";
+
+						if(data.sch_plan_list[i]["sch_shf_fri"] == "99")
+							result += "      <td class='text-center text-danger'>" + data.sch_plan_list[i]["sch_shf_fri"] + "</td>";
+						else
+							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_fri"] + "</td>";
+						
+						if(data.sch_plan_list[i]["sch_shf_sat"] == "99")
+							result += "      <td class='text-center text-danger'>" + data.sch_plan_list[i]["sch_shf_sat"] + "</td>";
+						else
+							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_sat"] + "</td>";
+						
+						if(data.sch_plan_list[i]["sch_shf_sun"] == "99")
+							result += "      <td class='text-center text-danger'>" + data.sch_plan_list[i]["sch_shf_sun"] + "</td>";
+						else
+							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_sun"] + "</td>";
+
+
+						if(data.sch_plan_list[i]["sch_active"]==1)
+							result += "      <td class='text-center'>Y</td>";
+						else
+							result += "      <td class='text-center'>&nbsp;</td>";
+
+						if(data.sch_plan_list[i]["relief"]==1)
+							result += "      <td class='text-center'>Y</td>";
+						else
+							result += "      <td class='text-center'>&nbsp;</td>";
+
+						result += "      <td>" + data.sch_plan_list[i]["upd_date"] + "</td>";
+						result += "      <td>" + data.sch_plan_list[i]["upd_by"] + "</td>";
+						result += "      <td>" + data.sch_plan_list[i]["upd_flag"] + "</td>";
+						
+				        result += "		 <td class='text-left align-center'>";
+				        result += "		   <div class='btn-group btn-group-xs' mt-2>";
+				        result += "		     <a href=javascript:update_sch_plan('" + data.sch_plan_list[i]["sch_no"] + "'); type='button' class='btn btn-outline-primary btn-sm'>";
+				        result += "      <i class='fas fa-pen fa-xs'></i>";
+				        result += "   		</a>";					       
+				        //result += "		     &nbsp;";
+				        //result += "		     <button type='button' id='btn_delete_customer' class='btn btn-danger btn-xs js-delete-customer' data-url='' >";
+				        //result += "		       <i class='fas fa-trash fa-xs'></i>";
+				        //result += "		     </button>";
+				        result += "		   </div>";
+				        result += "		 </td>";
+
+						result += "    </tr>";						
+						count++;
+					}
+				} else {
+					result += "<tr><td colspan='17' align='center'>There is no data available.</td></tr>";
+				}
+
+				result += "  </tbody>";
+				result += "</table>";
+				result += "</font>";
+							
+				$("#id_security_guard_list").html(result);	
+				//$("#security_guard_list_amount").html("<b>Total " + data.sch_plan_list.length + "</b>");
+				//$("#security_guard_list_amount").html("<b>Total 0</b>");
 	    	},
 	    	error: function(data) {
-	    		alert("error");
+			  	$(document).Toasts('create', {
+			    	class: data.class, 
+			    	title: "{% trans 'System message' %}",
+			    	subtitle: '',
+			    	autohide: true,
+			    	delay: 2000,
+			    	body: data.message + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+			    	autoDismiss: true,
+			    	close: true,
+			    	autoremove: true,
+			  	});	    		
 	    	}
 	    });
 
@@ -963,6 +1121,7 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 				if(data.is_existed) {
 					$("#contract_service_list_form :input").attr("disabled", false);
 					$("#security_guard_list_form :input").attr("disabled", false);					
+					$("#save_security_guard_button").attr("disabled", true);
 
 					$("#schedule_maintenance_form :input").attr("disabled", true);					
 					$("#cancelCustomerServicePersonButton").attr("disabled", false);
@@ -1215,7 +1374,7 @@ function update_sch_plan(sch_no) {
 	if(sch_no=="") {
 		return false;			
 	}
-
+	
 	$.ajax({
     	url : "/monitoring/ajax/get_customer_schdule_plan/",
     	type : "POST",
@@ -1238,11 +1397,16 @@ function update_sch_plan(sch_no) {
 
     		if(data.sch_active==1) {
     			$("#id_service_active").prop("checked", true);
-    			$("#id_relief").prop("checked", false);
     		}
     		else {
     			$("#id_service_active").prop("checked", false);
+    		}
+
+    		if(data.relief==1) {
     			$("#id_relief").prop("checked", true);
+    		}
+    		else {
+    			$("#id_relief").prop("checked", false);
     		}
 
     		$("#id_emp_join_date").val(data.emp_join_date);
@@ -1256,6 +1420,8 @@ function update_sch_plan(sch_no) {
     		$("#id_fri_shift").val(data.sch_shf_fri);
     		$("#id_sat_shift").val(data.sch_shf_sat);
     		$("#id_sun_shift").val(data.sch_shf_sun);
+
+    		$("#save_security_guard_button").attr("disabled", false);
     	},
     	error: function(data) {
     		alert("0");
