@@ -9,6 +9,7 @@
 
         <div class="row">
 
+          {% if perms.customer.view_customer %}
           <div class="col-12 col-sm-12 col-md-6">
             <div class="info-box mb-4">
               <span class="info-box-icon" style="background-color:#3c8dbc !important"><i class="fas fa-user-tie text-white"></i></span>
@@ -25,7 +26,10 @@
             <!-- /.info-box -->
           </div>
           <!-- /.col -->
+          {% endif %}
 
+
+          {% if perms.contract.view_contract %}
           <div class="col-12 col-sm-12 col-md-6">
             <div class="info-box mb-4">
               <span class="info-box-icon" style="background-color:#006600 !important"><i class="fas fa-handshake text-white"></i></span>
@@ -42,9 +46,10 @@
             <!-- /.info-box -->
           </div>
           <!-- /.col -->
+          {% endif %}
 
 
-          {% if perms.leave.view_monitoring %}
+          {% if perms.monitoring.view_dlyplan %}
           <div class="col-12 col-sm-12 col-md-6">
             <div class="info-box mb-4">
               <span class="info-box-icon" style="background-color:#007bff !important"><i class="fas fa-desktop text-white"></i></span>
