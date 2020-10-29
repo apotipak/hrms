@@ -41,12 +41,13 @@ def ScheduleMaintenance(request):
 
 
 @login_required(login_url='/accounts/login/')
-@permission_required('contract.view_dlyplan', login_url='/accounts/login/')
+@permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
 def ajax_get_customer(request):
 	cus_id = request.POST.get('cus_id')
 	cus_brn = request.POST.get('cus_brn')
 	cus_vol = request.POST.get('cus_vol')
 	cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
+	
 	print("cnt_id = " + str(cnt_id))
 
 	# if cus_id is not None and cus_brn is not None:
@@ -312,7 +313,7 @@ def ajax_get_customer(request):
 
 
 @login_required(login_url='/accounts/login/')
-@permission_required('contract.view_dlyplan', login_url='/accounts/login/')
+@permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
 def get_customer_service_list(request):
     print("*************************************")
     print("FUNCTION: get_customer_service_list()")
@@ -359,7 +360,7 @@ def get_customer_service_list(request):
 
 
 @login_required(login_url='/accounts/login/')
-@permission_required('contract.view_dlyplan', login_url='/accounts/login/')
+@permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
 def ajax_get_customer_schedule_plan_list(request):
     print("*************************************")
     print("FUNCTION: ajax_get_customer_schedule_plan_list()")
@@ -504,7 +505,7 @@ def ajax_get_customer_schedule_plan_list(request):
 
 
 @login_required(login_url='/accounts/login/')
-@permission_required('contract.view_dlyplan', login_url='/accounts/login/')
+@permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
 def ajax_get_customer_schedule_plan(request):
     print("*************************************")
     print("FUNCTION: ajax_get_customer_schedule_plan()")
@@ -590,7 +591,7 @@ def ajax_get_customer_schedule_plan(request):
 
 
 @login_required(login_url='/accounts/login/')
-@permission_required('contract.view_dlyplan', login_url='/accounts/login/')
+@permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
 def ajax_save_customer_schedule_plan(request):
 	print("*************************************")
 	print("FUNCTION: ajax_save_customer_schedule_plan()")
@@ -616,7 +617,7 @@ def ajax_save_customer_schedule_plan(request):
 	print("sat_shift = " + str(sat_shift))
 	print("sun_shift = " + str(sun_shift))
 	print("sch_active = " + str(sch_active))
-	
+
 	if len(selected_sch_no) > 0:
 		try:
 			sch_plan = SchPlan.objects.filter(sch_no=selected_sch_no).get()
