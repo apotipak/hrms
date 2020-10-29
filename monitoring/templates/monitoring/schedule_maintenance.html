@@ -227,8 +227,10 @@
 
 	        	<div class="card-tools">
 		        	<div class="card-tools float-right">
-		        		<button id="add_security_guard_button" type="button" class="btn btn-outline-success btn-sm" data-toggle="modal"><i class="fas fa-plus fa-md"></i>&nbsp;&nbsp;{% trans 'Add' %}</button>&nbsp;
-		        		<button id="save_security_guard_button" type="button" class="btn btn-outline-success btn-sm" data-toggle="modal"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</button>
+		        		<button id="cancel_security_guard_button" type="button" class="btn btn-outline-secondary btn-sm">{% trans 'Cancel' %}</button>
+		        		<button id="save_security_guard_button" type="button" class="btn btn-outline-primary btn-sm"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</button>
+		        		&nbsp;&nbsp;|&nbsp;&nbsp;
+		        		<button id="add_security_guard_button" type="button" class="btn btn-outline-success btn-sm"><i class="fas fa-plus fa-md"></i>&nbsp;&nbsp;{% trans 'Add' %}</button>&nbsp;		        				        	
 		        	</div>
 	        	</div>
 
@@ -482,6 +484,30 @@
 	</div>
 
 
+
+	<!-- Select employee modal -->
+	<div class="modal fade" id="select_employee_modal" tabindex="-1" role="dialog">
+
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+	    <div class="modal-content">
+	      
+	      <div class="modal-header">
+	        <h5 class="modal-title"><i class="fas fa-search fa-sm text-secondary"></i>&nbsp;&nbsp;{% trans 'Select an Employee' %}</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      
+	      <div class="modal-body"></div>
+
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary btn-md" data-dismiss="modal">{% trans 'Close' %}</button>	        
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+
   </div>
   <!-- /.content-wrapper -->
 
@@ -489,13 +515,35 @@
 
 
 {% block javascript %}
-<script>
+<script>	
+/*
+document.addEventListener('contextmenu', function(e) {
+  e.preventDefault();
+});
+*/
+document.onkeydown = function(e) {
+  if(event.keyCode == 123) {
+     return false;
+  }
+  if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) {
+     return false;
+  }
+  if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) {
+     return false;
+  }
+  if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) {
+     return false;
+  }
+  if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) {
+     return false;
+  }
+}
+
 $(document).ready(function(){
  	$('#add_security_guard_button').on('click', function (e) { 		
-    	var obj = $(this);
-    	result = "";
-    	$("#add_security_guard_modal .modal-body").html(result);
-    	$("#add_security_guard_modal").modal("show");
+		$("#security_guard_list_form").trigger("reset");
+		$("#save_security_guard_button").attr("disabled", false);
+		$("#id_emp_id").focus();
     });
 
 	$("#contract_service_list_form :input").attr("disabled", true);
@@ -512,6 +560,39 @@ $(document).ready(function(){
 	});
 
 	$('#id_cus_id').focus();
+
+
+ 	$("#cancel_security_guard_button").click( function() {
+    	event.preventDefault();    	
+    	$("#security_guard_list_form").trigger("reset");
+    	$("#save_security_guard_button").attr("disabled", true);
+    	$("#id_emp_id").focus();
+    });
+
+ 	$("#id_emp_id_lookup").click( function() {
+ 		current_district_id = "";
+
+		$.ajax({
+        	url: "monitoring/ajax/ajax_get_employee_list",
+			type: 'post',          
+          	dataType: 'json',
+          	data : {          
+            	current_district_id : current_district_id,
+          	},          
+          	beforeSend: function () {
+            	$("#select_employee_modal").modal("show");
+          	},
+          	success: function (data) {
+          		result = "todo1";
+          	},
+          	error: function (data) {
+          		result = "todo2";
+          	},
+         });
+
+    	$("#select_employee_modal .modal-body").html(result);    	
+    	$("#select_employee_modal").modal("show");
+	});
 
  	$("#save_security_guard_button").click( function() {
     	event.preventDefault();    	
