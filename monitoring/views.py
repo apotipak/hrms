@@ -599,6 +599,15 @@ def ajax_save_customer_schedule_plan(request):
     cus_id = request.POST.get('cus_id')
     cus_brn = request.POST.get('cus_brn')
     cus_vol = request.POST.get('cus_vol')
-    sch_no = request.POST.get("sch_no")	
+    selected_sch_no = request.POST.get("selected_sch_no")
     cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
+
+    print("Select sch_no = " + str(selected_sch_no))
+    
+    response = JsonResponse(data={
+        "success": True,
+    })
+
+    response.status_code = 200
+    return response
     
