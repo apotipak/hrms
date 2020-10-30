@@ -814,7 +814,49 @@
 
 
 {% block javascript %}
-<script>
+<script>  
+
+  $(document).ready(function(){
+    $("#id_cnt_doc_no").focus();
+
+
+
+    $(document).on('keypress', '#id_cnt_doc_no', function(e) {
+      if(e.which == 13) {      
+        e.preventDefault();
+        $('#id_cnt_doc_date').focus();
+      }
+    });
+
+    $(document).on('keypress', '#id_cnt_doc_date', function(e) {
+      if(e.which == 13) {      
+        e.preventDefault();
+        $('#id_cnt_eff_frm').focus();
+      }
+    });
+
+    $(document).on('keypress', '#id_cnt_eff_frm', function(e) {
+      if(e.which == 13) {      
+        e.preventDefault();
+        $('#id_cnt_eff_to').focus();
+      }
+    });
+
+    $(document).on('keypress', '#id_cnt_eff_to', function(e) {
+      if(e.which == 13) {      
+        e.preventDefault();
+        $('#id_cnt_sign_frm').focus();
+      }
+    });
+
+    $(document).on('keypress', '#id_cnt_sign_frm', function(e) {
+      if(e.which == 13) {      
+        e.preventDefault();
+        $('#id_cnt_sign_to').focus();
+      }
+    });
+  });
+
   $('#id_cnt_print').on('click', function (e) {
     if ($('#id_cnt_print').is(":checked"))
       $('#id_cnt_print_label').text('Customer');

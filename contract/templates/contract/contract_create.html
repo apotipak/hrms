@@ -908,6 +908,44 @@
 
 {% block javascript %}
 <script>
+  $(document).ready(function(){
+    $("#id_cnt_doc_no").focus();
+
+    $(document).on('keypress', '#id_cnt_doc_no', function(e) {
+      if(e.which == 13) {      
+        e.preventDefault();
+        $('#id_cnt_doc_date').focus();
+      }
+    });
+
+    $(document).on('keypress', '#id_cnt_doc_date', function(e) {
+      if(e.which == 13) {      
+        e.preventDefault();
+        $('#id_cnt_eff_frm').focus();
+      }
+    });
+
+    $(document).on('keypress', '#id_cnt_eff_frm', function(e) {
+      if(e.which == 13) {      
+        e.preventDefault();
+        $('#id_cnt_eff_to').focus();
+      }
+    });
+
+    $(document).on('keypress', '#id_cnt_eff_to', function(e) {
+      if(e.which == 13) {      
+        e.preventDefault();
+        $('#id_cnt_sign_frm').focus();
+      }
+    });
+
+    $(document).on('keypress', '#id_cnt_sign_frm', function(e) {
+      if(e.which == 13) {      
+        e.preventDefault();
+        $('#id_cnt_sign_to').focus();
+      }
+    });
+  });
 
   $(document).ready(function(){
     $('#id_cus_id').focus();
