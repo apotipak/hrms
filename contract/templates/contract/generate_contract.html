@@ -24,8 +24,10 @@
           </div>
           <div class="col-sm-4 pt-2">
             <div class="float-right">
-              <button type="button" class="btn btn-secondary btn-sm" onclick="closetab()">&nbsp;&nbsp;{% trans 'Close' %}&nbsp;&nbsp;</button>
               <a type="button" class="btn btn-info btn-sm" href="{% url 'download-contract' file_name %}"><i class="fas fa-download"></i>&nbsp;&nbsp;{% trans 'Download file' %}</a>
+              &nbsp;&nbsp;|&nbsp;&nbsp;
+              <button type="button" class="btn btn-default btn-sm" onclick="closetab()">&nbsp;&nbsp;{% trans 'Close' %}&nbsp;&nbsp;</button>
+              <a href="invoice-print.html" target="_blank" class="btn btn-primary btn-sm"><i class="fas fa-print"></i> Print</a>
             </div>
           </div>
         </div>

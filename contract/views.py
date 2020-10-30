@@ -2313,6 +2313,9 @@ def generate_contract(request, *args, **kwargs):
                     shf_time_to = str(shf_time_to).zfill(4)
                     shf_time_to = shf_time_to[:2] + ':' + shf_time_to[2:]
 
+                    srv_rate_qty = '{:20,.2f}'.format(float(srv_rate * srv_qty)).strip()
+                    srv_rate = '{:20,.2f}'.format(float(srv_rate)).strip()
+
                     record = {
                         "cus_name_th": cus_name_th,
                         "cus_name_en": cus_name_en,
@@ -2320,11 +2323,11 @@ def generate_contract(request, *args, **kwargs):
                         "shf_time_frm": shf_time_frm,
                         "shf_time_to": shf_time_to,
                         "srv_qty": srv_qty,
-                        "srv_rank_th": rank_th,
-                        "srv_rank_en": rank_en,
+                        "srv_rank_th": rank_th.strip(),
+                        "srv_rank_en": rank_en.strip(),
                         "srv_rem": srv_rem,
                         "srv_rate": srv_rate,
-                        "srv_rate_qty": srv_rate * srv_qty,
+                        "srv_rate_qty": srv_rate_qty,
                         "shf_desc": shf_desc,
                     }
                     pickup_record_day.append(record)                
@@ -2334,7 +2337,8 @@ def generate_contract(request, *args, **kwargs):
                     shf_time_frm = shf_time_frm[:2] + ':' + shf_time_frm[2:]
                     shf_time_to = str(shf_time_to).zfill(4)
                     shf_time_to = shf_time_to[:2] + ':' + shf_time_to[2:]
-
+                    srv_rate_qty = '{:20,.2f}'.format(float(srv_rate * srv_qty)).strip()
+                    srv_rate = '{:20,.2f}'.format(float(srv_rate)).strip()
                     record = {
                         "cus_name_th": cus_name_th,
                         "cus_name_en": cus_name_en,
@@ -2342,11 +2346,11 @@ def generate_contract(request, *args, **kwargs):
                         "shf_time_frm": str(shf_time_frm).zfill(4),
                         "shf_time_to": shf_time_to,
                         "srv_qty": srv_qty,
-                        "srv_rank_th": rank_th,
-                        "srv_rank_en": rank_en,
+                        "srv_rank_th": rank_th.strip(),
+                        "srv_rank_en": rank_en.strip(),
                         "srv_rem": srv_rem,
                         "srv_rate": srv_rate,
-                        "srv_rate_qty": srv_rate * srv_qty,
+                        "srv_rate_qty": srv_rate_qty,
                         "shf_desc": shf_desc,
                     }
                     pickup_record_night.append(record)                
@@ -2369,6 +2373,9 @@ def generate_contract(request, *args, **kwargs):
             sign_to_en_format = cus_contract.cnt_sign_to.strftime("%d %B %Y")
             sign_to_th_format = convert_date_english_to_thai_format(cus_contract.cnt_sign_to.strftime("%d %m %Y"))
 
+
+            srv_rate_total = '{:20,.2f}'.format(float(srv_rate_day + srv_rate_night))
+            
             context = {
                 'customer': customer,
                 'file_name': file_name,
@@ -2432,7 +2439,7 @@ def generate_contract(request, *args, **kwargs):
                 'count_shift_day': count_shift_day,
                 'count_shift_night': count_shift_night,
                 'total_count_shift': count_shift_day + count_shift_night,
-                'srv_rate_total': srv_rate_day + srv_rate_night,                
+                'srv_rate_total': srv_rate_total,
             }
         except CusContract.DoesNotExist:
             context = {
