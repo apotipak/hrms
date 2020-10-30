@@ -124,9 +124,9 @@ class ContractCreateForm(forms.ModelForm):
         # Initial value
         self.fields['cnt_doc_date'].initial = datetime.date.today
         self.fields['cnt_eff_frm'].initial = datetime.date.today
-        self.fields['cnt_eff_to'].initial = datetime.date.today
+        self.fields['cnt_eff_to'].initial = datetime.datetime.strptime("31/12/2999", "%d/%m/%Y").date()
         self.fields['cnt_sign_frm'].initial = datetime.date.today
-        self.fields['cnt_sign_to'].initial = datetime.date.today
+        self.fields['cnt_sign_to'].initial = datetime.datetime.strptime("31/12/2999", "%d/%m/%Y").date()
         self.fields['cnt_apr_by_text'].initial = "ดร.ชนัต สุขสุวรรณธร (Dr.Chanat Suksuwannatorn)"
         self.fields['cnt_guard_amt'].initial = 0
         self.fields['cnt_sale_amt'].initial = 0
