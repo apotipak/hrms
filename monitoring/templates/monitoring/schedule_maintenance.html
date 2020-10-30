@@ -569,24 +569,73 @@ $(document).ready(function(){
     	$("#id_emp_id").focus();
     });
 
- 	$("#id_emp_id_lookup").click( function() {
- 		current_district_id = "";
-
+ 	$("#id_emp_id_lookup").click( function(e) {
+ 		var result = "";
+ 		emp_id = $("#id_emp_id").val();
+ 		page = 1;
 		$.ajax({
-        	url: "monitoring/ajax/ajax_get_employee_list",
-			type: 'post',          
+        	url: "/monitoring/ajax/get_employee_list",        	
+			type: 'get',          
           	dataType: 'json',
-          	data : {          
-            	current_district_id : current_district_id,
+          	//async: false,
+          	data : { 
+            	emp_id : emp_id,
+            	page: page,
           	},          
           	beforeSend: function () {
-            	$("#select_employee_modal").modal("show");
+            	//$("#select_employee_modal").modal("show");
           	},
           	success: function (data) {
-          		result = "todo1";
+				var count = data.results.length;
+
+				result += "<div class='row col-12'>";
+				result += "<div class='col-8 offset-3 pb-2'>";
+				result += "<form id='cus_main_search_district_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
+				result += "  <div class='form-group mx-sm-3 mb-2'>";
+				result += "  <select name='cus_main_cus_district_option' class='form-control form-control-sm' required id='id_cus_main_cus_district_option'>";
+				result += "    <option value='1'>District ID</option>";
+				result += "    <option value='2'>District</option>";
+				result += "    <option value='3' selected>City</option>";
+				result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";
+				result += "    <label for='id_cus_main_search_district' class='sr-only'>Search</label>";            
+				result += "    <input type='text' class='form-control form-control-sm' id='id_cus_main_cus_district_search_text' name='cus_main_cus_district_search_text' placeholder=''>";
+				result += "  </div>";
+				result += "<a href='javascript:cus_main_search_district_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";            
+				result += "</form>";
+				result += "</div>";
+
+				result += "<div class='row col-12'>";
+				result += "<table class='table table-hover table-sm'>";
+				result += " <thead>";
+				result += "   <tr>";
+				result += "     <th scope='col'>{% trans 'Emp ID' %}</th>";
+				result += "     <th scope='col'>{% trans 'Emp Name (TH)' %}</th>";
+				result += "     <th scope='col'>{% trans 'Emp Name (EN)' %}</th>";
+				result += "     <th scope='col'>&nbsp;</th>";
+				result += "   </tr>";
+				result += " </thead>";
+				result += "<tbody>";
+				result += "</div>";
+				result += "<div>";
+
+				for(var i=0; i<count; i++) {              
+					var emp_id = data.results[i]["emp_id"];
+					var emp_fname_th = data.results[i]["emp_fname_th"];
+					var emp_lname_th = data.results[i]["emp_lname_th"];
+					result += "<tr>";
+					result += "<td>" + emp_id + "</td>";        
+					result += "<td>" + emp_fname_th + " " + emp_lname_th + "</td>";
+					result += "<td>" + emp_fname_th + " " + emp_lname_th + "</td>";
+
+					result += "<td><a href='javascript:select_employee(" + emp_id + ",\"" + emp_fname_th + "\",\"" + emp_lname_th + "\",\"" + emp_fname_en + "\",\"" + emp_lname_en + "\");' type='button' class='btn btn-outline-primary btn-sm'>Select</a></td>";
+
+					result += "</tr>";              
+				}
+				result += " </tbody>";
+				result += "</table>";				
           	},
           	error: function (data) {
-          		result = "todo2";
+          		result += "Error";
           	},
          });
 

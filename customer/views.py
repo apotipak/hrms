@@ -1140,14 +1140,17 @@ def get_district_list_modal(request):
     # print("current_district_id = " + str(current_district_id))
 
     if search_district_option == '1':
+        print("district 1")
         data = TDistrict.objects.select_related('city_id').filter(dist_id__exact=search_district_text)
 
     if search_district_option == '2':
+        print("district 2")
         data = TDistrict.objects.select_related('city_id').filter(dist_th__contains=search_district_text)
         if not data:
             data = TDistrict.objects.select_related('city_id').filter(dist_en__contains=search_district_text)        
 
     if search_district_option == '3':
+        print("district 3")
         data = TDistrict.objects.select_related('city_id').filter(city_id__city_th__contains=search_district_text)
         if not data:
             data = TDistrict.objects.select_related('city_id').filter(city_id__city_en__contains=search_district_text)        
@@ -1257,7 +1260,7 @@ def get_district_list(request):
         if current_district_id is not None:
             if current_district_id != "":
                 if current_district_id.isnumeric():
-                    print("debug1")
+                    print("debug 1")
                     district_object = TDistrict.objects.filter(dist_id__exact=current_district_id).get()
                     data = TDistrict.objects.select_related('city_id').filter(city_id__city_th__contains=district_object.city_id.city_th)
                     if not data:
