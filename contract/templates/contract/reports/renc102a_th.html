@@ -1,15 +1,15 @@
 {% load humanize %}
 
 <div class='col-8 offset-2'>            
-<!--<div class="text-center"><h3>บริษัท การ์ดฟอร์ซ ซิเคียวริตี้ เซอร์วิสเซส (ประเทศไทย) จำกัด ('การ์ดฟอร์ซ')</h3></div>-->
-<div class="text-center"><h3>การให้บริการรักษาความปลอดภัย</h3></div>
-<div class="text-center"><h3>เอกสารแนบท้ายสัญญา</h3></div>
+<div class="text-center"><h4>บริษัท รักษาความปลอดภัย การ์ดฟอร์ซ (ประเทศไทย) จำกัด ('การ์ดฟอร์ซ')</h4></div>
+<div class="text-center"><h4>การให้บริการรักษาความปลอดภัย</h4></div>
+<div class="text-center"><h4>เอกสารแนบท้ายสัญญา</h4></div>
 
 <div>&nbsp;</div>
 <div class="float-right">
   <table>
-    <tr><td>เลขที่&nbsp;&nbsp;&nbsp;</td><td><strong>{{cnt_doc_no}}</strong></td></tr>
-    <tr><td>วันที่&nbsp;&nbsp;&nbsp;</td><td>{{today_date_th_format}}</td></tr>
+    <!--<tr><td>เลขที่&nbsp;&nbsp;&nbsp;</td><td><strong>{{cnt_doc_no}}</strong></td></tr>-->
+    <tr><td>วันที่&nbsp;&nbsp;&nbsp;</td><td><b>{{today_date_th_format}}</b></td></tr>
   </table>
 </div>
 <br><br><br><br>
@@ -31,9 +31,9 @@
     {% for item in shift_list_day %}
     <tr>
     <td >{{ item.shf_time_frm }} - {{ item.shf_time_to }}</td>
-    <td>{{item.srv_qty}}&nbsp;&nbsp; x {{item.srv_rank_th}} ({{item.srv_rate|floatformat:2|intcomma}})</td>
+    <td>{{item.srv_qty}}&nbsp;&nbsp; x {{item.srv_rank_th}} ({{item.srv_rate}})</td>
     <td class="text-left" nowrap>{{item.srv_rem}}</td>
-    <td class="text-right" nowrap>{{ item.srv_rate_qty|floatformat:2|intcomma }}.-</td>
+    <td class="text-right" nowrap>{{ item.srv_rate_qty }}.-</td>
     </tr>
     {% endfor %}              
   </table>
@@ -57,9 +57,9 @@
     {% for item in shift_list_night %}
     <tr>                
     <td >{{ item.shf_time_frm }} - {{ item.shf_time_to }}</td>                
-    <td>{{item.srv_qty}}&nbsp;&nbsp; x {{item.srv_rank_th}} ({{item.srv_rate|floatformat:2|intcomma}})</td>
+    <td>{{item.srv_qty}}&nbsp;&nbsp; x {{item.srv_rank_th}} ({{item.srv_rate}})</td>
     <td class="text-left" nowrap>{{item.srv_rem}}</td>
-    <td class="text-right" nowrap>{{item.srv_rate_qty|floatformat:2|intcomma}}.-</td>
+    <td class="text-right" nowrap>{{item.srv_rate_qty}}.-</td>
     </tr>
     {% endfor %}              
   </table>
@@ -79,11 +79,13 @@
     <td width="50%">&nbsp;</td>
     <td width="10%">&nbsp;</td>
     <td width="30%" class="text-center"><b>รวมอัตราค่าบริการทั้งสิ้น</b><br>(ยังไม่รวมภาษีมูลค่าเพิ่ม)</td>                
-    <td width="10%" class="text-right" style="vertical-align:top"><b>{{ srv_rate_total|floatformat:2|intcomma }}.-</b></td>
+    <td width="10%" class="text-right" style="vertical-align:top"><b>{{ srv_rate_total }}.-</b></td>
     </tr>
   </table>
   {% endif %}
 </div>
+<br>
+<div><b>(เงื่อนไขมาตรฐานของสัญญา)</b></div>
 <br>
 <div>              
   4. ที่อยู่ของสถานที่ที่จะให้บริการ<br>
@@ -93,6 +95,8 @@
 <div>5. วันเริ่มให้บริการ&nbsp;&nbsp;&nbsp;<strong>{{ sign_from_th_format }}</strong>&nbsp;&nbsp;&nbsp;ถึงวันที่&nbsp;&nbsp;&nbsp;<strong>{{ sign_to_th_format }}</strong></div>            
 <br>
 <div>6. การให้บริการจะเป็นระยะเวลา 1 ปีและจะต่อสัญญาไปจนกว่าฝ่ายใดฝ่ายหนึ่งจะยกเลิกสัญญาตามอนุประโยคที่ 19</div>
+
+<!--
 <br>
 <div><strong>7. เอกสารแนบท้ายสัญญาฉบับนี้เป็นส่วนหนึ่งของสัญญาฉบับเดิม    เลขที่  {{cnt_doc_no}}</strong></div>
 <div>ในกรณีที่ลูกค้าต้องการพนักงานรักษาความปลอดภัยเสริมพิเศษในบางครั้งคราวเป็นการชั่วคราว อัตราค่าบริการที่จะคิดเพิ่ม คือ 140 บาทต่อชั่วโมงสำหรับพนักงานรักษาความปลอดภัย และ 280 บาทต่อชั่วโมง สำหรับหัวหน้าพนักงานรักษาความปลอดภัย</div>
@@ -119,6 +123,5 @@
 		</tr>		
 	</table>
 </div>
-
-
 </div>
+-->

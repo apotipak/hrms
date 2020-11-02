@@ -2497,7 +2497,6 @@ def generate_contract(request, *args, **kwargs):
 
 
     # Convert doc to pdf
-    print("file_name = " + str(file_name))
     docx_file_name = MEDIA_ROOT + "/contract/download/" + file_name + ".docx"
     pdf_file_name = MEDIA_ROOT + "/contract/download/" + file_name + ".pdf"
     convert(docx_file_name, pdf_file_name)

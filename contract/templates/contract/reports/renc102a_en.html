@@ -1,13 +1,13 @@
 {% load humanize %}
 <div class='col-8 offset-2'>            
-<!--<div class="text-center"><strong>GUARDFORCE SECURITY SERVICES (THAILAND) COMPANY LIMITED</strong></div>-->
-<div class="text-center"><h3>GUARDING SERVICES</h3></div>
-<div class="text-center"><h3>ADDENDUM</h3></div>
+<div class="text-center"><h4><b>GUARDFORCE SECURITY (THAILAND) COMPANY LIMITED</b></h4></div>
+<div class="text-center"><h4><b>GUARDING SERVICES</b></h4></div>
+<div class="text-center"><h4><b>ADDENDUM</b></h4></div>
 <div>&nbsp;</div>
 <div class="float-right">
   <table>
-    <tr><td>No:</td><td><strong>{{cnt_doc_no}}</strong></td></tr>
-    <tr><td>Date:</td><td>{{today_date_en_format}}</td></tr>
+    <!--<tr><td>No:</td><td><strong>{{cnt_doc_no}}</strong></td></tr>-->
+    <tr><td>Date:&nbsp;&nbsp;&nbsp;&nbsp;</td><td><b>{{today_date_en_format}}</b></td></tr>
   </table>
 </div>
 <br><br><br><br>
@@ -29,9 +29,9 @@
     {% for item in shift_list_day %}
     <tr>
     <td >{{ item.shf_time_frm }} - {{ item.shf_time_to }}</td>
-    <td>{{item.srv_qty}}&nbsp;&nbsp; x {{item.srv_rank_en}} ({{item.srv_rate|floatformat:2|intcomma}})</td>
+    <td>{{item.srv_qty}}&nbsp;&nbsp; x {{item.srv_rank_en}} ({{item.srv_rate}})</td>
     <td class="text-left" nowrap>{{item.srv_rem}}</td>
-    <td class="text-right" nowrap>{{ item.srv_rate_qty|floatformat:2|intcomma }}.-</td>
+    <td class="text-right" nowrap>{{ item.srv_rate_qty }}.-</td>
     </tr>
     {% endfor %}              
   </table>
@@ -55,9 +55,9 @@
     {% for item in shift_list_night %}
     <tr>                
     <td >{{ item.shf_time_frm }} - {{ item.shf_time_to }}</td>                
-    <td>{{item.srv_qty}}&nbsp;&nbsp; x {{item.srv_rank_en}} ({{item.srv_rate|floatformat:2|intcomma}})</td>
+    <td>{{item.srv_qty}}&nbsp;&nbsp; x {{item.srv_rank_en}} ({{item.srv_rate}})</td>
     <td class="text-left" nowrap>{{item.srv_rem}}</td>
-    <td class="text-right" nowrap>{{item.srv_rate_qty|floatformat:2|intcomma}}.-</td>
+    <td class="text-right" nowrap>{{item.srv_rate_qty}}.-</td>
     </tr>
     {% endfor %}              
   </table>
@@ -74,10 +74,10 @@
   <br>
   <table width="100%">
     <tr>
-    <td width="40%">&nbsp;</td>
-    <td width="10%">&nbsp;</td>
-    <td width="40%" class="text-left"><b>TOTAL MONTHLY SERVICE CHARGE</b><br>(VAT. NOT INCLUDED)</td>                
-    <td width="10%" class="text-right" style="vertical-align:top"><b>{{ srv_rate_total|floatformat:2|intcomma }}.-</b></td>
+    <td width="20%">&nbsp;</td>
+    <td width="40%" class="text-left"><b>TOTAL MONTHLY SERVICE CHARGE</b><br><b>(VAT. NOT INCLUDED)</b></td>
+    <td width="10%">&nbsp;</td>                  
+    <td width="30%" class="text-right" style="vertical-align:top"><b>{{ srv_rate_total }}.-</b></td>
     </tr>
   </table>
   {% endif %}
@@ -88,19 +88,18 @@
   <strong>{{ customer_address_en }}</strong>
 </div>
 <br>
-<div>5. Commencement Date:&nbsp;&nbsp;&nbsp;<strong>{{ effective_from_en_format }}</strong>&nbsp;&nbsp;&nbsp;TO&nbsp;&nbsp;&nbsp;<strong>{{ effective_to_en_format }}</strong></div>            
+<div>5. Commencement Date:&nbsp;&nbsp;&nbsp;<strong>{{ sign_from_en_format }}</strong>&nbsp;&nbsp;&nbsp;TO&nbsp;&nbsp;&nbsp;<strong>{{ sign_to_en_format }}</strong></div>            
 <br>
-<div>6. Service to be for one year and will then continue until terminated by either party in accordance with clause 19.</div>
-<br>
-<div><strong>7. This Addendum shall be part of Original Contract</strong>&nbsp;&nbsp;&nbsp;<b>No.&nbsp;&nbsp;&nbsp;{{cnt_doc_no}}</b></div><br>
-<div><b>Should The Customer require extra Security Officers to be deployed from time to time on a temporary basis then the hourly rate to be charged will be B140 for a Security Officer and B280 for a Supervisor.</b></div><br><br>
+<div>6. Service to be for one year and will then continue in accordance with the terms and conditions in original contract agreement until terminated by either party.</div>
+<br><br><br>
 
+<!--
 <div>
 	<table width="100%">
 		<tr>
 			<td width="60%"><b>
 				For and on behalf of<br>
-				Guardforce Security Services (Thailand)<br>
+				Guardforce Security (Thailand)<br>
 				Company Limited<br><br><br><br>
 				(Mr.Paisan Mongkolsubgul)<br>
 				Managing Director
@@ -120,5 +119,5 @@
 		</tr>
 	</table>	
 </div>
-
 </div>
+-->

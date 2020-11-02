@@ -1,13 +1,13 @@
 {% load humanize %}
 
 <div class='col-8 offset-2'>            
-<!--<div class="text-center"><strong>GUARDFORCE SECURITY SERVICES (THAILAND) COMPANY LIMITED</strong></div>-->
-<div class="text-center"><h3>GUARDING SERVICES</h3></div>
+<div class="text-center"><h4>GUARDFORCE SECURITY (THAILAND) COMPANY LIMITED</h4></div>
+<div class="text-center"><h4>GUARDING SERVICES</h4></div>
 <div>&nbsp;</div>
 <div class="float-right">
   <table>
-    <tr><td>No:</td><td><strong>{{cnt_doc_no}}</strong></td></tr>
-    <tr><td>Date:</td><td>{{today_date_en_format}}</td></tr>
+    <!--<tr><td>No:</td><td><strong>{{cnt_doc_no}}</strong></td></tr>-->
+    <tr><td>Date:</td><td><b>{{today_date_en_format}}</b></td></tr>
   </table>
 </div>
 <br><br><br><br>
@@ -18,6 +18,7 @@
 </div>
 
 <div>3. Description of Service to be provided by Guardforce Security Services (Thailand) Company Limited:</div>
+<br>
 <div class='col-12'>
 
   {% if count_shift_day > 0 %}
@@ -29,9 +30,9 @@
     {% for item in shift_list_day %}
     <tr>
     <td >{{ item.shf_time_frm }} - {{ item.shf_time_to }}</td>
-    <td>{{item.srv_qty}}&nbsp;&nbsp; x {{item.srv_rank_en}} ({{item.srv_rate|floatformat:2|intcomma}})</td>
+    <td>{{item.srv_qty}}&nbsp;&nbsp; x {{item.srv_rank_en}} ({{item.srv_rate}})</td>
     <td class="text-left" nowrap>{{item.srv_rem}}</td>
-    <td class="text-right" nowrap>{{ item.srv_rate_qty|floatformat:2|intcomma }}.-</td>
+    <td class="text-right" nowrap>{{ item.srv_rate_qty }}.-</td>
     </tr>
     {% endfor %}              
   </table>
@@ -55,9 +56,9 @@
     {% for item in shift_list_night %}
     <tr>                
     <td >{{ item.shf_time_frm }} - {{ item.shf_time_to }}</td>                
-    <td>{{item.srv_qty}}&nbsp;&nbsp; x {{item.srv_rank_en}} ({{item.srv_rate|floatformat:2|intcomma}})</td>
+    <td>{{item.srv_qty}}&nbsp;&nbsp; x {{item.srv_rank_en}} ({{item.srv_rate}})</td>
     <td class="text-left" nowrap>{{item.srv_rem}}</td>
-    <td class="text-right" nowrap>{{item.srv_rate_qty|floatformat:2|intcomma}}.-</td>
+    <td class="text-right" nowrap>{{item.srv_rate_qty}}.-</td>
     </tr>
     {% endfor %}              
   </table>
@@ -74,25 +75,27 @@
   <br>
   <table width="100%">
     <tr>
-    <td width="50%">&nbsp;</td>
     <td width="10%">&nbsp;</td>
-    <td width="30%" class="text-center"><b>TOTAL MONTHLY SERVICE CHARGE</b><br>(VAT. NOT INCLUDED)</td>                
-    <td width="10%" class="text-right" style="vertical-align:top"><b>{{ srv_rate_total|floatformat:2|intcomma }}.-</b></td>
+    <td width="50%" class="text-left"><b>TOTAL MONTHLY SERVICE CHARGE</b><br>(VAT. NOT INCLUDED)</td>
+    <td width="10%">&nbsp;</td>
+    <td width="30%" class="text-right" style="vertical-align:top"><b>{{ srv_rate_total }}.-</b></td>
     </tr>
   </table>
   {% endif %}
 </div>
 <br>
+<b>Standard conditions of contract</b>
+<br><br>
 <div>
   4. Address of Premises at which Services are to be provided:<br>
   <strong>{{ customer_address_en }}</strong>
 </div>
 <br>
-<div>5. Commencement Date:&nbsp;&nbsp;&nbsp;<strong>{{ effective_from_en_format }}</strong>&nbsp;&nbsp;&nbsp;TO&nbsp;&nbsp;&nbsp;<strong>{{ effective_to_en_format }}</strong></div>            
+<div>5. Commencement Date:&nbsp;&nbsp;&nbsp;<strong>{{ sign_from_en_format }}</strong>&nbsp;&nbsp;&nbsp;TO&nbsp;&nbsp;&nbsp;<strong>{{ sign_to_en_format }}</strong></div>            
 <br>
 <div>6. Service to be for one year and will then continue until terminated by either party in accordance with clause 19.</div>
 <br>
 <div><strong>7. Special Conditions</strong></div>
-<div>7.1 Post Standing Orders as agreed by Guardforce Security Services (Thailand) Company Limited and the customer.</div>
-<div>7.2 Guardforce Security Services (Thailand) Company Limited Rules And Regulations for Security Guards.</div>
+<div>7.1 Post <b>Standing Orders</b> as agreed by Guardforce Security (Thailand) Company Limited and the customer.</div>
+<div>7.2 Guardforce Security (Thailand) Company Limited <b>Rules And Regulations</b> for Security Guards.</div>
 </div>

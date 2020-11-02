@@ -11,11 +11,11 @@
 </div>
 <br><br><br><br>
 
-<div>หนังสือฉบับนี้เป็นสัญญาว่าจ้างระหว่าง <b>บริษัท การ์ดฟอร์ซ ซิเคียวริตี้ เซอร์วิสเซส (ประเทศไทย) จำกัด ('การ์ดฟอร์ซ')</b> เรียกว่า "บริษัทรับจ้าง"<br>
+<div>หนังสือฉบับนี้เป็นสัญญาว่าจ้างระหว่าง <b>บริษัท รักษาความปลอดภัย การ์ดฟอร์ซ (ประเทศไทย) จำกัด ('การ์ดฟอร์ซ')</b> เรียกว่า "บริษัทรับจ้าง"<br>
 ฝ่ายหนึ่งตั้งอยู่ ณ เลขที่ 1780 อาคารเตียวฮงบางนา ถนนบางนา-ตราด แขวงบางนา เขตบางนา กรุงเทพมหานคร 10260
 </div>
 <div>กับ <b>{{customer_name_th}}</b> เรียกว่า "ผู้ว่าจ้าง"</div>
-<div>อีกฝ่ายหนึ่งตั้งอยู่ ณ . <strong>{{ customer_address_th }} {{customer_site_cus_subdist_th}} {{customer_site_cus_district_th}} {{customer_site_cus_city_th}} {{ customer_site_cus_zip }}</strong></div><br>
+<div>อีกฝ่ายหนึ่งตั้งอยู่ ณ . <strong>{{ cusbill_address_th }} {{cusbill_site_cus_subdist_th}} {{cusbill_site_cus_district_th}} {{cusbill_site_cus_city_th}} {{ cusbill_site_cus_zip }}</strong></div><br>
 
 <div><strong>1. การบริการที่จะจัดให้</strong></div>
 <div class='col-12'>
@@ -28,9 +28,9 @@
     {% for item in shift_list_day %}
     <tr>
     <td >{{ item.shf_time_frm }} - {{ item.shf_time_to }}</td>
-    <td>{{item.srv_qty}}&nbsp;&nbsp; x {{item.srv_rank_th}} ({{item.srv_rate|floatformat:2|intcomma}})</td>
+    <td>{{item.srv_qty}}&nbsp;&nbsp; x {{item.srv_rank_th}} ({{item.srv_rate}})</td>
     <td class="text-left" nowrap>{{item.srv_rem}}</td>
-    <td class="text-right" nowrap>{{ item.srv_rate_qty|floatformat:2|intcomma }}.-</td>
+    <td class="text-right" nowrap>{{ item.srv_rate_qty }}.-</td>
     </tr>
     {% endfor %}              
   </table>
@@ -54,9 +54,9 @@
     {% for item in shift_list_night %}
     <tr>                
     <td >{{ item.shf_time_frm }} - {{ item.shf_time_to }}</td>                
-    <td>{{item.srv_qty}}&nbsp;&nbsp; x {{item.srv_rank_th}} ({{item.srv_rate|floatformat:2|intcomma}})</td>
+    <td>{{item.srv_qty}}&nbsp;&nbsp; x {{item.srv_rank_th}} ({{item.srv_rate}})</td>
     <td class="text-left" nowrap>{{item.srv_rem}}</td>
-    <td class="text-right" nowrap>{{item.srv_rate_qty|floatformat:2|intcomma}}.-</td>
+    <td class="text-right" nowrap>{{item.srv_rate_qty}}.-</td>
     </tr>
     {% endfor %}              
   </table>
@@ -73,17 +73,17 @@
   <br>
   <table width="100%">
     <tr>
-    <td width="50%">&nbsp;</td>
-    <td width="10%">&nbsp;</td>
-    <td width="30%" class="text-center"><b>รวมอัตราค่าบริการทั้งสิ้น</b><br>(ยังไม่รวมภาษีมูลค่าเพิ่ม)</td>                
-    <td width="10%" class="text-right" style="vertical-align:top"><b>{{ srv_rate_total|floatformat:2|intcomma }}.-</b></td>
+    <td width="20%">&nbsp;</td>
+    <td width="40%" class="text-left"><b>รวมอัตราค่าบริการทั้งสิ้น</b><br>(ยังไม่รวมภาษีมูลค่าเพิ่ม)</td>                
+    <td width="10%">&nbsp;</td>    
+    <td width="30%" class="text-right" style="vertical-align:top"><b>{{ srv_rate_total }}.-</b></td>
     </tr>
   </table>
   {% endif %}
 </div>
 <br>
 <div>              
-  2.	ค่าบริการรักษาความปลอดภัยรวมเป็นเงินเดือนละจำนวนทั้งสิ้น&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>{{ srv_rate_total|floatformat:2|intcomma }}</b> บาท<br>
+  2.	ค่าบริการรักษาความปลอดภัยรวมเป็นเงินเดือนละจำนวนทั้งสิ้น&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>{{ srv_rate_total }}</b> บาท<br>
 </div>
 <br>
 <div>3. มีผลตั้งแต่วันที่&nbsp;&nbsp;&nbsp;<strong>{{ sign_from_th_format }}</strong>&nbsp;&nbsp;&nbsp;ถึงวันที่&nbsp;&nbsp;&nbsp;<strong>{{ sign_to_th_format }}</strong><br>
@@ -91,7 +91,7 @@
 </div>            
 <br>
 <div>4.	สถานที่ตั้งของหน่วยงานตามสัญญา<br>
-	<strong>{{ cusbill_address_en }} {{cusbill_site_cus_subdist_en}} {{cusbill_site_cus_district_en}} {{cusbill_site_cus_city_en}} {{ cusbill_site_cus_zip }}</strong>
+	<strong>{{ customer_address_th }} {{customer_site_cus_subdist_th}} {{customer_site_cus_district_th}} {{customer_site_cus_city_th}} {{ customer_site_cus_zip }}</strong>
 </div>
 <br>
 <div>5. เงื่อนไขพิเศษ</div>
