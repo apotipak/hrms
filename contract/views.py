@@ -29,8 +29,8 @@ from django.http import HttpResponse, Http404
 from django.http import FileResponse
 from django.db import connection
 import docx
-from docx2pdf import convert
-
+# from docx2pdf import convert
+import comtypes.client
 
 def check_modified_field(table_name, primary_key, field_name, old_value, new_value, log_type, request):
     record = {}
@@ -2496,10 +2496,23 @@ def generate_contract(request, *args, **kwargs):
     tpl.save(MEDIA_ROOT + '/contract/download/' + file_name + ".docx")
 
 
-    # Convert doc to pdf
-    docx_file_name = MEDIA_ROOT + "/contract/download/" + file_name + ".docx"
-    pdf_file_name = MEDIA_ROOT + "/contract/download/" + file_name + ".pdf"
+    # docx2pdf
+    # docx_file_name = MEDIA_ROOT + "/contract/download/" + file_name + ".docx"
+    # pdf_file_name = MEDIA_ROOT + "/contract/download/" + file_name + ".pdf"
     # convert(docx_file_name, pdf_file_name)
+
+
+
+    # comtypes
+    wdFormatPDF = 17
+
+    in_file = MEDIA_ROOT + "/contract/download/" + file_name + ".docx"
+    out_file = MEDIA_ROOT + "/contract/download/" + file_name + ".pdf"
+    word = comtypes.client.CreateObject('Word.Application')
+    doc = word.Documents.Open(in_file)
+    doc.SaveAs(out_file, FileFormat=wdFormatPDF)
+    doc.Close()
+    word.Quit()
 
     return render(request, 'contract/generate_contract.html', context)
 
