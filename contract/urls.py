@@ -28,5 +28,6 @@ urlpatterns = [
     # url(r'^generate-contract/(?P<cnt_id>\d+)/(?P<language_option>\w+)/$', views.generate_contract, name='generate-contract'),
     url(r'^generate-contract/(?P<cnt_id>\d+)/(?P<language_option>\w+)/(?P<is_new_report>\w+)/(?P<is_amendment>\w+)/(?P<is_customer_address>\w+)/$', views.generate_contract, name='generate-contract'),
     url(r'^download-contract/(?P<file_name>[-\w_\\-\\.]+)$', views.download_contract, name='download-contract'),
+    url(r'^print-contract/(?P<file_name>[-\w_\\-\\.]+)$', views.print_contract, name='print-contract'),
     url(r'^ajax/ajax_undelete_contract/$', views.ajax_undelete_contract, name='ajax_undelete_contract'),
 ]

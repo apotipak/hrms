@@ -26,7 +26,10 @@ import os
 from django.conf import settings
 from wsgiref.util import FileWrapper
 from django.http import HttpResponse, Http404
+from django.http import FileResponse
 from django.db import connection
+import docx
+from docx2pdf import convert
 
 
 def check_modified_field(table_name, primary_key, field_name, old_value, new_value, log_type, request):
@@ -2204,7 +2207,8 @@ def convert_date_english_to_thai_format(date_en_format):
         month = "xx"
 
     return day + " " + month + " " + year
-    
+
+
 @login_required(login_url='/accounts/login/')
 @permission_required('contract.view_cuscontract', login_url='/accounts/login/')
 def generate_contract(request, *args, **kwargs):    
@@ -2241,7 +2245,8 @@ def generate_contract(request, *args, **kwargs):
                 print("Service Agreement - TH")
                 template_name = base_url + 'ReC102_TH.docx' 
 
-        file_name = request.user.username + "_" + cnt_id + "_TH.docx"
+        # file_name = request.user.username + "_" + cnt_id + "_TH.docx"
+        file_name = cnt_id + "_TH"
     else:
         if is_new_report=='1':
             if is_amendment=='1':
@@ -2258,7 +2263,8 @@ def generate_contract(request, *args, **kwargs):
                 print("Service Agreement - EN")
                 template_name = base_url + 'ReC102_EN.docx'                        
 
-        file_name = request.user.username + "_" + cnt_id + "_EN.docx"
+        # file_name = request.user.username + "_" + cnt_id + "_EN.docx"
+        file_name = cnt_id + "_EN"
 
 
     today_date_en_format = datetime.datetime.now().strftime("%d %B %Y")
@@ -2373,12 +2379,13 @@ def generate_contract(request, *args, **kwargs):
             sign_to_en_format = cus_contract.cnt_sign_to.strftime("%d %B %Y")
             sign_to_th_format = convert_date_english_to_thai_format(cus_contract.cnt_sign_to.strftime("%d %m %Y"))
 
-
             srv_rate_total = '{:20,.2f}'.format(float(srv_rate_day + srv_rate_night))
             
             context = {
                 'customer': customer,
                 'file_name': file_name,
+                'docx_file_name': file_name+".docx",
+                'pdf_file_name': file_name+".pdf",
                 'template_name': template_name,
                 'language_option': language_option,
                 'is_new_report': is_new_report,
@@ -2445,6 +2452,8 @@ def generate_contract(request, *args, **kwargs):
             context = {
                 'customer': "",
                 'file_name': "",
+                'docx_file_name': "",
+                'pdf_file_name': "",
                 'cnt_id': "",
                 'cnt_doc_no': "",
                 'today_date_en_format': today_date_en_format,
@@ -2464,6 +2473,8 @@ def generate_contract(request, *args, **kwargs):
         context = {
                 'customer': "",
                 'file_name': "",
+                'docx_file_name': "",
+                'pdf_file_name': "",
                 'cnt_id': "",
                 'cnt_doc_no': "",
                 'today_date_en_format': today_date_en_format,
@@ -2482,7 +2493,14 @@ def generate_contract(request, *args, **kwargs):
     
     tpl = DocxTemplate(template_name)
     tpl.render(context)
-    tpl.save(MEDIA_ROOT + '/contract/download/' + file_name)
+    tpl.save(MEDIA_ROOT + '/contract/download/' + file_name + ".docx")
+
+
+    # Convert doc to pdf
+    print("file_name = " + str(file_name))
+    docx_file_name = MEDIA_ROOT + "/contract/download/" + file_name + ".docx"
+    pdf_file_name = MEDIA_ROOT + "/contract/download/" + file_name + ".pdf"
+    convert(docx_file_name, pdf_file_name)
 
     return render(request, 'contract/generate_contract.html', context)
 
@@ -2497,6 +2515,22 @@ def download_contract(request, *args, **kwargs):
             response = HttpResponse(fh.read(), content_type="application/vnd.ms-word")
             response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
             return response
+        fh.closed
+    raise Http404
+
+
+@login_required(login_url='/accounts/login/')
+@permission_required('contract.view_cuscontract', login_url='/accounts/login/')
+def print_contract(request, *args, **kwargs):
+    print("print_contract()")
+
+    file_name = kwargs['file_name']
+    # file_name = "test.pdf"
+    file_path = "media/contract/download/" + file_name
+
+    if os.path.exists(file_path):
+        return FileResponse(open(file_path, 'rb'), content_type='application/pdf')
+
     raise Http404
 
 
