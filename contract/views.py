@@ -2502,7 +2502,7 @@ def generate_contract(request, *args, **kwargs):
     # pdf_file_name = MEDIA_ROOT + "/contract/download/" + file_name + ".pdf"
     pdf_file_name = os.path.basename("media/contract/download/" + file_name + ".pdf")
     print("pdf_file_name = " + str(pdf_file_name))
-    convert(docx_file_name, pdf_file_name)
+    # convert(docx_file_name, pdf_file_name)
 
     # comtypes
     '''
