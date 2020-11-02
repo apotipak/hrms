@@ -2499,7 +2499,7 @@ def generate_contract(request, *args, **kwargs):
     # Convert doc to pdf
     docx_file_name = MEDIA_ROOT + "/contract/download/" + file_name + ".docx"
     pdf_file_name = MEDIA_ROOT + "/contract/download/" + file_name + ".pdf"
-    convert(docx_file_name, pdf_file_name)
+    # convert(docx_file_name, pdf_file_name)
 
     return render(request, 'contract/generate_contract.html', context)
 
