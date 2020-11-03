@@ -2508,12 +2508,18 @@ def generate_contract(request, *args, **kwargs):
 
     # comtypes    
     wdFormatPDF = 17
-    in_file = MEDIA_ROOT + "/contract/download/" + file_name + ".docx"
-    out_file = MEDIA_ROOT + "/contract/download/" + file_name + ".pdf"
+    # in_file = MEDIA_ROOT + "/contract/download/" + file_name + ".docx"
+    in_file = "C:/hrms/media/contract/download/" + file_name + ".docx"
+    print("in_file = " + str(in_file))
+
+    # out_file = MEDIA_ROOT + "/contract/download/" + file_name + ".pdf"
+    out_file = "C:/hrms/media/contract/download/" + file_name + ".pdf"
+    print("out_file = " + str(out_file))
+
     # word = comtypes.client.CreateObject('Word.Application')
     word = win32com.client.DispatchEx("Word.Application")
     doc = word.Documents.Open(in_file)
-    #doc.SaveAs(out_file, FileFormat=wdFormatPDF)
+    doc.SaveAs(out_file, FileFormat=wdFormatPDF)
     doc.Close()
     word.Quit()
 
