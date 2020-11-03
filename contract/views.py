@@ -31,6 +31,7 @@ from django.db import connection
 import docx
 # from docx2pdf import convert
 import comtypes.client
+import win32com.client
 
 
 def check_modified_field(table_name, primary_key, field_name, old_value, new_value, log_type, request):
@@ -2509,7 +2510,8 @@ def generate_contract(request, *args, **kwargs):
     wdFormatPDF = 17
     in_file = MEDIA_ROOT + "/contract/download/" + file_name + ".docx"
     out_file = MEDIA_ROOT + "/contract/download/" + file_name + ".pdf"
-    word = comtypes.client.CreateObject('Word.Application')
+    # word = comtypes.client.CreateObject('Word.Application')
+    word = win32com.client.DispatchEx("Word.Application")
     doc = word.Documents.Open(in_file)
     doc.SaveAs(out_file, FileFormat=wdFormatPDF)
     doc.Close()
