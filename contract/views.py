@@ -29,8 +29,8 @@ from django.http import HttpResponse, Http404
 from django.http import FileResponse
 from django.db import connection
 import docx
-from docx2pdf import convert
-# import comtypes.client
+# from docx2pdf import convert
+import comtypes.client
 # import win32com.client
 
 
@@ -2499,27 +2499,27 @@ def generate_contract(request, *args, **kwargs):
 
 
     # docx2pdf
+    '''
     docx_file_name = MEDIA_ROOT + "/contract/download/" + file_name + ".docx"
     # docx_file_name = "C:/hrms/media/contract/download/" + file_name + ".docx"    
-    
     pdf_file_name = MEDIA_ROOT + "/contract/download/" + file_name + ".pdf"    
     # pdf_file_name = "C:/hrms/media/contract/download/" + file_name + ".pdf"    
-
-    # print("pdf_file_name = " + str(pdf_file_name))
-    # convert(docx_file_name, pdf_file_name)
-
+    print("pdf_file_name = " + str(pdf_file_name))
+    convert(
+        'templates/test.docx',
+        'templates/preview.pdf'
+    )
+    '''
 
     # comtypes
     '''
     wdFormatPDF = 17
-    # in_file = MEDIA_ROOT + "/contract/download/" + file_name + ".docx"
-    in_file = "C:/hrms/media/contract/download/" + file_name + ".docx"
+    in_file = MEDIA_ROOT + "/contract/download/" + file_name + ".docx"
+    # in_file = "C:/hrms/media/contract/download/" + file_name + ".docx"
     print("in_file = " + str(in_file))
-
-    # out_file = MEDIA_ROOT + "/contract/download/" + file_name + ".pdf"
-    out_file = "C:/hrms/media/contract/download/" + file_name + ".pdf"
+    out_file = MEDIA_ROOT + "/contract/download/" + file_name + ".pdf"
+    # out_file = "C:/hrms/media/contract/download/" + file_name + ".pdf"
     print("out_file = " + str(out_file))
-
     # word = comtypes.client.CreateObject('Word.Application')
     word = win32com.client.DispatchEx("Word.Application")
     doc = word.Documents.Open(in_file)
@@ -2527,6 +2527,18 @@ def generate_contract(request, *args, **kwargs):
     doc.Close()
     word.Quit()
     '''
+
+    wdFormatPDF = 17
+    in_file = os.path.abspath("media\\contract\\download\\" + file_name + ".docx")
+    out_file = os.path.abspath("media\\contract\\download\\" + file_name + ".pdf")
+    print("in_file = " + in_file)
+    print("out_file = " + out_file)
+    word = comtypes.client.CreateObject('Word.Application')
+    doc = word.Documents.Open(in_file)
+    doc.SaveAs(out_file, FileFormat=wdFormatPDF)
+    doc.Close()
+    word.Quit()
+    
 
     return render(request, 'contract/generate_contract.html', context)
 
