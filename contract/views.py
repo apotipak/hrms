@@ -2513,7 +2513,7 @@ def generate_contract(request, *args, **kwargs):
     # word = comtypes.client.CreateObject('Word.Application')
     word = win32com.client.DispatchEx("Word.Application")
     doc = word.Documents.Open(in_file)
-    doc.SaveAs(out_file, FileFormat=wdFormatPDF)
+    #doc.SaveAs(out_file, FileFormat=wdFormatPDF)
     doc.Close()
     word.Quit()
 
