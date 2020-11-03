@@ -29,8 +29,8 @@ from django.http import HttpResponse, Http404
 from django.http import FileResponse
 from django.db import connection
 import docx
-# from docx2pdf import convert
-import comtypes.client
+from docx2pdf import convert
+# import comtypes.client
 # import win32com.client
 
 
@@ -2499,17 +2499,13 @@ def generate_contract(request, *args, **kwargs):
 
 
     # docx2pdf
-    '''
     docx_file_name = MEDIA_ROOT + "/contract/download/" + file_name + ".docx"
     # docx_file_name = "C:/hrms/media/contract/download/" + file_name + ".docx"    
     pdf_file_name = MEDIA_ROOT + "/contract/download/" + file_name + ".pdf"    
     # pdf_file_name = "C:/hrms/media/contract/download/" + file_name + ".pdf"    
     print("pdf_file_name = " + str(pdf_file_name))
-    convert(
-        'templates/test.docx',
-        'templates/preview.pdf'
-    )
-    '''
+    convert(docx_file_name)
+
 
     # comtypes
     '''
@@ -2528,6 +2524,7 @@ def generate_contract(request, *args, **kwargs):
     word.Quit()
     '''
 
+    '''
     wdFormatPDF = 17
     in_file = os.path.abspath("media\\contract\\download\\" + file_name + ".docx")
     out_file = os.path.abspath("media\\contract\\download\\" + file_name + ".pdf")
@@ -2538,7 +2535,7 @@ def generate_contract(request, *args, **kwargs):
     doc.SaveAs(out_file, FileFormat=wdFormatPDF)
     doc.Close()
     word.Quit()
-    
+    '''
 
     return render(request, 'contract/generate_contract.html', context)
 
