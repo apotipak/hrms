@@ -2501,9 +2501,12 @@ def generate_contract(request, *args, **kwargs):
 
     # docx2pdf
     docx_file = path.abspath("media\\contract\\download\\" + file_name + ".docx")
-    pdf_file = path.abspath("media\\contract\\download\\" + file_name + ".pdf")
+    pdf_file = path.abspath("media\\contract\\download\\" + file_name + ".pdf")    
     convert(docx_file, pdf_file)
-    
+
+    #from time import sleep
+    #sleep(3)
+    return FileResponse(open(pdf_file, 'rb'), content_type='application/pdf')
 
 
     #Word
@@ -2740,8 +2743,305 @@ def generate_contract(request, *args, **kwargs):
 @login_required(login_url='/accounts/login/')
 @permission_required('contract.view_cuscontract', login_url='/accounts/login/')
 def download_contract(request, *args, **kwargs):    
+    base_url = MEDIA_ROOT + '/contract/template/'
+
+    # Identify which template to be used
+    cnt_id = kwargs['cnt_id']
+    language_option = kwargs['language_option']
+    is_new_report = kwargs['is_new_report']
+    is_amendment = kwargs['is_amendment']
+    is_customer_address = kwargs['is_customer_address']
+
+    print("-----------------------")
+    print("language_option = " + str(language_option)) 
+    print("is_new_report = " + str(is_new_report))
+    print("is_amendment = " + str(is_amendment))
+    # print("is_customer_address = " + str(is_customer_address))
+    print("-----------------------")
+
+    template_name = None
+    if language_option=='T':
+        if is_new_report=='1':
+            if is_amendment=='1':
+                print("Guarding Services Addendum - TH")                
+                template_name = base_url + 'ReNC102A_TH.docx'
+            else:
+                print("Guarding Services - TH")                
+                template_name = base_url + 'ReNC102_TH.docx'
+        else:
+            if is_amendment=='1':
+                print("Service Agreement Amendment - TH")                
+                template_name = base_url + 'ReC102A_TH.docx'
+            else:
+                print("Service Agreement - TH")
+                template_name = base_url + 'ReC102_TH.docx' 
+
+        # file_name = request.user.username + "_" + cnt_id + "_TH.docx"
+        file_name = cnt_id + "_TH"
+    else:
+        if is_new_report=='1':
+            if is_amendment=='1':
+                print("Guarding Services Addendum - EN")
+                template_name = base_url + 'ReNC102A_EN.docx'
+            else:
+                print("Guarding Services - EN")
+                template_name = base_url + 'ReNC102_EN.docx'
+        else:
+            if is_amendment=='1':
+                print("Service Agreement Amendment - EN")
+                template_name = base_url + 'ReC102A_EN.docx'
+            else:
+                print("Service Agreement - EN")
+                template_name = base_url + 'ReC102_EN.docx'                        
+
+        # file_name = request.user.username + "_" + cnt_id + "_EN.docx"
+        file_name = cnt_id + "_EN"
+
+
+    today_date_en_format = datetime.datetime.now().strftime("%d %B %Y")
+    today_date_th_format = convert_date_english_to_thai_format(datetime.datetime.now().strftime("%d %m %Y"))
+
+    if cnt_id is not None:
+        try:                
+            # Get Contract information
+            cus_contract = CusContract.objects.filter(cnt_id__exact=cnt_id).get()
+            cus_contract_cus_id = cus_contract.cus_id
+            cus_contract_cus_brn = cus_contract.cus_brn
+
+            # Get Customer information
+            customer = Customer.objects.filter(cus_id=cus_contract_cus_id).filter(cus_brn=cus_contract_cus_brn).get()
+            cusbill = CusBill.objects.filter(cus_id=cus_contract_cus_id).filter(cus_brn=cus_contract_cus_brn).get()
+
+            # Get Cutomer Service information
+            pickup_record_day = []
+            pickup_record_night = []
+            count_shift_day = 0
+            count_shift_night = 0
+            srv_rate_day = 0
+            srv_rate_night = 0
+            srv_rate_total = 0
+
+            try:
+                # get data from view V_CONTRACT
+                cursor = connection.cursor()
+                try:        
+                    cursor.execute("select cus_name_th, cus_name_en, shf_type, shf_time_frm, shf_time_to, srv_qty, rank_th, srv_rem, srv_rate, shf_desc, rank_en from V_CONTRACT where cnt_id=" + cnt_id + " and srv_active=1 and shf_type='D' order by shf_type,srv_rank desc")
+                    cus_service_list_day = cursor.fetchall()
+                    count_shift_day = len(cus_service_list_day)
+                    for row in cus_service_list_day:                        
+                        srv_rate_day = srv_rate_day + (int(row[5]) * int(row[8])) # row[8] = srv_rate
+
+
+
+                    cursor.execute("select cus_name_th, cus_name_en, shf_type, shf_time_frm, shf_time_to, srv_qty, rank_th, srv_rem, srv_rate, shf_desc, rank_en from V_CONTRACT where cnt_id=" + cnt_id + " and srv_active=1 and shf_type='N' order by shf_type,srv_rank desc")
+                    cus_service_list_night = cursor.fetchall()
+                    count_shift_night = len(cus_service_list_night)
+                    for row in cus_service_list_night:
+                        srv_rate_night = srv_rate_night + (int(row[5]) * int(row[8])) # row[8] = srv_rate
+
+                finally:
+                    cursor.close()
+                
+
+                for (cus_name_th, cus_name_en, shf_type, shf_time_frm,shf_time_to,srv_qty,rank_th,srv_rem,srv_rate,shf_desc,rank_en) in cus_service_list_day:
+                    
+                    shf_time_frm = str(shf_time_frm).zfill(4)
+                    shf_time_frm = shf_time_frm[:2] + ':' + shf_time_frm[2:]
+                    shf_time_to = str(shf_time_to).zfill(4)
+                    shf_time_to = shf_time_to[:2] + ':' + shf_time_to[2:]
+
+                    srv_rate_qty = '{:20,.2f}'.format(float(srv_rate * srv_qty)).strip()
+                    srv_rate = '{:20,.2f}'.format(float(srv_rate)).strip()
+
+                    record = {
+                        "cus_name_th": cus_name_th,
+                        "cus_name_en": cus_name_en,
+                        "shf_type": shf_type,
+                        "shf_time_frm": shf_time_frm,
+                        "shf_time_to": shf_time_to,
+                        "srv_qty": srv_qty,
+                        "srv_rank_th": rank_th.strip(),
+                        "srv_rank_en": rank_en.strip(),
+                        "srv_rem": srv_rem,
+                        "srv_rate": srv_rate,
+                        "srv_rate_qty": srv_rate_qty,
+                        "shf_desc": shf_desc,
+                    }
+                    pickup_record_day.append(record)                
+
+                for (cus_name_th, cus_name_en, shf_type, shf_time_frm,shf_time_to,srv_qty,rank_th,srv_rem,srv_rate,shf_desc,rank_en) in cus_service_list_night: 
+                    shf_time_frm = str(shf_time_frm).zfill(4)
+                    shf_time_frm = shf_time_frm[:2] + ':' + shf_time_frm[2:]
+                    shf_time_to = str(shf_time_to).zfill(4)
+                    shf_time_to = shf_time_to[:2] + ':' + shf_time_to[2:]
+                    srv_rate_qty = '{:20,.2f}'.format(float(srv_rate * srv_qty)).strip()
+                    srv_rate = '{:20,.2f}'.format(float(srv_rate)).strip()
+                    record = {
+                        "cus_name_th": cus_name_th,
+                        "cus_name_en": cus_name_en,
+                        "shf_type": shf_type,
+                        "shf_time_frm": str(shf_time_frm).zfill(4),
+                        "shf_time_to": shf_time_to,
+                        "srv_qty": srv_qty,
+                        "srv_rank_th": rank_th.strip(),
+                        "srv_rank_en": rank_en.strip(),
+                        "srv_rem": srv_rem,
+                        "srv_rate": srv_rate,
+                        "srv_rate_qty": srv_rate_qty,
+                        "shf_desc": shf_desc,
+                    }
+                    pickup_record_night.append(record)                
+
+            except CusService.DoesNotExist:
+                cus_service_list_day = []
+                cus_service_list_night = []
+
+
+            # TH EN Date format
+            effective_from_en_format = cus_contract.cnt_eff_frm.strftime("%d %B %Y")
+            effective_from_th_format = convert_date_english_to_thai_format(cus_contract.cnt_eff_frm.strftime("%d %m %Y"))            
+
+            effective_to_en_format = cus_contract.cnt_eff_to.strftime("%d %B %Y")
+            effective_to_th_format = convert_date_english_to_thai_format(cus_contract.cnt_eff_to.strftime("%d %m %Y"))
+
+            sign_from_en_format = cus_contract.cnt_sign_frm.strftime("%d %B %Y")
+            sign_from_th_format = convert_date_english_to_thai_format(cus_contract.cnt_sign_frm.strftime("%d %m %Y"))
+
+            sign_to_en_format = cus_contract.cnt_sign_to.strftime("%d %B %Y")
+            sign_to_th_format = convert_date_english_to_thai_format(cus_contract.cnt_sign_to.strftime("%d %m %Y"))
+
+            srv_rate_total = '{:20,.2f}'.format(float(srv_rate_day + srv_rate_night))
+            
+            context = {
+                'customer': customer,
+                'file_name': file_name,
+                'docx_file_name': file_name+".docx",
+                'pdf_file_name': file_name+".pdf",
+                'template_name': template_name,
+                'language_option': language_option,
+                'is_new_report': is_new_report,
+                'is_amendment': is_amendment,
+                'cnt_id': cnt_id,               
+                'cnt_doc_no': cus_contract.cnt_doc_no,
+                'today_date_en_format': today_date_en_format,
+                'today_date_th_format': today_date_th_format,
+                'cusbill_name_th': cusbill.cus_name_th,
+                'cusbill_name_en': cusbill.cus_name_en,
+                'cusbill_address_th': cusbill.cus_add1_th,
+                'cusbill_address_en': cusbill.cus_add1_en,                
+                'cusbill_site_th': cusbill.cus_add1_th,
+                'cusbill_site_en': cusbill.cus_add1_en,
+                'cusbill_site_cus_subdist_th': cusbill.cus_subdist_th,
+                'cusbill_site_cus_subdist_en': cusbill.cus_subdist_en,
+
+                'cusbill_site_cus_district_th': cusbill.cus_district.dist_th,
+                'cusbill_site_cus_district_en': cusbill.cus_district.dist_en,
+
+                'cusbill_site_cus_city_th': cusbill.cus_city.city_th,
+                'cusbill_site_cus_city_en': cusbill.cus_city.city_en,
+
+                'cusbill_site_cus_zip': cusbill.cus_zip,
+
+                'customer_name_th': customer.cus_name_th,
+                'customer_name_en': customer.cus_name_en,
+                'customer_address_th': customer.cus_add1_th,
+                'customer_address_en': customer.cus_add1_en,                
+                'customer_site_th': customer.cus_add1_th,
+                'customer_site_en': customer.cus_add1_en,
+                'customer_site_cus_subdist_th': customer.cus_subdist_th,
+                'customer_site_cus_subdist_en': customer.cus_subdist_en,
+                'customer_site_cus_district_th': customer.cus_district.dist_th,
+                'customer_site_cus_district_en': customer.cus_district.dist_en,
+                'customer_site_cus_city_th': customer.cus_city.city_th,
+                'customer_site_cus_city_en': customer.cus_city.city_en,
+                'customer_site_cus_zip': customer.cus_zip,
+
+                # 'effective_from': cus_contract.cnt_eff_frm.strftime("%d %B %Y"),
+                'effective_from_en_format': effective_from_en_format,
+                'effective_from_th_format': effective_from_th_format,
+
+                # 'effective_to': cus_contract.cnt_eff_to.strftime("%d %B %Y"),
+                'effective_to_en_format': effective_to_en_format,
+                'effective_to_th_format': effective_to_th_format,
+
+                # 'sign_from': cus_contract.cnt_sign_frm.strftime("%d %B %Y"),
+                'sign_from_en_format': sign_from_en_format,
+                'sign_from_th_format': sign_from_th_format,
+
+                # 'sign_to': cus_contract.cnt_sign_to.strftime("%d %B %Y"),
+                'sign_to_en_format': sign_to_en_format,
+                'sign_to_th_format': sign_to_th_format,
+
+                'shift_list_day': list(pickup_record_day),
+                'shift_list_night': list(pickup_record_night),
+                'count_shift_day': count_shift_day,
+                'count_shift_night': count_shift_night,
+                'total_count_shift': count_shift_day + count_shift_night,
+                'srv_rate_total': srv_rate_total,
+            }
+        except CusContract.DoesNotExist:
+            context = {
+                'customer': "",
+                'file_name': "",
+                'docx_file_name': "",
+                'pdf_file_name': "",
+                'cnt_id': "",
+                'cnt_doc_no': "",
+                'today_date_en_format': today_date_en_format,
+                'today_date_th_format': today_date_th_format,
+                'customer_name': "",
+                'customer_address': "",
+                'customer_site': "",
+                'effect_from': "",
+                'effect_to': "",
+                'items' : [
+                    {'desc' : 'test1', 'qty' : 2, 'price' : '0.00' },
+                    {'desc' : 'test2', 'qty' : 2, 'price' : '0.00' },
+                ],
+                'is_changed' : True,
+            }            
+    else:
+        context = {
+                'customer': "",
+                'file_name': "",
+                'docx_file_name': "",
+                'pdf_file_name': "",
+                'cnt_id': "",
+                'cnt_doc_no': "",
+                'today_date_en_format': today_date_en_format,
+                'today_date_th_format': today_date_th_format,                
+                'customer_name': "",
+                'customer_address': "",
+                'customer_site': "",
+                'effect_from': "",
+                'effect_to': "",
+                'items' : [
+                    {'desc' : 'test1', 'qty' : 2, 'price' : '0.00' },
+                    {'desc' : 'test2', 'qty' : 2, 'price' : '0.00' },
+                ],
+                'is_changed' : True,
+        }
+    
+    tpl = DocxTemplate(template_name)
+    tpl.render(context)
+    tpl.save(MEDIA_ROOT + '/contract/download/' + file_name + ".docx")
+
+    in_file = os.path.abspath("media\\contract\\download\\" + file_name + ".docx")
+    with open(in_file,'rb') as doc:
+        response = HttpResponse(doc.read(), content_type='application/ms-word')
+        response['Content-Disposition'] = 'attachment;filename=' + file_name + '.docx'
+        return response
+    
+
+@login_required(login_url='/accounts/login/')
+@permission_required('contract.view_cuscontract', login_url='/accounts/login/')
+def download_contract_temp(request, *args, **kwargs):
+    print("download_contract()")
     file_name = kwargs['file_name']
     file_path = "media/contract/download/" + file_name
+
+    print(file_path)
+
     if os.path.exists(file_path):
         with open(file_path, 'rb') as fh:
             response = HttpResponse(fh.read(), content_type="application/vnd.ms-word")
