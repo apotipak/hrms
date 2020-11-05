@@ -2209,7 +2209,8 @@ def convert_date_english_to_thai_format(date_en_format):
     else:
         month = "xx"
 
-    return day + " " + month + " " + year
+    year = int(year) + 543
+    return day + " " + month + " " + str(year)
 
 
 @login_required(login_url='/accounts/login/')
