@@ -57,8 +57,7 @@
             
             <input type="hidden" id="id_cnt_id_temp" name="cnt_id_temp" value="">
 
-            <!--
-            <a class="dropdown-item" href="#" onclick="download_contract('{{contract.cnt_id}}')"><i class="fas fa-download text-secondary"></i>&nbsp;&nbsp;Download file</a>-->
+            <a class="dropdown-item" href="#" onclick="download_contract('{{contract.cnt_id}}')"><i class="fas fa-download text-secondary"></i>&nbsp;&nbsp;Download file</a>            
           </div>
 
           &nbsp;&nbsp;
@@ -3300,6 +3299,33 @@
       is_customer_address = 'S';  
 
     var href = "/contract/generate-contract/" + cnt_id + "/" + language_option + "/" + is_new_report + "/" + is_amendment + "/" + is_customer_address;
+
+    window.open(
+      href,
+      '_blank'
+    );
+  }
+
+
+  function download_contract(cnt_id) {  
+    language_option = $("input[name=printOptions]:checked").val();
+    cnt_id = $("#id_cnt_id_temp").val();    
+    if($("input[name=cnt_new]:checked").val())
+      is_new_report = 1;
+    else
+      is_new_report = 0;
+
+    if($("input[name=amendment]:checked").val())
+      is_amendment = 1;
+    else
+      is_amendment = 0;
+
+    if($("input[name=cnt_print]:checked").val())
+      is_customer_address = 'C';
+    else
+      is_customer_address = 'S';  
+
+    var href = "/contract/download-contract/" + cnt_id + "/" + language_option + "/" + is_new_report + "/" + is_amendment + "/" + is_customer_address;
 
     window.open(
       href,
