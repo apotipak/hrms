@@ -2496,9 +2496,150 @@ def generate_contract(request, *args, **kwargs):
     tpl.save(MEDIA_ROOT + '/contract/download/' + file_name + ".docx")
 
 
-    # from docx2pdf import convert
+    # docx2pdf
+    from time import sleep
+    from docx2pdf import convert
+    docx_file = path.abspath("media\\contract\\download\\" + file_name + ".docx")
+    pdf_file = path.abspath("media\\contract\\download\\" + file_name + ".pdf")
+    convert(docx_file, pdf_file)
+    
+
+
+    #Word
+    '''
+    from os import path
+    from win32com.client import Dispatch
+    word1 = Dispatch("Word.Application")    
+    in_file = path.abspath('C:\\Test\\test.docx')
+    out_file = path.abspath('C:\\Test\\1.pdf')
+    doc1 = word1.Documents.Open(in_file)
+    doc1.SaveAs(out_file, FileFormat=17)
+    doc1.Close()
+    word1.Quit()
+    '''
+
+    '''
+    import pythoncom
+    import win32com.client as win32
+    from os import path
+    pythoncom.CoInitialize()
+    #word = win32.Dispatch("Word.Application")    
+    word = win32.gencache.EnsureDispatch("Word.Application")
+    in_file = path.abspath('C:\\Test\\test.docx')
+    out_file = path.abspath('C:\\Test\\1.pdf')
+    doc = word.Documents.Open(in_file)
+    #doc.SaveAs(out_file, FileFormat=17)        
+    #word.SaveAs("C:\\Test\\MyFile.html", FileFormat=8)
+    #doc.Close()
+    word.Quit()
+    '''
+
+    
+    '''
+    from win32com.client import Dispatch
+    myWord = Dispatch('Word.Application')
+    myWord.Visible = 1
+    in_file = path.abspath('C:\\Test\\test.docx')
+    new_file = path.abspath('C:\\Test\\1.pdf')
+    #myWord.Documents.Open(in_file, False, False, True)
+    myWord = myWord.Documents.Open(FileName=wordfile, ReadOnly=True)
+    myWord.ActiveDocument.SaveAs(new_file)
+    myWord.Quit()
+    '''
+
+
+
+    '''
+    import comtypes.client
+    word = comtypes.client.CreateObject('Word.Application')
+    from pathlib import Path
+    in_file = Path(os.path.abspath("media\\contract\\download\\" + file_name + ".docx"))    
+    with open(in_file,'rb') as doc:
+        response = HttpResponse(doc.read(), content_type='application/ms-word')
+        response['Content-Disposition'] = 'attachment;filename=name.docx'
+        return response
+    '''
+
+
+
+    '''
+    from pathlib import Path
+    in_file = Path(os.path.abspath("media\\contract\\download\\" + file_name + ".docx"))    
+    with open(in_file,'rb') as doc:
+        response = HttpResponse(doc.read(), content_type='application/ms-word')
+        response['Content-Disposition'] = 'inline; filename=name.pdf'
+        return response
+    '''
+
+    '''
+    #import win32com.client as win32
+    #word = win32.gencache.EnsureDispatch('Word.Application')
+    import comtypes.client
+    word = comtypes.client.CreateObject('Word.Application')
+    word.Visible = False
+    in_file = 'C:/hrms/media/contract/download/test.docx'
+    doc = word.Documents.Open(in_file)
+    doc.SaveAs('C:/hrms/media/contract/download/test1.docx')
+    '''
+
+    '''
+    from pathlib import Path
+    from time import sleep
+    import comtypes.client
+    #import win32com.client as win32
+    wdFormatPDF = 17
+    in_file = Path(os.path.abspath("media\\contract\\download\\" + file_name + ".docx"))
+    out_file = Path(os.path.abspath("media\\contract\\download\\" + file_name + ".pdf"))    
+    #word = win32.gencache.EnsureDispatch('Word.Application')
+    word = comtypes.client.CreateObject('Word.Application')
+    #word.Visible = False
+    #sleep(3)
+    #doc = word.Documents.Open(in_file)
+    #doc.SaveAs(out_file, FileFormat=wdFormatPDF)
+    #doc.Close()
+    #doc.Quit()
+    '''
+
+    '''
+    file_name = 'test'
+    wdFormatPDF = 17
+    in_file = Path(os.path.abspath("media\\contract\\download\\" + file_name + ".docx"))
+    in_file = 'C:/hrms/media/contract/download/test.docx'
+    out_file = 'C:/hrms/media/contract/download/test.pdf'
+    word = win32.gencache.EnsureDispatch('Word.Application')
+    word.Visible = 0
+    doc = word.Documents.Open(in_file, ReadOnly = 1)
+    doc.SaveAs(out_file, FileFormat = 17)
+    '''
+
+
+
+    '''
+    import win32com.client
+    import win32com.client as win32
+    from pathlib import Path
+    #path_file_name = "C:\hrms\media\contract\download\test.docx"
+    path_file_name= Path(os.path.abspath("media\\contract\\download\\" + "test.docx")),
+    word = win32.gencache.EnsureDispatch("Word.Application")
+    word.Visible = False
+    doc = word.Documents.Open(path_file_name )
+    '''    
+
+
+    '''
+    doc.Activate()
+    word.ActiveDocument.TrackRevisions = False  # Maybe not need this (not really but why not)
+    word.ActiveDocument.Revisions.AcceptAll()
+    if word.ActiveDocument.Comments.Count >= 1:
+        word.ActiveDocument.DeleteAllComments()
+    word.ActiveDocument.Save()
+    doc.Close(False)
+    word.Application.Quit()
+    '''
+    
     # docx2pdf
     '''
+    from docx2pdf import convert
     docx_file_name = MEDIA_ROOT + "/contract/download/" + file_name + ".docx"
     pdf_file_name = MEDIA_ROOT + "/contract/download/" + file_name + ".pdf"    
     print("pdf_file_name = " + str(pdf_file_name))
@@ -2522,18 +2663,76 @@ def generate_contract(request, *args, **kwargs):
     word.Quit()
     '''
 
-    import comtypes.client    
+    '''
+    import comtypes.client
+    from win32com import client
     wdFormatPDF = 17
     in_file = os.path.abspath("media\\contract\\download\\" + file_name + ".docx")
     out_file = os.path.abspath("media\\contract\\download\\" + file_name + ".pdf")
     print("in_file = " + in_file)
     print("out_file = " + out_file)
-    word = comtypes.client.CreateObject('Word.Application')
-    doc = word.Documents.Open(in_file)
-    doc.SaveAs(out_file, FileFormat=wdFormatPDF)
-    doc.Close()
+    #word = comtypes.client.CreateObject('Word.Application')    
+    #word = client.Dispatch("Word.Application")
+    #word = client.DispatchEx("Word.Application")
+    #doc = word.Documents.Open(in_file)
+    #doc.SaveAs(out_file, FileFormat=17)
+    #doc.Close()
     word.Quit()
+    '''
     
+    # pywin32
+    '''
+    from win32com import client
+    word = win32com.client.Dispatch('Word.Application')
+    word.Visible = False
+    wdFormatPDF = 17
+    in_file = os.path.abspath("media\\contract\\download\\" + file_name + ".docx")
+    out_file = os.path.abspath("media\\contract\\download\\" + file_name + ".pdf")
+    word = comtypes.client.CreateObject('Word.Application')
+    '''
+
+    # comtypes
+    # from pathlib import Path
+    #import comtypes.client
+    #import win32com.client
+    #from win32com import client
+    #import win32com.client as win32
+    #from win32com.client import Dispatch
+
+    '''
+    import win32com.client as win32
+    file_name = 'test'
+    wdFormatPDF = 17
+    in_file = Path(os.path.abspath("media\\contract\\download\\" + file_name + ".docx"))
+    in_file = 'C:/hrms/media/contract/download/test.docx'
+    out_file = 'C:/hrms/media/contract/download/test.pdf'
+    word = win32.gencache.EnsureDispatch('Word.Application')
+    word.Visible = 0
+    doc = word.Documents.Open(in_file, ReadOnly = 1)
+    doc.SaveAs(out_file, FileFormat = 17)
+    '''
+
+    '''
+    #if in_file.is_file():
+    #    word = win32.gencache.EnsureDispatch('Word.Application')
+    #    word.Visible = 0
+    #    doc = word.Documents.Open(in_file)
+    #else:
+    #    print("test")
+    '''
+   
+
+    '''    
+    word.Visible = False
+    wdFormatPDF = 17
+    in_file = os.path.abspath("media\\contract\\download\\" + file_name + ".docx")    
+    out_file = os.path.abspath("media\\contract\\download\\" + file_name + ".pdf")
+    doc = word.Documents.Open(in_file)
+    #doc.SaveAs(out_file, FileFormat=wdFormatPDF)
+    #doc.Close()
+    #word.Quit()
+    '''
+
     return render(request, 'contract/generate_contract.html', context)
 
 
