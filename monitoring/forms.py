@@ -19,8 +19,9 @@ class ScheduleMaintenanceForm(forms.Form):
         self.fields['cus_vol'].widget.attrs = {'class': 'form-control form-control-md', 'placeholder': _('Customer ID')}        
         self.fields['cus_vol'].error_messages = {'required': _('Please enter data'), 'max_value': _('Incorrect code')}
 
+        '''
         self.fields['cus_id'].initial = "1324"
         self.fields['cus_brn'].initial = "000"
         self.fields['cus_vol'].initial = "001"
-
+        '''
 
