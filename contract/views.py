@@ -2387,7 +2387,7 @@ def generate_contract(request, *args, **kwargs):
             srv_rate_total = '{:20,.2f}'.format(float(srv_rate_day + srv_rate_night))
             #srv_rate_total_th_word = "("+num2words(srv_rate_day + srv_rate_night, lang='th')+"บาทถ้วน)"
             srv_rate_total_th_word = num2words(srv_rate_day + srv_rate_night, lang='th')+"บาทถ้วน"
-            srv_rate_total_en_word = num2words(srv_rate_day + srv_rate_night, lang='en')
+            srv_rate_total_en_word = num2words(srv_rate_day + srv_rate_night, lang='en').capitalize()
 
             context = {
                 'customer': customer,
@@ -2420,7 +2420,7 @@ def generate_contract(request, *args, **kwargs):
                 'cusbill_site_cus_zip': cusbill.cus_zip,
 
                 'customer_id': customer.cus_id,
-                
+
                 'customer_name_th': customer.cus_name_th,
                 'customer_name_en': customer.cus_name_en,
                 'customer_address_th': customer.cus_add1_th,
