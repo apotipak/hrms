@@ -21,6 +21,9 @@ from django.db.models import Max
 from hrms.settings import MEDIA_ROOT
 from docxtpl import DocxTemplate
 from django.views.static import serve
+from time import sleep
+from docx2pdf import convert
+from os import path
 import mimetypes
 import os
 from django.conf import settings
@@ -2497,8 +2500,6 @@ def generate_contract(request, *args, **kwargs):
 
 
     # docx2pdf
-    from time import sleep
-    from docx2pdf import convert
     docx_file = path.abspath("media\\contract\\download\\" + file_name + ".docx")
     pdf_file = path.abspath("media\\contract\\download\\" + file_name + ".pdf")
     convert(docx_file, pdf_file)
