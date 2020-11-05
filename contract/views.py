@@ -2387,7 +2387,8 @@ def generate_contract(request, *args, **kwargs):
             srv_rate_total = '{:20,.2f}'.format(float(srv_rate_day + srv_rate_night))
             #srv_rate_total_th_word = "("+num2words(srv_rate_day + srv_rate_night, lang='th')+"บาทถ้วน)"
             srv_rate_total_th_word = num2words(srv_rate_day + srv_rate_night, lang='th')+"บาทถ้วน"
-            srv_rate_total_en_word = num2words(srv_rate_day + srv_rate_night, lang='en').capitalize()
+            srv_rate_total_en_word = num2words(srv_rate_day + srv_rate_night, lang='en').upper()
+            # print("Debug : " + str(srv_rate_total_en_word))
 
             context = {
                 'customer': customer,
@@ -2922,7 +2923,8 @@ def download_contract(request, *args, **kwargs):
             srv_rate_total = '{:20,.2f}'.format(float(srv_rate_day + srv_rate_night))
             #srv_rate_total_th_word = "("+num2words(srv_rate_day + srv_rate_night, lang='th')+"บาทถ้วน)"
             srv_rate_total_th_word = num2words(srv_rate_day + srv_rate_night, lang='th')+"บาทถ้วน"
-            srv_rate_total_en_word = num2words(srv_rate_day + srv_rate_night, lang='en')
+            #srv_rate_total_en_word = num2words(srv_rate_day + srv_rate_night, lang='en')
+            srv_rate_total_en_word = num2words(srv_rate_day + srv_rate_night, lang='en').upper()
             
             context = {
                 'customer': customer,
