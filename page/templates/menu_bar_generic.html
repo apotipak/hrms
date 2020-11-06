@@ -27,6 +27,13 @@
       </li>
       {% endif %}
 
+      {% if perms.monitoring.view_dlyplan %}
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="{% url 'schedule-maintenance' %}" class="nav-link">Daily Monitoring</a>
+      </li>
+      {% endif %}
+
+
     </ul>
 
     <!-- Right navbar links -->

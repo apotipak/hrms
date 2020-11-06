@@ -99,6 +99,8 @@ def ajax_get_customer(request):
 						    "srv_pub": d.srv_pub,
 						    "srv_rem": d.srv_rem,
 						    "srv_active": "Y",
+						    "upd_date": d.upd_date.strftime("%d/%m/%Y %H:%M:%S"),
+						    "upd_by": d.upd_by,
 						}
 						cus_service_list.append(record)		
 			except CusService.DoesNotExist:
@@ -349,6 +351,8 @@ def get_customer_service_list(request):
             "srv_pub": d.srv_pub,
             "srv_rem": d.srv_rem,
             "srv_active": d.srv_active,
+            "upd_date": d.upd_date,
+            "upd_by": d.upd_by,
         }
         cus_service_list.append(record)
 
