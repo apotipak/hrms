@@ -299,7 +299,7 @@ def ajax_get_customer(request):
 			    response.status_code = 200
 			    return response			    	
 		except CusContract.DoesNotExist:
-			print("not found")
+			print("ajax_get_customer() - Customer Number is not found.")
 			response = JsonResponse(data={
 			    "success": True,
 			    "class": "bg-danger",
