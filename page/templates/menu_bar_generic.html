@@ -14,11 +14,19 @@
       <li class="nav-item d-sm-inline-block">
         <a href="/" class="nav-link">{% trans 'Home' %}</a>
       </li>
-      <!--
+
+      {% if perms.customer.view_customer %}
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="#" class="nav-link">Contact</a>
+        <a href="{% url 'customer-list' %}" class="nav-link">Customer</a>
       </li>
-      -->
+      {% endif %}
+
+      {% if perms.contract.view_cuscontract %}
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="/contract/" class="nav-link">Contract</a>
+      </li>
+      {% endif %}
+
     </ul>
 
     <!-- Right navbar links -->
