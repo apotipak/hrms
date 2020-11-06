@@ -543,11 +543,16 @@ $(document).ready(function(){
  	$('#add_security_guard_button').on('click', function (e) { 		
 		$("#security_guard_list_form").trigger("reset");
 		$("#save_security_guard_button").attr("disabled", false);
+		
+		$("#id_emp_id").attr("disabled", false);
+		$("#id_emp_id_lookup").attr("disabled", false);
+		$("#cancel_security_guard_button").attr("disabled", false);
+
 		$("#id_emp_id").focus();
     });
 
 	$("#contract_service_list_form :input").attr("disabled", true);
-	$("#security_guard_list_form :input").prop("disabled", true);	
+	$("#security_guard_list_form :input").prop("disabled", true);
 
 	$("#id_cus_id").on('click', function(){
 		$("#id_cus_id").select();
@@ -566,7 +571,10 @@ $(document).ready(function(){
     	event.preventDefault();    	
     	$("#security_guard_list_form").trigger("reset");
     	$("#save_security_guard_button").attr("disabled", true);
-    	$("#id_emp_id").focus();
+    	$("#security_guard_list_form :input").prop("disabled", true);
+
+    	$("#add_security_guard_button").attr("disabled", false);
+    	//$("#id_emp_id").focus();
     });
 
  	$("#id_emp_id_lookup").click( function(e) {
@@ -1250,7 +1258,13 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 				
 				if(data.is_existed) {
 					$("#contract_service_list_form :input").attr("disabled", false);
-					$("#security_guard_list_form :input").attr("disabled", false);					
+					
+					$("#security_guard_list_form :input").attr("disabled", false);
+					$("#id_emp_id").attr("disabled", true);
+					$("#id_emp_id_lookup").attr("disabled", true);
+
+
+
 					$("#save_security_guard_button").attr("disabled", true);
 					$("#cancel_security_guard_button").attr("disabled", true);
 
