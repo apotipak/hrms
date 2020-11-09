@@ -1862,6 +1862,15 @@ function update_sch_plan(sch_no) {
     	},
     });
 }
+
+
+  $(document).on('keyup keypress', '#search_employee_modal_form input[type="text"]', function(e) {
+    if(e.which == 13) {
+      e.preventDefault();
+      return false;
+    }
+  });
+
 </script>
 {% endblock %}
 

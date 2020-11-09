@@ -714,26 +714,23 @@ def ajax_get_employee_list(request):
 	emp_id = request.GET.get('emp_id')
 	print("debug: emp_id = " + str(emp_id))
 
-	item_per_page = 50
+	item_per_page = 10
 
 	if emp_id is not None:
 	    if emp_id != "":
 	        if emp_id.isnumeric():
-	            print("debug1")
+	            print("debug11")
 	            data = Employee.objects.filter(emp_id__exact=emp_id).filter(emp_type='D1').get()
 	        else:
-	            print("debug3")
+	            print("debug22")
 	            data = Employee.objects.all().filter(emp_type='D1')[:10]
 	    else:
-	        print("debug4")
-	        data = Employee.objects.filter(emp_type='D1').filter(empstatus='A').exclude(upd_flag='D').order_by('emp_id')[:10]
+	        print("debug33")
+	        #data = Employee.objects.filter(emp_type='D1').filter(empstatus='A').exclude(upd_flag='D').order_by('emp_id')[:200]
+	        data = Employee.objects.all().filter(emp_type='D1').filter(empstatus='A').exclude(upd_flag='D').order_by('emp_id')
 	else:		
-	    print("debug5")
+	    print("debug44")
 	    data = Employee.objects.all().filter(emp_type='D1')[:10]
-
-	for d in data:
-		print("emp_id = " + str(d.emp_id))
-
 
 	paginator = Paginator(data, item_per_page)
 	is_paginated = True if paginator.num_pages > 1 else False
