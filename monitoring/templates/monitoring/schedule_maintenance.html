@@ -299,11 +299,11 @@
 
 					    <div class="col-3">
 					    	<label class="form-check-label" for="id_sch_rank"><b>Service Duration</b></label>
-					      	<input type="text" class="form-control form-control-sm" id="id_duration_from" placeholder="From" readonly />
+					      	<input type="text" class="form-control form-control-sm" id="id_duration_from" placeholder="From" />
 					    </div>					    
 					    <div class="col-3">
 					    	<label class="form-check-label" for="id_sch_rank"></label>
-					      	<input type="text" class="form-control form-control-sm" id="id_duration_to" placeholder="To" readonly />
+					      	<input type="text" class="form-control form-control-sm" id="id_duration_to" placeholder="To" />
 					    </div>					    		    
 
 					  	<div class="col-2">	   	
@@ -557,7 +557,13 @@ $(document).ready(function(){
 		$("#id_emp_id_lookup").attr("disabled", false);
 		$("#cancel_security_guard_button").attr("disabled", false);
 
+		$("#id_duration_from").attr("disabled", false);
+		$("#id_duration_to").attr("disabled", false);
+		$("#id_service_active").attr("disabled", false);
+		$("#id_relief").attr("disabled", false);
+
 		$("#id_emp_id").focus();
+
     });
 
 	$("#contract_service_list_form :input").attr("disabled", true);
@@ -1727,6 +1733,9 @@ function update_sch_plan(sch_no) {
     		$("#id_emp_id").val(data.emp_id);
     		
     		$("#id_emp_name_th").val(data.emp_fname_th.trim() + " " + data.emp_lname_th.trim());    		
+    		$(window).scrollTop($('#security_guard_list_title').offset().top);
+    		$("#id_emp_name_th").css("background-color", 'green');
+    		$("#id_emp_name_th").animate({color:'white'}, 1000);
 
     		$("#id_sch_rank").val(data.sch_rank);
     		$("#id_sch_dept").val(data.emp_type);
@@ -1760,11 +1769,13 @@ function update_sch_plan(sch_no) {
     		$("#id_sun_shift").val(data.sch_shf_sun);
 
     		$("#save_security_guard_button").attr("disabled", false);
-    		$("#cancel_security_guard_button").attr("disabled", false);
-    		
-    		$(window).scrollTop($('#security_guard_list_title').offset().top);
-    		$("#id_emp_name_th").css("background-color", 'green');
-    		$("#id_emp_name_th").animate({color:'white'}, 1000);
+    		$("#cancel_security_guard_button").attr("disabled", false); 
+
+			$("#id_duration_from").attr("disabled", false);
+			$("#id_duration_to").attr("disabled", false);
+			$("#id_service_active").attr("disabled", false);
+			$("#id_relief").attr("disabled", false);
+
     	},
     	error: function(data) {
     		alert("There is an error. Please contact IT.");
