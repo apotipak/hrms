@@ -509,9 +509,12 @@
 	      
 	      <div class="modal-body"></div>
 
+	      <!--
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-secondary btn-md" data-dismiss="modal">{% trans 'Close' %}</button>	        
 	      </div>
+	  	  -->
+	  	  
 	    </div>
 	  </div>
 	</div>
@@ -697,8 +700,13 @@ $(document).ready(function(){
 				result += "</form>";
 				result += "</div>";
 
-				result += "<div class='row col-12'>";
-				result += "<table class='table table-hover table-sm'>";
+
+				result += "<div class='col-12 pl-3'>";
+				
+				result += "<font size='2'>";
+
+				result += "<table class='table table-sm table-hover'>";
+				
 				result += " <thead>";
 				result += "   <tr>";
 				result += "     <th scope='col'>{% trans 'District ID' %}</th>";
@@ -709,6 +717,7 @@ $(document).ready(function(){
 				result += " </thead>";
 				result += "<tbody>";
 				result += "</div>";
+
 				result += "<div>";
 
 				for(var i=0; i<count; i++) {              
@@ -727,6 +736,8 @@ $(document).ready(function(){
 				}
 				result += " </tbody>";
 				result += "</table>";
+				result += "</font>";
+
 
 				if(data.is_paginated) {
 				  result += "<div>";
@@ -736,6 +747,8 @@ $(document).ready(function(){
 				  result += "    </span>";
 				  result += "</div>";
 				}
+
+
 
 				//amnaj
 				$("#select_employee_modal .modal-body").html(result);            

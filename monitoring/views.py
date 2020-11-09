@@ -714,7 +714,7 @@ def ajax_get_employee_list(request):
 	emp_id = request.GET.get('emp_id')
 	print("debug: emp_id = " + str(emp_id))
 
-	item_per_page = 10
+	item_per_page = 5
 
 	if emp_id is not None:
 	    if emp_id != "":
