@@ -386,7 +386,7 @@
 		                        </div>
 
 								<div class="text-left form-inline col-12 p-0 m-0 pt-1">
-									<div class="text-left text-blue col-2">SAT&nbsp;</div>
+									<div class="text-left text-purple col-2">SAT&nbsp;</div>
 									<div class="float-right text-right col-10 text-purple">
 		                          	<select name="id_sat_shift" class="form-control form-control-sm" required="" id="id_sat_shift" style="font-size:9pt;width:100% !important;">
 			                          	<option value="99" class="text-danger">99&nbsp;&nbsp;&nbsp;# DAY OFF </option> 
@@ -396,7 +396,7 @@
 		                        </div>
 
 								<div class="text-left form-inline col-12 p-0 m-0 pt-1">
-									<div class="text-left text-blue col-2">SUN&nbsp;</div>
+									<div class="text-left text-red col-2">SUN&nbsp;</div>
 									<div class="float-right text-right col-10 text-red">
 		                          	<select name="id_sun_shift" class="form-control form-control-sm" required="" id="id_sun_shift" style="font-size:9pt;width:100% !important;">
 			                          	<option value="99" class="text-danger">99&nbsp;&nbsp;&nbsp;# DAY OFF </option> 
@@ -1513,7 +1513,7 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 							count++;
 						}
 					} else {
-						result += "<tr><td colspan='16' align='center'>There is no data available.</td></tr>";
+						result += "<tr><td colspan='18' align='center' class='text-danger'><br><font size='3'>There is no contract service available.</font><br><br></td></tr>";
 					}
 
 					result += "  </tbody>";
@@ -1642,7 +1642,7 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 							count++;
 						}
 					} else {
-						result += "<tr><td colspan='17' align='center'>There is no data available.</td></tr>";
+						result += "<tr><td colspan='18' align='center' class='text-danger'><br><font size='3'>There is no security guard available.</font><br><br></td></tr>";
 					}
 
 					result += "  </tbody>";
