@@ -702,8 +702,9 @@ def ajax_save_customer_schedule_plan(request):
 	return response
     
 
+
+#@permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
 @login_required(login_url='/accounts/login/')
-@permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
 def ajax_get_employee_list(request):
 
 	print("***********************************")
@@ -734,21 +735,25 @@ def ajax_get_employee_list(request):
 		print("emp_id = " + str(d.emp_id))
 
 
-	page = 1
-	next_page = page + 1
-	if page >= 1:
-	    previous_page = page - 1
-	else:
-	    previous_page = 0
-
 	paginator = Paginator(data, item_per_page)
-	is_paginated = True if paginator.num_pages > 1 else False        
+	is_paginated = True if paginator.num_pages > 1 else False
+	page = request.GET.get('page', 1) or 1
 
 	try:
 	    current_page = paginator.get_page(page)
 	except InvalidPage as e:
-	    raise Http404(str(e))
-	    if current_page:
+	    raise Http404(str(e))    
+
+	# amnaj
+	if current_page:
+		try:
+			print("debug 1")
+			current_page = paginator.get_page(page)
+		except InvalidPage as e:
+			print("debug 2")
+			raise Http404(str(e))
+
+		if current_page:
 		    current_page_number = current_page.number
 		    current_page_paginator_num_pages = current_page.paginator.num_pages
 
@@ -759,14 +764,14 @@ def ajax_get_employee_list(request):
 		    	emp_id = d.emp_id
 		    	emp_fname_th = d.emp_fname_th
 		    	emp_lname_th = d.emp_lname_th
-		    	emp_fname_th = d.emp_fname_en
-		    	emp_lname_th = d.emp_lname_en
+		    	emp_fname_en = d.emp_fname_en
+		    	emp_lname_en = d.emp_lname_en
 
 		    	record = {
 		    		"emp_id": emp_id,
 		    		"emp_fname_th": emp_fname_th,
-		    		"emp_lname_en": emp_lname_th,
-		    		"emp_fname_th": emp_fname_en,
+		    		"emp_lname_th": emp_lname_th,
+		    		"emp_fname_en": emp_fname_en,
 		    		"emp_lname_en": emp_lname_en,		    		
 		    	}
 		    	pickup_records.append(record)
@@ -775,15 +780,21 @@ def ajax_get_employee_list(request):
 		    	"success": True,
 		        "is_paginated": is_paginated,
 		        "page" : page,
-		        "next_page" : page + 1,
+		        #"next_page" : page + 1,
 		        "current_page_number" : current_page_number,
 		        "current_page_paginator_num_pages" : current_page_paginator_num_pages,
 		        "results": list(pickup_records)         
 		        })
 		    response.status_code = 200
 		    return response
+		else:
+			print("debug 3")
+			print("error 403")
+			response = JsonResponse({"error": "there was an error"})
+			response.status_code = 403
+			return response
 	else:
-		print("error 403")
+		print("debug 4")
 		response = JsonResponse({"error": "there was an error"})
 		response.status_code = 403
 		return response

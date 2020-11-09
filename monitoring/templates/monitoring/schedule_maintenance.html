@@ -548,6 +548,16 @@ document.onkeydown = function(e) {
   }
 }
 
+function select_employee(emp_id, emp_fname_th, emp_lname_th) {
+	$("#id_emp_id").val(emp_id);
+	$("#id_emp_name_th").val(emp_fname_th + " " + emp_lname_th);	
+	
+	$("#id_emp_name_th").css("background-color", 'green');
+	$("#id_emp_name_th").animate({color:'white'}, 1000);		
+
+	$("#select_employee_modal").modal("hide");
+};
+
 $(document).ready(function(){
  	$('#add_security_guard_button').on('click', function (e) { 		
 		$("#security_guard_list_form").trigger("reset");
@@ -611,6 +621,7 @@ $(document).ready(function(){
           	beforeSend: function () {
             	//$("#select_employee_modal").modal("show");
           	},
+          	/*
           	success: function (data) {
 				var count = data.results.length;
 
@@ -619,9 +630,9 @@ $(document).ready(function(){
 				result += "<form id='cus_main_search_district_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
 				result += "  <div class='form-group mx-sm-3 mb-2'>";
 				result += "  <select name='cus_main_cus_district_option' class='form-control form-control-sm' required id='id_cus_main_cus_district_option'>";
-				result += "    <option value='1'>District ID</option>";
-				result += "    <option value='2'>District</option>";
-				result += "    <option value='3' selected>City</option>";
+				result += "    <option value='1'>Employee ID</option>";
+				result += "    <option value='2'>Employee Name (TH)</option>";
+				result += "    <option value='3' selected>Employee Name (EN)</option>";
 				result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";
 				result += "    <label for='id_cus_main_search_district' class='sr-only'>Search</label>";            
 				result += "    <input type='text' class='form-control form-control-sm' id='id_cus_main_cus_district_search_text' name='cus_main_cus_district_search_text' placeholder=''>";
@@ -641,13 +652,16 @@ $(document).ready(function(){
 				result += "   </tr>";
 				result += " </thead>";
 				result += "<tbody>";
-				result += "</div>";
+				result += "</div>";				
 				result += "<div>";
 
 				for(var i=0; i<count; i++) {              
 					var emp_id = data.results[i]["emp_id"];
 					var emp_fname_th = data.results[i]["emp_fname_th"];
 					var emp_lname_th = data.results[i]["emp_lname_th"];
+					var emp_fname_en = data.results[i]["emp_fname_en"];
+					var emp_lname_en = data.results[i]["emp_lname_en"];
+
 					result += "<tr>";
 					result += "<td>" + emp_id + "</td>";        
 					result += "<td>" + emp_fname_th + " " + emp_lname_th + "</td>";
@@ -659,15 +673,81 @@ $(document).ready(function(){
 				}
 				result += " </tbody>";
 				result += "</table>";				
+
+				$("#select_employee_modal .modal-body").html(result);
           	},
+          	*/
+			success: function (data) {
+				var result = "";
+				var count = data.results.length;
+
+				result += "<div class='row col-12'>";
+				result += "<div class='col-8 offset-3 pb-2'>";
+				result += "<form id='search_employee_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
+				result += "  <div class='form-group mx-sm-3 mb-2'>";
+				result += "  <select name='employee_option' class='form-control form-control-sm' required id='id_employee_option'>";
+				result += "    <option value='1'>Employee ID</option>";
+				result += "    <option value='2' selected>Employee Name (TH)</option>";
+				result += "    <option value='3'>Employee Name (EN)</option>";
+				result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";
+				result += "    <label for='id_cus_main_search_district' class='sr-only'>Search</label>";            
+				result += "    <input type='text' class='form-control form-control-sm' id='id_cus_main_cus_district_search_text' name='cus_main_cus_district_search_text' placeholder=''>";
+				result += "  </div>";
+				result += "<a href='javascript:cus_main_search_district_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";            
+				result += "</form>";
+				result += "</div>";
+
+				result += "<div class='row col-12'>";
+				result += "<table class='table table-hover table-sm'>";
+				result += " <thead>";
+				result += "   <tr>";
+				result += "     <th scope='col'>{% trans 'District ID' %}</th>";
+				result += "     <th scope='col'>{% trans 'District' %}</th>";
+				result += "     <th scope='col'>{% trans 'City' %}</th>";
+				result += "     <th scope='col'>&nbsp;</th>";
+				result += "   </tr>";
+				result += " </thead>";
+				result += "<tbody>";
+				result += "</div>";
+				result += "<div>";
+
+				for(var i=0; i<count; i++) {              
+				  var emp_id = data.results[i]["emp_id"];
+				  var emp_fname_th = data.results[i]["emp_fname_th"].trim();
+				  var emp_lname_th = data.results[i]["emp_lname_th"].trim();
+				  var emp_fname_en = data.results[i]["emp_fname_en"].trim();
+				  var emp_lname_en = data.results[i]["emp_lname_en"].trim();
+				  result += "<tr>";
+				  result += "<td>" + emp_id + "</td>";
+				  result += "<td>" + emp_fname_th + "</td>";
+				  result += "<td>" + emp_lname_th + "</td>";
+				  
+				  result += "<td><a href='javascript:select_employee(" + emp_id + ",\"" + emp_fname_th + "\",\"" + emp_lname_th + "\");' type='button' class='btn btn-outline-primary btn-sm'>Select</a></td>";	  
+				  result += "</tr>";              
+				}
+				result += " </tbody>";
+				result += "</table>";
+
+				if(data.is_paginated) {
+				  result += "<div>";
+				  result += "  <span>";
+				  result += data.current_page_number + " / " + data.current_page_paginator_num_pages;
+				  result += " <a href='javascript:get_employee_lookup(" + data.next_page + ");'>" + "<i class='fas fa-arrow-circle-right'></i></a>";
+				  result += "    </span>";
+				  result += "</div>";
+				}
+
+				//amnaj
+				$("#select_employee_modal .modal-body").html(result);            
+	        },          	
           	error: function (data) {
           		result += "Error";
           	},
          });
-
-    	$("#select_employee_modal .modal-body").html(result);    	
+    	
     	$("#select_employee_modal").modal("show");
 	});
+
 
  	$("#save_security_guard_button").click( function() {
     	event.preventDefault();    	
