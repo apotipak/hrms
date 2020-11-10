@@ -514,7 +514,7 @@
 	        <button type="button" class="btn btn-secondary btn-md" data-dismiss="modal">{% trans 'Close' %}</button>	        
 	      </div>
 	  	  -->
-	  	  
+
 	    </div>
 	  </div>
 	</div>
@@ -533,6 +533,14 @@ document.addEventListener('contextmenu', function(e) {
   e.preventDefault();
 });
 */
+
+$(document).on('keyup keypress', '#search_employee_modal_form input[type="text"]', function(e) {
+	if(e.which == 13) {
+	  e.preventDefault();
+	  return false;
+	}
+});
+
 document.onkeydown = function(e) {
   if(event.keyCode == 123) {
      return false;
@@ -550,16 +558,6 @@ document.onkeydown = function(e) {
      return false;
   }
 }
-
-function select_employee(emp_id, emp_fname_th, emp_lname_th) {
-	$("#id_emp_id").val(emp_id);
-	$("#id_emp_name_th").val(emp_fname_th + " " + emp_lname_th);	
-	
-	$("#id_emp_name_th").css("background-color", 'green');
-	$("#id_emp_name_th").animate({color:'white'}, 1000);		
-
-	$("#select_employee_modal").modal("hide");
-};
 
 $(document).ready(function(){
  	$('#add_security_guard_button').on('click', function (e) { 		
@@ -1876,13 +1874,18 @@ function update_sch_plan(sch_no) {
     });
 }
 
+function select_employee(emp_id, emp_fname_th, emp_lname_th) {
+	$("#security_guard_list_form").trigger("reset");
+	
+	$("#id_emp_id").val(emp_id);
+	$("#id_emp_name_th").val(emp_fname_th + " " + emp_lname_th);	
+	
+	$("#id_emp_name_th").css("background-color", 'green');
+	$("#id_emp_name_th").animate({color:'white'}, 1000);		
 
-  $(document).on('keyup keypress', '#search_employee_modal_form input[type="text"]', function(e) {
-    if(e.which == 13) {
-      e.preventDefault();
-      return false;
-    }
-  });
+	$("#select_employee_modal").modal("hide");
+};
+
 
 </script>
 {% endblock %}
