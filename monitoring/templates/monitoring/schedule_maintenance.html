@@ -708,8 +708,8 @@ $(document).ready(function(){
 				result += " <thead>";
 				result += "   <tr>";
 				result += "     <th scope='col'>{% trans 'Employee ID' %}</th>";
-				result += "     <th scope='col'>{% trans 'Employee Name (TH)' %}</th>";
-				result += "     <th scope='col'>{% trans 'Employee Lastname (TH)' %}</th>";
+				result += "     <th scope='col'>{% trans 'First Name (TH)' %}</th>";
+				result += "     <th scope='col'>{% trans 'Last Name (TH)' %}</th>";
 				result += "     <th scope='col'>&nbsp;</th>";
 				result += "   </tr>";
 				result += " </thead>";
@@ -1886,18 +1886,21 @@ function select_employee(emp_id, emp_fname_th, emp_lname_th) {
 
 
 function get_new_page(page_no) {
-	alert("Request page number : " + page_no);
+	//alert("Request page number : " + page_no);
 
+	search_key = $("#id_employee_search_text").val();
+	search_option = $("#id_employee_option").val();
+	alert(search_option + " | " + search_key);
 
-
+	/*
 	$("#contact_modal .modal-body").html(result);            
-  		$(document).on('keyup keypress', '#cus_site_search_district_modal_form input[type="text"]', function(e) {
+  	$(document).on('keyup keypress', '#cus_site_search_district_modal_form input[type="text"]', function(e) {
     	if(e.which == 13) {
       		e.preventDefault();
       		return false;
     }
-  });
-
+	});
+	*/
 }
 
 
