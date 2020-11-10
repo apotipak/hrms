@@ -687,12 +687,12 @@ $(document).ready(function(){
 				result += "<form id='search_employee_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
 				result += "  <div class='form-group mx-sm-3 mb-2'>";
 				result += "  <select name='employee_option' class='form-control form-control-sm' required id='id_employee_option'>";
-				result += "    <option value='1'>Employee ID</option>";
-				result += "    <option value='2' selected>Employee Name (TH)</option>";
+				result += "    <option value='1' selected>Employee ID</option>";
+				result += "    <option value='2'>Employee Name (TH)</option>";
 				result += "    <option value='3'>Employee Name (EN)</option>";
 				result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";
-				result += "    <label for='id_cus_main_search_district' class='sr-only'>Search</label>";            
-				result += "    <input type='text' class='form-control form-control-sm' id='id_cus_main_cus_district_search_text' name='cus_main_cus_district_search_text' placeholder=''>";
+				result += "    <label for='id_employee_search_text' class='sr-only'>Search</label>";            
+				result += "    <input type='text' class='form-control form-control-sm' id='id_employee_search_text' name='employee_search_text' placeholder=''>";
 				result += "  </div>";
 				result += "<a href='javascript:search_employee_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";            
 				result += "</form>";
@@ -707,9 +707,9 @@ $(document).ready(function(){
 				
 				result += " <thead>";
 				result += "   <tr>";
-				result += "     <th scope='col'>{% trans 'District ID' %}</th>";
-				result += "     <th scope='col'>{% trans 'District' %}</th>";
-				result += "     <th scope='col'>{% trans 'City' %}</th>";
+				result += "     <th scope='col'>{% trans 'Employee ID' %}</th>";
+				result += "     <th scope='col'>{% trans 'Employee Name (TH)' %}</th>";
+				result += "     <th scope='col'>{% trans 'Employee Lastname (TH)' %}</th>";
 				result += "     <th scope='col'>&nbsp;</th>";
 				result += "   </tr>";
 				result += " </thead>";
@@ -724,6 +724,7 @@ $(document).ready(function(){
 				  var emp_lname_th = data.results[i]["emp_lname_th"].trim();
 				  var emp_fname_en = data.results[i]["emp_fname_en"].trim();
 				  var emp_lname_en = data.results[i]["emp_lname_en"].trim();
+
 				  result += "<tr>";
 				  result += "<td>" + emp_id + "</td>";
 				  result += "<td>" + emp_fname_th + "</td>";
@@ -741,14 +742,11 @@ $(document).ready(function(){
 				  result += "<div>";
 				  result += "  <span>";
 				  result += data.current_page_number + " / " + data.current_page_paginator_num_pages;
-				  result += " <a href='javascript:get_employee_lookup(" + data.next_page + ");'>" + "<i class='fas fa-arrow-circle-right'></i></a>";
+				  result += " <a href='javascript:get_new_page(" + data.next_page + ");'>" + "<i class='fas fa-arrow-circle-right'></i></a>";
 				  result += "    </span>";
 				  result += "</div>";
 				}
 
-
-
-				//amnaj
 				$("#select_employee_modal .modal-body").html(result);            
 	        },          	
           	error: function (data) {
@@ -1887,6 +1885,21 @@ function select_employee(emp_id, emp_fname_th, emp_lname_th) {
 };
 
 
+function get_new_page(page_no) {
+	alert("Request page number : " + page_no);
+
+
+
+	$("#contact_modal .modal-body").html(result);            
+  		$(document).on('keyup keypress', '#cus_site_search_district_modal_form input[type="text"]', function(e) {
+    	if(e.which == 13) {
+      		e.preventDefault();
+      		return false;
+    }
+  });
+
+}
+
 
 $(document).ready(function(){
 
@@ -1984,7 +1997,7 @@ $(document).ready(function(){
 });
 
 
-  function searchJ_employee_modal() {
+  function search_employee_modal() {
     current_district_id = $('#id_cus_main_select_district_id').val();
     search_district_option = $('#id_cus_main_cus_district_option').val();
     search_district_text = $('#id_cus_main_cus_district_search_text').val();

@@ -777,7 +777,7 @@ def ajax_get_employee_list(request):
 		    	"success": True,
 		        "is_paginated": is_paginated,
 		        "page" : page,
-		        #"next_page" : page + 1,
+		        "next_page" : current_page_number + 1,
 		        "current_page_number" : current_page_number,
 		        "current_page_paginator_num_pages" : current_page_paginator_num_pages,
 		        "results": list(pickup_records)         
