@@ -253,7 +253,7 @@
 					    	<label class="form-check-label" for="id_emp_id"><b>Employee ID</b></label>
                             <div class="input-group">                            	
                               	<input type="text" id="id_emp_id" name="id_emp_id" class="form-control form-control-sm" value="" />
-                              	<button id="id_emp_id_lookup" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url=""><i class="fas fa-search fa-sm"></i></button>
+                              	<button id="emp_id_lookup_button" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url=""><i class="fas fa-search fa-sm"></i></button>
 
                               	<input type="hidden" id="id_selected_sch_no" name="id_selected_sch_no" value="">
                             </div>
@@ -565,7 +565,7 @@ $(document).ready(function(){
 		$("#save_security_guard_button").attr("disabled", false);
 		
 		$("#id_emp_id").attr("disabled", false);
-		$("#id_emp_id_lookup").attr("disabled", false);
+		$("#emp_id_lookup_button").attr("disabled", false);
 		$("#cancel_security_guard_button").attr("disabled", false);
 
 		$("#id_duration_from").attr("disabled", false);
@@ -606,7 +606,7 @@ $(document).ready(function(){
     	$("#id_emp_name_th").animate({color:''}, 1000);
     });
 
- 	$("#id_emp_id_lookup").click( function(e) {
+ 	$("#emp_id_lookup_button").click( function(e) {
  		var result = "";
  		emp_id = $("#id_emp_id").val();
  		page = 1;
@@ -742,11 +742,12 @@ $(document).ready(function(){
 				  result += "<div>";
 				  result += "  <span>";
 				  result += data.current_page_number + " / " + data.current_page_paginator_num_pages;
-				  result += " <a href='javascript:get_new_page(" + data.next_page + ");'>" + "<i class='fas fa-arrow-circle-right'></i></a>";
+				  result += " <a href='javascript:get_next_page(" + data.next_page + ");'>" + "<i class='fas fa-arrow-circle-right'></i></a>";
 				  result += "    </span>";
 				  result += "</div>";
 				}
 
+				// amnaj
 				$("#select_employee_modal .modal-body").html(result);            
 	        },          	
           	error: function (data) {
@@ -1507,7 +1508,7 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 					
 					$("#security_guard_list_form :input").attr("disabled", false);
 					$("#id_emp_id").attr("disabled", true);
-					$("#id_emp_id_lookup").attr("disabled", true);
+					$("#emp_id_lookup_button").attr("disabled", true);
 
 
 
@@ -1886,22 +1887,138 @@ function select_employee(emp_id, emp_fname_th, emp_lname_th) {
 };
 
 
-function get_new_page(page_no) {
-	//alert("Request page number : " + page_no);
+function get_next_page(page_no) {
+	var search_key = $("#id_employee_search_text").val();
+	var search_option = $("#id_employee_option").val();	
+	var result = "";	
+	var page = page_no;
 
-	search_key = $("#id_employee_search_text").val();
-	search_option = $("#id_employee_option").val();
-	alert(search_option + " | " + search_key);
+	$.ajax({
+    	url: "/monitoring/ajax/get_employee_list",        	
+		type: 'get',          
+      	dataType: 'json',
+      	//async: false,
+      	data : { 
+        	emp_id : emp_id,
+        	page: page,
+      	},          
+      	beforeSend: function () {
+			result = "";
+			result += "<div class='row col-12'>";
+			result += "<div class='col-8 offset-3 pb-2'>";
+			result += "<form id='search_employee_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
+			result += "  <div class='form-group mx-sm-3 mb-2'>";
+			result += "  <select name='employee_option' class='form-control form-control-sm' required id='id_employee_option'>";
+			result += "    <option value='1' selected>Employee ID</option>";
+			result += "    <option value='2'>Employee Name (TH)</option>";
+			result += "    <option value='3'>Employee Name (EN)</option>";
+			result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";
+			result += "    <label for='id_employee_search_text' class='sr-only'>Search</label>";            
+			result += "    <input type='text' class='form-control form-control-sm' id='id_employee_search_text' name='employee_search_text' placeholder=''>";
+			result += "  </div>";
+			result += "<a href='javascript:search_employee_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";            
+			result += "</form>";
+			result += "</div>";
+			result += "<div class='col-12 pl-3'>";	
+			result += "<font size='2'>";
+			result += "<table class='table table-sm table-hover'>";
+			result += " <thead>";
+			result += "   <tr>";
+			result += "     <th scope='col'>{% trans 'Employee ID' %}</th>";
+			result += "     <th scope='col'>{% trans 'First Name (TH)' %}</th>";
+			result += "     <th scope='col'>{% trans 'Last Name (TH)' %}</th>";
+			result += "     <th scope='col'>&nbsp;</th>";
+			result += "   </tr>";
+			result += " </thead>";
+			result += "<tbody>";
+			result += "</div>";
+			result += "</div>";
+			result += "<tr>";
+			result += "<td colspan='4' class='text-center'><b>Loading...</b></td>";
+			result += "</tr>";              
+			result += " </tbody>";
+			result += "</table>";
+			result += "</font>";
+			$("#select_employee_modal .modal-body").html(result);        	
+      	},
+		success: function (data) {
+			var result = "";
+			var count = data.results.length;
 
-	/*
-	$("#contact_modal .modal-body").html(result);            
-  	$(document).on('keyup keypress', '#cus_site_search_district_modal_form input[type="text"]', function(e) {
-    	if(e.which == 13) {
-      		e.preventDefault();
-      		return false;
-    }
-	});
-	*/
+			result += "<div class='row col-12'>";
+			result += "<div class='col-8 offset-3 pb-2'>";
+			result += "<form id='search_employee_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
+			result += "  <div class='form-group mx-sm-3 mb-2'>";
+			result += "  <select name='employee_option' class='form-control form-control-sm' required id='id_employee_option'>";
+			result += "    <option value='1' selected>Employee ID</option>";
+			result += "    <option value='2'>Employee Name (TH)</option>";
+			result += "    <option value='3'>Employee Name (EN)</option>";
+			result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";
+			result += "    <label for='id_employee_search_text' class='sr-only'>Search</label>";            
+			result += "    <input type='text' class='form-control form-control-sm' id='id_employee_search_text' name='employee_search_text' placeholder=''>";
+			result += "  </div>";
+			result += "<a href='javascript:search_employee_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";            
+			result += "</form>";
+			result += "</div>";
+
+
+			result += "<div class='col-12 pl-3'>";
+			
+			result += "<font size='2'>";
+
+			result += "<table class='table table-sm table-hover'>";
+			
+			result += " <thead>";
+			result += "   <tr>";
+			result += "     <th scope='col'>{% trans 'Employee ID' %}</th>";
+			result += "     <th scope='col'>{% trans 'First Name (TH)' %}</th>";
+			result += "     <th scope='col'>{% trans 'Last Name (TH)' %}</th>";
+			result += "     <th scope='col'>&nbsp;</th>";
+			result += "   </tr>";
+			result += " </thead>";
+			result += "<tbody>";
+			result += "</div>";
+
+			result += "<div>";
+
+			for(var i=0; i<count; i++) {              
+			  var emp_id = data.results[i]["emp_id"];
+			  var emp_fname_th = data.results[i]["emp_fname_th"].trim();
+			  var emp_lname_th = data.results[i]["emp_lname_th"].trim();
+			  var emp_fname_en = data.results[i]["emp_fname_en"].trim();
+			  var emp_lname_en = data.results[i]["emp_lname_en"].trim();
+
+			  result += "<tr>";
+			  result += "<td>" + emp_id + "</td>";
+			  result += "<td>" + emp_fname_th + "</td>";
+			  result += "<td>" + emp_lname_th + "</td>";
+			  
+			  result += "<td><a href='javascript:select_employee(" + emp_id + ",\"" + emp_fname_th + "\",\"" + emp_lname_th + "\");' type='button' class='btn btn-outline-primary btn-sm'>Select</a></td>";	  
+			  result += "</tr>";              
+			}
+			result += " </tbody>";
+			result += "</table>";
+			result += "</font>";
+
+
+			if(data.is_paginated) {
+			  result += "<div>";
+			  result += "  <span>";
+			  result += data.current_page_number + " / " + data.current_page_paginator_num_pages;
+			  result += " <a href='javascript:get_next_page(" + data.next_page + ");'>" + "<i class='fas fa-arrow-circle-right'></i></a>";
+			  result += "    </span>";
+			  result += "</div>";
+			}
+
+			// amnaj
+			$("#select_employee_modal .modal-body").html(result);            
+        },          	
+      	error: function (data) {
+      		result += "Error";
+      	},
+    });
+	
+	// amnaj
 }
 
 
