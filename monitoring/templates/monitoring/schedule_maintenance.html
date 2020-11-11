@@ -714,7 +714,7 @@ $(document).ready(function(){
 		    	subtitle: '',
 		    	autohide: true,
 		    	delay: 2000,
-		    	body: "Please enter Employee ID!.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+		    	body: "Please enter Employee ID!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
 		    	autoDismiss: true,
 		    	close: true,
 		    	autoremove: true,
@@ -734,6 +734,7 @@ $(document).ready(function(){
     	} else {
     		relief = 0;
     	}
+
 
 		$.ajax({
 	    	url : "/monitoring/ajax/save_customer_schdule_plan/",
