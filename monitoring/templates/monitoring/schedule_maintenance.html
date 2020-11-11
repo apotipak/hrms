@@ -232,9 +232,9 @@
 	        	<div class="card-tools">
 		        	<div class="card-tools float-right">
 		        		<button id="cancel_security_guard_button" type="button" class="btn btn-warning btn-sm">{% trans 'Cancel' %}</button>
-		        		<button id="save_security_guard_button" type="button" class="btn btn-primary btn-sm"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</button>
+		        		<button id="save_security_guard_button" type="button" class="btn btn-primary btn-sm"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</button>
 		        		&nbsp;&nbsp;|&nbsp;&nbsp;
-		        		<button id="add_security_guard_button" type="button" class="btn btn-success btn-sm"><i class="fas fa-plus fa-md"></i>&nbsp;&nbsp;{% trans 'Add' %}</button>&nbsp;		        				        	
+		        		<button id="add_security_guard_button" type="button" class="btn btn-success btn-sm"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;{% trans 'Add' %}</button>&nbsp;		        				        	
 		        	</div>
 	        	</div>
 
@@ -1817,9 +1817,10 @@ function update_sch_plan(sch_no) {
       	sch_no: sch_no,
     	},
     	success: function(data) {     		
-    		$("#id_selected_sch_no").val(data.sch_no);
-    		$("#id_emp_id").focus();
+    		$("#id_selected_sch_no").val(data.sch_no);    		
     		$("#id_emp_id").val(data.emp_id);
+    		$("#id_duration_from").focus();
+			$("#id_emp_id").attr("disabled", true);
     		
     		$("#id_emp_name_th").val(data.emp_fname_th.trim() + " " + data.emp_lname_th.trim());    		
     		$(window).scrollTop($('#security_guard_list_title').offset().top);
