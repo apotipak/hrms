@@ -703,7 +703,7 @@ def ajax_save_customer_schedule_plan(request):
     
 
 
-#@permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
+@permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
 @login_required(login_url='/accounts/login/')
 def ajax_get_employee_list(request):
 

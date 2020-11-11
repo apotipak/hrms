@@ -500,8 +500,8 @@
 	  <div class="modal-dialog modal-dialog-centered" role="document">
 	    <div class="modal-content">
 	      
-	      <div class="modal-header">
-	        <h5 class="modal-title"><i class="fas fa-search fa-sm text-secondary"></i>&nbsp;&nbsp;{% trans 'Select an Employee' %}</h5>
+	      <div class="modal-header bg-primary">
+	        <h5 class="modal-title"><i class="fas fa-search fa-sm text-light"></i>&nbsp;&nbsp;{% trans 'Select an Employee' %}</h5>
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 	          <span aria-hidden="true">&times;</span>
 	        </button>
@@ -622,62 +622,6 @@ $(document).ready(function(){
           	beforeSend: function () {
             	//$("#select_employee_modal").modal("show");
           	},
-          	/*
-          	success: function (data) {
-				var count = data.results.length;
-
-				result += "<div class='row col-12'>";
-				result += "<div class='col-8 offset-3 pb-2'>";
-				result += "<form id='search_employee_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
-				result += "  <div class='form-group mx-sm-3 mb-2'>";
-				result += "  <select name='cus_main_cus_district_option' class='form-control form-control-sm' required id='id_cus_main_cus_district_option'>";
-				result += "    <option value='1'>Employee ID</option>";
-				result += "    <option value='2'>Employee Name (TH)</option>";
-				result += "    <option value='3' selected>Employee Name (EN)</option>";
-				result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";
-				result += "    <label for='id_cus_main_search_district' class='sr-only'>Search</label>";            
-				result += "    <input type='text' class='form-control form-control-sm' id='id_cus_main_cus_district_search_text' name='cus_main_cus_district_search_text' placeholder=''>";
-				result += "  </div>";
-				result += "<a href='javascript:search_employee_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";            
-				result += "</form>";
-				result += "</div>";
-
-				result += "<div class='row col-12'>";
-				result += "<table class='table table-hover table-sm'>";
-				result += " <thead>";
-				result += "   <tr>";
-				result += "     <th scope='col'>{% trans 'Emp ID' %}</th>";
-				result += "     <th scope='col'>{% trans 'Emp Name (TH)' %}</th>";
-				result += "     <th scope='col'>{% trans 'Emp Name (EN)' %}</th>";
-				result += "     <th scope='col'>&nbsp;</th>";
-				result += "   </tr>";
-				result += " </thead>";
-				result += "<tbody>";
-				result += "</div>";				
-				result += "<div>";
-
-				for(var i=0; i<count; i++) {              
-					var emp_id = data.results[i]["emp_id"];
-					var emp_fname_th = data.results[i]["emp_fname_th"];
-					var emp_lname_th = data.results[i]["emp_lname_th"];
-					var emp_fname_en = data.results[i]["emp_fname_en"];
-					var emp_lname_en = data.results[i]["emp_lname_en"];
-
-					result += "<tr>";
-					result += "<td>" + emp_id + "</td>";        
-					result += "<td>" + emp_fname_th + " " + emp_lname_th + "</td>";
-					result += "<td>" + emp_fname_th + " " + emp_lname_th + "</td>";
-
-					result += "<td><a href='javascript:select_employee(" + emp_id + ",\"" + emp_fname_th + "\",\"" + emp_lname_th + "\",\"" + emp_fname_en + "\",\"" + emp_lname_en + "\");' type='button' class='btn btn-outline-primary btn-sm'>Select</a></td>";
-
-					result += "</tr>";              
-				}
-				result += " </tbody>";
-				result += "</table>";				
-
-				$("#select_employee_modal .modal-body").html(result);
-          	},
-          	*/
 			success: function (data) {
 				var result = "";
 				var count = data.results.length;
@@ -747,7 +691,6 @@ $(document).ready(function(){
 				  result += "</div>";
 				}
 
-				// amnaj
 				$("#select_employee_modal .modal-body").html(result);            
 	        },          	
           	error: function (data) {
@@ -1903,43 +1846,7 @@ function get_next_page(page_no) {
         	page: page,
       	},          
       	beforeSend: function () {
-			result = "";
-			result += "<div class='row col-12'>";
-			result += "<div class='col-8 offset-3 pb-2'>";
-			result += "<form id='search_employee_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
-			result += "  <div class='form-group mx-sm-3 mb-2'>";
-			result += "  <select name='employee_option' class='form-control form-control-sm' required id='id_employee_option'>";
-			result += "    <option value='1' selected>Employee ID</option>";
-			result += "    <option value='2'>Employee Name (TH)</option>";
-			result += "    <option value='3'>Employee Name (EN)</option>";
-			result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";
-			result += "    <label for='id_employee_search_text' class='sr-only'>Search</label>";            
-			result += "    <input type='text' class='form-control form-control-sm' id='id_employee_search_text' name='employee_search_text' placeholder=''>";
-			result += "  </div>";
-			result += "<a href='javascript:search_employee_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";            
-			result += "</form>";
-			result += "</div>";
-			result += "<div class='col-12 pl-3'>";	
-			result += "<font size='2'>";
-			result += "<table class='table table-sm table-hover'>";
-			result += " <thead>";
-			result += "   <tr>";
-			result += "     <th scope='col'>{% trans 'Employee ID' %}</th>";
-			result += "     <th scope='col'>{% trans 'First Name (TH)' %}</th>";
-			result += "     <th scope='col'>{% trans 'Last Name (TH)' %}</th>";
-			result += "     <th scope='col'>&nbsp;</th>";
-			result += "   </tr>";
-			result += " </thead>";
-			result += "<tbody>";
-			result += "</div>";
-			result += "</div>";
-			result += "<tr>";
-			result += "<td colspan='4' class='text-center'><b>Loading...</b></td>";
-			result += "</tr>";              
-			result += " </tbody>";
-			result += "</table>";
-			result += "</font>";
-			$("#select_employee_modal .modal-body").html(result);        	
+      		//	
       	},
 		success: function (data) {
 			var result = "";
@@ -2010,7 +1917,6 @@ function get_next_page(page_no) {
 			  result += "</div>";
 			}
 
-			// amnaj
 			$("#select_employee_modal .modal-body").html(result);            
         },          	
       	error: function (data) {
