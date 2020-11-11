@@ -561,6 +561,7 @@ document.onkeydown = function(e) {
 
 $(document).ready(function(){
  	$('#add_security_guard_button').on('click', function (e) { 		
+ 		$("#id_selected_sch_no").val(0);
 		$("#security_guard_list_form").trigger("reset");
 		$("#save_security_guard_button").attr("disabled", false);
 		
