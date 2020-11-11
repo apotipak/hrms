@@ -599,9 +599,9 @@ def ajax_get_customer_schedule_plan(request):
 @login_required(login_url='/accounts/login/')
 @permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
 def ajax_save_customer_schedule_plan(request):
-	print("*************************************")
+	print("*********************************************")
 	print("FUNCTION: ajax_save_customer_schedule_plan()")
-	print("*************************************")
+	print("*********************************************")
 
 	selected_sch_no = request.POST.get("selected_sch_no")
 	print("selected_sch_no = " + str(selected_sch_no))
@@ -611,7 +611,8 @@ def ajax_save_customer_schedule_plan(request):
 	cus_vol = request.POST.get('cus_vol')    
 	cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
 	
-	# emp_id = request.POST.get("selected_sch_no")
+	emp_id = request.POST.get("emp_id")
+	print("emp_id = " + str(emp_id))
 
 	sch_active = request.POST.get("sch_active")
 	relief = request.POST.get("relief")
@@ -630,9 +631,20 @@ def ajax_save_customer_schedule_plan(request):
 	print("sun_shift = " + str(sun_shift))
 	print("sch_active = " + str(sch_active))
 
-	if selected_sch_no == 0:
+	if selected_sch_no == "0":
+		# amnaj
+		# TODO: Check if user select duplicated employee
+		try:			
+			employee = SchPlan.objects.filter(emp_id=emp_id).exclude(upd_flag='D',sch_active=False).get()
+			print("Not available")
+		except SchPlan.DoesNotExist:
+			print("Available")
+
+		# TODO: Check if SO is existed in other schedule
+
+
 		response = JsonResponse(data={
-			"message": "No data",
+			"message": "Add new record.",
 			"class": "bg-danger",
 			"sch_plan_list": list(sch_plan_list),
 			"is_update": False,
@@ -649,7 +661,7 @@ def ajax_save_customer_schedule_plan(request):
 			sch_plan.sch_shf_fri = fri_shift
 			sch_plan.sch_shf_sat = sat_shift
 			sch_plan.sch_shf_sun = sun_shift
-			sch_plan.sch_upd_date = datetime.datetime.now()
+			sch_plan.upd_date = datetime.datetime.now()
 			sch_plan.upd_by = request.user.first_name
 			sch_plan.upd_flag = 'E'			
 			sch_plan.save()
@@ -699,7 +711,7 @@ def ajax_save_customer_schedule_plan(request):
 			})
 		except SchPlan.DoesNotExist:
 			response = JsonResponse(data={
-				"message": "Schedule Number is not found.",
+				"message": "Schedule Number not found.",
 				"class": "bg-danger",
 				"sch_plan_list": list(sch_plan_list),
 				"is_saved": False,
@@ -750,7 +762,6 @@ def ajax_get_employee_list(request):
 	except InvalidPage as e:
 	    raise Http404(str(e))    
 
-	# amnaj
 	if current_page:
 		try:
 			print("debug 1")
