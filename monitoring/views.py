@@ -604,11 +604,15 @@ def ajax_save_customer_schedule_plan(request):
 	print("*************************************")
 
 	selected_sch_no = request.POST.get("selected_sch_no")
+	print("selected_sch_no = " + str(selected_sch_no))
+
 	cus_id = request.POST.get('cus_id')
 	cus_brn = request.POST.get('cus_brn')
 	cus_vol = request.POST.get('cus_vol')    
 	cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
-	emp_id = request.POST.get("selected_sch_no")	
+	
+	# emp_id = request.POST.get("selected_sch_no")
+
 	sch_active = request.POST.get("sch_active")
 	relief = request.POST.get("relief")
 	mon_shift = request.POST.get("mon_shift")
@@ -626,7 +630,14 @@ def ajax_save_customer_schedule_plan(request):
 	print("sun_shift = " + str(sun_shift))
 	print("sch_active = " + str(sch_active))
 
-	if len(selected_sch_no) > 0:
+	if selected_sch_no == 0:
+		response = JsonResponse(data={
+			"message": "No data",
+			"class": "bg-danger",
+			"sch_plan_list": list(sch_plan_list),
+			"is_update": False,
+		})
+	else:
 		try:
 			sch_plan = SchPlan.objects.filter(sch_no=selected_sch_no).get()
 			sch_plan.sch_active = sch_active
@@ -676,7 +687,7 @@ def ajax_save_customer_schedule_plan(request):
 					    "relief": relief,
 					    "upd_date": d.upd_date.strftime("%d/%m/%Y %H:%M:%S"),
 					    "upd_by": d.upd_by,
-					    "upd_flag": d.upd_flag,
+					    "upd_flag": d.upd_flag,					 
 					}
 					sch_plan_list.append(record)
 
@@ -684,19 +695,15 @@ def ajax_save_customer_schedule_plan(request):
 				"message": "Saved success.",
 				"class": "bg-success",
 				"sch_plan_list": list(sch_plan_list),
+				"is_saved": True,
 			})
 		except SchPlan.DoesNotExist:
 			response = JsonResponse(data={
 				"message": "Schedule Number is not found.",
 				"class": "bg-danger",
 				"sch_plan_list": list(sch_plan_list),
+				"is_saved": False,
 			})
-	else:
-		response = JsonResponse(data={
-			"message": "No data",
-			"class": "bg-danger",
-			"sch_plan_list": list(sch_plan_list),
-		})
     
 	response.status_code = 200
 	return response

@@ -255,7 +255,7 @@
                               	<input type="text" id="id_emp_id" name="id_emp_id" class="form-control form-control-sm" value="" />
                               	<button id="emp_id_lookup_button" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url=""><i class="fas fa-search fa-sm"></i></button>
 
-                              	<input type="hidden" id="id_selected_sch_no" name="id_selected_sch_no" value="">
+                              	<input type="hidden" id="id_selected_sch_no" name="id_selected_sch_no" value="0">
                             </div>
 					    </div>	 
 					    <div class="col-5">
@@ -594,7 +594,9 @@ $(document).ready(function(){
 
 
  	$("#cancel_security_guard_button").click( function() {
-    	event.preventDefault();    	
+    	event.preventDefault();
+
+    	$("#id_selected_sch_no").val(0);
     	$("#security_guard_list_form").trigger("reset");
     	$("#save_security_guard_button").attr("disabled", true);
     	$("#security_guard_list_form :input").prop("disabled", true);
@@ -706,6 +708,7 @@ $(document).ready(function(){
     	event.preventDefault();    	
 
 		emp_id = $("#id_emp_id").val();
+		selected_sch_no = $("#id_selected_sch_no").val();
 
     	if (emp_id=="") {
 		  	$(document).Toasts('create', {
@@ -865,13 +868,8 @@ $(document).ready(function(){
 				        result += "		     <a href=javascript:update_sch_plan('" + data.sch_plan_list[i]["sch_no"] + "'); type='button' class='btn btn-outline-primary btn-sm'>";
 				        result += "      <i class='fas fa-pen fa-xs'></i>";
 				        result += "   		</a>";					       
-				        //result += "		     &nbsp;";
-				        //result += "		     <button type='button' id='btn_delete_customer' class='btn btn-danger btn-xs js-delete-customer' data-url='' >";
-				        //result += "		       <i class='fas fa-trash fa-xs'></i>";
-				        //result += "		     </button>";
 				        result += "		   </div>";
 				        result += "		 </td>";
-
 						result += "    </tr>";						
 						count++;
 					}
@@ -884,13 +882,11 @@ $(document).ready(function(){
 				result += "</font>";
 							
 				$("#id_security_guard_list").html(result);	
-				//$("#security_guard_list_amount").html("<b>Total " + data.sch_plan_list.length + "</b>");
-				//$("#security_guard_list_amount").html("<b>Total 0</b>");
 	    	},
 	    	error: function(data) {
 			  	$(document).Toasts('create', {
 			    	class: data.class, 
-			    	title: "{% trans 'System message' %}",
+			    	title: "{% trans 'Error message' %}",
 			    	subtitle: '',
 			    	autohide: true,
 			    	delay: 2000,
@@ -906,6 +902,8 @@ $(document).ready(function(){
 
  	$("#cancelCustomerServicePersonButton").click( function() {
     	event.preventDefault();    	
+
+    	$("#id_selected_sch_no").val(0);
 
     	$("#schedule_maintenance_form :input").attr("disabled", false);
     	
@@ -938,11 +936,14 @@ $(document).ready(function(){
     	$("#id_cus_id").select();
   	});
 
+ 	/*
  	$("#saveSecurityGuardButton").click( function() {
     	event.preventDefault();
     	alert("todo");
     });
- 	 	
+ 	*/
+
+
 	$('input[type=radio][name=security_guard_list_status_option]').change(function() {
 		// Security Guard List
 		result = "";
@@ -1728,6 +1729,7 @@ function update_sch_plan(sch_no) {
 	cus_id = $('#id_cus_id').val();
 	cus_brn = $('#id_cus_brn').val();
 	cus_vol = $('#id_cus_vol').val();
+	sch_no = sch_no;
 		
 	if(cus_id=="") {
 		alert("Please entet Customer ID.");
@@ -1748,7 +1750,9 @@ function update_sch_plan(sch_no) {
 	}
 
 	if(sch_no=="") {
-		return false;			
+		return false;		
+	} else {
+		$("#id_selected_sch_no").val(sch_no);
 	}
 	
 	$.ajax({
@@ -1762,7 +1766,7 @@ function update_sch_plan(sch_no) {
       	sch_no: sch_no,
     	},
     	success: function(data) {     		
-    		$("#id_selected_sch_no").val(data.sch_no);    		
+    		$("#id_selected_sch_no").val(data.sch_no); 		
     		$("#id_emp_id").val(data.emp_id);
     		$("#id_duration_from").focus();
 			$("#id_emp_id").attr("disabled", true);
@@ -1909,7 +1913,6 @@ function get_next_page(page_no) {
 			result += "</table>";
 			result += "</font>";
 
-			//amnaj
 			if(data.is_paginated) {
 			  	result += "<div class='text-center'>";
 			  	result += "  <span>";
