@@ -714,19 +714,21 @@ def ajax_get_employee_list(request):
 	emp_id = request.GET.get('emp_id')
 	print("debug: emp_id = " + str(emp_id))
 
-	item_per_page = 5
+	item_per_page = 6
 
 	if emp_id is not None:
 	    if emp_id != "":
 	        if emp_id.isnumeric():
 	            print("debug11")
-	            data = Employee.objects.filter(emp_id__exact=emp_id).filter(emp_type='D1').get()
+	            # data = Employee.objects.filter(emp_id__exact=emp_id).filter(emp_type='D1').get()
+	            data = Employee.objects.all().filter(emp_type='D1').filter(empstatus='A').exclude(upd_flag='D').order_by('emp_id')
 	        else:
 	            print("debug22")
-	            data = Employee.objects.all().filter(emp_type='D1')[:10]
+	            # data = Employee.objects.all().filter(emp_type='D1')[:10]
+	            data = Employee.objects.all().filter(emp_type='D1').filter(empstatus='A').exclude(upd_flag='D').order_by('emp_id')
 	    else:
 	        print("debug33")
-	        #data = Employee.objects.filter(emp_type='D1').filter(empstatus='A').exclude(upd_flag='D').order_by('emp_id')[:200]
+	        # data = Employee.objects.filter(emp_type='D1').filter(empstatus='A').exclude(upd_flag='D').order_by('emp_id')[:200]
 	        data = Employee.objects.all().filter(emp_type='D1').filter(empstatus='A').exclude(upd_flag='D').order_by('emp_id')
 	else:		
 	    print("debug44")
