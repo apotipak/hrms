@@ -558,6 +558,7 @@ def ajax_get_customer_schedule_plan(request):
     	else:
     		sch_shf_sun = sch_plan.sch_shf_sun 
 
+    	# amnaj
     	response = JsonResponse(data={
 	        "success": True,
 			"sch_no": sch_plan.sch_no,
@@ -758,10 +759,13 @@ def ajax_get_employee_list(request):
 		if search_option=="1":
 			# Search employee by emp_id
 			print("1111")
-			if search_key!="" and search_key is not None and search_key.isnumeric():
+			if search_key.isnumeric():
+				print("1111-1")
 				data = Employee.objects.filter(emp_type__exact='D1').filter(empstatus='A').exclude(upd_flag='D').filter(emp_id=search_key).order_by('emp_id').all()
 			else:
-				data = Employee.objects.filter(emp_type__exact='D1').filter(empstatus='A').exclude(upd_flag='D').order_by('emp_id').all()
+				print("1111-2")
+				data = []
+			
 		elif search_option=="2":
 			print("2222")
 			print("search_key = " + str(search_key))
@@ -812,6 +816,7 @@ def ajax_get_employee_list(request):
 
 		    	emp_rank = d.emp_rank
 		    	emp_type = d.emp_type
+		    	emp_status = str(d.emp_status_id) + " | " + str(d.emp_status.sts_th)
 
 		    	record = {
 		    		"emp_id": emp_id,
@@ -822,8 +827,10 @@ def ajax_get_employee_list(request):
 		    		"emp_join_date": emp_join_date,
 		    		"emp_term_date": emp_term_date,
 		    		"emp_rank": emp_rank,
-		    		"emp_type": emp_type, # aka Department
+		    		"emp_type": emp_type,
+		    		"emp_status": emp_status,
 		    	}
+		    	# amnaj
 		    	pickup_records.append(record)
 
 		    response = JsonResponse(data={
