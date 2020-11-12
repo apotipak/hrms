@@ -564,7 +564,6 @@ $(document).on('keypress', '#id_emp_id', function(e) {
 	if(e.which == 13) {
 		e.preventDefault();
 
-		//amnaj
 		var emp_id = $(this).val();
 		alert(emp_id);
 
@@ -663,6 +662,12 @@ $(document).ready(function(){
  		var result = "";
  		emp_id = $("#id_emp_id").val();
  		page = 1;
+
+		var search_key = "";
+		var search_option = 1;
+ 		
+ 		//alert(search_key + ", " + search_option);
+
 		$.ajax({
         	url: "/monitoring/ajax/get_employee_list",        	
 			type: 'get',          
@@ -1896,8 +1901,10 @@ function select_employee(emp_id, emp_fname_th, emp_lname_th) {
 
 
 function get_next_page(page_no) {
+
 	var search_key = $("#id_employee_search_text").val();
 	var search_option = $("#id_employee_option").val();	
+
 	var result = "";	
 	var page = page_no;
 
@@ -1905,14 +1912,11 @@ function get_next_page(page_no) {
     	url: "/monitoring/ajax/get_employee_list",        	
 		type: 'get',          
       	dataType: 'json',
-      	//async: false,
       	data : { 
-        	emp_id : emp_id,
-        	page: page,
+        	page: page_no,
+        	search_key: search_key,
+        	search_option: search_option,
       	},          
-      	beforeSend: function () {
-      		//	
-      	},
 		success: function (data) {
 			var result = "";
 			var count = data.results.length;
@@ -1922,12 +1926,24 @@ function get_next_page(page_no) {
 			result += "<form id='search_employee_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
 			result += "  <div class='form-group mx-sm-3 mb-2'>";
 			result += "  <select name='employee_option' class='form-control form-control-sm' required id='id_employee_option'>";
-			result += "    <option value='1' selected>Employee ID</option>";
-			result += "    <option value='2'>Employee Name (TH)</option>";
-			result += "    <option value='3'>Employee Name (EN)</option>";
+
+			if(search_option==1) {
+				result += "    <option value='1' selected>Employee ID</option>";
+				result += "    <option value='2'>Employee Name (TH)</option>";
+				result += "    <option value='3'>Employee Name (EN)</option>";
+			} else if(search_option==2) {
+				result += "    <option value='1'>Employee ID</option>";
+				result += "    <option value='2' selected>Employee Name (TH)</option>";
+				result += "    <option value='3'>Employee Name (EN)</option>";
+			} else {
+				result += "    <option value='1'>Employee ID</option>";
+				result += "    <option value='2'>Employee Name (TH)</option>";
+				result += "    <option value='3' selected>Employee Name (EN)</option>";
+			}
+
 			result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";
 			result += "    <label for='id_employee_search_text' class='sr-only'>Search</label>";            
-			result += "    <input type='text' class='form-control form-control-sm' id='id_employee_search_text' name='employee_search_text' placeholder=''>";
+			result += "    <input type='text' class='form-control form-control-sm' id='id_employee_search_text' name='employee_search_text' value='" + search_key + "'>";
 			result += "  </div>";
 			result += "<a href='javascript:search_employee_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";            
 			result += "</form>";
@@ -1977,7 +1993,7 @@ function get_next_page(page_no) {
 			  	result += "  <span>";
 
 				if(data.current_page_number > 1) {
-					result += "<a href='javascript:get_next_page(" + data.previous_page + ");'>" + "<i class='fas fa-arrow-circle-left'></i></a>&nbsp;&nbsp;&nbsp;&nbsp;";
+					result += "<a href='javascript:get_next_page(" + data.previous_page +");'>" + "<i class='fas fa-arrow-circle-left'></i></a>&nbsp;&nbsp;&nbsp;&nbsp;";
 				  	result += data.current_page_number + " of " + data.current_page_paginator_num_pages;
 				  	result += "&nbsp;&nbsp;&nbsp;&nbsp;<a href='javascript:get_next_page(" + data.next_page + ");'>" + "<i class='fas fa-arrow-circle-right'></i></a>";
 				}
@@ -2094,8 +2110,6 @@ $(document).ready(function(){
 	});
 });
 
-
-// amnaj
 function search_employee_modal() {
 	var search_key = $("#id_employee_search_text").val();
 	var search_option = $("#id_employee_option").val();	
@@ -2122,12 +2136,24 @@ function search_employee_modal() {
 			result += "<form id='search_employee_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
 			result += "  <div class='form-group mx-sm-3 mb-2'>";
 			result += "  <select name='employee_option' class='form-control form-control-sm' required id='id_employee_option'>";
-			result += "    <option value='1' selected>Employee ID</option>";
-			result += "    <option value='2'>Employee Name (TH)</option>";
-			result += "    <option value='3'>Employee Name (EN)</option>";
+			
+			if(search_option==1) {
+				result += "    <option value='1' selected>Employee ID</option>";
+				result += "    <option value='2'>Employee Name (TH)</option>";
+				result += "    <option value='3'>Employee Name (EN)</option>";
+			} else if(search_option==2) {
+				result += "    <option value='1'>Employee ID</option>";
+				result += "    <option value='2' selected>Employee Name (TH)</option>";
+				result += "    <option value='3'>Employee Name (EN)</option>";
+			} else {
+				result += "    <option value='1'>Employee ID</option>";
+				result += "    <option value='2'>Employee Name (TH)</option>";
+				result += "    <option value='3' selected>Employee Name (EN)</option>";
+			}
+
 			result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";
 			result += "    <label for='id_employee_search_text' class='sr-only'>Search</label>";            
-			result += "    <input type='text' class='form-control form-control-sm' id='id_employee_search_text' name='employee_search_text' placeholder=''>";
+			result += "    <input type='text' class='form-control form-control-sm' id='id_employee_search_text' name='employee_search_text' value='" + search_key + "'>";
 			result += "  </div>";
 			result += "<a href='javascript:search_employee_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";            
 			result += "</form>";
@@ -2190,11 +2216,64 @@ function search_employee_modal() {
 			  	result += "</div>";
 			}
 
-			$("#select_employee_modal .modal-body").html(result);            
+			$("#select_employee_modal .modal-body").html(result);
         },          	
       	error: function (data) {
-      		result += "Error";
-      		alert("error");
+      		var result = "";
+
+			result += "<div class='row col-12'>";
+			result += "<div class='col-8 offset-3 pb-2'>";
+			result += "<form id='search_employee_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
+			result += "  <div class='form-group mx-sm-3 mb-2'>";
+			result += "  <select name='employee_option' class='form-control form-control-sm' required id='id_employee_option'>";
+
+			if(search_option==1) {
+				result += "    <option value='1' selected>Employee ID</option>";
+				result += "    <option value='2'>Employee Name (TH)</option>";
+				result += "    <option value='3'>Employee Name (EN)</option>";
+			} else if(search_option==2) {
+				result += "    <option value='1'>Employee ID</option>";
+				result += "    <option value='2' selected>Employee Name (TH)</option>";
+				result += "    <option value='3'>Employee Name (EN)</option>";
+			} else {
+				result += "    <option value='1'>Employee ID</option>";
+				result += "    <option value='2'>Employee Name (TH)</option>";
+				result += "    <option value='3' selected>Employee Name (EN)</option>";
+			}
+
+			result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";
+
+			//result += "    <label for='id_employee_search_text' class='sr-only'>Search</label>";            
+			result += "    <input type='text' class='form-control form-control-sm' id='id_employee_search_text' name='employee_search_text' value='" + search_key + "' >";
+			result += "  </div>";
+			result += "<a href='javascript:search_employee_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";            
+			result += "</form>";
+
+			result += "</div>";
+			result += "<div class='col-12 pl-3'>";			
+			result += "<font size='2'>";
+			result += "<table class='table table-sm table-hover'>";
+			result += " <thead>";
+			result += "   <tr>";
+			result += "     <th scope='col'>{% trans 'Employee ID' %}</th>";
+			result += "     <th scope='col'>{% trans 'First Name (TH)' %}</th>";
+			result += "     <th scope='col'>{% trans 'Last Name (TH)' %}</th>";
+			result += "     <th scope='col'>&nbsp;</th>";
+			result += "   </tr>";
+			result += " </thead>";
+			result += "<tbody>";
+			result += "</div>";
+			result += "<div>";			
+		  	result += "<tr>";
+		  	result += "<td colspan='4' class='text-center'><br><br><span class='text-danger'><b>Search not found.</b></span><br><br><br></td>";
+			result += "</tr>";              
+			result += " </tbody>";
+			result += "</table>";
+			result += "</font>";
+
+      		// amnaj
+      		$("#select_employee_modal .modal-body").html(result);
+      		$("#id_employee_search_text").focus();
       	},
     });
 }

@@ -734,6 +734,9 @@ def ajax_get_employee_list(request):
 	print("***********************************")
 
 	emp_id = request.GET.get('emp_id')
+	search_option = request.GET.get('search_option')
+	search_key = request.GET.get('search_key')
+
 	print("debug: emp_id = " + str(emp_id))
 
 	item_per_page = 6
@@ -759,10 +762,11 @@ def ajax_get_employee_list(request):
 			data = Employee.objects.filter(emp_type='D1').filter(empstatus='A').exclude(upd_flag='D').filter(emp_id=search_key).order_by('emp_id').all()
 		elif search_option=="2":
 			print("2222")
-			data = Employee.objects.filter(emp_type='D1').filter(empstatus='A').exclude(upd_flag='D').filter(emp_fname_th=search_key).order_by('emp_id').all()
+			print("search_key = " + str(search_key))
+			data = Employee.objects.filter(emp_type='D1').filter(empstatus='A').exclude(upd_flag='D').filter(emp_fname_th__startswith=search_key).order_by('emp_id').all()
 		else:
 			print("3333")
-			data = Employee.objects.filter(emp_type='D1').filter(empstatus='A').exclude(upd_flag='D').filter(emp_fname_en=search_key).order_by('emp_id').all()
+			data = Employee.objects.filter(emp_type='D1').filter(empstatus='A').exclude(upd_flag='D').filter(emp_fname_en__startswith=search_key).order_by('emp_id').all()
 			#data = Employee.objects.all().filter(emp_type='D1').filter(empstatus='A').exclude(upd_flag='D')[:10]
 
 	paginator = Paginator(data, item_per_page)
@@ -813,6 +817,8 @@ def ajax_get_employee_list(request):
 		        "previous_page": current_page_number - 1,
 		        "current_page_number" : current_page_number,
 		        "current_page_paginator_num_pages" : current_page_paginator_num_pages,
+				"search_key": search_key,
+				"search_option": search_option,		        
 		        "results": list(pickup_records)         
 		        })
 		    response.status_code = 200
@@ -825,9 +831,12 @@ def ajax_get_employee_list(request):
 			return response
 	else:
 		print("debug 4")
-		response = JsonResponse(data={
+		response = JsonResponse(
+			data={
 			"success": True,
 			"error": "Data not found",
+			"search_key": search_key,
+			"search_option": search_option,
 			})
 		response.status_code = 403
 		return response
