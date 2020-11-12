@@ -631,11 +631,14 @@ def ajax_save_customer_schedule_plan(request):
 	print("sun_shift = " + str(sun_shift))
 	print("sch_active = " + str(sch_active))
 
+	#
 	if selected_sch_no == "0":
 		# amnaj
 		# TODO: Check if user select duplicated employee
 		try:			
-			employee = SchPlan.objects.filter(emp_id=emp_id).exclude(upd_flag='D',sch_active=False).get()
+			employee = SchPlan.objects.filter(emp_id=emp_id).exclude(upd_flag='D').exclude(sch_active='0').get()
+			# select * from sch_plan where emp_id=916 and sch_active=1 and upd_flag!='D'
+
 			print("Not available")
 		except SchPlan.DoesNotExist:
 			print("Available")
@@ -647,7 +650,7 @@ def ajax_save_customer_schedule_plan(request):
 			"message": "Add new record.",
 			"class": "bg-danger",
 			"sch_plan_list": list(sch_plan_list),
-			"is_update": False,
+			"is_saved": False,
 		})
 	else:
 		try:

@@ -543,12 +543,32 @@ $(document).on('keyup keypress', '#search_employee_modal_form input[type="text"]
 
 $(document).on('keypress', '#id_emp_id', function(e) {
 	if(e.which == 13) {
-	  e.preventDefault();
+		e.preventDefault();
 
-	  alert("test");
-	  return false;
+		//amnaj
+		var emp_id = $(this).val();
+		alert(emp_id);
 
-	}
+		/*
+		$.ajax({
+	    	url: "/monitoring/ajax/get_employee_list",        	
+			type: 'get',          
+	      	dataType: 'json',
+	      	data : { 
+	        	emp_id : emp_id,
+	        	page: page,
+	      	},          
+	      	beforeSend: function () {
+	        	//$("#select_employee_modal").modal("show");
+	      	},
+			success: function (data) {
+			},
+		});
+		*/
+
+		return false;
+
+	}	
 });
 
 
@@ -902,7 +922,7 @@ $(document).ready(function(){
 	    	},
 	    	error: function(data) {
 			  	$(document).Toasts('create', {
-			    	class: data.class, 
+			    	class: "bg-danger", 
 			    	title: "{% trans 'Error message' %}",
 			    	subtitle: '',
 			    	autohide: true,
