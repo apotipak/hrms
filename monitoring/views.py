@@ -742,19 +742,28 @@ def ajax_get_employee_list(request):
 	    if emp_id != "":
 	        if emp_id.isnumeric():
 	            print("debug11")
-	            # data = Employee.objects.filter(emp_id__exact=emp_id).filter(emp_type='D1').get()
-	            data = Employee.objects.all().filter(emp_type='D1').filter(empstatus='A').exclude(upd_flag='D').order_by('emp_id')
+	            data = Employee.objects.all().filter(emp_type__exact='D1').filter(empstatus='A').exclude(upd_flag='D').order_by('emp_id')
 	        else:
 	            print("debug22")
-	            # data = Employee.objects.all().filter(emp_type='D1')[:10]
-	            data = Employee.objects.all().filter(emp_type='D1').filter(empstatus='A').exclude(upd_flag='D').order_by('emp_id')
+	            data = Employee.objects.all().filter(emp_type__exact='D1').filter(empstatus='A').exclude(upd_flag='D').order_by('emp_id')
 	    else:
 	        print("debug33")
-	        # data = Employee.objects.filter(emp_type='D1').filter(empstatus='A').exclude(upd_flag='D').order_by('emp_id')[:200]
-	        data = Employee.objects.all().filter(emp_type='D1').filter(empstatus='A').exclude(upd_flag='D').order_by('emp_id')
+	        data = Employee.objects.all().filter(emp_type__exact='D1').filter(empstatus='A').exclude(upd_flag='D').order_by('emp_id')
 	else:		
-	    print("debug44")
-	    data = Employee.objects.all().filter(emp_type='D1')[:10]
+		print("debug44")
+		search_option = request.GET.get('search_option')
+		search_key = request.GET.get('search_key')
+		if search_option=="1":
+			# Search employee by emp_id
+			print("1111")
+			data = Employee.objects.filter(emp_type='D1').filter(empstatus='A').exclude(upd_flag='D').filter(emp_id=search_key).order_by('emp_id').all()
+		elif search_option=="2":
+			print("2222")
+			data = Employee.objects.filter(emp_type='D1').filter(empstatus='A').exclude(upd_flag='D').filter(emp_fname_th=search_key).order_by('emp_id').all()
+		else:
+			print("3333")
+			data = Employee.objects.filter(emp_type='D1').filter(empstatus='A').exclude(upd_flag='D').filter(emp_fname_en=search_key).order_by('emp_id').all()
+			#data = Employee.objects.all().filter(emp_type='D1').filter(empstatus='A').exclude(upd_flag='D')[:10]
 
 	paginator = Paginator(data, item_per_page)
 	is_paginated = True if paginator.num_pages > 1 else False
@@ -816,7 +825,10 @@ def ajax_get_employee_list(request):
 			return response
 	else:
 		print("debug 4")
-		response = JsonResponse({"error": "there was an error"})
+		response = JsonResponse(data={
+			"success": True,
+			"error": "Data not found",
+			})
 		response.status_code = 403
 		return response
 
