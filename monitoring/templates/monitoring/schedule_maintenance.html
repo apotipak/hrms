@@ -207,7 +207,7 @@
 
 	        	<div class="float-left">
 	        		<h4 class="m-0 text-dark" id="security_guard_list_title"><b>Security Guard List</b>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;
-		        		<button id="add_security_guard_button" type="button" class="btn btn-success btn-sm"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;{% trans 'Add new' %}</button>&nbsp;	        			
+		        		<button id="add_security_guard_button" type="button" class="btn btn-success btn-sm"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;{% trans 'New' %}&nbsp;</button>&nbsp;	        			
 	        		<!--
 	        		<small><small>
 					<div class="form-check form-check-inline">
@@ -730,7 +730,7 @@ $(document).ready(function(){
 				  var emp_rank = data.results[i]["emp_rank"]
 				  var emp_type = data.results[i]["emp_type"]
 				  var emp_status = data.results[i]["emp_status"]
-				  
+
 				  result += "<tr>";
 				  result += "<td>" + emp_id + "</td>";
 				  result += "<td>" + emp_fname_th + "</td>";
@@ -1906,6 +1906,7 @@ function select_employee(emp_id, emp_fname_th, emp_lname_th, emp_join_date, emp_
 	$("#id_emp_name_th").css("background-color", 'green');
 	$("#id_emp_name_th").animate({color:'white'}, 1000);
 	$("#select_employee_modal").modal("hide");
+	$("#id_duration_from").focus();
 };
 
 
@@ -2020,7 +2021,7 @@ function get_next_page(page_no) {
 			  	result += "</div>";
 			}
 
-			$("#select_employee_modal .modal-body").html(result);            
+			$("#select_employee_modal .modal-body").html(result);			
         },          	
       	error: function (data) {
       		result += "Error";
