@@ -633,7 +633,6 @@ def ajax_save_customer_schedule_plan(request):
 
 	#
 	if selected_sch_no == "0":
-		# amnaj
 		# TODO: Check if user select duplicated employee
 		try:			
 			employee = SchPlan.objects.filter(emp_id=emp_id).exclude(upd_flag='D').exclude(sch_active='0').get()
@@ -759,15 +758,17 @@ def ajax_get_employee_list(request):
 		if search_option=="1":
 			# Search employee by emp_id
 			print("1111")
-			data = Employee.objects.filter(emp_type='D1').filter(empstatus='A').exclude(upd_flag='D').filter(emp_id=search_key).order_by('emp_id').all()
+			if search_key!="" and search_key is not None and search_key.isnumeric():
+				data = Employee.objects.filter(emp_type__exact='D1').filter(empstatus='A').exclude(upd_flag='D').filter(emp_id=search_key).order_by('emp_id').all()
+			else:
+				data = Employee.objects.filter(emp_type__exact='D1').filter(empstatus='A').exclude(upd_flag='D').order_by('emp_id').all()
 		elif search_option=="2":
 			print("2222")
 			print("search_key = " + str(search_key))
-			data = Employee.objects.filter(emp_type='D1').filter(empstatus='A').exclude(upd_flag='D').filter(emp_fname_th__startswith=search_key).order_by('emp_id').all()
+			data = Employee.objects.filter(emp_type__exact='D1').filter(empstatus='A').exclude(upd_flag='D').filter(emp_fname_th__startswith=search_key).order_by('emp_id').all()
 		else:
 			print("3333")
-			data = Employee.objects.filter(emp_type='D1').filter(empstatus='A').exclude(upd_flag='D').filter(emp_fname_en__startswith=search_key).order_by('emp_id').all()
-			#data = Employee.objects.all().filter(emp_type='D1').filter(empstatus='A').exclude(upd_flag='D')[:10]
+			data = Employee.objects.filter(emp_type__exact='D1').filter(empstatus='A').exclude(upd_flag='D').filter(emp_fname_en__startswith=search_key).order_by('emp_id').all()
 
 	paginator = Paginator(data, item_per_page)
 	is_paginated = True if paginator.num_pages > 1 else False
@@ -799,13 +800,29 @@ def ajax_get_employee_list(request):
 		    	emp_lname_th = d.emp_lname_th
 		    	emp_fname_en = d.emp_fname_en
 		    	emp_lname_en = d.emp_lname_en
+		    	if d.emp_join_date is not None:
+		    		emp_join_date = d.emp_join_date.strftime("%d/%m/%Y"),
+		    	else:
+		    		emp_join_date = "",
+
+		    	if d.emp_term_date is not None:
+		    		emp_term_date = d.emp_term_date.strftime("%d/%m/%Y"),
+		    	else:
+		    		emp_term_date = "",
+
+		    	emp_rank = d.emp_rank
+		    	emp_type = d.emp_type
 
 		    	record = {
 		    		"emp_id": emp_id,
 		    		"emp_fname_th": emp_fname_th,
 		    		"emp_lname_th": emp_lname_th,
 		    		"emp_fname_en": emp_fname_en,
-		    		"emp_lname_en": emp_lname_en,		    		
+		    		"emp_lname_en": emp_lname_en,
+		    		"emp_join_date": emp_join_date,
+		    		"emp_term_date": emp_term_date,
+		    		"emp_rank": emp_rank,
+		    		"emp_type": emp_type, # aka Department
 		    	}
 		    	pickup_records.append(record)
 
