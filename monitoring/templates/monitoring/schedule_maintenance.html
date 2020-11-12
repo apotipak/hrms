@@ -622,6 +622,14 @@ $(document).ready(function(){
 		$("#id_service_active").attr("disabled", false);
 		$("#id_relief").attr("disabled", false);
 
+		$("#id_mon_shift").attr("disabled", false);
+		$("#id_tue_shift").attr("disabled", false);
+		$("#id_wed_shift").attr("disabled", false);
+		$("#id_thu_shift").attr("disabled", false);
+		$("#id_fri_shift").attr("disabled", false);
+		$("#id_sat_shift").attr("disabled", false);
+		$("#id_sun_shift").attr("disabled", false);
+
 		$("#id_emp_id").focus();
 
     });
@@ -641,7 +649,6 @@ $(document).ready(function(){
 
 	$('#id_cus_id').focus();
 
-
  	$("#cancel_security_guard_button").click( function() {
     	event.preventDefault();
 
@@ -649,10 +656,10 @@ $(document).ready(function(){
     	$("#security_guard_list_form").trigger("reset");
     	$("#save_security_guard_button").attr("disabled", true);
     	$("#security_guard_list_form :input").prop("disabled", true);
-
     	$("#add_security_guard_button").attr("disabled", false);
-    	//$("#id_emp_id").focus();
-		
+
+    	$('input[type=radio][name=security_guard_list_status_option]').attr("disabled", false);
+
 		$("#id_emp_name_th").css("background-color", '');
     	$("#id_emp_name_th").animate({color:''}, 1000);
     });
@@ -1885,6 +1892,13 @@ function update_sch_plan(sch_no) {
 			$("#id_service_active").attr("disabled", false);
 			$("#id_relief").attr("disabled", false);
 
+			$("#id_mon_shift").attr("disabled", false);
+			$("#id_tue_shift").attr("disabled", false);
+			$("#id_wed_shift").attr("disabled", false);
+			$("#id_thu_shift").attr("disabled", false);
+			$("#id_fri_shift").attr("disabled", false);
+			$("#id_sat_shift").attr("disabled", false);
+			$("#id_sun_shift").attr("disabled", false);
     	},
     	error: function(data) {
     		alert("There is an error. Please contact IT.");
@@ -2291,7 +2305,6 @@ function search_employee_modal() {
 			result += "</table>";
 			result += "</font>";
 
-      		// amnaj
       		$("#select_employee_modal .modal-body").html(result);
       		$("#id_employee_search_text").focus();
       	},
