@@ -31,7 +31,13 @@ class ScheduleMaintenanceForm(forms.Form):
         self.fields['cus_vol'].initial = "001"        
         '''
         
+        '''
         self.fields['cus_id'].initial = "1538"
+        self.fields['cus_brn'].initial = "000"
+        self.fields['cus_vol'].initial = "001"        
+        '''
+
+        self.fields['cus_id'].initial = "1008"
         self.fields['cus_brn'].initial = "000"
         self.fields['cus_vol'].initial = "001"        
 
