@@ -423,7 +423,7 @@ def ajax_get_customer_schedule_plan_list(request):
 	    			}
 	    			sch_plan_list.append(record)
     	elif sch_active == '2':
-    		sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).exclude(upd_flag='D').order_by('emp_id')
+    		sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).exclude(upd_flag='D').exclude(sch_date_to='2999-12-31').order_by('emp_id')
 	    	for d in sch_plan:    		
 	    		if d.sch_active == 0:
 	    			if d.relief:
@@ -558,7 +558,6 @@ def ajax_get_customer_schedule_plan(request):
     	else:
     		sch_shf_sun = sch_plan.sch_shf_sun 
 
-    	# amnaj
     	response = JsonResponse(data={
 	        "success": True,
 			"sch_no": sch_plan.sch_no,
@@ -604,17 +603,14 @@ def ajax_save_customer_schedule_plan(request):
 	print("FUNCTION: ajax_save_customer_schedule_plan()")
 	print("*********************************************")
 
-	selected_sch_no = request.POST.get("selected_sch_no")
-	print("selected_sch_no = " + str(selected_sch_no))
+	selected_sch_no = request.POST.get("selected_sch_no")	
 
 	cus_id = request.POST.get('cus_id')
 	cus_brn = request.POST.get('cus_brn')
 	cus_vol = request.POST.get('cus_vol')    
 	cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
 	
-	emp_id = request.POST.get("emp_id")
-	print("emp_id = " + str(emp_id))
-
+	emp_id = request.POST.get("emp_id")	
 	sch_active = request.POST.get("sch_active")
 	relief = request.POST.get("relief")
 	mon_shift = request.POST.get("mon_shift")
@@ -624,26 +620,46 @@ def ajax_save_customer_schedule_plan(request):
 	fri_shift = request.POST.get("fri_shift")
 	sat_shift = request.POST.get("sat_shift")
 	sun_shift = request.POST.get("sun_shift")
+	duration_from = request.POST.get("id_duration_from")
+	duration_to = request.POST.get("id_duration_to")
+	service_active = request.POST.get("id_service_active")
+	service_relief = request.POST.get("id_relief")
 	
 	sch_plan_list = []
 
+	print("--- debug ---")
+	print("selected_sch_no = " + str(selected_sch_no))
+	print("emp_id = " + str(emp_id))
+	print("duration_from = " + str(duration_from))
+	print("duration_to = " + str(duration_to))
+	print("sch_active = " + str(sch_active))
 	print("relief = " + str(relief))
+	print("mon_shift = " + str(mon_shift))
+	print("tue_shift = " + str(tue_shift))
+	print("wed_shift = " + str(wed_shift))
+	print("thu_shift = " + str(thu_shift))
+	print("fri_shift = " + str(fri_shift))
 	print("sat_shift = " + str(sat_shift))
 	print("sun_shift = " + str(sun_shift))
-	print("sch_active = " + str(sch_active))
+	print("--- debug ---")
 
-	#
+	# Case - add new employee into customer service
 	if selected_sch_no == "0":
-		# TODO: Check if user select duplicated employee
-		try:			
+		# TODO1: Check if user select duplicated employee
+		# amnaj
+
+
+		'''
+		try:
 			employee = SchPlan.objects.filter(emp_id=emp_id).exclude(upd_flag='D').exclude(sch_active='0').get()
 			# select * from sch_plan where emp_id=916 and sch_active=1 and upd_flag!='D'
-
 			print("Not available")
 		except SchPlan.DoesNotExist:
 			print("Available")
+		'''
 
-		# TODO: Check if SO is existed in other schedule
+
+		# TODO2: Check if SO is existed in other schedule
 
 
 		response = JsonResponse(data={
@@ -652,7 +668,7 @@ def ajax_save_customer_schedule_plan(request):
 			"sch_plan_list": list(sch_plan_list),
 			"is_saved": False,
 		})
-	else:
+	else: 
 		try:
 			sch_plan = SchPlan.objects.filter(sch_no=selected_sch_no).get()
 			sch_plan.sch_active = sch_active
@@ -830,7 +846,6 @@ def ajax_get_employee_list(request):
 		    		"emp_type": emp_type,
 		    		"emp_status": emp_status,
 		    	}
-		    	# amnaj
 		    	pickup_records.append(record)
 
 		    response = JsonResponse(data={

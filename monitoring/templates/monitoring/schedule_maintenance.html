@@ -959,6 +959,8 @@ $(document).ready(function(){
 							result += "    </tr>";						
 							count++;
 						}
+
+						reset_security_guard_list_form();
 					} else {
 						result += "<tr><td colspan='17' align='center'>There is no data available.</td></tr>";
 					}
@@ -2324,6 +2326,18 @@ function search_employee_modal() {
       		$("#id_employee_search_text").focus();
       	},
     });
+}
+
+function reset_security_guard_list_form() {
+	$("#security_guard_list_form").trigger("reset");
+	$("#id_selected_sch_no").val(0);
+	$("#security_guard_list_form").trigger("reset");
+	$("#save_security_guard_button").attr("disabled", true);
+	$("#security_guard_list_form :input").prop("disabled", true);
+	$("#add_security_guard_button").attr("disabled", false);
+	$('input[type=radio][name=security_guard_list_status_option]').attr("disabled", false);
+	$("#id_emp_name_th").css("background-color", '');
+	$("#id_emp_name_th").animate({color:''}, 1000);
 }
 
 </script>
