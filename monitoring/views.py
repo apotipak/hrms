@@ -627,25 +627,26 @@ def ajax_save_customer_schedule_plan(request):
 	
 	sch_plan_list = []
 
-	print("--- debug ---")
-	print("selected_sch_no = " + str(selected_sch_no))
-	print("emp_id = " + str(emp_id))
-	print("duration_from = " + str(duration_from))
-	print("duration_to = " + str(duration_to))
-	print("sch_active = " + str(sch_active))
-	print("relief = " + str(relief))
-	print("mon_shift = " + str(mon_shift))
-	print("tue_shift = " + str(tue_shift))
-	print("wed_shift = " + str(wed_shift))
-	print("thu_shift = " + str(thu_shift))
-	print("fri_shift = " + str(fri_shift))
-	print("sat_shift = " + str(sat_shift))
-	print("sun_shift = " + str(sun_shift))
-	print("--- debug ---")
-
 	# Case - add new employee into customer service
 	if selected_sch_no == "0":
-		# TODO1: Check if user select duplicated employee
+		print("--- debug ---")
+		print("selected_sch_no = " + str(selected_sch_no))
+		print("emp_id = " + str(emp_id))
+		print("duration_from = " + str(duration_from))
+		print("duration_to = " + str(duration_to))
+		print("sch_active = " + str(sch_active))
+		print("relief = " + str(relief))
+		print("mon_shift = " + str(mon_shift))
+		print("tue_shift = " + str(tue_shift))
+		print("wed_shift = " + str(wed_shift))
+		print("thu_shift = " + str(thu_shift))
+		print("fri_shift = " + str(fri_shift))
+		print("sat_shift = " + str(sat_shift))
+		print("sun_shift = " + str(sun_shift))
+		print("--- debug ---")
+
+		# RULE-1: Check if select duplicated security guard
+
 		# amnaj
 
 

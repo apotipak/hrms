@@ -310,16 +310,22 @@
 
 					  <div class="form-group row">
 
-					    <div class="col-3">
-					    	<label class="form-check-label" for="id_sch_rank"><b>Service Duration</b></label>
-					      	<input type="text" class="form-control form-control-sm" id="id_duration_from" placeholder="From" />
+					    <div class="col-4">
+					    	<label class="form-check-label" for="id_duration_from"><b>Duration From</b></label>
+					    	<div class="form-inline col-12">
+					      		<input type="checkbox" id="chkDurationFromDisable" class="form-inline" onclick="disableDurationFormDP()">&nbsp;
+					      		<input type="text" class="form-control form-control-sm" id="id_duration_from" placeholder="From" />
+					      	</div>
 					    </div>					    
-					    <div class="col-3">
-					    	<label class="form-check-label" for="id_sch_rank"></label>
-					      	<input type="text" class="form-control form-control-sm" id="id_duration_to" placeholder="To" />
+					    <div class="col-4">
+					    	<label class="form-check-label" for="id_duration_to"><b>Duration To</b></label>
+					    	<div class="form-inline col-12">
+					    		<input type="checkbox" id="chkDurationToDisable" class="form-inline" onclick="disableDurationToDP()">&nbsp;
+					      		<input type="text" class="form-control form-control-sm" id="id_duration_to" placeholder="To" />
+					      	</div>
 					    </div>					    		    
 
-					  	<div class="col-2">	   	
+					  	<div class="col-4">	   	
 					  		<div><label class="form-label" for="id_sch_rank"><b>Service Status</b></label></div>
 							<div class="form-check form-check-inline">
 							  <input class="form-check-input" type="checkbox" id="id_service_active" value="1">
@@ -330,10 +336,29 @@
 							  <label class="form-check-label" for="id_relief"><b>Relief</b></label>
 							</div>
 						</div>
+
 					  </div>
+
+
+					  <!--amnaj-->
+					  <!--
+					  <div class="form-group row">
+
+						<div class="col-12"><label class="form-label" for="chkDurationFromDisable"><b>Duration From</b></label></div>
+						<div class="form-inline col-12">
+						    <div class="form-group">    	
+						        <input type="checkbox" id="chkDurationFromDisable" onclick="disableDP()">&nbsp;
+						        <input id="id_duration_from" type="text" class="form-control form-control-sm" placeholder="From" />
+						    </div>
+						</div>
+					  </div>
+					  -->
+
 					</div>
 
 					
+
+
 					<div class="col-4">
 
 						
@@ -1862,7 +1887,7 @@ function update_sch_plan(sch_no) {
     	success: function(data) {     		
     		$("#id_selected_sch_no").val(data.sch_no); 		
     		$("#id_emp_id").val(data.emp_id);
-    		$("#id_duration_from").focus();
+    		//$("#id_duration_from").focus();
 			$("#id_emp_id").attr("disabled", true);
 			$("#emp_id_lookup_button").attr("disabled", true);
     		
@@ -2340,6 +2365,26 @@ function reset_security_guard_list_form() {
 	$('input[type=radio][name=security_guard_list_status_option]').attr("disabled", false);
 	$("#id_emp_name_th").css("background-color", '');
 	$("#id_emp_name_th").animate({color:''}, 1000);
+}
+
+$(function(){    
+    $('#id_duration_from').datepicker({
+        dateFormat: 'dd/mm/yy',
+        altField: '#thealtdate',
+        altFormat: 'dd/mm/yy'
+    });
+    $('#id_duration_to').datepicker({
+        dateFormat: 'dd/mm/yy',
+        altField: '#thealtdate',
+        altFormat: 'dd/mm/yy'
+    });    
+});
+
+function disableDurationFormDP(){
+	$("#id_duration_from").attr("disabled",  $("#chkDurationFromDisable").is(":checked")).val("31/12/2999");
+}
+function disableDurationToDP(){
+	$("#id_duration_to").attr("disabled",  $("#chkDurationToDisable").is(":checked")).val("31/12/2999");
 }
 
 </script>
