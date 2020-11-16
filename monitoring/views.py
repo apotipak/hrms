@@ -109,7 +109,7 @@ def ajax_get_customer(request):
 
 			# SCH_PLAN			
 			try:
-				sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).exclude(upd_flag='D').order_by('emp_id')
+				sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).filter(sch_date_to='2999-12-31').exclude(upd_flag='D').order_by('emp_id')
 				print("sch_plan is found")
 				sch_plan_list = []
 				for d in sch_plan:
@@ -386,7 +386,7 @@ def ajax_get_customer_schedule_plan_list(request):
     	total = 0
 
     	if sch_active == '1':
-    		sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).exclude(upd_flag='D').order_by('emp_id')
+    		sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).filter(sch_date_to='2999-12-31').exclude(upd_flag='D').order_by('emp_id')
 	    	for d in sch_plan:    		
 	    		if d.sch_active:
 	    			if d.relief:
@@ -425,39 +425,38 @@ def ajax_get_customer_schedule_plan_list(request):
     	elif sch_active == '2':
     		sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).exclude(upd_flag='D').exclude(sch_date_to='2999-12-31').order_by('emp_id')
 	    	for d in sch_plan:    		
-	    		if d.sch_active == 0:
-	    			if d.relief:
-	    				relief = 1
-	    			else:
-	    				relief = 0 
+    			if d.relief:
+    				relief = 1
+    			else:
+    				relief = 0 
 
-	    			if d.sch_active:
-	    				sch_active = 1
-	    			else:
-	    				sch_active = 0
+    			if d.sch_active:
+    				sch_active = 1
+    			else:
+    				sch_active = 0
 
-	    			record = {
-	    				"sch_no": d.sch_no,
-	    				"emp_id": d.emp_id_id,
-					    "emp_fname_th": d.emp_id.emp_fname_th,
-					    "emp_lname_th": d.emp_id.emp_lname_th,	    				
-	    				"sch_rank": d.sch_rank,
-	    				"sch_date_frm": d.sch_date_frm.strftime("%d/%m/%Y"),
-	    				"sch_date_to": d.sch_date_to.strftime("%d/%m/%Y"),
-	    				"sch_shf_mon": d.sch_shf_mon,
-	    				"sch_shf_tue": d.sch_shf_tue,
-	    				"sch_shf_wed": d.sch_shf_wed,
-	    				"sch_shf_thu": d.sch_shf_thu,
-	    				"sch_shf_fri": d.sch_shf_fri,
-	    				"sch_shf_sat": d.sch_shf_sat,
-	    				"sch_shf_sun": d.sch_shf_sun,
-	    				"sch_active": sch_active,
-	    				"relief": relief,
-	    				"upd_date": d.upd_date.strftime("%d/%m/%Y %H:%M:%S"),
-	    				"upd_by": d.upd_by,
-	    				"upd_flag": d.upd_flag,
-	    			}
-	    			sch_plan_list.append(record)
+    			record = {
+    				"sch_no": d.sch_no,
+    				"emp_id": d.emp_id_id,
+				    "emp_fname_th": d.emp_id.emp_fname_th,
+				    "emp_lname_th": d.emp_id.emp_lname_th,	    				
+    				"sch_rank": d.sch_rank,
+    				"sch_date_frm": d.sch_date_frm.strftime("%d/%m/%Y"),
+    				"sch_date_to": d.sch_date_to.strftime("%d/%m/%Y"),
+    				"sch_shf_mon": d.sch_shf_mon,
+    				"sch_shf_tue": d.sch_shf_tue,
+    				"sch_shf_wed": d.sch_shf_wed,
+    				"sch_shf_thu": d.sch_shf_thu,
+    				"sch_shf_fri": d.sch_shf_fri,
+    				"sch_shf_sat": d.sch_shf_sat,
+    				"sch_shf_sun": d.sch_shf_sun,
+    				"sch_active": sch_active,
+    				"relief": relief,
+    				"upd_date": d.upd_date.strftime("%d/%m/%Y %H:%M:%S"),
+    				"upd_by": d.upd_by,
+    				"upd_flag": d.upd_flag,
+    			}
+    			sch_plan_list.append(record)
     	elif sch_active == '3':
     		sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).exclude(upd_flag='D').order_by('-sch_active', 'emp_id')
 	    	for d in sch_plan:
@@ -689,41 +688,41 @@ def ajax_save_customer_schedule_plan(request):
 			sch_plan.save()
 
 			# generate new security guard list		
-			sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).exclude(upd_flag='D').order_by('emp_id')			
+			sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).exclude(sch_date_to='2999-12-31').exclude(upd_flag='D').order_by('emp_id')			
 			for d in sch_plan:
+				# if d.sch_active:
+				if d.relief:
+					relief = 1
+				else:
+					relief = 0 
+
 				if d.sch_active:
-					if d.relief:
-						relief = 1
-					else:
-						relief = 0 
+					sch_active = 1
+				else:
+					sch_active = 0
 
-					if d.sch_active:
-						sch_active = 1
-					else:
-						sch_active = 0
-
-					record = {
-					    "sch_no": d.sch_no,
-					    "emp_id": d.emp_id_id,
-					    "emp_fname_th": d.emp_id.emp_fname_th,
-					    "emp_lname_th": d.emp_id.emp_lname_th,
-					    "sch_rank": d.sch_rank,
-					    "sch_date_frm": d.sch_date_frm.strftime("%d/%m/%Y"),
-					    "sch_date_to": d.sch_date_to.strftime("%d/%m/%Y"),
-					    "sch_shf_mon": d.sch_shf_mon,
-					    "sch_shf_tue": d.sch_shf_tue,
-					    "sch_shf_wed": d.sch_shf_wed,
-					    "sch_shf_thu": d.sch_shf_thu,
-					    "sch_shf_fri": d.sch_shf_fri,
-					    "sch_shf_sat": d.sch_shf_sat,
-					    "sch_shf_sun": d.sch_shf_sun,
-					    "sch_active": sch_active,
-					    "relief": relief,
-					    "upd_date": d.upd_date.strftime("%d/%m/%Y %H:%M:%S"),
-					    "upd_by": d.upd_by,
-					    "upd_flag": d.upd_flag,					 
-					}
-					sch_plan_list.append(record)
+				record = {
+				    "sch_no": d.sch_no,
+				    "emp_id": d.emp_id_id,
+				    "emp_fname_th": d.emp_id.emp_fname_th,
+				    "emp_lname_th": d.emp_id.emp_lname_th,
+				    "sch_rank": d.sch_rank,
+				    "sch_date_frm": d.sch_date_frm.strftime("%d/%m/%Y"),
+				    "sch_date_to": d.sch_date_to.strftime("%d/%m/%Y"),
+				    "sch_shf_mon": d.sch_shf_mon,
+				    "sch_shf_tue": d.sch_shf_tue,
+				    "sch_shf_wed": d.sch_shf_wed,
+				    "sch_shf_thu": d.sch_shf_thu,
+				    "sch_shf_fri": d.sch_shf_fri,
+				    "sch_shf_sat": d.sch_shf_sat,
+				    "sch_shf_sun": d.sch_shf_sun,
+				    "sch_active": sch_active,
+				    "relief": relief,
+				    "upd_date": d.upd_date.strftime("%d/%m/%Y %H:%M:%S"),
+				    "upd_by": d.upd_by,
+				    "upd_flag": d.upd_flag,					 
+				}
+				sch_plan_list.append(record)
 
 			response = JsonResponse(data={
 				"message": "Saved success.",
