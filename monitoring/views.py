@@ -620,8 +620,8 @@ def ajax_save_customer_schedule_plan(request):
 	fri_shift = request.POST.get("fri_shift")
 	sat_shift = request.POST.get("sat_shift")
 	sun_shift = request.POST.get("sun_shift")
-	duration_from = request.POST.get("id_duration_from")
-	duration_to = request.POST.get("id_duration_to")
+	duration_from = request.POST.get("duration_from")
+	duration_to = request.POST.get("duration_to")
 	service_active = request.POST.get("id_service_active")
 	service_relief = request.POST.get("id_relief")
 	
@@ -680,9 +680,11 @@ def ajax_save_customer_schedule_plan(request):
 			sch_plan.sch_shf_fri = fri_shift
 			sch_plan.sch_shf_sat = sat_shift
 			sch_plan.sch_shf_sun = sun_shift
+			sch_plan.sch_date_frm = datetime.datetime.strptime(duration_from, "%d/%m/%Y")
+			sch_plan.sch_date_to = datetime.datetime.strptime(duration_to, "%d/%m/%Y")
 			sch_plan.upd_date = datetime.datetime.now()
 			sch_plan.upd_by = request.user.first_name
-			sch_plan.upd_flag = 'E'			
+			sch_plan.upd_flag = 'E'
 			sch_plan.save()
 
 			# generate new security guard list		
