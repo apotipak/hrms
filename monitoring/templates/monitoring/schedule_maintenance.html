@@ -312,8 +312,8 @@
 
 					    <div class="col-4">
 					    	<label class="form-check-label" for="id_duration_from"><b>Duration From</b></label>
-					    	<div class="form-inline col-12">
-					      		<input type="checkbox" id="chkDurationFromDisable" class="form-inline" onclick="disableDurationFormDP()">&nbsp;
+					    	<div class="form-inline col-12 text-left float-left">
+					      		<input type="checkbox" id="chkDurationFromDisable" class="form-inline float-left" onclick="disableDurationFormDP()">&nbsp;
 					      		<input type="text" class="form-control form-control-sm" id="id_duration_from" placeholder="From" />
 					      	</div>
 					    </div>					    
@@ -1574,7 +1574,13 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 					$("#id_emp_id").attr("disabled", true);
 					$("#emp_id_lookup_button").attr("disabled", true);
 
+					$("#id_duration_from").attr("disabled", true);
+					$("#chkDurationToDisable").attr("disabled", true);
+					$("#id_duration_to").attr("disabled", true);
+					$("#chkDurationFromDisable").attr("disabled", true);
 
+					$("#id_service_active").attr("disabled", true);
+					$("#id_relief").attr("disabled", true);
 
 					$("#save_security_guard_button").attr("disabled", true);
 					$("#cancel_security_guard_button").attr("disabled", true);
@@ -1899,8 +1905,12 @@ function update_sch_plan(sch_no) {
 
     		$("#id_sch_rank").val(data.sch_rank);
     		$("#id_sch_dept").val(data.emp_type);
-    		$("#id_duration_from").val(data.sch_date_frm);
-    		$("#id_duration_to").val(data.sch_date_to);
+    		
+    		//$("#id_duration_from").val(data.sch_date_frm);    		
+    		$('#id_duration_from').datepicker('setDate', data.sch_date_frm);
+
+    		//$("#id_duration_to").val(data.sch_date_to);
+    		$('#id_duration_to').datepicker('setDate', data.sch_date_to);
 
     		if(data.sch_active==1) {
     			$("#id_service_active").prop("checked", true);
@@ -1927,6 +1937,9 @@ function update_sch_plan(sch_no) {
     		$("#id_fri_shift").val(data.sch_shf_fri);
     		$("#id_sat_shift").val(data.sch_shf_sat);
     		$("#id_sun_shift").val(data.sch_shf_sun);
+
+			$("#chkDurationToDisable").attr("disabled", false);
+			$("#chkDurationFromDisable").attr("disabled", false);
 
     		$("#save_security_guard_button").attr("disabled", false);
     		$("#cancel_security_guard_button").attr("disabled", false); 
@@ -2369,14 +2382,14 @@ function reset_security_guard_list_form() {
 
 $(function(){    
     $('#id_duration_from').datepicker({
-        dateFormat: 'dd/mm/yy',
+        format: 'dd/mm/yyyy',
         altField: '#thealtdate',
-        altFormat: 'dd/mm/yy'
+        altFormat: 'dd/mm/yyyy'
     });
     $('#id_duration_to').datepicker({
-        dateFormat: 'dd/mm/yy',
+        format: 'dd/mm/yyyy',
         altField: '#thealtdate',
-        altFormat: 'dd/mm/yy'
+        altFormat: 'dd/mm/yyyy'
     });    
 });
 
