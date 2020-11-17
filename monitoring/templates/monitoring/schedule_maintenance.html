@@ -193,16 +193,11 @@
 	        	</div>
 	      	</div>
 	      	<div class="card-body">
-
-
-
-  <table id="contractServiceListTable" class="table table-fixed table-condensed">
-      <tr class="">
-        <td class="col-xs-12 text-center">There is no service available.</td>
-      </tr>
-  </table>
-
-
+			  <table id="contractServiceListTable" class="table table-fixed table-condensed">
+			      <tr class="">
+			        <td class="col-xs-12 text-center">There is no service available.</td>
+			      </tr>
+			  </table>
 	      	</div>
 	    </div>
   			
@@ -1644,6 +1639,7 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 					result += "<table id='contractServiceListTable' class='table table-fixed table-sm table-condensed'>";
 					result += "  <thead>";
 					result += "    <tr>";
+					result += "      <th scope='col' class='d-none'>Service ID1</th>";	
 					result += "      <th scope='col'>No.</th>";
 					result += "      <th scope='col'>Rank</th>";
 					result += "      <th scope='col'>Shift</th>";
@@ -1670,6 +1666,7 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 						count = 1;
 						for(i=0; i<data.cus_service_list.length; i++) {
 							result += "    <tr class='clickableRow'>";
+							result += "      <td scope='row' class='d-none'>" + data.cus_service_list[i]["srv_id"] + "</td>";
 							result += "      <td scope='row'>" + count + "</td>";
 							result += "      <td>" + data.cus_service_list[i]["srv_rank"] + "</td>";							
 							//result += "      <td>" + data.cus_service_list[i]["srv_shif_id"] + "</td>";
@@ -2443,6 +2440,14 @@ $('#contractServiceListTable').on('click', 'tbody tr', function(event) {
 
 $(document).on('click', '#contractServiceListTable tbody tr', function(e) {
 	$(this).addClass('highlight').siblings().removeClass('highlight');
+	
+	/*
+	arr = $('#contractServiceListTable').find('[type="checkbox"]:checked').map(function(){
+      return $(this).closest('tr').find('td:nth-child(2)').text();
+  	}).get();
+  	console.log(arr);	
+	*/
+
 });
 
 
