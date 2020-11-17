@@ -204,7 +204,7 @@
 	      	<div class="card-header">
 
 	        	<div class="float-left">
-	        		<h4 class="m-0 text-dark" id="security_guard_list_title"><b>Security Guard List</b>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;
+	        		<h4 class="m-0 text-dark" id="security_guard_list_title"><i class="fas fa-shield-alt fa-sm"></i>&nbsp;&nbsp;<b>Security Guard List</b>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;
 		        		<button id="add_security_guard_button" type="button" class="btn btn-success btn-sm"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;{% trans 'New' %}&nbsp;</button>&nbsp;	        			
 	        		<!--
 	        		<small><small>
@@ -645,7 +645,9 @@ document.onkeydown = function(e) {
 }
 
 $(document).ready(function(){
- 	$('#add_security_guard_button').on('click', function (e) { 		
+ 	$('#add_security_guard_button').on('click', function (e) {
+
+
  		$("#id_selected_sch_no").val(0);
 		$("#security_guard_list_form").trigger("reset");
 		$("#save_security_guard_button").attr("disabled", false);
@@ -1683,14 +1685,16 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 							count++;
 						}
 					} else {
-						result += "<tr><td colspan='18' align='center' class='text-danger'><br><font size='3'>There is no data available.</font><br><br></td></tr>";
+						result += "<tr><td colspan='18' align='center' class='text-danger'><br><font size='3'><i class='fas fa-xs fa-exclamation'></i>&nbsp;Sorry, there is no service available.</font><br><br></td></tr>";
+
+						$("#add_security_guard_button").attr("disabled", true);
 					}
 
 					result += "  </tbody>";
 					result += "</table>";
 					result += "</font>";
 					$(".card-contract-service-list .card-body").html(result);
-					$("#contract_service_list_amount").html("Total security guard <b>" + data.cus_service_list.length + "</b>");
+					$("#contract_service_list_amount").html("Total <b>" + data.cus_service_list.length + "</b>");
 
 					// Security Guard List
 					result = "";
