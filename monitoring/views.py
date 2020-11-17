@@ -109,7 +109,7 @@ def ajax_get_customer(request):
 
 			# SCH_PLAN			
 			try:
-				sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).filter(sch_date_to='2999-12-31').exclude(upd_flag='D').order_by('emp_id')
+				sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).filter(sch_date_to='2999-12-31').exclude(upd_flag='D').order_by('-upd_date')
 				print("sch_plan is found")
 				sch_plan_list = []
 				for d in sch_plan:
@@ -386,7 +386,7 @@ def ajax_get_customer_schedule_plan_list(request):
     	total = 0
 
     	if sch_active == '1':
-    		sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).filter(sch_date_to='2999-12-31').exclude(upd_flag='D').order_by('emp_id')
+    		sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).filter(sch_date_to='2999-12-31').exclude(upd_flag='D').order_by('-upd_date')
 	    	for d in sch_plan:    		
 	    		if d.sch_active:
 	    			if d.relief:
@@ -423,7 +423,7 @@ def ajax_get_customer_schedule_plan_list(request):
 	    			}
 	    			sch_plan_list.append(record)
     	elif sch_active == '2':
-    		sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).exclude(upd_flag='D').exclude(sch_date_to='2999-12-31').order_by('emp_id')
+    		sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).exclude(upd_flag='D').exclude(sch_date_to='2999-12-31').order_by('-upd_date', 'emp_id')
 	    	for d in sch_plan:    		
     			if d.relief:
     				relief = 1
@@ -458,7 +458,7 @@ def ajax_get_customer_schedule_plan_list(request):
     			}
     			sch_plan_list.append(record)
     	elif sch_active == '3':
-    		sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).exclude(upd_flag='D').order_by('-sch_active', 'emp_id')
+    		sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).exclude(upd_flag='D').order_by('-upd_date', 'emp_id')
 	    	for d in sch_plan:
     			if d.relief:
     				relief = 1
