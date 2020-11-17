@@ -255,3 +255,7 @@ display: block;
   z-index: 999999;
 }
 */
+
+.table tbody tr.highlight td {
+  background-color: #ddd;
+}
