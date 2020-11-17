@@ -1639,7 +1639,7 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 					result += "<table id='contractServiceListTable' class='table table-fixed table-sm table-condensed'>";
 					result += "  <thead>";
 					result += "    <tr>";
-					result += "      <th scope='col' class='d-none'>Service ID1</th>";	
+					result += "      <th scope='col' name='service_id' class='d-none'>Service ID1</th>";	
 					result += "      <th scope='col'>No.</th>";
 					result += "      <th scope='col'>Rank</th>";
 					result += "      <th scope='col'>Shift</th>";
@@ -1665,7 +1665,7 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 					if(data.cus_service_list.length>0) {
 						count = 1;
 						for(i=0; i<data.cus_service_list.length; i++) {
-							result += "    <tr class='clickableRow'>";
+							result += "    <tr class='clickableRow' data-serviceid='" + data.cus_service_list[i]["srv_id"] + "'>";
 							result += "      <td scope='row' class='d-none'>" + data.cus_service_list[i]["srv_id"] + "</td>";
 							result += "      <td scope='row'>" + count + "</td>";
 							result += "      <td>" + data.cus_service_list[i]["srv_rank"] + "</td>";							
@@ -2438,18 +2438,17 @@ $('#contractServiceListTable').on('click', 'tbody tr', function(event) {
 });
 */
 
-$(document).on('click', '#contractServiceListTable tbody tr', function(e) {
+$(document).on('click', '#contractServiceListTable tbody tr', function(row, $el, field) {
 	$(this).addClass('highlight').siblings().removeClass('highlight');
+
+	var service_id = $(this).find('td:eq(0)').text();
+	var srv_eff_from = $(this).find('td:eq(5)').text();
+	var srv_eff_to = $(this).find('td:eq(6)').text();
 	
-	/*
-	arr = $('#contractServiceListTable').find('[type="checkbox"]:checked').map(function(){
-      return $(this).closest('tr').find('td:nth-child(2)').text();
-  	}).get();
-  	console.log(arr);	
-	*/
-
+	$('#id_duration_to').datepicker('setDate', srv_eff_to);
+	$("#chkDurationToDisable").prop("checked", true);
+	
 });
-
 
 </script>
 {% endblock %}
