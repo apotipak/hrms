@@ -12,6 +12,9 @@ import datetime
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Max
+from django.db.models import F
+from django.db import connection
 
 
 @login_required(login_url='/accounts/login/')
@@ -603,7 +606,11 @@ def ajax_save_customer_schedule_plan(request):
 	print("*********************************************")
 
 	selected_sch_no = request.POST.get("selected_sch_no")	
+	print("selected_sch_no = " + str(selected_sch_no))
 
+	selected_service_id = request.POST.get("selected_service_id")	
+	print("selected_service_id = " + str(selected_service_id))
+	
 	cus_id = request.POST.get('cus_id')
 	cus_brn = request.POST.get('cus_brn')
 	cus_vol = request.POST.get('cus_vol')    
@@ -643,6 +650,12 @@ def ajax_save_customer_schedule_plan(request):
 		print("sat_shift = " + str(sat_shift))
 		print("sun_shift = " + str(sun_shift))
 		print("--- debug ---")
+
+		cursor = connection.cursor()		
+		cursor.execute("select max(convert(decimal(4,0),right(rtrim(convert(char(20),sch_no)),4))) from sch_plan where cnt_id=" + cnt_id)
+		max_sch_no = cursor.fetchone()[0]
+		print("max_sch_no = " + str(max_sch_no))
+
 
 		# RULE-1: Check if select duplicated security guard
 		# amnaj
