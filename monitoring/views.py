@@ -610,13 +610,14 @@ def ajax_save_customer_schedule_plan(request):
 
 	selected_service_id = request.POST.get("selected_service_id")	
 	print("selected_service_id = " + str(selected_service_id))
-	
+
 	cus_id = request.POST.get('cus_id')
 	cus_brn = request.POST.get('cus_brn')
 	cus_vol = request.POST.get('cus_vol')    
 	cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
 	
-	emp_id = request.POST.get("emp_id")	
+	emp_id = request.POST.get("emp_id")
+	emp_rank = request.POST.get("emp_rank")
 	sch_active = request.POST.get("sch_active")
 	relief = request.POST.get("relief")
 	mon_shift = request.POST.get("mon_shift")
@@ -628,8 +629,6 @@ def ajax_save_customer_schedule_plan(request):
 	sun_shift = request.POST.get("sun_shift")
 	duration_from = request.POST.get("duration_from")
 	duration_to = request.POST.get("duration_to")
-	service_active = request.POST.get("id_service_active")
-	service_relief = request.POST.get("id_relief")
 	
 	sch_plan_list = []
 
@@ -637,7 +636,7 @@ def ajax_save_customer_schedule_plan(request):
 	if selected_sch_no == "0":
 		print("--- debug ---")
 		print("selected_sch_no = " + str(selected_sch_no))
-		print("emp_id = " + str(emp_id))
+		print("emp_id = " + str(emp_id))		
 		print("duration_from = " + str(duration_from))
 		print("duration_to = " + str(duration_to))
 		print("sch_active = " + str(sch_active))
@@ -651,15 +650,23 @@ def ajax_save_customer_schedule_plan(request):
 		print("sun_shift = " + str(sun_shift))
 		print("--- debug ---")
 
+		# Get latest sch_no
 		cursor = connection.cursor()		
 		cursor.execute("select max(convert(decimal(4,0),right(rtrim(convert(char(20),sch_no)),4))) from sch_plan where cnt_id=" + cnt_id)
 		max_sch_no = cursor.fetchone()[0]
-		print("max_sch_no = " + str(max_sch_no))
+
+		if max_sch_no is not None:
+			new_sch_no = max_sch_no + 1
+		else:
+			new_sch_no = 1
+	
+		# Generate new sch_no
+		new_sch_no = str(selected_service_id) + str(new_sch_no).zfill(4)
+		print("new_sch_no = " + str(new_sch_no))
 
 
-		# RULE-1: Check if select duplicated security guard
 		# amnaj
-
+		# RULE-1: Check if select duplicated security guard	
 		'''
 		try:
 			employee = SchPlan.objects.filter(emp_id=emp_id).exclude(upd_flag='D').exclude(sch_active='0').get()
@@ -669,13 +676,37 @@ def ajax_save_customer_schedule_plan(request):
 			print("Available")
 		'''
 
+		# amnaj
+		# RULE-2: Check if SO is existed in other schedule
 
-		# TODO2: Check if SO is existed in other schedule
 
+		# If RULE-1 and RULE-2 is passed, then save a new record
+		new_sch_plan = SchPlan(
+			sch_no = new_sch_no,
+			srv_id = selected_service_id,
+			cnt_id = cnt_id,
+			emp_id_id = emp_id,
+			sch_rank = emp_rank,
+			relief = relief,
+			sch_date_frm = duration_from,
+			sch_date_to = duration_to,
+			sch_shf_mon = mon_shift,
+			sch_shf_tue = tue_shift,
+			sch_shf_wed = wed_shift,
+			sch_shf_thu = thu_shift,
+			sch_shf_fri = fri_shift,
+			sch_shf_sat = sat_shift,
+			sch_shf_sun = sun_shift,
+			sch_active = sch_active,			
+			upd_date = datetime.datetime.now(),
+			upd_by = request.user.first_name,
+			upd_flag = 'A',
+		    )
+		new_sch_plan.save()  
 
 		response = JsonResponse(data={
-			"message": "Add new record.",
-			"class": "bg-danger",
+			"message": "Saved success",
+			"class": "bg-success",
 			"sch_plan_list": list(sch_plan_list),
 			"is_saved": False,
 		})
