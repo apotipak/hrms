@@ -260,6 +260,8 @@
                               	<button id="emp_id_lookup_button" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url=""><i class="fas fa-search fa-sm"></i></button>
 
                               	<input type="hidden" id="id_selected_sch_no" name="id_selected_sch_no" value="0">
+                              	<input type="hidden" id="id_selected_service_id" name="id_selected_service_id" value="0">
+                              	
                             </div>
 					    </div>	 
 					    <div class="col-5">
@@ -828,6 +830,9 @@ $(document).ready(function(){
 
 		emp_id = $("#id_emp_id").val();
 		selected_sch_no = $("#id_selected_sch_no").val();
+		selected_service_id = $("#id_selected_service_id").val();
+		duration_from =  $("#id_duration_from").val();
+		duration_to =  $("#id_duration_to").val();
 
     	if (emp_id=="") {
 		  	$(document).Toasts('create', {
@@ -844,6 +849,54 @@ $(document).ready(function(){
     		$("#id_emp_id").focus();
     		return false;
     	}
+
+		if(selected_service_id==0) {
+		  	$(document).Toasts('create', {
+		    	class: "bg-danger", 
+		    	title: "{% trans 'System message' %}",
+		    	subtitle: '',
+		    	autohide: true,
+		    	delay: 2000,
+		    	body: "Please select Service ID.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+		    	autoDismiss: true,
+		    	close: true,
+		    	autoremove: true,
+		  	});
+    		$("#id_emp_id").focus();			
+			return false;
+		}
+
+		if(duration_from=="") {
+		  	$(document).Toasts('create', {
+		    	class: "bg-danger", 
+		    	title: "{% trans 'System message' %}",
+		    	subtitle: '',
+		    	autohide: true,
+		    	delay: 2000,
+		    	body: "Please enter Duration From.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+		    	autoDismiss: true,
+		    	close: true,
+		    	autoremove: true,
+		  	});
+    		$("#id_duration_from").focus();			
+			return false;			
+		}
+
+		if(duration_from=="") {
+		  	$(document).Toasts('create', {
+		    	class: "bg-danger", 
+		    	title: "{% trans 'System message' %}",
+		    	subtitle: '',
+		    	autohide: true,
+		    	delay: 2000,
+		    	body: "Please enter Duration To.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+		    	autoDismiss: true,
+		    	close: true,
+		    	autoremove: true,
+		  	});
+    		$("#id_duration_to").focus();			
+			return false;			
+		}
 
     	if ($('#id_service_active').is(":checked")) {
 	    	service_active = 1;
@@ -2426,10 +2479,19 @@ $(function(){
 });
 
 function disableDurationFormDP(){
-	$("#id_duration_from").attr("disabled",  $("#chkDurationFromDisable").is(":checked")).val("31/12/2999");
+	duration_from = $("#id_duration_from").val();
+	if(duration_from!="") {
+		$("#id_duration_from").attr("disabled", true).val(duration_from);
+	} else {
+		$("#id_duration_from").attr("disabled", false).val(duration_from);
+	}
 }
 function disableDurationToDP(){
-	$("#id_duration_to").attr("disabled",  $("#chkDurationToDisable").is(":checked")).val("31/12/2999");
+	duration_to = $("#id_duration_to").val();	
+	if(duration_to!="")
+		$("#id_duration_to").attr("disabled",  $("#chkDurationToDisable").is(":checked")).val(duration_to);	
+	
+	//$("#id_duration_to").attr("disabled",  $("#chkDurationToDisable").is(":checked")).val("31/12/2999");
 }
 
 /*
@@ -2441,12 +2503,17 @@ $('#contractServiceListTable').on('click', 'tbody tr', function(event) {
 $(document).on('click', '#contractServiceListTable tbody tr', function(row, $el, field) {
 	$(this).addClass('highlight').siblings().removeClass('highlight');
 
-	var service_id = $(this).find('td:eq(0)').text();
+	var service_id = $(this).find('td:eq(0)').text();	
 	var srv_eff_from = $(this).find('td:eq(5)').text();
 	var srv_eff_to = $(this).find('td:eq(6)').text();
+
+	$('#id_selected_service_id').val(service_id);
+
+	$('#id_duration_from').datepicker('setDate', srv_eff_from);
+	$("#chkDurationFromDisable").prop("checked", true);
 	
 	$('#id_duration_to').datepicker('setDate', srv_eff_to);
-	$("#chkDurationToDisable").prop("checked", true);
+	$("#chkDurationToDisable").prop("checked", true);	
 	
 });
 
