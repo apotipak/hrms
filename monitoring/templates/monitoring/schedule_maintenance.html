@@ -321,14 +321,14 @@
 					    	<label class="form-check-label" for="id_duration_from"><b>Duration From</b></label>
 					    	<div class="form-inline col-12 text-left float-left">
 					      		<input type="checkbox" id="chkDurationFromDisable" class="form-inline float-left" onclick="disableDurationFormDP()">&nbsp;
-					      		<input type="text" class="form-control form-control-sm" id="id_duration_from" placeholder="From" />
+					      		<input type="text" class="form-control form-control-sm" id="id_duration_from" placeholder="dd/mm/yyyy" />
 					      	</div>
 					    </div>					    
 					    <div class="col-4">
 					    	<label class="form-check-label" for="id_duration_to"><b>Duration To</b></label>
 					    	<div class="form-inline col-12">
 					    		<input type="checkbox" id="chkDurationToDisable" class="form-inline" onclick="disableDurationToDP()">&nbsp;
-					      		<input type="text" class="form-control form-control-sm" id="id_duration_to" placeholder="To" />
+					      		<input type="text" class="form-control form-control-sm" id="id_duration_to" placeholder="dd/mm/yyyy" />
 					      	</div>
 					    </div>					    		    
 
@@ -901,8 +901,6 @@ $(document).ready(function(){
 		duration_from =  $("#id_duration_from").val();
 		duration_to =  $("#id_duration_to").val();
 
-		alert(selected_service_id);
-
     	if (emp_id=="") {
 		  	$(document).Toasts('create', {
 		    	class: "bg-danger", 
@@ -947,7 +945,7 @@ $(document).ready(function(){
 		    	close: true,
 		    	autoremove: true,
 		  	});
-    		$("#id_duration_from").focus();			
+    		$("#chkDurationFromDisable").focus();			
 			return false;			
 		}
 
@@ -987,6 +985,24 @@ $(document).ready(function(){
 			return false;				
 		}
 
+		durationToStatus =  $("#chkDurationToDisable").is(":checked");
+		if(durationToStatus) {
+			//
+		} else {
+		  	$(document).Toasts('create', {
+		    	class: "bg-danger", 
+		    	title: "{% trans 'System message' %}",
+		    	subtitle: '',
+		    	autohide: true,
+		    	delay: 2000,
+		    	body: "Please select Duration To.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+		    	autoDismiss: true,
+		    	close: true,
+		    	autoremove: true,
+		  	});
+    		$("#id_duration_to").focus();
+			return false;				
+		}
 
     	if ($('#id_service_active').is(":checked")) {
 	    	service_active = 1;
