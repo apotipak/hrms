@@ -640,14 +640,35 @@ $(document).on('keypress', '#id_emp_id', function(e) {
 		    	subtitle: '',
 		    	autohide: true,
 		    	delay: 2000,
-		    	body: "Please enter Employee ID.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+		    	body: "Please enter Employee ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
 		    	autoDismiss: true,
 		    	close: true,
 		    	autoremove: true,
 		  	});    		
     		$("#id_emp_id").focus();
 		} else {
-
+			//amnaj
+			$.ajax({
+		    	url : "/monitoring/ajax/get_employee",
+		    	type : "GET",
+		    	data : {          
+		      		csrfmiddlewaretoken: '{{ csrf_token }}',
+		      		emp_id: emp_id,
+		    	},
+		    	success: function(data) {
+		    		if(data.is_found) {		    			
+		    			fullname = data.emp_fname_th + "  " + data.emp_lname_th;
+		    			$("#id_emp_name_th").val(fullname);
+		    			$("#id_sch_rank").val(data.emp_rank);
+		    			$("#id_sch_dept").val(data.emp_type);
+		    			$("#id_emp_status").val(data.emp_status);
+		    			$("#id_emp_join_date").val(data.emp_join_date);
+		    			$("#id_emp_term_date").val(data.emp_term_date);
+		    		} else {
+		    			//alert("not found");
+		    		}
+		    	},
+		    });
 		}		
 	}
 });

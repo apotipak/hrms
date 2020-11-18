@@ -883,3 +883,57 @@ def ajax_get_employee_list(request):
 		return response
 
 	return JsonResponse(data={"success": False, "results": ""})
+
+
+@permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
+@login_required(login_url='/accounts/login/')
+def ajax_get_employee(request):
+
+	print("********************************")
+	print("FUNCTION: ajax_get_employee()")
+	print("********************************")
+
+	employee_item = []
+	emp_id = request.GET.get('emp_id')
+
+	try:
+		employee = Employee.objects.filter(emp_id__exact=emp_id).filter(emp_type='D1').get()
+		print("found")
+		response = JsonResponse(data={
+			"success": True,
+			"is_found": True,
+			"class": "bg-success",
+			"emp_id": employee.emp_id,
+			"emp_fname_th": employee.emp_fname_th,
+			"emp_lname_th": employee.emp_lname_th,
+			"emp_fname_en": employee.emp_fname_en,
+			"emp_lname_en": employee.emp_lname_en,
+			"emp_join_date": employee.emp_join_date,
+			"emp_term_date": employee.emp_term_date,
+			"emp_rank": employee.emp_rank,
+			"emp_type": employee.emp_type,
+			"emp_status": str(employee.emp_status_id) + " | " + str(employee.emp_status.sts_th)
+		    })
+		response.status_code = 200
+		return response
+
+	except Employee.DoesNotExist:
+		print("not found")
+		response = JsonResponse(data={
+			"success": True,
+			"is_found": False,
+			"class": "bg-danger",
+			"message": "Employee not found.",			
+			"emp_id": "",
+			"emp_fname_th": "",
+			"emp_lname_th": "",
+			"emp_fname_en": "",
+			"emp_lname_en": "",
+			"emp_join_date": "",
+			"emp_term_date": "",
+			"emp_rank": "",
+			"emp_type": "",
+		})
+
+	response.status_code = 200
+	return response
