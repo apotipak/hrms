@@ -967,9 +967,7 @@ $(document).ready(function(){
 
 		// amnaj
 		durationFromStatus =  $("#chkDurationFromDisable").is(":checked");
-		if(durationFromStatus) {
-			//
-		} else {
+		if(!durationFromStatus) {
 		  	$(document).Toasts('create', {
 		    	class: "bg-danger", 
 		    	title: "{% trans 'System message' %}",
@@ -986,9 +984,7 @@ $(document).ready(function(){
 		}
 
 		durationToStatus =  $("#chkDurationToDisable").is(":checked");
-		if(durationToStatus) {
-			//
-		} else {
+		if(!durationToStatus) {
 		  	$(document).Toasts('create', {
 		    	class: "bg-danger", 
 		    	title: "{% trans 'System message' %}",
