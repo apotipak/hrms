@@ -905,8 +905,8 @@ def ajax_get_employee(request):
 		8 = เกษียณ
 		9 = ไล่ออก
 		'''
-		
-		employee = Employee.objects.filter(emp_id__exact=emp_id).filter(emp_type='D1').exclude(emp_status__in=exclude_list).get()
+
+		employee = Employee.objects.filter(emp_id__exact=emp_id).filter(emp_type='D1').exclude(empstatus='I').exclude(emp_status__in=exclude_list).get()
 
 		response = JsonResponse(data={
 			"success": True,

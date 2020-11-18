@@ -662,6 +662,8 @@ $(document).on('keypress', '#id_emp_id', function(e) {
 	    			$("#id_emp_status").val("");
 	    			$("#id_emp_join_date").val("");
 	    			$("#id_emp_term_date").val("");
+		    		$("#id_emp_name_th").css("background-color", '');
+		    		$("#id_emp_name_th").animate({color:''}, 1000);
 
 		    		if(data.is_found) {		    			
 		    			$("#id_emp_name_th").val(data.emp_fname_th.trim() + "  " + data.emp_lname_th.trim());
@@ -680,6 +682,7 @@ $(document).on('keypress', '#id_emp_id', function(e) {
 			    		$("#id_emp_name_th").css("background-color", 'green');
 			    		$("#id_emp_name_th").animate({color:'white'}, 1000);
 		    		} else {
+
 					  	$(document).Toasts('create', {
 					    	class: "bg-danger", 
 					    	title: "{% trans 'System message' %}",
