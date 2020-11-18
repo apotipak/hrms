@@ -645,9 +645,7 @@ def ajax_save_customer_schedule_plan(request):
 		print("--- debug ---")
 
 		# RULE-1: Check if select duplicated security guard
-
 		# amnaj
-
 
 		'''
 		try:
@@ -907,6 +905,15 @@ def ajax_get_employee(request):
 		'''
 
 		employee = Employee.objects.filter(emp_id__exact=emp_id).filter(emp_type='D1').exclude(empstatus='I').exclude(emp_status__in=exclude_list).get()
+		if employee.emp_join_date is not None:
+			emp_join_date = employee.emp_join_date.strftime("%d/%m/%Y")
+		else:
+			emp_join_date = ""
+
+		if employee.emp_term_date is not None:
+			emp_term_date = employee.emp_term_date.strftime("%d/%m/%Y")
+		else:
+			emp_term_date = ""
 
 		response = JsonResponse(data={
 			"success": True,
@@ -917,8 +924,8 @@ def ajax_get_employee(request):
 			"emp_lname_th": employee.emp_lname_th,
 			"emp_fname_en": employee.emp_fname_en,
 			"emp_lname_en": employee.emp_lname_en,
-			"emp_join_date": employee.emp_join_date,
-			"emp_term_date": employee.emp_term_date,
+			"emp_join_date": emp_join_date,
+			"emp_term_date": emp_term_date,
 			"emp_rank": employee.emp_rank,
 			"emp_type": employee.emp_type,
 			"emp_status_id": employee.emp_status_id,
