@@ -193,9 +193,9 @@
 	        	</div>
 	      	</div>
 	      	<div class="card-body">
-			  <table id="contractServiceListTable" class="table table-fixed table-condensed">
-			      <tr class="">
-			        <td class="col-xs-12 text-center">There is no service available.</td>
+			  <table id="contractServiceListTable" class="text-center">
+			      <tr>
+			        <td class="col-12">There is no contract service available.</td>
 			      </tr>
 			  </table>
 	      	</div>
@@ -256,7 +256,7 @@
 					    <div class="col-3">
 					    	<label class="form-check-label" for="id_emp_id"><b>Employee ID</b></label>
                             <div class="input-group">                            	
-                              	<input type="text" id="id_emp_id" name="id_emp_id" class="form-control form-control-sm" value="" />
+                              	<input type="number" id="id_emp_id" name="id_emp_id" class="form-control form-control-sm" value="" />
                               	<button id="emp_id_lookup_button" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url=""><i class="fas fa-search fa-sm"></i></button>
 
                               	<input type="hidden" id="id_selected_sch_no" name="id_selected_sch_no" value="0">
@@ -347,7 +347,7 @@
 					  </div>
 
 
-					  <!--amnaj-->
+					  
 					  <!--
 					  <div class="form-group row">
 
@@ -606,34 +606,35 @@ $(document).on('keypress', '#id_employee_search_text', function(e) {
 });
 
 $(document).on('keypress', '#id_emp_id', function(e) {
-	if(e.which == 13) {
+	if(e.which == 13) {      
 		e.preventDefault();
 
-		var emp_id = $(this).val();
+		cus_id = $('#id_cus_id').val();
+		cus_brn = $('#id_cus_brn').val();
+		cus_vol = $('#id_cus_vol').val();
+		
+		if(cus_id=="") {
+			alert("Please entet Customer ID.");
+			$('#id_cus_id').focus();				
+			return false;
+		}
+
+		if(cus_brn=="") {
+			alert("Please entet Customer Branch.");
+			$('#id_cus_brn').focus();
+			return false;			
+		}
+
+		if(cus_vol=="") {
+			alert("Please entet Customer Volume.");
+			$('#id_cus_vol').focus();
+			return false;
+		}
+
+		emp_id = $(this).val();
 		alert(emp_id);
-
-		/*
-		$.ajax({
-	    	url: "/monitoring/ajax/get_employee_list",        	
-			type: 'get',          
-	      	dataType: 'json',
-	      	data : { 
-	        	emp_id : emp_id,
-	        	page: page,
-	      	},          
-	      	beforeSend: function () {
-	        	//$("#select_employee_modal").modal("show");
-	      	},
-			success: function (data) {
-			},
-		});
-		*/
-
-		return false;
-
-	}	
+	}
 });
-
 
 document.onkeydown = function(e) {
   if(event.keyCode == 123) {
@@ -857,13 +858,17 @@ $(document).ready(function(){
 		    	subtitle: '',
 		    	autohide: true,
 		    	delay: 2000,
-		    	body: "Please select Service ID.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+		    	body: "Please select a service from <b>Contract Service List</b>.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
 		    	autoDismiss: true,
 		    	close: true,
 		    	autoremove: true,
 		  	});
-    		$("#id_emp_id").focus();			
+
+
+    		//$("#id_emp_id").focus();		
 			return false;
+
+			//amnaj
 		}
 
 		if(duration_from=="") {
@@ -2479,26 +2484,36 @@ $(function(){
 });
 
 function disableDurationFormDP(){
+	durationFromStatus =  $("#chkDurationFromDisable").is(":checked");
+	
+	$("#id_duration_from").val($("#id_duration_from").val());
+	
+	if(durationFromStatus) {
+		$("#id_duration_from").attr("disabled", false);
+	} else {
+		$("#id_duration_from").attr("disabled", true);
+	}
+
+	/*
 	duration_from = $("#id_duration_from").val();
 	if(duration_from!="") {
 		$("#id_duration_from").attr("disabled", true).val(duration_from);
 	} else {
 		$("#id_duration_from").attr("disabled", false).val(duration_from);
 	}
+	*/
 }
 function disableDurationToDP(){
-	duration_to = $("#id_duration_to").val();	
-	if(duration_to!="")
-		$("#id_duration_to").attr("disabled",  $("#chkDurationToDisable").is(":checked")).val(duration_to);	
+	durationToStatus =  $("#chkDurationToDisable").is(":checked");
 	
-	//$("#id_duration_to").attr("disabled",  $("#chkDurationToDisable").is(":checked")).val("31/12/2999");
+	$("#id_duration_to").val($("#id_duration_to").val());
+	
+	if(durationToStatus) {
+		$("#id_duration_to").attr("disabled", false);
+	} else {
+		$("#id_duration_to").attr("disabled", true);
+	}
 }
-
-/*
-$('#contractServiceListTable').on('click', 'tbody tr', function(event) {
-  $(this).addClass('highlight').siblings().removeClass('highlight');
-});
-*/
 
 $(document).on('click', '#contractServiceListTable tbody tr', function(row, $el, field) {
 	$(this).addClass('highlight').siblings().removeClass('highlight');
@@ -2516,6 +2531,7 @@ $(document).on('click', '#contractServiceListTable tbody tr', function(row, $el,
 	$("#chkDurationToDisable").prop("checked", true);	
 	
 });
+
 
 </script>
 {% endblock %}
