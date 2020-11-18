@@ -667,10 +667,18 @@ $(document).on('keypress', '#id_emp_id', function(e) {
 		    			$("#id_emp_name_th").val(data.emp_fname_th.trim() + "  " + data.emp_lname_th.trim());
 		    			$("#id_sch_rank").val(data.emp_rank);
 		    			$("#id_sch_dept").val(data.emp_type);
+
 		    			$("#id_emp_status").val(data.emp_status);
+		    			if(data.emp_status_id=='9') {		    				
+			    			$("#id_emp_status").animate({color:'red'}, 1000);
+		    			} else {
+		    				$("#id_emp_status").animate({color:'black'}, 1000);
+		    			}
 		    			$("#id_emp_join_date").val(data.emp_join_date);
 		    			$("#id_emp_term_date").val(data.emp_term_date);
 
+			    		$("#id_emp_name_th").css("background-color", 'green');
+			    		$("#id_emp_name_th").animate({color:'white'}, 1000);
 		    		} else {
 					  	$(document).Toasts('create', {
 					    	class: "bg-danger", 

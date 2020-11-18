@@ -897,8 +897,17 @@ def ajax_get_employee(request):
 	emp_id = request.GET.get('emp_id')
 
 	try:
-		employee = Employee.objects.filter(emp_id__exact=emp_id).filter(emp_type='D1').get()
-		print("found")
+		exclude_list = [4,5,6,8,9]
+		'''
+		4 = เลิกจ้าง
+		5 = สูญหาย
+		6 = เสียชีวิต
+		8 = เกษียณ
+		9 = ไล่ออก
+		'''
+		
+		employee = Employee.objects.filter(emp_id__exact=emp_id).filter(emp_type='D1').exclude(emp_status__in=exclude_list).get()
+
 		response = JsonResponse(data={
 			"success": True,
 			"is_found": True,
@@ -912,6 +921,7 @@ def ajax_get_employee(request):
 			"emp_term_date": employee.emp_term_date,
 			"emp_rank": employee.emp_rank,
 			"emp_type": employee.emp_type,
+			"emp_status_id": employee.emp_status_id,
 			"emp_status": str(employee.emp_status_id) + " | " + str(employee.emp_status.sts_th)
 		    })
 		response.status_code = 200
@@ -933,6 +943,8 @@ def ajax_get_employee(request):
 			"emp_term_date": "",
 			"emp_rank": "",
 			"emp_type": "",
+			"emp_status_id": "",
+			"emp_status": "",
 		})
 
 	response.status_code = 200
