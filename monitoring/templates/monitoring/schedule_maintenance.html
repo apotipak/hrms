@@ -632,7 +632,23 @@ $(document).on('keypress', '#id_emp_id', function(e) {
 		}
 
 		emp_id = $(this).val();
-		alert(emp_id);
+
+		if(emp_id=="") {
+		  	$(document).Toasts('create', {
+		    	class: "bg-danger", 
+		    	title: "{% trans 'System message' %}",
+		    	subtitle: '',
+		    	autohide: true,
+		    	delay: 2000,
+		    	body: "Please enter Employee ID.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+		    	autoDismiss: true,
+		    	close: true,
+		    	autoremove: true,
+		  	});    		
+    		$("#id_emp_id").focus();
+		} else {
+
+		}		
 	}
 });
 
@@ -1906,7 +1922,7 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 				      subtitle: '',
 				      autohide: true,
 				      delay: 2000,
-				      body: "Sorry, the customer ID is not found. Please try again.",
+				      body: "Schedule Number is not found. Please try again.",
 				      autoDismiss: true,
 				      close: true,
 				      autoremove: true,
