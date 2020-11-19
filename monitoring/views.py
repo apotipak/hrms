@@ -664,20 +664,17 @@ def ajax_save_customer_schedule_plan(request):
 		new_sch_no = str(selected_service_id) + str(new_sch_no).zfill(4)
 		print("new_sch_no = " + str(new_sch_no))
 
-
 		# amnaj
-		# RULE-1: Check if select duplicated security guard	
-		'''
+		# RULE-1: Check if an employee is existed in another schedule		
 		try:
 			employee = SchPlan.objects.filter(emp_id=emp_id).exclude(upd_flag='D').exclude(sch_active='0').get()
 			# select * from sch_plan where emp_id=916 and sch_active=1 and upd_flag!='D'
 			print("Not available")
 		except SchPlan.DoesNotExist:
 			print("Available")
-		'''
-
+		
 		# amnaj
-		# RULE-2: Check if SO is existed in other schedule
+		# RULE-2: Check if select duplicated security guard	
 
 
 		# If RULE-1 and RULE-2 is passed, then save a new record
@@ -702,7 +699,7 @@ def ajax_save_customer_schedule_plan(request):
 			upd_by = request.user.first_name,
 			upd_flag = 'A',
 		    )
-		new_sch_plan.save()  
+		#new_sch_plan.save()  
 
 		response = JsonResponse(data={
 			"message": "Saved success",
