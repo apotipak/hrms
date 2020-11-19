@@ -33,7 +33,7 @@
 
 
       	<!-- 1st Block -->
-      	<div class="card card-outline card-success">
+      	<div class="card card-outline card-secondary">
 
 	    	<div class="card-header">
 
@@ -184,7 +184,7 @@
 
 
       	<!-- Contract Service List -->      	
-	    <div class="card card-contract-service-list card-outline card-success">
+	    <div class="card card-contract-service-list card-outline card-secondary">
 	      	<div class="card-header">                
 	        	<div class="float-left"><h4 class="m-0 text-dark">Contract Service List&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;<small><small><span id="contract_service_list_amount">Total <b>0</b></span></small></small></h4></div>
 	        	<div class="float-left"><h4 class="m-0 text-light"><span id="id_contract_number"></span></h4></div>
@@ -722,8 +722,7 @@ document.onkeydown = function(e) {
 
 $(document).ready(function(){
  	$('#add_security_guard_button').on('click', function (e) {
-
-
+ 		
  		$("#id_selected_sch_no").val(0);
     	$("#id_selected_service_id").val(0);
 
@@ -754,7 +753,8 @@ $(document).ready(function(){
 
 		$("#id_emp_name_th").css("background-color", '');
     	$("#id_emp_name_th").animate({color:''}, 1000);
-
+		
+    	
 		$("#id_emp_id").focus();
 
     });
@@ -776,19 +776,7 @@ $(document).ready(function(){
 
  	$("#cancel_security_guard_button").click( function() {
     	event.preventDefault();
-
-    	$("#id_selected_sch_no").val(0);
-    	$("#id_selected_service_id").val(0);
-
-    	$("#security_guard_list_form").trigger("reset");
-    	$("#save_security_guard_button").attr("disabled", true);
-    	$("#security_guard_list_form :input").prop("disabled", true);
-    	$("#add_security_guard_button").attr("disabled", false);
-
-    	$('input[type=radio][name=security_guard_list_status_option]').attr("disabled", false);
-
-		$("#id_emp_name_th").css("background-color", '');
-    	$("#id_emp_name_th").animate({color:''}, 1000);
+    	reset_security_guard_list_form();
     });
 
  	$("#emp_id_lookup_button").click( function(e) {
@@ -2054,8 +2042,10 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 function update_sch_plan(sch_no, srv_id) {
 	cus_id = $('#id_cus_id').val();
 	cus_brn = $('#id_cus_brn').val();
-	cus_vol = $('#id_cus_vol').val();
+	cus_vol = $('#id_cus_vol').val();	
 	sch_no = sch_no;
+
+	$("#id_selected_service_id").val(srv_id);
 
 	if(cus_id=="") {
 		alert("Please entet Customer ID.");
@@ -2109,9 +2099,12 @@ function update_sch_plan(sch_no, srv_id) {
     		
     		//$("#id_duration_from").val(data.sch_date_frm);    		
     		$('#id_duration_from').datepicker('setDate', data.sch_date_frm);
+    		$("#chkDurationFromDisable").prop("checked", true);
+
 
     		//$("#id_duration_to").val(data.sch_date_to);
     		$('#id_duration_to').datepicker('setDate', data.sch_date_to);
+			$("#chkDurationToDisable").prop("checked", true);
 
     		if(data.sch_active==1) {
     			$("#id_service_active").prop("checked", true);
@@ -2605,8 +2598,20 @@ function reset_security_guard_list_form() {
 	$('input[type=radio][name=security_guard_list_status_option]').attr("disabled", false);
 	$("#id_emp_name_th").css("background-color", '');
 	$("#id_emp_name_th").animate({color:''}, 1000);
-}
 
+    $('#id_duration_from').datepicker({
+        format: 'dd/mm/yyyy',
+        altField: '#thealtdate',
+        altFormat: 'dd/mm/yyyy'
+    }).datepicker("setDate", new Date());
+
+    $('#id_duration_to').datepicker({
+        format: 'dd/mm/yyyy',
+        altField: '#thealtdate',
+        altFormat: 'dd/mm/yyyy'
+    }).datepicker("setDate", new Date());
+
+}
 
 $(function(){
     $('#id_duration_from').datepicker({
