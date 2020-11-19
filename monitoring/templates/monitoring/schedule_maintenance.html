@@ -33,9 +33,9 @@
 
 
       	<!-- 1st Block -->
-      	<div class="card">
+      	<div class="card card-outline card-success">
 
-	    	<div class="card-header bg-secondary">
+	    	<div class="card-header">
 
 		        <h1 class="card-title">
 		          <span id="customer_name_title">
@@ -184,9 +184,9 @@
 
 
       	<!-- Contract Service List -->      	
-	    <div class="card card-contract-service-list">
-	      	<div class="card-header bg-secondary">                
-	        	<div class="float-left"><h4 class="m-0 text-light">Contract Service List&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;<small><small><span id="contract_service_list_amount">Total <b>0</b></span></small></small></h4></div>
+	    <div class="card card-contract-service-list card-outline card-success">
+	      	<div class="card-header">                
+	        	<div class="float-left"><h4 class="m-0 text-dark">Contract Service List&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;<small><small><span id="contract_service_list_amount">Total <b>0</b></span></small></small></h4></div>
 	        	<div class="float-left"><h4 class="m-0 text-light"><span id="id_contract_number"></span></h4></div>
 	        	<div class="card-tools">
 	          		<div class="float-left">&nbsp;</div>
@@ -203,7 +203,7 @@
   			
 
       	<!-- Security Guard List -->      	
-	    <div class="card card-security-guard-list">
+	    <div class="card card-security-guard-list card-outline card-success">
 
 			<form id="security_guard_list_form" method="POST">
       		{% csrf_token %}
@@ -1783,7 +1783,7 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 					$("#cancelCustomerServicePersonButton").attr("disabled", false);
 
 					result_title = "";
-					result_title = "<h4 class='m-0 text-light'>" + data.cus_site_name_th + "<small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-light'></i></button></small></h4>";
+					result_title = "<h4 class='m-0 text-dark'>" + data.cus_site_name_th + "<small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-dark'></i></button></small></h4>";
 
 					
 					$("#customer_name_title").html(result_title);
