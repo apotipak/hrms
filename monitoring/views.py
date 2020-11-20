@@ -681,9 +681,14 @@ def ajax_save_customer_schedule_plan(request):
 		# select * from sch_plan where emp_id=916 and sch_active=1 and upd_flag!='D'
 		employee_count = SchPlan.objects.filter(emp_id=emp_id).exclude(upd_flag='D').exclude(sch_active="").count()		
 		if employee_count > 0:
-			message = "Employe is not available."
+			response = JsonResponse(data={
+				"message": "Employee is not available.",
+				"class": "bg-danger",
+				"sch_plan_list": list(sch_plan_list),
+				"is_saved": False,
+			})
+
 		else:
-			message = "Added success"
 			new_sch_plan = SchPlan(
 				sch_no = new_sch_no,
 				srv_id = selected_service_id,
@@ -707,12 +712,12 @@ def ajax_save_customer_schedule_plan(request):
 			    )
 			new_sch_plan.save() 
 
-		response = JsonResponse(data={
-			"message": message,
-			"class": "bg-success",
-			"sch_plan_list": list(sch_plan_list),
-			"is_saved": False,
-		})
+			response = JsonResponse(data={
+				"message": "Added success",
+				"class": "bg-success",
+				"sch_plan_list": list(sch_plan_list),
+				"is_saved": True,
+			})
 
 
 		'''

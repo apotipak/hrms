@@ -564,7 +564,6 @@
 	  </div>
 	</div>
 
-
   </div>
   <!-- /.content-wrapper -->
 
@@ -883,8 +882,6 @@ $(document).ready(function(){
     	$("#select_employee_modal").modal("show");
 	});
 
-
-	//amnaj
  	$("#save_security_guard_button").click( function() {
     	event.preventDefault();    	
 
@@ -1092,20 +1089,7 @@ $(document).ready(function(){
 	      		contract_list_filter_option: $('input[type=radio][name=security_guard_list_status_option]:checked').val(),
 	    	},
 	    	success: function(data) {
-			  	$(document).Toasts('create', {
-			    	class: data.class, 
-			    	title: "{% trans 'System message' %}",
-			    	subtitle: '',
-			    	autohide: true,
-			    	delay: 2000,
-			    	body: data.message + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
-			    	autoDismiss: true,
-			    	close: true,
-			    	autoremove: true,
-			  	});
-
-			  	//alert("debug");
-
+	    		//amnaj
 			  	if(data.is_saved) {
 					// Security Guard List
 					result = "";
@@ -1216,12 +1200,28 @@ $(document).ready(function(){
 						
 					reset_security_guard_list_form();		
 					$("#id_security_guard_list").html(result);				  		
-			  	} else {
 
+				  	$(document).Toasts('create', {
+				    	class: data.class, 
+				    	title: "{% trans 'System message' %}",
+				    	subtitle: '',
+				    	autohide: true,
+				    	delay: 2000,
+				    	body: data.message + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+				    	autoDismiss: true,
+				    	close: true,
+				    	autoremove: true,
+				  	});
+			  	} else {
+					$.alert({
+					    title: 'Error!',
+					    content: '<b>This employee is not available.</b>',
+					});
 			  	}
 
 	    	},
 	    	error: function(data) {
+	    		alert("aa");
 			  	$(document).Toasts('create', {
 			    	class: "bg-danger", 
 			    	title: "{% trans 'Error message' %}",
