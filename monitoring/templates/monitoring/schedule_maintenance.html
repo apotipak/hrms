@@ -2092,27 +2092,19 @@ function update_sch_plan(sch_no, srv_id) {
       	sch_no: sch_no,
     	},
     	success: function(data) {
-    		/*
-    		var today = new Date();
-			var dd = String(today.getDate()).padStart(2, '0');
-			var mm = String(today.getMonth() + 1).padStart(2, '0');
-			var yyyy = today.getFullYear();
-			today = dd + '/' + mm + '/' + yyyy;    		    		
-    		var todayDate = new Date(today);
-			*/
-
 			var todayDate = new Date();
 			var dd = String(todayDate.getDate()).padStart(2, '0');
 			var mm = String(todayDate.getMonth() + 1).padStart(2, '0');
 			var yyyy = todayDate.getFullYear();	
 			todayDate = dd + '/' + mm + '/' + yyyy;			
-			todayDate = moment(todayDate, "DD/MM/YYYY");
+			var todayDate = moment(todayDate, "DD/MM/YYYY");
+			var unlimitedDate = moment("31/12/2999", "DD/MM/YYYY");
 
-
+			var contractServiceFromDate = moment(data.sch_date_frm, "DD/MM/YYYY");
+			var contractServiceToDate = moment(data.sch_date_to, "DD/MM/YYYY");
 
     		$("#id_selected_sch_no").val(data.sch_no); 		
     		$("#id_emp_id").val(data.emp_id);
-    		//$("#id_duration_from").focus();
 			$("#id_emp_id").attr("disabled", true);
 			$("#emp_id_lookup_button").attr("disabled", true);
     		
@@ -2130,11 +2122,6 @@ function update_sch_plan(sch_no, srv_id) {
     		//$("#id_duration_from").val(data.sch_date_frm);
     		$('#id_duration_from').datepicker('setDate', data.sch_date_frm);
     		$("#chkDurationFromDisable").prop("checked", true);
-
-    		//amnaj    		
-    		var contractServiceFromDate = moment(data.sch_date_frm, "DD/MM/YYYY");
-
-    		//20/11/2020
     		if(contractServiceFromDate <= todayDate) {
 	    		$("#chkDurationFromDisable").attr("disabled", true);
 	    		$("#id_duration_from").attr("disabled", true);
@@ -2146,10 +2133,11 @@ function update_sch_plan(sch_no, srv_id) {
 
     		// Check Duration To condition
     		//alert(data.sch_date_to);
-    		if(data.sch_date_to=="31/12/2999") {
+    		if(contractServiceToDate<=unlimitedDate) {
 	    		//$('#id_duration_to').datepicker('setDate', data.sch_date_to);
 	    		$('#id_duration_to').attr("disabled", false);
 				$("#chkDurationToDisable").prop("checked", false);
+				$("#chkDurationToDisable").attr("disabled", false);
     		} else {
 	    		$('#id_duration_to').datepicker('setDate', data.sch_date_to);
 				$("#chkDurationToDisable").prop("checked", true);
