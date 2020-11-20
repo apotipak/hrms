@@ -5,7 +5,7 @@ from django.conf import settings
 from .models import DlyPlan, SchPlan
 from customer.models import CusMain, Customer, CusBill
 from contract.models import CusContract, CusService
-from employee.models import Employee
+from employee.models import Employee, EmpPhoto
 from .forms import ScheduleMaintenanceForm
 from django.http import JsonResponse
 import datetime
@@ -690,13 +690,15 @@ def ajax_save_customer_schedule_plan(request):
 				employee_fullname_th = str(sch_plan.emp_id.emp_fname_th) + "  " + str(sch_plan.emp_id.emp_lname_th)
 				employee_rank = sch_plan.emp_id.emp_rank
 
+				employee_info = EmpPhoto.objects.filter(emp_id=emp_id).get()
+				employee_photo = employee_info.image
+
 				cus_contract_info = CusContract.objects.filter(cnt_id=existed_contract_id).get()
 				existed_cus_id = cus_contract_info.cus_id
 				existed_cus_brn = cus_contract_info.cus_brn
 
 				customer_info = Customer.objects.filter(cus_id=existed_cus_id).filter(cus_brn=existed_cus_brn).get()
 				existed_cus_name_th = customer_info.cus_name_en
-				print("existed_cus_name_th = " + str(existed_cus_name_th))
 
 			except SchPlan.DoesNotExist:
 				existed_contract_id = "N/A"
@@ -707,6 +709,7 @@ def ajax_save_customer_schedule_plan(request):
 
 				message = ""
 				message += "<div class='card'>"
+				message += "<img src='data:image/png;base64," + employee_photo + "' style='width:50px;height:50px;'/>"
 				message += "  <div class='card-body text-dark'>"
 				message += "    <h4 class='text-center'>" + employee_fullname_th + "</h4>"
 				message += "    <p class='text-center'>" + employee_rank + "</p>"
@@ -728,7 +731,7 @@ def ajax_save_customer_schedule_plan(request):
 			# encoded = base64.b64encode("BinaryField as ByteArray")
 
 			response = JsonResponse(data={
-				"message": message,
+				"message": message,				
 				"class": "bg-danger",
 				"sch_plan_list": list(sch_plan_list),
 				"is_saved": False,

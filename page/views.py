@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
-from .models import Employee
+from employee.models import Employee, EmpPhoto
 from django.shortcuts import get_object_or_404
 from django.shortcuts import get_list_or_404
 from .forms import ChangePasswordForm, LanguageForm
@@ -11,6 +11,7 @@ from django.utils import translation
 from django.contrib import messages
 from django.utils.translation import ugettext as _
 from page.rules import *
+from base64 import b64encode
 
 
 @login_required(login_url='/accounts/login/')
@@ -20,11 +21,16 @@ def index(request):
     project_version = settings.PROJECT_VERSION
     today_date = settings.TODAY_DATE
 
+    employee_info = EmpPhoto.objects.filter(emp_id=request.user.username).get()    
+    employee_photo = b64encode(employee_info.image).decode("utf-8")
+
     return render(request, 'index.html', {
     	'project_name': project_name, 
     	'project_version': project_version, 
     	'db_server': db_server, 
-    	'today_date': today_date,        
+    	'today_date': today_date,
+        'employee_photo': employee_photo,
+        'test': "test",
     })
 
 
