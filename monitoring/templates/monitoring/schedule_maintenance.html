@@ -674,7 +674,7 @@ $(document).on('keypress', '#id_emp_id', function(e) {
 		    			if(data.emp_status_id=='9') {		    				
 			    			$("#id_emp_status").animate({color:'red'}, 1000);
 		    			} else {
-		    				$("#id_emp_status").animate({color:'black'}, 1000);
+		    				$("#id_emp_status").animate({color:'#495057'}, 1000);
 		    			}
 		    			$("#id_emp_join_date").val(data.emp_join_date);
 		    			$("#id_emp_term_date").val(data.emp_term_date);
@@ -2628,6 +2628,8 @@ function reset_security_guard_list_form() {
 	$('input[type=radio][name=security_guard_list_status_option]').attr("disabled", false);
 	$("#id_emp_name_th").css("background-color", '');
 	$("#id_emp_name_th").animate({color:''}, 1000);
+
+	$('#id_emp_status').css({'background-color':'', 'color':'#495057'});
 
     $('#id_duration_from').datepicker({
         format: 'dd/mm/yyyy',
