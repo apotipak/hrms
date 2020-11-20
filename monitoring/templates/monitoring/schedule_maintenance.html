@@ -531,7 +531,7 @@
 
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-secondary btn-md" data-dismiss="modal">{% trans 'Close' %}</button>
-	        <button id="save_security_guard_button" onclick="save_new_service()" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}&nbsp;&nbsp;</button>
+	        <button id="save_security_guard_button" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}&nbsp;&nbsp;</button>
 	      </div>
 	    </div>
 	  </div>
@@ -1010,21 +1010,48 @@ $(document).ready(function(){
 		duration_from = moment(duration_from, "DD/MM/YYYY");
 		today = moment(today, "DD/MM/YYYY");
 
-		if (duration_from.format("DD/MM/YYYY") <= today.format("DD/MM/YYYY")) {			
-		  	$(document).Toasts('create', {
-		    	class: "bg-danger", 
-		    	title: "{% trans 'System message' %}",
-		    	subtitle: '',
-		    	autohide: true,
-		    	delay: 2000,
-		    	body: "Duration From must be greater than today.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
-		    	autoDismiss: true,
-		    	close: true,
-		    	autoremove: true,
-		  	});
-			$("#id_duration_from").focus();
-			return false;
+
+
+		//amnaj
+		if($('#chkDurationFromDisable').prop('disabled')) {
+			//alert("disabled");
+		} else {
+			//alert("not disabled");
+			if (duration_from <= today) {
+			  	$(document).Toasts('create', {
+			    	class: "bg-danger", 
+			    	title: "{% trans 'System message' %}",
+			    	subtitle: '',
+			    	autohide: true,
+			    	delay: 2000,
+			    	body: "Duration From must be greater than today.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+			    	autoDismiss: true,
+			    	close: true,
+			    	autoremove: true,
+			  	});
+				$("#id_duration_from").focus();
+				return false;
+			}
+
 		}
+
+
+		/*
+
+    		if(contractServiceToDate<=unlimitedDate) {
+	    		$('#id_duration_to').attr("disabled", false);
+				$("#chkDurationToDisable").prop("checked", false);
+				$("#chkDurationToDisable").attr("disabled", false);
+    		} else {
+	    		$('#id_duration_to').datepicker('setDate', data.sch_date_to);
+				$("#chkDurationToDisable").prop("checked", true);
+    		}
+		*/
+
+
+
+
+
 
 
     	if ($('#id_service_active').is(":checked")) {
@@ -2135,7 +2162,6 @@ function update_sch_plan(sch_no, srv_id) {
 
 
     		// Check Duration To condition
-    		//alert(data.sch_date_to);
     		if(contractServiceToDate<=unlimitedDate) {
 	    		//$('#id_duration_to').datepicker('setDate', data.sch_date_to);
 	    		$('#id_duration_to').attr("disabled", false);
@@ -2145,12 +2171,6 @@ function update_sch_plan(sch_no, srv_id) {
 	    		$('#id_duration_to').datepicker('setDate', data.sch_date_to);
 				$("#chkDurationToDisable").prop("checked", true);
     		}
-
-			//$("#id_duration_to").attr("disabled", true);
-			//$("#chkDurationToDisable").attr("disabled", false);
-
-
-
 
     		if(data.sch_active==1) {
     			$("#id_service_active").prop("checked", true);
@@ -2169,7 +2189,6 @@ function update_sch_plan(sch_no, srv_id) {
     		$("#id_emp_join_date").val(data.emp_join_date);
     		$("#id_emp_term_date").val(data.emp_term_date);
 
-    		//amnaj3
     		$("#id_emp_status").val(data.emp_status_id + " | " + data.emp_status);
     		if(data.emp_status_id!="2")
     			$('#id_emp_status').css({'background-color':'#dc3545', 'color':'white'});
