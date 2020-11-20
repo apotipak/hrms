@@ -940,6 +940,8 @@ $(document).ready(function(){
 			return false;			
 		}
 
+
+
 		if(duration_to=="") {
 		  	$(document).Toasts('create', {
 		    	class: "bg-danger", 
@@ -947,7 +949,7 @@ $(document).ready(function(){
 		    	subtitle: '',
 		    	autohide: true,
 		    	delay: 2000,
-		    	body: "Please select Duration To.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+		    	body: "Please select Duration To1.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
 		    	autoDismiss: true,
 		    	close: true,
 		    	autoremove: true,
@@ -955,6 +957,9 @@ $(document).ready(function(){
     		$("#id_duration_to").focus();			
 			return false;			
 		}
+
+		//alert(duration_to);
+		//return false;
 
 		durationFromStatus =  $("#chkDurationFromDisable").is(":checked");
 		if(!durationFromStatus) {
@@ -975,19 +980,24 @@ $(document).ready(function(){
 
 		durationToStatus =  $("#chkDurationToDisable").is(":checked");
 		if(!durationToStatus) {
-		  	$(document).Toasts('create', {
-		    	class: "bg-danger", 
-		    	title: "{% trans 'System message' %}",
-		    	subtitle: '',
-		    	autohide: true,
-		    	delay: 2000,
-		    	body: "Please select Duration To.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
-		    	autoDismiss: true,
-		    	close: true,
-		    	autoremove: true,
-		  	});
-    		$("#id_duration_to").focus();
-			return false;				
+			if(duration_to=="") {
+			  	$(document).Toasts('create', {
+			    	class: "bg-danger", 
+			    	title: "{% trans 'System message' %}",
+			    	subtitle: '',
+			    	autohide: true,
+			    	delay: 2000,
+			    	body: "Please select Duration To.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+			    	autoDismiss: true,
+			    	close: true,
+			    	autoremove: true,
+			  	});
+	    		$("#id_duration_to").focus();
+				return false;								
+			} else {
+				duration_to = '31/12/2999';
+			}
+
 		}
 
 		// Check Duration From must be greater than today
@@ -1051,7 +1061,7 @@ $(document).ready(function(){
 	      		sat_shift: $("#id_sat_shift").val(),
 	      		sun_shift: $("#id_sun_shift").val(),
 	      		duration_from: $("#id_duration_from").val(),
-	      		duration_to: $("#id_duration_to").val(),
+	      		duration_to: duration_to,
 	    	},
 	    	success: function(data) {
 			  	$(document).Toasts('create', {
@@ -2097,14 +2107,19 @@ function update_sch_plan(sch_no, srv_id) {
     		$("#id_sch_rank").val(data.sch_rank);
     		$("#id_sch_dept").val(data.emp_type);
     		
-    		//$("#id_duration_from").val(data.sch_date_frm);    		
+    		//$("#id_duration_from").val(data.sch_date_frm);
     		$('#id_duration_from').datepicker('setDate', data.sch_date_frm);
     		$("#chkDurationFromDisable").prop("checked", true);
 
+    		if(data.sch_date_to=="31/12/2999") {
+	    		$('#id_duration_to').datepicker('setDate', data.sch_date_to);
+	    		$('#id_duration_to').attr("disabled", true);
+				$("#chkDurationToDisable").prop("checked", false);
 
-    		//$("#id_duration_to").val(data.sch_date_to);
-    		$('#id_duration_to').datepicker('setDate', data.sch_date_to);
-			$("#chkDurationToDisable").prop("checked", true);
+    		} else {
+	    		$('#id_duration_to').datepicker('setDate', data.sch_date_to);
+				$("#chkDurationToDisable").prop("checked", true);
+    		}
 
     		if(data.sch_active==1) {
     			$("#id_service_active").prop("checked", true);
