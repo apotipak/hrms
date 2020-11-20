@@ -883,6 +883,8 @@ $(document).ready(function(){
     	$("#select_employee_modal").modal("show");
 	});
 
+
+	//amnaj
  	$("#save_security_guard_button").click( function() {
     	event.preventDefault();    	
 
@@ -891,7 +893,8 @@ $(document).ready(function(){
 		selected_service_id = $("#id_selected_service_id").val();
 		duration_from =  $("#id_duration_from").val();
 		duration_to =  $("#id_duration_to").val();
-
+		contract_list_filter_option = $('input[type=radio][name=security_guard_list_status_option]:checked').val();
+		
     	if (emp_id=="") {
 		  	$(document).Toasts('create', {
 		    	class: "bg-danger", 
@@ -903,7 +906,7 @@ $(document).ready(function(){
 		    	autoDismiss: true,
 		    	close: true,
 		    	autoremove: true,
-		  	});    		
+		  	});		
     		$("#id_emp_id").focus();
     		return false;
     	}
@@ -1010,9 +1013,6 @@ $(document).ready(function(){
 		duration_from = moment(duration_from, "DD/MM/YYYY");
 		today = moment(today, "DD/MM/YYYY");
 
-
-
-		//amnaj
 		if($('#chkDurationFromDisable').prop('disabled')) {
 			//alert("disabled");
 		} else {
@@ -1089,6 +1089,7 @@ $(document).ready(function(){
 	      		sun_shift: $("#id_sun_shift").val(),
 	      		duration_from: $("#id_duration_from").val(),
 	      		duration_to: duration_to,
+	      		contract_list_filter_option: $('input[type=radio][name=security_guard_list_status_option]:checked').val(),
 	    	},
 	    	success: function(data) {
 			  	$(document).Toasts('create', {
@@ -1204,9 +1205,7 @@ $(document).ready(function(){
 					        result += "		 </td>";
 							result += "    </tr>";						
 							count++;
-						}
-
-						reset_security_guard_list_form();
+						}						
 					} else {
 						result += "<tr><td colspan='17' align='center'>There is no data available.</td></tr>";
 					}
@@ -1214,7 +1213,8 @@ $(document).ready(function(){
 					result += "  </tbody>";
 					result += "</table>";
 					result += "</font>";
-								
+						
+					reset_security_guard_list_form();		
 					$("#id_security_guard_list").html(result);				  		
 			  	} else {
 
@@ -2162,14 +2162,18 @@ function update_sch_plan(sch_no, srv_id) {
 
 
     		// Check Duration To condition
-    		if(contractServiceToDate<=unlimitedDate) {
-	    		//$('#id_duration_to').datepicker('setDate', data.sch_date_to);
+    		if(contractServiceToDate<unlimitedDate) {
 	    		$('#id_duration_to').attr("disabled", false);
+				$("#chkDurationToDisable").attr("disabled", false);
+
+				if(contractServiceToDate==unlimitedDate)					
+					$("#chkDurationToDisable").prop("checked", false);
+				else
+					$("#chkDurationToDisable").prop("checked", true);
+    		} else {
+	    		$('#id_duration_to').attr("disabled", true);
 				$("#chkDurationToDisable").prop("checked", false);
 				$("#chkDurationToDisable").attr("disabled", false);
-    		} else {
-	    		$('#id_duration_to').datepicker('setDate', data.sch_date_to);
-				$("#chkDurationToDisable").prop("checked", true);
     		}
 
     		if(data.sch_active==1) {

@@ -391,7 +391,10 @@ def ajax_get_customer_schedule_plan_list(request):
 
     	if sch_active == '1':
     		sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).filter(sch_date_to='2999-12-31').exclude(upd_flag='D').order_by('-upd_date')
-	    	for d in sch_plan:    		
+    		print("sch")
+
+	    	for d in sch_plan:	
+	    		print("Active - " + str(d.cnt_id) + "," + str(d.sch_rank))
 	    		if d.sch_active:
 	    			if d.relief:
 	    				relief = 1
@@ -402,7 +405,6 @@ def ajax_get_customer_schedule_plan_list(request):
 	    				sch_active = 1
 	    			else:
 	    				sch_active = 0
-
 
 	    			record = {
 	    				"sch_no": d.sch_no,
@@ -426,10 +428,11 @@ def ajax_get_customer_schedule_plan_list(request):
 	    				"upd_by": d.upd_by,
 	    				"upd_flag": d.upd_flag,
 	    			}
-	    			sch_plan_list.append(record)
+	    			sch_plan_list.append(record)	    			
     	elif sch_active == '2':
     		sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).exclude(upd_flag='D').exclude(sch_date_to='2999-12-31').order_by('-upd_date', 'emp_id')
 	    	for d in sch_plan:    		
+	    		print("Pending - " + str(d.cnt_id) + "," + str(d.sch_rank))
     			if d.relief:
     				relief = 1
     			else:
@@ -466,6 +469,7 @@ def ajax_get_customer_schedule_plan_list(request):
     	elif sch_active == '3':
     		sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).exclude(upd_flag='D').order_by('-upd_date', 'emp_id')
 	    	for d in sch_plan:
+	    		print("All - " + str(d.cnt_id) + "," + str(d.sch_rank))
     			if d.relief:
     				relief = 1
     			else:
@@ -633,7 +637,9 @@ def ajax_save_customer_schedule_plan(request):
 	sun_shift = request.POST.get("sun_shift")
 	duration_from = request.POST.get("duration_from")
 	duration_to = request.POST.get("duration_to")
-	
+	contract_list_filter_option = request.POST.get("contract_list_filter_option")
+	print("contract_list_filter_option = " + str(contract_list_filter_option))
+
 	sch_plan_list = []
 
 	# Case - add new employee into customer service
@@ -671,47 +677,83 @@ def ajax_save_customer_schedule_plan(request):
 
 		# amnaj
 		# RULE-1: Check if an employee is existed in another schedule		
-		try:
-			employee = SchPlan.objects.filter(emp_id=emp_id).exclude(upd_flag='D').exclude(sch_active='0').get()
-			# select * from sch_plan where emp_id=916 and sch_active=1 and upd_flag!='D'
-			print("Not available")
+		# employee = SchPlan.objects.filter(emp_id=emp_id).exclude(upd_flag='D').exclude(sch_active="")
+		# select * from sch_plan where emp_id=916 and sch_active=1 and upd_flag!='D'
+		employee_count = SchPlan.objects.filter(emp_id=emp_id).exclude(upd_flag='D').exclude(sch_active="").count()		
+		if employee_count > 0:
+			message = "Employe is not available."
+		else:
+			message = "Added success"
+			new_sch_plan = SchPlan(
+				sch_no = new_sch_no,
+				srv_id = selected_service_id,
+				cnt_id = cnt_id,
+				emp_id_id = emp_id,
+				sch_rank = emp_rank,
+				relief = relief,
+				sch_date_frm = datetime.datetime.strptime(duration_from, "%d/%m/%Y").date(),
+				sch_date_to = datetime.datetime.strptime(duration_to, "%d/%m/%Y").date(),
+				sch_shf_mon = mon_shift,
+				sch_shf_tue = tue_shift,
+				sch_shf_wed = wed_shift,
+				sch_shf_thu = thu_shift,
+				sch_shf_fri = fri_shift,
+				sch_shf_sat = sat_shift,
+				sch_shf_sun = sun_shift,
+				sch_active = sch_active,			
+				upd_date = datetime.datetime.now(),
+				upd_by = request.user.first_name,
+				upd_flag = 'A',
+			    )
+			new_sch_plan.save() 
+
+		response = JsonResponse(data={
+			"message": message,
+			"class": "bg-success",
+			"sch_plan_list": list(sch_plan_list),
+			"is_saved": False,
+		})
+
+
+		'''
 		except SchPlan.DoesNotExist:
 			print("Available")
+			# If RULE-1 and RULE-2 is passed, then save a new record
+			new_sch_plan = SchPlan(
+				sch_no = new_sch_no,
+				srv_id = selected_service_id,
+				cnt_id = cnt_id,
+				emp_id_id = emp_id,
+				sch_rank = emp_rank,
+				relief = relief,
+				sch_date_frm = datetime.datetime.strptime(duration_from, "%d/%m/%Y").date(),
+				sch_date_to = datetime.datetime.strptime(duration_to, "%d/%m/%Y").date(),
+				sch_shf_mon = mon_shift,
+				sch_shf_tue = tue_shift,
+				sch_shf_wed = wed_shift,
+				sch_shf_thu = thu_shift,
+				sch_shf_fri = fri_shift,
+				sch_shf_sat = sat_shift,
+				sch_shf_sun = sun_shift,
+				sch_active = sch_active,			
+				upd_date = datetime.datetime.now(),
+				upd_by = request.user.first_name,
+				upd_flag = 'A',
+			    )
+			new_sch_plan.save() 			
+
+			response = JsonResponse(data={
+				"message": "Added success",
+				"class": "bg-success",
+				"sch_plan_list": list(sch_plan_list),
+				"is_saved": True,
+			})
+		'''
 
 		# amnaj
 		# RULE-2: Check if select duplicated security guard	
 
 
-		# If RULE-1 and RULE-2 is passed, then save a new record
-		new_sch_plan = SchPlan(
-			sch_no = new_sch_no,
-			srv_id = selected_service_id,
-			cnt_id = cnt_id,
-			emp_id_id = emp_id,
-			sch_rank = emp_rank,
-			relief = relief,
-			sch_date_frm = datetime.datetime.strptime(duration_from, "%d/%m/%Y").date(),
-			sch_date_to = datetime.datetime.strptime(duration_to, "%d/%m/%Y").date(),
-			sch_shf_mon = mon_shift,
-			sch_shf_tue = tue_shift,
-			sch_shf_wed = wed_shift,
-			sch_shf_thu = thu_shift,
-			sch_shf_fri = fri_shift,
-			sch_shf_sat = sat_shift,
-			sch_shf_sun = sun_shift,
-			sch_active = sch_active,			
-			upd_date = datetime.datetime.now(),
-			upd_by = request.user.first_name,
-			upd_flag = 'A',
-		    )
-		#new_sch_plan.save()  
-
-		response = JsonResponse(data={
-			"message": "Saved success",
-			"class": "bg-success",
-			"sch_plan_list": list(sch_plan_list),
-			"is_saved": False,
-		})
 	else:
 		print("update existing");
 		print("selected_sch_no = " + str(selected_sch_no))
@@ -737,8 +779,21 @@ def ajax_save_customer_schedule_plan(request):
 
 			# amnaj
 			# generate new security guard list
-			sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).filter(sch_date_to='2999-12-31').exclude(upd_flag='D').order_by('-upd_date')	
-			# sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).exclude(sch_date_to='2999-12-31').exclude(upd_flag='D').order_by('emp_id')			
+			'''
+			if contract_list_filter_option=='1':
+				sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).filter(sch_date_to='2999-12-31').exclude(upd_flag='D').order_by('-upd_date')	
+			elif contract_list_filter_option=='2':				
+				sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).exclude(upd_flag='D').exclude(sch_date_to='2999-12-31').order_by('-upd_date', 'emp_id')
+			elif contract_list_filter_option=='3':
+				sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).exclude(upd_flag='D').order_by('-upd_date', 'emp_id')
+			else:
+				sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).filter(sch_date_to='2999-12-31').exclude(upd_flag='D').order_by('-upd_date')	
+			'''
+
+			# sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).filter(sch_date_to='2999-12-31').exclude(upd_flag='D').order_by('-upd_date')	
+			# sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).exclude(upd_flag='D').exclude(sch_date_to='2999-12-31').order_by('-upd_date', 'emp_id')
+			sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).exclude(upd_flag='D').order_by('-upd_date', 'emp_id')
+
 			for d in sch_plan:
 				# if d.sch_active:
 				if d.relief:
