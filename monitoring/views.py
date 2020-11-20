@@ -679,10 +679,59 @@ def ajax_save_customer_schedule_plan(request):
 		# RULE-1: Check if an employee is existed in another schedule		
 		# employee = SchPlan.objects.filter(emp_id=emp_id).exclude(upd_flag='D').exclude(sch_active="")
 		# select * from sch_plan where emp_id=916 and sch_active=1 and upd_flag!='D'
-		employee_count = SchPlan.objects.filter(emp_id=emp_id).exclude(upd_flag='D').exclude(sch_active="").count()		
-		if employee_count > 0:
+		sch_plan_count = SchPlan.objects.filter(emp_id=emp_id).exclude(upd_flag='D').exclude(sch_active="").count()		
+
+		if sch_plan_count > 0:
+
+			try:
+				sch_plan = SchPlan.objects.filter(emp_id=emp_id).exclude(upd_flag='D').exclude(sch_active="").get()
+				contract_id = sch_plan.cnt_id				
+			except SchPlan.DoesNotExist:
+				contract_id = "N/A"
+
+			try:
+				customer = Customer.objects.filter(cus_id=cus_id).filter(cus_brn=cus_brn).get()
+				cus_name_th = customer.cus_name_th
+			except Customer.DoesNotExist:
+				cus_name_th = "N/A"
+			try:				
+				employee_profile = Employee.objects.filter(emp_id=emp_id).filter(emp_type='D1').get();
+				message = ""			
+				message += "<div class='card'>"
+				message += "  <div class='card-body text-dark'>"
+				message += "    <h4 class='text-center'>" + employee_profile.emp_fname_th + "  " + employee_profile.emp_lname_th + "</h4>"
+				message += "    <p class='text-center'>" + employee_profile.emp_rank + "</p>"
+				message += "	<p class='text-center text-danger'>ตารางเวรยังมีสถานะ Active ที่หน่วยงาน</p>"
+				message += "    <ul class='list-group list-group-unbordered mb-3'>"
+				message += "      <li class='list-group-item text-center'>"
+				message += "        <b>" + str(contract_id) + "  " + str(cus_name_th) + "</b>"
+				message += "      </li>"
+				message += "    </ul>"			
+				message += "	<p class='text-center'>กรุณาตรวจสอบข้อมูลอีกครั้ง</p>"
+				message += "  </div>"
+				message += "</div>"				
+			except Employee.DoesNotExist:
+				message = ""			
+				message += "<div class='card'>"
+				message += "  <div class='card-body text-dark'>"
+				message += "    <h3 class='text-center'>Nina Mcintire</h3>"
+				message += "    <p class='text-center'>Software Engineer</p>"
+				message += "    <ul class='list-group list-group-unbordered mb-3'>"
+				message += "      <li class='list-group-item'>"
+				message += "        <b>Followers</b> <a class='float-right'>1,322</a>"
+				message += "      </li>"
+				message += "      <li class='list-group-item'>"
+				message += "        <b>Following</b> <a class='float-right'>543</a>"
+				message += "      </li>"
+				message += "      <li class='list-group-item'>"
+				message += "        <b>Friends</b> <a class='float-right'>13,287</a>"
+				message += "     </li>"
+				message += "    </ul>"			
+				message += "  </div>"
+				message += "</div>"
+
 			response = JsonResponse(data={
-				"message": "Employee is not available.",
+				"message": message,
 				"class": "bg-danger",
 				"sch_plan_list": list(sch_plan_list),
 				"is_saved": False,

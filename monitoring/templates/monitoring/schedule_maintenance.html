@@ -940,8 +940,6 @@ $(document).ready(function(){
 			return false;			
 		}
 
-
-
 		if(duration_to=="") {
 		  	$(document).Toasts('create', {
 		    	class: "bg-danger", 
@@ -1033,24 +1031,6 @@ $(document).ready(function(){
 		}
 
 
-		/*
-
-    		if(contractServiceToDate<=unlimitedDate) {
-	    		$('#id_duration_to').attr("disabled", false);
-				$("#chkDurationToDisable").prop("checked", false);
-				$("#chkDurationToDisable").attr("disabled", false);
-    		} else {
-	    		$('#id_duration_to').datepicker('setDate', data.sch_date_to);
-				$("#chkDurationToDisable").prop("checked", true);
-    		}
-		*/
-
-
-
-
-
-
-
     	if ($('#id_service_active').is(":checked")) {
 	    	service_active = 1;
     	} else {
@@ -1089,7 +1069,6 @@ $(document).ready(function(){
 	      		contract_list_filter_option: $('input[type=radio][name=security_guard_list_status_option]:checked').val(),
 	    	},
 	    	success: function(data) {
-	    		//amnaj
 			  	if(data.is_saved) {
 					// Security Guard List
 					result = "";
@@ -1213,11 +1192,16 @@ $(document).ready(function(){
 				    	autoremove: true,
 				  	});
 			  	} else {
+
 					$.alert({
 					    title: 'Error!',
 					    type: 'red',
-					    content: '<b>This employee is not available.</b>',
-					    closeIcon: true,
+					    content: data.message,
+					    theme: 'black',
+					    animation: 'zoom',
+					    animationBounce: 1.5,
+					    closeIcon: false,
+					    title: false,
 					});
 			  	}
 
