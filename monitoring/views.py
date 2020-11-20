@@ -638,6 +638,7 @@ def ajax_save_customer_schedule_plan(request):
 
 	# Case - add new employee into customer service
 	if selected_sch_no == "0":
+		print("add new");
 		print("--- debug ---")
 		print("selected_sch_no = " + str(selected_sch_no))
 		print("emp_id = " + str(emp_id))		
@@ -711,7 +712,10 @@ def ajax_save_customer_schedule_plan(request):
 			"sch_plan_list": list(sch_plan_list),
 			"is_saved": False,
 		})
-	else: 
+	else:
+		print("update existing");
+		print("selected_sch_no = " + str(selected_sch_no))
+
 		try:
 			sch_plan = SchPlan.objects.filter(sch_no=selected_sch_no).get()
 			sch_plan.sch_active = sch_active
@@ -730,8 +734,11 @@ def ajax_save_customer_schedule_plan(request):
 			sch_plan.upd_flag = 'E'
 			sch_plan.save()
 
-			# generate new security guard list		
-			sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).exclude(sch_date_to='2999-12-31').exclude(upd_flag='D').order_by('emp_id')			
+
+			# amnaj
+			# generate new security guard list
+			sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).filter(sch_date_to='2999-12-31').exclude(upd_flag='D').order_by('-upd_date')	
+			# sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).exclude(sch_date_to='2999-12-31').exclude(upd_flag='D').order_by('emp_id')			
 			for d in sch_plan:
 				# if d.sch_active:
 				if d.relief:
