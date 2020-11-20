@@ -1215,13 +1215,14 @@ $(document).ready(function(){
 			  	} else {
 					$.alert({
 					    title: 'Error!',
+					    type: 'red',
 					    content: '<b>This employee is not available.</b>',
+					    closeIcon: true,
 					});
 			  	}
 
 	    	},
 	    	error: function(data) {
-	    		alert("aa");
 			  	$(document).Toasts('create', {
 			    	class: "bg-danger", 
 			    	title: "{% trans 'Error message' %}",
