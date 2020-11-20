@@ -15,6 +15,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Max
 from django.db.models import F
 from django.db import connection
+import base64
 
 
 @login_required(login_url='/accounts/login/')
@@ -685,50 +686,46 @@ def ajax_save_customer_schedule_plan(request):
 
 			try:
 				sch_plan = SchPlan.objects.filter(emp_id=emp_id).exclude(upd_flag='D').exclude(sch_active="").get()
-				contract_id = sch_plan.cnt_id				
-			except SchPlan.DoesNotExist:
-				contract_id = "N/A"
+				existed_contract_id = sch_plan.cnt_id
+				employee_fullname_th = str(sch_plan.emp_id.emp_fname_th) + "  " + str(sch_plan.emp_id.emp_lname_th)
+				employee_rank = sch_plan.emp_id.emp_rank
 
+				cus_contract_info = CusContract.objects.filter(cnt_id=existed_contract_id).get()
+				existed_cus_id = cus_contract_info.cus_id
+				existed_cus_brn = cus_contract_info.cus_brn
+
+				customer_info = Customer.objects.filter(cus_id=existed_cus_id).filter(cus_brn=existed_cus_brn).get()
+				existed_cus_name_th = customer_info.cus_name_en
+				print("existed_cus_name_th = " + str(existed_cus_name_th))
+
+			except SchPlan.DoesNotExist:
+				existed_contract_id = "N/A"
+				employee_fullname_th = "N/A"
 			try:
 				customer = Customer.objects.filter(cus_id=cus_id).filter(cus_brn=cus_brn).get()
-				cus_name_th = customer.cus_name_th
-			except Customer.DoesNotExist:
-				cus_name_th = "N/A"
-			try:				
-				employee_profile = Employee.objects.filter(emp_id=emp_id).filter(emp_type='D1').get();
-				message = ""			
+				cus_name_th = customer.cus_name_th				
+
+				message = ""
 				message += "<div class='card'>"
 				message += "  <div class='card-body text-dark'>"
-				message += "    <h4 class='text-center'>" + employee_profile.emp_fname_th + "  " + employee_profile.emp_lname_th + "</h4>"
-				message += "    <p class='text-center'>" + employee_profile.emp_rank + "</p>"
+				message += "    <h4 class='text-center'>" + employee_fullname_th + "</h4>"
+				message += "    <p class='text-center'>" + employee_rank + "</p>"
 				message += "	<p class='text-center text-danger'>ตารางเวรยังมีสถานะ Active ที่หน่วยงาน</p>"
 				message += "    <ul class='list-group list-group-unbordered mb-3'>"
-				message += "      <li class='list-group-item text-center'>"
-				message += "        <b>" + str(contract_id) + "  " + str(cus_name_th) + "</b>"
+				message += "      <li class='list-group-item'>"
+				message += "        <b>Customer Name</b> | " + str(existed_cus_name_th)
 				message += "      </li>"
+				message += "      <li class='list-group-item'>"
+				message += "        <b>Schedule No.</b> | " + str(existed_contract_id)
+				message += "      </li>"				
 				message += "    </ul>"			
 				message += "	<p class='text-center'>กรุณาตรวจสอบข้อมูลอีกครั้ง</p>"
 				message += "  </div>"
 				message += "</div>"				
-			except Employee.DoesNotExist:
-				message = ""			
-				message += "<div class='card'>"
-				message += "  <div class='card-body text-dark'>"
-				message += "    <h3 class='text-center'>Nina Mcintire</h3>"
-				message += "    <p class='text-center'>Software Engineer</p>"
-				message += "    <ul class='list-group list-group-unbordered mb-3'>"
-				message += "      <li class='list-group-item'>"
-				message += "        <b>Followers</b> <a class='float-right'>1,322</a>"
-				message += "      </li>"
-				message += "      <li class='list-group-item'>"
-				message += "        <b>Following</b> <a class='float-right'>543</a>"
-				message += "      </li>"
-				message += "      <li class='list-group-item'>"
-				message += "        <b>Friends</b> <a class='float-right'>13,287</a>"
-				message += "     </li>"
-				message += "    </ul>"			
-				message += "  </div>"
-				message += "</div>"
+			except Customer.DoesNotExist:				
+				message = "Error! Please contact IT."
+
+			# encoded = base64.b64encode("BinaryField as ByteArray")
 
 			response = JsonResponse(data={
 				"message": message,

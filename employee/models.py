@@ -78,3 +78,16 @@ class Employee(models.Model):
     class Meta:
         managed = False
         db_table = 'EMPLOYEE'
+
+class EmpPhoto(models.Model):
+    emp_id = models.DecimalField(primary_key=True, max_digits=7, decimal_places=0)
+    image_title = models.CharField(max_length=100, blank=True, null=True)
+    image_path = models.CharField(max_length=100, blank=True, null=True)
+    image = models.BinaryField(blank=True, null=True)
+    upd_date = models.DateTimeField(blank=True, null=True)
+    upd_by = models.CharField(max_length=10, blank=True, null=True)
+    upd_flag = models.CharField(max_length=1, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'EMP_PHOTO'
