@@ -2171,8 +2171,10 @@ function update_sch_plan(sch_no, srv_id) {
 
     		//amnaj3
     		$("#id_emp_status").val(data.emp_status_id + " | " + data.emp_status);
-    		if(data.emp_status_id!=2)
+    		if(data.emp_status_id!="2")
     			$('#id_emp_status').css({'background-color':'#dc3545', 'color':'white'});
+    		else
+    			$('#id_emp_status').css({'background-color':'', 'color':'#495057'});
 
     		$("#id_mon_shift").val(data.sch_shf_mon);
     		$("#id_tue_shift").val(data.sch_shf_tue);
