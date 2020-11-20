@@ -2091,7 +2091,25 @@ function update_sch_plan(sch_no, srv_id) {
       	cus_vol: cus_vol,
       	sch_no: sch_no,
     	},
-    	success: function(data) {     		
+    	success: function(data) {
+    		/*
+    		var today = new Date();
+			var dd = String(today.getDate()).padStart(2, '0');
+			var mm = String(today.getMonth() + 1).padStart(2, '0');
+			var yyyy = today.getFullYear();
+			today = dd + '/' + mm + '/' + yyyy;    		    		
+    		var todayDate = new Date(today);
+			*/
+
+			var todayDate = new Date();
+			var dd = String(todayDate.getDate()).padStart(2, '0');
+			var mm = String(todayDate.getMonth() + 1).padStart(2, '0');
+			var yyyy = todayDate.getFullYear();	
+			todayDate = dd + '/' + mm + '/' + yyyy;			
+			todayDate = moment(todayDate, "DD/MM/YYYY");
+
+
+
     		$("#id_selected_sch_no").val(data.sch_no); 		
     		$("#id_emp_id").val(data.emp_id);
     		//$("#id_duration_from").focus();
@@ -2107,19 +2125,41 @@ function update_sch_plan(sch_no, srv_id) {
     		$("#id_sch_rank").val(data.sch_rank);
     		$("#id_sch_dept").val(data.emp_type);
     		
+
+    		// Check Duration From's condition
     		//$("#id_duration_from").val(data.sch_date_frm);
     		$('#id_duration_from').datepicker('setDate', data.sch_date_frm);
     		$("#chkDurationFromDisable").prop("checked", true);
 
-    		if(data.sch_date_to=="31/12/2999") {
-	    		$('#id_duration_to').datepicker('setDate', data.sch_date_to);
-	    		$('#id_duration_to').attr("disabled", true);
-				$("#chkDurationToDisable").prop("checked", false);
+    		//amnaj    		
+    		var contractServiceFromDate = moment(data.sch_date_frm, "DD/MM/YYYY");
 
+    		//20/11/2020
+    		if(contractServiceFromDate <= todayDate) {
+	    		$("#chkDurationFromDisable").attr("disabled", true);
+	    		$("#id_duration_from").attr("disabled", true);
+    		} else {
+	    		$("#chkDurationFromDisable").attr("disabled", false);
+	    		$("#id_duration_from").attr("disabled", false);
+    		}
+
+
+    		// Check Duration To condition
+    		//alert(data.sch_date_to);
+    		if(data.sch_date_to=="31/12/2999") {
+	    		//$('#id_duration_to').datepicker('setDate', data.sch_date_to);
+	    		$('#id_duration_to').attr("disabled", false);
+				$("#chkDurationToDisable").prop("checked", false);
     		} else {
 	    		$('#id_duration_to').datepicker('setDate', data.sch_date_to);
 				$("#chkDurationToDisable").prop("checked", true);
     		}
+
+			//$("#id_duration_to").attr("disabled", true);
+			//$("#chkDurationToDisable").attr("disabled", false);
+
+
+
 
     		if(data.sch_active==1) {
     			$("#id_service_active").prop("checked", true);
@@ -2146,26 +2186,6 @@ function update_sch_plan(sch_no, srv_id) {
     		$("#id_fri_shift").val(data.sch_shf_fri);
     		$("#id_sat_shift").val(data.sch_shf_sat);
     		$("#id_sun_shift").val(data.sch_shf_sun);
-
-    		var today = new Date();
-			var dd = String(today.getDate()).padStart(2, '0');
-			var mm = String(today.getMonth() + 1).padStart(2, '0');
-			var yyyy = today.getFullYear();
-			today = dd + '/' + mm + '/' + yyyy;    		
-    		
-    		var todayDate = new Date(today);
-    		var contractServiceFromDate = new Date(data.sch_date_frm);
-
-    		if(todayDate < contractServiceFromDate) {
-	    		$("#chkDurationFromDisable").attr("disabled", true);
-	    		$("#id_duration_from").attr("disabled", true);
-    		} else {
-	    		$("#chkDurationFromDisable").attr("disabled", false);
-	    		$("#id_duration_from").attr("disabled", false);
-    		}
-
-			$("#id_duration_to").attr("disabled", false);
-			$("#chkDurationToDisable").attr("disabled", false);
 			
     		$("#save_security_guard_button").attr("disabled", false);
     		$("#cancel_security_guard_button").attr("disabled", false); 
