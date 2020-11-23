@@ -1120,3 +1120,16 @@ def ajax_get_employee(request):
 
 	response.status_code = 200
 	return response
+
+
+@login_required(login_url='/accounts/login/')
+@permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
+def DailyAttendance(request):
+	page_title = settings.PROJECT_NAME
+	db_server = settings.DATABASES['default']['HOST']
+	project_name = settings.PROJECT_NAME
+	project_version = settings.PROJECT_VERSION
+	today_date = settings.TODAY_DATE	
+
+
+

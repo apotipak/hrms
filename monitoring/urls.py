@@ -4,12 +4,15 @@ from django.conf.urls import url
 
 
 urlpatterns = [    
-    path('', views.ScheduleMaintenance, name='schedule-maintenance'),
+    path('', views.ScheduleMaintenance, name='daily-monitoring'),
+    path('schedule-maintenance/', views.ScheduleMaintenance, name='schedule-maintenance'),
     url(r'^ajax/get_customer/$', views.ajax_get_customer, name='ajax_get_customer'),
     url(r'^ajax/get_customer_schdule_plan_list/$', views.ajax_get_customer_schedule_plan_list, name='ajax_get_customer_schedule_plan_list'),
     url(r'^ajax/get_customer_schdule_plan/$', views.ajax_get_customer_schedule_plan, name='ajax_get_customer_schedule_plan'),
     url(r'^ajax/save_customer_schdule_plan/$', views.ajax_save_customer_schedule_plan, name='ajax_save_customer_schedule_plan'),
-    
     url(r'^ajax/get_employee_list/$', views.ajax_get_employee_list, name='ajax_get_employee_list'),
     url(r'^ajax/get_employee/$', views.ajax_get_employee, name='ajax_get_employee'),
+
+    path('daily-attendance', views.DailyAttendance, name='daily-attendance'),
+
 ]
