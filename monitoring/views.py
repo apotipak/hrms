@@ -688,20 +688,22 @@ def ajax_save_customer_schedule_plan(request):
 		if sch_plan_count > 0:
 
 			try:
-				sch_plan = SchPlan.objects.filter(emp_id=emp_id).exclude(upd_flag='D').exclude(sch_active="").get()
+				#sch_plan = SchPlan.objects.filter(emp_id=emp_id).exclude(upd_flag='D').exclude(sch_active="").get()
+				sch_plan = SchPlan.objects.filter(emp_id=emp_id).exclude(upd_flag='D').filter(sch_active__in=[1]).get()
+
 				existed_contract_id = sch_plan.cnt_id
 				employee_fullname_th = str(sch_plan.emp_id.emp_fname_th) + "  " + str(sch_plan.emp_id.emp_lname_th)
 				employee_rank = sch_plan.emp_id.emp_rank
 
 				employee_info = EmpPhoto.objects.filter(emp_id=emp_id).get()
-				employee_photo = employee_info.image
+				employee_photo = b64encode(employee_info.image).decode("utf-8")
 
 				cus_contract_info = CusContract.objects.filter(cnt_id=existed_contract_id).get()
 				existed_cus_id = cus_contract_info.cus_id
 				existed_cus_brn = cus_contract_info.cus_brn
 
 				customer_info = Customer.objects.filter(cus_id=existed_cus_id).filter(cus_brn=existed_cus_brn).get()
-				existed_cus_name_th = customer_info.cus_name_en
+				existed_cus_name_th = customer_info.cus_name_th
 
 			except SchPlan.DoesNotExist:
 				existed_contract_id = "N/A"
@@ -711,21 +713,16 @@ def ajax_save_customer_schedule_plan(request):
 				cus_name_th = customer.cus_name_th				
 
 				message = ""
-				message += "<div class='card'>"
-				message += "<img src='data:image/png;base64," + employee_photo + "' style='width:50px;height:50px;'/>"
-				message += "  <div class='card-body text-dark'>"
-				message += "    <h4 class='text-center'>" + employee_fullname_th + "</h4>"
-				message += "    <p class='text-center'>" + employee_rank + "</p>"
-				message += "	<p class='text-center text-danger'>ตารางเวรยังมีสถานะ Active ที่หน่วยงาน</p>"
-				message += "    <ul class='list-group list-group-unbordered mb-3'>"
+				message += "<div class='card'>"				
+				message += "  <div class='card-body text-dark text-center'>"
+				message += "	<img src='data:image/png;base64," + employee_photo + "' style='width:120px;'/><br><br>"
+				message += "    <h5 class='text-center'>" + emp_id + "&nbsp;-&nbsp;" + employee_fullname_th + "(" + employee_rank + ")" + "</h5>"
+				message += "	<p class='small text-center text-danger'>ไม่สามารถลงตารางเวรใหม่ได้ เนื่องจากมีสถานะ Active ที่หน่วยงาน</p>"
+				message += "    <ul class='list-group list-group-unbordered mb-3'>"				
 				message += "      <li class='list-group-item'>"
-				message += "        <b>Customer Name</b> | " + str(existed_cus_name_th)
+				message += "        <b>" + str(existed_contract_id) + "</b>&nbsp;&nbsp;&nbsp;&nbsp;" + str(existed_cus_name_th)
 				message += "      </li>"
-				message += "      <li class='list-group-item'>"
-				message += "        <b>Schedule No.</b> | " + str(existed_contract_id)
-				message += "      </li>"				
 				message += "    </ul>"			
-				message += "	<p class='text-center'>กรุณาตรวจสอบข้อมูลอีกครั้ง</p>"
 				message += "  </div>"
 				message += "</div>"				
 			except Customer.DoesNotExist:				
