@@ -30,7 +30,6 @@ def index(request):
     	'db_server': db_server, 
     	'today_date': today_date,
         'employee_photo': employee_photo,
-        'test': "test",
     })
 
 
@@ -68,6 +67,9 @@ def userpassword(request):
     project_version = settings.PROJECT_VERSION
     today_date = getDateFormatDisplay(user_language)   
 
+    employee_info = EmpPhoto.objects.filter(emp_id=request.user.username).get()    
+    employee_photo = b64encode(employee_info.image).decode("utf-8")
+
     form = ChangePasswordForm(request.POST, user=request.user)
     
     if request.method == "POST":
@@ -87,6 +89,7 @@ def userpassword(request):
         'project_version': project_version, 
         'db_server': db_server, 
         'today_date': today_date,
+        'employee_photo': employee_photo,
     })
 
 

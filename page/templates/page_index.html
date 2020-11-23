@@ -36,7 +36,10 @@
         <li class="nav-item dropdown">          
           <a class="nav-link pt-2 m-0" data-toggle="dropdown" href="#">
             <!--<i class="fas fa-user-alt text-secondary mr-2"></i>-->
-            <img class="img-circle" src="data:image/gif;base64,{{ employee_photo }}" height="35px" width="35px;">&nbsp;&nbsp;
+
+            <div class="side-crop">
+            <img class="img-circle" src="data:image/gif;base64,{{ employee_photo }}" style="height:35px;width:35px;" >&nbsp;&nbsp;
+
               {% if user.is_authenticated %}
                   {% if user.is_superuser %}
                       <span class="text-primary"><b>Superadmin</b></span>
@@ -44,7 +47,11 @@
                       <span class="text-primary"><b>{{ user.get_short_name }}</b></span>
                   {% endif %}
               {% endif %}
-              &nbsp;&nbsp;<i class="fas fa-caret-down fa-xs"></i>              
+              &nbsp;&nbsp;<i class="fas fa-caret-down fa-xs"></i>             
+
+            </div>
+
+ 
           </a>
 
           <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">            

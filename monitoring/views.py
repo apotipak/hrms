@@ -15,7 +15,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Max
 from django.db.models import F
 from django.db import connection
-import base64
+from base64 import b64encode
 
 
 @login_required(login_url='/accounts/login/')
@@ -31,6 +31,9 @@ def ScheduleMaintenance(request):
 	response_data = {}
 	modified_records = []
 
+	employee_info = EmpPhoto.objects.filter(emp_id=request.user.username).get()    
+	employee_photo = b64encode(employee_info.image).decode("utf-8")
+
 	if request.method == "POST":
 		print("POST: ScheduleMaintenance()")
 		if form.is_valid():          
@@ -43,7 +46,7 @@ def ScheduleMaintenance(request):
 		print("GET: ScheduleMaintenance()")
 		form = ScheduleMaintenanceForm()
 
-	return render(request, template_name, {'page_title': page_title, 'project_name': project_name, 'project_version': project_version, 'db_server': db_server, 'today_date': today_date, 'form': form,})
+	return render(request, template_name, {'page_title': page_title, 'project_name': project_name, 'project_version': project_version, 'db_server': db_server, 'today_date': today_date, 'form': form, 'employee_photo': employee_photo})
 
 
 @login_required(login_url='/accounts/login/')
