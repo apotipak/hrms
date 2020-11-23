@@ -1171,8 +1171,11 @@ def DailyGuardPerformance(request):
 	response_data = {}
 	modified_records = []
 
-	employee_info = EmpPhoto.objects.filter(emp_id=request.user.username).get()    
-	employee_photo = b64encode(employee_info.image).decode("utf-8")
+	if request.user.is_superuser:
+	    employee_photo = ""
+	else:
+	    employee_info = EmpPhoto.objects.filter(emp_id=request.user.username).get()    
+	    employee_photo = b64encode(employee_info.image).decode("utf-8")        
 
 	if request.method == "POST":
 		if form.is_valid():          
