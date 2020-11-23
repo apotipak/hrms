@@ -1,0 +1,72 @@
+{% extends "page_generic.html" %}
+{% load i18n %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %}{{ page_title}} - Generate Daily Attend{% endblock %}
+{% load static %}
+
+{% block content %}
+ 	<!-- Content Wrapper. Contains page content -->
+	<div class="content-wrapper">
+	
+		<div class="content-header">
+			<div class="col-6 offset-3">
+
+			</div>
+		</div>
+
+    	<!-- Main content -->
+    	<section class="content col-6 offset-3">
+
+			<div class="card card-outline card-success">
+			  <div class="card-header">
+			    <h3 class="card-title lead"><i class="fas fa-cog"></i>&nbsp;&nbsp;Generate Daily Attend</h3>
+			    <div class="card-tools">
+			 		<button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i></button>
+			      	<button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+			      	<!--<span class="badge badge-primary">Label</span>-->
+			    </div>
+			    <!-- /.card-tools -->
+
+			  </div>
+			  <!-- /.card-header -->
+			  <div class="card-body">
+<form>
+  <div class="form-row align-items-center">
+    <div class="col-auto">
+      <label for="inlineFormInput">Date</label>
+      <input type="text" class="form-control mb-2" id="inlineFormInput" placeholder="Jane Doe">
+    </div>
+    <div class="col-auto">
+      <button type="submit" class="btn btn-primary mb-2">OK</button>
+    </div>
+  </div>
+</form>
+
+			  </div>
+			  <!-- /.card-body -->
+			  <div class="card-footer">
+			    ...
+			  </div>
+			  <!-- /.card-footer -->
+
+			<!--
+			<div class="overlay">
+			<i class="fas fa-2x fa-sync-alt fa-spin"></i>
+			</div>
+			-->
+
+			</div>
+			<!-- /.card -->
+
+    	</section>
+	</div>
+{% endblock %}
+
+
+{% block javascript %}
+<script>	
+	//
+</script>
+{% endblock %}
+		

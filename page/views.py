@@ -21,8 +21,11 @@ def index(request):
     project_version = settings.PROJECT_VERSION
     today_date = settings.TODAY_DATE
 
-    employee_info = EmpPhoto.objects.filter(emp_id=request.user.username).get()    
-    employee_photo = b64encode(employee_info.image).decode("utf-8")
+    if request.user.is_superuser:
+        employee_photo = ""
+    else:
+        employee_info = EmpPhoto.objects.filter(emp_id=request.user.username).get()    
+        employee_photo = b64encode(employee_info.image).decode("utf-8")        
 
     return render(request, 'index.html', {
     	'project_name': project_name, 
@@ -67,8 +70,11 @@ def userpassword(request):
     project_version = settings.PROJECT_VERSION
     today_date = getDateFormatDisplay(user_language)   
 
-    employee_info = EmpPhoto.objects.filter(emp_id=request.user.username).get()    
-    employee_photo = b64encode(employee_info.image).decode("utf-8")
+    if request.user.is_superuser:
+        employee_photo = ""
+    else:
+        employee_info = EmpPhoto.objects.filter(emp_id=request.user.username).get()    
+        employee_photo = b64encode(employee_info.image).decode("utf-8")        
 
     form = ChangePasswordForm(request.POST, user=request.user)
     

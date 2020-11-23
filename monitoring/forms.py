@@ -19,26 +19,23 @@ class ScheduleMaintenanceForm(forms.Form):
         self.fields['cus_vol'].widget.attrs = {'class': 'form-control form-control-md col-2', 'placeholder': _('Customer Volume')}        
         self.fields['cus_vol'].error_messages = {'required': _('Please enter data'), 'max_value': _('Incorrect code')}
 
-        '''
-        self.fields['cus_id'].initial = "1324"
-        self.fields['cus_brn'].initial = "000"
-        self.fields['cus_vol'].initial = "001"
-        '''
-
-        '''
-        self.fields['cus_id'].initial = "1544"
-        self.fields['cus_brn'].initial = "000"
-        self.fields['cus_vol'].initial = "001"        
-        '''
-        
-        '''
-        self.fields['cus_id'].initial = "1538"
-        self.fields['cus_brn'].initial = "000"
-        self.fields['cus_vol'].initial = "001"        
-        '''
-
         self.fields['cus_id'].initial = "1008"
         self.fields['cus_brn'].initial = "000"
         self.fields['cus_vol'].initial = "001"        
 
 
+class GenerateDailyAttendForm(forms.Form):
+    date = forms.IntegerField()
+  
+    def __init__(self, *args, **kwargs):        
+        super(GenerateDailyAttendForm, self).__init__(*args, **kwargs)
+        self.fields['cus_id'].widget.attrs = {'class': 'form-control form-control-md col-2', 'placeholder': _('Customer ID')}        
+        self.fields['cus_id'].error_messages = {'required': _('Please enter data'), 'max_value': _('Incorrect code')}
+        self.fields['cus_brn'].widget.attrs = {'class': 'form-control form-control-md col-2', 'placeholder': _('Customer Branch')}        
+        self.fields['cus_brn'].error_messages = {'required': _('Please enter data'), 'max_value': _('Incorrect code')}
+        self.fields['cus_vol'].widget.attrs = {'class': 'form-control form-control-md col-2', 'placeholder': _('Customer Volume')}        
+        self.fields['cus_vol'].error_messages = {'required': _('Please enter data'), 'max_value': _('Incorrect code')}
+
+        self.fields['cus_id'].initial = "1008"
+        self.fields['cus_brn'].initial = "000"
+        self.fields['cus_vol'].initial = "001"   

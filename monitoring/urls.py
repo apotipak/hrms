@@ -13,6 +13,9 @@ urlpatterns = [
     url(r'^ajax/get_employee_list/$', views.ajax_get_employee_list, name='ajax_get_employee_list'),
     url(r'^ajax/get_employee/$', views.ajax_get_employee, name='ajax_get_employee'),
 
-    path('daily-attendance', views.DailyAttendance, name='daily-attendance'),
+    path('daily-attendance/', views.DailyAttendance, name='daily-attendance'),
 
+    path('daily-performance/', views.DailyGuardPerformance, name='daily-guard-performance'),
+
+	path('generate-daily-attend/', views.GenerateDailyAttend, name='generate-daily-attend'),
 ]
