@@ -686,7 +686,6 @@ def ajax_save_customer_schedule_plan(request):
 		sch_plan_count = SchPlan.objects.filter(emp_id=emp_id).exclude(upd_flag='D').exclude(sch_active="").count()		
 
 		if sch_plan_count > 0:
-
 			try:
 				#sch_plan = SchPlan.objects.filter(emp_id=emp_id).exclude(upd_flag='D').exclude(sch_active="").get()
 				sch_plan = SchPlan.objects.filter(emp_id=emp_id).exclude(upd_flag='D').filter(sch_active__in=[1]).get()
@@ -695,9 +694,6 @@ def ajax_save_customer_schedule_plan(request):
 				employee_fullname_th = str(sch_plan.emp_id.emp_fname_th) + "  " + str(sch_plan.emp_id.emp_lname_th)
 				employee_rank = sch_plan.emp_id.emp_rank
 
-				employee_info = EmpPhoto.objects.filter(emp_id=emp_id).get()
-				employee_photo = b64encode(employee_info.image).decode("utf-8")
-
 				cus_contract_info = CusContract.objects.filter(cnt_id=existed_contract_id).get()
 				existed_cus_id = cus_contract_info.cus_id
 				existed_cus_brn = cus_contract_info.cus_brn
@@ -705,9 +701,16 @@ def ajax_save_customer_schedule_plan(request):
 				customer_info = Customer.objects.filter(cus_id=existed_cus_id).filter(cus_brn=existed_cus_brn).get()
 				existed_cus_name_th = customer_info.cus_name_th
 
+				employee_info = EmpPhoto.objects.filter(emp_id=emp_id).get()
+				employee_photo = b64encode(employee_info.image).decode("utf-8")
+
 			except SchPlan.DoesNotExist:
 				existed_contract_id = "N/A"
 				employee_fullname_th = "N/A"
+				existed_cus_name_th = "N/A"
+				employee_rank = "N/A"
+				employee_photo = "N/A"
+
 			try:
 				customer = Customer.objects.filter(cus_id=cus_id).filter(cus_brn=cus_brn).get()
 				cus_name_th = customer.cus_name_th				
