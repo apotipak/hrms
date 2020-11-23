@@ -1222,3 +1222,14 @@ def GenerateDailyAttend(request):
 	return render(request, template_name, {'page_title': page_title, 'project_name': project_name, 'project_version': project_version, 'db_server': db_server, 'today_date': today_date, 'form': form, 'employee_photo': employee_photo})
 
 
+@permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
+@login_required(login_url='/accounts/login/')
+def ajax_sp_generate_daily_attend(request):
+
+	print("***********************************")
+	print("FUNCTION: ajax_sp_generate_daily_attend()")
+	print("***********************************")
+
+	date = request.GET.get('date')
+
+	print("debug: date = " + str(date))

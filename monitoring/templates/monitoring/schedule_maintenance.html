@@ -1258,8 +1258,8 @@ $(document).ready(function(){
 		$("#id_emp_name_th").css("background-color", '');
 		$("#id_emp_name_th").animate({color:''}, 1000);		
 
-		$('#id_duration_from').datepicker({format: 'dd/mm/yyyy',altField: '#thealtdate',altFormat: 'dd/mm/yyyy'}).datepicker("setDate", new Date());
-    	$('#id_duration_to').datepicker({format: 'dd/mm/yyyy',altField: '#thealtdate',altFormat: 'dd/mm/yyyy'}).datepicker("setDate", new Date());
+		$('#id_duration_from').datepicker({format: 'dd/mm/yyyy',altField: '#thealtdate',altFormat: 'dd/mm/yyyy',autoclose: true}).datepicker("setDate", new Date());
+    	$('#id_duration_to').datepicker({format: 'dd/mm/yyyy',altField: '#thealtdate',altFormat: 'dd/mm/yyyy',autoclose: true}).datepicker("setDate", new Date());
 
     	$("#id_cus_id").focus();
     	$("#id_cus_id").select();
@@ -2647,13 +2647,15 @@ function reset_security_guard_list_form() {
     $('#id_duration_from').datepicker({
         format: 'dd/mm/yyyy',
         altField: '#thealtdate',
-        altFormat: 'dd/mm/yyyy'
+        altFormat: 'dd/mm/yyyy',
+        autoclose: true
     }).datepicker("setDate", new Date());
 
     $('#id_duration_to').datepicker({
         format: 'dd/mm/yyyy',
         altField: '#thealtdate',
-        altFormat: 'dd/mm/yyyy'
+        altFormat: 'dd/mm/yyyy',
+        autoclose: true
     }).datepicker("setDate", new Date());
 
 }
@@ -2662,13 +2664,15 @@ $(function(){
     $('#id_duration_from').datepicker({
         format: 'dd/mm/yyyy',
         altField: '#thealtdate',
-        altFormat: 'dd/mm/yyyy'
+        altFormat: 'dd/mm/yyyy',
+        autoclose: true
     }).datepicker("setDate", new Date());
 
     $('#id_duration_to').datepicker({
         format: 'dd/mm/yyyy',
         altField: '#thealtdate',
-        altFormat: 'dd/mm/yyyy'
+        altFormat: 'dd/mm/yyyy',
+        autoclose: true
     }).datepicker("setDate", new Date());
 
 	/*

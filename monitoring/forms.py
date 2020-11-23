@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.forms.widgets import HiddenInput
 from django.utils.translation import gettext_lazy as _
 from django.core.exceptions import ValidationError
-
+from datetime import date
 
 class ScheduleMaintenanceForm(forms.Form):
     cus_id = forms.IntegerField()
@@ -23,10 +23,14 @@ class ScheduleMaintenanceForm(forms.Form):
         self.fields['cus_brn'].initial = "000"
         self.fields['cus_vol'].initial = "001"        
 
+def present_or_future_date(value):
+    if value < datetime.date.today():
+        raise forms.ValidationError("The date cannot be in the past!")
+    return value
 
-class GenerateDailyAttendForm(forms.Form):
-    date = forms.IntegerField()
-  
+class GenerateDailyAttendForm(forms.Form):    
+    date = forms.DateField(validators=[present_or_future_date])
+
     def __init__(self, *args, **kwargs):        
         super(GenerateDailyAttendForm, self).__init__(*args, **kwargs)
         self.fields['cus_id'].widget.attrs = {'class': 'form-control form-control-md col-2', 'placeholder': _('Customer ID')}        
@@ -39,3 +43,9 @@ class GenerateDailyAttendForm(forms.Form):
         self.fields['cus_id'].initial = "1008"
         self.fields['cus_brn'].initial = "000"
         self.fields['cus_vol'].initial = "001"   
+
+    def clean_date(self):
+        date = self.cleaned_data['date']
+        if date < datetime.date.today():
+            raise forms.ValidationError("The date cannot be in the past!")
+        return date

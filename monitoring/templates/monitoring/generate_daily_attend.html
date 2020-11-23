@@ -31,22 +31,25 @@
 			  </div>
 			  <!-- /.card-header -->
 			  <div class="card-body">
-<form>
-  <div class="form-row align-items-center">
-    <div class="col-auto">
-      <label for="inlineFormInput">Date</label>
-      <input type="text" class="form-control mb-2" id="inlineFormInput" placeholder="Jane Doe">
-    </div>
-    <div class="col-auto">
-      <button type="submit" class="btn btn-primary mb-2">OK</button>
-    </div>
-  </div>
-</form>
+
+				<form>
+				{% csrf_token %}
+				  <div class="form-row align-items-center">
+				    <div class="col-auto form-inline">
+				      <label for="inlineFormInput">Date</label>&nbsp;&nbsp;
+				      <input type="text" class="form-control mb-2" id="id_generated_date" placeholder="dd/mm/yyyy">
+				    </div>
+				    <div class="col-auto">
+				      <button type="button" id="generated_date_ok_button" class="btn btn-primary mb-2">&nbsp;&nbsp;OK&nbsp;&nbsp;</button>&nbsp;
+				      <button type="reset" class="btn btn-secondary mb-2">Cancel</button>
+				    </div>
+				  </div>
+				</form>
 
 			  </div>
 			  <!-- /.card-body -->
 			  <div class="card-footer">
-			    ...
+			    
 			  </div>
 			  <!-- /.card-footer -->
 
@@ -66,7 +69,15 @@
 
 {% block javascript %}
 <script>	
-	//
+
+$('#id_generated_date').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true}).datepicker("setDate", new Date());
+$("#generated_date_ok_button").click( function() {
+	event.preventDefault();    	
+	generated_date = $("#id_generated_date").val();
+
+	alert(generated_date);
+});
+
 </script>
 {% endblock %}
 		
