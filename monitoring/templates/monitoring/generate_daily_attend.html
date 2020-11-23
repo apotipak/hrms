@@ -18,7 +18,7 @@
     	<!-- Main content -->
     	<section class="content col-6 offset-3">
 
-			<div class="card card-outline card-success">
+			<div class="card card-outline card-success" id="generate_date_card">
 			  <div class="card-header">
 			    <h3 class="card-title lead"><i class="fas fa-cog"></i>&nbsp;&nbsp;Generate Daily Attend</h3>
 			    <div class="card-tools">
@@ -49,16 +49,15 @@
 			  </div>
 			  <!-- /.card-body -->
 			  <div class="card-footer">
-			    
+			  	<div id="generate_status">...</div>
 			  </div>
 			  <!-- /.card-footer -->
 
-			<!--
-			<div class="overlay">
-			<i class="fas fa-2x fa-sync-alt fa-spin"></i>
-			</div>
-			-->
-
+			    <!--
+				<div id="test" class="overlay">
+					<i class="fas fa-2x fa-sync-alt fa-spin"></i>
+				</div>
+				-->
 			</div>
 			<!-- /.card -->
 
@@ -68,14 +67,45 @@
 
 
 {% block javascript %}
-<script>	
+<script>
+$(document).ready(function(){	
+	$('#generate_date_card').removeClass('overlay');
 
-$('#id_generated_date').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true}).datepicker("setDate", new Date());
+	$('#id_generated_date').focus();
+	$('#id_generated_date').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true}).datepicker("setDate", new Date());
+});
+
 $("#generated_date_ok_button").click( function() {
 	event.preventDefault();    	
 	generated_date = $("#id_generated_date").val();
+	//alert(generated_date);
 
-	alert(generated_date);
+
+$('body').removeClass('preload'); 
+
+	$.ajax({
+    	url : "/monitoring/ajax/sp_generate_daily_attend/",
+    	type : "POST",
+    	data : {          
+      		csrfmiddlewaretoken: '{{ csrf_token }}',
+      		generated_date: generated_date,
+    	},
+		beforeSend: function () {
+			//$('#generate_date_card').addClass('overlay');
+		},
+    	success: function(data) {
+    		var count = data.com_type.length;
+    		var result = "";
+
+    		for(var i=0; i<count; i++) {
+				result += "<p>" + data.com_type[i]; + "</p>";
+    		}
+
+    		$("#generate_status").html(result);
+    		$('#generate_date_card').removeClass('overlay');
+    	},
+    });
+
 });
 
 </script>

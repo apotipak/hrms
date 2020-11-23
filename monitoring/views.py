@@ -1226,10 +1226,32 @@ def GenerateDailyAttend(request):
 @login_required(login_url='/accounts/login/')
 def ajax_sp_generate_daily_attend(request):
 
-	print("***********************************")
+	print("******************************************")
 	print("FUNCTION: ajax_sp_generate_daily_attend()")
-	print("***********************************")
+	print("******************************************")
 
-	date = request.GET.get('date')
+	generated_date = request.POST.get('generated_date')
 
-	print("debug: date = " + str(date))
+	cursor = connection.cursor()
+
+	com_id = 2
+	# cursor.execute("{call dbo.select_com_type(" +com_id + ")}")
+	cursor.execute("exec dbo.select_com_type %s", [com_id])	
+
+	comtype = cursor.fetchall()
+	result_list = []
+
+	print("debug: generated_date = " + str(generated_date))
+
+	for row in comtype:
+		p = row[0]
+		result_list.append(p)
+
+	response = JsonResponse(data={
+		"success": True,
+		"is_found": True,
+		"class": "bg-success",
+		"com_type": result_list,
+	    })
+	response.status_code = 200
+	return response
