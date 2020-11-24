@@ -20,7 +20,7 @@
 
 			<div class="card card-outline card-success" id="generate_date_card">
 			  <div class="card-header">
-			    <h3 class="card-title lead"><i class="fas fa-tasks"></i>&nbsp;&nbsp;Daily Attendance</h3>
+			    <h3 class="card-title"><i class="fas fa-tasks"></i>&nbsp;&nbsp;<b>Daily Attendance</b></h3>
 			    <div class="card-tools">
 			 		<button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i></button>
 			      	<button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
@@ -148,13 +148,16 @@
 			// Search by Employee ID
 			$("#id_emp_id").focus();
 			$("#id_emp_id").attr("readonly", false);
-
 			$("#id_cus_id").attr("readonly", true);
 			$("#id_cus_brn").attr("readonly", true);
 			$("#id_cus_vol").attr("readonly", true);
 		}
 	});
 
+
+	// AJAX
+
+	
 </script>
 {% endblock %}
 		
