@@ -49,7 +49,9 @@
 			  </div>
 			  <!-- /.card-body -->
 			  <div class="card-footer">
-			  	<div id="generate_status">...</div>
+			  	<div id="generate_status">
+			  		<progress id="progress-bar" value="0" max="100" style="display:none; margin-bottom: 1em;"></progress>			  		
+			  	</div>
 			  </div>
 			  <!-- /.card-footer -->
 
@@ -77,11 +79,12 @@ $(document).ready(function(){
 
 $("#generated_date_ok_button").click( function() {
 	event.preventDefault();    	
-	generated_date = $("#id_generated_date").val();
+
+	var frm = $('#process-raw-data');
+    var pgrbar = $('#progress-bar');
+
+	var generated_date = $("#id_generated_date").val();
 	//alert(generated_date);
-
-
-$('body').removeClass('preload'); 
 
 	$.ajax({
     	url : "/monitoring/ajax/sp_generate_daily_attend/",
@@ -94,19 +97,53 @@ $('body').removeClass('preload');
 			//$('#generate_date_card').addClass('overlay');
 		},
     	success: function(data) {
+    		/*
     		var count = data.com_type.length;
     		var result = "";
-
     		for(var i=0; i<count; i++) {
 				result += "<p>" + data.com_type[i]; + "</p>";
     		}
-
     		$("#generate_status").html(result);
     		$('#generate_date_card').removeClass('overlay');
+    		*/
+    		alert("Success");
+
     	},
     });
 
 });
+
+function get_generate_daily_attend_status(generated_date) {
+        $.ajax({
+            type: 'get',
+            url: '/monitoring/ajax/sp_generate_daily_attend_status/',
+            data: {'generated_date': generated_date},
+            success: function (data) {
+                frm.html('');
+                if (data.state == 'PENDING') {
+                    frm.html('Please wait...');
+                }
+                else if (data.state == 'PROGRESS') {
+                    pgrbar.css('display', 'inline');
+                    pgrbar.val(data.result.percent);
+                    frm.html('lines processed ' + data.result.current + ' out of ' + data.result.total);
+                }
+                else if(data.state == 'SUCCESS'){
+                    pgrbar.css('display', 'none');
+                    frm.html('Successfully Completed!');
+
+                }
+                if (data.state != 'SUCCESS') {
+                    setTimeout(function () {
+                        get_task_info(task_id)
+                    }, 500);
+                }
+            },
+            error: function (data) {
+                frm.html("error!");
+            }
+        });
+    }
 
 </script>
 {% endblock %}

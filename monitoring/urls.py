@@ -19,5 +19,5 @@ urlpatterns = [
 
 	path('generate-daily-attend/', views.GenerateDailyAttend, name='generate-daily-attend'),
 	url(r'^ajax/sp_generate_daily_attend/$', views.ajax_sp_generate_daily_attend, name='ajax_sp_generate_daily_attend'),
-
+	url(r'^ajax/sp_generate_daily_attend_status/$', views.ajax_sp_generate_daily_attend_status, name='ajax_sp_generate_daily_attend_status'),
 ]

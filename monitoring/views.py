@@ -1255,3 +1255,14 @@ def ajax_sp_generate_daily_attend(request):
 	    })
 	response.status_code = 200
 	return response
+
+
+@permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
+@login_required(login_url='/accounts/login/')
+def ajax_sp_generate_daily_attend_status(request):
+
+	print("************************************************")
+	print("FUNCTION: ajax_sp_generate_daily_attend_status()")
+	print("************************************************")
+	data = {'state': task.state, 'result': task.result,}
+	return HttpResponse(json.dumps(data), content_type='application/json')
