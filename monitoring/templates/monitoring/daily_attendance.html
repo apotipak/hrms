@@ -28,25 +28,52 @@
 			    <!-- /.card-tools -->
 
 			  </div>
+
 			  <!-- /.card-header -->
 			  <div class="card-body">
+				<form class="form-inline" name="daily_attendance_form">
+					{% csrf_token %}
 
-				<form>
-				{% csrf_token %}
-				  <div class="form-row align-items-center">
-				    <div class="col-auto form-inline">
-				      <label for="inlineFormInput">Date</label>&nbsp;&nbsp;
-				      <input type="text" class="form-control mb-2" id="id_generated_date" placeholder="dd/mm/yyyy">
-				    </div>
-				    <div class="col-auto">
-				      <button type="button" id="generated_date_ok_button" class="btn btn-primary mb-2">&nbsp;&nbsp;OK&nbsp;&nbsp;</button>&nbsp;
-				      <button type="reset" class="btn btn-secondary mb-2">Cancel</button>
-				    </div>
-				  </div>
+			  	<div class="row col-12 bg-light">
+
+			  		<div class="float-left text-left col-5">
+					    <div class="form-inline">
+					        <label class="control-label">Date</label>&nbsp;&nbsp;				        
+					        <input type="text" class="form-control form-control-sm" id="id_date" placeholder="dd/mm/yyyy">&nbsp;&nbsp;
+					    	<label class="control-label">Shift</label>&nbsp;&nbsp;
+					        <select id="id_shift_option" class="form-control form-control-sm">
+							  <option value="0">---------</option>
+							  <option value="1" selected="">A | All</option>
+							  <option value="2">D | Day shift</option>
+							  <option value="3">N | Night shift</option>
+					        </select>					        
+					    </div>
+					</div>
+
+					<div class="float-right text-right col-7">
+					    <div class="form-group">
+		                      <input class="form-check-input" type="radio" name="searchOptions" id="id_search_by_cnt_id" value="1" checked>
+		                      <label class="control-label" for="id_search_by_cnt_id">Contract No</label>&nbsp;
+		                      <input type="text" id="id_cus_id" class="col-2">&nbsp;
+		                      <input type="text" id="id_cus_brn" class="col-1">&nbsp;
+		                      <input type="text" id="id_cus_vol" class="col-1">&nbsp;&nbsp;&nbsp;
+		                      <input class="form-check-input" type="radio" name="searchOptions" id="id_search_by_empid" value="2" readonly>
+		                      <label class="control-label" for="id_search_by_empid">Employee ID</label>&nbsp;
+		                      <input type="text" id="id_emp_id" class="col-2" readonly>
+	                    </div>
+	                </div>
+
+					    <!--
+					    <div class="form-group">
+					      <button type="button" id="generated_date_ok_button" class="btn btn-primary btn-sm">&nbsp;&nbsp;&nbsp;&nbsp;OK&nbsp;&nbsp;&nbsp;&nbsp;</button>&nbsp;
+					      <button type="reset" class="btn btn-secondary btn-sm">Cancel</button>
+					    </div>
+					    -->	    					
+				</div>
 				</form>
-
 			  </div>
 			  <!-- /.card-body -->
+
 			  <div class="card-footer">
 			  	<div id="generate_status">
 			  		<progress id="progress-bar" value="0" max="100" style="display:none; margin-bottom: 1em;"></progress>			  		
@@ -68,7 +95,66 @@
 
 {% block javascript %}
 <script>	
-	//
+	$('#id_cus_id').focus();
+
+	$(document).on('keyup keypress', '#daily_attendance_form input[type="text"]', function(e) {
+		if(e.which == 13) {
+			e.preventDefault();
+			return false;
+	    }
+	});
+
+    $(document).on('keypress', '#id_cus_id', function(e) {
+      if(e.which == 13) {      
+        e.preventDefault();
+        $('#id_cus_brn').focus();
+      }
+    });
+
+    $(document).on('keypress', '#id_cus_brn', function(e) {
+      if(e.which == 13) {      
+        e.preventDefault();
+        $('#id_cus_vol').focus();
+      }
+    });
+
+    $(document).on('keypress', '#id_cus_vol', function(e) {
+      if(e.which == 13) {      
+        e.preventDefault();
+        alert("todo1");   
+      }
+    });
+
+    $(document).on('keypress', '#id_emp_id', function(e) {
+      if(e.which == 13) {      
+        e.preventDefault();
+        alert("todo2");
+      }
+    });
+
+	$('#id_date').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true}).datepicker("setDate", new Date());
+	
+	$("input:radio[name='searchOptions']").change(function(){
+		var _val = $(this).val();
+		if(_val==1) {
+			// Search by Contract ID
+			$("#id_cus_id").focus();		
+			$("#id_cus_id").attr("readonly", false);
+			$("#id_cus_brn").attr("readonly", false);
+			$("#id_cus_vol").attr("readonly", false);
+
+			$("#id_emp_id").attr("readonly", true);
+		} else {
+			// Search by Employee ID
+			$("#id_emp_id").focus();
+			$("#id_emp_id").attr("readonly", false);
+
+			$("#id_cus_id").attr("readonly", true);
+			$("#id_cus_brn").attr("readonly", true);
+			$("#id_cus_vol").attr("readonly", true);
+		}
+	});
+
 </script>
 {% endblock %}
 		
