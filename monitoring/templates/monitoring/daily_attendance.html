@@ -18,10 +18,53 @@
     	<!-- Main content -->
     	<section class="content">
 
+			<div class="card card-outline card-success" id="generate_date_card">
+			  <div class="card-header">
+			    <h3 class="card-title lead"><i class="fas fa-tasks"></i>&nbsp;&nbsp;Daily Attendance</h3>
+			    <div class="card-tools">
+			 		<button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i></button>
+			      	<button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+			    </div>
+			    <!-- /.card-tools -->
+
+			  </div>
+			  <!-- /.card-header -->
+			  <div class="card-body">
+
+				<form>
+				{% csrf_token %}
+				  <div class="form-row align-items-center">
+				    <div class="col-auto form-inline">
+				      <label for="inlineFormInput">Date</label>&nbsp;&nbsp;
+				      <input type="text" class="form-control mb-2" id="id_generated_date" placeholder="dd/mm/yyyy">
+				    </div>
+				    <div class="col-auto">
+				      <button type="button" id="generated_date_ok_button" class="btn btn-primary mb-2">&nbsp;&nbsp;OK&nbsp;&nbsp;</button>&nbsp;
+				      <button type="reset" class="btn btn-secondary mb-2">Cancel</button>
+				    </div>
+				  </div>
+				</form>
+
+			  </div>
+			  <!-- /.card-body -->
+			  <div class="card-footer">
+			  	<div id="generate_status">
+			  		<progress id="progress-bar" value="0" max="100" style="display:none; margin-bottom: 1em;"></progress>			  		
+			  	</div>
+			  </div>
+			  <!-- /.card-footer -->
+
+			    <!--
+				<div id="test" class="overlay">
+					<i class="fas fa-2x fa-sync-alt fa-spin"></i>
+				</div>
+				-->
+			</div>
+			<!-- /.card -->
+
     	</section>
 	</div>
 {% endblock %}
-
 
 {% block javascript %}
 <script>	

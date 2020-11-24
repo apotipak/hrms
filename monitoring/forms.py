@@ -19,7 +19,7 @@ class ScheduleMaintenanceForm(forms.Form):
         self.fields['cus_vol'].widget.attrs = {'class': 'form-control form-control-md col-2', 'placeholder': _('Customer Volume')}        
         self.fields['cus_vol'].error_messages = {'required': _('Please enter data'), 'max_value': _('Incorrect code')}
 
-        self.fields['cus_id'].initial = "1008"
+        self.fields['cus_id'].initial = "1082"
         self.fields['cus_brn'].initial = "000"
         self.fields['cus_vol'].initial = "001"        
 
@@ -40,7 +40,7 @@ class GenerateDailyAttendForm(forms.Form):
         self.fields['cus_vol'].widget.attrs = {'class': 'form-control form-control-md col-2', 'placeholder': _('Customer Volume')}        
         self.fields['cus_vol'].error_messages = {'required': _('Please enter data'), 'max_value': _('Incorrect code')}
 
-        self.fields['cus_id'].initial = "1008"
+        self.fields['cus_id'].initial = "1082"
         self.fields['cus_brn'].initial = "000"
         self.fields['cus_vol'].initial = "001"   
 
