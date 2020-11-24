@@ -18,6 +18,7 @@
     	<!-- Main content -->
     	<section class="content">
 
+    		<!-- FORM SEARCH -->
 			<div class="card card-outline card-success" id="generate_date_card">
 			  <div class="card-header">
 			    <h3 class="card-title"><i class="fas fa-tasks"></i>&nbsp;&nbsp;<b>Daily Attendance</b></h3>
@@ -31,7 +32,7 @@
 
 			  <!-- /.card-header -->
 			  <div class="card-body">
-				<form class="form-inline" name="daily_attendance_form">
+				<form class="form-inline" name="daily_attendance_search_form">
 					{% csrf_token %}
 
 			  	<div class="row col-12 bg-light">
@@ -75,17 +76,46 @@
 			  <!-- /.card-body -->
 
 			  <div class="card-footer">
-			  	<div id="generate_status">
-			  		<progress id="progress-bar" value="0" max="100" style="display:none; margin-bottom: 1em;"></progress>			  		
-			  	</div>
+			  	<!-- content goes here -->
+			  </div>
+			  <!-- /.card-footer -->
+			</div>
+			<!-- /.card -->
+
+
+
+			<!-- FORM DETAIL -->
+			<div class="card card-outline card-secondary" id="generate_date_card">
+			  <div class="card-header">
+			    <div class="card-tools">
+			    	<button id="save_button" type="button" class="btn btn-success btn-sm"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;{% trans 'Add' %}</button>&nbsp;&nbsp;|&nbsp;&nbsp;
+		        	<button id="save_button" type="button" class="btn btn-primary btn-sm"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</button>
+		        	<button id="delete_button" type="button" class="btn btn-danger btn-sm"><i class="fas fa-trash fa-sm"></i>&nbsp;&nbsp;{% trans 'Delete' %}</button>
+			    </div>	
+			    <!-- /.card-tools -->
+
+			  </div>
+
+			  <!-- /.card-header -->
+			  <div class="card-body">
+				<form class="form-inline" name="daily_attendance_form">
+					{% csrf_token %}
+
+			  	<div class="row col-12 bg-light">
+
+				</div>
+				</form>
+			  </div>
+			  <!-- /.card-body -->
+
+			  <div class="card-footer">
+			  	<!-- content goes here -->
 			  </div>
 			  <!-- /.card-footer -->
 
-			    <!--
 				<div id="test" class="overlay">
 					<i class="fas fa-2x fa-sync-alt fa-spin"></i>
 				</div>
-				-->
 			</div>
 			<!-- /.card -->
 
@@ -97,7 +127,7 @@
 <script>	
 	$('#id_cus_id').focus();
 
-	$(document).on('keyup keypress', '#daily_attendance_form input[type="text"]', function(e) {
+	$(document).on('keyup keypress', '#daily_attendance_search_form input[type="text"]', function(e) {
 		if(e.which == 13) {
 			e.preventDefault();
 			return false;
@@ -157,7 +187,7 @@
 
 	// AJAX
 
-	
+
 </script>
 {% endblock %}
 		
