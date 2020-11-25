@@ -18,8 +18,8 @@
     	<!-- Main content -->
     	<section class="content">
 
-    		<!-- FORM SEARCH -->
-			<div class="card card-outline card-success" id="generate_date_card">
+    		<!-- SEARCH FORM -->
+			<div class="card card-outline card-success" id="daily_attendance_search_card">
 			  <div class="card-header">
 			    <h3 class="card-title"><i class="fas fa-tasks"></i>&nbsp;&nbsp;<b>Daily Attendance</b></h3>
 			    <div class="card-tools">
@@ -84,17 +84,22 @@
 
 
 
-			<!-- FORM DETAIL -->
-			<div class="card card-outline card-secondary" id="generate_date_card">
+
+
+
+
+			<!-- DATA ENTRY FORM -->
+			<div class="card card-outline card-secondary" id="daily_attendance_data_entry_card">
+
+			  <!--
 			  <div class="card-header">
 			    <div class="card-tools">
 			    	<button id="save_button" type="button" class="btn btn-success btn-sm"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;{% trans 'Add' %}</button>&nbsp;&nbsp;|&nbsp;&nbsp;
 		        	<button id="save_button" type="button" class="btn btn-primary btn-sm"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</button>
 		        	<button id="delete_button" type="button" class="btn btn-danger btn-sm"><i class="fas fa-trash fa-sm"></i>&nbsp;&nbsp;{% trans 'Delete' %}</button>
 			    </div>	
-			    <!-- /.card-tools -->
 			  </div>
-			  <!-- /.card-header -->
+			  -->
 
 			  <div class="card-body">
 				<form class="form-inline" name="daily_attendance_form">
@@ -121,9 +126,30 @@
 
 		        <!-- Tab Body -->
 		        <div class="tab-content" id="dailyAttendanceBodyTab">
+		            <div class="tab-pane fade show active pt-2" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
 
-		            <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
-		            	1
+						<table class="table table-sm">
+						  <thead>
+						    <tr>
+						      <th scope="col"></th>
+						      <th scope="col">No</th>
+						      <th scope="col">Emp ID</th>
+						      <th scope="col">Name</th>
+						      <th scope="col">Rank</th>
+						      <th scope="col">Shift</th>
+						      <th scope="col">Late</th>
+						      <th scope="col">Full</th>
+						      <th scope="col">Relief</th>
+						      <th scope="col">Rel. ID</th>
+						    </tr>
+						  </thead>
+						  <tbody>
+						    <tr>
+						      <td colspan="10" class="text-center"><br>There is no data.</td>
+						    </tr>
+						  </tbody>
+						</table>
+
 		        	</div>
 
 		            <div class="tab-pane fade show" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
@@ -182,7 +208,11 @@
     $(document).on('keypress', '#id_cus_vol', function(e) {
       if(e.which == 13) {      
         e.preventDefault();
-        alert("todo1");   
+        
+        //alert("todo1");
+
+
+
       }
     });
 
