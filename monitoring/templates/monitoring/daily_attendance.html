@@ -55,9 +55,9 @@
 					    <div class="form-group">
 		                      <input class="form-check-input" type="radio" name="searchOptions" id="id_search_by_cnt_id" value="1" checked>
 		                      <label class="control-label" for="id_search_by_cnt_id">Contract No</label>&nbsp;
-		                      <input type="text" id="id_cus_id" class="col-2">&nbsp;
-		                      <input type="text" id="id_cus_brn" class="col-1">&nbsp;
-		                      <input type="text" id="id_cus_vol" class="col-1">&nbsp;&nbsp;&nbsp;
+		                      <input type="number" min=0 id="id_cus_id" class="col-2">&nbsp;
+		                      <input type="number" min=0 id="id_cus_brn" class="col-1">&nbsp;
+		                      <input type="number" min=0 id="id_cus_vol" class="col-1">&nbsp;&nbsp;&nbsp;
 		                      <input class="form-check-input" type="radio" name="searchOptions" id="id_search_by_empid" value="2" readonly>
 		                      <label class="control-label" for="id_search_by_empid">Employee ID</label>&nbsp;
 		                      <input type="text" id="id_emp_id" class="col-2" readonly>
@@ -194,6 +194,15 @@
     $(document).on('keypress', '#id_cus_id', function(e) {
       if(e.which == 13) {      
         e.preventDefault();
+
+        var obj = $(this);
+      	var id_cus_id = obj.val();
+
+
+      	while (id_cus_id.length < 7)
+        	id_cus_id = "0" + id_cus_id;
+      	$('#id_cus_id').val(id_cus_id);
+
         $('#id_cus_brn').focus();
       }
     });
@@ -201,6 +210,13 @@
     $(document).on('keypress', '#id_cus_brn', function(e) {
       if(e.which == 13) {      
         e.preventDefault();
+
+      	var obj = $(this);
+      	var id_cus_brn = obj.val();      	
+      	while (id_cus_brn.length < 3) 
+        	id_cus_brn = "0" + id_cus_brn;
+      	$('#id_cus_brn').val(id_cus_brn);
+
         $('#id_cus_vol').focus();
       }
     });
@@ -210,7 +226,11 @@
         e.preventDefault();
         
         //alert("todo1");
-
+    	var obj = $(this);
+      	var id_cus_vol = obj.val();
+      	while (id_cus_vol.length < 3) 
+        	id_cus_vol = "0" + id_cus_vol;
+      	$('#id_cus_vol').val(id_cus_vol);
 
 
       }

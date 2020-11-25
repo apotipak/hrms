@@ -270,4 +270,13 @@ display: block;
 }
 
 .side-crop { max-width: 375px; overflow: hidden; }
-.side-crop img { max-width: initial;
+.side-crop img { max-width: initial };
+
+input[type='number'] {
+    -moz-appearance:textfield;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
