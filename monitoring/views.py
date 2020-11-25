@@ -1284,6 +1284,7 @@ def ajax_sp_generate_daily_attend(request):
 		response = JsonResponse(data={"success": True,"is_error": True,"class": "bg-success","error_message": error_message})
 
 
+	cursor.close
 	response.status_code = 200
 	return response
 
@@ -1327,15 +1328,22 @@ def ajax_get_attendance_information(request):
 	print("cnt_id = " + str(cnt_id))
 
 
-	# Get contract schedule list
-	# select shf_desc from cus_service a,t_shift b where a.cnt_id=2526000001 and a.srv_active=1 and b.shf_id=a.srv_shif_id
+	# Get contract schedule list	
 	cursor = connection.cursor()	
-	cursor.execute("select shf_desc from cus_service a,t_shift b where a.cnt_id=2526000001 and a.srv_active=1 and b.shf_id=a.srv_shif_id")
+	cursor.execute("select shf_desc from cus_service a,t_shift b where a.cnt_id=%s and a.srv_active=1 and b.shf_id=a.srv_shif_id", [cnt_id])
 	rows = cursor.fetchall()
 	schedule_list = []
 	for index in range(len(rows)):
-		print(rows[index][0])
 		schedule_list.append(rows[index][0])
+
+
+	# Get employee schedule list
+	cursor.execute("select distinct emp_fname_th,emp_lname_th,sch_shift,emp_id from v_dlyplan where cnt_id=%s and dly_date=%s and customer_flag<>'D' order by sch_shift,emp_id", [cnt_id, attendance_date])
+	rows = cursor.fetchall()
+	employee_list = []
+	for row in rows:
+		print(row[1])
+		employee_list.append(row[1])
 
 	try:
 		dlyplan = DlyPlan.objects.filter(cnt_id=cnt_id).all()
@@ -1348,6 +1356,7 @@ def ajax_get_attendance_information(request):
 	data = {"is_found": is_found, "schedule_list": list(schedule_list)}
 
 	print("is_found = " + str(is_found))
+	cursor.close
 
 	return HttpResponse(json.dumps(data), content_type='application/json')
 
