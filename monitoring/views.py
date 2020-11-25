@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
+from django.http import HttpResponse
 from .models import DlyPlan, SchPlan
 from customer.models import CusMain, Customer, CusBill
 from contract.models import CusContract, CusService
@@ -18,6 +19,7 @@ from django.db import connection
 from base64 import b64encode
 import datetime
 import django.db as db
+import json
 
 
 @login_required(login_url='/accounts/login/')
@@ -1305,3 +1307,48 @@ def ajax_sp_generate_daily_attend_status(request):
 	print("************************************************")
 	data = {'state': task.state, 'result': task.result,}
 	return HttpResponse(json.dumps(data), content_type='application/json')
+
+
+@permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
+@login_required(login_url='/accounts/login/')
+def ajax_get_attendance_information(request):
+
+	print("********************************************")
+	print("FUNCTION: ajax_get_attendance_information()")
+	print("********************************************")
+
+	attendance_date = request.POST.get('attendance_date')
+	attendance_date = datetime.datetime.strptime(attendance_date, '%d/%m/%Y')
+	print("attendance_date = " + str(attendance_date))
+	cus_id = request.POST.get('cus_id').lstrip("0")
+	cus_brn = request.POST.get('cus_brn')
+	cus_vol = request.POST.get('cus_vol')
+	cnt_id = cus_id+cus_brn+cus_vol
+	print("cnt_id = " + str(cnt_id))
+
+
+	# Get contract schedule list
+	# select shf_desc from cus_service a,t_shift b where a.cnt_id=2526000001 and a.srv_active=1 and b.shf_id=a.srv_shif_id
+	cursor = connection.cursor()	
+	cursor.execute("select shf_desc from cus_service a,t_shift b where a.cnt_id=2526000001 and a.srv_active=1 and b.shf_id=a.srv_shif_id")
+	rows = cursor.fetchall()
+	schedule_list = []
+	for index in range(len(rows)):
+		print(rows[index][0])
+		schedule_list.append(rows[index][0])
+
+	try:
+		dlyplan = DlyPlan.objects.filter(cnt_id=cnt_id).all()
+		is_found = True
+		print(1)
+	except CusContract.DoesNotExist:
+		is_found = False
+		print(2)
+
+	data = {"is_found": is_found, "schedule_list": list(schedule_list)}
+
+	print("is_found = " + str(is_found))
+
+	return HttpResponse(json.dumps(data), content_type='application/json')
+
+

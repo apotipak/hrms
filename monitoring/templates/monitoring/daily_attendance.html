@@ -55,9 +55,9 @@
 					    <div class="form-group">
 		                      <input class="form-check-input" type="radio" name="searchOptions" id="id_search_by_cnt_id" value="1" checked>
 		                      <label class="control-label" for="id_search_by_cnt_id">Contract No</label>&nbsp;
-		                      <input type="number" min=0 id="id_cus_id" class="col-2">&nbsp;
-		                      <input type="number" min=0 id="id_cus_brn" class="col-1">&nbsp;
-		                      <input type="number" min=0 id="id_cus_vol" class="col-1">&nbsp;&nbsp;&nbsp;
+		                      <input type="number" min=0 id="id_cus_id" class="col-2" value="0002526">&nbsp;
+		                      <input type="number" min=0 id="id_cus_brn" class="col-1" value="000">&nbsp;
+		                      <input type="number" min=0 id="id_cus_vol" class="col-1" value="001">&nbsp;&nbsp;&nbsp;
 		                      <input class="form-check-input" type="radio" name="searchOptions" id="id_search_by_empid" value="2" readonly>
 		                      <label class="control-label" for="id_search_by_empid">Employee ID</label>&nbsp;
 		                      <input type="text" id="id_emp_id" class="col-2" readonly>
@@ -127,6 +127,10 @@
 		        <!-- Tab Body -->
 		        <div class="tab-content" id="dailyAttendanceBodyTab">
 		            <div class="tab-pane fade show active pt-2" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+
+		            	<div id="id_schedule_option">
+
+		            	</div>
 
 						<table class="table table-sm">
 						  <thead>
@@ -198,12 +202,16 @@
         var obj = $(this);
       	var id_cus_id = obj.val();
 
+      	if(id_cus_id!=0) {
+	      	while (id_cus_id.length < 7)
+	        	id_cus_id = "0" + id_cus_id;
+	      	$('#id_cus_id').val(id_cus_id);
 
-      	while (id_cus_id.length < 7)
-        	id_cus_id = "0" + id_cus_id;
-      	$('#id_cus_id').val(id_cus_id);
+	        $('#id_cus_brn').focus();
+      	} else {
+      		$(this).focus();
+      	}
 
-        $('#id_cus_brn').focus();
       }
     });
 
@@ -212,12 +220,15 @@
         e.preventDefault();
 
       	var obj = $(this);
-      	var id_cus_brn = obj.val();      	
+      	var id_cus_brn = obj.val();
+
       	while (id_cus_brn.length < 3) 
         	id_cus_brn = "0" + id_cus_brn;
+      	
       	$('#id_cus_brn').val(id_cus_brn);
 
         $('#id_cus_vol').focus();
+
       }
     });
 
@@ -230,11 +241,47 @@
       	var id_cus_vol = obj.val();
       	while (id_cus_vol.length < 3) 
         	id_cus_vol = "0" + id_cus_vol;
-      	$('#id_cus_vol').val(id_cus_vol);
 
+        $('#id_cus_vol').val(id_cus_vol);
 
+        var attendance_date = $('#id_date').val();
+      	var cus_id = $('#id_cus_id').val();
+      	var cus_brn = $('#id_cus_brn').val();
+      	var cus_vol = $('#id_cus_vol').val();
+
+		$.ajax({
+			url : "/monitoring/ajax/get_attendance_information/",
+			type : "POST",
+			data : {          
+		  		csrfmiddlewaretoken: '{{ csrf_token }}',
+		  		attendance_date: attendance_date,
+		  		cus_id: cus_id,
+		  		cus_brn: cus_brn,
+		  		cus_vol: cus_vol,
+			},
+			success : function(data) {
+
+				if(data.is_found) {
+					result = "";
+					schedule_list_length = data.schedule_list.length;
+					for(i=0; i<schedule_list_length; i++) {
+						result += data.schedule_list[i];
+					}
+
+					$('#id_schedule_option').text(result);
+
+				} else {
+					alert("Not found");
+				}
+			}
+		});
+      	
       }
     });
+
+
+
+
 
     $(document).on('keypress', '#id_emp_id', function(e) {
       if(e.which == 13) {      
