@@ -86,10 +86,14 @@ $("#generated_date_ok_button").click( function() {
 	var generated_date = $("#id_generated_date").val();
 	//alert(generated_date);
 
+	$("#generated_date_ok_button").attr("disabled", true);
+	$("#generated_date_ok_button").text("Please wait..");
+
+
 	$.ajax({
     	url : "/monitoring/ajax/sp_generate_daily_attend/",
     	type : "POST",
-    	async: false,
+    	async: true,
     	data : {          
       		csrfmiddlewaretoken: '{{ csrf_token }}',
       		generated_date: generated_date,
@@ -106,12 +110,34 @@ $("#generated_date_ok_button").click( function() {
     		}
     		$("#generate_status").html(result);
     		$('#generate_date_card').removeClass('overlay');
-    		*/
+    		*/    		
+
     		if(data.is_error) {
-    			alert(data.error_message);
-    		} else {
-    			alert("Success");
-    		}    		
+    			//alert(data.error_message);
+				$.alert({
+				    title: 'Error',
+				    type: 'red',
+				    content: data.error_message,
+				    animation: 'zoom',
+				    animationBounce: 1.5,
+				    closeIcon: false,
+				    boxWidth: '38%',
+				    useBootstrap: false,
+				});
+    		} else {    		
+				$.alert({
+				    title: 'Success',
+				    type: 'green',
+				    content: data.error_message,
+				    animation: 'zoom',
+				    animationBounce: 1.5,
+				    closeIcon: false,
+				    boxWidth: '38%',
+				    useBootstrap: false,
+				});    			
+    		}
+			$("#generated_date_ok_button").attr("disabled", false);
+			$("#generated_date_ok_button").text("Generate");    		
     	},
     });
 
@@ -125,7 +151,7 @@ function get_generate_daily_attend_status(generated_date) {
             success: function (data) {
                 frm.html('');
                 if (data.state == 'PENDING') {
-                    frm.html('Please wait...');
+                    frm.html('Please wait ...');
                 }
                 else if (data.state == 'PROGRESS') {
                     pgrbar.css('display', 'inline');

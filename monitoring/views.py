@@ -1242,48 +1242,47 @@ def ajax_sp_generate_daily_attend(request):
 	print("******************************************")
 
 	generated_date = request.POST.get('generated_date')	
-	print("generated_date = " + str(generated_date))
 
-	# TODO: getPeriod()
+	# Get current period
 	period = getPeriod(generated_date)
 	print("period = " + str(period))
 
-	# TODO: call SP
-	error_message = ""
+	# Get current date
+	generated_date = datetime.datetime.strptime(generated_date, '%d/%m/%Y')	
+	generated_date = str(generated_date)[0:10]
+	print("generated_date : " + str(generated_date))
 
-	try:
-		cursor = connection.cursor()	
-		cursor.execute("exec dbo.create_dly_plan_new %s", ["2020-11-25"])
-		response = JsonResponse(data={"success": True, "is_error": False, "class": "bg-success", "error_message": error_message})
-	except db.OperationalError as e:
-		print(str(e))
-		error_message = "Error";
-	except db.OperationalError as e:    	
-		error_message = str(e);
-	except db.Error as e:
-		error_message = str(e);
-	except:
-		error_message = cursor.statusmessage;
 
-	response = JsonResponse(data={"success": True, "is_error": True, "class": "bg-danger", "error_message": error_message})
-
-	'''
+	# TODO
 	cursor = connection.cursor()
-	com_id = 2	
-	cursor.execute("exec dbo.select_com_type %s", [com_id])	
-	comtype = cursor.fetchall()
-	result_list = []
-	print("debug: generated_date = " + str(generated_date))
-	for row in comtype:
-		p = row[0]
-		result_list.append(p)
-	response = JsonResponse(data={
-		"success": True,
-		"is_found": True,
-		"class": "bg-success",
-		"com_type": result_list,
-	    })
-	'''
+	
+	cursor.execute("select count(*) from t_date where date_chk='" + str(generated_date) + "'")	
+	tdate_count = cursor.fetchone()
+	if tdate_count[0] == 0:
+		try:
+			cursor = connection.cursor()	
+			cursor.execute("exec dbo.create_dly_plan_new %s", [generated_date])
+			error_message = "Generate completed."
+			is_error = False
+			response = JsonResponse(data={"success": True, "is_error": is_error, "class": "bg-success", "error_message": error_message})
+		except db.OperationalError as e:
+			error_message = "Error";
+			is_error = True
+		except db.OperationalError as e:    	
+			error_message = str(e);
+			is_error = True
+		except db.Error as e:
+			error_message = str(e);
+			is_error = True
+		except:
+			error_message = cursor.statusmessage;		
+			is_error = True
+
+		response = JsonResponse(data={"success": True, "is_error": is_error, "class": "bg-danger", "error_message": error_message})
+	else:
+		error_message = "Daily Attendance table has been created. No need to generate again."
+		response = JsonResponse(data={"success": True,"is_error": True,"class": "bg-success","error_message": error_message})
+
 
 	response.status_code = 200
 	return response
