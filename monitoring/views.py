@@ -1252,10 +1252,8 @@ def ajax_sp_generate_daily_attend(request):
 	generated_date = str(generated_date)[0:10]
 	print("generated_date : " + str(generated_date))
 
-
 	# TODO
-	cursor = connection.cursor()
-	
+	cursor = connection.cursor()	
 	cursor.execute("select count(*) from t_date where date_chk='" + str(generated_date) + "'")	
 	tdate_count = cursor.fetchone()
 	if tdate_count[0] == 0:
