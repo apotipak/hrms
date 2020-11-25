@@ -347,3 +347,26 @@ class TEmpsts(models.Model):
     class Meta:
         managed = False
         db_table = 'T_EMPSTS'
+
+class TPeriod(models.Model):
+    prd_id = models.CharField(primary_key=True, max_length=7)
+    prd_year = models.DecimalField(max_digits=4, decimal_places=0, blank=True, null=True)
+    prd_month = models.SmallIntegerField(blank=True, null=True)
+    period = models.SmallIntegerField(blank=True, null=True)
+    prd_order = models.DecimalField(max_digits=4, decimal_places=0, blank=True, null=True)
+    prd_num = models.DecimalField(max_digits=2, decimal_places=0, blank=True, null=True)
+    prd_date_frm = models.DateTimeField(blank=True, null=True)
+    prd_date_to = models.DateTimeField(blank=True, null=True)
+    prd_date_paid = models.DateTimeField(blank=True, null=True)
+    emp_type = models.CharField(max_length=2, blank=True, null=True)
+    com_id = models.DecimalField(max_digits=2, decimal_places=0, blank=True, null=True)
+    prd_close = models.BooleanField(blank=True, null=True)
+    prd_process = models.BooleanField(blank=True, null=True)
+    prd_wrkday = models.DecimalField(max_digits=2, decimal_places=0, blank=True, null=True)
+    upd_date = models.DateTimeField(blank=True, null=True)
+    upd_by = models.CharField(max_length=10, blank=True, null=True)
+    upd_flag = models.CharField(max_length=1, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'T_PERIOD'

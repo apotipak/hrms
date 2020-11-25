@@ -89,6 +89,7 @@ $("#generated_date_ok_button").click( function() {
 	$.ajax({
     	url : "/monitoring/ajax/sp_generate_daily_attend/",
     	type : "POST",
+    	async: true,
     	data : {          
       		csrfmiddlewaretoken: '{{ csrf_token }}',
       		generated_date: generated_date,

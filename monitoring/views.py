@@ -6,6 +6,7 @@ from .models import DlyPlan, SchPlan
 from customer.models import CusMain, Customer, CusBill
 from contract.models import CusContract, CusService
 from employee.models import Employee, EmpPhoto
+from system.models import TPeriod
 from .forms import ScheduleMaintenanceForm
 from django.http import JsonResponse
 import datetime
@@ -1203,11 +1204,13 @@ def GenerateDailyAttend(request):
 	response_data = {}
 	modified_records = []
 
+	# Show avatar
 	if request.user.is_superuser:
 	    employee_photo = ""
 	else:
 	    employee_info = EmpPhoto.objects.filter(emp_id=request.user.username).get()    
 	    employee_photo = b64encode(employee_info.image).decode("utf-8")        
+
 
 	if request.method == "POST":
 		if form.is_valid():          
@@ -1219,7 +1222,14 @@ def GenerateDailyAttend(request):
 	else:
 		form = ScheduleMaintenanceForm()
 
-	return render(request, template_name, {'page_title': page_title, 'project_name': project_name, 'project_version': project_version, 'db_server': db_server, 'today_date': today_date, 'form': form, 'employee_photo': employee_photo})
+	return render(request, template_name, {'page_title': page_title, 
+		'project_name': project_name, 
+		'project_version': project_version, 
+		'db_server': db_server, 
+		'today_date': today_date, 
+		'form': form, 
+		'employee_photo': employee_photo
+		})
 
 
 @permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
@@ -1230,32 +1240,50 @@ def ajax_sp_generate_daily_attend(request):
 	print("FUNCTION: ajax_sp_generate_daily_attend()")
 	print("******************************************")
 
-	generated_date = request.POST.get('generated_date')
+	generated_date = request.POST.get('generated_date')	
+	print("generated_date = " + str(generated_date))
 
+	# TODO: getPeriod()
+	period = getPeriod(generated_date)
+	print("period = " + str(period))
+
+	# TODO: call SP
+	cursor = connection.cursor()	
+	cursor.execute("exec dbo.create_dly_plan_new %s", ["2020-11-25"])
+	response = JsonResponse(data={"success": True, "is_found": True, "class": "bg-success"})
+
+
+	'''
 	cursor = connection.cursor()
-
-	com_id = 2
-	# cursor.execute("{call dbo.select_com_type(" +com_id + ")}")
+	com_id = 2	
 	cursor.execute("exec dbo.select_com_type %s", [com_id])	
-
 	comtype = cursor.fetchall()
 	result_list = []
-
 	print("debug: generated_date = " + str(generated_date))
-
 	for row in comtype:
 		p = row[0]
 		result_list.append(p)
-
 	response = JsonResponse(data={
 		"success": True,
 		"is_found": True,
 		"class": "bg-success",
 		"com_type": result_list,
 	    })
+	'''
+
 	response.status_code = 200
 	return response
 
+def getPeriod(generated_date):
+	generated_date = datetime.datetime.strptime(generated_date, '%d/%m/%Y')
+	print(generated_date)
+	try:
+		period = TPeriod.objects.filter(prd_date_frm__lte=generated_date).filter(prd_date_to__gte=generated_date).filter(emp_type='D1').get()
+		period = period.prd_id
+	except CusContract.DoesNotExist:
+		period = ""
+	
+	return period
 
 @permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
 @login_required(login_url='/accounts/login/')
