@@ -34,14 +34,14 @@
 
 				<form>
 				{% csrf_token %}
-				  <div class="form-row align-items-center">
+				  <div class="form-row justify-content-center">
 				    <div class="col-auto form-inline">
 				      <label for="inlineFormInput">Date</label>&nbsp;&nbsp;
 				      <input type="text" class="form-control mb-2" id="id_generated_date" placeholder="dd/mm/yyyy">
 				    </div>
 				    <div class="col-auto">
-				      <button type="button" id="generated_date_ok_button" class="btn btn-primary mb-2">&nbsp;&nbsp;OK&nbsp;&nbsp;</button>&nbsp;
-				      <button type="reset" class="btn btn-secondary mb-2">Cancel</button>
+				      <button type="button" id="generated_date_ok_button" class="btn btn-primary mb-2">&nbsp;&nbsp;Generate&nbsp;&nbsp;</button>&nbsp;
+				      <!--<button type="reset" class="btn btn-secondary mb-2">Cancel</button>-->
 				    </div>
 				  </div>
 				</form>
@@ -89,7 +89,7 @@ $("#generated_date_ok_button").click( function() {
 	$.ajax({
     	url : "/monitoring/ajax/sp_generate_daily_attend/",
     	type : "POST",
-    	async: true,
+    	async: false,
     	data : {          
       		csrfmiddlewaretoken: '{{ csrf_token }}',
       		generated_date: generated_date,
@@ -107,8 +107,11 @@ $("#generated_date_ok_button").click( function() {
     		$("#generate_status").html(result);
     		$('#generate_date_card').removeClass('overlay');
     		*/
-    		alert("Success");
-
+    		if(data.is_error) {
+    			alert(data.error_message);
+    		} else {
+    			alert("Success");
+    		}    		
     	},
     });
 

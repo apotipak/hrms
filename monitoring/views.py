@@ -9,7 +9,6 @@ from employee.models import Employee, EmpPhoto
 from system.models import TPeriod
 from .forms import ScheduleMaintenanceForm
 from django.http import JsonResponse
-import datetime
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.decorators.csrf import csrf_exempt
@@ -17,6 +16,8 @@ from django.db.models import Max
 from django.db.models import F
 from django.db import connection
 from base64 import b64encode
+import datetime
+import django.db as db
 
 
 @login_required(login_url='/accounts/login/')
@@ -1248,10 +1249,23 @@ def ajax_sp_generate_daily_attend(request):
 	print("period = " + str(period))
 
 	# TODO: call SP
-	cursor = connection.cursor()	
-	cursor.execute("exec dbo.create_dly_plan_new %s", ["2020-11-25"])
-	response = JsonResponse(data={"success": True, "is_found": True, "class": "bg-success"})
+	error_message = ""
 
+	try:
+		cursor = connection.cursor()	
+		cursor.execute("exec dbo.create_dly_plan_new %s", ["2020-11-25"])
+		response = JsonResponse(data={"success": True, "is_error": False, "class": "bg-success", "error_message": error_message})
+	except db.OperationalError as e:
+		print(str(e))
+		error_message = "Error";
+	except db.OperationalError as e:    	
+		error_message = str(e);
+	except db.Error as e:
+		error_message = str(e);
+	except:
+		error_message = cursor.statusmessage;
+
+	response = JsonResponse(data={"success": True, "is_error": True, "class": "bg-danger", "error_message": error_message})
 
 	'''
 	cursor = connection.cursor()
