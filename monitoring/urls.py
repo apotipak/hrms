@@ -12,6 +12,7 @@ urlpatterns = [
     url(r'^ajax/save_customer_schdule_plan/$', views.ajax_save_customer_schedule_plan, name='ajax_save_customer_schedule_plan'),
     url(r'^ajax/get_employee_list/$', views.ajax_get_employee_list, name='ajax_get_employee_list'),
     url(r'^ajax/get_employee/$', views.ajax_get_employee, name='ajax_get_employee'),
+    url(r'^ajax/get_employee_photo/$', views.ajax_get_employee_photo, name='ajax_get_employee_photo'),
 
     path('daily-attendance/', views.DailyAttendance, name='daily-attendance'),
     path('daily-performance/', views.DailyGuardPerformance, name='daily-guard-performance'),

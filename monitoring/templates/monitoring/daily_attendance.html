@@ -128,32 +128,31 @@
 		        <div class="tab-content" id="dailyAttendanceBodyTab">
 		            <div class="tab-pane fade show active pt-2" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
 
-		            	<div id="id_schedule_option">
+		            	<div id="id_schedule_option"></div>
 
-		            	</div>
-
-						<table class="table table-sm">
-						  <thead>
-						    <tr>
-						      <th scope="col"></th>
-						      <th scope="col">No</th>
-						      <th scope="col">Emp ID</th>
-						      <th scope="col">Name</th>
-						      <th scope="col">Rank</th>
-						      <th scope="col">Shift</th>
-						      <th scope="col">Late</th>
-						      <th scope="col">Full</th>
-						      <th scope="col">Relief</th>
-						      <th scope="col">Rel. ID</th>
-						    </tr>
-						  </thead>
-						  <tbody>
-						    <tr>
-						      <td colspan="10" class="text-center"><br>There is no data.</td>
-						    </tr>
-						  </tbody>
-						</table>
-
+		            	<div id="id_employee_list">
+							<table class="table table-sm">
+							  <thead>
+							    <tr>
+							      <th scope="col"></th>
+							      <th scope="col">No</th>
+							      <th scope="col">Emp ID</th>
+							      <th scope="col">Name</th>
+							      <th scope="col">Rank</th>
+							      <th scope="col">Shift</th>
+							      <th scope="col">Late</th>
+							      <th scope="col">Full</th>
+							      <th scope="col">Relief</th>
+							      <th scope="col">Rel. ID</th>
+							    </tr>
+							  </thead>
+							  <tbody>
+							    <tr>
+							      <td colspan="10" class="text-center"><br>There is no data.</td>
+							    </tr>
+							  </tbody>
+							</table>
+						</div>
 		        	</div>
 
 		            <div class="tab-pane fade show" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
@@ -233,7 +232,10 @@
     });
 
     $(document).on('keypress', '#id_cus_vol', function(e) {
-      if(e.which == 13) {      
+      if(e.which == 13) { 
+      	
+      	showLoading();
+
         e.preventDefault();
         
         //alert("todo1");
@@ -262,19 +264,78 @@
 			success : function(data) {
 
 				if(data.is_found) {
+
+					// Get Schedule list info
 					result = "";
 					schedule_list_length = data.schedule_list.length;
 					for(i=0; i<schedule_list_length; i++) {
 						result += data.schedule_list[i];
 					}
 
-					$('#id_schedule_option').text(result);
+					// TODO
+					//$('#id_schedule_option').text(result);
+					$('#id_schedule_option').text("");
+
+					// Get Employee info
+					result = "";
+					result += "<table class='table table-sm'>";
+					result += "  <thead>";
+					result += "    <tr>";
+					result += "      <th scope='col'></th>";
+					//result += "      <th scope='col'>No</th>";
+					result += "      <th scope='col'>Emp ID</th>";
+					result += "      <th scope='col'>Name</th>";
+					result += "      <th scope='col'>Rank</th>";
+					result += "      <th scope='col'>Shift</th>";
+					result += "      <th scope='col'>Late</th>";
+					result += "      <th scope='col'>Full</th>";
+					result += "      <th scope='col'>Relief</th>";
+					result += "      <th scope='col'>Rel. ID</th>";
+					result += "    </tr>";
+					result += "  </thead>";
+					result += "  <tbody>";
+
+					if(data.employee_list.length>0) {
+						for(i=0; i<data.employee_list.length; i++) {
+							emp_id = data.employee_list[i]["emp_id"];
+							emp_fname_th = data.employee_list[i]["emp_fname_th"];
+							emp_lname_th = data.employee_list[i]["emp_lname_th"];
+							sch_rank = data.employee_list[i]["sch_rank"];
+							shf_desc = data.employee_list[i]["shf_desc"];
+
+							result += "    <tr>";
+							result += "	     <td></td>";
+							//result += "	     <td></td>";
+							result += "	     <td>" + emp_id + "</td>";
+							result += "	     <td>" + emp_fname_th + "&nbsp;&nbsp;" + emp_lname_th + "</td>";
+							result += "	     <td>" + sch_rank + "</td>";
+							
+							result += "	     <td>" + shf_desc + "</td>";
+							result += "	     <td></td>";
+							result += "	     <td></td>";
+							result += "	     <td></td>";
+							result += "	     <td></td>";
+							result += "    </tr>";
+						}
+					}
+					else {
+							result += "    <tr class='text-center'>";
+							result += "	     <td colspan='9'><br><br>There is no data.</td>";
+							result += "	   </tr>"
+					}
+					result += "  </tbody>";
+					result += "</table>";
+
+
+					$('#id_employee_list').html(result);
 
 				} else {
 					alert("Not found");
 				}
 			}
 		});
+
+		$.LoadingOverlay("hide");
       	
       }
     });
@@ -313,8 +374,15 @@
 	});
 
 
-	// AJAX
-
+	function showLoading() {
+		$.LoadingOverlaySetup({
+		    background      : "rgba(0, 0, 0, 0.5)",
+		    image           : "/static/img/logo-small.png",
+		    imageAnimation  : "1.5s fadein",
+		    imageColor      : "#ffcc00"
+		});
+		$.LoadingOverlay("show");	
+	}
 
 </script>
 {% endblock %}

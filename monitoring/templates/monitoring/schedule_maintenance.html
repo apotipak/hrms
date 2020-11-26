@@ -1805,6 +1805,7 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
         	id_cus_vol = "0" + id_cus_vol;
       	$('#id_cus_vol').val(id_cus_vol);
 
+
 		// Get customer data (ajax)      	
 		$.ajax({
         	url : "/monitoring/ajax/get_customer/",
@@ -2269,8 +2270,25 @@ function update_sch_plan(sch_no, srv_id) {
 }
 
 function select_employee(emp_id, emp_fname_th, emp_lname_th, emp_join_date, emp_term_date, emp_rank, emp_type, emp_status) {
-	$("#security_guard_list_form").trigger("reset");
 
+	showLoading();
+	// Get employee photo
+	$.ajax({
+    	url: "/monitoring/ajax/get_employee_photo",        	
+		type: 'get',          
+      	dataType: 'json',
+      	async: true,
+      	data : { 
+        	emp_id: emp_id,
+      	},          
+		success: function (data) {
+			var result = "";
+			$("#employeePhoto").html("<img src='data:image/png;base64," + data.employee_photo + "' style='width:90px;'/>");			
+			$.LoadingOverlay("hide");
+		},
+	});	
+
+	$("#security_guard_list_form").trigger("reset");
 	$("#id_emp_id").val(emp_id);	
 	$("#id_emp_name_th").val(emp_fname_th + "   " + emp_lname_th);
 	$("#id_emp_join_date").val(emp_join_date);
@@ -2282,7 +2300,7 @@ function select_employee(emp_id, emp_fname_th, emp_lname_th, emp_join_date, emp_
 	$("#id_emp_name_th").css("background-color", 'green');
 	$("#id_emp_name_th").animate({color:'white'}, 1000);
 	$("#select_employee_modal").modal("hide");
-	
+			
 	//$("#id_duration_from").focus();
 };
 

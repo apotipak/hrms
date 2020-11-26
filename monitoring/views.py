@@ -78,10 +78,19 @@ def ajax_get_customer(request):
 			cnt_sign_to = cus_contract.cnt_sign_to.strftime("%d/%m/%Y")			
 			cnt_eff_frm = cus_contract.cnt_eff_frm.strftime("%d/%m/%Y")
 			cnt_eff_to = cus_contract.cnt_eff_to.strftime("%d/%m/%Y")
-			cnt_wage_name_th = cus_contract.cnt_wage_id.wage_th
-			cnt_wage_name_en = cus_contract.cnt_wage_id.wage_en
-			cnt_apr_by_name_en = cus_contract.cnt_apr_by.apr_name_en
 
+			if cus_contract.cnt_wage_id is not None:
+				if cus_contract.cnt_wage_id != "":
+					cnt_wage_name_th = cus_contract.cnt_wage_id.wage_th
+					cnt_wage_name_en = cus_contract.cnt_wage_id.wage_en
+				else:
+					cnt_wage_name_th = ""
+					cnt_wage_name_en = ""	
+			else:
+				cnt_wage_name_th = ""
+				cnt_wage_name_en = ""
+			
+			cnt_apr_by_name_en = cus_contract.cnt_apr_by.apr_name_en
 
 			# Contract Services
 			try:
@@ -688,7 +697,6 @@ def ajax_save_customer_schedule_plan(request):
 		new_sch_no = str(selected_service_id) + str(new_sch_no).zfill(4)
 		print("new_sch_no = " + str(new_sch_no))
 
-		# amnaj
 		# RULE-1: Check if an employee is existed in another schedule		
 		# employee = SchPlan.objects.filter(emp_id=emp_id).exclude(upd_flag='D').exclude(sch_active="")
 		# select * from sch_plan where emp_id=916 and sch_active=1 and upd_flag!='D'
@@ -816,7 +824,6 @@ def ajax_save_customer_schedule_plan(request):
 			})
 		'''
 
-		# amnaj
 		# RULE-2: Check if select duplicated security guard	
 
 
@@ -843,7 +850,6 @@ def ajax_save_customer_schedule_plan(request):
 			sch_plan.save()
 
 
-			# amnaj
 			# generate new security guard list
 			'''
 			if contract_list_filter_option=='1':
@@ -1136,6 +1142,21 @@ def ajax_get_employee(request):
 	return response
 
 
+@permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
+@login_required(login_url='/accounts/login/')
+def ajax_get_employee_photo(request):
+	print("************************************")
+	print("FUNCTION: ajax_get_employee_photo()")
+	print("***********************************")
+	employee_item = []
+	emp_id = request.GET.get('emp_id')
+	employee_info = EmpPhoto.objects.filter(emp_id=emp_id).get()    
+	employee_photo = b64encode(employee_info.image).decode("utf-8")
+	response = JsonResponse(data={"success": True,"is_error": True,"class": "bg-success","employee_photo": employee_photo})
+	response.status_code = 200	
+	return response	
+
+
 @login_required(login_url='/accounts/login/')
 @permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
 def DailyAttendance(request):
@@ -1344,13 +1365,19 @@ def ajax_get_attendance_information(request):
 		schedule_list.append(rows[index][0])
 
 
-	# Get employee schedule list
-	cursor.execute("select distinct emp_fname_th,emp_lname_th,sch_shift,emp_id from v_dlyplan where cnt_id=%s and dly_date=%s and customer_flag<>'D' order by sch_shift,emp_id", [cnt_id, attendance_date])
+	# Get employee schedule list (v_dlyplan)
+	cursor.execute("select distinct emp_id,emp_fname_th,emp_lname_th,sch_rank,shf_desc,sch_shift from v_dlyplan where cnt_id=%s and dly_date=%s and customer_flag<>'D' order by sch_shift,emp_id", [cnt_id, attendance_date])
 	rows = cursor.fetchall()
 	employee_list = []
 	for row in rows:
-		print(row[1])
-		employee_list.append(row[1])
+		record = {
+		    "emp_id": row[0],
+		    "emp_fname_th": row[1],
+		    "emp_lname_th": row[2],
+		    "sch_rank": row[3],
+		    "shf_desc": row[4],
+		}
+		employee_list.append(record)
 
 	try:
 		dlyplan = DlyPlan.objects.filter(cnt_id=cnt_id).all()
@@ -1360,11 +1387,19 @@ def ajax_get_attendance_information(request):
 		is_found = False
 		print(2)
 
-	data = {"is_found": is_found, "schedule_list": list(schedule_list)}
+	data = {"is_found": is_found, "schedule_list": list(schedule_list), "employee_list": employee_list}
 
 	print("is_found = " + str(is_found))
 	cursor.close
 
-	return HttpResponse(json.dumps(data), content_type='application/json')
+	response = JsonResponse(data={
+	    "success": True,
+	    "is_found": is_found,
+	    "schedule_list": list(schedule_list),
+	    "employee_list": list(employee_list),
+	})
+
+	response.status_code = 200
+	return response	
 
 
