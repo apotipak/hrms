@@ -55,8 +55,8 @@
 					    <div class="form-group">
 		                      <input class="form-check-input" type="radio" name="searchOptions" id="id_search_by_cnt_id" value="1" checked>
 		                      <label class="control-label" for="id_search_by_cnt_id">Contract No</label>&nbsp;
-		                      <input type="number" min=0 id="id_cus_id" class="col-2" value="0002526">&nbsp;
-		                      <input type="number" min=0 id="id_cus_brn" class="col-1" value="000">&nbsp;
+		                      <input type="number" min=0 id="id_cus_id" class="col-2" value="0001420">&nbsp;
+		                      <input type="number" min=0 id="id_cus_brn" class="col-1" value="001">&nbsp;
 		                      <input type="number" min=0 id="id_cus_vol" class="col-1" value="001">&nbsp;&nbsp;&nbsp;
 		                      <input class="form-check-input" type="radio" name="searchOptions" id="id_search_by_empid" value="2" readonly>
 		                      <label class="control-label" for="id_search_by_empid">Employee ID</label>&nbsp;
@@ -131,7 +131,7 @@
 		            	<div id="id_schedule_option"></div>
 
 		            	<div id="id_employee_list">
-							<table class="table table-sm">
+							<table class="table table-sm table-wrapper-scroll-y my-custom-scrollbar">
 							  <thead>
 							    <tr>
 							      <th scope="col"></th>
@@ -278,7 +278,7 @@
 
 					// Get Employee info
 					result = "";
-					result += "<table class='table table-sm'>";
+					result += "<table class='table table-sm table-wrapper-scroll-y my-custom-scrollbar'>";
 					result += "  <thead>";
 					result += "    <tr>";
 					result += "      <th scope='col'></th>";
@@ -309,7 +309,7 @@
 							result += "	     <td>" + emp_id + "</td>";
 							result += "	     <td>" + emp_fname_th + "&nbsp;&nbsp;" + emp_lname_th + "</td>";
 							result += "	     <td>" + sch_rank + "</td>";
-							
+
 							result += "	     <td>" + shf_desc + "</td>";
 							result += "	     <td></td>";
 							result += "	     <td></td>";

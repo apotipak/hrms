@@ -245,7 +245,7 @@
 		        	<div class="card-tools float-right">
 		        		<button id="cancel_security_guard_button" type="button" class="btn btn-secondary btn-sm">{% trans 'Cancel' %}</button>
 		        		<button id="save_security_guard_button" type="button" class="btn btn-primary btn-sm"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</button>
-		        		<button id="expand_security_guard_window_button" type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i></button>
+		        		<!--<button id="expand_security_guard_window_button" type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i></button>-->
 		        	</div>
 	        	</div>
 
@@ -1953,7 +1953,7 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 					// Security Guard List
 					result = "";
 					result += "<font size='2'>";
-					result += "<table class='table table-striped table-sm'>";
+					result += "<table class='table table-striped table-sm table-wrapper-scroll-y my-custom-scrollbar'>";
 					result += "  <thead>";
 					result += "    <tr>";
 					result += "      <th scope='col'>No.</th>";
