@@ -483,6 +483,7 @@
 	                        </div>                        	                        
 						</div>
 												
+
 					</div>
 					
 
@@ -524,6 +525,13 @@
 	      		</font>
 
 				<div id="id_security_guard_list"></div>
+
+			<!--
+              <div class="overlay">
+                <i class="fas fa-2x fa-sync-alt"></i>
+              </div>
+			-->
+
 	      	</div>
 
 	      	</form>
@@ -659,6 +667,8 @@ $(document).on('keypress', '#id_emp_id', function(e) {
 
 		emp_id = $(this).val();
 
+
+
 		if(emp_id=="") {
 		  	$(document).Toasts('create', {
 		    	class: "bg-danger", 
@@ -673,6 +683,15 @@ $(document).on('keypress', '#id_emp_id', function(e) {
 		  	});    		
     		$("#id_emp_id").focus();
 		} else {
+
+			// amnaj
+			//$(".card-security-guard-list .card-body").html(result);			
+			//var target = $(".card-security-guard-list .card-body");
+			//$('#my-card [data-card-widget="card-refresh"]').on('loaded.lte.cardrefresh', handleLoadedEvent)
+			//target.CardWidget('toggle');
+			
+			showLoading();
+
 			$.ajax({
 		    	url : "/monitoring/ajax/get_employee",
 		    	type : "GET",
@@ -722,6 +741,7 @@ $(document).on('keypress', '#id_emp_id', function(e) {
 					    	autoremove: true,
 					  	});
 		    		}
+		    		$.LoadingOverlay("hide");
 		    		$("#id_emp_id").select();
 		    	},
 		    });
@@ -1280,7 +1300,7 @@ $(document).ready(function(){
 
 		$("#customer_name_title").html("<h4 class='m-0'>Customer Information</h4>");		
 		$("#employeePhoto").html("<img src='/static/img/profile-128x128.png' width='90px;'' />");
-		
+
 		//$("#id_cus_main_cus_name_th").css("background-color", '');
 		//$("#id_cus_main_cus_name_th").animate({color:''}, 1000);					
 		$("#id_emp_name_th").css("background-color", '');
@@ -1300,8 +1320,8 @@ $(document).ready(function(){
     });
  	*/
 
-
 	$('input[type=radio][name=security_guard_list_status_option]').change(function() {
+		
 		// Security Guard List
 		result = "";
 		result += "<font size='2'>";
@@ -1451,13 +1471,12 @@ $(document).ready(function(){
 					//$(".card-security-guard-list .card-body").html(result);
 					$("#id_security_guard_list").html(result);
 					$("#security_guard_list_amount").html("Total <b>0</b>");		          		
-	        	}   	
-	        });	    	
+	        	}	        	
+	        });			
 	    }
 	    else if (this.value == '2') {
 			$("#id_security_guard_list").html("Loading...");
 			$("#security_guard_list_amount").html("Total <b>0</b>");
-
 			$.ajax({
 
 	        	url : "/monitoring/ajax/get_customer_schdule_plan_list/",
@@ -1587,11 +1606,8 @@ $(document).ready(function(){
 					$("#security_guard_list_amount").html("Total <b>0</b>");
 	        	}   	
 	        });
-
-	    } else if (this.value == '3') {
-
+	    } else if (this.value == '3') {			
 			$.ajax({
-
 	        	url : "/monitoring/ajax/get_customer_schdule_plan_list/",
 	        	type : "POST",
 	        	async: false,
@@ -1715,7 +1731,7 @@ $(document).ready(function(){
 
 					$("#security_guard_list_amount").html("Total <b>0</b>");		          		
 	        	},	        
-	        });	  
+	        });	       	
 	    } else {
 	    	result += "<tr><td colspan='17' align='center'>There is no data available.</td></tr>";
 			result += "  </tbody>";
@@ -1727,9 +1743,10 @@ $(document).ready(function(){
 
 			$("#security_guard_list_amount").html("Total <b>0</b>");		    	
 	    }
+		
 	});
-
-
+	
+	
 
 });
 
@@ -2773,7 +2790,15 @@ $(document).on('click', '#contractServiceListTable tbody tr', function(row, $el,
 	
 });
 
-
+function showLoading() {
+	$.LoadingOverlaySetup({
+	    background      : "rgba(0, 0, 0, 0.5)",
+	    image           : "/static/img/logo-small.png",
+	    imageAnimation  : "1.5s fadein",
+	    imageColor      : "#ffcc00"
+	});
+	$.LoadingOverlay("show");	
+}
 </script>
 {% endblock %}
 
