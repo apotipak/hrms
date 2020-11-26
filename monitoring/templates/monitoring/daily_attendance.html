@@ -23,7 +23,7 @@
 			  <div class="card-header">
 			    <h3 class="card-title"><i class="fas fa-tasks"></i>&nbsp;&nbsp;<b>Daily Attendance</b></h3>
 			    <div class="card-tools">
-			 		<button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i></button>
+			 		<!--<button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i></button>-->
 			      	<button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
 			    </div>
 			    <!-- /.card-tools -->
@@ -131,7 +131,7 @@
 		            	<div id="id_schedule_option"></div>
 
 		            	<div id="id_employee_list">
-							<table class="table table-sm table-wrapper-scroll-y my-custom-scrollbar">
+							<table id="employee_list_table" class="table table-sm">
 							  <thead>
 							    <tr>
 							      <th scope="col"></th>
@@ -184,8 +184,29 @@
 {% endblock %}
 
 {% block javascript %}
-<script>	
+<script>
+
 	$('#id_cus_id').focus();
+
+
+	$(document).on('click', '#employee_list_table tbody tr', function(row, $el, field) {
+		$(this).addClass('highlight').siblings().removeClass('highlight');
+		var emp_id = $(this).find('td:eq(1)').text();
+		alert(emp_id);
+
+		/*
+		var service_id = $(this).find('td:eq(0)').text();	
+		var srv_eff_from = $(this).find('td:eq(5)').text();
+		var srv_eff_to = $(this).find('td:eq(6)').text();
+
+		$('#id_selected_service_id').val(service_id);
+		$('#id_duration_from').datepicker('setDate', srv_eff_from);
+		$("#chkDurationFromDisable").prop("checked", true);		
+		$('#id_duration_to').datepicker('setDate', srv_eff_to);
+		$("#chkDurationToDisable").prop("checked", true);
+		*/
+		
+	});
 
 	$(document).on('keyup keypress', '#daily_attendance_search_form input[type="text"]', function(e) {
 		if(e.which == 13) {
@@ -278,7 +299,8 @@
 
 					// Get Employee info
 					result = "";
-					result += "<table class='table table-sm table-wrapper-scroll-y my-custom-scrollbar'>";
+					result += "<font size='2em;'>";
+					result += "<table id='employee_list_table' class='table table-sm table-fixed table-condensed table-wrapper-scroll-y my-custom-scrollbar'>";
 					result += "  <thead>";
 					result += "    <tr>";
 					result += "      <th scope='col'></th>";
@@ -294,6 +316,7 @@
 					result += "    </tr>";
 					result += "  </thead>";
 					result += "  <tbody>";
+
 
 					if(data.employee_list.length>0) {
 						for(i=0; i<data.employee_list.length; i++) {
@@ -325,7 +348,7 @@
 					}
 					result += "  </tbody>";
 					result += "</table>";
-
+					result += "</font>";
 
 					$('#id_employee_list').html(result);
 
