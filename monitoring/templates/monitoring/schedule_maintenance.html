@@ -245,6 +245,7 @@
 		        	<div class="card-tools float-right">
 		        		<button id="cancel_security_guard_button" type="button" class="btn btn-secondary btn-sm">{% trans 'Cancel' %}</button>
 		        		<button id="save_security_guard_button" type="button" class="btn btn-primary btn-sm"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</button>
+		        		<button id="expand_security_guard_window_button" type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i></button>
 		        	</div>
 	        	</div>
 
@@ -683,12 +684,6 @@ $(document).on('keypress', '#id_emp_id', function(e) {
 		  	});    		
     		$("#id_emp_id").focus();
 		} else {
-
-			// amnaj
-			//$(".card-security-guard-list .card-body").html(result);			
-			//var target = $(".card-security-guard-list .card-body");
-			//$('#my-card [data-card-widget="card-refresh"]').on('loaded.lte.cardrefresh', handleLoadedEvent)
-			//target.CardWidget('toggle');
 			
 			showLoading();
 
@@ -2692,6 +2687,7 @@ function reset_security_guard_list_form() {
 	$("#employeePhoto").html("<img src='/static/img/profile-128x128.png' width='90px;'' />");
 
 	$('#id_emp_status').css({'background-color':'', 'color':'#495057'});
+	$('#expand_security_guard_window_button').attr("disabled", false);
 
     $('#id_duration_from').datepicker({
         format: 'dd/mm/yyyy',
