@@ -259,50 +259,69 @@
 					<div class="col-8 float-left">
 
 					  <div class="form-group row">
-					    <div class="col-3">
-					    	<label class="form-check-label" for="id_emp_id"><b>Employee ID</b></label>
-                            <div class="input-group">                            	
-                              	<input type="number" id="id_emp_id" name="id_emp_id" class="form-control form-control-sm" value="" />
-                              	<button id="emp_id_lookup_button" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url=""><i class="fas fa-search fa-sm"></i></button>
 
-                              	<input type="hidden" id="id_selected_sch_no" name="id_selected_sch_no" value="0">
-                              	<input type="hidden" id="id_selected_service_id" name="id_selected_service_id" value="0">
-                              	
-                            </div>
-					    </div>	 
-					    <div class="col-5">
-					    	<label class="form-check-label" for="id_emp_name_th"><b>Name</b></label>
-					      	<input type="text" class="form-control form-control-sm" id="id_emp_name_th" placeholder="" readonly />
+					  	<div class="row col-2">
+						  	<div class="col-12">
+						  		<div id="employeePhoto"><img src="/static/img/profile-128x128.png" width="90px;" /></div>
+						  	</div>
+					  	</div>
+
+					  	<div class="row col-10 d-flex justify-content-end">
+
+						    <div class="col-3">
+						    	<label class="form-check-label" for="id_emp_id"><b>Employee ID</b></label>
+	                            <div class="input-group">                            	
+	                              	<input type="number" id="id_emp_id" name="id_emp_id" class="form-control form-control-sm" value="" />
+	                              	<button id="emp_id_lookup_button" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url=""><i class="fas fa-search fa-sm"></i></button>
+
+	                              	<input type="hidden" id="id_selected_sch_no" name="id_selected_sch_no" value="0">
+	                              	<input type="hidden" id="id_selected_service_id" name="id_selected_service_id" value="0">
+	                              	
+	                            </div>
+						    </div>	 
+
+						    <div class="col-5">
+						    	<label class="form-check-label" for="id_emp_name_th"><b>Name</b></label>
+						      	<input type="text" class="form-control form-control-sm" id="id_emp_name_th" placeholder="" readonly />
+						    </div>
+
+						    <div class="col-2">
+						    	<label class="form-check-label" for="id_sch_rank"><b>Rank</b></label>
+						      	<input type="text" class="form-control form-control-sm" id="id_sch_rank" placeholder="" readonly />
+						    </div>
+
+						    <div class="col-2">
+						    	<label class="form-check-label" for="id_sch_rank"><b>Department</b></label>
+						      	<input type="text" class="form-control form-control-sm" id="id_sch_dept" placeholder="" readonly />
+						    </div>
+
+					    <div class="col-6">
+					    	<label class="form-check-label" for="id_emp_name_th"><b>Employee Status</b></label>
+					    	<input type="text" class="form-control form-control-sm" id="id_emp_status" placeholder="" readonly />
 					    </div>
-
-
-					    <!--
-					    <div class="col-2">
+					    <div class="col-3">
 					    	<label class="form-check-label" for="id_emp_name_th"><b>Joined Date</b></label>
 					      	<input type="text" class="form-control form-control-sm" id="id_emp_join_date" placeholder="" readonly />
 					    </div>
-					    <div class="col-2">
+					    <div class="col-3">
 					    	<label class="form-check-label" for="id_emp_name_th"><b>Terminated Date</b></label>
 					      	<input type="text" class="form-control form-control-sm" id="id_emp_term_date" readonly />
-					    </div>					    
-						-->
+					    </div>	
 
 
-					    <div class="col-2">
-					    	<label class="form-check-label" for="id_sch_rank"><b>Rank</b></label>
-					      	<input type="text" class="form-control form-control-sm" id="id_sch_rank" placeholder="" readonly />
-					    </div>
 
-					    <div class="col-2">
-					    	<label class="form-check-label" for="id_sch_rank"><b>Department</b></label>
-					      	<input type="text" class="form-control form-control-sm" id="id_sch_dept" placeholder="" readonly />
-					    </div>
+					  	</div>
+
+
+
+
+
 
 					  </div>
 
 
 
-
+					  <!--
 					  <div class="form-group row">
 					    <div class="col-6">
 					    	<label class="form-check-label" for="id_emp_name_th"><b>Employee Status</b></label>
@@ -319,6 +338,7 @@
 					    </div>					    
 			
 					  </div>
+					  -->
 
 
 					  <div class="form-group row">
@@ -669,8 +689,10 @@ $(document).on('keypress', '#id_emp_id', function(e) {
 	    			$("#id_emp_term_date").val("");
 		    		$("#id_emp_name_th").css("background-color", '');
 		    		$("#id_emp_name_th").animate({color:''}, 1000);
+		    		$("#employeePhoto").html("<img src='/static/img/profile-128x128.png' width='90px;'' />");
 
-		    		if(data.is_found) {		    			
+		    		if(data.is_found) {
+						$("#employeePhoto").html("<img src='data:image/png;base64," + data.employee_photo + "' style='width:90px;'/>");
 		    			$("#id_emp_name_th").val(data.emp_fname_th.trim() + "  " + data.emp_lname_th.trim());
 		    			$("#id_sch_rank").val(data.emp_rank);
 		    			$("#id_sch_dept").val(data.emp_type);
@@ -759,7 +781,8 @@ $(document).ready(function(){
 		$("#id_emp_name_th").css("background-color", '');
     	$("#id_emp_name_th").animate({color:''}, 1000);
 		
-    	
+		
+    	$("#employeePhoto").html("<img src='/static/img/profile-128x128.png' width='90px;'' />");
 		$("#id_emp_id").focus();
 
     });
@@ -1082,7 +1105,7 @@ $(document).ready(function(){
 					result += "<table class='table table-striped table-sm'>";
 					result += "  <thead>";
 					result += "    <tr>";
-					result += "      <th scope='col'>No1.</th>";
+					result += "      <th scope='col'>No.</th>";
 					result += "      <th scope='col'>Name</th>";
 					result += "      <th scope='col'>Rank</th>";
 					result += "      <th scope='col'>Eff From</th>";
@@ -1197,9 +1220,7 @@ $(document).ready(function(){
 				    	close: true,
 				    	autoremove: true,
 				  	});
-			  	} else {
-
-					//<img alt="Embedded Image" src="data:image/png;base64,{{ rslt }}" style="width:50px;height:50px;"/>
+			  	} else {					
 					$.alert({
 					    title: 'Error',
 					    type: 'red',
@@ -2120,15 +2141,18 @@ function update_sch_plan(sch_no, srv_id) {
 			var dd = String(todayDate.getDate()).padStart(2, '0');
 			var mm = String(todayDate.getMonth() + 1).padStart(2, '0');
 			var yyyy = todayDate.getFullYear();	
-			todayDate = dd + '/' + mm + '/' + yyyy;			
+			todayDate = dd + '/' + mm + '/' + yyyy;
 			var todayDate = moment(todayDate, "DD/MM/YYYY");
 			var unlimitedDate = moment("31/12/2999", "DD/MM/YYYY");
-
 			var contractServiceFromDate = moment(data.sch_date_frm, "DD/MM/YYYY");
 			var contractServiceToDate = moment(data.sch_date_to, "DD/MM/YYYY");
+			var employeePhoto = data.employee_photo;
+			employeePhoto = "<img src='data:image/png;base64," + employeePhoto + "' style='width:100px;'/>"			
+			
 
     		$("#id_selected_sch_no").val(data.sch_no); 		
     		$("#id_emp_id").val(data.emp_id);
+    		$("#employeePhoto").html(employeePhoto);
 			$("#id_emp_id").attr("disabled", true);
 			$("#emp_id_lookup_button").attr("disabled", true);
     		
@@ -2647,6 +2671,7 @@ function reset_security_guard_list_form() {
 	$('input[type=radio][name=security_guard_list_status_option]').attr("disabled", false);
 	$("#id_emp_name_th").css("background-color", '');
 	$("#id_emp_name_th").animate({color:''}, 1000);
+	$("#employeePhoto").html("<img src='/static/img/profile-128x128.png' width='90px;'' />");
 
 	$('#id_emp_status').css({'background-color':'', 'color':'#495057'});
 

@@ -548,9 +548,10 @@ def ajax_get_customer_schedule_plan(request):
     try:
     	sch_plan = SchPlan.objects.filter(sch_no=sch_no).get()
 
-    	print("debug : " + str(sch_plan.emp_id_id) + str(sch_plan.sch_rank))
+    	print("debug : " + str(sch_plan.emp_id_id) + "," + str(sch_plan.sch_rank))
     	print("sch_active = " + str(sch_plan.sch_active))
-
+    	employee_info = EmpPhoto.objects.filter(emp_id=sch_plan.emp_id_id).get()
+    	employee_photo = b64encode(employee_info.image).decode("utf-8")
 
     	if sch_plan.relief:
     		relief = 1
@@ -604,7 +605,8 @@ def ajax_get_customer_schedule_plan(request):
 			"relief": relief,
 			"upd_date": sch_plan.upd_date.strftime("%d/%m/%Y %H:%M:%S"),
 			"upd_by": sch_plan.upd_by,
-			"upd_flag": sch_plan.upd_flag,	        
+			"upd_flag": sch_plan.upd_flag,
+			"employee_photo": employee_photo,
    		})					    		   
     except SchPlan.DoesNotExist:
 	    response = JsonResponse(data={
@@ -1086,6 +1088,9 @@ def ajax_get_employee(request):
 		else:
 			emp_term_date = ""
 
+		employee_info = EmpPhoto.objects.filter(emp_id=emp_id).get()
+		employee_photo = b64encode(employee_info.image).decode("utf-8")
+
 		response = JsonResponse(data={
 			"success": True,
 			"is_found": True,
@@ -1100,7 +1105,8 @@ def ajax_get_employee(request):
 			"emp_rank": employee.emp_rank,
 			"emp_type": employee.emp_type,
 			"emp_status_id": employee.emp_status_id,
-			"emp_status": str(employee.emp_status_id) + " | " + str(employee.emp_status.sts_th)
+			"emp_status": str(employee.emp_status_id) + " | " + str(employee.emp_status.sts_th),
+			"employee_photo": employee_photo,
 		    })
 		response.status_code = 200
 		return response
@@ -1123,6 +1129,7 @@ def ajax_get_employee(request):
 			"emp_type": "",
 			"emp_status_id": "",
 			"emp_status": "",
+			"employee_photo": "",
 		})
 
 	response.status_code = 200
