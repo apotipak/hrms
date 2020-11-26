@@ -1366,16 +1366,30 @@ def ajax_get_attendance_information(request):
 
 
 	# Get employee schedule list (v_dlyplan)
-	cursor.execute("select distinct emp_id,emp_fname_th,emp_lname_th,sch_rank,shf_desc,sch_shift from v_dlyplan where cnt_id=%s and dly_date=%s and customer_flag<>'D' order by sch_shift,emp_id", [cnt_id, attendance_date])
+	sql = "select distinct emp_id, emp_fname_th, emp_lname_th, sch_rank, shf_desc, sch_shift, "
+	sql += "absent "
+	sql += "from v_dlyplan "	
+	sql += "where cnt_id=%s and dly_date=%s and customer_flag<>'D' order by sch_shift,emp_id "
+
+	cursor.execute(sql, [cnt_id, attendance_date])
+
 	rows = cursor.fetchall()
 	employee_list = []
 	for row in rows:
+		print(row[6])
+		if(row[6]):
+			absent=1
+		else:
+			absent=0
+
 		record = {
 		    "emp_id": row[0],
 		    "emp_fname_th": row[1],
 		    "emp_lname_th": row[2],
 		    "sch_rank": row[3],
 		    "shf_desc": row[4],
+		    "sch_shift": row[5],
+		    "absent": absent,
 		}
 		employee_list.append(record)
 
