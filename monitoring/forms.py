@@ -19,9 +19,16 @@ class ScheduleMaintenanceForm(forms.Form):
         self.fields['cus_vol'].widget.attrs = {'class': 'form-control form-control-md col-2', 'placeholder': _('Customer Volume')}        
         self.fields['cus_vol'].error_messages = {'required': _('Please enter data'), 'max_value': _('Incorrect code')}
 
+        '''
         self.fields['cus_id'].initial = "1420"
         self.fields['cus_brn'].initial = "001"
         self.fields['cus_vol'].initial = "001"        
+        '''
+        
+        self.fields['cus_id'].initial = "2526"
+        self.fields['cus_brn'].initial = "000"
+        self.fields['cus_vol'].initial = "001"        
+
 
 def present_or_future_date(value):
     if value < datetime.date.today():
@@ -40,9 +47,16 @@ class GenerateDailyAttendForm(forms.Form):
         self.fields['cus_vol'].widget.attrs = {'class': 'form-control form-control-md col-2', 'placeholder': _('Customer Volume')}        
         self.fields['cus_vol'].error_messages = {'required': _('Please enter data'), 'max_value': _('Incorrect code')}
 
+        '''
         self.fields['cus_id'].initial = "1420"
         self.fields['cus_brn'].initial = "001"
         self.fields['cus_vol'].initial = "001"   
+        '''
+
+        self.fields['cus_id'].initial = "2526"
+        self.fields['cus_brn'].initial = "000"
+        self.fields['cus_vol'].initial = "001"        
+
 
     def clean_date(self):
         date = self.cleaned_data['date']

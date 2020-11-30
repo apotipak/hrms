@@ -1338,77 +1338,100 @@ def ajax_sp_generate_daily_attend_status(request):
 	return HttpResponse(json.dumps(data), content_type='application/json')
 
 
+def isGenerateDailyCreated(attendance_date):
+	print("attendance_date = " + str(attendance_date))
+	attendance_date = datetime.datetime.strptime(attendance_date, '%d/%m/%Y')
+	cursor = connection.cursor()	
+	cursor.execute("select count(*) from t_date where date_chk='" + str(attendance_date) + "'")	
+	tdate_count = cursor.fetchone()
+	if tdate_count[0] > 0:
+		return True
+	else:
+		return False
+	cursor.close()
+
+
 @permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
 @login_required(login_url='/accounts/login/')
 def ajax_get_attendance_information(request):
 
 	print("********************************************")
 	print("FUNCTION: ajax_get_attendance_information()")
-	print("********************************************")
-
-	attendance_date = request.POST.get('attendance_date')
-	attendance_date = datetime.datetime.strptime(attendance_date, '%d/%m/%Y')
-	print("attendance_date = " + str(attendance_date))
-	cus_id = request.POST.get('cus_id').lstrip("0")
-	cus_brn = request.POST.get('cus_brn')
-	cus_vol = request.POST.get('cus_vol')
-	cnt_id = cus_id+cus_brn+cus_vol
-	print("cnt_id = " + str(cnt_id))
-
-
-	# Get contract schedule list	
-	cursor = connection.cursor()	
-	cursor.execute("select shf_desc from cus_service a,t_shift b where a.cnt_id=%s and a.srv_active=1 and b.shf_id=a.srv_shif_id", [cnt_id])
-	rows = cursor.fetchall()
+	print("********************************************")	
+	
+	attendance_date = request.POST.get('attendance_date')	
+	
 	schedule_list = []
-	for index in range(len(rows)):
-		schedule_list.append(rows[index][0])
-
-
-	# Get employee schedule list (v_dlyplan)
-	sql = "select distinct emp_id, emp_fname_th, emp_lname_th, sch_rank, shf_desc, sch_shift, "
-	sql += "absent "
-	sql += "from v_dlyplan "	
-	sql += "where cnt_id=%s and dly_date=%s and customer_flag<>'D' order by sch_shift,emp_id "
-
-	cursor.execute(sql, [cnt_id, attendance_date])
-
-	rows = cursor.fetchall()
 	employee_list = []
-	for row in rows:
-		print(row[6])
-		if(row[6]):
-			absent=1
-		else:
-			absent=0
 
-		record = {
-		    "emp_id": row[0],
-		    "emp_fname_th": row[1],
-		    "emp_lname_th": row[2],
-		    "sch_rank": row[3],
-		    "shf_desc": row[4],
-		    "sch_shift": row[5],
-		    "absent": absent,
-		}
-		employee_list.append(record)
+	if isGenerateDailyCreated(attendance_date):
+		attendance_date = request.POST.get('attendance_date')
+		attendance_date = datetime.datetime.strptime(attendance_date, '%d/%m/%Y')
+		print("attendance_date = " + str(attendance_date))
+		cus_id = request.POST.get('cus_id').lstrip("0")
+		cus_brn = request.POST.get('cus_brn')
+		cus_vol = request.POST.get('cus_vol')
+		cnt_id = cus_id+cus_brn+cus_vol
+		print("cnt_id = " + str(cnt_id))
 
-	try:
-		dlyplan = DlyPlan.objects.filter(cnt_id=cnt_id).all()
-		is_found = True
-		print(1)
-	except CusContract.DoesNotExist:
+
+		# Get contract schedule list	
+		cursor = connection.cursor()	
+		cursor.execute("select shf_desc from cus_service a,t_shift b where a.cnt_id=%s and a.srv_active=1 and b.shf_id=a.srv_shif_id", [cnt_id])
+		rows = cursor.fetchall()
+		for index in range(len(rows)):
+			schedule_list.append(rows[index][0])
+
+
+		# Get employee schedule list (v_dlyplan)
+		sql = "select distinct emp_id, emp_fname_th, emp_lname_th, sch_rank, shf_desc, sch_shift, "
+		sql += "absent "
+		sql += "from v_dlyplan "	
+		sql += "where cnt_id=%s and dly_date=%s and customer_flag<>'D' order by sch_shift,emp_id "
+
+		cursor.execute(sql, [cnt_id, attendance_date])
+
+		rows = cursor.fetchall()
+		
+		for row in rows:
+			print(row[6])
+			if(row[6]):
+				absent=1
+			else:
+				absent=0
+
+			record = {
+			    "emp_id": row[0],
+			    "emp_fname_th": row[1],
+			    "emp_lname_th": row[2],
+			    "sch_rank": row[3],
+			    "shf_desc": row[4],
+			    "sch_shift": row[5],
+			    "absent": absent,
+			}
+			employee_list.append(record)
+
+		try:
+			dlyplan = DlyPlan.objects.filter(cnt_id=cnt_id).all()
+			is_found = True
+			print(1)
+		except CusContract.DoesNotExist:
+			is_found = False
+			print(2)
+
+		data = {"is_found": is_found, "schedule_list": list(schedule_list), "employee_list": employee_list}
+		message = ""
+		
+		print("is_found = " + str(is_found))
+		cursor.close
+	else:
 		is_found = False
-		print(2)
-
-	data = {"is_found": is_found, "schedule_list": list(schedule_list), "employee_list": employee_list}
-
-	print("is_found = " + str(is_found))
-	cursor.close
+		message = ""
 
 	response = JsonResponse(data={
 	    "success": True,
 	    "is_found": is_found,
+	    "message": message,
 	    "schedule_list": list(schedule_list),
 	    "employee_list": list(employee_list),
 	})

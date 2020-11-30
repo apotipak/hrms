@@ -80,98 +80,115 @@ $("#generated_date_ok_button").click( function() {
 
 	var frm = $('#process-raw-data');
     var pgrbar = $('#progress-bar');
-
 	var generated_date = $("#id_generated_date").val();
-	//alert(generated_date);
 
-	$("#generated_date_ok_button").attr("disabled", true);
-	$("#generated_date_ok_button").text("Please wait..");
+	$.confirm({
+		title: 'Confirmation',
+		type: 'red',
+		content: 'Confirm to generate on <strong>' + generated_date + '</strong>',
+	    buttons: {
+	        danger: {
+	        	text: 'Confirm',
+	            btnClass: 'btn-red any-other-class',
+	            action: function() {
+					$("#generated_date_ok_button").attr("disabled", true);
+					$("#generated_date_ok_button").text("Please wait..");	
 
-
-	$.ajax({
-    	url : "/monitoring/ajax/sp_generate_daily_attend/",
-    	type : "POST",
-    	async: true,
-    	data : {          
-      		csrfmiddlewaretoken: '{{ csrf_token }}',
-      		generated_date: generated_date,
-    	},
-		beforeSend: function () {
-			//$('#generate_date_card').addClass('overlay');
-		},
-    	success: function(data) {
-    		/*
-    		var count = data.com_type.length;
-    		var result = "";
-    		for(var i=0; i<count; i++) {
-				result += "<p>" + data.com_type[i]; + "</p>";
-    		}
-    		$("#generate_status").html(result);
-    		$('#generate_date_card').removeClass('overlay');
-    		*/    		
-
-    		if(data.is_error) {
-    			//alert(data.error_message);
-				$.alert({
-				    title: 'Error',
-				    type: 'red',
-				    content: data.error_message,
-				    animation: 'zoom',
-				    animationBounce: 1.5,
-				    closeIcon: false,
-				    boxWidth: '38%',
-				    useBootstrap: false,
-				});
-    		} else {    		
-				$.alert({
-				    title: 'Success',
-				    type: 'green',
-				    content: data.error_message,
-				    animation: 'zoom',
-				    animationBounce: 1.5,
-				    closeIcon: false,
-				    boxWidth: '38%',
-				    useBootstrap: false,
-				});    			
-    		}
-			$("#generated_date_ok_button").attr("disabled", false);
-			$("#generated_date_ok_button").text("Generate");    		
-    	},
-    });
-
+					$.ajax({
+				    	url : "/monitoring/ajax/sp_generate_daily_attend/",
+				    	type : "POST",
+				    	async: true,
+				    	data : {          
+				      		csrfmiddlewaretoken: '{{ csrf_token }}',
+				      		generated_date: generated_date,
+				    	},
+						beforeSend: function () {
+							showLoading();
+						},
+				    	success: function(data) {
+				    		if(data.is_error) {
+								$.alert({
+								    title: 'Error',
+								    type: 'red',
+								    content: data.error_message,
+								    animation: 'zoom',
+								    animationBounce: 1.5,
+								    closeIcon: false,
+								    boxWidth: '38%',
+								    useBootstrap: false,
+								});
+				    		} else {    		
+								$.alert({
+								    title: 'Success',
+								    type: 'green',
+								    content: data.error_message,
+								    animation: 'zoom',
+								    animationBounce: 1.5,
+								    closeIcon: false,
+								    boxWidth: '38%',
+								    useBootstrap: false,
+								});    			
+				    		}
+							$("#generated_date_ok_button").attr("disabled", false);
+							$("#generated_date_ok_button").text("Generate");
+							$.LoadingOverlay("hide");
+				    	},
+				    });
+	            }
+	        },
+	        default: {
+	        	text: 'Cancel',
+	            btnClass: 'btn-default',
+				action: function() {
+					$('#id_generated_date').focus();
+				}
+	        },
+	    }
+	});
+    
 });
 
-function get_generate_daily_attend_status(generated_date) {
-        $.ajax({
-            type: 'get',
-            url: '/monitoring/ajax/sp_generate_daily_attend_status/',
-            data: {'generated_date': generated_date},
-            success: function (data) {
-                frm.html('');
-                if (data.state == 'PENDING') {
-                    frm.html('Please wait ...');
-                }
-                else if (data.state == 'PROGRESS') {
-                    pgrbar.css('display', 'inline');
-                    pgrbar.val(data.result.percent);
-                    frm.html('lines processed ' + data.result.current + ' out of ' + data.result.total);
-                }
-                else if(data.state == 'SUCCESS'){
-                    pgrbar.css('display', 'none');
-                    frm.html('Successfully Completed!');
+	function get_generate_daily_attend_status(generated_date) {
+	    $.ajax({
+	        type: 'get',
+	        url: '/monitoring/ajax/sp_generate_daily_attend_status/',
+	        data: {'generated_date': generated_date},
+	        success: function (data) {
+	            frm.html('');
+	            if (data.state == 'PENDING') {
+	                frm.html('Please wait ...');
+	            }
+	            else if (data.state == 'PROGRESS') {
+	                pgrbar.css('display', 'inline');
+	                pgrbar.val(data.result.percent);
+	                frm.html('lines processed ' + data.result.current + ' out of ' + data.result.total);
+	            }
+	            else if(data.state == 'SUCCESS'){
+	                pgrbar.css('display', 'none');
+	                frm.html('Successfully Completed!');
 
-                }
-                if (data.state != 'SUCCESS') {
-                    setTimeout(function () {
-                        get_task_info(task_id)
-                    }, 500);
-                }
-            },
-            error: function (data) {
-                frm.html("error!");
-            }
-        });
-    }
+	            }
+	            if (data.state != 'SUCCESS') {
+	                setTimeout(function () {
+	                    get_task_info(task_id)
+	                }, 500);
+	            }
+	        },
+	        error: function (data) {
+	            frm.html("error!");
+	        }
+	    });
+	}
+
+	function showLoading() {
+		$.LoadingOverlaySetup({
+		    background      : "rgba(0, 0, 0, 0.5)",
+		    image           : "/static/img/logo-small.png",
+		    imageAnimation  : "1.5s fadein",
+		    imageColor      : "#ffcc00"
+		});
+		$.LoadingOverlay("show");	
+	}
 
 </script>
 {% endblock %}

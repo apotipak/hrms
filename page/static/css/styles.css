@@ -242,7 +242,7 @@ input:checked + .slider:after {
 
 .my-custom-scrollbar {
 position: relative;
-height: 200px;
+height: 120px;
 overflow: auto;
 }
 .table-wrapper-scroll-y {
@@ -279,4 +279,8 @@ input[type='number'] {
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
+}
+
+.sortable tr {
+    cursor: pointer;
 }

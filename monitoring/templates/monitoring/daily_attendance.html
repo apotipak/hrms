@@ -55,7 +55,7 @@
 					    <div class="form-group">
 		                      <input class="form-check-input" type="radio" name="searchOptions" id="id_search_by_cnt_id" value="1" checked>
 		                      <label class="control-label" for="id_search_by_cnt_id">Contract No</label>&nbsp;
-		                      <input type="number" min=0 id="id_cus_id" class="col-2" value="0001420">&nbsp;
+		                      <input type="number" min=0 id="id_cus_id" class="col-2" value="0002526">&nbsp;
 		                      <input type="number" min=0 id="id_cus_brn" class="col-1" value="000">&nbsp;
 		                      <input type="number" min=0 id="id_cus_vol" class="col-1" value="001">&nbsp;&nbsp;&nbsp;
 		                      <input class="form-check-input" type="radio" name="searchOptions" id="id_search_by_empid" value="2" readonly>
@@ -128,7 +128,9 @@
 		            	<div id="id_schedule_option"></div>
 
 		            	<div id="id_employee_list">
-							<table id="employee_list_table" class="table table-sm">
+							<!--<table id="employee_list_table" class="table table-sm">-->
+							<font size='2em;'>
+							<table id='employee_list_table' class='table table-sm table-fixed table-condensed table-wrapper-scroll-y my-custom-scrollbar'>
 							  <thead>
 							    <tr>
 							      <th scope="col">&nbsp;</th>
@@ -147,10 +149,11 @@
 							  </thead>
 							  <tbody>
 							    <tr>
-							      <td colspan="12" class="text-center"><br>There is no data.</td>
+							      <td colspan="12" class="text-center"><br><br>There is no data.<br><br><br></td>
 							    </tr>
 							  </tbody>
 							</table>
+							</font>
 						</div>
 
 		        	</div>
@@ -231,7 +234,7 @@
 					      <button type="button" id="generated_date_ok_button" class="btn btn-primary btn-sm">&nbsp;&nbsp;&nbsp;&nbsp;OK&nbsp;&nbsp;&nbsp;&nbsp;</button>&nbsp;
 					      <button type="reset" class="btn btn-secondary btn-sm">Cancel</button>
 					    </div>
-					    -->	    					
+					    -->
 				</div>
 				</form>
 			  </div>
@@ -319,6 +322,8 @@
       }
     });
 
+
+    /* ID_CUS_VOL */
     $(document).on('keypress', '#id_cus_vol', function(e) {
       if(e.which == 13) { 
       	
@@ -370,7 +375,7 @@
 					result += "<table id='employee_list_table' class='table table-sm table-fixed table-condensed table-wrapper-scroll-y my-custom-scrollbar'>";
 					result += "  <thead>";
 					result += "    <tr>";
-					result += "      <th scope='col'></th>";
+					result += "      <th scope='col'>&nbsp;</th>";
 					result += "      <th scope='col'>Emp ID</th>";
 					result += "      <th scope='col'>Name</th>";
 					result += "      <th scope='col'>Rank</th>";
@@ -384,7 +389,7 @@
 					result += "      <th scope='col'>Call Time</th>";
 					result += "    </tr>";
 					result += "  </thead>";
-					result += "  <tbody>";
+					result += "  <tbody class='sortable'>";
 
 
 					if(data.employee_list.length>0) {
@@ -407,7 +412,6 @@
 							result += "	     <td>" + emp_id + "</td>";
 							result += "	     <td>" + emp_fname_th + "&nbsp;&nbsp;" + emp_lname_th + "</td>";
 							result += "	     <td>" + sch_rank + "</td>";
-
 							result += "	     <td>" + shf_desc + "</td>";
 							result += "	     <td>Late</td>";
 							result += "	     <td>Full</td>";
@@ -421,7 +425,7 @@
 					}
 					else {
 							result += "    <tr class='text-center'>";
-							result += "	     <td colspan='9'><br><br>There is no data.</td>";
+							result += "	     <td colspan='12'><br><br>There is no data....<br><br><br></td>";
 							result += "	   </tr>"
 					}
 					result += "  </tbody>";
@@ -431,7 +435,16 @@
 					$('#id_employee_list').html(result);
 
 				} else {
-					alert("Not found");
+					$.alert({
+					    title: 'Error',
+					    type: 'red',
+					    content: "<strong><h4>" + attendance_date + "</strong><small> is not generated. Please generate first.</small></h4>",
+					    animation: 'zoom',
+					    animationBounce: 1.5,
+					    closeIcon: false,
+					    boxWidth: '38%',
+					    useBootstrap: false,
+					});					
 				}
 			}
 		});
