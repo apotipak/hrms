@@ -45,12 +45,12 @@
 					    <div class="form-group">
 		                      <input class="form-check-input" type="radio" name="searchOptions" id="id_search_by_cnt_id" value="1" checked>
 		                      <label class="control-label" for="id_search_by_cnt_id">Contract No</label>&nbsp;
-		                      <input type="number" min=0 id="id_cus_id" class="col-2" value="0002526">&nbsp;
-		                      <input type="number" min=0 id="id_cus_brn" class="col-1" value="000">&nbsp;
-		                      <input type="number" min=0 id="id_cus_vol" class="col-1" value="001">&nbsp;&nbsp;&nbsp;
+		                      <input type="number" min=0 id="id_cus_id" class="form-control form-control-sm col-2" value="0002526">&nbsp;
+		                      <input type="number" min=0 id="id_cus_brn" class="form-control form-control-sm col-1" value="000">&nbsp;
+		                      <input type="number" min=0 id="id_cus_vol" class="form-control form-control-sm col-1" value="001">&nbsp;&nbsp;&nbsp;
 		                      <input class="form-check-input" type="radio" name="searchOptions" id="id_search_by_empid" value="2" readonly>
 		                      <label class="control-label" for="id_search_by_empid">Employee ID</label>&nbsp;
-		                      <input type="text" id="id_emp_id" class="col-2" readonly>
+		                      <input type="text" id="id_emp_id" class="form-control form-control-sm col-2" readonly>
 	                    </div>
 	                </div>
 
@@ -187,10 +187,11 @@
 
 			  <!-- /.card-header -->
 			  <div class="card-body">
+
 				<form class="form-inline" name="employee_detail_form">
 					{% csrf_token %}
 
-			  	<div class="row bg-light">
+			  	<div class="row col-10">
 
 			  		<!--
 			  		<div class="float-left text-left col-5">
@@ -202,34 +203,40 @@
 					</div>
 					-->
 
-				    <div class="float-left text-left col-3">
-				    	<label class="form-check-label" for="id_emp_id"><b>Employee ID</b></label>
+				    <div class="col-3">
+				    	<label style="text-align: left" for="id_emp_id"><b>Employee ID</b></label>
                         <div class="input-group">                            	
                           	<input type="number" id="id_emp_id" name="id_emp_id" class="form-control form-control-sm" value="" />
                           	<button id="emp_id_lookup_button" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url=""><i class="fas fa-search fa-sm"></i></button>
-
-                          	<!--
-                          	<input type="hidden" id="id_selected_sch_no" name="id_selected_sch_no" value="0">
-                          	<input type="hidden" id="id_selected_service_id" name="id_selected_service_id" value="0">
-                          	-->
                         </div>
 				    </div>	 
 
 
-				    <div class="col-5">
-				    	<label class="form-check-label" for="id_emp_name_th"><b>Name</b></label>
+					<div class="col-6" style="text-align: left">
+						<label class="control-label" for="id_emp_id"><b>Name</b></label>
+					    <div class="form-group">
+		                      <input type="text" id="id_emp_name_th" class="form-control form-control-sm col-2">&nbsp;
+		                      <input type="text" id="id_emp_rank" class="form-control form-control-sm col-1">&nbsp;
+		                      <input type="text" id="id_emp_dept" class="form-control form-control-sm col-1">&nbsp;&nbsp;&nbsp;
+	                    </div>
+	                </div>
+
+	                <!--
+				    <div class="float-left col-3">
+				    	<label class="" for="id_emp_name_th"><b>Name</b></label>
 				      	<input type="text" class="form-control form-control-sm" id="id_emp_name_th" placeholder="" readonly />
 				    </div>
 
-				    <div class="col-2">
-				    	<label class="form-check-label" for="id_sch_rank"><b>Rank</b></label>
+				    <div class="float-left col-2">
+				    	<label class="" for="id_sch_rank"><b>Rank</b></label>
 				      	<input type="text" class="form-control form-control-sm" id="id_sch_rank" placeholder="" readonly />
 				    </div>
 
-				    <div class="col-2">
-				    	<label class="form-check-label" for="id_sch_rank"><b>Department</b></label>
+				    <div class="float-right col-2">
+				    	<label class="" for="id_sch_rank"><b>Department</b></label>
 				      	<input type="text" class="form-control form-control-sm" id="id_sch_dept" placeholder="" readonly />
 				    </div>
+					-->
 
 					<!--
 					<div class="float-right text-right col-7">
