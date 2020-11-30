@@ -1339,7 +1339,6 @@ def ajax_sp_generate_daily_attend_status(request):
 
 
 def isGenerateDailyCreated(attendance_date):
-	print("attendance_date = " + str(attendance_date))
 	attendance_date = datetime.datetime.strptime(attendance_date, '%d/%m/%Y')
 	cursor = connection.cursor()	
 	cursor.execute("select count(*) from t_date where date_chk='" + str(attendance_date) + "'")	
@@ -1384,8 +1383,20 @@ def ajax_get_attendance_information(request):
 
 
 		# Get employee schedule list (v_dlyplan)
-		sql = "select distinct emp_id, emp_fname_th, emp_lname_th, sch_rank, shf_desc, sch_shift, "
-		sql += "absent "
+		sql = "select distinct "
+		sql += "emp_fname_th, emp_lname_th, shf_type, shf_desc, shf_time_frm, shf_time_to, "
+		sql += "shf_amt_hr, Remp_fname_th, Remp_lname_th, ot_res_th, ot_res_en, "
+		sql += "dept_th, dept_en, cnt_id, emp_id, dly_date, "
+		sql += "sch_shift, sch_no, dept_id, sch_rank, prd_id, "
+		sql += "absent, relieft, relieft_id, tel_man, tel_time, "
+		sql += "tel_amt, tel_paid, ot, ot_reason, ot_time_frm, "
+		sql += "ot_time_to, ot_hr_amt, ot_pay_amt, spare, wage_id, "
+		sql += "wage_no, pay_type, bas_amt, bon_amt, pub_amt, "
+		sql += "soc_amt, soc, pub, paid, upd_date, "
+		sql += "upd_by, upd_flag, upd_gen, cus_name_th, late, "
+		sql += "sch_relieft, otm_amt, dof_amt, dof, TPA, "
+		sql += "late_full, DAY7, cnt_sale_amt, cus_name_en, cnt_active, "
+		sql += "Remark, ex_dof_amt, Customer_Flag "	
 		sql += "from v_dlyplan "	
 		sql += "where cnt_id=%s and dly_date=%s and customer_flag<>'D' order by sch_shift,emp_id "
 
@@ -1401,13 +1412,70 @@ def ajax_get_attendance_information(request):
 				absent=0
 
 			record = {
-			    "emp_id": row[0],
-			    "emp_fname_th": row[1],
-			    "emp_lname_th": row[2],
-			    "sch_rank": row[3],
-			    "shf_desc": row[4],
-			    "sch_shift": row[5],
-			    "absent": absent,
+				"emp_fname_th": row[0],
+				"emp_lname_th": row[1],
+				"shf_type": row[2],
+				"shf_desc": row[3],
+				"shf_time_frm": row[4],
+				"shf_time_to": row[5],
+				"shf_amt_hr": row[6],
+				"Remp_fname_th": row[7],
+				"Remp_lname_th": row[8],
+				"ot_res_th": row[9],
+				"ot_res_en": row[10],
+				"dept_th": row[11],
+				"dept_en": row[12],
+				"cnt_id": row[13],
+				"emp_id": row[14],
+				"dly_date": row[15],
+				"sch_shift": row[16],
+				"sch_no": row[17],
+				"dept_id": row[18],
+				"sch_rank": row[19],
+				"prd_id": row[20],
+				"absent": row[21],
+				"relieft": row[22],
+				"relieft_id": row[23],
+				"tel_man": row[24],
+				"tel_time": row[25],
+				"tel_amt": row[26],
+				"tel_paid": row[27],
+				"ot": row[28],
+				"ot_reason": row[29],
+				"ot_time_frm": row[30],
+				"ot_time_to": row[31],
+				"ot_hr_amt": row[32],
+				"ot_pay_amt": row[33],
+				"spare": row[34],
+				"wage_id": row[35],
+				"wage_no": row[36],
+				"pay_type": row[37],
+				"bas_amt": row[38],
+				"bon_amt": row[39],
+				"pub_amt": row[40],
+				"soc_amt": row[41],
+				"soc": row[42],
+				"pub": row[43],
+				"paid": row[44],
+				"upd_date": row[45],
+				"upd_by": row[46],
+				"upd_flag": row[47],
+				"upd_gen": row[48],
+				"cus_name_th": row[49],
+				"late": row[50],
+				"sch_relieft": row[51],
+				"otm_amt": row[52],
+				"dof_amt": row[53],
+				"dof": row[54],
+				"TPA": row[55],
+				"late_full": row[56],
+				"DAY7": row[57],
+				"cnt_sale_amt": row[58],
+				"cus_name_en": row[59],
+				"cnt_active": row[60],
+				"Remark": row[61],
+				"ex_dof_amt": row[62],
+				"Customer_Flag": row[63],
 			}
 			employee_list.append(record)
 
@@ -1421,7 +1489,7 @@ def ajax_get_attendance_information(request):
 
 		data = {"is_found": is_found, "schedule_list": list(schedule_list), "employee_list": employee_list}
 		message = ""
-		
+
 		print("is_found = " + str(is_found))
 		cursor.close
 	else:
