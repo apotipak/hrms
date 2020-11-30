@@ -19,23 +19,24 @@
     	<section class="content">
 
     		<!-- SEARCH FORM -->
-			<div class="card card-outline card-success" id="daily_attendance_search_card">
+			<div class="card card-outline card-default" id="daily_attendance_search_card">
+
+			  <!--
 			  <div class="card-header">
 			    <h3 class="card-title"><i class="fas fa-tasks"></i>&nbsp;&nbsp;<b>Daily Attendance</b></h3>
 			    <div class="card-tools">
-			 		<!--<button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i></button>-->
+			 		<button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i></button>
 			      	<button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
 			    </div>
-			    <!-- /.card-tools -->
-
 			  </div>
-
+			  -->			  
 			  <!-- /.card-header -->
+
 			  <div class="card-body">
 				<form class="form-inline" name="daily_attendance_search_form">
 					{% csrf_token %}
 
-			  	<div class="row col-12 bg-light">
+			  	<div class="row col-12">
 
 			  		<div class="float-left text-left col-5">
 					    <div class="form-inline">
@@ -75,9 +76,11 @@
 			  </div>
 			  <!-- /.card-body -->
 
+			  <!--
 			  <div class="card-footer">
-			  	<!-- content goes here -->
+			  	&nbsp;
 			  </div>
+			  -->
 			  <!-- /.card-footer -->
 			</div>
 			<!-- /.card -->
@@ -204,15 +207,46 @@
 				<form class="form-inline" name="employee_detail_form">
 					{% csrf_token %}
 
-			  	<div class="row col-12 bg-light">
+			  	<div class="row bg-light">
 
+			  		<!--
 			  		<div class="float-left text-left col-5">
 					    <div class="form-inline">
-					        <label class="control-label">Emp.ID</label>&nbsp;&nbsp;				        
+					        <label class="control-label">Employee ID</label>&nbsp;&nbsp;				        
 					        <input type="number" min=0 class="form-control form-control-sm col-3" id="id_emp_id">&nbsp;&nbsp;
 					        <input type="number" min=0 class="form-control form-control-sm col-2" id="id_emp_name">&nbsp;
 					    </div>
 					</div>
+					-->
+
+				    <div class="float-left text-left col-3">
+				    	<label class="form-check-label" for="id_emp_id"><b>Employee ID</b></label>
+                        <div class="input-group">                            	
+                          	<input type="number" id="id_emp_id" name="id_emp_id" class="form-control form-control-sm" value="" />
+                          	<button id="emp_id_lookup_button" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url=""><i class="fas fa-search fa-sm"></i></button>
+
+                          	<!--
+                          	<input type="hidden" id="id_selected_sch_no" name="id_selected_sch_no" value="0">
+                          	<input type="hidden" id="id_selected_service_id" name="id_selected_service_id" value="0">
+                          	-->
+                        </div>
+				    </div>	 
+
+
+				    <div class="col-5">
+				    	<label class="form-check-label" for="id_emp_name_th"><b>Name</b></label>
+				      	<input type="text" class="form-control form-control-sm" id="id_emp_name_th" placeholder="" readonly />
+				    </div>
+
+				    <div class="col-2">
+				    	<label class="form-check-label" for="id_sch_rank"><b>Rank</b></label>
+				      	<input type="text" class="form-control form-control-sm" id="id_sch_rank" placeholder="" readonly />
+				    </div>
+
+				    <div class="col-2">
+				    	<label class="form-check-label" for="id_sch_rank"><b>Department</b></label>
+				      	<input type="text" class="form-control form-control-sm" id="id_sch_dept" placeholder="" readonly />
+				    </div>
 
 					<!--
 					<div class="float-right text-right col-7">
