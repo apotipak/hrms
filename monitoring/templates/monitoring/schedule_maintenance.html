@@ -1314,13 +1314,15 @@ $(document).ready(function(){
     	alert("todo");
     });
  	*/
-
+ 	
 	$('input[type=radio][name=security_guard_list_status_option]').change(function() {
 		
 		// Security Guard List
 		result = "";
 		result += "<font size='2'>";
-		result += "<table class='table table-striped table-sm'>";
+		//result += "<table class='table table-striped table-sm'>";
+		result += "<table class='table table-striped table-sm table-wrapper-scroll-y my-custom-scrollbar'>";
+
 		result += "  <thead>";
 		result += "    <tr>";
 		result += "      <th scope='col'>No.</th>";
