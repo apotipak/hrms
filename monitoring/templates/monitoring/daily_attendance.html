@@ -155,9 +155,12 @@
 			  </div>
 			  <!-- /.card-body -->
 
+			  <!--
 			  <div class="card-footer">
-			  	<!-- content goes here -->
+			  	&nbsp;
 			  </div>
+			  -->
+
 			  <!-- /.card-footer -->
 
 			  <!--
@@ -171,7 +174,7 @@
 
 
     		<!-- EMPLOYEE DETAIL -->
-			<div class="card card-outline card-success" id="daily_attendance_search_card">
+			<div class="card card-outline card-success">
 			  <div class="card-header">
 			    
 			    <!--<h3 class="card-title"><i class="fas fa-tasks"></i>&nbsp;&nbsp;<b>Daily Attendance</b></h3>-->
@@ -188,10 +191,10 @@
 			  <!-- /.card-header -->
 			  <div class="card-body">
 
-				<form class="form-inline" name="employee_detail_form">
+			  	<div class="row col-12">
+					
+					<form class="form-row">
 					{% csrf_token %}
-
-			  	<div class="row col-10">
 
 			  		<!--
 			  		<div class="float-left text-left col-5">
@@ -204,7 +207,7 @@
 					-->
 
 				    <div class="col-3">
-				    	<label style="text-align: left" for="id_emp_id"><b>Employee ID</b></label>
+				    	<label class="text-align-top text-align-left"><b>Employee ID</b></label>
                         <div class="input-group">                            	
                           	<input type="number" id="id_emp_id" name="id_emp_id" class="form-control form-control-sm" value="" />
                           	<button id="emp_id_lookup_button" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url=""><i class="fas fa-search fa-sm"></i></button>
@@ -212,9 +215,9 @@
 				    </div>	 
 
 
-					<div class="col-6" style="text-align: left">
+					<div class="col-6">
 						<label class="control-label" for="id_emp_id"><b>Name</b></label>
-					    <div class="form-group">
+					    <div class="input-group">
 		                      <input type="text" id="id_emp_name_th" class="form-control form-control-sm col-2">&nbsp;
 		                      <input type="text" id="id_emp_rank" class="form-control form-control-sm col-1">&nbsp;
 		                      <input type="text" id="id_emp_dept" class="form-control form-control-sm col-1">&nbsp;&nbsp;&nbsp;
@@ -264,10 +267,13 @@
 			  </div>
 			  <!-- /.card-body -->
 
+			  <!--
 			  <div class="card-footer">
-			  	<!-- content goes here -->
+			  	&nbsp;
 			  </div>
+			  -->
 			  <!-- /.card-footer -->
+
 			</div>
 			<!-- /.card -->
 
