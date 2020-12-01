@@ -50,9 +50,14 @@
 		                      <input type="number" min=0 id="id_cus_vol" class="form-control form-control-sm col-1" value="001">&nbsp;&nbsp;&nbsp;
 		                      <input class="form-check-input" type="radio" name="searchOptions" id="id_search_by_empid" value="2" readonly>
 		                      <label class="control-label" for="id_search_by_empid">Employee ID</label>&nbsp;
-		                      <input type="text" id="id_search_emp_id" class="form-control form-control-sm col-2" readonly>
+		                      <input type="text" id="id_search_emp_id" class="form-control form-control-sm col-2" readonly>&nbsp;&nbsp;
+
+		                      <button id="cancelDailyAttendanceButton" type="button" class="btn btn-sm btn-warning pull-right">Cancel</button>
 	                    </div>
+
+
 	                </div>
+	                
 
 				</div>
 				</form>
@@ -114,7 +119,6 @@
 		            	<div id="id_schedule_option"></div>
 
 		            	<div id="id_employee_list">
-							<!--<table id="employee_list_table" class="table table-sm">-->
 							<font size='2em;'>
 							<table id='employee_list_table' class='table table-sm table-fixed table-condensed table-wrapper-scroll-y my-custom-scrollbar'>
 							  <thead>
@@ -217,7 +221,7 @@
 			  	<div class="col-md-10 float-left">
 
 
-					<form class="form-row">
+					<form class="form-row" id="dailyAttendanceDataEntryForm">
 					{% csrf_token %}
 
 				    <div class="col-md-2">
@@ -320,9 +324,36 @@
 
 {% block javascript %}
 <script>
+ 	function disableAllElements() {
+ 		$("#dailyAttendanceDataEntryForm:input").attr("disabled", true);
+ 		$("#id_emp_id").attr("disabled", true);
+ 		$("#add_button").attr("disabled", true);
+ 		$("#save_button").attr("disabled", true);
+ 		$("#delete_button").attr("disabled", true);
 
-	$('#id_cus_id').focus();
+ 		$("#id_absent_check").attr("disabled", true);
+		$("#id_late_check").attr("disabled", true);
+ 		$("#id_phone_check").attr("disabled", true);
+ 	}
 
+ 	function enableAllElements() { 		
+ 		$("#dailyAttendanceDataEntryForm:input").attr("disabled", false);
+ 		$("#id_emp_id").attr("disabled", false);
+ 		$("#add_button").attr("disabled", false);
+ 		$("#save_button").attr("disabled", false);
+ 		$("#delete_button").attr("disabled", false);
+
+ 		$("#id_absent_check").attr("disabled", false);
+		$("#id_late_check").attr("disabled", false);
+ 		$("#id_phone_check").attr("disabled", false);
+ 	}
+
+	$(document).ready(function(){
+		disableAllElements();
+
+		$('#id_cus_id').focus();
+
+	});
 
 	$(document).on('click', '#employee_list_table tbody tr', function(row, $el, field) {
 		$(this).addClass('highlight').siblings().removeClass('highlight');
@@ -512,6 +543,16 @@
 							result += "	     <td>" + upd_gen + "</td>";
 							result += "    </tr>";
 						}
+
+						enableAllElements();
+
+						$("#id_date").attr("readonly", true);
+						$("#id_shift_option").attr("readonly", true);
+						$("#id_cus_id").attr("readonly", true);
+						$("#id_cus_brn").attr("readonly", true);
+						$("#id_cus_vol").attr("readonly", true);
+						$("input[name=searchOptions]").attr("disabled",true);
+
 					}
 					else {
 							result += "    <tr class='text-center'>";
@@ -715,6 +756,65 @@
         
     });
 
+ 	$("#cancelDailyAttendanceButton").click( function() {
+    	event.preventDefault();    	
+
+    	$("#id_cus_id").val("0002526");
+    	$("#id_cus_brn").val("000");
+    	$("#id_cus_vol").val("001");
+
+    	clearEmployeeListTable();
+    	disableAllElements();
+
+
+		$("#id_date").attr("readonly", false);
+		$("#id_shift_option").attr("readonly", false);
+
+		$("#id_cus_id").attr("readonly", false);
+		$("#id_cus_brn").attr("readonly", false);
+		$("#id_cus_vol").attr("readonly", false);
+		$("input[name=searchOptions]").attr("disabled", false);
+
+    	$("#id_cus_id").focus();
+    });
+
+    function clearEmployeeListTable() {
+    	var result = "";
+		result += "<font size='2em;'>";
+		result += "<table id='employee_list_table' class='table table-sm table-fixed table-condensed table-wrapper-scroll-y my-custom-scrollbar'>";
+		result += "  <thead>";
+		result += "    <tr>";
+		result += "      <th scope='col'>&nbsp;</th>";
+		result += "      <th scope='col'>Emp ID</th>";
+		result += "      <th scope='col'>Name</th>";
+		result += "      <th scope='col'>Rank</th>";
+		result += "      <th scope='col'>Shift</th>";
+		result += "      <th scope='col'>Late</th>";
+		result += "      <th scope='col'>Full</th>";
+		result += "      <th scope='col'>Relief</th>";
+		result += "      <th scope='col'>Rel. ID</th>";
+		result += "      <th scope='col'>Name</th>";
+		result += "      <th scope='col'>TEL</th>";
+		result += "      <th scope='col'>Call Time</th>";
+		result += "      <th scope='col'>Call Amt</th>";
+		result += "      <th scope='col'>Call Paid</th>";
+		result += "     <th scope='col'>Spare</th>";
+		result += "      <th scope='col'>Wage</th>";
+		result += "      <th scope='col'>Upd Date</th>";
+		result += "      <th scope='col'>Upd By</th>";
+		result += "      <th scope='col'>Upd Flag</th>";
+		result += "      <th scope='col'>Upd Gen</th>";
+		result += "    </tr>";
+		result += "  </thead>";
+		result += "  <tbody>";
+		result += "    <tr>";
+		result += "      <td colspan='20' class='text-center'><br><br>There is no data.<br><br><br></td>";
+		result += "    </tr>";
+		result += "  </tbody>";
+		result += "</table>";
+		result += "</font>";
+		$("#id_employee_list").html(result);
+    }
 </script>
 {% endblock %}
 		
