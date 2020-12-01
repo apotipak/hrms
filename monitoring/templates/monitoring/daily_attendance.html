@@ -259,18 +259,18 @@
 					<table class="table table-sm table-bordered">
 					  <thead>
 					    <tr>
-					      <td colspan="4" class="text-center">Normal</td>
+					      <td colspan="4" class="text-center"><b>Normal</b></td>
 					    </tr>
 					  </thead>
 					  <tbody>
 					    <tr>
-					      <th>DAY</th>
+					      <td class="text-center">D&nbsp;&nbsp;<i class="fas fa-sun"></i></td>
 					      <td class="text-center">0</td>
 					      <td class="text-center">0</td>
 					      <td class="text-center text-danger">0</td>
 					    </tr>
 					    <tr>
-					      <th>NIGHT</th>
+					      <td class="text-center">N&nbsp;&nbsp;<i class="fas fa-moon"></i></td>
 					      <td class="text-center">0</td>
 					      <td class="text-center">0</td>
 					      <td class="text-center text-danger">0</td>
@@ -282,18 +282,18 @@
 					<table class="table table-sm table-bordered">
 					  <thead>
 					    <tr>
-					      <td colspan="4" class="text-center">Public</th>
+					      <td colspan="4" class="text-center"><b>Public</b></th>
 					    </tr>
 					  </thead>
 					  <tbody>
 					    <tr>
-					      <th>DAY</th>
+					      <td class="text-center">D&nbsp;&nbsp;<i class="fas fa-sun"></i></td>
 					      <td class="text-center">0</td>
 					      <td class="text-center">0</td>
 					      <td class="text-center text-danger">0</td>
 					    </tr>
 					    <tr>
-					      <th>NIGHT</th>
+					      <td class="text-center">N&nbsp;&nbsp;<i class="fas fa-moon"></i></td>
 					      <td class="text-center">0</td>
 					      <td class="text-center">0</td>
 					      <td class="text-center text-danger">0</td>
@@ -355,25 +355,6 @@
 
 		$('#id_cus_id').focus();
 
-	});
-
-	$(document).on('click', '#employee_list_table tbody tr', function(row, $el, field) {
-		$(this).addClass('highlight').siblings().removeClass('highlight');
-		var emp_id = $(this).find('td:eq(1)').text();
-		
-
-		/*
-		var service_id = $(this).find('td:eq(0)').text();	
-		var srv_eff_from = $(this).find('td:eq(5)').text();
-		var srv_eff_to = $(this).find('td:eq(6)').text();
-
-		$('#id_selected_service_id').val(service_id);
-		$('#id_duration_from').datepicker('setDate', srv_eff_from);
-		$("#chkDurationFromDisable").prop("checked", true);		
-		$('#id_duration_to').datepicker('setDate', srv_eff_to);
-		$("#chkDurationToDisable").prop("checked", true);
-		*/
-		
 	});
 
 	$(document).on('keyup keypress', '#daily_attendance_search_form input[type="text"]', function(e) {
@@ -817,6 +798,39 @@
 		result += "</font>";
 		$("#id_employee_list").html(result);
     }
+
+	$(document).on('click', '#employee_list_table tbody tr', function(row, $el, field) {
+		$(this).addClass('highlight').siblings().removeClass('highlight');
+		var emp_id = $(this).find('td:eq(1)').text();
+		var emp_fullname_th = $(this).find('td:eq(2)').text();
+		var sch_rank = $(this).find('td:eq(3)').text();
+		var sch_dept = $(this).find('td:eq(4)').text();
+		var emp_join_date = $(this).find('td:eq(4)').text();
+
+		$("#id_emp_id").val(emp_id);
+		$("#id_emp_fullname_th").val(emp_fullname_th);
+		$("#id_sch_rank").val(sch_rank);
+		$("#id_sch_dept").val(sch_dept);
+
+		$("#id_emp_join_date").val();
+		$("#id_emp_term_date").val();
+		$("#id_emp_status").val();
+
+		/*
+		var service_id = $(this).find('td:eq(0)').text();	
+		var srv_eff_from = $(this).find('td:eq(5)').text();
+		var srv_eff_to = $(this).find('td:eq(6)').text();
+
+		$('#id_selected_service_id').val(service_id);
+		$('#id_duration_from').datepicker('setDate', srv_eff_from);
+		$("#chkDurationFromDisable").prop("checked", true);		
+		$('#id_duration_to').datepicker('setDate', srv_eff_to);
+		$("#chkDurationToDisable").prop("checked", true);
+		*/
+		
+	});
+
+
 </script>
 {% endblock %}
 		
