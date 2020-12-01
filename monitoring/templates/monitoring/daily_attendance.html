@@ -180,12 +180,26 @@
 			<!-- /.card -->
 
 
-
+					
     		<!-- EMPLOYEE DETAIL -->
 			<div class="card card-outline card-success">
+
 			  <div class="card-header">
 			    
-			    <!--<h3 class="card-title"><i class="fas fa-tasks"></i>&nbsp;&nbsp;<b>Daily Attendance</b></h3>-->
+	            <div class="form-check d-inline">
+	              <input class="form-check-input" id="id_absent_check" name="absent_check" type="checkbox">
+	              <label class="form-check-label">Absent</label>&nbsp;&nbsp;&nbsp;&nbsp;
+	            </div>
+
+	            <div class="form-check d-inline">
+	              <input class="form-check-input" id="id_late_check" name="late_check" type="checkbox">
+	              <label class="form-check-label">Late</label>&nbsp;&nbsp;&nbsp;&nbsp;
+	            </div>
+
+	            <div class="form-check d-inline">
+	              <input class="form-check-input" id="id_phone_check" name="phone_check" type="checkbox">
+	              <label class="form-check-label">Phone</label>&nbsp;&nbsp;&nbsp;&nbsp;
+	            </div>
 
 			    <div class="card-tools">
 					<button id="add_button" type="button" class="btn btn-success btn-sm"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;{% trans 'Add' %}</button>&nbsp;&nbsp;|&nbsp;&nbsp;
@@ -199,8 +213,10 @@
 			  <!-- /.card-header -->
 			  <div class="card-body">
 
+
 			  	<div class="col-md-10 float-left">
-					
+
+
 					<form class="form-row">
 					{% csrf_token %}
 
@@ -229,9 +245,10 @@
 		                      <input type="text" id="id_emp_status" class="form-control form-control-sm col-6" readonly>&nbsp;&nbsp;&nbsp;
 	                    </div>
 	                </div>
+	        		</form>    	
 
 				</div>
-
+			
 
 				<div class="col-md-2 float-left">
 					<font size='2em;'> 
@@ -281,7 +298,7 @@
 					</table>					
 					</font>
 				</div>
-				</form>
+				<!--</form>-->
 			  </div>
 			  <!-- /.card-body -->
 
@@ -684,6 +701,19 @@
 		});
 		$.LoadingOverlay("show");	
 	}
+
+
+    $(document).on('click', '#id_absent_check', function(e) {
+        
+    });
+
+    $(document).on('click', '#id_late_check', function(e) {
+        
+    });
+
+    $(document).on('click', '#id_phone_check', function(e) {
+        
+    });
 
 </script>
 {% endblock %}
