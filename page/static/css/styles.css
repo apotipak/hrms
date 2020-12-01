@@ -257,7 +257,8 @@ display: block;
 */
 
 .table tbody tr.highlight td {
-  background-color: #ddd;
+  /*background-color: #ddd;*/
+  background-color: #9fc299;
 }
 
 .crop1 {
