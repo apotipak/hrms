@@ -326,6 +326,8 @@
 <script>
  	function disableAllElements() {
  		$("#dailyAttendanceDataEntryForm:input").attr("disabled", true);
+ 		$("#dailyAttendanceDataEntryForm").trigger("reset");
+ 		
  		$("#id_emp_id").attr("disabled", true);
  		$("#emp_id_lookup_button").attr("disabled", true);
  		$("#add_button").attr("disabled", true);
@@ -739,28 +741,6 @@
         
     });
 
- 	$("#cancelDailyAttendanceButton").click( function() {
-    	event.preventDefault();    	
-
-    	$("#id_cus_id").val("0002526");
-    	$("#id_cus_brn").val("000");
-    	$("#id_cus_vol").val("001");
-
-    	clearEmployeeListTable();
-    	disableAllElements();
-
-
-		$("#id_date").attr("readonly", false);
-		$("#id_shift_option").attr("readonly", false);
-
-		$("#id_cus_id").attr("readonly", false);
-		$("#id_cus_brn").attr("readonly", false);
-		$("#id_cus_vol").attr("readonly", false);
-		$("input[name=searchOptions]").attr("disabled", false);
-
-    	$("#id_cus_id").focus();
-    });
-
     function clearEmployeeListTable() {
     	var result = "";
 		result += "<font size='2em;'>";
@@ -801,35 +781,47 @@
 
 	$(document).on('click', '#employee_list_table tbody tr', function(row, $el, field) {
 		$(this).addClass('highlight').siblings().removeClass('highlight');
+		$("#emp_id_lookup_button").attr("disabled", true);
+
 		var emp_id = $(this).find('td:eq(1)').text();
 		var emp_fullname_th = $(this).find('td:eq(2)').text();
 		var sch_rank = $(this).find('td:eq(3)').text();
 		var sch_dept = $(this).find('td:eq(4)').text();
 		var emp_join_date = $(this).find('td:eq(4)').text();
+		var dept_id = $(this).find('td:eq(4)').text();
 
 		$("#id_emp_id").val(emp_id);
 		$("#id_emp_fullname_th").val(emp_fullname_th);
 		$("#id_sch_rank").val(sch_rank);
-		$("#id_sch_dept").val(sch_dept);
+		//$("#id_sch_dept").val(sch_dept);
 
 		$("#id_emp_join_date").val();
 		$("#id_emp_term_date").val();
 		$("#id_emp_status").val();
-
-		/*
-		var service_id = $(this).find('td:eq(0)').text();	
-		var srv_eff_from = $(this).find('td:eq(5)').text();
-		var srv_eff_to = $(this).find('td:eq(6)').text();
-
-		$('#id_selected_service_id').val(service_id);
-		$('#id_duration_from').datepicker('setDate', srv_eff_from);
-		$("#chkDurationFromDisable").prop("checked", true);		
-		$('#id_duration_to').datepicker('setDate', srv_eff_to);
-		$("#chkDurationToDisable").prop("checked", true);
-		*/
 		
 	});
 
+ 	$("#cancelDailyAttendanceButton").click( function() {
+    	event.preventDefault();    	
+
+    	$("#id_cus_id").val("0002526");
+    	$("#id_cus_brn").val("000");
+    	$("#id_cus_vol").val("001");
+
+    	clearEmployeeListTable();
+    	disableAllElements();
+
+
+		$("#id_date").attr("readonly", false);
+		$("#id_shift_option").attr("readonly", false);
+
+		$("#id_cus_id").attr("readonly", false);
+		$("#id_cus_brn").attr("readonly", false);
+		$("#id_cus_vol").attr("readonly", false);
+		$("input[name=searchOptions]").attr("disabled", false);		
+
+    	$("#id_cus_id").focus();
+    });
 
 </script>
 {% endblock %}
