@@ -131,11 +131,19 @@
 							      <th scope="col">Name</th>
 							      <th scope="col">TEL</th>
 							      <th scope="col">Call Time</th>
+							      <th scope="col">Call Amt</th>
+							      <th scope="col">Call Paid</th>
+							      <th scope="col">Spare</th>
+							      <th scope="col">Wage</th>
+							      <th scope="col">Upd Date</th>
+							      <th scope="col">Upd By</th>
+							      <th scope="col">Upd Flag</th>
+							      <th scope="col">Upd Gen</th>
 							    </tr>
 							  </thead>
 							  <tbody>
 							    <tr>
-							      <td colspan="12" class="text-center"><br><br>There is no data.<br><br><br></td>
+							      <td colspan="20" class="text-center"><br><br>There is no data.<br><br><br></td>
 							    </tr>
 							  </tbody>
 							</table>
@@ -416,21 +424,25 @@
 					result += "  <thead>";
 					result += "    <tr>";
 					result += "      <th scope='col'>&nbsp;</th>";
-					result += "      <th scope='col'>Emp ID</th>";
-					result += "      <th scope='col'>Name</th>";
+					result += "      <th scope='col' nowrap>Emp ID</th>";
+					result += "      <th scope='col' nowrap>Name</th>";
 					result += "      <th scope='col'>Rank</th>";
 					result += "      <th scope='col'>Shift</th>";
 					result += "      <th scope='col'>Late</th>";
 					result += "      <th scope='col'>Full</th>";
 					result += "      <th scope='col'>Relief</th>";
-					result += "      <th scope='col'>Rel. ID</th>";
+					result += "      <th scope='col' nowrap>Rel. ID</th>";
 					result += "      <th scope='col'>Name</th>";
 					result += "      <th scope='col'>TEL</th>";
 					result += "      <th scope='col'>Call Time</th>";
+					result += "      <th scope='col' nowrap>Call Amt</th>";
+					result += "      <th scope='col' nowrap>Call Paid</th>";
 					result += "      <th scope='col'>Spare</th>";
 					result += "      <th scope='col'>Wage</th>";
-					result += "      <th scope='col'>Upd Date</th>";
-					result += "      <th scope='col'>Upd By</th>";
+					result += "      <th scope='col' nowrap>Upd Date</th>";
+					result += "      <th scope='col' nowrap>Upd By</th>";
+					result += "      <th scope='col' nowrap>Upd Flag</th>";
+					result += "      <th scope='col' nowrap>Upd Gen</th>";
 					result += "    </tr>";
 					result += "  </thead>";
 					result += "  <tbody class='sortable'>";
@@ -444,10 +456,16 @@
 							sch_rank = data.employee_list[i]["sch_rank"];
 							shf_desc = data.employee_list[i]["shf_desc"];
 							absent = data.employee_list[i]["absent"];
+							tel_man = data.employee_list[i]["tel_man"];
+							tel_time = data.employee_list[i]["tel_time"];
+							tel_amt = data.employee_list[i]["tel_amt"];
+							tel_paid = data.employee_list[i]["tel_paid"];
 							spare = data.employee_list[i]["spare"];
 							wage_id = data.employee_list[i]["wage_id"];
 							upd_date = data.employee_list[i]["upd_date"];
 							upd_by = data.employee_list[i]["upd_by"];
+							upd_flag = data.employee_list[i]["upd_flag"];
+							upd_gen = data.employee_list[i]["upd_gen"];
 							result += "    <tr>";
 
 							if(absent==1) {
@@ -457,7 +475,7 @@
 							}
 							
 							result += "	     <td>" + emp_id + "</td>";
-							result += "	     <td>" + emp_fname_th + "&nbsp;&nbsp;" + emp_lname_th + "</td>";
+							result += "	     <td nowrap>" + emp_fname_th + "&nbsp;&nbsp;" + emp_lname_th + "</td>";
 							result += "	     <td>" + sch_rank + "</td>";
 							result += "	     <td>" + shf_desc + "</td>";
 							result += "	     <td></td>";
@@ -465,18 +483,22 @@
 							result += "	     <td></td>";
 							result += "	     <td></td>";
 							result += "	     <td></td>";
-							result += "	     <td></td>";
-							result += "	     <td></td>";
-							result += "	     <td>" + spare + "</td>";
+							result += "	     <td class='text-center'>" + tel_man + "</td>";
+							result += "	     <td>" + tel_time + "</td>";
+							result += "	     <td>" + tel_amt + "</td>";
+							result += "	     <td>" + tel_paid + "</td>";
+							result += "	     <td>" + parseInt(spare) + "</td>";
 							result += "	     <td>" + wage_id + "</td>";
 							result += "	     <td>" + upd_date + "</td>";
 							result += "	     <td>" + upd_by + "</td>";
+							result += "	     <td>" + upd_flag + "</td>";
+							result += "	     <td>" + upd_gen + "</td>";
 							result += "    </tr>";
 						}
 					}
 					else {
 							result += "    <tr class='text-center'>";
-							result += "	     <td colspan='16'><br><br>There is no data.<br><br><br></td>";
+							result += "	     <td colspan='20'><br><br>There is no data.<br><br><br></td>";
 							result += "	   </tr>"
 					}
 					result += "  </tbody>";

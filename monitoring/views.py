@@ -1410,7 +1410,15 @@ def ajax_get_attendance_information(request):
 				absent=1
 			else:
 				absent=0
+		
+			if row[24]==1:
+				tel_man = "<span class='text-danger'><strong>X</strong></span>"
+			else:
+				tel_man = ""
 
+			tel_time = row[25].strftime("%d/%m/%Y %H:%M")
+			upd_date = row[45].strftime("%d/%m/%Y %H:%M")
+			
 			record = {
 				"emp_fname_th": row[0],
 				"emp_lname_th": row[1],
@@ -1436,8 +1444,8 @@ def ajax_get_attendance_information(request):
 				"absent": row[21],
 				"relieft": row[22],
 				"relieft_id": row[23],
-				"tel_man": row[24],
-				"tel_time": row[25],
+				"tel_man": tel_man,
+				"tel_time": tel_time,
 				"tel_amt": row[26],
 				"tel_paid": row[27],
 				"ot": row[28],
@@ -1457,7 +1465,7 @@ def ajax_get_attendance_information(request):
 				"soc": row[42],
 				"pub": row[43],
 				"paid": row[44],
-				"upd_date": row[45],
+				"upd_date": upd_date,
 				"upd_by": row[46],
 				"upd_flag": row[47],
 				"upd_gen": row[48],
