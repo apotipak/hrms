@@ -1416,9 +1416,13 @@ def ajax_get_attendance_information(request):
 			else:
 				tel_man = ""
 
-			tel_time = row[25].strftime("%d/%m/%Y %H:%M")
+			if row[25] is not None:
+				tel_time = row[25].strftime("%d/%m/%Y %H:%M")
+			else:
+				tel_time = ""
+
 			upd_date = row[45].strftime("%d/%m/%Y %H:%M")
-			
+
 			record = {
 				"emp_fname_th": row[0],
 				"emp_lname_th": row[1],
