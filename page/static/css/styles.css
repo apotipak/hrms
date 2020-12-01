@@ -242,7 +242,7 @@ input:checked + .slider:after {
 
 .my-custom-scrollbar {
 position: relative;
-height: 120px;
+height: 150px;
 overflow: auto;
 }
 .table-wrapper-scroll-y {
