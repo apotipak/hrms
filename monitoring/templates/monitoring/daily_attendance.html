@@ -235,9 +235,9 @@
 					<div class="col-md-5">
 						<label class="control-label"><b>Name | Rank | Dept</b></label>
 					    <div class="input-group">
-		                      <input type="text" id="id_emp_fullname_th" class="form-control form-control-sm col-8" readonly>&nbsp;
+		                      <input type="text" id="id_emp_fullname_th" class="form-control form-control-sm col-6" readonly>&nbsp;
 		                      <input type="text" id="id_sch_rank" class="form-control form-control-sm col-2" readonly>&nbsp;
-		                      <input type="text" id="id_sch_dept" class="form-control form-control-sm col-2" readonly>&nbsp;&nbsp;&nbsp;
+		                      <input type="text" id="id_sch_dept" class="form-control form-control-sm col-4" readonly>&nbsp;&nbsp;&nbsp;
 	                    </div>
 	                </div>
 
@@ -327,7 +327,7 @@
  	function disableAllElements() {
  		$("#dailyAttendanceDataEntryForm:input").attr("disabled", true);
  		$("#dailyAttendanceDataEntryForm").trigger("reset");
- 		
+
  		$("#id_emp_id").attr("disabled", true);
  		$("#emp_id_lookup_button").attr("disabled", true);
  		$("#add_button").attr("disabled", true);
@@ -780,24 +780,57 @@
     }
 
 	$(document).on('click', '#employee_list_table tbody tr', function(row, $el, field) {
-		$(this).addClass('highlight').siblings().removeClass('highlight');
-		$("#emp_id_lookup_button").attr("disabled", true);
-
+		var absent = $(this).find('td:eq(0)').text();
 		var emp_id = $(this).find('td:eq(1)').text();
 		var emp_fullname_th = $(this).find('td:eq(2)').text();
 		var sch_rank = $(this).find('td:eq(3)').text();
-		var sch_dept = $(this).find('td:eq(4)').text();
-		var emp_join_date = $(this).find('td:eq(4)').text();
+		var sch_dept = $(this).find('td:eq(4)').text();		
 		var dept_id = $(this).find('td:eq(4)').text();
 
+		// Get Employee information
+		$.ajax({
+	    	url : "/monitoring/ajax/get_employee",
+	    	type : "GET",
+	    	data : {          
+	      		csrfmiddlewaretoken: '{{ csrf_token }}',
+	      		emp_id: emp_id,
+	    	},
+	    	success: function(data) {
+	    		if(data.is_found) {
+	    			$("#id_emp_fullname_th").val(data.emp_fname_th.trim() + "  " + data.emp_lname_th.trim());
+					$("#id_sch_rank").val(data.emp_rank);
+	    			$("#id_sch_dept").val(data.emp_type);
+	    			$("#id_emp_status").val(data.emp_status);
+	    			$("#id_emp_join_date").val(data.emp_join_date);
+	    			$("#id_emp_term_date").val(data.emp_term_date);
+
+	    			var emp_join_date = data.emp_join_date;
+	    			var emp_term_date = data.emp_term_date;
+	    		} else {
+	    			var emp_join_date = "";
+	    			var emp_term_date = "";
+	    		}
+	    		//$.LoadingOverlay("hide");
+	    	},
+	    });
+
+
+		$(this).addClass('highlight').siblings().removeClass('highlight');
+
+		if(absent=="X") {
+			$("#id_absent_check").prop("checked", true);
+		} else {
+			$("#id_absent_check").prop("checked", false);
+		}
+
+		$("#emp_id_lookup_button").attr("disabled", true);
 		$("#id_emp_id").val(emp_id);
 		$("#id_emp_fullname_th").val(emp_fullname_th);
 		$("#id_sch_rank").val(sch_rank);
-		//$("#id_sch_dept").val(sch_dept);
 
-		$("#id_emp_join_date").val();
-		$("#id_emp_term_date").val();
-		$("#id_emp_status").val();
+		
+
+		//$("#id_emp_status").val();
 		
 	});
 
