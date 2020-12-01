@@ -689,12 +689,6 @@
 		}
 	});
 
-
-    $(document).on('click', '#add_button', function(e) {
-        $('#id_emp_id').focus();
-    });
-
-
 	$('#id_date').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true}).datepicker("setDate", new Date());
 	
 	$("input:radio[name='searchOptions']").change(function(){
@@ -780,6 +774,12 @@
     }
 
 	$(document).on('click', '#employee_list_table tbody tr', function(row, $el, field) {
+		$("#id_emp_id").attr("disabled", true);
+		$("#id_late_check").hide();
+		$("#id_late_check").next("label").hide();
+		$("#id_phone_check").hide();
+		$("#id_phone_check").next("label").hide();
+
 		var absent = $(this).find('td:eq(0)').text();
 		var emp_id = $(this).find('td:eq(1)').text();
 		var emp_fullname_th = $(this).find('td:eq(2)').text();
@@ -833,6 +833,21 @@
 		//$("#id_emp_status").val();
 		
 	});
+
+    $(document).on('click', '#add_button', function(e) {
+    	$("#dailyAttendanceDataEntryForm").trigger("reset");
+    	$("#id_emp_id").attr("disabled", false);
+    	$("#emp_id_lookup_button").attr("disabled", false);
+
+    	$("#id_absent_check").prop("checked", false);
+		$("#id_late_check").show();
+		$("#id_late_check").next("label").show();
+		$("#id_phone_check").show();
+		$("#id_phone_check").next("label").show();
+
+
+        $('#id_emp_id').focus();
+    });
 
  	$("#cancelDailyAttendanceButton").click( function() {
     	event.preventDefault();    	
