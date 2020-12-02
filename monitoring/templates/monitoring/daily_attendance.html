@@ -220,7 +220,7 @@
 
 			  	<div class="col-md-10 float-left">
 
-
+			  		<!--
 					<form class="form-row" id="dailyAttendanceDataEntryForm">
 					{% csrf_token %}
 
@@ -250,6 +250,56 @@
 	                    </div>
 	                </div>
 	        		</form>    	
+					-->
+
+
+					<form id="dailyAttendanceDataEntryForm">
+						{% csrf_token %}
+
+					  <div class="form-row">
+					    
+					    <div class="form-group col-md-4">
+					      	<label class="text-align-top text-align-left"><b>Employee ID</b></label>
+					    	<div class="input-group">                            	
+					      		<input type="number" id="id_emp_id" name="id_emp_id" class="form-control form-control-sm" value="" />
+					      		<button id="emp_id_lookup_button" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url=""><i class="fas fa-search fa-sm"></i></button>
+					    	</div>      
+					    </div>
+
+					    <div class="form-group col-md-2">
+					      <label class="control-label"><b>Name</b></label>
+					      <input type="text" id="id_emp_fullname_th" class="form-control form-control-sm col-6" readonly>
+					    </div>
+
+					    <div class="form-group col-md-2">
+					      <label class="control-label"><b>Rank</b></label>
+					      <input type="text" id="id_sch_rank" class="form-control form-control-sm col-2" readonly>
+					    </div>
+
+					    <div class="form-group col-md-2">
+					      <label class="control-label"><b>Dept</b></label>
+					      <input type="text" id="id_sch_dept" class="form-control form-control-sm col-4" readonly>
+					    </div>
+
+
+
+					    <div class="form-group col-md-2">
+					      <label class="control-label"><b>Join Date</b></label>
+					      <input type="text" id="id_emp_join_date" class="form-control form-control-sm col-3" readonly>
+					    </div>
+					    <div class="form-group col-md-2">
+					      <label class="control-label"><b>Term Date</b></label>
+					      <input type="text" id="id_emp_term_date" class="form-control form-control-sm col-3" readonly>
+					    </div>
+					    <div class="form-group col-md-2">
+					      <label class="control-label"><b>Status</b></label>
+					      <input type="text" id="id_emp_status" class="form-control form-control-sm col-3" readonly>
+					    </div>
+
+					  </div>
+
+					</form>
+
 
 				</div>
 			
