@@ -1370,15 +1370,95 @@ def ajax_get_attendance_information(request):
 		cus_id = request.POST.get('cus_id').lstrip("0")
 		cus_brn = request.POST.get('cus_brn')
 		cus_vol = request.POST.get('cus_vol')
-		cnt_id = cus_id+cus_brn+cus_vol
+				
+		# Get Contract ID
+		cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)		
 		print("cnt_id = " + str(cnt_id))
+
+		# Get Customer No
+		cus_no = cus_id + cus_brn.zfill(3)
+		print("cus_no = " + str(cus_no))
+
+		# Get current date
+		curDate = attendance_date
+		print("Current date = " + str(curDate))
+
+		# Check if daily attend is a public holiday
+		# select hol_date from t_holiday where hol_date=curDate
+		cursor = connection.cursor()
+		cursor.execute("select hol_date from t_holiday where hol_date=%s", [curDate])		
+		cursor.close
+		# 99  # DAY OFF #########
+		# 999  # ANOTHER SITE #
+
+		# Get Day of Week
+		dayOfWeek = curDate.weekday()
+		print("Day of week = " + str(dayOfWeek))
+
+
+		# Provide contract service list dropdown
+
+
+		# Check Total
+		# NUM_SERVICE TOTAL
+		# select cnt_id,shf_type,sum(srv_wed) as srv_num, sum(srv_pub) as srv_pub from v_contract as a where cnt_id=1008000001 and srv_active=1 and cus_service_flag <> 'D' group by cnt_id,shf_type
+		cursor = connection.cursor()
+		cursor.execute("select cnt_id,shf_type,sum(srv_wed) as srv_num, sum(srv_pub) as srv_pub from v_contract as a where cnt_id=%s and srv_active=1 and cus_service_flag <> 'D' group by cnt_id,shf_type", [cnt_id])
+		rows = cursor.fetchall()
+		cursor.close
+		totalNDP = 0
+		totalPDP = 0
+		totalNNP = 0
+		totalPNP = 0		
+		if len(rows)==0:
+			totalNDP = 0
+			totalPDP = 0
+			totalNNP = 0
+			totalPNP = 0
+		else:
+			for index in range(len(rows)):
+				cnt_id_temp = rows[index][0]
+				shf_type_temp = rows[index][1]
+				srv_num_temp = rows[index][2]
+				srv_pub_temp = rows[index][3]
+				if shf_type_temp=='D':
+					totalNDP = srv_num_temp
+					totalPDP = srv_pub_temp
+				else:
+					totalNNP = srv_num_temp
+					totalPNP = srv_pub_temp
+		
+		print("totalNDP=" + str(totalNDP))
+		print("totalNNP=" + str(totalNNP))
+		print("totalPDP=" + str(totalPDP))
+		print("totalPNP=" + str(totalPNP))
+
+
+
+		# DLY_PLAN TOTAL
+		totalNDA = 0
+		totalNNA = 0
+		totalPDA = 0
+		totalPNA = 0
+
+
+
+		
+		# TOTAL_Missing_Guard
+
+
+
+
+
+		# CUS_SERVICE		
+		
 
 
 		# Get contract schedule list	
 		cursor = connection.cursor()	
 		cursor.execute("select shf_desc from cus_service a,t_shift b where a.cnt_id=%s and a.srv_active=1 and b.shf_id=a.srv_shif_id", [cnt_id])
 		rows = cursor.fetchall()
-		for index in range(len(rows)):
+		for index in range(len(rows)):			
 			schedule_list.append(rows[index][0])
 
 
@@ -1499,7 +1579,6 @@ def ajax_get_attendance_information(request):
 			is_found = False
 			print(2)
 
-		data = {"is_found": is_found, "schedule_list": list(schedule_list), "employee_list": employee_list}
 		message = ""
 
 		print("is_found = " + str(is_found))
@@ -1514,6 +1593,10 @@ def ajax_get_attendance_information(request):
 	    "message": message,
 	    "schedule_list": list(schedule_list),
 	    "employee_list": list(employee_list),
+	    "totalNDP": totalNDP,
+		"totalNNP": totalNNP,
+		"totalPDP": totalPDP,
+		"totalPNP": totalPNP,	    
 	})
 
 	response.status_code = 200
