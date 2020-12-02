@@ -1439,14 +1439,33 @@ def ajax_get_attendance_information(request):
 		totalNDA = 0
 		totalNNA = 0
 		totalPDA = 0
-		totalPNA = 0
+		totalPNA = 0		
+		# select distinct * from v_dlyplan where cnt_id=2526000001 and dly_date=convert(datetime,'2020-12-02',20) and customer_flag<>'D' order by sch_shift, emp_id
+		cursor = connection.cursor()
+		cursor.execute("select distinct * from v_dlyplan where cnt_id=%s and dly_date=convert(datetime,%s,20) and customer_flag<>'D' order by sch_shift, emp_id", [cnt_id, curDate])
+		rows = cursor.fetchall()
+		cursor.close
+		if len(rows)>0:
+			for index in range(len(rows)):				
+				shf_type = rows[index][2]
+				absent = rows[index][21]
+				print("shf_type = " + str(shf_type))
+				if shf_type=='D':
+					if absent==0:
+						totalNDA = totalNDA + 1
+						totalPDA = totalPDA + 1
+				elif shf_type=='N':
+					if absent==0:
+						totalNNA = totalNNA + 1
+						totalPNA = totalPNA + 1
 
-
+		totalNDM = totalNDA - totalNDP
+		totalNNM = totalNNA - totalNNP
+		totalPDM = totalPDA - totalPDP
+		totalPNM = totalPNA - totalPNP
 
 		
 		# TOTAL_Missing_Guard
-
-
 
 
 
@@ -1596,9 +1615,17 @@ def ajax_get_attendance_information(request):
 	    "totalNDP": totalNDP,
 		"totalNNP": totalNNP,
 		"totalPDP": totalPDP,
-		"totalPNP": totalPNP,	    
+		"totalPNP": totalPNP,
+		"totalNDA": totalNDA,
+		"totalNNA": totalNNA,
+		"totalPDA": totalPDA,
+		"totalPNA": totalPNA,
+		"totalNDM": totalNDM,
+		"totalNNM": totalNNM,
+		"totalPDM": totalPDM,
+		"totalPNM": totalPNM,
 	})
-
+	
 	response.status_code = 200
 	return response	
 
