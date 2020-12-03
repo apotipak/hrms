@@ -206,7 +206,8 @@
 	            </div>
 
 			    <div class="card-tools">
-					<button id="add_button" type="button" class="btn btn-success btn-sm"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;{% trans 'Add' %}</button>&nbsp;&nbsp;|&nbsp;&nbsp;
+					<button id="add_button" type="button" class="btn btn-success btn-sm"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;{% trans 'New' %}</button>
+					<button id="reset_button" type="button" class="btn btn-secondary btn-sm">&nbsp;{% trans 'Reset' %}</button>&nbsp;&nbsp;|&nbsp;&nbsp;
 		        	<button id="save_button" type="button" class="btn btn-primary btn-sm"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</button>
 		        	<button id="delete_button" type="button" class="btn btn-danger btn-sm"><i class="fas fa-trash fa-sm"></i>&nbsp;&nbsp;{% trans 'Delete' %}</button>			      	
 			    </div>
@@ -373,6 +374,7 @@
  		$("#id_emp_id").attr("disabled", true);
  		$("#emp_id_lookup_button").attr("disabled", true);
  		$("#add_button").attr("disabled", true);
+ 		$("#reset_button").attr("disabled", true);
  		$("#save_button").attr("disabled", true);
  		$("#delete_button").attr("disabled", true);
 
@@ -382,12 +384,13 @@
  	}
 
  	function enableAllElements() { 		
- 		$("#dailyAttendanceDataEntryForm:input").attr("disabled", false);
+ 		$("#dailyAttendanceDataEntryForm:input").attr("disabled", false);                              
  		$("#id_emp_id").attr("disabled", false);
  		$("#emp_id_lookup_button").attr("disabled", false);
  		$("#add_button").attr("disabled", false);
- 		$("#save_button").attr("disabled", false);
- 		$("#delete_button").attr("disabled", false);
+ 		//$("#reset_button").attr("disabled", true);
+ 		//$("#save_button").attr("disabled", true);
+ 		//$("#delete_button").attr("disabled", true);
 
  		$("#id_absent_check").attr("disabled", false);
 		$("#id_late_check").attr("disabled", false);
@@ -396,9 +399,7 @@
 
 	$(document).ready(function(){
 		disableAllElements();
-
 		$('#id_cus_id').focus();
-
 	});
 
 	$(document).on('keyup keypress', '#daily_attendance_search_form input[type="text"]', function(e) {
@@ -523,7 +524,6 @@
 					result += "  </thead>";
 					result += "  <tbody class='sortable'>";
 
-
 					if(data.employee_list.length>0) {
 						for(i=0; i<data.employee_list.length; i++) {
 							emp_id = data.employee_list[i]["emp_id"];
@@ -590,6 +590,14 @@
 					result += "</font>";
 
 					$('#id_employee_list').html(result);
+
+
+					// Available Shift Option
+					if(data.schedule_list.length>0) {
+						for(i=0; i<data.schedule_list.length; i++) {
+							shf_desc = data.schedule_list[i]["shf_desc"];
+						}
+					}					
 
 					// TOTAL
 					$("#totalNDP").html(data.totalNDP);
@@ -671,7 +679,7 @@
 			    	subtitle: '',
 			    	autohide: true,
 			    	delay: 2000,
-			    	body: "Please enter Employee ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+			    	body: "Please select Employee ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
 			    	autoDismiss: true,
 			    	close: true,
 			    	autoremove: true,
@@ -714,6 +722,9 @@
 			    			}
 			    			$("#id_emp_join_date").val(data.emp_join_date);
 			    			$("#id_emp_term_date").val(data.emp_term_date);
+
+			    			$("#save_button").attr("disabled", false);
+			    			$("#delete_button").attr("disabled", true);
 
 			    			/*
 							$("#employeePhoto").html("<img src='data:image/png;base64," + data.employee_photo + "' style='width:90px;'/>");
@@ -901,6 +912,9 @@
 	});
 
     $(document).on('click', '#add_button', function(e) {
+    	$("#reset_button").attr("disabled", false);
+    	$("#save_button").attr("disabled", false);
+
     	$("#dailyAttendanceDataEntryForm").trigger("reset");
     	$("#id_emp_id").attr("disabled", false);
     	$("#emp_id_lookup_button").attr("disabled", false);
@@ -911,9 +925,95 @@
 		$("#id_phone_check").show();
 		$("#id_phone_check").next("label").show();
 
-
         $('#id_emp_id').focus();
     });
+
+    $(document).on('click', '#reset_button', function(e) {    	
+    	$("#dailyAttendanceDataEntryForm").trigger("reset");
+    	$('#id_emp_id').focus();
+    });
+
+    $(document).on('click', '#save_button', function(e) {    	
+    	var emp_id = $("#id_emp_id").val();
+
+    	if(emp_id==""){
+		  	$(document).Toasts('create', {
+		    	class: "bg-danger", 
+		    	title: "{% trans 'System message' %}",
+		    	subtitle: '',
+		    	autohide: true,
+		    	delay: 2000,
+		    	body: "Please select Employee ID.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+		    	autoDismiss: true,
+		    	close: true,
+		    	autoremove: true,
+		  	});
+
+		  	$('#id_emp_id').focus();
+    		return false;
+    	}
+
+    	// TODO
+    	//amnaj
+		showLoading();
+
+		$.ajax({
+	    	url : "/monitoring/ajax/get_employee",
+	    	type : "GET",
+	    	data : {          
+	      		csrfmiddlewaretoken: '{{ csrf_token }}',
+	      		emp_id: emp_id,
+	    	},
+	    	success: function(data) {
+				$("#id_emp_name_th").val("");
+    			$("#id_sch_rank").val("");
+    			$("#id_sch_dept").val("");
+    			$("#id_emp_status").val("");
+    			$("#id_emp_join_date").val("");
+    			$("#id_emp_term_date").val("");
+
+	    		if(data.is_found) {
+	    			$("#id_emp_fullname_th").val(data.emp_fname_th.trim() + "  " + data.emp_lname_th.trim());
+					$("#id_sch_rank").val(data.emp_rank);
+	    			$("#id_sch_dept").val(data.emp_type);
+	    			$("#id_emp_status").val(data.emp_status);
+	    			if(data.emp_status_id=='9') {		    				
+		    			$("#id_emp_status").animate({color:'red'}, 1000);
+	    			} else {
+	    				$("#id_emp_status").animate({color:'#495057'}, 1000);
+	    			}
+	    			$("#id_emp_join_date").val(data.emp_join_date);
+	    			$("#id_emp_term_date").val(data.emp_term_date);
+
+	    			$("#save_button").attr("disabled", false);
+	    			$("#delete_button").attr("disabled", true);
+
+	    			//alert("TODO - check if employee is available.");
+	    			select_shift_option = $("#id_shift_option").val();
+	    			alert("emp_id = " + emp_id + " | " + "shift = " + select_shift_option);
+	    		} else {
+
+				  	$(document).Toasts('create', {
+				    	class: "bg-danger", 
+				    	title: "{% trans 'System message' %}",
+				    	subtitle: '',
+				    	autohide: true,
+				    	delay: 2000,
+				    	body: "Employee ID not found.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+				    	autoDismiss: true,
+				    	close: true,
+				    	autoremove: true,
+				  	});
+	    		}
+	    		$.LoadingOverlay("hide");
+	    		$("#id_emp_id").select();
+	    	},
+	    });    	    	
+
+    });
+
+
+
 
  	$("#cancelDailyAttendanceButton").click( function() {
     	event.preventDefault();    	
@@ -925,7 +1025,6 @@
     	clearEmployeeListTable();
     	disableAllElements();
 
-
 		$("#id_date").attr("readonly", false);
 		$("#id_search_shift_option").attr("readonly", false);
 
@@ -933,6 +1032,21 @@
 		$("#id_cus_brn").attr("readonly", false);
 		$("#id_cus_vol").attr("readonly", false);
 		$("input[name=searchOptions]").attr("disabled", false);		
+
+		$("#totalNDP").html("");
+		$("#totalNNP").html("");
+		$("#totalPDP").html("");
+		$("#totalPNP").html("");
+
+		$("#totalNDA").html("");
+		$("#totalNNA").html("");
+		$("#totalPDA").html("");
+		$("#totalPNA").html("");
+
+		$("#totalNDM").html("");
+		$("#totalNNM").html("");
+		$("#totalPDM").html("");
+		$("#totalPNM").html("");
 
     	$("#id_cus_id").focus();
     });
