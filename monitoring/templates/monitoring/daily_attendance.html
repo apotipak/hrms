@@ -896,6 +896,14 @@
 		} else {
 			$("#id_absent_check").prop("checked", false);
 		}
+		
+		if(sch_dept.substring(0,3)=='999' || sch_dept.substring(0,2)=='99') {
+			$("#save_button").attr("disabled", true);
+			$("#delete_button").attr("disabled", true);
+		} else {
+			$("#save_button").attr("disabled", false);
+			$("#delete_button").attr("disabled", false);
+		}
 
 		$("#emp_id_lookup_button").attr("disabled", true);
 		$("#id_emp_id").val(emp_id);
