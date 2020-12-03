@@ -240,13 +240,13 @@
 					    </div>
 
 						<div class="form-group col-1">
-							<label for="id_emp_rank">Rank</label>
-							<input type="text" class="form-control form-control-sm" id="id_emp_rank" readonly>
+							<label for="id_sch_rank">Rank</label>
+							<input type="text" class="form-control form-control-sm" id="id_sch_rank" readonly>
 						</div>
 
 						<div class="form-group col-1">
-							<label for="id_emp_dept">Dept</label>
-							<input type="text" class="form-control form-control-sm" id="id_emp_dept" readonly>
+							<label for="id_sch_dept">Dept</label>
+							<input type="text" class="form-control form-control-sm" id="id_sch_dept" readonly>
 						</div>
 
 					    <div class="form-group col-2">
@@ -592,12 +592,27 @@
 					$('#id_employee_list').html(result);
 
 
+					//amnaj
 					// Available Shift Option
+					result = "";
+					result += "<select id='id_shift_option' class='form-control form-control-sm'>";
+					result += "  <option value='099' selected>99   # DAY OFF ########</option>";
+					result += "  <option value='0999'>999   # ANOTHER SITE #</option>";
+					result += "</select>";
+
+					var $el = $("#id_shift_option");
+					$el.empty();
 					if(data.schedule_list.length>0) {
 						for(i=0; i<data.schedule_list.length; i++) {
+							shf_id = data.schedule_list[i]["shf_id"];
 							shf_desc = data.schedule_list[i]["shf_desc"];
+							$el.append($("<option></option>").attr("value", shf_id).text(shf_desc));
 						}
-					}					
+					}
+					
+					
+					//$("#id_shift_option").html(result);
+					//alert("check");
 
 					// TOTAL
 					$("#totalNDP").html(data.totalNDP);
@@ -953,8 +968,6 @@
     		return false;
     	}
 
-    	// TODO
-    	//amnaj
 		showLoading();
 
 		$.ajax({
