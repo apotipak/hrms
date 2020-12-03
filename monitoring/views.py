@@ -1363,6 +1363,19 @@ def ajax_get_attendance_information(request):
 	schedule_list = []
 	employee_list = []
 
+	totalNDP = 0
+	totalNNP = 0
+	totalPDP = 0
+	totalPNP = 0
+	totalNDA = 0
+	totalNNA = 0
+	totalPDA = 0
+	totalPNA = 0
+	totalNDM = 0
+	totalNNM = 0
+	totalPDM = 0
+	totalPNM = 0
+
 	if isGenerateDailyCreated(attendance_date):
 		attendance_date = request.POST.get('attendance_date')
 		attendance_date = datetime.datetime.strptime(attendance_date, '%d/%m/%Y')
@@ -1406,16 +1419,8 @@ def ajax_get_attendance_information(request):
 		cursor.execute("select cnt_id,shf_type,sum(srv_wed) as srv_num, sum(srv_pub) as srv_pub from v_contract as a where cnt_id=%s and srv_active=1 and cus_service_flag <> 'D' group by cnt_id,shf_type", [cnt_id])
 		rows = cursor.fetchall()
 		cursor.close
-		totalNDP = 0
-		totalPDP = 0
-		totalNNP = 0
-		totalPNP = 0		
-		if len(rows)==0:
-			totalNDP = 0
-			totalPDP = 0
-			totalNNP = 0
-			totalPNP = 0
-		else:
+
+		if len(rows)>0:
 			for index in range(len(rows)):
 				cnt_id_temp = rows[index][0]
 				shf_type_temp = rows[index][1]
@@ -1436,10 +1441,6 @@ def ajax_get_attendance_information(request):
 
 
 		# DLY_PLAN TOTAL
-		totalNDA = 0
-		totalNNA = 0
-		totalPDA = 0
-		totalPNA = 0		
 		# select distinct * from v_dlyplan where cnt_id=2526000001 and dly_date=convert(datetime,'2020-12-02',20) and customer_flag<>'D' order by sch_shift, emp_id
 		cursor = connection.cursor()
 		cursor.execute("select distinct * from v_dlyplan where cnt_id=%s and dly_date=convert(datetime,%s,20) and customer_flag<>'D' order by sch_shift, emp_id", [cnt_id, curDate])
