@@ -32,7 +32,7 @@
 					        <label class="control-label">Date</label>&nbsp;&nbsp;				        
 					        <input type="text" class="form-control form-control-sm" id="id_date" placeholder="dd/mm/yyyy">&nbsp;&nbsp;
 					    	<label class="control-label">Shift</label>&nbsp;&nbsp;
-					        <select id="id_shift_option" class="form-control form-control-sm">
+					        <select id="id_search_shift_option" class="form-control form-control-sm">
 							  <option value="0">---------</option>
 							  <option value="1" selected="">A | All</option>
 							  <option value="2">D | Day shift</option>
@@ -220,85 +220,69 @@
 
 			  	<div class="col-md-10 float-left">
 
-			  		<!--
 					<form class="form-row" id="dailyAttendanceDataEntryForm">
 					{% csrf_token %}
 
-				    <div class="col-md-2">
-				    	<label class="text-align-top text-align-left"><b>Employee ID</b></label>
-                        <div class="input-group">                            	
-                          	<input type="number" id="id_emp_id" name="id_emp_id" class="form-control form-control-sm" value="" />
-                          	<button id="emp_id_lookup_button" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url=""><i class="fas fa-search fa-sm"></i></button>
-                        </div>
-				    </div>	 
-
-					<div class="col-md-5">
-						<label class="control-label"><b>Name | Rank | Dept</b></label>
-					    <div class="input-group">
-		                      <input type="text" id="id_emp_fullname_th" class="form-control form-control-sm col-6" readonly>&nbsp;
-		                      <input type="text" id="id_sch_rank" class="form-control form-control-sm col-2" readonly>&nbsp;
-		                      <input type="text" id="id_sch_dept" class="form-control form-control-sm col-4" readonly>&nbsp;&nbsp;&nbsp;
-	                    </div>
-	                </div>
-
-					<div class="col-md-5 float-left">
-						<label class="control-label"><b>Join Date | Terminate Date | Status</b></label>
-					    <div class="input-group">
-		                      <input type="text" id="id_emp_join_date" class="form-control form-control-sm col-3" readonly>&nbsp;
-		                      <input type="text" id="id_emp_term_date" class="form-control form-control-sm col-3" readonly>&nbsp;
-		                      <input type="text" id="id_emp_status" class="form-control form-control-sm col-6" readonly>&nbsp;&nbsp;&nbsp;
-	                    </div>
-	                </div>
-	        		</form>    	
-					-->
-
-
-					<form id="dailyAttendanceDataEntryForm">
-						{% csrf_token %}
-
 					  <div class="form-row">
-					    
-					    <div class="form-group col-md-4">
-					      	<label class="text-align-top text-align-left"><b>Employee ID</b></label>
-					    	<div class="input-group">                            	
+
+						<div class="form-group col-md-2">
+					      	<label for="id_emp_id">Employee ID</label>     
+							<div class="input-group">                            	
 					      		<input type="number" id="id_emp_id" name="id_emp_id" class="form-control form-control-sm" value="" />
 					      		<button id="emp_id_lookup_button" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url=""><i class="fas fa-search fa-sm"></i></button>
-					    	</div>      
-					    </div>
+					    	</div>
+						</div>
 
 					    <div class="form-group col-md-2">
-					      <label class="control-label"><b>Name</b></label>
-					      <input type="text" id="id_emp_fullname_th" class="form-control form-control-sm col-6" readonly>
+					      <label for="id_emp_fullname_th">Name</label>
+					      <input type="text" class="form-control form-control-sm" id="id_emp_fullname_th" readonly>
 					    </div>
 
-					    <div class="form-group col-md-2">
-					      <label class="control-label"><b>Rank</b></label>
-					      <input type="text" id="id_sch_rank" class="form-control form-control-sm col-2" readonly>
+						<div class="form-group col-1">
+							<label for="id_emp_rank">Rank</label>
+							<input type="text" class="form-control form-control-sm" id="id_emp_rank" readonly>
+						</div>
+
+						<div class="form-group col-1">
+							<label for="id_emp_dept">Dept</label>
+							<input type="text" class="form-control form-control-sm" id="id_emp_dept" readonly>
+						</div>
+
+					    <div class="form-group col-2">
+					      <label class="control-label"><b>Join</b></label>
+					      <input type="text" id="id_emp_join_date" class="form-control form-control-sm" readonly>
 					    </div>
 
-					    <div class="form-group col-md-2">
-					      <label class="control-label"><b>Dept</b></label>
-					      <input type="text" id="id_sch_dept" class="form-control form-control-sm col-4" readonly>
+					    <div class="form-group col-2">
+					      <label class="control-label nowrap"><b>Terminate</b></label>
+					      <input type="text" id="id_emp_term_date" class="form-control form-control-sm" readonly>
 					    </div>
 
-
-
-					    <div class="form-group col-md-2">
-					      <label class="control-label"><b>Join Date</b></label>
-					      <input type="text" id="id_emp_join_date" class="form-control form-control-sm col-3" readonly>
-					    </div>
-					    <div class="form-group col-md-2">
-					      <label class="control-label"><b>Term Date</b></label>
-					      <input type="text" id="id_emp_term_date" class="form-control form-control-sm col-3" readonly>
-					    </div>
-					    <div class="form-group col-md-2">
+					    <div class="form-group col-2">
 					      <label class="control-label"><b>Status</b></label>
-					      <input type="text" id="id_emp_status" class="form-control form-control-sm col-3" readonly>
+					      <input type="text" id="id_emp_status" class="form-control form-control-sm" readonly>
 					    </div>
 
 					  </div>
 
+
+					  <div class="form-row">
+
+						<div class="form-group col-3">
+					      	<label for="id_sent_spare">Sent spare</label>     
+					      	<input type="number" id="id_sent_spare" name="sent_spare" class="form-control form-control-sm" />					    	
+						</div>
+						<div class="form-group col-6">
+					      	<label for="id_sent_spare">Shift</label>
+					        <select id="id_shift_option" class="form-control form-control-sm">
+							  <option value="99" selected>99   # DAY OFF ########</option>
+							  <option value="999">999   # ANOTHER SITE #</option>
+					        </select>					        					      	
+						</div>
+
+					  </div>
 					</form>
+
 
 
 				</div>
@@ -590,7 +574,7 @@
 						enableAllElements();
 
 						$("#id_date").attr("readonly", true);
-						$("#id_shift_option").attr("readonly", true);
+						$("#id_search_shift_option").attr("readonly", true);
 						$("#id_cus_id").attr("readonly", true);
 						$("#id_cus_brn").attr("readonly", true);
 						$("#id_cus_vol").attr("readonly", true);
@@ -943,7 +927,7 @@
 
 
 		$("#id_date").attr("readonly", false);
-		$("#id_shift_option").attr("readonly", false);
+		$("#id_search_shift_option").attr("readonly", false);
 
 		$("#id_cus_id").attr("readonly", false);
 		$("#id_cus_brn").attr("readonly", false);
