@@ -1476,7 +1476,7 @@ def ajax_get_attendance_information(request):
 
 		# Get contract schedule list	
 		cursor = connection.cursor()	
-		cursor.execute("select shf_id,shf_desc from cus_service a,t_shift b where a.cnt_id=%s and a.srv_active=1 and b.shf_id=a.srv_shif_id", [cnt_id])
+		cursor.execute("select distinct(shf_id),shf_desc from cus_service a,t_shift b where a.cnt_id=%s and a.srv_active=1 and b.shf_id=a.srv_shif_id", [cnt_id])
 		rows = cursor.fetchall()
 		for row in rows:
 			record = {
