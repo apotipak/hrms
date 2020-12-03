@@ -294,7 +294,7 @@
 					<table class="table table-sm table-bordered">
 					  <thead>
 					    <tr>
-					      <td colspan="4" class="text-center"><b>Normal</b></td>
+					      <td colspan="4" class="text-center bg-info"><b>Normal</b></td>
 					    </tr>
 					  </thead>
 					  <tbody>
@@ -325,7 +325,7 @@
 					<table class="table table-sm table-bordered">
 					  <thead>
 					    <tr>
-					      <td colspan="4" class="text-center"><b>Public</b></th>
+					      <td colspan="4" class="text-center bg-info"><b>Public</b></th>
 					    </tr>
 					  </thead>
 					  <tbody>
@@ -372,6 +372,17 @@
  		$("#dailyAttendanceDataEntryForm").trigger("reset");
 
  		$("#id_emp_id").attr("disabled", true);
+ 		$("#id_sent_spare").attr("disabled", true);
+
+		result = "";
+		result += "<option value='0' selected></option>";
+		result += "<option value='099'>99   # DAY OFF ########</option>";
+		result += "<option value='0999'>999   # ANOTHER SITE #</option>";
+		var $el = $("#id_shift_option");
+		$el.empty();
+		$el.append(result);
+ 		$("#id_shift_option").attr("disabled", true); 		
+
  		$("#emp_id_lookup_button").attr("disabled", true);
  		$("#add_button").attr("disabled", true);
  		$("#reset_button").attr("disabled", true);
@@ -386,6 +397,8 @@
  	function enableAllElements() { 		
  		$("#dailyAttendanceDataEntryForm:input").attr("disabled", false);                              
  		$("#id_emp_id").attr("disabled", false);
+ 		$("#id_sent_spare").attr("disabled", false);
+ 		$("#id_shift_option").attr("disabled", false);
  		$("#emp_id_lookup_button").attr("disabled", false);
  		$("#add_button").attr("disabled", false);
  		//$("#reset_button").attr("disabled", true);
@@ -592,16 +605,11 @@
 					$('#id_employee_list').html(result);
 
 
-					//amnaj
-					// Available Shift Option
-					result = "";
-					result += "<select id='id_shift_option' class='form-control form-control-sm'>";
-					result += "  <option value='099' selected>99   # DAY OFF ########</option>";
-					result += "  <option value='0999'>999   # ANOTHER SITE #</option>";
-					result += "</select>";
-
+					// Show available Shift Option
 					var $el = $("#id_shift_option");
-					$el.empty();
+					$el.empty();				
+					result += "<option value='0' selected></option>";
+					$el.append(result);
 					if(data.schedule_list.length>0) {
 						for(i=0; i<data.schedule_list.length; i++) {
 							shf_id = data.schedule_list[i]["shf_id"];
@@ -609,11 +617,7 @@
 							$el.append($("<option></option>").attr("value", shf_id).text(shf_desc));
 						}
 					}
-					
-					
-					//$("#id_shift_option").html(result);
-					//alert("check");
-
+									
 					// TOTAL
 					$("#totalNDP").html(data.totalNDP);
 					$("#totalNNP").html(data.totalNNP);
@@ -666,7 +670,9 @@
 			cus_id = $('#id_cus_id').val();
 			cus_brn = $('#id_cus_brn').val();
 			cus_vol = $('#id_cus_vol').val();
-			
+			emp_id = $(this).val();
+			shift_id = $("#id_shift_option").val();
+
 			if(cus_id=="") {
 				alert("Please entet Customer ID.");
 				$('#id_cus_id').focus();				
@@ -684,9 +690,7 @@
 				$('#id_cus_vol').focus();
 				return false;
 			}
-
-			emp_id = $(this).val();
-
+		
 			if(emp_id=="") {
 			  	$(document).Toasts('create', {
 			    	class: "bg-danger", 
@@ -710,6 +714,11 @@
 			    	data : {          
 			      		csrfmiddlewaretoken: '{{ csrf_token }}',
 			      		emp_id: emp_id,
+			      		shift_id: shift_id,
+			      		cus_id: cus_id,
+			      		cus_brn: cus_brn,
+			      		cus_vol: cus_vol,
+
 			    	},
 			    	success: function(data) {
 						$("#id_emp_name_th").val("");
@@ -871,6 +880,11 @@
 		var sch_dept = $(this).find('td:eq(4)').text();		
 		var dept_id = $(this).find('td:eq(4)').text();
 
+		var shift_id = $("#id_shift_option").val();
+		var cus_id = $("#id_cus_id").val();
+		var cus_brn = $("id_cus_brn").val();
+		var cus_vol = $("id_cus_vol").val();
+
 		// Get Employee information
 		$.ajax({
 	    	url : "/monitoring/ajax/get_employee",
@@ -878,6 +892,10 @@
 	    	data : {          
 	      		csrfmiddlewaretoken: '{{ csrf_token }}',
 	      		emp_id: emp_id,
+	      		shift_id: shift_id,
+	      		cus_id: cus_id,
+	      		cus_vol: cus_vol,
+	      		cus_brn: cus_brn,
 	    	},
 	    	success: function(data) {
 	    		if(data.is_found) {
@@ -949,7 +967,11 @@
     });
 
     $(document).on('click', '#save_button', function(e) {    	
+      	var cus_id = $('#id_cus_id').val();
+      	var cus_brn = $('#id_cus_brn').val();
+      	var cus_vol = $('#id_cus_vol').val();    	
     	var emp_id = $("#id_emp_id").val();
+    	var shift_id = $("#id_shift_option").val();
 
     	if(emp_id==""){
 		  	$(document).Toasts('create', {
@@ -968,14 +990,41 @@
     		return false;
     	}
 
+    	
+    	if(shift_id=="0"){
+		  	$(document).Toasts('create', {
+		    	class: "bg-danger", 
+		    	title: "{% trans 'System message' %}",
+		    	subtitle: '',
+		    	autohide: true,
+		    	delay: 2000,
+		    	body: "Please select Shift.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+		    	autoDismiss: true,
+		    	close: true,
+		    	autoremove: true,
+		  	});
+
+		  	$('#id_shift_option').focus();
+    		return false;
+    	}
+
+
 		showLoading();
+
+		alert(cus_id);
+		alert(cus_brn);
+		alert(cus_vol);
 
 		$.ajax({
 	    	url : "/monitoring/ajax/get_employee",
 	    	type : "GET",
 	    	data : {          
 	      		csrfmiddlewaretoken: '{{ csrf_token }}',
+	      		cus_id: cus_id,
+	      		cus_brn: cus_brn,
+	      		cus_vol: cus_vol,
 	      		emp_id: emp_id,
+	      		shift_id: shift_id,
 	    	},
 	    	success: function(data) {
 				$("#id_emp_name_th").val("");
@@ -1003,7 +1052,7 @@
 
 	    			//alert("TODO - check if employee is available.");
 	    			select_shift_option = $("#id_shift_option").val();
-	    			alert("emp_id = " + emp_id + " | " + "shift = " + select_shift_option);
+	    			//alert("emp_id = " + emp_id + " | " + "shift = " + select_shift_option);
 	    		} else {
 
 				  	$(document).Toasts('create', {
