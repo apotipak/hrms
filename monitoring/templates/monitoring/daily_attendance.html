@@ -1070,14 +1070,36 @@
 
 
     $(document).on('click', '#delete_button', function(e) {
-    	alert("delete");
       	var cus_id = $('#id_cus_id').val();
       	var cus_brn = $('#id_cus_brn').val();
       	var cus_vol = $('#id_cus_vol').val();    	
     	var emp_id = $("#id_emp_id").val();
-    	var shift_option = $("#id_shift_option").val();
+    	var shift_id = $("#id_shift_option").val();
     	var dly_date = $("#id_dly_date").val();
 
+    	//console.log(cus_id+","+cus_brn+","+cus_vol+","+emp_id+","+shift_option+","+dly_date)
+
+		$.ajax({
+	    	url : "/monitoring/ajax/delete_employee",
+	    	type : "GET",
+	    	data : {          
+	      		csrfmiddlewaretoken: '{{ csrf_token }}',
+	      		cus_id: cus_id,
+	      		cus_brn: cus_brn,
+	      		cus_vol: cus_vol,
+	      		emp_id: emp_id,
+	      		shift_id: shift_id,
+	      		dly_date: dly_date,
+	    	},
+	    	success: function(data) {
+	    		if(data.success) {
+	    			alert(data.message);
+	    		} else {
+	    			alert("error");
+	    		}
+	    		
+	    	}
+	    });
     });
 
  	$("#cancelDailyAttendanceButton").click( function() {

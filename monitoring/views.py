@@ -557,8 +557,11 @@ def ajax_get_customer_schedule_plan(request):
     try:
     	sch_plan = SchPlan.objects.filter(sch_no=sch_no).get()
 
+    	'''
     	print("debug : " + str(sch_plan.emp_id_id) + "," + str(sch_plan.sch_rank))
     	print("sch_active = " + str(sch_plan.sch_active))
+    	'''
+
     	employee_info = EmpPhoto.objects.filter(emp_id=sch_plan.emp_id_id).get()
     	employee_photo = b64encode(employee_info.image).decode("utf-8")
 
@@ -666,6 +669,7 @@ def ajax_save_customer_schedule_plan(request):
 
 	# Case - add new employee into customer service
 	if selected_sch_no == "0":
+		'''
 		print("add new");
 		print("--- debug ---")
 		print("selected_sch_no = " + str(selected_sch_no))
@@ -682,6 +686,7 @@ def ajax_save_customer_schedule_plan(request):
 		print("sat_shift = " + str(sat_shift))
 		print("sun_shift = " + str(sun_shift))
 		print("--- debug ---")
+		'''
 
 		# Get latest sch_no
 		cursor = connection.cursor()		
@@ -932,7 +937,7 @@ def ajax_get_employee_list(request):
 	search_option = request.GET.get('search_option')
 	search_key = request.GET.get('search_key')
 
-	print("debug: emp_id = " + str(emp_id))
+	# print("debug: emp_id = " + str(emp_id))
 
 	item_per_page = 6
 
@@ -1080,11 +1085,13 @@ def ajax_get_employee(request):
 	cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
 	employee_item = []
 
+	'''
 	print("-------debug--------")
 	print("_cnt_id = " + str(cnt_id))
 	print("_emp_id = " + str(emp_id))
 	print("_dly_date = " + str(""))
 	print("_sch_shift = " + str(shf_desc))
+	'''
 
 	try:
 		exclude_list = [4,5,6,8,9]
@@ -1651,4 +1658,42 @@ def ajax_get_attendance_information(request):
 	response.status_code = 200
 	return response	
 
+@permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
+@login_required(login_url='/accounts/login/')
+def ajax_delete_employee(request):
+	print("********************************")
+	print("FUNCTION: ajax_delete_employee()")
+	print("********************************")
 
+	cus_id = request.GET.get('cus_id').lstrip("0")
+	cus_brn = request.GET.get('cus_brn')
+	cus_vol = request.GET.get('cus_vol')
+	cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)		
+	emp_id = request.GET.get('emp_id')
+	dly_date = datetime.datetime.strptime(request.GET.get('dly_date'), '%d/%m/%Y')	
+	shift_id = request.GET.get('shift_id')
+	
+	'''
+	print("--------debug---------")
+	print("_cnt_id = " + str(cnt_id))
+	print("_emp_id = " + str(emp_id))
+	print("_dly_date = " + str(dly_date))
+	print("_shift_id = " + str(shift_id))
+	'''
+
+	# Check if request's record is existed
+	cursor = connection.cursor()
+	# cursor.execute("delete dly_plan where cnt_id=%s and emp_id=%s and dly_date=convert(datetime,%s,20) and sch_shift=%s", [cnt_id, emp_id, dly_date, shift_id])
+	cursor.execute("select * from dly_plan where cnt_id=%s and emp_id=%s and dly_date=%s and sch_shift=%s", [cnt_id, emp_id, dly_date, shift_id])
+	rows = cursor.fetchall()
+	if len(rows)>0:
+		for row in rows:
+			print("data = " + str(row[0]))
+
+	response = JsonResponse(data={
+	    "success": True,	    
+	    "message": "OK",
+	})
+
+	response.status_code = 200
+	return response	

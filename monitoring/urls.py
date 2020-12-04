@@ -23,4 +23,5 @@ urlpatterns = [
 
 	url(r'^ajax/get_attendance_information/$', views.ajax_get_attendance_information, name='ajax_get_attendance_information'),
 
+	url(r'^ajax/delete_employee/$', views.ajax_delete_employee, name='ajax_delete_employee'),
 ]
