@@ -492,7 +492,6 @@
 		  		cus_vol: cus_vol,
 			},
 			success : function(data) {
-
 				if(data.is_found) {
 
 					// Get Schedule list info
@@ -866,6 +865,7 @@
 		$("#id_employee_list").html(result);
     }
 
+    // ClickRow
 	$(document).on('click', '#employee_list_table tbody tr', function(row, $el, field) {
 		$("#id_emp_id").attr("disabled", true);
 		$("#id_late_check").hide();
