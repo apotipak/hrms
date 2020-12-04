@@ -923,7 +923,10 @@
 			$("#id_absent_check").prop("checked", false);
 		}
 		
-		if(shf_desc.substring(0,3)=='999' || shf_desc.substring(0,2)=='99') {
+		shift_id =  parseInt(shf_desc.substring(0,4));
+		$('#id_shift_option').val(shift_id);
+
+		if(shift_id==999 || shift_id==99) {
 			$("#save_button").attr("disabled", true);
 			$("#delete_button").attr("disabled", true);
 		} else {
@@ -1072,7 +1075,9 @@
       	var cus_brn = $('#id_cus_brn').val();
       	var cus_vol = $('#id_cus_vol').val();    	
     	var emp_id = $("#id_emp_id").val();
-    	
+    	var shift_option = $("#id_shift_option").val();
+    	var dly_date = $("#id_dly_date").val();
+
     });
 
  	$("#cancelDailyAttendanceButton").click( function() {
