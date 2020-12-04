@@ -693,6 +693,9 @@ $(document).on('keypress', '#id_emp_id', function(e) {
 		    	data : {          
 		      		csrfmiddlewaretoken: '{{ csrf_token }}',
 		      		emp_id: emp_id,
+		      		cus_id: cus_id,
+		      		cus_brn: cus_brn,
+		      		cus_vol: cus_vol,
 		    	},
 		    	success: function(data) {
 	    			$("#id_emp_name_th").val("");

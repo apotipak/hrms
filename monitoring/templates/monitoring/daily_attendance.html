@@ -521,7 +521,7 @@
 					result += "      <th scope='col'>Relief</th>";
 					result += "      <th scope='col' nowrap>Rel. ID</th>";
 					result += "      <th scope='col'>Name</th>";
-					result += "      <th scope='col'>TEL</th>";
+					result += "      <th scope='col'>Tel</th>";
 					result += "      <th scope='col' nowrap>Call Time</th>";
 					result += "      <th scope='col' nowrap>Call Amt</th>";
 					result += "      <th scope='col' nowrap>Call Paid</th>";
@@ -570,7 +570,7 @@
 							result += "	     <td></td>";
 							result += "	     <td></td>";
 							result += "	     <td class='text-center'>" + tel_man + "</td>";
-							result += "	     <td>" + tel_time + "</td>";
+							result += "	     <td nowrap>" + tel_time + "</td>";
 							result += "	     <td>" + tel_amt + "</td>";
 							result += "	     <td>" + tel_paid + "</td>";
 							result += "	     <td>" + parseInt(spare) + "</td>";
@@ -967,6 +967,9 @@
     	$('#id_emp_id').focus();
     });
 
+
+
+
     $(document).on('click', '#save_button', function(e) {    	
       	var cus_id = $('#id_cus_id').val();
       	var cus_brn = $('#id_cus_brn').val();
@@ -990,7 +993,6 @@
 		  	$('#id_emp_id').focus();
     		return false;
     	}
-
     	
     	if(shift_id=="0"){
 		  	$(document).Toasts('create', {
@@ -1046,9 +1048,12 @@
 	    			$("#save_button").attr("disabled", false);
 	    			$("#delete_button").attr("disabled", true);
 
-	    			//alert("TODO - check if employee is available.");
+	    			alert("TODO - check if employee is available.");
 	    			select_shift_option = $("#id_shift_option").val();
+
+	    			//select cnt_id, sch_shift from dly_plan where cnt_id=2526000001 and sch_shift=3 and absent=0 and dly_date=convert(datetime,'2020-12-04',20)
 	    			//alert("emp_id = " + emp_id + " | " + "shift = " + select_shift_option);
+
 	    		} else {
 
 				  	$(document).Toasts('create', {
@@ -1063,6 +1068,7 @@
 				    	autoremove: true,
 				  	});
 	    		}
+
 	    		$.LoadingOverlay("hide");
 	    		$("#id_emp_id").select();
 	    	},

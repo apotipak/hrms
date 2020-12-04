@@ -1540,7 +1540,9 @@ def ajax_get_attendance_information(request):
 				absent=0
 		
 			if row[24]==1:
-				tel_man = "<span class='text-danger'><strong>X</strong></span>"
+				# tel_man = "<span class='text-danger'><strong>X</strong></span>"
+				# tel_man = "<span class='text-success'><i class='fas fa-phone-volume'></i></span>"
+				tel_man = "<span class='text-success'><i class='fas fa-phone-alt'></i></span>"
 			else:
 				tel_man = ""
 
