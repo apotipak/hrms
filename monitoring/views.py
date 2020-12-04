@@ -1681,9 +1681,23 @@ def ajax_delete_employee(request):
 	print("_shift_id = " + str(shift_id))
 	'''
 
+	if cus_id=="" or cus_id is None:
+		response = JsonResponse(data={"success": True, "message": "Contract Number is not correct."})
+		response.status_code = 200
+		return response
+	
+	if emp_id=="" or cus_id is None:
+		response = JsonResponse(data={"success": True, "message": "Employee ID is not correct."})
+		response.status_code = 200
+		return response
+
+	if dly_date=="" or cus_id is None:
+		response = JsonResponse(data={"success": True, "message": "Daily Attendnace Date is not correct."})
+		response.status_code = 200
+		return response
+
 	# Check if request's record is existed
 	with connection.cursor() as cursor:
-		# cursor = connection.cursor()
 		cursor.execute("delete dly_plan where cnt_id=%s and emp_id=%s and dly_date=%s and sch_shift=%s", [cnt_id, emp_id, dly_date, shift_id])
 		cursor.execute("select * from dly_plan where cnt_id=%s and emp_id=%s and dly_date=%s and sch_shift=%s", [cnt_id, emp_id, dly_date, shift_id])
 		row = cursor.fetchone()
