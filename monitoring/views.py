@@ -1672,7 +1672,8 @@ def ajax_delete_employee(request):
 	emp_id = request.GET.get('emp_id')
 	dly_date = datetime.datetime.strptime(request.GET.get('dly_date'), '%d/%m/%Y')	
 	shift_id = request.GET.get('shift_id')
-	
+	username = request.user.first_name
+
 	'''
 	print("--------debug---------")
 	print("_cnt_id = " + str(cnt_id))
@@ -1698,6 +1699,7 @@ def ajax_delete_employee(request):
 
 	# Check if request's record is existed
 	with connection.cursor() as cursor:
+		cursor.execute("insert his_dly_plan_del select getdate(), %s, 'DLY_PLAN', * from dly_plan where cnt_id=%s and emp_id=%s and dly_date=%s and sch_shift=%s", [username, cnt_id, emp_id, dly_date, shift_id])
 		cursor.execute("delete dly_plan where cnt_id=%s and emp_id=%s and dly_date=%s and sch_shift=%s", [cnt_id, emp_id, dly_date, shift_id])
 		cursor.execute("select * from dly_plan where cnt_id=%s and emp_id=%s and dly_date=%s and sch_shift=%s", [cnt_id, emp_id, dly_date, shift_id])
 		row = cursor.fetchone()
