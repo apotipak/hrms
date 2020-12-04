@@ -873,17 +873,17 @@
 		$("#id_phone_check").hide();
 		$("#id_phone_check").next("label").hide();
 
+		var cus_id = $("#id_cus_id").val();
+		var cus_brn = $("#id_cus_brn").val();
+		var cus_vol = $("#id_cus_vol").val();
+		
 		var absent = $(this).find('td:eq(0)').text();
 		var emp_id = $(this).find('td:eq(1)').text();
 		var emp_fullname_th = $(this).find('td:eq(2)').text();
 		var sch_rank = $(this).find('td:eq(3)').text();
-		var sch_dept = $(this).find('td:eq(4)').text();		
-		var dept_id = $(this).find('td:eq(4)').text();
+		var shf_desc = $(this).find('td:eq(4)').text();	
 
-		var shift_id = $("#id_shift_option").val();
-		var cus_id = $("#id_cus_id").val();
-		var cus_brn = $("id_cus_brn").val();
-		var cus_vol = $("id_cus_vol").val();
+		alert(shf_desc);
 
 		// Get Employee information
 		$.ajax({
@@ -892,7 +892,7 @@
 	    	data : {          
 	      		csrfmiddlewaretoken: '{{ csrf_token }}',
 	      		emp_id: emp_id,
-	      		shift_id: shift_id,
+	      		shf_desc: shf_desc,
 	      		cus_id: cus_id,
 	      		cus_vol: cus_vol,
 	      		cus_brn: cus_brn,
@@ -925,7 +925,7 @@
 			$("#id_absent_check").prop("checked", false);
 		}
 		
-		if(sch_dept.substring(0,3)=='999' || sch_dept.substring(0,2)=='99') {
+		if(shf_desc.substring(0,3)=='999' || shf_desc.substring(0,2)=='99') {
 			$("#save_button").attr("disabled", true);
 			$("#delete_button").attr("disabled", true);
 		} else {

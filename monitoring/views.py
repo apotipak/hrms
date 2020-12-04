@@ -1071,7 +1071,7 @@ def ajax_get_employee(request):
 	print("********************************")
 	
 	emp_id = request.GET.get('emp_id')
-	shift_id = request.GET.get('shift_id')
+	shf_desc = request.GET.get('shf_desc')
 	cus_id = request.GET.get('cus_id')
 	cus_brn = request.GET.get('cus_brn')
 	cus_vol = request.GET.get('cus_vol')
