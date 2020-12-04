@@ -30,7 +30,7 @@
 			  		<div class="float-left text-left col-5">
 					    <div class="form-inline">
 					        <label class="control-label">Date</label>&nbsp;&nbsp;				        
-					        <input type="text" class="form-control form-control-sm" id="id_date" placeholder="dd/mm/yyyy">&nbsp;&nbsp;
+					        <input type="text" class="form-control form-control-sm" id="id_dly_date" placeholder="dd/mm/yyyy">&nbsp;&nbsp;
 					    	<label class="control-label">Shift</label>&nbsp;&nbsp;
 					        <select id="id_search_shift_option" class="form-control form-control-sm">
 							  <option value="0">---------</option>
@@ -476,7 +476,7 @@
 
         $('#id_cus_vol').val(id_cus_vol);
 
-        var attendance_date = $('#id_date').val();
+        var attendance_date = $('#id_dly_date').val();
       	var cus_id = $('#id_cus_id').val();
       	var cus_brn = $('#id_cus_brn').val();
       	var cus_vol = $('#id_cus_vol').val();
@@ -585,7 +585,7 @@
 
 						enableAllElements();
 
-						$("#id_date").attr("readonly", true);
+						$("#id_dly_date").attr("readonly", true);
 						$("#id_search_shift_option").attr("readonly", true);
 						$("#id_cus_id").attr("readonly", true);
 						$("#id_cus_brn").attr("readonly", true);
@@ -779,7 +779,7 @@
 		}
 	});
 
-	$('#id_date').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true}).datepicker("setDate", new Date());
+	$('#id_dly_date').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true}).datepicker("setDate", new Date());
 	
 	$("input:radio[name='searchOptions']").change(function(){
 		var _val = $(this).val();
@@ -883,8 +883,6 @@
 		var sch_rank = $(this).find('td:eq(3)').text();
 		var shf_desc = $(this).find('td:eq(4)').text();	
 
-		alert(shf_desc);
-
 		// Get Employee information
 		$.ajax({
 	    	url : "/monitoring/ajax/get_employee",
@@ -937,8 +935,6 @@
 		$("#id_emp_id").val(emp_id);
 		$("#id_emp_fullname_th").val(emp_fullname_th);
 		$("#id_sch_rank").val(sch_rank);
-
-		
 
 		//$("#id_emp_status").val();
 		
@@ -1008,12 +1004,7 @@
     		return false;
     	}
 
-
 		showLoading();
-
-		alert(cus_id);
-		alert(cus_brn);
-		alert(cus_vol);
 
 		$.ajax({
 	    	url : "/monitoring/ajax/get_employee",
@@ -1075,7 +1066,14 @@
     });
 
 
-
+    $(document).on('click', '#delete_button', function(e) {
+    	alert("delete");
+      	var cus_id = $('#id_cus_id').val();
+      	var cus_brn = $('#id_cus_brn').val();
+      	var cus_vol = $('#id_cus_vol').val();    	
+    	var emp_id = $("#id_emp_id").val();
+    	
+    });
 
  	$("#cancelDailyAttendanceButton").click( function() {
     	event.preventDefault();    	
@@ -1087,7 +1085,7 @@
     	clearEmployeeListTable();
     	disableAllElements();
 
-		$("#id_date").attr("readonly", false);
+		$("#id_dly_date").attr("readonly", false);
 		$("#id_search_shift_option").attr("readonly", false);
 
 		$("#id_cus_id").attr("readonly", false);

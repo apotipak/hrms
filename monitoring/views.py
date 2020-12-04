@@ -1076,11 +1076,15 @@ def ajax_get_employee(request):
 	cus_brn = request.GET.get('cus_brn')
 	cus_vol = request.GET.get('cus_vol')
 
-	print(str(emp_id) + " | " + str(cus_id) + " | " + str(cus_brn) + " | " + str(cus_vol))
+	# print(str(emp_id) + " | " + str(cus_id) + " | " + str(cus_brn) + " | " + str(cus_vol))
 	cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
 	employee_item = []
 
+	print("-------debug--------")
 	print("_cnt_id = " + str(cnt_id))
+	print("_emp_id = " + str(emp_id))
+	print("_dly_date = " + str(""))
+	print("_sch_shift = " + str(shf_desc))
 
 	try:
 		exclude_list = [4,5,6,8,9]
