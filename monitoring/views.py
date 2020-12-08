@@ -1735,20 +1735,62 @@ def ajax_save_daily_attendance(request):
 	cus_brn = request.GET.get('cus_brn')
 	cus_vol = request.GET.get('cus_vol')	
 	cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
+	cnt_id = cnt_id.lstrip("0")
 	emp_id = request.GET.get('emp_id')
 	shift_id = request.GET.get('shift_id')
-	shift_name = request.GET.get('shift_name')
-	shift_period = shift_name.partition("#")[2][0:2].strip()
-	# shift_period = shift_name.partition("#")[2][0:0]
+	shift_name = request.GET.get('shift_name')	
+	# TODO
+	job_id = '00'
 
+
+	# ดักจับในกรณีที่ cnt_id มากกว่า 10 หลัก
+	if len(cnt_id)>10:
+		message = ""
+		response = JsonResponse(data={		
+		    "success": True,
+		    "title": "Error",
+		    "type": "red",
+		    "message": "Contract ID " + str(cnt_id) + " is not correct!",
+		})
+		response.status_code = 200
+		return response
+
+	if shift_id!="99":
+		message = "TODO"
+	else:		
+		message = ""
+		response = JsonResponse(data={
+		    "success": True,
+		    "title": "Error",
+		    "type": "red",
+		    "message": "You select Shift ID = " + str(shift_id),
+		})
+		response.status_code = 200
+		return response	
+
+
+
+	# All good to go	
+	response = JsonResponse(data={		
+	    "success": True,
+	    "title": "Sucess",
+	    "type": "green",
+	    "message": message,
+	})
+	response.status_code = 200
+	return response
+
+
+
+
+	'''
 	print("--------debug---------")
 	print("_dly_date = " + str(dly_date))
 	print("_cnt_id = " + str(cnt_id))
 	print("_emp_id = " + str(emp_id))
 	print("_dly_date = " + str(dly_date))
 	print("_shift_id = " + str(shift_id))
-	print("_shift_name =" + str(shift_name))
-	print("_shift_period =" + shift_period)
+	print("_shift_name =" + str(shift_name))	
 
 	cursor = connection.cursor()	
 	cursor.execute("select count(*) from dly_plan where cnt_id=%s and sch_shift=%s and absent=0 and dly_date=%s", [cnt_id, shift_id, dly_date])
@@ -1777,7 +1819,9 @@ def ajax_save_daily_attendance(request):
 	print("scheduleCount = " + str(srv_qty))
 
 
-	# Check 1 - Must not over quota
+	# ******************************
+	# Rule 1 - inform's request must not over capacity
+	# ******************************
 	if informCount >= scheduleCount:
 		message = "พนักงานที่แจ้งเวรมากกว่าที่อยู่ในสัญญา : <b>" + str(cnt_id)[3:] + "</b>"
 		response = JsonResponse(data={
@@ -1789,14 +1833,35 @@ def ajax_save_daily_attendance(request):
 		response.status_code = 200
 		return response
 
-	# Check 2 - Manpower
-	if shift_period == 'D' or shift_period == 'N':
+
+	# ******************************
+	# Rule 2 - check manpower
+	# ******************************
+	shift_type = shift_name.partition("#")[2][0:2].strip()
+	print("_shift_type =" + shift_type)	
+	#raw query - select cnt_id, sch_shift from v_dlyplan_shift where cnt_id=1486000001 and left(remark,2)=00 and shf_type='D' and absent=0 and dly_date=convert(datetime,'2020-12-08',20)
+	cursor.execute("select cnt_id, sch_shift from v_dlyplan_shift where cnt_id=%s and left(remark,2)=%s and shf_type=%s and absent=0 and dly_date=%s", [cnt_id, job_id, shift_type, dly_date])
+	rows = cursor.fetchone()
+	cursor.close
+	if rows is not None:
+		if len(rows)==0:
+			aManPower = 0
+		else:
+			aManPower = len(rows)
+	else:
+		aManPower = 0
+	print("aManPower = " + str(aManPower))
+	'''
+
+
+	'''
+	if shift_type == 'D' or shift_type == 'N':
 		message = "เลือกช่วงเวลาทำงานถูกต้อง"
 		response = JsonResponse(data={
 		    "success": True,
 		    "title": "Success",
 		    "type": "green",
-		    "message": shift_period + " - " + message,
+		    "message": shift_type + " - " + message,
 		})
 		response.status_code = 200
 		return response
@@ -1806,19 +1871,10 @@ def ajax_save_daily_attendance(request):
 		    "success": False,
 		    "title": "Error",
 		    "type": "red",
-		    "message": shift_period + " - " + message,
+		    "message": shift_type + " - " + message,
 		})
 		response.status_code = 200
 		return response		
+	'''
 
 
-	# All good to go
-	message = "Good to go"
-	response = JsonResponse(data={		
-	    "success": True,
-	    "title": "Sucess",
-	    "type": "green",
-	    "message": message,
-	})
-	response.status_code = 200
-	return response
