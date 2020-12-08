@@ -45,7 +45,7 @@
 					    <div class="form-group">
 		                      <input class="form-check-input" type="radio" name="searchOptions" id="id_search_by_cnt_id" value="1" checked>
 		                      <label class="control-label" for="id_search_by_cnt_id">Contract No</label>&nbsp;
-		                      <input type="number" min=0 id="id_cus_id" class="form-control form-control-sm col-2" value="0002526">&nbsp;
+		                      <input type="number" min=0 id="id_cus_id" class="form-control form-control-sm col-2" value="">&nbsp;
 		                      <input type="number" min=0 id="id_cus_brn" class="form-control form-control-sm col-1" value="000">&nbsp;
 		                      <input type="number" min=0 id="id_cus_vol" class="form-control form-control-sm col-1" value="001">&nbsp;&nbsp;&nbsp;
 		                      <input class="form-check-input" type="radio" name="searchOptions" id="id_search_by_empid" value="2" readonly>
@@ -153,7 +153,7 @@
 							</table>
 							</font>
 						</div>
-						<font size='2em'><span class="text-danger">X</span> is absent.</font>
+						<font size='2em'><span class="text-danger">x</span> is absent.</font>
 		        	</div>
 
 		            <div class="tab-pane fade show" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
@@ -568,7 +568,7 @@
 							upd_gen = data.employee_list[i]["upd_gen"];
 							result += "    <tr>";							
 							if(absent==1) {
-								result += "	     <td><font class='text-danger'>X</font></td>";
+								result += "	     <td><font class='text-danger'>x</font></td>";
 							} else {
 								result += "	     <td>&nbsp</td>";
 							}
@@ -1081,15 +1081,17 @@
 				    	success: function(data) {
 				    		if(data.success) {				    							    		
 								$.alert({
-								    title: 'Error',
-								    type: 'red',
+								    title: 'Success',
+								    type: 'green',
 								    content: data.message,
 								    animation: 'zoom',
 								    animationBounce: 1.5,
 								    closeIcon: false,
 								    boxWidth: '38%',
 								    useBootstrap: false,
-								});					    			
+								});
+								
+								$("#dailyAttendanceDataEntryForm").trigger("reset");			    			
 				    		} else {
 				    			alert("error");
 				    		}				    		
@@ -1337,7 +1339,7 @@
  	$("#cancelDailyAttendanceButton").click( function() {
     	event.preventDefault();    	
 
-    	$("#id_cus_id").val("0002526");
+    	//$("#id_cus_id").val("0002526");
     	$("#id_cus_brn").val("000");
     	$("#id_cus_vol").val("001");
 
