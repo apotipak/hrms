@@ -1758,23 +1758,29 @@ def ajax_save_daily_attendance(request):
 	srv_qty = rows[2]
 	scheduleCount = srv_qty
 	print("scheduleCount = " + str(srv_qty))
-	
+
+	# Check if not over quota	
 	if informCount >= scheduleCount:
 		message = "พนักงานที่แจ้งเวรมากกว่าที่อยู่ในสัญญา : <b>" + str(cnt_id)[3:] + "</b>"
 		response = JsonResponse(data={
-		    "success": True,	    
+		    "success": True,
+		    "title": "Error",
+		    "type": "red",
 		    "message": message,
 		})
 		response.status_code = 200
 		return response
 
-
 	# Check Manpower
-	
-	
+
+
+
+	# All good to go
 	message = "TODO"
-	response = JsonResponse(data={
-	    "success": True,	    
+	response = JsonResponse(data={		
+	    "success": True,
+	    "title": "Sucess",
+	    "type": "green",
 	    "message": message,
 	})
 	response.status_code = 200

@@ -409,14 +409,21 @@
  		$("#id_absent_check").attr("disabled", true);
 		$("#id_late_check").attr("disabled", true);
  		$("#id_phone_check").attr("disabled", true);
+
+ 		$("#id_emp_id").attr("disabled", true);
+ 		$("#emp_id_lookup_button").attr("disabled", true);
+		$("#id_sent_spare").attr("disabled", true);
+		$("#id_shift_option").attr("disabled", true);
  	}
 
  	function enableAllElements() { 		
  		$("#dailyAttendanceDataEntryForm:input").attr("disabled", false);                              
- 		$("#id_emp_id").attr("disabled", false);
- 		$("#id_sent_spare").attr("disabled", false);
- 		$("#id_shift_option").attr("disabled", false);
- 		$("#emp_id_lookup_button").attr("disabled", false);
+ 		
+ 		//$("#id_emp_id").attr("disabled", false);
+ 		//$("#emp_id_lookup_button").attr("disabled", false);
+ 		//$("#id_sent_spare").attr("disabled", false);
+ 		//$("#id_shift_option").attr("disabled", false); 		
+
  		$("#add_button").attr("disabled", false);
  		//$("#reset_button").attr("disabled", true);
  		//$("#save_button").attr("disabled", true);
@@ -963,8 +970,11 @@
     	$("#delete_button").attr("disabled", true);
 
     	$("#dailyAttendanceDataEntryForm").trigger("reset");
+
     	$("#id_emp_id").attr("disabled", false);
     	$("#emp_id_lookup_button").attr("disabled", false);
+		$("#id_sent_spare").attr("disabled", false);
+		$("#id_shift_option").attr("disabled", false);
 
     	$("#id_absent_check").prop("checked", false);
 		$("#id_late_check").show();
@@ -972,7 +982,7 @@
 		$("#id_phone_check").show();
 		$("#id_phone_check").next("label").show();
 
-        $('#id_emp_id').focus();
+        $('#id_emp_id').focus();        
     });
 
     $(document).on('click', '#reset_button', function(e) {    	
@@ -1081,8 +1091,8 @@
 				    	success: function(data) {
 				    		if(data.success) {				    							    		
 								$.alert({
-								    title: 'Success',
-								    type: 'green',
+								    title: data.title,
+								    type: data.type,
 								    content: data.message,
 								    animation: 'zoom',
 								    animationBounce: 1.5,
@@ -1091,7 +1101,12 @@
 								    useBootstrap: false,
 								});
 								
-								$("#dailyAttendanceDataEntryForm").trigger("reset");			    			
+								$("#dailyAttendanceDataEntryForm").trigger("reset");
+								
+								$("#id_emp_id").attr("disabled", true);
+ 								$("#emp_id_lookup_button").attr("disabled", true);
+ 								$("#id_sent_spare").attr("disabled", true);
+ 								$("#id_shift_option").attr("disabled", true);
 				    		} else {
 				    			alert("error");
 				    		}				    		
