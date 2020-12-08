@@ -367,6 +367,23 @@
 
 {% block javascript %}
 <script>
+	$(document).ready(function(){
+		$("#id_cus_id").on('click', function(){
+			$("#id_cus_id").select();
+		});
+		$("#id_cus_brn").on('click', function(){
+			$("#id_cus_brn").select();
+		});
+		$("#id_cus_vol").on('click', function(){
+			$("#id_cus_vol").select();
+		});
+
+		disableAllElements();
+
+		$('#id_cus_id').focus();
+		$('#id_cus_id').select();
+	});
+
  	function disableAllElements() {
  		$("#dailyAttendanceDataEntryForm:input").attr("disabled", true);
  		$("#dailyAttendanceDataEntryForm").trigger("reset");
@@ -410,11 +427,6 @@
  		$("#id_phone_check").attr("disabled", false);
  	}
 
-	$(document).ready(function(){
-		disableAllElements();
-		$('#id_cus_id').focus();
-	});
-
 	$(document).on('keyup keypress', '#daily_attendance_search_form input[type="text"]', function(e) {
 		if(e.which == 13) {
 			e.preventDefault();
@@ -435,8 +447,9 @@
 	      	$('#id_cus_id').val(id_cus_id);
 
 	        $('#id_cus_brn').focus();
+	        $('#id_cus_brn').select();
       	} else {
-      		$(this).focus();
+      		$(this).focus();      		
       	}
 
       }
@@ -455,7 +468,7 @@
       	$('#id_cus_brn').val(id_cus_brn);
 
         $('#id_cus_vol').focus();
-
+        $('#id_cus_vol').select();
       }
     });
 
