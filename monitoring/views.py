@@ -1810,13 +1810,19 @@ def ajax_save_daily_attendance(request):
 		# RULE 4 - Check if employee is terminated
 		# *****************************************
 		isPass, message = checkAbsentandReliefStatus()
-
+		# skip this rule because it's included in RULE 3
 
 
 		# *****************************************
 		# RULE 5 - Check Relief condition
 		# *****************************************
-		isPass, message = checkReliefCondition()		
+		isPass, message = checkReliefCondition()
+
+
+		# *******************************************************************
+		# RULE 6 - เช็คจำนวนคนห้ามคีย์เกินในรายการสัญญา ขณะนี้ให้เช็คจาก Missing Record
+		# *******************************************************************
+		isPass, message = checkTotalMissGuard(shift_type)	
 
 
 		# *****************************************
@@ -1950,4 +1956,13 @@ def checkReliefCondition():
 	message = ""
 
 	return isPass, message
-	
+
+
+# *******************************************************************
+# RULE 6 - เช็คจำนวนคนห้ามคีย์เกินในรายการสัญญา ขณะนี้ให้เช็คจาก Missing Record
+# *******************************************************************
+def checkTotalMissGuard(shift_type):
+	isPass = False
+	message = ""
+
+	return isPass, message
