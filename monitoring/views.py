@@ -1806,12 +1806,17 @@ def ajax_save_daily_attendance(request):
 			message = message
 
 
+		# *****************************************
+		# RULE 4 - Check if employee is terminated
+		# *****************************************
+		isPass, message = checkAbsentandReliefStatus()
+
+
 
 		# *****************************************
-		# RULE 4 - 
+		# RULE 5 - Check Relief condition
 		# *****************************************
-		# 
-
+		isPass, message = checkReliefCondition()		
 
 
 		# *****************************************
@@ -1842,9 +1847,9 @@ def ajax_save_daily_attendance(request):
 	return response
 
 
-# ************************************************
-# RULE 1 - เช็คพนักงานที่แจ้งเวรต้องไม่เกินจำนวนที่ว่าจ้างในสัญญา
-# ************************************************
+# ******************************************************
+# RULE 1 - เช็คพนักงานที่แจ้งเวรต้องไม่เกินจำนวนอัตราที่ว่าจ้างในสัญญา
+# ******************************************************
 def checkNotOverCapacity(cnt_id, shift_id, dly_date):
 	isPass = False
 	message = ""
@@ -1909,8 +1914,11 @@ def checkManPower(cnt_id, job_id, shift_type, dly_date):
 # RULE 3 - ตรวจสอบพนักงานที่ไม่มีอยู่ในระบบ
 # *****************************************
 def checkExistedEmployee(emp_id):
+	isPass = False
+	message = ""
+
 	cursor = connection.cursor()
-	cursor.execute("select count(*) from v_employee where emp_id=%s and upd_flag<>'D' and sch_active=1 and emp_type='D1'", [emp_id])
+	cursor.execute("select count(*) from v_employee where emp_id=%s and upd_flag<>'D' and sch_active=1 and emp_type='D1' and emp_term_date is null", [emp_id])
 	row_count = cursor.fetchone()
 	cursor.close
 
@@ -1922,3 +1930,24 @@ def checkExistedEmployee(emp_id):
 		message = str(emp_id) + " is found."
 
 	return isPass, message
+
+
+# *****************************************
+# RULE 4 - Check Absent and Relief status
+# *****************************************
+def checkAbsentandReliefStatus():
+	isPass = False
+	message = ""
+
+	return isPass, message
+
+
+# *****************************************
+# RULE 5 - Check Relief condition
+# *****************************************
+def checkReliefCondition():
+	isPass = False
+	message = ""
+
+	return isPass, message
+	
