@@ -1755,19 +1755,69 @@ def ajax_save_daily_attendance(request):
 		response.status_code = 200
 		return response
 
+
 	if shift_id!="99":
-		# Rule 1 - เช็คพนักงานที่แจ้งเวรต้องไม่เกินจำนวนอัตราที่กำหนดในสัญญา
-		isPass, message = isPassRule1(cnt_id, shift_id, dly_date)
-		if isPass:
+		# ************************************************
+		# RULE 1 - เช็คพนักงานที่แจ้งเวรต้องไม่เกินจำนวนที่ว่าจ้างในสัญญา
+		# ************************************************
+		isPass, message = checkNotOverCapacity(cnt_id, shift_id, dly_date)
+		if not isPass:
 			success = True
 			title = "Success"
 			type = "green"
-			message = message
+			message = "TODO: Check RULE 2"
 		else:
 			success = False
 			title = "Error"
 			type = "red"
-			message = "Error"
+			message = message
+
+
+		# *****************************************
+		# RULE 2 - ตรวจสอบ Manpower
+		# *****************************************
+		shift_type = shift_name.partition("#")[2][0:2].strip()
+		isPass, message = checkManPower(cnt_id, job_id, shift_type, dly_date)
+		if isPass:
+			success = True
+			title = "Success"
+			type = "green"
+			message = "TODO: Check RULE 3"
+		else:
+			success = False
+			title = "Error"
+			type = "red"
+			message = message
+
+
+		# *****************************************
+		# RULE 3 - ตรวจสอบพนักงานที่ไม่มีอยู่ในระบบ
+		# *****************************************
+		isPass, message = checkExistedEmployee(emp_id)
+		if isPass:
+			success = True
+			title = "Success"
+			type = "green"
+			message = "TODO: Check RULE 4"
+		else:
+			success = False
+			title = "Error"
+			type = "red"
+			message = message
+
+
+
+		# *****************************************
+		# RULE 4 - 
+		# *****************************************
+		# 
+
+
+
+		# *****************************************
+		# RULE ? - ???
+		# *****************************************
+		# 
 
 
 	else:		
@@ -1792,69 +1842,14 @@ def ajax_save_daily_attendance(request):
 	return response
 
 
-
-
-	'''
-	print("--------debug---------")
-	print("_dly_date = " + str(dly_date))
-	print("_cnt_id = " + str(cnt_id))
-	print("_emp_id = " + str(emp_id))
-	print("_dly_date = " + str(dly_date))
-	print("_shift_id = " + str(shift_id))
-	print("_shift_name =" + str(shift_name))	
-
-
-
-
-	# ******************************
-	# Rule 2 - check manpower
-	# ******************************
-	shift_type = shift_name.partition("#")[2][0:2].strip()
-	print("_shift_type =" + shift_type)	
-	#raw query - select cnt_id, sch_shift from v_dlyplan_shift where cnt_id=1486000001 and left(remark,2)=00 and shf_type='D' and absent=0 and dly_date=convert(datetime,'2020-12-08',20)
-	cursor.execute("select cnt_id, sch_shift from v_dlyplan_shift where cnt_id=%s and left(remark,2)=%s and shf_type=%s and absent=0 and dly_date=%s", [cnt_id, job_id, shift_type, dly_date])
-	rows = cursor.fetchone()
-	cursor.close
-	if rows is not None:
-		if len(rows)==0:
-			aManPower = 0
-		else:
-			aManPower = len(rows)
-	else:
-		aManPower = 0
-	print("aManPower = " + str(aManPower))
-	'''
-
-
-	'''
-	if shift_type == 'D' or shift_type == 'N':
-		message = "เลือกช่วงเวลาทำงานถูกต้อง"
-		response = JsonResponse(data={
-		    "success": True,
-		    "title": "Success",
-		    "type": "green",
-		    "message": shift_type + " - " + message,
-		})
-		response.status_code = 200
-		return response
-	else:
-		message = "เลือก Day Off | Another Site"
-		response = JsonResponse(data={
-		    "success": False,
-		    "title": "Error",
-		    "type": "red",
-		    "message": shift_type + " - " + message,
-		})
-		response.status_code = 200
-		return response		
-	'''
-
-
-
-def isPassRule1(cnt_id, shift_id, dly_date):
+# ************************************************
+# RULE 1 - เช็คพนักงานที่แจ้งเวรต้องไม่เกินจำนวนที่ว่าจ้างในสัญญา
+# ************************************************
+def checkNotOverCapacity(cnt_id, shift_id, dly_date):
 	isPass = False
+	message = ""
 
-	cursor = connection.cursor()	
+	cursor = connection.cursor()
 	cursor.execute("select count(*) from dly_plan where cnt_id=%s and sch_shift=%s and absent=0 and dly_date=%s", [cnt_id, shift_id, dly_date])
 	informCount = cursor.fetchone()
 	if len(informCount)==0:
@@ -1865,7 +1860,7 @@ def isPassRule1(cnt_id, shift_id, dly_date):
 	cursor.execute("select cnt_id, srv_shif_id, sum(srv_qty) as qty from cus_service where srv_active=1 and cnt_id=%s and srv_shif_id=%s group by cnt_id, srv_shif_id", [cnt_id, shift_id])
 	rows = cursor.fetchone()
 	cursor.close
-	
+
 	if rows is not None:
 		if len(rows)==0:
 			srv_qty = 0
@@ -1885,4 +1880,45 @@ def isPassRule1(cnt_id, shift_id, dly_date):
 
 	return isPass, message
 
-		
+
+# *****************************************
+# RULE 2 - ตรวจสอบ Manpower
+# *****************************************
+def checkManPower(cnt_id, job_id, shift_type, dly_date):
+	isPass = False
+	message = ""
+	
+	cursor = connection.cursor()
+	cursor.execute("select cnt_id, sch_shift from v_dlyplan_shift where cnt_id=%s and left(remark,2)=%s and shf_type=%s and absent=0 and dly_date=%s", [cnt_id, job_id, shift_type, dly_date])
+	rows = cursor.fetchone()
+	cursor.close
+
+	if rows is not None:
+		if len(rows)==0:
+			aManPower = 0
+		else:
+			aManPower = len(rows)
+	else:
+		aManPower = 0
+		message = "Unkwown error!"
+	
+	return isPass, message
+
+
+# *****************************************
+# RULE 3 - ตรวจสอบพนักงานที่ไม่มีอยู่ในระบบ
+# *****************************************
+def checkExistedEmployee(emp_id):
+	cursor = connection.cursor()
+	cursor.execute("select count(*) from v_employee where emp_id=%s and upd_flag<>'D' and sch_active=1 and emp_type='D1'", [emp_id])
+	row_count = cursor.fetchone()
+	cursor.close
+
+	if row_count[0] == 0:
+		isPass = False
+		message = "Employee not found."		
+	else:
+		isPass = True
+		message = str(emp_id) + " is found."
+
+	return isPass, message
