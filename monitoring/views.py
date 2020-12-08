@@ -1737,6 +1737,9 @@ def ajax_save_daily_attendance(request):
 	cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
 	emp_id = request.GET.get('emp_id')
 	shift_id = request.GET.get('shift_id')
+	shift_name = request.GET.get('shift_name')
+	shift_period = shift_name.partition("#")[2][0:2].strip()
+	# shift_period = shift_name.partition("#")[2][0:0]
 
 	print("--------debug---------")
 	print("_dly_date = " + str(dly_date))
@@ -1744,26 +1747,41 @@ def ajax_save_daily_attendance(request):
 	print("_emp_id = " + str(emp_id))
 	print("_dly_date = " + str(dly_date))
 	print("_shift_id = " + str(shift_id))
+	print("_shift_name =" + str(shift_name))
+	print("_shift_period =" + shift_period)
 
 	cursor = connection.cursor()	
 	cursor.execute("select count(*) from dly_plan where cnt_id=%s and sch_shift=%s and absent=0 and dly_date=%s", [cnt_id, shift_id, dly_date])
 	informCount = cursor.fetchone()
-	informCount = informCount[0]
+	if len(informCount)==0:
+		informCount = 0
+	else:
+		informCount = informCount[0]
 
 	print("informCount = " + str(informCount))
+
+	
 	# select cnt_id, srv_shif_id, sum(srv_qty) as qty from cus_service where srv_active=1 and cnt_id=2526000001 and srv_shif_id=3 group by cnt_id, srv_shif_id
 	cursor.execute("select cnt_id, srv_shif_id, sum(srv_qty) as qty from cus_service where srv_active=1 and cnt_id=%s and srv_shif_id=%s group by cnt_id, srv_shif_id", [cnt_id, shift_id])
 	rows = cursor.fetchone()
 	cursor.close
-	srv_qty = rows[2]
+	if rows is not None:
+		if len(rows)==0:
+			srv_qty = 0
+		else:
+			srv_qty = rows[2]
+	else:
+		srv_qty = 0
+
 	scheduleCount = srv_qty
 	print("scheduleCount = " + str(srv_qty))
 
-	# Check if not over quota	
+
+	# Check 1 - Must not over quota
 	if informCount >= scheduleCount:
 		message = "พนักงานที่แจ้งเวรมากกว่าที่อยู่ในสัญญา : <b>" + str(cnt_id)[3:] + "</b>"
 		response = JsonResponse(data={
-		    "success": True,
+		    "success": False,
 		    "title": "Error",
 		    "type": "red",
 		    "message": message,
@@ -1771,12 +1789,31 @@ def ajax_save_daily_attendance(request):
 		response.status_code = 200
 		return response
 
-	# Check Manpower
-
+	# Check 2 - Manpower
+	if shift_period == 'D' or shift_period == 'N':
+		message = "เลือกช่วงเวลาทำงานถูกต้อง"
+		response = JsonResponse(data={
+		    "success": True,
+		    "title": "Success",
+		    "type": "green",
+		    "message": shift_period + " - " + message,
+		})
+		response.status_code = 200
+		return response
+	else:
+		message = "เลือก Day Off | Another Site"
+		response = JsonResponse(data={
+		    "success": False,
+		    "title": "Error",
+		    "type": "red",
+		    "message": shift_period + " - " + message,
+		})
+		response.status_code = 200
+		return response		
 
 
 	# All good to go
-	message = "TODO"
+	message = "Good to go"
 	response = JsonResponse(data={		
 	    "success": True,
 	    "title": "Sucess",

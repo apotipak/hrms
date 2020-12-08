@@ -1000,7 +1000,8 @@
       	var cus_vol = $('#id_cus_vol').val();    	
     	var emp_id = $("#id_emp_id").val();
     	var shift_id = $("#id_shift_option").val();
-    	
+    	var shift_name = $("#id_shift_option option:selected").text();
+
     	if(emp_id==""){
 		  	$(document).Toasts('create', {
 		    	class: "bg-danger", 
@@ -1046,7 +1047,7 @@
 	      		cus_brn: cus_brn,
 	      		cus_vol: cus_vol,
 	      		emp_id: emp_id,
-	      		shift_id: shift_id,
+	      		shift_id: shift_id,	      		
 	    	},
 	    	success: function(data) {
 				$("#id_emp_name_th").val("");
@@ -1087,6 +1088,7 @@
 				      		cus_vol: cus_vol,
 				      		emp_id: emp_id,
 				      		shift_id: shift_id,
+				      		shift_name: shift_name,
 				    	},
 				    	success: function(data) {
 				    		if(data.success) {				    							    		
@@ -1100,15 +1102,27 @@
 								    boxWidth: '38%',
 								    useBootstrap: false,
 								});
-								
-								$("#dailyAttendanceDataEntryForm").trigger("reset");
-								
+								/*
+								$("#dailyAttendanceDataEntryForm").trigger("reset");								
 								$("#id_emp_id").attr("disabled", true);
  								$("#emp_id_lookup_button").attr("disabled", true);
  								$("#id_sent_spare").attr("disabled", true);
  								$("#id_shift_option").attr("disabled", true);
+ 								*/
+ 								$("#id_emp_id").focus();
 				    		} else {
-				    			alert("error");
+								$.alert({
+								    title: data.title,
+								    type: data.type,
+								    content: data.message,
+								    animation: 'zoom',
+								    animationBounce: 1.5,
+								    closeIcon: false,
+								    boxWidth: '38%',
+								    useBootstrap: false,
+								});
+
+								$("#id_emp_id").focus();
 				    		}				    		
 				    	},
 				    });
