@@ -801,8 +801,8 @@ $(document).ready(function(){
 		
 		
     	$("#employeePhoto").html("<img src='/static/img/profile-128x128.png' width='90px;'' />");
-		$("#id_emp_id").focus();
-
+		
+		$("#id_emp_id").focus();		
     });
 
 	$("#contract_service_list_form :input").attr("disabled", true);
@@ -819,6 +819,7 @@ $(document).ready(function(){
 	});
 
 	$('#id_cus_id').focus();
+	$("#id_cus_id").select();
 
  	$("#cancel_security_guard_button").click( function() {
     	event.preventDefault();
@@ -1761,6 +1762,7 @@ $(document).on('keypress', '#id_cus_id', function(e) {
       	$('#id_cus_id').val(id_cus_id);
 
 		$('#id_cus_brn').focus();
+		$('#id_cus_brn').select();
 	}
 });
 
@@ -1774,6 +1776,7 @@ $(document).on('keypress', '#id_cus_brn', function(e) {
         	id_cus_brn = "0" + id_cus_brn;
       	$('#id_cus_brn').val(id_cus_brn);
 		$('#id_cus_vol').focus();
+		$('#id_cus_vol').select();
 	}
 });
 
