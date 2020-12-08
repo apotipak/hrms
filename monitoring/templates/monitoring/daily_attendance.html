@@ -971,12 +971,13 @@
 
 
     $(document).on('click', '#save_button', function(e) {    	
+    	var dly_date = $("#id_dly_date").val();
       	var cus_id = $('#id_cus_id').val();
       	var cus_brn = $('#id_cus_brn').val();
       	var cus_vol = $('#id_cus_vol').val();    	
     	var emp_id = $("#id_emp_id").val();
     	var shift_id = $("#id_shift_option").val();
-
+    	
     	if(emp_id==""){
 		  	$(document).Toasts('create', {
 		    	class: "bg-danger", 
@@ -1037,6 +1038,7 @@
 					$("#id_sch_rank").val(data.emp_rank);
 	    			$("#id_sch_dept").val(data.emp_type);
 	    			$("#id_emp_status").val(data.emp_status);
+	    			
 	    			if(data.emp_status_id=='9') {		    				
 		    			$("#id_emp_status").animate({color:'red'}, 1000);
 	    			} else {
@@ -1048,12 +1050,38 @@
 	    			$("#save_button").attr("disabled", false);
 	    			$("#delete_button").attr("disabled", true);
 
-	    			alert("TODO - check if employee is available.");
-	    			select_shift_option = $("#id_shift_option").val();
+	    	
 
-	    			//select cnt_id, sch_shift from dly_plan where cnt_id=2526000001 and sch_shift=3 and absent=0 and dly_date=convert(datetime,'2020-12-04',20)
-	    			//alert("emp_id = " + emp_id + " | " + "shift = " + select_shift_option);
-
+	    			//alert("TODO - check if employee is available.");		
+					$.ajax({
+				    	url : "/monitoring/ajax/save_daily_attendance",
+				    	type : "GET",
+				    	data : {          
+				      		csrfmiddlewaretoken: '{{ csrf_token }}',
+				      		dly_date: dly_date,				      		
+				      		cus_id: cus_id,
+				      		cus_brn: cus_brn,
+				      		cus_vol: cus_vol,
+				      		emp_id: emp_id,
+				      		shift_id: shift_id,
+				    	},
+				    	success: function(data) {
+				    		if(data.success) {				    							    		
+								$.alert({
+								    title: 'Error',
+								    type: 'red',
+								    content: data.message,
+								    animation: 'zoom',
+								    animationBounce: 1.5,
+								    closeIcon: false,
+								    boxWidth: '38%',
+								    useBootstrap: false,
+								});					    			
+				    		} else {
+				    			alert("error");
+				    		}				    		
+				    	},
+				    });
 	    		} else {
 
 				  	$(document).Toasts('create', {

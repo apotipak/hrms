@@ -1718,4 +1718,64 @@ def ajax_delete_employee(request):
 	})
 
 	response.status_code = 200
-	return response	
+	return response
+
+
+@permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
+@login_required(login_url='/accounts/login/')
+def ajax_save_daily_attendance(request):
+
+	print("***************************************")
+	print("FUNCTION: ajax_save_daily_attendance()")
+	print("***************************************")
+
+	dly_date = request.GET.get('dly_date')
+	dly_date = datetime.datetime.strptime(request.GET.get('dly_date'), '%d/%m/%Y')	
+	cus_id = request.GET.get('cus_id')
+	cus_brn = request.GET.get('cus_brn')
+	cus_vol = request.GET.get('cus_vol')	
+	cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
+	emp_id = request.GET.get('emp_id')
+	shift_id = request.GET.get('shift_id')
+
+	print("--------debug---------")
+	print("_dly_date = " + str(dly_date))
+	print("_cnt_id = " + str(cnt_id))
+	print("_emp_id = " + str(emp_id))
+	print("_dly_date = " + str(dly_date))
+	print("_shift_id = " + str(shift_id))
+
+	cursor = connection.cursor()	
+	cursor.execute("select count(*) from dly_plan where cnt_id=%s and sch_shift=%s and absent=0 and dly_date=%s", [cnt_id, shift_id, dly_date])
+	informCount = cursor.fetchone()
+	informCount = informCount[0]
+
+	print("informCount = " + str(informCount))
+	# select cnt_id, srv_shif_id, sum(srv_qty) as qty from cus_service where srv_active=1 and cnt_id=2526000001 and srv_shif_id=3 group by cnt_id, srv_shif_id
+	cursor.execute("select cnt_id, srv_shif_id, sum(srv_qty) as qty from cus_service where srv_active=1 and cnt_id=%s and srv_shif_id=%s group by cnt_id, srv_shif_id", [cnt_id, shift_id])
+	rows = cursor.fetchone()
+	cursor.close
+	srv_qty = rows[2]
+	scheduleCount = srv_qty
+	print("scheduleCount = " + str(srv_qty))
+	
+	if informCount >= scheduleCount:
+		message = "พนักงานที่แจ้งเวรมากกว่าที่อยู่ในสัญญา : <b>" + str(cnt_id)[3:] + "</b>"
+		response = JsonResponse(data={
+		    "success": True,	    
+		    "message": message,
+		})
+		response.status_code = 200
+		return response
+
+
+	# Check Manpower
+	
+	
+	message = "TODO"
+	response = JsonResponse(data={
+	    "success": True,	    
+	    "message": message,
+	})
+	response.status_code = 200
+	return response
