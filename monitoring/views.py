@@ -1756,7 +1756,20 @@ def ajax_save_daily_attendance(request):
 		return response
 
 	if shift_id!="99":
-		message = "TODO"
+		# Rule 1 - เช็คพนักงานที่แจ้งเวรต้องไม่เกินจำนวนอัตราที่กำหนดในสัญญา
+		isPass, message = isPassRule1(cnt_id, shift_id, dly_date)
+		if isPass:
+			success = True
+			title = "Success"
+			type = "green"
+			message = message
+		else:
+			success = False
+			title = "Error"
+			type = "red"
+			message = "Error"
+
+
 	else:		
 		message = ""
 		response = JsonResponse(data={
@@ -1769,12 +1782,10 @@ def ajax_save_daily_attendance(request):
 		return response	
 
 
-
-	# All good to go	
 	response = JsonResponse(data={		
-	    "success": True,
-	    "title": "Sucess",
-	    "type": "green",
+	    "success": success,
+	    "title": title,
+	    "type": type,
 	    "message": message,
 	})
 	response.status_code = 200
@@ -1792,46 +1803,7 @@ def ajax_save_daily_attendance(request):
 	print("_shift_id = " + str(shift_id))
 	print("_shift_name =" + str(shift_name))	
 
-	cursor = connection.cursor()	
-	cursor.execute("select count(*) from dly_plan where cnt_id=%s and sch_shift=%s and absent=0 and dly_date=%s", [cnt_id, shift_id, dly_date])
-	informCount = cursor.fetchone()
-	if len(informCount)==0:
-		informCount = 0
-	else:
-		informCount = informCount[0]
 
-	print("informCount = " + str(informCount))
-
-	
-	# select cnt_id, srv_shif_id, sum(srv_qty) as qty from cus_service where srv_active=1 and cnt_id=2526000001 and srv_shif_id=3 group by cnt_id, srv_shif_id
-	cursor.execute("select cnt_id, srv_shif_id, sum(srv_qty) as qty from cus_service where srv_active=1 and cnt_id=%s and srv_shif_id=%s group by cnt_id, srv_shif_id", [cnt_id, shift_id])
-	rows = cursor.fetchone()
-	cursor.close
-	if rows is not None:
-		if len(rows)==0:
-			srv_qty = 0
-		else:
-			srv_qty = rows[2]
-	else:
-		srv_qty = 0
-
-	scheduleCount = srv_qty
-	print("scheduleCount = " + str(srv_qty))
-
-
-	# ******************************
-	# Rule 1 - inform's request must not over capacity
-	# ******************************
-	if informCount >= scheduleCount:
-		message = "พนักงานที่แจ้งเวรมากกว่าที่อยู่ในสัญญา : <b>" + str(cnt_id)[3:] + "</b>"
-		response = JsonResponse(data={
-		    "success": False,
-		    "title": "Error",
-		    "type": "red",
-		    "message": message,
-		})
-		response.status_code = 200
-		return response
 
 
 	# ******************************
@@ -1878,3 +1850,39 @@ def ajax_save_daily_attendance(request):
 	'''
 
 
+
+def isPassRule1(cnt_id, shift_id, dly_date):
+	isPass = False
+
+	cursor = connection.cursor()	
+	cursor.execute("select count(*) from dly_plan where cnt_id=%s and sch_shift=%s and absent=0 and dly_date=%s", [cnt_id, shift_id, dly_date])
+	informCount = cursor.fetchone()
+	if len(informCount)==0:
+		informCount = 0
+	else:
+		informCount = informCount[0]
+
+	cursor.execute("select cnt_id, srv_shif_id, sum(srv_qty) as qty from cus_service where srv_active=1 and cnt_id=%s and srv_shif_id=%s group by cnt_id, srv_shif_id", [cnt_id, shift_id])
+	rows = cursor.fetchone()
+	cursor.close
+	
+	if rows is not None:
+		if len(rows)==0:
+			srv_qty = 0
+		else:
+			srv_qty = rows[2]
+	else:
+		srv_qty = 0
+
+	scheduleCount = srv_qty
+
+	if informCount >= scheduleCount:
+		isPass = False
+		message = "พนักงานที่แจ้งเวรมากกว่าที่อยู่ในสัญญา : <b>" + str(cnt_id)[3:] + "</b>"
+	else:
+		isPass = True
+		message = "Pass rule 1"
+
+	return isPass, message
+
+		
