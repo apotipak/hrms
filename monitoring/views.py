@@ -1847,6 +1847,38 @@ def ajax_save_daily_attendance(request):
 		# *****************************************
 		# 
 
+		if isPass:
+			success = True
+			title = "Success"
+			type = "green"
+
+			'''
+			dly_date, cnt_id, emp_id, shift_id, shift_type, job_type, totalNDP, 
+			totalNDA, totalNDM, totalNNP, totalNNA, totalNNM, totalPDP, totalPDA, 
+			totalPDM, totalPNP, totalPNA, totalPNM, absent_status, late_status, 
+			phone_status, relief_status
+			'''
+
+			sql = "insert into dly_plan (cnt_id,emp_id,dly_date,sch_shift"
+			sql += ",sch_no,dept_id,sch_rank,prd_id"
+			sql += ",absent,late,late_full,relieft,relieft_id"
+			sql += ",tel_man,tel_time,tel_amt,tel_paid"
+			sql += ",ot,ot_reason,ot_time_frm,ot_time_to,ot_hr_amt,ot_pay_amt"
+			sql += ",spare,wage_id,wage_no,pay_type,soc,pub,dof,day7"
+			sql += ",upd_date,upd_by,upd_flag,remark)"
+			sql += " values ("
+			
+			sql += str(cnt_id) + "," + str(emp_id) + ",'" + str(dly_date) + "'," + str(shift_id) + ","
+			sql += "0" + "," + "2051" + "," + "'SOY'" + "," + "'D120121'" + ","
+			sql += "0" + "," + "0" + "," + "0" + "," + "0" + "," + "0" + ","
+			sql += "0" + "," + "NULL" + "," + "0" + "," + "0" + ","
+			sql += "0" + "," + "0" + "," + "NULL" + "," + "NULL" + "," + "0" + "," + "0" + ","
+			sql += "0" + "," + "32" + "," + "'32SOY'" + "," + "NULL" + "," + "0" + "," + "0" + "," + "1" + "," + "NULL" + ","
+			sql += "''" + "," + "'System'" + "," + "'A'" + "," + "NULL" + ")"
+
+			print(sql)
+
+			message = ""
 
 	else:
 		# Select shift id 99 - DAY OFF
@@ -1941,8 +1973,6 @@ def checkManPower(cnt_id, job_type, shift_type, dly_date):
 # RULE 3 - Validate Input
 # *******************************************************************
 def validateInput(dly_date, cnt_id, emp_id, shift_id, shift_type, job_type, totalNDP, totalNDA, totalNDM, totalNNP, totalNNA, totalNNM, totalPDP, totalPDA, totalPDM, totalPNP, totalPNA, totalPNM, absent_status, late_status, phone_status, relief_status):
-	print("DLY DATE = " + str(dly_date))
-
 	isPass = True
 	message = ""
 
