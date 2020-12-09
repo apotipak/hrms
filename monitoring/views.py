@@ -1729,8 +1729,11 @@ def ajax_save_daily_attendance(request):
 	print("FUNCTION: ajax_save_daily_attendance()")
 	print("***************************************")
 
+	# amnaj 2
 	dly_date = request.GET.get('dly_date')
-	dly_date = datetime.datetime.strptime(request.GET.get('dly_date'), '%d/%m/%Y')	
+	# dly_date = datetime.datetime.strptime(request.GET.get('dly_date'), '%d/%m/%Y')
+	dly_date = datetime.datetime.strptime(request.GET.get('dly_date'), '%d/%m/%Y').date()
+
 	cus_id = request.GET.get('cus_id')
 	cus_brn = request.GET.get('cus_brn')
 	cus_vol = request.GET.get('cus_vol')	
@@ -1826,13 +1829,13 @@ def ajax_save_daily_attendance(request):
 		# *****************************************
 		# RULE 3 - Validate Input
 		# *****************************************		
-		isPass, message = validateInput(dly_date, cnt_id, emp_id, shift_id, shift_type, job_type, totalNDP, totalNDA, totalNDM, totalNNP, totalNNA, totalNNM, totalPDP, totalPDA, totalPDM, totalPNP, totalPNA, totalPNM)
-	
+		isPass, message = validateInput(dly_date, cnt_id, emp_id, shift_id, shift_type, job_type, totalNDP, totalNDA, totalNDM, totalNNP, totalNNA, totalNNM, totalPDP, totalPDA, totalPDM, totalPNP, totalPNA, totalPNM, absent_status, late_status, phone_status, relief_status)
+
 		if isPass:
 			success = True
 			title = "Success"
 			type = "green"
-			message = "TODO: Check RULE 4"
+			message = "No error. All are good to go."
 		else:
 			success = False
 			title = "Error"
@@ -1937,7 +1940,9 @@ def checkManPower(cnt_id, job_type, shift_type, dly_date):
 # *******************************************************************
 # RULE 3 - Validate Input
 # *******************************************************************
-def validateInput(dly_date, cnt_id, emp_id, shift_id, shift_type, job_type, totalNDP, totalNDA, totalNDM, totalNNP, totalNNA, totalNNM, totalPDP, totalPDA, totalPDM, totalPNP, totalPNA, totalPNM):
+def validateInput(dly_date, cnt_id, emp_id, shift_id, shift_type, job_type, totalNDP, totalNDA, totalNDM, totalNNP, totalNNA, totalNNM, totalPDP, totalPDA, totalPDM, totalPNP, totalPNA, totalPNM, absent_status, late_status, phone_status, relief_status):
+	print("DLY DATE = " + str(dly_date))
+
 	isPass = True
 	message = ""
 
@@ -1989,33 +1994,66 @@ def validateInput(dly_date, cnt_id, emp_id, shift_id, shift_type, job_type, tota
 	# TODO: checkLate()
 
 	# TODO: ห้ามลงงานที่อื่นในกะเดียวกัน วันเดียวกัน
+	# ทำเคสนี้ถ้าเป็นการ Edit
 
 
-	# TODO: พนักงานเข้าเวรที่หน่วยงานอื่นอยู่แล้วแต่ต้องการเข้าเวรที่หน่วยงานใหม่
-	# where = "where dly_date='2020-12-09' and emp_id=" + str(emp_id) + " and absent=0 and sch_shift=" + str(shift_id)
-	is_duplicated, message = checkDupDly(dly_date, cnt_id, emp_id, shift_id)
-	# is_duplicated, message = checkDupDly(where)
+	# TODO: พนักงานเข้าเวรที่หน่วยงานอื่น ต้องการลบออกจากหน่วยงานเดิมหรือไม่
+	sql = "select count(*) from dly_plan where dly_date='%s' and emp_id=%s and absent=0 and sch_shift=%s" % (dly_date, emp_id, shift_id)
+	is_duplicated, message = checkDupDly(sql)
 	if is_duplicated:
 		isPass = False
 		message = "เข้าเวรที่หน่วยงานอื่นไปแล้วแต่สามารถให้ย้ายมาเข้าเวรที่ใหม่ได้"
-
+	else:
+		isPass = True
 
 	# TODO: ห้ามลงงานที่อื่นในเวลาที่คร่อมกัน วันเดียวกัน
-	is_partial_duplicated, message = checkPartialDuplicate(dly_date, emp_id)
-	if is_partial_duplicated:
-		isPass = False
-		message = "พนักงานเข้าเวรคร่อมกับหน่วยงานอื่น"
-		# TODO: Rea_timecross = 57
-
-
-	# TODO: สำหรับ Employee ID ห้ามลงรายการซ้ำถ้าเพิ่มรายการใหม่
-	'''
-	is_duplicated, message = checkDupDly(dly_date, cnt_id, emp_id, shift_id)
+	print("Check 1: checkBetweenShift()")
+	sql = "select a.*, b.shf_type, b.shf_time_frm, b.shf_time_to from dly_plan a left join t_shift b on a.sch_shift = b.shf_id where a.dly_date=%s and a.emp_id=%s and a.absent=0" % (dly_date, emp_id)
+	is_duplicated, message = checkBetweenShift(sql)
 	if is_duplicated:
 		isPass = False
-		message = "เข้าเวรที่หน่วยงานอื่นไปแล้วแต่สามารถให้ย้ายมาเข้าเวรที่ใหม่ได้"
+		message = ""
+	else:
+		isPass = True
+
+	# TODO: สำหรับ Employee ID ห้ามลงรายการซ้ำถ้าเพิ่มรายการใหม่	
+	if not is_duplicated:
+		print("Check 2: checkDupDly()")
+		sql = "select count(*) from dly_plan where cnt_id=%s and dly_date='%s' and emp_id=%s and sch_shift=%s" % (cnt_id, dly_date, emp_id, shift_id)
+		is_duplicated, message = checkDupDly(sql)
+		if is_duplicated:
+			isPass = False
+			message = "2) พนักงานรหัส <b>" + str(emp_id) + "</b> มีการแจ้งเวรแล้ว กรุณาตรวจสอบอีกครั้ง"
+		else:
+			isPass = True	
+	
+	# TODO: ห้ามลงรายการซ้ำ ถ้าเพิ่มรายการใหม่ สำหรับคนที่มาแทน แทนหลายคนในหน่วยเดียวกันไม่ได้
+	if not is_duplicated:
+		print("Check 3: checkDupDly()")
+		# sql will be revised	
+		sql = "select count(*) from dly_plan where cnt_id=%s and dly_date='%s' and emp_id=%s and sch_shift=%s" % (cnt_id, dly_date, emp_id, shift_id)
+		is_duplicated, message = checkDupDly(sql)
+		if is_duplicated:
+			isPass = False
+			message = "3) พนักงานรหัส <b>" + str(emp_id) + "</b> มีการแจ้งเวรไปแล้ว กรุณาตรวจสอบอีกครั้ง"
+		else:
+			isPass = True
+
+	# **** Process takes too long at this step
+	# TODO: เช็คห้ามพนักงานทำงานในวัน Day Off จากตาราง SYS_GPMDOF
+	'''
+	if not is_duplicated:
+		if len(emp_id)>0 and int(emp_id)>0 and absent_status==0:
+			is_day_off = checkDayOff(emp_id, dly_date)
+			if is_day_off:
+				isPass = False
+				message = "ห้ามพนักงานทำงานในวัน Day Off"
+			else:
+				isPass = True
 	'''
 
+
+	# TODO: เช็คห้ามพนักงาน Relief ทำงานในวัน Day Off จากตาราง SYS_GPMDOF
 
 	return isPass, message
 
@@ -2052,15 +2090,14 @@ def totalMissGuard(totalNDP, totalNDA, totalNNP, totalNNA, totalPDP, totalPDA, t
 
 	return totalNDM, totalNNM, totalPDM, totalPNM
 
-def checkDupDly(dly_date, cnt_id, emp_id, shift_id):
-#def checkDupDly(where):
-	#print("where = " + str(where))
+# def checkDupDly(dly_date, cnt_id, emp_id, shift_id):
+def checkDupDly(sql):
 	isDuplicated = False
 	message = ""
 
 	cursor = connection.cursor()
-	cursor.execute("select count(*) from dly_plan where dly_date=%s and emp_id=%s and absent=0 and sch_shift=%s", [dly_date, emp_id, shift_id])
-	# cursor.execute("select count(*) from dly_plan " + str(where))
+	cursor.execute(sql)
+
 	duplicateCount = cursor.fetchone()
 
 	if duplicateCount[0] == 0:
@@ -2068,21 +2105,43 @@ def checkDupDly(dly_date, cnt_id, emp_id, shift_id):
 	else:
 		isDuplicated = True
 
+	cursor.close
+
 	return isDuplicated, message
 
 
 # CheckBetweenShift
-def checkPartialDuplicate(dly_date, emp_id):
-	isPartialDuplicated = True
+def checkBetweenShift(sql):
+	isDuplicated = True
 	message = ""
 
 	cursor = connection.cursor()
-	cursor.execute("select a.*, b.shf_type, b.shf_time_frm, b.shf_time_to from dly_plan a left join t_shift b on a.sch_shift = b.shf_id where a.dly_date=%s and a.emp_id=%s and a.absent=0", [dly_date, emp_id])
+	cursor.execute(sql)
 	rows = cursor.fetchall()
 
 	if len(rows) == 0:
-		isPartialDuplicated = False
+		isDuplicated = False
 	else:
-		isPartialDuplicated = True
+		isDuplicated = True
 
-	return isPartialDuplicated, message
+	cursor.close
+
+	return isDuplicated, message
+
+
+def checkDayOff(emp_id, dly_date):
+	is_day_off = True
+	message = ""
+
+	cursor = connection.cursor()
+	cursor.execute("select * from sys_gpmdof where emp_id=%s and dly_date=%s", [emp_id, dly_date])
+	rows = cursor.fetchall()
+
+	if len(rows) == 0:
+		is_day_off = False
+	else:
+		is_day_off = True
+
+	cursor.close
+
+	return is_day_off, message
