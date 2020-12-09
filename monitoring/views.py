@@ -1823,20 +1823,21 @@ def ajax_save_daily_attendance(request):
 		# RULE 6 - เช็คจำนวนคนห้ามคีย์เกินในรายการสัญญา ขณะนี้ให้เช็คจาก Missing Record
 		# *******************************************************************
 		isPass, message = checkTotalMissGuard(shift_type)	
-		
+
 		# *****************************************
 		# RULE ? - ???
 		# *****************************************
 		# 
 
 
-	else:		
+	else:
+		# Select shift id 99 - DAY OFF
 		message = ""
 		response = JsonResponse(data={
 		    "success": True,
 		    "title": "Error",
 		    "type": "red",
-		    "message": "You select Shift ID = " + str(shift_id),
+		    "message": "You select shift " + str(shift_name),
 		})
 		response.status_code = 200
 		return response	
