@@ -1744,25 +1744,38 @@ def ajax_save_daily_attendance(request):
 	late_status = request.GET.get('late_status')
 	phone_status = request.GET.get('phone_status')
 	relief_status = request.GET.get('relief_status')
+
+	'''
 	print("debug 1")
 	print("------------------")
 	print(str(absent_status) + "," + str(late_status) + "," + str(phone_status) + "," + str(relief_status))
 	print("------------------")
+	'''
 
 	job_type = request.GET.get('job_type_option')
 	remark = request.GET.get('remark')
-	totalNDP = request.GET.get('totalNDP')
-	totalNDA = request.GET.get('totalNDA')
-	totalNDM = request.GET.get('totalNDM')
-	totalNNP = request.GET.get('totalNNP')
-	totalNNA = request.GET.get('totalNNA')
-	totalNNM = request.GET.get('totalNNM')
+	
+	totalNDP = int(request.GET.get('totalNDP'))
+	totalNDA = int(request.GET.get('totalNDA'))
+	totalNDM = int(request.GET.get('totalNDM'))
+	totalNNP = int(request.GET.get('totalNNP'))
+	totalNNA = int(request.GET.get('totalNNA'))
+	totalNNM = int(request.GET.get('totalNNM'))
 
+	totalPDP = int(request.GET.get('totalPDP'))
+	totalPDA = int(request.GET.get('totalPDA'))
+	totalPDM = int(request.GET.get('totalPDM'))
+	totalPNP = int(request.GET.get('totalPNP'))
+	totalPNA = int(request.GET.get('totalPNA'))
+	totalPNM = int(request.GET.get('totalPNM'))
+
+	'''
 	print("debug 2")
 	print("------------------")
 	print(str(job_type) + "," + str(remark) + "," + str(totalNDP) + "," + str(totalNDA) + "," + str(totalNDM) + "," + str(totalNNP) + "," + str(totalNNA) + "," + str(totalNNM))
 	print("------------------")
-	
+	'''
+
 	# ดักจับในกรณีที่ cnt_id มากกว่า 10 หลัก
 	if len(cnt_id)>10:
 		message = ""
@@ -1813,7 +1826,8 @@ def ajax_save_daily_attendance(request):
 		# *****************************************
 		# RULE 3 - Validate Input
 		# *****************************************		
-		isPass, message = validateInput(dly_date, cnt_id, emp_id, shift_type, job_type, totalNDP, totalNDA, totalNDM, totalNNP, totalNNA, totalNNM)
+		isPass, message = validateInput(dly_date, cnt_id, emp_id, shift_id, shift_type, job_type, totalNDP, totalNDA, totalNDM, totalNNP, totalNNA, totalNNM, totalPDP, totalPDA, totalPDM, totalPNP, totalPNA, totalPNM)
+	
 		if isPass:
 			success = True
 			title = "Success"
@@ -1825,45 +1839,8 @@ def ajax_save_daily_attendance(request):
 			type = "red"
 			message = message
 
-		'''
 		# *****************************************
-		# RULE 3 - ตรวจสอบพนักงานที่ไม่มีอยู่ในระบบ
-		# *****************************************
-		isPass, message = checkExistEmployee(emp_id)
-		if isPass:
-			success = True
-			title = "Success"
-			type = "green"
-			message = "TODO: Check RULE 4"
-		else:
-			success = False
-			title = "Error"
-			type = "red"
-			message = message
-
-
-		# *****************************************
-		# RULE 4 - Check if employee is terminated
-		# *****************************************
-		isPass, message = checkAbsentandReliefStatus()
-		# skip this rule because it's included in RULE 3
-
-
-		# *****************************************
-		# RULE 5 - Check Relief condition
-		# *****************************************
-		isPass, message = checkReliefCondition()
-		# TODO
-
-
-		# *******************************************************************
-		# RULE 6 - เช็คจำนวนคนห้ามคีย์เกินในรายการสัญญา ขณะนี้ให้เช็คจาก Missing Record
-		# *******************************************************************
-		isPass, message = checkTotalMissGuard(shift_type)	
-		'''
-
-		# *****************************************
-		# RULE ? - ???
+		# RULE ? - Others
 		# *****************************************
 		# 
 
@@ -1901,7 +1878,7 @@ def checkNotOverCapacity(cnt_id, shift_id, dly_date):
 	cursor = connection.cursor()
 	cursor.execute("select count(*) from dly_plan where cnt_id=%s and sch_shift=%s and absent=0 and dly_date=%s", [cnt_id, shift_id, dly_date])
 	informCount = cursor.fetchone()
-	if len(informCount)==0:
+	if informCount[0] == 0:
 		informCount = 0
 	else:
 		informCount = informCount[0]
@@ -1960,67 +1937,152 @@ def checkManPower(cnt_id, job_type, shift_type, dly_date):
 # *******************************************************************
 # RULE 3 - Validate Input
 # *******************************************************************
-def validateInput(dly_date, cnt_id, emp_id, shift_type, job_type, totalNDP, totalNDA, totalNDM, totalNNP, totalNNA, totalNNM):
-	isPass = False
+def validateInput(dly_date, cnt_id, emp_id, shift_id, shift_type, job_type, totalNDP, totalNDA, totalNDM, totalNNP, totalNNA, totalNNM, totalPDP, totalPDA, totalPDM, totalPNP, totalPNA, totalPNM):
+	isPass = True
 	message = ""
 
+	is_public_holiday, message = isPublicHoliday(dly_date)
+
+	if shift_type=='D':
+		if is_public_holiday:
+			totalNDA = totalNDA + 1
+		else:
+			totalPDA = totalPDA + 1
+	
+	if shift_type=='N':
+		if is_public_holiday:
+			totalNNA = totalNNA + 1
+		else:
+			totalPNA = totalPNA + 1
+
+	# Call TOTAL MISS GUARD
+	totalNDM, totalNNM, totalPDM, totalPNM = totalMissGuard(totalNDP, totalNDA, totalNNP, totalNNA, totalPDP, totalPDA, totalPNP, totalPNA)
+
+	if is_public_holiday:
+		if totalPDM > 0:
+			isPass = False
+			message = "PD - จำนวน รปภ.ในกะกลางวัน เกินว่าที่ระบุในสัญญา"
+			totalPDA = totalPDA - 1
+			totalNDM, totalNNM, totalPDM, totalPNM = totalMissGuard(totalNDP, totalNDA, totalNNP, totalNNA, totalPDP, totalPDA, totalPNP, totalPNA)			
+
+		if totalPNM > 0:
+			isPass = False
+			message = "PD - จำนวน รปภ.ในกะกลางคืน เกินว่าที่ระบุในสัญญา"
+			totalPNA = totalPNA - 1
+			totalNDM, totalNNM, totalPDM, totalPNM = totalMissGuard(totalNDP, totalNDA, totalNNP, totalNNA, totalPDP, totalPDA, totalPNP, totalPNA)
+	else:
+		if totalNDM > 0:
+			isPass = False
+			message = "ND - จำนวน รปภ.ในกะกลางวัน เกินว่าที่ระบุในสัญญา"
+			totalNDA = totalNDA - 1
+			totalNDM, totalNNM, totalPDM, totalPNM = totalMissGuard(totalNDP, totalNDA, totalNNP, totalNNA, totalPDP, totalPDA, totalPNP, totalPNA)			
+
+		if totalNNM > 0:
+			isPass = False
+			message = "NN - จำนวน รปภ.ในกะกลางคืน เกินว่าที่ระบุในสัญญา"
+			totalNNA = totalNNA - 1
+			totalNDM, totalNNM, totalPDM, totalPNM = totalMissGuard(totalNDP, totalNDA, totalNNP, totalNNA, totalPDP, totalPDA, totalPNP, totalPNA)			
+
+
+	# TODO: checkCall()
+
+	# TODO: checkLate()
+
+	# TODO: ห้ามลงงานที่อื่นในกะเดียวกัน วันเดียวกัน
+
+
+	# TODO: พนักงานเข้าเวรที่หน่วยงานอื่นอยู่แล้วแต่ต้องการเข้าเวรที่หน่วยงานใหม่
+	# where = "where dly_date='2020-12-09' and emp_id=" + str(emp_id) + " and absent=0 and sch_shift=" + str(shift_id)
+	is_duplicated, message = checkDupDly(dly_date, cnt_id, emp_id, shift_id)
+	# is_duplicated, message = checkDupDly(where)
+	if is_duplicated:
+		isPass = False
+		message = "เข้าเวรที่หน่วยงานอื่นไปแล้วแต่สามารถให้ย้ายมาเข้าเวรที่ใหม่ได้"
+
+
+	# TODO: ห้ามลงงานที่อื่นในเวลาที่คร่อมกัน วันเดียวกัน
+	is_partial_duplicated, message = checkPartialDuplicate(dly_date, emp_id)
+	if is_partial_duplicated:
+		isPass = False
+		message = "พนักงานเข้าเวรคร่อมกับหน่วยงานอื่น"
+		# TODO: Rea_timecross = 57
+
+
+	# TODO: สำหรับ Employee ID ห้ามลงรายการซ้ำถ้าเพิ่มรายการใหม่
+	'''
+	is_duplicated, message = checkDupDly(dly_date, cnt_id, emp_id, shift_id)
+	if is_duplicated:
+		isPass = False
+		message = "เข้าเวรที่หน่วยงานอื่นไปแล้วแต่สามารถให้ย้ายมาเข้าเวรที่ใหม่ได้"
+	'''
 
 
 	return isPass, message
 
 
-
-
-'''
-# *****************************************
-# RULE 3 - ตรวจสอบพนักงานที่ไม่มีอยู่ในระบบ
-# *****************************************
-def checkExistEmployee(emp_id):
-	isPass = False
-	message = ""
+# **************************
+# **** Helper functions ****
+# **************************
+def isPublicHoliday(curDate):
+	isPublicHoliday = False
 
 	cursor = connection.cursor()
-	cursor.execute("select count(*) from v_employee where emp_id=%s and upd_flag<>'D' and sch_active=1 and emp_type='D1' and emp_term_date is null", [emp_id])
+	cursor.execute("select count(*) from t_holiday where hol_date=%s", [curDate])
 	row_count = cursor.fetchone()
 	cursor.close
 
 	if row_count[0] == 0:
-		isPass = False
-		message = "Employee not found."		
+		isPublicHoliday = False
+		message = str(curDate) + " is public holiday."
 	else:
-		isPass = True
-		message = str(emp_id) + " is found."
+		isPublicHoliday = True
+		message = str(curDate) + " is not public holiday."
 
-	return isPass, message
+	return isPublicHoliday, message
 
+def totalMissGuard(totalNDP, totalNDA, totalNNP, totalNNA, totalPDP, totalPDA, totalPNP, totalPNA):
+	totalNDM = 0
+	totalNNM = 0
+	totalPDM = 0
+	totalPNM = 0
+	totalNDM = totalNDA - totalNDP
+	totalNNM = totalNNA - totalNNP
+	totalPDM = totalPDA - totalPDP
+	totalPNM = totalPNA - totalPNP
 
-# *****************************************
-# RULE 4 - Check Absent and Relief status
-# *****************************************
-def checkAbsentandReliefStatus():
-	isPass = False
+	return totalNDM, totalNNM, totalPDM, totalPNM
+
+def checkDupDly(dly_date, cnt_id, emp_id, shift_id):
+#def checkDupDly(where):
+	#print("where = " + str(where))
+	isDuplicated = False
 	message = ""
 
-	return isPass, message
+	cursor = connection.cursor()
+	cursor.execute("select count(*) from dly_plan where dly_date=%s and emp_id=%s and absent=0 and sch_shift=%s", [dly_date, emp_id, shift_id])
+	# cursor.execute("select count(*) from dly_plan " + str(where))
+	duplicateCount = cursor.fetchone()
+
+	if duplicateCount[0] == 0:
+		isDuplicated = False
+	else:
+		isDuplicated = True
+
+	return isDuplicated, message
 
 
-# *****************************************
-# RULE 5 - Check Relief condition
-# *****************************************
-def checkReliefCondition():
-	isPass = False
+# CheckBetweenShift
+def checkPartialDuplicate(dly_date, emp_id):
+	isPartialDuplicated = True
 	message = ""
 
-	return isPass, message
+	cursor = connection.cursor()
+	cursor.execute("select a.*, b.shf_type, b.shf_time_frm, b.shf_time_to from dly_plan a left join t_shift b on a.sch_shift = b.shf_id where a.dly_date=%s and a.emp_id=%s and a.absent=0", [dly_date, emp_id])
+	rows = cursor.fetchall()
 
+	if len(rows) == 0:
+		isPartialDuplicated = False
+	else:
+		isPartialDuplicated = True
 
-# *******************************************************************
-# RULE 6 - เช็คจำนวนคนห้ามคีย์เกินในรายการสัญญา ขณะนี้ให้เช็คจาก Missing Record
-# *******************************************************************
-def checkTotalMissGuard(shift_type):
-	isPass = False
-	message = ""
-
-	return isPass, message
-
-'''
+	return isPartialDuplicated, message

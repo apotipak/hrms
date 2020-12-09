@@ -1056,9 +1056,18 @@
     	var totalNDP = $("#totalNDP").text();
     	var totalNDA = $("#totalNDA").text();
     	var totalNDM = $("#totalNDM").text();
+
     	var totalNNP = $("#totalNNP").text();
     	var totalNNA = $("#totalNNA").text();
     	var totalNNM = $("#totalNNM").text();
+
+    	var totalPDP = $("#totalPDP").text();
+    	var totalPDA = $("#totalPDA").text();
+    	var totalPDM = $("#totalPDM").text();
+
+    	var totalPNP = $("#totalPNP").text();
+    	var totalPNA = $("#totalPNA").text();
+    	var totalPNM = $("#totalPNM").text();
 
     	if(emp_id==""){
 		  	$(document).Toasts('create', {
@@ -1158,7 +1167,13 @@
 				      		totalNDM: totalNDM,
 				      		totalNNP: totalNNP,
 				      		totalNNA: totalNNA,
-				      		totalNNM: totalNNM,      		
+				      		totalNNM: totalNNM,
+				      		totalPDP: totalPDP,
+				      		totalPDA: totalPDA,
+				      		totalPDM: totalPDM,
+				      		totalPNP: totalPNP,
+				      		totalPNA: totalPNA,
+				      		totalPNM: totalPNM,
 				    	},
 				    	success: function(data) {
 				    		if(data.success) {				    							    		
