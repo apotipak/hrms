@@ -1739,9 +1739,17 @@ def ajax_save_daily_attendance(request):
 	emp_id = request.GET.get('emp_id')
 	shift_id = request.GET.get('shift_id')
 	shift_name = request.GET.get('shift_name')	
-	# TODO
-	job_id = '00'
+	
+	job_type = request.GET.get('job_type_option')
+	remark = request.GET.get('remark')
+	totalNDP = request.GET.get('totalNDP')
+	totalNDA = request.GET.get('totalNDA')
+	totalNDM = request.GET.get('totalNDM')
+	totalNNP = request.GET.get('totalNNP')
+	totalNNA = request.GET.get('totalNNA')
+	totalNNM = request.GET.get('totalNNM')
 
+	print(str(job_type) + "," + str(remark) + "," + str(totalNDP) + "," + str(totalNDA) + "," + str(totalNDM) + "," + str(totalNNP) + "," + str(totalNNA) + "," + str(totalNNM))
 
 	# ดักจับในกรณีที่ cnt_id มากกว่า 10 หลัก
 	if len(cnt_id)>10:
@@ -1761,28 +1769,11 @@ def ajax_save_daily_attendance(request):
 		# RULE 1 - เช็คพนักงานที่แจ้งเวรต้องไม่เกินจำนวนที่ว่าจ้างในสัญญา
 		# ************************************************
 		isPass, message = checkNotOverCapacity(cnt_id, shift_id, dly_date)
-		if not isPass:
-			success = True
-			title = "Success"
-			type = "green"
-			message = "TODO: Check RULE 2"
-		else:
-			success = False
-			title = "Error"
-			type = "red"
-			message = message
-
-
-		# *****************************************
-		# RULE 2 - ตรวจสอบ Manpower
-		# *****************************************
-		shift_type = shift_name.partition("#")[2][0:2].strip()
-		isPass, message = checkManPower(cnt_id, job_id, shift_type, dly_date)
 		if isPass:
 			success = True
 			title = "Success"
 			type = "green"
-			message = "TODO: Check RULE 3"
+			message = "TODO: Check next rule."
 		else:
 			success = False
 			title = "Error"
@@ -1791,9 +1782,44 @@ def ajax_save_daily_attendance(request):
 
 
 		# *****************************************
+		# RULE 2 - Check Manpower
+		# *****************************************
+		shift_type = shift_name.partition("#")[2][0:2].strip()
+		isPass, message = checkManPower(cnt_id, job_type, shift_type, dly_date)
+		if isPass:
+			success = True
+			title = "Success"
+			type = "green"
+			message = "TODO: Check next rule."
+		else:
+			success = False
+			title = "Error"
+			type = "red"
+			message = message
+
+
+		# *****************************************
+		# RULE 3 - Validate Input
+		# *****************************************		
+		isPass, message = validateInput(emp_id, shift_type, cnt_id, job_type, dly_date)
+		if isPass:
+			success = True
+			title = "Success"
+			type = "green"
+			message = "TODO: Check RULE 4"
+		else:
+			success = False
+			title = "Error"
+			type = "red"
+			message = message
+
+
+
+		'''
+		# *****************************************
 		# RULE 3 - ตรวจสอบพนักงานที่ไม่มีอยู่ในระบบ
 		# *****************************************
-		isPass, message = checkExistedEmployee(emp_id)
+		isPass, message = checkExistEmployee(emp_id)
 		if isPass:
 			success = True
 			title = "Success"
@@ -1817,12 +1843,14 @@ def ajax_save_daily_attendance(request):
 		# RULE 5 - Check Relief condition
 		# *****************************************
 		isPass, message = checkReliefCondition()
+		# TODO
 
 
 		# *******************************************************************
 		# RULE 6 - เช็คจำนวนคนห้ามคีย์เกินในรายการสัญญา ขณะนี้ให้เช็คจาก Missing Record
 		# *******************************************************************
 		isPass, message = checkTotalMissGuard(shift_type)	
+		'''
 
 		# *****************************************
 		# RULE ? - ???
@@ -1893,14 +1921,15 @@ def checkNotOverCapacity(cnt_id, shift_id, dly_date):
 
 
 # *****************************************
-# RULE 2 - ตรวจสอบ Manpower
+# RULE 2 - Check Manpower
 # *****************************************
-def checkManPower(cnt_id, job_id, shift_type, dly_date):
+def checkManPower(cnt_id, job_type, shift_type, dly_date):
+	print(str(cnt_id) + "," + str(job_type) + "," + str(shift_type) + "," + str(dly_date))
 	isPass = False
 	message = ""
 	
 	cursor = connection.cursor()
-	cursor.execute("select cnt_id, sch_shift from v_dlyplan_shift where cnt_id=%s and left(remark,2)=%s and shf_type=%s and absent=0 and dly_date=%s", [cnt_id, job_id, shift_type, dly_date])
+	cursor.execute("select cnt_id, sch_shift from v_dlyplan_shift where cnt_id=%s and left(remark,2)=%s and shf_type=%s and absent=0 and dly_date=%s", [cnt_id, job_type, shift_type, dly_date])
 	rows = cursor.fetchone()
 	cursor.close
 
@@ -1909,17 +1938,32 @@ def checkManPower(cnt_id, job_id, shift_type, dly_date):
 			aManPower = 0
 		else:
 			aManPower = len(rows)
+		isPass = True
 	else:
+		isPass = True
 		aManPower = 0
-		message = "Unkwown error!"
 	
 	return isPass, message
 
 
+
+# *******************************************************************
+# RULE 3 - Validate Input
+# *******************************************************************
+def validateInput(emp_id, shift_type, cnt_id, job_type, dly_date):
+	isPass = False
+	message = ""
+
+	return isPass, message
+
+
+
+
+'''
 # *****************************************
 # RULE 3 - ตรวจสอบพนักงานที่ไม่มีอยู่ในระบบ
 # *****************************************
-def checkExistedEmployee(emp_id):
+def checkExistEmployee(emp_id):
 	isPass = False
 	message = ""
 
@@ -1966,3 +2010,5 @@ def checkTotalMissGuard(shift_type):
 	message = ""
 
 	return isPass, message
+
+'''

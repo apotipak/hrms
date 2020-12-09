@@ -1032,6 +1032,21 @@
     	var shift_id = $("#id_shift_option").val();
     	var shift_name = $("#id_shift_option option:selected").text();
 
+    	var absent_status = $("#id_absent_check").val();
+    	var late_status = $("#id_late_check").val();
+    	var phone_status = $("#id_phone_check").val();
+    	var relief_status = $("#id_relief_check").val();
+
+    	var job_type_option = $("#id_job_type_option").val();
+    	var remark = $("#id_remark").val();
+
+    	var totalNDP = $("#totalNDP").text();
+    	var totalNDA = $("#totalNDA").text();
+    	var totalNDM = $("#totalNDM").text();
+    	var totalNNP = $("#totalNNP").text();
+    	var totalNNA = $("#totalNNA").text();
+    	var totalNNM = $("#totalNNM").text();
+
     	if(emp_id==""){
 		  	$(document).Toasts('create', {
 		    	class: "bg-danger", 
@@ -1119,6 +1134,18 @@
 				      		emp_id: emp_id,
 				      		shift_id: shift_id,
 				      		shift_name: shift_name,
+				      		absent_status: absent_status,
+				      		late_status: late_status,
+				      		phone_status: phone_status,
+				      		relief_status: relief_status,
+				      		job_type_option: job_type_option,
+				      		remark: remark,
+				      		totalNDP: totalNDP,
+				      		totalNDA: totalNDA,
+				      		totalNDM: totalNDM,
+				      		totalNNP: totalNNP,
+				      		totalNNA: totalNNA,
+				      		totalNNM: totalNNM,      		
 				    	},
 				    	success: function(data) {
 				    		if(data.success) {				    							    		
