@@ -1724,12 +1724,16 @@ def ajax_delete_employee(request):
 @permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
 @login_required(login_url='/accounts/login/')
 def ajax_save_daily_attendance(request):
-
 	print("***************************************")
 	print("FUNCTION: ajax_save_daily_attendance()")
 	print("***************************************")
 
-	# amnaj 2
+	# TODO: Check Add or Edit
+
+
+	AEdly = request.GET.get("AEdly")
+	print("AEdly = " + str(AEdly))
+
 	dly_date = request.GET.get('dly_date')
 	# dly_date = datetime.datetime.strptime(request.GET.get('dly_date'), '%d/%m/%Y')
 	dly_date = datetime.datetime.strptime(request.GET.get('dly_date'), '%d/%m/%Y').date()
@@ -1876,7 +1880,7 @@ def ajax_save_daily_attendance(request):
 			sql += "0" + "," + "32" + "," + "'32SOY'" + "," + "NULL" + "," + "0" + "," + "0" + "," + "1" + "," + "NULL" + ","
 			sql += "''" + "," + "'System'" + "," + "'A'" + "," + "NULL" + ")"
 
-			print(sql)
+			# print(sql)
 
 			message = ""
 

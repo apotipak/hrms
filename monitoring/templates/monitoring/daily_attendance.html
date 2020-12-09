@@ -209,7 +209,7 @@
 					<button id="add_button" type="button" class="btn btn-success btn-sm"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;{% trans 'New' %}</button>
 					<button id="reset_button" type="button" class="btn btn-secondary btn-sm">&nbsp;{% trans 'Cancel' %}</button>&nbsp;&nbsp;|&nbsp;&nbsp;
 		        	<button id="save_button" type="button" class="btn btn-primary btn-sm"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</button>
-		        	<button id="delete_button" type="button" class="btn btn-danger btn-sm"><i class="fas fa-trash fa-sm"></i>&nbsp;&nbsp;{% trans 'Delete' %}</button>			      	
+		        	<button id="delete_button" type="button" class="btn btn-danger btn-sm"><i class="fas fa-trash fa-sm"></i>&nbsp;&nbsp;{% trans 'Delete' %}</button>		        			      
 			    </div>
 			    <!-- /.card-tools -->
 
@@ -311,6 +311,7 @@
 						  </div>
 					  </div>
 
+					  <input type="hidden" id="id_add_new_record_status" name="add_new_record_status" value=0 ?>
 
 					</form>
 
@@ -995,6 +996,8 @@
 	});
 
     $(document).on('click', '#add_button', function(e) {
+    	$("#id_add_new_record_status").val(1);
+
     	$("#reset_button").attr("disabled", false);
     	$("#save_button").attr("disabled", false);
     	$("#delete_button").attr("disabled", true);
@@ -1012,11 +1015,13 @@
 		$("#id_phone_check").show();
 		$("#id_phone_check").next("label").show();
 
-        $('#id_emp_id').focus();        
+        $('#id_emp_id').focus();     
     });
 
     $(document).on('click', '#reset_button', function(e) {    	
+    	$("#id_add_new_record_status").val(0);
     	$("#dailyAttendanceDataEntryForm").trigger("reset");
+
     	$('#id_emp_id').focus();
     });
 
@@ -1025,6 +1030,7 @@
 
     $(document).on('click', '#save_button', function(e) {
     	//amnaj
+    	var AEdly = $("#id_add_new_record_status").val();
 
     	var dly_date = $("#id_dly_date").val();
       	var cus_id = $('#id_cus_id').val();
@@ -1149,7 +1155,8 @@
 				    	type : "GET",
 				    	data : {          
 				      		csrfmiddlewaretoken: '{{ csrf_token }}',
-				      		dly_date: dly_date,				      		
+				      		AEdly: AEdly,
+				      		dly_date: dly_date,		      		
 				      		cus_id: cus_id,
 				      		cus_brn: cus_brn,
 				      		cus_vol: cus_vol,
