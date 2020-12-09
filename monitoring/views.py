@@ -1730,9 +1730,38 @@ def ajax_save_daily_attendance(request):
 
 	# TODO: Check Add or Edit
 
-
+	# 0 = Add
+	# 1 = Edit
+	# 2 = Delete
 	AEdly = request.GET.get("AEdly")
 	print("AEdly = " + str(AEdly))
+
+	if AEdly == 0:
+		print("Add")
+		message = "Add"
+	elif AEdly == 1:
+		print("Edit")
+		message = "Edit"
+	elif AEdly == 2:
+		print("Delete")
+		message = "Delete"
+	else:
+		print("Error!")
+		message = "Error!"
+
+	response = JsonResponse(data={		
+	    "success": True,
+	    "title": "Test",
+	    "type": "green",
+	    "message": "AEdly = " + str(AEdly),
+	})
+	
+	response.status_code = 200
+	return response
+
+
+
+
 
 	dly_date = request.GET.get('dly_date')
 	# dly_date = datetime.datetime.strptime(request.GET.get('dly_date'), '%d/%m/%Y')
