@@ -1738,8 +1738,17 @@ def ajax_save_daily_attendance(request):
 	cnt_id = cnt_id.lstrip("0")
 	emp_id = request.GET.get('emp_id')
 	shift_id = request.GET.get('shift_id')
-	shift_name = request.GET.get('shift_name')	
-	
+	shift_name = request.GET.get('shift_name')
+
+	absent_status = request.GET.get('absent_status')
+	late_status = request.GET.get('late_status')
+	phone_status = request.GET.get('phone_status')
+	relief_status = request.GET.get('relief_status')
+	print("debug 1")
+	print("------------------")
+	print(str(absent_status) + "," + str(late_status) + "," + str(phone_status) + "," + str(relief_status))
+	print("------------------")
+
 	job_type = request.GET.get('job_type_option')
 	remark = request.GET.get('remark')
 	totalNDP = request.GET.get('totalNDP')
@@ -1749,8 +1758,11 @@ def ajax_save_daily_attendance(request):
 	totalNNA = request.GET.get('totalNNA')
 	totalNNM = request.GET.get('totalNNM')
 
+	print("debug 2")
+	print("------------------")
 	print(str(job_type) + "," + str(remark) + "," + str(totalNDP) + "," + str(totalNDA) + "," + str(totalNDM) + "," + str(totalNNP) + "," + str(totalNNA) + "," + str(totalNNM))
-
+	print("------------------")
+	
 	# ดักจับในกรณีที่ cnt_id มากกว่า 10 หลัก
 	if len(cnt_id)>10:
 		message = ""
@@ -1801,7 +1813,7 @@ def ajax_save_daily_attendance(request):
 		# *****************************************
 		# RULE 3 - Validate Input
 		# *****************************************		
-		isPass, message = validateInput(emp_id, shift_type, cnt_id, job_type, dly_date)
+		isPass, message = validateInput(dly_date, cnt_id, emp_id, shift_type, job_type, totalNDP, totalNDA, totalNDM, totalNNP, totalNNA, totalNNM)
 		if isPass:
 			success = True
 			title = "Success"
@@ -1812,8 +1824,6 @@ def ajax_save_daily_attendance(request):
 			title = "Error"
 			type = "red"
 			message = message
-
-
 
 		'''
 		# *****************************************
@@ -1950,9 +1960,11 @@ def checkManPower(cnt_id, job_type, shift_type, dly_date):
 # *******************************************************************
 # RULE 3 - Validate Input
 # *******************************************************************
-def validateInput(emp_id, shift_type, cnt_id, job_type, dly_date):
+def validateInput(dly_date, cnt_id, emp_id, shift_type, job_type, totalNDP, totalNDA, totalNDM, totalNNP, totalNNA, totalNNM):
 	isPass = False
 	message = ""
+
+
 
 	return isPass, message
 

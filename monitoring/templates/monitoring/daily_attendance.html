@@ -1023,7 +1023,9 @@
 
 
 
-    $(document).on('click', '#save_button', function(e) {    	
+    $(document).on('click', '#save_button', function(e) {
+    	//amnaj
+
     	var dly_date = $("#id_dly_date").val();
       	var cus_id = $('#id_cus_id').val();
       	var cus_brn = $('#id_cus_brn').val();
@@ -1032,10 +1034,21 @@
     	var shift_id = $("#id_shift_option").val();
     	var shift_name = $("#id_shift_option option:selected").text();
 
-    	var absent_status = $("#id_absent_check").val();
-    	var late_status = $("#id_late_check").val();
-    	var phone_status = $("#id_phone_check").val();
-    	var relief_status = $("#id_relief_check").val();
+    	var absent_status = 0;
+    	if($("#id_absent_check").is(":checked")) 
+    		absent_status = 1;
+
+    	var late_status = 0;
+    	if($("#id_late_check").is(":checked"))
+    		late_status = 1;
+
+    	var phone_status = 0;
+    	if($("#id_phone_check").is(":checked"))
+    		phone_status =1;
+
+    	var relief_status = 0;
+    	if($("#id_relief_check").is(":checked"))
+    		relief_status = 1;
 
     	var job_type_option = $("#id_job_type_option").val();
     	var remark = $("#id_remark").val();
