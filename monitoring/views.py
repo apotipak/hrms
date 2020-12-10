@@ -1103,6 +1103,56 @@ def ajax_get_employee(request):
 		9 = ไล่ออก
 		'''
 
+
+		# select * from v_employee where upd_flag<>'D' and sch_active=1 and emp_id=916
+		# amnaj
+
+		emp_fname_th = ""
+		emp_lname_th = ""
+		emp_rank = ""
+		emp_dept = ""
+		emp_type = ""
+		emp_join_date = ""
+		emp_term_date = ""
+		emp_status = ""
+
+		try:
+			with connection.cursor() as cursor:		
+				cursor.execute("select emp_fname_th,emp_lname_th,emp_rank,emp_dept,emp_type,emp_join_date,emp_term_date,emp_status,sts_th from v_employee where upd_flag<>'D' and sch_active=1 and emp_id=%s",[emp_id])
+				record = cursor.fetchone()
+				emp_fname_th = record[0]
+				emp_lname_th = record[1]
+				emp_rank = record[2]
+				emp_dept = record[3]
+				emp_type = record[4]
+				emp_join_date = "" if record[5] is None else record[5].strftime("%d/%m/%Y")
+				emp_term_date = "" if record[6] is None else record[6].strftime("%d/%m/%Y")
+				emp_status_id = record[7]
+				emp_status_th = record[8]
+
+		except db.OperationalError as e:
+			message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+		except db.Error as e:
+			message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+
+
+		'''
+		try:
+			with connection.cursor() as cursor:
+				cursor.execute(sql)
+
+			is_pass = True
+			message = "Added complete."
+		except db.OperationalError as e:
+			is_pass = False
+			message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+		except db.Error as e:
+			is_pass = False
+			message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+
+		'''
+
+		'''
 		employee = Employee.objects.filter(emp_id__exact=emp_id).filter(emp_type='D1').exclude(empstatus='I').exclude(emp_status__in=exclude_list).get()
 		if employee.emp_join_date is not None:
 			emp_join_date = employee.emp_join_date.strftime("%d/%m/%Y")
@@ -1113,6 +1163,9 @@ def ajax_get_employee(request):
 			emp_term_date = employee.emp_term_date.strftime("%d/%m/%Y")
 		else:
 			emp_term_date = ""
+		'''
+
+
 
 		employee_info = EmpPhoto.objects.filter(emp_id=emp_id).get()
 		employee_photo = b64encode(employee_info.image).decode("utf-8")
@@ -1121,17 +1174,16 @@ def ajax_get_employee(request):
 			"success": True,
 			"is_found": True,
 			"class": "bg-success",
-			"emp_id": employee.emp_id,
-			"emp_fname_th": employee.emp_fname_th,
-			"emp_lname_th": employee.emp_lname_th,
-			"emp_fname_en": employee.emp_fname_en,
-			"emp_lname_en": employee.emp_lname_en,
+			"emp_id": emp_id,
+			"emp_fname_th": emp_fname_th,
+			"emp_lname_th": emp_lname_th,
 			"emp_join_date": emp_join_date,
 			"emp_term_date": emp_term_date,
-			"emp_rank": employee.emp_rank,
-			"emp_type": employee.emp_type,
-			"emp_status_id": employee.emp_status_id,
-			"emp_status": str(employee.emp_status_id) + " | " + str(employee.emp_status.sts_th),
+			"emp_rank": emp_rank,
+			"emp_dept": emp_dept,
+			"emp_type": emp_type,
+			"emp_status_id": emp_status_id,
+			"emp_status": str(emp_status_id) + " | " + str(emp_status_th),
 			"employee_photo": employee_photo,
 		    })
 		response.status_code = 200
@@ -1147,8 +1199,6 @@ def ajax_get_employee(request):
 			"emp_id": "",
 			"emp_fname_th": "",
 			"emp_lname_th": "",
-			"emp_fname_en": "",
-			"emp_lname_en": "",
 			"emp_join_date": "",
 			"emp_term_date": "",
 			"emp_rank": "",
