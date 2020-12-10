@@ -1730,32 +1730,32 @@ def ajax_save_daily_attendance(request):
 
 	# TODO: Check Add or Edit
 
-	# 0 = Add
-	# 1 = Edit
+	# 0 = Edit
+	# 1 = Add
 	# 2 = Delete
-	AEdly = request.GET.get("AEdly")
+	AEdly = int(request.GET.get("AEdly"))
 	print("AEdly = " + str(AEdly))
 
 	if AEdly == 0:
-		print("Add")
-		message = "Add"
-	elif AEdly == 1:
 		print("Edit")
-		message = "Edit"
+		message = "Edit record"
+	elif AEdly == 1:
+		print("Add")
+		message = "Add record"
 	elif AEdly == 2:
 		print("Delete")
-		message = "Delete"
+		message = "Delete record"
 	else:
 		print("Error!")
-		message = "Error!"
+		message = "Unknown request!"
 
 	response = JsonResponse(data={		
 	    "success": True,
 	    "title": "Test",
 	    "type": "green",
-	    "message": "AEdly = " + str(AEdly),
+	    "message": "AEdly = " + message,
 	})
-	
+
 	response.status_code = 200
 	return response
 
