@@ -1094,19 +1094,6 @@ def ajax_get_employee(request):
 	'''
 
 	try:
-		exclude_list = [4,5,6,8,9]
-		'''
-		4 = เลิกจ้าง
-		5 = สูญหาย
-		6 = เสียชีวิต
-		8 = เกษียณ
-		9 = ไล่ออก
-		'''
-
-
-		# select * from v_employee where upd_flag<>'D' and sch_active=1 and emp_id=916
-		# amnaj
-
 		emp_fname_th = ""
 		emp_lname_th = ""
 		emp_rank = ""
@@ -1137,22 +1124,13 @@ def ajax_get_employee(request):
 
 
 		'''
-		try:
-			with connection.cursor() as cursor:
-				cursor.execute(sql)
+		exclude_list = [4,5,6,8,9]
+		# 4 = เลิกจ้าง
+		# 5 = สูญหาย
+		# 6 = เสียชีวิต
+		# 8 = เกษียณ
+		# 9 = ไล่ออก
 
-			is_pass = True
-			message = "Added complete."
-		except db.OperationalError as e:
-			is_pass = False
-			message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
-		except db.Error as e:
-			is_pass = False
-			message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
-
-		'''
-
-		'''
 		employee = Employee.objects.filter(emp_id__exact=emp_id).filter(emp_type='D1').exclude(empstatus='I').exclude(emp_status__in=exclude_list).get()
 		if employee.emp_join_date is not None:
 			emp_join_date = employee.emp_join_date.strftime("%d/%m/%Y")
@@ -1164,8 +1142,6 @@ def ajax_get_employee(request):
 		else:
 			emp_term_date = ""
 		'''
-
-
 
 		employee_info = EmpPhoto.objects.filter(emp_id=emp_id).get()
 		employee_photo = b64encode(employee_info.image).decode("utf-8")
