@@ -1723,7 +1723,71 @@ def ajax_delete_employee(request):
 
 def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM):
 	is_success = True
-	message = "Add record success."	
+	message = ""	
+
+	if shift_id!="99":
+		# ************************************************
+		# RULE 1 - ดักจับในกรณีที่ cnt_id มากกว่า 10 หลัก
+		# ************************************************		
+		if len(cnt_id) > 10:
+			is_success = False		
+			message = "Rule 1 is failed."
+			print(message)
+		else:			
+			is_success = True
+			message = "Rule 2 is passed."
+			print(message)
+
+		# ************************************************
+		# RULE 2 - เช็คพนักงานที่แจ้งเวรต้องไม่เกินจำนวนที่ว่าจ้างในสัญญา
+		# ************************************************		
+		if is_success:
+			is_pass, message = checkNotOverCapacity(cnt_id, shift_id, dly_date)
+			if is_pass:				
+				is_success = True
+				message = "Rule 2 is passed."
+				print(message)
+			else:
+				is_success = False
+				message = "Rule 2 is failed."
+				print(message)
+
+
+		# *****************************************
+		# RULE 3 - Check Manpower
+		# *****************************************
+		if is_success:
+			shift_type = shift_name.partition("#")[2][0:2].strip()
+			isPass, message = checkManPower(cnt_id, job_type, shift_type, dly_date)
+			if isPass:			
+				is_success = True
+				message = "Rule 3 is passed."
+				print(message)
+			else:
+				is_success = False
+				message = "Rule 3 is failed."
+				print(message)			
+
+
+		# *****************************************
+		# RULE 4 - Validate all input
+		# *****************************************		
+		if is_success:
+			isPass, message = validateInput(dly_date, cnt_id, emp_id, shift_id, shift_type, shift_name, job_type, totalNDP, totalNDA, totalNDM, totalNNP, totalNNA, totalNNM, totalPDP, totalPDA, totalPDM, totalPNP, totalPNA, totalPNM, absent_status, late_status, phone_status, relief_status)
+			if isPass:
+				is_success = True
+				message = "Rule 4 is passed."
+				print(message)							
+			else:
+				is_success = False
+				# message = "Rule 4 is failed."
+				print(message)
+
+
+	else:
+		is_success = False
+		message = "Shift ID is 99 - Day Off"
+
 	return is_success, message
 
 def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM):
@@ -1836,68 +1900,16 @@ def ajax_save_daily_attendance(request):
 
 
 
-	# ดักจับในกรณีที่ cnt_id มากกว่า 10 หลัก
-	if len(cnt_id)>10:
-		message = ""
-		response = JsonResponse(data={		
-		    "success": True,
-		    "title": "Error",
-		    "type": "red",
-		    "message": "Contract ID " + str(cnt_id) + " is not correct!",
-		})
-		response.status_code = 200
-		return response
+	
 
 
 	if shift_id!="99":
-		# ************************************************
-		# RULE 1 - เช็คพนักงานที่แจ้งเวรต้องไม่เกินจำนวนที่ว่าจ้างในสัญญา
-		# ************************************************
-		isPass, message = checkNotOverCapacity(cnt_id, shift_id, dly_date)
-		if isPass:
-			success = True
-			title = "Success"
-			type = "green"
-			message = "TODO: Check next rule."
-		else:
-			success = False
-			title = "Error"
-			type = "red"
-			message = message
 
 
-		# *****************************************
-		# RULE 2 - Check Manpower
-		# *****************************************
-		shift_type = shift_name.partition("#")[2][0:2].strip()
-		isPass, message = checkManPower(cnt_id, job_type, shift_type, dly_date)
-		if isPass:
-			success = True
-			title = "Success"
-			type = "green"
-			message = "TODO: Check next rule."
-		else:
-			success = False
-			title = "Error"
-			type = "red"
-			message = message
 
 
-		# *****************************************
-		# RULE 3 - Validate Input
-		# *****************************************		
-		isPass, message = validateInput(dly_date, cnt_id, emp_id, shift_id, shift_type, job_type, totalNDP, totalNDA, totalNDM, totalNNP, totalNNA, totalNNM, totalPDP, totalPDA, totalPDM, totalPNP, totalPNA, totalPNM, absent_status, late_status, phone_status, relief_status)
 
-		if isPass:
-			success = True
-			title = "Success"
-			type = "green"
-			message = "No error. All are good to go."
-		else:
-			success = False
-			title = "Error"
-			type = "red"
-			message = message
+
 
 		# *****************************************
 		# RULE ? - Others
@@ -2029,7 +2041,7 @@ def checkManPower(cnt_id, job_type, shift_type, dly_date):
 # *******************************************************************
 # RULE 3 - Validate Input
 # *******************************************************************
-def validateInput(dly_date, cnt_id, emp_id, shift_id, shift_type, job_type, totalNDP, totalNDA, totalNDM, totalNNP, totalNNA, totalNNM, totalPDP, totalPDA, totalPDM, totalPNP, totalPNA, totalPNM, absent_status, late_status, phone_status, relief_status):
+def validateInput(dly_date, cnt_id, emp_id, shift_id, shift_type, shift_name, job_type, totalNDP, totalNDA, totalNDM, totalNNP, totalNNA, totalNNM, totalPDP, totalPDA, totalPDM, totalPNP, totalPNA, totalPNM, absent_status, late_status, phone_status, relief_status):
 	isPass = True
 	message = ""
 
@@ -2110,7 +2122,7 @@ def validateInput(dly_date, cnt_id, emp_id, shift_id, shift_type, job_type, tota
 		is_duplicated, message = checkDupDly(sql)
 		if is_duplicated:
 			isPass = False
-			message = "2) พนักงานรหัส <b>" + str(emp_id) + "</b> มีการแจ้งเวรแล้ว กรุณาตรวจสอบอีกครั้ง"
+			message = "รหัส : <b>" + str(emp_id) + "</b><br>ตารางเวร : <b>" + shift_name + "</b><br>มีรายการอยู่แล้ว กรุณาตรวจสอบอีกครั้ง"
 		else:
 			isPass = True	
 	
