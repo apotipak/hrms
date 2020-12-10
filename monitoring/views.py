@@ -1722,7 +1722,7 @@ def ajax_delete_employee(request):
 
 
 def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM):
-	is_success = True
+	is_pass = True
 	message = ""	
 
 	if shift_id!="99":
@@ -1730,25 +1730,25 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,shift_id,shift_name,
 		# RULE 1 - ดักจับในกรณีที่ cnt_id มากกว่า 10 หลัก
 		# ************************************************		
 		if len(cnt_id) > 10:
-			is_success = False		
+			is_pass = False		
 			message = "Rule 1 is failed."
 			print(message)
 		else:			
-			is_success = True
+			is_pass = True
 			message = "Rule 2 is passed."
 			print(message)
 
 		# ************************************************
 		# RULE 2 - เช็คพนักงานที่แจ้งเวรต้องไม่เกินจำนวนที่ว่าจ้างในสัญญา
 		# ************************************************		
-		if is_success:
-			is_pass, message = checkNotOverCapacity(cnt_id, shift_id, dly_date)
-			if is_pass:				
-				is_success = True
+		if is_pass:
+			is_not_error, message = checkNotOverCapacity(cnt_id, shift_id, dly_date)
+			if is_not_error:				
+				is_pass = True
 				message = "Rule 2 is passed."
 				print(message)
 			else:
-				is_success = False
+				is_pass = False
 				message = "Rule 2 is failed."
 				print(message)
 
@@ -1756,39 +1756,74 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,shift_id,shift_name,
 		# *****************************************
 		# RULE 3 - Check Manpower
 		# *****************************************
-		if is_success:
+		if is_pass:
 			shift_type = shift_name.partition("#")[2][0:2].strip()
-			isPass, message = checkManPower(cnt_id, job_type, shift_type, dly_date)
-			if isPass:			
-				is_success = True
+			is_not_error, message = checkManPower(cnt_id, job_type, shift_type, dly_date)
+			if is_not_error:			
+				is_pass = True
 				message = "Rule 3 is passed."
 				print(message)
 			else:
-				is_success = False
+				is_pass = False
 				message = "Rule 3 is failed."
 				print(message)			
 
 
 		# *****************************************
 		# RULE 4 - Validate all input
-		# *****************************************		
-		if is_success:
-			isPass, message = validateInput(dly_date, cnt_id, emp_id, shift_id, shift_type, shift_name, job_type, totalNDP, totalNDA, totalNDM, totalNNP, totalNNA, totalNNM, totalPDP, totalPDA, totalPDM, totalPNP, totalPNA, totalPNM, absent_status, late_status, phone_status, relief_status)
-			if isPass:
-				is_success = True
+		# *****************************************				
+		if is_pass:
+			is_not_error, message = validateInput(dly_date, cnt_id, emp_id, shift_id, shift_type, shift_name, job_type, totalNDP, totalNDA, totalNDM, totalNNP, totalNNA, totalNNM, totalPDP, totalPDA, totalPDM, totalPNP, totalPNA, totalPNM, absent_status, late_status, phone_status, relief_status)
+			if is_not_error:
+				is_pass = True
 				message = "Rule 4 is passed."
 				print(message)							
 			else:
-				is_success = False
+				is_pass = False
 				# message = "Rule 4 is failed."
 				print(message)
 
 
+		# *****************************************
+		# RULE ? - New rule
+		# *****************************************		
+		# New rule will be added here.
+
+
+		# Note: If all rules are passed, then it's ready to add.
+		if is_pass:
+			'''
+			dly_date, cnt_id, emp_id, shift_id, shift_type, job_type, totalNDP, 
+			totalNDA, totalNDM, totalNNP, totalNNA, totalNNM, totalPDP, totalPDA, 
+			totalPDM, totalPNP, totalPNA, totalPNM, absent_status, late_status, 
+			phone_status, relief_status
+			'''
+
+			sql = "insert into dly_plan (cnt_id,emp_id,dly_date,sch_shift"
+			sql += ",sch_no,dept_id,sch_rank,prd_id"
+			sql += ",absent,late,late_full,relieft,relieft_id"
+			sql += ",tel_man,tel_time,tel_amt,tel_paid"
+			sql += ",ot,ot_reason,ot_time_frm,ot_time_to,ot_hr_amt,ot_pay_amt"
+			sql += ",spare,wage_id,wage_no,pay_type,soc,pub,dof,day7"
+			sql += ",upd_date,upd_by,upd_flag,remark)"
+			sql += " values ("
+			
+			sql += str(cnt_id) + "," + str(emp_id) + ",'" + str(dly_date) + "'," + str(shift_id) + ","
+			sql += "0" + "," + "2051" + "," + "'SOY'" + "," + "'D120121'" + ","
+			sql += "0" + "," + "0" + "," + "0" + "," + "0" + "," + "0" + ","
+			sql += "0" + "," + "NULL" + "," + "0" + "," + "0" + ","
+			sql += "0" + "," + "0" + "," + "NULL" + "," + "NULL" + "," + "0" + "," + "0" + ","
+			sql += "0" + "," + "32" + "," + "'32SOY'" + "," + "NULL" + "," + "0" + "," + "0" + "," + "1" + "," + "NULL" + ","
+			sql += "''" + "," + "'System'" + "," + "'A'" + "," + "NULL" + ")"
+
+			# print(sql)
+
+			message = "Add completed."
 	else:
-		is_success = False
+		is_pass = False
 		message = "Shift ID is 99 - Day Off"
 
-	return is_success, message
+	return is_pass, message
 
 def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM):
 	is_success = True
@@ -1873,7 +1908,7 @@ def ajax_save_daily_attendance(request):
 		else:
 			success_status = False
 			title = "Error"
-			type_status = "red"			
+			type_status = "red"	
 	elif AEdly == 2:
 		print("Delete")
 		success_status = True
@@ -1904,50 +1939,11 @@ def ajax_save_daily_attendance(request):
 
 
 	if shift_id!="99":
-
-
-
-
-
-
-
 		# *****************************************
 		# RULE ? - Others
 		# *****************************************
 		# 
-
-		if isPass:
-			success = True
-			title = "Success"
-			type = "green"
-
-			'''
-			dly_date, cnt_id, emp_id, shift_id, shift_type, job_type, totalNDP, 
-			totalNDA, totalNDM, totalNNP, totalNNA, totalNNM, totalPDP, totalPDA, 
-			totalPDM, totalPNP, totalPNA, totalPNM, absent_status, late_status, 
-			phone_status, relief_status
-			'''
-
-			sql = "insert into dly_plan (cnt_id,emp_id,dly_date,sch_shift"
-			sql += ",sch_no,dept_id,sch_rank,prd_id"
-			sql += ",absent,late,late_full,relieft,relieft_id"
-			sql += ",tel_man,tel_time,tel_amt,tel_paid"
-			sql += ",ot,ot_reason,ot_time_frm,ot_time_to,ot_hr_amt,ot_pay_amt"
-			sql += ",spare,wage_id,wage_no,pay_type,soc,pub,dof,day7"
-			sql += ",upd_date,upd_by,upd_flag,remark)"
-			sql += " values ("
-			
-			sql += str(cnt_id) + "," + str(emp_id) + ",'" + str(dly_date) + "'," + str(shift_id) + ","
-			sql += "0" + "," + "2051" + "," + "'SOY'" + "," + "'D120121'" + ","
-			sql += "0" + "," + "0" + "," + "0" + "," + "0" + "," + "0" + ","
-			sql += "0" + "," + "NULL" + "," + "0" + "," + "0" + ","
-			sql += "0" + "," + "0" + "," + "NULL" + "," + "NULL" + "," + "0" + "," + "0" + ","
-			sql += "0" + "," + "32" + "," + "'32SOY'" + "," + "NULL" + "," + "0" + "," + "0" + "," + "1" + "," + "NULL" + ","
-			sql += "''" + "," + "'System'" + "," + "'A'" + "," + "NULL" + ")"
-
-			# print(sql)
-
-			message = ""
+		print("test")
 
 	else:
 		# Select shift id 99 - DAY OFF
