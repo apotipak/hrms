@@ -1738,6 +1738,7 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,shift_id,shift_name,
 			message = "Rule 2 is passed."
 			print(message)
 
+
 		# ************************************************
 		# RULE 2 - เช็คพนักงานที่แจ้งเวรต้องไม่เกินจำนวนที่ว่าจ้างในสัญญา
 		# ************************************************		
@@ -1749,8 +1750,8 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,shift_id,shift_name,
 				print(message)
 			else:
 				is_pass = False
-				message = "Rule 2 is failed."
-				print(message)
+				# message = "Rule 2 is failed."
+				# print(message)
 
 
 		# *****************************************
@@ -1799,6 +1800,9 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,shift_id,shift_name,
 			phone_status, relief_status
 			'''
 
+			upd_date = str(datetime.datetime.now())
+			# upd_date = str(datetime.datetime.now())[:-3]
+
 			sql = "insert into dly_plan (cnt_id,emp_id,dly_date,sch_shift"
 			sql += ",sch_no,dept_id,sch_rank,prd_id"
 			sql += ",absent,late,late_full,relieft,relieft_id"
@@ -1806,19 +1810,30 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,shift_id,shift_name,
 			sql += ",ot,ot_reason,ot_time_frm,ot_time_to,ot_hr_amt,ot_pay_amt"
 			sql += ",spare,wage_id,wage_no,pay_type,soc,pub,dof,day7"
 			sql += ",upd_date,upd_by,upd_flag,remark)"
-			sql += " values ("
-			
+			sql += " values ("			
 			sql += str(cnt_id) + "," + str(emp_id) + ",'" + str(dly_date) + "'," + str(shift_id) + ","
 			sql += "0" + "," + "2051" + "," + "'SOY'" + "," + "'D120121'" + ","
 			sql += "0" + "," + "0" + "," + "0" + "," + "0" + "," + "0" + ","
 			sql += "0" + "," + "NULL" + "," + "0" + "," + "0" + ","
 			sql += "0" + "," + "0" + "," + "NULL" + "," + "NULL" + "," + "0" + "," + "0" + ","
-			sql += "0" + "," + "32" + "," + "'32SOY'" + "," + "NULL" + "," + "0" + "," + "0" + "," + "1" + "," + "NULL" + ","
-			sql += "''" + "," + "'System'" + "," + "'A'" + "," + "NULL" + ")"
+			sql += "0" + "," + "32" + "," + "'32SOY'" + "," + "NULL" + "," + "0" + "," + "0" + "," + "1" + "," + "NULL" + ",'"
+			sql += str(upd_date) + "'," + "'System'" + "," + "'A'" + "," + "NULL" + ")"
 
-			# print(sql)
 
-			message = "Add completed."
+			print(sql)
+
+			try:
+				with connection.cursor() as cursor:
+					cursor.execute(sql)
+
+				is_pass = True
+				message = "Added complete."
+			except db.OperationalError as e:
+				is_pass = False
+				message = "<b>Please send this error to IT team.</b><br>" + str(e)
+			except db.Error as e:
+				is_pass = False
+				message = "<b>Please send this error to IT team.</b><br>" + str(e)
 	else:
 		is_pass = False
 		message = "Shift ID is 99 - Day Off"
@@ -1933,41 +1948,6 @@ def ajax_save_daily_attendance(request):
 	return response
 
 
-
-
-	
-
-
-	if shift_id!="99":
-		# *****************************************
-		# RULE ? - Others
-		# *****************************************
-		# 
-		print("test")
-
-	else:
-		# Select shift id 99 - DAY OFF
-		message = ""
-		response = JsonResponse(data={
-		    "success": True,
-		    "title": "Error",
-		    "type": "red",
-		    "message": "You select shift " + str(shift_name),
-		})
-		response.status_code = 200
-		return response	
-
-
-	response = JsonResponse(data={		
-	    "success": success,
-	    "title": title,
-	    "type": type,
-	    "message": message,
-	})
-	response.status_code = 200
-	return response
-
-
 # ******************************************************
 # RULE 1 - เช็คพนักงานที่แจ้งเวรต้องไม่เกินจำนวนอัตราที่ว่าจ้างในสัญญา
 # ******************************************************
@@ -1999,10 +1979,11 @@ def checkNotOverCapacity(cnt_id, shift_id, dly_date):
 
 	if informCount >= scheduleCount:
 		isPass = False
-		message = "พนักงานที่แจ้งเวรมากกว่าที่อยู่ในสัญญา : <b>" + str(cnt_id)[3:] + "</b>"
+		# message = "พนักงานที่แจ้งเวรมากกว่าที่อยู่ในสัญญา : <b>" + str(cnt_id)[3:] + "</b>"
+		message = "พนักงานที่แจ้งเวรมากกว่าที่มีอยู่ในสัญญา : <b>" + str(cnt_id) + "</b>"
 	else:
 		isPass = True
-		message = "Pass rule 1"
+		message = "Pass rule 2"
 
 	return isPass, message
 
@@ -2118,7 +2099,7 @@ def validateInput(dly_date, cnt_id, emp_id, shift_id, shift_type, shift_name, jo
 		is_duplicated, message = checkDupDly(sql)
 		if is_duplicated:
 			isPass = False
-			message = "รหัส : <b>" + str(emp_id) + "</b><br>ตารางเวร : <b>" + shift_name + "</b><br>มีรายการอยู่แล้ว กรุณาตรวจสอบอีกครั้ง"
+			message = "รหัส : <b>" + str(emp_id) + "</b><br>ตารางเวร : <b>" + shift_name + "</b><br>เป็นรายการซ้ำ กรุณาตรวจสอบอีกครั้ง"
 		else:
 			isPass = True	
 	
