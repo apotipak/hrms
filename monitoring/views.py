@@ -1721,6 +1721,16 @@ def ajax_delete_employee(request):
 	return response
 
 
+def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM):
+	is_success = True
+	message = "Add record success."	
+	return is_success, message
+
+def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM):
+	is_success = True
+	message = "Edit record success."	
+	return is_success, message
+
 @permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
 @login_required(login_url='/accounts/login/')
 def ajax_save_daily_attendance(request):
@@ -1728,45 +1738,14 @@ def ajax_save_daily_attendance(request):
 	print("FUNCTION: ajax_save_daily_attendance()")
 	print("***************************************")
 
-	# TODO: Check Add or Edit
-
-	# 0 = Edit
-	# 1 = Add
-	# 2 = Delete
+	# Initial values
 	AEdly = int(request.GET.get("AEdly"))
-	print("AEdly = " + str(AEdly))
+	message = ""
 
-	if AEdly == 0:
-		print("Edit")
-		message = "Edit record"
-	elif AEdly == 1:
-		print("Add")
-		message = "Add record"
-	elif AEdly == 2:
-		print("Delete")
-		message = "Delete record"
-	else:
-		print("Error!")
-		message = "Unknown request!"
-
-	response = JsonResponse(data={		
-	    "success": True,
-	    "title": "Test",
-	    "type": "green",
-	    "message": "AEdly = " + message,
-	})
-
-	response.status_code = 200
-	return response
-
-
-
-
-
-	dly_date = request.GET.get('dly_date')
+	# Get parameters
+	# dly_date = request.GET.get('dly_date')
 	# dly_date = datetime.datetime.strptime(request.GET.get('dly_date'), '%d/%m/%Y')
 	dly_date = datetime.datetime.strptime(request.GET.get('dly_date'), '%d/%m/%Y').date()
-
 	cus_id = request.GET.get('cus_id')
 	cus_brn = request.GET.get('cus_brn')
 	cus_vol = request.GET.get('cus_vol')	
@@ -1775,42 +1754,87 @@ def ajax_save_daily_attendance(request):
 	emp_id = request.GET.get('emp_id')
 	shift_id = request.GET.get('shift_id')
 	shift_name = request.GET.get('shift_name')
-
 	absent_status = request.GET.get('absent_status')
 	late_status = request.GET.get('late_status')
 	phone_status = request.GET.get('phone_status')
 	relief_status = request.GET.get('relief_status')
-
-	'''
-	print("debug 1")
-	print("------------------")
-	print(str(absent_status) + "," + str(late_status) + "," + str(phone_status) + "," + str(relief_status))
-	print("------------------")
-	'''
-
 	job_type = request.GET.get('job_type_option')
 	remark = request.GET.get('remark')
-	
 	totalNDP = int(request.GET.get('totalNDP'))
 	totalNDA = int(request.GET.get('totalNDA'))
 	totalNDM = int(request.GET.get('totalNDM'))
 	totalNNP = int(request.GET.get('totalNNP'))
 	totalNNA = int(request.GET.get('totalNNA'))
 	totalNNM = int(request.GET.get('totalNNM'))
-
 	totalPDP = int(request.GET.get('totalPDP'))
 	totalPDA = int(request.GET.get('totalPDA'))
 	totalPDM = int(request.GET.get('totalPDM'))
 	totalPNP = int(request.GET.get('totalPNP'))
 	totalPNA = int(request.GET.get('totalPNA'))
 	totalPNM = int(request.GET.get('totalPNM'))
-
+	
 	'''
+	print("debug 1")
+	print("------------------")
+	print(str(absent_status) + "," + str(late_status) + "," + str(phone_status) + "," + str(relief_status))
+	print("------------------")
 	print("debug 2")
 	print("------------------")
 	print(str(job_type) + "," + str(remark) + "," + str(totalNDP) + "," + str(totalNDA) + "," + str(totalNDM) + "," + str(totalNNP) + "," + str(totalNNA) + "," + str(totalNNM))
 	print("------------------")
 	'''
+
+	# 0 = Edit
+	# 1 = Add
+	# 2 = Delete
+
+	if AEdly == 0:
+		print("Edit")		
+		is_edit_record_success, message = editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM)
+		if is_edit_record_success:
+			success_status = True
+			title = "Success"
+			type_status = "green"
+		else:
+			success_status = False
+			title = "Error"
+			type_status = "red"		
+	elif AEdly == 1:
+		print("Add")		
+		is_add_record_success, message = addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM)
+		if is_add_record_success:
+			success_status = True
+			title = "Success"
+			type_status = "green"
+		else:
+			success_status = False
+			title = "Error"
+			type_status = "red"			
+	elif AEdly == 2:
+		print("Delete")
+		success_status = True
+		title = "Success"
+		type_status = "green"
+		message = "TODO: Delete record"
+	else:
+		print("Error!")
+		success_status = False
+		title = "Error"
+		type_status = "red"
+		message = "Unknown request!"
+
+	response = JsonResponse(data={		
+	    "success": success_status,
+	    "title": title,
+	    "type": type_status,
+	    "message": message,
+	})
+
+	response.status_code = 200
+	return response
+
+
+
 
 	# ดักจับในกรณีที่ cnt_id มากกว่า 10 หลัก
 	if len(cnt_id)>10:

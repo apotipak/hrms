@@ -919,6 +919,8 @@
 
     // ClickRow
 	$(document).on('click', '#employee_list_table tbody tr', function(row, $el, field) {
+		$("#id_add_new_record_status").val(0);
+
 		$("#id_emp_id").attr("disabled", true);
 		$("#id_late_check").hide();
 		$("#id_late_check").next("label").hide();
@@ -1030,7 +1032,7 @@
 
     $(document).on('click', '#save_button', function(e) {
     	//amnaj
-    	var AEdly = $("#id_add_new_record_status").val();    	
+    	var AEdly = $("#id_add_new_record_status").val();
     	//alert(AEdly);
 
     	var dly_date = $("#id_dly_date").val();
