@@ -1830,10 +1830,10 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,shift_id,shift_name,
 				message = "Added complete."
 			except db.OperationalError as e:
 				is_pass = False
-				message = "<b>Please send this error to IT team.</b><br>" + str(e)
+				message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
 			except db.Error as e:
 				is_pass = False
-				message = "<b>Please send this error to IT team.</b><br>" + str(e)
+				message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
 	else:
 		is_pass = False
 		message = "Shift ID is 99 - Day Off"
