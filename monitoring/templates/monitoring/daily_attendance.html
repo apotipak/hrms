@@ -241,13 +241,13 @@
 						    </div>
 
 							<div class="form-group col-1">
-								<label for="id_sch_rank">Rank</label>
-								<input type="text" class="form-control form-control-sm" id="id_sch_rank" readonly>
+								<label for="id_emp_rank">Rank</label>
+								<input type="text" class="form-control form-control-sm" id="id_emp_rank" readonly>
 							</div>
 
 							<div class="form-group col-1">
-								<label for="id_sch_dept">Dept</label>
-								<input type="text" class="form-control form-control-sm" id="id_sch_dept" readonly>
+								<label for="id_emp_dept">Dept</label>
+								<input type="text" class="form-control form-control-sm" id="id_emp_dept" readonly>
 							</div>
 
 						    <div class="form-group col-2">
@@ -771,8 +771,8 @@
 			    	},
 			    	success: function(data) {
 						$("#id_emp_name_th").val("");
-		    			$("#id_sch_rank").val("");
-		    			$("#id_sch_dept").val("");
+		    			$("#id_emp_rank").val("");
+		    			$("#id_emp_dept").val("");
 		    			$("#id_emp_status").val("");
 		    			$("#id_emp_join_date").val("");
 		    			$("#id_emp_term_date").val("");
@@ -785,8 +785,8 @@
 
 			    		if(data.is_found) {
 			    			$("#id_emp_fullname_th").val(data.emp_fname_th.trim() + "  " + data.emp_lname_th.trim());
-							$("#id_sch_rank").val(data.emp_rank);
-			    			$("#id_sch_dept").val(data.emp_dept);
+							$("#id_emp_rank").val(data.emp_rank);
+			    			$("#id_emp_dept").val(data.emp_dept);
 			    			$("#id_emp_status").val(data.emp_status);
 			    			if(data.emp_status_id=='9') {		    				
 				    			$("#id_emp_status").animate({color:'red'}, 1000);
@@ -802,8 +802,8 @@
 			    			/*
 							$("#employeePhoto").html("<img src='data:image/png;base64," + data.employee_photo + "' style='width:90px;'/>");
 			    			$("#id_emp_name_th").val(data.emp_fname_th.trim() + "  " + data.emp_lname_th.trim());
-			    			$("#id_sch_rank").val(data.emp_rank);
-			    			$("#id_sch_dept").val(data.emp_type);
+			    			$("#id_emp_rank").val(data.emp_rank);
+			    			$("#id_emp_dept").val(data.emp_type);
 				    		$("#id_emp_name_th").css("background-color", 'green');
 				    		$("#id_emp_name_th").animate({color:'white'}, 1000);
 				    		*/
@@ -952,8 +952,8 @@
 	    	success: function(data) {
 	    		if(data.is_found) {
 	    			$("#id_emp_fullname_th").val(data.emp_fname_th.trim() + "  " + data.emp_lname_th.trim());
-					$("#id_sch_rank").val(data.emp_rank);
-	    			$("#id_sch_dept").val(data.emp_type);
+					$("#id_emp_rank").val(data.emp_rank);
+	    			$("#id_emp_dept").val(data.emp_type);
 	    			$("#id_emp_status").val(data.emp_status);
 	    			$("#id_emp_join_date").val(data.emp_join_date);
 	    			$("#id_emp_term_date").val(data.emp_term_date);
@@ -991,7 +991,7 @@
 		$("#emp_id_lookup_button").attr("disabled", true);
 		$("#id_emp_id").val(emp_id);
 		$("#id_emp_fullname_th").val(emp_fullname_th);
-		$("#id_sch_rank").val(sch_rank);
+		$("#id_emp_rank").val(sch_rank);
 
 		//$("#id_emp_status").val();
 		
@@ -1040,6 +1040,8 @@
       	var cus_brn = $('#id_cus_brn').val();
       	var cus_vol = $('#id_cus_vol').val();    	
     	var emp_id = $("#id_emp_id").val();
+    	var emp_rank = $("#id_emp_rank").val();
+    	var emp_dept = $("#id_emp_dept").val();
     	var shift_id = $("#id_shift_option").val();
     	var shift_name = $("#id_shift_option option:selected").text();
 
@@ -1127,16 +1129,16 @@
 	    	},
 	    	success: function(data) {
 				$("#id_emp_name_th").val("");
-    			$("#id_sch_rank").val("");
-    			$("#id_sch_dept").val("");
+    			$("#id_emp_rank").val("");
+    			$("#id_emp_dept").val("");
     			$("#id_emp_status").val("");
     			$("#id_emp_join_date").val("");
     			$("#id_emp_term_date").val("");
 
 	    		if(data.is_found) {
 	    			$("#id_emp_fullname_th").val(data.emp_fname_th.trim() + "  " + data.emp_lname_th.trim());
-					$("#id_sch_rank").val(data.emp_rank);
-	    			$("#id_sch_dept").val(data.emp_type);
+					$("#id_emp_rank").val(data.emp_rank);
+	    			$("#id_emp_dept").val(data.emp_dept);
 	    			$("#id_emp_status").val(data.emp_status);
 	    			
 	    			if(data.emp_status_id=='9') {		    				
@@ -1164,6 +1166,8 @@
 				      		cus_brn: cus_brn,
 				      		cus_vol: cus_vol,
 				      		emp_id: emp_id,
+				      		emp_rank: emp_rank,
+				      		emp_dept: emp_dept,
 				      		shift_id: shift_id,
 				      		shift_name: shift_name,
 				      		absent_status: absent_status,

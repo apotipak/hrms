@@ -1747,7 +1747,7 @@ def ajax_delete_employee(request):
 	return response
 
 
-def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM):
+def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM):
 	is_pass = True
 	message = ""	
 
@@ -1826,8 +1826,8 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,shift_id,shift_name,
 			phone_status, relief_status
 			'''
 
-			upd_date = str(datetime.datetime.now())
-			# upd_date = str(datetime.datetime.now())[:-3]
+			# upd_date = str(datetime.datetime.now())
+			upd_date = str(datetime.datetime.now())[:-3]
 
 			sql = "insert into dly_plan (cnt_id,emp_id,dly_date,sch_shift"
 			sql += ",sch_no,dept_id,sch_rank,prd_id"
@@ -1838,7 +1838,7 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,shift_id,shift_name,
 			sql += ",upd_date,upd_by,upd_flag,remark)"
 			sql += " values ("			
 			sql += str(cnt_id) + "," + str(emp_id) + ",'" + str(dly_date) + "'," + str(shift_id) + ","
-			sql += "0" + "," + "2051" + "," + "'SOY'" + "," + "'D120121'" + ","
+			sql += "0" + "," + emp_dept + ",'" + str(emp_rank) + "'," + "'D120121'" + ","
 			sql += "0" + "," + "0" + "," + "0" + "," + "0" + "," + "0" + ","
 			sql += "0" + "," + "NULL" + "," + "0" + "," + "0" + ","
 			sql += "0" + "," + "0" + "," + "NULL" + "," + "NULL" + "," + "0" + "," + "0" + ","
@@ -1866,7 +1866,7 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,shift_id,shift_name,
 
 	return is_pass, message
 
-def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM):
+def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM):
 	is_success = True
 	message = "Edit record success."	
 	return is_success, message
@@ -1891,7 +1891,9 @@ def ajax_save_daily_attendance(request):
 	cus_vol = request.GET.get('cus_vol')	
 	cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
 	cnt_id = cnt_id.lstrip("0")
-	emp_id = request.GET.get('emp_id')
+	emp_id = request.GET.get('emp_id')	
+	emp_rank = request.GET.get('emp_rank')
+	emp_dept = request.GET.get('emp_dept')
 	shift_id = request.GET.get('shift_id')
 	shift_name = request.GET.get('shift_name')
 	absent_status = request.GET.get('absent_status')
@@ -1930,7 +1932,7 @@ def ajax_save_daily_attendance(request):
 
 	if AEdly == 0:
 		print("Edit")		
-		is_edit_record_success, message = editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM)
+		is_edit_record_success, message = editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM)
 		if is_edit_record_success:
 			success_status = True
 			title = "Success"
@@ -1941,7 +1943,7 @@ def ajax_save_daily_attendance(request):
 			type_status = "red"		
 	elif AEdly == 1:
 		print("Add")		
-		is_add_record_success, message = addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM)
+		is_add_record_success, message = addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM)
 		if is_add_record_success:
 			success_status = True
 			title = "Success"
