@@ -934,10 +934,18 @@
 		var cus_vol = $("#id_cus_vol").val();
 		
 		var absent = $(this).find('td:eq(0)').text();
+		//console.log("absent = " + absent);
+
 		var emp_id = $(this).find('td:eq(1)').text();
 		var emp_fullname_th = $(this).find('td:eq(2)').text();
 		var sch_rank = $(this).find('td:eq(3)').text();
 		var shf_desc = $(this).find('td:eq(4)').text();	
+
+		$("#emp_id_lookup_button").attr("disabled", true);
+
+		$("#id_emp_fullname_th").val(emp_fullname_th);
+		$("#id_emp_id").val(emp_id);
+		$("#id_emp_rank").val(sch_rank);
 
 		// Get Employee information
 		$.ajax({
@@ -953,7 +961,8 @@
 	    	},
 	    	success: function(data) {
 	    		if(data.is_found) {
-	    			$("#id_emp_fullname_th").val(data.emp_fname_th.trim() + "  " + data.emp_lname_th.trim());
+	    			//$("#id_emp_fullname_th").val(data.emp_fname_th.trim() + "  " + data.emp_lname_th.trim());
+	    			//$("#id_emp_fullname_th").val("AA");
 					$("#id_emp_rank").val(data.emp_rank);
 	    			$("#id_emp_dept").val(data.emp_dept);
 	    			$("#id_emp_status").val(data.emp_status);
@@ -973,14 +982,14 @@
 
 		$(this).addClass('highlight').siblings().removeClass('highlight');
 
-		if(absent=="X") {
+		if(absent=="x") {
 			$("#id_absent_check").prop("checked", true);
 		} else {
 			$("#id_absent_check").prop("checked", false);
 		}
 		
 		shift_id =  parseInt(shf_desc.substring(0,4));
-		console.log("shift_id = " + shift_id);
+		//console.log("shift_id = " + shift_id);
 		$('#id_shift_option').val(shift_id);
 
 		if(shift_id==999 || shift_id==99) {
@@ -994,13 +1003,6 @@
 			$("#id_shift_option").attr("disabled", false);
 			//$("#id_job_type_option").attr("disabled", true);
 		}
-
-		$("#emp_id_lookup_button").attr("disabled", true);
-		$("#id_emp_id").val(emp_id);
-		$("#id_emp_fullname_th").val(emp_fullname_th);
-		$("#id_emp_rank").val(sch_rank);
-
-		//$("#id_emp_status").val();
 		
 	});
 

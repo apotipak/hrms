@@ -1579,9 +1579,10 @@ def ajax_get_attendance_information(request):
 
 			upd_date = row[45].strftime("%d/%m/%Y %H:%M")
 
+			# amnaj
 			record = {
-				"emp_fname_th": row[0],
-				"emp_lname_th": row[1],
+				"emp_fname_th": row[0].strip(),
+				"emp_lname_th": row[1].strip(),
 				"shf_type": row[2],
 				"shf_desc": row[3],
 				"shf_time_frm": row[4],
