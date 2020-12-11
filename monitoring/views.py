@@ -1844,9 +1844,7 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 			sql += "0" + "," + "0" + "," + "NULL" + "," + "NULL" + "," + "0" + "," + "0" + ","
 			sql += "0" + "," + "32" + "," + "'32SOY'" + "," + "NULL" + "," + "0" + "," + "0" + "," + "1" + "," + "NULL" + ",'"
 			sql += str(upd_date) + "'," + "'System'" + "," + "'A'" + "," + "NULL" + ")"
-
-
-			print(sql)
+			# print(sql)
 
 			try:
 				with connection.cursor() as cursor:
@@ -1866,10 +1864,40 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 
 	return is_pass, message
 
-def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM):
-	is_success = True
-	message = "Edit record success."	
-	return is_success, message
+
+def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM):	
+	is_pass = True
+	message = ""	
+
+	# *****************************************
+	# RULE 1 - Check Manpower
+	# *****************************************
+	shift_type = shift_name.partition("#")[2][0:2].strip() # shift_type will be D or N
+	is_not_error, message = checkManPower(cnt_id, job_type, shift_type, dly_date)
+	if is_not_error:			
+		is_pass = True
+		message = "checkManPower() is passed."
+		print(message)
+	else:
+		is_pass = False
+		message = "checkManPower() is failed."
+		print(message)			
+
+
+	if is_pass:
+		print("TODO: checkCall()")
+		print("TODO: checkLate()")
+		print("TODO: checkAbsent()")
+		# If all conditions above are true, then
+		if shift_id != "99":
+			print("")
+		else:
+			print("")
+
+
+
+	return is_pass, message
+
 
 @permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
 @login_required(login_url='/accounts/login/')
@@ -1940,7 +1968,8 @@ def ajax_save_daily_attendance(request):
 		else:
 			success_status = False
 			title = "Error"
-			type_status = "red"		
+			type_status = "red"
+
 	elif AEdly == 1:
 		print("Add")		
 		is_add_record_success, message = addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM)
@@ -2020,8 +2049,8 @@ def checkNotOverCapacity(cnt_id, shift_id, dly_date):
 # RULE 2 - Check Manpower
 # *****************************************
 def checkManPower(cnt_id, job_type, shift_type, dly_date):
-	print(str(cnt_id) + "," + str(job_type) + "," + str(shift_type) + "," + str(dly_date))
-	isPass = False
+	# print(str(cnt_id) + "," + str(job_type) + "," + str(shift_type) + "," + str(dly_date))
+	is_pass = False
 	message = ""
 	
 	cursor = connection.cursor()
@@ -2034,12 +2063,12 @@ def checkManPower(cnt_id, job_type, shift_type, dly_date):
 			aManPower = 0
 		else:
 			aManPower = len(rows)
-		isPass = True
+		is_pass = True
 	else:
-		isPass = True
+		is_pass = True
 		aManPower = 0
 	
-	return isPass, message
+	return is_pass, message
 
 
 
