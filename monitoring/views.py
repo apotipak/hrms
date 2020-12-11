@@ -1922,7 +1922,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 	if is_pass:			
 		
 		# ***********************************************
-		# RULE 3.1 เช็คห้ามคีย์รหัสที่ไม่มีสิทธ์ลงเวร
+		# RULE 3 เช็คห้ามคีย์รหัสที่ไม่มีสิทธ์ลงเวร
 		# ตรวจ 3 เงื่อนไข 1.ไม่มีรหัสในระบบ 2.มีแต่สถานะ upd_flag='D' 3. ยังไม่ลาออก emp_term_date=null
 		# ***********************************************
 		try:
@@ -1942,7 +1942,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 			# print("absent_status = " + str(absent_status))
 			# print("relief_status = " + str(relief_status))
 
-			# Check Absent and Relief status
+			# กรณีพนักงานมาเข้าเวรปกติ
 			if absent_status==1 and relief_status==0:
 				# ตรวจสอบสถานะการลาออก emp_term_date
 				# ถ้าลาออกค่า emp_term_date จะไม่ใช่ค่า Null แต่ใส่เป็นวันที่ที่ลาออก
@@ -1950,52 +1950,102 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 					emp_term_date = employee[1].strftime('%d/%m/%Y')
 					# print("emp_term_date = " + str(emp_term_date))
 					is_pass = False
-					message += "Rule 3.1 is failed: พนักงานคนนี้ไม่สามารถจัดตารางเวรได้ เนื่องจากลาออกตั้งแต่วันที่ " + str(emp_term_date)
+					message += "Rule 3 is failed: พนักงานคนนี้ไม่สามารถจัดตารางเวรได้ เนื่องจากลาออกตั้งแต่วันที่ " + str(emp_term_date)
 				else:
 					is_pass = True
+
+
+			# กรณีพนักงานลาและมีคนลงเวรแทน
+			if absent_status==1 and relief_status==1:
+				print("TODO")
+
 		else:
 			is_pass = False
 
 
 		if is_pass:
-			message += "Rule 3.1 is passed.<br>"
+			message += "Rule 3 is passed.<br>"
 
 
-		
 
-		# ***********************************************
-		# RULE 4.1 - ป้องกันการแก้ไข ปลด  Absent รปภ.ที่ขาดหน่วยงานที่หนึ่งแล้วไปอยู่อีกหน่วยงานหนึ่ง 
-		# หากปลด Absent ต้องออกจากหน่วยงานที่สองก่อน
-		# ***********************************************
+	# ***********************************************
+	# RULE 4 - เช็คจำนวนคนห้ามคีย์เกินในรายการสัญญา กรณีนี้ให้เช็คจาก Missing Record		
+	# ***********************************************
+	if is_pass:
+		if phone_status==1:
+			if phone_amount <= 0:
+				is_pass = False
+				message = "Rule 4 is faled: แจ้งโทรลงบันทึกการเข้าเวร แต่ค่าโทรยังเป็น 0 บาท."
 
+		ot_status = 0 # Hardcode
+		if late_status==1 or ot_status:
+			print("TODO")
 
-		# ***********************************************
-		# RULE 4.2 - ห้ามลงรายการซ้ำ ถ้าเพิ่มรายการใหม่ สำหรับคนที่มาแทน แทนหลายคนในหน่วยเดียวกันไม่ได้
-		# ***********************************************
-		# TODO
-
-
-		# ***********************************************
-		# RULE 4.3 - ห้ามพนักงานทำงานในวัน Day Off จากตาราง SYS_GPMDOF
-		# ***********************************************
-		# TODO
-		# "select cnt_id,sch_shift from v_dlyplan_shift where cnt_id=1486000001 and left(remark,2)=00 and shf_type='D' and absent=0 and dly_date='2020-12-01'"
+		is_pass = True
 
 
-	# All are good to go
-	#if is_pass:
+	# ***********************************************
+	# RULE 5 - ห้ามลงงานที่อื่นในกะเดียวกัน วันเดียวกัน
+	# และป้องกันการแก้ไข ปลด Absent รปภ.ที่ขาดหน่วยงานที่นึงแล้วไปอยู่อีกหน่วยงานนึง หากจะปลด Absent ต้องออกจากหน่วยงานที่สองก่อน
+	# ***********************************************
+	if is_pass:
+		if phone_status==1:
+			print("TODO: เช็คพนักงาานเข้าเวรที่หน่วยงานอื่นไปแล้ว")
+			is_pass = False
+
+
+		sql = ""
+		#is_error, message = checkBetweenShift(sql)
+		#if is_error:
+		#	print("TODO: พนักงานเข้าเวรคร่อมกับหน่วยงาน")
+
+		# Hardcode
+		is_pass = True
+		message += "Rule 5 is passed.<br>"
+
+
+	# ***********************************************
+	# RULE 6 - 	ป้องกันการกลับมาแก้ไข Absent หากรปภ.เข้าเวรอื่นอยู่และเวลาคร่อมกับหน่วยงานอื่น
+	# ***********************************************
+	if is_pass:
+		if relief_status==1:
+			print("TODO")
+
+		# Hardcode
+		is_pass = True
+		message += "Rule 6 is passed.<br>"		
+
+
+	# ***********************************************
+	# RULE 7 - 	ห้ามลงรายการซ้ำ ถ้าเพิ่มรายการใหม่สำหรับคนที่มาแทน แทนหลายคนในหน่วยงานเดียวกันไม่ได้
+	# ***********************************************
+	if is_pass:
+		print("TODO")
+
+		# Hardcode
+		is_pass = True
+		message += "Rule 7 is passed.<br>"
+
+
+	# ***********************************************
+	# RULE 8 - ห้ามพนักงานทำงานในวัน Day Off จากตาราง SYS_GPMDOF
+	# ***********************************************
+	# TODO
+	# "select cnt_id,sch_shift from v_dlyplan_shift where cnt_id=1486000001 and left(remark,2)=00 and shf_type='D' and absent=0 and dly_date='2020-12-01'"
+	if is_pass:
+		print("TODO")
+
+		# Hardcode
+		is_pass = True
+		message += "Rule 8 is passed.<br>"
+
+
+
+	# All rules are good then it's good to go
+	# if is_pass:
 	# setVariable()
 	# updateListName()
 	# Not allow CMS_SUP Add/Edit passed day
-
-
-
-
-
-
-
-
-
 
 
 
