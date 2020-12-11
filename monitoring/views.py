@@ -1920,9 +1920,11 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 	# RULE 3 - Check valid input
 	# ***********************************************
 	if is_pass:			
-
-		# เช็คห้ามคีย์รหัสที่ไม่มีสิทธ์ลงเวร
-		# ตรวจ 2 เงื่อนไข 1.ไม่มีรหัสในระบบ 2.มีแต่สถานะ upd_flag='D'		
+		
+		# ***********************************************
+		# RULE 3.1 เช็คห้ามคีย์รหัสที่ไม่มีสิทธ์ลงเวร
+		# ตรวจ 3 เงื่อนไข 1.ไม่มีรหัสในระบบ 2.มีแต่สถานะ upd_flag='D' 3. ยังไม่ลาออก emp_term_date=null
+		# ***********************************************
 		try:
 			with connection.cursor() as cursor:		
 				cursor.execute("select emp_id, emp_term_date from v_employee where emp_id=%s and upd_flag<>'D'", [emp_id])
@@ -1948,7 +1950,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 					emp_term_date = employee[1].strftime('%d/%m/%Y')
 					# print("emp_term_date = " + str(emp_term_date))
 					is_pass = False
-					message += "Rule 3 is failed: พนักงานคนนี้ไม่สามารถจัดตารางเวรได้ เนื่องจากลาออกตั้งแต่วันที่ " + str(emp_term_date)
+					message += "Rule 3.1 is failed: พนักงานคนนี้ไม่สามารถจัดตารางเวรได้ เนื่องจากลาออกตั้งแต่วันที่ " + str(emp_term_date)
 				else:
 					is_pass = True
 		else:
@@ -1956,9 +1958,10 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 
 
 		if is_pass:
-			message += "Rule 3 is passed.<br>"
+			message += "Rule 3.1 is passed.<br>"
 
 
+		
 
 		# ***********************************************
 		# RULE 4.1 - ป้องกันการแก้ไข ปลด  Absent รปภ.ที่ขาดหน่วยงานที่หนึ่งแล้วไปอยู่อีกหน่วยงานหนึ่ง 
