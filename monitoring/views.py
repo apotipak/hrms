@@ -1579,7 +1579,6 @@ def ajax_get_attendance_information(request):
 
 			upd_date = row[45].strftime("%d/%m/%Y %H:%M")
 
-			# amnaj
 			record = {
 				"emp_fname_th": row[0].strip(),
 				"emp_lname_th": row[1].strip(),
@@ -1927,31 +1926,37 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		try:
 			with connection.cursor() as cursor:		
 				cursor.execute("select emp_id, emp_term_date from v_employee where emp_id=%s and upd_flag<>'D'", [emp_id])
-				employee = cursor.fetchone()
-				emp_term_date = row_count[1]
+				employee = cursor.fetchone()				
 
 		except db.OperationalError as e:
 			message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
 		except db.Error as e:
 			message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
 
-		# is_pass = True if row_count[0]>0 else False
-		is_pass = True if len(employee)>0 else False
+		# is_pass = True if employee[0]>0 else False
+		if len(employee)>0:			
+			emp_term_date = employee[1]
+			# print("emp_term_date = " + str(emp_term_date))
+			# print("absent_status = " + str(absent_status))
+			# print("relief_status = " + str(relief_status))
+
+			# Check Absent and Relief status
+			if absent_status==1 and relief_status==0:
+				# ตรวจสอบสถานะการลาออก emp_term_date
+				# ถ้าลาออกค่า emp_term_date จะไม่ใช่ค่า Null แต่ใส่เป็นวันที่ที่ลาออก
+				if emp_term_date is not None:
+					emp_term_date = employee[1].strftime('%d/%m/%Y')
+					# print("emp_term_date = " + str(emp_term_date))
+					is_pass = False
+					message += "Rule 3 is failed: พนักงานคนนี้ไม่สามารถจัดตารางเวรได้ เนื่องจากลาออกตั้งแต่วันที่ " + str(emp_term_date)
+				else:
+					is_pass = True
+		else:
+			is_pass = False
+
 
 		if is_pass:
 			message += "Rule 3 is passed.<br>"
-		else:
-			message += "Rule 3 is failed.<br>"
-
-
-		# Check Absent and Relief status
-		if absent_status==1 and relief_status==0:
-			# ตรวจสอบสถานะการลาออก emp_term_date
-			# ถ้าลาออกค่า emp_term_date จะไม่ใช่ค่า Null แต่ใส่เป็นวันที่ที่ลาออก
-			if emp_term_date is None:
-				is_pass = False
-				message = "พนักงานคนนี้ไม่สามารถจัดตารางเวรได้ เนื่องจากลาออกตั้งแต่วันที่ " + str(emp_term_date)
-
 
 
 
@@ -2019,10 +2024,10 @@ def ajax_save_daily_attendance(request):
 	emp_dept = request.GET.get('emp_dept')
 	shift_id = request.GET.get('shift_id')
 	shift_name = request.GET.get('shift_name')
-	absent_status = request.GET.get('absent_status')
-	late_status = request.GET.get('late_status')
-	phone_status = request.GET.get('phone_status')
-	relief_status = request.GET.get('relief_status')
+	absent_status = int(request.GET.get('absent_status'))
+	late_status = int(request.GET.get('late_status'))
+	phone_status = int(request.GET.get('phone_status'))
+	relief_status = int(request.GET.get('relief_status'))
 	job_type = request.GET.get('job_type_option')
 	remark = request.GET.get('remark')
 	totalNDP = int(request.GET.get('totalNDP'))
