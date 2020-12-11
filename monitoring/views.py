@@ -1870,33 +1870,124 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 	is_pass = True
 	message = ""	
 
-	# *****************************************
-	# RULE 1 - Check Manpower
-	# *****************************************
-	shift_type = shift_name.partition("#")[2][0:2].strip() # shift_type will be D or N
-	is_not_error, message = checkManPower(cnt_id, job_type, shift_type, dly_date)
-	if is_not_error:			
-		is_pass = True
-		message = "checkManPower() is passed."
-		message += "<br>emp_id = " + str(emp_id)
-		message += "<br>shift_id = " + str(shift_id)
-		message += "<br>absent_status = " + str(absent_status)
-		print(message)
-	else:
-		is_pass = False
-		message = "checkManPower() is failed."
-		print(message)			
+	# Server side check
+	# TODO: shift_id must be in cus_service
 
+
+
+
+	# *****************************************************
+	# RULE 1 - Check manpower must not more than contract
+	# *****************************************************
+	shift_type = shift_name.partition("#")[2][0:2].strip() # shift_type will be D or N
+	is_error, message = checkManPower(cnt_id, job_type, shift_type, dly_date)
+	if is_error:
+		is_pass = False
+	else:
+		is_pass = True
 
 	if is_pass:
-		print("TODO: checkCall()")
-		print("TODO: checkLate()")
-		print("TODO: checkAbsent()")
-		# If all conditions above are true, then
-		if shift_id != "99":
-			print("")
+		message += "Rule 1 is passed.<br>"
+	else:
+		message += "Rule 1 is failed.<br>"
+
+
+	# *****************************************
+	# RULE 2 - Check phone call status
+	# *****************************************
+	# TODO
+	if is_pass:
+
+		if phone_status:
+			if late_status:
+				if absent_status and relief_status:
+					if shift_id != "99":
+						print("")
+					else:
+						print("")
+
+			is_pass = True # ***Hardcode***
+
+
+		# TODO: ค่าโทรเป็น 0 ให้ตรวจสอบ
+		# if phone_status and phone_amount>0:
+
+		if is_pass:
+			message += "Rule 2 is passed.<br>"
 		else:
-			print("")
+			message += "Rule 2 is failed.<br>"
+		
+	# ***********************************************
+	# RULE 3 - Check valid input
+	# ***********************************************
+	if is_pass:			
+
+		# เช็คห้ามคีย์รหัสที่ไม่มีสิทธ์ลงเวร
+		# ตรวจ 2 เงื่อนไข 1.ไม่มีรหัสในระบบ 2.มีแต่สถานะ upd_flag='D'		
+		try:
+			with connection.cursor() as cursor:		
+				cursor.execute("select emp_id, emp_term_date from v_employee where emp_id=%s and upd_flag<>'D'", [emp_id])
+				employee = cursor.fetchone()
+				emp_term_date = row_count[1]
+
+		except db.OperationalError as e:
+			message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+		except db.Error as e:
+			message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+
+		# is_pass = True if row_count[0]>0 else False
+		is_pass = True if len(employee)>0 else False
+
+		if is_pass:
+			message += "Rule 3 is passed.<br>"
+		else:
+			message += "Rule 3 is failed.<br>"
+
+
+		# Check Absent and Relief status
+		if absent_status==1 and relief_status==0:
+			# ตรวจสอบสถานะการลาออก emp_term_date
+			# ถ้าลาออกค่า emp_term_date จะไม่ใช่ค่า Null แต่ใส่เป็นวันที่ที่ลาออก
+			if emp_term_date is None:
+				is_pass = False
+				message = "พนักงานคนนี้ไม่สามารถจัดตารางเวรได้ เนื่องจากลาออกตั้งแต่วันที่ " + str(emp_term_date)
+
+
+
+
+		# ***********************************************
+		# RULE 4.1 - ป้องกันการแก้ไข ปลด  Absent รปภ.ที่ขาดหน่วยงานที่หนึ่งแล้วไปอยู่อีกหน่วยงานหนึ่ง 
+		# หากปลด Absent ต้องออกจากหน่วยงานที่สองก่อน
+		# ***********************************************
+
+
+		# ***********************************************
+		# RULE 4.2 - ห้ามลงรายการซ้ำ ถ้าเพิ่มรายการใหม่ สำหรับคนที่มาแทน แทนหลายคนในหน่วยเดียวกันไม่ได้
+		# ***********************************************
+		# TODO
+
+
+		# ***********************************************
+		# RULE 4.3 - ห้ามพนักงานทำงานในวัน Day Off จากตาราง SYS_GPMDOF
+		# ***********************************************
+		# TODO
+		# "select cnt_id,sch_shift from v_dlyplan_shift where cnt_id=1486000001 and left(remark,2)=00 and shf_type='D' and absent=0 and dly_date='2020-12-01'"
+
+
+	# All are good to go
+	#if is_pass:
+	# setVariable()
+	# updateListName()
+	# Not allow CMS_SUP Add/Edit passed day
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2050,7 +2141,7 @@ def checkNotOverCapacity(cnt_id, shift_id, dly_date):
 # *****************************************
 def checkManPower(cnt_id, job_type, shift_type, dly_date):
 	# print(str(cnt_id) + "," + str(job_type) + "," + str(shift_type) + "," + str(dly_date))
-	is_pass = False
+	is_error = False
 	message = ""
 	
 	cursor = connection.cursor()
@@ -2063,12 +2154,12 @@ def checkManPower(cnt_id, job_type, shift_type, dly_date):
 			aManPower = 0
 		else:
 			aManPower = len(rows)
-		is_pass = True
-	else:
-		is_pass = True
+	else:		
 		aManPower = 0
 	
-	return is_pass, message
+	is_error = True if aManPower>0 else False
+	
+	return is_error, message
 
 
 
