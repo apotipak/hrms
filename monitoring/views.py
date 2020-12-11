@@ -1865,14 +1865,12 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 	return is_pass, message
 
 
-def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM):	
+def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM):
 	is_pass = True
 	message = ""	
 
 	# Server side check
 	# TODO: shift_id must be in cus_service
-
-
 
 
 	# *****************************************************
@@ -1916,6 +1914,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		else:
 			message += "Rule 2 is failed.<br>"
 		
+
 	# ***********************************************
 	# RULE 3 - Check valid input
 	# ***********************************************
@@ -2004,6 +2003,8 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		message += "Rule 5 is passed.<br>"
 
 
+
+
 	# ***********************************************
 	# RULE 6 - 	ป้องกันการกลับมาแก้ไข Absent หากรปภ.เข้าเวรอื่นอยู่และเวลาคร่อมกับหน่วยงานอื่น
 	# ***********************************************
@@ -2040,14 +2041,65 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		message += "Rule 8 is passed.<br>"
 
 
-
 	# All rules are good then it's good to go
-	# if is_pass:
-	# setVariable()
-	# updateListName()
-	# Not allow CMS_SUP Add/Edit passed day
+	# *** Not allow CMS_SUP Add/Edit passed day ***
 
+	if is_pass:
+		# setVariable()		
+		# dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,
+		# relief_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM
+		upd_date = str(datetime.datetime.now())[:-3]
+		sql = "update dly_plan set cnt_id=" + str(cnt_id) + ","		
+		sql += "sch_no=0,"
+		sql += "dept_id=" + str(emp_dept) + ","
+		sql += "sch_rank='" + str(emp_rank) + "',"
+		sql += "prd_id='D120121',"
+		sql += "absent=" + str(absent_status) + ","
+		sql += "late=" + str(late_status) + ","
+		sql += "late_full=0,"
+		sql += "relieft=" + str(relief_status) + ","
+		sql += "relieft_id=0,"
+		sql += "tel_man=0,"
+		sql += "tel_time=NULL,"
+		sql += "tel_amt=0,"
+		sql += "tel_paid=0,"
+		sql += "ot=0,"
+		sql += "ot_reason=0,"
+		sql += "ot_time_frm=NULL,"
+		sql += "ot_time_to=NULL,"
+		sql += "ot_hr_amt=0,"
+		sql += "ot_pay_amt=0,"
+		sql += "spare=0,"
+		sql += "wage_id=32,"
+		sql += "wage_no='32SOY',"
+		sql += "pay_type='',"
+		sql += "soc=0,"
+		sql += "pub=0,"
+		sql += "dof=0,"
+		sql += "day7=0,"
+		sql += "upd_date='" + str(upd_date) + "',"
+		sql += "upd_by='System',"
+		sql += "upd_flag='A',"
+		sql += "remark='" + str(job_type) + " " + str(remark) + "' "
+		sql += "where cnt_id=" + str(cnt_id)
+		sql += " and dly_date='" + str(dly_date) + "'"
+		sql += " and emp_id=" + str(emp_id)
+		sql += " and sch_shift=" + str(shift_id)
 
+		print(sql)
+	
+		try:
+			with connection.cursor() as cursor:
+				cursor.execute(sql)
+
+			is_pass = True
+			message = "Edit complete."
+		except db.OperationalError as e:
+			is_pass = False
+			message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+		except db.Error as e:
+			is_pass = False
+			message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
 
 	return is_pass, message
 
@@ -2103,7 +2155,7 @@ def ajax_save_daily_attendance(request):
 	print("------------------")
 	print("debug 2")
 	print("------------------")
-	print(str(job_type) + "," + str(remark) + "," + str(totalNDP) + "," + str(totalNDA) + "," + str(totalNDM) + "," + str(totalNNP) + "," + str(totalNNA) + "," + str(totalNNM))
+	print(str(job_type) + "," + str(job_type) + "," + str(totalNDP) + "," + str(totalNDA) + "," + str(totalNDM) + "," + str(totalNNP) + "," + str(totalNNA) + "," + str(totalNNM))
 	print("------------------")
 	'''
 
