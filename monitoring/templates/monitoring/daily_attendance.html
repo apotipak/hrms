@@ -1203,7 +1203,7 @@
 				      		totalPNM: totalPNM,
 				    	},
 				    	success: function(data) {
-				    		if(data.success) {				    							    		
+				    		if(data.success) {
 								$.alert({
 								    title: data.title,
 								    type: data.type,
@@ -1214,6 +1214,8 @@
 								    boxWidth: '38%',
 								    useBootstrap: false,
 								});
+
+
 								/*
 								$("#dailyAttendanceDataEntryForm").trigger("reset");								
 								$("#id_emp_id").attr("disabled", true);
@@ -1257,7 +1259,7 @@
 				  	});
 	    		}
 
-	    		//$.LoadingOverlay("hide");
+	    		$.LoadingOverlay("hide");
 	    		$("#id_emp_id").select();
 	    	},
 	    });    	    	
