@@ -1878,6 +1878,9 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 	if is_not_error:			
 		is_pass = True
 		message = "checkManPower() is passed."
+		message += "<br>emp_id = " + str(emp_id)
+		message += "<br>shift_id = " + str(shift_id)
+		message += "<br>absent_status = " + str(absent_status)
 		print(message)
 	else:
 		is_pass = False
@@ -1955,11 +1958,7 @@ def ajax_save_daily_attendance(request):
 	print("------------------")
 	'''
 
-	# 0 = Edit
-	# 1 = Add
-	# 2 = Delete
-
-	if AEdly == 0:
+	if AEdly == 0: # EDIT MODE
 		print("Edit")		
 		is_edit_record_success, message = editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM)
 		if is_edit_record_success:
@@ -1971,7 +1970,7 @@ def ajax_save_daily_attendance(request):
 			title = "Error"
 			type_status = "red"
 
-	elif AEdly == 1:
+	elif AEdly == 1: # ADD MODE
 		print("Add")		
 		is_add_record_success, message = addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM)
 		if is_add_record_success:
@@ -1982,13 +1981,13 @@ def ajax_save_daily_attendance(request):
 			success_status = False
 			title = "Error"
 			type_status = "red"	
-	elif AEdly == 2:
+	elif AEdly == 2: # DELETE MODE
 		print("Delete")
 		success_status = True
 		title = "Success"
 		type_status = "green"
 		message = "TODO: Delete record"
-	else:
+	else: # UNKNOWN MODE
 		print("Error!")
 		success_status = False
 		title = "Error"
