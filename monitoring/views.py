@@ -1115,8 +1115,7 @@ def ajax_get_employee(request):
 				emp_join_date = "" if record[5] is None else record[5].strftime("%d/%m/%Y")
 				emp_term_date = "" if record[6] is None else record[6].strftime("%d/%m/%Y")
 				emp_status_id = record[7]
-				emp_status_th = record[8]
-
+				emp_status_th = record[8]				
 		except db.OperationalError as e:
 			message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
 		except db.Error as e:
@@ -1178,6 +1177,7 @@ def ajax_get_employee(request):
 			"emp_join_date": "",
 			"emp_term_date": "",
 			"emp_rank": "",
+			"emp_dept": "",
 			"emp_type": "",
 			"emp_status_id": "",
 			"emp_status": "",
@@ -1910,7 +1910,7 @@ def ajax_save_daily_attendance(request):
 	AEdly = int(request.GET.get("AEdly"))
 	message = ""
 
-	# Get parameters
+	# Get requested parameters
 	# dly_date = request.GET.get('dly_date')
 	# dly_date = datetime.datetime.strptime(request.GET.get('dly_date'), '%d/%m/%Y')
 	dly_date = datetime.datetime.strptime(request.GET.get('dly_date'), '%d/%m/%Y').date()
@@ -1992,7 +1992,7 @@ def ajax_save_daily_attendance(request):
 		success_status = False
 		title = "Error"
 		type_status = "red"
-		message = "Unknown request!"
+		message = "Unknown request! Please contact IT team."
 
 	response = JsonResponse(data={		
 	    "success": success_status,
