@@ -1278,20 +1278,22 @@
 
 
     $(document).on('click', '#delete_button', function(e) {
-      	var cus_id = $('#id_cus_id').val();
-      	var emp_fullname_th = $('#id_emp_fullname_th').val();
+      	var cus_id = $('#id_cus_id').val();      	
       	var cus_brn = $('#id_cus_brn').val();
       	var cus_vol = $('#id_cus_vol').val();    	
     	var emp_id = $("#id_emp_id").val();
     	var shift_id = $("#id_shift_option").val();
     	var dly_date = $("#id_dly_date").val();
+    	var emp_fullname_th = $('#id_emp_fullname_th').val();
 
     	//console.log(cus_id+","+cus_brn+","+cus_vol+","+emp_id+","+shift_option+","+dly_date)			
+    	//amnaj
+    	var cnt_id = cus_id + cus_brn + cus_vol
 
 		$.confirm({
 		    title: 'Confirmation',
 		    type: 'red',
-		    content: 'Do you want to delete?<br><b>' + emp_id + " | " + emp_fullname_th + "</b>",
+		    content: 'ต้องการลบพนักงาน <b>' + emp_id + " | " + emp_fullname_th + "</b><br>ออกจากหน่วยงาน <b>" + cnt_id.replace(/^0+/,'') + "</b>",
 			animation: 'zoom',
 		    animationBounce: 1.5,
 		    closeIcon: true,
