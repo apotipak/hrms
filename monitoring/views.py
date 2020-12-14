@@ -1763,7 +1763,7 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 			print(message)
 		else:			
 			is_pass = True
-			message = "Rule 2 is passed."
+			message = "Rule 1 is passed."
 			print(message)
 
 
@@ -1830,6 +1830,7 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 
 			# upd_date = str(datetime.datetime.now())
 			upd_date = str(datetime.datetime.now())[:-3]
+			remark = str(job_type) + " " + str(remark)
 
 			sql = "insert into dly_plan (cnt_id,emp_id,dly_date,sch_shift"
 			sql += ",sch_no,dept_id,sch_rank,prd_id"
@@ -1845,7 +1846,7 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 			sql += "0" + "," + "NULL" + "," + "0" + "," + "0" + ","
 			sql += "0" + "," + "0" + "," + "NULL" + "," + "NULL" + "," + "0" + "," + "0" + ","
 			sql += "0" + "," + "32" + "," + "'32SOY'" + "," + "NULL" + "," + "0" + "," + "0" + "," + "1" + "," + "NULL" + ",'"
-			sql += str(upd_date) + "'," + "'System'" + "," + "'A'" + "," + "NULL" + ")"
+			sql += str(upd_date) + "'," + "'System'" + "," + "'A'" + ",'" + remark + "')"
 			# print(sql)
 
 			try:
@@ -2158,8 +2159,10 @@ def ajax_save_daily_attendance(request):
 	print("debug 2")
 	print("------------------")
 	print(str(job_type) + "," + str(job_type) + "," + str(totalNDP) + "," + str(totalNDA) + "," + str(totalNDM) + "," + str(totalNNP) + "," + str(totalNNA) + "," + str(totalNNM))
-	print("------------------")
+	print("------------------")	
 	'''
+	print("remark : " + str(remark))
+
 
 	if AEdly == 0: # EDIT MODE
 		print("Edit")		
@@ -2259,11 +2262,10 @@ def checkManPower(cnt_id, job_type, shift_type, dly_date):
 	cursor = connection.cursor()
 	cursor.execute("select cnt_id, sch_shift from v_dlyplan_shift where cnt_id=%s and left(remark,2)=%s and shf_type=%s and absent=0 and dly_date=%s", [cnt_id, job_type, shift_type, dly_date])
 	rows = cursor.fetchone()
-	cursor.close
-
-	print("no. of rows = " + str(rows))
+	cursor.close	
 
 	if rows is not None:
+		print("no. of rows = " + str(len(rows)))
 		if len(rows)==0:
 			aManPower = 0
 		else:
