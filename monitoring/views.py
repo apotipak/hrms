@@ -1578,6 +1578,7 @@ def ajax_get_attendance_information(request):
 				tel_time = ""
 
 			upd_date = row[45].strftime("%d/%m/%Y %H:%M")
+			upd_gen = "" if row[48] is None else row[48]
 
 			record = {
 				"emp_fname_th": row[0].strip(),
@@ -1628,7 +1629,7 @@ def ajax_get_attendance_information(request):
 				"upd_date": upd_date,
 				"upd_by": row[46],
 				"upd_flag": row[47],
-				"upd_gen": row[48],
+				"upd_gen": upd_gen,
 				"cus_name_th": row[49],
 				"late": row[50],
 				"sch_relieft": row[51],
@@ -1785,15 +1786,15 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 		# *****************************************
 		if is_pass:
 			shift_type = shift_name.partition("#")[2][0:2].strip()
-			is_not_error, message = checkManPower(cnt_id, job_type, shift_type, dly_date)
-			if is_not_error:			
-				is_pass = True
-				message = "Rule 3 is passed."
-				print(message)
-			else:
+			is_error, message = checkManPower(cnt_id, job_type, shift_type, dly_date)
+			if is_error:
 				is_pass = False
 				message = "Rule 3 is failed."
-				print(message)			
+				print(message)					
+			else:
+				is_pass = True
+				message = "Rule 3 is passed."
+				print(message)				
 
 
 		# *****************************************
@@ -1851,7 +1852,7 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 					cursor.execute(sql)
 
 				is_pass = True
-				message = "Added complete."
+				message = "บันทึกข้อมูลสำเร็จ"
 			except db.OperationalError as e:
 				is_pass = False
 				message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
@@ -2250,7 +2251,7 @@ def checkNotOverCapacity(cnt_id, shift_id, dly_date):
 # RULE 2 - Check Manpower
 # *****************************************
 def checkManPower(cnt_id, job_type, shift_type, dly_date):
-	# print(str(cnt_id) + "," + str(job_type) + "," + str(shift_type) + "," + str(dly_date))
+	print(str(cnt_id) + "," + str(job_type) + "," + str(shift_type) + "," + str(dly_date))
 	is_error = False
 	message = ""
 	
@@ -2258,6 +2259,8 @@ def checkManPower(cnt_id, job_type, shift_type, dly_date):
 	cursor.execute("select cnt_id, sch_shift from v_dlyplan_shift where cnt_id=%s and left(remark,2)=%s and shf_type=%s and absent=0 and dly_date=%s", [cnt_id, job_type, shift_type, dly_date])
 	rows = cursor.fetchone()
 	cursor.close
+
+	print("no. of rows = " + str(rows))
 
 	if rows is not None:
 		if len(rows)==0:
@@ -2268,6 +2271,8 @@ def checkManPower(cnt_id, job_type, shift_type, dly_date):
 		aManPower = 0
 	
 	is_error = True if aManPower>0 else False
+
+	print("is_error = " + str(is_error))
 	
 	return is_error, message
 
