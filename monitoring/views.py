@@ -1579,8 +1579,7 @@ def ajax_get_attendance_information(request):
 
 			upd_date = row[45].strftime("%d/%m/%Y %H:%M")
 			upd_gen = "" if row[48] is None else row[48]
-			remark = "" if row[61] is None else row[61].strip("0").strip()
-			
+			remark = "" if row[61] is None else row[61].strip("0").strip()			
 
 			record = {
 				"emp_fname_th": row[0].strip(),
@@ -1644,7 +1643,7 @@ def ajax_get_attendance_information(request):
 				"cnt_sale_amt": row[58],
 				"cus_name_en": row[59],
 				"cnt_active": row[60],
-				"Remark": remark,
+				"remark": remark,
 				"ex_dof_amt": row[62],
 				"Customer_Flag": row[63],
 			}

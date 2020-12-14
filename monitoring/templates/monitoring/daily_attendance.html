@@ -584,9 +584,9 @@
 					result += "      <th scope='col'>Wage</th>";
 					result += "      <th scope='col' nowrap>Upd Date</th>";
 					result += "      <th scope='col' nowrap>Upd By</th>";
-					result += "      <th scope='col' class='d-none' nowrap>Upd Flag</th>";
-					result += "      <th scope='col' class='d-none' nowrap>Upd Gen</th>";
-					result += "      <th scope='col' class='d-none'>Remark</th>";
+					result += "      <th scope='col' nowrap>Upd Flag</th>";
+					result += "      <th scope='col' nowrap>Upd Gen</th>";
+					result += "      <th scope='col'>Remark</th>";
 					result += "    </tr>";
 					result += "  </thead>";
 					result += "  <tbody class='sortable'>";
@@ -635,9 +635,9 @@
 							result += "	     <td>" + wage_id + "</td>";
 							result += "	     <td nowrap>" + upd_date + "</td>";
 							result += "	     <td>" + upd_by + "</td>";
-							result += "	     <td class='d-none'>" + upd_flag + "</td>";
-							result += "	     <td class='d-none'>" + upd_gen + "</td>";
-							result += "	     <td class='d-none'>" + remark + "</td>";
+							result += "	     <td>" + upd_flag + "</td>";
+							result += "	     <td>" + upd_gen + "</td>";
+							result += "	     <td>" + remark + "</td>";
 							result += "    </tr>";
 						}
 
@@ -907,12 +907,13 @@
 		result += "      <th scope='col' nowrap>Call Time</th>";
 		result += "      <th scope='col' nowrap>Call Amt</th>";
 		result += "      <th scope='col' norwrap>Call Paid</th>";
-		result += "     <th scope='col'>Spare</th>";
+		result += "      <th scope='col'>Spare</th>";
 		result += "      <th scope='col'>Wage</th>";
 		result += "      <th scope='col' nowrap>Upd Date</th>";
 		result += "      <th scope='col' nowrap>Upd By</th>";
-		result += "      <th scope='col' nowrap>Upd Flag</th>";
-		result += "      <th scope='col' nowrap>Upd Gen</th>";
+		result += "      <th scope='col' class='d-none' nowrap>Upd Flag</th>";
+		result += "      <th scope='col' class='d-none' nowrap>Upd Gen</th>";
+		result += "      <th scope='col' class='d-none' nowrap>Remark</th>";
 		result += "    </tr>";
 		result += "  </thead>";
 		result += "  <tbody>";
@@ -1278,6 +1279,7 @@
 												result += "      <th scope='col' nowrap>Upd By</th>";
 												result += "      <th scope='col' nowrap>Upd Flag</th>";
 												result += "      <th scope='col' nowrap>Upd Gen</th>";
+												result += "      <th scope='col' nowrap>Remark</th>";
 												result += "    </tr>";
 												result += "  </thead>";
 												result += "  <tbody class='sortable'>";
@@ -1300,6 +1302,8 @@
 														upd_by = data.employee_list[i]["upd_by"];
 														upd_flag = data.employee_list[i]["upd_flag"];
 														upd_gen = data.employee_list[i]["upd_gen"];
+														remark = data.employee_list[i]["remark"];
+
 														result += "    <tr>";							
 														if(absent==1) {
 															result += "	     <td><font class='text-danger'>X</font></td>";
@@ -1326,6 +1330,7 @@
 														result += "	     <td>" + upd_by + "</td>";
 														result += "	     <td>" + upd_flag + "</td>";
 														result += "	     <td>" + upd_gen + "</td>";
+														result += "	     <td>" + remark + "</td>";
 														result += "    </tr>";
 													}
 
@@ -1463,7 +1468,7 @@
 		$.confirm({
 		    title: 'Confirmation',
 		    type: 'red',
-		    content: 'ต้องการลบพนักงานรหัส <b>' + emp_id + "  (" + emp_fullname_th + ")</b><br>ออกจากหน่วยงาน <b>" + cnt_id.replace(/^0+/,'') + "</b>",
+		    content: 'ลบพนักงานรหัส <b>' + emp_id + "  (" + emp_fullname_th + ")</b><br>ออกจากหน่วยงาน <b>" + cnt_id.replace(/^0+/,'') + "</b>",
 			animation: 'zoom',
 		    animationBounce: 1.5,
 		    closeIcon: true,
@@ -1539,6 +1544,7 @@
 												result += "      <th scope='col' nowrap>Upd By</th>";
 												result += "      <th scope='col' nowrap>Upd Flag</th>";
 												result += "      <th scope='col' nowrap>Upd Gen</th>";
+												result += "      <th scope='col'>Remark</th>";
 												result += "    </tr>";
 												result += "  </thead>";
 												result += "  <tbody class='sortable'>";
@@ -1561,6 +1567,11 @@
 														upd_by = data.employee_list[i]["upd_by"];
 														upd_flag = data.employee_list[i]["upd_flag"];
 														upd_gen = data.employee_list[i]["upd_gen"];
+														
+														remark = data.employee_list[i]["remark"];
+														//remark = "aa";
+
+
 														result += "    <tr>";							
 														if(absent==1) {
 															result += "	     <td><font class='text-danger'>X</font></td>";
@@ -1587,6 +1598,7 @@
 														result += "	     <td>" + upd_by + "</td>";
 														result += "	     <td>" + upd_flag + "</td>";
 														result += "	     <td>" + upd_gen + "</td>";
+														result += "	     <td>" + remark + "</td>";
 														result += "    </tr>";
 													}
 
