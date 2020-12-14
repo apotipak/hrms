@@ -942,6 +942,7 @@
 		var emp_fullname_th = $(this).find('td:eq(2)').text();
 		var sch_rank = $(this).find('td:eq(3)').text();
 		var shf_desc = $(this).find('td:eq(4)').text();	
+		var upd_gen = $(this).find('td:eq(19)').text();	
 
 		$("#emp_id_lookup_button").attr("disabled", true);
 
@@ -994,19 +995,28 @@
 		//console.log("shift_id = " + shift_id);
 		$('#id_shift_option').val(shift_id);
 
-		if(shift_id==999 || shift_id==99) {
+		if(shift_id==999 || shift_id==99) {			
 			$("#save_button").attr("disabled", true);
-			$("#delete_button").attr("disabled", true);
+
+			if(upd_gen=='G')
+				$("#delete_button").attr("disabled", true);
+			else
+				$("#delete_button").attr("disabled", false);
+
 			$("#id_shift_option").attr("disabled", true);
 			
 			$("#id_remark").attr("disabled", false);
 			$("#id_remark").attr("readonly", false);
 		} else {
 			$("#save_button").attr("disabled", false);
-			$("#delete_button").attr("disabled", false);
+
+			if(upd_gen=='G')
+				$("#delete_button").attr("disabled", true);
+			else
+				$("#delete_button").attr("disabled", false);
+
 			$("#id_shift_option").attr("disabled", false);
 			
-			//$("#id_job_type_option").attr("disabled", true);
 			$("#id_remark").attr("disabled", false);
 			$("#id_remark").attr("readonly", false);
 		}
