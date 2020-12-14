@@ -1884,7 +1884,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 	# amnaj
 	# Check Manpower
 	# sql = "select count(*) from dly_plan where dly_date='%s' and emp_id=%s and absent=0 and sch_shift=%s" % (dly_date, emp_id, shift_id)
-	sql = "select count(*) from v_dlyplan_shift where cnt_id='" + str(cnt_id) + "' and left(remark,2)='" + str(remark) + "' and shf_type=" + str(job_type) + "' and absent=0 and dly_date='" + str(dly_date) + "'"
+	sql = "select count(*) from v_dlyplan_shift where cnt_id='" + str(cnt_id) + "' and left(remark,2)='" + str(remark) + "' and shf_type=" + str(job_type) + " and absent=0 and dly_date='" + str(dly_date) + "'"
 	print("sql = " + str(sql))
 
 	cursor = connection.cursor()
