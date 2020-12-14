@@ -584,8 +584,9 @@
 					result += "      <th scope='col'>Wage</th>";
 					result += "      <th scope='col' nowrap>Upd Date</th>";
 					result += "      <th scope='col' nowrap>Upd By</th>";
-					result += "      <th scope='col' nowrap>Upd Flag</th>";
-					result += "      <th scope='col' nowrap>Upd Gen</th>";
+					result += "      <th scope='col' class='d-none' nowrap>Upd Flag</th>";
+					result += "      <th scope='col' class='d-none' nowrap>Upd Gen</th>";
+					result += "      <th scope='col' class='d-none'>Remark</th>";
 					result += "    </tr>";
 					result += "  </thead>";
 					result += "  <tbody class='sortable'>";
@@ -608,6 +609,8 @@
 							upd_by = data.employee_list[i]["upd_by"];
 							upd_flag = data.employee_list[i]["upd_flag"];
 							upd_gen = data.employee_list[i]["upd_gen"];
+							remark= data.employee_list[i]["Remark"];
+
 							result += "    <tr>";							
 							if(absent==1) {
 								result += "	     <td><font class='text-danger'>x</font></td>";
@@ -632,8 +635,9 @@
 							result += "	     <td>" + wage_id + "</td>";
 							result += "	     <td nowrap>" + upd_date + "</td>";
 							result += "	     <td>" + upd_by + "</td>";
-							result += "	     <td>" + upd_flag + "</td>";
-							result += "	     <td>" + upd_gen + "</td>";
+							result += "	     <td class='d-none'>" + upd_flag + "</td>";
+							result += "	     <td class='d-none'>" + upd_gen + "</td>";
+							result += "	     <td class='d-none'>" + remark + "</td>";
 							result += "    </tr>";
 						}
 
@@ -921,7 +925,7 @@
 		$("#id_employee_list").html(result);
     }
 
-    // RowClick
+    // ClickRow
 	$(document).on('click', '#employee_list_table tbody tr', function(row, $el, field) {
 		$("#id_add_new_record_status").val(0);
 
@@ -942,13 +946,15 @@
 		var emp_fullname_th = $(this).find('td:eq(2)').text();
 		var sch_rank = $(this).find('td:eq(3)').text();
 		var shf_desc = $(this).find('td:eq(4)').text();	
-		var upd_gen = $(this).find('td:eq(19)').text();	
+		var upd_gen = $(this).find('td:eq(19)').text();
+		var remark = $(this).find('td:eq(20)').text(); 
 
 		$("#emp_id_lookup_button").attr("disabled", true);
 
 		$("#id_emp_fullname_th").val(emp_fullname_th);
 		$("#id_emp_id").val(emp_id);
 		$("#id_emp_rank").val(sch_rank);
+		$("#id_remark").val(remark);
 
 		// Get Employee information
 		$.ajax({
@@ -964,8 +970,6 @@
 	    	},
 	    	success: function(data) {
 	    		if(data.is_found) {
-	    			//$("#id_emp_fullname_th").val(data.emp_fname_th.trim() + "  " + data.emp_lname_th.trim());
-	    			//$("#id_emp_fullname_th").val("AA");
 					$("#id_emp_rank").val(data.emp_rank);
 	    			$("#id_emp_dept").val(data.emp_dept);
 	    			$("#id_emp_status").val(data.emp_status);
@@ -1665,6 +1669,7 @@
     	event.preventDefault();    	
 
     	//$("#id_cus_id").val("0002526");
+    	$("#id_cus_id").val("0001486");
     	$("#id_cus_brn").val("000");
     	$("#id_cus_vol").val("001");
 
