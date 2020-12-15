@@ -269,14 +269,64 @@
 
 					  </div>
 
-					  <div class="row col-12">
+
+
+
+
+
+					  <div class="row col-12 hidden" id="relief_employee_section">
 						  
+						  <!--
 				            <div class="form-check">
 				              <input class="form-check-input" id="id_relief_check" name="relief_check" type="checkbox">
 				              <label class="form-check-label">Relief by</label>&nbsp;&nbsp;&nbsp;&nbsp;
 				            </div>
-						  
+						  -->
+
+						  <div class="form-row">
+							<div class="form-group col-md-2">
+						      	<label for="id_relief_emp_id">Relief by</label>     
+								<div class="input-group">                            	
+						      		<input type="number" id="id_relief_emp_id" name="id_relief_emp_id" class="form-control form-control-sm" value="" />
+						      		<button id="emp_id_lookup_button" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url=""><i class="fas fa-search fa-sm"></i></button>
+						    	</div>
+							</div>
+
+						    <div class="form-group col-md-2">
+						      <label for="id_relief_emp_fullname_th">Name</label>
+						      <input type="text" class="form-control form-control-sm" id="id_relief_emp_fullname_th" readonly>
+						    </div>
+
+							<div class="form-group col-1">
+								<label for="id_relief_emp_rank">Rank</label>
+								<input type="text" class="form-control form-control-sm" id="id_relief_emp_rank" readonly>
+							</div>
+
+							<div class="form-group col-1">
+								<label for="id_relief_emp_dept">Dept</label>
+								<input type="text" class="form-control form-control-sm" id="id_relief_emp_dept" readonly>
+							</div>
+
+						    <div class="form-group col-2">
+						      <label class="control-label"><b>Join</b></label>
+						      <input type="text" id="id_relief_emp_join_date" class="form-control form-control-sm" readonly>
+						    </div>
+
+						    <div class="form-group col-2">
+						      <label class="control-label nowrap"><b>Terminate</b></label>
+						      <input type="text" id="id_relief_emp_term_date" class="form-control form-control-sm" readonly>
+						    </div>
+
+						    <div class="form-group col-2">
+						      <label class="control-label"><b>Status</b></label>
+						      <input type="text" id="id_relief_emp_status" class="form-control form-control-sm" readonly>
+						    </div>
+						</div>
+
 					  </div>
+
+
+
 
 					  <div class="row col-12">
 						  <div class="form-row">
@@ -416,6 +466,18 @@
 		$('#id_cus_id').select();
 	});
 
+
+
+
+	$("#id_absent_check").change(function() {
+	    if(this.checked) {
+	   		$("#relief_employee_section").show();      
+	    } else {
+	    	$("#relief_employee_section").hide();
+	    }
+	});
+
+
  	function disableAllElements() {
  		$("#dailyAttendanceDataEntryForm:input").attr("disabled", true);
  		$("#dailyAttendanceDataEntryForm").trigger("reset");
@@ -449,6 +511,8 @@
 		$("#id_job_type_option").attr("disabled", true);
 		
 		$("#id_remark").attr("disabled", true);
+
+		$("#relief_employee_section").hide();
 
  	}
 
@@ -1019,8 +1083,10 @@
 
 		if(absent=="x") {
 			$("#id_absent_check").prop("checked", true);
+			$("#relief_employee_section").show();
 		} else {
 			$("#id_absent_check").prop("checked", false);
+			$("#relief_employee_section").hide();
 		}
 		
 		shift_id =  parseInt(shf_desc.substring(0,4));
