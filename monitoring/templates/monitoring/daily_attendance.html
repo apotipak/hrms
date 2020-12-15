@@ -142,12 +142,13 @@
 							      <th scope="col" nowrap>Upd Date</th>
 							      <th scope="col" nowrap>Upd By</th>
 							      <th scope="col" nowrap>Upd Flag</th>
-							      <th scope="col" nowrap>Upd Gen</th>
+							      <th scope="col" class='d-none' nowrap>Upd Gen</th>
+							      <th scope="col" class='d-none' nowrap>Remark</th>
 							    </tr>
 							  </thead>
 							  <tbody>
 							    <tr>
-							      <td colspan="20" class="text-center"><br><br>There is no data.<br><br><br></td>
+							      <td colspan="21" class="text-center"><br><br>There is no data.<br><br><br></td>
 							    </tr>
 							  </tbody>
 							</table>
@@ -585,8 +586,8 @@
 					result += "      <th scope='col' nowrap>Upd Date</th>";
 					result += "      <th scope='col' nowrap>Upd By</th>";
 					result += "      <th scope='col' nowrap>Upd Flag</th>";
-					result += "      <th scope='col' nowrap>Upd Gen</th>";
-					result += "      <th scope='col'>Remark</th>";
+					result += "      <th scope='col' class='d-none' nowrap>Upd Gen</th>";
+					result += "      <th scope='col' class='d-none'>Remark</th>";
 					result += "    </tr>";
 					result += "  </thead>";
 					result += "  <tbody class='sortable'>";
@@ -636,8 +637,8 @@
 							result += "	     <td nowrap>" + upd_date + "</td>";
 							result += "	     <td>" + upd_by + "</td>";
 							result += "	     <td>" + upd_flag + "</td>";
-							result += "	     <td>" + upd_gen + "</td>";
-							result += "	     <td>" + remark + "</td>";
+							result += "	     <td class='d-none'>" + upd_gen + "</td>";
+							result += "	     <td class='d-none'>" + remark + "</td>";
 							result += "    </tr>";
 						}
 
@@ -928,7 +929,7 @@
 		result += "      <th scope='col'>Wage</th>";
 		result += "      <th scope='col' nowrap>Upd Date</th>";
 		result += "      <th scope='col' nowrap>Upd By</th>";
-		result += "      <th scope='col' class='d-none' nowrap>Upd Flag</th>";
+		result += "      <th scope='col' nowrap>Upd Flag</th>";
 		result += "      <th scope='col' class='d-none' nowrap>Upd Gen</th>";
 		result += "      <th scope='col' class='d-none' nowrap>Remark</th>";
 		result += "    </tr>";
@@ -1300,8 +1301,8 @@
 												result += "      <th scope='col' nowrap>Upd Date</th>";
 												result += "      <th scope='col' nowrap>Upd By</th>";
 												result += "      <th scope='col' nowrap>Upd Flag</th>";
-												result += "      <th scope='col' nowrap>Upd Gen</th>";
-												result += "      <th scope='col' nowrap>Remark</th>";
+												result += "      <th scope='col' class='d-none' nowrap>Upd Gen</th>";
+												result += "      <th scope='col' class='d-none' nowrap>Remark</th>";
 												result += "    </tr>";
 												result += "  </thead>";
 												result += "  <tbody class='sortable'>";
@@ -1351,8 +1352,8 @@
 														result += "	     <td nowrap>" + upd_date + "</td>";
 														result += "	     <td>" + upd_by + "</td>";
 														result += "	     <td>" + upd_flag + "</td>";
-														result += "	     <td>" + upd_gen + "</td>";
-														result += "	     <td>" + remark + "</td>";
+														result += "	     <td class='d-none'>" + upd_gen + "</td>";
+														result += "	     <td> class='d-none'" + remark + "</td>";
 														result += "    </tr>";
 													}
 
@@ -1589,8 +1590,8 @@
 												result += "      <th scope='col' nowrap>Upd Date</th>";
 												result += "      <th scope='col' nowrap>Upd By</th>";
 												result += "      <th scope='col' nowrap>Upd Flag</th>";
-												result += "      <th scope='col' nowrap>Upd Gen</th>";
-												result += "      <th scope='col'>Remark</th>";
+												result += "      <th scope='col' class='d-none' nowrap>Upd Gen</th>";
+												result += "      <th scope='col' class='d-none'>Remark</th>";
 												result += "    </tr>";
 												result += "  </thead>";
 												result += "  <tbody class='sortable'>";

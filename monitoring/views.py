@@ -1893,31 +1893,23 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 
 	print("aManPower = " + str(rows[0]))
 
-	is_error = True if rows[0]>0 else False
+	is_pass = True if rows[0]>0 else False
 
-	if is_error:
-		is_pass = False
-		message += "Rule 1 is failed.<br>"
-	else:
-		is_pass = True
-		message += "Rule 1 is passed.<br>"
+	# print("absent_status = " + str(absent_status))
+	# print("shift_id = " + str(shift_id))
 
-
-	print("absent_status = " + str(absent_status))
-	print("shift_id = " + str(shift_id))
-
-	if absent_status==0:
+	if absent_status==0: # กรณีพนักงานมาทำงาน
 		if shift_id!="99":
 			# sql = "select cnt_id, sch_shift from dly_plan where cnt_id=" + str(cnt_id) + " and sch_shift=" + str(shift_id) + " and absent=" + str(absent_status) + " and dly_date='" + str(dly_date) + "'"
 			sql = "select count(*) from dly_plan where cnt_id=" + str(cnt_id) + " and sch_shift=" + str(shift_id) + " and absent=" + str(absent_status) + " and dly_date='" + str(dly_date) + "'"
-			print("sql 1 = " + str(sql))
+			# print("sql 1 = " + str(sql))
 			cursor = connection.cursor()
 			cursor.execute(sql)
 			rows = cursor.fetchone()				
 			informedNumber = rows[0]
 
 			sql = "select cnt_id, srv_shif_id, sum(srv_qty) as qty from cus_service where srv_active=1 and cnt_id=" + str(cnt_id) + " and srv_shif_id=" + str(shift_id) + " group by cnt_id, srv_shif_id"
-			print("sql 2 = " + str(sql))
+			# print("sql 2 = " + str(sql))
 			cursor = connection.cursor()
 			cursor.execute(sql)
 			rows = cursor.fetchone()
@@ -1926,10 +1918,18 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 			cursor.close
 
 			print("informed_number = " + str(informedNumber))
-			print("contract_number = " + str(contractNumber))			
+			print("contract_number = " + str(contractNumber))
 
-	else:
-		print("todo")			
+			if(informedNumber >= contractNumber):
+				is_pass = False
+				message += "Rule 1 is failed : พนักงานที่แจ้งเวรมากกว่าที่มีอยู่ในสัญญา<br>"		
+			else:
+				is_pass = True
+				message += "Rule 1 is passed.<br>"
+
+	else: # กรณีไม่มาทำงาน
+		print("todo: employee takes absent")
+
 
 
 	# *****************************************
