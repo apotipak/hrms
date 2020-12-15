@@ -1892,30 +1892,16 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 	rows = cursor.fetchone()
 	cursor.close	
 
-	if rows is not None:
-		print("no. of rows = " + str(len(rows)))
-		if len(rows)==0:
-			aManPower = 0
-		else:
-			aManPower = len(rows)
-	else:		
-		aManPower = 0
-	
-	is_error = True if aManPower>0 else False
+	is_error = True if rows[0]>0 else False
 
-	print("aManPower = " + str(aManPower))
-
-
+	print("aManPower = " + str(rows[0]))
 
 	if is_error:
 		is_pass = False
+		message += "Rule 1 is failed.<br>"
 	else:
 		is_pass = True
-
-	if is_pass:
 		message += "Rule 1 is passed.<br>"
-	else:
-		message += "Rule 1 is failed.<br>"
 
 
 	# *****************************************
