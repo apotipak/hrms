@@ -333,13 +333,13 @@
 					      <td class="text-center"><b>D</b><!--&nbsp;&nbsp;<i class="fas fa-sun"></i>--></td>
 					      <td class="text-center"><div id="totalNDP">0</div></td>
 					      <td class="text-center"><div id="totalNDA">0</div></td>
-					      <td class="text-center text-danger"><div id="totalNDM">0</div></td>
+					      <td class="text-center text-success"><div id="totalNDM">0</div></td>
 					    </tr>
 					    <tr>
 					      <td class="text-center"><b>N</b><!--&nbsp;&nbsp;<i class="fas fa-moon"></i>--></td>
 					      <td class="text-center"><div id="totalNNP">0</div></td>
 					      <td class="text-center"><div id="totalNNA">0</div></td>
-					      <td class="text-center text-danger"><div id="totalNNM">0</div></td>
+					      <td class="text-center text-success"><div id="totalNNM">0</div></td>
 					    </tr>
 
 					    <!--
@@ -364,13 +364,13 @@
 					      <td class="text-center"><b>D</b><!--&nbsp;&nbsp;<i class="fas fa-sun"></i>--></td>
 					      <td class="text-center"><div id="totalPDP">0</div></td>
 					      <td class="text-center"><div id="totalPDA">0</div></td>
-					      <td class="text-center text-danger"><div id="totalPDM">0</div></td>
+					      <td class="text-center text-success"><div id="totalPDM">0</div></td>
 					    </tr>
 					    <tr>
 					      <td class="text-center"><b>N</b><!--&nbsp;&nbsp;<i class="fas fa-moon"></i>--></td>
 					      <td class="text-center"><div id="totalPNP">0</div></td>
 					      <td class="text-center"><div id="totalPNA">0</div></td>
-					      <td class="text-center text-danger"><div id="totalPNM">0</div></td>
+					      <td class="text-center text-success"><div id="totalPNM">0</div></td>
 					    </tr>
 					  </tbody>
 					</table>					
@@ -686,10 +686,27 @@
 					$("#totalPDA").html(data.totalPDA);
 					$("#totalPNA").html(data.totalPNA);
 
-					$("#totalNDM").html(data.totalNDM);
-					$("#totalNNM").html(data.totalNNM);
-					$("#totalPDM").html(data.totalPDM);
-					$("#totalPNM").html(data.totalPNM);
+
+					if(data.totalNDM>=0)
+						$("#totalNDM").html("<span class='text-success'>" + data.totalNDM + "</span>");
+					else
+						$("#totalNDM").html("<span class='text-danger'>" + data.totalNDM + "</span>");
+
+					if(data.totalNNM>=0)
+						$("#totalNNM").html("<span class='text-success'>" + data.totalNNM + "</span>");						
+					else
+						$("#totalNNM").html("<span class='text-danger'>" + data.totalNNM + "</span>");
+					
+					if(data.totalPDM>=0)
+						$("#totalPDM").html("<span class='text-success'>" + data.totalPDM + "</span>");						
+					else
+						$("#totalPDM").html("<span class='text-danger'>" + data.totalPDM + "</span>");
+
+					if(data.totalPNM>=0)
+						$("#totalPNM").html("<span class='text-success'>" + data.totalPNM + "</span>");						
+					else
+						$("#totalPNM").html("<span class='text-danger'>" + data.totalPNM + "</span>");
+
 				} else {
 					$.alert({
 					    title: 'Error',
@@ -1370,10 +1387,34 @@
 												$("#totalPDA").html(data.totalPDA);
 												$("#totalPNA").html(data.totalPNA);
 
+												/*
 												$("#totalNDM").html(data.totalNDM);
 												$("#totalNNM").html(data.totalNNM);
 												$("#totalPDM").html(data.totalPDM);
-												$("#totalPNM").html(data.totalPNM);												
+												$("#totalPNM").html(data.totalPNM);
+												*/
+
+												if(data.totalNDM>=0)
+													$("#totalNDM").html("<span class='text-success'>" + data.totalNDM + "</span>");
+												else
+													$("#totalNDM").html("<span class='text-danger'>" + data.totalNDM + "</span>");
+
+												if(data.totalNNM>=0)
+													$("#totalNNM").html("<span class='text-success'>" + data.totalNNM + "</span>");						
+												else
+													$("#totalNNM").html("<span class='text-danger'>" + data.totalNNM + "</span>");
+												
+												if(data.totalPDM>=0)
+													$("#totalPDM").html("<span class='text-success'>" + data.totalPDM + "</span>");						
+												else
+													$("#totalPDM").html("<span class='text-danger'>" + data.totalPDM + "</span>");
+
+												if(data.totalPNM>=0)
+													$("#totalPNM").html("<span class='text-success'>" + data.totalPNM + "</span>");						
+												else
+													$("#totalPNM").html("<span class='text-danger'>" + data.totalPNM + "</span>");
+
+
 											}
 										}
 									});
@@ -1638,10 +1679,34 @@
 												$("#totalPDA").html(data.totalPDA);
 												$("#totalPNA").html(data.totalPNA);
 
+												/*
 												$("#totalNDM").html(data.totalNDM);
 												$("#totalNNM").html(data.totalNNM);
 												$("#totalPDM").html(data.totalPDM);
-												$("#totalPNM").html(data.totalPNM);												
+												$("#totalPNM").html(data.totalPNM);
+												*/
+
+												if(data.totalNDM>=0)
+													$("#totalNDM").html("<span class='text-success'>" + data.totalNDM + "</span>");
+												else
+													$("#totalNDM").html("<span class='text-danger'>" + data.totalNDM + "</span>");
+
+												if(data.totalNNM>=0)
+													$("#totalNNM").html("<span class='text-success'>" + data.totalNNM + "</span>");						
+												else
+													$("#totalNNM").html("<span class='text-danger'>" + data.totalNNM + "</span>");
+												
+												if(data.totalPDM>=0)
+													$("#totalPDM").html("<span class='text-success'>" + data.totalPDM + "</span>");						
+												else
+													$("#totalPDM").html("<span class='text-danger'>" + data.totalPDM + "</span>");
+
+												if(data.totalPNM>=0)
+													$("#totalPNM").html("<span class='text-success'>" + data.totalPNM + "</span>");						
+												else
+													$("#totalPNM").html("<span class='text-danger'>" + data.totalPNM + "</span>");
+
+
 											}
 										}
 									});
