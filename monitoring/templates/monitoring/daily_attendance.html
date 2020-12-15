@@ -611,6 +611,8 @@
 							upd_flag = data.employee_list[i]["upd_flag"];
 							upd_gen = data.employee_list[i]["upd_gen"];
 							remark = data.employee_list[i]["remark"];
+
+							relief = data.employee_list[i]["relief"];
 							relief_id = data.employee_list[i]["relief_id"];
 
 							result += "    <tr>";							
@@ -626,7 +628,13 @@
 							result += "	     <td nowrap>" + shf_desc + "</td>";
 							result += "	     <td></td>";
 							result += "	     <td></td>";
-							result += "	     <td></td>";
+
+							//result += "	     <td>" + relief + "</td>";
+							if(relief)
+								result += "	     <td>X</td>";
+							else
+								result += "	     <td></td>";
+
 							result += "	     <td>" + relief_id + "</td>";
 							result += "	     <td></td>";
 							result += "	     <td class='text-center'>" + tel_man + "</td>";

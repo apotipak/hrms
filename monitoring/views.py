@@ -1582,9 +1582,12 @@ def ajax_get_attendance_information(request):
 			upd_date = row[45].strftime("%d/%m/%Y %H:%M")
 			upd_gen = "" if row[48] is None else row[48]
 			remark = "" if row[61] is None else row[61].strip("0").strip()
+
+			relief = 1 if row[22]==1 else 0
 			relief_id = "" if row[23]==0 else row[23]
 
-			print("relief_id = " + str(row[23]))
+			#print("relief = " + str(relief))
+			#print("relief_id = " + str(relief_id))
 
 			record = {
 				"emp_fname_th": row[0].strip(),
@@ -1609,7 +1612,7 @@ def ajax_get_attendance_information(request):
 				"sch_rank": row[19],
 				"prd_id": row[20],
 				"absent": row[21],
-				"relief": row[22],
+				"relief": relief,
 				"relief_id": relief_id,
 				"tel_man": tel_man,
 				"tel_time": tel_time,
