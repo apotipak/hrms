@@ -610,7 +610,8 @@
 							upd_by = data.employee_list[i]["upd_by"];
 							upd_flag = data.employee_list[i]["upd_flag"];
 							upd_gen = data.employee_list[i]["upd_gen"];
-							remark= data.employee_list[i]["remark"];
+							remark = data.employee_list[i]["remark"];
+							relief_id = data.employee_list[i]["relief_id"];
 
 							result += "    <tr>";							
 							if(absent==1) {
@@ -626,7 +627,7 @@
 							result += "	     <td></td>";
 							result += "	     <td></td>";
 							result += "	     <td></td>";
-							result += "	     <td></td>";
+							result += "	     <td>" + relief_id + "</td>";
 							result += "	     <td></td>";
 							result += "	     <td class='text-center'>" + tel_man + "</td>";
 							result += "	     <td nowrap>" + tel_time + "</td>";

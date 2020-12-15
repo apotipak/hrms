@@ -1555,6 +1555,8 @@ def ajax_get_attendance_information(request):
 		sql += "from v_dlyplan "	
 		sql += "where cnt_id=%s and dly_date=%s and customer_flag<>'D' order by sch_shift,emp_id "
 
+		print("sql 3 = " + str(sql))
+
 		cursor.execute(sql, [cnt_id, attendance_date])
 		rows = cursor.fetchall()
 		
@@ -1579,7 +1581,10 @@ def ajax_get_attendance_information(request):
 
 			upd_date = row[45].strftime("%d/%m/%Y %H:%M")
 			upd_gen = "" if row[48] is None else row[48]
-			remark = "" if row[61] is None else row[61].strip("0").strip()			
+			remark = "" if row[61] is None else row[61].strip("0").strip()
+			relief_id = "" if row[23]==0 else row[23]
+
+			print("relief_id = " + str(row[23]))
 
 			record = {
 				"emp_fname_th": row[0].strip(),
@@ -1604,8 +1609,8 @@ def ajax_get_attendance_information(request):
 				"sch_rank": row[19],
 				"prd_id": row[20],
 				"absent": row[21],
-				"relieft": row[22],
-				"relieft_id": row[23],
+				"relief": row[22],
+				"relief_id": relief_id,
 				"tel_man": tel_man,
 				"tel_time": tel_time,
 				"tel_amt": row[26],
@@ -1922,7 +1927,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 
 			if(informedNumber >= contractNumber):
 				is_pass = False
-				message += "Rule 1 is failed : พนักงานที่แจ้งเวรมากกว่าที่มีอยู่ในสัญญา<br>"		
+				message += "พนักงานที่แจ้งเวรมากกว่าที่มีอยู่ในสัญญา: <b>" + str(cnt_id) + "</b>"
 			else:
 				is_pass = True
 				message += "Rule 1 is passed.<br>"
