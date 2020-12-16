@@ -1536,7 +1536,18 @@ def ajax_get_attendance_information(request):
 		record = {"shf_id": 999,"shf_desc": "999   # ANOTHER SITE #"}
 		schedule_list.append(record)
 
+		# amnaj
+		string_today_date = str(settings.TODAY_DATE.strftime("%d/%m/%Y"))
+		today_date = datetime.datetime.strptime(string_today_date, "%d/%m/%Y")
+		# print("today_date = " + str(today_date))
 
+		daily_attendance_date = datetime.datetime.strptime(request.POST.get('attendance_date'), '%d/%m/%Y').date()		
+		# print("daily_attendance_date = " + str(daily_attendance_date))			
+
+		if daily_attendance_date == today_date.date():
+			table = ", Customer_Flag from v_dlyplan where cnt_id=%s and dly_date=%s and customer_flag<>'D' order by sch_shift,emp_id"
+		else:
+			table = ", '' as Customer_Flag from v_hdlyplan where cnt_id=%s and dly_date=%s order by sch_shift,emp_id"
 
 		# Get employee schedule list (v_dlyplan)
 		sql = "select distinct "
@@ -1552,9 +1563,9 @@ def ajax_get_attendance_information(request):
 		sql += "upd_by, upd_flag, upd_gen, cus_name_th, late, "
 		sql += "sch_relieft, otm_amt, dof_amt, dof, TPA, "
 		sql += "late_full, DAY7, cnt_sale_amt, cus_name_en, cnt_active, "
-		sql += "Remark, ex_dof_amt, Customer_Flag "	
-		sql += "from v_dlyplan "	
-		sql += "where cnt_id=%s and dly_date=%s and customer_flag<>'D' order by sch_shift,emp_id "
+		sql += "Remark, ex_dof_amt "
+		sql += table + " "
+		# sql += "where cnt_id=%s and dly_date=%s and customer_flag<>'D' order by sch_shift,emp_id "
 
 		print("sql 3 = " + str(sql))
 
@@ -1589,6 +1600,8 @@ def ajax_get_attendance_information(request):
 
 			#print("relief = " + str(relief))
 			#print("relief_id = " + str(relief_id))
+
+			customer_flag = "" if row[63] is None else row[63]
 
 			record = {
 				"emp_fname_th": row[0].strip(),
@@ -1654,7 +1667,7 @@ def ajax_get_attendance_information(request):
 				"cnt_active": row[60],
 				"remark": remark,
 				"ex_dof_amt": row[62],
-				"Customer_Flag": row[63],
+				"Customer_Flag": customer_flag,
 			}
 			employee_list.append(record)
 
@@ -1926,7 +1939,6 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		sql += "where cnt_id=" + str(cnt_id) + " and sch_shift=" + str(shift_id) + " and absent=0 and dly_date='" + str(dly_date) + "'"
 		print(sql)
 
-		# amnaj
 		is_pass = False
 		# message = "TEST"
 
