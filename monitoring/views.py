@@ -20,6 +20,7 @@ from base64 import b64encode
 import datetime
 import django.db as db
 import json
+from datetime import timedelta
 
 
 @login_required(login_url='/accounts/login/')
@@ -1425,7 +1426,7 @@ def ajax_get_attendance_information(request):
 	if isGenerateDailyCreated(attendance_date):
 		attendance_date = request.POST.get('attendance_date')
 		attendance_date = datetime.datetime.strptime(attendance_date, '%d/%m/%Y')
-		print("attendance_date = " + str(attendance_date))
+		# print("attendance_date = " + str(attendance_date))
 		cus_id = request.POST.get('cus_id').lstrip("0")
 		cus_brn = request.POST.get('cus_brn')
 		cus_vol = request.POST.get('cus_vol')
@@ -1888,25 +1889,52 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 	# RULE 1 - Check manpower must not more than contract
 	# *****************************************************
 	shift_type = shift_name.partition("#")[2][0:2].strip() # shift_type will be D or N
-	
-	# amnaj
+		
 	# Check Manpower
 	sql = "select count(*) from v_dlyplan_shift where cnt_id='" + str(cnt_id) + "' and left(remark,2)='" + str(remark) + "' and shf_type=" + str(job_type) + " and absent=0 and dly_date='" + str(dly_date) + "'"
 	print("sql = " + str(sql))
-
 	cursor = connection.cursor()
 	cursor.execute(sql)
 	rows = cursor.fetchone()
 	cursor.close	
-
 	print("aManPower = " + str(rows[0]))
-
 	is_pass = True if rows[0]>0 else False
 
 	# print("absent_status = " + str(absent_status))
 	# print("shift_id = " + str(shift_id))
 
-	if absent_status==0: # กรณีพนักงานมาทำงาน
+
+	# กรณีพนักงานลาและมีการส่งคนใหม่เข้าเวรแทน
+	if absent_status==1 and relief_status==1: 
+				
+		today_date = settings.TODAY_DATE.strftime("%Y-%m-%y")
+		daily_attendance_date = dly_date.strftime("%Y-%m-%y")
+
+		print("today_date = " + str(today_date))
+		print("daily_attendance_date = " + str(daily_attendance_date))
+
+		# d1 = time.strptime(settings.TODAY_DATE, "%d/%m/%Y")
+		# d2 = time.strptime(dly_date, "%d/%m/%Y")
+
+		if daily_attendance_date == today_date:
+			sql = "select cnt_id, sch_shift from dly_plan "
+			message = "DLY_PLAN"
+		else:
+			sql = "select cnt_id, sch_shift from his_dly_plan "
+			message = "HIS_DLY_PLAN"
+
+		sql += "where cnt_id=" + str(cnt_id) + " and sch_shift=" + str(shift_id) + " and absent=0 and dly_date='" + str(dly_date) + "'"
+		print(sql)
+
+		# amnaj
+		is_pass = False
+		# message = "TEST"
+
+
+
+
+	# กรณีพนักงานมาทำงาน
+	if absent_status==0: 
 		if shift_id!="99":
 			# sql = "select cnt_id, sch_shift from dly_plan where cnt_id=" + str(cnt_id) + " and sch_shift=" + str(shift_id) + " and absent=" + str(absent_status) + " and dly_date='" + str(dly_date) + "'"
 			sql = "select count(*) from dly_plan where cnt_id=" + str(cnt_id) + " and sch_shift=" + str(shift_id) + " and absent=" + str(absent_status) + " and dly_date='" + str(dly_date) + "'"

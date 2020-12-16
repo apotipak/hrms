@@ -285,10 +285,11 @@
 
 						  <div class="form-row">
 							<div class="form-group col-md-2">
+								<input class="" id="id_relief_check" name="relief_check" type="checkbox">
 						      	<label for="id_relief_emp_id">Relief by</label>     
 								<div class="input-group">                            	
-						      		<input type="number" id="id_relief_emp_id" name="id_relief_emp_id" class="form-control form-control-sm" value="" />
-						      		<button id="emp_id_lookup_button" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url=""><i class="fas fa-search fa-sm"></i></button>
+						      		<input type="number" id="id_relief_emp_id" name="id_relief_emp_id" class="form-control form-control-sm" readonly="" />
+						      		<button id="relief_emp_id_lookup_button" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url="" disabled=""><i class="fas fa-search fa-sm"></i></button>
 						    	</div>
 							</div>
 
@@ -1076,7 +1077,7 @@
 
 
     $(document).on('click', '#id_absent_check', function(e) {
-        
+    	//alert("click absent");
     });
 
     $(document).on('click', '#id_late_check', function(e) {
@@ -1085,6 +1086,40 @@
 
     $(document).on('click', '#id_phone_check', function(e) {
         
+    });
+
+    //amnaj
+    $(document).on('click', '#id_relief_check', function(e) {
+    	if($("#id_relief_check").is(":checked")) {    		
+    		relief_status = 1;
+
+    		$("#id_relief_emp_id").attr("disabled", false);
+    		$("#id_relief_emp_id").attr("readonly", false);
+
+    		$("#relief_emp_id_lookup_button").attr("disabled", false);
+
+    		//alert("check");
+    	}
+    	else {
+    		//alert("uncheck");
+    		relief_status = 0;
+
+    		$("#id_relief_emp_id").attr("disabled", true);
+    		$("#id_relief_emp_id").attr("readonly", false);
+    		$("#relief_emp_id_lookup_button").attr("disabled", true);
+
+    		$("#id_relief_emp_id").val("");
+    		$("#id_relief_emp_fullname_th").val("");
+    		$("#id_relief_emp_rank").val("");
+    		$("#id_relief_emp_dept").val("");
+    		$("#id_relief_emp_join_date").val("");
+    		$("#id_relief_emp_term_date").val("");
+    		$("#id_relief_emp_status").val("");
+    	}
+
+    	//alert("click relief");
+    	//$("#id_absent_check").prop("checked", true);
+
     });
 
     function clearEmployeeListTable() {
@@ -1695,7 +1730,6 @@
     	var emp_fullname_th = $('#id_emp_fullname_th').val();
 
     	//console.log(cus_id+","+cus_brn+","+cus_vol+","+emp_id+","+shift_option+","+dly_date)			
-    	//amnaj
     	var cnt_id = cus_id + cus_brn + cus_vol
 
 		$.confirm({
