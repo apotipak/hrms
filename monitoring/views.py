@@ -1890,13 +1890,17 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 	return is_pass, message
 
 
-def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM):
+def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM):
 	is_pass = True
 	message = ""	
 
 	# Server side check
 	# TODO: shift_id must be in cus_service
 
+	# ป้องกันความผิดพลาดของการคีย์ค่า spare zone
+	checkNoSpare = False
+	if absent_status==0 and late_status==0 and late_status==0 and ot_status==0 and phone_status==0:
+		checkNoSpare = True
 
 	# *****************************************************
 	# RULE 1 - Check manpower must not more than contract
@@ -1911,14 +1915,14 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 	rows = cursor.fetchone()
 	cursor.close	
 	print("aManPower = " + str(rows[0]))
-	is_pass = True if rows[0]>0 else False
-
+	is_pass = True if rows[0]>=0 else False
+	print("Rule 1 is passed." if is_pass else "Rule 1 is failed.")
 	# print("absent_status = " + str(absent_status))
 	# print("shift_id = " + str(shift_id))
-
+     
 
 	# กรณีพนักงานลาและมีการส่งคนใหม่เข้าเวรแทน
-	if absent_status==1 and relief_status==1: 
+	if absent_status==1 and relief_status==1:
 				
 		today_date = settings.TODAY_DATE.strftime("%Y-%m-%y")
 		daily_attendance_date = dly_date.strftime("%Y-%m-%y")
@@ -1943,6 +1947,12 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		# message = "TEST"
 
 
+
+
+	if phone_status==0:
+		if late_status==0:
+			if absent_status==0:
+				print("TODO")
 
 
 	# กรณีพนักงานมาทำงาน
@@ -2224,6 +2234,9 @@ def ajax_save_daily_attendance(request):
 	late_status = int(request.GET.get('late_status'))
 	phone_status = int(request.GET.get('phone_status'))
 	relief_status = int(request.GET.get('relief_status'))
+
+	ot_status = 0
+
 	job_type = request.GET.get('job_type_option')
 	remark = request.GET.get('remark')
 	totalNDP = int(request.GET.get('totalNDP'))
@@ -2254,7 +2267,7 @@ def ajax_save_daily_attendance(request):
 
 	if AEdly == 0: # EDIT MODE
 		print("Edit")		
-		is_edit_record_success, message = editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM)
+		is_edit_record_success, message = editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM)
 		if is_edit_record_success:
 			success_status = True
 			title = "Success"
