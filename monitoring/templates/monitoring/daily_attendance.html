@@ -1042,7 +1042,7 @@
 
 
 
-	$('#id_dly_date').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true}).datepicker("setDate", new Date());
+	$('#id_dly_date').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", new Date());
 	
 	$("input:radio[name='searchOptions']").change(function(){
 		var _val = $(this).val();
