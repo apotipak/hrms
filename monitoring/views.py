@@ -1433,15 +1433,15 @@ def ajax_get_attendance_information(request):
 				
 		# Get Contract ID
 		cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)		
-		print("cnt_id = " + str(cnt_id))
+		# print("cnt_id = " + str(cnt_id))
 
 		# Get Customer No
 		cus_no = cus_id + cus_brn.zfill(3)
-		print("cus_no = " + str(cus_no))
+		# print("cus_no = " + str(cus_no))
 
 		# Get current date
 		curDate = attendance_date
-		print("Current date = " + str(curDate))
+		# print("Current date = " + str(curDate))
 
 		# Check if daily attend is a public holiday
 		# select hol_date from t_holiday where hol_date=curDate
@@ -1453,7 +1453,7 @@ def ajax_get_attendance_information(request):
 
 		# Get Day of Week
 		dayOfWeek = curDate.weekday()
-		print("Day of week = " + str(dayOfWeek))
+		# print("Day of week = " + str(dayOfWeek))
 
 
 		# Provide contract service list dropdown
@@ -1480,10 +1480,10 @@ def ajax_get_attendance_information(request):
 					totalNNP = srv_num_temp
 					totalPNP = srv_pub_temp
 		
-		print("totalNDP=" + str(totalNDP))
-		print("totalNNP=" + str(totalNNP))
-		print("totalPDP=" + str(totalPDP))
-		print("totalPNP=" + str(totalPNP))
+		# print("totalNDP=" + str(totalNDP))
+		# print("totalNNP=" + str(totalNNP))
+		# print("totalPDP=" + str(totalPDP))
+		# print("totalPNP=" + str(totalPNP))
 
 
 
@@ -1497,7 +1497,7 @@ def ajax_get_attendance_information(request):
 			for index in range(len(rows)):				
 				shf_type = rows[index][2]
 				absent = rows[index][21]
-				print("shf_type = " + str(shf_type))
+				# print("shf_type = " + str(shf_type))
 				if shf_type=='D':
 					if absent==0:
 						totalNDA = totalNDA + 1
@@ -1567,13 +1567,13 @@ def ajax_get_attendance_information(request):
 		sql += table + " "
 		# sql += "where cnt_id=%s and dly_date=%s and customer_flag<>'D' order by sch_shift,emp_id "
 
-		print("sql 3 = " + str(sql))
+		# print("sql 3 = " + str(sql))
 
 		cursor.execute(sql, [cnt_id, attendance_date])
 		rows = cursor.fetchall()
 		
 		for row in rows:
-			print(row[6])
+			# print(row[6])
 			if(row[6]):
 				absent=1
 			else:
@@ -1674,14 +1674,14 @@ def ajax_get_attendance_information(request):
 		try:
 			dlyplan = DlyPlan.objects.filter(cnt_id=cnt_id).all()
 			is_found = True
-			print(1)
+			# print(1)
 		except CusContract.DoesNotExist:
 			is_found = False
-			print(2)
+			# print(2)
 
 		message = ""
 
-		print("is_found = " + str(is_found))
+		# print("is_found = " + str(is_found))
 		cursor.close
 	else:
 		is_found = False
@@ -1891,6 +1891,88 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 
 
 def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM):
+	# amnaj
+	is_pass = False
+	message = ""
+
+	string_today_date = str(settings.TODAY_DATE.strftime("%d/%m/%Y"))
+	today_date = datetime.datetime.strptime(string_today_date, "%d/%m/%Y")
+	
+	# Check #1
+	checkNoSpare = False
+	if absent_status==0 and late_status==0 and late_status==0 and ot_status==0 and phone_status==0:
+		checkNoSpare = True
+	is_pass = True
+	message += "Check #1 is passed.<br>" if is_pass else "Check #1 is failed.<br>"
+	# print(message)
+
+	# Check #2 - check shift not empty	
+	# skip
+	if is_pass:
+		is_pass = True
+		message += "Check #2 is passed.<br>" if is_pass else "Check #2 is failed.<br>"
+		# print(message)
+	
+
+	# Check #3 - check manpower
+	if is_pass:
+		sql = "select count(*) from v_dlyplan_shift where cnt_id='" + str(cnt_id) + "' and left(remark,2)='" + str(remark) + "' and shf_type=" + str(job_type) + " and absent=0 and dly_date='" + str(dly_date) + "'"
+		# print("sql = " + str(sql))
+		cursor = connection.cursor()
+		cursor.execute(sql)
+		rows = cursor.fetchone()
+		cursor.close	
+		# print("aManPower = " + str(rows[0]))
+		is_pass = True if rows[0]>=0 else False
+		message += "Check #3 is passed.<br>" if is_pass else "Check #3 is failed.</br>"
+		# print(message)
+
+
+	# Check #4 - 
+	if is_pass:
+		if phone_status==0:
+			if late_status==0:
+				if absent_status==1 and relief_status==1:
+					print("TODO check #4")
+		is_pass = True
+		message += "Check #4 is passed.<br>" if is_pass else "Check #4 is failed.</br>"
+
+
+	# Check #5 - ค่าโทราต้องมีค่ามากกว่า 0 บาท
+	if is_pass:
+		is_pass = True
+		message += "Check #5 is passed.<br>" if is_pass else "Check #5 is failed.</br>"
+
+
+	# Check #6 - กรณีพนักงานไม่ได้หยุดและต้องการแจ้งเวรให้ตรวจสอบจำนวนคนแจ้งเวรต้องไม่เกินจากที่จำนวนที่แจ้งในสัญญา
+	if is_pass:
+		if phone_status==0:
+			if late_status==0:
+				if absent_status==0:
+					if shift_id != "99":
+
+						if dly_date > today_date.date():
+							is_pass = False
+							message += "Check #6 is failed - Daily attendance date is greater than today date.</br>"
+						else:
+							is_pass = True
+
+						if is_pass:
+							if dly_date == today_date.date():
+								sql = "select cnt_id, sch_shift from dly_plan "
+
+							if dly_date < today_date.date():
+								sql = "select cnt_id, sch_shift from his_dly_plan "
+
+							message += "Check #6 is passed."
+
+						#print("SQL = " + str(sql))
+
+
+	return is_pass, message
+
+
+def editRecord_backup(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM):
 	is_pass = True
 	message = ""	
 
@@ -1957,7 +2039,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 
 	# กรณีพนักงานมาทำงาน
 	if absent_status==0: 
-		if shift_id!="99":
+		if shift_id!="99":			
 			# sql = "select cnt_id, sch_shift from dly_plan where cnt_id=" + str(cnt_id) + " and sch_shift=" + str(shift_id) + " and absent=" + str(absent_status) + " and dly_date='" + str(dly_date) + "'"
 			sql = "select count(*) from dly_plan where cnt_id=" + str(cnt_id) + " and sch_shift=" + str(shift_id) + " and absent=" + str(absent_status) + " and dly_date='" + str(dly_date) + "'"
 			# print("sql 1 = " + str(sql))
@@ -2187,7 +2269,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		sql += " and emp_id=" + str(emp_id)
 		sql += " and sch_shift=" + str(shift_id)
 
-		print(sql)
+		# print(sql)
 	
 		try:
 			with connection.cursor() as cursor:
@@ -2262,11 +2344,12 @@ def ajax_save_daily_attendance(request):
 	print(str(job_type) + "," + str(job_type) + "," + str(totalNDP) + "," + str(totalNDA) + "," + str(totalNDM) + "," + str(totalNNP) + "," + str(totalNNA) + "," + str(totalNNM))
 	print("------------------")	
 	'''
-	print("remark : " + str(remark))
+	
+	# print("remark : " + str(remark))
 
 
 	if AEdly == 0: # EDIT MODE
-		print("Edit")		
+		print("Edit Mode")		
 		is_edit_record_success, message = editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM)
 		if is_edit_record_success:
 			success_status = True
@@ -2278,7 +2361,7 @@ def ajax_save_daily_attendance(request):
 			type_status = "red"
 
 	elif AEdly == 1: # ADD MODE
-		print("Add")		
+		print("Add Mode")
 		is_add_record_success, message = addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM)
 		if is_add_record_success:
 			success_status = True
@@ -2289,13 +2372,13 @@ def ajax_save_daily_attendance(request):
 			title = "Error"
 			type_status = "red"	
 	elif AEdly == 2: # DELETE MODE
-		print("Delete")
+		print("Delete Mode")
 		success_status = True
 		title = "Success"
 		type_status = "green"
 		message = "TODO: Delete record"
 	else: # UNKNOWN MODE
-		print("Error!")
+		print("Error! unknown mode")
 		success_status = False
 		title = "Error"
 		type_status = "red"
