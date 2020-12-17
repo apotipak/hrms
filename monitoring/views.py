@@ -1536,7 +1536,6 @@ def ajax_get_attendance_information(request):
 		record = {"shf_id": 999,"shf_desc": "999   # ANOTHER SITE #"}
 		schedule_list.append(record)
 
-		# amnaj
 		string_today_date = str(settings.TODAY_DATE.strftime("%d/%m/%Y"))
 		today_date = datetime.datetime.strptime(string_today_date, "%d/%m/%Y")
 		# print("today_date = " + str(today_date))
@@ -1891,7 +1890,6 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 
 
 def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM):
-	# amnaj
 	is_pass = False
 	message = ""
 
@@ -1959,18 +1957,125 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 
 						if is_pass:
 							if dly_date == today_date.date():
-								sql = "select cnt_id, sch_shift from dly_plan "
+								sql = "select count(*) from dly_plan "
 
 							if dly_date < today_date.date():
-								sql = "select cnt_id, sch_shift from his_dly_plan "
+								sql = "select count(*) from his_dly_plan "
 
-							message += "Check #6 is passed."
+							sql += "where cnt_id=" + str(cnt_id) + " and sch_shift=" + str(shift_id) + " and absent=0 and dly_date='" + str(dly_date) + "'"
+							cursor = connection.cursor()
+							cursor.execute(sql)
+							rows = cursor.fetchone()
+							cursor.close	
+							informNo = rows[0] if rows[0]>0 else 0
+							# print("informNo = " + str(informNo))
 
-						#print("SQL = " + str(sql))
+							# get srv_qty
+							sql = "select cnt_id, srv_shif_id, sum(srv_qty) as qty from cus_service where srv_active=1 and cnt_id=" + str(cnt_id) + " and srv_shif_id=" + str(shift_id) + " group by cnt_id, srv_shif_id"
+							cursor = connection.cursor()
+							cursor.execute(sql)
+							rows = cursor.fetchone()
+							cursor.close
+							contractNo = rows[2]
+							# print("contractNo = " + str(contractNo))
 
+							if informNo >= contractNo:
+								is_pass = False
+								message += "Check #6 is failed - พนักงานที่แจ้งเวรมากกว่าที่มีอยู่ในสัญญา"
+							else:
+								is_pass = True
+								message += "Check #6 is passed."
+
+						# print("SQL = " + str(sql))
+
+	# Check #7 - check valid input
+	if is_pass:
+		is_pass, message = chkValidInput(2,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM)
+		
+		#is_pass = True
+		#message += "Check #7 is passed."
 
 	return is_pass, message
 
+
+def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM):
+	is_pass = False
+	message = ""
+
+	# Case 1
+	if check_type==1:
+		is_pass = False
+		message = "check_type = 1 is not implemented."
+
+	# Case 2
+	if check_type==2:
+		if emp_id=="" or emp_id is None:
+			is_pass = False
+			message = "กรุณาป้อนรหัสพนักงาน"
+		else:
+			is_pass = True
+			message = "Check #7 is passed."
+		
+		if is_pass:
+			if shift_id=="" or shift_id is None:
+				is_pass = False
+				message = "กรุณาป้อนกะการทำงานของพนักงาาน"
+			else:
+				is_pass = True
+				message = "Check #7 is passed."
+
+		if is_pass:
+			# เช็คห้ามคีย์รหัสที่ไม่มีสิทธ์ลงเวร
+			sql = "select count(*) from v_employee where emp_id=" + str(emp_id) + " and upd_flag<>'D' and sch_active=1 and emp_term_date is null"
+			cursor = connection.cursor()
+			cursor.execute(sql)
+			rows = cursor.fetchone()
+			cursor.close
+			count = rows[0]
+			is_pass = True if count==1 else False
+
+		if is_pass:						
+			# กรณีมีการเข้าเวรแทน
+			if absent_status==1 and relief_status==1:
+				if relief_id!="" and relief_id is not None:
+					sql = "select count(*) from v_employee where emp_id=" + str(relief_id) + " and upd_flag<>'D' and sch_active=1 and emp_term_date is null"
+					cursor = connection.cursor()
+					cursor.execute(sql)
+					rows = cursor.fetchone()
+					cursor.close
+					count = rows[0]
+					is_pass = True if count==1 else False
+
+		if is_pass:			
+			# amnaj
+			if phone_status==1:
+				if phone_amount==0 and phone_amount is None:
+					is_pass = False
+					message = "กรุณาป้อนค่าโทรศัพท์"
+				else:
+					is_pass = True
+
+			if is_pass:
+				if late_status==1 or ot_status==1:
+					print("TODO")
+
+		if is_pass:
+			print("TODO")
+			# ห้ามลงงานที่อื่นในกะเดียวกัน วันเดียวกัน
+			if phone_status==1:
+				if ot_status==1:
+					if late_status==1:
+						if absent_status==0:
+							sql = ""
+
+
+	# Case 3
+	if check_type==3:
+		is_pass = False
+		message = "check_type = 3 is not implemented."
+
+
+	return is_pass, message
 
 def editRecord_backup(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM):
 	is_pass = True
