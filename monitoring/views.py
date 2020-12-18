@@ -1474,6 +1474,37 @@ def ajax_get_attendance_information(request):
 	#getPriorityStatus = False
 	#gUSE,gADD,gEDIT,gDEL,gPREVIEW,gPRINT,gIM,gEX,gSALARY,gType,gOLD
 
+
+
+	# ตรวจสอบวันที่ Daily Attendance มากกว่าวันที่ปัจจุบัน	
+	today_date = convertStringToDate(settings.TODAY_DATE.strftime("%d/%m/%Y"))
+	daily_attendance_date = convertStringToDate(attendance_date)
+	if daily_attendance_date > today_date:
+		is_pass = False
+		message = "วันที่"
+		response = JsonResponse(data={
+		    "success": True,
+		    "is_found": False,
+		    "message": "วันที่ <b>Daily Attendance</b> มากกว่าวันที่ปัจจุบัน",
+		})		
+		response.status_code = 200
+		return response
+
+	# ตรวจสอบวันที่ Daily Attendance น้อยกว่าวันที่ปัจจุบัน	
+	'''
+	if daily_attendance_date < today_date:
+		is_pass = False
+		message = "วันที่"
+		response = JsonResponse(data={
+		    "success": True,
+		    "is_found": False,
+		    "message": "วันที่ <b>Daily Attendance</b> น้อยกว่าวันที่ปัจจุบัน",
+		})
+		response.status_code = 200
+		return response
+	'''
+	
+
 	# ตรวจสอบสิทธิ์การใช้งานจากระบบเก่า
 	usr_id = getUSR_ID(username)	
 	if usr_id is None:
@@ -1952,7 +1983,76 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 	return is_pass, message
 
 
-def editRecord_new(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM):
+
+def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM):
+	is_pass = False
+	message = ""
+
+	string_today_date = str(settings.TODAY_DATE.strftime("%d/%m/%Y"))
+	today_date = datetime.datetime.strptime(string_today_date, "%d/%m/%Y")
+		
+	# Flow 1 - Absent, Late, Phone status are not check	
+	shift_type = shift_name.partition("#")[2][0:2].strip() # shift_type will be D or N or O
+
+
+
+	# ******* Rule 1 - Check Manpower *****
+	# ********** START ***********
+	sql = "select count(*) from v_dlyplan_shift where cnt_id='" + str(cnt_id) + "' and left(remark,2)='" + str(remark) + "' and shf_type=" + str(job_type) + " and absent=0 and dly_date='" + str(dly_date) + "'"
+	cursor = connection.cursor()
+	cursor.execute(sql)
+	row = cursor.fetchone()
+	cursor.close		
+	if row is not None:
+		aManPower = row[0] if row[0] >= 0 else 0
+	else:
+		aManPower = 0
+	# ********** END ***********
+
+
+	# Check #4
+	# Not sure at this point, to be checked again
+	# ********** START ***********
+	if phone_status == 0:
+		if late_status == 0: 
+			if absent_status == 1 and relief_status == 1:
+				print("TODO")
+	# ********** END ***********
+
+
+	# Check #5 - ค่าโทรต้องมีค่ามากกว่า 0 บาท
+	# ********** START ***********
+	if phone_status == 1 and phone_amount <= 0:
+		is_pass = False
+		message = "ค่าโทรมีค่าเป็น 0 กรุณาตรวจสอบ"
+		return is_pass, message
+	# ********** END ***********
+
+
+	# Check #6 - กรณีไม่ได้ลาหยุดให้ตรวจสอบ No person not more than contract
+	print("shift_id = " + str(shift_id))
+	if late_status == 0:
+		if absent_status == 0:
+			if shift_id != 99:				
+				if dly_date == today_date.date():
+					sql = "select count(*) from dly_plan "
+
+				if dly_date < today_date.date():
+					sql = "select count(*) from his_dly_plan "
+
+				sql += "where cnt_id=" + str(cnt_id) + " and sch_shift=" + str(shift_id) + " and absent=0 and dly_date='" + str(dly_date) + "'"
+				cursor = connection.cursor()
+				cursor.execute(sql)
+				rows = cursor.fetchone()
+				cursor.close	
+				informNo = rows[0] if rows[0]>0 else 0
+				print("informNo = " + str(informNo))
+
+
+	return is_pass, message
+
+
+def editRecord_temp(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM):
 	is_pass = False
 	message = ""
 
@@ -2139,7 +2239,7 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 
 	return is_pass, message
 
-def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM):
+def editRecord_old(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM):
 	is_pass = True
 	message = ""	
 
@@ -2154,18 +2254,18 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 	# *****************************************************
 	# RULE 1 - Check manpower must not more than contract
 	# *****************************************************
-	shift_type = shift_name.partition("#")[2][0:2].strip() # shift_type will be D or N
+	shift_type = shift_name.partition("#")[2][0:2].strip() # shift_type will be D or N or O
 		
 	# Check Manpower
-	sql = "select count(*) from v_dlyplan_shift where cnt_id='" + str(cnt_id) + "' and left(remark,2)='" + str(remark) + "' and shf_type=" + str(job_type) + " and absent=0 and dly_date='" + str(dly_date) + "'"
+	# sql = "select count(*) from v_dlyplan_shift where cnt_id='" + str(cnt_id) + "' and left(remark,2)='" + str(remark) + "' and shf_type=" + str(job_type) + " and absent=0 and dly_date='" + str(dly_date) + "'"
 	print("sql = " + str(sql))
 	cursor = connection.cursor()
 	cursor.execute(sql)
 	rows = cursor.fetchone()
 	cursor.close	
-	print("aManPower = " + str(rows[0]))
+	# print("aManPower = " + str(rows[0]))
 	is_pass = True if rows[0]>=0 else False
-	print("Rule 1 is passed." if is_pass else "Rule 1 is failed.")
+	# print("Rule 1 is passed." if is_pass else "Rule 1 is failed.")
 	# print("absent_status = " + str(absent_status))
 	# print("shift_id = " + str(shift_id))
      
@@ -2460,6 +2560,7 @@ def ajax_save_daily_attendance(request):
 	print("***************************************")
 	print("FUNCTION: ajax_save_daily_attendance()")
 	print("***************************************")
+	print("___STATRT___")
 
 	# Initial values
 	AEdly = int(request.GET.get("AEdly"))
@@ -2468,7 +2569,11 @@ def ajax_save_daily_attendance(request):
 	# Get requested parameters
 	# dly_date = request.GET.get('dly_date')
 	# dly_date = datetime.datetime.strptime(request.GET.get('dly_date'), '%d/%m/%Y')
+	
 	dly_date = datetime.datetime.strptime(request.GET.get('dly_date'), '%d/%m/%Y').date()
+	# print("dly_date = " + str(dly_date))
+
+
 	cus_id = request.GET.get('cus_id')
 	cus_brn = request.GET.get('cus_brn')
 	cus_vol = request.GET.get('cus_vol')	
@@ -2559,6 +2664,9 @@ def ajax_save_daily_attendance(request):
 	})
 
 	response.status_code = 200
+
+	print("___END___")
+
 	return response
 
 

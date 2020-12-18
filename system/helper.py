@@ -1,4 +1,11 @@
 from django.db import connection
+import datetime
+
+
+def convertStringToDate(str_date):
+	date = datetime.datetime.strptime(str_date, "%d/%m/%Y")
+	return date
+
 
 def getUSR_ID(username):
 	
