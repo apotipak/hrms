@@ -1374,6 +1374,7 @@ def getPeriod(generated_date):
 	
 	return period
 
+
 @permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
 @login_required(login_url='/accounts/login/')
 def ajax_sp_generate_daily_attend_status(request):
@@ -1385,28 +1386,163 @@ def ajax_sp_generate_daily_attend_status(request):
 	return HttpResponse(json.dumps(data), content_type='application/json')
 
 
-def isGenerateDailyCreated(attendance_date):
+def isGenerateDailyCreated(attendance_date, cnt_id):
+	# Implement ChkValidInput Case 3
+	is_pass = False
+	error_message = ""
+
+	# Check if date_chk is created
 	attendance_date = datetime.datetime.strptime(attendance_date, '%d/%m/%Y')
+	sql = "select gen_chk, end_chk, pro_chk from t_date where date_chk='" + str(attendance_date) + "'"	
 	cursor = connection.cursor()	
-	cursor.execute("select count(*) from t_date where date_chk='" + str(attendance_date) + "'")	
-	tdate_count = cursor.fetchone()
-	if tdate_count[0] > 0:
-		return True
-	else:
-		return False
+	cursor.execute(sql)	
+	tdate = cursor.fetchall()
 	cursor.close()
+
+	if len(tdate) == 1:
+		print("no. of rows = " + str(len(tdate)))
+		print("gen_chk = " + str(tdate[0][0]))
+
+		gen_chk = 1 if tdate[0][0]==1 else 0
+		end_chk = 1 if tdate[0][1]==1 else 0
+		pro_chk = 1 if tdate[0][2]==1 else 0
+
+		is_pass = True
+	else:
+		is_pass = False
+		error_message = "ข้อมูลตารางเวรของวันที่ " + str(attendance_date) + " ยังไม่ได้สร้าง กรุณา Gen ข้อมูลก่อน"
+
+	# Check if day end (end_chk) is processed
+	if is_pass:				
+		if end_chk:
+			is_pass = False
+			error_message = "ข้อมูลวันนี้ถูก Day end ไปแล้ว ไม่สามารถเรียกดูข้อมูลย้อนหลังได้"			
+	
+	# Check customer contract status
+	if is_pass:
+		print("cnt_id = " + str(cnt_id))
+
+
+
+	return is_pass, error_message	
+
+
+def getGaray(gType):
+	gPos = gType
+	lAray = 0
+
+def getPriority(emp_id, form_name):
+	is_pass = False
+
+	getPriorityStatus = False
+	gUSE = False
+	gADD = False
+	gEDIT = False
+	gDEL = False
+	gPREVIEW = False
+	gPRINT = False
+	gIM = False
+	gEX = False
+	gSALARY = False
+	gType = "A"
+	gOLD = False
+	
+	# Get Module Name
+	sql = "select mod_id,mod_type,mod_fre,mod_th,mod_en,con_type,mod_grp,frm_name,rep_name1,rep_name,paper,mod_sql,mod_into,mod_where,mod_table from module where frm_name='" + form_name + "'"	
+	print(sql)
+	cursor = connection.cursor()	
+	cursor.execute(sql)	
+	module = cursor.fetchall()
+	cursor.close()
+	if len(module) == 1:
+		MDL = module[0][0]
+		gReport = module[0][9]
+		gReport1 = module[0][8]
+		is_pass = True
+		getPriorityStatus = True
+	else:
+		MDL = ""
+		gReport = ""
+		gReport1 = ""
+		getPriorityStatus = False
+		is_pass = False
+
+	# Get Policy
+	if is_pass:
+		sql = "select plc_id,ust_id,mod_id,plc_use,plc_add,plc_edit,plc_del,plc_preview,plc_print,plc_im,plc_ex,plc_salary,plc_type,plc_old,upd_date,upd_by,upd_flag,usr_id from policy where usr_id='" + str(emp_id) + "' and mod_id=" + str(MDL)
+		cursor = connection.cursor()	
+		cursor.execute(sql)	
+		policy = cursor.fetchall()
+		cursor.close()
+		if len(policy) == 1:
+			gUSE = policy[0][3]	#PLC_USE
+			gADD = policy[0][4]	#PLC_ADD
+			gEDIT = policy[0][5]	#PLC_EDIT
+			gDEL = policy[0][6]	#PLC_DEL
+			gPREVIEW = policy[0][7]	#PLC_PREVIEW
+			gPRINT = policy[0][8]	#PLC_PRINT
+			gIM = policy[0][9]	#PLC_IM
+			gEX = policy[0][10]	#PLC_EX
+			gSALARY = policy[0][11]	#PLC_SALARY
+			gType = policy[0][12] if policy[0][12] != "" else "A"	#PLC_TYPE
+			gOLD = True if policy[0][13] else False	#PLC_OLD
+			gGROUP = policy[0][1]	#UST_ID
+			gPERMIT = True if policy[0][1]=='SUV' else False
+			if not gPERMIT:
+				gPERMIT = True if policy[0][1]=='PSN' else False			
+
+			if gType != "":
+				print("TODO: GetGaray()")
+
+			getPrioity = True
+		else:
+			gUSE = False
+			gADD = False
+			gEDIT = False
+			gDEL = False
+			gPREVIEW = False
+			gPRINT = False
+			gIM = False
+			gEX = False
+			gSALARY = False
+			gType = "A"
+			gOLD = False
+			getPrioity = False
+
+	print("gType = " + str(gType))
+
+	return getPriorityStatus,gUSE,gADD,gEDIT,gDEL,gPREVIEW,gPRINT,gIM,gEX,gSALARY,gType,gOLD
 
 
 @permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
 @login_required(login_url='/accounts/login/')
 def ajax_get_attendance_information(request):
 
+	form_name = "frmD200"
+	username = request.user.username
+	if username=='900504':
+		user_id = 151
+	else:
+		user_id = 175
+
 	print("********************************************")
 	print("FUNCTION: ajax_get_attendance_information()")
 	print("********************************************")	
 	
 	attendance_date = request.POST.get('attendance_date')	
-	
+
+	cus_id = request.POST.get('cus_id').lstrip("0")
+	cus_brn = request.POST.get('cus_brn')
+	cus_vol = request.POST.get('cus_vol')
+			
+	# Get Contract ID
+	cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)		
+	# print("cnt_id = " + str(cnt_id))
+
+	# Get Customer No
+	cus_no = cus_id + cus_brn.zfill(3)
+	# print("cus_no = " + str(cus_no))
+
 	schedule_list = []
 	employee_list = []
 
@@ -1422,22 +1558,19 @@ def ajax_get_attendance_information(request):
 	totalNNM = 0
 	totalPDM = 0
 	totalPNM = 0
+	
+	getPriorityStatus,gUSE,gADD,gEDIT,gDEL,gPREVIEW,gPRINT,gIM,gEX,gSALARY,gType,gOLD = getPriority(user_id, form_name)
 
-	if isGenerateDailyCreated(attendance_date):
+	# getGaray(gType)
+	if gType != "":
+		getGaray(gType)
+
+
+
+	if isGenerateDailyCreated(attendance_date, cnt_id):
 		attendance_date = request.POST.get('attendance_date')
 		attendance_date = datetime.datetime.strptime(attendance_date, '%d/%m/%Y')
 		# print("attendance_date = " + str(attendance_date))
-		cus_id = request.POST.get('cus_id').lstrip("0")
-		cus_brn = request.POST.get('cus_brn')
-		cus_vol = request.POST.get('cus_vol')
-				
-		# Get Contract ID
-		cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)		
-		# print("cnt_id = " + str(cnt_id))
-
-		# Get Customer No
-		cus_no = cus_id + cus_brn.zfill(3)
-		# print("cus_no = " + str(cus_no))
 
 		# Get current date
 		curDate = attendance_date
