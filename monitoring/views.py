@@ -21,6 +21,7 @@ import datetime
 import django.db as db
 import json
 from datetime import timedelta
+from system.helper import getGoblin
 
 
 @login_required(login_url='/accounts/login/')
@@ -1386,14 +1387,18 @@ def ajax_sp_generate_daily_attend_status(request):
 	return HttpResponse(json.dumps(data), content_type='application/json')
 
 
+
+# amnaj
 def isGenerateDailyCreated(attendance_date, cnt_id):
+
 	# Implement ChkValidInput Case 3
 	is_pass = False
 	error_message = ""
 
 	# Check if date_chk is created
 	attendance_date = datetime.datetime.strptime(attendance_date, '%d/%m/%Y')
-	sql = "select gen_chk, end_chk, pro_chk from t_date where date_chk='" + str(attendance_date) + "'"	
+	sql = "select gen_chk, end_chk, pro_chk from t_date where date_chk='" + str(attendance_date) + "'"
+
 	cursor = connection.cursor()	
 	cursor.execute(sql)	
 	tdate = cursor.fetchall()
@@ -1409,8 +1414,8 @@ def isGenerateDailyCreated(attendance_date, cnt_id):
 
 		is_pass = True
 	else:
-		is_pass = False
-		error_message = "ข้อมูลตารางเวรของวันที่ " + str(attendance_date) + " ยังไม่ได้สร้าง กรุณา Gen ข้อมูลก่อน"
+		is_pass = False		
+		error_message = "ข้อมูลตารางเวรของวันที่ <b>" + str(attendance_date.strftime("%d/%m/%Y")) + "</b> ยังไม่ได้ Gen<br>กรุณา Gen ข้อมูลก่อน"
 
 	# Check if day end (end_chk) is processed
 	if is_pass:				
@@ -1420,9 +1425,10 @@ def isGenerateDailyCreated(attendance_date, cnt_id):
 	
 	# Check customer contract status
 	if is_pass:
-		print("cnt_id = " + str(cnt_id))
+		print("cnt_id... = " + str(cnt_id))
 
-
+	print("is_pass = " + str(is_pass))
+	print("error_message = " + str(error_message))
 
 	return is_pass, error_message	
 
@@ -1518,9 +1524,12 @@ def getPriority(emp_id, form_name):
 @login_required(login_url='/accounts/login/')
 def ajax_get_attendance_information(request):
 
+	# getGoblin
+	# print(getGoblin())
+
 	form_name = "frmD200"
 	username = request.user.username
-	if username=='900504':
+	if username == '900504':
 		user_id = 151
 	else:
 		user_id = 175
@@ -1529,7 +1538,7 @@ def ajax_get_attendance_information(request):
 	print("FUNCTION: ajax_get_attendance_information()")
 	print("********************************************")	
 	
-	attendance_date = request.POST.get('attendance_date')	
+	attendance_date = request.POST.get('attendance_date')
 
 	cus_id = request.POST.get('cus_id').lstrip("0")
 	cus_brn = request.POST.get('cus_brn')
@@ -1561,13 +1570,16 @@ def ajax_get_attendance_information(request):
 	
 	getPriorityStatus,gUSE,gADD,gEDIT,gDEL,gPREVIEW,gPRINT,gIM,gEX,gSALARY,gType,gOLD = getPriority(user_id, form_name)
 
+
+
+
 	# getGaray(gType)
 	if gType != "":
 		getGaray(gType)
 
+	is_pass, message = isGenerateDailyCreated(attendance_date, cnt_id)
 
-
-	if isGenerateDailyCreated(attendance_date, cnt_id):
+	if is_pass:
 		attendance_date = request.POST.get('attendance_date')
 		attendance_date = datetime.datetime.strptime(attendance_date, '%d/%m/%Y')
 		# print("attendance_date = " + str(attendance_date))
@@ -1817,8 +1829,9 @@ def ajax_get_attendance_information(request):
 		cursor.close
 	else:
 		is_found = False
-		message = ""
+		message = message
 
+	# amnaj
 	response = JsonResponse(data={
 	    "success": True,
 	    "is_found": is_found,
@@ -2022,7 +2035,7 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 	return is_pass, message
 
 
-def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM):
+def editRecord_new(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM):
 	is_pass = False
 	message = ""
 
@@ -2180,7 +2193,6 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 					is_pass = True if count==1 else False
 
 		if is_pass:			
-			# amnaj
 			if phone_status==1:
 				if phone_amount==0 and phone_amount is None:
 					is_pass = False
@@ -2210,7 +2222,7 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 
 	return is_pass, message
 
-def editRecord_backup(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM):
+def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM):
 	is_pass = True
 	message = ""	
 

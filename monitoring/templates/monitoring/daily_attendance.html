@@ -583,8 +583,8 @@
 
     /* ID_CUS_VOL */
     $(document).on('keypress', '#id_cus_vol', function(e) {
-      if(e.which == 13) { 
-      	
+      if(e.which == 13) {            
+
       	showLoading();
 
         e.preventDefault();
@@ -604,7 +604,7 @@
 		$.ajax({
 			url : "/monitoring/ajax/get_attendance_information/",
 			type : "POST",
-			data : {          
+			data : {
 		  		csrfmiddlewaretoken: '{{ csrf_token }}',
 		  		attendance_date: attendance_date,
 		  		cus_id: cus_id,
@@ -783,6 +783,21 @@
 						$("#totalPNM").html("<span class='text-danger'>" + data.totalPNM + "</span>");
 
 				} else {
+
+					error_message = data.message
+
+					$.alert({
+					    title: 'Error',
+					    type: 'red',
+					    content: error_message,
+					    animation: 'zoom',
+					    animationBounce: 1.5,
+					    closeIcon: false,
+					    boxWidth: '38%',
+					    useBootstrap: false,
+					});
+
+					/*
 					$.alert({
 					    title: 'Error',
 					    type: 'red',
@@ -792,7 +807,8 @@
 					    closeIcon: false,
 					    boxWidth: '38%',
 					    useBootstrap: false,
-					});					
+					});
+					*/				
 				}
 			}
 		});
