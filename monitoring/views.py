@@ -21,7 +21,7 @@ import datetime
 import django.db as db
 import json
 from datetime import timedelta
-from system.helper import getGoblin
+from system.helper import *
 
 
 @login_required(login_url='/accounts/login/')
@@ -1437,124 +1437,27 @@ def getGaray(gType):
 	gPos = gType
 	lAray = 0
 
-def getPriority(emp_id, form_name):
-	is_pass = False
-
-	getPriorityStatus = False
-	gUSE = False
-	gADD = False
-	gEDIT = False
-	gDEL = False
-	gPREVIEW = False
-	gPRINT = False
-	gIM = False
-	gEX = False
-	gSALARY = False
-	gType = "A"
-	gOLD = False
-	
-	# Get Module Name
-	sql = "select mod_id,mod_type,mod_fre,mod_th,mod_en,con_type,mod_grp,frm_name,rep_name1,rep_name,paper,mod_sql,mod_into,mod_where,mod_table from module where frm_name='" + form_name + "'"	
-	print(sql)
-	cursor = connection.cursor()	
-	cursor.execute(sql)	
-	module = cursor.fetchall()
-	cursor.close()
-	if len(module) == 1:
-		MDL = module[0][0]
-		gReport = module[0][9]
-		gReport1 = module[0][8]
-		is_pass = True
-		getPriorityStatus = True
-	else:
-		MDL = ""
-		gReport = ""
-		gReport1 = ""
-		getPriorityStatus = False
-		is_pass = False
-
-	# Get Policy
-	if is_pass:
-		sql = "select plc_id,ust_id,mod_id,plc_use,plc_add,plc_edit,plc_del,plc_preview,plc_print,plc_im,plc_ex,plc_salary,plc_type,plc_old,upd_date,upd_by,upd_flag,usr_id from policy where usr_id='" + str(emp_id) + "' and mod_id=" + str(MDL)
-		cursor = connection.cursor()	
-		cursor.execute(sql)	
-		policy = cursor.fetchall()
-		cursor.close()
-		if len(policy) == 1:
-			gUSE = policy[0][3]	#PLC_USE
-			gADD = policy[0][4]	#PLC_ADD
-			gEDIT = policy[0][5]	#PLC_EDIT
-			gDEL = policy[0][6]	#PLC_DEL
-			gPREVIEW = policy[0][7]	#PLC_PREVIEW
-			gPRINT = policy[0][8]	#PLC_PRINT
-			gIM = policy[0][9]	#PLC_IM
-			gEX = policy[0][10]	#PLC_EX
-			gSALARY = policy[0][11]	#PLC_SALARY
-			gType = policy[0][12] if policy[0][12] != "" else "A"	#PLC_TYPE
-			gOLD = True if policy[0][13] else False	#PLC_OLD
-			gGROUP = policy[0][1]	#UST_ID
-			gPERMIT = True if policy[0][1]=='SUV' else False
-			if not gPERMIT:
-				gPERMIT = True if policy[0][1]=='PSN' else False			
-
-			if gType != "":
-				print("TODO: GetGaray()")
-
-			getPrioity = True
-		else:
-			gUSE = False
-			gADD = False
-			gEDIT = False
-			gDEL = False
-			gPREVIEW = False
-			gPRINT = False
-			gIM = False
-			gEX = False
-			gSALARY = False
-			gType = "A"
-			gOLD = False
-			getPrioity = False
-
-	print("gType = " + str(gType))
-
-	return getPriorityStatus,gUSE,gADD,gEDIT,gDEL,gPREVIEW,gPRINT,gIM,gEX,gSALARY,gType,gOLD
-
 
 @permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
 @login_required(login_url='/accounts/login/')
 def ajax_get_attendance_information(request):
-
-	# getGoblin
-	# print(getGoblin())
-
-	form_name = "frmD200"
-	username = request.user.username
-	if username == '900504':
-		user_id = 151
-	else:
-		user_id = 175
-
 	print("********************************************")
 	print("FUNCTION: ajax_get_attendance_information()")
 	print("********************************************")	
-	
-	attendance_date = request.POST.get('attendance_date')
 
+	# กำหนดค่าเริ่มต้น
+	is_pass = False			# กำหนดให้เป็น False ไว้ก่อน
+	message = ""
+	form_name = "frmD200"	# ค่าได้มาจากชื่อฟอร์ม D200: Daily Attendance
+	username = request.user.username	# ชื่อผู้ล็อคอิน
+	attendance_date = request.POST.get('attendance_date')
 	cus_id = request.POST.get('cus_id').lstrip("0")
 	cus_brn = request.POST.get('cus_brn')
 	cus_vol = request.POST.get('cus_vol')
-			
-	# Get Contract ID
 	cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)		
-	# print("cnt_id = " + str(cnt_id))
-
-	# Get Customer No
-	cus_no = cus_id + cus_brn.zfill(3)
-	# print("cus_no = " + str(cus_no))
-
+	cus_no = cus_id + cus_brn.zfill(3)	
 	schedule_list = []
 	employee_list = []
-
 	totalNDP = 0
 	totalNNP = 0
 	totalPDP = 0
@@ -1567,11 +1470,25 @@ def ajax_get_attendance_information(request):
 	totalNNM = 0
 	totalPDM = 0
 	totalPNM = 0
+
+	#getPriorityStatus = False
+	#gUSE,gADD,gEDIT,gDEL,gPREVIEW,gPRINT,gIM,gEX,gSALARY,gType,gOLD
+
+	# ตรวจสอบสิทธิ์การใช้งานจากระบบเก่า
+	usr_id = getUSR_ID(username)	
+	if usr_id is None:
+		response = JsonResponse(data={
+		    "success": True,
+		    "is_found": False,
+		    "message": "ไม่พบสิทธ์การใช้งาน กรุณาติดต่อฝ่าย IT เพื่อตรวจสอบ",
+		})		
+		response.status_code = 200
+		return response	
+	else:
+		is_pass = True
+
 	
-	getPriorityStatus,gUSE,gADD,gEDIT,gDEL,gPREVIEW,gPRINT,gIM,gEX,gSALARY,gType,gOLD = getPriority(user_id, form_name)
-
-
-
+	getPriorityStatus,gUSE,gADD,gEDIT,gDEL,gPREVIEW,gPRINT,gIM,gEX,gSALARY,gType,gOLD = getPriority(usr_id, form_name)
 
 	# getGaray(gType)
 	if gType != "":
