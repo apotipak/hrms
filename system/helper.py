@@ -20,6 +20,9 @@ def getUSR_ID(username):
 	else:
 		usr_id = None
 	
+	print("username = " + str(username))
+	print('usr_id = ' + str(usr_id))
+	
 	return usr_id
 
 

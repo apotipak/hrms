@@ -1389,9 +1389,10 @@ def ajax_sp_generate_daily_attend_status(request):
 
 
 # amnaj
-def isGenerateDailyCreated(attendance_date, cnt_id):
+def isGenerateDailyCreated(attendance_date,cnt_id,getPriorityStatus,gUSE,gADD,gEDIT,gDEL,gPREVIEW,gPRINT,gIM,gEX,gSALARY,gType,gOLD):
 
 	# Implement ChkValidInput Case 3
+
 	is_pass = False
 	error_message = ""
 
@@ -1404,32 +1405,25 @@ def isGenerateDailyCreated(attendance_date, cnt_id):
 	tdate = cursor.fetchall()
 	cursor.close()
 
-	if len(tdate) == 1:
-		print("no. of rows = " + str(len(tdate)))
-		print("gen_chk = " + str(tdate[0][0]))
-
+	if len(tdate) <= 0:
+		is_pass = False
+		error_message = "ข้อมูลตารางเวรของวันที่ <b>" + str(attendance_date.strftime("%d/%m/%Y")) + "</b> ยังไม่ได้ Gen<br>กรุณา Gen ข้อมูลก่อน"
+		return is_pass, error_message		
+	else:
 		gen_chk = 1 if tdate[0][0]==1 else 0
 		end_chk = 1 if tdate[0][1]==1 else 0
 		pro_chk = 1 if tdate[0][2]==1 else 0
 
-		is_pass = True
-	else:
-		is_pass = False		
-		error_message = "ข้อมูลตารางเวรของวันที่ <b>" + str(attendance_date.strftime("%d/%m/%Y")) + "</b> ยังไม่ได้ Gen<br>กรุณา Gen ข้อมูลก่อน"
-
-	# Check if day end (end_chk) is processed
-	if is_pass:				
-		if end_chk:
-			is_pass = False
-			error_message = "ข้อมูลวันนี้ถูก Day end ไปแล้ว ไม่สามารถเรียกดูข้อมูลย้อนหลังได้"			
+		if end_chk == 1:
+			if gOLD==False:
+				is_pass = False
+				error_message = "ข้อมูลวันนี้ถูก Day end ไปแล้ว ไม่สามารถเรียกดูข้อมูลย้อนหลังได้"
+				return is_pass, error_message
+			else:
+				is_pass = True
+		else:
+			is_pass = True
 	
-	# Check customer contract status
-	if is_pass:
-		print("cnt_id... = " + str(cnt_id))
-
-	print("is_pass = " + str(is_pass))
-	print("error_message = " + str(error_message))
-
 	return is_pass, error_message	
 
 
@@ -1525,7 +1519,8 @@ def ajax_get_attendance_information(request):
 	if gType != "":
 		getGaray(gType)
 
-	is_pass, message = isGenerateDailyCreated(attendance_date, cnt_id)
+	#amnaj
+	is_pass, message = isGenerateDailyCreated(attendance_date,cnt_id,getPriorityStatus,gUSE,gADD,gEDIT,gDEL,gPREVIEW,gPRINT,gIM,gEX,gSALARY,gType,gOLD)
 
 	if is_pass:
 		attendance_date = request.POST.get('attendance_date')
@@ -1779,7 +1774,6 @@ def ajax_get_attendance_information(request):
 		is_found = False
 		message = message
 
-	# amnaj
 	response = JsonResponse(data={
 	    "success": True,
 	    "is_found": is_found,
@@ -2041,13 +2035,29 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 					sql = "select count(*) from his_dly_plan "
 
 				sql += "where cnt_id=" + str(cnt_id) + " and sch_shift=" + str(shift_id) + " and absent=0 and dly_date='" + str(dly_date) + "'"
+				print("sql = " + str(sql))
+
 				cursor = connection.cursor()
 				cursor.execute(sql)
 				rows = cursor.fetchone()
 				cursor.close	
 				informNo = rows[0] if rows[0]>0 else 0
-				print("informNo = " + str(informNo))
 
+				# get srv_qty
+				sql = "select cnt_id, srv_shif_id, sum(srv_qty) as qty from cus_service where srv_active=1 and cnt_id=" + str(cnt_id) + " and srv_shif_id=" + str(shift_id) + " group by cnt_id, srv_shif_id"
+				cursor = connection.cursor()
+				cursor.execute(sql)
+				rows = cursor.fetchone()
+				cursor.close
+				srv_qty = rows[2]
+
+				if informNo >= srv_qty:
+					is_pass = False					
+					message = "Check #6 is failed - พนักงานที่แจ้งเวรมากกว่าที่มีอยู่ในสัญญา"
+					return is_pass, message
+				else:
+					is_pass = True
+					message = "Check #6 is passed."
 
 	return is_pass, message
 
