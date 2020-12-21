@@ -2287,7 +2287,7 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 					# เช็คว่าพนักงานลาออกหรือไม่
 					if employeeobj[2] is not None:
 						is_pass = False
-						message = "พนักงานคนนี้ไม่สามารถนำมาจัดตารางเวรได้เนื่องจากลาออกตั้งแต่วันที่ <b>" + str(employeeobj[0][2]) + "</b>"
+						message = "พนักงานคนนี้ไม่สามารถนำมาจัดตารางเวรได้เนื่องจาก" + " <u>ลาออก</u> " + "ตั้งแต่วันที่ <b>" + str(employeeobj[2].strftime("%d/%m/%Y")) + "</b>" #amnaj11						
 						return is_pass, message					
 
 					# หากไม่ติดเงื่อนไขข้างต้นให้ทำการอัพเดทข้อมูล
