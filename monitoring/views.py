@@ -1387,8 +1387,6 @@ def ajax_sp_generate_daily_attend_status(request):
 	return HttpResponse(json.dumps(data), content_type='application/json')
 
 
-
-# amnaj
 def isGenerateDailyCreated(attendance_date,cnt_id,getPriorityStatus,gUSE,gADD,gEDIT,gDEL,gPREVIEW,gPRINT,gIM,gEX,gSALARY,gType,gOLD):
 
 	# Implement ChkValidInput Case 3
@@ -1519,7 +1517,6 @@ def ajax_get_attendance_information(request):
 	if gType != "":
 		getGaray(gType)
 
-	#amnaj
 	is_pass, message = isGenerateDailyCreated(attendance_date,cnt_id,getPriorityStatus,gUSE,gADD,gEDIT,gDEL,gPREVIEW,gPRINT,gIM,gEX,gSALARY,gType,gOLD)
 
 	if is_pass:
@@ -2025,6 +2022,8 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 
 	# Check #6 - กรณีไม่ได้ลาหยุดให้ตรวจสอบ No person not more than contract
 	print("shift_id = " + str(shift_id))
+	print("absent_status = " + str(absent_status))
+
 	if late_status == 0:
 		if absent_status == 0:
 			if shift_id != 99:				
@@ -2051,13 +2050,27 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 				cursor.close
 				srv_qty = rows[2]
 
+				print("inform_no = " + str(informNo))
+				print("srv_qty = " + str(srv_qty))
+
 				if informNo >= srv_qty:
 					is_pass = False					
 					message = "Check #6 is failed - พนักงานที่แจ้งเวรมากกว่าที่มีอยู่ในสัญญา"
 					return is_pass, message
 				else:
-					is_pass = True
+					is_pass = True # แจ้งเวรยังไม่เกินจำนวนที่อยู่ในสัญญา
 					message = "Check #6 is passed."
+
+	# กรณีพนักงานยังแจ้งเวรไม่เกินจำนวนที่อยู่ในสัญญา
+	# amnaj
+	# Check #7 - checkValidInput()
+	is_pass, message = chkValidInput(2,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM)
+
+	if is_pass:
+		# Call SetVariable("DLY_PLAN")
+		print("Save record")
+		
+
 
 	return is_pass, message
 
@@ -2154,19 +2167,18 @@ def editRecord_temp(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_d
 
 							if informNo >= contractNo:
 								is_pass = False
-								message += "Check #6 is failed - พนักงานที่แจ้งเวรมากกว่าที่มีอยู่ในสัญญา"
+								message += "พนักงานที่แจ้งเวรมากกว่าที่มีอยู่ในสัญญา"
+								return is_pass, message
 							else:
-								is_pass = True
-								message += "Check #6 is passed."
-
-						# print("SQL = " + str(sql))
+								is_pass = True								
+						
 
 	# Check #7 - check valid input
-	if is_pass:
-		is_pass, message = chkValidInput(2,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM)
+	is_pass, message = chkValidInput(2,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM)
+
 		
-		#is_pass = True
-		#message += "Check #7 is passed."
+	#is_pass = True
+	#message += "Check #7 is passed."
 
 	return is_pass, message
 
@@ -2179,45 +2191,48 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 	if check_type==1:
 		is_pass = False
 		message = "check_type = 1 is not implemented."
+		return is_pass, message
 
 	# Case 2
 	if check_type==2:
+
 		if emp_id=="" or emp_id is None:
 			is_pass = False
 			message = "กรุณาป้อนรหัสพนักงาน"
+			return is_pass, message
+		
+		if shift_id=="" or shift_id is None:
+			is_pass = False
+			message = "กรุณาป้อนกะการทำงานของพนักงาาน"
+			return is_pass, message
+
+		# เช็คห้ามคีย์รหัสที่ไม่มีสิทธ์ลงเวร
+		sql = "select count(*) from v_employee where emp_id=" + str(emp_id) + " and upd_flag<>'D' and sch_active=1 and emp_term_date is null"
+		cursor = connection.cursor()
+		cursor.execute(sql)
+		rows = cursor.fetchone()
+		cursor.close
+		count = rows[0]
+		if count <= 0:
+			is_pass = False
+			message = "พนักงานคนนี้ไม่สามารถนำมาจัดตารางเวรได้เนื่องจากรหัสพนักงานไม่มีอยู่ในระบบ"
+			return is_pass, message
 		else:
 			is_pass = True
-			message = "Check #7 is passed."
+			message = "TEST 1 2 3"
+			return is_pass, message
 		
-		if is_pass:
-			if shift_id=="" or shift_id is None:
-				is_pass = False
-				message = "กรุณาป้อนกะการทำงานของพนักงาาน"
-			else:
-				is_pass = True
-				message = "Check #7 is passed."
-
-		if is_pass:
-			# เช็คห้ามคีย์รหัสที่ไม่มีสิทธ์ลงเวร
-			sql = "select count(*) from v_employee where emp_id=" + str(emp_id) + " and upd_flag<>'D' and sch_active=1 and emp_term_date is null"
-			cursor = connection.cursor()
-			cursor.execute(sql)
-			rows = cursor.fetchone()
-			cursor.close
-			count = rows[0]
-			is_pass = True if count==1 else False
-
-		if is_pass:						
-			# กรณีมีการเข้าเวรแทน
-			if absent_status==1 and relief_status==1:
-				if relief_id!="" and relief_id is not None:
-					sql = "select count(*) from v_employee where emp_id=" + str(relief_id) + " and upd_flag<>'D' and sch_active=1 and emp_term_date is null"
-					cursor = connection.cursor()
-					cursor.execute(sql)
-					rows = cursor.fetchone()
-					cursor.close
-					count = rows[0]
-					is_pass = True if count==1 else False
+		'''				
+		# เช็คกรณีมีการเข้าเวรแทน
+		if absent_status==1 and relief_status==1:
+			if relief_id!="" and relief_id is not None:
+				sql = "select count(*) from v_employee where emp_id=" + str(relief_id) + " and upd_flag<>'D' and sch_active=1 and emp_term_date is null"
+				cursor = connection.cursor()
+				cursor.execute(sql)
+				rows = cursor.fetchone()
+				cursor.close
+				count = rows[0]
+				is_pass = True if count==1 else False
 
 		if is_pass:			
 			if phone_status==1:
@@ -2239,6 +2254,7 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 					if late_status==1:
 						if absent_status==0:
 							sql = ""
+		'''
 
 
 	# Case 3
