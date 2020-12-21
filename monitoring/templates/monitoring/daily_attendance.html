@@ -1405,8 +1405,6 @@
 					$('#id_relief_emp_id').focus();
 					return false;    			
 	    		}	
-    		} else {
-
     		}
     	} else {
 		  	$(document).Toasts('create', {
@@ -1516,9 +1514,6 @@
 
 		showLoading();
 
-
-		//alert(relief_status + ", " + relief_emp_id);
-
 		$.ajax({
 	    	url : "/monitoring/ajax/get_employee",
 	    	type : "GET",
@@ -1558,8 +1553,8 @@
 	    			$("#delete_button").attr("disabled", true);
 
 	    	
+	    			//alert("TODO - check if employee is available.");
 
-	    			//alert("TODO - check if employee is available.");		
 					$.ajax({
 				    	url : "/monitoring/ajax/save_daily_attendance",
 				    	type : "GET",

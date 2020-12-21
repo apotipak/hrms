@@ -1082,8 +1082,10 @@ def ajax_get_employee(request):
 	cus_id = request.GET.get('cus_id')
 	cus_brn = request.GET.get('cus_brn')
 	cus_vol = request.GET.get('cus_vol')
+
 	relief_status = request.GET.get('relief_status')
 	relief_emp_id = request.GET.get('relief_emp_id')	
+	
 	cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
 	employee_item = []
 
@@ -1091,8 +1093,9 @@ def ajax_get_employee(request):
 	print("__relief_status = " + str(relief_status))
 	print("__relief_emp_id = " + str(relief_emp_id))
 
+	if relief_status==1:
+		print("______________relief_status = 1")
 
-	if relief_status=="1":
 		if relief_emp_id is not None:			
 			try:
 				with connection.cursor() as cursor:		
@@ -2194,18 +2197,69 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 	# Check #7 - checkValidInput()
 	is_pass, message = chkValidInput(2,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM)
 
-	if is_pass:
-		
+	# if is_pass:		
 		# TODO: Call SetVariable("DLY_PLAN")
 
-		# if absent_status==1
+	if is_pass:
+		# setVariable()		
+		# dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,
+		# relief_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM
+		upd_date = str(datetime.datetime.now())[:-3]
+		sql = "update dly_plan set cnt_id=" + str(cnt_id) + ","		
+		sql += "sch_no=0,"
+		sql += "dept_id=" + str(emp_dept) + ","
+		sql += "sch_rank='" + str(emp_rank) + "',"
+		sql += "prd_id='D120121',"
+		sql += "absent=" + str(absent_status) + ","
+		sql += "late=" + str(late_status) + ","
+		sql += "late_full=0,"
+		sql += "relieft=" + str(relief_status) + ","
+		sql += "relieft_id=0,"
+		sql += "tel_man=0,"
+		sql += "tel_time=NULL,"
+		sql += "tel_amt=0,"
+		sql += "tel_paid=0,"
+		sql += "ot=0,"
+		sql += "ot_reason=0,"
+		sql += "ot_time_frm=NULL,"
+		sql += "ot_time_to=NULL,"
+		sql += "ot_hr_amt=0,"
+		sql += "ot_pay_amt=0,"
+		sql += "spare=0,"
+		sql += "wage_id=32,"
+		sql += "wage_no='32SOY',"
+		sql += "pay_type='',"
+		sql += "soc=0,"
+		sql += "pub=0,"
+		sql += "dof=0,"
+		sql += "day7=0,"
+		sql += "upd_date='" + str(upd_date) + "',"
+		sql += "upd_by='System',"
+		sql += "upd_flag='A',"
+		sql += "remark='" + str(job_type) + " " + str(remark) + "' "
+		sql += "where cnt_id=" + str(cnt_id)
+		sql += " and dly_date='" + str(dly_date) + "'"
+		sql += " and emp_id=" + str(emp_id)
+		sql += " and sch_shift=" + str(shift_id)
 
+		# print(sql)
+	
+		try:
+			with connection.cursor() as cursor:
+				cursor.execute(sql)
 
-		print("Save record")
-
-
+			is_pass = True
+			message = "Edit complete."
+		except db.OperationalError as e:
+			is_pass = False
+			message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+		except db.Error as e:
+			is_pass = False
+			message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
 
 	return is_pass, message
+	
+	# return is_pass, message
 
 
 def editRecord_temp(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM):
@@ -2223,6 +2277,8 @@ def editRecord_temp(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_d
 	message += "Check #1 is passed.<br>" if is_pass else "Check #1 is failed.<br>"
 	# print(message)
 
+
+	print("PASS CHECK #1")
 	# Check #2 - check shift not empty	
 	# skip
 	if is_pass:
@@ -2231,6 +2287,7 @@ def editRecord_temp(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_d
 		# print(message)
 	
 
+	print("PASS CHECK #2")
 	# Check #3 - check manpower
 	if is_pass:
 		sql = "select count(*) from v_dlyplan_shift where cnt_id='" + str(cnt_id) + "' and left(remark,2)='" + str(remark) + "' and shf_type=" + str(job_type) + " and absent=0 and dly_date='" + str(dly_date) + "'"
@@ -2245,6 +2302,7 @@ def editRecord_temp(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_d
 		# print(message)
 
 
+	print("PASS CHECK #3")
 	# Check #4 - 
 	if is_pass:
 		if phone_status==0:
@@ -2255,12 +2313,14 @@ def editRecord_temp(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_d
 		message += "Check #4 is passed.<br>" if is_pass else "Check #4 is failed.</br>"
 
 
+	print("PASS CHECK #4")
 	# Check #5 - ค่าโทราต้องมีค่ามากกว่า 0 บาท
 	if is_pass:
 		is_pass = True
 		message += "Check #5 is passed.<br>" if is_pass else "Check #5 is failed.</br>"
 
 
+	print("PASS CHECK #5")
 	# Check #6 - กรณีพนักงานไม่ได้หยุดและต้องการแจ้งเวรให้ตรวจสอบจำนวนคนแจ้งเวรต้องไม่เกินจากที่จำนวนที่แจ้งในสัญญา
 	if is_pass:
 		if phone_status==0:
@@ -2306,12 +2366,73 @@ def editRecord_temp(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_d
 								is_pass = True								
 						
 
-	# Check #7 - check valid input
-	is_pass, message = chkValidInput(2,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM)
+	print("PASS CHECK #6")
 
-		
-	#is_pass = True
-	#message += "Check #7 is passed."
+	# Check #7 - check valid input
+	is_pass, message = chkValidInput(2,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM)		
+	is_pass = True
+	message += "Ready to save record"
+
+	'''
+	if is_pass:
+		# setVariable()		
+		# dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,
+		# relief_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM
+		upd_date = str(datetime.datetime.now())[:-3]
+		sql = "update dly_plan set cnt_id=" + str(cnt_id) + ","		
+		sql += "sch_no=0,"
+		sql += "dept_id=" + str(emp_dept) + ","
+		sql += "sch_rank='" + str(emp_rank) + "',"
+		sql += "prd_id='D120121',"
+		sql += "absent=" + str(absent_status) + ","
+		sql += "late=" + str(late_status) + ","
+		sql += "late_full=0,"
+		sql += "relieft=" + str(relief_status) + ","
+		sql += "relieft_id=0,"
+		sql += "tel_man=0,"
+		sql += "tel_time=NULL,"
+		sql += "tel_amt=0,"
+		sql += "tel_paid=0,"
+		sql += "ot=0,"
+		sql += "ot_reason=0,"
+		sql += "ot_time_frm=NULL,"
+		sql += "ot_time_to=NULL,"
+		sql += "ot_hr_amt=0,"
+		sql += "ot_pay_amt=0,"
+		sql += "spare=0,"
+		sql += "wage_id=32,"
+		sql += "wage_no='32SOY',"
+		sql += "pay_type='',"
+		sql += "soc=0,"
+		sql += "pub=0,"
+		sql += "dof=0,"
+		sql += "day7=0,"
+		sql += "upd_date='" + str(upd_date) + "',"
+		sql += "upd_by='System',"
+		sql += "upd_flag='A',"
+		sql += "remark='" + str(job_type) + " " + str(remark) + "' "
+		sql += "where cnt_id=" + str(cnt_id)
+		sql += " and dly_date='" + str(dly_date) + "'"
+		sql += " and emp_id=" + str(emp_id)
+		sql += " and sch_shift=" + str(shift_id)
+
+		# print(sql)
+	
+		try:
+			with connection.cursor() as cursor:
+				cursor.execute(sql)
+
+			is_pass = True
+			message = "Edit complete."
+		except db.OperationalError as e:
+			is_pass = False
+			message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+		except db.Error as e:
+			is_pass = False
+			message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+
+	return is_pass, message
+	'''
 
 	return is_pass, message
 
