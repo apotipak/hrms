@@ -1092,7 +1092,7 @@ def ajax_get_employee(request):
 	print("__relief_emp_id = " + str(relief_emp_id))
 
 
-	if relief_status:
+	if relief_status=="1":
 		if relief_emp_id is not None:			
 			try:
 				with connection.cursor() as cursor:		
@@ -1198,6 +1198,9 @@ def ajax_get_employee(request):
 			response.status_code = 200
 			return response				
 	else:
+		# กรณีพนักงาานลาแบบไม่มีคนแทน
+		print("..........Leave without relief")	
+
 		try:
 			emp_fname_th = ""
 			emp_lname_th = ""

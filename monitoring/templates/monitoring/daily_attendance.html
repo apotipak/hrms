@@ -1405,6 +1405,8 @@
 					$('#id_relief_emp_id').focus();
 					return false;    			
 	    		}	
+    		} else {
+
     		}
     	} else {
 		  	$(document).Toasts('create', {
@@ -1513,6 +1515,9 @@
     	}
 
 		showLoading();
+
+
+		//alert(relief_status + ", " + relief_emp_id);
 
 		$.ajax({
 	    	url : "/monitoring/ajax/get_employee",
