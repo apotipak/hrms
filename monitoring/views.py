@@ -1107,17 +1107,39 @@ def ajax_get_employee(request):
 
 		try:
 			with connection.cursor() as cursor:		
-				cursor.execute("select emp_fname_th,emp_lname_th,emp_rank,emp_dept,emp_type,emp_join_date,emp_term_date,emp_status,sts_th from v_employee where upd_flag<>'D' and sch_active=1 and emp_id=%s",[emp_id])
+				cursor.execute("select emp_fname_th,emp_lname_th,emp_rank,emp_dept,emp_type,emp_join_date,emp_term_date,emp_status,sts_th from v_employee where emp_type='D1' and upd_flag<>'D' and sch_active=1 and emp_id=%s",[emp_id])
 				record = cursor.fetchone()
-				emp_fname_th = record[0]
-				emp_lname_th = record[1]
-				emp_rank = record[2]
-				emp_dept = record[3]
-				emp_type = record[4]
-				emp_join_date = "" if record[5] is None else record[5].strftime("%d/%m/%Y")
-				emp_term_date = "" if record[6] is None else record[6].strftime("%d/%m/%Y")
-				emp_status_id = record[7]
-				emp_status_th = record[8]				
+
+				if record is not None:
+					emp_fname_th = record[0]
+					emp_lname_th = record[1]
+					emp_rank = record[2]
+					emp_dept = record[3]
+					emp_type = record[4]
+					emp_join_date = "" if record[5] is None else record[5].strftime("%d/%m/%Y")
+					emp_term_date = "" if record[6] is None else record[6].strftime("%d/%m/%Y")
+					emp_status_id = record[7]
+					emp_status_th = record[8]
+				else:
+					response = JsonResponse(data={
+						"success": True,
+						"is_found": False,
+						"class": "bg-danger",
+						"message": "ไม่พบรหัสพนักงานนี้ในระบบ",
+						"emp_id": "",
+						"emp_fname_th": "",
+						"emp_lname_th": "",
+						"emp_join_date": "",
+						"emp_term_date": "",
+						"emp_rank": "",
+						"emp_dept": "",
+						"emp_type": "",
+						"emp_status_id": "",
+						"emp_status": "",
+						"employee_photo": "",
+					})
+					response.status_code = 200
+					return response						
 		except db.OperationalError as e:
 			message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
 		except db.Error as e:
@@ -1172,7 +1194,7 @@ def ajax_get_employee(request):
 			"success": True,
 			"is_found": False,
 			"class": "bg-danger",
-			"message": "Employee not found.",			
+			"message": "ไม่พบรหัสพนักงานนี้ในระบบ",
 			"emp_id": "",
 			"emp_fname_th": "",
 			"emp_lname_th": "",
@@ -1855,7 +1877,7 @@ def ajax_delete_employee(request):
 	return response
 
 
-def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM):
+def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,relief_id,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM):
 	is_pass = True
 	message = ""	
 
@@ -1975,7 +1997,7 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 
 
 
-def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM):
+def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,relief_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM):
 	is_pass = False
 	message = ""
 
@@ -2064,7 +2086,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 	# amnaj
 	# กรณีพนักงานยังแจ้งเวรไม่เกินจำนวนที่อยู่ในสัญญา
 	# Check #7 - checkValidInput()
-	is_pass, message = chkValidInput(2,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM)
+	is_pass, message = chkValidInput(2,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,relief_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM)
 
 	if is_pass:
 		
@@ -2188,7 +2210,8 @@ def editRecord_temp(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_d
 	return is_pass, message
 
 
-def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM):
+#amnaj
+def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,relief_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM):
 	is_pass = False
 	message = ""
 
@@ -2201,44 +2224,83 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 	# Case 2
 	if check_type==2:
 
+		# เช็ครหัสพนักงานต้องมีค่า
 		if emp_id=="" or emp_id is None:
 			is_pass = False
 			message = "กรุณาป้อนรหัสพนักงาน"
 			return is_pass, message
 		
+		# เช็คกะการทำงานต้องมีค่า
 		if shift_id=="" or shift_id is None:
 			is_pass = False
 			message = "กรุณาป้อนกะการทำงานของพนักงาาน"
 			return is_pass, message
 
+
 		# เช็คห้ามคีย์รหัสที่ไม่มีสิทธ์ลงเวร
-		sql = "select count(*) from v_employee where emp_id=" + str(emp_id) + " and upd_flag<>'D' and sch_active=1 and emp_term_date is null"
+		sql = "select emp_id,upd_flag,emp_term_date from v_employee where emp_id=" + str(emp_id)
 		cursor = connection.cursor()
 		cursor.execute(sql)
-		rows = cursor.fetchone()
+		employeeobj = cursor.fetchone()
 		cursor.close
-		count = rows[0]
-		if count <= 0:
+		if employeeobj is not None:
+
+			# เช็คว่าพนักงานถูกลบออกจากระบบไปแล้วหรือไม่
+			if employeeobj[1] == 'D':
+				is_pass = False
+				message = "พนักงานคนนี้ไม่สามารถนำมาจัดตารางเวรได้เนื่องจากพนักงานโดนลบจากระบบ"
+				return is_pass, message
+
+			# เช็คว่าพนักงานลาออกหรือไม่
+			if employeeobj[2] is not None:
+				is_pass = False
+				message = "พนักงานคนนี้ไม่สามารถนำมาจัดตารางเวรได้เนื่องจากลาออกตั้งแต่วันที่ <b>" + str(employeeobj[0][2]) + "</b>"
+				return is_pass, message
+
+			# หากไม่ติดเงื่อนไขข้างต้นให้ทำการอัพเดทข้อมูล
+			is_pass = True
+			message = "Pass"
+		else:
 			is_pass = False
 			message = "พนักงานคนนี้ไม่สามารถนำมาจัดตารางเวรได้เนื่องจากรหัสพนักงานไม่มีอยู่ในระบบ"
 			return is_pass, message
-		else:
-			is_pass = True
-			message = "TEST 1 2 3"
-			return is_pass, message
-		
-		'''				
+
+
 		# เช็คกรณีมีการเข้าเวรแทน
+		print("relief_id = " + str(relief_id))
 		if absent_status==1 and relief_status==1:
-			if relief_id!="" and relief_id is not None:
-				sql = "select count(*) from v_employee where emp_id=" + str(relief_id) + " and upd_flag<>'D' and sch_active=1 and emp_term_date is null"
+			if relief_id is not None:
+				
+
+				sql = "select emp_id,upd_flag,emp_term_date from v_employee where emp_id=" + str(relief_id)				
 				cursor = connection.cursor()
 				cursor.execute(sql)
-				rows = cursor.fetchone()
+				employeeobj = cursor.fetchone()
 				cursor.close
-				count = rows[0]
-				is_pass = True if count==1 else False
+				if employeeobj is not None:
+					# เช็คว่าพนักงานถูกลบออกจากระบบไปแล้วหรือไม่
+					if employeeobj[1] == 'D':
+						is_pass = False
+						message = "พนักงานคนนี้ไม่สามารถนำมาจัดตารางเวรได้เนื่องจากพนักงานโดนลบจากระบบ"
+						return is_pass, message
 
+					# เช็คว่าพนักงานลาออกหรือไม่
+					if employeeobj[2] is not None:
+						is_pass = False
+						message = "พนักงานคนนี้ไม่สามารถนำมาจัดตารางเวรได้เนื่องจากลาออกตั้งแต่วันที่ <b>" + str(employeeobj[0][2]) + "</b>"
+						return is_pass, message					
+
+					# หากไม่ติดเงื่อนไขข้างต้นให้ทำการอัพเดทข้อมูล
+					is_pass = True
+					message = "Pass - สามารถลงหน่วยงานแทนได้"
+			else:
+				is_pass = False
+				message = "พนักงานคนนี้ไม่สามารถนำมาจัดตารางเวรได้เนื่องจากรหัสพนักงานไม่มีอยู่ในระบบ"
+				return is_pass, message
+
+
+
+		'''
 		if is_pass:			
 			if phone_status==1:
 				if phone_amount==0 and phone_amount is None:
@@ -2619,6 +2681,7 @@ def ajax_save_daily_attendance(request):
 	late_status = int(request.GET.get('late_status'))
 	phone_status = int(request.GET.get('phone_status'))
 	relief_status = int(request.GET.get('relief_status'))
+	relief_id = request.GET.get('relief_id')
 
 	ot_status = 0
 
@@ -2637,6 +2700,9 @@ def ajax_save_daily_attendance(request):
 	totalPNA = int(request.GET.get('totalPNA'))
 	totalPNM = int(request.GET.get('totalPNM'))
 	
+	
+
+
 	'''
 	print("debug 1")
 	print("------------------")
@@ -2652,8 +2718,9 @@ def ajax_save_daily_attendance(request):
 
 
 	if AEdly == 0: # EDIT MODE
-		print("Edit Mode")		
-		is_edit_record_success, message = editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM)
+		print("Edit Mode")
+
+		is_edit_record_success, message = editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,relief_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM)
 		if is_edit_record_success:
 			success_status = True
 			title = "Success"
@@ -2665,7 +2732,7 @@ def ajax_save_daily_attendance(request):
 
 	elif AEdly == 1: # ADD MODE
 		print("Add Mode")
-		is_add_record_success, message = addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM)
+		is_add_record_success, message = addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,relief_id,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM)
 		if is_add_record_success:
 			success_status = True
 			title = "Success"

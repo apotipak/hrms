@@ -1349,6 +1349,9 @@
     	if($("#id_relief_check").is(":checked"))
     		relief_status = 1;
 
+    	var relief_id = $("#id_relief_emp_id").val();
+    	//alert(relief_id);
+
     	var job_type_option = $("#id_job_type_option").val();
     	var remark = $("#id_remark").val();    	
 
@@ -1462,6 +1465,7 @@
 				      		late_status: late_status,
 				      		phone_status: phone_status,
 				      		relief_status: relief_status,
+				      		relief_id: relief_id,
 				      		job_type_option: job_type_option,
 				      		remark: remark,
 				      		totalNDP: totalNDP,
