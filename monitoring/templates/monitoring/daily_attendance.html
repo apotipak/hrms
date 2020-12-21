@@ -334,15 +334,33 @@
 
 							<div class="form-group col-3">
 						      	<label for="id_sent_spare">Sent spare</label>     
-						      	<input type="number" id="id_sent_spare" name="sent_spare" class="form-control form-control-sm" />					    	
+						      	<input type="number" id="id_sent_spare" name="sent_spare" class="form-control form-control-sm" />
 							</div>
-							<div class="form-group col-9">
+							<div class="form-group col-3">
 						      	<label for="id_sent_spare">Shift</label>
 						        <select id="id_shift_option" class="form-control form-control-sm">
 								  <option value="99" selected>99   # DAY OFF ########</option>
 								  <option value="999">999   # ANOTHER SITE #</option>
 						        </select>					        					      	
 							</div>
+
+
+								<div class="form-group col-3">
+							      	<label for="id_call_time">Call Time</label>
+							      	<input type="number" id="id_call_time" name="call_time" class="form-control form-control-sm" />
+								</div>
+
+								<div class="form-group col-3">
+							      	<label for="id_call_amount_option">Amount</label>
+							        <select id="id_call_amount_option" class="form-control form-control-sm">
+									  <option value="0" selected>0 บาท</option>
+									  <option value="1">1 บาท</option>
+									  <option value="2">2 บาท</option>
+									  <option value="3">3 บาท</option>
+									  <option value="4">4 บาท</option>
+									  <option value="5">5 บาท</option>
+							        </select>					        					      	
+								</div>
 
 						  </div>
 					  </div>
@@ -468,13 +486,35 @@
 	});
 
 
+		
+		$("#id_late_check").hide();
+		$("#id_late_check").next("label").hide();
+		$("#id_phone_check").hide();
+		$("#id_phone_check").next("label").hide();
 
 
+	// amnaj
 	$("#id_absent_check").change(function() {
 	    if(this.checked) {
-	   		$("#relief_employee_section").show();      
+	   		$("#relief_employee_section").show();
+
+	   		$("#id_late_check").hide();
+	   		$("#id_late_check").next("label").hide();
+			//$("#id_late_check").attr("disabled", true);
+
+			$("#id_phone_check").hide();
+			$("#id_phone_check").next("label").hide();
+	 		
 	    } else {
 	    	$("#relief_employee_section").hide();
+
+	    	$("#id_late_check").show();
+	    	$("#id_late_check").next("label").show();
+	    	//$("#id_late_check").attr("disabled", false);
+
+	    	$("#id_phone_check").show();
+	    	$("#id_phone_check").next("label").show();
+ 			//$("#id_phone_check").attr("disabled", false);
 	    }
 	});
 
@@ -516,6 +556,7 @@
 		$("#id_remark").attr("disabled", true);
 
 		$("#relief_employee_section").hide();
+		$("#id_call_section").hide();
 
  	}
 
@@ -644,6 +685,7 @@
 					result += "      <th scope='col'>Relief</th>";
 					result += "      <th scope='col' nowrap>Rel. ID</th>";
 					result += "      <th scope='col'>Name</th>";
+					result += "      <th scope='col' class='d-none'>Tel Status</th>";
 					result += "      <th scope='col'>Tel</th>";
 					result += "      <th scope='col' nowrap>Call Time</th>";
 					result += "      <th scope='col' nowrap>Call Amt</th>";
@@ -667,6 +709,7 @@
 							sch_rank = data.employee_list[i]["sch_rank"];
 							shf_desc = data.employee_list[i]["shf_desc"];
 							absent = data.employee_list[i]["absent"];
+							tel_status = data.employee_list[i]["tel_status"];
 							tel_man = data.employee_list[i]["tel_man"];
 							tel_time = data.employee_list[i]["tel_time"];
 							tel_amt = data.employee_list[i]["tel_amt"];
@@ -704,6 +747,7 @@
 
 							result += "	     <td>" + relief_id + "</td>";
 							result += "	     <td></td>";
+							result += "	     <td class='text-center d-none'>" + tel_status + "</td>";
 							result += "	     <td class='text-center'>" + tel_man + "</td>";
 							result += "	     <td nowrap>" + tel_time + "</td>";
 							result += "	     <td>" + tel_amt + "</td>";
@@ -1137,7 +1181,6 @@
         
     });
 
-    //amnaj
     $(document).on('click', '#id_relief_check', function(e) {
     	if($("#id_relief_check").is(":checked")) {    		
     		relief_status = 1;
@@ -1247,6 +1290,8 @@
 		var upd_gen = $(this).find('td:eq(19)').text();
 		var remark = $(this).find('td:eq(20)').text(); 
 
+		var tel_status = $(this).find('td:eq(10)').text();		
+
 		$("#emp_id_lookup_button").attr("disabled", true);
 
 		$("#id_emp_fullname_th").val(emp_fullname_th);
@@ -1290,14 +1335,42 @@
 		if(absent=="x") {
 			$("#id_absent_check").prop("checked", true);
 			$("#relief_employee_section").show();
-			
+
+	   		$("#id_late_check").hide();
+	   		$("#id_late_check").next("label").hide();
+
 		} else {
 			$("#id_absent_check").prop("checked", false);
 			$("#relief_employee_section").hide();
+
+	    	$("#id_late_check").show();
+	    	$("#id_late_check").next("label").show();	    	
+
+	    	$("#id_phone_check").show();
+	    	$("#id_phone_check").next("label").show();			
+
+	   		if(tel_status==1) {
+	   			$("#id_phone_check").prop("checked", true);
+
+	   			//$("#id_call_section").show();
+	   			//$("#id_call_time").show();
+	   			$("#id_call_time").attr("disabled", false);
+	   			//$("#id_call_amount_option").show();
+	   			$("#id_call_amount_option").attr("disabled", false);
+
+	   		} else {
+	   			$("#id_phone_check").prop("checked", false);
+
+	   			//$("#id_call_section").hide();
+	   			//$("#id_call_time").hide();
+	   			$("#id_call_time").attr("disabled", true);
+	   			//$("#id_call_amount_option").hide();
+	   			$("#id_call_amount_option").attr("disabled", true);
+	   		}	    	
 		}
-		
+
 		shift_id =  parseInt(shf_desc.substring(0,4));
-		//console.log("shift_id = " + shift_id);
+		
 		$('#id_shift_option').val(shift_id);
 
 		if(shift_id==999 || shift_id==99) {			

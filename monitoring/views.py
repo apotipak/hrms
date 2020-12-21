@@ -1780,8 +1780,7 @@ def ajax_get_attendance_information(request):
 		sql += "late_full, DAY7, cnt_sale_amt, cus_name_en, cnt_active, "
 		sql += "Remark, ex_dof_amt "
 		sql += table + " "
-		# sql += "where cnt_id=%s and dly_date=%s and customer_flag<>'D' order by sch_shift,emp_id "
-
+		
 		# print("sql 3 = " + str(sql))
 
 		cursor.execute(sql, [cnt_id, attendance_date])
@@ -1795,16 +1794,24 @@ def ajax_get_attendance_information(request):
 				absent=0
 		
 			if row[24]==1:
-				# tel_man = "<span class='text-danger'><strong>X</strong></span>"
-				# tel_man = "<span class='text-success'><i class='fas fa-phone-volume'></i></span>"
+				tel_status = 1
 				tel_man = "<span class='text-success'><i class='fas fa-phone-alt'></i></span>"
+				tel_time = row[25].strftime("%d/%m/%Y %H:%M")
+				tel_amt = row[26] if row[26] > 0 else 0
+				tel_paid = 1 if row[27] else 0 
 			else:
+				tel_status = 0
 				tel_man = ""
-
+				tel_time = ""
+				tel_amt = 0
+				tel_paid = 0
+				
+			'''
 			if row[25] is not None:
 				tel_time = row[25].strftime("%d/%m/%Y %H:%M")
 			else:
 				tel_time = ""
+			'''
 
 			upd_date = row[45].strftime("%d/%m/%Y %H:%M")
 			upd_gen = "" if row[48] is None else row[48]
@@ -1843,10 +1850,11 @@ def ajax_get_attendance_information(request):
 				"absent": row[21],
 				"relief": relief,
 				"relief_id": relief_id,
+				"tel_status": tel_status,
 				"tel_man": tel_man,
 				"tel_time": tel_time,
-				"tel_amt": row[26],
-				"tel_paid": row[27],
+				"tel_amt": tel_amt,
+				"tel_paid": tel_paid,
 				"ot": row[28],
 				"ot_reason": row[29],
 				"ot_time_frm": row[30],
