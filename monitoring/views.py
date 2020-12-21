@@ -2187,6 +2187,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 				if informNo >= srv_qty:
 					is_pass = False					
 					message = "Check #6 is failed - พนักงานที่แจ้งเวรมากกว่าที่มีอยู่ในสัญญา"
+					message = "พนักงานที่แจ้งเวรมากกว่าที่มีอยู่ในสัญญา: <b>" + str(cnt_id) + "</b>"
 					return is_pass, message
 				else:
 					is_pass = True # แจ้งเวรยังไม่เกินจำนวนที่อยู่ในสัญญา
