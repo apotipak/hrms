@@ -1378,10 +1378,51 @@
     	var emp_dept = $("#id_emp_dept").val();
     	var shift_id = $("#id_shift_option").val();
     	var shift_name = $("#id_shift_option option:selected").text();    	
+    	var relief_emp_id = $("#id_relief_emp_id").val();
 
     	var absent_status = 0;
     	if($("#id_absent_check").is(":checked")) 
     		absent_status = 1;
+
+    	var relief_status = 0;
+    	if($("#id_relief_check").is(":checked")) 
+    		relief_status = 1;
+
+    	if(absent_status==1) {
+    		if(relief_status==1) {
+	    		if(relief_emp_id=="") {
+				  	$(document).Toasts('create', {
+				    	class: "bg-danger", 
+				    	title: "{% trans 'Error' %}",
+				    	subtitle: '',
+				    	autohide: true,
+				    	delay: 2000,		    	
+				    	body: "กรุณาเลือกพนักงานที่มาเข้าเวรแทน &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+				    	autoDismiss: true,
+				    	close: true,
+				    	autoremove: true,
+				  	});    			
+					$('#id_relief_emp_id').focus();
+					return false;    			
+	    		}	
+    		}
+    	} else {
+		  	$(document).Toasts('create', {
+		    	class: "bg-danger", 
+		    	title: "{% trans 'Error' %}",
+		    	subtitle: '',
+		    	autohide: true,
+		    	delay: 2000,
+		    	body: "กรุณาเลือกพนักงานที่ต้องการแจ้งเวร &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+		    	autoDismiss: true,
+		    	close: true,
+		    	autoremove: true,
+		  	});
+
+		  	$('#id_relief_emp_id').focus();
+			return false;    		
+    	}
+
 
     	var late_status = 0;
     	if($("#id_late_check").is(":checked"))
@@ -1724,7 +1765,7 @@
 												else
 													$("#totalPNM").html("<span class='text-danger'>" + data.totalPNM + "</span>");
 
-
+												$("#id_absent_check").prop("checked", false);
 											}
 										}
 									});
