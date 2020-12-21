@@ -958,6 +958,7 @@
 			cus_id = $('#id_cus_id').val();
 			cus_brn = $('#id_cus_brn').val();
 			cus_vol = $('#id_cus_vol').val();
+			emp_id = $('#id_emp_id').val();
 			relief_emp_id = $(this).val();
 			shift_id = $("#id_shift_option").val();
 
@@ -986,14 +987,33 @@
 			    	subtitle: '',
 			    	autohide: true,
 			    	delay: 2000,
-			    	body: "Please select Employee ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+			    	body: "กรุณาป้อนรหัสพนักงานลงเวรแทน&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
 			    	autoDismiss: true,
 			    	close: true,
 			    	autoremove: true,
 			  	});    		
+	    		
 	    		$("#id_relief_emp_id").focus();
+	    		return false;
+
 			} else {
 				
+				if(emp_id==relief_emp_id) {
+				  	$(document).Toasts('create', {
+				    	class: "bg-danger", 
+				    	title: "{% trans 'Error' %}",
+				    	subtitle: '',
+				    	autohide: true,
+				    	delay: 2000,
+				    	body: "เลือกรหัสพนักงานลงเวรแทนไม่ถูกต้อง&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+				    	autoDismiss: true,
+				    	close: true,
+				    	autoremove: true,
+				  	});    		
+		    		$("#id_relief_emp_id").focus();
+		    		return false;
+				}
+
 				showLoading();
 
 				$.ajax({
@@ -1181,7 +1201,13 @@
 
     // ClickRow
 	$(document).on('click', '#employee_list_table tbody tr', function(row, $el, field) {
+
+		$("#id_relief_check").prop("checked", false);
+		$('#id_relief_emp_id').val(null);
+		$('#id_relief_emp_id').attr("disabled", true);
+		$('#relief_emp_id_lookup_button').attr("disabled", true);
 		$("#id_add_new_record_status").val(0);
+		
 
 		$("#id_emp_id").attr("disabled", true);
 		$("#id_late_check").hide();
@@ -1246,6 +1272,7 @@
 		if(absent=="x") {
 			$("#id_absent_check").prop("checked", true);
 			$("#relief_employee_section").show();
+			
 		} else {
 			$("#id_absent_check").prop("checked", false);
 			$("#relief_employee_section").hide();
@@ -1280,6 +1307,7 @@
 			$("#id_remark").attr("disabled", false);
 			$("#id_remark").attr("readonly", false);
 		}
+		
 		
 	});
 
@@ -1345,12 +1373,31 @@
     	if($("#id_phone_check").is(":checked"))
     		phone_status =1;
 
-    	var relief_status = 0;
-    	if($("#id_relief_check").is(":checked"))
-    		relief_status = 1;
-
     	var relief_id = $("#id_relief_emp_id").val();
     	//alert(relief_id);
+
+    	var relief_status = 0;
+    	if($("#id_relief_check").is(":checked")) {
+    		
+    		relief_status = 1;
+
+    		if (emp_id == relief_id) {
+			  	$(document).Toasts('create', {
+			    	class: "bg-danger", 
+			    	title: "{% trans 'Error' %}",
+			    	subtitle: '',
+			    	autohide: true,
+			    	delay: 2000,
+			    	body: "เลือกรหัสพนักงานลงเวรแทนไม่ถูกต้อง&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+			    	autoDismiss: true,
+			    	close: true,
+			    	autoremove: true,
+			  	});
+
+			  	$('#id_relief_emp_id').focus();
+	    		return false;    			
+    		}
+    	}
 
     	var job_type_option = $("#id_job_type_option").val();
     	var remark = $("#id_remark").val();    	
