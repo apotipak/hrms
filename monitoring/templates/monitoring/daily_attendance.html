@@ -958,9 +958,16 @@
 			cus_id = $('#id_cus_id').val();
 			cus_brn = $('#id_cus_brn').val();
 			cus_vol = $('#id_cus_vol').val();
-			emp_id = $('#id_emp_id').val();
-			relief_emp_id = $(this).val();
+			emp_id = $('#id_emp_id').val();			
 			shift_id = $("#id_shift_option").val();
+
+	    	var relief_status = 0;
+	    	if($("#id_relief_check").is(":checked")) {	    		
+	    		relief_status = 1;
+	    		relief_emp_id = $(this).val();
+	    	} else {
+	    		relief_emp_id = null;
+	    	}
 
 			if(cus_id=="") {
 				alert("Please entet Customer ID.");
@@ -1021,12 +1028,13 @@
 			    	type : "GET",
 			    	data : {          
 			      		csrfmiddlewaretoken: '{{ csrf_token }}',
-			      		emp_id: relief_emp_id,
+			      		emp_id: emp_id,
 			      		shift_id: shift_id,
 			      		cus_id: cus_id,
 			      		cus_brn: cus_brn,
 			      		cus_vol: cus_vol,
-
+			      		relief_status: relief_status,
+			      		relief_emp_id: relief_emp_id
 			    	},
 			    	success: function(data) {
 						$("#id_relief_emp_name_th").val("");
@@ -1037,6 +1045,7 @@
 		    			$("#id_relief_emp_term_date").val("");
 			    	
 			    		if(data.is_found) {
+			    			alert("found");
 			    			$("#id_relief_emp_fullname_th").val(data.emp_fname_th.trim() + "  " + data.emp_lname_th.trim());
 							$("#id_relief_emp_rank").val(data.emp_rank);
 			    			$("#id_relief_emp_dept").val(data.emp_dept);
@@ -1060,7 +1069,7 @@
 						    	subtitle: '',
 						    	autohide: true,
 						    	delay: 2000,
-						    	body: "รหัสพนักงาน <b>" + relief_emp_id + "</b> ไม่มีในระบบ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+						    	body: data.message,
 						    	autoDismiss: true,
 						    	close: true,
 						    	autoremove: true,
@@ -1207,7 +1216,7 @@
 		$('#id_relief_emp_id').attr("disabled", true);
 		$('#relief_emp_id_lookup_button').attr("disabled", true);
 		$("#id_add_new_record_status").val(0);
-		
+
 
 		$("#id_emp_id").attr("disabled", true);
 		$("#id_late_check").hide();
@@ -1373,7 +1382,7 @@
     	if($("#id_phone_check").is(":checked"))
     		phone_status =1;
 
-    	var relief_id = $("#id_relief_emp_id").val();
+    	var relief_emp_id = $("#id_relief_emp_id").val();
     	//alert(relief_id);
 
     	var relief_status = 0;
@@ -1381,7 +1390,7 @@
     		
     		relief_status = 1;
 
-    		if (emp_id == relief_id) {
+    		if (emp_id == relief_emp_id) {
 			  	$(document).Toasts('create', {
 			    	class: "bg-danger", 
 			    	title: "{% trans 'Error' %}",
@@ -1397,7 +1406,10 @@
 			  	$('#id_relief_emp_id').focus();
 	    		return false;    			
     		}
+
     	}
+
+    	alert(relief_status);
 
     	var job_type_option = $("#id_job_type_option").val();
     	var remark = $("#id_remark").val();    	
@@ -1463,7 +1475,9 @@
 	      		cus_brn: cus_brn,
 	      		cus_vol: cus_vol,
 	      		emp_id: emp_id,
-	      		shift_id: shift_id,	      		
+	      		shift_id: shift_id,
+	      		relief_status: relief_status,
+	      		relief_emp_id: relief_emp_id     		
 	    	},
 	    	success: function(data) {
 				$("#id_emp_name_th").val("");
@@ -1512,7 +1526,7 @@
 				      		late_status: late_status,
 				      		phone_status: phone_status,
 				      		relief_status: relief_status,
-				      		relief_id: relief_id,
+				      		relief_emp_id: relief_emp_id,
 				      		job_type_option: job_type_option,
 				      		remark: remark,
 				      		totalNDP: totalNDP,
@@ -1772,7 +1786,7 @@
 				    	subtitle: '',
 				    	autohide: true,
 				    	delay: 2000,
-				    	body: "Employee ID not found.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+				    	body: "รหัสพนักงาน <b>" + relief_emp_id + "</b> ไม่มีในระบบ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
 				    	autoDismiss: true,
 				    	close: true,
 				    	autoremove: true,

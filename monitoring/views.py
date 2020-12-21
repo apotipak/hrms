@@ -1082,134 +1082,220 @@ def ajax_get_employee(request):
 	cus_id = request.GET.get('cus_id')
 	cus_brn = request.GET.get('cus_brn')
 	cus_vol = request.GET.get('cus_vol')
-
-	# print(str(emp_id) + " | " + str(cus_id) + " | " + str(cus_brn) + " | " + str(cus_vol))
+	relief_status = request.GET.get('relief_status')
+	relief_emp_id = request.GET.get('relief_emp_id')	
 	cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
 	employee_item = []
 
-	'''
-	print("-------debug--------")
-	print("_cnt_id = " + str(cnt_id))
-	print("_emp_id = " + str(emp_id))
-	print("_dly_date = " + str(""))
-	print("_sch_shift = " + str(shf_desc))
-	'''
+	print("__emp_id = " + str(emp_id))
+	print("__relief_status = " + str(relief_status))
+	print("__relief_emp_id = " + str(relief_emp_id))
 
-	try:
-		emp_fname_th = ""
-		emp_lname_th = ""
-		emp_rank = ""
-		emp_dept = ""
-		emp_type = ""
-		emp_join_date = ""
-		emp_term_date = ""
-		emp_status = ""
 
+	if relief_status:
+		if relief_emp_id is not None:			
+			try:
+				with connection.cursor() as cursor:		
+					cursor.execute("select emp_fname_th,emp_lname_th,emp_rank,emp_dept,emp_type,emp_join_date,emp_term_date,emp_status,sts_th from v_employee where emp_type='D1' and upd_flag<>'D' and sch_active=1 and emp_id=%s",[relief_emp_id])
+					record = cursor.fetchone()
+					if record is not None:
+						emp_fname_th = record[0]
+						emp_lname_th = record[1]
+						emp_rank = record[2]
+						emp_dept = record[3]
+						emp_type = record[4]
+						emp_join_date = "" if record[5] is None else record[5].strftime("%d/%m/%Y")
+						emp_term_date = "" if record[6] is None else record[6].strftime("%d/%m/%Y")
+						emp_status_id = record[7]
+						emp_status_th = record[8]
+
+						response = JsonResponse(data={
+							"success": True,
+							"is_found": True,
+							"class": "bg-danger",
+							"message": "ข้อมูลพนักงานลงเวรแทนถูกต้อง",
+							"emp_id": relief_emp_id,
+							"emp_fname_th": emp_fname_th,
+							"emp_lname_th": emp_lname_th,
+							"emp_join_date": emp_join_date,
+							"emp_term_date": emp_term_date,
+							"emp_rank": emp_rank,
+							"emp_dept": emp_dept,
+							"emp_type": emp_type,
+							"emp_status_id": emp_status_id,
+							"emp_status": emp_status_th,
+							"employee_photo": "",
+						})
+						response.status_code = 200
+						return response	
+					else:
+						response = JsonResponse(data={
+							"success": True,
+							"is_found": False,
+							"class": "bg-danger",
+							"message": "ไม่พบรหัสพนักงานนี้ในระบบ",
+							"emp_id": "",
+							"emp_fname_th": "",
+							"emp_lname_th": "",
+							"emp_join_date": "",
+							"emp_term_date": "",
+							"emp_rank": "",
+							"emp_dept": "",
+							"emp_type": "",
+							"emp_status_id": "",
+							"emp_status": "",
+							"employee_photo": "",
+						})
+						response.status_code = 200
+						return response						
+			except db.OperationalError as e:
+				is_found = False
+				message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+			except db.Error as e:
+				is_found = False
+				message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+
+			response.status_code = 200
+			return response
+		else:
+			is_found = False
+			error_message = "ข้อมูลรหัสพนักงานลงเวรแทนไม่ถูกต้อง"
+
+			response = JsonResponse(data={
+				"success": True,
+				"is_found": is_found,
+				"class": "bg-danger",
+				"message": error_message,
+				"emp_id": "",
+				"emp_fname_th": "",
+				"emp_lname_th": "",
+				"emp_join_date": "",
+				"emp_term_date": "",
+				"emp_rank": "",
+				"emp_dept": "",
+				"emp_type": "",
+				"emp_status_id": "",
+				"emp_status": "",
+				"employee_photo": "",
+			})
+			response.status_code = 200
+			return response				
+	else:
 		try:
-			with connection.cursor() as cursor:		
-				cursor.execute("select emp_fname_th,emp_lname_th,emp_rank,emp_dept,emp_type,emp_join_date,emp_term_date,emp_status,sts_th from v_employee where emp_type='D1' and upd_flag<>'D' and sch_active=1 and emp_id=%s",[emp_id])
-				record = cursor.fetchone()
-
-				if record is not None:
-					emp_fname_th = record[0]
-					emp_lname_th = record[1]
-					emp_rank = record[2]
-					emp_dept = record[3]
-					emp_type = record[4]
-					emp_join_date = "" if record[5] is None else record[5].strftime("%d/%m/%Y")
-					emp_term_date = "" if record[6] is None else record[6].strftime("%d/%m/%Y")
-					emp_status_id = record[7]
-					emp_status_th = record[8]
-				else:
-					response = JsonResponse(data={
-						"success": True,
-						"is_found": False,
-						"class": "bg-danger",
-						"message": "ไม่พบรหัสพนักงานนี้ในระบบ",
-						"emp_id": "",
-						"emp_fname_th": "",
-						"emp_lname_th": "",
-						"emp_join_date": "",
-						"emp_term_date": "",
-						"emp_rank": "",
-						"emp_dept": "",
-						"emp_type": "",
-						"emp_status_id": "",
-						"emp_status": "",
-						"employee_photo": "",
-					})
-					response.status_code = 200
-					return response						
-		except db.OperationalError as e:
-			message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
-		except db.Error as e:
-			message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
-
-
-		'''
-		exclude_list = [4,5,6,8,9]
-		# 4 = เลิกจ้าง
-		# 5 = สูญหาย
-		# 6 = เสียชีวิต
-		# 8 = เกษียณ
-		# 9 = ไล่ออก
-
-		employee = Employee.objects.filter(emp_id__exact=emp_id).filter(emp_type='D1').exclude(empstatus='I').exclude(emp_status__in=exclude_list).get()
-		if employee.emp_join_date is not None:
-			emp_join_date = employee.emp_join_date.strftime("%d/%m/%Y")
-		else:
+			emp_fname_th = ""
+			emp_lname_th = ""
+			emp_rank = ""
+			emp_dept = ""
+			emp_type = ""
 			emp_join_date = ""
-
-		if employee.emp_term_date is not None:
-			emp_term_date = employee.emp_term_date.strftime("%d/%m/%Y")
-		else:
 			emp_term_date = ""
-		'''
+			emp_status = ""
 
-		employee_info = EmpPhoto.objects.filter(emp_id=emp_id).get()
-		employee_photo = b64encode(employee_info.image).decode("utf-8")
+			try:
+				with connection.cursor() as cursor:		
+					cursor.execute("select emp_fname_th,emp_lname_th,emp_rank,emp_dept,emp_type,emp_join_date,emp_term_date,emp_status,sts_th from v_employee where emp_type='D1' and upd_flag<>'D' and sch_active=1 and emp_id=%s",[emp_id])
+					record = cursor.fetchone()
 
-		response = JsonResponse(data={
-			"success": True,
-			"is_found": True,
-			"class": "bg-success",
-			"emp_id": emp_id,
-			"emp_fname_th": emp_fname_th,
-			"emp_lname_th": emp_lname_th,
-			"emp_join_date": emp_join_date,
-			"emp_term_date": emp_term_date,
-			"emp_rank": emp_rank,
-			"emp_dept": emp_dept,
-			"emp_type": emp_type,
-			"emp_status_id": emp_status_id,
-			"emp_status": str(emp_status_id) + " | " + str(emp_status_th),
-			"employee_photo": employee_photo,
-		    })
+					if record is not None:
+						emp_fname_th = record[0]
+						emp_lname_th = record[1]
+						emp_rank = record[2]
+						emp_dept = record[3]
+						emp_type = record[4]
+						emp_join_date = "" if record[5] is None else record[5].strftime("%d/%m/%Y")
+						emp_term_date = "" if record[6] is None else record[6].strftime("%d/%m/%Y")
+						emp_status_id = record[7]
+						emp_status_th = record[8]
+					else:
+						response = JsonResponse(data={
+							"success": True,
+							"is_found": False,
+							"class": "bg-danger",
+							"message": "ไม่พบรหัสพนักงานนี้ในระบบ",
+							"emp_id": "",
+							"emp_fname_th": "",
+							"emp_lname_th": "",
+							"emp_join_date": "",
+							"emp_term_date": "",
+							"emp_rank": "",
+							"emp_dept": "",
+							"emp_type": "",
+							"emp_status_id": "",
+							"emp_status": "",
+							"employee_photo": "",
+						})
+						response.status_code = 200
+						return response						
+			except db.OperationalError as e:
+				message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+			except db.Error as e:
+				message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+
+
+			'''
+			exclude_list = [4,5,6,8,9]
+			# 4 = เลิกจ้าง
+			# 5 = สูญหาย
+			# 6 = เสียชีวิต
+			# 8 = เกษียณ
+			# 9 = ไล่ออก
+
+			employee = Employee.objects.filter(emp_id__exact=emp_id).filter(emp_type='D1').exclude(empstatus='I').exclude(emp_status__in=exclude_list).get()
+			if employee.emp_join_date is not None:
+				emp_join_date = employee.emp_join_date.strftime("%d/%m/%Y")
+			else:
+				emp_join_date = ""
+
+			if employee.emp_term_date is not None:
+				emp_term_date = employee.emp_term_date.strftime("%d/%m/%Y")
+			else:
+				emp_term_date = ""
+			'''
+
+			employee_info = EmpPhoto.objects.filter(emp_id=emp_id).get()
+			employee_photo = b64encode(employee_info.image).decode("utf-8")
+
+			response = JsonResponse(data={
+				"success": True,
+				"is_found": True,
+				"class": "bg-success",
+				"emp_id": emp_id,
+				"emp_fname_th": emp_fname_th,
+				"emp_lname_th": emp_lname_th,
+				"emp_join_date": emp_join_date,
+				"emp_term_date": emp_term_date,
+				"emp_rank": emp_rank,
+				"emp_dept": emp_dept,
+				"emp_type": emp_type,
+				"emp_status_id": emp_status_id,
+				"emp_status": str(emp_status_id) + " | " + str(emp_status_th),
+				"employee_photo": employee_photo,
+			    })
+			response.status_code = 200
+			return response
+
+		except Employee.DoesNotExist:
+			print("not found")
+			response = JsonResponse(data={
+				"success": True,
+				"is_found": False,
+				"class": "bg-danger",
+				"message": "ไม่พบรหัสพนักงานนี้ในระบบ",
+				"emp_id": "",
+				"emp_fname_th": "",
+				"emp_lname_th": "",
+				"emp_join_date": "",
+				"emp_term_date": "",
+				"emp_rank": "",
+				"emp_dept": "",
+				"emp_type": "",
+				"emp_status_id": "",
+				"emp_status": "",
+				"employee_photo": "",
+			})
+
 		response.status_code = 200
 		return response
-
-	except Employee.DoesNotExist:
-		print("not found")
-		response = JsonResponse(data={
-			"success": True,
-			"is_found": False,
-			"class": "bg-danger",
-			"message": "ไม่พบรหัสพนักงานนี้ในระบบ",
-			"emp_id": "",
-			"emp_fname_th": "",
-			"emp_lname_th": "",
-			"emp_join_date": "",
-			"emp_term_date": "",
-			"emp_rank": "",
-			"emp_dept": "",
-			"emp_type": "",
-			"emp_status_id": "",
-			"emp_status": "",
-			"employee_photo": "",
-		})
-
-	response.status_code = 200
-	return response
 
 
 @permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
