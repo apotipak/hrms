@@ -1155,6 +1155,23 @@ def ajax_get_employee(request):
 				is_found = False
 				message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
 
+			response = JsonResponse(data={
+				"success": True,
+				"is_found": is_found,
+				"class": "bg-danger",
+				"message": message,
+				"emp_id": "",
+				"emp_fname_th": "",
+				"emp_lname_th": "",
+				"emp_join_date": "",
+				"emp_term_date": "",
+				"emp_rank": "",
+				"emp_dept": "",
+				"emp_type": "",
+				"emp_status_id": "",
+				"emp_status": "",
+				"employee_photo": "",
+			})
 			response.status_code = 200
 			return response
 		else:

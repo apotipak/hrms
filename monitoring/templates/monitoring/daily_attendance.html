@@ -502,6 +502,8 @@
  		$("#delete_button").attr("disabled", true);
 
  		$("#id_absent_check").attr("disabled", true);
+ 		$("#id_absent_check").prop("checked", false);
+ 		
 		$("#id_late_check").attr("disabled", true);
  		$("#id_phone_check").attr("disabled", true);
 
@@ -1037,15 +1039,15 @@
 			      		relief_emp_id: relief_emp_id
 			    	},
 			    	success: function(data) {
-						$("#id_relief_emp_name_th").val("");
+
+						$("#id_relief_emp_fullname_th").val("");
 		    			$("#id_relief_emp_rank").val("");
 		    			$("#id_relief_emp_dept").val("");
 		    			$("#id_relief_emp_status").val("");
 		    			$("#id_relief_emp_join_date").val("");
 		    			$("#id_relief_emp_term_date").val("");
 			    	
-			    		if(data.is_found) {
-			    			alert("found");
+			    		if(data.is_found) {			    			
 			    			$("#id_relief_emp_fullname_th").val(data.emp_fname_th.trim() + "  " + data.emp_lname_th.trim());
 							$("#id_relief_emp_rank").val(data.emp_rank);
 			    			$("#id_relief_emp_dept").val(data.emp_dept);
@@ -1074,6 +1076,8 @@
 						    	close: true,
 						    	autoremove: true,
 						  	});
+
+
 			    		}
 
 			    		//showLoading();
@@ -1210,6 +1214,13 @@
 
     // ClickRow
 	$(document).on('click', '#employee_list_table tbody tr', function(row, $el, field) {
+
+		$("#id_relief_emp_fullname_th").val("");
+		$("#id_relief_emp_rank").val("");
+		$("#id_relief_emp_dept").val("");
+		$("#id_relief_emp_status").val("");
+		$("#id_relief_emp_join_date").val("");
+		$("#id_relief_emp_term_date").val("");
 
 		$("#id_relief_check").prop("checked", false);
 		$('#id_relief_emp_id').val(null);
@@ -1435,7 +1446,7 @@
 		    	subtitle: '',
 		    	autohide: true,
 		    	delay: 2000,
-		    	body: "Please select Employee ID.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+		    	body: "กรุณาเลือกพนักงานที่ต้องการลางาน &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
 		    	autoDismiss: true,
 		    	close: true,
 		    	autoremove: true,
