@@ -347,7 +347,7 @@
 
 								<div class="form-group col-3">
 							      	<label for="id_call_time">Call Time</label>
-							      	<input type="number" id="id_call_time" name="call_time" class="form-control form-control-sm" />
+							      	<input type="text" id="id_call_time" name="call_time" class="form-control form-control-sm" readonly />
 								</div>
 
 								<div class="form-group col-3">
@@ -1290,7 +1290,10 @@
 		var upd_gen = $(this).find('td:eq(19)').text();
 		var remark = $(this).find('td:eq(20)').text(); 
 
-		var tel_status = $(this).find('td:eq(10)').text();		
+		var tel_status = $(this).find('td:eq(10)').text();			
+		var tel_time = $(this).find('td:eq(12)').text();
+		var tel_amount = $(this).find('td:eq(13)').text();	
+		var tel_paid = $(this).find('td:eq(14)').text();		
 
 		$("#emp_id_lookup_button").attr("disabled", true);
 
@@ -1349,23 +1352,18 @@
 	    	$("#id_phone_check").show();
 	    	$("#id_phone_check").next("label").show();			
 
-	   		if(tel_status==1) {
+	   		if(tel_status==1) {	   			
 	   			$("#id_phone_check").prop("checked", true);
-
-	   			//$("#id_call_section").show();
-	   			//$("#id_call_time").show();
 	   			$("#id_call_time").attr("disabled", false);
-	   			//$("#id_call_amount_option").show();
-	   			$("#id_call_amount_option").attr("disabled", false);
-
+	   			$("#id_call_amount_option").attr("disabled", false);   			
+	   			$("#id_call_time").val(tel_time);
+	   			$("#id_call_amount_option").val(tel_amount);
 	   		} else {
 	   			$("#id_phone_check").prop("checked", false);
-
-	   			//$("#id_call_section").hide();
-	   			//$("#id_call_time").hide();
 	   			$("#id_call_time").attr("disabled", true);
-	   			//$("#id_call_amount_option").hide();
 	   			$("#id_call_amount_option").attr("disabled", true);
+	   			$("#id_call_time").val("");
+	   			$("#id_call_amount_option").val(0);
 	   		}	    	
 		}
 
