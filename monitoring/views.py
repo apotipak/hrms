@@ -2061,15 +2061,20 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 					is_pass = True # แจ้งเวรยังไม่เกินจำนวนที่อยู่ในสัญญา
 					message = "Check #6 is passed."
 
-	# กรณีพนักงานยังแจ้งเวรไม่เกินจำนวนที่อยู่ในสัญญา
 	# amnaj
+	# กรณีพนักงานยังแจ้งเวรไม่เกินจำนวนที่อยู่ในสัญญา
 	# Check #7 - checkValidInput()
 	is_pass, message = chkValidInput(2,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM)
 
 	if is_pass:
-		# Call SetVariable("DLY_PLAN")
-		print("Save record")
 		
+		# TODO: Call SetVariable("DLY_PLAN")
+
+		# if absent_status==1
+
+
+		print("Save record")
+
 
 
 	return is_pass, message
