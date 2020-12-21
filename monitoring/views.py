@@ -1133,7 +1133,7 @@ def ajax_get_employee(request):
 							"success": True,
 							"is_found": False,
 							"class": "bg-danger",
-							"message": "ไม่พบรหัสพนักงานนี้ในระบบ",
+							"message": "รหัสพนักงาน <b>" + str(relief_emp_id) + "</b> ไม่มีในระบบ",
 							"emp_id": "",
 							"emp_fname_th": "",
 							"emp_lname_th": "",
@@ -2100,7 +2100,7 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 
 
 
-def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,relief_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM):
+def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM):
 	is_pass = False
 	message = ""
 
@@ -2189,7 +2189,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 	# amnaj
 	# กรณีพนักงานยังแจ้งเวรไม่เกินจำนวนที่อยู่ในสัญญา
 	# Check #7 - checkValidInput()
-	is_pass, message = chkValidInput(2,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,relief_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM)
+	is_pass, message = chkValidInput(2,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM)
 
 	if is_pass:
 		
@@ -2365,12 +2365,12 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 			message = "Pass"
 		else:
 			is_pass = False
-			message = "พนักงานคนนี้ไม่สามารถนำมาจัดตารางเวรได้เนื่องจากรหัสพนักงานไม่มีอยู่ในระบบ"
+			message = "พนักงานคนนี้ไม่สามารถนำมาจัดตารางเวรได้เนื่องจากรหัสพนักงานไม่มีอยู่ในระบบ..."
 			return is_pass, message
 
 
 		# เช็คกรณีมีการเข้าเวรแทน
-		print("relief_id = " + str(relief_id))
+		print("____relief_id = " + str(relief_id))
 		if absent_status==1 and relief_status==1:
 			if relief_id is not None:
 				
@@ -2398,7 +2398,7 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 					message = "Pass - สามารถลงหน่วยงานแทนได้"
 			else:
 				is_pass = False
-				message = "พนักงานคนนี้ไม่สามารถนำมาจัดตารางเวรได้เนื่องจากรหัสพนักงานไม่มีอยู่ในระบบ"
+				message = "พนักงานคนนี้ไม่สามารถนำมาจัดตารางเวรได้เนื่องจากรหัสพนักงานไม่มีอยู่ในระบบ!"
 				return is_pass, message
 
 
@@ -2784,7 +2784,7 @@ def ajax_save_daily_attendance(request):
 	late_status = int(request.GET.get('late_status'))
 	phone_status = int(request.GET.get('phone_status'))
 	relief_status = int(request.GET.get('relief_status'))
-	relief_id = request.GET.get('relief_id')
+	relief_emp_id = request.GET.get('relief_emp_id')
 
 	ot_status = 0
 
@@ -2823,7 +2823,7 @@ def ajax_save_daily_attendance(request):
 	if AEdly == 0: # EDIT MODE
 		print("Edit Mode")
 
-		is_edit_record_success, message = editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,relief_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM)
+		is_edit_record_success, message = editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM)
 		if is_edit_record_success:
 			success_status = True
 			title = "Success"
@@ -2835,7 +2835,7 @@ def ajax_save_daily_attendance(request):
 
 	elif AEdly == 1: # ADD MODE
 		print("Add Mode")
-		is_add_record_success, message = addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,relief_id,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM)
+		is_add_record_success, message = addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,relief_emp_id,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM)
 		if is_add_record_success:
 			success_status = True
 			title = "Success"

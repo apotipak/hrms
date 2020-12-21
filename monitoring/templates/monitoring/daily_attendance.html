@@ -1144,10 +1144,8 @@
 
     		$("#id_relief_emp_id").attr("disabled", false);
     		$("#id_relief_emp_id").attr("readonly", false);
-
     		$("#relief_emp_id_lookup_button").attr("disabled", false);
-
-    		//alert("check");
+    		$("#id_relief_emp_id").focus();
     	}
     	else {
     		//alert("uncheck");
@@ -1408,7 +1406,7 @@
 			    	subtitle: '',
 			    	autohide: true,
 			    	delay: 2000,
-			    	body: "เลือกรหัสพนักงานลงเวรแทนไม่ถูกต้อง&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+			    	body: "เลือกรหัสพนักงานที่จะลงเวรแทนไม่ถูกต้อง &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
 			    	autoDismiss: true,
 			    	close: true,
 			    	autoremove: true,
