@@ -562,7 +562,12 @@
 				$("#id_call_amount_option").val(tel_amount);
 			} else {
 				//$("#id_phone_check").prop("checked", false);
-				$("#id_call_time").val("");
+				//$("#id_call_time").val("");
+
+				$("#id_call_amount_option").attr("disabled", false);
+				$("#id_call_amount_option").attr("readonly", false);
+
+				$("#id_call_time").val("{% now 'd/m/Y H:i' %}");
 				$("#id_call_amount_option").val(0);
 			}
 
@@ -573,6 +578,8 @@
 	    } else {
 	    	$("#id_call_time").val("");
 	    	$("#id_call_amount_option").val(0);
+			$("#id_call_amount_option").attr("disabled", true);
+			$("#id_call_amount_option").attr("readonly", true);
 	    }
 	    
 	});
@@ -726,7 +733,7 @@
 					// TODO
 					//$('#id_schedule_option').text(result);
 					$('#id_schedule_option').text("");
-
+					
 					// Get Employee info
 					result = "";
 					result += "<font size='2em;'>";
@@ -761,9 +768,10 @@
 					result += "  </thead>";
 					result += "  <tbody class='sortable'>";
 
-					//ironman
 
+					// amazon 1
 					if(data.employee_list.length>0) {
+						//alert("111");
 						for(i=0; i<data.employee_list.length; i++) {
 							emp_id = data.employee_list[i]["emp_id"];
 							emp_fname_th = data.employee_list[i]["emp_fname_th"];
@@ -787,6 +795,7 @@
 							relief = data.employee_list[i]["relief"];
 							relief_id = data.employee_list[i]["relief_id"];
 
+							
 							result += "    <tr>";							
 							result += "	     <td class='d-none'>" + absent + "</td>";
 							if(absent==1) {
@@ -1471,7 +1480,9 @@
 			//var tel_amount = $(this).find('td:eq(14)').text();	
 			//var tel_paid = $(this).find('td:eq(15)').text();	
 	    	
-	   		if(tel_status==1) {	   			
+	   		if(tel_status==1) {
+	   			console.log(tel_status);
+
 	   			$("#id_phone_check").prop("checked", true);
 	   			//$("#id_call_time").attr("disabled", false);
 	   			
@@ -1844,8 +1855,7 @@
 												//$('#id_schedule_option').text(result);
 												$('#id_schedule_option').text("");
 
-
-												// ironman
+												
 												// Get Employee info
 												result = "";
 												result += "<font size='2em;'>";
@@ -1879,7 +1889,9 @@
 												result += "  </thead>";
 												result += "  <tbody class='sortable'>";
 
+												//amazon 2
 												if(data.employee_list.length>0) {
+													//alert("222");
 													for(i=0; i<data.employee_list.length; i++) {
 														emp_id = data.employee_list[i]["emp_id"];
 														emp_fname_th = data.employee_list[i]["emp_fname_th"];
@@ -1887,6 +1899,7 @@
 														sch_rank = data.employee_list[i]["sch_rank"];
 														shf_desc = data.employee_list[i]["shf_desc"];
 														absent = data.employee_list[i]["absent"];
+														tel_status = data.employee_list[i]["tel_status"];
 														tel_man = data.employee_list[i]["tel_man"];
 														tel_time = data.employee_list[i]["tel_time"];
 														tel_amt = data.employee_list[i]["tel_amt"];
@@ -1898,6 +1911,9 @@
 														upd_flag = data.employee_list[i]["upd_flag"];
 														upd_gen = data.employee_list[i]["upd_gen"];
 														remark = data.employee_list[i]["remark"];
+
+														relief = data.employee_list[i]["relief"];
+														relief_id = data.employee_list[i]["relief_id"];
 
 														result += "    <tr>";							
 														result += "	     <td class='d-none'>" + absent + "</td>";
