@@ -1854,7 +1854,7 @@ def ajax_get_attendance_information(request):
 				"dept_id": row[18],
 				"sch_rank": row[19],
 				"prd_id": row[20],
-				"absent": row[21],
+				"absent": absent,
 				"relief": relief,
 				"relief_id": relief_id,
 				"tel_status": tel_status,

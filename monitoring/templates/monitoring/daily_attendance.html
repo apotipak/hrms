@@ -689,6 +689,7 @@
 					result += "<table id='employee_list_table' class='table table-responsive table-sm table-condensed table-wrapper-scroll-y my-custom-scrollbar'>";
 					result += "  <thead>";
 					result += "    <tr>";
+					result += "      <th scope='col' class='d-none' nowrap>Absent Status</th>";
 					result += "      <th scope='col'>&nbsp;</th>";
 					result += "      <th scope='col' nowrap>Emp ID</th>";
 					result += "      <th scope='col' nowrap>Name</th>";
@@ -740,6 +741,7 @@
 							relief_id = data.employee_list[i]["relief_id"];
 
 							result += "    <tr>";							
+							result += "	     <td class='d-none'>" + absent + "</td>";
 							if(absent==1) {
 								result += "	     <td><font class='text-danger'><i class='fas fa-times fa-xs'></i></font></td>";
 							} else {
@@ -1267,6 +1269,8 @@
 		$("#id_employee_list").html(result);
     }
 
+
+
     // ClickRow
 	$(document).on('click', '#employee_list_table tbody tr', function(row, $el, field) {
 
@@ -1295,7 +1299,7 @@
 		var cus_vol = $("#id_cus_vol").val();
 		
 		var absent = $(this).find('td:eq(0)').text();
-		//console.log("absent = " + absent);
+		// console.log("absent = " + absent);
 
 		var emp_id = $(this).find('td:eq(1)').text();
 		var emp_fullname_th = $(this).find('td:eq(2)').text();
@@ -1349,7 +1353,7 @@
 
 		$(this).addClass('highlight').siblings().removeClass('highlight');
 
-		if(absent=="x") {
+		if(absent==1) {
 			$("#id_absent_check").prop("checked", true);
 			$("#relief_employee_section").show();
 
