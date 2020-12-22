@@ -493,7 +493,6 @@
 		$("#id_phone_check").next("label").hide();
 
 
-	// amnaj
 	$("#id_absent_check").change(function() {
 	    if(this.checked) {
 	   		$("#relief_employee_section").show();
@@ -504,6 +503,10 @@
 
 			$("#id_phone_check").hide();
 			$("#id_phone_check").next("label").hide();
+
+			$("#id_phone_check").prop("checked", false);
+			$("#id_call_time").val("");
+	    	$("#id_call_amount_option").val(0);			
 	 		
 	    } else {
 	    	$("#relief_employee_section").hide();
@@ -515,6 +518,17 @@
 	    	$("#id_phone_check").show();
 	    	$("#id_phone_check").next("label").show();
  			//$("#id_phone_check").attr("disabled", false);
+	    }
+	});
+
+	//amnaj
+	$("#id_phone_check").change(function() {
+	    if(this.checked) {
+	 		$("#id_call_time").val("{% now 'd/m/Y H:i' %}");
+	 		$("#id_call_amount_option").val(0);
+	    } else {
+	    	$("#id_call_time").val("");
+	    	$("#id_call_amount_option").val(0);
 	    }
 	});
 
@@ -1437,7 +1451,7 @@
 
 
 
-
+    // SAVE
     $(document).on('click', '#save_button', function(e) {
     	var AEdly = $("#id_add_new_record_status").val();
     	var dly_date = $("#id_dly_date").val();
@@ -1450,6 +1464,10 @@
     	var shift_id = $("#id_shift_option").val();
     	var shift_name = $("#id_shift_option option:selected").text();    	
     	var relief_emp_id = $("#id_relief_emp_id").val();
+
+    	var tel_man = $("#id_phone_check").val();
+    	var tel_time = $("#id_call_time").val();
+    	var tel_amount = $("#id_call_amount_option").val();
 
     	var absent_status = 0;
     	if($("#id_absent_check").is(":checked")) 
@@ -1503,8 +1521,19 @@
     		late_status = 1;
 
     	var phone_status = 0;
-    	if($("#id_phone_check").is(":checked"))
-    		phone_status =1;
+    	if($("#id_phone_check").is(":checked")) {
+    		phone_status = 1;
+    		tel_man = 1;
+    		tel_time = $("#id_call_time").val();
+    		tel_amount = $("#id_call_amount_option").val();
+    		tel_paid = 1;
+    	} else {
+    		phone_status = 0;
+    		tel_man = 0;
+    		tel_time = "";
+    		tel_amount = 0;
+    		tel_paid = 0;
+    	}
 
     	var relief_emp_id = $("#id_relief_emp_id").val();
     	//alert(relief_id);
@@ -1516,7 +1545,7 @@
 
     		if (emp_id == relief_emp_id) {
 			  	$(document).Toasts('create', {
-			    	class: "bg-danger", 
+			    	class: "bg-danger",
 			    	title: "{% trans 'Error' %}",
 			    	subtitle: '',
 			    	autohide: true,
@@ -1591,7 +1620,7 @@
 		$.ajax({
 	    	url : "/monitoring/ajax/get_employee",
 	    	type : "GET",
-	    	data : {          
+	    	data : {
 	      		csrfmiddlewaretoken: '{{ csrf_token }}',
 	      		cus_id: cus_id,
 	      		cus_brn: cus_brn,
@@ -1647,6 +1676,9 @@
 				      		absent_status: absent_status,
 				      		late_status: late_status,
 				      		phone_status: phone_status,
+				      		tel_man: tel_man,
+				      		tel_time: tel_time,
+				      		tel_amount: tel_amount,
 				      		relief_status: relief_status,
 				      		relief_emp_id: relief_emp_id,
 				      		job_type_option: job_type_option,
