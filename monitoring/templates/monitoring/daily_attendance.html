@@ -638,7 +638,7 @@
     });
 
 
-    
+	// ID_CUS_VOL    
     $(document).on('keypress', '#id_cus_vol', function(e) {
       if(e.which == 13) {            
 
@@ -1301,17 +1301,49 @@
 		var absent = $(this).find('td:eq(0)').text();
 		// console.log("absent = " + absent);
 
-		var emp_id = $(this).find('td:eq(1)').text();
-		var emp_fullname_th = $(this).find('td:eq(2)').text();
-		var sch_rank = $(this).find('td:eq(3)').text();
-		var shf_desc = $(this).find('td:eq(4)').text();	
-		var upd_gen = $(this).find('td:eq(19)').text();
-		var remark = $(this).find('td:eq(20)').text(); 
+		// ironman
+		var emp_id = $(this).find('td:eq(2)').text();
+		var emp_fullname_th = $(this).find('td:eq(3)').text();
+		var sch_rank = $(this).find('td:eq(4)').text();
+		var shf_desc = $(this).find('td:eq(5)').text();	
+		var upd_gen = $(this).find('td:eq(21)').text();
+		var remark = $(this).find('td:eq(22)').text();
+		//alert(remark);
 
-		var tel_status = $(this).find('td:eq(10)').text();			
-		var tel_time = $(this).find('td:eq(12)').text();
-		var tel_amount = $(this).find('td:eq(13)').text();	
-		var tel_paid = $(this).find('td:eq(14)').text();		
+		var tel_status = $(this).find('td:eq(11)').text();			
+		var tel_time = $(this).find('td:eq(13)').text();
+		var tel_amount = $(this).find('td:eq(14)').text();	
+		var tel_paid = $(this).find('td:eq(15)').text();		
+
+
+		/*
+		result += "    <tr>";
+		result += "      <th scope='col' class='d-none' nowrap>Absent Status</th>";
+		result += "      <th scope='col'>&nbsp;</th>";
+		result += "      <th scope='col' nowrap>Emp ID</th>";
+		result += "      <th scope='col' nowrap>Name</th>";
+		result += "      <th scope='col'>Rank</th>";
+		5 result += "      <th scope='col'>Shift</th>";
+		result += "      <th scope='col'>Late</th>";
+		result += "      <th scope='col'>Full</th>";
+		result += "      <th scope='col'>Relief</th>";
+		result += "      <th scope='col' nowrap>Rel. ID</th>";
+		10 result += "      <th scope='col'>Name</th>";
+		result += "      <th scope='col' class='d-none'>Tel Status</th>";
+		result += "      <th scope='col'>Tel</th>";
+		result += "      <th scope='col' nowrap>Call Time</th>";
+		result += "      <th scope='col' nowrap>Call Amt</th>";
+		15 result += "      <th scope='col' nowrap>Call Paid</th>";
+		result += "      <th scope='col'>Spare</th>";
+		result += "      <th scope='col'>Wage</th>";
+		result += "      <th scope='col' nowrap>Upd Date</th>";
+		result += "      <th scope='col' nowrap>Upd By</th>";
+		20 result += "      <th scope='col' nowrap>Upd Flag</th>";
+		result += "      <th scope='col' class='d-none' nowrap>Upd Gen</th>";
+		result += "      <th scope='col' class='d-none'>Remark</th>";
+		result += "    </tr>";
+		*/
+
 
 		$("#emp_id_lookup_button").attr("disabled", true);
 
