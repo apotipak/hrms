@@ -510,8 +510,7 @@
 			$("#id_call_time").val("");
 	    	$("#id_call_amount_option").val(0);			
 	 		
-	    } else {
-	    	// ironman
+	    } else {	    	
 			var tel_man = $("#employee_list_table").find('.highlight').find('td:eq(11)').text();
 			var tel_time = $("#employee_list_table").find('.highlight').find('td:eq(13)').text();
 			var tel_amount = $("#employee_list_table").find('.highlight').find('td:eq(14)').text();
@@ -537,7 +536,6 @@
 	});
 
 
-	//ironman
 	$("#id_phone_check").change(function() {
 
 		/*
@@ -1574,6 +1572,7 @@
 
     // SAVE_BUTTON
     $(document).on('click', '#save_button', function(e) {
+    	var allowZeroBathForPhoneAmount = 0;
     	var AEdly = $("#id_add_new_record_status").val();
     	var dly_date = $("#id_dly_date").val();
       	var cus_id = $('#id_cus_id').val();
@@ -1586,7 +1585,10 @@
     	var shift_name = $("#id_shift_option option:selected").text();    	
     	var relief_emp_id = $("#id_relief_emp_id").val();
 
-    	var tel_man = $("#id_phone_check").val();
+    	var tel_man = 0;
+		if($("#id_phone_check").is(":checked")) 
+    		tel_man = 1;
+
     	var tel_time = $("#id_call_time").val();
     	var tel_amount = $("#id_call_amount_option").val();
 
@@ -1614,487 +1616,501 @@
 				  	});    			
 					$('#id_relief_emp_id').focus();
 					return false;    			
-	    		}	
-    		}
-    	} else {
-
-    		/*
-		  	$(document).Toasts('create', {
-		    	class: "bg-danger", 
-		    	title: "{% trans 'Error' %}",
-		    	subtitle: '',
-		    	autohide: true,
-		    	delay: 2000,
-		    	body: "กรุณาเลือกพนักงานที่ต้องการแจ้งเวร &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
-		    	autoDismiss: true,
-		    	close: true,
-		    	autoremove: true,
-		  	});
-
-		  	$('#id_relief_emp_id').focus();
-			return false;    		
-			*/
-    	}
-
-
-    	var late_status = 0;
-    	if($("#id_late_check").is(":checked"))
-    		late_status = 1;
-
-    	// ironman
-    	var phone_status = 0;
-
-    	if($("#id_phone_check").is(":checked")) {    		
-    		phone_status = 1;
-    		tel_man = 1;
-    		tel_time = $("#id_call_time").val();
-    		tel_amount = $("#id_call_amount_option").val();
-    		tel_paid = 1;
-    	} else {
-    		phone_status = 0;
-    		tel_man = 0;
-    		tel_time = "";
-    		tel_amount = 0;
-    		tel_paid = 0;
-    	}
-
-    	var relief_emp_id = $("#id_relief_emp_id").val();
-    	//alert(relief_id);
-
-    	var relief_status = 0;
-    	if($("#id_relief_check").is(":checked")) {
-    		
-    		relief_status = 1;
-
-    		if (emp_id == relief_emp_id) {
-			  	$(document).Toasts('create', {
-			    	class: "bg-danger",
-			    	title: "{% trans 'Error' %}",
-			    	subtitle: '',
-			    	autohide: true,
-			    	delay: 2000,
-			    	body: "เลือกรหัสพนักงานที่จะลงเวรแทนไม่ถูกต้อง &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
-			    	autoDismiss: true,
-			    	close: true,
-			    	autoremove: true,
-			  	});
-
-			  	$('#id_relief_emp_id').focus();
-	    		return false;    			
-    		}
-
-    	}
-
-    	var job_type_option = $("#id_job_type_option").val();
-    	var remark = $("#id_remark").val();    	
-
-    	var totalNDP = $("#totalNDP").text();
-    	var totalNDA = $("#totalNDA").text();
-    	var totalNDM = $("#totalNDM").text();
-
-    	var totalNNP = $("#totalNNP").text();
-    	var totalNNA = $("#totalNNA").text();
-    	var totalNNM = $("#totalNNM").text();
-
-    	var totalPDP = $("#totalPDP").text();
-    	var totalPDA = $("#totalPDA").text();
-    	var totalPDM = $("#totalPDM").text();
-
-    	var totalPNP = $("#totalPNP").text();
-    	var totalPNA = $("#totalPNA").text();
-    	var totalPNM = $("#totalPNM").text();
-
-    	if(emp_id==""){
-		  	$(document).Toasts('create', {
-		    	class: "bg-danger", 
-		    	title: "{% trans 'Error' %}",
-		    	subtitle: '',
-		    	autohide: true,
-		    	delay: 2000,
-		    	body: "กรุณาเลือกพนักงานที่ต้องการลางาน &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
-		    	autoDismiss: true,
-		    	close: true,
-		    	autoremove: true,
-		  	});
-
-		  	$('#id_emp_id').focus();
-    		return false;
-    	}
-    	
-    	if(shift_id=="0"){
-		  	$(document).Toasts('create', {
-		    	class: "bg-danger", 
-		    	title: "{% trans 'Error' %}",
-		    	subtitle: '',
-		    	autohide: true,
-		    	delay: 2000,
-		    	body: "Please select Shift.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
-		    	autoDismiss: true,
-		    	close: true,
-		    	autoremove: true,
-		  	});
-
-		  	$('#id_shift_option').focus();
-    		return false;
-    	}
-
-		showLoading();
-
-		$.ajax({
-	    	url : "/monitoring/ajax/get_employee",
-	    	type : "GET",
-	    	data : {
-	      		csrfmiddlewaretoken: '{{ csrf_token }}',
-	      		cus_id: cus_id,
-	      		cus_brn: cus_brn,
-	      		cus_vol: cus_vol,
-	      		emp_id: emp_id,
-	      		shift_id: shift_id,
-	      		relief_status: relief_status,
-	      		relief_emp_id: relief_emp_id     		
-	    	},
-	    	success: function(data) {
-				$("#id_emp_name_th").val("");
-    			$("#id_emp_rank").val("");
-    			$("#id_emp_dept").val("");
-    			$("#id_emp_status").val("");
-    			$("#id_emp_join_date").val("");
-    			$("#id_emp_term_date").val("");
-
-	    		if(data.is_found) {
-	    			$("#id_emp_fullname_th").val(data.emp_fname_th.trim() + "  " + data.emp_lname_th.trim());
-					$("#id_emp_rank").val(data.emp_rank);
-	    			$("#id_emp_dept").val(data.emp_dept);
-	    			$("#id_emp_status").val(data.emp_status);
-	    			
-	    			if(data.emp_status_id=='9') {		    				
-		    			$("#id_emp_status").animate({color:'red'}, 1000);
-	    			} else {
-	    				$("#id_emp_status").animate({color:'#495057'}, 1000);
-	    			}
-	    			$("#id_emp_join_date").val(data.emp_join_date);
-	    			$("#id_emp_term_date").val(data.emp_term_date);
-
-	    			$("#save_button").attr("disabled", false);
-	    			$("#delete_button").attr("disabled", true);
-
-	    	
-	    			//alert("TODO - check if employee is available.");
-
-					$.ajax({
-				    	url : "/monitoring/ajax/save_daily_attendance",
-				    	type : "GET",
-				    	data : {          
-				      		csrfmiddlewaretoken: '{{ csrf_token }}',
-				      		AEdly: AEdly,
-				      		dly_date: dly_date,		      		
-				      		cus_id: cus_id,
-				      		cus_brn: cus_brn,
-				      		cus_vol: cus_vol,
-				      		emp_id: emp_id,
-				      		emp_rank: emp_rank,
-				      		emp_dept: emp_dept,
-				      		shift_id: shift_id,
-				      		shift_name: shift_name,
-				      		absent_status: absent_status,
-				      		late_status: late_status,
-				      		phone_status: phone_status,
-				      		tel_man: tel_man,
-				      		tel_time: tel_time,
-				      		tel_amount: tel_amount,
-				      		relief_status: relief_status,
-				      		relief_emp_id: relief_emp_id,
-				      		job_type_option: job_type_option,
-				      		remark: remark,
-				      		totalNDP: totalNDP,
-				      		totalNDA: totalNDA,
-				      		totalNDM: totalNDM,
-				      		totalNNP: totalNNP,
-				      		totalNNA: totalNNA,
-				      		totalNNM: totalNNM,
-				      		totalPDP: totalPDP,
-				      		totalPDA: totalPDA,
-				      		totalPDM: totalPDM,
-				      		totalPNP: totalPNP,
-				      		totalPNA: totalPNA,
-				      		totalPNM: totalPNM,
-				    	},
-				    	success: function(data) {
-				    		if(data.success) {
-								/*
-								$("#dailyAttendanceDataEntryForm").trigger("reset");								
-								$("#id_emp_id").attr("disabled", true);
- 								$("#emp_id_lookup_button").attr("disabled", true);
- 								$("#id_sent_spare").attr("disabled", true);
- 								$("#id_shift_option").attr("disabled", true);
- 								*/
-
- 								// TODO1
-					    		if(data.success) {
-									$.ajax({
-										url : "/monitoring/ajax/get_attendance_information/",
-										type : "POST",
-										data : {          
-									  		csrfmiddlewaretoken: '{{ csrf_token }}',
-									  		attendance_date: dly_date,
-									  		cus_id: cus_id,
-									  		cus_brn: cus_brn,
-									  		cus_vol: cus_vol,
-										},
-										success : function(data) {
-											if(data.is_found) {
-
-												// Get Schedule list info
-												result = "";
-												schedule_list_length = data.schedule_list.length;
-												for(i=0; i<schedule_list_length; i++) {
-													result += data.schedule_list[i];
-												}
-
-												// TODO
-												//$('#id_schedule_option').text(result);
-												$('#id_schedule_option').text("");
-
-												
-												// Get Employee info
-												result = "";
-												result += "<font size='2em;'>";
-												result += "<table id='employee_list_table' class='table table-responsive table-sm table-condensed table-wrapper-scroll-y my-custom-scrollbar'>";
-												result += "  <thead>";
-												result += "    <tr>";
-												result += "      <th scope='col' class='d-none' nowrap>Absent Status</th>";
-												result += "      <th scope='col'>&nbsp;</th>";
-												result += "      <th scope='col' nowrap>Emp ID</th>";
-												result += "      <th scope='col' nowrap>Name</th>";
-												result += "      <th scope='col'>Rank</th>";
-												result += "      <th scope='col'>Shift</th>";
-												result += "      <th scope='col'>Late</th>";
-												result += "      <th scope='col'>Full</th>";
-												result += "      <th scope='col'>Relief</th>";
-												result += "      <th scope='col' nowrap>Rel. ID</th>";
-												result += "      <th scope='col'>Name</th>";
-												result += "      <th scope='col' class='d-none'>Tel Status</th>";
-												result += "      <th scope='col'>Tel</th>";
-												result += "      <th scope='col' nowrap>Call Time</th>";
-												result += "      <th scope='col' nowrap>Call Amt</th>";
-												result += "      <th scope='col' nowrap>Call Paid</th>";
-												result += "      <th scope='col'>Spare</th>";
-												result += "      <th scope='col'>Wage</th>";
-												result += "      <th scope='col' nowrap>Upd Date</th>";
-												result += "      <th scope='col' nowrap>Upd By</th>";
-												result += "      <th scope='col' nowrap>Upd Flag</th>";
-												result += "      <th scope='col' class='d-none' nowrap>Upd Gen</th>";
-												result += "      <th scope='col' class='d-none'>Remark</th>";
-												result += "    </tr>";
-												result += "  </thead>";
-												result += "  <tbody class='sortable'>";
-
-												//amazon 2
-												if(data.employee_list.length>0) {
-													//alert("222");
-													for(i=0; i<data.employee_list.length; i++) {
-														emp_id = data.employee_list[i]["emp_id"];
-														emp_fname_th = data.employee_list[i]["emp_fname_th"];
-														emp_lname_th = data.employee_list[i]["emp_lname_th"];
-														sch_rank = data.employee_list[i]["sch_rank"];
-														shf_desc = data.employee_list[i]["shf_desc"];
-														absent = data.employee_list[i]["absent"];
-														tel_status = data.employee_list[i]["tel_status"];
-														tel_man = data.employee_list[i]["tel_man"];
-														tel_time = data.employee_list[i]["tel_time"];
-														tel_amt = data.employee_list[i]["tel_amt"];
-														tel_paid = data.employee_list[i]["tel_paid"];
-														spare = data.employee_list[i]["spare"];
-														wage_id = data.employee_list[i]["wage_id"];
-														upd_date = data.employee_list[i]["upd_date"];
-														upd_by = data.employee_list[i]["upd_by"];
-														upd_flag = data.employee_list[i]["upd_flag"];
-														upd_gen = data.employee_list[i]["upd_gen"];
-														remark = data.employee_list[i]["remark"];
-
-														relief = data.employee_list[i]["relief"];
-														relief_id = data.employee_list[i]["relief_id"];
-
-														result += "    <tr>";							
-														result += "	     <td class='d-none'>" + absent + "</td>";
-														if(absent==1) {
-															result += "	     <td><font class='text-danger'><i class='fas fa-times fa-xs'></i></font></td>";
-														} else {
-															result += "	     <td><font class='text-success'><i class='fas fa-check fa-xs'></i></font></td>";
-														}
-														
-														result += "	     <td>" + emp_id + "</td>";
-														result += "	     <td nowrap>" + emp_fname_th + "&nbsp;&nbsp;" + emp_lname_th + "</td>";
-														result += "	     <td>" + sch_rank + "</td>";
-														result += "	     <td nowrap>" + shf_desc + "</td>";
-														result += "	     <td></td>";
-														result += "	     <td></td>";
-
-														//result += "	     <td>" + relief + "</td>";
-														if(relief)
-															result += "	     <td class='text-center'><i class='fas fa-check fa-xs'></i></td>";
-														else
-															result += "	     <td></td>";
-
-														result += "	     <td>" + relief_id + "</td>";
-														result += "	     <td></td>";
-														result += "	     <td class='text-center d-none'>" + tel_status + "</td>";
-														result += "	     <td class='text-center'>" + tel_man + "</td>";
-														result += "	     <td nowrap>" + tel_time + "</td>";
-														result += "	     <td>" + tel_amt + "</td>";
-														result += "	     <td>" + tel_paid + "</td>";
-														result += "	     <td>" + parseInt(spare) + "</td>";
-														result += "	     <td>" + wage_id + "</td>";
-														result += "	     <td nowrap>" + upd_date + "</td>";
-														result += "	     <td>" + upd_by + "</td>";
-														result += "	     <td>" + upd_flag + "</td>";
-														result += "	     <td class='d-none'>" + upd_gen + "</td>";
-														result += "	     <td class='d-none'>" + remark + "</td>";
-														result += "    </tr>";
-													}
-
-													enableAllElements();
-
-													$("#id_dly_date").attr("readonly", true);
-													$("#id_search_shift_option").attr("readonly", true);
-													$("#id_cus_id").attr("readonly", true);
-													$("#id_cus_brn").attr("readonly", true);
-													$("#id_cus_vol").attr("readonly", true);
-													$("input[name=searchOptions]").attr("disabled",true);
-												}
-												else {
-														result += "    <tr class='text-center'>";
-														result += "	     <td colspan='20'><br><br>There is no data.<br><br><br></td>";
-														result += "	   </tr>"
-												}
-												result += "  </tbody>";
-												result += "</table>";					
-												result += "</font>";
-
-												$('#id_employee_list').html(result);
-
-												// TOTAL
-												$("#totalNDP").html(data.totalNDP);
-												$("#totalNNP").html(data.totalNNP);
-												$("#totalPDP").html(data.totalPDP);
-												$("#totalPNP").html(data.totalPNP);
-
-												$("#totalNDA").html(data.totalNDA);
-												$("#totalNNA").html(data.totalNNA);
-												$("#totalPDA").html(data.totalPDA);
-												$("#totalPNA").html(data.totalPNA);
-
-												/*
-												$("#totalNDM").html(data.totalNDM);
-												$("#totalNNM").html(data.totalNNM);
-												$("#totalPDM").html(data.totalPDM);
-												$("#totalPNM").html(data.totalPNM);
-												*/
-
-												if(data.totalNDM>=0)
-													$("#totalNDM").html("<span class='text-success'>" + data.totalNDM + "</span>");
-												else
-													$("#totalNDM").html("<span class='text-danger'>" + data.totalNDM + "</span>");
-
-												if(data.totalNNM>=0)
-													$("#totalNNM").html("<span class='text-success'>" + data.totalNNM + "</span>");						
-												else
-													$("#totalNNM").html("<span class='text-danger'>" + data.totalNNM + "</span>");
-												
-												if(data.totalPDM>=0)
-													$("#totalPDM").html("<span class='text-success'>" + data.totalPDM + "</span>");						
-												else
-													$("#totalPDM").html("<span class='text-danger'>" + data.totalPDM + "</span>");
-
-												if(data.totalPNM>=0)
-													$("#totalPNM").html("<span class='text-success'>" + data.totalPNM + "</span>");						
-												else
-													$("#totalPNM").html("<span class='text-danger'>" + data.totalPNM + "</span>");
-
-												$("#id_absent_check").prop("checked", false);
-											}
-										}
-									});
-					    			
-							 		$("#dailyAttendanceDataEntryForm:input").attr("disabled", true);
-							 		$("#dailyAttendanceDataEntryForm").trigger("reset");
-
-									$("#totalNDP").html("");
-									$("#totalNNP").html("");
-									$("#totalPDP").html("");
-									$("#totalPNP").html("");
-
-									$("#totalNDA").html("");
-									$("#totalNNA").html("");
-									$("#totalPDA").html("");
-									$("#totalPNA").html("");
-
-									$("#totalNDM").html("");
-									$("#totalNNM").html("");
-									$("#totalPDM").html("");
-									$("#totalPNM").html("");									
-					    		} else {
-					    			alert("error");
-					    		}
-
-								$.alert({
-								    title: data.title,
-								    type: data.type,
-								    content: data.message,
-								    animation: 'zoom',
-								    animationBounce: 1.5,
-								    closeIcon: false,
-								    boxWidth: '38%',
-								    useBootstrap: false,
-								});
-
- 								
-								$("#dailyAttendanceDataEntryForm").trigger("reset");
-
-								//amnaj
-								//TODO1: refresh table
-
-
- 								$("#id_emp_id").focus();
-				    		} else {
-								$.alert({
-								    title: data.title,
-								    type: data.type,
-								    content: data.message,
-								    animation: 'zoom',
-								    animationBounce: 1.5,
-								    closeIcon: false,
-								    boxWidth: '38%',
-								    useBootstrap: false,
-								});
-
-								$("#id_emp_id").focus();
-				    		}				    		
-				    	},
-				    });
-	    		} else {
-
-				  	$(document).Toasts('create', {
-				    	class: "bg-danger", 
-				    	title: "{% trans 'Error' %}",
-				    	subtitle: '',
-				    	autohide: true,
-				    	delay: 2000,
-				    	body: "รหัสพนักงาน <b>" + relief_emp_id + "</b> ไม่มีในระบบ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
-				    	autoDismiss: true,
-				    	close: true,
-				    	autoremove: true,
-				  	});
-
-				  	$.LoadingOverlay("hide");
-				  	$("#id_relief_emp_id").select();
-				  	return false;
 	    		}
+    		} else {
+    			alert("a..");
+    		}
 
-	    		$.LoadingOverlay("hide");
-	    		$("#id_emp_id").select();
-	    	},
-	    });    	    	
+    	} 
+
+    	// Check Phone Amount is 0
+    	if(tel_man==1) {
+    		if(tel_amount=="0") {
+				$.confirm({
+				    title: 'Confirmation',
+				    type: 'red',
+				    content: 'ยืนยันที่จะใช้ค่าโทรแจ้งเวรเป็น 0 บาท',
+					animation: 'zoom',
+				    animationBounce: 1.5,
+				    closeIcon: true,
+				    boxWidth: '38%',
+				    useBootstrap: false,		    
+				    buttons: {
+				        confirm: {
+				        	text: 'ยืนยัน',
+				        	btnClass: 'btn-danger',
+				        	action: function () {
+								// ironman 1
+						    	var late_status = 0;
+						    	if($("#id_late_check").is(":checked"))
+						    		late_status = 1;
+
+						    	var phone_status = 0;
+
+						    	if($("#id_phone_check").is(":checked")) {    		
+						    		phone_status = 1;
+						    		tel_man = 1;
+						    		tel_time = $("#id_call_time").val();
+						    		tel_amount = $("#id_call_amount_option").val();
+						    		tel_paid = 1;
+						    	} else {
+						    		phone_status = 0;
+						    		tel_man = 0;
+						    		tel_time = "";
+						    		tel_amount = 0;
+						    		tel_paid = 0;
+						    	}
+
+						    	var relief_emp_id = $("#id_relief_emp_id").val();
+						    	//alert(relief_id);
+
+						    	var relief_status = 0;
+						    	if($("#id_relief_check").is(":checked")) {
+						    		
+						    		relief_status = 1;
+
+						    		if (emp_id == relief_emp_id) {
+									  	$(document).Toasts('create', {
+									    	class: "bg-danger",
+									    	title: "{% trans 'Error' %}",
+									    	subtitle: '',
+									    	autohide: true,
+									    	delay: 2000,
+									    	body: "เลือกรหัสพนักงานที่จะลงเวรแทนไม่ถูกต้อง &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+									    	autoDismiss: true,
+									    	close: true,
+									    	autoremove: true,
+									  	});
+
+									  	$('#id_relief_emp_id').focus();
+							    		return false;    			
+						    		}
+
+						    	}
+
+						    	var job_type_option = $("#id_job_type_option").val();
+						    	var remark = $("#id_remark").val();    	
+
+						    	var totalNDP = $("#totalNDP").text();
+						    	var totalNDA = $("#totalNDA").text();
+						    	var totalNDM = $("#totalNDM").text();
+
+						    	var totalNNP = $("#totalNNP").text();
+						    	var totalNNA = $("#totalNNA").text();
+						    	var totalNNM = $("#totalNNM").text();
+
+						    	var totalPDP = $("#totalPDP").text();
+						    	var totalPDA = $("#totalPDA").text();
+						    	var totalPDM = $("#totalPDM").text();
+
+						    	var totalPNP = $("#totalPNP").text();
+						    	var totalPNA = $("#totalPNA").text();
+						    	var totalPNM = $("#totalPNM").text();
+
+						    	if(emp_id==""){
+								  	$(document).Toasts('create', {
+								    	class: "bg-danger", 
+								    	title: "{% trans 'Error' %}",
+								    	subtitle: '',
+								    	autohide: true,
+								    	delay: 2000,
+								    	body: "กรุณาเลือกพนักงานที่ต้องการลางาน &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+								    	autoDismiss: true,
+								    	close: true,
+								    	autoremove: true,
+								  	});
+
+								  	$('#id_emp_id').focus();
+						    		return false;
+						    	}
+						    	
+						    	if(shift_id=="0"){
+								  	$(document).Toasts('create', {
+								    	class: "bg-danger", 
+								    	title: "{% trans 'Error' %}",
+								    	subtitle: '',
+								    	autohide: true,
+								    	delay: 2000,
+								    	body: "Please select Shift.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+								    	autoDismiss: true,
+								    	close: true,
+								    	autoremove: true,
+								  	});
+
+								  	$('#id_shift_option').focus();
+						    		return false;
+						    	}
+
+								showLoading();
+
+								$.ajax({
+							    	url : "/monitoring/ajax/get_employee",
+							    	type : "GET",
+							    	data : {
+							      		csrfmiddlewaretoken: '{{ csrf_token }}',
+							      		cus_id: cus_id,
+							      		cus_brn: cus_brn,
+							      		cus_vol: cus_vol,
+							      		emp_id: emp_id,
+							      		shift_id: shift_id,
+							      		relief_status: relief_status,
+							      		relief_emp_id: relief_emp_id     		
+							    	},
+							    	success: function(data) {
+										$("#id_emp_name_th").val("");
+						    			$("#id_emp_rank").val("");
+						    			$("#id_emp_dept").val("");
+						    			$("#id_emp_status").val("");
+						    			$("#id_emp_join_date").val("");
+						    			$("#id_emp_term_date").val("");
+
+							    		if(data.is_found) {
+							    			$("#id_emp_fullname_th").val(data.emp_fname_th.trim() + "  " + data.emp_lname_th.trim());
+											$("#id_emp_rank").val(data.emp_rank);
+							    			$("#id_emp_dept").val(data.emp_dept);
+							    			$("#id_emp_status").val(data.emp_status);
+							    			
+							    			if(data.emp_status_id=='9') {		    				
+								    			$("#id_emp_status").animate({color:'red'}, 1000);
+							    			} else {
+							    				$("#id_emp_status").animate({color:'#495057'}, 1000);
+							    			}
+							    			$("#id_emp_join_date").val(data.emp_join_date);
+							    			$("#id_emp_term_date").val(data.emp_term_date);
+
+							    			$("#save_button").attr("disabled", false);
+							    			$("#delete_button").attr("disabled", true);
+
+							    	
+							    			//alert("TODO - check if employee is available.");
+
+											$.ajax({
+										    	url : "/monitoring/ajax/save_daily_attendance",
+										    	type : "GET",
+										    	data : {          
+										      		csrfmiddlewaretoken: '{{ csrf_token }}',
+										      		AEdly: AEdly,
+										      		dly_date: dly_date,
+										      		allowZeroBathForPhoneAmount: allowZeroBathForPhoneAmount,	      		
+										      		cus_id: cus_id,
+										      		cus_brn: cus_brn,
+										      		cus_vol: cus_vol,
+										      		emp_id: emp_id,
+										      		emp_rank: emp_rank,
+										      		emp_dept: emp_dept,
+										      		shift_id: shift_id,
+										      		shift_name: shift_name,
+										      		absent_status: absent_status,
+										      		late_status: late_status,
+										      		phone_status: phone_status,
+										      		tel_man: tel_man,
+										      		tel_time: tel_time,
+										      		tel_amount: tel_amount,
+										      		relief_status: relief_status,
+										      		relief_emp_id: relief_emp_id,
+										      		job_type_option: job_type_option,
+										      		remark: remark,
+										      		totalNDP: totalNDP,
+										      		totalNDA: totalNDA,
+										      		totalNDM: totalNDM,
+										      		totalNNP: totalNNP,
+										      		totalNNA: totalNNA,
+										      		totalNNM: totalNNM,
+										      		totalPDP: totalPDP,
+										      		totalPDA: totalPDA,
+										      		totalPDM: totalPDM,
+										      		totalPNP: totalPNP,
+										      		totalPNA: totalPNA,
+										      		totalPNM: totalPNM,
+										    	},
+										    	success: function(data) {
+										    		if(data.success) {
+														/*
+														$("#dailyAttendanceDataEntryForm").trigger("reset");								
+														$("#id_emp_id").attr("disabled", true);
+						 								$("#emp_id_lookup_button").attr("disabled", true);
+						 								$("#id_sent_spare").attr("disabled", true);
+						 								$("#id_shift_option").attr("disabled", true);
+						 								*/
+
+						 								// TODO1
+											    		if(data.success) {
+															$.ajax({
+																url : "/monitoring/ajax/get_attendance_information/",
+																type : "POST",
+																data : {          
+															  		csrfmiddlewaretoken: '{{ csrf_token }}',
+															  		attendance_date: dly_date,
+															  		cus_id: cus_id,
+															  		cus_brn: cus_brn,
+															  		cus_vol: cus_vol,
+																},
+																success : function(data) {
+																	if(data.is_found) {
+
+																		// Get Schedule list info
+																		result = "";
+																		schedule_list_length = data.schedule_list.length;
+																		for(i=0; i<schedule_list_length; i++) {
+																			result += data.schedule_list[i];
+																		}
+
+																		// TODO
+																		//$('#id_schedule_option').text(result);
+																		$('#id_schedule_option').text("");
+
+																		
+																		// Get Employee info
+																		result = "";
+																		result += "<font size='2em;'>";
+																		result += "<table id='employee_list_table' class='table table-responsive table-sm table-condensed table-wrapper-scroll-y my-custom-scrollbar'>";
+																		result += "  <thead>";
+																		result += "    <tr>";
+																		result += "      <th scope='col' class='d-none' nowrap>Absent Status</th>";
+																		result += "      <th scope='col'>&nbsp;</th>";
+																		result += "      <th scope='col' nowrap>Emp ID</th>";
+																		result += "      <th scope='col' nowrap>Name</th>";
+																		result += "      <th scope='col'>Rank</th>";
+																		result += "      <th scope='col'>Shift</th>";
+																		result += "      <th scope='col'>Late</th>";
+																		result += "      <th scope='col'>Full</th>";
+																		result += "      <th scope='col'>Relief</th>";
+																		result += "      <th scope='col' nowrap>Rel. ID</th>";
+																		result += "      <th scope='col'>Name</th>";
+																		result += "      <th scope='col' class='d-none'>Tel Status</th>";
+																		result += "      <th scope='col'>Tel</th>";
+																		result += "      <th scope='col' nowrap>Call Time</th>";
+																		result += "      <th scope='col' nowrap>Call Amt</th>";
+																		result += "      <th scope='col' nowrap>Call Paid</th>";
+																		result += "      <th scope='col'>Spare</th>";
+																		result += "      <th scope='col'>Wage</th>";
+																		result += "      <th scope='col' nowrap>Upd Date</th>";
+																		result += "      <th scope='col' nowrap>Upd By</th>";
+																		result += "      <th scope='col' nowrap>Upd Flag</th>";
+																		result += "      <th scope='col' class='d-none' nowrap>Upd Gen</th>";
+																		result += "      <th scope='col' class='d-none'>Remark</th>";
+																		result += "    </tr>";
+																		result += "  </thead>";
+																		result += "  <tbody class='sortable'>";
+
+																		//amazon 2
+																		if(data.employee_list.length>0) {
+																			//alert("222");
+																			for(i=0; i<data.employee_list.length; i++) {
+																				emp_id = data.employee_list[i]["emp_id"];
+																				emp_fname_th = data.employee_list[i]["emp_fname_th"];
+																				emp_lname_th = data.employee_list[i]["emp_lname_th"];
+																				sch_rank = data.employee_list[i]["sch_rank"];
+																				shf_desc = data.employee_list[i]["shf_desc"];
+																				absent = data.employee_list[i]["absent"];
+																				tel_status = data.employee_list[i]["tel_status"];
+																				tel_man = data.employee_list[i]["tel_man"];
+																				tel_time = data.employee_list[i]["tel_time"];
+																				tel_amt = data.employee_list[i]["tel_amt"];
+																				tel_paid = data.employee_list[i]["tel_paid"];
+																				spare = data.employee_list[i]["spare"];
+																				wage_id = data.employee_list[i]["wage_id"];
+																				upd_date = data.employee_list[i]["upd_date"];
+																				upd_by = data.employee_list[i]["upd_by"];
+																				upd_flag = data.employee_list[i]["upd_flag"];
+																				upd_gen = data.employee_list[i]["upd_gen"];
+																				remark = data.employee_list[i]["remark"];
+
+																				relief = data.employee_list[i]["relief"];
+																				relief_id = data.employee_list[i]["relief_id"];
+
+																				result += "    <tr>";							
+																				result += "	     <td class='d-none'>" + absent + "</td>";
+																				if(absent==1) {
+																					result += "	     <td><font class='text-danger'><i class='fas fa-times fa-xs'></i></font></td>";
+																				} else {
+																					result += "	     <td><font class='text-success'><i class='fas fa-check fa-xs'></i></font></td>";
+																				}
+																				
+																				result += "	     <td>" + emp_id + "</td>";
+																				result += "	     <td nowrap>" + emp_fname_th + "&nbsp;&nbsp;" + emp_lname_th + "</td>";
+																				result += "	     <td>" + sch_rank + "</td>";
+																				result += "	     <td nowrap>" + shf_desc + "</td>";
+																				result += "	     <td></td>";
+																				result += "	     <td></td>";
+
+																				//result += "	     <td>" + relief + "</td>";
+																				if(relief)
+																					result += "	     <td class='text-center'><i class='fas fa-check fa-xs'></i></td>";
+																				else
+																					result += "	     <td></td>";
+
+																				result += "	     <td>" + relief_id + "</td>";
+																				result += "	     <td></td>";
+																				result += "	     <td class='text-center d-none'>" + tel_status + "</td>";
+																				result += "	     <td class='text-center'>" + tel_man + "</td>";
+																				result += "	     <td nowrap>" + tel_time + "</td>";
+																				result += "	     <td>" + tel_amt + "</td>";
+																				result += "	     <td>" + tel_paid + "</td>";
+																				result += "	     <td>" + parseInt(spare) + "</td>";
+																				result += "	     <td>" + wage_id + "</td>";
+																				result += "	     <td nowrap>" + upd_date + "</td>";
+																				result += "	     <td>" + upd_by + "</td>";
+																				result += "	     <td>" + upd_flag + "</td>";
+																				result += "	     <td class='d-none'>" + upd_gen + "</td>";
+																				result += "	     <td class='d-none'>" + remark + "</td>";
+																				result += "    </tr>";
+																			}
+
+																			enableAllElements();
+
+																			$("#id_dly_date").attr("readonly", true);
+																			$("#id_search_shift_option").attr("readonly", true);
+																			$("#id_cus_id").attr("readonly", true);
+																			$("#id_cus_brn").attr("readonly", true);
+																			$("#id_cus_vol").attr("readonly", true);
+																			$("input[name=searchOptions]").attr("disabled",true);
+																		}
+																		else {
+																				result += "    <tr class='text-center'>";
+																				result += "	     <td colspan='20'><br><br>There is no data.<br><br><br></td>";
+																				result += "	   </tr>"
+																		}
+																		result += "  </tbody>";
+																		result += "</table>";					
+																		result += "</font>";
+
+																		$('#id_employee_list').html(result);
+
+																		// TOTAL
+																		$("#totalNDP").html(data.totalNDP);
+																		$("#totalNNP").html(data.totalNNP);
+																		$("#totalPDP").html(data.totalPDP);
+																		$("#totalPNP").html(data.totalPNP);
+
+																		$("#totalNDA").html(data.totalNDA);
+																		$("#totalNNA").html(data.totalNNA);
+																		$("#totalPDA").html(data.totalPDA);
+																		$("#totalPNA").html(data.totalPNA);
+
+																		/*
+																		$("#totalNDM").html(data.totalNDM);
+																		$("#totalNNM").html(data.totalNNM);
+																		$("#totalPDM").html(data.totalPDM);
+																		$("#totalPNM").html(data.totalPNM);
+																		*/
+
+																		if(data.totalNDM>=0)
+																			$("#totalNDM").html("<span class='text-success'>" + data.totalNDM + "</span>");
+																		else
+																			$("#totalNDM").html("<span class='text-danger'>" + data.totalNDM + "</span>");
+
+																		if(data.totalNNM>=0)
+																			$("#totalNNM").html("<span class='text-success'>" + data.totalNNM + "</span>");						
+																		else
+																			$("#totalNNM").html("<span class='text-danger'>" + data.totalNNM + "</span>");
+																		
+																		if(data.totalPDM>=0)
+																			$("#totalPDM").html("<span class='text-success'>" + data.totalPDM + "</span>");						
+																		else
+																			$("#totalPDM").html("<span class='text-danger'>" + data.totalPDM + "</span>");
+
+																		if(data.totalPNM>=0)
+																			$("#totalPNM").html("<span class='text-success'>" + data.totalPNM + "</span>");						
+																		else
+																			$("#totalPNM").html("<span class='text-danger'>" + data.totalPNM + "</span>");
+
+																		$("#id_absent_check").prop("checked", false);
+																	}
+																}
+															});
+											    			
+													 		$("#dailyAttendanceDataEntryForm:input").attr("disabled", true);
+													 		$("#dailyAttendanceDataEntryForm").trigger("reset");
+
+															$("#totalNDP").html("");
+															$("#totalNNP").html("");
+															$("#totalPDP").html("");
+															$("#totalPNP").html("");
+
+															$("#totalNDA").html("");
+															$("#totalNNA").html("");
+															$("#totalPDA").html("");
+															$("#totalPNA").html("");
+
+															$("#totalNDM").html("");
+															$("#totalNNM").html("");
+															$("#totalPDM").html("");
+															$("#totalPNM").html("");									
+											    		} else {
+											    			alert("error");
+											    		}
+
+														$.alert({
+														    title: data.title,
+														    type: data.type,
+														    content: data.message,
+														    animation: 'zoom',
+														    animationBounce: 1.5,
+														    closeIcon: false,
+														    boxWidth: '38%',
+														    useBootstrap: false,
+														});
+
+						 								
+														$("#dailyAttendanceDataEntryForm").trigger("reset");
+
+														//amnaj
+														//TODO1: refresh table
+
+
+						 								$("#id_emp_id").focus();
+										    		} else {
+														$.alert({
+														    title: data.title,
+														    type: data.type,
+														    content: data.message,
+														    animation: 'zoom',
+														    animationBounce: 1.5,
+														    closeIcon: false,
+														    boxWidth: '38%',
+														    useBootstrap: false,
+														});
+
+														$("#id_emp_id").focus();
+										    		}				    		
+										    	},
+										    });
+							    		} else {
+
+										  	$(document).Toasts('create', {
+										    	class: "bg-danger", 
+										    	title: "{% trans 'Error' %}",
+										    	subtitle: '',
+										    	autohide: true,
+										    	delay: 2000,
+										    	body: "รหัสพนักงาน <b>" + relief_emp_id + "</b> ไม่มีในระบบ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+										    	autoDismiss: true,
+										    	close: true,
+										    	autoremove: true,
+										  	});
+
+										  	$.LoadingOverlay("hide");
+										  	$("#id_relief_emp_id").select();
+										  	return false;
+							    		}
+
+							    		$.LoadingOverlay("hide");
+							    		$("#id_emp_id").select();
+							    	},
+							    });
+							}
+				        },
+				        cancel: {	
+				        	// ironman 2	        	
+				        	action: function () {
+								$("#id_call_amount_option").focus();
+				        	}
+				        }
+				    }
+				});
+    		}
+    	}
 
     });
 
