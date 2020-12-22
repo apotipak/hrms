@@ -2167,6 +2167,8 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 	# ********** END ***********
 
 
+	print("............tel_time = " + str(tel_time))
+
 	# Check #6 - กรณีไม่ได้ลาหยุดให้ตรวจสอบ No person not more than contract
 	print("shift_id = " + str(shift_id))
 	print("absent_status = " + str(absent_status))
@@ -2221,7 +2223,28 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		# setVariable()		
 		# dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,
 		# relief_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM
+		
+		if tel_man == 1:
+			if tel_time is not None:			
+				tel_time_obj = datetime.datetime.strptime(tel_time, "%d/%m/%Y %H:%M")
+				# print("______tel_time_obj = " + str(tel_time_obj)[:-3])
+				tel_time = str(tel_time_obj)[:-3]
+			else:
+				tel_time = None
+
+			if tel_amount > 0:
+				tel_paid = 1
+			else:
+				tel_paid = 0
+		else:
+			tel_time = None
+			tel_amount = 0
+			tel_paid = 0
+
+
+
 		upd_date = str(datetime.datetime.now())[:-3]
+
 		sql = "update dly_plan set cnt_id=" + str(cnt_id) + ","		
 		sql += "sch_no=0,"
 		sql += "dept_id=" + str(emp_dept) + ","
@@ -2232,9 +2255,14 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		sql += "late_full=0,"
 		sql += "relieft=" + str(relief_status) + ","
 		sql += "relieft_id=0,"
-		sql += "tel_man=0,"
-		sql += "tel_time=NULL,"
-		sql += "tel_amt=0,"
+		sql += "tel_man=" + str(tel_man) + ","
+
+		if tel_man==1:
+			sql += "tel_time='" + str(tel_time) + "',"			
+		else:
+			sql += "tel_time=null,"
+
+		sql += "tel_amt=" + str(tel_amount) + ","
 		sql += "tel_paid=0,"
 		sql += "ot=0,"
 		sql += "ot_reason=0,"
