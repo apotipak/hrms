@@ -2266,7 +2266,12 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 			sql += "tel_time=null,"
 
 		sql += "tel_amt=" + str(tel_amount) + ","
-		sql += "tel_paid=0,"
+
+		if tel_amount > 0:
+			sql += "tel_paid=1,"
+		else:
+			sql += "tel_paid=0,"
+		
 		sql += "ot=0,"
 		sql += "ot_reason=0,"
 		sql += "ot_time_frm=NULL,"

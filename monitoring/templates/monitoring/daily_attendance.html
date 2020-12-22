@@ -352,7 +352,8 @@
 
 								<div class="form-group col-3">
 							      	<label for="id_call_amount_option">Amount</label>
-							        <select id="id_call_amount_option" class="form-control form-control-sm">
+
+							        <select id="id_call_amount_option" class="form-control form-control-sm" readonly>
 									  <option value="0" selected>0 บาท</option>
 									  <option value="1">1 บาท</option>
 									  <option value="2">2 บาท</option>
@@ -1195,8 +1196,13 @@
         
     });
 
+    // ironman
     $(document).on('click', '#id_phone_check', function(e) {
-        
+    	if($("#id_phone_check").is(":checked")) {
+			$("#id_call_amount_option").attr("readonly", false);
+    	} else {
+    		$("#id_call_amount_option").attr("readonly", true);
+    	}
     });
 
     $(document).on('click', '#id_relief_check', function(e) {
@@ -1392,6 +1398,9 @@
 	   		$("#id_late_check").hide();
 	   		$("#id_late_check").next("label").hide();
 
+   			$("#id_call_time").val("");
+   			$("#id_call_amount_option").val(0);	   		
+
 		} else {
 			$("#id_absent_check").prop("checked", false);
 			$("#relief_employee_section").hide();
@@ -1400,8 +1409,15 @@
 	    	$("#id_late_check").next("label").show();	    	
 
 	    	$("#id_phone_check").show();
-	    	$("#id_phone_check").next("label").show();			
+	    	$("#id_phone_check").next("label").show();
 
+			//var tel_status = $(this).find('td:eq(11)').text();			
+			//var tel_time = $(this).find('td:eq(13)').text();
+			//var tel_amount = $(this).find('td:eq(14)').text();	
+			//var tel_paid = $(this).find('td:eq(15)').text();	
+
+	    	//alert(tel_status);
+	    	
 	   		if(tel_status==1) {	   			
 	   			$("#id_phone_check").prop("checked", true);
 	   			$("#id_call_time").attr("disabled", false);
@@ -1414,7 +1430,8 @@
 	   			$("#id_call_amount_option").attr("disabled", true);
 	   			$("#id_call_time").val("");
 	   			$("#id_call_amount_option").val(0);
-	   		}	    	
+	   		}
+	   		
 		}
 
 		shift_id =  parseInt(shf_desc.substring(0,4));
@@ -1556,8 +1573,9 @@
     	if($("#id_late_check").is(":checked"))
     		late_status = 1;
 
+    	// ironman
     	var phone_status = 0;
-    	if($("#id_phone_check").is(":checked")) {
+    	if($("#id_phone_check").is(":checked")) {    		
     		phone_status = 1;
     		tel_man = 1;
     		tel_time = $("#id_call_time").val();
