@@ -495,6 +495,7 @@
 
 
 	$("#id_absent_check").change(function() {
+
 	    if(this.checked) {
 	   		$("#relief_employee_section").show();
 
@@ -510,27 +511,70 @@
 	    	$("#id_call_amount_option").val(0);			
 	 		
 	    } else {
+	    	// ironman
+			var tel_man = $("#employee_list_table").find('.highlight').find('td:eq(11)').text();
+			var tel_time = $("#employee_list_table").find('.highlight').find('td:eq(13)').text();
+			var tel_amount = $("#employee_list_table").find('.highlight').find('td:eq(14)').text();
+
+			if(tel_man==1) {
+				$("#id_phone_check").prop("checked", true);
+				$("#id_call_time").val(tel_time);
+				$("#id_call_amount_option").val(tel_amount);
+			} else {
+				$("#id_phone_check").prop("checked", false);
+				$("#id_call_time").val("");
+				$("#id_call_amount_option").val(0);
+			}
+
 	    	$("#relief_employee_section").hide();
-
 	    	$("#id_late_check").show();
-	    	$("#id_late_check").next("label").show();
-	    	//$("#id_late_check").attr("disabled", false);
-
+	    	$("#id_late_check").next("label").show();	    	
 	    	$("#id_phone_check").show();
 	    	$("#id_phone_check").next("label").show();
- 			//$("#id_phone_check").attr("disabled", false);
+
+
 	    }
 	});
 
-	//amnaj
+
+	//ironman
 	$("#id_phone_check").change(function() {
+
+		/*
+		if(this.checked) {
+			alert("check");
+		}
+		else {
+			alert("not check");
+		}
+		*/
+		
 	    if(this.checked) {
-	 		$("#id_call_time").val("{% now 'd/m/Y H:i' %}");
-	 		$("#id_call_amount_option").val(0);
+
+			var tel_man = $("#employee_list_table").find('.highlight').find('td:eq(11)').text();
+			var tel_time = $("#employee_list_table").find('.highlight').find('td:eq(13)').text();
+			var tel_amount = $("#employee_list_table").find('.highlight').find('td:eq(14)').text();
+
+			if(tel_man==1) {
+				//$("#id_phone_check").prop("checked", true);
+				//$("#id_call_time").val(tel_time);
+				$("#id_call_time").val("{% now 'd/m/Y H:i' %}");
+				$("#id_call_amount_option").val(tel_amount);
+			} else {
+				//$("#id_phone_check").prop("checked", false);
+				$("#id_call_time").val("");
+				$("#id_call_amount_option").val(0);
+			}
+
+	 		//$("#id_call_time").val("{% now 'd/m/Y H:i' %}");
+	 		//$("#id_call_amount_option").val(0);
+
+
 	    } else {
 	    	$("#id_call_time").val("");
 	    	$("#id_call_amount_option").val(0);
 	    }
+	    
 	});
 
 
@@ -1196,21 +1240,24 @@
         
     });
     
-    // PHONE_CHECK
-    $(document).on('click', '#id_phone_check', function(e) {				
+    // ID_PHONE_CHECK
+    $(document).on('click', '#id_phone_check', function(e) {
+    	//alert("..");
+
 		var tel_man = $("#employee_list_table").find('.highlight').find('td:eq(11)').text();
 		var tel_time = $("#employee_list_table").find('.highlight').find('td:eq(13)').text();
 		var tel_amount = $("#employee_list_table").find('.highlight').find('td:eq(14)').text();
-		var tel_paid = $("#employee_list_table").find('.highlight').find('td:eq(15)').text();
+		//var tel_paid = $("#employee_list_table").find('.highlight').find('td:eq(15)').text();
+
+		if($("#id_phone_check").is(":checked"))
+			$("#id_phone_check").prop("checked", true);
+		else
+			$("#id_phone_check").prop("checked", false);
 
 		if(tel_man==1) {
 			$("#id_call_time").val(tel_time);
 			$("#id_call_amount_option").val(tel_amount);
-		} else {
-			$("#id_call_time").val("");
-			$("#id_call_amount_option").val(0);
-		}
-
+		} 
     });
 
     $(document).on('click', '#id_relief_check', function(e) {
@@ -1585,6 +1632,7 @@
 
     	// ironman
     	var phone_status = 0;
+
     	if($("#id_phone_check").is(":checked")) {    		
     		phone_status = 1;
     		tel_man = 1;
