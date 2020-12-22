@@ -1195,14 +1195,22 @@
     $(document).on('click', '#id_late_check', function(e) {
         
     });
+    
+    // PHONE_CHECK
+    $(document).on('click', '#id_phone_check', function(e) {				
+		var tel_man = $("#employee_list_table").find('.highlight').find('td:eq(11)').text();
+		var tel_time = $("#employee_list_table").find('.highlight').find('td:eq(13)').text();
+		var tel_amount = $("#employee_list_table").find('.highlight').find('td:eq(14)').text();
+		var tel_paid = $("#employee_list_table").find('.highlight').find('td:eq(15)').text();
 
-    // ironman
-    $(document).on('click', '#id_phone_check', function(e) {
-    	if($("#id_phone_check").is(":checked")) {
-			$("#id_call_amount_option").attr("readonly", false);
-    	} else {
-    		$("#id_call_amount_option").attr("readonly", true);
-    	}
+		if(tel_man==1) {
+			$("#id_call_time").val(tel_time);
+			$("#id_call_amount_option").val(tel_amount);
+		} else {
+			$("#id_call_time").val("");
+			$("#id_call_amount_option").val(0);
+		}
+
     });
 
     $(document).on('click', '#id_relief_check', function(e) {
@@ -1415,15 +1423,17 @@
 			//var tel_time = $(this).find('td:eq(13)').text();
 			//var tel_amount = $(this).find('td:eq(14)').text();	
 			//var tel_paid = $(this).find('td:eq(15)').text();	
-
-	    	//alert(tel_status);
 	    	
 	   		if(tel_status==1) {	   			
 	   			$("#id_phone_check").prop("checked", true);
-	   			$("#id_call_time").attr("disabled", false);
-	   			$("#id_call_amount_option").attr("disabled", false);   			
+	   			//$("#id_call_time").attr("disabled", false);
+	   			
+
 	   			$("#id_call_time").val(tel_time);
+	   			$("#id_call_amount_option").attr("disabled", false);
+	   			$("#id_call_amount_option").attr("readonly", false);
 	   			$("#id_call_amount_option").val(tel_amount);
+
 	   		} else {
 	   			$("#id_phone_check").prop("checked", false);
 	   			$("#id_call_time").attr("disabled", true);
