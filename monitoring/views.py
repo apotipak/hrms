@@ -909,7 +909,7 @@ def ajax_save_customer_schedule_plan(request):
 				sch_plan_list.append(record)
 
 			response = JsonResponse(data={
-				"message": "Saved success.",
+				"message": "บันทึกรายการสำเร็จ",
 				"class": "bg-success",
 				"sch_plan_list": list(sch_plan_list),
 				"is_saved": True,
@@ -1781,14 +1781,15 @@ def ajax_get_attendance_information(request):
 		sql += "Remark, ex_dof_amt "
 		sql += table + " "
 		
-		# print("sql 3 = " + str(sql))
+		print("______sql 3_____ = " + str(sql))
 
 		cursor.execute(sql, [cnt_id, attendance_date])
 		rows = cursor.fetchall()
 		
 		for row in rows:
-			# print(row[6])
-			if(row[6]):
+			print("____row[21] = " + str(row[21]))
+
+			if(row[21]):
 				absent=1
 			else:
 				absent=0
@@ -2137,6 +2138,8 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 	# ******* Rule 1 - Check Manpower *****
 	# ********** START ***********
 	sql = "select count(*) from v_dlyplan_shift where cnt_id='" + str(cnt_id) + "' and left(remark,2)='" + str(remark) + "' and shf_type=" + str(job_type) + " and absent=0 and dly_date='" + str(dly_date) + "'"
+	print("____sql1____ = " + str(sql))
+
 	cursor = connection.cursor()
 	cursor.execute(sql)
 	row = cursor.fetchone()
@@ -2183,7 +2186,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 					sql = "select count(*) from his_dly_plan "
 
 				sql += "where cnt_id=" + str(cnt_id) + " and sch_shift=" + str(shift_id) + " and absent=0 and dly_date='" + str(dly_date) + "'"
-				print("sql = " + str(sql))
+				print("____sql2____ = " + str(sql))
 
 				cursor = connection.cursor()
 				cursor.execute(sql)
@@ -2294,7 +2297,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 				cursor.execute(sql)
 
 			is_pass = True
-			message = "Edit complete."
+			message = "บันทึกรายการสำเร็จ"
 		except db.OperationalError as e:
 			is_pass = False
 			message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
@@ -2910,7 +2913,7 @@ def editRecord_old(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_de
 				cursor.execute(sql)
 
 			is_pass = True
-			message = "Edit complete."
+			message = "บันทึกรายการสำเร็จ"
 		except db.OperationalError as e:
 			is_pass = False
 			message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
