@@ -716,6 +716,8 @@
 					result += "  </thead>";
 					result += "  <tbody class='sortable'>";
 
+					//ironman
+
 					if(data.employee_list.length>0) {
 						for(i=0; i<data.employee_list.length; i++) {
 							emp_id = data.employee_list[i]["emp_id"];
@@ -1301,14 +1303,12 @@
 		var absent = $(this).find('td:eq(0)').text();
 		// console.log("absent = " + absent);
 
-		// ironman
 		var emp_id = $(this).find('td:eq(2)').text();
 		var emp_fullname_th = $(this).find('td:eq(3)').text();
 		var sch_rank = $(this).find('td:eq(4)').text();
 		var shf_desc = $(this).find('td:eq(5)').text();	
 		var upd_gen = $(this).find('td:eq(21)').text();
 		var remark = $(this).find('td:eq(22)').text();
-		//alert(remark);
 
 		var tel_status = $(this).find('td:eq(11)').text();			
 		var tel_time = $(this).find('td:eq(13)').text();
@@ -1487,7 +1487,7 @@
 
 
 
-    // SAVE
+    // SAVE_BUTTON
     $(document).on('click', '#save_button', function(e) {
     	var AEdly = $("#id_add_new_record_status").val();
     	var dly_date = $("#id_dly_date").val();
@@ -1768,12 +1768,15 @@
 												//$('#id_schedule_option').text(result);
 												$('#id_schedule_option').text("");
 
+
+												// ironman
 												// Get Employee info
 												result = "";
 												result += "<font size='2em;'>";
 												result += "<table id='employee_list_table' class='table table-responsive table-sm table-condensed table-wrapper-scroll-y my-custom-scrollbar'>";
 												result += "  <thead>";
 												result += "    <tr>";
+												result += "      <th scope='col' class='d-none' nowrap>Absent Status</th>";
 												result += "      <th scope='col'>&nbsp;</th>";
 												result += "      <th scope='col' nowrap>Emp ID</th>";
 												result += "      <th scope='col' nowrap>Name</th>";
@@ -1784,7 +1787,8 @@
 												result += "      <th scope='col'>Relief</th>";
 												result += "      <th scope='col' nowrap>Rel. ID</th>";
 												result += "      <th scope='col'>Name</th>";
-												result += "      <th scope='col'>TEL</th>";
+												result += "      <th scope='col' class='d-none'>Tel Status</th>";
+												result += "      <th scope='col'>Tel</th>";
 												result += "      <th scope='col' nowrap>Call Time</th>";
 												result += "      <th scope='col' nowrap>Call Amt</th>";
 												result += "      <th scope='col' nowrap>Call Paid</th>";
@@ -1794,7 +1798,7 @@
 												result += "      <th scope='col' nowrap>Upd By</th>";
 												result += "      <th scope='col' nowrap>Upd Flag</th>";
 												result += "      <th scope='col' class='d-none' nowrap>Upd Gen</th>";
-												result += "      <th scope='col' class='d-none' nowrap>Remark</th>";
+												result += "      <th scope='col' class='d-none'>Remark</th>";
 												result += "    </tr>";
 												result += "  </thead>";
 												result += "  <tbody class='sortable'>";
@@ -1820,10 +1824,11 @@
 														remark = data.employee_list[i]["remark"];
 
 														result += "    <tr>";							
+														result += "	     <td class='d-none'>" + absent + "</td>";
 														if(absent==1) {
-															result += "	     <td><font class='text-danger'>x</font></td>";
+															result += "	     <td><font class='text-danger'><i class='fas fa-times fa-xs'></i></font></td>";
 														} else {
-															result += "	     <td>&nbsp</td>";
+															result += "	     <td><font class='text-success'><i class='fas fa-check fa-xs'></i></font></td>";
 														}
 														
 														result += "	     <td>" + emp_id + "</td>";
@@ -1832,11 +1837,18 @@
 														result += "	     <td nowrap>" + shf_desc + "</td>";
 														result += "	     <td></td>";
 														result += "	     <td></td>";
+
+														//result += "	     <td>" + relief + "</td>";
+														if(relief)
+															result += "	     <td class='text-center'><i class='fas fa-check fa-xs'></i></td>";
+														else
+															result += "	     <td></td>";
+
+														result += "	     <td>" + relief_id + "</td>";
 														result += "	     <td></td>";
-														result += "	     <td></td>";
-														result += "	     <td></td>";
+														result += "	     <td class='text-center d-none'>" + tel_status + "</td>";
 														result += "	     <td class='text-center'>" + tel_man + "</td>";
-														result += "	     <td>" + tel_time + "</td>";
+														result += "	     <td nowrap>" + tel_time + "</td>";
 														result += "	     <td>" + tel_amt + "</td>";
 														result += "	     <td>" + tel_paid + "</td>";
 														result += "	     <td>" + parseInt(spare) + "</td>";
