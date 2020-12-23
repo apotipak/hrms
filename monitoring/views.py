@@ -2271,11 +2271,172 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 
 	# กรณีพนักงานยังแจ้งเวรไม่เกินจำนวนที่อยู่ในสัญญา
 	# Check #7 - checkValidInput()
-	is_pass, message = chkValidInput(2,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM)
+	# is_pass, message = chkValidInput(2,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM)
+	is_pass, message = chkValidInput(2,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,tel_man,tel_time,tel_amount,relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount)
 	# ironman 1
-
-	# if is_pass:		
+	
+	if is_pass:
 		# TODO: Call SetVariable("DLY_PLAN")
+		# ------------- START ----------------
+		
+		# TODO: ตรวจสอบการใช้งานค่านี้อีกครั้ง
+		tsch_no = 0 
+
+		# TODO: เลือกว่าจะใช้รหัสโซนไหนระหว่าง รหัสโซนของหน่วยงาน หรือ รหัสโซนของพนักงาน
+		if emp_id is not None:
+			tdept_id = 0
+		else:
+			tdpet_id = 0
+
+
+		# TODO: กำหนดค่า tel_paid
+		tel_paid = 0
+		if tel_man == 1:
+			if tel_amount > 0:
+				tel_paid = 1
+			else:
+				tel_paid = 0
+		else:
+			tel_paid = 0
+
+		# TODO: Check Time cross
+		# if rea_timecross==57:
+
+		# ------------- END ----------------
+
+
+		# ถ้าหากขาดงานและมีคนมาแทน คนที่ขาดจะตั้ง Tday7=0 แต่คนมาแทนต้องตั้ง Tday7=1
+		
+		# TODO: หาว่าค่านี้ถูกเซ็ทตั้งต้นมาจากไหนใน HRMS
+		tday7 = 0
+
+		if absent_status==1 and relief_status==1 and relief_emp_id is not None:
+			message = relief_emp_id
+			tday7tmp = tday7
+			tday7 = 0
+
+
+		# ทำการบันทึกข้อมูลกรณีแก้ไขข้อมูลเก่า
+		# TODO: UpdListName("DLY_PLAN")
+		if dly_date==today_date.date():
+			sql = "update dly_plan set "
+		elif dly_date < today_date.date():
+			# เช็คล็อคอินยูสเซอร์เป็น CMS_SUP หรือไม่
+			if username=='CMS_SUP':
+				sql = "update his_dly_plan set "
+			else:
+				is_pass = False
+				message = "ไม่มีสิทธิ์ทำรายการ"
+				return is_pass, message
+		else:
+			is_pass = False
+			message = "เลือกวันที่ทำรายการไม่ถูกต้อง"
+			return is_pass, message
+
+		upd_date = str(datetime.datetime.now())[:-3]
+
+		sql += "sch_no=" + str(tsch_no) + ","
+		sql += "dept_id=" + str(tdept_id) + ","
+		sql += "sch_rank='" + str(emp_rank) + "',"
+		sql += "prd_id='" + "D120122" + "',"
+		sql += "absent=" + str(absent_status) + ","
+		sql += "late=" + str(late_status) + ","
+		sql += "late_full=" + str(0) + ","
+		sql += "relieft=" + str(relief_status) + ","
+		sql += "relieft_id=" + str(relief_emp_id) + ","
+		sql += "tel_man=" + str(tel_man) + ","
+		sql += "tel_time='" + str(tel_time) + "',"
+		sql += "tel_amt=" + str(tel_amount) + ","
+		sql += "tel_paid=" + str(tel_paid) + ","
+		sql += "ot=" + str(0) + ","
+		sql += "ot_reason=" + str(0) + ","
+		sql += "ot_time_frm=null" + ","
+		sql += "ot_time_to=null" + ","
+		sql += "ot_hr_amt=" + str(0) + ","
+		sql += "ot_pay_amt=" + str(0) + ","
+		sql += "spare=" + str(0) + ","
+		sql += "wage_id=32" + ","
+		sql += "wage_no='" + str("32SOY") + "',"
+		sql += "pay_type='" + str("") + "',"
+		sql += "soc=" + str(0) + ","
+		sql += "pub=" + str(0) + ","
+		sql += "dof=" + str(0) + ","
+		sql += "day7=" + str(0) + ","
+		sql += "upd_date='" + str(upd_date) + "',"
+		sql += "upd_by='" + str(username) + "',"
+		sql += "upd_flag='E'" + ","
+		sql += "remark='" + str(remark) + "' "
+		sql += "where cnt_id=" + str(cnt_id) + " "
+		sql += "and dly_date='" + str(dly_date) + "' "
+		sql += "and emp_id=" + str(emp_id) + " "
+		sql += "and sch_shift=" + str(shift_id)
+
+		print(sql)
+
+		'''
+		try:
+			with connection.cursor() as cursor:
+				cursor.execute(sql)
+			is_pass = True
+			message = "บันทึกรายการสำเร็จ"
+		except db.OperationalError as e:
+			is_pass = False
+			message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+		except db.Error as e:
+			is_pass = False
+			message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+		'''
+
+		# ถ้าหากขาดงานและมีคนมาแทนจะต้อเพิ่มรายการคนที่แทนอีก 1 รายการ
+		if emp_id is not None and absent_status==1 and relief_status==1 and relief_emp_id is not None:
+			# TODO: get relief employee id rank
+			# TODO: กำหนดค่า Tday7 | คนลาให้ Tday7=0 คนมาแทนให้ Tday7=1
+
+			if dly_date==today_date.date():
+				sql = "insert into dly_plan "
+			elif dly_date < today_date.date():
+				if username=="CMS_SUP":
+					sql = "insert into his_dly_plan "
+				else:
+					is_pass = False
+					message = "ไม่มีสิทธิ์ทำรายการ"
+					return is_pass, message
+			else:
+				is_pass = False
+				message = "เลือกวันที่ทำรายการไม่ถูกต้อง"
+				return is_pass, message
+
+			
+			sql += "(cnt_id,emp_id,dly_date,sch_shift"
+			sql += ",sch_no,dept_id,sch_rank,prd_id"
+			sql += ",absent,late,late_full,relieft,relieft_id"
+			sql += ",tel_man,tel_time,tel_amt,tel_paid"
+			sql += ",ot,ot_reason,ot_time_frm,ot_time_to,ot_hr_amt,ot_pay_amt"
+			sql += ",spare,wage_id,wage_no,pay_type,soc,pub,dof,day7"
+			sql += ",upd_date,upd_by,upd_flag,remark)"
+			sql += " values ("			
+			sql += str(cnt_id) + "," + str(relief_emp_id) + ",'" + str(dly_date) + "'," + str(shift_id) + ","
+			sql += "0" + "," + str(emp_dept) + ",'" + str(emp_rank) + "'," + "'D120121'" + ","
+			sql += "0" + "," + "0" + "," + "0" + "," + "0" + "," + "0" + ","
+			sql += "0" + "," + "NULL" + "," + "0" + "," + "0" + ","
+			sql += "0" + "," + "0" + "," + "NULL" + "," + "NULL" + "," + "0" + "," + "0" + ","
+			sql += "0" + "," + "32" + "," + "'32SOY'" + "," + "NULL" + "," + "0" + "," + "0" + "," + str(0) + "," + str(1) + ",'"
+			sql += str(upd_date) + "','" + str(username) + "'," + "'A'" + ",'" + str(remark) + "')"
+			print(sql)			
+
+			'''
+			try:
+				with connection.cursor() as cursor:
+					cursor.execute(sql)
+				is_pass = True
+				message = "บันทึกรายการสำเร็จ"
+			except db.OperationalError as e:
+				is_pass = False
+				message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+			except db.Error as e:
+				is_pass = False
+				message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+			'''
 
 	return is_pass, message
 
@@ -2547,7 +2708,8 @@ def editRecord_temp(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_d
 
 
 # ironman 2
-def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,relief_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM):
+# def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,relief_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM):
+def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,tel_man,tel_time,tel_amount,relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount):
 	is_pass = False
 	message = ""
 
@@ -2606,10 +2768,10 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 		# print("____relief_id = " + str(relief_id))
 		if absent_status==1 and relief_status==1:
 			# print("___Relief__=Y")
-			if relief_id is not None:
+			if relief_emp_id is not None:
 				
 
-				sql = "select emp_id,upd_flag,emp_term_date from v_employee where emp_id=" + str(relief_id)				
+				sql = "select emp_id,upd_flag,emp_term_date from v_employee where emp_id=" + str(relief_emp_id)				
 				cursor = connection.cursor()
 				cursor.execute(sql)
 				employeeobj = cursor.fetchone()
@@ -2656,7 +2818,7 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 			sql = "select a.*,b.shf_type,b.shf_time_frm,b.shf_time_to"
 			sql += " from dly_plan a left join t_shift b on a.sch_shift=b.shf_id"
 			sql += " where a.dly_date='" + str(dly_date) + "'"
-			sql += " and a.emp_id=" + str(relief_id)
+			sql += " and a.emp_id=" + str(relief_emp_id)
 			sql += " and a.absent=0"
 			# print("____sql=" + str(sql))			
 			cursor = connection.cursor()
@@ -2671,7 +2833,7 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 				return is_pass, message
 			
 		# ห้ามลงรายการซ้ำ ถ้าเพิ่มรายการใหม่ สำหรับคนที่มาแทน แทนหลายคนในหน่วยเดียวกันไม่ได้
-		if relief_status==1 and relief_id is not None:
+		if relief_status==1 and relief_emp_id is not None:
 			# GetShiftOrder
 			getShiftOrder = 0
 			sql = "select shf_order from t_shift where shf_id=" + shift_id
@@ -2686,7 +2848,7 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 			# เช็คห้ามคนที่มาแทนลงงานที่อื่นในกะเดียวกัน วันเดียวกัน
 			checkDupDly = 0
 			sql = "select * from dly_plan where dly_date='" + str(dly_date) + "'"
-			sql += " and emp_id=" + str(relief_id)
+			sql += " and emp_id=" + str(relief_emp_id)
 			sql += " and absent=0"
 			sql += " and dbo.shforder(sch_shift)=" + str(getShiftOrder)
 			# print("___sql = " + str(sql))
@@ -2710,7 +2872,7 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 			# สำหรับ Relief Employee ID ห้ามลงรายการซ้ำในสัญญาเดียวกัน วันเดียวกัน กะเดียวกัน
 			checkDupDly = 0
 			sql = "select * from dly_plan where cnt_id=" + str(cnt_id) + " and dly_date='" + str(dly_date) + "'"
-			sql += " and emp_id=" + str(relief_id)
+			sql += " and emp_id=" + str(relief_emp_id)
 			sql += " and sch_shift=" + str(shift_id)
 			cursor = connection.cursor()
 			cursor.execute(sql)
@@ -2750,12 +2912,12 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 				if chkDOF:
 					print("TODO: CheckEmpDOF()")
 						
-			if relief_id is not None and absent_status==1:
+			if relief_emp_id is not None and absent_status==1:
 				print("TODO: ChkDOF()")
 				print("TODO: CheckEmpDOF()")
 				print("TODO: ChkDOF")
 				chkDOF = False
-				sql = "select * from sys_gpmdof where emp_id=" + str(relief_id) + " and dly_date='" + str(dly_date) + "'"
+				sql = "select * from sys_gpmdof where emp_id=" + str(relief_emp_id) + " and dly_date='" + str(dly_date) + "'"
 				cursor = connection.cursor()
 				cursor.execute(sql)
 				record = cursor.fetchone()
