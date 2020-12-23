@@ -883,22 +883,22 @@
 
 
 					if(data.totalNDM>=0)
-						$("#totalNDM").html("<span class='text-success'>" + data.totalNDM + "</span>");
+						$("#totalNDM").html("<span class='text-danger'>" + data.totalNDM + "</span>");
 					else
 						$("#totalNDM").html("<span class='text-danger'>" + data.totalNDM + "</span>");
 
 					if(data.totalNNM>=0)
-						$("#totalNNM").html("<span class='text-success'>" + data.totalNNM + "</span>");						
+						$("#totalNNM").html("<span class='text-danger'>" + data.totalNNM + "</span>");						
 					else
 						$("#totalNNM").html("<span class='text-danger'>" + data.totalNNM + "</span>");
 					
 					if(data.totalPDM>=0)
-						$("#totalPDM").html("<span class='text-success'>" + data.totalPDM + "</span>");						
+						$("#totalPDM").html("<span class='text-danger'>" + data.totalPDM + "</span>");						
 					else
 						$("#totalPDM").html("<span class='text-danger'>" + data.totalPDM + "</span>");
 
 					if(data.totalPNM>=0)
-						$("#totalPNM").html("<span class='text-success'>" + data.totalPNM + "</span>");						
+						$("#totalPNM").html("<span class='text-danger'>" + data.totalPNM + "</span>");						
 					else
 						$("#totalPNM").html("<span class='text-danger'>" + data.totalPNM + "</span>");
 
@@ -1574,6 +1574,8 @@
 
 
     function saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,tel_man,tel_time,tel_amount,absent_status,relief_status) {
+
+    	
 		var late_status = 0;
 		if($("#id_late_check").is(":checked"))
 			late_status = 1;
@@ -1913,22 +1915,22 @@
 												$("#totalPNA").html(data.totalPNA);
 
 												if(data.totalNDM>=0)
-													$("#totalNDM").html("<span class='text-success'>" + data.totalNDM + "</span>");
+													$("#totalNDM").html("<span class='text-danger'>" + data.totalNDM + "</span>");
 												else
 													$("#totalNDM").html("<span class='text-danger'>" + data.totalNDM + "</span>");
 
 												if(data.totalNNM>=0)
-													$("#totalNNM").html("<span class='text-success'>" + data.totalNNM + "</span>");						
+													$("#totalNNM").html("<span class='text-danger'>" + data.totalNNM + "</span>");						
 												else
 													$("#totalNNM").html("<span class='text-danger'>" + data.totalNNM + "</span>");
 												
 												if(data.totalPDM>=0)
-													$("#totalPDM").html("<span class='text-success'>" + data.totalPDM + "</span>");						
+													$("#totalPDM").html("<span class='text-danger'>" + data.totalPDM + "</span>");						
 												else
 													$("#totalPDM").html("<span class='text-danger'>" + data.totalPDM + "</span>");
 
 												if(data.totalPNM>=0)
-													$("#totalPNM").html("<span class='text-success'>" + data.totalPNM + "</span>");						
+													$("#totalPNM").html("<span class='text-danger'>" + data.totalPNM + "</span>");						
 												else
 													$("#totalPNM").html("<span class='text-danger'>" + data.totalPNM + "</span>");
 
@@ -2068,7 +2070,11 @@
 				  	});    			
 					$('#id_relief_emp_id').focus();
 					return false;    			
+	    		} else {
+	    			saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,tel_man,tel_time,tel_amount,absent_status,relief_status);
+	    			return false;
 	    		}
+
     		} else {
     			saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,tel_man,tel_time,tel_amount,absent_status,relief_status);
     			return false;
@@ -2080,7 +2086,7 @@
 					$.confirm({
 					    title: 'Confirmation',
 					    type: 'red',
-					    content: 'ยืนยันที่จะใช้ค่าโทรแจ้งเวรเป็น 0 บาท',
+					    content: 'ยืนยันที่จะใช้ข้อมูลค่าโทรแจ้งเวร 0 บาท',
 						animation: 'zoom',
 					    animationBounce: 1.5,
 					    closeIcon: true,
@@ -2306,22 +2312,22 @@
 												*/
 
 												if(data.totalNDM>=0)
-													$("#totalNDM").html("<span class='text-success'>" + data.totalNDM + "</span>");
+													$("#totalNDM").html("<span class='text-danger'>" + data.totalNDM + "</span>");
 												else
 													$("#totalNDM").html("<span class='text-danger'>" + data.totalNDM + "</span>");
 
 												if(data.totalNNM>=0)
-													$("#totalNNM").html("<span class='text-success'>" + data.totalNNM + "</span>");						
+													$("#totalNNM").html("<span class='text-danger'>" + data.totalNNM + "</span>");						
 												else
 													$("#totalNNM").html("<span class='text-danger'>" + data.totalNNM + "</span>");
 												
 												if(data.totalPDM>=0)
-													$("#totalPDM").html("<span class='text-success'>" + data.totalPDM + "</span>");						
+													$("#totalPDM").html("<span class='text-danger'>" + data.totalPDM + "</span>");						
 												else
 													$("#totalPDM").html("<span class='text-danger'>" + data.totalPDM + "</span>");
 
 												if(data.totalPNM>=0)
-													$("#totalPNM").html("<span class='text-success'>" + data.totalPNM + "</span>");						
+													$("#totalPNM").html("<span class='text-danger'>" + data.totalPNM + "</span>");						
 												else
 													$("#totalPNM").html("<span class='text-danger'>" + data.totalPNM + "</span>");
 
