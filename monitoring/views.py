@@ -44,7 +44,7 @@ def ScheduleMaintenance(request):
 	    employee_photo = b64encode(employee_info.image).decode("utf-8")        
 
 	if request.method == "POST":
-		print("POST: ScheduleMaintenance()")
+		# print("POST: ScheduleMaintenance()")
 		if form.is_valid():          
 			form = ScheduleMaintenanceForm(request.POST, user=request.user)
 			response_data['form_is_valid'] = True            
@@ -52,7 +52,7 @@ def ScheduleMaintenance(request):
 			response_data['form_is_valid'] = False
 		return JsonResponse(response_data)     
 	else:
-		print("GET: ScheduleMaintenance()")
+		# print("GET: ScheduleMaintenance()")
 		form = ScheduleMaintenanceForm()
 
 	return render(request, template_name, {'page_title': page_title, 'project_name': project_name, 'project_version': project_version, 'db_server': db_server, 'today_date': today_date, 'form': form, 'employee_photo': employee_photo})
@@ -66,7 +66,7 @@ def ajax_get_customer(request):
 	cus_vol = request.POST.get('cus_vol')
 	cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
 	
-	print("cnt_id = " + str(cnt_id))
+	# print("cnt_id = " + str(cnt_id))
 
 	# if cus_id is not None and cus_brn is not None:
 	if cnt_id is not None:
@@ -97,7 +97,7 @@ def ajax_get_customer(request):
 			# Contract Services
 			try:
 				cus_service = CusService.objects.all().filter(cnt_id=cnt_id).exclude(upd_flag='D').order_by('-srv_active')				
-				print("cus_service is found")
+				# print("cus_service is found")
 				cus_service_list=[]
 				for d in cus_service:
 					if d.srv_active:
@@ -129,13 +129,13 @@ def ajax_get_customer(request):
 						}
 						cus_service_list.append(record)		
 			except CusService.DoesNotExist:
-				print("cus_service is not found")
+				# print("cus_service is not found")
 				cus_service_list=[]
 
 			# SCH_PLAN			
 			try:
 				sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).filter(sch_date_to='2999-12-31').exclude(upd_flag='D').order_by('-upd_date')
-				print("sch_plan is found")
+				# print("sch_plan is found")
 				sch_plan_list = []
 				for d in sch_plan:
 					if d.sch_active:
@@ -173,7 +173,7 @@ def ajax_get_customer(request):
 						}
 						sch_plan_list.append(record)			    
 			except SchPlan.DoesNotExist:
-				print("sch_plan is not found")
+				# print("sch_plan is not found")
 				sch_plan_list = []
 
 			# CUS_MAIN
@@ -325,7 +325,7 @@ def ajax_get_customer(request):
 			    response.status_code = 200
 			    return response			    	
 		except CusContract.DoesNotExist:
-			print("ajax_get_customer() - Customer Number is not found.")
+			# print("ajax_get_customer() - Customer Number is not found.")
 			response = JsonResponse(data={
 			    "success": True,
 			    "class": "bg-danger",
@@ -403,20 +403,20 @@ def ajax_get_customer_schedule_plan_list(request):
     cus_vol = request.POST.get('cus_vol')
     sch_active = request.POST.get("sch_active")	
     cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
-    print("cnt_id = " + str(cnt_id))
-    print("sch_active = " + str(sch_active))
+    # print("cnt_id = " + str(cnt_id))
+    # print("sch_active = " + str(sch_active))
 
     try:    	
-    	print("sch_plan is found")
+    	# print("sch_plan is found")
     	sch_plan_list = []
     	total = 0
 
     	if sch_active == '1':
     		sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).filter(sch_date_to='2999-12-31').exclude(upd_flag='D').order_by('-upd_date')
-    		print("sch")
+    		# print("sch")
 
 	    	for d in sch_plan:	
-	    		print("Active - " + str(d.cnt_id) + "," + str(d.sch_rank))
+	    		# print("Active - " + str(d.cnt_id) + "," + str(d.sch_rank))
 	    		if d.sch_active:
 	    			if d.relief:
 	    				relief = 1
@@ -454,7 +454,7 @@ def ajax_get_customer_schedule_plan_list(request):
     	elif sch_active == '2':
     		sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).exclude(upd_flag='D').exclude(sch_date_to='2999-12-31').order_by('-upd_date', 'emp_id')
 	    	for d in sch_plan:    		
-	    		print("Pending - " + str(d.cnt_id) + "," + str(d.sch_rank))
+	    		# print("Pending - " + str(d.cnt_id) + "," + str(d.sch_rank))
     			if d.relief:
     				relief = 1
     			else:
@@ -491,7 +491,7 @@ def ajax_get_customer_schedule_plan_list(request):
     	elif sch_active == '3':
     		sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).exclude(upd_flag='D').order_by('-upd_date', 'emp_id')
 	    	for d in sch_plan:
-	    		print("All - " + str(d.cnt_id) + "," + str(d.sch_rank))
+	    		# print("All - " + str(d.cnt_id) + "," + str(d.sch_rank))
     			if d.relief:
     				relief = 1
     			else:
@@ -526,11 +526,11 @@ def ajax_get_customer_schedule_plan_list(request):
     			}
     			sch_plan_list.append(record)	    	
     	else:
-	    	print("sch_plan is not found")    	
+	    	# print("sch_plan is not found")    	
 	    	sch_plan_list = []
 
     except SchPlan.DoesNotExist:
-    	print("sch_plan is not found")    	
+    	# print("sch_plan is not found")    	
     	sch_plan_list = []
 
     response = JsonResponse(data={
@@ -554,7 +554,7 @@ def ajax_get_customer_schedule_plan(request):
     cus_vol = request.POST.get('cus_vol')
     sch_no = request.POST.get("sch_no")	
     cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
-    print("sch_no = " + str(sch_no))
+    # print("sch_no = " + str(sch_no))
 
     try:
     	sch_plan = SchPlan.objects.filter(sch_no=sch_no).get()
@@ -641,10 +641,10 @@ def ajax_save_customer_schedule_plan(request):
 	print("*********************************************")
 
 	selected_sch_no = request.POST.get("selected_sch_no")	
-	print("selected_sch_no = " + str(selected_sch_no))
+	# print("selected_sch_no = " + str(selected_sch_no))
 
 	selected_service_id = request.POST.get("selected_service_id")	
-	print("selected_service_id = " + str(selected_service_id))
+	# print("selected_service_id = " + str(selected_service_id))
 
 	cus_id = request.POST.get('cus_id')
 	cus_brn = request.POST.get('cus_brn')
@@ -665,7 +665,7 @@ def ajax_save_customer_schedule_plan(request):
 	duration_from = request.POST.get("duration_from")
 	duration_to = request.POST.get("duration_to")
 	contract_list_filter_option = request.POST.get("contract_list_filter_option")
-	print("contract_list_filter_option = " + str(contract_list_filter_option))
+	# print("contract_list_filter_option = " + str(contract_list_filter_option))
 
 	sch_plan_list = []
 
@@ -702,7 +702,7 @@ def ajax_save_customer_schedule_plan(request):
 	
 		# Generate new sch_no
 		new_sch_no = str(selected_service_id) + str(new_sch_no).zfill(4)
-		print("new_sch_no = " + str(new_sch_no))
+		# print("new_sch_no = " + str(new_sch_no))
 
 		# RULE-1: Check if an employee is existed in another schedule		
 		# employee = SchPlan.objects.filter(emp_id=emp_id).exclude(upd_flag='D').exclude(sch_active="")
@@ -835,8 +835,8 @@ def ajax_save_customer_schedule_plan(request):
 
 
 	else:
-		print("update existing");
-		print("selected_sch_no = " + str(selected_sch_no))
+		# print("update existing");
+		# print("selected_sch_no = " + str(selected_sch_no))
 
 		try:
 			sch_plan = SchPlan.objects.filter(sch_no=selected_sch_no).get()
@@ -946,34 +946,34 @@ def ajax_get_employee_list(request):
 	if emp_id is not None:
 	    if emp_id != "":
 	        if emp_id.isnumeric():
-	            print("debug11")
+	            # print("debug11")
 	            data = Employee.objects.all().filter(emp_type__exact='D1').filter(empstatus='A').exclude(upd_flag='D').order_by('emp_id')
 	        else:
-	            print("debug22")
+	            # print("debug22")
 	            data = Employee.objects.all().filter(emp_type__exact='D1').filter(empstatus='A').exclude(upd_flag='D').order_by('emp_id')
 	    else:
-	        print("debug33")
+	        # print("debug33")
 	        data = Employee.objects.all().filter(emp_type__exact='D1').filter(empstatus='A').exclude(upd_flag='D').order_by('emp_id')
 	else:		
-		print("debug44")
+		# print("debug44")
 		search_option = request.GET.get('search_option')
 		search_key = request.GET.get('search_key')
 		if search_option=="1":
 			# Search employee by emp_id
-			print("1111")
+			# print("1111")
 			if search_key.isnumeric():
-				print("1111-1")
+				# print("1111-1")
 				data = Employee.objects.filter(emp_type__exact='D1').filter(empstatus='A').exclude(upd_flag='D').filter(emp_id=search_key).order_by('emp_id').all()
 			else:
-				print("1111-2")
+				# print("1111-2")
 				data = []
 			
 		elif search_option=="2":
-			print("2222")
-			print("search_key = " + str(search_key))
+			# print("2222")
+			# print("search_key = " + str(search_key))
 			data = Employee.objects.filter(emp_type__exact='D1').filter(empstatus='A').exclude(upd_flag='D').filter(emp_fname_th__startswith=search_key).order_by('emp_id').all()
 		else:
-			print("3333")
+			# print("3333")
 			data = Employee.objects.filter(emp_type__exact='D1').filter(empstatus='A').exclude(upd_flag='D').filter(emp_fname_en__startswith=search_key).order_by('emp_id').all()
 
 	paginator = Paginator(data, item_per_page)
@@ -987,10 +987,10 @@ def ajax_get_employee_list(request):
 
 	if current_page:
 		try:
-			print("debug 1")
+			# print("debug 1")
 			current_page = paginator.get_page(page)
 		except InvalidPage as e:
-			print("debug 2")
+			# print("debug 2")
 			raise Http404(str(e))
 
 		if current_page:
@@ -1049,13 +1049,13 @@ def ajax_get_employee_list(request):
 		    response.status_code = 200
 		    return response
 		else:
-			print("debug 3")
-			print("error 403")
+			# print("debug 3")
+			# print("error 403")
 			response = JsonResponse({"error": "there was an error"})
 			response.status_code = 403
 			return response
 	else:
-		print("debug 4")
+		# print("debug 4")
 		response = JsonResponse(
 			data={
 			"success": True,
@@ -1083,18 +1083,18 @@ def ajax_get_employee(request):
 	cus_brn = request.GET.get('cus_brn')
 	cus_vol = request.GET.get('cus_vol')
 
-	relief_status = request.GET.get('relief_status')
+	relief_status = int(request.GET.get('relief_status'))
 	relief_emp_id = request.GET.get('relief_emp_id')	
 	
 	cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
 	employee_item = []
 
-	print("__emp_id = " + str(emp_id))
-	print("__relief_status = " + str(relief_status))
-	print("__relief_emp_id = " + str(relief_emp_id))
+	# print("__emp_id = " + str(emp_id))
+	# print("__relief_status = " + str(relief_status))
+	# print("__relief_emp_id = " + str(relief_emp_id))
 
 	if relief_status==1:
-		print("______________relief_status = 1")
+		# print("______________relief_status = 1")
 
 		if relief_emp_id is not None:			
 			try:
@@ -1202,7 +1202,7 @@ def ajax_get_employee(request):
 			return response				
 	else:
 		# กรณีพนักงาานลาแบบไม่มีคนแทน
-		print("..........Leave without relief")	
+		# print("..........Leave without relief")	
 
 		try:
 			emp_fname_th = ""
@@ -1298,7 +1298,7 @@ def ajax_get_employee(request):
 			return response
 
 		except Employee.DoesNotExist:
-			print("not found")
+			# print("not found")
 			response = JsonResponse(data={
 				"success": True,
 				"is_found": False,
@@ -1356,7 +1356,7 @@ def DailyAttendance(request):
 	    employee_photo = b64encode(employee_info.image).decode("utf-8")        
 
 	if request.method == "POST":
-		print("POST: ScheduleMaintenance()")
+		# print("POST: ScheduleMaintenance()")
 		if form.is_valid():          
 			form = ScheduleMaintenanceForm(request.POST, user=request.user)
 			response_data['form_is_valid'] = True            
@@ -1454,12 +1454,12 @@ def ajax_sp_generate_daily_attend(request):
 
 	# Get current period
 	period = getPeriod(generated_date)
-	print("period = " + str(period))
+	# print("period = " + str(period))
 
 	# Get current date
 	generated_date = datetime.datetime.strptime(generated_date, '%d/%m/%Y')	
 	generated_date = str(generated_date)[0:10]
-	print("generated_date : " + str(generated_date))
+	# print("generated_date : " + str(generated_date))
 
 	# TODO
 	cursor = connection.cursor()	
@@ -1497,7 +1497,7 @@ def ajax_sp_generate_daily_attend(request):
 
 def getPeriod(generated_date):
 	generated_date = datetime.datetime.strptime(generated_date, '%d/%m/%Y')
-	print(generated_date)
+	# print(generated_date)
 	try:
 		period = TPeriod.objects.filter(prd_date_frm__lte=generated_date).filter(prd_date_to__gte=generated_date).filter(emp_type='D1').get()
 		period = period.prd_id
@@ -1781,20 +1781,20 @@ def ajax_get_attendance_information(request):
 		sql += "Remark, ex_dof_amt "
 		sql += table + " "
 		
-		print("______sql 3_____ = " + str(sql))
+		# print("______sql 3_____ = " + str(sql))
 
 		cursor.execute(sql, [cnt_id, attendance_date])
 		rows = cursor.fetchall()
 		
 		for row in rows:
-			print("____row[21] = " + str(row[21]))
+			# print("____row[21] = " + str(row[21]))
 
 			if(row[21]):
 				absent=1
 			else:
 				absent=0
 			
-			print("tel_time = " + str(row[25]))
+			# print("tel_time = " + str(row[25]))
 
 			if row[24]==1:
 				tel_status = 1
@@ -2124,7 +2124,7 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 
 def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,tel_man,tel_time,tel_amount,relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount):
 
-	print("________allowZeroBathForPhoneAmount=" + str(allowZeroBathForPhoneAmount))
+	# print("________allowZeroBathForPhoneAmount=" + str(allowZeroBathForPhoneAmount))
 
 	is_pass = False
 	message = ""
@@ -2140,7 +2140,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 	# ******* Rule 1 - Check Manpower *****
 	# ********** START ***********
 	sql = "select count(*) from v_dlyplan_shift where cnt_id='" + str(cnt_id) + "' and left(remark,2)='" + str(remark) + "' and shf_type=" + str(job_type) + " and absent=0 and dly_date='" + str(dly_date) + "'"
-	print("____sql1____ = " + str(sql))
+	# print("____sql1____ = " + str(sql))
 
 	cursor = connection.cursor()
 	cursor.execute(sql)
@@ -2159,7 +2159,53 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 	if tel_man == 0:
 		if late_status == 0: 
 			if absent_status == 1 and relief_status == 1:
-				print("TODO")
+				if shift_id != 99:
+
+					# Get informNo
+					if dly_date == today_date.date():
+						sql = "select cnt_id, sch_shift from dly_plan "
+
+					if dly_date < today_date.date():
+						sql = "select cnt_id, sch_shift from his_dly_plan "
+
+					sql += "where cnt_id=" + str(cnt_id) + " and sch_shift=" + str(shift_id) + " and absent=0 and dly_date='" + str(dly_date) + "'"
+
+					cursor = connection.cursor()
+					cursor.execute(sql)
+					record = cursor.fetchone()
+					cursor.close
+					if record is not None:
+						informNo = record[0] if record[0]>0 else 0
+					else:
+						informNo = 0
+
+					# get srv_qty
+					sql = "select cnt_id, srv_shif_id, sum(srv_qty) as qty from cus_service where srv_active=1 and cnt_id=" + str(cnt_id) + " and srv_shif_id=" + str(shift_id) + " group by cnt_id, srv_shif_id"
+					cursor = connection.cursor()
+					cursor.execute(sql)
+					record = cursor.fetchone()
+					cursor.close
+
+					if record is not None:
+						contractNo = record[2]
+					else:
+						contractNo = 0
+
+					# print("contractNo = " + str(contractNo))
+
+					if informNo >= contractNo:
+						is_pass = False
+						message += "พนักงานที่แจ้งเวรมากกว่าที่มีอยู่ในสัญญา"
+					else:
+						is_pass = True
+						message = "Good to go."
+
+					# return is_pass, message
+				else:
+					is_pass = False
+					message = "Shift ID = 99"
+
+				# return is_pass, message
 	# ********** END ***********
 
 
@@ -2173,54 +2219,57 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 	# ********** END ***********
 
 
-	print("............tel_time = " + str(tel_time))
+	# print("............tel_time = " + str(tel_time))
 
 	# Check #6 - กรณีไม่ได้ลาหยุดให้ตรวจสอบ No person not more than contract
-	print("shift_id = " + str(shift_id))
-	print("absent_status = " + str(absent_status))
+	# print("shift_id = " + str(shift_id))
+	# print("absent_status = " + str(absent_status))
 
-	if late_status == 0:
-		if absent_status == 0:
-			if shift_id != 99:				
-				if dly_date == today_date.date():
-					sql = "select count(*) from dly_plan "
+	if phone_status == 0:
+		if late_status == 0:
+			if absent_status == 0:
+				if shift_id != 99:				
+					if dly_date == today_date.date():
+						sql = "select count(*) from dly_plan "
 
-				if dly_date < today_date.date():
-					sql = "select count(*) from his_dly_plan "
+					if dly_date < today_date.date():
+						sql = "select count(*) from his_dly_plan "
 
-				sql += "where cnt_id=" + str(cnt_id) + " and sch_shift=" + str(shift_id) + " and absent=0 and dly_date='" + str(dly_date) + "'"
-				print("____sql2____ = " + str(sql))
+					sql += "where cnt_id=" + str(cnt_id) + " and sch_shift=" + str(shift_id) + " and absent=0 and dly_date='" + str(dly_date) + "'"
+					# print("____sql2____ = " + str(sql))
 
-				cursor = connection.cursor()
-				cursor.execute(sql)
-				rows = cursor.fetchone()
-				cursor.close	
-				informNo = rows[0] if rows[0]>0 else 0
+					cursor = connection.cursor()
+					cursor.execute(sql)
+					rows = cursor.fetchone()
+					cursor.close	
+					informNo = rows[0] if rows[0]>0 else 0
 
-				# get srv_qty
-				sql = "select cnt_id, srv_shif_id, sum(srv_qty) as qty from cus_service where srv_active=1 and cnt_id=" + str(cnt_id) + " and srv_shif_id=" + str(shift_id) + " group by cnt_id, srv_shif_id"
-				cursor = connection.cursor()
-				cursor.execute(sql)
-				rows = cursor.fetchone()
-				cursor.close
-				srv_qty = rows[2]
+					# get srv_qty
+					sql = "select cnt_id, srv_shif_id, sum(srv_qty) as qty from cus_service where srv_active=1 and cnt_id=" + str(cnt_id) + " and srv_shif_id=" + str(shift_id) + " group by cnt_id, srv_shif_id"
+					cursor = connection.cursor()
+					cursor.execute(sql)
+					rows = cursor.fetchone()
+					cursor.close
+					srv_qty = rows[2]
 
-				print("inform_no = " + str(informNo))
-				print("srv_qty = " + str(srv_qty))
+					# print("inform_no = " + str(informNo))
+					# print("srv_qty = " + str(srv_qty))
 
-				if informNo >= srv_qty:
-					is_pass = False					
-					message = "Check #6 is failed - พนักงานที่แจ้งเวรมากกว่าที่มีอยู่ในสัญญา"
-					message = "พนักงานที่แจ้งเวรมากกว่าที่มีอยู่ในสัญญา: <b>" + str(cnt_id) + "</b>"
-					return is_pass, message
-				else:
-					is_pass = True # แจ้งเวรยังไม่เกินจำนวนที่อยู่ในสัญญา
-					message = "Check #6 is passed."
+					if informNo >= srv_qty:
+						is_pass = False					
+						message = "Check #6 is failed - พนักงานที่แจ้งเวรมากกว่าที่มีอยู่ในสัญญา"
+						message = "พนักงานที่แจ้งเวรมากกว่าที่มีอยู่ในสัญญา: <b>" + str(cnt_id) + "</b>"
+						return is_pass, message
+					else:
+						is_pass = True # แจ้งเวรยังไม่เกินจำนวนที่อยู่ในสัญญา
+						message = "Check #6 is passed."
 
-	# amnaj
+	
+
 	# กรณีพนักงานยังแจ้งเวรไม่เกินจำนวนที่อยู่ในสัญญา
 	# Check #7 - checkValidInput()
 	is_pass, message = chkValidInput(2,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM)
+	# ironman 1
 
 	# if is_pass:		
 		# TODO: Call SetVariable("DLY_PLAN")
@@ -2495,7 +2544,7 @@ def editRecord_temp(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_d
 	return is_pass, message
 
 
-#amnaj
+# ironman 2
 def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,relief_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM):
 	is_pass = False
 	message = ""
@@ -2554,6 +2603,7 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 		# เช็คกรณีมีการเข้าเวรแทน
 		print("____relief_id = " + str(relief_id))
 		if absent_status==1 and relief_status==1:
+			print("___Relief__=Y")
 			if relief_id is not None:
 				
 
@@ -2566,56 +2616,58 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 					# เช็คว่าพนักงานถูกลบออกจากระบบไปแล้วหรือไม่
 					if employeeobj[1] == 'D':
 						is_pass = False
-						message = "พนักงานคนนี้ไม่สามารถนำมาจัดตารางเวรได้เนื่องจากพนักงานโดนลบจากระบบ"
+						message = "พนักงานคนนี้ไม่สามารถเข้าเวรแทนได้เนื่องจากพนักงานโดนลบจากระบบ"
 						return is_pass, message
 
 					# เช็คว่าพนักงานลาออกหรือไม่
 					if employeeobj[2] is not None:
 						is_pass = False
-						message = "พนักงานคนนี้ไม่สามารถนำมาจัดตารางเวรได้เนื่องจาก" + " <u>ลาออก</u> " + "ตั้งแต่วันที่ <b>" + str(employeeobj[2].strftime("%d/%m/%Y")) + "</b>" #amnaj11						
+						message = "พนักงานคนนี้ไม่สามารถนำเข้าเวรแทนได้เนื่องจาก" + " <u>ลาออก</u> " + "ตั้งแต่วันที่ <b>" + str(employeeobj[2].strftime("%d/%m/%Y")) + "</b>"
 						return is_pass, message					
 
 					# หากไม่ติดเงื่อนไขข้างต้นให้ทำการอัพเดทข้อมูล
 					is_pass = True
 					message = "Pass - สามารถลงหน่วยงานแทนได้"
+
+					print(message)
+
 			else:
 				is_pass = False
-				message = "พนักงานคนนี้ไม่สามารถนำมาจัดตารางเวรได้เนื่องจากรหัสพนักงานไม่มีอยู่ในระบบ!"
-				return is_pass, message
+				message = "พนักงานคนนี้ไม่สามารถนำมาเข้าเวรแทนได้เนื่องจากรหัสพนักงานไม่มีอยู่ในระบบ!"
+		
 
-
-
-		'''
-		if is_pass:			
-			if phone_status==1:
-				if phone_amount==0 and phone_amount is None:
-					is_pass = False
-					message = "กรุณาป้อนค่าโทรศัพท์"
-				else:
-					is_pass = True
-
-			if is_pass:
-				if late_status==1 or ot_status==1:
-					print("TODO")
-
+		# เช็คห้ามลงงานที่อื่นในกะเดียวกัน วันเดียวกัน
 		if is_pass:
-			print("TODO")
-			# ห้ามลงงานที่อื่นในกะเดียวกัน วันเดียวกัน
 			if phone_status==1:
-				if ot_status==1:
-					if late_status==1:
-						if absent_status==0:
-							sql = ""
-		'''
+				print("Do nothing")
+			elif late_status==1:				
+				print("Do nothing")
+			elif absent_status==0:
+				print("TODO")
 
+		# เช็คป้องกันการกลับมาแก้ไข Absent หากรปภ.เข้าเวรอื่นอยู่และเวลาคร่อมกับหน่วยงานอื่น
+		if relief_status==1:
+
+			rea_timecross = 0
+
+			# Check between shift
+			sql = "select a.*,b.shf_type,b.shf_time_frm,b.shf_time_to"
+			sql += " from dly_plan a left join t_shift b on a.sch_shift=b.shf_id"
+			sql += " where a.dly_date='" + str(dly_date) + "'"
+			sql += " and a.emp_id=" + str(relief_id)
+			sql += " and a.absent=0"
+
+			print("____sql=" + str(sql))
+
+		return is_pass, message
 
 	# Case 3
 	if check_type==3:
 		is_pass = False
 		message = "check_type = 3 is not implemented."
-
-
-	return is_pass, message
+		return is_pass, message
+	
+	return False, "Validation is failed! Please contact admin"
 
 def editRecord_old(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM):
 	is_pass = True
@@ -3006,7 +3058,7 @@ def ajax_save_daily_attendance(request):
 	'''
 	
 	# print("remark : " + str(remark))
-	print(str(tel_man) + "," + str(tel_time) + "," + str(tel_amount))
+	# print(str(tel_man) + "," + str(tel_time) + "," + str(tel_amount))
 
 
 	if AEdly == 0: # EDIT MODE

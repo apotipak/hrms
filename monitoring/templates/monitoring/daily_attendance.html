@@ -1078,7 +1078,7 @@
 			cus_id = $('#id_cus_id').val();
 			cus_brn = $('#id_cus_brn').val();
 			cus_vol = $('#id_cus_vol').val();
-			emp_id = $('#id_emp_id').val();			
+			emp_id = $('#id_emp_id').val();	
 			shift_id = $("#id_shift_option").val();
 
 	    	var relief_status = 0;
@@ -1088,6 +1088,8 @@
 	    	} else {
 	    		relief_emp_id = null;
 	    	}
+
+	    	//alert(relief_status);
 
 			if(cus_id=="") {
 				alert("Please entet Customer ID.");
@@ -1575,7 +1577,7 @@
 
     function saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,tel_man,tel_time,tel_amount,absent_status,relief_status) {
 
-    	
+
 		var late_status = 0;
 		if($("#id_late_check").is(":checked"))
 			late_status = 1;

@@ -20,9 +20,9 @@ def getUSR_ID(username):
 	else:
 		usr_id = None
 	
-	print("username = " + str(username))
-	print('usr_id = ' + str(usr_id))
-	
+	# print("username = " + str(username))
+	# print('usr_id = ' + str(usr_id))
+
 	return usr_id
 
 
@@ -86,7 +86,8 @@ def getPriority(usr_id, form_name):
 				gPERMIT = True if policy[0][1]=='PSN' else False			
 
 			if gType != "":
-				print("TODO: GetGaray()")
+				message = ""
+				# print("TODO: GetGaray()")
 
 			getPrioity = True
 		else:
