@@ -122,7 +122,9 @@
 							<font size='2em;'>
 							<table id='employee_list_table' class='table table-responsive table-sm table-condensed table-wrapper-scroll-y my-custom-scrollbar'>
 							  <thead>
+
 							    <tr>
+							      <th scope='col' class='d-none' nowrap>Absent Status</th>
 							      <th scope="col">&nbsp;</th>
 							      <th scope="col" nowrap>Emp ID</th>
 							      <th scope="col">Name</th>
@@ -133,6 +135,7 @@
 							      <th scope="col">Relief</th>
 							      <th scope="col" nowrap>Rel. ID</th>
 							      <th scope="col">Name</th>
+							      <th scope='col' class='d-none'>Tel Status</th>
 							      <th scope="col">TEL</th>
 							      <th scope="col" nowrap>Call Time</th>
 							      <th scope="col" nowrap>Call Amt</th>
@@ -144,11 +147,13 @@
 							      <th scope="col" nowrap>Upd Flag</th>
 							      <th scope="col" class='d-none' nowrap>Upd Gen</th>
 							      <th scope="col" class='d-none' nowrap>Remark</th>
+							      <th scope='col' class='d-none'>Relief Status</th>
 							    </tr>
 							  </thead>
+
 							  <tbody>
 							    <tr>
-							      <td colspan="21" class="text-center"><br><br>There is no data.<br><br><br></td>
+							      <td colspan="24" class="text-center"><br><br>There is no data.<br><br><br></td>
 							    </tr>
 							  </tbody>
 							</table>
@@ -766,6 +771,7 @@
 					result += "      <th scope='col' nowrap>Upd Flag</th>";
 					result += "      <th scope='col' class='d-none' nowrap>Upd Gen</th>";
 					result += "      <th scope='col' class='d-none'>Remark</th>";
+					result += "      <th scope='col' class='d-none'>Relief Status</th>";
 					result += "    </tr>";
 					result += "  </thead>";
 					result += "  <tbody class='sortable'>";
@@ -833,6 +839,7 @@
 							result += "	     <td>" + upd_flag + "</td>";
 							result += "	     <td class='d-none'>" + upd_gen + "</td>";
 							result += "	     <td class='d-none'>" + remark + "</td>";
+							result += "	     <td class='d-none'>" + relief + "</td>";
 							result += "    </tr>";
 						}
 
@@ -847,7 +854,7 @@
 					}
 					else {
 							result += "    <tr class='text-center'>";
-							result += "	     <td colspan='20'><br><br>There is no data.<br><br><br></td>";
+							result += "	     <td colspan='24'><br><br>There is no data.<br><br><br></td>";
 							result += "	   </tr>"
 					}
 					result += "  </tbody>";
@@ -1333,11 +1340,12 @@
 		result += "      <th scope='col' nowrap>Upd Flag</th>";
 		result += "      <th scope='col' class='d-none' nowrap>Upd Gen</th>";
 		result += "      <th scope='col' class='d-none' nowrap>Remark</th>";
+		result += " 	 <th scope='col' class='d-none' nowrap>Relief Status</th>";
 		result += "    </tr>";
 		result += "  </thead>";
 		result += "  <tbody>";
 		result += "    <tr>";
-		result += "      <td colspan='20' class='text-center'><br><br>There is no data.<br><br><br></td>";
+		result += "      <td colspan='24' class='text-center'><br><br>There is no data.<br><br><br></td>";
 		result += "    </tr>";
 		result += "  </tbody>";
 		result += "</table>";
@@ -1387,8 +1395,11 @@
 		var tel_status = $(this).find('td:eq(11)').text();			
 		var tel_time = $(this).find('td:eq(13)').text();
 		var tel_amount = $(this).find('td:eq(14)').text();	
-		var tel_paid = $(this).find('td:eq(15)').text();		
+		var tel_paid = $(this).find('td:eq(15)').text();
 
+		var relief_status = $(this).find('td:eq(23)').text();
+		var relief_emp_id = $(this).find('td:eq(9)').text();
+		var relief_emp_fullname_th = $(this).find('td:eq(10)').text();
 
 		/*
 		result += "    <tr>";
@@ -1424,7 +1435,17 @@
 		$("#id_emp_fullname_th").val(emp_fullname_th);
 		$("#id_emp_id").val(emp_id);
 		$("#id_emp_rank").val(sch_rank);
-		$("#id_remark").val(remark);
+		$("#id_remark").val(remark);		
+
+		if(relief_status==1) {
+			$("#id_relief_check").prop("checked", true);
+			$("#id_relief_emp_id").val(relief_emp_id);
+			$("#id_relief_emp_fullname_th").val(relief_emp_fullname_th);
+		} else {
+			$("#id_relief_check").prop("checked", false);
+			$("#id_relief_emp_id").val("");
+			$("#id_relief_emp_fullname_th").val("");
+		}
 
 		// Get Employee information
 		$.ajax({
@@ -1817,6 +1838,7 @@
 												result += "      <th scope='col' nowrap>Upd Flag</th>";
 												result += "      <th scope='col' class='d-none' nowrap>Upd Gen</th>";
 												result += "      <th scope='col' class='d-none'>Remark</th>";
+												result += "      <th scope='col' class='d-none'>Relief Status</th>";
 												result += "    </tr>";
 												result += "  </thead>";
 												result += "  <tbody class='sortable'>";
@@ -1882,6 +1904,7 @@
 														result += "	     <td>" + upd_flag + "</td>";
 														result += "	     <td class='d-none'>" + upd_gen + "</td>";
 														result += "	     <td class='d-none'>" + remark + "</td>";
+														result += "	     <td class='d-none'>" + relief + "</td>";
 														result += "    </tr>";
 													}
 
@@ -2192,11 +2215,15 @@
 												$('#id_schedule_option').text("");
 
 												// Get Employee info
+
+												batman
 												result = "";
 												result += "<font size='2em;'>";
 												result += "<table id='employee_list_table' class='table table-responsive table-sm table-condensed table-wrapper-scroll-y my-custom-scrollbar'>";
+
 												result += "  <thead>";
 												result += "    <tr>";
+												result += "      <th scope='col' class='d-none' nowrap>Absent Status</th>";
 												result += "      <th scope='col'>&nbsp;</th>";
 												result += "      <th scope='col' nowrap>Emp ID</th>";
 												result += "      <th scope='col' nowrap>Name</th>";
@@ -2207,7 +2234,8 @@
 												result += "      <th scope='col'>Relief</th>";
 												result += "      <th scope='col' nowrap>Rel. ID</th>";
 												result += "      <th scope='col'>Name</th>";
-												result += "      <th scope='col'>TEL</th>";
+												result += "      <th scope='col' class='d-none'>Tel Status</th>";
+												result += "      <th scope='col'>Tel</th>";
 												result += "      <th scope='col' nowrap>Call Time</th>";
 												result += "      <th scope='col' nowrap>Call Amt</th>";
 												result += "      <th scope='col' nowrap>Call Paid</th>";
@@ -2218,8 +2246,9 @@
 												result += "      <th scope='col' nowrap>Upd Flag</th>";
 												result += "      <th scope='col' class='d-none' nowrap>Upd Gen</th>";
 												result += "      <th scope='col' class='d-none'>Remark</th>";
+												result += "      <th scope='col' class='d-none'>Relief Status</th>";
 												result += "    </tr>";
-												result += "  </thead>";
+												result += "  </thead>";												
 												result += "  <tbody class='sortable'>";
 
 												if(data.employee_list.length>0) {
@@ -2242,8 +2271,6 @@
 														upd_gen = data.employee_list[i]["upd_gen"];
 														
 														remark = data.employee_list[i]["remark"];
-														//remark = "aa";
-
 
 														result += "    <tr>";							
 														if(absent==1) {
@@ -2272,6 +2299,7 @@
 														result += "	     <td>" + upd_flag + "</td>";
 														result += "	     <td>" + upd_gen + "</td>";
 														result += "	     <td>" + remark + "</td>";
+														result += "	     <td>" + relief + "</td>";
 														result += "    </tr>";
 													}
 
