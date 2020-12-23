@@ -2318,6 +2318,10 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 			tday7tmp = tday7
 			tday7 = 0
 
+		print("relief_status = " + str(relief_status))
+		print("relief_emp_id = " + str(relief_emp_id))
+		if relief_status==0:
+			relief_emp_id = 0
 
 		# ทำการบันทึกข้อมูลกรณีแก้ไขข้อมูลเก่า
 		# TODO: UpdListName("DLY_PLAN")
@@ -2373,8 +2377,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		sql += "and dly_date='" + str(dly_date) + "' "
 		sql += "and emp_id=" + str(emp_id) + " "
 		sql += "and sch_shift=" + str(shift_id)
-
-		# print(sql)
+		# print("sql 1 " + str(sql))
 
 		try:
 			with connection.cursor() as cursor:
@@ -2387,6 +2390,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		except db.Error as e:
 			is_pass = False
 			message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+
 
 		# ถ้าหากขาดงานและมีคนมาแทนจะต้อเพิ่มรายการคนที่แทนอีก 1 รายการ
 		if emp_id is not None and absent_status==1 and relief_status==1 and relief_emp_id is not None:
@@ -2422,7 +2426,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 			sql += "0" + "," + "0" + "," + "NULL" + "," + "NULL" + "," + "0" + "," + "0" + ","
 			sql += "0" + "," + "32" + "," + "'32SOY'" + "," + "NULL" + "," + "0" + "," + "0" + "," + str(0) + "," + str(1) + ",'"
 			sql += str(upd_date) + "','" + str(username) + "'," + "'A'" + ",'" + str(remark) + "')"
-			print(sql)			
+			print("sql 2 " + str(sql))
 
 			try:
 				with connection.cursor() as cursor:

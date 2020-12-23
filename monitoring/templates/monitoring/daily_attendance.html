@@ -777,9 +777,9 @@
 					result += "  <tbody class='sortable'>";
 
 
-					// amazon 1
+					// batman
 					if(data.employee_list.length>0) {
-						//alert("111");
+						
 						for(i=0; i<data.employee_list.length; i++) {
 							emp_id = data.employee_list[i]["emp_id"];
 							emp_fname_th = data.employee_list[i]["emp_fname_th"];
@@ -1886,7 +1886,7 @@
 
 														//result += "	     <td>" + relief + "</td>";
 														if(relief)
-															result += "	     <td class='text-center'><i class='fas fa-check fa-xs'></i></td>";
+															result += "	     <td class='text-center'><font class='text-success'<i class='fas fa-check fa-xs'></i></font></td>";
 														else
 															result += "	     <td></td>";
 
@@ -2214,9 +2214,7 @@
 												//$('#id_schedule_option').text(result);
 												$('#id_schedule_option').text("");
 
-												// Get Employee info
-
-												batman
+												// Get Employee info												
 												result = "";
 												result += "<font size='2em;'>";
 												result += "<table id='employee_list_table' class='table table-responsive table-sm table-condensed table-wrapper-scroll-y my-custom-scrollbar'>";
@@ -2251,7 +2249,9 @@
 												result += "  </thead>";												
 												result += "  <tbody class='sortable'>";
 
+												//batman
 												if(data.employee_list.length>0) {
+
 													for(i=0; i<data.employee_list.length; i++) {
 														emp_id = data.employee_list[i]["emp_id"];
 														emp_fname_th = data.employee_list[i]["emp_fname_th"];
@@ -2259,6 +2259,7 @@
 														sch_rank = data.employee_list[i]["sch_rank"];
 														shf_desc = data.employee_list[i]["shf_desc"];
 														absent = data.employee_list[i]["absent"];
+														tel_status = data.employee_list[i]["tel_status"];
 														tel_man = data.employee_list[i]["tel_man"];
 														tel_time = data.employee_list[i]["tel_time"];
 														tel_amt = data.employee_list[i]["tel_amt"];
@@ -2269,14 +2270,18 @@
 														upd_by = data.employee_list[i]["upd_by"];
 														upd_flag = data.employee_list[i]["upd_flag"];
 														upd_gen = data.employee_list[i]["upd_gen"];
-														
 														remark = data.employee_list[i]["remark"];
 
+														relief = data.employee_list[i]["relief"];
+														relief_id = data.employee_list[i]["relief_id"];							
+														relief_emp_fullname_th = data.employee_list[i]["Remp_fname_th"] + " " + data.employee_list[i]["Remp_lname_th"]
+														
 														result += "    <tr>";							
+														result += "	     <td class='d-none'>" + absent + "</td>";
 														if(absent==1) {
-															result += "	     <td><font class='text-danger'>x</font></td>";
+															result += "	     <td><font class='text-danger'><i class='fas fa-times fa-xs'></i></font></td>";
 														} else {
-															result += "	     <td>&nbsp</td>";
+															result += "	     <td><font class='text-success'><i class='fas fa-check fa-xs'></i></font></td>";
 														}
 														
 														result += "	     <td>" + emp_id + "</td>";
@@ -2285,11 +2290,18 @@
 														result += "	     <td nowrap>" + shf_desc + "</td>";
 														result += "	     <td></td>";
 														result += "	     <td></td>";
-														result += "	     <td></td>";
-														result += "	     <td></td>";
-														result += "	     <td></td>";
+
+														//result += "	     <td>" + relief + "</td>";
+														if(relief)
+															result += "	     <td class='text-center'><font class='text-success'><i class='fas fa-check fa-xs'></i></font></td>";
+														else
+															result += "	     <td></td>";
+
+														result += "	     <td>" + relief_id + "</td>";
+														result += "	     <td>" + relief_emp_fullname_th + "</td>";
+														result += "	     <td class='text-center d-none'>" + tel_status + "</td>";
 														result += "	     <td class='text-center'>" + tel_man + "</td>";
-														result += "	     <td>" + tel_time + "</td>";
+														result += "	     <td nowrap>" + tel_time + "</td>";
 														result += "	     <td>" + tel_amt + "</td>";
 														result += "	     <td>" + tel_paid + "</td>";
 														result += "	     <td>" + parseInt(spare) + "</td>";
@@ -2297,12 +2309,11 @@
 														result += "	     <td nowrap>" + upd_date + "</td>";
 														result += "	     <td>" + upd_by + "</td>";
 														result += "	     <td>" + upd_flag + "</td>";
-														result += "	     <td>" + upd_gen + "</td>";
-														result += "	     <td>" + remark + "</td>";
-														result += "	     <td>" + relief + "</td>";
+														result += "	     <td class='d-none'>" + upd_gen + "</td>";
+														result += "	     <td class='d-none'>" + remark + "</td>";
+														result += "	     <td class='d-none'>" + relief + "</td>";
 														result += "    </tr>";
 													}
-
 													enableAllElements();
 
 													$("#id_dly_date").attr("readonly", true);
