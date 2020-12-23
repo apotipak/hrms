@@ -1843,9 +1843,8 @@
 												result += "  </thead>";
 												result += "  <tbody class='sortable'>";
 
-												//amazon 2
 												if(data.employee_list.length>0) {
-													//alert("222");
+
 													for(i=0; i<data.employee_list.length; i++) {
 														emp_id = data.employee_list[i]["emp_id"];
 														emp_fname_th = data.employee_list[i]["emp_fname_th"];
@@ -1867,8 +1866,9 @@
 														remark = data.employee_list[i]["remark"];
 
 														relief = data.employee_list[i]["relief"];
-														relief_id = data.employee_list[i]["relief_id"];
-
+														relief_id = data.employee_list[i]["relief_id"];							
+														relief_emp_fullname_th = data.employee_list[i]["Remp_fname_th"] + " " + data.employee_list[i]["Remp_lname_th"]
+														
 														result += "    <tr>";							
 														result += "	     <td class='d-none'>" + absent + "</td>";
 														if(absent==1) {
@@ -1886,12 +1886,12 @@
 
 														//result += "	     <td>" + relief + "</td>";
 														if(relief)
-															result += "	     <td class='text-center'><font class='text-success'<i class='fas fa-check fa-xs'></i></font></td>";
+															result += "	     <td class='text-center'><font class='text-success'><i class='fas fa-check fa-xs'></i></font></td>";
 														else
 															result += "	     <td></td>";
 
 														result += "	     <td>" + relief_id + "</td>";
-														result += "	     <td></td>";
+														result += "	     <td>" + relief_emp_fullname_th + "</td>";
 														result += "	     <td class='text-center d-none'>" + tel_status + "</td>";
 														result += "	     <td class='text-center'>" + tel_man + "</td>";
 														result += "	     <td nowrap>" + tel_time + "</td>";
@@ -2249,7 +2249,7 @@
 												result += "  </thead>";												
 												result += "  <tbody class='sortable'>";
 
-												//batman
+												//batman 1
 												if(data.employee_list.length>0) {
 
 													for(i=0; i<data.employee_list.length; i++) {
