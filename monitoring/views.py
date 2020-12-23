@@ -2203,7 +2203,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 
 					if informNo >= contractNo:
 						is_pass = False
-						message += "พนักงานที่แจ้งเวรมากกว่าที่มีอยู่ในสัญญา"
+						message += "พนักงานที่แจ้งเวรมากกว่าที่มีอยู่ในสัญญา: <b>" + str(cnt_id) + "</b>"
 						return is_pass, message
 					else:
 						is_pass = True
