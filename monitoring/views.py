@@ -1083,7 +1083,10 @@ def ajax_get_employee(request):
 	cus_brn = request.GET.get('cus_brn')
 	cus_vol = request.GET.get('cus_vol')
 
-	relief_status = int(request.GET.get('relief_status'))
+	relief_status = request.GET.get('relief_status')
+	if relief_status is not None:
+		relief_status = int(relief_status)
+
 	relief_emp_id = request.GET.get('relief_emp_id')	
 	
 	cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
@@ -2601,9 +2604,9 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 
 
 		# เช็คกรณีมีการเข้าเวรแทน
-		print("____relief_id = " + str(relief_id))
+		# print("____relief_id = " + str(relief_id))
 		if absent_status==1 and relief_status==1:
-			print("___Relief__=Y")
+			# print("___Relief__=Y")
 			if relief_id is not None:
 				
 
@@ -2629,7 +2632,7 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 					is_pass = True
 					message = "Pass - สามารถลงหน่วยงานแทนได้"
 
-					print(message)
+					# print(message)
 
 			else:
 				is_pass = False
@@ -2657,7 +2660,7 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 			sql += " and a.emp_id=" + str(relief_id)
 			sql += " and a.absent=0"
 
-			print("____sql=" + str(sql))
+			# print("____sql=" + str(sql))
 
 		return is_pass, message
 
@@ -2990,7 +2993,7 @@ def ajax_save_daily_attendance(request):
 	print("***************************************")
 	print("FUNCTION: ajax_save_daily_attendance()")
 	print("***************************************")
-	print("___STATRT___")
+	# print("___STATRT___")
 
 	username = request.user.username
 
@@ -3062,7 +3065,7 @@ def ajax_save_daily_attendance(request):
 
 
 	if AEdly == 0: # EDIT MODE
-		print("Edit Mode")
+		# print("Edit Mode")
 
 		is_edit_record_success, message = editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,tel_man,tel_time,tel_amount,relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount)
 		if is_edit_record_success:
@@ -3075,7 +3078,7 @@ def ajax_save_daily_attendance(request):
 			type_status = "red"
 
 	elif AEdly == 1: # ADD MODE
-		print("Add Mode")
+		# print("Add Mode")
 		is_add_record_success, message = addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,tel_man,tel_time,tel_amount,relief_status,relief_emp_id,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount)
 		if is_add_record_success:
 			success_status = True
@@ -3086,13 +3089,13 @@ def ajax_save_daily_attendance(request):
 			title = "Error"
 			type_status = "red"	
 	elif AEdly == 2: # DELETE MODE
-		print("Delete Mode")
+		# print("Delete Mode")
 		success_status = True
 		title = "Success"
 		type_status = "green"
 		message = "TODO: Delete record"
 	else: # UNKNOWN MODE
-		print("Error! unknown mode")
+		# print("Error! unknown mode")
 		success_status = False
 		title = "Error"
 		type_status = "red"
@@ -3107,7 +3110,7 @@ def ajax_save_daily_attendance(request):
 
 	response.status_code = 200
 
-	print("___END___")
+	# print("___END___")
 
 	return response
 
@@ -3156,7 +3159,7 @@ def checkNotOverCapacity(cnt_id, shift_id, dly_date):
 # RULE 2 - Check Manpower
 # *****************************************
 def checkManPower(cnt_id, job_type, shift_type, dly_date):
-	print(str(cnt_id) + "," + str(job_type) + "," + str(shift_type) + "," + str(dly_date))
+	# print(str(cnt_id) + "," + str(job_type) + "," + str(shift_type) + "," + str(dly_date))
 	is_error = False
 	message = ""
 	
@@ -3166,7 +3169,7 @@ def checkManPower(cnt_id, job_type, shift_type, dly_date):
 	cursor.close	
 
 	if rows is not None:
-		print("no. of rows = " + str(len(rows)))
+		# print("no. of rows = " + str(len(rows)))
 		if len(rows)==0:
 			aManPower = 0
 		else:
@@ -3176,7 +3179,7 @@ def checkManPower(cnt_id, job_type, shift_type, dly_date):
 	
 	is_error = True if aManPower>0 else False
 
-	print("is_error = " + str(is_error))
+	# print("is_error = " + str(is_error))
 	
 	return is_error, message
 
@@ -3250,7 +3253,7 @@ def validateInput(dly_date, cnt_id, emp_id, shift_id, shift_type, shift_name, jo
 		isPass = True
 
 	# TODO: ห้ามลงงานที่อื่นในเวลาที่คร่อมกัน วันเดียวกัน
-	print("Check 1: checkBetweenShift()")
+	# print("Check 1: checkBetweenShift()")
 	sql = "select a.*, b.shf_type, b.shf_time_frm, b.shf_time_to from dly_plan a left join t_shift b on a.sch_shift = b.shf_id where a.dly_date=%s and a.emp_id=%s and a.absent=0" % (dly_date, emp_id)
 	is_duplicated, message = checkBetweenShift(sql)
 	if is_duplicated:
@@ -3261,7 +3264,7 @@ def validateInput(dly_date, cnt_id, emp_id, shift_id, shift_type, shift_name, jo
 
 	# TODO: สำหรับ Employee ID ห้ามลงรายการซ้ำถ้าเพิ่มรายการใหม่	
 	if not is_duplicated:
-		print("Check 2: checkDupDly()")
+		# print("Check 2: checkDupDly()")
 		sql = "select count(*) from dly_plan where cnt_id=%s and dly_date='%s' and emp_id=%s and sch_shift=%s" % (cnt_id, dly_date, emp_id, shift_id)
 		is_duplicated, message = checkDupDly(sql)
 		if is_duplicated:
@@ -3272,7 +3275,7 @@ def validateInput(dly_date, cnt_id, emp_id, shift_id, shift_type, shift_name, jo
 	
 	# TODO: ห้ามลงรายการซ้ำ ถ้าเพิ่มรายการใหม่ สำหรับคนที่มาแทน แทนหลายคนในหน่วยเดียวกันไม่ได้
 	if not is_duplicated:
-		print("Check 3: checkDupDly()")
+		# print("Check 3: checkDupDly()")
 		# sql will be revised	
 		sql = "select count(*) from dly_plan where cnt_id=%s and dly_date='%s' and emp_id=%s and sch_shift=%s" % (cnt_id, dly_date, emp_id, shift_id)
 		is_duplicated, message = checkDupDly(sql)
