@@ -2145,8 +2145,8 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 
 	# ******* Rule 1 - Check Manpower *****
 	# ********** START ***********
-	sql = "select count(*) from v_dlyplan_shift where cnt_id='" + str(cnt_id) + "' and left(remark,2)='" + str(remark) + "' and shf_type=" + str(job_type) + " and absent=0 and dly_date='" + str(dly_date) + "'"
-	# print("____sql1____ = " + str(sql))
+	sql = "select count(*) from v_dlyplan_shift where cnt_id='" + str(cnt_id) + "' and left(remark,2)='" + str(remark) + "' and shf_type='" + str(shift_type) + "' and absent=0 and dly_date='" + str(dly_date) + "'"
+	print("____sql1____ = " + str(sql))
 
 	cursor = connection.cursor()
 	cursor.execute(sql)
@@ -2156,8 +2156,9 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		aManPower = row[0] if row[0] >= 0 else 0
 	else:
 		aManPower = 0
-	# ********** END ***********
+	# ********** END ***********	
 
+	
 
 	# Check #4
 	# Not sure at this point, to be checked again
@@ -2175,16 +2176,17 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 						sql = "select cnt_id, sch_shift from his_dly_plan "
 
 					sql += "where cnt_id=" + str(cnt_id) + " and sch_shift=" + str(shift_id) + " and absent=0 and dly_date='" + str(dly_date) + "'"
-
+					
 					cursor = connection.cursor()
-					cursor.execute(sql)
-					record = cursor.fetchone()
-					cursor.close
+					cursor.execute(sql)					
+					record = cursor.fetchall()
+					cursor.close()
+
 					if record is not None:
-						informNo = record[0] if record[0]>0 else 0
+						informNo = len(record)
 					else:
 						informNo = 0
-
+				
 					# get srv_qty
 					sql = "select cnt_id, srv_shif_id, sum(srv_qty) as qty from cus_service where srv_active=1 and cnt_id=" + str(cnt_id) + " and srv_shif_id=" + str(shift_id) + " group by cnt_id, srv_shif_id"
 					cursor = connection.cursor()
@@ -2202,6 +2204,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 					if informNo >= contractNo:
 						is_pass = False
 						message += "พนักงานที่แจ้งเวรมากกว่าที่มีอยู่ในสัญญา"
+						return is_pass, message
 					else:
 						is_pass = True
 						message = "Good to go."
@@ -2210,10 +2213,14 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 				else:
 					is_pass = False
 					message = "Shift ID = 99"
+					return is_pass, message
 
 				# return is_pass, message
 	# ********** END ***********
-
+	
+	# print("informNo=" + str(informNo))
+	# print("contractNo=" + str(contractNo))
+	# return False, "Test"
 
 	# Check #5 - ค่าโทรต้องมีค่ามากกว่า 0 บาท
 	# ********** START ***********
