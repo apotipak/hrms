@@ -1829,10 +1829,13 @@ def ajax_get_attendance_information(request):
 			remark = "" if row[61] is None else row[61].strip("0").strip()
 
 			relief = 1 if row[22]==1 else 0
-			relief_id = "" if row[23]==0 else row[23]
-
 			#print("relief = " + str(relief))
+
+			relief_id = "" if row[23]==0 else row[23]			
 			#print("relief_id = " + str(relief_id))
+
+			relief_fname_th = "" if row[7] is None else row[7]
+			relief_lname_th = "" if row[8] is None else row[8]
 
 			customer_flag = "" if row[63] is None else row[63]
 
@@ -1844,8 +1847,8 @@ def ajax_get_attendance_information(request):
 				"shf_time_frm": row[4],
 				"shf_time_to": row[5],
 				"shf_amt_hr": row[6],
-				"Remp_fname_th": row[7],
-				"Remp_lname_th": row[8],
+				"Remp_fname_th": relief_fname_th,
+				"Remp_lname_th": relief_lname_th,
 				"ot_res_th": row[9],
 				"ot_res_en": row[10],
 				"dept_th": row[11],
@@ -2371,9 +2374,8 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		sql += "and emp_id=" + str(emp_id) + " "
 		sql += "and sch_shift=" + str(shift_id)
 
-		print(sql)
+		# print(sql)
 
-		'''
 		try:
 			with connection.cursor() as cursor:
 				cursor.execute(sql)
@@ -2385,7 +2387,6 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		except db.Error as e:
 			is_pass = False
 			message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
-		'''
 
 		# ถ้าหากขาดงานและมีคนมาแทนจะต้อเพิ่มรายการคนที่แทนอีก 1 รายการ
 		if emp_id is not None and absent_status==1 and relief_status==1 and relief_emp_id is not None:
@@ -2405,7 +2406,6 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 				is_pass = False
 				message = "เลือกวันที่ทำรายการไม่ถูกต้อง"
 				return is_pass, message
-
 			
 			sql += "(cnt_id,emp_id,dly_date,sch_shift"
 			sql += ",sch_no,dept_id,sch_rank,prd_id"
@@ -2424,7 +2424,6 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 			sql += str(upd_date) + "','" + str(username) + "'," + "'A'" + ",'" + str(remark) + "')"
 			print(sql)			
 
-			'''
 			try:
 				with connection.cursor() as cursor:
 					cursor.execute(sql)
@@ -2436,7 +2435,6 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 			except db.Error as e:
 				is_pass = False
 				message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
-			'''
 
 	return is_pass, message
 
