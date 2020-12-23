@@ -2277,11 +2277,10 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 	# if is_pass:		
 		# TODO: Call SetVariable("DLY_PLAN")
 
-	if is_pass:
-		# setVariable()		
-		# dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,
-		# relief_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM
-		
+	return is_pass, message
+
+	'''
+	if is_pass:		
 		if tel_man == 1:
 			if tel_time is not None:			
 				tel_time_obj = datetime.datetime.strptime(tel_time, "%d/%m/%Y %H:%M")
@@ -2298,7 +2297,6 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 			tel_time = None
 			tel_amount = 0
 			tel_paid = 0
-
 
 
 		upd_date = str(datetime.datetime.now())[:-3]
@@ -2370,6 +2368,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		message = "Error"
 
 	return is_pass, message
+	'''
 	
 
 def editRecord_temp(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM):
@@ -2659,8 +2658,120 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 			sql += " where a.dly_date='" + str(dly_date) + "'"
 			sql += " and a.emp_id=" + str(relief_id)
 			sql += " and a.absent=0"
+			# print("____sql=" + str(sql))			
+			cursor = connection.cursor()
+			cursor.execute(sql)
+			record = cursor.fetchone()
+			cursor.close
+			if record is None:
+				is_pass = True
+			else:
+				is_pass = False
+				message = "พนักงานเข้าเวรคร่อมกับหน่วยงาน..."
+				return is_pass, message
+			
+		# ห้ามลงรายการซ้ำ ถ้าเพิ่มรายการใหม่ สำหรับคนที่มาแทน แทนหลายคนในหน่วยเดียวกันไม่ได้
+		if relief_status==1 and relief_id is not None:
+			# GetShiftOrder
+			getShiftOrder = 0
+			sql = "select shf_order from t_shift where shf_id=" + shift_id
+			cursor = connection.cursor()
+			cursor.execute(sql)
+			record = cursor.fetchone()
+			cursor.close
+			if record is not None:
+				getShiftOrder = record[0]
 
-			# print("____sql=" + str(sql))
+
+			# เช็คห้ามคนที่มาแทนลงงานที่อื่นในกะเดียวกัน วันเดียวกัน
+			checkDupDly = 0
+			sql = "select * from dly_plan where dly_date='" + str(dly_date) + "'"
+			sql += " and emp_id=" + str(relief_id)
+			sql += " and absent=0"
+			sql += " and dbo.shforder(sch_shift)=" + str(getShiftOrder)
+			# print("___sql = " + str(sql))
+			cursor = connection.cursor()
+			cursor.execute(sql)
+			record = cursor.fetchone()
+			cursor.close
+			if record is not None:				
+				# หากมีการแก้ไขเปลี่ยนแปลง Phone, OT, Late ให้สามารถบันทึกได้
+				if late_status==1 or phone_status==1:
+					gphone = 0
+
+				checkDupDly = 1
+				is_pass = False
+				message = "พนักงานเข้าเวรที่หน่วยงานอื่น"
+				return is_pass, message
+			else:
+				checkDupDly = 0
+				message = ""
+
+			# สำหรับ Relief Employee ID ห้ามลงรายการซ้ำในสัญญาเดียวกัน วันเดียวกัน กะเดียวกัน
+			checkDupDly = 0
+			sql = "select * from dly_plan where cnt_id=" + str(cnt_id) + " and dly_date='" + str(dly_date) + "'"
+			sql += " and emp_id=" + str(relief_id)
+			sql += " and sch_shift=" + str(shift_id)
+			cursor = connection.cursor()
+			cursor.execute(sql)
+			record = cursor.fetchone()
+			cursor.close
+			if record is not None:				
+				# หากมีการแก้ไขเปลี่ยนแปลง Phone, OT, Late ให้สามารถบันทึกได้
+				if late_status==1 or phone_status==1:
+					gphone = 0
+
+				checkDupDly = 1
+				is_pass = False
+				message = "พนักงานเข้าเวรที่หน่วยงานอื่น"
+				return is_pass, message
+			else:
+				checkDupDly = 0
+				message = ""
+
+			# เช็คห้ามพนักงานทำงานในวัน Day Off จากตาราง SYS_GPMDOF
+			if emp_id is not None and absent_status==0:
+				print("TODO: ChkDOF")
+				chkDOF = False
+				sql = "select * from sys_gpmdof where emp_id=" + str(emp_id) + " and dly_date='" + str(dly_date) + "'"
+				cursor = connection.cursor()
+				cursor.execute(sql)
+				record = cursor.fetchone()
+				cursor.close
+				if record is not None:
+					chkDOF = True
+					is_pass = False
+					message = "พนักงานทำงานในวัน Day Off จากตาราง SYS_GPMDOF"
+					return is_pass, message
+				else:
+					is_pass = True
+					chkDOF = False
+
+				if chkDOF:
+					print("TODO: CheckEmpDOF()")
+						
+			if relief_id is not None and absent_status==1:
+				print("TODO: ChkDOF()")
+				print("TODO: CheckEmpDOF()")
+				print("TODO: ChkDOF")
+				chkDOF = False
+				sql = "select * from sys_gpmdof where emp_id=" + str(relief_id) + " and dly_date='" + str(dly_date) + "'"
+				cursor = connection.cursor()
+				cursor.execute(sql)
+				record = cursor.fetchone()
+				cursor.close
+				if record is not None:
+					chkDOF = True
+					is_pass = False
+					message = "พนักงานที่จะลงเวรแทนทำงานในวัน Day Off จากตาราง SYS_GPMDOF"
+					return is_pass, message
+				else:
+					is_pass = True
+					chkDOF = False
+
+				if chkDOF:
+					print("TODO: CheckEmpDOF()")
+
 
 		return is_pass, message
 
