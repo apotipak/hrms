@@ -524,6 +524,8 @@
 
 	    	$("#id_relief_emp_id").attr("disabled", false);
 	    	$("#id_relief_emp_id").attr("readonly", false);
+
+	    	$("#id_relief_check").prop("checked", true);
 	    	$("#id_relief_emp_id").focus();
 	 		
 	    } else {	    	
@@ -543,6 +545,7 @@
 
 	    	//$("#relief_employee_section").hide();
 
+			$("#id_relief_check").prop("checked", false);
 	    	$("#id_relief_emp_id").attr("disabled", true);
 
 	    	$("#id_late_check").show();
@@ -1127,7 +1130,10 @@
 
 
 	$(document).on('keypress', '#id_relief_emp_id', function(e) {
-		if(e.which == 13) {      
+
+		$("#id_relief_check").prop("checked", true);
+
+		if(e.which == 13) {
 			e.preventDefault();
 
 			cus_id = $('#id_cus_id').val();
@@ -1237,9 +1243,11 @@
 
 			    			$("#save_button").attr("disabled", false);
 			    			$("#delete_button").attr("disabled", true);
+			    		
+			    			$("#id_relief_check").prop("checked", true);
 
 			    		} else {
-
+			    			/*
 						  	$(document).Toasts('create', {
 						    	class: "bg-danger", 
 						    	title: "{% trans 'Error' %}",
@@ -1251,7 +1259,18 @@
 						    	close: true,
 						    	autoremove: true,
 						  	});
+							*/
 
+							$.alert({
+							    title: 'Error',
+							    type: 'red',
+							    content: data.message,
+							    animation: 'zoom',
+							    animationBounce: 1.5,
+							    closeIcon: false,
+							    boxWidth: '38%',
+							    useBootstrap: false,
+							});
 
 			    		}
 
@@ -1552,6 +1571,8 @@
 
 	    	$("#id_relief_emp_id").attr("disabled", false);
 	    	$("#id_relief_emp_id").attr("readonly", false);
+
+			$("#id_relief_check").prop("checked", true);						
 	    	$("#id_relief_emp_id").focus();
 
 	   		//$("#id_late_check").hide();
