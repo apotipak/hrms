@@ -1097,8 +1097,7 @@
       while (id_cus_vol.length < 3) 
         id_cus_vol = "0" + id_cus_vol;
       $('#id_cus_vol').val(id_cus_vol);
-      
-      
+            
       var cnt_id = $('#id_cus_id').val();
       var cus_brn = $('#id_cus_brn').val();
       var cus_vol_text = $('#id_cus_vol').val();
@@ -1110,16 +1109,17 @@
         alert("Customer Branch is required");
         $('#id_cus_brn').focus();
       } else if(cus_vol_text=='' || cus_vol_text==null) {    
-        $("#id_cus_vol").val('000');        
+        $("#id_cus_vol").val('000');   
         cus_vol = 0;
       }
       else {
         cus_vol = cus_vol_text;
-      }      
+      }
 
       // TODO - check existing cnt_id
       $.ajax({
-        url : "/contract/ajax/get_attendance_information/",
+        //url : "/contract/ajax/get_attendance_information/",
+        url : "/contract/ajax/get_cus_contract/",        
         type : "POST",
         data : {          
           csrfmiddlewaretoken: '{{ csrf_token }}',
