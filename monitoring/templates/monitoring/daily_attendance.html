@@ -521,6 +521,10 @@
 			$("#id_phone_check").prop("checked", false);
 			$("#id_call_time").val("");
 	    	$("#id_call_amount_option").val(0);
+
+	    	$("#id_relief_emp_id").attr("disabled", false);
+	    	$("#id_relief_emp_id").attr("readonly", false);
+	    	$("#id_relief_emp_id").focus();
 	 		
 	    } else {	    	
 			var tel_man = $("#employee_list_table").find('.highlight').find('td:eq(11)').text();
@@ -538,6 +542,9 @@
 			}
 
 	    	//$("#relief_employee_section").hide();
+
+	    	$("#id_relief_emp_id").attr("disabled", true);
+
 	    	$("#id_late_check").show();
 	    	$("#id_late_check").next("label").show();	    	
 	    	$("#id_phone_check").show();
@@ -1542,6 +1549,10 @@
 		if(absent==1) {
 			$("#id_absent_check").prop("checked", true);
 			$("#relief_employee_section").show();
+
+	    	$("#id_relief_emp_id").attr("disabled", false);
+	    	$("#id_relief_emp_id").attr("readonly", false);
+	    	$("#id_relief_emp_id").focus();
 
 	   		//$("#id_late_check").hide();
 	   		//$("#id_late_check").next("label").hide();
