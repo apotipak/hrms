@@ -2110,7 +2110,7 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 			sql += "0" + "," + "NULL" + "," + "0" + "," + "0" + ","
 			sql += "0" + "," + "0" + "," + "NULL" + "," + "NULL" + "," + "0" + "," + "0" + ","
 			sql += "0" + "," + "32" + "," + "'32SOY'" + "," + "NULL" + "," + "0" + "," + "0" + "," + "1" + "," + "NULL" + ",'"
-			sql += str(upd_date) + "'," + "'System'" + "," + "'A'" + ",'" + remark + "')"
+			sql += str(upd_date) + "'," + str(username) + "," + "'A'" + ",'" + remark + "')"
 			# print(sql)
 
 			try:
