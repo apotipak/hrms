@@ -474,6 +474,9 @@
 	</div>
 {% endblock %}
 
+
+
+
 {% block javascript %}
 <script>
 	$(document).ready(function(){
@@ -507,15 +510,15 @@
 	    	
 	   		$("#relief_employee_section").show();
 
-	   		$("#id_late_check").hide();
-	   		$("#id_late_check").next("label").hide();
+	   		//$("#id_late_check").hide();
+	   		//$("#id_late_check").next("label").hide();
 
-			$("#id_phone_check").hide();
-			$("#id_phone_check").next("label").hide();
+			//$("#id_phone_check").hide();
+			//$("#id_phone_check").next("label").hide();
 
 			$("#id_phone_check").prop("checked", false);
 			$("#id_call_time").val("");
-	    	$("#id_call_amount_option").val(0);			
+	    	$("#id_call_amount_option").val(0);
 	 		
 	    } else {	    	
 			var tel_man = $("#employee_list_table").find('.highlight').find('td:eq(11)').text();
@@ -532,13 +535,36 @@
 				$("#id_call_amount_option").val(0);
 			}
 
-	    	$("#relief_employee_section").hide();
+	    	//$("#relief_employee_section").hide();
 	    	$("#id_late_check").show();
 	    	$("#id_late_check").next("label").show();	    	
 	    	$("#id_phone_check").show();
 	    	$("#id_phone_check").next("label").show();
 
 
+	    }
+	});
+
+	$("#id_late_check").change(function() {
+
+	    if(this.checked) {
+	    	
+	   		$("#relief_employee_section").show();
+
+	   		$("#id_relief_emp_id").attr("disabled", false);
+	   		$("#id_relief_emp_id").attr("readonly", false);
+	   		$("#id_relief_emp_id").focus();
+
+	   		//$("#id_late_check").hide();
+	   		//$("#id_late_check").next("label").hide();
+
+			//$("#id_phone_check").hide();
+			//$("#id_phone_check").next("label").hide();
+
+			//$("#id_phone_check").prop("checked", false);
+			//$("#id_call_time").val("");
+	    	//$("#id_call_amount_option").val(0);
+	 		
 	    }
 	});
 
@@ -592,6 +618,7 @@
 	    }
 	    
 	});
+
 
 
  	function disableAllElements() {
@@ -1268,11 +1295,11 @@
 
 
     $(document).on('click', '#id_absent_check', function(e) {
-    	//alert("click absent");
+    	//alert("click absent checkbox");
     });
 
     $(document).on('click', '#id_late_check', function(e) {
-        
+		// alert("click late checkbox");
     });
     
     // ID_PHONE_CHECK

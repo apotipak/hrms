@@ -2353,7 +2353,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 			return is_pass, message
 
 		upd_date = str(datetime.datetime.now())[:-3]
-
+		
 		sql += "sch_no=" + str(tsch_no) + ","
 		sql += "dept_id=" + str(tdept_id) + ","
 		sql += "sch_rank='" + str(emp_rank) + "',"
@@ -2364,7 +2364,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		sql += "relieft=" + str(relief_status) + ","
 		sql += "relieft_id=" + str(relief_emp_id) + ","
 		sql += "tel_man=" + str(tel_man) + ","
-		sql += "tel_time='" + str(tel_time) + "',"
+		sql += "tel_time='" + str(upd_date) + "',"
 		sql += "tel_amt=" + str(tel_amount) + ","
 		sql += "tel_paid=" + str(tel_paid) + ","
 		sql += "ot=" + str(0) + ","
@@ -2389,7 +2389,9 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		sql += "and dly_date='" + str(dly_date) + "' "
 		sql += "and emp_id=" + str(emp_id) + " "
 		sql += "and sch_shift=" + str(shift_id)
+		
 		# print("sql 1 " + str(sql))
+		# return False,"TEST"
 
 		try:
 			with connection.cursor() as cursor:
