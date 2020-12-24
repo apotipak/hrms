@@ -1840,6 +1840,7 @@ def ajax_get_attendance_information(request):
 			customer_flag = "" if row[63] is None else row[63]
 
 			late_status = 1 if row[24]==1 else 0
+			late_full_status = 1 if row[56]==1 else 0
 
 			record = {
 				"emp_fname_th": row[0].strip(),
@@ -1899,7 +1900,7 @@ def ajax_get_attendance_information(request):
 				"dof_amt": row[53],
 				"dof": row[54],
 				"TPA": row[55],
-				"late_full": row[56],
+				"late_full": late_full_status,
 				"DAY7": row[57],
 				"cnt_sale_amt": row[58],
 				"cus_name_en": row[59],
