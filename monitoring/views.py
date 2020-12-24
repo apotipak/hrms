@@ -2057,7 +2057,9 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 			else:
 				is_pass = True
 				message = "Rule 3 is passed."
-				print(message)				
+				print(message)
+
+			is_pass = True
 
 
 		# *****************************************
@@ -3444,7 +3446,8 @@ def checkNotOverCapacity(cnt_id, shift_id, dly_date):
 # RULE 2 - Check Manpower
 # *****************************************
 def checkManPower(cnt_id, job_type, shift_type, dly_date):
-	# print(str(cnt_id) + "," + str(job_type) + "," + str(shift_type) + "," + str(dly_date))
+	print(str(cnt_id) + "," + str(job_type) + "," + str(shift_type) + "," + str(dly_date))
+
 	is_error = False
 	message = ""
 	
@@ -3454,7 +3457,7 @@ def checkManPower(cnt_id, job_type, shift_type, dly_date):
 	cursor.close	
 
 	if rows is not None:
-		# print("no. of rows = " + str(len(rows)))
+		print("no. of rows = " + str(len(rows)))
 		if len(rows)==0:
 			aManPower = 0
 		else:
