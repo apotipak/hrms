@@ -574,21 +574,15 @@
 	});
 
 	$("#id_phone_check").change(function() {
-
-		/*
-		if(this.checked) {
-			alert("check");
-		}
-		else {
-			alert("not check");
-		}
-		*/
 		
 	    if(this.checked) {
 
 			var tel_man = $("#employee_list_table").find('.highlight').find('td:eq(11)').text();
 			var tel_time = $("#employee_list_table").find('.highlight').find('td:eq(13)').text();
 			var tel_amount = $("#employee_list_table").find('.highlight').find('td:eq(14)').text();
+
+			$("#id_call_amount_option").css('border-color','green');
+			$("#id_call_amount_option").css('border-style','solid');
 
 			if(tel_man==1) {
 				//$("#id_phone_check").prop("checked", true);
@@ -615,6 +609,9 @@
 	    	$("#id_call_amount_option").val(0);
 			$("#id_call_amount_option").attr("disabled", true);
 			$("#id_call_amount_option").attr("readonly", true);
+
+			$("#id_call_amount_option").css('border-color','');
+			$("#id_call_amount_option").css('border-style','');
 	    }
 	    
 	});
