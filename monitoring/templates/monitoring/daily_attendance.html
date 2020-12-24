@@ -148,12 +148,14 @@
 							      <th scope="col" class='d-none' nowrap>Upd Gen</th>
 							      <th scope="col" class='d-none' nowrap>Remark</th>
 							      <th scope='col' class='d-none'>Relief Status</th>
+							      <th scope='col' class='d-none'>Late Status</th>
+							      
 							    </tr>
 							  </thead>
 
 							  <tbody>
 							    <tr>
-							      <td colspan="24" class="text-center"><br><br>There is no data.<br><br><br></td>
+							      <td colspan="25" class="text-center"><br><br>There is no data.<br><br><br></td>
 							    </tr>
 							  </tbody>
 							</table>
@@ -772,6 +774,7 @@
 					result += "      <th scope='col' class='d-none' nowrap>Upd Gen</th>";
 					result += "      <th scope='col' class='d-none'>Remark</th>";
 					result += "      <th scope='col' class='d-none'>Relief Status</th>";
+					result += "      <th scope='col' class='d-none'>Late Status</th>";
 					result += "    </tr>";
 					result += "  </thead>";
 					result += "  <tbody class='sortable'>";
@@ -802,6 +805,8 @@
 							relief_id = data.employee_list[i]["relief_id"];							
 							relief_emp_fullname_th = data.employee_list[i]["Remp_fname_th"] + " " + data.employee_list[i]["Remp_lname_th"]
 							
+							late_status = data.employee_list[i]["late"];
+
 							result += "    <tr>";							
 							result += "	     <td class='d-none'>" + absent + "</td>";
 							if(absent==1) {
@@ -814,14 +819,19 @@
 							result += "	     <td nowrap>" + emp_fname_th + "&nbsp;&nbsp;" + emp_lname_th + "</td>";
 							result += "	     <td>" + sch_rank + "</td>";
 							result += "	     <td nowrap>" + shf_desc + "</td>";
-							result += "	     <td></td>";
+							
+							//result += "	     <td>" + late_status + "</td>";
+							if(late_status)
+								result += "	     <td class='text-center'><font class='text-success'><i class='fas fa-check fa-xs'></i></font></td>";
+							else
+								result += "	     <td>&nbsp;</td>";
+
 							result += "	     <td></td>";
 
-							//result += "	     <td>" + relief + "</td>";
 							if(relief)
 								result += "	     <td class='text-center'><font class='text-success'><i class='fas fa-check fa-xs'></i></font></td>";
 							else
-								result += "	     <td></td>";
+								result += "	     <td>&nbsp;</td>";
 
 							result += "	     <td>" + relief_id + "</td>";
 							result += "	     <td>" + relief_emp_fullname_th + "</td>";
@@ -838,6 +848,7 @@
 							result += "	     <td class='d-none'>" + upd_gen + "</td>";
 							result += "	     <td class='d-none'>" + remark + "</td>";
 							result += "	     <td class='d-none'>" + relief + "</td>";
+							result += "	     <td class='d-none'>" + late_status + "</td>";
 							result += "    </tr>";
 						}
 
@@ -1339,11 +1350,12 @@
 		result += "      <th scope='col' class='d-none' nowrap>Upd Gen</th>";
 		result += "      <th scope='col' class='d-none' nowrap>Remark</th>";
 		result += " 	 <th scope='col' class='d-none' nowrap>Relief Status</th>";
+		result += " 	 <th scope='col' class='d-none' nowrap>Late Status</th>";		
 		result += "    </tr>";
 		result += "  </thead>";
 		result += "  <tbody>";
 		result += "    <tr>";
-		result += "      <td colspan='24' class='text-center'><br><br>There is no data.<br><br><br></td>";
+		result += "      <td colspan='25' class='text-center'><br><br>There is no data.<br><br><br></td>";
 		result += "    </tr>";
 		result += "  </tbody>";
 		result += "</table>";
@@ -1405,6 +1417,8 @@
 		var relief_emp_id = $(this).find('td:eq(9)').text();
 		var relief_emp_fullname_th = $(this).find('td:eq(10)').text();
 
+		var late_status = $(this).find('td:eq(24)').text();		
+
 		/*
 		result += "    <tr>";
 		result += "      <th scope='col' class='d-none' nowrap>Absent Status</th>";
@@ -1449,6 +1463,12 @@
 			$("#id_relief_check").prop("checked", false);
 			$("#id_relief_emp_id").val("");
 			$("#id_relief_emp_fullname_th").val("");
+		}
+
+		if(late_status==1) {
+			$("#id_late_check").prop("checked", true);
+		} else {
+			$("#id_late_check").prop("checked", false);
 		}
 
 		// Get Employee information
@@ -1510,11 +1530,10 @@
 			//var tel_paid = $(this).find('td:eq(15)').text();	
 	    	
 	   		if(tel_status==1) {
-	   			console.log(tel_status);
+	   			//console.log(tel_status);
 
 	   			$("#id_phone_check").prop("checked", true);
-	   			//$("#id_call_time").attr("disabled", false);
-	   			
+	   			//$("#id_call_time").attr("disabled", false);	   			
 
 	   			$("#id_call_time").val(tel_time);
 	   			$("#id_call_amount_option").attr("disabled", false);
@@ -1864,6 +1883,8 @@
 												result += "      <th scope='col' class='d-none' nowrap>Upd Gen</th>";
 												result += "      <th scope='col' class='d-none'>Remark</th>";
 												result += "      <th scope='col' class='d-none'>Relief Status</th>";
+												result += "      <th scope='col' class='d-none'>Late Status</th>";
+												
 												result += "    </tr>";
 												result += "  </thead>";
 												result += "  <tbody class='sortable'>";
@@ -1894,6 +1915,8 @@
 														relief_id = data.employee_list[i]["relief_id"];							
 														relief_emp_fullname_th = data.employee_list[i]["Remp_fname_th"] + " " + data.employee_list[i]["Remp_lname_th"]
 														
+														late_status = data.employee_list[i]["late"];
+
 														result += "    <tr>";							
 														result += "	     <td class='d-none'>" + absent + "</td>";
 														if(absent==1) {
@@ -1906,7 +1929,13 @@
 														result += "	     <td nowrap>" + emp_fname_th + "&nbsp;&nbsp;" + emp_lname_th + "</td>";
 														result += "	     <td>" + sch_rank + "</td>";
 														result += "	     <td nowrap>" + shf_desc + "</td>";
-														result += "	     <td></td>";
+
+														//result += "	     <td>" + late_status + "</td>";
+														if(late_status)
+															result += "	     <td class='text-center'><font class='text-success'><i class='fas fa-check fa-xs'></i></font></td>";
+														else
+															result += "	     <td>&nbsp;</td>";														
+
 														result += "	     <td></td>";
 
 														//result += "	     <td>" + relief + "</td>";
@@ -1930,6 +1959,8 @@
 														result += "	     <td class='d-none'>" + upd_gen + "</td>";
 														result += "	     <td class='d-none'>" + remark + "</td>";
 														result += "	     <td class='d-none'>" + relief + "</td>";
+														result += "	     <td class='d-none'>" + late_status + "</td>";
+														
 														result += "    </tr>";
 													}
 
@@ -2274,6 +2305,8 @@
 												result += "      <th scope='col' class='d-none' nowrap>Upd Gen</th>";
 												result += "      <th scope='col' class='d-none'>Remark</th>";
 												result += "      <th scope='col' class='d-none'>Relief Status</th>";
+												result += "      <th scope='col' class='d-none'>Late Status</th>";
+												
 												result += "    </tr>";
 												result += "  </thead>";												
 												result += "  <tbody class='sortable'>";
@@ -2304,6 +2337,8 @@
 														relief_id = data.employee_list[i]["relief_id"];							
 														relief_emp_fullname_th = data.employee_list[i]["Remp_fname_th"] + " " + data.employee_list[i]["Remp_lname_th"]
 														
+														late_status = data.employee_list[i]["late"];
+
 														result += "    <tr>";							
 														result += "	     <td class='d-none'>" + absent + "</td>";
 														if(absent==1) {
@@ -2316,7 +2351,13 @@
 														result += "	     <td nowrap>" + emp_fname_th + "&nbsp;&nbsp;" + emp_lname_th + "</td>";
 														result += "	     <td>" + sch_rank + "</td>";
 														result += "	     <td nowrap>" + shf_desc + "</td>";
-														result += "	     <td></td>";
+														
+														//result += "	     <td>" + late_status + "</td>";
+														if(late_status)
+															result += "	     <td class='text-center'><font class='text-success'><i class='fas fa-check fa-xs'></i></font></td>";
+														else
+															result += "	     <td>&nbsp;</td>";
+
 														result += "	     <td></td>";
 
 														//result += "	     <td>" + relief + "</td>";
@@ -2340,6 +2381,8 @@
 														result += "	     <td class='d-none'>" + upd_gen + "</td>";
 														result += "	     <td class='d-none'>" + remark + "</td>";
 														result += "	     <td class='d-none'>" + relief + "</td>";
+														result += "	     <td class='d-none'>" + late_status + "</td>";
+														
 														result += "    </tr>";
 													}
 													enableAllElements();

@@ -1839,6 +1839,8 @@ def ajax_get_attendance_information(request):
 
 			customer_flag = "" if row[63] is None else row[63]
 
+			late_status = 1 if row[24]==1 else 0
+
 			record = {
 				"emp_fname_th": row[0].strip(),
 				"emp_lname_th": row[1].strip(),
@@ -1891,7 +1893,7 @@ def ajax_get_attendance_information(request):
 				"upd_flag": row[47],
 				"upd_gen": upd_gen,
 				"cus_name_th": row[49],
-				"late": row[50],
+				"late": late_status,
 				"sch_relieft": row[51],
 				"otm_amt": row[52],
 				"dof_amt": row[53],
