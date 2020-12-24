@@ -776,8 +776,6 @@
 					result += "  </thead>";
 					result += "  <tbody class='sortable'>";
 
-
-					// batman
 					if(data.employee_list.length>0) {
 						
 						for(i=0; i<data.employee_list.length; i++) {
@@ -1378,6 +1376,12 @@
 		$("#id_phone_check").hide();
 		$("#id_phone_check").next("label").hide();
 
+		// Clear red highlight textbox
+		$("#id_call_amount_option").css('border-color','');
+		$("#id_call_amount_option").css('border-style','');
+		$("#id_shift_option").css('border-color','');
+		$("#id_shift_option").css('border-style','');
+
 		var cus_id = $("#id_cus_id").val();
 		var cus_brn = $("#id_cus_brn").val();
 		var cus_vol = $("#id_cus_vol").val();
@@ -1681,7 +1685,9 @@
 			return false;
 		}
 		
+		//batman
 		if(shift_id=="0"){
+			/*
 		  	$(document).Toasts('create', {
 		    	class: "bg-danger", 
 		    	title: "{% trans 'Error' %}",
@@ -1693,10 +1699,29 @@
 		    	close: true,
 		    	autoremove: true,
 		  	});
+			*/
+
+			$.alert({
+			    title: 'Error',
+			    type: 'red',
+			    content: "Please select Shift.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+			    animation: 'zoom',
+			    animationBounce: 1.5,
+			    closeIcon: false,
+			    boxWidth: '38%',
+			    useBootstrap: false,
+			});
+
+			$("#id_shift_option").css('border-color','red');
+			$("#id_shift_option").css('border-style','solid');
 
 		  	$('#id_shift_option').focus();
 			return false;
+		} else {
+			$("#id_shift_option").css('border-color','');
+			$("#id_shift_option").css('border-style','');
 		}
+
 
 		showLoading();
 
@@ -1982,8 +2007,13 @@
 									$("#totalPDM").html("");
 									$("#totalPNM").html("");
 
+									// Clear call amount highlight
 									$("#id_call_amount_option").css('border-color','');
 									$("#id_call_amount_option").css('border-style','');
+
+									// Clear call amount highlight
+									$("#id_shift_option").css('border-color','');
+									$("#id_shift_option").css('border-style','');
 
 					    		} else {
 					    			alert("error");
@@ -2111,7 +2141,7 @@
 					$.confirm({
 					    title: 'Confirmation',
 					    type: 'red',
-					    content: 'ยืนยันที่จะใช้ข้อมูลค่าโทรแจ้งเวร 0 บาท',
+					    content: 'ยืนยันที่จะป้อนค่าโทรแจ้งเวรเป็น 0 บาท',
 						animation: 'zoom',
 					    animationBounce: 1.5,
 					    closeIcon: true,
@@ -2131,7 +2161,6 @@
 									//$("#id_call_amount_option").addClass("highlight").focus();
 									$("#id_call_amount_option").css('border-color','red');
 									$("#id_call_amount_option").css('border-style','solid');
-									//alert("...");
 					        	}
 					        }
 					    }
@@ -2249,7 +2278,6 @@
 												result += "  </thead>";												
 												result += "  <tbody class='sortable'>";
 
-												//batman 1
 												if(data.employee_list.length>0) {
 
 													for(i=0; i<data.employee_list.length; i++) {
@@ -2447,9 +2475,22 @@
 		$("#totalPDM").html("");
 		$("#totalPNM").html("");
 
+		// Clear red highlight textbox
+		$("#id_call_amount_option").css('border-color','');		
+		$("#id_call_amount_option").css('border-style','');
+		$("#id_shift_option").css('border-color','');
+		$("#id_shift_option").css('border-style','');
+
     	$("#id_cus_id").focus();
     });
 
+ 	function clearRedHighlightTextbox() {
+		// Clear red highlight textbox
+		$("#id_call_amount_option").css('border-color','');		
+		$("#id_call_amount_option").css('border-style','');
+		$("#id_shift_option").css('border-color','');
+		$("#id_shift_option").css('border-style',''); 		
+ 	}
 </script>
 {% endblock %}
 		
