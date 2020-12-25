@@ -1617,6 +1617,7 @@
 		var emp_fullname_th = $(this).find('td:eq(3)').text();
 		var sch_rank = $(this).find('td:eq(4)').text();
 		var shf_desc = $(this).find('td:eq(5)').text();	
+		var shift_id =  parseInt(shf_desc.substring(0,4));
 		var upd_gen = $(this).find('td:eq(21)').text();
 		var remark = $(this).find('td:eq(22)').text();
 
@@ -1659,6 +1660,38 @@
 		result += "      <th scope='col' class='d-none'>Remark</th>";
 		result += "    </tr>";
 		*/
+
+
+		if(shift_id==999 || shift_id==99) {			
+			$("#save_button").attr("disabled", true);
+
+			$("#id_absent_check").attr("disabled", true);
+			$("#id_absent_check").prop("checked", false);
+
+			$("#id_late_check").attr("disabled", true);
+			$("#id_late_check").prop("checked", false);
+
+			$("#id_phone_check").attr("disabled", true);
+			$("#id_phone_check").prop("checked", false);
+
+			if(upd_gen=='G') {
+				$("#delete_button").attr("disabled", true);
+
+				$("#id_relief_check").attr('disabled', true);					
+				$("#id_relief_emp_id").attr('disabled', true);
+			}
+			else {
+				$("#delete_button").attr("disabled", false);
+			}
+
+			$("#id_shift_option").attr("disabled", true);			
+			$("#id_remark").attr("disabled", false);
+			$("#id_remark").attr("readonly", false);
+
+			$(this).addClass('highlight').siblings().removeClass('highlight');
+			
+			return false;
+		}
 
 
 		$("#emp_id_lookup_button").attr("disabled", true);
@@ -1769,17 +1802,22 @@
 	   		
 		}
 
-		shift_id =  parseInt(shf_desc.substring(0,4));
+		//shift_id =  parseInt(shf_desc.substring(0,4));
 		
 		$('#id_shift_option').val(shift_id);
 
 		if(shift_id==999 || shift_id==99) {			
 			$("#save_button").attr("disabled", true);
 
-			if(upd_gen=='G')
+			if(upd_gen=='G') {
 				$("#delete_button").attr("disabled", true);
-			else
+
+				$("#id_relief_check").attr('disabled', true);					
+				$("#id_relief_emp_id").attr('disabled', true);
+			}
+			else {
 				$("#delete_button").attr("disabled", false);
+			}
 
 			$("#id_shift_option").attr("disabled", true);
 			
