@@ -304,8 +304,13 @@
 
 						  <div class="form-row">
 							<div class="form-group col-md-2">
+								<!--
 								<input class="" id="id_relief_check" name="relief_check" type="checkbox">
 						      	<label for="id_relief_emp_id">Relief by</label>     
+								-->
+
+						      	<label><input class="" id="id_relief_check" name="relief_check" type="checkbox" />&nbsp;&nbsp;Relief by</label>
+
 								<div class="input-group">                            	
 						      		<input type="number" id="id_relief_emp_id" name="id_relief_emp_id" class="form-control form-control-sm" readonly="" />
 						      		<button id="relief_emp_id_lookup_button" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url="" disabled=""><i class="fas fa-search fa-sm"></i></button>
@@ -385,9 +390,6 @@
 						  </div>
 					  </div>
 
-
-
-
 					  <div class="row">
 						  <div class="form-row">
 
@@ -410,7 +412,7 @@
 
 
 							<div class="form-group col-5">
-						      	<label for="id_late_hour">Total Time</label>
+						      	<label for="id_late_hour">Total Time (ชั่วโมง)</label>
 								<div class="input-group">                            	
 						      		<input type="text" id="id_late_hour" name="late_hour" class="form-control form-control-sm" />
 						      		
@@ -438,22 +440,23 @@
 
 
 					  <div class="row col-12">
-						  <div class="form-row container-fluid">
-							<div class="form-group col-2">
-						      	<label for="id_job_type_option">Job Type</label>
+						  <div class="form-row">
+
+							<div class="form-group col-5">
+								<label for="id_job_type_option">Job Type</label>
 						        <select id="id_job_type_option" class="form-control form-control-sm" readonly>
 								  <option value="00" selected>00 :No</option>
-						        </select>	
+						        </select>								
+						      	
 							</div>
-							<div class="form-group col-6">
+
+							<div class="form-group col-7">
 						      	<label for="id_remark">Remark</label>     
 						      	<input type="text" id="id_remark" name="remark" class="form-control form-control-sm" readonly />
 							</div>
+
 						  </div>
 					  </div>
-
-
-
 
 					  <input type="hidden" id="id_add_new_record_status" name="add_new_record_status" value=0 />
 
