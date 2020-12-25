@@ -2733,6 +2733,7 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 		is_pass = False
 		message = "check_type = 1 is not implemented."
 		return is_pass, message
+	
 
 	# Case 2
 	if check_type==2:
@@ -2777,7 +2778,6 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 			is_pass = False
 			message = "พนักงานคนนี้ไม่สามารถนำมาจัดตารางเวรได้เนื่องจากรหัสพนักงานไม่มีอยู่ในระบบ..."
 			return is_pass, message
-
 
 		# เช็คกรณีมีการเข้าเวรแทน
 		# print("____relief_id = " + str(relief_id))
@@ -2846,7 +2846,8 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 				is_pass = False
 				message = "พนักงานเข้าเวรคร่อมกับหน่วยงาน..."
 				return is_pass, message
-			
+				
+
 		# ห้ามลงรายการซ้ำ ถ้าเพิ่มรายการใหม่ สำหรับคนที่มาแทน แทนหลายคนในหน่วยเดียวกันไม่ได้
 		if relief_status==1 and relief_emp_id is not None:
 			# GetShiftOrder
@@ -2949,6 +2950,20 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 				if chkDOF:
 					print("TODO: CheckEmpDOF()")
 
+		# TODO: checkCall
+		if phone_status==1:
+			if phone_amount <= 0:
+				is_pass = False
+				message = "ยังไม่ได้ป้อนค่าโทรศัพท์"
+				return is_pass, message
+
+		# TODO: checkLate
+		# if late_status==1 or ot_status==1:	# ot_status ???
+		if late_status==1:
+			if relief_emp_id=="" or relief_emp_id is None:
+				return False, "กรุณาป้อนรหัสพนังานที่เข้าเวรแทน"	
+		else:
+			return False, "late_status!=1"
 
 		return is_pass, message
 

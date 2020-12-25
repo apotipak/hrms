@@ -201,18 +201,28 @@
 			  <div class="card-header">
 			    
 	            <div class="form-check d-inline">
+	            	<!--
 	              <input class="form-check-input" id="id_absent_check" name="absent_check" type="checkbox">
 	              <label class="form-check-label"><b>Absent</b></label>&nbsp;&nbsp;&nbsp;&nbsp;
+					-->
+
+	              <label><input class="form-check-input" id="id_absent_check" name="absent_check" type="checkbox" />Absent</label>&nbsp;&nbsp;&nbsp;&nbsp;
 	            </div>
 
 	            <div class="form-check d-inline">
+	            	<!--
 	              <input class="form-check-input" id="id_late_check" name="late_check" type="checkbox">
 	              <label class="form-check-label"><b>Late</b></label>&nbsp;&nbsp;&nbsp;&nbsp;
+					-->
+	              <label><input class="form-check-input" id="id_late_check" name="late_check" type="checkbox" />Late</label>&nbsp;&nbsp;&nbsp;&nbsp;
 	            </div>
 
 	            <div class="form-check d-inline">
+	            	<!--
 	              <input class="form-check-input" id="id_phone_check" name="phone_check" type="checkbox">
 	              <label class="form-check-label"><b>Phone</b></label>&nbsp;&nbsp;&nbsp;&nbsp;
+	              	-->
+	              <label><input class="form-check-input" id="id_phone_check" name="phone_check" type="checkbox" />Phone</label>&nbsp;&nbsp;&nbsp;&nbsp;
 	            </div>
 
 			    <div class="card-tools">
@@ -382,13 +392,13 @@
 						  <div class="form-row">
 
 							<div class="form-group col-2 d-inline">
-						      	<label for="id_sent_spare">From</label>     
+						      	<label for="id_late_from">Late From</label>     
 						      	<input type="text" id="id_late_from" name="late_from" class="form-control form-control-sm" />
 							</div>
 
 							<div class="form-group col-2 d-inline">
-						      	<label for="id_sent_spare">&nbsp;</label>
-						      	<input type="text" id="id_late_from" name="late_from" class="form-control form-control-sm" />
+						      	<label for="id_late_to">Late To</label>
+						      	<input type="text" id="id_late_to" name="late_to" class="form-control form-control-sm" />
 							</div>
 
 							<div class="form-group col-3 d-inline">
@@ -405,8 +415,8 @@
 						      		<input type="text" id="id_late_hour" name="late_hour" class="form-control form-control-sm" />
 						      		
 						      		<div class="pt-1 pl-2">
-						      			<input type="checkbox" id="id_late_full_paid" name="late_full_paid" />
-						      			<label for="id_late_full_paid">Full Paid</label>
+						      			<input type="checkbox" id="id_late_full_paid_check" name="late_full_paid_check" />
+						      			<label for="id_late_full_paid_check">Full Paid</label>
 						      		</div>
 
 						    	</div>
@@ -554,11 +564,12 @@
 
 
 		
+		/*
 		$("#id_late_check").hide();
 		$("#id_late_check").next("label").hide();
 		$("#id_phone_check").hide();
 		$("#id_phone_check").next("label").hide();
-
+		*/
 
 	$("#id_absent_check").change(function() {
 
@@ -604,10 +615,10 @@
 			$("#id_relief_check").prop("checked", false);
 	    	$("#id_relief_emp_id").attr("disabled", true);
 
-	    	$("#id_late_check").show();
-	    	$("#id_late_check").next("label").show();	    	
-	    	$("#id_phone_check").show();
-	    	$("#id_phone_check").next("label").show();
+	    	//$("#id_late_check").show();
+	    	//$("#id_late_check").next("label").show();	    	
+	    	//$("#id_phone_check").show();
+	    	//$("#id_phone_check").next("label").show();
 
 
 	    }
@@ -1512,10 +1523,10 @@
 
 
 		$("#id_emp_id").attr("disabled", true);
-		$("#id_late_check").hide();
-		$("#id_late_check").next("label").hide();
-		$("#id_phone_check").hide();
-		$("#id_phone_check").next("label").hide();
+		//$("#id_late_check").hide();
+		//$("#id_late_check").next("label").hide();
+		//$("#id_phone_check").hide();
+		//$("#id_phone_check").next("label").hide();
 
 		// Clear red highlight textbox
 		$("#id_call_amount_option").css('border-color','');
@@ -2277,6 +2288,20 @@
     	var relief_status = 0;
     	if($("#id_relief_check").is(":checked")) 
     		relief_status = 1;
+
+    	var late_status = 0;
+    	if($("#id_late_check").is(":checked"))
+    		late_status =1;
+    	var late_from = $("#id_late_from").val();
+    	var late_to = $("#id_late_from").val();
+    	var late_reason_option = $("#id_late_to").val();
+    	var late_hour = $("#id_late_hour").val();
+    	
+    	var late_full_paid_status = 0;
+    	if($("#id_late_full_paid_check").is(":checked"))
+    		late_full_paid_status = 1;
+
+    	console.log(late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status);
 
     	if(absent_status==1) {
     		if(relief_status==1) {
