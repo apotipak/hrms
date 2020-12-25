@@ -1665,14 +1665,13 @@
 		if(shift_id==999 || shift_id==99) {			
 			$("#save_button").attr("disabled", true);
 
+			// Checkbox
 			$("#id_absent_check").attr("disabled", true);
 			$("#id_absent_check").prop("checked", false);
-
 			$("#id_late_check").attr("disabled", true);
-			$("#id_late_check").prop("checked", false);
-
+			//$("#id_late_check").prop("checked", false);
 			$("#id_phone_check").attr("disabled", true);
-			$("#id_phone_check").prop("checked", false);
+			//$("#id_phone_check").prop("checked", false);
 
 			if(upd_gen=='G') {
 				$("#delete_button").attr("disabled", true);
@@ -1689,8 +1688,16 @@
 			$("#id_remark").attr("readonly", false);
 
 			$(this).addClass('highlight').siblings().removeClass('highlight');
-			
+
 			return false;
+		} else {
+			// Checkbox
+			$("#id_absent_check").attr("disabled", false);
+			$("#id_absent_check").prop("checked", false);
+			$("#id_late_check").attr("disabled", false);
+			$("#id_late_check").prop("checked", false);
+			$("#id_phone_check").attr("disabled", false);
+			$("#id_phone_check").prop("checked", false);			
 		}
 
 
