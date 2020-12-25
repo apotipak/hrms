@@ -1,4 +1,5 @@
 {% extends "page_generic.html" %}
+{% load humanize %}
 {% load i18n %}
 {% load static %}
 {% load widget_tweaks %}
@@ -941,6 +942,7 @@
 							
 							late_status = data.employee_list[i]["late"];
 							late_full_status = data.employee_list[i]["late_full"];							
+							
 
 							result += "    <tr>";							
 							result += "	     <td class='d-none'>" + absent + "</td>";
@@ -979,7 +981,10 @@
 							result += "	     <td>" + tel_paid + "</td>";
 							result += "	     <td>" + parseInt(spare) + "</td>";
 							result += "	     <td>" + wage_id + "</td>";
-							result += "	     <td nowrap>" + upd_date + "</td>";
+
+							//result += "	     <td nowrap>" + upd_date + "</td>";
+							result += "		<td><small>{{upd_date|naturaltime }}</small></td>";
+
 							result += "	     <td>" + upd_by + "</td>";
 							result += "	     <td>" + upd_flag + "</td>";
 							result += "	     <td class='d-none'>" + upd_gen + "</td>";
@@ -1665,13 +1670,25 @@
 		if(shift_id==999 || shift_id==99) {			
 			$("#save_button").attr("disabled", true);
 
-			// Checkbox
+			// Clear checkbox
 			$("#id_absent_check").attr("disabled", true);
 			$("#id_absent_check").prop("checked", false);
 			$("#id_late_check").attr("disabled", true);
-			//$("#id_late_check").prop("checked", false);
 			$("#id_phone_check").attr("disabled", true);
-			//$("#id_phone_check").prop("checked", false);
+
+			// Clear textbox
+			$("#id_emp_id").val("");
+			$("#id_emp_fullname_th").val("");
+			$("#id_emp_rank").val("");
+			$("#id_emp_dept").val("");
+			$("#id_emp_join_date").val("");
+			$("#id_emp_term_date").val("");
+			$("#id_emp_status").val("");
+
+			// Clear dropdown
+			$("#id_shift_option").val(0);
+			$("#id_late_reason_option").val(0);
+			$("#id_job_type_option").val(0);
 
 			if(upd_gen=='G') {
 				$("#delete_button").attr("disabled", true);
@@ -1692,6 +1709,7 @@
 			return false;
 		} else {
 			// Checkbox
+			$("#id_relief_check").attr("disabled", false);
 			$("#id_absent_check").attr("disabled", false);
 			$("#id_absent_check").prop("checked", false);
 			$("#id_late_check").attr("disabled", false);
@@ -1699,7 +1717,6 @@
 			$("#id_phone_check").attr("disabled", false);
 			$("#id_phone_check").prop("checked", false);			
 		}
-
 
 		$("#emp_id_lookup_button").attr("disabled", true);
 
@@ -2229,7 +2246,10 @@
 														result += "	     <td>" + tel_paid + "</td>";
 														result += "	     <td>" + parseInt(spare) + "</td>";
 														result += "	     <td>" + wage_id + "</td>";
-														result += "	     <td nowrap>" + upd_date + "</td>";
+														
+														//result += "	     <td nowrap>" + upd_date + "</td>";
+														result += "		<td>" + upd_date + "...&nbsp;<small>" + {% upd_date %} + "</small></td>";
+
 														result += "	     <td>" + upd_by + "</td>";
 														result += "	     <td>" + upd_flag + "</td>";
 														result += "	     <td class='d-none'>" + upd_gen + "</td>";
