@@ -631,7 +631,7 @@
 
 	    if(this.checked) {
 	    	
-	   		$("#relief_employee_section").show();
+	   		//$("#relief_employee_section").show();
 
 			$("#id_absent_check").prop("checked", false);
 
@@ -649,7 +649,23 @@
 			//$("#id_call_time").val("");
 	    	//$("#id_call_amount_option").val(0);
 	 		
+	    } else {
+	    	$("#id_relief_check").prop("checked", false);
+
+	    	$("#id_relief_emp_id").val("");
+	    	$("#id_relief_emp_fullname_th").val("");
+	    	$("#id_relief_emp_rank").val("");
+	    	$("#id_relief_emp_dept").val("");
+	    	$("#id_relief_emp_join_date").val("");
+			$("#id_relief_emp_term_date").val("");
+			$("#id_relief_emp_status").val("");
+
+	   		$("#id_relief_emp_id").attr("disabled", true);
+	   		$("#id_relief_emp_id").attr("readonly", true);
+
+	   		//alert("a");
 	    }
+
 	});
 
 	$("#id_call_amount_option").change(function() {
