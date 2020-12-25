@@ -576,6 +576,9 @@
 
 	$("#id_absent_check").change(function() {
 
+		//$("#id_relief_emp_id").css('border-color','');
+		//$("#id_relief_emp_id").css('border-style','');
+
 	    if(this.checked) {
 	    	
 	   		$("#relief_employee_section").show();
@@ -598,7 +601,10 @@
 	    	$("#id_relief_check").prop("checked", true);
 	    	$("#id_relief_emp_id").focus();
 	 		
-	    } else {	    	
+	    } else {
+			$("#id_relief_emp_id").css('border-color','');
+			$("#id_relief_emp_id").css('border-style','');
+
 			var tel_man = $("#employee_list_table").find('.highlight').find('td:eq(11)').text();
 			var tel_time = $("#employee_list_table").find('.highlight').find('td:eq(13)').text();
 			var tel_amount = $("#employee_list_table").find('.highlight').find('td:eq(14)').text();
@@ -628,6 +634,9 @@
 	});
 
 	$("#id_late_check").change(function() {
+
+		$("#id_relief_emp_id").css('border-color','red');
+		$("#id_relief_emp_id").css('border-style','solid');
 
 	    if(this.checked) {
 	    	
@@ -1509,6 +1518,9 @@
     		$("#id_relief_emp_join_date").val("");
     		$("#id_relief_emp_term_date").val("");
     		$("#id_relief_emp_status").val("");
+
+			$("#id_relief_emp_id").css('border-color','');
+			$("#id_relief_emp_id").css('border-style','');    		
     	}
 
     	//alert("click relief");
@@ -1587,6 +1599,8 @@
 		//$("#id_phone_check").next("label").hide();
 
 		// Clear red highlight textbox
+		$("#id_relief_emp_id").css('border-color','');
+		$("#id_relief_emp_id").css('border-style','');		
 		$("#id_call_amount_option").css('border-color','');
 		$("#id_call_amount_option").css('border-style','');
 		$("#id_shift_option").css('border-color','');
@@ -2367,7 +2381,6 @@
     	var late_hour = $("#id_late_hour").val();
     	
     	if(late_status==1 & relief_emp_id=="") {
-    		/*
 		  	$(document).Toasts('create', {
 		    	class: "bg-danger", 
 		    	title: "{% trans 'Error' %}",
@@ -2379,7 +2392,8 @@
 		    	close: true,
 		    	autoremove: true,
 		  	});
-		  	*/
+
+		  	/*
 			$.alert({
 			    title: 'Error',
 			    type: 'red',
@@ -2390,11 +2404,17 @@
 			    boxWidth: '38%',
 			    useBootstrap: false,
 			});
+			*/
 			
-			$("#id_relief_emp_id").focus();
+			
+			$("#id_relief_emp_id").css('border-color','red');
+			$("#id_relief_emp_id").css('border-style','solid');			
 
+			$("#id_relief_emp_id").focus();
+			
     		return false;
     	}
+
 
     	var late_full_paid_status = 0;
     	if($("#id_late_full_paid_check").is(":checked"))
@@ -2405,7 +2425,6 @@
     	if(absent_status==1) {
     		if(relief_status==1) {
 	    		if(relief_emp_id=="") {
-	    			/*
 				  	$(document).Toasts('create', {
 				    	class: "bg-danger", 
 				    	title: "{% trans 'Error' %}",
@@ -2417,7 +2436,8 @@
 				    	close: true,
 				    	autoremove: true,
 				  	});
-				  	*/
+
+				  	/*
 					$.alert({
 					    title: 'Error',
 					    type: 'red',
@@ -2427,7 +2447,12 @@
 					    closeIcon: false,
 					    boxWidth: '38%',
 					    useBootstrap: false,
-					});				  		
+					});
+					*/
+
+					$("#id_relief_emp_id").css('border-color','red');
+					$("#id_relief_emp_id").css('border-style','solid');
+
 					$('#id_relief_emp_id').focus();
 
 					return false;    			
