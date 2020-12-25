@@ -2962,9 +2962,7 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 		if late_status==1:
 			if relief_emp_id=="" or relief_emp_id is None:
 				return False, "กรุณาป้อนรหัสพนังานที่เข้าเวรแทน"	
-		else:
-			return False, "late_status!=1"
-
+		
 		return is_pass, message
 
 	# Case 3
