@@ -566,6 +566,8 @@
 	    	
 	   		$("#relief_employee_section").show();
 
+	   		$("#id_late_check").prop("checked", false);
+
 	   		//$("#id_late_check").hide();
 	   		//$("#id_late_check").next("label").hide();
 
@@ -616,6 +618,8 @@
 	    if(this.checked) {
 	    	
 	   		$("#relief_employee_section").show();
+
+			$("#id_absent_check").prop("checked", false);
 
 	   		$("#id_relief_emp_id").attr("disabled", false);
 	   		$("#id_relief_emp_id").attr("readonly", false);
@@ -1331,10 +1335,14 @@
 
 			    		//showLoading();
 			    		$.LoadingOverlay("hide");
-			    		$("#id_relief_emp_id").select();
-
-			    		$("#id_late_from").focus();
-			    		//alert("a");
+			    					    		
+			    		if($("#id_late_check").is(":checked")) {
+			    			$("#id_late_from").focus();
+			    		}
+			    		else {
+			    			$("#id_relief_emp_id").focus();
+			    			$("#id_relief_emp_id").select();
+			    		}			    		
 			    	},
 
 			    });
@@ -1409,7 +1417,7 @@
     });
 
     $(document).on('click', '#id_relief_check', function(e) {
-    	if($("#id_relief_check").is(":checked")) {    		
+    	if($("#id_relief_check").is(":checked")) {
     		relief_status = 1;
 
     		$("#id_relief_emp_id").attr("disabled", false);
@@ -1909,10 +1917,7 @@
 
 	    			$("#save_button").attr("disabled", false);
 	    			$("#delete_button").attr("disabled", true);
-
-	    	
-	    			//alert("TODO - check if employee is available.");
-
+	    
 					$.ajax({
 				    	url : "/monitoring/ajax/save_daily_attendance",
 				    	type : "GET",
@@ -1954,7 +1959,6 @@
 				    	},
 				    	success: function(data) {
 				    		if(data.success) {
-									// TODO1
 					    		if(data.success) {
 									$.ajax({
 										url : "/monitoring/ajax/get_attendance_information/",
