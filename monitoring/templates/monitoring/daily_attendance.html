@@ -1123,6 +1123,7 @@
 			}
 		
 			if(emp_id=="") {
+				/*
 			  	$(document).Toasts('create', {
 			    	class: "bg-danger", 
 			    	title: "{% trans 'Error' %}",
@@ -1133,7 +1134,20 @@
 			    	autoDismiss: true,
 			    	close: true,
 			    	autoremove: true,
-			  	});    		
+			  	});
+			  	*/
+
+				$.alert({
+				    title: 'Error',
+				    type: 'red',
+				    content: "Please select Employee ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+				    animation: 'zoom',
+				    animationBounce: 1.5,
+				    closeIcon: false,
+				    boxWidth: '38%',
+				    useBootstrap: false,
+				});
+
 	    		$("#id_emp_id").focus();
 			} else {
 				
@@ -1190,7 +1204,7 @@
 				    		$("#id_emp_name_th").animate({color:'white'}, 1000);
 				    		*/
 			    		} else {
-
+			    			/*
 						  	$(document).Toasts('create', {
 						    	class: "bg-danger", 
 						    	title: "{% trans 'Error' %}",
@@ -1202,6 +1216,18 @@
 						    	close: true,
 						    	autoremove: true,
 						  	});
+						  	*/
+							$.alert({
+							    title: 'Error',
+							    type: 'red',
+							    content: "Employee ID not found.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+							    animation: 'zoom',
+							    animationBounce: 1.5,
+							    closeIcon: false,
+							    boxWidth: '38%',
+							    useBootstrap: false,
+							});
+
 			    		}
 
 			    		//showLoading();
@@ -1259,6 +1285,7 @@
 			}
 		
 			if(relief_emp_id=="") {
+				/*
 			  	$(document).Toasts('create', {
 			    	class: "bg-danger", 
 			    	title: "{% trans 'Error' %}",
@@ -1270,7 +1297,19 @@
 			    	close: true,
 			    	autoremove: true,
 			  	});    		
-	    		
+	    		*/
+
+				$.alert({
+				    title: 'Error',
+				    type: 'red',
+				    content: "กรุณาป้อนรหัสพนักงานลงเวรแทน&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+				    animation: 'zoom',
+				    animationBounce: 1.5,
+				    closeIcon: false,
+				    boxWidth: '38%',
+				    useBootstrap: false,
+				});
+
 	    		$("#id_relief_emp_id").focus();
 	    		return false;
 
@@ -1854,6 +1893,7 @@
 		var totalPNM = $("#totalPNM").text();
 
 		if(emp_id=="") {
+			/*
 		  	$(document).Toasts('create', {
 		    	class: "bg-danger", 
 		    	title: "{% trans 'Error' %}",
@@ -1865,7 +1905,17 @@
 		    	close: true,
 		    	autoremove: true,
 		  	});
-
+		  	*/
+			$.alert({
+			    title: 'Error',
+			    type: 'red',
+			    content: "กรุณาเลือกพนักงานที่ต้องการลางาน &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+			    animation: 'zoom',
+			    animationBounce: 1.5,
+			    closeIcon: false,
+			    boxWidth: '38%',
+			    useBootstrap: false,
+			});
 		  	$('#id_emp_id').focus();
 			return false;
 		}
@@ -2316,6 +2366,36 @@
     	var late_reason_option = $("#id_late_to").val();
     	var late_hour = $("#id_late_hour").val();
     	
+    	if(late_status==1 & relief_emp_id=="") {
+    		/*
+		  	$(document).Toasts('create', {
+		    	class: "bg-danger", 
+		    	title: "{% trans 'Error' %}",
+		    	subtitle: '',
+		    	autohide: true,
+		    	delay: 2000,
+		    	body: "กรุณาเลือกพนักงานที่มาเข้าเวรแทน",
+		    	autoDismiss: true,
+		    	close: true,
+		    	autoremove: true,
+		  	});
+		  	*/
+			$.alert({
+			    title: 'Error',
+			    type: 'red',
+			    content: "กรุณาเลือกพนักงานที่มาเข้าเวรแทน..",
+			    animation: 'zoom',
+			    animationBounce: 1.5,
+			    closeIcon: false,
+			    boxWidth: '38%',
+			    useBootstrap: false,
+			});
+			
+			$("#id_relief_emp_id").focus();
+
+    		return false;
+    	}
+
     	var late_full_paid_status = 0;
     	if($("#id_late_full_paid_check").is(":checked"))
     		late_full_paid_status = 1;
@@ -2325,6 +2405,7 @@
     	if(absent_status==1) {
     		if(relief_status==1) {
 	    		if(relief_emp_id=="") {
+	    			/*
 				  	$(document).Toasts('create', {
 				    	class: "bg-danger", 
 				    	title: "{% trans 'Error' %}",
@@ -2335,8 +2416,20 @@
 				    	autoDismiss: true,
 				    	close: true,
 				    	autoremove: true,
-				  	});    			
+				  	});
+				  	*/
+					$.alert({
+					    title: 'Error',
+					    type: 'red',
+					    content: "กรุณาเลือกพนักงานที่มาเข้าเวรแทน &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+					    animation: 'zoom',
+					    animationBounce: 1.5,
+					    closeIcon: false,
+					    boxWidth: '38%',
+					    useBootstrap: false,
+					});				  		
 					$('#id_relief_emp_id').focus();
+
 					return false;    			
 	    		} else {
 	    			saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,tel_man,tel_time,tel_amount,absent_status,relief_status);
