@@ -378,18 +378,49 @@
 
 
 
-					  <div class="row col-12">
+					  <div class="row">
 						  <div class="form-row">
 
-							<div class="form-group col-3">
+							<div class="form-group col-2 d-inline">
 						      	<label for="id_sent_spare">From</label>     
 						      	<input type="text" id="id_late_from" name="late_from" class="form-control form-control-sm" />
 							</div>
 
-							<div class="form-group col-3">
+							<div class="form-group col-2 d-inline">
 						      	<label for="id_sent_spare">&nbsp;</label>
 						      	<input type="text" id="id_late_from" name="late_from" class="form-control form-control-sm" />
 							</div>
+
+							<div class="form-group col-3 d-inline">
+						      	<label for="id_late_reason_option">Reason</label>
+						        <select id="id_late_reason_option" class="form-control form-control-sm">
+								  <option value="1" selected>มาสาย</option>
+						        </select>	
+							</div>
+
+
+							<div class="form-group col-5">
+						      	<label for="id_late_hour">Total Time</label>
+								<div class="input-group">                            	
+						      		<input type="text" id="id_late_hour" name="late_hour" class="form-control form-control-sm" />
+						      		
+						      		<div class="pt-1 pl-2">
+						      			<input type="checkbox" id="id_late_full_paid" name="late_full_paid" />
+						      			<label for="id_late_full_paid">Full Paid</label>
+						      		</div>
+
+						    	</div>
+							</div>
+
+
+
+							<!--
+				            <div class="form-group col-2 d-inline">								
+								<input type="checkbox" id="id_late_full_paid" name="late_full_paid" />	
+								<label for="id_late_full_paid">Full Paid</label>
+				            </div>
+							-->
+
 
 						  </div>
 					  </div>
@@ -1269,6 +1300,7 @@
 			    		
 			    			$("#id_relief_check").prop("checked", true);
 
+
 			    		} else {
 			    			/*
 						  	$(document).Toasts('create', {
@@ -1300,9 +1332,15 @@
 			    		//showLoading();
 			    		$.LoadingOverlay("hide");
 			    		$("#id_relief_emp_id").select();
+
+			    		$("#id_late_from").focus();
+			    		//alert("a");
 			    	},
+
 			    });
-			}		
+			}
+
+			
 		}
 	});
 
