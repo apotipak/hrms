@@ -1059,7 +1059,7 @@
 						for(i=0; i<data.ot_reason_list.length; i++) {
 							ot_res_id = data.ot_reason_list[i]["ot_res_id"];
 							ot_res_th = data.ot_reason_list[i]["ot_res_th"];
-							$el.append($("<option></option>").attr("value", ot_res_id).text(ot_res_id + " | " + ot_res_th));
+							$el.append($("<option></option>").attr("value", ot_res_id).html(ot_res_id + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| " + ot_res_th));
 							//$el.append($("<option></option>").attr("value", ot_res_id).text(ot_res_th));
 						}
 					}
