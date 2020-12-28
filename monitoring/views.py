@@ -1585,6 +1585,8 @@ def ajax_get_attendance_information(request):
 	cus_no = cus_id + cus_brn.zfill(3)	
 	schedule_list = []
 	employee_list = []
+	ot_reason_list = []
+
 	totalNDP = 0
 	totalNNP = 0
 	totalPDP = 0
@@ -1741,8 +1743,9 @@ def ajax_get_attendance_information(request):
 		
 
 
-		# Get contract schedule list	
-		cursor = connection.cursor()	
+		# Get contract schedule list
+		# ----- START -----
+		cursor = connection.cursor()
 		cursor.execute("select distinct(shf_id),shf_desc from cus_service a,t_shift b where a.cnt_id=%s and a.srv_active=1 and b.shf_id=a.srv_shif_id", [cnt_id])
 		rows = cursor.fetchall()
 		for row in rows:
@@ -1750,11 +1753,32 @@ def ajax_get_attendance_information(request):
 				"shf_id": row[0],
 				"shf_desc": row[1],
 				}
-			schedule_list.append(record)
+			schedule_list.append(record)		
+
 		record = {"shf_id": 99,"shf_desc": "99   # DAY OFF ########"}
 		schedule_list.append(record)
 		record = {"shf_id": 999,"shf_desc": "999   # ANOTHER SITE #"}
 		schedule_list.append(record)
+		cursor.close()
+		# ----- END -----
+
+
+		# Get ot reason list
+		# ----- START -----		
+		cursor = connection.cursor()	
+		cursor.execute("select ot_res_id,ot_res_th from t_ot_reason")
+		ot_reason_obj = cursor.fetchall()		
+		if ot_reason_obj is not None:
+			for row in ot_reason_obj:
+				record = {
+					"ot_res_id": row[0],
+					"ot_res_th": row[1],
+				}
+			ot_reason_list.append(record)
+		else:
+			ot_reason_list = None
+		cursor.close()
+		# ----- END -----
 
 		string_today_date = str(settings.TODAY_DATE.strftime("%d/%m/%Y"))
 		today_date = datetime.datetime.strptime(string_today_date, "%d/%m/%Y")
@@ -1787,6 +1811,7 @@ def ajax_get_attendance_information(request):
 		
 		# print("______sql 3_____ = " + str(sql))
 
+		cursor = connection.cursor()
 		cursor.execute(sql, [cnt_id, attendance_date])
 		rows = cursor.fetchall()
 		
@@ -1934,7 +1959,7 @@ def ajax_get_attendance_information(request):
 		message = ""
 
 		# print("is_found = " + str(is_found))
-		cursor.close
+		cursor.close()
 	else:
 		is_found = False
 		message = message
@@ -1945,6 +1970,7 @@ def ajax_get_attendance_information(request):
 	    "message": message,
 	    "schedule_list": list(schedule_list),
 	    "employee_list": list(employee_list),
+	    "ot_reason_list": list(ot_reason_list),
 	    "totalNDP": totalNDP,
 		"totalNNP": totalNNP,
 		"totalPDP": totalPDP,
