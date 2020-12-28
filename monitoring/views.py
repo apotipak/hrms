@@ -1767,14 +1767,18 @@ def ajax_get_attendance_information(request):
 		# ----- START -----		
 		cursor = connection.cursor()	
 		cursor.execute("select ot_res_id,ot_res_th from t_ot_reason")
-		ot_reason_obj = cursor.fetchall()		
+		ot_reason_obj = cursor.fetchall()
+		
+		record = {"ot_res_id": 56,"ot_res_th": "มาสาย"}
+		ot_reason_list.append(record)
+
 		if ot_reason_obj is not None:
 			for row in ot_reason_obj:
 				record = {
 					"ot_res_id": row[0],
 					"ot_res_th": row[1],
 				}
-			ot_reason_list.append(record)
+				ot_reason_list.append(record)
 		else:
 			ot_reason_list = None
 		cursor.close()

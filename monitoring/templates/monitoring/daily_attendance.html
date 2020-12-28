@@ -407,7 +407,7 @@
 							<div class="form-group col-3 d-inline">
 						      	<label for="id_late_reason_option">Reason</label>
 						        <select id="id_late_reason_option" class="form-control form-control-sm">
-								  <option value="1" selected>มาสาย</option>
+								  <!--<option value="56" selected>56 | มาสาย</option>-->
 						        </select>	
 							</div>
 
@@ -643,6 +643,15 @@
 	    	
 	   		//$("#relief_employee_section").show();
 
+	   		$("#id_late_reason_option").val(56);
+
+	   		//$("#id_late_reason_option").text("56 | มาสาย");
+	   		//$("#id_shift_option").text("aa");
+	   		//alert("a");
+	   		// ironman
+
+
+
 			$("#id_absent_check").prop("checked", false);
 
 	   		$("#id_relief_emp_id").attr("disabled", false);
@@ -661,6 +670,8 @@
 	 		
 	    } else {
 	    	$("#id_relief_check").prop("checked", false);
+
+	    	$("#id_late_reason_option").val("");
 
 	    	$("#id_relief_emp_id").val("");
 	    	$("#id_relief_emp_fullname_th").val("");
@@ -742,7 +753,7 @@
 		var $el = $("#id_shift_option");
 		$el.empty();
 		$el.append(result);
- 		$("#id_shift_option").attr("disabled", true); 		
+ 		$("#id_shift_option").attr("disabled", true);
 
  		$("#emp_id_lookup_button").attr("disabled", true);
  		$("#add_button").attr("disabled", true);
@@ -1025,7 +1036,7 @@
 					$('#id_employee_list').html(result);
 
 
-					// Show available Shift Option
+					// Show available Shift option
 					var $el = $("#id_shift_option");
 					$el.empty();				
 					result += "<option value='0' selected></option>";
@@ -1037,7 +1048,23 @@
 							$el.append($("<option></option>").attr("value", shf_id).text(shf_desc));
 						}
 					}
-									
+
+
+					// Show ot reason option
+					var $el = $("#id_late_reason_option");
+					$el.empty();				
+					//result += "<option value='0' selected></option>";
+					$el.append(result);
+					if(data.ot_reason_list.length>0) {
+						for(i=0; i<data.ot_reason_list.length; i++) {
+							ot_res_id = data.ot_reason_list[i]["ot_res_id"];
+							ot_res_th = data.ot_reason_list[i]["ot_res_th"];
+							$el.append($("<option></option>").attr("value", ot_res_id).text(ot_res_id + " | " + ot_res_th));
+							//$el.append($("<option></option>").attr("value", ot_res_id).text(ot_res_th));
+						}
+					}
+
+
 					// TOTAL
 					$("#totalNDP").html(data.totalNDP);
 					$("#totalNNP").html(data.totalNNP);
@@ -2566,8 +2593,7 @@
 					        		saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,tel_man,tel_time,tel_amount,absent_status,relief_status);
 								}
 					        },
-					        cancel: {	
-					        	// ironman 2	        	
+					        cancel: {					        	
 					        	action: function () {
 									//$("#id_call_amount_option").addClass("highlight").focus();
 									$("#id_call_amount_option").css('border-color','red');
