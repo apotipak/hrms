@@ -22,6 +22,7 @@ import django.db as db
 import json
 from datetime import timedelta
 from system.helper import *
+from django.contrib.humanize.templatetags.humanize import naturalday
 
 
 @login_required(login_url='/accounts/login/')
@@ -1825,6 +1826,13 @@ def ajax_get_attendance_information(request):
 			'''
 
 			upd_date = row[45].strftime("%d/%m/%Y %H:%M")
+			upd_date_naturalday = naturalday(row[45])
+			upd_date_naturaltime = row[45]
+
+			print("upd_date_naturalday", upd_date_naturalday)
+			# print("nautraltime", nautraltime(row[45]))
+
+
 			upd_gen = "" if row[48] is None else row[48]
 			remark = "" if row[61] is None else row[61].strip("0").strip()
 
@@ -1889,7 +1897,11 @@ def ajax_get_attendance_information(request):
 				"soc": row[42],
 				"pub": row[43],
 				"paid": row[44],
-				"upd_date": upd_date,
+
+				"upd_date": upd_date,			
+				"upd_date_naturalday": upd_date_naturalday,
+				"upd_date_naturaltime": upd_date_naturaltime,
+
 				"upd_by": row[46],
 				"upd_flag": row[47],
 				"upd_gen": upd_gen,
