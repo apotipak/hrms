@@ -1699,6 +1699,8 @@
 		var late_full_status = $(this).find('td:eq(25)').text();
 
 		var ot_reason = $(this).find('td:eq(27)').text();
+		var ot_time_from = $(this).find('td:eq(28)').text();
+		var ot_time_to = $(this).find('td:eq(29)').text();
 		var ot_hour_amount = $(this).find('td:eq(30)').text();
 
 /*
@@ -1814,6 +1816,12 @@
 
 		// Set OT Reason
 		$("#id_late_reason_option").val(ot_reason);
+
+		// Set OT Time From
+		$("#id_late_from").val(ot_time_from);
+
+		// Set OT Time To
+		$("#id_late_to").val(ot_time_to);
 
 		// Set OT Hour Amount
 		$("#id_late_hour").val(ot_hour_amount);

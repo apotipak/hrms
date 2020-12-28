@@ -1879,8 +1879,25 @@ def ajax_get_attendance_information(request):
 			late_status = 1 if row[50]==1 else 0
 			late_full_status = 1 if row[56]==1 else 0
 
+
+			# OT Time From
+			if row[30] is not None:
+				ot_time_frm = row[30].strftime("%d/%m/%Y %H:%M")
+			else:
+				ot_time_frm = ""
+
+			# OT Time To
+			if row[31] is not None:
+				ot_time_to = row[31].strftime("%d/%m/%Y %H:%M")
+			else:
+				ot_time_to = ""
+
+			# OT Hour Amount
 			if row[32] is not None:
 				ot_hr_amt = int(row[32])
+			else:
+				ot_hr_amt = 0
+
 
 			record = {
 				"emp_fname_th": row[0].strip(),
@@ -1914,8 +1931,8 @@ def ajax_get_attendance_information(request):
 				"tel_paid": tel_paid,
 				"ot": row[28],
 				"ot_reason": row[29],
-				"ot_time_frm": row[30],
-				"ot_time_to": row[31],
+				"ot_time_frm": ot_time_frm,
+				"ot_time_to": ot_time_to,
 				"ot_hr_amt": ot_hr_amt,
 				"ot_pay_amt": row[33],
 				"spare": row[34],
