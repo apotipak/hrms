@@ -1879,6 +1879,9 @@ def ajax_get_attendance_information(request):
 			late_status = 1 if row[50]==1 else 0
 			late_full_status = 1 if row[56]==1 else 0
 
+			if row[32] is not None:
+				ot_hr_amt = int(row[32])
+
 			record = {
 				"emp_fname_th": row[0].strip(),
 				"emp_lname_th": row[1].strip(),
@@ -1913,7 +1916,7 @@ def ajax_get_attendance_information(request):
 				"ot_reason": row[29],
 				"ot_time_frm": row[30],
 				"ot_time_to": row[31],
-				"ot_hr_amt": row[32],
+				"ot_hr_amt": ot_hr_amt,
 				"ot_pay_amt": row[33],
 				"spare": row[34],
 				"wage_id": row[35],

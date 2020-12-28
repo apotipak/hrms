@@ -153,12 +153,18 @@
 							      <th scope='col' class='d-none'>Relief Status</th>
 							      <th scope='col' class='d-none'>Late Status</th>
 							      <th scope='col' class='d-none'>Late Full Status</th>
-							    </tr>
-							  </thead>
 
+							      <th scope='col' class='d-none'>OT</th>
+							      <th scope='col' class='d-none'>OT Reason</th>
+							      <th scope='col' class='d-none'>OT Time From</th>
+							      <th scope='col' class='d-none'>OT Time To</th>
+							      <th scope='col' class='d-none'>OT Hour Amount</th>
+							    </tr>
+
+							  </thead>
 							  <tbody>
 							    <tr>
-							      <td colspan="25" class="text-center"><br><br>There is no data.<br><br><br></td>
+							      <td colspan="31" class="text-center"><br><br>There is no data.<br><br><br></td>
 							    </tr>
 							  </tbody>
 							</table>
@@ -412,10 +418,10 @@
 							</div>
 
 
-							<div class="form-group col-5">
+							<div class="form-group col-2">
 						      	<label for="id_late_hour">Total Time (ชั่วโมง)</label>
 								<div class="input-group">                            	
-						      		<input type="text" id="id_late_hour" name="late_hour" class="form-control form-control-sm" />
+						      		<input type="number" id="id_late_hour" name="late_hour" class="form-control form-control-sm" />
 						      		
 						      		<div class="pt-1 pl-2">
 						      			<input type="checkbox" id="id_late_full_paid_check" name="late_full_paid_check" />
@@ -921,6 +927,13 @@
 					result += "      <th scope='col' class='d-none'>Relief Status</th>";
 					result += "      <th scope='col' class='d-none'>Late Status</th>";
 					result += "      <th scope='col' class='d-none'>Late Full Status</th>";
+
+					result += "      <th scope='col' class='d-none'>OT</th>";
+					result += "      <th scope='col' class='d-none'>OT Reason</th>";
+					result += "      <th scope='col' class='d-none'>OT Time From</th>";
+					result += "      <th scope='col' class='d-none'>OT Time To</th>";
+					result += "      <th scope='col' class='d-none'>OT Hour Amount</th>";
+					
 					result += "    </tr>";
 					result += "  </thead>";
 					result += "  <tbody class='sortable'>";
@@ -958,7 +971,12 @@
 							late_status = data.employee_list[i]["late"];
 							late_full_status = data.employee_list[i]["late_full"];							
 							
-
+							ot = data.employee_list[i]["ot"];
+							ot_reason = data.employee_list[i]["ot_reason"];
+							ot_time_frm = data.employee_list[i]["ot_time_frm"];
+							ot_time_to = data.employee_list[i]["ot_time_to"];
+							ot_hr_amt = data.employee_list[i]["ot_hr_amt"];				
+				
 							result += "    <tr>";							
 							result += "	     <td class='d-none'>" + absent + "</td>";
 							if(absent==1) {
@@ -997,13 +1015,8 @@
 							result += "	     <td>" + parseInt(spare) + "</td>";
 							result += "	     <td>" + wage_id + "</td>";
 
-							//result += "	     <td nowrap>{% now 'Y m d H:i:s' %}</td>";							
-							//result += "	     <td nowrap>" + upd_date + "&nbsp;<small>" + upd_date_naturalday + "</small</td>";
-							//result += "	     <td nowrap><small>" + upd_date_naturalday + "</small</td>";
 							result += "	     <td nowrap>" + upd_date + "</td>";
 							
-							//batman - id_cus_vol
-
 							result += "	     <td>" + upd_by + "</td>";
 							result += "	     <td>" + upd_flag + "</td>";
 							result += "	     <td class='d-none'>" + upd_gen + "</td>";
@@ -1011,7 +1024,14 @@
 							result += "	     <td class='d-none'>" + relief + "</td>";
 							result += "	     <td class='d-none'>" + late_status + "</td>";
 							result += "	     <td class='d-none'>" + late_full_status + "</td>";
-							
+
+							result += "	     <td class='d-none'>" + ot + "</td>";
+							result += "	     <td class='d-none'>" + ot_reason + "</td>";
+							result += "	     <td class='d-none'>" + ot_time_frm + "</td>";
+							result += "	     <td class='d-none'>" + ot_time_to + "</td>";
+							result += "	     <td class='d-none'>" + ot_hr_amt + "</td>";
+							//batman
+
 							result += "    </tr>";
 						}
 
@@ -1601,11 +1621,16 @@
 		result += " 	 <th scope='col' class='d-none' nowrap>Relief Status</th>";
 		result += " 	 <th scope='col' class='d-none' nowrap>Late Status</th>";
 		result += " 	 <th scope='col' class='d-none' nowrap>Late Full Status</th>";
+		result += "	     <td class='d-none'>OT</td>";
+		result += "	     <td class='d-none'>OT Reason</td>";
+		result += "	     <td class='d-none'>OT Time From</td>";
+		result += "	     <td class='d-none'>OT Time To</td>";
+		result += "	     <td class='d-none'>OT Hour Amount</td>";
 		result += "    </tr>";
 		result += "  </thead>";
 		result += "  <tbody>";
 		result += "    <tr>";
-		result += "      <td colspan='24' class='text-center'><br><br>There is no data.<br><br><br></td>";
+		result += "      <td colspan='29' class='text-center'><br><br>There is no data.<br><br><br></td>";
 		result += "    </tr>";
 		result += "  </tbody>";
 		result += "</table>";
@@ -1673,33 +1698,44 @@
 		var late_status = $(this).find('td:eq(24)').text();
 		var late_full_status = $(this).find('td:eq(25)').text();
 
-		/*
+		var ot_reason = $(this).find('td:eq(27)').text();
+		var ot_hour_amount = $(this).find('td:eq(30)').text();
+
+/*
 		result += "    <tr>";
 		result += "      <th scope='col' class='d-none' nowrap>Absent Status</th>";
 		result += "      <th scope='col'>&nbsp;</th>";
 		result += "      <th scope='col' nowrap>Emp ID</th>";
 		result += "      <th scope='col' nowrap>Name</th>";
 		result += "      <th scope='col'>Rank</th>";
-		5 result += "      <th scope='col'>Shift</th>";
+		result += "      <th scope='col'>Shift</th>";
 		result += "      <th scope='col'>Late</th>";
 		result += "      <th scope='col'>Full</th>";
 		result += "      <th scope='col'>Relief</th>";
 		result += "      <th scope='col' nowrap>Rel. ID</th>";
-		10 result += "      <th scope='col'>Name</th>";
+		result += "      <th scope='col'>Name</th>";
 		result += "      <th scope='col' class='d-none'>Tel Status</th>";
 		result += "      <th scope='col'>Tel</th>";
 		result += "      <th scope='col' nowrap>Call Time</th>";
 		result += "      <th scope='col' nowrap>Call Amt</th>";
-		15 result += "      <th scope='col' nowrap>Call Paid</th>";
+		result += "      <th scope='col' nowrap>Call Paid</th>";
 		result += "      <th scope='col'>Spare</th>";
 		result += "      <th scope='col'>Wage</th>";
 		result += "      <th scope='col' nowrap>Upd Date</th>";
 		result += "      <th scope='col' nowrap>Upd By</th>";
-		20 result += "      <th scope='col' nowrap>Upd Flag</th>";
+		result += "      <th scope='col' nowrap>Upd Flag</th>";
 		result += "      <th scope='col' class='d-none' nowrap>Upd Gen</th>";
 		result += "      <th scope='col' class='d-none'>Remark</th>";
-		result += "    </tr>";
-		*/
+		result += "      <th scope='col' class='d-none'>Relief Status</th>";
+		result += "      <th scope='col' class='d-none'>Late Status</th>";
+	 25 result += "      <th scope='col' class='d-none'>Late Full Status</th>";
+		result += "	     <td class='d-none'>OT</td>";
+		result += "	     <td class='d-none'>OT Reason</td>";
+		result += "	     <td class='d-none'>OT Time From</td>";
+		result += "	     <td class='d-none'>OT Time To</td>";
+		result += "	     <td class='d-none'>OT Hour Amount</td>";
+	 30 result += "    </tr>";
+*/		
 
 
 		if(shift_id==999 || shift_id==99) {			
@@ -1775,6 +1811,12 @@
 		} else {
 			$("#id_late_check").prop("checked", false);
 		}
+
+		// Set OT Reason
+		$("#id_late_reason_option").val(ot_reason);
+
+		// Set OT Hour Amount
+		$("#id_late_hour").val(ot_hour_amount);
 
 		// Get Employee information
 		$.ajax({
@@ -2210,7 +2252,11 @@
 												result += "      <th scope='col' class='d-none'>Relief Status</th>";
 												result += "      <th scope='col' class='d-none'>Late Status</th>";
 												result += "      <th scope='col' class='d-none'>Late Full Status</th>";
-
+												result += "	     <td class='d-none'>OT</td>";
+												result += "	     <td class='d-none'>OT Reason</td>";
+												result += "	     <td class='d-none'>OT Time From</td>";
+												result += "	     <td class='d-none'>OT Time To</td>";
+												result += "	     <td class='d-none'>OT Hour Amount</td>";
 												result += "    </tr>";
 												result += "  </thead>";
 												result += "  <tbody class='sortable'>";
@@ -2247,6 +2293,12 @@
 														
 														late_status = data.employee_list[i]["late"];
 														late_full_status = data.employee_list[i]["late_full"];		
+
+														ot = data.employee_list[i]["ot"];
+														ot_reason = data.employee_list[i]["ot_reason"];
+														ot_time_frm = data.employee_list[i]["ot_time_frm"];
+														ot_time_to = data.employee_list[i]["ot_time_to"];
+														ot_hr_amt = data.employee_list[i]["ot_hr_amt"];							
 
 														result += "    <tr>";							
 														result += "	     <td class='d-none'>" + absent + "</td>";
@@ -2299,6 +2351,11 @@
 														result += "	     <td class='d-none'>" + relief + "</td>";
 														result += "	     <td class='d-none'>" + late_status + "</td>";
 														result += "	     <td class='d-none'>" + late_full_status + "</td>";
+														result += "	     <td class='d-none'>" + ot + "</td>";
+														result += "	     <td class='d-none'>" + ot_reason + "</td>";
+														result += "	     <td class='d-none'>" + ot_time_frm + "</td>";
+														result += "	     <td class='d-none'>" + ot_time_to + "</td>";
+														result += "	     <td class='d-none'>" + ot_hr_amt + "</td>";
 																												
 														result += "    </tr>";
 													}
@@ -2715,6 +2772,11 @@
 												result += "      <th scope='col' class='d-none'>Relief Status</th>";
 												result += "      <th scope='col' class='d-none'>Late Status</th>";
 												result += "      <th scope='col' class='d-none'>Late Full Status</th>";
+												result += "	     <td class='d-none'>OT</td>";
+												result += "	     <td class='d-none'>OT Reason</td>";
+												result += "	     <td class='d-none'>OT Time From</td>";
+												result += "	     <td class='d-none'>OT Time To</td>";
+												result += "	     <td class='d-none'>OT Hour Amount</td>";
 																								
 												result += "    </tr>";
 												result += "  </thead>";												
@@ -2748,6 +2810,12 @@
 														
 														late_status = data.employee_list[i]["late"];
 														late_full_status = data.employee_list[i]["late_full"];
+
+														ot = data.employee_list[i]["ot"];
+														ot_reason = data.employee_list[i]["ot_reason"];
+														ot_time_frm = data.employee_list[i]["ot_time_frm"];
+														ot_time_to = data.employee_list[i]["ot_time_to"];
+														ot_hr_amt = data.employee_list[i]["ot_hr_amt"];							
 
 														result += "    <tr>";							
 														result += "	     <td class='d-none'>" + absent + "</td>";
@@ -2796,6 +2864,11 @@
 														result += "	     <td class='d-none'>" + remark + "</td>";
 														result += "	     <td class='d-none'>" + relief + "</td>";
 														result += "	     <td class='d-none'>" + late_status + "</td>";
+														result += "	     <td class='d-none'>" + ot + "</td>";
+														result += "	     <td class='d-none'>" + ot_reason + "</td>";
+														result += "	     <td class='d-none'>" + ot_time_frm + "</td>";
+														result += "	     <td class='d-none'>" + ot_time_to + "</td>";
+														result += "	     <td class='d-none'>" + ot_hr_amt + "</td>";												
 														
 														result += "    </tr>";
 													}
