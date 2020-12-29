@@ -2894,7 +2894,7 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 					is_pass = True
 				else:
 					is_pass = False
-					message = "พนักงานเข้าเวรที่หน่วยงานอื่น"
+					message = "พนักงานรหัส <b>" + str(emp_id) + "</b> เข้าเวรที่หน่วยงานอื่น กรุณาตรวจสอบ"
 					return is_pass, message
 
 
