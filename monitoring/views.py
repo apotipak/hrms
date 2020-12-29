@@ -1879,18 +1879,17 @@ def ajax_get_attendance_information(request):
 			late_status = 1 if row[50]==1 else 0
 			late_full_status = 1 if row[56]==1 else 0
 
-
 			# OT Time From
 			if row[30] is not None:
 				ot_time_frm = row[30].strftime("%d/%m/%Y %H:%M")
 			else:
-				ot_time_frm = ""
+				ot_time_frm = None
 
 			# OT Time To
 			if row[31] is not None:
 				ot_time_to = row[31].strftime("%d/%m/%Y %H:%M")
 			else:
-				ot_time_to = ""
+				ot_time_to = None
 
 			# OT Hour Amount
 			if row[32] is not None:
