@@ -613,7 +613,7 @@
 	    	$("#id_relief_emp_id").attr("disabled", false);
 	    	$("#id_relief_emp_id").attr("readonly", false);
 
-	    	$("#id_relief_check").prop("checked", true);
+	    	//$("#id_relief_check").prop("checked", true);
 	    	$("#id_relief_emp_id").focus();
 	 		
 	    } else {
@@ -1659,6 +1659,8 @@
 		$("#id_relief_emp_term_date").val("");
 
 		$("#id_relief_check").prop("checked", false);
+
+
 		$('#id_relief_emp_id').val(null);
 		$('#id_relief_emp_id').attr("disabled", true);
 		$('#relief_emp_id_lookup_button').attr("disabled", true);
@@ -1798,6 +1800,7 @@
 		} else {
 			// Checkbox
 			$("#id_relief_check").attr("disabled", false);
+
 			$("#id_absent_check").attr("disabled", false);
 			$("#id_absent_check").prop("checked", false);
 			$("#id_late_check").attr("disabled", false);
@@ -1853,7 +1856,7 @@
 		} else {
 			$("#id_late_from").text(date);
 		}
-		
+
 		// Set OT Time To
 		if(ot_time_to!=null) {
 			$("#id_late_to").text(ot_time_to);
@@ -1904,7 +1907,7 @@
 	    	$("#id_relief_emp_id").attr("disabled", false);
 	    	$("#id_relief_emp_id").attr("readonly", false);
 
-			$("#id_relief_check").prop("checked", true);						
+			//$("#id_relief_check").prop("checked", true);						
 	    	$("#id_relief_emp_id").focus();
 
 	   		//$("#id_late_check").hide();
