@@ -1822,9 +1822,10 @@
 
 		if(relief_status==1) {
 			if(absent==1) {
-				$("#id_relief_check").prop("checked", true);	
+				$("#id_relief_check").prop("checked", true);				
 			} else {
 				$("#id_relief_check").prop("checked", false);
+				$("#id_relief_check").attr("disabled", true);
 			}
 			
 			$("#id_relief_emp_id").val(relief_emp_id);
