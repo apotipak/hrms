@@ -3013,7 +3013,7 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 
 		# TODO: checkCall
 		if phone_status==1:
-			if phone_amount <= 0:
+			if tel_amount <= 0:
 				is_pass = False
 				message = "ยังไม่ได้ป้อนค่าโทรศัพท์"
 				return is_pass, message

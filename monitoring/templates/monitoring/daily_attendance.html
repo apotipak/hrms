@@ -419,7 +419,7 @@
 
 
 							<div class="form-group col-3">
-						      	<label for="id_late_hour">Total Time (ชั่วโมง)</label>
+						      	<label for="id_late_hour">Total Time (hrs)</label>
 								<div class="input-group">                            	
 						      		<input type="number" id="id_late_hour" name="late_hour" class="form-control form-control-sm" />
 						      		
@@ -1821,7 +1821,12 @@
 		$("#id_remark").val(remark);		
 
 		if(relief_status==1) {
-			$("#id_relief_check").prop("checked", true);
+			if(absent==1) {
+				$("#id_relief_check").prop("checked", true);	
+			} else {
+				$("#id_relief_check").prop("checked", false);
+			}
+			
 			$("#id_relief_emp_id").val(relief_emp_id);
 			$("#id_relief_emp_fullname_th").val(relief_emp_fullname_th);
 		} else {
