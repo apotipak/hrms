@@ -2883,13 +2883,9 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 			elif late_status==1:				
 				print("Do nothing")
 			elif absent_status==0:
-				print("TODO")
-				
 				# TODO: 
 				table_name = "dly_plan"
-
 				sql = "select * from " + table_name + " where dly_date='" + str(dly_date) + "' and emp_id=" + str(emp_id) + " and absent=0" + " and sch_shift=" + str(shift_id) + " and cnt_id<>" + str(cnt_id)
-				print("sql", sql)
 				cursor = connection.cursor()
 				cursor.execute(sql)
 				record = cursor.fetchone()
