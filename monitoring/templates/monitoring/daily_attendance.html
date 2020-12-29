@@ -556,6 +556,9 @@
 {% block javascript %}
 <script>
 	$(document).ready(function(){
+		var today = new Date();
+		var date = today.getDate() + "/" + today.getMonth() + '/' + today.getFullYear() + " 00:00";
+
 		$("#id_cus_id").on('click', function(){
 			$("#id_cus_id").select();
 		});
@@ -567,6 +570,11 @@
 		});
 
 		disableAllElements();
+
+		// Set Late From/To
+		$("#id_late_from").val(date);
+		$("#id_late_to").val(date);
+
 
 		$('#id_cus_id').focus();
 		$('#id_cus_id').select();
@@ -640,7 +648,10 @@
 	    }
 	});
 
+
 	$("#id_late_check").change(function() {
+		var today = new Date();
+		var date = today.getDate() + "/" + today.getMonth() + '/' + today.getFullYear() + " 00:00";
 
 		//$("#id_relief_emp_id").css('border-color','red');
 		//$("#id_relief_emp_id").css('border-style','solid');
@@ -654,25 +665,17 @@
 	   		//$("#id_late_reason_option").text("56 | มาสาย");
 	   		//$("#id_shift_option").text("aa");
 	   		//alert("a");
-	   		// ironman
-
-
 
 			$("#id_absent_check").prop("checked", false);
 
 	   		$("#id_relief_emp_id").attr("disabled", false);
 	   		$("#id_relief_emp_id").attr("readonly", false);
+
+			// Set Late From/To
+			$("#id_late_from").val(date);
+			$("#id_late_to").val(date);
+
 	   		$("#id_relief_emp_id").focus();
-
-	   		//$("#id_late_check").hide();
-	   		//$("#id_late_check").next("label").hide();
-
-			//$("#id_phone_check").hide();
-			//$("#id_phone_check").next("label").hide();
-
-			//$("#id_phone_check").prop("checked", false);
-			//$("#id_call_time").val("");
-	    	//$("#id_call_amount_option").val(0);
 	 		
 	    } else {
 	    	$("#id_relief_check").prop("checked", false);
@@ -1645,6 +1648,8 @@
 
     // ClickRow
 	$(document).on('click', '#employee_list_table tbody tr', function(row, $el, field) {
+		var today = new Date();
+		var date = today.getDate() + "/" + today.getMonth() + '/' + today.getFullYear() + " 00:00";
 
 		$("#id_relief_emp_fullname_th").val("");
 		$("#id_relief_emp_rank").val("");
@@ -1750,18 +1755,6 @@
 	 30 result += "    </tr>";
 */		
 
-		if(ot_time_from!=null) {
-			$("#id_late_from").text(ot_time_from);		
-		} else {
-			$("#id_late_from").text(today);
-		}
-
-		if(ot_time_to!=null) {
-			$("#id_late_to").text(ot_time_to);
-		} else {
-			$("#id_late_to").text(today);
-		}
-
 		if(shift_id==999 || shift_id==99) {			
 			$("#save_button").attr("disabled", true);
 
@@ -1855,10 +1848,18 @@
 		$("#id_late_reason_option").val(ot_reason);
 
 		// Set OT Time From
-		$("#id_late_from").val(ot_time_from);
-
+		if(!ot_time_from) {
+			$("#id_late_from").text(ot_time_from);		
+		} else {
+			$("#id_late_from").text(date);
+		}
+		
 		// Set OT Time To
-		$("#id_late_to").val(ot_time_to);
+		if(ot_time_to!=null) {
+			$("#id_late_to").text(ot_time_to);
+		} else {
+			$("#id_late_to").text(date);
+		}
 
 		// Set OT Hour Amount
 		$("#id_late_hour").val(ot_hour_amount);
