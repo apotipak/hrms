@@ -2325,9 +2325,14 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 	# Check #6 - กรณีไม่ได้ลาหยุดให้ตรวจสอบ No person not more than contract
 	# print("shift_id = " + str(shift_id))
 	# print("absent_status = " + str(absent_status))
+	
+	message = "1"
 	if phone_status == 0:
+		message = "2"
 		if late_status == 0:
+			message = "3"
 			if absent_status == 0:
+				message = "4"
 				if shift_id != 99:				
 					if dly_date == today_date.date():
 						sql = "select count(*) from dly_plan "
@@ -2352,8 +2357,10 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 					cursor.close
 					srv_qty = rows[2]
 
-					# print("inform_no = " + str(informNo))
-					# print("srv_qty = " + str(srv_qty))
+					print("inform_no =", informNo)
+					print("srv_qty =", srv_qty)
+
+					
 
 					if informNo >= srv_qty:
 						is_pass = False					
@@ -2365,6 +2372,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 						message = "Check #6 is passed."
 
 	
+	return False, message
 
 	# กรณีพนักงานยังแจ้งเวรไม่เกินจำนวนที่อยู่ในสัญญา
 	# Check #7 - checkValidInput()
