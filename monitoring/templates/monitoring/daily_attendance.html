@@ -1885,7 +1885,7 @@
 
 		// Late Status
 		if(late_status==1) {
-			$("#id_late_check").prop("checked", true);			
+			$("#id_late_check").prop("checked", true);	
 		} else {
 			$("#id_late_check").prop("checked", false);
 		}
@@ -1901,7 +1901,8 @@
 		$("#id_late_reason_option").val(ot_reason);
 
 		// Set OT Time From		
-		console.log(ot_time_from + "," + ot_time_to);
+		//console.log(ot_time_from + "," + ot_time_to);
+
 		if(ot_time_from!="") {
 			//alert(ot_time_from);
 			$("#id_late_from").text(ot_time_from);
@@ -2039,7 +2040,7 @@
 			$("#id_remark").attr("readonly", false);
 		}
 		
-		
+		console.log(ot_time_from + "," + ot_time_to);
 	});
 
 
@@ -2658,7 +2659,7 @@
     	if($("#id_late_check").is(":checked"))
     		late_status =1;
     	var late_from = $("#id_late_from").val();
-    	var late_to = $("#id_late_from").val();
+    	var late_to = $("#id_late_to").val();
     	var late_reason_option = $("#id_late_reason_option").val();
     	var late_hour = $("#id_late_hour").val();
     	
