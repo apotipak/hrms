@@ -2033,7 +2033,9 @@
 			$("#id_remark").attr("disabled", false);
 			$("#id_remark").attr("readonly", false);
 		} else {
+
 			$("#save_button").attr("disabled", false);
+			$("#reset_button").attr("disabled", false);
 
 			if(upd_gen=='G')
 				$("#delete_button").attr("disabled", true);
@@ -2080,9 +2082,21 @@
         $('#id_emp_id').focus();     
     });
 
+
+    // aeiou
     $(document).on('click', '#reset_button', function(e) {    	
+    	$("#reset_button").attr("disabled", true);
+
     	$("#id_add_new_record_status").val(0);
     	$("#dailyAttendanceDataEntryForm").trigger("reset");
+
+
+    	if($("#id_absent_check").is(":checked")) 
+    		$("#id_absent_check").prop("checked", false);
+
+    	$('#employee_list_table tr').removeClass('highlight');
+		//$(this).addClass('highlight').siblings().removeClass('highlight');
+		//var tel_man = $("#employee_list_table").find('.highlight').find('td:eq(11)').text();
 
     	$('#id_emp_id').focus();
     });
