@@ -1774,7 +1774,7 @@ def ajax_get_attendance_information(request):
 
 		if ot_reason_obj is not None:
 			for row in ot_reason_obj:
-				print("row[0]", row[0])
+				# print("row[0]", row[0])
 				if row[0]==57:
 					record = {
 						"ot_res_id": 56,
@@ -1921,7 +1921,7 @@ def ajax_get_attendance_information(request):
 				"shf_amt_hr": row[6],
 				"Remp_fname_th": relief_fname_th.strip(),
 				"Remp_lname_th": relief_lname_th.strip(),
-				"ot_res_th": row[9],
+				"ot_res_th": row[9],         
 				"ot_res_en": row[10],
 				"dept_th": row[11],
 				"dept_en": row[12],
@@ -2085,7 +2085,7 @@ def ajax_delete_employee(request):
 	return response
 
 
-def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,tel_man,tel_time,tel_amount,relief_status,relief_id,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount):
+def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,tel_man,tel_time,tel_amount,relief_status,relief_id,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status):
 	is_pass = True
 	message = ""	
 
@@ -2207,7 +2207,7 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 
 
 
-def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,tel_man,tel_time,tel_amount,relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount):
+def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,tel_man,tel_time,tel_amount,relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status):
 
 	# print("________allowZeroBathForPhoneAmount=" + str(allowZeroBathForPhoneAmount))
 
@@ -2426,7 +2426,28 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 			return is_pass, message
 
 		upd_date = str(datetime.datetime.now())[:-3]
-		
+
+
+		# Late Check
+		print("late status", late_status)
+		if late_status==0:
+			late_reason_option = 0
+			late_hour = 0
+			late_from = None
+			late_to = None
+		else:
+			if late_from is not None or late_from != "":
+				late_from = datetime.datetime.strptime(late_from, "%d/%m/%Y %H:%M")
+				# late_from = None
+			else:
+				late_from = None
+
+			if late_to is not None or late_to != "":
+				late_to = datetime.datetime.strptime(late_to, "%d/%m/%Y %H:%M")
+				# late_to = None
+			else:
+				late_to = None
+
 		sql += "sch_no=" + str(tsch_no) + ","
 		sql += "dept_id=" + str(tdept_id) + ","
 		sql += "sch_rank='" + str(emp_rank) + "',"
@@ -2441,10 +2462,19 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		sql += "tel_amt=" + str(tel_amount) + ","
 		sql += "tel_paid=" + str(tel_paid) + ","
 		sql += "ot=" + str(0) + ","
-		sql += "ot_reason=" + str(0) + ","
-		sql += "ot_time_frm=null" + ","
-		sql += "ot_time_to=null" + ","
-		sql += "ot_hr_amt=" + str(0) + ","
+		sql += "ot_reason='" + str(late_reason_option) + "',"
+
+		if late_from is None:
+			sql += "ot_time_frm=null,"
+		else:
+			sql += "ot_time_frm='" + str(late_from) + "',"
+
+		if late_to is None:
+			sql += "ot_time_to=null,"
+		else:
+			sql += "ot_time_to='" + str(late_to) + "',"
+
+		sql += "ot_hr_amt=" + str(late_hour) + ","
 		sql += "ot_pay_amt=" + str(0) + ","
 		sql += "spare=" + str(0) + ","
 		sql += "wage_id=32" + ","
@@ -3408,7 +3438,14 @@ def ajax_save_daily_attendance(request):
 	shift_id = request.GET.get('shift_id')
 	shift_name = request.GET.get('shift_name')
 	absent_status = int(request.GET.get('absent_status'))
+	
 	late_status = int(request.GET.get('late_status'))
+	late_from = request.GET.get('late_from')
+	late_to = request.GET.get('late_to')
+	late_reason_option = request.GET.get('late_reason_option')
+	late_hour = request.GET.get('late_hour')
+	late_full_paid_status = request.GET.get('late_full_paid_status')
+
 	phone_status = int(request.GET.get('phone_status'))
 
 	tel_man = int(request.GET.get('tel_man'))
@@ -3455,7 +3492,7 @@ def ajax_save_daily_attendance(request):
 	if AEdly == 0: # EDIT MODE
 		# print("Edit Mode")
 
-		is_edit_record_success, message = editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,tel_man,tel_time,tel_amount,relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount)
+		is_edit_record_success, message = editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,tel_man,tel_time,tel_amount,relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status)
 		if is_edit_record_success:
 			success_status = True
 			title = "Success"
@@ -3467,7 +3504,7 @@ def ajax_save_daily_attendance(request):
 
 	elif AEdly == 1: # ADD MODE
 		# print("Add Mode")
-		is_add_record_success, message = addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,tel_man,tel_time,tel_amount,relief_status,relief_emp_id,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount)
+		is_add_record_success, message = addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,tel_man,tel_time,tel_amount,relief_status,relief_emp_id,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status)
 		if is_add_record_success:
 			success_status = True
 			title = "Success"
