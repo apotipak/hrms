@@ -1905,16 +1905,22 @@
 
 		if(ot_time_from!="") {
 			//alert(ot_time_from);
-			$("#id_late_from").text(ot_time_from);
+			if(ot_time_from != "null")
+				$("#id_late_from").val(ot_time_from);
+			else
+				$("#id_late_from").val("");
 		} else {
-			$("#id_late_from").text(date);		
+			$("#id_late_from").val(date);		
 		}
 
 		// Set OT Time To
 		if(ot_time_to!="") {
-			$("#id_late_to").text(ot_time_to);
+			if(ot_time_to != "null")
+				$("#id_late_to").val(ot_time_to);
+			else
+				$("#id_late_to").val("");
 		} else {
-			$("#id_late_to").text(date);
+			$("#id_late_to").val(date);
 		}
 
 		// Set OT Hour Amount
