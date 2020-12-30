@@ -1893,14 +1893,22 @@ def ajax_get_attendance_information(request):
 			late_full_status = 1 if row[56]==1 else 0
 
 			# OT Time From
+			print("row[30]", row[30])
 			if row[30] is not None:
-				ot_time_frm = row[30].strftime("%d/%m/%Y %H:%M")
+				if row[30] != "":
+					ot_time_frm = row[30].strftime("%d/%m/%Y %H:%M")
+				else:
+					ot_time_frm = None
 			else:
 				ot_time_frm = None
 
 			# OT Time To
+			print("row[31]", row[31])
 			if row[31] is not None:
-				ot_time_to = row[31].strftime("%d/%m/%Y %H:%M")
+				if row[31] != "":
+					ot_time_to = row[31].strftime("%d/%m/%Y %H:%M")
+				else:
+					ot_time_to = None
 			else:
 				ot_time_to = None
 
