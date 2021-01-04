@@ -1446,6 +1446,47 @@ def GenerateDailyAttend(request):
 		})
 
 
+@login_required(login_url='/accounts/login/')
+@permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
+def PostDailyAttend(request):
+	page_title = settings.PROJECT_NAME
+	db_server = settings.DATABASES['default']['HOST']
+	project_name = settings.PROJECT_NAME
+	project_version = settings.PROJECT_VERSION
+	today_date = settings.TODAY_DATE	
+
+	template_name = 'monitoring/post_daily_attend.html'
+	response_data = {}
+	modified_records = []
+
+	# Show avatar
+	if request.user.is_superuser:
+	    employee_photo = ""
+	else:
+	    employee_info = EmpPhoto.objects.filter(emp_id=request.user.username).get()    
+	    employee_photo = b64encode(employee_info.image).decode("utf-8")        
+
+
+	if request.method == "POST":
+		if form.is_valid():          
+			form = ScheduleMaintenanceForm(request.POST, user=request.user)
+			response_data['form_is_valid'] = True            
+		else:            
+			response_data['form_is_valid'] = False
+		return JsonResponse(response_data)     
+	else:
+		form = ScheduleMaintenanceForm()
+
+	return render(request, template_name, {'page_title': page_title, 
+		'project_name': project_name, 
+		'project_version': project_version, 
+		'db_server': db_server, 
+		'today_date': today_date, 
+		'form': form, 
+		'employee_photo': employee_photo
+		})
+
+
 @permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
 @login_required(login_url='/accounts/login/')
 def ajax_sp_generate_daily_attend(request):

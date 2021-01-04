@@ -18,6 +18,8 @@ urlpatterns = [
     path('daily-performance/', views.DailyGuardPerformance, name='daily-guard-performance'),
 
 	path('generate-daily-attend/', views.GenerateDailyAttend, name='generate-daily-attend'),
+    path('post-daily-attend/', views.PostDailyAttend, name='post-daily-attend'),
+
 	url(r'^ajax/sp_generate_daily_attend/$', views.ajax_sp_generate_daily_attend, name='ajax_sp_generate_daily_attend'),
 	url(r'^ajax/sp_generate_daily_attend_status/$', views.ajax_sp_generate_daily_attend_status, name='ajax_sp_generate_daily_attend_status'),
 

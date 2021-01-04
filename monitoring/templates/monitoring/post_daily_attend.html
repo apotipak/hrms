@@ -1,0 +1,195 @@
+{% extends "page_generic.html" %}
+{% load i18n %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %}{{ page_title}} - Post Daily Attend{% endblock %}
+{% load static %}
+
+{% block content %}
+ 	<!-- Content Wrapper. Contains page content -->
+	<div class="content-wrapper">
+	
+		<div class="content-header">
+			<div class="col-6 offset-3">
+
+			</div>
+		</div>
+
+    	<!-- Main content -->
+    	<section class="content col-6 offset-3">
+
+			<div class="card card-outline card-success" id="generate_date_card">
+			  <div class="card-header">
+			    <h3 class="card-title lead"><i class="fas fa-cog"></i>&nbsp;&nbsp;Post Daily Attend</h3>
+			    <div class="card-tools">
+			 		<!--<button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i></button>-->
+			      	<button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+			      	<!--<span class="badge badge-primary">Label</span>-->
+			    </div>
+			    <!-- /.card-tools -->
+
+			  </div>
+			  <!-- /.card-header -->
+			  <div class="card-body">
+
+				<form>
+				{% csrf_token %}
+				  <div class="form-row justify-content-center">
+				    <div class="col-auto form-inline">
+				      <label for="inlineFormInput">Date</label>&nbsp;&nbsp;
+				      <input type="text" class="form-control mb-2" id="id_generated_date" placeholder="dd/mm/yyyy">
+				    </div>
+				    <div class="col-auto">
+				      <button type="button" id="generated_date_ok_button" class="btn btn-primary mb-2">&nbsp;&nbsp;Post&nbsp;&nbsp;</button>&nbsp;
+				      <!--<button type="reset" class="btn btn-secondary mb-2">Cancel</button>-->
+				    </div>
+				  </div>
+				</form>
+
+			  </div>
+			  <!-- /.card-body -->
+			  <div class="card-footer">
+			  	
+			  </div>
+			  <!-- /.card-footer -->
+
+			    <!--
+				<div id="test" class="overlay">
+					<i class="fas fa-2x fa-sync-alt fa-spin"></i>
+				</div>
+				-->
+			</div>
+			<!-- /.card -->
+
+    	</section>
+	</div>
+{% endblock %}
+
+
+{% block javascript %}
+<script>
+$(document).ready(function(){	
+	$('#generate_date_card').removeClass('overlay');
+
+	$('#id_generated_date').focus();
+	$('#id_generated_date').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true}).datepicker("setDate", new Date());
+});
+
+$("#generated_date_ok_button").click( function() {
+	event.preventDefault();    	
+
+	var frm = $('#process-raw-data');
+    var pgrbar = $('#progress-bar');
+	var generated_date = $("#id_generated_date").val();
+
+	$.confirm({
+		title: 'Confirmation',
+		type: 'red',
+		content: 'Confirm to generate on <strong>' + generated_date + '</strong>',
+	    buttons: {
+	        danger: {
+	        	text: 'Confirm',
+	            btnClass: 'btn-red any-other-class',
+	            action: function() {
+					$("#generated_date_ok_button").attr("disabled", true);
+					$("#generated_date_ok_button").text("Please wait..");	
+
+					$.ajax({
+				    	url : "/monitoring/ajax/sp_generate_daily_attend/",
+				    	type : "POST",
+				    	async: true,
+				    	data : {          
+				      		csrfmiddlewaretoken: '{{ csrf_token }}',
+				      		generated_date: generated_date,
+				    	},
+						beforeSend: function () {
+							showLoading();
+						},
+				    	success: function(data) {
+				    		if(data.is_error) {
+								$.alert({
+								    title: 'Error',
+								    type: 'red',
+								    content: data.error_message,
+								    animation: 'zoom',
+								    animationBounce: 1.5,
+								    closeIcon: false,
+								    boxWidth: '38%',
+								    useBootstrap: false,
+								});
+				    		} else {    		
+								$.alert({
+								    title: 'Success',
+								    type: 'green',
+								    content: data.error_message,
+								    animation: 'zoom',
+								    animationBounce: 1.5,
+								    closeIcon: false,
+								    boxWidth: '38%',
+								    useBootstrap: false,
+								});    			
+				    		}
+							$("#generated_date_ok_button").attr("disabled", false);
+							$("#generated_date_ok_button").text("Generate");
+							$.LoadingOverlay("hide");
+				    	},
+				    });
+	            }
+	        },
+	        default: {
+	        	text: 'Cancel',
+	            btnClass: 'btn-default',
+				action: function() {
+					$('#id_generated_date').focus();
+				}
+	        },
+	    }
+	});
+    
+});
+
+	function get_generate_daily_attend_status(generated_date) {
+	    $.ajax({
+	        type: 'get',
+	        url: '/monitoring/ajax/sp_generate_daily_attend_status/',
+	        data: {'generated_date': generated_date},
+	        success: function (data) {
+	            frm.html('');
+	            if (data.state == 'PENDING') {
+	                frm.html('Please wait ...');
+	            }
+	            else if (data.state == 'PROGRESS') {
+	                pgrbar.css('display', 'inline');
+	                pgrbar.val(data.result.percent);
+	                frm.html('lines processed ' + data.result.current + ' out of ' + data.result.total);
+	            }
+	            else if(data.state == 'SUCCESS'){
+	                pgrbar.css('display', 'none');
+	                frm.html('Successfully Completed!');
+
+	            }
+	            if (data.state != 'SUCCESS') {
+	                setTimeout(function () {
+	                    get_task_info(task_id)
+	                }, 500);
+	            }
+	        },
+	        error: function (data) {
+	            frm.html("error!");
+	        }
+	    });
+	}
+
+	function showLoading() {
+		$.LoadingOverlaySetup({
+		    background      : "rgba(0, 0, 0, 0.5)",
+		    image           : "/static/img/logo-small.png",
+		    imageAnimation  : "1.5s fadein",
+		    imageColor      : "#ffcc00"
+		});
+		$.LoadingOverlay("show");	
+	}
+
+</script>
+{% endblock %}
+		
