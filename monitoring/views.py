@@ -1551,21 +1551,31 @@ def ajax_sp_post_daily_attend(request):
 
 	# Get TcurDate
 	post_date = request.POST.get('post_date')	
-	# ChkValidInput()
-	if len(post_date)<=0:
+	# Get current date
+	post_date = datetime.datetime.strptime(post_date, '%d/%m/%Y')	
+	post_date = str(post_date)[0:10]
+
+	# ChkValidInput() - Check date is not empty
+	if len(post_date)<=0:		
 		response = JsonResponse(data={"success": True, "is_error": True, "class": "bg-danger", "error_message": "เลือกวันที่ไม่ถูกต้อง"})
 		return response
+
+	# ChkValidInput() - Check Post Day End
+	sql = "select date_chk,gen_chk,end_chk,pro_chk,im_brn1,im_brn2,im_brn3,prd_id,upd_date,upd_by,upd_flag from t_date where date_chk='" + str(post_date) + "'"	
+	print("sql", sql)
+	cursor = connection.cursor()	
+	cursor.execute(sql)
+	record_count = cursor.fetchall()
+	if len(record_count) <= 0:
+		response = JsonResponse(data={"success": True, "is_error": True, "class": "bg-danger", "error_message": "วันที่นี้ไม่มีการทำรายการ"})
+	else:
+		response = JsonResponse(data={"success": True, "is_error": True, "class": "bg-danger", "error_message": "วันที่นี้ทำการ Post Day End ไปแล้ว"})
+	
+	return response
 
 	# Get Tperiod	
 	period = getPeriod(post_date)
 	# print("period = " + str(period))
-
-	# ChkValidInput()
-	if len(post_date)<=0:
-		response = JsonResponse(data={"success": True, "is_error": True, "class": "bg-danger", "error_message": "เลือกวันที่ไม่ถูกต้อง"})
-		return response
-
-
 
 	# Get current date
 	post_date = datetime.datetime.strptime(post_date, '%d/%m/%Y')	
