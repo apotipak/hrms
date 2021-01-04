@@ -22,9 +22,7 @@
 			  <div class="card-header">
 			    <h3 class="card-title lead"><i class="fas fa-cog"></i>&nbsp;&nbsp;Post Daily Attend</h3>
 			    <div class="card-tools">
-			 		<!--<button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i></button>-->
 			      	<button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
-			      	<!--<span class="badge badge-primary">Label</span>-->
 			    </div>
 			    <!-- /.card-tools -->
 
@@ -32,16 +30,15 @@
 			  <!-- /.card-header -->
 			  <div class="card-body">
 
-				<form>
+				<form name="post_daily_attend_form">
 				{% csrf_token %}
 				  <div class="form-row justify-content-center">
 				    <div class="col-auto form-inline">
 				      <label for="inlineFormInput">Date</label>&nbsp;&nbsp;
-				      <input type="text" class="form-control mb-2" id="id_generated_date" placeholder="dd/mm/yyyy">
+				      <input type="text" class="form-control mb-2" id="id_post_date" placeholder="dd/mm/yyyy">
 				    </div>
 				    <div class="col-auto">
-				      <button type="button" id="generated_date_ok_button" class="btn btn-primary mb-2">&nbsp;&nbsp;Post&nbsp;&nbsp;</button>&nbsp;
-				      <!--<button type="reset" class="btn btn-secondary mb-2">Cancel</button>-->
+				      <button type="button" id="post_button" class="btn btn-primary mb-2">&nbsp;&nbsp;Post&nbsp;&nbsp;</button>&nbsp;
 				    </div>
 				  </div>
 				</form>
@@ -68,22 +65,46 @@
 
 {% block javascript %}
 <script>
+
+$(document).on('keypress', '#id_post_date', function(e) {
+  if(e.which == 13) {      
+    e.preventDefault();
+    return false;
+  }
+});
+
 $(document).ready(function(){
 	const today = new Date();
 	const yesterday = new Date(today);
 	yesterday.setDate(yesterday.getDate() - 1);
 	$('#generate_date_card').removeClass('overlay');
-	$('#id_generated_date').focus();
-	$('#id_generated_date').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true}).datepicker("setDate", yesterday);
+	$('#id_post_date').focus();
+	$('#id_post_date').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true}).datepicker("setDate", yesterday);
 });
 
-$("#generated_date_ok_button").click( function() {
+$("#post_button").click( function() {
 	event.preventDefault();    	
 
 	var frm = $('#process-raw-data');
     var pgrbar = $('#progress-bar');
 	var generated_date = $("#id_generated_date").val();
 
+	showLoading();
+	
+	$.alert({
+	    title: 'Success',
+	    type: 'green',
+	    content: "Posted success",
+	    animation: 'zoom',
+	    animationBounce: 1.5,
+	    closeIcon: false,
+	    boxWidth: '38%',
+	    useBootstrap: false,
+	});
+
+	$.LoadingOverlay("hide");
+	
+	/*
 	$.confirm({
 		title: 'Confirmation',
 		type: 'red',
@@ -147,6 +168,7 @@ $("#generated_date_ok_button").click( function() {
 	        },
 	    }
 	});
+	*/
     
 });
 
@@ -189,7 +211,7 @@ $("#generated_date_ok_button").click( function() {
 		    imageAnimation  : "1.5s fadein",
 		    imageColor      : "#ffcc00"
 		});
-		$.LoadingOverlay("show");	
+		$.LoadingOverlay("show");
 	}
 
 </script>
