@@ -89,6 +89,23 @@ $("#post_button").click( function() {
     var pgrbar = $('#progress-bar');
 	var post_date = $("#id_post_date").val();
 
+	if(post_date.length<=0) {
+		$.alert({
+		    title: 'Error',
+		    type: 'red',
+		    content: "เลือกวันที่ไม่ถูกต้อง",
+		    animation: 'zoom',
+		    animationBounce: 1.5,
+		    closeIcon: false,
+		    boxWidth: '38%',
+		    useBootstrap: false,
+		});
+
+		$("#id_post_date").focus();
+		
+		return false;
+	}
+
 	$.confirm({
 		title: 'ตรวจสอบ',
 		type: 'red',

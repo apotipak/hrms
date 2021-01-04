@@ -1548,16 +1548,29 @@ def ajax_sp_post_daily_attend(request):
 	print("FUNCTION: ajax_sp_post_daily_attend()")
 	print("******************************************")
 
-	post_date = request.POST.get('post_date')	
 
-	# Get current period
+	# Get TcurDate
+	post_date = request.POST.get('post_date')	
+	# ChkValidInput()
+	if len(post_date)<=0:
+		response = JsonResponse(data={"success": True, "is_error": True, "class": "bg-danger", "error_message": "เลือกวันที่ไม่ถูกต้อง"})
+		return response
+
+	# Get Tperiod	
 	period = getPeriod(post_date)
-	print("period = " + str(period))
+	# print("period = " + str(period))
+
+	# ChkValidInput()
+	if len(post_date)<=0:
+		response = JsonResponse(data={"success": True, "is_error": True, "class": "bg-danger", "error_message": "เลือกวันที่ไม่ถูกต้อง"})
+		return response
+
+
 
 	# Get current date
 	post_date = datetime.datetime.strptime(post_date, '%d/%m/%Y')	
 	post_date = str(post_date)[0:10]
-	print("post_date :", post_date)
+	# print("post_date :", post_date)
 	
 	response = JsonResponse(data={"success": True, "is_error": False, "class": "bg-success", "error_message": "ทำรายการสำเร็จ"})
 
