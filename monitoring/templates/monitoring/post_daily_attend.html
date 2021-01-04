@@ -77,9 +77,9 @@ $(document).ready(function(){
 	const today = new Date();
 	const yesterday = new Date(today);
 	yesterday.setDate(yesterday.getDate() - 1);
-	$('#generate_date_card').removeClass('overlay');
-	$('#id_post_date').focus();
+	$('#generate_date_card').removeClass('overlay');	
 	$('#id_post_date').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true}).datepicker("setDate", yesterday);
+	$('#id_post_date').focus();
 });
 
 $("#post_button").click( function() {

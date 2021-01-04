@@ -1570,6 +1570,7 @@ def ajax_sp_post_daily_attend(request):
 	cursor = connection.cursor()	
 	cursor.execute(sql)
 	record = cursor.fetchall()
+	cursor.close()
 	if len(record) <= 0:
 		response = JsonResponse(data={"success": True, "is_error": True, "class": "bg-danger", "error_message": "วันที่ <b>" + str(request.POST.get('post_date')) + "</b> ไม่มีรายการแจ้งเวร"})
 		response.status_code = 200
@@ -1583,45 +1584,30 @@ def ajax_sp_post_daily_attend(request):
 			response.status_code = 200
 			return response
 		
-	# TODO: Call PostDayEndN	
+	# TODO: Call PostDayEndN
+	# amnaj
+	message = PostDayEndN(post_date)
+
+	response = JsonResponse(data={"success": True, "is_error": False, "class": "bg-success", "error_message": message})
 	response.status_code = 200	
-	response = JsonResponse(data={"success": True, "is_error": False, "class": "bg-success", "error_message": "ทำรายการสำเร็จ"})
-
-
-	# TODO
-	'''
-	cursor = connection.cursor()	
-	cursor.execute("select count(*) from t_date where date_chk='" + str(post_date) + "'")	
-	tdate_count = cursor.fetchone()
-	if tdate_count[0] == 0:
-		try:
-			cursor = connection.cursor()	
-			cursor.execute("exec dbo.create_dly_plan_new %s", [post_date])
-			error_message = "Generate completed."
-			is_error = False
-			response = JsonResponse(data={"success": True, "is_error": is_error, "class": "bg-success", "error_message": error_message})
-		except db.OperationalError as e:
-			error_message = "Error";
-			is_error = True
-		except db.OperationalError as e:    	
-			error_message = str(e);
-			is_error = True
-		except db.Error as e:
-			error_message = str(e);
-			is_error = True
-		except:
-			error_message = cursor.statusmessage;		
-			is_error = True
-
-		response = JsonResponse(data={"success": True, "is_error": is_error, "class": "bg-danger", "error_message": error_message})
-	else:
-		error_message = "Daily Attendance table has been created. No need to generate again."
-		response = JsonResponse(data={"success": True,"is_error": True,"class": "bg-success","error_message": error_message})
-	cursor.close
-	'''
-
-	response.status_code = 200
 	return response
+
+
+def PostDayEndN(post_date):
+	sql = "select dly_date from dly_plan_bk where dly_date='" + str(post_date) + "'"
+	cursor = connection.cursor()	
+	cursor.execute(sql)
+	record = cursor.fetchall()
+	cursor.close()
+	if len(record) == 0:
+		sql = "INSERT INTO DLY_PLAN_BK(cnt_id, emp_id, dly_date, sch_shift, sch_no, dept_id, sch_rank, prd_id, absent, late, late_full, sch_relieft, relieft, relieft_id, tel_man, tel_time,tel_amt, tel_paid, ot, ot_reason, ot_time_frm, ot_time_to, ot_hr_amt, ot_pay_amt,spare, wage_id, wage_no, pay_type, bas_amt, otm_amt, bon_amt, pub_amt, soc_amt,dof_amt, ex_dof_amt, soc, pub, dof, paid, TPA, DAY7, upd_date, upd_by, upd_flag,upd_gen, upd_log, Remark) SELECT cnt_id, emp_id, dly_date, sch_shift, sch_no, dept_id, sch_rank, prd_id,absent, late, late_full, sch_relieft, relieft, relieft_id, tel_man, tel_time,tel_amt, tel_paid, ot, ot_reason, ot_time_frm, ot_time_to, ot_hr_amt, ot_pay_amt,spare, wage_id, wage_no, pay_type, bas_amt, otm_amt, bon_amt, pub_amt, soc_amt,dof_amt, ex_dof_amt, soc, pub, dof, paid, TPA, DAY7, upd_date, upd_by, upd_flag,upd_gen , upd_log, Remark From DLY_PLAN WHERE DLY_DATE='" + str(post_date) + "'"
+		# TODO:  row_count = selct count(emp_id) as empcount from dly_plan where dly_date='" + str(post_date) + "'"
+
+		
+	else:
+		sql = "ERROR"
+
+	return sql
 
 
 def getPeriod(generated_date):
