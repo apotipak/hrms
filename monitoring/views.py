@@ -1540,6 +1540,63 @@ def ajax_sp_generate_daily_attend(request):
 	response.status_code = 200
 	return response
 
+@permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
+@login_required(login_url='/accounts/login/')
+def ajax_sp_post_daily_attend(request):
+
+	print("******************************************")
+	print("FUNCTION: ajax_sp_post_daily_attend()")
+	print("******************************************")
+
+	post_date = request.POST.get('post_date')	
+
+	# Get current period
+	period = getPeriod(post_date)
+	print("period = " + str(period))
+
+	# Get current date
+	post_date = datetime.datetime.strptime(post_date, '%d/%m/%Y')	
+	post_date = str(post_date)[0:10]
+	print("post_date :", post_date)
+	
+	response = JsonResponse(data={"success": True, "is_error": False, "class": "bg-success", "error_message": "ทำรายการสำเร็จ"})
+
+	# TODO
+	'''
+	cursor = connection.cursor()	
+	cursor.execute("select count(*) from t_date where date_chk='" + str(post_date) + "'")	
+	tdate_count = cursor.fetchone()
+	if tdate_count[0] == 0:
+		try:
+			cursor = connection.cursor()	
+			cursor.execute("exec dbo.create_dly_plan_new %s", [post_date])
+			error_message = "Generate completed."
+			is_error = False
+			response = JsonResponse(data={"success": True, "is_error": is_error, "class": "bg-success", "error_message": error_message})
+		except db.OperationalError as e:
+			error_message = "Error";
+			is_error = True
+		except db.OperationalError as e:    	
+			error_message = str(e);
+			is_error = True
+		except db.Error as e:
+			error_message = str(e);
+			is_error = True
+		except:
+			error_message = cursor.statusmessage;		
+			is_error = True
+
+		response = JsonResponse(data={"success": True, "is_error": is_error, "class": "bg-danger", "error_message": error_message})
+	else:
+		error_message = "Daily Attendance table has been created. No need to generate again."
+		response = JsonResponse(data={"success": True,"is_error": True,"class": "bg-success","error_message": error_message})
+	cursor.close
+	'''
+
+	response.status_code = 200
+	return response
+
+
 def getPeriod(generated_date):
 	generated_date = datetime.datetime.strptime(generated_date, '%d/%m/%Y')
 	# print(generated_date)
