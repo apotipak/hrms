@@ -102,14 +102,14 @@ $("#post_button").click( function() {
 		});
 
 		$("#id_post_date").focus();
-		
+
 		return false;
 	}
 
 	$.confirm({
 		title: 'ตรวจสอบ',
 		type: 'red',
-		content: 'ยืนยันที่จะทำการโพสรายการของวันที่ <strong>' + post_date + '</strong>',
+		content: 'ยืนยันที่จะโพสรายการของวันที่ <strong>' + post_date + '</strong>',
 	    buttons: {
 	        danger: {
 	        	text: 'ยืนยัน',
