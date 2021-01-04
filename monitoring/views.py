@@ -1585,9 +1585,12 @@ def ajax_sp_post_daily_attend(request):
 			return response
 		
 	# TODO: Call PostDayEndN
-	message = PostDayEndN(post_date, period, request.user.username)
+	is_error, error_message = PostDayEndN(post_date, period, request.user.username)
+	if is_error:
+		response = JsonResponse(data={"success": True, "is_error": is_error, "class": "bg-danger", "error_message": error_message})
+	else:
+		response = JsonResponse(data={"success": True, "is_error": False, "class": "bg-success", "error_message": error_message})
 
-	response = JsonResponse(data={"success": True, "is_error": False, "class": "bg-success", "error_message": message})
 	response.status_code = 200	
 	return response
 
@@ -1778,8 +1781,10 @@ def PostDayEndN(post_date, period, username):
 				if RowsResult == 1:
 					Esub = True
 
+
+
 				# Update Generate Complete
-				sql = "select count(emp_id) as empcount from dly_plan where dly_date='" + str(post_date) + "'"
+				sql = "select count(emp_id) as empcount from his_dly_plan where dly_date='" + str(post_date) + "'"
 				cursor = connection.cursor()
 				cursor.execute(sql)	
 				record_count = cursor.fetchone()
@@ -1790,15 +1795,19 @@ def PostDayEndN(post_date, period, username):
 					cursor.execute(sql)	
 					cursor.close()
 
-				# CalculateDay_DOF
-				cursor = connection.cursor()
-				cursor.execute("exec dbo.CalculateDay_DOF %s", [post_date])
-				cursor.close()
+					# MsgBox "Post Day End for date "
 
-				error_message = "Check DOF for date <b>" + str(post_date) + "</b> - Complete."
+					# CalculateDay_DOF
+					cursor = connection.cursor()
+					cursor.execute("exec dbo.CalculateDay_DOF %s", [post_date])
+					cursor.close()
 
-				is_error = False
-				response = JsonResponse(data={"success": True, "is_error": is_error, "class": "bg-success", "error_message": error_message})				
+					is_error = False
+					error_message = "Check DOF for date <b>" + str(post_date) + "</b> - Complete."
+				else:
+					is_error = True
+					error_message = "Found problem between Post Day End. Please Post DayEnd next time again."
+
 			except db.OperationalError as e:
 				error_message = "Error";
 				is_error = True
@@ -1808,14 +1817,14 @@ def PostDayEndN(post_date, period, username):
 			except db.Error as e:
 				error_message = str(e);
 				is_error = True
-
-			message = error_message
 		else:
-			message = "GoTo Exit Loop"
+			is_error = True
+			error_message = "GoTo Exit Loop"
 	else:
-		message = "Found problem between Post Day End. Please Post DayEnd next time again."
+		is_error = True
+		error_message = "ERROR"
 
-	return message
+	return is_error, error_message
 
 
 def getPeriod(generated_date):
