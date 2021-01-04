@@ -1550,14 +1550,18 @@ def ajax_sp_post_daily_attend(request):
 
 
 	# Get TcurDate
-	post_date = request.POST.get('post_date')	
-	# Get current date
+	post_date = request.POST.get('post_date')
 	post_date = datetime.datetime.strptime(post_date, '%d/%m/%Y')	
 	post_date = str(post_date)[0:10]
+
+	# Get Tperiod	
+	period = getPeriod(request.POST.get('post_date'))
+	# print("period = " + str(period))
 
 	# ChkValidInput() - Check date is not empty
 	if len(post_date)<=0:		
 		response = JsonResponse(data={"success": True, "is_error": True, "class": "bg-danger", "error_message": "เลือกวันที่ไม่ถูกต้อง"})
+		response.status_code = 200
 		return response
 
 	# ChkValidInput() - Check Post Day End
@@ -1565,24 +1569,24 @@ def ajax_sp_post_daily_attend(request):
 	print("sql", sql)
 	cursor = connection.cursor()	
 	cursor.execute(sql)
-	record_count = cursor.fetchall()
-	if len(record_count) <= 0:
-		response = JsonResponse(data={"success": True, "is_error": True, "class": "bg-danger", "error_message": "วันที่นี้ไม่มีการทำรายการ"})
+	record = cursor.fetchall()
+	if len(record) <= 0:
+		response = JsonResponse(data={"success": True, "is_error": True, "class": "bg-danger", "error_message": "วันที่ <b>" + str(request.POST.get('post_date')) + "</b> ไม่มีรายการแจ้งเวร"})
+		response.status_code = 200
+		return response
 	else:
-		response = JsonResponse(data={"success": True, "is_error": True, "class": "bg-danger", "error_message": "วันที่นี้ทำการ Post Day End ไปแล้ว"})
-	
-	return response
-
-	# Get Tperiod	
-	period = getPeriod(post_date)
-	# print("period = " + str(period))
-
-	# Get current date
-	post_date = datetime.datetime.strptime(post_date, '%d/%m/%Y')	
-	post_date = str(post_date)[0:10]
-	# print("post_date :", post_date)
-	
+		# end_chk = record[]
+		end_chk = record[0][2]
+		# print("end_chk", end_chk)
+		if end_chk:
+			response = JsonResponse(data={"success": True, "is_error": True, "class": "bg-danger", "error_message": "วันที่ <b>" + str(request.POST.get('post_date')) + "</b> ทำ <b>Post Day End</b> ไปแล้ว"})
+			response.status_code = 200
+			return response
+		
+	# TODO: Call PostDayEndN	
+	response.status_code = 200	
 	response = JsonResponse(data={"success": True, "is_error": False, "class": "bg-success", "error_message": "ทำรายการสำเร็จ"})
+
 
 	# TODO
 	'''
