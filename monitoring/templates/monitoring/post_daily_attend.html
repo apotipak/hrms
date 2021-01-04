@@ -68,11 +68,13 @@
 
 {% block javascript %}
 <script>
-$(document).ready(function(){	
+$(document).ready(function(){
+	const today = new Date();
+	const yesterday = new Date(today);
+	yesterday.setDate(yesterday.getDate() - 1);
 	$('#generate_date_card').removeClass('overlay');
-
 	$('#id_generated_date').focus();
-	$('#id_generated_date').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true}).datepicker("setDate", new Date());
+	$('#id_generated_date').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true}).datepicker("setDate", yesterday);
 });
 
 $("#generated_date_ok_button").click( function() {
