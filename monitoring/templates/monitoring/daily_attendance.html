@@ -719,6 +719,12 @@
 	   		$("#id_relief_emp_id").attr("disabled", false);
 	   		$("#id_relief_emp_id").attr("readonly", false);
 
+	   		$("#id_late_from").attr("disabled", false);
+	   		$("#id_late_to").attr("disabled", false);
+	   		$("#id_late_reason_option").attr("disabled", false);
+	   		$("#id_late_hour").attr("disabled", false);
+	   		$("#id_late_full_paid_check").attr("disabled", false);
+
 			// Set Late From/To
 			$("#id_late_from").val(date);
 			$("#id_late_to").val(date);
@@ -741,7 +747,12 @@
 	   		$("#id_relief_emp_id").attr("disabled", true);
 	   		$("#id_relief_emp_id").attr("readonly", true);
 
-	   		//alert("a");
+	   		$("#id_late_from").attr("disabled", true);
+	   		$("#id_late_to").attr("disabled", true);
+	   		$("#id_late_reason_option").attr("disabled", true);
+	   		$("#id_late_hour").attr("disabled", true);
+	   		$("#id_late_full_paid_check").attr("disabled", true);
+	   		$("#id_late_full_paid_check").prop("checked", false);
 	    }
 
 	});
@@ -831,10 +842,15 @@
 		$("#id_job_type_option").attr("disabled", true);
 		
 		$("#id_remark").attr("disabled", true);
-
-		//$("#relief_employee_section").hide();
+		
 		$("#id_call_section").hide();
 
+		$("#id_late_from").attr("disabled", true);
+		$("#id_late_to").attr("disabled", true);
+		$("#id_late_reason_option").attr("disabled", true);
+		$("#id_late_hour").attr("disabled", true);
+   		$("#id_late_full_paid_check").attr("disabled", true);
+   		$("#id_late_full_paid_check").prop("checked", false);
  	}
 
  	function enableAllElements() { 		
@@ -2086,19 +2102,22 @@
     // aeiou
     $(document).on('click', '#reset_button', function(e) {    	
     	$("#reset_button").attr("disabled", true);
+    	$("#save_button").attr("disabled", true);
 
     	$("#id_add_new_record_status").val(0);
     	$("#dailyAttendanceDataEntryForm").trigger("reset");
 
 
-    	if($("#id_absent_check").is(":checked")) 
-    		$("#id_absent_check").prop("checked", false);
+    	if($("#id_absent_check").is(":checked")) {
+    		$("#id_absent_check").prop("checked", false);    		
+    		$("#id_relief_emp_id").attr("disabled", true);
+    	}
 
     	$('#employee_list_table tr').removeClass('highlight');
-		//$(this).addClass('highlight').siblings().removeClass('highlight');
-		//var tel_man = $("#employee_list_table").find('.highlight').find('td:eq(11)').text();
 
-    	$('#id_emp_id').focus();
+    	disableAllElements();
+
+    	//$('#id_emp_id').focus();
     });
 
 
