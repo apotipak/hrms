@@ -116,7 +116,7 @@ $("#post_button").click( function() {
 	            btnClass: 'btn-red any-other-class',
 	            action: function() {
 					$("#post_button").attr("disabled", true);
-					$("#post_button").text("Please wait..");	
+					$("#post_button").text("Posting..");	
 
 					$.ajax({
 				    	url : "/monitoring/ajax/sp_post_daily_attend/",
