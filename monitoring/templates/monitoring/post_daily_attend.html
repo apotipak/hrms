@@ -20,7 +20,7 @@
 
 			<div class="card card-outline card-success" id="generate_date_card">
 			  <div class="card-header">
-			    <h3 class="card-title lead"><i class="fas fa-cog"></i>&nbsp;&nbsp;Post Daily Attend</h3>
+			    <h3 class="card-title lead"><i class="fas fa-cogs"></i>&nbsp;&nbsp;Post Daily Attend</h3>
 			    <div class="card-tools">
 			      	<button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
 			    </div>
@@ -79,7 +79,7 @@ $(document).ready(function(){
 	yesterday.setDate(yesterday.getDate() - 1);
 	$('#generate_date_card').removeClass('overlay');	
 	$('#id_post_date').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true}).datepicker("setDate", yesterday);
-	$('#id_post_date').focus();
+	//$('#id_post_date').focus();
 });
 
 $("#post_button").click( function() {
