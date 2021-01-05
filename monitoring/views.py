@@ -1625,226 +1625,215 @@ def PostDayEndN(post_date, period, username):
 	RowsCount = 0 if record_count[0] < 0 else record_count[0]
 
 
-	return False, RowsCount
+	#TODO
+	count_status = 0
+	for i in range(1,101):
+		count_status = i
+		if not Esub:
+			if i==1:
+				# exec CalDayEnd_COPYDATA1
+				try:
+					cursor = connection.cursor()
+					cursor.execute("exec dbo.CalDayEnd_COPYDATA1 %s, %s, %s", [post_date, period, username])			
+					is_error = False
+					message = "CalDayEnd_COPYDATA1 is success"
+				except db.OperationalError as e:
+					is_error = True
+					message = "CalDayEnd_COPYDATA1 is error - " + str(e)
+					return is_error, message
+				except db.Error as e:
+					is_error = True
+					message = "CalDayEnd_COPYDATA1 is error - " + str(e)
+					return is_error, message
 
-
-	# 3. Call store procedures
-	if not Esub:		
-		# CalDayEnd_COPYDATA1
-		try:
-			cursor = connection.cursor()
-			cursor.execute("exec dbo.CalDayEnd_COPYDATA1 %s, %s, %s", [post_date, period, username])			
-			is_error = False
-			message = "CalDayEnd_COPYDATA1 is success"
-		except db.OperationalError as e:
-			is_error = True
-			message = "CalDayEnd_COPYDATA1 is error - " + str(e)
-		except db.Error as e:
-			is_error = True
-			message = "CalDayEnd_COPYDATA1 is error - " + str(e)
-
-
-		return is_error, message
-
-
-		# TODO
-		try:
-			# CalDayEnd_COPYDATA1
-			cursor = connection.cursor()	
-			cursor.execute("exec dbo.CalDayEnd_COPYDATA1 %s, %s, %s", [post_date, period, username])				
-			cursor.close()
-			if RowsCount > 100:
-				RowsCount -= 100
+				if RowsCount > 100:
+					RowsCount -= 100
+				elif RowsCount <= 100:
+					RowsResult = 1
 			else:
-				RowsCount = 1
-				RowsResult = 1
+				if RowsCount > 100:
+					RowsCount -= 100
+				elif RowsCount <= 100:
+					RowsResult = 1
 
-			'''
-			# CalDayEnd_COPYDATA2
-			cursor = connection.cursor()	
-			cursor.execute("exec dbo.CalDayEnd_COPYDATA2 %s, %s, %s", [post_date, period, username])				
+			# exec CalDayEnd_COPYDATA2
+			cursor = connection.cursor()
+			cursor.execute("exec dbo.CalDayEnd_COPYDATA2 %s, %s, %s", [post_date, period, username])
 			cursor.close()
 
-			# Update Zone, Wage_ID
+			# exec CAL_UPDATE_ZONE_WAGE_ID_NEW
 			cursor = connection.cursor()	
 			cursor.execute("exec dbo.CAL_UPDATE_ZONE_WAGE_ID_NEW %s", [post_date])
 			cursor.close()
 
-			# Update Dept, Section, Wage_ID
+			# exec CAL_UPDATE_DEPT_SECTION_WAGE_ID_NEW
 			cursor = connection.cursor()	
 			cursor.execute("exec dbo.CAL_UPDATE_DEPT_SECTION_WAGE_ID_NEW %s", [post_date])
 			cursor.close()
-
-			# Update Employee Wage
+			
+			# exec CAL_UPDATE_EMP_WAGE_NEW
 			cursor = connection.cursor()	
 			cursor.execute("exec dbo.CAL_UPDATE_EMP_WAGE_NEW %s", [post_date])
 			cursor.close()
 
-			# Calculate Day Step 1
+			# exec CalculateDay_STEP1_NEW
 			cursor = connection.cursor()	
 			cursor.execute("exec dbo.CalculateDay_STEP1_NEW %s, %s, %s", [post_date, period, username])
 			cursor.close()
 
-			# Calculate Day Step 2
+			# exec CalculateDay_STEP2_NEW
 			cursor = connection.cursor()	
 			cursor.execute("exec dbo.CalculateDay_STEP2_NEW %s, %s, %s", [post_date, period, username])
 			cursor.close()
 
-			# Calculate Day Step 3
+			# exec CalculateDay_STEP3_NEW
 			cursor = connection.cursor()
 			cursor.execute("exec dbo.CalculateDay_STEP3_NEW %s, %s, %s", [post_date, period, username])
 			cursor.close()
 
-			# Update A set a.sch_rank=b.emp_rank
+			# Update DEN_DLY_PLAN
 			sql = "update A set a.sch_rank=b.emp_rank from DEN_DLY_PLAN as A left join employee as b on a.emp_id=b.emp_id where a.dly_date='" + str(post_date) + "'"
 			cursor = connection.cursor()
 			cursor.execute(sql)
 			cursor.close()
 
-			# Update
+			# Update DEN_DLY_PLAN
 			sql = "update A set a.wage_no=right('00'+ltrim(str(a.wage_id)),2)+ltrim(a.sch_rank) from DEN_DLY_PLAN as A where a.dly_date='" + str(post_date) + "'"
 			cursor = connection.cursor()
 			cursor.execute(sql)
 			cursor.close()
 
-			# Update
+			# Update DEN_DLY_PLAN
 			sql = "update A set a.bon_amt=b.bonus_day from DEN_DLY_PLAN a left join t_wagerank as B on a.wage_no=b.wage_no where a.dly_date='" + str(post_date) + "'  and a.prd_id='" + str(period) + "' and a.absent='0' and b.wage_active=1"
 			cursor = connection.cursor()
 			cursor.execute(sql)
 			cursor.close()
 
-			# Calculate Day setp 4
+			# exec CalculateDay_STEP4_NEW
 			cursor = connection.cursor()
 			cursor.execute("exec dbo.CalculateDay_STEP4_NEW %s, %s, %s", [post_date, period, username])
-			# cursor.execute("exec dbo.CalculateDay_STEP4_NEW '" + str(post_date) + "','" + str(period) + "','" + str(username) + "'")
 			cursor.close()
 
+			# exec CalculateDay_STEP5_NEW
+			cursor = connection.cursor()
+			cursor.execute("exec dbo.CalculateDay_STEP5_NEW %s, %s, %s", [post_date, period, username])
+			cursor.close()
 
-			# Calculate Day setp 5
+			# exec CalculateDay_STEP6_NEW
 			cursor = connection.cursor()
 			cursor.execute("exec dbo.CalculateDay_STEP6_NEW %s, %s, %s", [post_date, period, username])
 			cursor.close()
 
-			# Calculate Day setp 6
-			cursor = connection.cursor()
-			cursor.execute("exec dbo.CalculateDay_STEP6_NEW %s, %s, %s", [post_date, period, username])
-			cursor.close()
-
-			# Calculate Day setp 7
+			# exec CalculateDay_STEP7_NEW
 			cursor = connection.cursor()
 			cursor.execute("exec dbo.CalculateDay_STEP7_NEW %s, %s, %s", [post_date, period, username])
 			cursor.close()
 
-			# Calculate Day setp 8
+			#exec CalculateDay_STEP8_NEW
 			cursor = connection.cursor()
 			cursor.execute("exec dbo.CalculateDay_STEP8_NEW %s, %s, %s", [post_date, period, username])
 			cursor.close()
 
-			# Calculate Day setp 9
+			#exec CalculateDay_STEP9_NEW
 			cursor = connection.cursor()
 			cursor.execute("exec dbo.CalculateDay_STEP9_NEW %s, %s, %s", [post_date, period, username])
 			cursor.close()
 
-			# Calculate Day setp 10
+			#exec CalculateDay_STEP10_NEW
 			cursor = connection.cursor()
 			cursor.execute("exec dbo.CalculateDay_STEP10_NEW %s, %s, %s", [post_date, period, username])
 			cursor.close()
 
-			# Calculate Day setp 11
+			#exec CalculateDay_STEP11_NEW
 			cursor = connection.cursor()
 			cursor.execute("exec dbo.CalculateDay_STEP11_NEW %s, %s, %s", [post_date, period, username])
 			cursor.close()
 
-			# Calculate Day setp 12
+			#exec CalculateDay_STEP12_NEW
 			cursor = connection.cursor()
 			cursor.execute("exec dbo.CalculateDay_STEP12_NEW %s, %s, %s", [post_date, period, username])
 			cursor.close()
 
-			# Calculate Day setp 13
+			#exec CalculateDay_STEP13_NEW
 			cursor = connection.cursor()
 			cursor.execute("exec dbo.CalculateDay_STEP13_NEW %s, %s, %s", [post_date, period, username])
 			cursor.close()
 
-			# Calculate Day setp 14
+			#exec CalculateDay_STEP14_NEW
 			cursor = connection.cursor()
 			cursor.execute("exec dbo.CalculateDay_STEP14_NEW %s, %s, %s", [post_date, period, username])
 			cursor.close()
 
-			# Calculate Day setp 15
+			#exec CalculateDay_STEP15_NEW
 			cursor = connection.cursor()
 			cursor.execute("exec dbo.CalculateDay_STEP15_NEW %s, %s, %s", [post_date, period, username])
 			cursor.close()
 
-			# Calculate Day setp 16
+			#exec CalculateDay_STEP16_NEW
 			cursor = connection.cursor()
 			cursor.execute("exec dbo.CalculateDay_STEP16_NEW %s, %s, %s", [post_date, period, username])
 			cursor.close()
 
-			# Calculate Day setp 17
+			#exec CalculateDay_STEP17_NEW
 			cursor = connection.cursor()
 			cursor.execute("exec dbo.CalculateDay_STEP17_NEW %s, %s, %s", [post_date, period, username])
 			cursor.close()
 
-			# Calculate Day setp 18
+			#exec CalculateDay_STEP18_NEW
 			cursor = connection.cursor()
 			cursor.execute("exec dbo.CalculateDay_STEP18_NEW %s, %s, %s", [post_date, period, username])
 			cursor.close()
 
-			# Calculate Day setp 19
+			#exec CalculateDay_STEP19_NEW
 			cursor = connection.cursor()
 			cursor.execute("exec dbo.CalculateDay_STEP19_NEW %s, %s, %s", [post_date, period, username])
 			cursor.close()
 
-			# Calculate Day setp 20
+			#exec CalculateDay_STEP20_NEW
 			cursor = connection.cursor()
 			cursor.execute("exec dbo.CalculateDay_STEP20_NEW %s, %s, %s, '0'", [post_date, period, username])
 			cursor.close()
-			'''			
 
 			if RowsResult == 1:
 				Esub = True
+		
+	try:		
+		sql = "select count(emp_id) as empcount from his_dly_plan where dly_date='" + str(post_date) + "'"
+		cursor = connection.cursor()
+		cursor.execute(sql)	
+		record_count = cursor.fetchone()
+		cursor.close()
 
-
-
+		if record_count[0] > 0:
 			# Update Generate Complete
-			sql = "select count(emp_id) as empcount from his_dly_plan where dly_date='" + str(post_date) + "'"
+			sql = "update t_date set end_chk=1, upd_date=GetDate(), upd_by='" + str(username) + "', upd_flag='E' where date_chk='" + str(post_date) + "'"
 			cursor = connection.cursor()
 			cursor.execute(sql)	
-			record_count = cursor.fetchone()
 			cursor.close()
-			if record_count[0] > 0:
-				sql = "update t_date set end_chk=1, upd_date=GetDate(), upd_by='" + str(username) + "', upd_flag='E' where date_chk='" + str(post_date) + "'"
-				cursor = connection.cursor()
-				cursor.execute(sql)	
-				cursor.close()
 
-				# MsgBox "Post Day End for date "
+			# MsgBox "Post Day End for date "
 
-				# CalculateDay_DOF
-				cursor = connection.cursor()
-				cursor.execute("exec dbo.CalculateDay_DOF %s", [post_date])
-				cursor.close()
+			# CalculateDay_DOF
+			cursor = connection.cursor()
+			cursor.execute("exec dbo.CalculateDay_DOF %s", [post_date])
+			cursor.close()
 
-				is_error = False
-				error_message = "Check DOF for date <b>" + str(post_date) + "</b> - Complete."
-			else:
-				is_error = True
-				error_message = "Found problem between Post Day End. Please Post DayEnd next time again."
-
-		except db.OperationalError as e:
-			error_message = "Error";
+			is_error = False
+			message = "Check DOF for date <b>" + str(post_date) + "</b> - Complete."
+		else:
 			is_error = True
-		except db.OperationalError as e:    	
-			error_message = str(e);
-			is_error = True
-		except db.Error as e:
-			error_message = str(e);
-			is_error = True
-	else:
+			message = "Found problem between Post Day End. Please Post DayEnd next time again."
+	except db.OperationalError as e:
+		error_message = "Error";
 		is_error = True
-		error_message = "GoTo Exit Loop"
-
-	return is_error, error_message
+	except db.OperationalError as e:    	
+		error_message = str(e);
+		is_error = True
+	except db.Error as e:
+		error_message = str(e);
+		is_error = True
+	
+	return is_error, count_status
 
 
 def getPeriod(generated_date):
