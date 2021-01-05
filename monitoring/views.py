@@ -3797,21 +3797,24 @@ def ajax_save_daily_attendance(request):
 	emp_dept = request.GET.get('emp_dept')
 	shift_id = request.GET.get('shift_id')
 	shift_name = request.GET.get('shift_name')
-	absent_status = int(request.GET.get('absent_status'))
 	
-	late_status = int(request.GET.get('late_status'))
+	absent_status = int(request.GET.get('ui_absent_status'))	
+	late_status = int(request.GET.get('ui_late_status'))
+	phone_status = int(request.GET.get('ui_phone_status'))
+	relief_status = int(request.GET.get('ui_relief_status'))
+
 	late_from = request.GET.get('late_from')
 	late_to = request.GET.get('late_to')
 	late_reason_option = request.GET.get('late_reason_option')
 	late_hour = request.GET.get('late_hour')
 	late_full_paid_status = request.GET.get('late_full_paid_status')
 
-	phone_status = int(request.GET.get('phone_status'))
+	tel_man = request.GET.get('tel_man')
+	print("tel_man:", tel_man)
 
-	tel_man = int(request.GET.get('tel_man'))
 	tel_time = request.GET.get('tel_time')
-	tel_amount = int(request.GET.get('tel_amount'))
-	relief_status = int(request.GET.get('relief_status'))
+	tel_amount = int(request.GET.get('tel_amount'))	
+	
 	relief_emp_id = request.GET.get('relief_emp_id')
 
 	ot_status = 0
