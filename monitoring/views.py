@@ -2213,7 +2213,7 @@ def ajax_get_attendance_information(request):
 			upd_date_naturalday = naturalday(row[45])
 			upd_date_naturaltime = row[45]
 
-			print("upd_date_naturalday", upd_date_naturalday)
+			# print("upd_date_naturalday", upd_date_naturalday)
 			# print("nautraltime", nautraltime(row[45]))
 
 
@@ -2235,7 +2235,7 @@ def ajax_get_attendance_information(request):
 			late_full_status = 1 if row[56]==1 else 0
 
 			# OT Time From
-			print("row[30]", row[30])
+			# print("row[30]", row[30])
 			if row[30] is not None:
 				if row[30] != "":
 					ot_time_frm = row[30].strftime("%d/%m/%Y %H:%M")
@@ -2245,7 +2245,7 @@ def ajax_get_attendance_information(request):
 				ot_time_frm = None
 
 			# OT Time To
-			print("row[31]", row[31])
+			# print("row[31]", row[31])
 			if row[31] is not None:
 				if row[31] != "":
 					ot_time_to = row[31].strftime("%d/%m/%Y %H:%M")
@@ -2558,6 +2558,7 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 
 
 
+# amnaj
 def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,tel_man,tel_time,tel_amount,relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status):
 
 	# print("________allowZeroBathForPhoneAmount=" + str(allowZeroBathForPhoneAmount))
@@ -2576,7 +2577,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 	# ******* Rule 1 - Check Manpower *****
 	# ********** START ***********
 	sql = "select count(*) from v_dlyplan_shift where cnt_id='" + str(cnt_id) + "' and left(remark,2)='" + str(remark) + "' and shf_type='" + str(shift_type) + "' and absent=0 and dly_date='" + str(dly_date) + "'"
-	print("____sql1____ = " + str(sql))
+	# print("____sql1____ = " + str(sql))
 
 	cursor = connection.cursor()
 	cursor.execute(sql)
@@ -2700,8 +2701,8 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 					cursor.close
 					srv_qty = rows[2]
 
-					print("inform_no =", informNo)
-					print("srv_qty =", srv_qty)
+					# print("inform_no =", informNo)
+					# print("srv_qty =", srv_qty)
 
 					
 
@@ -2762,8 +2763,8 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 			tday7tmp = tday7
 			tday7 = 0
 
-		print("relief_status = " + str(relief_status))
-		print("relief_emp_id = " + str(relief_emp_id))
+		# print("relief_status = " + str(relief_status))
+		# print("relief_emp_id = " + str(relief_emp_id))
 		if relief_status==0:
 			relief_emp_id = 0
 
@@ -2788,7 +2789,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 
 
 		# Late Check
-		print("late status", late_status)
+		# print("late status", late_status)
 		if late_status==0:
 			late_reason_option = 0
 			late_hour = 0
@@ -2853,7 +2854,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		sql += "and sch_shift=" + str(shift_id)
 
 		# ironman		
-		print("sql 1 " + str(sql))
+		# print("sql 1 " + str(sql))
 		# return False,"TEST"
 
 		try:
@@ -2904,7 +2905,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 			sql += "0" + "," + "0" + "," + "NULL" + "," + "NULL" + "," + "0" + "," + "0" + ","
 			sql += "0" + "," + "32" + "," + "'32SOY'" + "," + "NULL" + "," + "0" + "," + "0" + "," + str(0) + "," + str(1) + ",'"
 			sql += str(upd_date) + "','" + str(username) + "'," + "'A'" + ",'" + str(remark) + "')"
-			print("sql 2 " + str(sql))
+			# print("sql 2 " + str(sql))
 
 			try:
 				with connection.cursor() as cursor:
@@ -3792,16 +3793,16 @@ def ajax_save_daily_attendance(request):
 	cus_vol = request.GET.get('cus_vol')	
 	cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
 	cnt_id = cnt_id.lstrip("0")
-	emp_id = request.GET.get('emp_id')	
+	emp_id = request.GET.get('emp_id')
 	emp_rank = request.GET.get('emp_rank')
 	emp_dept = request.GET.get('emp_dept')
 	shift_id = request.GET.get('shift_id')
 	shift_name = request.GET.get('shift_name')
 	
-	absent_status = int(request.GET.get('ui_absent_status'))	
-	late_status = int(request.GET.get('ui_late_status'))
-	phone_status = int(request.GET.get('ui_phone_status'))
-	relief_status = int(request.GET.get('ui_relief_status'))
+	ui_absent_status = int(request.GET.get('ui_absent_status'))	
+	ui_late_status = int(request.GET.get('ui_late_status'))
+	ui_phone_status = int(request.GET.get('ui_phone_status'))
+	ui_relief_status = int(request.GET.get('ui_relief_status'))
 
 	late_from = request.GET.get('late_from')
 	late_to = request.GET.get('late_to')
@@ -3811,6 +3812,8 @@ def ajax_save_daily_attendance(request):
 
 	tel_man = request.GET.get('tel_man')
 	print("tel_man:", tel_man)
+	print("ui_phone_status:", ui_phone_status)
+
 
 	tel_time = request.GET.get('tel_time')
 	tel_amount = int(request.GET.get('tel_amount'))	
@@ -3855,7 +3858,7 @@ def ajax_save_daily_attendance(request):
 	if AEdly == 0: # EDIT MODE
 		# print("Edit Mode")
 
-		is_edit_record_success, message = editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,tel_man,tel_time,tel_amount,relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status)
+		is_edit_record_success, message = editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status)
 		if is_edit_record_success:
 			success_status = True
 			title = "Success"
@@ -3867,7 +3870,7 @@ def ajax_save_daily_attendance(request):
 
 	elif AEdly == 1: # ADD MODE
 		# print("Add Mode")
-		is_add_record_success, message = addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,tel_man,tel_time,tel_amount,relief_status,relief_emp_id,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status)
+		is_add_record_success, message = addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status)
 		if is_add_record_success:
 			success_status = True
 			title = "Success"
