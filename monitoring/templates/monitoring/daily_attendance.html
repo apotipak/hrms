@@ -1747,7 +1747,8 @@
 		var cus_vol = $("#id_cus_vol").val();
 		
 		var absent = $(this).find('td:eq(0)').text();
-		// console.log("absent = " + absent);
+		var tel_status = $(this).find('td:eq(11)').text();			
+		var late_status = $(this).find('td:eq(24)').text();
 
 		var emp_id = $(this).find('td:eq(2)').text();
 		var emp_fullname_th = $(this).find('td:eq(3)').text();
@@ -1756,36 +1757,23 @@
 		var shift_id =  parseInt(shf_desc.substring(0,4));
 		var upd_gen = $(this).find('td:eq(21)').text();
 		var remark = $(this).find('td:eq(22)').text();
-
-		var tel_status = $(this).find('td:eq(11)').text();			
 		var tel_time = $(this).find('td:eq(13)').text();
 		var tel_amount = $(this).find('td:eq(14)').text();	
 		var tel_paid = $(this).find('td:eq(15)').text();
-
 		var relief_status = $(this).find('td:eq(23)').text();
 		var relief_emp_id = $(this).find('td:eq(9)').text();
 		var relief_emp_fullname_th = $(this).find('td:eq(10)').text();
-
-		var late_status = $(this).find('td:eq(24)').text();
 		var late_full_status = $(this).find('td:eq(25)').text();
-
 		var ot_reason = $(this).find('td:eq(27)').text();
-		
 		var ot_time_from = $(this).find('td:eq(28)').text();		
 		var ot_time_to = $(this).find('td:eq(29)').text();
-		//console.log(ot_time_from + "," + ot_time_to);
-
-
-
 		var ot_hour_amount = $(this).find('td:eq(30)').text();
 
 		var today = new Date();
 		var dd = String(today.getDate()).padStart(2, '0');
 		var mm = String(today.getMonth() + 1).padStart(2, '0');
 		var yyyy = today.getFullYear();
-
 		today = dd + '/' + mm + '/' + yyyy + " 00:00";
-		//alert(today);
 
 /*
 		result += "    <tr>";

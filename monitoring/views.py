@@ -2542,7 +2542,8 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 					cursor.execute(sql)
 
 				is_pass = True
-				message = "บันทึกข้อมูลสำเร็จ"
+				# message = "บันทึกข้อมูลสำเร็จ"
+				# message = "บันทึกรายการแจ้งเวรสำเร็จ"
 			except db.OperationalError as e:
 				is_pass = False
 				message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
@@ -2859,7 +2860,8 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 			with connection.cursor() as cursor:
 				cursor.execute(sql)
 			is_pass = True
-			message = "บันทึกรายการสำเร็จ"
+			# message = "บันทึกรายการสำเร็จ"
+			message = "บันทึกรายการแจ้งเวรสำเร็จ"
 		except db.OperationalError as e:
 			is_pass = False
 			message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
