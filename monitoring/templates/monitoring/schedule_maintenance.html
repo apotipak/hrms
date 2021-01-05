@@ -269,6 +269,7 @@
 
 					  	<div class="row col-10 d-flex justify-content-end">
 
+
 						    <div class="col-3">
 						    	<label class="form-check-label" for="id_emp_id"><b>Employee ID</b></label>
 	                            <div class="input-group">                            	
@@ -291,24 +292,55 @@
 						      	<input type="text" class="form-control form-control-sm" id="id_sch_rank" placeholder="" readonly />
 						    </div>
 
+
 						    <div class="col-2">
 						    	<label class="form-check-label" for="id_sch_rank"><b>Department</b></label>
 						      	<input type="text" class="form-control form-control-sm" id="id_sch_dept" placeholder="" readonly />
 						    </div>
 
-					    <div class="col-6">
-					    	<label class="form-check-label" for="id_emp_name_th"><b>Employee Status</b></label>
-					    	<input type="text" class="form-control form-control-sm" id="id_emp_status" placeholder="" readonly />
-					    </div>
-					    <div class="col-3">
-					    	<label class="form-check-label" for="id_emp_name_th"><b>Joined Date</b></label>
-					      	<input type="text" class="form-control form-control-sm" id="id_emp_join_date" placeholder="" readonly />
-					    </div>
-					    <div class="col-3">
-					    	<label class="form-check-label" for="id_emp_name_th"><b>Terminated Date</b></label>
-					      	<input type="text" class="form-control form-control-sm" id="id_emp_term_date" readonly />
-					    </div>	
 
+
+						    <div class="col-6">
+						    	<label class="form-check-label" for="id_emp_name_th"><b>Employee Status</b></label>
+						    	<input type="text" class="form-control form-control-sm" id="id_emp_status" placeholder="" readonly />
+						    </div>
+						    <div class="col-3">
+						    	<label class="form-check-label" for="id_emp_name_th"><b>Joined Date</b></label>
+						      	<input type="text" class="form-control form-control-sm" id="id_emp_join_date" placeholder="" readonly />
+						    </div>
+
+						    <div class="col-3">
+						    	<label class="form-check-label" for="id_emp_name_th"><b>Terminated Date</b></label>
+						      	<input type="text" class="form-control form-control-sm" id="id_emp_term_date" readonly />
+						    </div>	
+
+
+						    <div class="col-5">
+						    	<i class="far fa-calendar-alt"></i>&nbsp;<label class="form-check-label" for="id_duration_from"><b>Duration From</b></label>
+						    	<div class="form-inline col-12 text-left float-left">
+						      		<input type="checkbox" id="chkDurationFromDisable" class="form-inline float-left" onclick="disableDurationFormDP()">&nbsp;
+						      		<input type="text" class="form-control form-control-sm" id="id_duration_from" placeholder="dd/mm/yyyy" />
+						      	</div>
+						    </div>					    
+						    <div class="col-5">
+						    	<i class="far fa-calendar-alt"></i>&nbsp;<label class="form-check-label" for="id_duration_to"><b>Duration To</b></label>
+						    	<div class="form-inline col-12">
+						    		<input type="checkbox" id="chkDurationToDisable" class="form-inline" onclick="disableDurationToDP()">&nbsp;
+						      		<input type="text" class="form-control form-control-sm" id="id_duration_to" placeholder="dd/mm/yyyy" />
+						      	</div>
+						    </div>					    		    
+
+						  	<div class="col-2">	   	
+						  		<div><label class="form-label" for="id_sch_rank"><b>Service Status</b></label></div>
+								<div class="form-check form-check-inline">
+								  <input class="form-check-input" type="checkbox" id="id_service_active" value="1">
+								  <label class="form-check-label" for="id_service_active"><b>Active</b></label>
+								</div>
+								<div class="form-check form-check-inline">
+								  <input class="form-check-input" type="checkbox" id="id_relief">
+								  <label class="form-check-label" for="id_relief"><b>Relief</b></label>
+								</div>
+							</div>
 
 
 					  	</div>
@@ -341,7 +373,7 @@
 					  </div>
 					  -->
 
-
+					  <!--
 					  <div class="form-group row">
 
 					    <div class="col-4">
@@ -372,7 +404,7 @@
 						</div>
 
 					  </div>
-
+						-->
 
 					  
 					  <!--
