@@ -1580,7 +1580,7 @@ def ajax_sp_post_daily_attend(request):
 		end_chk = record[0][2]
 		# print("end_chk", end_chk)
 		if end_chk:
-			response = JsonResponse(data={"success": True, "is_error": True, "class": "bg-danger", "error_message": "วันที่ <b>" + str(request.POST.get('post_date')) + "</b> ทำ <b>Post Day End</b> ไปแล้ว"})
+			response = JsonResponse(data={"success": True, "is_error": True, "class": "bg-danger", "error_message": "รายการแจ้งเวรของวันที่ <b>" + str(request.POST.get('post_date')) + "</b> มีการ <b>Post Day End</b> ไปแล้ว"})
 			response.status_code = 200
 			return response
 		
@@ -1796,7 +1796,9 @@ def PostDayEndN(post_date, period, username):
 
 			if RowsResult == 1:
 				Esub = True
-		
+		else:
+			break
+
 	try:		
 		sql = "select count(emp_id) as empcount from his_dly_plan where dly_date='" + str(post_date) + "'"
 		cursor = connection.cursor()
