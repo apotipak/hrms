@@ -1514,7 +1514,8 @@ def ajax_sp_generate_daily_attend(request):
 		try:
 			cursor = connection.cursor()	
 			cursor.execute("exec dbo.create_dly_plan_new %s", [generated_date])
-			error_message = "Generate completed."
+			# error_message = "Generate completed."
+			error_message = "สร้างตารางรับแจ้งเวรสำเร็จ"
 			is_error = False
 			response = JsonResponse(data={"success": True, "is_error": is_error, "class": "bg-success", "error_message": error_message})
 		except db.OperationalError as e:
@@ -1532,7 +1533,8 @@ def ajax_sp_generate_daily_attend(request):
 
 		response = JsonResponse(data={"success": True, "is_error": is_error, "class": "bg-danger", "error_message": error_message})
 	else:
-		error_message = "Daily Attendance table has been created. No need to generate again."
+		# error_message = "Daily Attendance table has been created. No need to generate again."
+		error_message = "ตารางรับแจ้งเวรของวันที่ <b>" + str(request.POST.get('generated_date')) + "</b> ได้สร้างไว้แล้ว"
 		response = JsonResponse(data={"success": True,"is_error": True,"class": "bg-success","error_message": error_message})
 
 
@@ -1821,21 +1823,22 @@ def PostDayEndN(post_date, period, username):
 			cursor.close()
 
 			is_error = False
-			message = "Check DOF for date <b>" + str(post_date) + "</b> - Complete."
+			# message = "Check DOF for date <b>" + str(post_date) + "</b> - Complete."
+			message = "โพสรายการแจ้งเวรของวันที่ <b>" + str(post_date) + "</b> สำเร็จ"
 		else:
 			is_error = True
 			message = "Found problem between Post Day End. Please Post DayEnd next time again."
 	except db.OperationalError as e:
-		error_message = "Error";
+		message = "Error";
 		is_error = True
 	except db.OperationalError as e:    	
-		error_message = str(e);
+		message = str(e);
 		is_error = True
 	except db.Error as e:
 		error_message = str(e);
 		is_error = True
 	
-	return is_error, count_status
+	return is_error, message
 
 
 def getPeriod(generated_date):

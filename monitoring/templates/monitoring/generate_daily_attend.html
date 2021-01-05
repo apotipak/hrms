@@ -20,7 +20,7 @@
 
 			<div class="card card-outline card-success" id="generate_date_card">
 			  <div class="card-header">
-			    <h3 class="card-title lead"><i class="fas fa-user-cog"></i>&nbsp;&nbsp;Generate Daily Attend</h3>
+			    <h3 class="card-title lead"><i class="fas fa-user-cog"></i>&nbsp;&nbsp;สร้างตารางรับแจ้งเวร (Generate Daily Attend)</h3>
 			    <div class="card-tools">
 			 		<!--<button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i></button>-->
 			      	<button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
@@ -85,10 +85,10 @@ $("#generated_date_ok_button").click( function() {
 	$.confirm({
 		title: 'Confirmation',
 		type: 'red',
-		content: 'Confirm to generate on <strong>' + generated_date + '</strong>',
+		content: 'ต้องการสร้างตารางรับแจ้งเวรของวันที่ <b>' + generated_date + '</b>',
 	    buttons: {
 	        danger: {
-	        	text: 'Confirm',
+	        	text: 'ยืนยัน',
 	            btnClass: 'btn-red any-other-class',
 	            action: function() {
 					$("#generated_date_ok_button").attr("disabled", true);
@@ -137,7 +137,7 @@ $("#generated_date_ok_button").click( function() {
 	            }
 	        },
 	        default: {
-	        	text: 'Cancel',
+	        	text: 'ยกเลิก',
 	            btnClass: 'btn-default',
 				action: function() {
 					$('#id_generated_date').focus();

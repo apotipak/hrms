@@ -20,7 +20,7 @@
 
 			<div class="card card-outline card-success" id="generate_date_card">
 			  <div class="card-header">
-			    <h3 class="card-title lead"><i class="fas fa-cogs"></i>&nbsp;&nbsp;Post Daily Attend</h3>
+			    <h3 class="card-title lead"><i class="fas fa-cogs"></i>&nbsp;&nbsp;โพสรายการแจ้งเวร (Post Daily Attend)</h3>
 			    <div class="card-tools">
 			      	<button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
 			    </div>
@@ -34,7 +34,7 @@
 				{% csrf_token %}
 				  <div class="form-row justify-content-center">
 				    <div class="col-auto form-inline">
-				      <label for="inlineFormInput">Date</label>&nbsp;&nbsp;
+				      <label for="inlineFormInput">วันที่</label>&nbsp;&nbsp;
 				      <input type="text" class="form-control mb-2" id="id_post_date" placeholder="dd/mm/yyyy">
 				    </div>
 				    <div class="col-auto">
@@ -97,7 +97,7 @@ $("#post_button").click( function() {
 		    animation: 'zoom',
 		    animationBounce: 1.5,
 		    closeIcon: false,
-		    boxWidth: '38%',
+		    boxWidth: '45%',
 		    useBootstrap: false,
 		});
 
@@ -107,9 +107,10 @@ $("#post_button").click( function() {
 	}
 
 	$.confirm({
-		title: 'ตรวจสอบ',
+		title: 'Confirmation',
 		type: 'red',
-		content: 'ยืนยันที่จะโพสรายการของวันที่ <strong>' + post_date + '</strong>',
+		content: 'ต้องการโพสรายการแจ้งเวรวันที่ <strong>' + post_date + '</strong>',
+		boxWidth: '45%',
 	    buttons: {
 	        danger: {
 	        	text: 'ยืนยัน',
@@ -138,18 +139,18 @@ $("#post_button").click( function() {
 								    animation: 'zoom',
 								    animationBounce: 1.5,
 								    closeIcon: false,
-								    boxWidth: '38%',
+								    boxWidth: '45%',
 								    useBootstrap: false,
 								});
 				    		} else {    		
 								$.alert({
-								    title: 'สำเร็จ',
+								    title: 'Success',
 								    type: 'green',
 								    content: data.error_message,
 								    animation: 'zoom',
 								    animationBounce: 1.5,
 								    closeIcon: false,
-								    boxWidth: '38%',
+								    boxWidth: '45%',
 								    useBootstrap: false,
 								});    			
 				    		}
