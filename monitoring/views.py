@@ -2557,9 +2557,138 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 	return is_pass, message
 
 
+def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status):
+	# TODO: Delete print values
+	# print("ui_absent_status", ui_absent_status)
+	# print("ui_late_status", ui_late_status)
+	# print("ui_phone_status", ui_phone_status)
+	# print("ui_relief_status", ui_relief_status)
+	
+	# set hardcode value
+	ui_ot_status = 0
 
-# amnaj
-def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,tel_man,tel_time,tel_amount,relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status):
+	# set default value
+	Tday7tmp = 0
+	Tdoftmp = 0
+	shift_type = shift_name.partition("#")[2][0:2].strip() # shift_type will be D or N or O
+	# job_type - get from parameter
+
+	# CheckNoSpare
+	#TODO: check chkAbsent, chkLate, chkOT, chkCall
+	if (ui_absent_status==0) and (ui_late_status==0) and (ui_ot_status==0) and (ui_phone_status==0):
+		CheckNoSpare = True
+	else:
+		CheckNoSpare = False
+
+	# RULE 1 - Check Manpower
+	string_today_date = str(settings.TODAY_DATE.strftime("%d/%m/%Y"))
+	today_date = datetime.datetime.strptime(string_today_date, "%d/%m/%Y")
+
+	if dly_date == today_date.date():
+		sql = "select count(*) from v_dlyplan_shift "
+
+	if dly_date < today_date.date():
+		sql = "select count(*) from v_dlyplan_shift "
+
+	sql += "where cnt_id=" + str(cnt_id) + " and left(remark, 2)=" + str(job_type) + " and shf_type='" + shift_type + "'" + " and absent=0 and dly_date='" + str(dly_date) + "'"
+	cursor = connection.cursor()	
+	cursor.execute(sql)	
+	record_count = cursor.fetchone()
+	cursor.close()
+	AmanPower = 0 if record_count[0] == 0 else record_count[0]
+
+
+	# Check #4
+	if dly_date == today_date.date():
+		sql = "select cnt_id,emp_id,absent,late,tel_man,relieft from dly_plan "
+
+	if dly_date < today_date.date():
+		sql = "select cnt_id,emp_id,absent,late,tel_man,relieft from his_dly_plan "
+
+	sql += " where cnt_id=" + str(cnt_id) + " and dly_date='" + str(dly_date) + "' and emp_id=" + str(emp_id)
+	cursor = connection.cursor()	
+	cursor.execute(sql)	
+	record_count = cursor.fetchone()
+	cursor.close()
+	if len(record_count)>0:
+		db_cnt_id = record_count[0]
+		db_emp_id = record_count[1]
+		db_absent_status = 1 if record_count[2] else 0
+		db_late_status = 1 if record_count[3] else 0
+		db_phone_status = 1 if record_count[4] else 0
+		db_relief_status = 1 if record_count[5] else 0
+		# return False, str(db_absent_status) + "," + str(db_late_status) + "," + str(db_phone_status) + "," + str(db_relief_status)
+	else:
+		return False, "Employee not found"
+
+	if ui_phone_status==db_phone_status:
+		if ui_late_status==db_late_status:
+			if (db_absent_status==1) and (db_relief_status==1):
+				# TODO
+				return True, "Implement Check #4"
+
+
+	# Check #5 - ค่าโทรต้องมีค่ามากกว่า 0 บาท
+	if (ui_phone_status==1) and (tel_amount<=0):
+		if allowZeroBathForPhoneAmount==0:
+			is_pass = False
+			message = "ค่าโทรมีค่าเป็น 0 กรุณาตรวจสอบ"
+			return is_pass, message
+
+
+	# Check #6
+	if ui_phone_status==db_phone_status:
+		if ui_late_status==db_late_status:
+			if ui_absent_status==0:
+				if shift_id != 99:				
+					if dly_date == today_date.date():
+						sql = "select count(*) from dly_plan "
+
+					if dly_date < today_date.date():
+						sql = "select count(*) from his_dly_plan "
+
+					sql += "where cnt_id=" + str(cnt_id) + " and sch_shift=" + str(shift_id) + " and absent=0 and dly_date='" + str(dly_date) + "'"
+
+					cursor = connection.cursor()
+					cursor.execute(sql)
+					rows = cursor.fetchone()
+					cursor.close	
+					informNo = rows[0] if rows[0]>0 else 0
+
+					# get srv_qty
+					sql = "select cnt_id, srv_shif_id, sum(srv_qty) as qty from cus_service where srv_active=1 and cnt_id=" + str(cnt_id) + " and srv_shif_id=" + str(shift_id) + " group by cnt_id, srv_shif_id"
+					cursor = connection.cursor()
+					cursor.execute(sql)
+					rows = cursor.fetchone()
+					cursor.close
+					srv_qty = rows[2]
+
+					if informNo >= srv_qty:
+						is_pass = False					
+						message = "พนักงานที่แจ้งเวรมากกว่าที่มีอยู่ในสัญญา: <b>" + str(cnt_id) + "</b>"
+						return is_pass, message
+					else:
+						is_pass = True # แจ้งเวรยังไม่เกินจำนวนที่อยู่ในสัญญา
+						message = "Check #6 is passed."
+
+	# Check #7
+	is_pass, message = chkValidInput(2,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,tel_man,tel_time,tel_amount,relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount)	
+	if is_pass:
+		message = "PASS"
+	else:
+		message = "FAIL"
+
+	return True, message
+
+
+
+
+
+
+
+
+
+
 
 	# print("________allowZeroBathForPhoneAmount=" + str(allowZeroBathForPhoneAmount))
 
@@ -3811,9 +3940,8 @@ def ajax_save_daily_attendance(request):
 	late_full_paid_status = request.GET.get('late_full_paid_status')
 
 	tel_man = request.GET.get('tel_man')
-	print("tel_man:", tel_man)
-	print("ui_phone_status:", ui_phone_status)
-
+	# print("tel_man:", tel_man)
+	# print("ui_phone_status:", ui_phone_status)
 
 	tel_time = request.GET.get('tel_time')
 	tel_amount = int(request.GET.get('tel_amount'))	
