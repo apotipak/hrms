@@ -927,7 +927,7 @@
 		result += "      <th scope='col'>Full</th>";
 		result += "      <th scope='col'>Relief</th>";
 		result += "      <th scope='col' nowrap>Rel. ID</th>";
-		result += "      <th scope='col'>Name</th>";
+		result += "      <th scope='col'>Name2</th>";
 		result += "      <th scope='col' class='d-none'>Tel Status</th>";
 		result += "      <th scope='col'>Tel</th>";
 		result += "      <th scope='col' nowrap>Call Time</th>";
@@ -1022,7 +1022,7 @@
 					result += "	     <td>&nbsp;</td>";
 
 				result += "	     <td>" + relief_id + "</td>";
-				result += "	     <td>" + relief_emp_fullname_th + "</td>";
+				result += "	     <td nowrap>" + relief_emp_fullname_th + "</td>";
 				result += "	     <td class='text-center d-none'>" + tel_status + "</td>";
 				result += "	     <td class='text-center'>" + tel_man + "</td>";
 				result += "	     <td nowrap>" + tel_time + "</td>";
@@ -2397,7 +2397,7 @@
 												result += "      <th scope='col'>Full</th>";
 												result += "      <th scope='col'>Relief</th>";
 												result += "      <th scope='col' nowrap>Rel. ID</th>";
-												result += "      <th scope='col'>Name</th>";
+												result += "      <th scope='col'>Name1</th>";
 												result += "      <th scope='col' class='d-none'>Tel Status</th>";
 												result += "      <th scope='col'>Tel</th>";
 												result += "      <th scope='col' nowrap>Call Time</th>";
@@ -2490,7 +2490,7 @@
 															result += "	     <td></td>";
 
 														result += "	     <td>" + relief_id + "</td>";
-														result += "	     <td>" + relief_emp_fullname_th + "</td>";
+														result += "	     <td nowrap>" + relief_emp_fullname_th + "</td>";
 														result += "	     <td class='text-center d-none'>" + tel_status + "</td>";
 														result += "	     <td class='text-center'>" + tel_man + "</td>";
 														result += "	     <td nowrap>" + tel_time + "</td>";
@@ -3136,7 +3136,7 @@
 		$.confirm({
 		    title: 'Confirmation',
 		    type: 'red',
-		    content: 'ลบพนักงานรหัส <b>' + emp_id + "  (" + emp_fullname_th + ")</b><br>ออกจากหน่วยงาน <b>" + cnt_id.replace(/^0+/,'') + "</b>",
+		    content: 'ต้องการลบพนักงานรหัส <b>' + emp_id + "  (" + emp_fullname_th + ")</b><br>ออกจากหน่วยงาน <b>" + cnt_id.replace(/^0+/,'') + "</b>",
 			animation: 'zoom',
 		    animationBounce: 1.5,
 		    closeIcon: true,
@@ -3144,7 +3144,7 @@
 		    useBootstrap: false,		    
 		    buttons: {
 		        confirm: {
-		        	text: 'Delete',
+		        	text: 'ยืนยัน',
 		        	btnClass: 'btn-danger',
 		        	action: function () {		        					
 						showLoading();
@@ -3418,7 +3418,9 @@
 					   	$.LoadingOverlay("hide");
 					}
 		        },
-		        cancel: {		        	
+		        cancel: {
+		        	text: 'ยกเลิก',
+		        	btnClass: 'btn-default',		        	
 		        	action: function () {
 		            	//$.alert('Canceled!');
 		        	}
