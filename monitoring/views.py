@@ -2672,11 +2672,36 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 						message = "Check #6 is passed."
 
 	# Check #7
-	is_pass, message = chkValidInput(2,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,tel_man,tel_time,tel_amount,relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount)	
+	is_pass, message = chkValidInput(2,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount)	
 	if is_pass:
 		message = "PASS"
 	else:
 		message = "FAIL"
+
+
+	# amnaj
+	'''
+	emp_list = [[90066222,13],[501601,19]]
+	empid = 0
+	vacplan = 0
+	cursor = connection.cursor()
+	for i in range(len(emp_list)):
+		for j in range(len(emp_list[i])):
+			if j==0:
+				empid=emp_list[i][j]
+			else:
+				vacplan=emp_list[i][j]
+		
+		# print("empid", empid)
+		# print("vacplan", vacplan)	
+		cursor.execute("exec dbo.UPDATE_EMP_LEAVE_PLAN_VAC_2021 %s, %s, %s, %s", [empid,vacplan,2020,5])
+		result = cursor.fetchone()[0]
+		if not result:
+			print("Success:", empid)
+		else:
+			print("Error:", empid)
+	cursor.close()
+	'''
 
 	return True, message
 
