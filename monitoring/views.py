@@ -2672,14 +2672,30 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 						message = "Check #6 is passed."
 
 	# Check #7
-	is_pass, message = chkValidInput(2,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount)	
+	is_pass, message = chkValidInput(2,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,ui_ot_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status)
+
 	if is_pass:
-		message = "PASS"
-	else:
-		message = "FAIL"
+		if (cnt_id=="") and (emp_id==""):
+			return False, "ข้อมูลไม่ถูกต้อง"
+
+		# SetVariable()
+		Tsch_no = 0
+		Temp_id = 0 if emp_id=="" else emp_id
+		Tdly_date = None if dly_date=="" else dly_date
+		Tsch_shift = 0 if shift_id=="" else shift_id
+		Tcnt_id = 0 if cnt_id=="" else cnt_id
+
+		#id_search_emp_id
+
+		message = "%s, %s, %s, %s, %s" % (Tsch_no, Temp_id, Tdly_date, Tsch_shift, Tcnt_id)
+		# print("%s, %s", Tsch_no, Temp_id)
 
 
+	return is_pass, message
 	# amnaj
+
+
+	# TODO: update emp_leave_plan
 	'''
 	emp_list = [[90066222,13],[501601,19]]
 	empid = 0
@@ -2703,7 +2719,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 	cursor.close()
 	'''
 
-	return True, message
+	
 
 
 
@@ -3342,8 +3358,207 @@ def editRecord_temp(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_d
 	return is_pass, message
 
 
+
+def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,ui_ot_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status):
+	ChkValidInput = False
+
+	# Case 2
+	if check_type==2:
+
+		# เช็ครหัสพนักงานต้องมีค่า
+		if emp_id=="" or emp_id is None:
+			return False, "กรุณาป้อนรหัสพนักงาน"
+		
+		# เช็คกะการทำงานต้องมีค่า
+		if shift_id=="" or shift_id is None:
+			return False, "กรุณาป้อนกะการทำงานของพนักงาาน"
+
+		# เช็คห้ามคีย์รหัสที่ไม่มีสิทธ์ลงเวร
+		sql = "select emp_id,upd_flag,emp_term_date from v_employee where emp_id=" + str(emp_id)
+		cursor = connection.cursor()
+		cursor.execute(sql)
+		employeeobj = cursor.fetchone()
+		cursor.close()
+		if employeeobj is not None:
+
+			# ตรวจสอบว่าพนักงานถูกลบออกจากระบบไปแล้วหรือไม่
+			if employeeobj[1] == 'D':
+				return False, "พนักงานคนนี้ไม่สามารถนำมาจัดตารางเวรได้เนื่องจากพนักงานโดนลบจากระบบ"
+
+			# ตรวจสอบว่าพนักงานลาออกหรือไม่
+			if employeeobj[2] is not None:
+				return False, "พนักงานคนนี้ไม่สามารถนำมาจัดตารางเวรได้เนื่องจากลาออกตั้งแต่วันที่ <b>" + str(employeeobj[0][2]) + "</b>"
+
+			# กรณีไม่มีคนเข้าเวรแทนให้ดูจากไม่มีการเลือกทั้ง Absent และ Relief หรือไม่ ถ้าใช่ให้ตรวจสอบว่าพนักงานลาออกหรือยัง
+			if (ui_absent_status==0) and (ui_relief_status==0):
+				if employeeobj[1] == 'D':
+					return False, "พนักงานคนนี้ไม่สามารถนำมาจัดตารางเวรได้เนื่องจากพนักงานโดนลบจากระบบ"
+
+			# กรณีมีการเข้าเวรแทน
+			if (ui_absent_status==1) and (ui_relief_status==1):
+				if relief_emp_id is not None:					
+					sql = "select emp_id,upd_flag,emp_term_date from v_employee where emp_id=" + str(relief_emp_id)				
+					cursor = connection.cursor()
+					cursor.execute(sql)
+					employeeobj = cursor.fetchone()
+					cursor.close()
+					if employeeobj is not None:
+						# เช็คว่าพนักงานถูกลบออกจากระบบไปแล้วหรือไม่
+						if employeeobj[1] == 'D':
+							return False, "พนักงานคนนี้ไม่สามารถเข้าเวรแทนได้เนื่องจากพนักงานโดนลบจากระบบ"
+
+						# เช็คว่าพนักงานลาออกหรือไม่
+						if employeeobj[2] is not None:
+							return False, "พนักงานคนนี้ไม่สามารถนำเข้าเวรแทนได้เนื่องจาก" + " <u>ลาออก</u> " + "ตั้งแต่วันที่ <b>" + str(employeeobj[2].strftime("%d/%m/%Y")) + "</b>"
+				else:
+					is_pass = False
+					message = "พนักงานคนนี้ไม่สามารถนำมาเข้าเวรแทนได้เนื่องจากรหัสพนักงานไม่มีอยู่ในระบบ!"			
+
+			# ตรวจสอบค่าโทร
+			if ui_phone_status==1:
+				if phone_amount==0:
+					if allowZeroBathForPhoneAmount==0:
+						return False, "กรุณาป้อนค่าโทรศัพท์"
+
+			# ตรวจสอบเงื่อนไขเข้างานสาย หรือ ตรวจสอบช่วงเวลาได้โอที
+			if (ui_late_status==1) or (ui_ot_status==1):
+				# ตรวจสอบการป้อนรหัสพนักงานที่เข้าเวรแทนช่วงมาสาย
+				if ui_late_status==1:
+					if (relief_emp_id=="") or (relief_emp_id is None):
+						return False, "กรุณาป้อนรหัสพนังานที่เข้าเวรแทน"
+
+				# ตรวจสอบเวลาเริ่มโอที
+				# late_from,late_to,late_reason_option,late_hour,late_full_paid_status
+				if (late_from=="") or (late_to==""):
+					return False, "กรุณาป้อนเวลาที่เริ่มและเวลาสิ้นสุดโอที"
+
+				# ตรวจสอบเวลาสิ้นสุดโอทีต้องน้อยกว่าเวลาเริ่มโอที
+				if late_from > late_to:
+					return False, "เวลาสิ้นสุดโอทีต้องมากกว่าเวลาเริ่มโอที"
+
+				# ตรวจสอบเหตุผลที่ได้โอที
+				if (late_reason_option=="") or (late_reason_option==0):
+					return False, "กรุณาเลือกเหตุผลที่ได้โอที"
+
+				# ตรวจสอบจำนวนชั่วโมงที่ได้โอที
+				if (late_hour=="") or (late_hour==0):
+					return False, "กรุณาระบุจำนวนชั่วโมงที่ได้โอที"
+
+				# ตรวจสอบจำนวนชั่วโมงที่ได้โอทีต้องไม่เกิน 2 ชั่วโมง
+				if int(late_hour) > 2:
+					return False, "จำนวนชั่วโมงควงรอเกิน 2 ชั่วโมง"
+
+
+			# ตรวจสอบห้ามลงงานที่อื่นในกะเดียวกัน วันเดียวกัน
+			if ui_phone_status==1:				
+				print("ui_phone_status=1")
+			elif ui_ot_status==1:
+				print("ui_ot_status=1")
+			elif ui_late_status==1:
+				print("ui_late_status=1")
+			elif ui_absent_status==0:
+				table_name = "dly_plan"
+				sql = "select * from " + table_name + " where dly_date='" + str(dly_date) + "' and emp_id=" + str(emp_id) + " and absent=0" + " and sch_shift=" + str(shift_id) + " and cnt_id<>" + str(cnt_id)
+				cursor = connection.cursor()
+				cursor.execute(sql)
+				record = cursor.fetchone()
+				cursor.close()
+				if record is not None:
+					return False, "ตรวจสอบห้ามลงงานที่อื่นในกะเดียวกัน วันเดียวกัน"
+
+
+			# ป้องกันการกลับมาแก้ไข Absent หากรปภ.เข้าเวรอื่นอยู่และเวลาคร่อมกับหน่วยงานอื่น
+			if ui_relief_status==1:
+				
+				# Call CheckBetweenShift function
+				sql = "select a.*,b.shf_type,b.shf_time_frm,b.shf_time_to"
+				sql += " from dly_plan a left join t_shift b on a.sch_shift=b.shf_id"
+				sql += " where a.dly_date='" + str(dly_date) + "'"
+				sql += " and a.emp_id=" + str(relief_emp_id)
+				sql += " and a.absent=0"
+				# print("____sql=" + str(sql))			
+				cursor = connection.cursor()
+				cursor.execute(sql)
+				record = cursor.fetchone()
+				cursor.close()
+				
+				if record is not None:
+					return False, "พนักงานเข้าเวรคร่อมกับหน่วยงาน..."
+				#else TODO: ทำเพิ่มในกรณีที่ยอมให้คร่อมหน่วยงานในวันเดียวกัน
+			
+
+			# ห้ามลงรายการซ้ำ ถ้าเพิ่มรายการใหม่ สำหรับคนที่มาแทน แทนหลายคนในหน่วยเดียวกันไม่ได้
+			if (ui_relief_status==1) and (relief_emp_id!="") and (relief_emp_id is not None):
+				
+				# GetShiftOrder
+				getShiftOrder = 0
+				sql = "select shf_order from t_shift where shf_id=" + shift_id
+				cursor = connection.cursor()
+				cursor.execute(sql)
+				record = cursor.fetchone()
+				cursor.close()
+				if record is not None:
+					getShiftOrder = record[0]
+
+
+				# เช็คห้ามคนที่มาแทนลงงานที่อื่นในกะเดียวกัน วันเดียวกัน
+				checkDupDly = 0
+				sql = "select * from dly_plan where dly_date='" + str(dly_date) + "'"
+				sql += " and emp_id=" + str(relief_emp_id)
+				sql += " and absent=0"
+				sql += " and dbo.shforder(sch_shift)=" + str(getShiftOrder)
+				# print("___sql = " + str(sql))
+				cursor = connection.cursor()
+				cursor.execute(sql)
+				record = cursor.fetchone()
+				cursor.close()
+				if record is not None:
+					return False, "พนักงานรหัส <b>" + str(relief_emp_id) + "</b> เข้าเวรที่หน่วยงานอื่น"
+
+				# สำหรับ Relief Employee ID ห้ามลงรายการซ้ำ ในสัญญาเดียวกัน วันเดียวกัน กะเดียวกัน
+				sql = "select * from dly_plan where cnt_id=" + str(cnt_id) + " and dly_date='" + str(dly_date) + "' and emp_id=" + str(relief_emp_id) + " and sch_shift=" + str(shift_id)
+				cursor = connection.cursor()
+				cursor.execute(sql)
+				record = cursor.fetchone()
+				cursor.close()
+				if record is not None:
+					return False, "พนักงานรหัส <b>" + str(relief_emp_id) + "</b> เข้าเวรที่หน่วยงานอื่น"		
+
+
+			# เช็คห้ามพนักงานทำงานในวัน Day Off จากตาราง SYS_GPMDOF
+			# พนักงานปกติ
+			if (emp_id!="") and (ui_absent_status==0):
+				sql = "select * from sys_gpmdof where emp_id=" + str(emp_id) + " and dly_date='" + str(dly_date) + "'"
+				cursor = connection.cursor()
+				cursor.execute(sql)
+				record = cursor.fetchone()
+				cursor.close()
+				if record is not None:
+					return False, "พนักงานทำงานในวัน Day Off จากตาราง SYS_GPMDOF"
+			# พนักงานที่มาเข้าเวรแทน
+			if (relief_emp_id is not None) and (ui_absent_status==1):
+				sql = "select * from sys_gpmdof where emp_id=" + str(relief_emp_id) + " and dly_date='" + str(dly_date) + "'"
+				cursor = connection.cursor()
+				cursor.execute(sql)
+				record = cursor.fetchone()
+				cursor.close()
+				if record is not None:
+					return False, "พนักงานที่จะลงเวรแทนทำงานในวัน Day Off จากตาราง SYS_GPMDOF"
+
+			is_pass = True
+			message = "ChkValidInput is true"
+		else:
+			return False, "พนักงานคนนี้ไม่สามารถนำมาจัดตารางเวรได้เนื่องจากรหัสพนักงานไม่มีอยู่ในระบบ"
+	else:
+		is_pass = False
+		message = "Error: check_type value is not 2."
+
+	# amnaj
+	return is_pass, message
+
+
 # def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,relief_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM):
-def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,tel_man,tel_time,tel_amount,relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount):
+def chkValidInput_bk(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,tel_man,tel_time,tel_amount,relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount):
 	is_pass = False
 	message = ""
 
@@ -3990,8 +4205,8 @@ def ajax_save_daily_attendance(request):
 	totalPNA = int(request.GET.get('totalPNA'))
 	totalPNM = int(request.GET.get('totalPNM'))
 	
-	
-
+	search_emp_id = request.GET.get('search_emp_id')
+	print("search_emp_id", search_emp_id)
 
 	'''
 	print("debug 1")
