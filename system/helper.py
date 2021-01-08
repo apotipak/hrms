@@ -105,3 +105,16 @@ def getPriority(usr_id, form_name):
 			getPrioity = False
 
 	return getPriorityStatus,gUSE,gADD,gEDIT,gDEL,gPREVIEW,gPRINT,gIM,gEX,gSALARY,gType,gOLD
+
+
+def getDayPub(strDate):
+	if (strDate!="") or (strDate is not None):
+		sql = "select * from t_holiday where hol_date='" + str(strDate) + "'"
+		cursor = connection.cursor()
+		cursor.execute(sql)	
+		record = cursor.fetchall()
+		cursor.close()
+		if len(record) > 0:
+			return 1
+		else:
+			return 0

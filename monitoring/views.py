@@ -24,6 +24,7 @@ from datetime import timedelta
 from system.helper import *
 from django.contrib.humanize.templatetags.humanize import naturalday
 
+Tpub = 11
 
 @login_required(login_url='/accounts/login/')
 @permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
@@ -1633,19 +1634,21 @@ def PostDayEndN(post_date, period, username):
 		count_status = i
 		if not Esub:
 			if i==1:
+				print("**********")
+				print(" step #", i)
+				print("**********")
 				# exec CalDayEnd_COPYDATA1
 				try:
 					cursor = connection.cursor()
 					cursor.execute("exec dbo.CalDayEnd_COPYDATA1 %s, %s, %s", [post_date, period, username])			
-					is_error = False
-					message = "CalDayEnd_COPYDATA1 is success"
+					message = "exec CalDayEnd_COPYDATA1 is success"
 				except db.OperationalError as e:
-					is_error = True
-					message = "CalDayEnd_COPYDATA1 is error - " + str(e)
+					is_error = False
+					message = "exec CalDayEnd_COPYDATA1 is error - " + str(e)
 					return is_error, message
 				except db.Error as e:
 					is_error = True
-					message = "CalDayEnd_COPYDATA1 is error - " + str(e)
+					message = "exec CalDayEnd_COPYDATA1 is error - " + str(e)
 					return is_error, message
 
 				if RowsCount > 100:
@@ -1653,6 +1656,9 @@ def PostDayEndN(post_date, period, username):
 				elif RowsCount <= 100:
 					RowsResult = 1
 			else:
+				print("**********")
+				print(" step #", i)
+				print("**********")				
 				if RowsCount > 100:
 					RowsCount -= 100
 				elif RowsCount <= 100:
@@ -1662,139 +1668,166 @@ def PostDayEndN(post_date, period, username):
 			cursor = connection.cursor()
 			cursor.execute("exec dbo.CalDayEnd_COPYDATA2 %s, %s, %s", [post_date, period, username])
 			cursor.close()
+			print("# exec CalDayEnd_COPYDATA2 is done")
 
 			# exec CAL_UPDATE_ZONE_WAGE_ID_NEW
 			cursor = connection.cursor()	
 			cursor.execute("exec dbo.CAL_UPDATE_ZONE_WAGE_ID_NEW %s", [post_date])
 			cursor.close()
+			print("# exec CAL_UPDATE_ZONE_WAGE_ID_NEW is done")
 
 			# exec CAL_UPDATE_DEPT_SECTION_WAGE_ID_NEW
 			cursor = connection.cursor()	
 			cursor.execute("exec dbo.CAL_UPDATE_DEPT_SECTION_WAGE_ID_NEW %s", [post_date])
 			cursor.close()
+			print("exec CAL_UPDATE_DEPT_SECTION_WAGE_ID_NEW is done")
 			
 			# exec CAL_UPDATE_EMP_WAGE_NEW
 			cursor = connection.cursor()	
 			cursor.execute("exec dbo.CAL_UPDATE_EMP_WAGE_NEW %s", [post_date])
 			cursor.close()
+			print("exec CAL_UPDATE_EMP_WAGE_NEW is done")
 
 			# exec CalculateDay_STEP1_NEW
 			cursor = connection.cursor()	
 			cursor.execute("exec dbo.CalculateDay_STEP1_NEW %s, %s, %s", [post_date, period, username])
 			cursor.close()
+			print("exec CalculateDay_STEP1_NEW is done")
 
 			# exec CalculateDay_STEP2_NEW
 			cursor = connection.cursor()	
 			cursor.execute("exec dbo.CalculateDay_STEP2_NEW %s, %s, %s", [post_date, period, username])
 			cursor.close()
+			print("# exec CalculateDay_STEP2_NEW is done")
 
 			# exec CalculateDay_STEP3_NEW
 			cursor = connection.cursor()
 			cursor.execute("exec dbo.CalculateDay_STEP3_NEW %s, %s, %s", [post_date, period, username])
 			cursor.close()
+			print("# exec CalculateDay_STEP3_NEW is done")
 
 			# Update DEN_DLY_PLAN
 			sql = "update A set a.sch_rank=b.emp_rank from DEN_DLY_PLAN as A left join employee as b on a.emp_id=b.emp_id where a.dly_date='" + str(post_date) + "'"
 			cursor = connection.cursor()
 			cursor.execute(sql)
 			cursor.close()
+			print("Update DEN_DLY_PLAN 1 is done")
 
 			# Update DEN_DLY_PLAN
 			sql = "update A set a.wage_no=right('00'+ltrim(str(a.wage_id)),2)+ltrim(a.sch_rank) from DEN_DLY_PLAN as A where a.dly_date='" + str(post_date) + "'"
 			cursor = connection.cursor()
 			cursor.execute(sql)
 			cursor.close()
+			print("Update DEN_DLY_PLAN 2 is done")
 
 			# Update DEN_DLY_PLAN
 			sql = "update A set a.bon_amt=b.bonus_day from DEN_DLY_PLAN a left join t_wagerank as B on a.wage_no=b.wage_no where a.dly_date='" + str(post_date) + "'  and a.prd_id='" + str(period) + "' and a.absent='0' and b.wage_active=1"
 			cursor = connection.cursor()
 			cursor.execute(sql)
 			cursor.close()
+			print("Update DEN_DLY_PLAN 3 is done")
 
 			# exec CalculateDay_STEP4_NEW
 			cursor = connection.cursor()
 			cursor.execute("exec dbo.CalculateDay_STEP4_NEW %s, %s, %s", [post_date, period, username])
 			cursor.close()
+			print("# exec CalculateDay_STEP4_NEW is done")
 
 			# exec CalculateDay_STEP5_NEW
 			cursor = connection.cursor()
 			cursor.execute("exec dbo.CalculateDay_STEP5_NEW %s, %s, %s", [post_date, period, username])
 			cursor.close()
+			print("# exec CalculateDay_STEP5_NEW is done")
 
 			# exec CalculateDay_STEP6_NEW
 			cursor = connection.cursor()
 			cursor.execute("exec dbo.CalculateDay_STEP6_NEW %s, %s, %s", [post_date, period, username])
 			cursor.close()
+			print("# exec CalculateDay_STEP6_NEW is done")
 
 			# exec CalculateDay_STEP7_NEW
 			cursor = connection.cursor()
 			cursor.execute("exec dbo.CalculateDay_STEP7_NEW %s, %s, %s", [post_date, period, username])
 			cursor.close()
+			print("# exec CalculateDay_STEP7_NEW is done")
 
 			#exec CalculateDay_STEP8_NEW
 			cursor = connection.cursor()
 			cursor.execute("exec dbo.CalculateDay_STEP8_NEW %s, %s, %s", [post_date, period, username])
 			cursor.close()
+			print("# exec CalculateDay_STEP8_NEW is done")
 
 			#exec CalculateDay_STEP9_NEW
 			cursor = connection.cursor()
 			cursor.execute("exec dbo.CalculateDay_STEP9_NEW %s, %s, %s", [post_date, period, username])
 			cursor.close()
+			print("# exec CalculateDay_STEP9_NEW is done")
 
 			#exec CalculateDay_STEP10_NEW
 			cursor = connection.cursor()
 			cursor.execute("exec dbo.CalculateDay_STEP10_NEW %s, %s, %s", [post_date, period, username])
 			cursor.close()
+			print("# exec CalculateDay_STEP10_NEW is done")
 
 			#exec CalculateDay_STEP11_NEW
 			cursor = connection.cursor()
 			cursor.execute("exec dbo.CalculateDay_STEP11_NEW %s, %s, %s", [post_date, period, username])
 			cursor.close()
+			print("# exec CalculateDay_STEP11_NEW is done")
 
 			#exec CalculateDay_STEP12_NEW
 			cursor = connection.cursor()
 			cursor.execute("exec dbo.CalculateDay_STEP12_NEW %s, %s, %s", [post_date, period, username])
 			cursor.close()
+			print("# exec CalculateDay_STEP12_NEW is done")
 
 			#exec CalculateDay_STEP13_NEW
 			cursor = connection.cursor()
 			cursor.execute("exec dbo.CalculateDay_STEP13_NEW %s, %s, %s", [post_date, period, username])
 			cursor.close()
+			print("# exec CalculateDay_STEP13_NEW is done")
 
 			#exec CalculateDay_STEP14_NEW
 			cursor = connection.cursor()
 			cursor.execute("exec dbo.CalculateDay_STEP14_NEW %s, %s, %s", [post_date, period, username])
 			cursor.close()
+			print("# exec CalculateDay_STEP14_NEW is done")
 
 			#exec CalculateDay_STEP15_NEW
 			cursor = connection.cursor()
 			cursor.execute("exec dbo.CalculateDay_STEP15_NEW %s, %s, %s", [post_date, period, username])
 			cursor.close()
+			print("# exec CalculateDay_STEP15_NEW is done")
 
 			#exec CalculateDay_STEP16_NEW
 			cursor = connection.cursor()
 			cursor.execute("exec dbo.CalculateDay_STEP16_NEW %s, %s, %s", [post_date, period, username])
 			cursor.close()
+			print("# exec CalculateDay_STEP16_NEW is done")
 
 			#exec CalculateDay_STEP17_NEW
 			cursor = connection.cursor()
 			cursor.execute("exec dbo.CalculateDay_STEP17_NEW %s, %s, %s", [post_date, period, username])
 			cursor.close()
+			print("# exec CalculateDay_STEP17_NEW is done")
 
 			#exec CalculateDay_STEP18_NEW
 			cursor = connection.cursor()
 			cursor.execute("exec dbo.CalculateDay_STEP18_NEW %s, %s, %s", [post_date, period, username])
 			cursor.close()
+			print("# exec CalculateDay_STEP18_NEW is done")
 
 			#exec CalculateDay_STEP19_NEW
 			cursor = connection.cursor()
 			cursor.execute("exec dbo.CalculateDay_STEP19_NEW %s, %s, %s", [post_date, period, username])
 			cursor.close()
+			print("# exec CalculateDay_STEP19_NEW is done")
 
 			#exec CalculateDay_STEP20_NEW
 			cursor = connection.cursor()
 			cursor.execute("exec dbo.CalculateDay_STEP20_NEW %s, %s, %s, '0'", [post_date, period, username])
 			cursor.close()
+			print("# exec CalculateDay_STEP20_NEW is done")
 
 			if RowsResult == 1:
 				Esub = True
@@ -1821,10 +1854,12 @@ def PostDayEndN(post_date, period, username):
 			cursor = connection.cursor()
 			cursor.execute("exec dbo.CalculateDay_DOF %s", [post_date])
 			cursor.close()
+			print("CalculateDay_DOF is done")
 
 			is_error = False
 			# message = "Check DOF for date <b>" + str(post_date) + "</b> - Complete."
 			message = "โพสรายการแจ้งเวรของวันที่ <b>" + str(post_date) + "</b> สำเร็จ"
+
 		else:
 			is_error = True
 			message = "Found problem between Post Day End. Please Post DayEnd next time again."
@@ -2435,7 +2470,7 @@ def ajax_delete_employee(request):
 	return response
 
 
-def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,tel_man,tel_time,tel_amount,relief_status,relief_id,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status):
+def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,tel_man,tel_time,tel_amount,relief_status,relief_id,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id,Tday7,Tdof):
 	is_pass = True
 	message = ""	
 
@@ -2557,7 +2592,7 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 	return is_pass, message
 
 
-def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id):
+def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id,Tday7,Tdof):
 	# TODO: Delete print values
 	# print("ui_absent_status", ui_absent_status)
 	# print("ui_late_status", ui_late_status)
@@ -2678,7 +2713,9 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		if (cnt_id=="") and (emp_id==""):
 			return False, "ข้อมูลไม่ถูกต้อง"
 
-		# SetVariable("DLY_PLAN")
+
+
+		# Call SetVariable("DLY_PLAN")
 		Tsch_no = 0
 		Temp_id = 0 if emp_id=="" else emp_id
 		Tdly_date = None if dly_date=="" else dly_date
@@ -2698,7 +2735,9 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		Tlate = ui_late_status
 		Tlate_full = late_full_paid_status
 		Trelief = ui_relief_status
-		Trelief_id = relief_emp_id
+		Trelief_id = '0' if relief_emp_id=="" else relief_emp_id
+
+		# return False, Trelief_id
 
 		# TELEPHONE
 		if ui_phone_status==1:
@@ -2759,7 +2798,13 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 
 		#message = "%s, %s, %s, %s, %s" % (Twage_id, Twage_no, Tpay_type, Tsoc, TRemark)
 		
+		
 		# TODO: ถ้าหากขาดงานและมีคนมาแทน คนที่ขาดจะตั้ง Tday7=0 แต่คนที่มาแทนจะตั้ง Tday7=1
+		if (ui_absent_status==1) and (ui_relief_status==1) and (relief_emp_id!=""):
+			Tday7tmp = Tday7
+			Tday7 = 0
+ 
+		# return False, Tday7
 
 		# ทำการบันทึกข้อมูลกรณีแก้ไขข้อมูลเก่า
 		# Call UpdListName("DLY_PLAN")
@@ -2776,22 +2821,28 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 
 		# Get Period
 		try:
-			period = TPeriod.objects.filter(prd_date_frm__lte=dly_date).filter(prd_date_to__gte=dly_date).filter(emp_type='D1').get()
-			period = period.prd_id
+			Tprd_id = TPeriod.objects.filter(prd_date_frm__lte=dly_date).filter(prd_date_to__gte=dly_date).filter(emp_type='D1').get()
+			Tprd_id = Tprd_id.prd_id
 		except TPeriod.DoesNotExist:
-			period = ""
+			Tprd_id = ""
 		
+		# Check Tpub
+		if getDayPub(dly_date)==1:
+			Tpub = 1
+		else:
+			Tpub = 0
+
 		sql += "sch_no=" + str(Tsch_no) + ","
 		sql += "dept_id=" + str(Tdept_id) + ","
 		sql += "sch_rank='" + str(Tsch_rank) + "',"		
-		sql += "prd_id='" + str(period) + "',"
+		sql += "prd_id='" + str(Tprd_id) + "',"
 		sql += "absent=" + str(Tabsent) + ","
 		sql += "late=" + str(Tlate) + ","
 		sql += "late_full=" + str(Tlate_full) + ","		
 		sql += "relieft=" + str(Trelief) + ","
 		sql += "relieft_id=" + str(Trelief_id) + ","
 		sql += "tel_man=" + str(tel_man) + ","
-		if Ttel_time is None:
+		if (Ttel_time is None) or (Ttel_time==""):
 			sql += "tel_time=null,"			
 		else:
 			sql += "tel_time=" + str(Ttel_time) + ","
@@ -2813,20 +2864,13 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		sql += "ot_hr_amt=" + str(Tot_hr_amt) + ","
 		sql += "ot_pay_amt=" + str(Tot_pay_amt) + ","
 		sql += "spare=" + str(Tspare) + ","
-		sql += "wage_id=" + str(Twage_id) + ","
-
-		
+		sql += "wage_id=" + str(Twage_id) + ","		
 		sql += "wage_no='" + str(Twage_no) + "',"
 		sql += "pay_type='" + str(Tpay_type) + "',"
 		sql += "soc=" + str(Tsoc) + ","
-
-		# TODO: find Tpub value
 		sql += "pub=" + str(Tpub) + ","
-
-
-		'''	
 		sql += "dof=" + str(Tdof) + ","		
-		sql += "day7=" + str(0) + ","
+		sql += "day7=" + str(Tday7) + ","		
 		sql += "upd_date='" + str(datetime.datetime.now())[:-3] + "',"
 		sql += "upd_by='" + str(username) + "',"
 		sql += "upd_flag='E'" + ","
@@ -2835,13 +2879,102 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		sql += "and dly_date='" + str(dly_date) + "' "
 		sql += "and emp_id=" + str(emp_id) + " "
 		sql += "and sch_shift=" + str(shift_id)
-		'''
-
-		# amnaj
 		print()
 		print("sql:", sql)
-		print()
-		message = sql
+		print()		
+		try:
+			with connection.cursor() as cursor:
+				cursor.execute(sql)
+			is_pass = True
+			message = "บันทึกรายการสำเร็จ"
+		except db.OperationalError as e:
+			is_pass = False
+			message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+		except db.Error as e:
+			is_pass = False
+			message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+
+
+		# message = "%s,%s,%s,%s" %(Temp_id,Tabsent,Trelief,Trelief_id)
+		# return False, message		
+
+		if (Temp_id!="") and (Tabsent==1) and (Trelief==1) and (Trelief_id!=""):
+			# TODO: ถ้าหากขาดงานและมีคนมาแทนจะต้องเพิ่ม รายการคนที่แทนอีก 1 รายการ
+			Temp_id = 0 if relief_emp_id=="" else relief_emp_id
+			Tsch_rank = "SOY" #TODO ส่งค่า relief_emp_id_rank มา
+
+			# คนที่ขาดจะตั้ง Tday7=0 แต่คนมาแทนต้องตั้ง Tday7=1
+			Tday7 = Tday7tmp
+			# 632036,SOY,0
+
+
+
+
+			# Call AddListName("DLY_PLAN")
+			if dly_date==today_date.date():
+				sql = "insert into dly_plan "
+			elif dly_date < today_date.date():
+				if username=="CMS_SUP":
+					sql = "insert into his_dly_plan "
+				else:
+					is_pass = False
+					message = "ไม่มีสิทธิ์ทำรายการ"
+					return is_pass, message
+			else:
+				is_pass = False
+				message = "เลือกวันที่ทำรายการไม่ถูกต้อง"
+				return is_pass, message
+			
+			sql += "(cnt_id,emp_id,dly_date,sch_shift"
+			sql += ",sch_no,dept_id,sch_rank,prd_id"
+			sql += ",absent,late,late_full,relieft,relieft_id"
+			sql += ",tel_man,tel_time,tel_amt,tel_paid"
+			sql += ",ot,ot_reason,ot_time_frm,ot_time_to,ot_hr_amt,ot_pay_amt"
+			sql += ",spare,wage_id,wage_no,pay_type,soc,pub,dof,day7"
+			sql += ",upd_date,upd_by,upd_flag,remark)"
+			sql += " values ("			
+			sql += str(Tcnt_id) + "," + str(Temp_id) + ",'" + str(Tdly_date) + "'," + str(Tsch_shift) + ","
+			sql += str(Tsch_no) + "," + str(Tdept_id) + ",'" + str(Tsch_rank) + "','" + str(Tprd_id) + "',"
+			sql += str(Tabsent) + "," + str(Tlate) + "," + str(Tlate_full) + "," + str(Trelief) + "," + str(Trelief_id) + ","
+			sql += str(ui_phone_status) + "," 
+			
+			if (Ttel_time is None) or (Ttel_time==""):
+				sql += "null" + "," 
+			else:
+				sql += str(Ttel_time)
+
+			sql += str(Ttel_amt) + "," + str(Ttel_paid) + "," + str(Tot) + "," + str(Tot_reason) + "," 
+
+			if (Tot_time_frm is None) or (Tot_time_frm==""):
+				sql += "null" + "," 
+			else:
+				sql += str(Tot_time_frm) + ","
+
+			if (Tot_time_to is None) or (Tot_time_to==""):
+				sql += "null" + "," 
+			else:
+				sql += str(Tot_time_to) + ","
+
+			sql += str(Tot_hr_amt) + "," + str(Tot_pay_amt) + ","
+			sql += str(Tspare) + "," + str(Twage_id) + ",'" + str(Twage_no) + "','" + str(Tpay_type) + "'," + str(Tsoc) + "," + str(Tpub) + "," + str(Tdof) + "," + str(Tday7) + ",'"
+			sql += str(str(datetime.datetime.now())[:-3]) + "','" + str(username) + "'," + "'A'" + ",'" + str(TRemark) + "')"
+			
+			# print("sql 2 " + str(sql))
+			# return False, "Test"
+
+			try:
+				with connection.cursor() as cursor:
+					cursor.execute(sql)
+				is_pass = True
+				message = "บันทึกรายการสำเร็จ"
+			except db.OperationalError as e:
+				is_pass = False
+				message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+			except db.Error as e:
+				is_pass = False
+				message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+
+		message = "OK"
 
 	return is_pass, message
 	
@@ -3715,7 +3848,6 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 		is_pass = False
 		message = "Error: check_type value is not 2."
 
-	# amnaj
 	return is_pass, message
 
 
@@ -4309,6 +4441,9 @@ def ajax_save_daily_attendance(request):
 
 	# Initial values
 	AEdly = int(request.GET.get("AEdly"))
+	Tday7 = 0
+	Tdof = 0
+
 	message = ""
 	allowZeroBathForPhoneAmount = int(request.GET.get("allowZeroBathForPhoneAmount"))
 
@@ -4321,7 +4456,7 @@ def ajax_save_daily_attendance(request):
 
 	cus_id = request.GET.get('cus_id')
 	cus_brn = request.GET.get('cus_brn')
-	cus_vol = request.GET.get('cus_vol')	
+	cus_vol = request.GET.get('cus_vol')
 	cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
 	cnt_id = cnt_id.lstrip("0")
 	emp_id = request.GET.get('emp_id')
@@ -4386,7 +4521,7 @@ def ajax_save_daily_attendance(request):
 	if AEdly == 0: # EDIT MODE
 		# print("Edit Mode")
 
-		is_edit_record_success, message = editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id)
+		is_edit_record_success, message = editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id,Tday7,Tdof)
 		if is_edit_record_success:
 			success_status = True
 			title = "Success"
@@ -4398,7 +4533,7 @@ def ajax_save_daily_attendance(request):
 
 	elif AEdly == 1: # ADD MODE
 		# print("Add Mode")
-		is_add_record_success, message = addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status)
+		is_add_record_success, message = addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id,Tday7,Tdof)
 		if is_add_record_success:
 			success_status = True
 			title = "Success"
