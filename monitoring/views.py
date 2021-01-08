@@ -1847,7 +1847,7 @@ def getPeriod(generated_date):
 	try:
 		period = TPeriod.objects.filter(prd_date_frm__lte=generated_date).filter(prd_date_to__gte=generated_date).filter(emp_type='D1').get()
 		period = period.prd_id
-	except CusContract.DoesNotExist:
+	except TPeriod.DoesNotExist:
 		period = ""
 	
 	return period
@@ -2557,7 +2557,7 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 	return is_pass, message
 
 
-def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status):
+def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id):
 	# TODO: Delete print values
 	# print("ui_absent_status", ui_absent_status)
 	# print("ui_late_status", ui_late_status)
@@ -2672,27 +2672,179 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 						message = "Check #6 is passed."
 
 	# Check #7
-	is_pass, message = chkValidInput(2,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,ui_ot_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status)
+	is_pass, message = chkValidInput(2,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,ui_ot_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id)
 
 	if is_pass:
 		if (cnt_id=="") and (emp_id==""):
 			return False, "ข้อมูลไม่ถูกต้อง"
 
-		# SetVariable()
+		# SetVariable("DLY_PLAN")
 		Tsch_no = 0
 		Temp_id = 0 if emp_id=="" else emp_id
 		Tdly_date = None if dly_date=="" else dly_date
 		Tsch_shift = 0 if shift_id=="" else shift_id
 		Tcnt_id = 0 if cnt_id=="" else cnt_id
+		
+		if search_emp_id=="":
+			print("Tdept_id = ใช้โซนของหน่วยงาน")
+			# TODO: เลือกว่าจะใช้ค่าโซนของพนักงานหรือหน่วยงาน
+			Tdept_id = emp_dept
+		else:
+			print("Tdept_id = ใช้โซนของพนักงาน")
+			Tdept_id = emp_dept
 
-		#id_search_emp_id
+		Tsch_rank = emp_rank
+		Tabsent = ui_absent_status
+		Tlate = ui_late_status
+		Tlate_full = late_full_paid_status
+		Trelief = ui_relief_status
+		Trelief_id = relief_emp_id
 
-		message = "%s, %s, %s, %s, %s" % (Tsch_no, Temp_id, Tdly_date, Tsch_shift, Tcnt_id)
-		# print("%s, %s", Tsch_no, Temp_id)
+		# TELEPHONE
+		if ui_phone_status==1:
+			if tel_time=="":
+				Ttel_time = None
+			else:
+				Ttel_time = tel_time
+			Ttel_amt = 0 if tel_amount=="" else tel_amount
+			Ttel_paid = 5 if Ttel_amt > 5 else Ttel_amt
+		else:
+			Ttel_time = None
+			Ttel_amt = 0
+			Ttel_paid = 0
 
+		# OVERTIME
+		Tot = 0 if ui_ot_status==0 else 1
+		if (Tot==1) or (Tlate==1):
+			Tot_reason = ot_reason
+			Tot_time_frm = ot_time_frm
+			Tot_time_to = ot_time_to
+			# TODO: Tot_hr_amt
+			Tot_hr_amt = 0
+			Tot_pay_amt = 0
+			if Tot==1:
+				Tpay_type = "BAS"
+			elif Tlate==1:
+				Tpay_type = "TPB"
+		else:
+			Tot_reason = 0
+			Tot_time_frm = None
+			Tot_time_to = None
+			Tot_hr_amt = 0
+			Tot_pay_amt = 0
+			Tpay_type = ""			
+
+
+		# Add by Somkiat 2016/02/24
+		#TODO: หาค่า Rea_timecross เซ็ทเริ่มต้นมาจากที่ไหน
+		Rea_timecross = 0
+		if Rea_timecross==57:
+			Tot_reason = 57
+			Tot_time_frm = None
+			Tot_time_to = None
+			Tot_hr_amt = Rea_timecross
+			Tot_pay_amt = 0
+			Tpay_type = "TPB"			
+
+		#TODO: หาค่า txtSpare มีการเซ็ทค่าเริ่มต้นมาจากที่ไหน
+		txtSpare = 0
+		Tspare = txtSpare
+		#TODO: ส่งค่า wage_id จาก Customer Tab
+		wage_id = 32
+		Twage_id = wage_id
+		Twage_no = str(Twage_id) + str(emp_rank)
+		Tpay_type = 1 if ui_ot_status==1 else ""
+		Tsoc = 1 if Tot_hr_amt>=8 else 0
+		TRemark = job_type + " " + remark
+
+		#message = "%s, %s, %s, %s, %s" % (Twage_id, Twage_no, Tpay_type, Tsoc, TRemark)
+		
+		# TODO: ถ้าหากขาดงานและมีคนมาแทน คนที่ขาดจะตั้ง Tday7=0 แต่คนที่มาแทนจะตั้ง Tday7=1
+
+		# ทำการบันทึกข้อมูลกรณีแก้ไขข้อมูลเก่า
+		# Call UpdListName("DLY_PLAN")
+		if dly_date==today_date.date():
+			sql = "update dly_plan set "
+		elif dly_date < today_date.date():
+			# เช็คล็อคอินยูสเซอร์เป็น CMS_SUP หรือไม่
+			if username=='CMS_SUP':
+				sql = "update his_dly_plan set "
+			else:
+				return False,is_pass, "ไม่มีสิทธิ์ทำรายการ"
+		else:
+			return False, "เลือกวันที่ทำรายการไม่ถูกต้อง"
+
+		# Get Period
+		try:
+			period = TPeriod.objects.filter(prd_date_frm__lte=dly_date).filter(prd_date_to__gte=dly_date).filter(emp_type='D1').get()
+			period = period.prd_id
+		except TPeriod.DoesNotExist:
+			period = ""
+		
+		sql += "sch_no=" + str(Tsch_no) + ","
+		sql += "dept_id=" + str(Tdept_id) + ","
+		sql += "sch_rank='" + str(Tsch_rank) + "',"		
+		sql += "prd_id='" + str(period) + "',"
+		sql += "absent=" + str(Tabsent) + ","
+		sql += "late=" + str(Tlate) + ","
+		sql += "late_full=" + str(Tlate_full) + ","		
+		sql += "relieft=" + str(Trelief) + ","
+		sql += "relieft_id=" + str(Trelief_id) + ","
+		sql += "tel_man=" + str(tel_man) + ","
+		if Ttel_time is None:
+			sql += "tel_time=null,"			
+		else:
+			sql += "tel_time=" + str(Ttel_time) + ","
+		sql += "tel_amt=" + str(Ttel_amt) + ","
+		sql += "tel_paid=" + str(Ttel_paid) + ","
+		sql += "ot=" + str(Tot) + ","
+		sql += "ot_reason=" + str(Tot_reason) + ","
+		
+		if Tot_time_frm is None:
+			sql += "ot_time_frm=null,"
+		else:
+			sql += "ot_time_frm='" + str(Tot_time_frm) + "',"
+
+		if Tot_time_to is None:
+			sql += "ot_time_to=null,"
+		else:
+			sql += "ot_time_to='" + str(Tot_time_to) + "',"
+
+		sql += "ot_hr_amt=" + str(Tot_hr_amt) + ","
+		sql += "ot_pay_amt=" + str(Tot_pay_amt) + ","
+		sql += "spare=" + str(Tspare) + ","
+		sql += "wage_id=" + str(Twage_id) + ","
+
+		
+		sql += "wage_no='" + str(Twage_no) + "',"
+		sql += "pay_type='" + str(Tpay_type) + "',"
+		sql += "soc=" + str(Tsoc) + ","
+
+		# TODO: find Tpub value
+		sql += "pub=" + str(Tpub) + ","
+
+
+		'''	
+		sql += "dof=" + str(Tdof) + ","		
+		sql += "day7=" + str(0) + ","
+		sql += "upd_date='" + str(datetime.datetime.now())[:-3] + "',"
+		sql += "upd_by='" + str(username) + "',"
+		sql += "upd_flag='E'" + ","
+		sql += "remark='" + str(remark) + "' "
+		sql += "where cnt_id=" + str(cnt_id) + " "
+		sql += "and dly_date='" + str(dly_date) + "' "
+		sql += "and emp_id=" + str(emp_id) + " "
+		sql += "and sch_shift=" + str(shift_id)
+		'''
+
+		# amnaj
+		print()
+		print("sql:", sql)
+		print()
+		message = sql
 
 	return is_pass, message
-	# amnaj
+	
 
 
 	# TODO: update emp_leave_plan
@@ -3359,8 +3511,7 @@ def editRecord_temp(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_d
 
 
 
-def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,ui_ot_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status):
-	ChkValidInput = False
+def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,ui_ot_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id):
 
 	# Case 2
 	if check_type==2:
@@ -3416,7 +3567,7 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 
 			# ตรวจสอบค่าโทร
 			if ui_phone_status==1:
-				if phone_amount==0:
+				if tel_amount==0:
 					if allowZeroBathForPhoneAmount==0:
 						return False, "กรุณาป้อนค่าโทรศัพท์"
 
@@ -3464,28 +3615,39 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 				record = cursor.fetchone()
 				cursor.close()
 				if record is not None:
-					return False, "ตรวจสอบห้ามลงงานที่อื่นในกะเดียวกัน วันเดียวกัน"
+					return False, "พนักงานเข้างานที่หน่วยงานอื่น"
+
+				# CheckBetweenShift()
+				sql = "select a.*,b.shf_type,b.shf_time_frm,b.shf_time_to"
+				sql += " from dly_plan a left join t_shift b on a.sch_shift=b.shf_id"
+				sql += " where a.dly_date='" + str(dly_date) + "'"
+				sql += " and a.emp_id=" + str(emp_id)
+				sql += " and a.absent=0"
+				cursor = connection.cursor()
+				cursor.execute(sql)
+				record = cursor.fetchone()
+				cursor.close()				
+				if record is not None:
+					# TODO: ตรวจสอบกรณียอมให้พนักงานเข้าเวรคร่อมกับหน่วยงานที่เข้าเวรอยู่ล้ว
+					return False, "พนักงานเข้าเวรคร่อมกับหน่วยงาน"
 
 
 			# ป้องกันการกลับมาแก้ไข Absent หากรปภ.เข้าเวรอื่นอยู่และเวลาคร่อมกับหน่วยงานอื่น
 			if ui_relief_status==1:
-				
-				# Call CheckBetweenShift function
 				sql = "select a.*,b.shf_type,b.shf_time_frm,b.shf_time_to"
 				sql += " from dly_plan a left join t_shift b on a.sch_shift=b.shf_id"
 				sql += " where a.dly_date='" + str(dly_date) + "'"
 				sql += " and a.emp_id=" + str(relief_emp_id)
 				sql += " and a.absent=0"
-				# print("____sql=" + str(sql))			
 				cursor = connection.cursor()
 				cursor.execute(sql)
 				record = cursor.fetchone()
 				cursor.close()
 				
 				if record is not None:
-					return False, "พนักงานเข้าเวรคร่อมกับหน่วยงาน..."
-				#else TODO: ทำเพิ่มในกรณีที่ยอมให้คร่อมหน่วยงานในวันเดียวกัน
-			
+					# TODO: ตรวจสอบกรณียอมให้พนักงานเข้าเวรคร่อมกับหน่วยงานที่เข้าเวรอยู่ล้ว
+					return False, "พนักงานเข้าเวรคร่อมกับหน่วยงาน..."			
+
 
 			# ห้ามลงรายการซ้ำ ถ้าเพิ่มรายการใหม่ สำหรับคนที่มาแทน แทนหลายคนในหน่วยเดียวกันไม่ได้
 			if (ui_relief_status==1) and (relief_emp_id!="") and (relief_emp_id is not None):
@@ -3535,7 +3697,7 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 				cursor.close()
 				if record is not None:
 					return False, "พนักงานทำงานในวัน Day Off จากตาราง SYS_GPMDOF"
-			# พนักงานที่มาเข้าเวรแทน
+			# เช็คห้ามพนักงานที่เข้าเวรแทนทำงานในวัน Day Off จากตาราง SYS_GPMDOF
 			if (relief_emp_id is not None) and (ui_absent_status==1):
 				sql = "select * from sys_gpmdof where emp_id=" + str(relief_emp_id) + " and dly_date='" + str(dly_date) + "'"
 				cursor = connection.cursor()
@@ -4203,10 +4365,8 @@ def ajax_save_daily_attendance(request):
 	totalPDM = int(request.GET.get('totalPDM'))
 	totalPNP = int(request.GET.get('totalPNP'))
 	totalPNA = int(request.GET.get('totalPNA'))
-	totalPNM = int(request.GET.get('totalPNM'))
-	
+	totalPNM = int(request.GET.get('totalPNM'))	
 	search_emp_id = request.GET.get('search_emp_id')
-	print("search_emp_id", search_emp_id)
 
 	'''
 	print("debug 1")
@@ -4226,7 +4386,7 @@ def ajax_save_daily_attendance(request):
 	if AEdly == 0: # EDIT MODE
 		# print("Edit Mode")
 
-		is_edit_record_success, message = editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status)
+		is_edit_record_success, message = editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id)
 		if is_edit_record_success:
 			success_status = True
 			title = "Success"
