@@ -1321,6 +1321,8 @@
 			    			$("#save_button").attr("disabled", false);
 			    			$("#delete_button").attr("disabled", true);
 
+			    			$("#id_phone_check").attr("disabled", false);
+
 			    			/*
 							$("#employeePhoto").html("<img src='data:image/png;base64," + data.employee_photo + "' style='width:90px;'/>");
 			    			$("#id_emp_name_th").val(data.emp_fname_th.trim() + "  " + data.emp_lname_th.trim());
@@ -2629,8 +2631,7 @@
 
 								//TODO1: refresh table
 
-
-									$("#id_emp_id").focus();
+								$("#id_emp_id").focus();
 				    		} else {
 								$.alert({
 								    title: data.title,
@@ -2893,7 +2894,7 @@
 
 
 
-    // SAVE_BUTTON
+    // SAVE_BUTTON_BK
     $(document).on('click', '#save_button_bk', function(e) {
     	var allowZeroBathForPhoneAmount = 0;
     	var AEdly = $("#id_add_new_record_status").val();

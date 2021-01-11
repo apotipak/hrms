@@ -2886,7 +2886,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 			with connection.cursor() as cursor:
 				cursor.execute(sql)
 			is_pass = True
-			message = "บันทึกรายการสำเร็จ"
+			message = "บันทึกรายแจ้งเวรสำเร็จ"
 		except db.OperationalError as e:
 			is_pass = False
 			message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
@@ -2906,8 +2906,6 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 			# คนที่ขาดจะตั้ง Tday7=0 แต่คนมาแทนต้องตั้ง Tday7=1
 			Tday7 = Tday7tmp
 			# 632036,SOY,0
-
-
 
 
 			# Call AddListName("DLY_PLAN")
@@ -2966,15 +2964,13 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 				with connection.cursor() as cursor:
 					cursor.execute(sql)
 				is_pass = True
-				message = "บันทึกรายการสำเร็จ"
+				message = "บันทึกรายแจ้งเวรสำเร็จ"
 			except db.OperationalError as e:
 				is_pass = False
 				message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
 			except db.Error as e:
 				is_pass = False
 				message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
-
-		message = "OK"
 
 	return is_pass, message
 	
