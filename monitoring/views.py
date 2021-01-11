@@ -2470,9 +2470,274 @@ def ajax_delete_employee(request):
 	return response
 
 
-def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,tel_man,tel_time,tel_amount,relief_status,relief_id,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id,Tday7,Tdof):
+def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,
+	ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,
+	remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,
+	allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id,Tday7,Tdof):
+	
 	is_pass = True
 	message = ""	
+
+	Tday7tmp = 0
+	Tdoftmp = 0
+	ui_ot_status = 0
+	shift_type = shift_name.partition("#")[2][0:2].strip() # shift_type will be D or N or O
+	string_today_date = str(settings.TODAY_DATE.strftime("%d/%m/%Y"))
+	today_date = datetime.datetime.strptime(string_today_date, "%d/%m/%Y")
+
+
+	# Rule 1 No person not more than contract
+	# **************** START ******************
+	if dly_date > today_date.date():
+		return False, "เลือกวันที่ไม่ถูกต้อง"
+
+	if dly_date == today_date.date():
+		sql = "select cnt_id,sch_shift from DLY_PLAN "
+
+	if dly_date < today_date.date():
+		sql = "select cnt_id,sch_shift from HIS_DLY_PLAN "
+
+	sql += " where cnt_id=" + str(cnt_id)
+	sql += " and sch_shift=" + str(shift_id)
+	sql += " and absent=0 and dly_date='" + str(dly_date) + "'"
+	cursor = connection.cursor()	
+	cursor.execute(sql)	
+	record_count = cursor.fetchall()
+	cursor.close()
+	informno = len(record_count) if len(record_count)>0 else 0
+
+	sql = "select cnt_id, srv_shif_id, sum(srv_qty) as qty from cus_service where srv_active=1 and cnt_id=" + str(cnt_id) + " and srv_shif_id=" + str(shift_id) + " group by cnt_id, srv_shif_id"
+	cursor = connection.cursor()
+	cursor.execute(sql)
+	rows = cursor.fetchone()
+	cursor.close
+	srv_qty = rows[2]
+
+	if informno >= srv_qty:
+		return False, "พนักงานที่แจ้งเวรมากกว่าที่มีอยู่ในสัญญา: <b>" + str(cnt_id) + "</b>"
+	# **************** END ******************
+
+
+
+	# Rule 2 Check Manpower
+	# ****** START *********
+	shift = shift_name.partition("#")[2][0:2].strip()
+	job = job_type
+
+	if dly_date > today_date.date():
+		return False, "เลือกวันที่ไม่ถูกต้อง"
+
+	if dly_date == today_date.date():
+		sql = "select cnt_id,sch_shift from v_dlyplan_shift "
+	else:
+		sql = "select cnt_id,sch_shift from v_dlyplan_shift "
+	sql += " where cnt_id=" + str(cnt_id)
+	sql += " and left(remark,2)=" + str(job)
+	sql += " and shf_type='" + str(shift) + "'"
+	sql += " and absent=0 and dly_date='" + str(dly_date) + "'"
+	cursor = connection.cursor()	
+	cursor.execute(sql)	
+	record_count = cursor.fetchall()
+	cursor.close()
+	amanpower = len(record_count) if len(record_count)>0 else 0
+
+
+
+	# Rule 3 ChkValidInput(2)
+	# ****** START **********
+	is_pass, message = chkValidInput(2,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,ui_ot_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id)
+	if is_pass:
+		message = "PASS"
+	else:
+		return False, message
+	# ******* END ***********
+
+
+	# Call SetVariable("DLY_PLAN")
+	Tsch_no = 0
+	Temp_id = 0 if emp_id=="" else emp_id
+	Tdly_date = None if dly_date=="" else dly_date
+	Tsch_shift = 0 if shift_id=="" else shift_id
+	Tcnt_id = 0 if cnt_id=="" else cnt_id
+	
+	if search_emp_id=="":
+		print("Tdept_id = ใช้โซนของหน่วยงาน")
+		# TODO: เลือกว่าจะใช้ค่าโซนของพนักงานหรือหน่วยงาน
+		Tdept_id = emp_dept
+	else:
+		print("Tdept_id = ใช้โซนของพนักงาน")
+		Tdept_id = emp_dept
+
+	Tsch_rank = emp_rank
+	Tabsent = ui_absent_status
+	Tlate = ui_late_status
+	Tlate_full = late_full_paid_status
+	Trelief = ui_relief_status
+	Trelief_id = '0' if relief_emp_id=="" else relief_emp_id
+
+	# return False, Trelief_id
+
+	# TELEPHONE
+	if ui_phone_status==1:
+		if tel_time=="":
+			Ttel_time = None
+		else:
+			Ttel_time = tel_time
+		Ttel_amt = 0 if tel_amount=="" else tel_amount
+		Ttel_paid = 5 if Ttel_amt > 5 else Ttel_amt
+	else:
+		Ttel_time = None
+		Ttel_amt = 0
+		Ttel_paid = 0
+
+	# OVERTIME
+	Tot = 0 if ui_ot_status==0 else 1
+	if (Tot==1) or (Tlate==1):
+		Tot_reason = ot_reason
+		Tot_time_frm = ot_time_frm
+		Tot_time_to = ot_time_to
+		# TODO: Tot_hr_amt
+		Tot_hr_amt = 0
+		Tot_pay_amt = 0
+		if Tot==1:
+			Tpay_type = "BAS"
+		elif Tlate==1:
+			Tpay_type = "TPB"
+	else:
+		Tot_reason = 0
+		Tot_time_frm = None
+		Tot_time_to = None
+		Tot_hr_amt = 0
+		Tot_pay_amt = 0
+		Tpay_type = ""			
+
+
+	# Add by Somkiat 2016/02/24
+	#TODO: หาค่า Rea_timecross เซ็ทเริ่มต้นมาจากที่ไหน
+	Rea_timecross = 0
+	if Rea_timecross==57:
+		Tot_reason = 57
+		Tot_time_frm = None
+		Tot_time_to = None
+		Tot_hr_amt = Rea_timecross
+		Tot_pay_amt = 0
+		Tpay_type = "TPB"			
+
+	#TODO: หาค่า txtSpare มีการเซ็ทค่าเริ่มต้นมาจากที่ไหน
+	txtSpare = 0
+	Tspare = txtSpare
+	#TODO: ส่งค่า wage_id จาก Customer Tab
+	wage_id = 32
+	Twage_id = wage_id
+	Twage_no = str(Twage_id) + str(emp_rank)
+	Tpay_type = 1 if ui_ot_status==1 else ""
+	Tsoc = 1 if Tot_hr_amt>=8 else 0
+	TRemark = job_type + " " + remark
+
+	# Get Period
+	try:
+		Tprd_id = TPeriod.objects.filter(prd_date_frm__lte=dly_date).filter(prd_date_to__gte=dly_date).filter(emp_type='D1').get()
+		Tprd_id = Tprd_id.prd_id
+	except TPeriod.DoesNotExist:
+		Tprd_id = ""
+	
+	# Check Tpub
+	if getDayPub(dly_date)==1:
+		Tpub = 1
+	else:
+		Tpub = 0
+
+	# Call AddListName("DLY_PLAN")
+	if dly_date == today_date.date():
+		sql = "insert into DLY_PLAN "
+	else:
+		if username == "CMS_SUP":
+			sql = "insert into HIS_DLY_PLAN "
+		else:
+			return False, "You don't have a permission to Add/Edit passed date."
+		
+	sql += "(cnt_id,emp_id,dly_date,sch_shift"
+	sql += ",sch_no,dept_id,sch_rank,prd_id"
+	sql += ",absent,late,late_full,relieft,relieft_id"
+	sql += ",tel_man,tel_time,tel_amt,tel_paid"
+	sql += ",ot,ot_reason,ot_time_frm,ot_time_to,ot_hr_amt,ot_pay_amt"
+	sql += ",spare,wage_id,wage_no,pay_type,soc,pub,dof,day7"
+	sql += ",upd_date,upd_by,upd_flag,remark)"
+	sql += " values ("			
+	sql += str(cnt_id) + "," + str(emp_id) + ",'" + str(dly_date) + "'," + str(Tsch_shift) + ","
+	sql += str(Tsch_no) + "," + str(Tdept_id) + ",'" + str(Tsch_rank) + "','" + str(Tprd_id) + "',"
+	sql += str(Tabsent) + "," + str(Tlate) + "," + str(Tlate_full) + "," + str(Trelief) + "," + str(Trelief_id) + ","
+	sql += str(ui_phone_status) + "," 
+
+	if (Ttel_time is None) or (Ttel_time==""):
+		sql += "null,"			
+	else:
+		sql += "'" + str(Ttel_time) + "',"
+
+	sql += str(Ttel_amt) + "," + str(Ttel_paid) + ","
+	sql += str(Tot) + "," + str(Tot_reason) + "," 
+
+	if Tot_time_frm is None:
+		sql += "null,"
+	else:
+		sql += str(Tot_time_frm) + "',"
+
+	if Tot_time_to is None:
+		sql += "null,"
+	else:
+		sql += str(Tot_time_to) + "',"
+
+	sql += str(Tot_hr_amt) + "," + str(Tot_pay_amt) + ","
+
+	sql += str(Tspare) + "," + str(Twage_id) + ",'" + str(Twage_no) + "','" + str(Tpay_type) + "'," + str(Tsoc) + "," + str(Tpub) + "," + str(Tdof) + "," + str(Tday7) + ",'"
+	sql += str(str(datetime.datetime.now())[:-3]) + "'," + str(username) + "," + "'A'" + ",'" + remark + "')"	
+
+	print("sql: ", sql)
+
+	try:
+		with connection.cursor() as cursor:
+			cursor.execute(sql)
+		is_pass = True
+		message = "บันทึกรายแจ้งเวรสำเร็จ"
+	except db.OperationalError as e:
+		is_pass = False
+		message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+	except db.Error as e:
+		is_pass = False
+		message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+
+	# amnaj	
+	return True, message
+
+
+
+
+
+
+
+
+	is_error, message = checkManPower(cnt_id, job_type, shift_type, dly_date)
+	if is_error:
+		is_pass = False
+		message = "Rule 3 is failed."
+		print(message)
+		return False, 
+	else:
+		is_pass = True
+		message = "Rule 3 is passed."
+		print(message)
+
+		is_pass = True	
+	# ****** END *********
+
+
+
+
+	return True, "PASS"
+
+
+
+
 
 	if shift_id!="99":
 		# ************************************************
@@ -2528,7 +2793,8 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 			is_not_error, message = validateInput(dly_date, cnt_id, emp_id, shift_id, shift_type, shift_name, job_type, totalNDP, totalNDA, totalNDM, totalNNP, totalNNA, totalNNM, totalPDP, totalPDA, totalPDM, totalPNP, totalPNA, totalPNM, absent_status, late_status, phone_status, relief_status)
 			if is_not_error:
 				is_pass = True
-				message = "Rule 4 is passed."
+				# message = "Rule 4 is passed."
+				message = "รับแจ้งเวรสำเร็จ"
 				print(message)							
 			else:
 				is_pass = False
@@ -2592,7 +2858,11 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 	return is_pass, message
 
 
-def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id,Tday7,Tdof):
+def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,
+	ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,
+	totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,
+	allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id,Tday7,Tdof):
+
 	# TODO: Delete print values
 	# print("ui_absent_status", ui_absent_status)
 	# print("ui_late_status", ui_late_status)
@@ -2602,6 +2872,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 	# set hardcode value
 	ui_ot_status = 0
 
+	# amnaj
 	# set default value
 	Tday7tmp = 0
 	Tdoftmp = 0
@@ -4532,7 +4803,8 @@ def ajax_save_daily_attendance(request):
 
 	elif AEdly == 1: # ADD MODE
 		# print("Add Mode")
-		is_add_record_success, message = addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id,Tday7,Tdof)
+		# is_add_record_success, message = addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id,Tday7,Tdof)
+		is_add_record_success, message = addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id,Tday7,Tdof)
 		if is_add_record_success:
 			success_status = True
 			title = "Success"
