@@ -3830,9 +3830,12 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 				cursor.close()
 				if record is not None:
 					return False, "พนักงานทำงานในวัน Day Off จากตาราง SYS_GPMDOF"
+
+			
 			# เช็คห้ามพนักงานที่เข้าเวรแทนทำงานในวัน Day Off จากตาราง SYS_GPMDOF
-			if (relief_emp_id is not None) and (ui_absent_status==1):
+			if (relief_emp_id!="") and (ui_absent_status==1):
 				sql = "select * from sys_gpmdof where emp_id=" + str(relief_emp_id) + " and dly_date='" + str(dly_date) + "'"
+				print("sql 1:", sql)
 				cursor = connection.cursor()
 				cursor.execute(sql)
 				record = cursor.fetchone()
