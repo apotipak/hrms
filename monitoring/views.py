@@ -1980,8 +1980,6 @@ def ajax_get_attendance_information(request):
 	#getPriorityStatus = False
 	#gUSE,gADD,gEDIT,gDEL,gPREVIEW,gPRINT,gIM,gEX,gSALARY,gType,gOLD
 
-
-
 	# ตรวจสอบวันที่ Daily Attendance มากกว่าวันที่ปัจจุบัน	
 	today_date = convertStringToDate(settings.TODAY_DATE.strftime("%d/%m/%Y"))
 	daily_attendance_date = convertStringToDate(attendance_date)
@@ -2026,6 +2024,7 @@ def ajax_get_attendance_information(request):
 
 	
 	getPriorityStatus,gUSE,gADD,gEDIT,gDEL,gPREVIEW,gPRINT,gIM,gEX,gSALARY,gType,gOLD = getPriority(usr_id, form_name)
+
 
 	# getGaray(gType)
 	if gType != "":
@@ -2179,12 +2178,13 @@ def ajax_get_attendance_information(request):
 		# print("today_date = " + str(today_date))
 
 		daily_attendance_date = datetime.datetime.strptime(request.POST.get('attendance_date'), '%d/%m/%Y').date()		
-		# print("daily_attendance_date = " + str(daily_attendance_date))			
+		print("daily_attendance_date = " + str(daily_attendance_date))			
 
 		if daily_attendance_date == today_date.date():
-			table = ", Customer_Flag from v_dlyplan where cnt_id=%s and dly_date=%s and customer_flag<>'D' order by sch_shift,emp_id"
+			table = ", Customer_Flag from v_dlyplan where cnt_id=" + str(cnt_id) + " and dly_date='" + str(daily_attendance_date) + "' and customer_flag<>'D' order by sch_shift,emp_id"
 		else:
-			table = ", '' as Customer_Flag from v_hdlyplan where cnt_id=%s and dly_date=%s order by sch_shift,emp_id"
+			# table = ", '' as Customer_Flag from v_hdlyplan where cnt_id=" + str(cnt_id) + " and dly_date='" + str(daily_attendance_date) + "' order by sch_shift,emp_id"
+			table = ", '' as Customer_Flag from v_dlyplan where cnt_id=" + str(cnt_id) + " and dly_date='" + str(daily_attendance_date) + "' order by sch_shift,emp_id"
 
 		# Get employee schedule list (v_dlyplan)
 		sql = "select distinct "
@@ -2201,7 +2201,8 @@ def ajax_get_attendance_information(request):
 		sql += "sch_relieft, otm_amt, dof_amt, dof, TPA, "
 		sql += "late_full, DAY7, cnt_sale_amt, cus_name_en, cnt_active, "
 		sql += "Remark, ex_dof_amt "
-		sql += table + " "
+		sql += " from v_dlyplan where cnt_id=1486000001 and dly_date='2021-01-11' order by sch_shift,emp_id"
+		# sql += table
 		
 		# print("______sql 3_____ = " + str(sql))
 
@@ -2209,8 +2210,11 @@ def ajax_get_attendance_information(request):
 		cursor.execute(sql, [cnt_id, attendance_date])
 		rows = cursor.fetchall()
 		
+		print("rows:", len(rows))
+
+
 		for row in rows:
-			# print("____row[21] = " + str(row[21]))
+			print("____row[21] = " + str(row[21]))
 
 			if(row[21]):
 				absent=1
@@ -2379,11 +2383,23 @@ def ajax_get_attendance_information(request):
 
 		message = ""
 
-		# print("is_found = " + str(is_found))
+		print("is_found = " + str(is_found))
 		cursor.close()
 	else:
+		print("NOT FOUND")
 		is_found = False
 		message = message
+
+
+
+	# TEST
+	'''
+	response = JsonResponse(data={
+	    "success": True, "is_found": False, "message": "ทดสอบ2",
+	})		
+	response.status_code = 200
+	return response	
+	'''
 
 	response = JsonResponse(data={
 	    "success": True,
