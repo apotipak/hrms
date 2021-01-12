@@ -88,6 +88,8 @@ def contract_create(request):
         'db_server': db_server, 
         'today_date': today_date,
         'contract_create_form': contract_create_form,
+        'database': settings.DATABASES['default']['NAME'],
+        'host': settings.DATABASES['default']['HOST'],
         })
 
 
@@ -512,6 +514,8 @@ def ContractList(request):
         'is_paginated': is_paginated,
         'form': form,
         'cus_id': cus_id,
+        'database': settings.DATABASES['default']['NAME'],
+        'host': settings.DATABASES['default']['HOST'],        
         # 'cus_brn': cus_brn,
         # 'cus_vol': cus_vol
     }
@@ -562,6 +566,8 @@ def ContractUpdate(request, pk):
         'request': request,
         'form_is_valid': form_is_valid,
         'update_message': update_message,
+        'database': settings.DATABASES['default']['NAME'],
+        'host': settings.DATABASES['default']['HOST'],        
     }
 
     return render(request, template_name, context)

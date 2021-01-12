@@ -33,6 +33,8 @@ def index(request):
     	'db_server': db_server, 
     	'today_date': today_date,
         'employee_photo': employee_photo,
+        'database': settings.DATABASES['default']['NAME'],
+        'host': settings.DATABASES['default']['HOST'],
     })
 
 
@@ -57,6 +59,8 @@ def userprofile(request):
         'today_date': today_date,
         'user_language': user_language,
         'employee_profile': employee_profile,
+        'database': settings.DATABASES['default']['NAME'],
+        'host': settings.DATABASES['default']['HOST'],        
     })
     
 
@@ -96,6 +100,8 @@ def userpassword(request):
         'db_server': db_server, 
         'today_date': today_date,
         'employee_photo': employee_photo,
+        'database': settings.DATABASES['default']['NAME'],
+        'host': settings.DATABASES['default']['HOST'],        
     })
 
 
@@ -142,4 +148,6 @@ def userlanguage(request):
         'project_version': project_version, 
         'db_server': db_server, 
         'today_date': today_date,
+        'database': settings.DATABASES['default']['NAME'],
+        'host': settings.DATABASES['default']['HOST'],        
     })

@@ -60,6 +60,8 @@ def CustomerCreate(request):
         'db_server': db_server, 
         'today_date': today_date,
         'customer_code_create_form': customer_code_create_form,
+        'database': settings.DATABASES['default']['NAME'],
+        'host': settings.DATABASES['default']['HOST'],        
         })
 
 
@@ -776,6 +778,8 @@ def CustomerDashboard(request):
         'no_of_delete_customer': no_of_delete_customer,
         'total_customer': total_customer,
         'history_log': history_log,
+        'database': settings.DATABASES['default']['NAME'],
+        'host': settings.DATABASES['default']['HOST'],        
     }
     return render(request, 'customer/customer_dashboard.html', context)
 
@@ -847,6 +851,8 @@ def ContactList(request):
         'contact_search_form': contact_search_form,
         'cus_id': cus_id,
         'con_id': con_id,
+        'database': settings.DATABASES['default']['NAME'],
+        'host': settings.DATABASES['default']['HOST'],        
     }
 
     return render(request, 'customer/contact_list.html', context)
@@ -1023,6 +1029,8 @@ def CustomerList(request):
         'cus_name': cus_name,
         'cus_id': cus_id,
         'cus_brn': cus_brn,
+        'database': settings.DATABASES['default']['NAME'],
+        'host': settings.DATABASES['default']['HOST'],        
     }
 
     return render(request, 'customer/customer_list.html', context)
@@ -1117,6 +1125,8 @@ def CustomerUpdate(request, pk):
         'business_type_list': business_type_list,
         'group_1_list': group_1_list,
         'group_2_list': group_2_list,
+        'database': settings.DATABASES['default']['NAME'],
+        'host': settings.DATABASES['default']['HOST'],        
     }
 
     # print("test")
@@ -1468,8 +1478,7 @@ def PerformanceInformation(request):
 	project_version = settings.PROJECT_VERSION	
 	today_date = settings.TODAY_DATE
 
-	return render(request, 'customer/performance_information.html', {'page_title': page_title, 'project_name': project_name, 'project_version': project_version, 'db_server': db_server, 'today_date': today_date})
-
+	return render(request, 'customer/performance_information.html', {'page_title': page_title, 'project_name': project_name, 'project_version': project_version, 'db_server': db_server, 'today_date': today_date, 'database': settings.DATABASES['default']['NAME'],'host': settings.DATABASES['default']['HOST']})
 
 @login_required(login_url='/accounts/login/')
 def CustomerReport(request):
@@ -1478,8 +1487,7 @@ def CustomerReport(request):
 	project_name = settings.PROJECT_NAME
 	project_version = settings.PROJECT_VERSION	
 	today_date = settings.TODAY_DATE
-	return render(request, 'customer/customer_report.html', {'page_title': page_title, 'project_name': project_name, 'project_version': project_version, 'db_server': db_server, 'today_date': today_date})
-
+	return render(request, 'customer/customer_report.html', {'page_title': page_title, 'project_name': project_name, 'project_version': project_version, 'db_server': db_server, 'today_date': today_date,'database': settings.DATABASES['default']['NAME'],'host': settings.DATABASES['default']['HOST']})
 
 
 @login_required(login_url='/accounts/login/')
@@ -1722,6 +1730,8 @@ def update_cus_main(request):
         'db_server': settings.DATABASES['default']['HOST'],
         'project_name': settings.PROJECT_NAME,
         'business_type': 'abc',
+        'database': settings.DATABASES['default']['NAME'],
+        'host': settings.DATABASES['default']['HOST'],
     }
 
     return render(request, template_name, context)    
@@ -2049,6 +2059,8 @@ def update_cus_bill(request):
         'db_server': settings.DATABASES['default']['HOST'],
         'project_name': settings.PROJECT_NAME,
         'business_type': 'abc',
+        'database': settings.DATABASES['default']['NAME'],
+        'host': settings.DATABASES['default']['HOST'],        
     }
     
     return render(request, template_name, context)    
@@ -3906,6 +3918,8 @@ def save_all_cus_tabs(request):
         'db_server': settings.DATABASES['default']['HOST'],
         'project_name': settings.PROJECT_NAME,
         'business_type': 'abc',
+        'database': settings.DATABASES['default']['NAME'],
+        'host': settings.DATABASES['default']['HOST'],        
     }
 
     return render(request, template_name, context)    
