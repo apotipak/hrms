@@ -120,6 +120,34 @@
 		            	<div id="id_schedule_option"></div>
 
 		            	<div id="id_employee_list" class="bg-light table-responsive">
+
+
+
+							<!-- amnaj -->
+							<form class="form-inline">
+								<div class="form-group mb-2 mt-2">
+									<label for="inputPassword2">Shift</label>&nbsp;&nbsp;
+								    <select id="id_bulk_shift_list_option" class="form-control form-control-sm">
+									  <option value="99" selected>99 </option>
+									  <option value="9999">9999</option>
+								    </select>
+								</div>
+
+								<div class="form-group mb-2 mt-2">
+								    <select id="id_shift_status" class="form-control form-control-sm">
+									  <option value="0" selected>Not Absent</option>
+									  <option value="1">Absent</option>
+								    </select>
+								    &nbsp;
+								</div>
+
+								<div class="form-group mb-2 mt-3">
+							  		&nbsp;<button type="submit" class="btn btn-primary btn-sm mb-2">Change</button>
+							  	</div>
+							</form>
+
+
+
 							<font size='2em;'>
 
 							<!--<table id='employee_list_table' class='table table-responsive table-sm table-condensed table-wrapper-scroll-y my-custom-scrollbar'>-->
@@ -2117,7 +2145,6 @@
     });
 
 
-    // amnaj
     function saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_status,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id) {
 
     	//alert(allowZeroBathForPhoneAmount);
@@ -2300,8 +2327,6 @@
 	    			$("#save_button").attr("disabled", false);
 	    			$("#delete_button").attr("disabled", true);
 	    				    			
-
-	    			// amnaj
 					$.ajax({
 				    	url : "/monitoring/ajax/save_daily_attendance",
 				    	type : "GET",
