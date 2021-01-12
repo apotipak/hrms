@@ -3119,7 +3119,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		if (Ttel_time is None) or (Ttel_time==""):
 			sql += "tel_time=null,"			
 		else:
-			sql += "tel_time=" + str(Ttel_time) + ","
+			sql += "tel_time='" + str(Ttel_time) + "',"
 		sql += "tel_amt=" + str(Ttel_amt) + ","
 		sql += "tel_paid=" + str(Ttel_paid) + ","
 		sql += "ot=" + str(Tot) + ","
