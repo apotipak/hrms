@@ -115,37 +115,36 @@
 
 		        <!-- Tab Body -->
 		        <div class="tab-content" id="dailyAttendanceBodyTab">
-		            <div class="tab-pane fade show active pt-2" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
-
-		            	<div id="id_schedule_option"></div>
-
-		            	<div id="id_employee_list" class="bg-light table-responsive">
-
-
-
-							<!-- amnaj -->
-							<form class="form-inline">
+		            <div class="tab-pane fade show active pt-2" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">		            	
+						<!-- amnaj -->
+						<form class="form-inline" id="bulk_shift_status_form">
+							{% csrf_token %}
+							<div id="id_bulk_schedule_option">
 								<div class="form-group mb-2 mt-2">
 									<label for="inputPassword2">Shift</label>&nbsp;&nbsp;
 								    <select id="id_bulk_shift_list_option" class="form-control form-control-sm">
 									  <option value="99" selected>99 </option>
 									  <option value="9999">9999</option>
-								    </select>
+								    </select>								    
 								</div>
+							</div>
 
-								<div class="form-group mb-2 mt-2">
-								    <select id="id_shift_status" class="form-control form-control-sm">
-									  <option value="0" selected>Not Absent</option>
-									  <option value="1">Absent</option>
-								    </select>
-								    &nbsp;
-								</div>
+							<div class="form-group mb-2 mt-2">
+								&nbsp;&nbsp;
+							    <select id="id_shift_status" class="form-control form-control-sm">
+								  <option value="0" selected>Not Absent</option>
+								  <option value="1">Absent</option>
+							    </select>
+							    &nbsp;
+							</div>
 
-								<div class="form-group mb-2 mt-3">
-							  		&nbsp;<button type="submit" class="btn btn-primary btn-sm mb-2">Change</button>
-							  	</div>
-							</form>
+							<div class="form-group mb-2 mt-3">
+						  		&nbsp;<button type="submit" class="btn btn-primary btn-sm mb-2">Change</button>
+						  	</div>
+						</form>
 
+
+		            	<div id="id_employee_list" class="bg-light table-responsive">
 
 
 							<font size='2em;'>
@@ -627,6 +626,27 @@
 
 {% block javascript %}
 <script>
+	// amnaj
+	$("#bulk_shift_status_form").submit(function(e) {
+	    e.preventDefault();
+
+	    var form = $(this);
+	    var url = form.attr('action');
+	    alert("TODO");
+
+	    /*
+	    $.ajax({
+	           type: "POST",
+	           url: url,
+	           data: form.serialize(), // serializes the form's elements.
+	           success: function(data)
+	           {
+	               alert(data); // show response from the php script.
+	           }
+	         });
+		*/	    
+	});
+
 	$(document).ready(function(){
 		var today = new Date();
 		var date = today.getDate() + "/" + today.getMonth() + '/' + today.getFullYear() + " 00:00";
@@ -1134,7 +1154,17 @@
 
 					// TODO
 					//$('#id_schedule_option').text(result);
-					$('#id_schedule_option').text("");
+					// amnaj
+					result = "<div class='form-group mb-2 mt-2'>";
+					result += "	<label for='id_bulk_shift_list_option'>Shift</label>&nbsp;&nbsp;";
+					result += "  <select id='id_bulk_shift_list_option' class='form-control form-control-sm'>";
+					result += "		<option value='1' selected>1 </option>";
+					result += "	  	<option value='2'>2</option>";
+					result += "  </select>";
+					result += "</div>";
+					$('#id_bulk_schedule_option').html(result);
+
+
 					
 					// Get Attandance Employee List
 					result = create_attandance_table(data.employee_list);
@@ -2399,7 +2429,7 @@
 
 												// TODO
 												//$('#id_schedule_option').text(result);
-												$('#id_schedule_option').text("");
+												$('#id_bulk_schedule_option').text("");
 
 												
 
@@ -3213,7 +3243,7 @@
 
 												// TODO
 												//$('#id_schedule_option').text(result);
-												$('#id_schedule_option').text("");
+												$('#id_bulk_schedule_option').text("");
 
 												// Get Attandance Employee List
 												result = create_attandance_table(data.employee_list);
