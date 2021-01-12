@@ -2201,17 +2201,17 @@ def ajax_get_attendance_information(request):
 		sql += "sch_relieft, otm_amt, dof_amt, dof, TPA, "
 		sql += "late_full, DAY7, cnt_sale_amt, cus_name_en, cnt_active, "
 		sql += "Remark, ex_dof_amt "
-		sql += " from v_dlyplan where cnt_id=1486000001 and dly_date='2021-01-11' order by sch_shift,emp_id"
-		# sql += table
+		# sql += " from v_dlyplan where cnt_id=1486000001 and dly_date='2021-01-11' order by sch_shift,emp_id"
+		sql += table
 		
 		# print("______sql 3_____ = " + str(sql))
 
 		cursor = connection.cursor()
-		cursor.execute(sql, [cnt_id, attendance_date])
+		# cursor.execute(sql, [cnt_id, attendance_date])
+		cursor.execute(sql)
 		rows = cursor.fetchall()
 		
 		print("rows:", len(rows))
-
 
 		for row in rows:
 			print("____row[21] = " + str(row[21]))
@@ -2383,23 +2383,10 @@ def ajax_get_attendance_information(request):
 
 		message = ""
 
-		print("is_found = " + str(is_found))
 		cursor.close()
 	else:
-		print("NOT FOUND")
 		is_found = False
 		message = message
-
-
-
-	# TEST
-	'''
-	response = JsonResponse(data={
-	    "success": True, "is_found": False, "message": "ทดสอบ2",
-	})		
-	response.status_code = 200
-	return response	
-	'''
 
 	response = JsonResponse(data={
 	    "success": True,
