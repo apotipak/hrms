@@ -1155,6 +1155,7 @@
 					// TODO
 					//$('#id_schedule_option').text(result);
 					// amnaj
+					/*
 					result = "<div class='form-group mb-2 mt-2'>";
 					result += "	<label for='id_bulk_shift_list_option'>Shift</label>&nbsp;&nbsp;";
 					result += "  <select id='id_bulk_shift_list_option' class='form-control form-control-sm'>";
@@ -1163,7 +1164,24 @@
 					result += "  </select>";
 					result += "</div>";
 					$('#id_bulk_schedule_option').html(result);
+					*/
 
+					var $test = $("#id_bulk_shift_list_option");
+					$test.empty();				
+					$test.append($("<option></option>").attr("value", 0).text(""));
+					if(data.schedule_list.length>0) {
+						for(i=0; i<data.schedule_list.length; i++) {							
+							shf_id = data.schedule_list[i]["shf_id"];
+							shf_desc = data.schedule_list[i]["shf_desc"];
+							if(shf_id=="99" || shf_id=="999") {								
+								
+							} else {
+								$test.append($("<option></option>").attr("value", shf_id).text(shf_desc));
+							}
+
+							//alert(shf_id);
+						}
+					}
 
 					
 					// Get Attandance Employee List
