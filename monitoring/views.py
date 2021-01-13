@@ -3368,10 +3368,10 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 
 
 		print("sql test: ", sql)
-		return False, "A2"
+		# return False, "A2"
 
 
-		
+
 
 		# message = "%s,%s,%s,%s" %(Temp_id,Tabsent,Trelief,Trelief_id)
 		# return False, message		
