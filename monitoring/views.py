@@ -2209,7 +2209,6 @@ def ajax_get_attendance_information(request):
 		# print("totalPNP=" + str(totalPNP))
 
 
-
 		# DLY_PLAN TOTAL
 		# select distinct * from v_dlyplan where cnt_id=2526000001 and dly_date=convert(datetime,'2020-12-02',20) and customer_flag<>'D' order by sch_shift, emp_id
 		cursor = connection.cursor()
@@ -2264,6 +2263,8 @@ def ajax_get_attendance_information(request):
 		# ----- END -----
 
 
+
+
 		# Get ot reason list
 		# ----- START -----		
 		cursor = connection.cursor()	
@@ -2305,11 +2306,44 @@ def ajax_get_attendance_information(request):
 		daily_attendance_date = datetime.datetime.strptime(request.POST.get('attendance_date'), '%d/%m/%Y').date()		
 		print("daily_attendance_date = " + str(daily_attendance_date))			
 
-		if daily_attendance_date == today_date.date():
+
+
+
+
+		
+		# ตรวจสอบว่าต้องไปดึงข้อมูลจาก v_dlyplan หรือ v_hdlyplan
+		gen_chk = 0	
+		end_chk = 0
+		pro_chk = 0		
+		sql = "select date_chk,gen_chk,end_chk,pro_chk from t_date where date_chk='" + str(daily_attendance_date) + "'"
+		cursor = connection.cursor()
+		cursor.execute(sql)	
+		t_date_obj = cursor.fetchall()
+		cursor.close()
+		# ตรวจสอบค่า gen_chk, end_chk, prp_chk ของวันที่ต้องการดึงข้อมูล
+		if (t_date_obj is not None):
+			if len(t_date_obj)>0:
+				gen_chk = t_date_obj[0][1]
+				end_chk = t_date_obj[0][2]
+				pro_chk = t_date_obj[0][3]
+
+		# ตรวจสอบว่า gen_chk ไปหรือยัง
+		view_name = "v_dlyplan"
+		if gen_chk!=1:
+			response = JsonResponse(data={"success": True, "is_found": False,"message": "ไม่มีรายการรับแจ้งเวรในวันที่ <b>" + str(request.POST.get('attendance_date')) + "</b>"})
+			response.status_code = 200
+			return response
+		elif end_chk!=1:
 			table = ", Customer_Flag from v_dlyplan where cnt_id=" + str(cnt_id) + " and dly_date='" + str(daily_attendance_date) + "' and customer_flag<>'D' order by sch_shift,emp_id"
 		else:
-			# table = ", '' as Customer_Flag from v_hdlyplan where cnt_id=" + str(cnt_id) + " and dly_date='" + str(daily_attendance_date) + "' order by sch_shift,emp_id"
-			table = ", '' as Customer_Flag from v_dlyplan where cnt_id=" + str(cnt_id) + " and dly_date='" + str(daily_attendance_date) + "' order by sch_shift,emp_id"
+			if daily_attendance_date==today_date.date():
+				table = ", Customer_Flag from v_dlyplan where cnt_id=" + str(cnt_id) + " and dly_date='" + str(daily_attendance_date) + "' and customer_flag<>'D' order by sch_shift,emp_id"
+			elif daily_attendance_date < today_date.date():
+				# เช็คล็อคอินยูสเซอร์เป็น CMS_SUP หรือไม่
+				if username=='CMS_SUP':							
+					# aeiou
+					view_name = "v_hdlyplan"
+					table = " from " + str(view_name) + " where cnt_id=" + str(cnt_id) + " and dly_date='" + str(daily_attendance_date) + "' order by sch_shift,emp_id"
 
 		# Get employee schedule list (v_dlyplan)
 		sql = "select distinct "
@@ -2329,7 +2363,7 @@ def ajax_get_attendance_information(request):
 		# sql += " from v_dlyplan where cnt_id=1486000001 and dly_date='2021-01-11' order by sch_shift,emp_id"
 		sql += table
 		
-		# print("______sql 3_____ = " + str(sql))
+		print("______sql 3_____ = " + str(sql))
 
 		cursor = connection.cursor()
 		# cursor.execute(sql, [cnt_id, attendance_date])
@@ -2338,8 +2372,15 @@ def ajax_get_attendance_information(request):
 		
 		print("rows:", len(rows))
 
+
+		'''
+		response = JsonResponse(data={"success": True,"is_found": False,"message": "T"})
+		response.status_code = 200
+		return response
+		'''
+
 		for row in rows:
-			print("____row[21] = " + str(row[21]))
+			# print("____row[21] = " + str(row[21]))
 
 			if(row[21]):
 				absent=1
@@ -2393,7 +2434,11 @@ def ajax_get_attendance_information(request):
 			relief_fname_th = "" if row[7] is None else row[7]
 			relief_lname_th = "" if row[8] is None else row[8]
 
-			customer_flag = "" if row[63] is None else row[63]
+			if view_name=="v_dlyplan":
+				if row[63] is not None:
+					customer_flag = "" if row[63] is None else row[63]
+			else:
+				customer_flag = ""
 
 			late_status = 1 if row[50]==1 else 0
 			late_full_status = 1 if row[56]==1 else 0
@@ -3233,7 +3278,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 
 		# ทำการบันทึกข้อมูลกรณีแก้ไขข้อมูลเก่า
 		# Call UpdListName("DLY_PLAN")
-
+		# aeiou
 		# ตรวจสอบว่าต้องไปอัพเดทข้อมูลในตาราง DLY_PLAN หรือ HIS_DLY_PLAN
 		gen_chk = 0	
 		end_chk = 0
@@ -3262,7 +3307,6 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 					sql = "update his_dly_plan set "
 			else:
 				return False, "เลือกวันที่ทำรายการไม่ถูกต้อง"		
-
 
 
 
