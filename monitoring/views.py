@@ -2363,15 +2363,14 @@ def ajax_get_attendance_information(request):
 		# sql += " from v_dlyplan where cnt_id=1486000001 and dly_date='2021-01-11' order by sch_shift,emp_id"
 		sql += table
 		
-		print("______sql 3_____ = " + str(sql))
+		# print("______sql 3_____ = " + str(sql))
 
 		cursor = connection.cursor()
 		# cursor.execute(sql, [cnt_id, attendance_date])
 		cursor.execute(sql)
 		rows = cursor.fetchall()
 		
-		print("rows:", len(rows))
-
+		# print("rows:", len(rows))
 
 		'''
 		response = JsonResponse(data={"success": True,"is_found": False,"message": "T"})
@@ -3302,9 +3301,14 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 			if dly_date==today_date.date():
 				sql = "update dly_plan set "
 			elif dly_date < today_date.date():
-				# เช็คล็อคอินยูสเซอร์เป็น CMS_SUP หรือไม่
+				# เช็คล็อคอินยูสเซอร์เป็น CMS_SUP หรือไม่				
 				if username=='CMS_SUP':
-					sql = "update his_dly_plan set "
+					if end_chk==1:
+						sql = "update his_dly_plan set "
+					else:
+						sql = "update dly_plan set "
+				else:
+					sql = "update dly_plan set "
 			else:
 				return False, "เลือกวันที่ทำรายการไม่ถูกต้อง"		
 
@@ -3346,7 +3350,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 
 
 		# ironman		
-		return False, sql
+		# return False, sql
 
 		# Get Period
 		try:
@@ -3411,9 +3415,10 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		sql += "and dly_date='" + str(dly_date) + "' "
 		sql += "and emp_id=" + str(emp_id) + " "
 		sql += "and sch_shift=" + str(shift_id)
-		print("sql check:", sql)		
 
-		return False, "TEST"
+
+		print("sql check:", sql)		
+		# return False, "TEST"
 
 		try:
 			with connection.cursor() as cursor:
