@@ -10,6 +10,7 @@ def convertStringToDate(str_date):
 def getUSR_ID(username):
 	
 	sql = "select usr_id from user_policy_mapping where username='" + str(username) + "'"
+
 	cursor = connection.cursor()
 	cursor.execute(sql)
 	row = cursor.fetchone()
