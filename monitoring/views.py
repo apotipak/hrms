@@ -3212,13 +3212,13 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 			if tel_time=="":
 				Ttel_time = None
 			else:
-				Ttel_time = tel_time
+				Ttel_time = datetime.datetime.strptime(tel_time, '%d/%m/%Y %H:%M')
 			Ttel_amt = 0 if tel_amount=="" else tel_amount
 			Ttel_paid = 5 if Ttel_amt > 5 else Ttel_amt
 		else:
 			Ttel_time = None
 			Ttel_amt = 0
-			Ttel_paid = 0
+			Ttel_paid = 0		
 
 		# OVERTIME
 		Tot = 0 if ui_ot_status==0 else 1
@@ -3378,10 +3378,13 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		sql += "relieft=" + str(Trelief) + ","
 		sql += "relieft_id=" + str(Trelief_id) + ","
 		sql += "tel_man=" + str(tel_man) + ","
-		if (Ttel_time is None) or (Ttel_time==""):
+
+
+		if (Ttel_time is None):
 			sql += "tel_time=null,"			
 		else:
 			sql += "tel_time='" + str(Ttel_time) + "',"
+
 		sql += "tel_amt=" + str(Ttel_amt) + ","
 		sql += "tel_paid=" + str(Ttel_paid) + ","
 		sql += "ot=" + str(Tot) + ","
@@ -3407,7 +3410,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		sql += "pub=" + str(Tpub) + ","
 		sql += "dof=" + str(Tdof) + ","		
 		sql += "day7=" + str(Tday7) + ","		
-		sql += "upd_date='" + str(datetime.datetime.now())[:-3] + "',"
+		sql += "upd_date='" + str(datetime.datetime.now())[:-10] + "',"		
 		sql += "upd_by='" + str(username) + "',"
 		sql += "upd_flag='E'" + ","
 		sql += "remark='" + str(remark) + "' "
@@ -3416,8 +3419,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		sql += "and emp_id=" + str(emp_id) + " "
 		sql += "and sch_shift=" + str(shift_id)
 
-
-		print("sql check:", sql)		
+		print("sql check:", sql)
 		# return False, "TEST"
 
 		try:
