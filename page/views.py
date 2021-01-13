@@ -24,8 +24,12 @@ def index(request):
     if request.user.is_superuser:
         employee_photo = ""
     else:
-        employee_info = EmpPhoto.objects.filter(emp_id=request.user.username).get()    
-        employee_photo = b64encode(employee_info.image).decode("utf-8")        
+        if request.user.username!="CMS_SUP":
+            employee_info = EmpPhoto.objects.filter(emp_id=request.user.username).get()   
+            employee_photo = b64encode(employee_info.image).decode("utf-8")        
+        else:
+            employee_info = None
+            employee_photo = None
 
     return render(request, 'index.html', {
     	'project_name': project_name, 

@@ -42,8 +42,12 @@ def ScheduleMaintenance(request):
 	if request.user.is_superuser:
 	    employee_photo = ""
 	else:
-	    employee_info = EmpPhoto.objects.filter(emp_id=request.user.username).get()    
-	    employee_photo = b64encode(employee_info.image).decode("utf-8")        
+		if request.user.username!="CMS_SUP":
+		    employee_info = EmpPhoto.objects.filter(emp_id=request.user.username).get()   
+		    employee_photo = b64encode(employee_info.image).decode("utf-8")        
+		else:
+		    employee_info = None
+		    employee_photo = None		
 
 	if request.method == "POST":
 		# print("POST: ScheduleMaintenance()")
@@ -1357,8 +1361,12 @@ def DailyAttendance(request):
 	if request.user.is_superuser:
 	    employee_photo = ""
 	else:
-	    employee_info = EmpPhoto.objects.filter(emp_id=request.user.username).get()    
-	    employee_photo = b64encode(employee_info.image).decode("utf-8")        
+		if request.user.username!="CMS_SUP":
+		    employee_info = EmpPhoto.objects.filter(emp_id=request.user.username).get()   
+		    employee_photo = b64encode(employee_info.image).decode("utf-8")        
+		else:
+		    employee_info = None
+		    employee_photo = None		
 
 	if request.method == "POST":
 		# print("POST: ScheduleMaintenance()")
@@ -1390,8 +1398,12 @@ def DailyGuardPerformance(request):
 	if request.user.is_superuser:
 	    employee_photo = ""
 	else:
-	    employee_info = EmpPhoto.objects.filter(emp_id=request.user.username).get()    
-	    employee_photo = b64encode(employee_info.image).decode("utf-8")        
+		if request.user.username!="CMS_SUP":
+		    employee_info = EmpPhoto.objects.filter(emp_id=request.user.username).get()   
+		    employee_photo = b64encode(employee_info.image).decode("utf-8")        
+		else:
+		    employee_info = None
+		    employee_photo = None		
 
 	if request.method == "POST":
 		if form.is_valid():          
@@ -1423,9 +1435,12 @@ def GenerateDailyAttend(request):
 	if request.user.is_superuser:
 	    employee_photo = ""
 	else:
-	    employee_info = EmpPhoto.objects.filter(emp_id=request.user.username).get()    
-	    employee_photo = b64encode(employee_info.image).decode("utf-8")        
-
+		if request.user.username!="CMS_SUP":
+		    employee_info = EmpPhoto.objects.filter(emp_id=request.user.username).get()   
+		    employee_photo = b64encode(employee_info.image).decode("utf-8")        
+		else:
+		    employee_info = None
+		    employee_photo = None		
 
 	if request.method == "POST":
 		if form.is_valid():          
@@ -1466,8 +1481,12 @@ def PostDailyAttend(request):
 	if request.user.is_superuser:
 	    employee_photo = ""
 	else:
-	    employee_info = EmpPhoto.objects.filter(emp_id=request.user.username).get()    
-	    employee_photo = b64encode(employee_info.image).decode("utf-8")        
+		if request.user.username!="CMS_SUP":
+		    employee_info = EmpPhoto.objects.filter(emp_id=request.user.username).get()   
+		    employee_photo = b64encode(employee_info.image).decode("utf-8")        
+		else:
+		    employee_info = None
+		    employee_photo = None		
 
 
 	if request.method == "POST":
@@ -1914,7 +1933,7 @@ def isGenerateDailyCreated(attendance_date,cnt_id,getPriorityStatus,gUSE,gADD,gE
 	attendance_date = datetime.datetime.strptime(attendance_date, '%d/%m/%Y')
 	sql = "select gen_chk, end_chk, pro_chk from t_date where date_chk='" + str(attendance_date) + "'"
 
-	cursor = connection.cursor()	
+	cursor = connection.cursor()
 	cursor.execute(sql)	
 	tdate = cursor.fetchall()
 	cursor.close()
@@ -1953,18 +1972,78 @@ def sfQuery(request):
 	print("********************************************")
 	print("FUNCTION: sfQuery()")
 	print("********************************************")	
-
-	status = False;
-
-	attendance_date = request.POST.get('attendance_date')
-	cus_id = request.POST.get('cus_id').lstrip("0")
+	
+	username = request.user.username
+	cus_id = request.POST.get('cus_id')
 	cus_brn = request.POST.get('cus_brn')
 	cus_vol = request.POST.get('cus_vol')
-	cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)		
-	cus_no = cus_id + cus_brn.zfill(3)	
+	cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
+	cnt_id = cnt_id.lstrip("0")
 
-	message = cus_no
-	return status, message
+	# chkValidInput(3)
+	# START
+	chkOldValue = 0
+	dly_date = datetime.datetime.strptime(request.POST.get('attendance_date'), '%d/%m/%Y').date()
+	if (dly_date is None) or (dly_date==""):
+		return False, "กรุณาป้อนวันที่"
+
+	sql = "select date_chk,gen_chk,end_chk,pro_chk from t_date where date_chk='" + str(dly_date) + "'"
+	cursor = connection.cursor()
+	cursor.execute(sql)	
+	t_date_obj = cursor.fetchall()
+	cursor.close()
+	
+	gen_chk = 0	
+	end_chk = 0
+	pro_chk = 0
+
+	# ตรวจสอบว่ามีการสร้างตารางรับแจ้งเวรไว้หรือยัง
+	if (t_date_obj is not None):
+		if len(t_date_obj)<=0:			
+			return False, "ข้อมูลตารางเวรของวันที่ <b>" + str(request.POST.get('attendance_date')) + "</b> ยังไม่ได้ Gen โปรด Gen ข้อมูลก่อน"	
+		else:
+			message = "chkValidInput(3) is pass"
+			gen_chk = t_date_obj[0][1]
+			end_chk = t_date_obj[0][2]
+			pro_chk = t_date_obj[0][3]
+	else:
+		return False, "ข้อมูลตารางเวรของวันที่ <b>" + str(request.POST.get('attendance_date')) + "</b> ยังไม่ได้ Gen โปรด Gen ข้อมูลก่อน"
+
+	# ตรวจสอบว่า post day end ไปหรือยัง
+	if end_chk==1:			
+		return False, "ข้อมูลวันที่ <b>" + str() + "</b> ถูก DayEnd ไปแล้ว ไม่สามารถเรียกดูย้อนหลังได้"
+
+	# ตรวจสอบว่าเลขที่สัญญาปิดไปแล้วหรือไม่
+	# call GetContractActive(cnt_id)
+	sql = "select cnt_active from cus_contract where cnt_id=" + str(cnt_id)
+	cursor = connection.cursor()
+	cursor.execute(sql)	
+	cus_contract_obj = cursor.fetchall()
+	cursor.close()
+	cnt_active = 0
+	if (cus_contract_obj is not None):
+		if len(cus_contract_obj)<=0:
+			return False, "ไม่พบรายละเอียดสัญญาเลขที่ <b>" + str(cnt_id) + "</b>"
+		else:
+			cnt_active = cus_contract_obj[0][0]
+	if cnt_active!=1:
+		return False, "สัญญาเลขที่ <b>" + str(cnt_id) + "</b> ถูกยกเลิก"
+
+	# END
+
+
+	# Continue sfQuery()
+	# call DisplayList("NUM_SERVICE")
+
+	# call DisplayList("CUS_SERVICE")
+
+	# call DisplayList("DLY_PLAN")
+
+
+	# call DisplayList("SCH_PLAN")
+
+
+	return True, message
 
 
 @permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
@@ -1979,17 +2058,22 @@ def ajax_get_attendance_information(request):
 
 
 	# amnaj
+	'''
 	status_is_ok, message = sfQuery(request)
-
 	if status_is_ok:
 		status = True
 	else:
 		status = False
-
 	response = JsonResponse(data={"success": True, "status": status, "message": message})	
 	response.status_code = 200
 	return response
-	
+	'''
+
+
+
+
+
+
 	# กำหนดค่าเริ่มต้น
 	is_pass = False			# กำหนดให้เป็น False ไว้ก่อน
 	message = ""
@@ -2589,7 +2673,12 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 
 	# Rule 3 ChkValidInput(2)
 	# ****** START **********
-	is_pass, message = chkValidInput(2,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,ui_ot_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id)
+	is_pass, message = chkValidInput(2,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,
+		shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,
+		relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,
+		totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,ui_ot_status,late_from,
+		late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id)
+
 	if is_pass:
 		message = "PASS"
 	else:
@@ -2949,6 +3038,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 
 
 	# Check #4 - To check No person not more than contract
+	'''
 	if dly_date == today_date.date():
 		sql = "select cnt_id,emp_id,absent,late,tel_man,relieft from dly_plan "
 
@@ -2958,7 +3048,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 	
 	print("sql:", sql)
 	return False, "TODO"
-	# amnaj
+	'''
 
 
 
@@ -2969,12 +3059,16 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 
 	if dly_date < today_date.date():
 		sql = "select cnt_id,emp_id,absent,late,tel_man,relieft from his_dly_plan "
+	'''
+
+	sql = "select cnt_id,emp_id,absent,late,tel_man,relieft from dly_plan "
 
 	sql += " where cnt_id=" + str(cnt_id) + " and dly_date='" + str(dly_date) + "' and emp_id=" + str(emp_id)
 	cursor = connection.cursor()	
 	cursor.execute(sql)	
 	record_count = cursor.fetchone()
 	cursor.close()
+
 	if len(record_count)>0:
 		db_cnt_id = record_count[0]
 		db_emp_id = record_count[1]
@@ -2986,14 +3080,12 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 	else:
 		return False, "Employee not found"
 
-	return False, "AA"
 
 	if ui_phone_status==db_phone_status:
 		if ui_late_status==db_late_status:
 			if (db_absent_status==1) and (db_relief_status==1):
 				# TODO
-				return True, "Implement Check #4"
-	'''
+				return True, "Implement Check #4"	
 
 	# Check #5 - ค่าโทรต้องมีค่ามากกว่า 0 บาท
 	if (ui_phone_status==1) and (tel_amount<=0):
@@ -3001,7 +3093,6 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 			is_pass = False
 			message = "ค่าโทรมีค่าเป็น 0 กรุณาตรวจสอบ"
 			return is_pass, message
-
 
 	# Check #6
 	if ui_phone_status==db_phone_status:
@@ -3038,10 +3129,10 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 						is_pass = True # แจ้งเวรยังไม่เกินจำนวนที่อยู่ในสัญญา
 						message = "Check #6 is passed."
 
+
 	# Check #7
 	is_pass, message = chkValidInput(2,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,ui_ot_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id)
 	
-
 	if is_pass:
 		if (cnt_id=="") and (emp_id==""):
 			return False, "ข้อมูลไม่ถูกต้อง"
@@ -3056,11 +3147,11 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		Tcnt_id = 0 if cnt_id=="" else cnt_id
 		
 		if search_emp_id=="":
-			print("Tdept_id = ใช้โซนของหน่วยงาน")
+			# print("Tdept_id = ใช้โซนของหน่วยงาน")
 			# TODO: เลือกว่าจะใช้ค่าโซนของพนักงานหรือหน่วยงาน
 			Tdept_id = emp_dept
 		else:
-			print("Tdept_id = ใช้โซนของพนักงาน")
+			# print("Tdept_id = ใช้โซนของพนักงาน")
 			Tdept_id = emp_dept
 
 		Tsch_rank = emp_rank
@@ -3130,8 +3221,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		TRemark = job_type + " " + remark
 
 		#message = "%s, %s, %s, %s, %s" % (Twage_id, Twage_no, Tpay_type, Tsoc, TRemark)
-		
-		
+
 		# TODO: ถ้าหากขาดงานและมีคนมาแทน คนที่ขาดจะตั้ง Tday7=0 แต่คนที่มาแทนจะตั้ง Tday7=1
 		if (ui_absent_status==1) and (ui_relief_status==1) and (relief_emp_id!=""):
 			Tday7tmp = Tday7
@@ -3139,18 +3229,80 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
  
 		# return False, Tday7
 
+		# return True, "TODO1"
+
 		# ทำการบันทึกข้อมูลกรณีแก้ไขข้อมูลเก่า
 		# Call UpdListName("DLY_PLAN")
-		if dly_date==today_date.date():
-			sql = "update dly_plan set "
-		elif dly_date < today_date.date():
-			# เช็คล็อคอินยูสเซอร์เป็น CMS_SUP หรือไม่
-			if username=='CMS_SUP':
-				sql = "update his_dly_plan set "
-			else:
-				return False,is_pass, "ไม่มีสิทธิ์ทำรายการ"
+
+		# ตรวจสอบว่าต้องไปอัพเดทข้อมูลในตาราง DLY_PLAN หรือ HIS_DLY_PLAN
+		gen_chk = 0	
+		end_chk = 0
+		pro_chk = 0		
+		sql = "select date_chk,gen_chk,end_chk,pro_chk from t_date where date_chk='" + str(dly_date) + "'"
+		cursor = connection.cursor()
+		cursor.execute(sql)	
+		t_date_obj = cursor.fetchall()
+		cursor.close()
+		# ตรวจสอบว่ามีการสร้างตารางรับแจ้งเวรไว้หรือยัง
+		if (t_date_obj is not None):
+			if len(t_date_obj)>0:
+				gen_chk = t_date_obj[0][1]
+				end_chk = t_date_obj[0][2]
+				pro_chk = t_date_obj[0][3]
+
+		# ตรวจสอบว่า post day end ไปหรือยัง
+		if end_chk==1:
+			return False, "ข้อมูลวันที่ <b>" + str() + "</b> ถูก DayEnd ไปแล้ว ไม่สามารถเรียกดูย้อนหลังได้"
 		else:
-			return False, "เลือกวันที่ทำรายการไม่ถูกต้อง"
+			if dly_date==today_date.date():
+				sql = "update dly_plan set "
+			elif dly_date < today_date.date():
+				# เช็คล็อคอินยูสเซอร์เป็น CMS_SUP หรือไม่
+				if username=='CMS_SUP':
+					sql = "update his_dly_plan set "
+			else:
+				return False, "เลือกวันที่ทำรายการไม่ถูกต้อง"		
+
+
+
+
+
+		'''
+		dly_date = datetime.datetime.strptime(request.POST.get('attendance_date'), '%d/%m/%Y').date()
+		if (dly_date is None) or (dly_date==""):
+			return False, "กรุณาป้อนวันที่"
+
+		sql = "select date_chk,gen_chk,end_chk,pro_chk from t_date where date_chk='" + str(dly_date) + "'"
+		cursor = connection.cursor()
+		cursor.execute(sql)	
+		t_date_obj = cursor.fetchall()
+		cursor.close()
+		
+		gen_chk = 0	
+		end_chk = 0
+		pro_chk = 0
+
+		# ตรวจสอบว่ามีการสร้างตารางรับแจ้งเวรไว้หรือยัง
+		if (t_date_obj is not None):
+			if len(t_date_obj)<=0:			
+				return False, "ข้อมูลตารางเวรของวันที่ <b>" + str(request.POST.get('attendance_date')) + "</b> ยังไม่ได้ Gen โปรด Gen ข้อมูลก่อน"	
+			else:
+				message = "chkValidInput(3) is pass"
+				gen_chk = t_date_obj[0][1]
+				end_chk = t_date_obj[0][2]
+				pro_chk = t_date_obj[0][3]
+		else:
+			return False, "ข้อมูลตารางเวรของวันที่ <b>" + str(request.POST.get('attendance_date')) + "</b> ยังไม่ได้ Gen โปรด Gen ข้อมูลก่อน"
+
+		# ตรวจสอบว่า post day end ไปหรือยัง
+		if end_chk==1:			
+			return False, "ข้อมูลวันที่ <b>" + str() + "</b> ถูก DayEnd ไปแล้ว ไม่สามารถเรียกดูย้อนหลังได้"
+
+		'''
+
+
+		# ironman		
+		return False, sql
 
 		# Get Period
 		try:
@@ -3164,6 +3316,9 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 			Tpub = 1
 		else:
 			Tpub = 0
+
+
+		
 
 		sql += "sch_no=" + str(Tsch_no) + ","
 		sql += "dept_id=" + str(Tdept_id) + ","
@@ -3212,9 +3367,10 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		sql += "and dly_date='" + str(dly_date) + "' "
 		sql += "and emp_id=" + str(emp_id) + " "
 		sql += "and sch_shift=" + str(shift_id)
-		print()
-		print("sql:", sql)
-		print()		
+		print("sql check:", sql)		
+
+		return False, "TEST"
+
 		try:
 			with connection.cursor() as cursor:
 				cursor.execute(sql)
@@ -3974,6 +4130,11 @@ def editRecord_temp(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_d
 
 
 def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,ui_ot_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id):
+
+	# Case 3
+	if check_type==3:
+		return True
+		# amnaj
 
 	# Case 2
 	if check_type==2:
