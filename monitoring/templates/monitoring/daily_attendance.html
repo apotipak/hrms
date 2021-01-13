@@ -123,8 +123,7 @@
 								<div class="form-group mb-2 mt-2">
 									<label for="inputPassword2">Shift</label>&nbsp;&nbsp;
 								    <select id="id_bulk_shift_list_option" class="form-control form-control-sm">
-									  <option value="99" selected>99 </option>
-									  <option value="9999">9999</option>
+									  <option value="" selected></option>
 								    </select>								    
 								</div>
 							</div>
@@ -1122,7 +1121,7 @@
         
     	var obj = $(this);
       	var id_cus_vol = obj.val();
-      	while (id_cus_vol.length < 3) 
+      	while (id_cus_vol.length < 3)
         	id_cus_vol = "0" + id_cus_vol;
 
         $('#id_cus_vol').val(id_cus_vol);

@@ -1946,6 +1946,27 @@ def getGaray(gType):
 	lAray = 0
 
 
+
+
+@login_required(login_url='/accounts/login/')
+def sfQuery(request):	
+	print("********************************************")
+	print("FUNCTION: sfQuery()")
+	print("********************************************")	
+
+	status = False;
+
+	attendance_date = request.POST.get('attendance_date')
+	cus_id = request.POST.get('cus_id').lstrip("0")
+	cus_brn = request.POST.get('cus_brn')
+	cus_vol = request.POST.get('cus_vol')
+	cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)		
+	cus_no = cus_id + cus_brn.zfill(3)	
+
+	message = cus_no
+	return status, message
+
+
 @permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
 @login_required(login_url='/accounts/login/')
 def ajax_get_attendance_information(request):
@@ -1953,6 +1974,22 @@ def ajax_get_attendance_information(request):
 	print("FUNCTION: ajax_get_attendance_information()")
 	print("********************************************")	
 
+
+	# call getContactID
+
+
+	# amnaj
+	status_is_ok, message = sfQuery(request)
+
+	if status_is_ok:
+		status = True
+	else:
+		status = False
+
+	response = JsonResponse(data={"success": True, "status": status, "message": message})	
+	response.status_code = 200
+	return response
+	
 	# กำหนดค่าเริ่มต้น
 	is_pass = False			# กำหนดให้เป็น False ไว้ก่อน
 	message = ""
@@ -2875,11 +2912,11 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 	# print("ui_late_status", ui_late_status)
 	# print("ui_phone_status", ui_phone_status)
 	# print("ui_relief_status", ui_relief_status)
-	
+
 	# set hardcode value
 	ui_ot_status = 0
 
-	# amnaj
+	#                                                          
 	# set default value
 	Tday7tmp = 0
 	Tdoftmp = 0
@@ -2911,7 +2948,22 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 	AmanPower = 0 if record_count[0] == 0 else record_count[0]
 
 
+	# Check #4 - To check No person not more than contract
+	if dly_date == today_date.date():
+		sql = "select cnt_id,emp_id,absent,late,tel_man,relieft from dly_plan "
+
+	if dly_date < today_date.date():
+		sql = "select cnt_id,emp_id,absent,late,tel_man,relieft from his_dly_plan "
+	sql += " where cnt_id=" + str(cnt_id) + " and dly_date='" + str(dly_date) + "' and emp_id=" + str(emp_id)
+	
+	print("sql:", sql)
+	return False, "TODO"
+	# amnaj
+
+
+
 	# Check #4
+	'''
 	if dly_date == today_date.date():
 		sql = "select cnt_id,emp_id,absent,late,tel_man,relieft from dly_plan "
 
@@ -2934,12 +2986,14 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 	else:
 		return False, "Employee not found"
 
+	return False, "AA"
+
 	if ui_phone_status==db_phone_status:
 		if ui_late_status==db_late_status:
 			if (db_absent_status==1) and (db_relief_status==1):
 				# TODO
 				return True, "Implement Check #4"
-
+	'''
 
 	# Check #5 - ค่าโทรต้องมีค่ามากกว่า 0 บาท
 	if (ui_phone_status==1) and (tel_amount<=0):
@@ -2986,6 +3040,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 
 	# Check #7
 	is_pass, message = chkValidInput(2,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,ui_ot_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id)
+	
 
 	if is_pass:
 		if (cnt_id=="") and (emp_id==""):
