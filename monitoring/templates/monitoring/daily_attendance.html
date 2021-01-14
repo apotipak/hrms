@@ -118,6 +118,8 @@
 		            <div class="tab-pane fade show active pt-2" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">		            	
 						<form class="form-inline" id="bulk_shift_status_form">
 							{% csrf_token %}
+
+							<!-- ironman -->
 							<div id="id_bulk_schedule_option">
 								<div class="form-group mb-2 mt-2">
 									<label for="inputPassword2">Shift</label>&nbsp;&nbsp;
@@ -624,7 +626,6 @@
 
 {% block javascript %}
 <script>
-	// ironman
 	$("#bulk_shift_status_form").submit(function(e) {
 	    e.preventDefault();
 
@@ -677,6 +678,7 @@
 						    useBootstrap: false,
 						});
 
+
 						$.ajax({
 							url : "/monitoring/ajax/get_attendance_information/",
 							type : "POST",
@@ -699,30 +701,12 @@
 
 									// TODO
 									//$('#id_schedule_option').text(result);
-									$('#id_bulk_schedule_option').text("");
+									//$('#id_bulk_schedule_option').text("");
 
 									// Get Attandance Employee List
 									result = create_attandance_table(data.employee_list);
 
 									$('#id_employee_list').html(result);
-
-									// TOTAL
-									$("#totalNDP").html(data.totalNDP);
-									$("#totalNNP").html(data.totalNNP);
-									$("#totalPDP").html(data.totalPDP);
-									$("#totalPNP").html(data.totalPNP);
-
-									$("#totalNDA").html(data.totalNDA);
-									$("#totalNNA").html(data.totalNNA);
-									$("#totalPDA").html(data.totalPDA);
-									$("#totalPNA").html(data.totalPNA);
-
-									/*
-									$("#totalNDM").html(data.totalNDM);
-									$("#totalNNM").html(data.totalNNM);
-									$("#totalPDM").html(data.totalPDM);
-									$("#totalPNM").html(data.totalPNM);
-									*/
 
 									if(data.totalNDM>=0)
 										$("#totalNDM").html("<span class='text-danger'>" + data.totalNDM + "</span>");
@@ -748,7 +732,6 @@
 								}
 							}
 						});
-
 
 		    		}		    		
 		    	},
@@ -2558,7 +2541,7 @@
 
 												// TODO
 												//$('#id_schedule_option').text(result);
-												$('#id_bulk_schedule_option').text("");
+												//$('#id_bulk_schedule_option').text("");
 
 												
 
@@ -3028,11 +3011,13 @@
 
 					return false;    			
 	    		} else {
+	    			alert("d");
 	    			saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id);
 	    			return false;
 	    		}
 
     		} else {
+    			alert("c");
     			saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id);
     			return false;
     		}
@@ -3067,9 +3052,11 @@
 					    }
 					});
 	    		} else {
+	    			alert("b");
 	    			saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id);
 	    		}
 	    	} else {
+	    		alert("a");
 	    		saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id);	
 	    	}    		
     	}
@@ -3373,7 +3360,7 @@
 
 												// TODO
 												//$('#id_schedule_option').text(result);
-												$('#id_bulk_schedule_option').text("");
+												//$('#id_bulk_schedule_option').text("");
 
 												// Get Attandance Employee List
 												result = create_attandance_table(data.employee_list);
