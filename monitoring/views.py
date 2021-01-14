@@ -5474,7 +5474,7 @@ def ajax_bulk_update_absent_status(request):
 				sql = "select cnt_id,emp_id,sch_shift,shf_type from v_dlyplan "
 				sql += " where cnt_id=" + str(cnt_id)
 				sql += " and sch_shift=" + str(shift_id)
-				# print("sql:", sql)
+				print("sql11:", sql)
 
 				try:
 					with connection.cursor() as cursor:		
@@ -5500,7 +5500,7 @@ def ajax_bulk_update_absent_status(request):
 							cursor.close()
 
 							if count>0:
-								message = "พนักงานรหัส <b>" + str(tmp_emp_id) + "</b> ทำงานที่หน่วยงาน <b>" + str(tmp_cnt_id) + "</b> เรียบร้อยแล้ว กรุณาตรวจสอบอีกครั้ง"
+								message = "พนักงานรหัส <b>" + str(tmp_emp_id) + "</b> ทำงานที่หน่วยงาน <b>" + str(tmp_cnt_id) + "</b> ในกะ <b>" + str(tmp_shf_type) + "</b> เรียบร้อยแล้ว กรุณาตรวจสอบอีกครั้ง"
 								response = JsonResponse(data={"success": True,"is_error": True,"message": message})
 								response.status_code = 200
 								return response
