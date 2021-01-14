@@ -2626,6 +2626,27 @@ def ajax_delete_employee(request):
 	return response
 
 
+def get_DLY_PLAN_OR_HIS_DLY_PLAN(dly_date):
+	table_name = "DLY_PLAN"
+	is_error_status = False
+	error_message = "Success"
+
+	print("dly_date:", dly_date)
+	sql = "select end_chk from t_date where date_chk='" + str(dly_date) + "'"
+	cursor = connection.cursor()	
+	cursor.execute(sql)	
+	t_date_obj = cursor.fetchone()
+	cursor.close()
+	if t_date_obj is not None:		
+		end_chk = t_date_obj[0]
+		if end_chk==1:
+			table_name = "HIS_DLY_PLAN"
+	else:
+		is_error_status = True
+		error_message = "ตารางแจ้งเวรของวันที่ <b>" + str(dly_date) + "</b> ไม่มีในระบบ"
+	return is_error_status, error_message, table_name
+
+
 def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,
 	ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,
 	remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,
@@ -2644,14 +2665,20 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 
 	# Rule 1 No person not more than contract
 	# **************** START ******************
+	is_error_status, error_message, table_name = get_DLY_PLAN_OR_HIS_DLY_PLAN(dly_date)	
+	if is_error_status:
+		return False, error_message
+	else:
+		sql = "select cnt_id,sch_shift from " + str(table_name)
+
+	'''
 	if dly_date > today_date.date():
 		return False, "เลือกวันที่ไม่ถูกต้อง"
-
 	if dly_date == today_date.date():
 		sql = "select cnt_id,sch_shift from DLY_PLAN "
-
 	if dly_date < today_date.date():
 		sql = "select cnt_id,sch_shift from HIS_DLY_PLAN "
+	'''
 
 	sql += " where cnt_id=" + str(cnt_id)
 	sql += " and sch_shift=" + str(shift_id)
@@ -2672,7 +2699,6 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 	if informno >= srv_qty:
 		return False, "พนักงานที่แจ้งเวรมากกว่าที่มีอยู่ในสัญญา: <b>" + str(cnt_id) + "</b>"
 	# **************** END ******************
-
 
 
 	# Rule 2 Check Manpower
@@ -2696,7 +2722,6 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 	record_count = cursor.fetchall()
 	cursor.close()
 	amanpower = len(record_count) if len(record_count)>0 else 0
-
 
 
 	# Rule 3 ChkValidInput(2)
@@ -2743,7 +2768,7 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 		if tel_time=="":
 			Ttel_time = None
 		else:
-			Ttel_time = tel_time
+			Ttel_time = datetime.datetime.strptime(tel_time, '%d/%m/%Y %H:%M')
 		Ttel_amt = 0 if tel_amount=="" else tel_amount
 		Ttel_paid = 5 if Ttel_amt > 5 else Ttel_amt
 	else:
@@ -2771,7 +2796,7 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 		Tot_hr_amt = 0
 		Tot_pay_amt = 0
 		Tpay_type = ""			
-
+	
 
 	# Add by Somkiat 2016/02/24
 	#TODO: หาค่า Rea_timecross เซ็ทเริ่มต้นมาจากที่ไหน
@@ -2808,7 +2833,9 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 	else:
 		Tpub = 0
 
+
 	# Call AddListName("DLY_PLAN")
+	'''
 	if dly_date == today_date.date():
 		sql = "insert into DLY_PLAN "
 	else:
@@ -2816,7 +2843,20 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 			sql = "insert into HIS_DLY_PLAN "
 		else:
 			return False, "You don't have a permission to Add/Edit passed date."
-		
+	'''
+
+	is_error_status, error_message, table_name = get_DLY_PLAN_OR_HIS_DLY_PLAN(dly_date)
+	if is_error_status:
+		return False, error_message
+	else:
+		if table_name=="DLY_PLAN":
+			sql = "insert into DLY_PLAN "
+		else:			
+			if username == "CMS_SUP":
+				sql = "insert into HIS_DLY_PLAN "
+			else:
+				return False, "You don't have a permission to Add/Edit passed date."
+
 	sql += "(cnt_id,emp_id,dly_date,sch_shift"
 	sql += ",sch_no,dept_id,sch_rank,prd_id"
 	sql += ",absent,late,late_full,relieft,relieft_id"
@@ -2830,6 +2870,8 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 	sql += str(Tabsent) + "," + str(Tlate) + "," + str(Tlate_full) + "," + str(Trelief) + "," + str(Trelief_id) + ","
 	sql += str(ui_phone_status) + "," 
 
+
+	# ironman
 	if (Ttel_time is None) or (Ttel_time==""):
 		sql += "null,"			
 	else:
