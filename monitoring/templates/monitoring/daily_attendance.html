@@ -624,26 +624,85 @@
 
 {% block javascript %}
 <script>
-	// amnaj
+	// ironman
 	$("#bulk_shift_status_form").submit(function(e) {
 	    e.preventDefault();
 
-	    var form = $(this);
-	    var url = form.attr('action');
-	    alert("TODO");
+	    var bulk_shift_id = $("#id_bulk_shift_list_option").val();
+	    var bulk_shift_status = $("#id_shift_status").val();
+        var attendance_date = $('#id_dly_date').val();
+      	var cus_id = $('#id_cus_id').val();
+      	var cus_brn = $('#id_cus_brn').val();
+      	var cus_vol = $('#id_cus_vol').val();
 
-	    /*
-	    $.ajax({
-	           type: "POST",
-	           url: url,
-	           data: form.serialize(), // serializes the form's elements.
-	           success: function(data)
-	           {
-	               alert(data); // show response from the php script.
-	           }
-	         });
-		*/	    
+	    if(bulk_shift_id=="0" || bulk_shift_status=="") {
+			$.alert({
+			    title: 'Error',
+			    type: 'red',
+			    content: "กรุณาเลือกกะการทำงานที่ต้องการเปลี่ยน Absent ของพนักงาน",
+			    animation: 'zoom',
+			    animationBounce: 1.5,
+			    closeIcon: false,
+			    boxWidth: '38%',
+			    useBootstrap: false,
+			});
+			$("#id_bulk_shift_list_option").focus();				
+	    	return false;	    		
+	    } else {
+			$.ajax({
+		    	url : "/monitoring/ajax/bulk_update_absent_status/",
+		    	type : "POST",
+		    	data : {          
+		      		csrfmiddlewaretoken: '{{ csrf_token }}',
+		      		attendance_date: attendance_date,
+		      		shift_id: bulk_shift_id,
+		      		shift_status: bulk_shift_status,
+		      		cus_id: cus_id,
+		      		cus_brn: cus_brn,
+		      		cus_vol: cus_vol,
+		    	},
+		    	success: function(data) {
+
+		    		if(data.is_error) {
+		    			alert("error");
+		    		} else {
+		    			alert("success");
+		    		}
+		    		
+
+	    			/*
+				  	$(document).Toasts('create', {
+				    	class: "bg-danger", 
+				    	title: "{% trans 'Error' %}",
+				    	subtitle: '',
+				    	autohide: true,
+				    	delay: 2000,
+				    	body: data.message,
+				    	autoDismiss: true,
+				    	close: true,
+				    	autoremove: true,
+				  	});
+					*/
+
+					/*
+					$.alert({
+					    title: 'Error',
+					    type: 'red',
+					    content: data.message,
+					    animation: 'zoom',
+					    animationBounce: 1.5,
+					    closeIcon: false,
+					    boxWidth: '38%',
+					    useBootstrap: false,
+					});
+					*/
+		    	},
+
+		    });
+
+	    }
 	});
+
 
 	$(document).ready(function(){
 		var today = new Date();

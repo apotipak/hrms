@@ -2870,8 +2870,6 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 	sql += str(Tabsent) + "," + str(Tlate) + "," + str(Tlate_full) + "," + str(Trelief) + "," + str(Trelief_id) + ","
 	sql += str(ui_phone_status) + "," 
 
-
-	# ironman
 	if (Ttel_time is None) or (Ttel_time==""):
 		sql += "null,"			
 	else:
@@ -3823,10 +3821,6 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		sql += "and dly_date='" + str(dly_date) + "' "
 		sql += "and emp_id=" + str(emp_id) + " "
 		sql += "and sch_shift=" + str(shift_id)
-
-		# ironman		
-		# print("sql 1 " + str(sql))
-		# return False,"TEST"
 
 		try:
 			with connection.cursor() as cursor:
@@ -5369,3 +5363,40 @@ def checkDayOff(emp_id, dly_date):
 	cursor.close
 
 	return is_day_off, message
+
+
+@login_required(login_url='/accounts/login/')
+def ajax_bulk_update_absent_status(request):
+
+	message = ""
+	is_error = False
+	shift_status_list = ["0","1"]
+
+	attendance_date = request.POST.get('attendance_date')
+	shift_id = request.POST.get('shift_id')
+	shift_status = request.POST.get('shift_status')
+	cus_id = request.POST.get('cus_id')
+	cus_brn = request.POST.get('cus_brn')
+	cus_vol = request.POST.get('cus_vol')
+
+	# message = "%s,%s,%s,%s,%s" %(attendance_date,shift_id,cus_id,cus_brn,cus_vol)
+	# print("message:", message)
+	print("shift_status:", shift_status)
+
+	# Field validation
+	if shift_status not in shift_status_list:
+		is_error = True
+		message = "เลือกสถานะการลาไม่ถูกต้อง"
+	else:
+		message = "SUCCESS"
+
+
+	response = JsonResponse(data={		
+	    "success": True,
+	    "is_error": is_error,
+	    "message": message,
+	})
+
+	response.status_code = 200
+	return response
+
