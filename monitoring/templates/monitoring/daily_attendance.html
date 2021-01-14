@@ -124,7 +124,7 @@
 								<div class="form-group mb-2 mt-2">
 									<label for="inputPassword2">Shift</label>&nbsp;&nbsp;
 								    <select id="id_bulk_shift_list_option" class="form-control form-control-sm">
-									  <option value="" selected></option>
+									  <option value="0" selected></option>
 								    </select>								    
 								</div>
 							</div>
@@ -145,7 +145,6 @@
 
 
 		            	<div id="id_employee_list" class="bg-light table-responsive">
-
 
 							<font size='2em;'>
 
@@ -636,7 +635,7 @@
       	var cus_brn = $('#id_cus_brn').val();
       	var cus_vol = $('#id_cus_vol').val();
 
-	    if(bulk_shift_id=="0" || bulk_shift_status=="") {
+	    if(bulk_shift_id=="0" || bulk_shift_id=="" || bulk_shift_status=="") {
 			$.alert({
 			    title: 'Error',
 			    type: 'red',
@@ -647,8 +646,8 @@
 			    boxWidth: '38%',
 			    useBootstrap: false,
 			});
-			$("#id_bulk_shift_list_option").focus();				
-	    	return false;	    		
+			
+	    	return false;  		
 	    } else {
 			$.ajax({
 		    	url : "/monitoring/ajax/bulk_update_absent_status/",
