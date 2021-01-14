@@ -1,20 +1,7 @@
   <!-- Main Footer -->
   <footer class="main-footer">
-    <!-- To the right -->
     <div class="float-right d-none d-sm-inline">
     	{{ today_date|date:"d M Y" }}
     </div>
-    
-    <!-- Default to the left -->
-    <b>{{ host }}</b> [{{ database }}]
-
-    {% comment %}
-    {% if db_server == "KTHBNL808\SQLEXPRESS" %}
-      on <span class="text-primary"><b>Dev</b></span>
-    {% endif %}
-
-    {% if db_server == "10.176.68.27" %}
-      on <span class="text-primary"><b>Staging</b></span>
-    {% endif %}
-    {% endcomment %}
+    <i class="fas fa-server"></i><span class="text-success">&nbsp;<b>{{ host }}</b></span>&nbsp;&nbsp;|&nbsp;&nbsp;<i class="fas fa-database"></i>&nbsp;<span class="text-success">{{ database }}</span>
   </footer>
