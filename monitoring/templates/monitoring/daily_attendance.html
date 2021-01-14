@@ -664,9 +664,18 @@
 		    	success: function(data) {
 
 		    		if(data.is_error) {
-		    			alert("error");
+		    			alert("Error!");
 		    		} else {
-		    			alert("success");
+						$.alert({
+						    title: 'Success',
+						    type: 'green',
+						    content: data.message,
+						    animation: 'zoom',
+						    animationBounce: 1.5,
+						    closeIcon: false,
+						    boxWidth: '38%',
+						    useBootstrap: false,
+						});		    			
 		    		}
 		    		
 
