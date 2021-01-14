@@ -665,7 +665,16 @@
 		    	success: function(data) {
 
 		    		if(data.is_error) {
-		    			alert("Error!");
+						$.alert({
+						    title: 'Error',
+						    type: 'red',
+						    content: data.message,
+						    animation: 'zoom',
+						    animationBounce: 1.5,
+						    closeIcon: false,
+						    boxWidth: '38%',
+						    useBootstrap: false,
+						});		    			
 		    		} else {
 						$.alert({
 						    title: 'Success',
@@ -677,7 +686,6 @@
 						    boxWidth: '38%',
 						    useBootstrap: false,
 						});
-
 
 						$.ajax({
 							url : "/monitoring/ajax/get_attendance_information/",

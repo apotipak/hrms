@@ -5383,7 +5383,9 @@ def ajax_bulk_update_absent_status(request):
 	cus_brn = request.POST.get('cus_brn')
 	cus_vol = request.POST.get('cus_vol')
 	cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
-
+	username = request.user.username
+	upd_date = datetime.datetime.now()
+	
 	# message = "%s,%s,%s,%s,%s" %(attendance_date,shift_id,cus_id,cus_brn,cus_vol)
 	# print("message:", message)
 	# print("shift_status:", shift_status)
@@ -5504,6 +5506,8 @@ def ajax_bulk_update_absent_status(request):
 								return response
 							else:
 								sql = "update dly_plan set absent=0"
+								sql += ",upd_by='" + str(username) + "'"
+								sql += ",upd_date='" + str(upd_date)[:-10] + "'"
 								sql += " where dly_date='" + str(CurDate) + "'"
 								sql += " and sch_shift=" + str(shift_id)
 								sql += " and emp_id=" + str(tmp_emp_id)
@@ -5529,9 +5533,12 @@ def ajax_bulk_update_absent_status(request):
 			
 		else: # Absent
 			sql = "update dly_plan set absent=1"
+			sql += ",upd_by='" + str(username) + "'"
+			sql += ",upd_date='" + str(upd_date)[:-10] + "'"
 			sql += " where dly_date='" + str(CurDate) + "'"
 			sql += " and sch_shift=" + str(shift_id)
 			sql += " and cnt_id=" + str(cnt_id)
+			print("sql:", sql)
 			try:
 				with connection.cursor() as cursor:		
 					cursor.execute(sql)
