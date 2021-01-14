@@ -470,12 +470,12 @@
 					  <div class="row">
 						  <div class="form-row">
 
-							<div class="form-group col-2 d-inline">
+							<div class="form-group col-3 d-inline">
 						      	<label for="id_late_from">Late From</label>     
 						      	<input type="text" id="id_late_from" name="late_from" class="form-control form-control-sm" />
 							</div>
 
-							<div class="form-group col-2 d-inline">
+							<div class="form-group col-3 d-inline">
 						      	<label for="id_late_to">Late To</label>
 						      	<input type="text" id="id_late_to" name="late_to" class="form-control form-control-sm" />
 							</div>
@@ -751,7 +751,7 @@
 
 	$(document).ready(function(){
 		var today = new Date();
-		var date = today.getDate() + "/" + today.getMonth() + '/' + today.getFullYear() + " 00:00";
+		var date = today.getDate() + "/" + ("0" + today.getMonth()+1).slice(-2) + '/' + today.getFullYear() + " 00:00";
 
 		$("#id_cus_id").on('click', function(){
 			$("#id_cus_id").select();
