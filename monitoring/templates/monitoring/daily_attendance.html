@@ -220,6 +220,7 @@
                     <div class="col-sm-3">
                         <label for="id_customer_wage_rate">Wage Rate</label>
                         <input type="text" class="form-control form-control-sm" id="id_customer_wage_rate" readonly>
+                        <input type="hidden" id="id_customer_wage_rate_id">
                     </div>
                     <div class="col-sm-1 text-right align-self-center" id="id_cnt_active"></div>                    
                 </div>
@@ -241,6 +242,7 @@
                     <div class="col-sm-2">
                         <label for="id_customer_zone">Zone</label>
                         <input type="text" class="form-control form-control-sm" id="id_customer_zone" readonly>
+                        <input type="hidden" id="id_customer_zone_id">
                     </div>                                        
                 </div>
 
@@ -248,7 +250,6 @@
                     <div class="col-sm-8">
                         <label for="id_cus_add1_th">Address</label>
                         <input type="text" class="form-control form-control-sm" id="id_cus_add1_th" readonly>
-                        <small class="form-text text-muted" id="id_cus_add1_en"></small>
                     </div>
                     <div class="col-sm-2">
                         <label>Contract Term From</label>
@@ -800,6 +801,9 @@
 	$(document).ready(function(){
 		var today = new Date();
 		var date = today.getDate() + "/" + ("0" + today.getMonth()+1).slice(-2) + '/' + today.getFullYear() + " 00:00";
+
+        $("#id_customer_wage_rate_id").val(0);
+        $("#id_customer_zone_id").val(0);
 
 		$("#id_cus_id").on('click', function(){
 			$("#id_cus_id").select();
@@ -1476,8 +1480,8 @@
 					$("#con_fname_th").val(con_fname_th + " " + con_lname_th);
 					$("#con_pos_th").val(con_pos_th);
 
-
-
+                	$("#id_customer_wage_rate_id").val(wage_id);
+                	$("#id_customer_zone_id").val(zone_id);
 					//$("#").val();
 
 					// 
@@ -2382,7 +2386,7 @@
 			$("#id_remark").attr("readonly", false);
 		}
 		
-		console.log(ot_time_from + "," + ot_time_to);
+		//console.log(ot_time_from + "," + ot_time_to);
 	});
 
 
@@ -2438,7 +2442,7 @@
     });
 
 
-    function saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_status,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id) {
+    function saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_status,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id) {
 
     	//alert(allowZeroBathForPhoneAmount);
 
@@ -2666,6 +2670,8 @@
 				      		totalPNA: totalPNA,
 				      		totalPNM: totalPNM,
 				      		search_emp_id: id_search_emp_id,
+							customer_wage_rate_id,
+							customer_zone_id
 				    	},
 				    	success: function(data) {
 				    		if(data.success) {
@@ -3008,6 +3014,11 @@
     	var shift_name = $("#id_shift_option option:selected").text();    	
     	var relief_emp_id = $("#id_relief_emp_id").val();
 
+        var customer_wage_rate_id = $("#id_customer_wage_rate_id").val();
+        var customer_zone_id = $("#id_customer_zone_id").val();
+
+        //console.log(customer_wage_rate_id + "," + customer_zone_id);
+
     	var ui_absent_status = 0;
     	if($("#id_absent_check").is(":checked")) 
     		ui_absent_status = 1;
@@ -3161,13 +3172,13 @@
 					$('#id_relief_emp_id').focus();
 
 					return false;    			
-	    		} else {
-	    			saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id);
+	    		} else {	    	
+	    			saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);
 	    			return false;
 	    		}
 
     		} else {
-    			saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id);
+    			saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);
     			return false;
     		}
     	} else {
@@ -3188,7 +3199,7 @@
 					        	text: 'ยืนยัน',
 					        	btnClass: 'btn-danger',
 					        	action: function () { 
-					        		saveRecord(1,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id);
+					        		saveRecord(1,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);
 								}
 					        },
 					        cancel: {					        	
@@ -3201,10 +3212,10 @@
 					    }
 					});
 	    		} else {
-	    			saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id);
+	    			saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);
 	    		}
 	    	} else {
-	    		saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id);	
+	    		saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);	
 	    	}    		
     	}
 
@@ -3644,6 +3655,9 @@
 		$("#id_late_hour").css('border-style','');			
 
 		$("#daily_attendance_search_form :input").attr("disabled", false);					
+
+        $("#id_customer_wage_rate_id").val(0);
+        $("#id_customer_zone_id").val(0);
 
     	$("#id_cus_id").focus();
     });
