@@ -2046,17 +2046,41 @@ def sfQuery(request):
 	return True, message
 
 
+def showContract(cnt_id):
+	print("********************************************")
+	print("FUNCTION: showContract()")
+	print("********************************************")	
+
+	contract_info = None
+
+	sql = "select a.*,b.*,c.dist_th,c.dist_en,d.city_th,d.city_en,e.country_th,e.country_th,e.country_en"
+	sql += " ,h.zone_en,i.cus_name_th as site_th,i.cus_name_en as site_en"
+	sql += " ,i.cus_tel as site_tel,g.apr_name_en,k.wage_en"
+	sql += " ,f.con_fname_th,f.con_lname_th,f.con_position_th as con_pos_th"
+	sql += " ,f.con_fname_en,f.con_lname_en,f.con_position_en as con_pos_en"
+	sql += " from cus_contract as a"
+	sql += " left join customer as b on a.cus_id=b.cus_id and a.cus_brn=b.cus_brn"
+	sql += " left join customer as i on a.cus_id=i.cus_id and i.cus_brn=0"
+	sql += " left join t_district as c on b.cus_district=c.dist_id"
+	sql += " left join t_city as d on b.cus_city=d.city_id"
+	sql += " left join t_country as e on b.cus_country=e.country_id"
+	sql += " left join cus_contact as f on b.site_contact=f.con_id"
+	sql += " left join com_zone as h on b.cus_zone=h.zone_id"
+	sql += " left join t_aprove as g on a.cnt_apr_by=g.apr_id"
+	sql += " left join t_wagezone as k on a.cnt_wage_id=k.wage_id"
+	sql += " where a.cnt_id=" + str(cnt_id)
+	sql += " and a.cnt_active=1"
+	print("sql contract:", sql)
+
+	return True
+
+
 @permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
 @login_required(login_url='/accounts/login/')
 def ajax_get_attendance_information(request):
 	print("********************************************")
 	print("FUNCTION: ajax_get_attendance_information()")
 	print("********************************************")	
-
-
-	# call getContactID
-
-
 
 	# กำหนดค่าเริ่มต้น
 	is_pass = False			# กำหนดให้เป็น False ไว้ก่อน
@@ -2085,6 +2109,20 @@ def ajax_get_attendance_information(request):
 	totalNNM = 0
 	totalPDM = 0
 	totalPNM = 0
+
+	# TODO
+	# call getContactID	
+
+	# TODO
+	# call ChkValidInput(3)
+	# วันที่นี้ตรวจสอบตารางเวรสร้างไว้หรือไม่
+	# ตรวจสอบวันที่นี้ทำการ Post Day End ไปแล้วหรือไม่
+	# ตรวจสอบสัญญาถูกยกเลิกไปแล้วหรือไม่
+
+	# TODO
+	is_founnd = showContract(cnt_id)
+	# amnaj
+
 
 	#getPriorityStatus = False
 	#gUSE,gADD,gEDIT,gDEL,gPREVIEW,gPRINT,gIM,gEX,gSALARY,gType,gOLD
@@ -5558,3 +5596,5 @@ def ajax_bulk_update_absent_status(request):
 	response = JsonResponse(data={"success": True,"is_error": is_error,"message": message})
 	response.status_code = 200
 	return response
+
+

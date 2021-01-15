@@ -1353,10 +1353,8 @@
 					else
 						$("#totalPNM").html("<span class='text-danger'>" + data.totalPNM + "</span>");
 
-					// amnaj					
 					$("#daily_attendance_search_form :input").attr("disabled", true);					
-					$("#cancelDailyAttendanceButton").removeAttr("disabled");
-							 		
+					$("#cancelDailyAttendanceButton").removeAttr("disabled");							 		
 
 				} else {
 
@@ -3461,10 +3459,13 @@
  	$("#cancelDailyAttendanceButton").click( function() {
     	event.preventDefault();    	
 
+    	// TODO: amnaj
+    	
+
     	//$("#id_cus_id").val("0002526");
-    	$("#id_cus_id").val("0001486");
-    	$("#id_cus_brn").val("000");
-    	$("#id_cus_vol").val("001");
+    	//$("#id_cus_id").val("0001486");
+    	//$("#id_cus_brn").val("000");
+    	//$("#id_cus_vol").val("001");
 
     	$("#id_cus_id").val("");
     	$("#id_cus_brn").val("");
@@ -3506,9 +3507,7 @@
 		$("#id_late_hour").css('border-color','');
 		$("#id_late_hour").css('border-style','');			
 
-		// amnaj
 		$("#daily_attendance_search_form :input").attr("disabled", false);					
-		//$("#cancelDailyAttendanceButton").removeAttr("disabled");
 
     	$("#id_cus_id").focus();
     });
