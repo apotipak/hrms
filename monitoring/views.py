@@ -2055,11 +2055,18 @@ def showContract(cnt_id):
 	contract_info_obj = None
 	message = ""
 
-	sql = "select a.*,b.*,c.dist_th,c.dist_en,d.city_th,d.city_en,e.country_th,e.country_th,e.country_en"
-	sql += " ,h.zone_en,i.cus_name_th as site_th,i.cus_name_en as site_en"
-	sql += " ,i.cus_tel as site_tel,g.apr_name_en,k.wage_en"
-	sql += " ,f.con_fname_th,f.con_lname_th,f.con_position_th as con_pos_th"
-	sql += " ,f.con_fname_en,f.con_lname_en,f.con_position_en as con_pos_en"
+	sql = "select "
+	sql += " b.cus_name_th, b.cus_name_en, b.cus_tel,"
+	sql += " i.cus_name_th as site_th, i.cus_name_en as site_en, i.cus_tel as site_tel,"
+	sql += " b.cus_add1_th, b.cus_add2_th,"
+	sql += " f.con_fname_th, f.con_lname_th, f.con_position_th as con_pos_th,"
+	sql += " f.con_fname_en, f.con_lname_en, f.con_position_en as con_pos_en,"
+	sql += " a.cnt_doc_no, a.cnt_sign_frm, a.cnt_sign_to, a.cnt_eff_frm, a.cnt_eff_to,"
+	sql += " k.wage_id, k.wage_en, g.apr_name_en, a.cnt_zone, a.cnt_active,"
+	sql += " c.dist_th, c.dist_en, d.city_th, d.city_en, e.country_th,"
+	sql += " e.country_th, e.country_en, h.zone_en,"
+	sql += " g.apr_name_en, k.wage_en,"
+	sql += " a.*, b.*"
 	sql += " from cus_contract as a"
 	sql += " left join customer as b on a.cus_id=b.cus_id and a.cus_brn=b.cus_brn"
 	sql += " left join customer as i on a.cus_id=i.cus_id and i.cus_brn=0"
@@ -2072,6 +2079,7 @@ def showContract(cnt_id):
 	sql += " left join t_wagezone as k on a.cnt_wage_id=k.wage_id"
 	sql += " where a.cnt_id=" + str(cnt_id)
 	sql += " and a.cnt_active=1"
+	print("sql 11:", sql)
 
 	try:				
 		cursor = connection.cursor()
@@ -2142,7 +2150,7 @@ def ajax_get_attendance_information(request):
 	# ตรวจสอบวันที่นี้ทำการ Post Day End ไปแล้วหรือไม่
 	# ตรวจสอบสัญญาถูกยกเลิกไปแล้วหรือไม่
 
-	# TODO
+	# Get Contract Info
 	is_found,contract_info_obj,message = showContract(cnt_id)
 	if is_found:
 		contract_info_obj = contract_info_obj
@@ -2155,6 +2163,12 @@ def ajax_get_attendance_information(request):
 		})		
 		response.status_code = 200
 		return response		
+
+	# Get Contract Service
+
+
+	# Get Schedule List
+
 
 	# amnaj
 
@@ -2621,7 +2635,7 @@ def ajax_get_attendance_information(request):
 	    "schedule_list": list(schedule_list),
 	    "employee_list": list(employee_list),
 	    "ot_reason_list": list(ot_reason_list),
-	    "contract_info": contract_info_obj,
+	    "contract_info": list(contract_info_obj),
 	    "totalNDP": totalNDP,
 		"totalNNP": totalNNP,
 		"totalPDP": totalPDP,

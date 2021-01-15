@@ -1355,11 +1355,50 @@
 
 
 					// amnaj
-					// Get Contract Information
+					// Get Contract Information					
+					cus_name_th = data.contract_info[0][0];
+					cus_name_en = data.contract_info[0][1];
+					cus_tel = data.contract_info[0][2];
 					
+					cus_add1_th = data.contract_info[0][6];
+					cus_add2_th = data.contract_info[0][7];
 
+					site_name_th = data.contract_info[0][3];
+					site_name_en = data.contract_info[0][4];
+					site_cus_tel = data.contract_info[0][5];
+
+					con_fname_th = data.contract_info[0][8];
+					con_lname_th = data.contract_info[0][9];
+					con_pos_th = data.contract_info[0][10];
+
+					con_fname_en = data.contract_info[0][11];
+					con_lname_en = data.contract_info[0][12];
+					con_pos_en = data.contract_info[0][13];
+
+					cnt_doc_no = data.contract_info[0][14];
+					cnt_sign_frm = data.contract_info[0][15];
+					cnt_sign_to = data.contract_info[0][16];
+					cnt_eff_frm = data.contract_info[0][17];
+					cnt_eff_frm = data.contract_info[0][18];
+
+					
+					wage_id = data.contract_info[0][19];
+					wage_en = data.contract_info[0][20];
+					apr_name_en = data.contract_info[0][21];
+					
+					zone_id = data.contract_info[0][22];
+					zone_name = data.contract_info[0][31];
+
+					cnt_active = data.contract_info[0][23];
+
+
+					$("#id_customer_name_th").val(cus_name_th);
+					$("#id_customer_phone").val(cus_tel);
+					$("#id_customer_wage_rate").val(wage_id + " " + wage_en);
+
+					// 
 					$("#daily_attendance_search_form :input").attr("disabled", true);					
-					$("#cancelDailyAttendanceButton").removeAttr("disabled");							 		
+					$("#cancelDailyAttendanceButton").removeAttr("disabled");					 		
 
 				} else {
 
