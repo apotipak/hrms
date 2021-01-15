@@ -1,7 +1,12 @@
   <!-- Main Footer -->
   <footer class="main-footer">
     <div class="float-right d-none d-sm-inline">
-    	<i class="fas fa-clock"></i><span class="text-dark">&nbsp;<b>{{ today_date|date:"d M Y" }}</b></span>
+    	<i class="far fa-calendar-alt"></i>
+    	<span class="text-dark">
+    		&nbsp;<b>{{ today_date|date:"d/m/Y" }}</b>&nbsp;
+			<a><span class="hours"></span></a>:<a><span class="min"></span></a>:<a><span class="sec"></span></a>
+    	</span>
     </div>
     <i class="fas fa-server"></i><span class="text-dark">&nbsp;<b>{{ host }}</b></span>&nbsp;&nbsp;|&nbsp;&nbsp;<i class="fas fa-database"></i>&nbsp;<span class="text-dark"><b>{{ database }}</b></span>
+
   </footer>
