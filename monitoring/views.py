@@ -2051,7 +2051,9 @@ def showContract(cnt_id):
 	print("FUNCTION: showContract()")
 	print("********************************************")	
 
-	contract_info = None
+	is_found = False
+	contract_info_obj = None
+	message = ""
 
 	sql = "select a.*,b.*,c.dist_th,c.dist_en,d.city_th,d.city_en,e.country_th,e.country_th,e.country_en"
 	sql += " ,h.zone_en,i.cus_name_th as site_th,i.cus_name_en as site_en"
@@ -2070,9 +2072,29 @@ def showContract(cnt_id):
 	sql += " left join t_wagezone as k on a.cnt_wage_id=k.wage_id"
 	sql += " where a.cnt_id=" + str(cnt_id)
 	sql += " and a.cnt_active=1"
-	print("sql contract:", sql)
 
-	return True
+	try:				
+		cursor = connection.cursor()
+		cursor.execute(sql)
+		contract_info_obj = cursor.fetchall()
+	except db.OperationalError as e:
+		return False, contract_info_obj, "<b>Please send this error to IT teamใ</b><br>" + str(e)
+	except db.Error as e:
+		return False, contract_info_obj, "<b>Please send this error to IT team.</b><br>" + str(e)
+	finally:
+		cursor.close()
+
+	if contract_info_obj is not None:
+		if len(contract_info_obj)>0:
+			is_found = True
+		else:
+			is_found = False
+			message = "ไม่พบรายละเอียดของสัญญาเลขที่ <b>" + str(cnt_id) + "</b> หรือสัญญานี้อาจถูกยกเลิกไปแล้ว"
+	else:
+		is_found = False
+		message = "ไม่พบรายละเอียดของสัญญาเลขที่ <b>" + str(cnt_id) + "</b> หรือสัญญานี้อาจถูกยกเลิกไปแล้ว"
+
+	return is_found, contract_info_obj, message
 
 
 @permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
@@ -2096,6 +2118,7 @@ def ajax_get_attendance_information(request):
 	schedule_list = []
 	employee_list = []
 	ot_reason_list = []
+	contract_info_obj = None
 
 	totalNDP = 0
 	totalNNP = 0
@@ -2120,7 +2143,19 @@ def ajax_get_attendance_information(request):
 	# ตรวจสอบสัญญาถูกยกเลิกไปแล้วหรือไม่
 
 	# TODO
-	is_founnd = showContract(cnt_id)
+	is_found,contract_info_obj,message = showContract(cnt_id)
+	if is_found:
+		contract_info_obj = contract_info_obj
+
+	else:
+		response = JsonResponse(data={
+		    "success": True,
+		    "is_found": False,
+		    "message": message
+		})		
+		response.status_code = 200
+		return response		
+
 	# amnaj
 
 
@@ -2586,6 +2621,7 @@ def ajax_get_attendance_information(request):
 	    "schedule_list": list(schedule_list),
 	    "employee_list": list(employee_list),
 	    "ot_reason_list": list(ot_reason_list),
+	    "contract_info": contract_info_obj,
 	    "totalNDP": totalNDP,
 		"totalNNP": totalNNP,
 		"totalPDP": totalPDP,
