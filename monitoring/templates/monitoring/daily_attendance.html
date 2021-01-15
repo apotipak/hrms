@@ -202,52 +202,94 @@
 
 
 
-						<div class="pt-2 col-12">
+<div class="container pt-2">
+    <div class="row">
+        <div class="col-md-12 mx-auto">
+            <form>
 
-							
-							<div class="col-10 float-left">
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label for="id_customer_name_th">Customer Name</label>
+                        <input type="text" class="form-control form-control-sm" id="id_customer_name_th" readonly>
+                        <small class="form-text text-muted" id="id_customer_name_en"></small>
+                    </div>
+                    <div class="col-sm-2">
+                        <label for="id_customer_phone">Phone</label>
+                        <input type="text" class="form-control form-control-sm" id="id_customer_phone" readonly>
+                    </div>
+                    <div class="col-sm-3">
+                        <label for="id_customer_wage_rate">Wage Rate</label>
+                        <input type="text" class="form-control form-control-sm" id="id_customer_wage_rate" readonly>
+                    </div>
+                    <div class="col-sm-1 text-right align-self-center" id="id_cnt_active"></div>                    
+                </div>
 
-							  <div class="form-group col-4">
-							    <label for="id_customer_name_th" class="col-sm-4 col-form-label col-form-label-sm">Customer</label>
-							    <div class="col-sm-10">
-							      <input type="text" class="form-control form-control-sm" id="id_customer_name_th" placeholder="col-form-label-sm">
-							    </div>
-							  </div>
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label for="id_site_customer_name_th">Site Name</label>
+                        <input type="text" class="form-control form-control-sm" id="id_site_customer_name_th" readonly>
+                        <small class="form-text text-muted" id="id_site_customer_name_en"></small>
+                    </div>
+                    <div class="col-sm-2">
+                        <label for="id_site_customer_phone">Phone</label>
+                        <input type="text" class="form-control form-control-sm" id="id_site_customer_phone" readonly>
+                    </div>
+                    <div class="col-sm-2">
+                        <label for="id_authorized_by">Authorized by</label>
+                        <input type="text" class="form-control form-control-sm" id="id_authorized_by" readonly>
+                    </div>
+                    <div class="col-sm-2">
+                        <label for="id_customer_zone">Zone</label>
+                        <input type="text" class="form-control form-control-sm" id="id_customer_zone" readonly>
+                    </div>                                        
+                </div>
 
-							  <div class="form-group col-2">
-							    <label for="id_customer_phone" class="col-sm-4 col-form-label col-form-label-sm">Phone</label>
-							    <div class="col-sm-10">
-							      <input type="text" class="form-control form-control-sm" id="id_customer_phone" placeholder="col-form-label-sm">
-							    </div>
-							  </div>
+                <div class="form-group row">
+                    <div class="col-sm-8">
+                        <label for="id_cus_add1_th">Address</label>
+                        <input type="text" class="form-control form-control-sm" id="id_cus_add1_th" readonly>
+                        <small class="form-text text-muted" id="id_cus_add1_en"></small>
+                    </div>
+                    <div class="col-sm-2">
+                        <label>Contract Term From</label>
+                        <input type="text" class="form-control form-control-sm" id="id_cnt_sign_frm" readonly>&nbsp;
+                    </div>
+                    <div class="col-sm-2">
+                        <label>Contract Term To</label>
+                        <input type="text" class="form-control form-control-sm" id="id_cnt_sign_to" readonly>
+                    </div>                    
+                </div>                
 
-							  <div class="form-group col-3">
-							    <label for="id_customer_wage_rate" class="col-sm-12 col-form-label col-form-label-sm">Wage Rate</label>
-							    <div class="col-sm-10">
-							      <input type="text" class="form-control form-control-sm" id="id_customer_wage_rate" placeholder="col-form-label-sm">
-							    </div>
-							  </div>  
-							</div>
+                <div class="form-group row">
+                    <div class="col-sm-2">
+                        <label for="id_cnt_doc_no">Cnt.Ref.</label>
+                        <input type="text" class="form-control form-control-sm" id="id_cnt_doc_no" readonly>                        
+                    </div>
+                    <div class="col-sm-3">
+                        <label>Contact</label>
+                        <input type="text" class="form-control form-control-sm" id="con_fname_th" readonly>&nbsp;
+                    </div>
+                    <div class="col-sm-3">
+                        <label>Position</label>
+                        <input type="text" class="form-control form-control-sm" id="con_pos_th" readonly>
+                    </div>
+                    <div class="col-sm-2">
+                        <label>Effective Term From</label>
+                        <input type="text" class="form-control form-control-sm" id="id_cnt_eff_frm" readonly>&nbsp;
+                    </div>
+                    <div class="col-sm-2">
+                        <label>Effective Term To</label>
+                        <input type="text" class="form-control form-control-sm" id="id_cnt_eff_to" readonly>
+                    </div>                                              
+                </div>                
 
-							<div class="col-2 float-right">
-							  <div class="form-group col-2">
-							    <label for="id_customer_active_status" class="col-sm-4 col-form-label col-form-label-sm">&nbsp;</label>
-							    <div class="col-sm-10">      
-									<div class="row float-right">
-							        	<div class="btn-group">
-								          	<label class="switch">                                 
-								            	<input type="checkbox" id="id_cnt_active" name="cnt_active" disabled>
-								            	<div class="slider"></div>
-								          	</label>  
-							        	</div>
-							        <div>&nbsp;</div>
-								</div>	
-							    </div>
-							  </div>  
-							</div>
+                <!-- amnaj -->
 
-
-						</div>
+                <!--<button type="button" class="btn btn-primary px-4 float-right">Save</button>-->
+            </form>
+        </div>
+    </div>
+</div>
 
 
 
@@ -1369,6 +1411,12 @@
 					
 					cus_add1_th = data.contract_info[0][6];
 					cus_add2_th = data.contract_info[0][7];
+					dist_th = data.contract_info[0][24];
+					city_th = data.contract_info[0][26];
+					country_th = data.contract_info[0][28];
+
+					dist_en = data.contract_info[0][25];
+					city_en = data.contract_info[0][27];
 
 					site_name_th = data.contract_info[0][3];
 					site_name_en = data.contract_info[0][4];
@@ -1383,29 +1431,58 @@
 					con_pos_en = data.contract_info[0][13];
 
 					cnt_doc_no = data.contract_info[0][14];
-					cnt_sign_frm = data.contract_info[0][15];
-					cnt_sign_to = data.contract_info[0][16];
-					cnt_eff_frm = data.contract_info[0][17];
-					cnt_eff_frm = data.contract_info[0][18];
+					cnt_sign_frm = convertStringToDate(data.contract_info[0][15]);
+					cnt_sign_to = convertStringToDate(data.contract_info[0][16]);
+					cnt_eff_frm = convertStringToDate(data.contract_info[0][17]);
+					cnt_eff_to = convertStringToDate(data.contract_info[0][18]);
 
-					
 					wage_id = data.contract_info[0][19];
 					wage_en = data.contract_info[0][20];
 					apr_name_en = data.contract_info[0][21];
 					
 					zone_id = data.contract_info[0][22];
-					zone_name = data.contract_info[0][31];
+					zone_name = data.contract_info[0][30];
 
 					cnt_active = data.contract_info[0][23];
 
-
+					
 					$("#id_customer_name_th").val(cus_name_th);
+					$("#id_customer_name_en").text(cus_name_en);
 					$("#id_customer_phone").val(cus_tel);
 					$("#id_customer_wage_rate").val(wage_id + " | " + wage_en);
 
+					if(cnt_active=="1") {					
+						result = "<button type='button' class='btn btn-lg btn-success'>Active</button>";
+					} else {
+						result = "<button type='button' class='btn btn-lg btn-danger'>Pending</button>";
+					}
+					$("#id_cnt_active").html(result);
+
+					$("#id_site_customer_name_th").val(site_name_th);
+					$("#id_site_customer_name_en").html(site_name_en);
+					$("#id_site_customer_phone").val(site_cus_tel);
+					$("#id_authorized_by").val(apr_name_en);
+
+					$("#id_customer_zone").val(zone_id + " | " + zone_name);
+										
+					$("#id_cus_add1_th").val(cus_add1_th + " " + cus_add2_th + " " + dist_th + " " + city_th + " " + country_th);					
+					
+					$("#id_cnt_doc_no").val(cnt_doc_no);
+					$("#id_cnt_sign_frm").val(cnt_sign_frm);
+					$("#id_cnt_sign_to").val(cnt_sign_to);
+					$("#id_cnt_eff_frm").val(cnt_eff_frm);
+					$("#id_cnt_eff_to").val(cnt_eff_to);					
+					
+					$("#con_fname_th").val(con_fname_th + " " + con_lname_th);
+					$("#con_pos_th").val(con_pos_th);
+
+
+
+					//$("#").val();
+
 					// 
 					$("#daily_attendance_search_form :input").attr("disabled", true);					
-					$("#cancelDailyAttendanceButton").removeAttr("disabled");					 		
+					$("#cancelDailyAttendanceButton").removeAttr("disabled");
 
 				} else {
 
@@ -1443,6 +1520,17 @@
       }
     });
 
+
+	function convertStringToDate(strdate) {
+		var new_date = ""
+		var new_date_temp = new Date(strdate);
+		var dd = String(new_date_temp.getDate()).padStart(2, '0');
+		var mm = String(new_date_temp.getMonth() + 1).padStart(2, '0');
+		var yyyy = new_date_temp.getFullYear();
+		new_date = dd + '/' + mm + '/' + yyyy;
+
+		return new_date;
+	}
 
 	/*
     $(document).on('keypress', '#id_emp_id', function(e) {
