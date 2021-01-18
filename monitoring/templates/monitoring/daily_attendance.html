@@ -204,94 +204,7 @@
 
 
 
-						<div class="container pt-2">
-						    <div class="row">
-						        <div class="col-md-12 mx-auto">
-						            <form>
-
-						                <div class="form-group row">
-						                    <div class="col-sm-6">
-						                        <label for="id_customer_name_th">Customer Name</label>
-						                        <input type="text" class="form-control form-control-sm" id="id_customer_name_th" readonly>
-						                        <small class="form-text text-muted" id="id_customer_name_en"></small>
-						                    </div>
-						                    <div class="col-sm-2">
-						                        <label for="id_customer_phone">Phone</label>
-						                        <input type="text" class="form-control form-control-sm" id="id_customer_phone" readonly>
-						                    </div>
-						                    <div class="col-sm-3">
-						                        <label for="id_customer_wage_rate">Wage Rate</label>
-						                        <input type="text" class="form-control form-control-sm" id="id_customer_wage_rate" readonly>
-						                        <input type="hidden" id="id_customer_wage_rate_id">
-						                    </div>
-						                    <div class="col-sm-1 text-right align-self-center" id="id_cnt_active"></div>                    
-						                </div>
-
-						                <div class="form-group row">
-						                    <div class="col-sm-6">
-						                        <label for="id_site_customer_name_th">Site Name</label>
-						                        <input type="text" class="form-control form-control-sm" id="id_site_customer_name_th" readonly>
-						                        <small class="form-text text-muted" id="id_site_customer_name_en"></small>
-						                    </div>
-						                    <div class="col-sm-2">
-						                        <label for="id_site_customer_phone">Phone</label>
-						                        <input type="text" class="form-control form-control-sm" id="id_site_customer_phone" readonly>
-						                    </div>
-						                    <div class="col-sm-2">
-						                        <label for="id_authorized_by">Authorized by</label>
-						                        <input type="text" class="form-control form-control-sm" id="id_authorized_by" readonly>
-						                    </div>
-						                    <div class="col-sm-2">
-						                        <label for="id_customer_zone">Zone</label>
-						                        <input type="text" class="form-control form-control-sm" id="id_customer_zone" readonly>
-						                        <input type="hidden" id="id_customer_zone_id">
-						                    </div>                                        
-						                </div>
-
-						                <div class="form-group row">
-						                    <div class="col-sm-8">
-						                        <label for="id_cus_add1_th">Address</label>
-						                        <input type="text" class="form-control form-control-sm" id="id_cus_add1_th" readonly>
-						                    </div>
-						                    <div class="col-sm-2">
-						                        <label>Contract Term From</label>
-						                        <input type="text" class="form-control form-control-sm" id="id_cnt_sign_frm" readonly>&nbsp;
-						                    </div>
-						                    <div class="col-sm-2">
-						                        <label>Contract Term To</label>
-						                        <input type="text" class="form-control form-control-sm" id="id_cnt_sign_to" readonly>
-						                    </div>                    
-						                </div>                
-
-						                <div class="form-group row">
-						                    <div class="col-sm-2">
-						                        <label for="id_cnt_doc_no">Cnt.Ref.</label>
-						                        <input type="text" class="form-control form-control-sm" id="id_cnt_doc_no" readonly>                        
-						                    </div>
-						                    <div class="col-sm-3">
-						                        <label>Contact</label>
-						                        <input type="text" class="form-control form-control-sm" id="con_fname_th" readonly>&nbsp;
-						                    </div>
-						                    <div class="col-sm-3">
-						                        <label>Position</label>
-						                        <input type="text" class="form-control form-control-sm" id="con_pos_th" readonly>
-						                    </div>
-						                    <div class="col-sm-2">
-						                        <label>Effective Term From</label>
-						                        <input type="text" class="form-control form-control-sm" id="id_cnt_eff_frm" readonly>&nbsp;
-						                    </div>
-						                    <div class="col-sm-2">
-						                        <label>Effective Term To</label>
-						                        <input type="text" class="form-control form-control-sm" id="id_cnt_eff_to" readonly>
-						                    </div>                                              
-						                </div>                
-
-						                <!-- amnaj -->
-
-						                <!--<button type="button" class="btn btn-primary px-4 float-right">Save</button>-->
-						            </form>
-						        </div>
-						    </div>
+						<div class="container pt-3">
 
 						    <!-- Customer Information Section -->
 					      	<div class="card card-outline card-secondary">
@@ -312,11 +225,83 @@
 						        <div class="card-body col-12">
 									<div class="row" style="white-space:nowrap;">
 										<div class="col-12">
-										  <div class="form-group row">
-										  	
+							                <div class="form-group row">
+							                    <div class="col-6">
+							                        <label for="id_customer_name_th">Customer Name</label>
+							                        <input type="text" class="form-control form-control-sm" id="id_customer_name_th" readonly>
+							                        <small class="form-text text-muted" id="id_customer_name_en"></small>
+							                    </div>
+							                    <div class="col-2">
+							                        <label for="id_customer_phone">Phone</label>
+							                        <input type="text" class="form-control form-control-sm" id="id_customer_phone" readonly>
+							                    </div>
+							                    <div class="col-3">
+							                        <label for="id_customer_wage_rate">Wage Rate</label>
+							                        <input type="text" class="form-control form-control-sm" id="id_customer_wage_rate" readonly>
+							                        <input type="hidden" id="id_customer_wage_rate_id">
+							                    </div>
+							                    <div class="col-1 text-right align-self-center" id="id_cnt_active"></div>                    
+							                </div>
 
+							                <div class="form-group row">
+							                    <div class="col-6">
+							                        <label for="id_site_customer_name_th">Site Name</label>
+							                        <input type="text" class="form-control form-control-sm" id="id_site_customer_name_th" readonly>
+							                        <small class="form-text text-muted" id="id_site_customer_name_en"></small>
+							                    </div>
+							                    <div class="col-2">
+							                        <label for="id_site_customer_phone">Phone</label>
+							                        <input type="text" class="form-control form-control-sm" id="id_site_customer_phone" readonly>
+							                    </div>
+							                    <div class="col-2">
+							                        <label for="id_authorized_by">Authorized by</label>
+							                        <input type="text" class="form-control form-control-sm" id="id_authorized_by" readonly>
+							                    </div>
+							                    <div class="col-2">
+							                        <label for="id_customer_zone">Zone</label>
+							                        <input type="text" class="form-control form-control-sm" id="id_customer_zone" readonly>
+							                        <input type="hidden" id="id_customer_zone_id">
+							                    </div>                                        
+							                </div>
 
-										  </div>
+							                <div class="form-group row">
+							                    <div class="col-8">
+							                        <label for="id_cus_add1_th">Address</label>
+							                        <input type="text" class="form-control form-control-sm" id="id_cus_add1_th" readonly>
+							                    </div>
+							                    <div class="col-2">
+							                        <label>Contract Term From</label>
+							                        <input type="text" class="form-control form-control-sm" id="id_cnt_sign_frm" readonly>&nbsp;
+							                    </div>
+							                    <div class="col-2">
+							                        <label>Contract Term To</label>
+							                        <input type="text" class="form-control form-control-sm" id="id_cnt_sign_to" readonly>
+							                    </div>                    
+							                </div>                
+
+							                <div class="form-group row">
+							                    <div class="col-2">
+							                        <label for="id_cnt_doc_no">Cnt.Ref.</label>
+							                        <input type="text" class="form-control form-control-sm" id="id_cnt_doc_no" readonly>                        
+							                    </div>
+							                    <div class="col-3">
+							                        <label>Contact</label>
+							                        <input type="text" class="form-control form-control-sm" id="con_fname_th" readonly>&nbsp;
+							                    </div>
+							                    <div class="col-3">
+							                        <label>Position</label>
+							                        <input type="text" class="form-control form-control-sm" id="con_pos_th" readonly>
+							                    </div>
+							                    <div class="col-2">
+							                        <label>Effective Term From</label>
+							                        <input type="text" class="form-control form-control-sm" id="id_cnt_eff_frm" readonly>&nbsp;
+							                    </div>
+							                    <div class="col-2">
+							                        <label>Effective Term To</label>
+							                        <input type="text" class="form-control form-control-sm" id="id_cnt_eff_to" readonly>
+							                    </div>                                              
+							                </div>                
+
 										</div>
 									</div>
 								</div>
@@ -1488,7 +1473,6 @@
 						$("#totalPNM").html("<span class='text-danger'>" + data.totalPNM + "</span>");
 
 
-					// amnaj
 					// Get Contract Information					
 					cus_name_th = data.contract_info[0][0];
 					cus_name_en = data.contract_info[0][1];
