@@ -67,7 +67,8 @@
       <div class="card-body">
 
         <div class="clearfix">
-          <div class="float-left">
+          <b>
+          <div class="float-left col-12">
             <ul class="nav nav-tabs navbar-expand nav-fill" id="customer" role="tablist">
 
               <li class="nav-item active">
@@ -82,8 +83,9 @@
                 <a class="nav-link" id="billing-tab" data-toggle="tab" href="#billing" role="tab" aria-controls="billing">{% trans 'Billing' %}</a>
               </li>
 
-            </ul>        
+            </ul>     
           </div>
+          </b>
         </div>
 
 
@@ -123,7 +125,7 @@
               <div class="float-left">&nbsp;</div>
               <div class="float-right">
 
-                <div class="mailbox-controls">
+                <div class="mailbox-controls pt-3">
                   <div class="btn-group">
                     <button id="btnCopyToSite" type="button" class="btn btn-outline-primary btn-sm"><i class="far fa-copy"></i>&nbsp;&nbsp;Copy to Site</button>
                     &nbsp;&nbsp;
@@ -648,7 +650,7 @@
               <div class="float-right">
 
 
-                <div class="mailbox-controls">
+                <div class="mailbox-controls pt-3">
                   <div class="btn-group">
                     <button id="btnSiteCopyToBill" type="button" class="btn btn-outline-primary btn-sm"><i class="far fa-copy"></i>&nbsp;&nbsp;Copy to Bill</button>
                   </div>
@@ -1071,24 +1073,33 @@
 
           <!-- Billing Tab -->
           <div class="tab-pane fade" id="billing" role="tabpanel" aria-labelledby="billing-tab">            
+
             <div class="clearfix">
-              <div class="float-left">&nbsp;</div>
+
+            <div class="float-left">&nbsp;</div>
               <div class="float-right">
-                <div class="float-left pt-2">
-                  &nbsp;
+
+                <div class="mailbox-controls pt-3">
+                  <div class="btn-group">&nbsp;</div>
+
+                  <div class="float-right">
+                    &nbsp;&nbsp;&nbsp;
+                    <div class="btn-group">
+                      <label class="switch">                                 
+                        {% if cus_bill.cus_active|default_if_none:0 %}
+                        <input type="checkbox" id="id_cus_bill_cus_active" name="cus_bill_cus_active" value=1 checked>
+                        {% else %}
+                        <input type="checkbox" id="id_cus_bill_cus_active" name="cus_bill_cus_active" value=0>
+                        {% endif %}                  
+                        <div class="slider"></div>
+                      </label>                      
+                    </div>
+                  </div>
                 </div>
 
-                <label class="switch">                                 
-                  {% if cus_bill.cus_active|default_if_none:0 %}
-                  <input type="checkbox" id="id_cus_bill_cus_active" name="cus_bill_cus_active" value=1 checked>
-                  {% else %}
-                  <input type="checkbox" id="id_cus_bill_cus_active" name="cus_bill_cus_active" value=0>
-                  {% endif %}                  
-                  <div class="slider"></div>
-                </label>
-
               </div>
-            </div>
+            </div>    
+
 
             <div class="container-fluid pt-2">
 
