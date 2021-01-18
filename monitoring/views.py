@@ -2133,8 +2133,9 @@ def getCustomerScheduleList(cnt_id):
 	sql += "left join t_shift as h on b.sch_shf_sat=h.shf_id "
 	sql += "left join t_shift as i on b.sch_shf_sun=i.shf_id "
 	sql += "where a.cnt_id=" + str(cnt_id) + " "
-	sql += "and a.cnt_active=1"
-	sql += "and b.upd_flag<>'D'"
+	sql += "and a.cnt_active=1 "
+	sql += "and b.upd_flag<>'D' "
+	sql += "and b.sch_active=1 "
 	sql += "order by b.sch_active desc,b.emp_id"
 
 	try:				
@@ -2922,8 +2923,7 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 		message = "PASS"
 	else:
 		return False, message
-	# ******* END ***********
-
+	# ******* END ***********	
 
 	# Call SetVariable("DLY_PLAN")
 	Tsch_no = 0
@@ -3080,7 +3080,8 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 	sql += str(str(datetime.datetime.now())[:-3]) + "','" + str(username) + "'," + "'A'" + ",'" + remark + "')"	
 
 	print("sql: ", sql)
-
+	return True, "TEST"
+	
 	try:
 		with connection.cursor() as cursor:
 			cursor.execute(sql)
