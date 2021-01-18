@@ -3079,9 +3079,9 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 	sql += str(Tspare) + "," + str(Twage_id) + ",'" + str(Twage_no) + "','" + str(Tpay_type) + "'," + str(Tsoc) + "," + str(Tpub) + "," + str(Tdof) + "," + str(Tday7) + ",'"
 	sql += str(str(datetime.datetime.now())[:-3]) + "','" + str(username) + "'," + "'A'" + ",'" + remark + "')"	
 
-	print("sql: ", sql)
-	return True, "TEST"
-	
+	# print("sql: ", sql)
+	# return True, "TEST"
+
 	try:
 		with connection.cursor() as cursor:
 			cursor.execute(sql)
@@ -3094,7 +3094,7 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 		is_pass = False
 		message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
 
-	return True, message
+	return is_pass, message
 
 
 
