@@ -59,6 +59,10 @@ $(document).ready(function(){
 	var today = new Date();
 	var date = today.getDate() + "/" + ("0" + today.getMonth()+1).slice(-2) + '/' + today.getFullYear() + " 00:00";
 
+	$('#id_search_date_from').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", new Date());
+	
+	$('#id_search_date_to').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", new Date());
+
 	$("#id_search_emp_id").focus();
 });
 
@@ -91,12 +95,108 @@ $(document).on('keypress', '#id_search_emp_id', function(e) {
 		});
 		$("#id_search_emp_id").focus();
   	} else {
-
+  		$("#id_search_date_from").focus();
   	}
   }
+});
+
+$(document).on('keypress', '#id_search_date_from', function(e) {
+  if(e.which == 13) {          
+    e.preventDefault();
+  	var obj = $(this);
+  	var id_search_date_from = obj.val();
+  	
+  	if(id_search_date_from=="") {
+		$.alert({
+		    title: 'Error',
+		    type: 'red',
+		    content: "กรุณาป้อนวันที่เริ่มต้น",
+		    animation: 'zoom',
+		    animationBounce: 1.5,
+		    closeIcon: false,
+		    boxWidth: '38%',
+		    useBootstrap: false,
+		});
+		$("#id_search_date_from").focus();
+  	} else {
+  		$("#id_search_date_to").focus();
+  	}
+  }
+});
+
+$(document).on('click', '#id_search_submit_button', function(e) {    	
+	var emp_id = $("#id_search_emp_id").val();
+	var search_date_from = $("#id_search_date_from").val();
+	var search_date_to = $("#id_search_date_to").val();
+
+	if(emp_id=="") {
+		$.alert({
+		    title: 'Error',
+		    type: 'red',
+		    content: "กรุณาป้อนวันที่เริ่มต้น",
+		    animation: 'zoom',
+		    animationBounce: 1.5,
+		    closeIcon: false,
+		    boxWidth: '38%',
+		    useBootstrap: false,
+		});
+		return false;		
+	}
+
+	if(emp_id=="") {
+		$.alert({
+		    title: 'Error',
+		    type: 'red',
+		    content: "กรุณาป้อนรหัสพนักงาน",
+		    animation: 'zoom',
+		    animationBounce: 1.5,
+		    closeIcon: false,
+		    boxWidth: '38%',
+		    useBootstrap: false,
+		    keys: ['enter', 'shift'],
+		});
+		return false;		
+	} 
+
+	if(search_date_from=="") {
+		$.alert({
+		    title: 'Error',
+		    type: 'red',
+		    content: "กรุณาป้อนวันที่เริ่มต้น",
+		    animation: 'zoom',
+		    animationBounce: 1.5,
+		    closeIcon: false,
+		    boxWidth: '38%',
+		    useBootstrap: false,
+		});
+		return false;
+	}
+
+	if(search_date_to=="") {
+		$.alert({
+		    title: 'Error',
+		    type: 'red',
+		    content: "กรุณาป้อนวันที่สิ้นสุด",
+		    animation: 'zoom',
+		    animationBounce: 1.5,
+		    closeIcon: false,
+		    boxWidth: '38%',
+		    useBootstrap: false,
+		});
+		return false;
+	}
+
+
+	alert("TODO");
+	console.log(emp_id+","+search_date_from+","+search_date_to);
 
 });
 
+$(document).on('click', '#id_search_cancel_button', function(e) {    	
+	$("#daily_guard_performance_search_form").trigger("reset");
+	$("#id_search_emp_id").focus();	
+});
+
+
 </script>
 {% endblock %}
-		
