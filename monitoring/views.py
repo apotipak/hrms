@@ -2078,7 +2078,7 @@ def showContract(cnt_id):
 	sql += " left join t_wagezone as k on a.cnt_wage_id=k.wage_id"
 	sql += " where a.cnt_id=" + str(cnt_id)
 	sql += " and a.cnt_active=1"
-	print("sql 11:", sql)
+	# print("sql 11:", sql)
 
 	try:				
 		cursor = connection.cursor()
@@ -2104,6 +2104,98 @@ def showContract(cnt_id):
 	return is_found, contract_info_obj, message
 
 
+
+def getCustomerScheduleList(cnt_id):
+	print("********************************************")
+	print("FUNCTION: getCustomerScheduleList()")
+	print("********************************************")	
+
+	is_found = False
+	schedule_list = None
+	message = ""
+
+	sql = "select b.* "
+	sql += ",k.emp_fname_th,k.emp_lname_th "
+	sql += ",c.shf_desc as shf_mon "
+	sql += ",d.shf_desc as shf_tue "
+	sql += ",e.shf_desc as shf_wed "
+	sql += ",f.shf_desc as shf_thu "
+	sql += ",g.shf_desc as shf_fri "
+	sql += ",h.shf_desc as shf_sat "
+	sql += ",i.shf_desc as shf_sun "
+	sql += "from cus_contract as a left join sch_plan as b on a.cnt_id=b.cnt_id "
+	sql += "left join v_employee as k on b.emp_id=k.emp_id "
+	sql += "left join t_shift as c on b.sch_shf_mon=c.shf_id "
+	sql += "left join t_shift as d on b.sch_shf_tue=d.shf_id "
+	sql += "left join t_shift as e on b.sch_shf_wed=e.shf_id "
+	sql += "left join t_shift as f on b.sch_shf_thu=f.shf_id "
+	sql += "left join t_shift as g on b.sch_shf_fri=g.shf_id "
+	sql += "left join t_shift as h on b.sch_shf_sat=h.shf_id "
+	sql += "left join t_shift as i on b.sch_shf_sun=i.shf_id "
+	sql += "where a.cnt_id=" + str(cnt_id) + " "
+	sql += "and a.cnt_active=1"
+	sql += "and b.upd_flag<>'D'"
+	sql += "order by b.sch_active desc,b.emp_id"
+
+	try:				
+		cursor = connection.cursor()
+		cursor.execute(sql)
+		customer_schedule_list = cursor.fetchall()
+	except db.OperationalError as e:
+		return False, customer_schedule_list, "<b>Please send this error to IT teamใ</b><br>" + str(e)
+	except db.Error as e:
+		return False, customer_schedule_list, "<b>Please send this error to IT team.</b><br>" + str(e)
+	finally:
+		cursor.close()
+
+	if customer_schedule_list is not None:
+		if len(customer_schedule_list)>0:
+			is_found = True
+		else:
+			is_found = False
+			message = "ไม่พบรายละเอียดของรายการสัญญาเลขที่ <b>" + str(cnt_id) + "</b>"
+	else:
+		is_found = False
+		message = "ไม่พบรายละเอียดของรายการสัญญาเลขที่ <b>" + str(cnt_id) + "</b>"
+
+	return is_found, customer_schedule_list, message
+
+
+def getCustomerContractServiceList(cnt_id):
+	print("********************************************")
+	print("FUNCTION: getCustomerContractServiceList()")
+	print("********************************************")	
+
+	is_found = False
+	customer_contract_service_list = None
+	message = ""
+
+	sql = "select distinct * from v_contract where cnt_id=" + str(cnt_id) + " and srv_active=1 and CUS_SERVICE_FLAG<>'D' order by srv_id"
+	
+	try:				
+		cursor = connection.cursor()
+		cursor.execute(sql)
+		customer_contract_service_list = cursor.fetchall()
+	except db.OperationalError as e:
+		return False, customer_contract_service_list, "<b>Please send this error to IT teamใ</b><br>" + str(e)
+	except db.Error as e:
+		return False, customer_contract_service_list, "<b>Please send this error to IT team.</b><br>" + str(e)
+	finally:
+		cursor.close()
+
+	if customer_contract_service_list is not None:
+		if len(customer_contract_service_list)>0:
+			is_found = True
+		else:
+			is_found = False
+			message = "ไม่พบรายละเอียดของรายการสัญญาเลขที่ <b>" + str(cnt_id) + "</b>"
+	else:
+		is_found = False
+		message = "ไม่พบรายละเอียดของรายการสัญญาเลขที่ <b>" + str(cnt_id) + "</b>"
+
+	return is_found, customer_contract_service_list, message
+
+
 @permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
 @login_required(login_url='/accounts/login/')
 def ajax_get_attendance_information(request):
@@ -2126,6 +2218,8 @@ def ajax_get_attendance_information(request):
 	employee_list = []
 	ot_reason_list = []
 	contract_info_obj = None
+	customer_contract_service_list = None
+	customer_schedule_list = None
 
 	totalNDP = 0
 	totalNNP = 0
@@ -2164,12 +2258,15 @@ def ajax_get_attendance_information(request):
 		return response		
 
 	# Get Contract Service
+	is_found,customer_contract_service_list,message = getCustomerContractServiceList(cnt_id)
+	if is_found:
+		customer_contract_service_list = customer_contract_service_list
 
 
 	# Get Schedule List
-
-
-	# amnaj
+	is_found,customer_schedule_list,message = getCustomerScheduleList(cnt_id)
+	if is_found:
+		customer_schedule_list = customer_schedule_list
 
 
 	#getPriorityStatus = False
@@ -2632,6 +2729,8 @@ def ajax_get_attendance_information(request):
 	    "is_found": is_found,
 	    "message": message,
 	    "schedule_list": list(schedule_list),
+	    "customer_contract_service_list": list(customer_contract_service_list),
+	    "customer_schedule_list": list(customer_schedule_list),
 	    "employee_list": list(employee_list),
 	    "ot_reason_list": list(ot_reason_list),
 	    "contract_info": list(contract_info_obj),
@@ -3358,7 +3457,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		#TODO: หาค่า txtSpare มีการเซ็ทค่าเริ่มต้นมาจากที่ไหน
 		txtSpare = 0
 		Tspare = txtSpare
-				
+
 		Twage_id = customer_wage_rate_id
 		Twage_no = str(Twage_id) + str(emp_rank)
 		Tpay_type = 1 if ui_ot_status==1 else ""

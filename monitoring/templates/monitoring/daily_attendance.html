@@ -329,8 +329,39 @@
 						        <div class="card-body col-12">
 									<div class="row" style="white-space:nowrap;">
 										<div class="col-12">
-										  <div class="form-group row">
-										  	TABLE
+										  <div class="form-group">
+										  	<font size='2em;'>
+										  		
+													<table class='table table-responsive table-sm table-striped' id="id_customer_contract_service">
+														<thead class=thead-light>
+															<tr>
+																<th scope='col'>No</th>
+																<th scope='col'>Rank</th>
+																<th scope='col'>Shift</th>
+																<th scope='col'>QTY</th>
+																<th scope='col'>Eff.Frm</th>
+																<th scope='col'>Eff.To</th>
+																<th scope='col'>MON</th>
+																<th scope='col'>TUE</th>
+																<th scope='col'>WED</th>
+																<th scope='col'>THU</th>
+																<th scope='col'>FRI</th>
+																<th scope='col'>SAT</th>
+																<th scope='col'>SUN</th>
+																<th scope='col'>PUB</th>
+																<th scope='col'>Active</th>
+																<th scope='col'>Remark</th>
+																<th scope='col'>Upd.Date</th>
+																<th scope='col'>Upd.By</th>
+																<th scope='col'>Upd.Flag</th>
+															</tr>
+														</thead>
+														<tbody>
+															<tr><td colspan='19'>&nbsp;</td></tr>
+														</tbody>
+													</table>
+												
+										  	</font>
 										  </div>
 										</div>
 									</div>
@@ -360,7 +391,33 @@
 									<div class="row" style="white-space:nowrap;">
 										<div class="col-12">
 										  <div class="form-group row">
-										  	TABLE
+										  	<font size='2em;'>
+									  			<table class='table table-responsive table-sm table-striped w-100' id="id_customer_schedule_list">
+													<thead class=thead-light>
+														<tr>
+															<th scope='col'>No</th>
+															<th scope='col'>Emp ID</th>
+															<th scope='col'>Name</th>
+															<th scope='col'>Rank</th>
+															<th scope='col'>Eff.Frm</th>
+															<th scope='col'>Eff.To</th>
+															<th scope='col'>MON</th>
+															<th scope='col'>TUE</th>
+															<th scope='col'>WED</th>
+															<th scope='col'>THU</th>
+															<th scope='col'>FRI</th>
+															<th scope='col'>SAT</th>
+															<th scope='col'>SUN</th>
+															<th scope='col'>Active</th>
+															<th scope='col'>Upd.Date</th>
+															<th scope='col'>Upd.By</th>															
+														</tr>
+													</thead>
+													<tbody>
+														<tr><td colspan='16'>&nbsp;</td></tr>
+													</tbody>
+												</table>
+										  	</font>
 										  </div>
 										</div>
 									</div>
@@ -368,8 +425,6 @@
 
 					      	</div>
 						   	<!-- End Schedule List Section -->
-
-
 
 						</div>
 
@@ -1515,6 +1570,263 @@
 					cnt_active = data.contract_info[0][23];
 
 					
+
+					// Get Customer Contract Service List
+					// TODO
+					number_of_rows = data.customer_contract_service_list.length;
+					if(number_of_rows>0) {
+						
+						result = "<table id='id_customer_contract_service'>";
+						result += "  <thead class=thead-light>";
+						result += "    <tr>";
+						result += "      <th scope='col'>No</th>";
+						result += "      <th scope='col'>Rank</th>";
+						result += "      <th scope='col'>Shift</th>";
+						result += "      <th scope='col'>QTY</th>";
+						result += "      <th scope='col'>Eff.Frm</th>";
+						result += "      <th scope='col'>Eff.To</th>";
+						result += "      <th scope='col'>MON</th>";
+						result += "      <th scope='col'>TUE</th>";
+						result += "      <th scope='col'>WED</th>";
+						result += "      <th scope='col'>THU</th>";
+						result += "      <th scope='col'>FRI</th>";
+						result += "      <th scope='col'>SAT</th>";
+						result += "      <th scope='col'>SUN</th>";
+						result += "      <th scope='col'>PUB</th>";
+						result += "      <th scope='col'>Active</th>";
+						result += "      <th scope='col'>Remark</th>";
+						result += "      <th scope='col'>Upd.Date</th>";
+						result += "      <th scope='col'>Upd.By</th>";
+						result += "      <th scope='col'>Upd.Flag</th>";
+						result += "    </tr>";
+						result += "  </thead>";
+						result += "  <tbody>";
+						count = 1;
+						for(i=0; i<number_of_rows; i++) {
+							srv_rank = data.customer_contract_service_list[i][19];
+							shift = data.customer_contract_service_list[i][39];
+							srv_eff_frm = convertStringToDate(data.customer_contract_service_list[i][21]);
+							srv_eff_to = convertStringToDate(data.customer_contract_service_list[i][22]);
+							srv_qty = data.customer_contract_service_list[i][23];							
+							srv_mon = data.customer_contract_service_list[i][24];
+							srv_tue = data.customer_contract_service_list[i][25];
+							srv_wed = data.customer_contract_service_list[i][26];
+							srv_thu = data.customer_contract_service_list[i][27];
+							srv_fri = data.customer_contract_service_list[i][28];
+							srv_sat = data.customer_contract_service_list[i][29];
+							srv_sun = data.customer_contract_service_list[i][30];
+							srv_pub = data.customer_contract_service_list[i][31];
+							srv_active = data.customer_contract_service_list[i][48];
+							remark = data.customer_contract_service_list[i][34];
+							upd_date = convertStringToDate(data.customer_contract_service_list[i][70]);
+							upd_by = data.customer_contract_service_list[i][71];
+							upd_flag = data.customer_contract_service_list[i][72];
+
+							result += "<tr>";
+							result += "<td>" + count + "</td>";
+							result += "<td>" + srv_rank + "</td>";
+							result += "<td><b>" + shift + "</b></td>";
+							result += "<td>" + srv_qty + "</td>";
+							result += "<td>" + srv_eff_frm + "</td>";
+							result += "<td>" + srv_eff_to + "</td>";
+							result += "<td>" + srv_mon + "</td>";
+							result += "<td>" + srv_tue + "</td>";
+							result += "<td>" + srv_wed + "</td>";
+							result += "<td>" + srv_thu + "</td>";
+							result += "<td>" + srv_fri + "</td>";
+							result += "<td>" + srv_sat + "</td>";
+							result += "<td>" + srv_sun + "</td>";
+							result += "<td>" + srv_pub + "</td>";
+
+							//result += "<td>" + srv_active + "</td>";
+							if(srv_active)
+								result += "<td><span class='badge badge-success'>Active</span></td>";
+							else
+								result += "<td><span class='badge badge-secondary'>Inactive</span></td>";
+
+							result += "<td>" + remark + "</td>";
+							result += "<td>" + upd_date + "</td>";
+							result += "<td>" + upd_by + "</td>";
+							result += "<td>" + upd_flag + "</td>";
+							result += "</tr>";
+							count++;
+						}
+						result += "  </tbody>";
+						result += "</table>";
+
+						$("#id_customer_contract_service").html(result);
+					}
+
+					
+
+
+					// amnaj
+					// Get Customer Schedule List
+					number_of_rows = data.customer_schedule_list.length;
+					if(number_of_rows>0) {
+						result = "<table id='id_customer_schedule_list'>";
+						result += "  <thead class=thead-light>";
+						result += "    <tr>";
+						result += "      <th scope='col'>No</th>";
+						result += "      <th scope='col'>Emp ID</th>";
+						result += "      <th scope='col'>Name</th>";
+						result += "      <th scope='col'>Rank</th>";
+						result += "      <th scope='col'>Eff.Frm</th>";
+						result += "      <th scope='col'>Eff.To</th>";
+						result += "      <th scope='col'>MON</th>";
+						result += "      <th scope='col'>TUE</th>";
+						result += "      <th scope='col'>WED</th>";
+						result += "      <th scope='col'>THU</th>";
+						result += "      <th scope='col'>FRI</th>";
+						result += "      <th scope='col'>SAT</th>";
+						result += "      <th scope='col'>SUN</th>";
+						result += "      <th scope='col'>Status</th>";
+						result += "      <th scope='col'>Upd.Date</th>";
+						result += "      <th scope='col'>Upd.By</th>";
+						result += "    </tr>";
+						result += "  </thead>";
+						result += "  <tbody>";
+						count = 1;
+						for(i=0; i<number_of_rows; i++) {
+							emp_id = data.customer_schedule_list[i][3];
+							emp_fullname_th = data.customer_schedule_list[i][19] + " " + data.customer_schedule_list[i][20];
+							emp_rank = data.customer_schedule_list[i][4];
+							emp_eff_frm = convertStringToDate(data.customer_schedule_list[i][6]);
+							emp_eff_to = convertStringToDate(data.customer_schedule_list[i][7]);
+							emp_mon = data.customer_schedule_list[i][8];
+							emp_tue = data.customer_schedule_list[i][9];
+							emp_wed = data.customer_schedule_list[i][10];
+							emp_thu = data.customer_schedule_list[i][11];
+							emp_fri = data.customer_schedule_list[i][12];
+							emp_sat = data.customer_schedule_list[i][13];
+							emp_sun = data.customer_schedule_list[i][14];
+							status = data.customer_schedule_list[i][15];
+							upd_date = convertStringToDate(data.customer_schedule_list[i][16]);
+							upd_by = data.customer_schedule_list[i][17];
+
+
+							result += "<tr>";
+							result += "<td>" + count + "</td>";
+
+							//result += "<td>" + emp_id + "</td>";
+							if(status=="true")
+								result += "<td><b>" + emp_id + "</b></td>";
+							else
+								result += "<td>" + emp_id + "</td>";
+
+							//result += "<td>" + emp_fullname_th + "</td>";
+							if(status=="true")
+								result += "<td><b>" + emp_fullname_th + "</b></td>";
+							else
+								result += "<td>" + emp_fullname_th + "</td>";
+
+							result += "<td>" + emp_rank + "</td>";						
+							result += "<td>" + emp_eff_frm + "</td>";
+							result += "<td>" + emp_eff_to + "</td>";							
+
+
+							//result += "<td>" + emp_mon + "</td>";
+							if (emp_mon==99) {
+								if(status=="true")
+									result += "<td class='text-danger'><b>DOF</b></td>";
+								else
+									result += "<td>DOF</td>";
+							}
+							else
+								result += "<td>" + emp_mon + "</td>";
+
+
+							//result += "<td>" + emp_tue + "</td>";
+							if (emp_tue==99) {
+								if(status=="true")
+									result += "<td class='text-danger'><b>DOF</b></td>";
+								else
+									result += "<td>DOF</td>";
+							}
+							else
+								result += "<td>" + emp_tue + "</td>";
+
+
+							//result += "<td>" + emp_wed + "</td>";
+							if (emp_wed==99) {
+								if(status=="true")
+									result += "<td class='text-danger'><b>DOF</b></td>";
+								else
+									result += "<td>DOF</td>";
+							}
+							else
+								result += "<td>" + emp_wed + "</td>";
+
+
+							//result += "<td>" + emp_thu + "</td>";
+							if (emp_thu==99) {
+								if(status=="true")
+									result += "<td class='text-danger'><b>DOF</b></td>";
+								else
+									result += "<td>DOF</td>";
+							}
+							else
+								result += "<td>" + emp_thu + "</td>";
+
+
+							//result += "<td>" + emp_fri + "</td>";
+							if (emp_fri==99) {
+								if(status=="true")
+									result += "<td class='text-danger'><b>DOF</b></td>";
+								else
+									result += "<td>DOF</td>";
+							}
+							else
+								result += "<td>" + emp_fri + "</td>";
+
+
+							//result += "<td>" + emp_sat + "</td>";
+							if (emp_sat==99) {
+								if(status=="true")
+									result += "<td class='text-danger'><b>DOF</b></td>";
+								else
+									result += "<td>DOF</td>";
+							}
+							else
+								result += "<td>" + emp_sat + "</td>";
+
+
+							//result += "<td>" + emp_sun + "</td>";
+							if (emp_sun==99) {
+								if(status=="true")
+									result += "<td class='text-danger'><b>DOF</b></td>";
+								else
+									result += "<td>DOF</td>";
+							}
+							else
+								result += "<td>" + emp_sun + "</td>";							
+
+
+
+
+
+							if(status=="true" && status=="true")
+								result += "<td><span class='badge badge-success'>Active</span></td>";
+							else
+								result += "<td><span class='badge badge-secondary'>Inactive</span></td>";
+
+							result += "<td>" + upd_date + "</td>";
+							result += "<td>" + upd_by + "</td>";
+
+							result += "</tr>";
+							count++;
+						}
+						result += "  </tbody>";
+						result += "</table>";
+					} else {
+						result = "<table class=table table-sm'>";
+						result += "<tr><td>No information.</td><tr>";
+						result += "</table>";
+					}
+					$("#id_customer_schedule_list").html(result);
+
+
+
 					$("#id_customer_name_th").val(cus_name_th);
 					$("#id_customer_name_en").text(cus_name_en);
 					$("#id_customer_phone").val(cus_tel);
@@ -1550,7 +1862,7 @@
 					//$("#").val();
 
 					// 
-					$("#daily_attendance_search_form :input").attr("disabled", true);					
+					$("#daily_attendance_search_form :input").attr("disabled", true);				
 					$("#cancelDailyAttendanceButton").removeAttr("disabled");
 
 				} else {
