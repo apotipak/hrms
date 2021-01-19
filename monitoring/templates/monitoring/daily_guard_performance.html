@@ -36,7 +36,7 @@
 			                    <input type="text" id="id_search_date_from" class="form-control form-control-sm" value="">
 			                    <input type="text" id="id_search_date_to" class="form-control form-control-sm" value="">&nbsp;&nbsp;&nbsp;
 							    
-			                    <button id="id_search_submit_button" name="search_submit_button" type="button" class="btn btn-sm btn-primary">Search</button>&nbsp;
+			                    <button id="id_search_submit_button" name="search_submit_button" type="button" class="btn btn-sm btn-primary"><i class="fas fa-search"></i>&nbsp;Search</button>&nbsp;
 						        <button id="id_search_cancel_button" name="search_cancel_button" type="button" class="btn btn-sm btn-secondary">Cancel</button>							    
 							</div>
 						</form>
@@ -45,18 +45,171 @@
 
 			  	</div>
 			</div>
+			<!-- END SEARCH FORM -->
 
 
 
+			<!-- TABLE LIST -->
+			<div class="card card-outline card-secondary" id="table_list_head">
+
+
+			  <div class="card-body">
+
+				<!-- Tab Header -->
+				<!--<div class="float-left col-12">-->
+				<div class="row">
+				<b>
+				<ul class="nav nav-tabs navbar-expand nav-fill" id="customer" role="tablist">
+
+					<!-- Performance Tab -->
+				  	<li class="nav-item active">
+				    	<a class="nav-link active" id="tab1-tab" data-toggle="tab" href="#tab1" role="tab" aria-controls="tab1">{% trans 'Performance' %}</a>
+				  	</li>
+
+				  	<!-- Schedule Tab -->
+				  	<li class="nav-item">
+				    	<a class="nav-link" id="tab2-tab" data-toggle="tab" href="#tab2" role="tab" aria-controls="tab2">{% trans 'Schedule' %}</a>
+				  	</li>
+
+				  	<!-- Substitute Tab -->
+				  	<li class="nav-item">
+				    	<a class="nav-link" id="tab3-tab" data-toggle="tab" href="#tab3" role="tab" aria-controls="tab3">{% trans 'Substitute' %}</a>
+				  	</li>
+
+				  	<!-- Leave Tab -->
+				  	<li class="nav-item">
+				    	<a class="nav-link" id="tab4-tab" data-toggle="tab" href="#tab4" role="tab" aria-controls="tab4">{% trans 'Leave' %}</a>
+				  	</li>
+
+				  	<!-- Overtime Tab -->
+				  	<li class="nav-item">
+				    	<a class="nav-link" id="tab5-tab" data-toggle="tab" href="#tab5" role="tab" aria-controls="tab5">{% trans 'Overtime' %}</a>
+				  	</li>
+
+				</ul>
+				</b>
+				</div>
+
+
+		        <!-- Tab Body -->
+		        <div class="tab-content pt-2" id="table_list_body">
+
+		        	<!-- Performance Tab -->
+		            <div class="tab-pane fade show active pt-2 row" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+		            	<div id="id_performance_list" class="bg-light table-responsive">
+							<font size='2em;'>
+							<table id='performance_list_table' class='table table-sm'>							
+							  <thead>
+							    <tr>
+							      <th scope="col">Rank</th>
+							      <th scope="col">Shift</th>
+							    </tr>
+							  </thead>
+							  <tbody>
+							    <tr>
+							      <td colspan="2" class="text-center"><br><br>There is no data.<br><br><br></td>
+							    </tr>
+							  </tbody>
+							</table>
+							</font>
+						</div>
+		        	</div>
+
+		        	<!-- Schedule Tab -->
+		            <div class="tab-pane fade show pt-2 row" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
+		            	<div id="id_schedule_list" class="bg-light table-responsive">
+							<font size='2em;'>
+							<table id='schedule_list_table' class='table table-sm'>							
+							  <thead>
+							    <tr>
+							      <th scope="col">Sch.No</th>
+							      <th scope="col">Eff.Frm</th>
+							    </tr>
+							  </thead>
+							  <tbody>
+							    <tr>
+							      <td colspan="2" class="text-center"><br><br>There is no data.<br><br><br></td>
+							    </tr>
+							  </tbody>
+							</table>
+							</font>
+						</div>
+		        	</div>
+
+
+		        	<!-- Substitute Tab -->
+		            <div class="tab-pane fade show pt-2 row" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
+		            	<div id="id_substitute_list" class="bg-light table-responsive">
+							<font size='2em;'>
+							<table id='substitute_list_table' class='table table-sm'>							
+							  <thead>
+							    <tr>
+							      <th scope="col">Sch.No</th>
+							      <th scope="col">Emp.ID</th>
+							    </tr>
+							  </thead>
+							  <tbody>
+							    <tr>
+							      <td colspan="2" class="text-center"><br><br>There is no data.<br><br><br></td>
+							    </tr>
+							  </tbody>
+							</table>
+							</font>
+						</div>
+		        	</div>
+
+
+		        	<!-- Leave Tab -->
+		            <div class="tab-pane fade show pt-2 row" id="tab4" role="tabpanel" aria-labelledby="tab4-tab">
+		            	<div id="id_leave_list" class="bg-light table-responsive">
+							<font size='2em;'>
+							<table id='leave_list_table' class='table table-sm'>							
+							  <thead>
+							    <tr>
+							      <th scope="col">Leave ID</th>
+							      <th scope="col">From Date</th>
+							    </tr>
+							  </thead>
+							  <tbody>
+							    <tr>
+							      <td colspan="2" class="text-center"><br><br>There is no data.<br><br><br></td>
+							    </tr>
+							  </tbody>
+							</table>
+							</font>
+						</div>
+		        	</div>
+
+
+		        	<!-- Overtime Tab -->
+		            <div class="tab-pane fade show pt-2 row" id="tab5" role="tabpanel" aria-labelledby="tab5-tab">
+		            	<div id="id_overtime_list" class="bg-light table-responsive">
+							<font size='2em;'>
+							<table id='overtime_list_table' class='table table-sm'>							
+							  <thead>
+							    <tr>
+							      <th scope="col">DLY Date</th>
+							      <th scope="col">Shift</th>
+							    </tr>
+							  </thead>
+							  <tbody>
+							    <tr>
+							      <td colspan="2" class="text-center"><br><br>There is no data.<br><br><br></td>
+							    </tr>
+							  </tbody>
+							</table>
+							</font>
+						</div>
+		        	</div>
+
+
+		        </div>
 
 
 
-
-
-
-
-
-
+			  </div>
+			</div>
+			<!-- END TABLE LIST -->
 
 
     	</section>
