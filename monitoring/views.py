@@ -6167,35 +6167,46 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 		finally:
 			cursor.close()
 
-		'''
-		if DlyPerRs is not None:
-			if len(DlyPerRs) > 0:
-				for i in range(0, len(DlyPerRs)):
-					cnt_id = DlyPerRs[i][13]
-					dly_date = DlyPerRs[i][15]
-					rank = DlyPerRs[i][19]
-					shift = DlyPerRs[i][3]
-					bas = DlyPerRs[i][31]
-					got = DlyPerRs[i][52]
-					bon = DlyPerRs[i][39]
-					pub = DlyPerRs[i][40]
-					dof = DlyPerRs[i][53]
-					tel_man = DlyPerRs[i][24]
-					tel_time = DlyPerRs[i][25]
-					tel_amt = DlyPerRs[i][26]
-					tel_paid = DlyPerRs[i][27]
-					ot = DlyPerRs[i][28]
-					ot_reason = DlyPerRs[i][29]
-					spare = DlyPerRs[i][34]
-					wage_id = DlyPerRs[i][35]
-					soc_status = DlyPerRs[i][42]
-					pub_status = DlyPerRs[i][43]
-					paid_status = DlyPerRs[i][44]
-
-					print(shift)
-		'''
-
 		is_error = False
 		message = "DisplayList('DLY_PLAN') is pass."
 
 	return is_error, message, DlyPerRs
+
+
+def SearchDailyGurdPerformanceEmployeeInformation(request):
+	is_error = True
+	message = ""
+	employee_information = None
+
+	emp_id = request.POST.get('emp_id')
+	if (emp_id=="") or (emp_id is None):
+		is_error = True
+		message = "ข้อมูลรหัสพนักงานไม่ถูกต้อง กรุณาตรวจสอบ"
+		response = JsonResponse(data={"success": True,"is_error": is_error,"message": message, "employee_information": employee_information})
+		response.status_code = 200
+		return response
+	else:
+		sql = "select a.*,b.dept_en,c.sts_en from employee as a "
+		sql += "left join com_department as b on a.emp_dept=b.dept_id "
+		sql += "left join t_empsts as c on a.emp_status=c.sts_id "
+		sql += "where a.emp_id=" + str(emp_id)
+		print("SQL:", sql)
+		try:
+			with connection.cursor() as cursor:		
+				cursor.execute(sql)
+				employee_information = cursor.fetchall()
+			
+			is_error = False
+			message = "PASS"				
+		except db.OperationalError as e:
+			is_error = True
+			message = "<b>Please send this error to IT team.</b><br>" + str(e)			
+		except db.Error as e:
+			is_error = True
+			message = "<b>Please send this error to IT team.</b><br>" + str(e)
+		finally:			
+			cursor.close()
+
+	response = JsonResponse(data={"success": True,"is_error": is_error,"message": message, "employee_information": employee_information})
+	response.status_code = 200
+	return response

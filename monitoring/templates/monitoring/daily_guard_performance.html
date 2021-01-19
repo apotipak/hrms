@@ -49,6 +49,91 @@
 
 
 
+			<!-- Employee Information -->
+			<div class="card card-outline card-secondary" id="id_employee_information">
+			  <div class="card-body">
+				<form>
+				  <div class="form-row">
+				    <div class="col-3">				      
+				      <input type="text" class="form-control form-control-sm" placeholder="ชื่อ-นามสกุล" id="id_emp_fullname" readonly="">
+				    </div>
+				    <div class="col-1">
+				      <input type="text" class="form-control form-control-sm" placeholder="ตำแหน่ง" id="id_emp_rank" readonly="">
+				    </div>
+
+				    <div class="col-2">
+				      <input type="text" class="form-control form-control-sm" placeholder="แผนก" id="id_emp_dept" readonly="">
+				    </div>
+
+				    <div class="col-1">
+				      <input type="text" class="form-control form-control-sm" placeholder="ประเภท" id="id_emp_type" readonly="">
+				    </div>
+
+				    <div class="col-2">
+				      <input type="text" class="form-control form-control-sm" placeholder="วันเริ่มงาน" id="id_emp_join_date" readonly="">
+				    </div>
+
+				    <div class="col-1">
+				      <input type="text" class="form-control form-control-sm" placeholder="วันสิ้นสุด" id="id_emp_term_date" readonly="">
+				    </div>
+
+				    <div class="col-2">
+				      <input type="text" class="form-control form-control-sm" placeholder="สถานะ" id="id_emp_status" readonly="">
+				    </div>
+				  </div>
+				</form>			  	
+			  </div>
+			</div>
+			<!-- END Employee Information -->
+
+
+
+			<!-- Income Information -->
+			<div class="card card-outline card-secondary" id="id_income_information">
+			  <div class="card-body">
+				<form>
+				  <div class="form-row">
+				    <div class="col">
+				      <label>Hours</label>
+				      <input type="text" class="form-control form-control-sm" placeholder="Hours" id="id_hours" readonly="">
+				    </div>
+
+				    <div class="col">
+				      <label>Day</label>
+				      <input type="text" class="form-control form-control-sm" placeholder="Day" id="id_day" readonly="">
+				    </div>
+
+				    <div class="col">
+				      <label>BAS</label>
+				      <input type="text" class="form-control form-control-sm" placeholder="BAS" id="id_bas" readonly="">
+				    </div>
+
+				    <div class="col">
+				      <label>GOT</label>
+				      <input type="text" class="form-control form-control-sm" placeholder="GOT" id="id_got" readonly="">
+				    </div>
+
+				    <div class="col">
+				      <label>BON</label>
+				      <input type="text" class="form-control form-control-sm" placeholder="BON" id="id_bon" readonly="">
+				    </div>
+
+				    <div class="col">
+				      <label>PUB</label>
+				      <input type="text" class="form-control form-control-sm" placeholder="PUB" id="id_pub" readonly="">
+				    </div>
+
+				    <div class="col">
+				      <label>DOF</label>
+				      <input type="text" class="form-control form-control-sm" placeholder="DOF" id="id_dof" readonly="">
+				    </div>
+				  </div>
+
+				</form>			  	
+			  </div>
+			</div>
+			<!-- END Income Information -->
+
 			<!-- TABLE LIST -->
 			<div class="card card-outline card-secondary" id="table_list_head">
 
@@ -230,6 +315,56 @@ $(document).on('keypress', '#id_search_emp_id', function(e) {
 		});
 		$("#id_search_emp_id").focus();
   	} else {
+  		// Get Employee Information
+		$.ajax({
+	    	url : "/monitoring/ajax/search_daily_guard_performance_employee_information/",
+	    	type : "POST",
+	    	data : {          
+	      		csrfmiddlewaretoken: '{{ csrf_token }}',
+	      		emp_id: id_emp_id,
+	    	},
+	    	success: function(data) {
+	    		if(data.is_error) {
+					$.alert({
+					    title: 'Error',
+					    type: 'red',
+					    content: data.message,
+					    animation: 'zoom',
+					    animationBounce: 1.5,
+					    closeIcon: false,
+					    boxWidth: '38%',
+					    useBootstrap: false,
+					});	    			
+	    		} else {
+	    			employee_information_count = data.employee_information.length;
+	    			if(employee_information_count==1) {
+						for(i=0; i<employee_information_count; i++) {
+							emp_id = data.employee_information[i][0];
+							emp_fullname_th = data.employee_information[i][4].trim() + "   " + data.employee_information[i][5].trim();
+							emp_rank = data.employee_information[i][31];
+							emp_dept = data.employee_information[i][28];
+							emp_dept_en = data.employee_information[i][68];
+							emp_type = data.employee_information[i][24];
+							emp_join_date = convertStringToDDMMYYYY(data.employee_information[i][39]);
+							emp_term_date = data.employee_information[i][40];
+							emp_status = data.employee_information[i][33] + " | " + data.employee_information[i][69];;
+	    				}
+
+	    				$("#id_emp_fullname").val(emp_fullname_th);
+	    				$("#id_emp_rank").val(emp_rank);
+	    				$("#id_emp_dept").val(emp_dept + " | " + emp_dept_en);
+	    				$("#id_emp_type").val(emp_type);
+	    				$("#id_emp_join_date").val(emp_join_date);
+	    				$("#id_emp_term_date").val(emp_term_date);
+	    				$("#id_emp_status").val(emp_status);
+
+	    			} else {
+	    				
+	    			}
+	    		}
+	    	}
+	    });
+
   		$("#id_search_date_from").focus();
   	}
   }
@@ -420,6 +555,15 @@ $(document).on('click', '#id_search_submit_button', function(e) {
 						tel_amt = data.performance_list[i][26];
 						tel_paid = data.performance_list[i][27];
 						ot_status = data.performance_list[i][28];
+
+
+						//ot = DlyPerRs[i][28]
+						//ot_reason = DlyPerRs[i][29]
+						//spare = DlyPerRs[i][34]
+						//wage_id = DlyPerRs[i][35]
+						//soc_status = DlyPerRs[i][42]
+						//pub_status = DlyPerRs[i][43]
+						//paid_status = DlyPerRs[i][44]
 
 						result += "<tr>";
 						result += "<td>" + count + "</td>";
