@@ -5850,6 +5850,7 @@ def SearchDailyGurdPerformance(request):
 		sql += "where emp_id=" + str(emp_id) + " "
 		sql += "and dly_date>='" + str(search_date_from) + "' "
 		sql += "and dly_date<='" + str(search_date_to) + "'"
+		print("AAA:", sql)
 		try:
 			with connection.cursor() as cursor:		
 				cursor.execute(sql)
@@ -5976,7 +5977,7 @@ def SearchDailyGurdPerformance(request):
 
 
 		# TODO: Call DisplayList("DLY_PLAN")
-		is_error, error_message = DisplayList("DLY_PLAN", user_first_name, emp_id, search_date_from, search_date_to)
+		is_error, error_message, performance_list = DisplayList("DLY_PLAN", user_first_name, emp_id, search_date_from, search_date_to)
 		if is_error:
 			is_error = True
 			message = error_message
@@ -6005,13 +6006,15 @@ def SearchDailyGurdPerformance(request):
 		is_error = True
 		message = "Can't drop table " + str(user_first_name)
 
-	response = JsonResponse(data={"success": True,"is_error": is_error,"message": message})
+	response = JsonResponse(data={"success": True,"is_error": is_error,"message": message, "performance_list": performance_list})
 	response.status_code = 200
 	return response	
 
 
 def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_date_to):
 	if (table_name=="DLY_PLAN"):
+		DlyPerRs = None
+		# UPDATE 1
 		sql = "update " + str(user_first_name) + " "
 		sql += "set shf_amt_hr = ot_hr_amt "
 		sql += "where (ot_hr_amt<>0 and pay_type='TPA')"
@@ -6030,6 +6033,7 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 			cursor.close()
 
 
+		# UPDATE 2
 		sql = "update "	+ str(user_first_name) + " "
 		sql += "set shf_amt_hr = (shf_amt_hr + ot_hr_amt) "
 		sql += "where (ot_hr_amt<>0 and relieft_id<>0) "
@@ -6049,6 +6053,7 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 			cursor.close()
 
 
+		# UPDATE 3
 		sql = "update " + str(user_first_name) + " "
 		sql += "set shf_amt_hr='0' "
 		sql += "where left(ltrim(shf_desc),3)='999' "
@@ -6067,15 +6072,18 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 		finally:
 			cursor.close()
 
-
+		# DlyPerRs
+		
 		sql = "select distinct * from " + str(user_first_name) + " "
 		sql += "where emp_id=" + str(emp_id) + " "
 		sql += "and dly_date>='" + str(search_date_from) + "' "
 		sql += "and dly_date<='" + str(search_date_to) + "' "
 		sql += "order by dly_date, sch_shift"
+		print("sql DlyPerRs: ", sql)
 		try:
 			with connection.cursor() as cursor:		
 				cursor.execute(sql)
+				DlyPerRs = cursor.fetchall()			
 		except db.OperationalError as e:
 			is_error = True
 			message = "<b>Please send this error to IT team.</b><br>" + str(e)
@@ -6159,9 +6167,35 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 		finally:
 			cursor.close()
 
+		'''
+		if DlyPerRs is not None:
+			if len(DlyPerRs) > 0:
+				for i in range(0, len(DlyPerRs)):
+					cnt_id = DlyPerRs[i][13]
+					dly_date = DlyPerRs[i][15]
+					rank = DlyPerRs[i][19]
+					shift = DlyPerRs[i][3]
+					bas = DlyPerRs[i][31]
+					got = DlyPerRs[i][52]
+					bon = DlyPerRs[i][39]
+					pub = DlyPerRs[i][40]
+					dof = DlyPerRs[i][53]
+					tel_man = DlyPerRs[i][24]
+					tel_time = DlyPerRs[i][25]
+					tel_amt = DlyPerRs[i][26]
+					tel_paid = DlyPerRs[i][27]
+					ot = DlyPerRs[i][28]
+					ot_reason = DlyPerRs[i][29]
+					spare = DlyPerRs[i][34]
+					wage_id = DlyPerRs[i][35]
+					soc_status = DlyPerRs[i][42]
+					pub_status = DlyPerRs[i][43]
+					paid_status = DlyPerRs[i][44]
+
+					print(shift)
+		'''
 
 		is_error = False
 		message = "DisplayList('DLY_PLAN') is pass."
 
-
-	return is_error, message
+	return is_error, message, DlyPerRs

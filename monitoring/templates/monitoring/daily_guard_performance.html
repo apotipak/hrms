@@ -9,14 +9,16 @@
  	<!-- Content Wrapper. Contains page content -->
 	<div class="content-wrapper">
 	
+		<!--
 		<div class="content-header">
 			<div class="col-6 offset-3">
 
 			</div>
 		</div>
+		-->
 
     	<!-- Main content -->
-    	<section class="content">
+    	<section class="content pt-2">
 
 
     		<!-- SEARCH FORM -->
@@ -24,7 +26,6 @@
 
 				<div class="card-body">
 					
-
 					<div class="d-flex justify-content-center">
 						<form class="form-inline" name="daily_guard_performance_search_form" id="daily_guard_performance_search_form">
 							<div class="form-inline">
@@ -44,6 +45,17 @@
 
 			  	</div>
 			</div>
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -222,6 +234,7 @@ $(document).on('click', '#id_search_submit_button', function(e) {
 				    useBootstrap: false,
 				});		    			
     		} else {
+    			/*
 				$.alert({
 				    title: 'Success',
 				    type: 'green',
@@ -232,6 +245,9 @@ $(document).on('click', '#id_search_submit_button', function(e) {
 				    boxWidth: '38%',
 				    useBootstrap: false,
 				});
+				*/
+
+				
     		}		    		
 
 			$("#id_search_submit_button").text("Search");
