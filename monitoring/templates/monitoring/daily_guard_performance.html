@@ -52,13 +52,10 @@
 			<!-- Employee Information -->
 			<div class="card card-outline card-secondary" id="id_employee_information">
 			  <div class="card-body">
-				<form>
+				<form id="id_employee_information_form">
 				  <div class="form-row">
 				    <div class="col-3">				      
 				      <input type="text" class="form-control form-control-sm" placeholder="ชื่อ-นามสกุล" id="id_emp_fullname" readonly="">
-				    </div>
-				    <div class="col-1">
-				      <input type="text" class="form-control form-control-sm" placeholder="ตำแหน่ง" id="id_emp_rank" readonly="">
 				    </div>
 
 				    <div class="col-2">
@@ -73,7 +70,7 @@
 				      <input type="text" class="form-control form-control-sm" placeholder="วันเริ่มงาน" id="id_emp_join_date" readonly="">
 				    </div>
 
-				    <div class="col-1">
+				    <div class="col-2">
 				      <input type="text" class="form-control form-control-sm" placeholder="วันสิ้นสุด" id="id_emp_term_date" readonly="">
 				    </div>
 
@@ -91,7 +88,7 @@
 			<!-- Income Information -->
 			<div class="card card-outline card-secondary" id="id_income_information">
 			  <div class="card-body">
-				<form>
+				<form id="id_income_information_form">
 				  <div class="form-row">
 				    <div class="col">
 				      <label>Hours</label>
@@ -340,8 +337,8 @@ $(document).on('keypress', '#id_search_emp_id', function(e) {
 	    			if(employee_information_count==1) {
 						for(i=0; i<employee_information_count; i++) {
 							emp_id = data.employee_information[i][0];
-							emp_fullname_th = data.employee_information[i][4].trim() + "   " + data.employee_information[i][5].trim();
 							emp_rank = data.employee_information[i][31];
+							emp_fullname_th = data.employee_information[i][4].trim() + "   " + data.employee_information[i][5].trim() + " (" + emp_rank + ")";
 							emp_dept = data.employee_information[i][28];
 							emp_dept_en = data.employee_information[i][68];
 							emp_type = data.employee_information[i][24];
@@ -351,7 +348,7 @@ $(document).on('keypress', '#id_search_emp_id', function(e) {
 	    				}
 
 	    				$("#id_emp_fullname").val(emp_fullname_th);
-	    				$("#id_emp_rank").val(emp_rank);
+	    				//$("#id_emp_rank").val(emp_rank);
 	    				$("#id_emp_dept").val(emp_dept + " | " + emp_dept_en);
 	    				$("#id_emp_type").val(emp_type);
 	    				$("#id_emp_join_date").val(emp_join_date);
@@ -639,6 +636,8 @@ $(document).on('click', '#id_search_submit_button', function(e) {
 
 $(document).on('click', '#id_search_cancel_button', function(e) {    	
 	$("#daily_guard_performance_search_form").trigger("reset");
+	$("#id_employee_information_form").trigger("reset");
+	$("#id_income_information_form").trigger("reset");
 	$("#id_search_emp_id").focus();	
 });
 
