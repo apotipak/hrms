@@ -99,15 +99,9 @@
 		            	<div id="id_performance_list" class="bg-light table-responsive">
 							<font size='2em;'>
 							<table id='performance_list_table' class='table table-sm'>							
-							  <thead>
-							    <tr>
-							      <th scope="col">Rank</th>
-							      <th scope="col">Shift</th>
-							    </tr>
-							  </thead>
 							  <tbody>
 							    <tr>
-							      <td colspan="2" class="text-center"><br><br>There is no data.<br><br><br></td>
+							      <td class="text-center"><br><br><br><br>There is no data.<br><br><br></td>
 							    </tr>
 							  </tbody>
 							</table>
@@ -120,15 +114,9 @@
 		            	<div id="id_schedule_list" class="bg-light table-responsive">
 							<font size='2em;'>
 							<table id='schedule_list_table' class='table table-sm'>							
-							  <thead>
-							    <tr>
-							      <th scope="col">Sch.No</th>
-							      <th scope="col">Eff.Frm</th>
-							    </tr>
-							  </thead>
 							  <tbody>
 							    <tr>
-							      <td colspan="2" class="text-center"><br><br>There is no data.<br><br><br></td>
+							      <td class="text-center"><br><br><br><br>There is no data.<br><br><br></td>
 							    </tr>
 							  </tbody>
 							</table>
@@ -142,15 +130,9 @@
 		            	<div id="id_substitute_list" class="bg-light table-responsive">
 							<font size='2em;'>
 							<table id='substitute_list_table' class='table table-sm'>							
-							  <thead>
-							    <tr>
-							      <th scope="col">Sch.No</th>
-							      <th scope="col">Emp.ID</th>
-							    </tr>
-							  </thead>
 							  <tbody>
 							    <tr>
-							      <td colspan="2" class="text-center"><br><br>There is no data.<br><br><br></td>
+							      <td class="text-center"><br><br><br><br>There is no data.<br><br><br></td>
 							    </tr>
 							  </tbody>
 							</table>
@@ -164,15 +146,9 @@
 		            	<div id="id_leave_list" class="bg-light table-responsive">
 							<font size='2em;'>
 							<table id='leave_list_table' class='table table-sm'>							
-							  <thead>
-							    <tr>
-							      <th scope="col">Leave ID</th>
-							      <th scope="col">From Date</th>
-							    </tr>
-							  </thead>
 							  <tbody>
 							    <tr>
-							      <td colspan="2" class="text-center"><br><br>There is no data.<br><br><br></td>
+							      <td class="text-center"><br><br><br><br>There is no data.<br><br><br></td>
 							    </tr>
 							  </tbody>
 							</table>
@@ -186,15 +162,9 @@
 		            	<div id="id_overtime_list" class="bg-light table-responsive">
 							<font size='2em;'>
 							<table id='overtime_list_table' class='table table-sm'>							
-							  <thead>
-							    <tr>
-							      <th scope="col">DLY Date</th>
-							      <th scope="col">Shift</th>
-							    </tr>
-							  </thead>
 							  <tbody>
 							    <tr>
-							      <td colspan="2" class="text-center"><br><br>There is no data.<br><br><br></td>
+							      <td class="text-center"><br><br><br><br>There is no data.<br><br><br></td>
 							    </tr>
 							  </tbody>
 							</table>
@@ -400,6 +370,51 @@ $(document).on('click', '#id_search_submit_button', function(e) {
 				});
 				*/
 
+				//performance_list_table
+				performance_list_count = data.performance_list.length
+				if(performance_list_count>0) {
+					result = "<table id='performance_list_table'>";
+					result += "  <thead class=thead-light>";
+					result += "    <tr>";
+					result += "      <th scope='col'>No</th>";
+					result += "		 <th scope='col'>Cnt</th>";
+					result += "      <th scope='col'>Rank</th>";
+					result += "      <th scope='col'>Shift</th>";
+					result += "      <th scope='col'>BAS</th>";
+					result += "      <th scope='col'>GOT</th>";
+					result += "      <th scope='col'>BON</th>";
+					result += "      <th scope='col'>PUB</th>";
+					result += "    </tr>";
+					result += "  </thead>";
+					result += "  <tbody>";
+					count = 1;
+					for(i=0; i<performance_list_count; i++) {
+						cnt_id = data.performance_list[i][13];
+						shift = data.performance_list[i][3];
+						rank = data.performance_list[i][19];
+						bas_amt = data.performance_list[i][38];
+						got_amt = data.performance_list[i][52];
+						bon_amt = data.performance_list[i][39];
+						pub_amt = data.performance_list[i][40];
+						dof_amt = data.performance_list[i][53];
+						
+						result += "<tr>";
+						result += "<td>" + count + "</td>";
+						result += "<td>" + cnt_id + "</td>";
+						result += "<td>" + rank + "</td>";
+						result += "<td>" + shift + "</td>";
+						result += "<td>" + bas_amt + "</td>";
+						result += "<td>" + got_amt + "</td>";
+						result += "<td>" + bon_amt + "</td>";
+						result += "<td>" + dof_amt + "</td>";
+						result += "</tr>";
+						count++;
+					}
+					result += "  </tbody>";
+					result += "</table>";
+
+					$("#performance_list_table").html(result);
+				}				
 				
     		}		    		
 
