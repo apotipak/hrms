@@ -195,6 +195,10 @@ $(document).on('click', '#id_search_submit_button', function(e) {
 	// console.log(emp_id+","+search_date_from+","+search_date_to);
 
 	// TODO: show Performance tab
+	showLoading();
+	$("#id_search_submit_button").text("Processing...");
+	$("#id_search_submit_button").attr("disabled", true);
+
 	$.ajax({
     	url : "/monitoring/ajax/search_daily_guard_performance/",
     	type : "POST",
@@ -229,6 +233,10 @@ $(document).on('click', '#id_search_submit_button', function(e) {
 				    useBootstrap: false,
 				});
     		}		    		
+
+			$("#id_search_submit_button").text("Search");
+			$("#id_search_submit_button").attr("disabled", false);
+    		$.LoadingOverlay("hide");
     	},
 
     });	
@@ -252,6 +260,16 @@ $(document).on('click', '#id_search_cancel_button', function(e) {
 	$("#id_search_emp_id").focus();	
 });
 
+
+function showLoading() {
+	$.LoadingOverlaySetup({
+	    background      : "rgba(0, 0, 0, 0.5)",
+	    image           : "/static/img/logo-small.png",
+	    imageAnimation  : "1.5s fadein",
+	    imageColor      : "#ffcc00"
+	});
+	$.LoadingOverlay("show");	
+}
 
 </script>
 {% endblock %}

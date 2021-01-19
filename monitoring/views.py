@@ -6015,7 +6015,6 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 		sql = "update " + str(user_first_name) + " "
 		sql += "set shf_amt_hr = ot_hr_amt "
 		sql += "where (ot_hr_amt<>0 and pay_type='TPA')"
-		print("debug:", sql)
 		try:
 			with connection.cursor() as cursor:		
 				cursor.execute(sql)
@@ -6033,23 +6032,79 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 
 		sql = "update "	+ str(user_first_name) + " "
 		sql += "set shf_amt_hr = (shf_amt_hr + ot_hr_amt) "
-		sql += "where (ot_hr_amt<>0 and relieft_id<>0 "
+		sql += "where (ot_hr_amt<>0 and relieft_id<>0) "
 		sql += "or (ot_hr_amt<>0 and pay_type<>'TPA')"
+		try:
+			with connection.cursor() as cursor:
+				cursor.execute(sql)
+		except db.OperationalError as e:
+			is_error = True
+			message = "<b>Please send this error to IT team.</b><br>" + str(e)
+			return is_error, message
+		except db.Error as e:
+			is_error = True
+			message = "<b>Please send this error to IT team.</b><br>" + str(e)
+			return is_error, message
+		finally:
+			cursor.close()
 
 
 		sql = "update " + str(user_first_name) + " "
 		sql += "set shf_amt_hr='0' "
 		sql += "where left(ltrim(shf_desc),3)='999' "
 		sql += "and absent='1'"
+		try:
+			with connection.cursor() as cursor:		
+				cursor.execute(sql)
+		except db.OperationalError as e:
+			is_error = True
+			message = "<b>Please send this error to IT team.</b><br>" + str(e)
+			return is_error, message
+		except db.Error as e:
+			is_error = True
+			message = "<b>Please send this error to IT team.</b><br>" + str(e)
+			return is_error, message
+		finally:
+			cursor.close()
+
 
 		sql = "select distinct * from " + str(user_first_name) + " "
 		sql += "where emp_id=" + str(emp_id) + " "
 		sql += "and dly_date>='" + str(search_date_from) + "' "
 		sql += "and dly_date<='" + str(search_date_to) + "' "
-		sql += "order by dly_datesch_shift"
+		sql += "order by dly_date, sch_shift"
+		try:
+			with connection.cursor() as cursor:		
+				cursor.execute(sql)
+		except db.OperationalError as e:
+			is_error = True
+			message = "<b>Please send this error to IT team.</b><br>" + str(e)
+			return is_error, message
+		except db.Error as e:
+			is_error = True
+			message = "<b>Please send this error to IT team.</b><br>" + str(e)
+			return is_error, message
+		finally:
+			cursor.close()
+
+
 
 		sql = "if exists (select * from dbo.sysobjects where id=object_id(N'[dbo].[R_D500]') and OBJECTPROPERTY(id,N'IsUserTable')=1) "
 		sql += "drop table [dbo].[R_D500]"
+		try:
+			with connection.cursor() as cursor:		
+				cursor.execute(sql)
+		except db.OperationalError as e:
+			is_error = True
+			message = "<b>Please send this error to IT team.</b><br>" + str(e)
+			return is_error, message
+		except db.Error as e:
+			is_error = True
+			message = "<b>Please send this error to IT team.</b><br>" + str(e)
+			return is_error, message
+		finally:
+			cursor.close()
+
 
 
 		sql = "select distinct emp_id,rtrim(emp_fname_th)+' ' + rtrim(emp_lname_th) as fname,cnt_id,dly_date,sch_shift, "
@@ -6060,8 +6115,28 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 		sql += "and dly_date>='" + str(search_date_from) + "' "
 		sql += "and dly_date<='" + str(search_date_to) + "' "
 		sql += "and pay_type<>'ABS' order by dly_date,sch_shift"
+		try:
+			with connection.cursor() as cursor:		
+				cursor.execute(sql)
+		except db.OperationalError as e:
+			is_error = True
+			message = "<b>Please send this error to IT team.</b><br>" + str(e)
+			return is_error, message
+		except db.Error as e:
+			is_error = True
+			message = "<b>Please send this error to IT team.</b><br>" + str(e)
+			return is_error, message
+		finally:
+			cursor.close()
 
-		# A1,A2,A3,A4,A5,A6,A7,A8 = 0
+		A1 = 0
+		A2 = 0
+		A3 = 0
+		A4 = 0
+		A5 = 0
+		A6 = 0
+		A7 = 0
+		A8 = 0
 
 		DropTable(user_first_name + "_TMPC")
 		sql = "select distinct * into " + str(user_first_name + "_TMPC") + " "
@@ -6070,10 +6145,23 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 		sql += "and dly_date>='" + str(search_date_from) + "' "
 		sql += "and dly_date<='" + str(search_date_to) + "' "
 		sql += "order by dly_date,sch_shift"
+		try:
+			with connection.cursor() as cursor:		
+				cursor.execute(sql)
+		except db.OperationalError as e:
+			is_error = True
+			message = "<b>Please send this error to IT team.</b><br>" + str(e)
+			return is_error, message
+		except db.Error as e:
+			is_error = True
+			message = "<b>Please send this error to IT team.</b><br>" + str(e)
+			return is_error, message
+		finally:
+			cursor.close()
+
 
 		is_error = False
 		message = "DisplayList('DLY_PLAN') is pass."
 
-		print("log: call DisplayList('DLY_PLAN') is pass")
 
 	return is_error, message
