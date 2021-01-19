@@ -609,6 +609,15 @@ $(document).on('click', '#id_search_submit_button', function(e) {
 					result += "</table>";
 
 					$("#performance_list_table").html(result);
+
+					// Fillin income list
+					$("#id_hours").val(data.income_list[0]);
+					$("#id_day").val(data.income_list[1]);
+					$("#id_bas").val(data.income_list[2]);
+					$("#id_got").val(data.income_list[3]);
+					$("#id_bon").val(data.income_list[4]);
+					$("#id_pub").val(data.income_list[5]);
+					$("#id_dof").val(data.income_list[6]);					
 				}				
 				
     		}		    		

@@ -5850,7 +5850,7 @@ def SearchDailyGurdPerformance(request):
 		sql += "where emp_id=" + str(emp_id) + " "
 		sql += "and dly_date>='" + str(search_date_from) + "' "
 		sql += "and dly_date<='" + str(search_date_to) + "'"
-		print("AAA:", sql)
+		
 		try:
 			with connection.cursor() as cursor:		
 				cursor.execute(sql)
@@ -5977,7 +5977,7 @@ def SearchDailyGurdPerformance(request):
 
 
 		# TODO: Call DisplayList("DLY_PLAN")
-		is_error, error_message, performance_list = DisplayList("DLY_PLAN", user_first_name, emp_id, search_date_from, search_date_to)
+		is_error, error_message, performance_list, income_list = DisplayList("DLY_PLAN", user_first_name, emp_id, search_date_from, search_date_to)
 		if is_error:
 			is_error = True
 			message = error_message
@@ -6006,7 +6006,7 @@ def SearchDailyGurdPerformance(request):
 		is_error = True
 		message = "Can't drop table " + str(user_first_name)
 
-	response = JsonResponse(data={"success": True,"is_error": is_error,"message": message, "performance_list": performance_list})
+	response = JsonResponse(data={"success": True,"is_error": is_error,"message": message, "performance_list": performance_list, "income_list": income_list})
 	response.status_code = 200
 	return response	
 
@@ -6014,6 +6014,8 @@ def SearchDailyGurdPerformance(request):
 def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_date_to):
 	if (table_name=="DLY_PLAN"):
 		DlyPerRs = None
+		income_list = []
+
 		# UPDATE 1
 		sql = "update " + str(user_first_name) + " "
 		sql += "set shf_amt_hr = ot_hr_amt "
@@ -6079,7 +6081,7 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 		sql += "and dly_date>='" + str(search_date_from) + "' "
 		sql += "and dly_date<='" + str(search_date_to) + "' "
 		sql += "order by dly_date, sch_shift"
-		print("sql DlyPerRs: ", sql)
+		# print("sql DlyPerRs: ", sql)
 		try:
 			with connection.cursor() as cursor:		
 				cursor.execute(sql)
@@ -6156,6 +6158,8 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 		try:
 			with connection.cursor() as cursor:		
 				cursor.execute(sql)
+
+
 		except db.OperationalError as e:
 			is_error = True
 			message = "<b>Please send this error to IT team.</b><br>" + str(e)
@@ -6167,10 +6171,45 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 		finally:
 			cursor.close()
 
+		if DlyPerRs is not None:
+			if len(DlyPerRs) > 0:
+				for i in range(0, len(DlyPerRs)):
+					absent = DlyPerRs[i][21]
+					shf_amt_hr = DlyPerRs[i][6]
+					
+					bas_amt = DlyPerRs[i][38] if DlyPerRs[i][38]>0 else 0
+					otm_amt = DlyPerRs[i][52] if DlyPerRs[i][52]>0 else 0
+					bon_amt = DlyPerRs[i][39] if DlyPerRs[i][39]>0 else 0
+					pub_amt = DlyPerRs[i][40] if DlyPerRs[i][40]>0 else 0
+					dof_amt = DlyPerRs[i][53] if DlyPerRs[i][53]>0 else 0
+					ex_dof_amt = DlyPerRs[i][62] if DlyPerRs[i][62]>0 else 0
+
+					if absent:
+						print("absent = true")
+					else:
+						A1 = A1 + shf_amt_hr
+						A2 = A2 + 1
+						A3 = A3 + bas_amt
+						A4 = A4 + otm_amt
+						A5 = A5 + bon_amt
+						A6 = A6 + pub_amt
+						A7 = A7 + dof_amt
+						A7 = A7 + ex_dof_amt					
+					print("absent:", absent)
+
+				print("A1:", A1)
+				print("A2:", A2)
+				print("A3:", A3)
+				print("A4:", A4)
+				print("A5:", A5)
+				print("A6:", A6)
+				print("A7:", A7)
+				income_list = [A1,A2,A3,A4,A5,A6,A7]
+
 		is_error = False
 		message = "DisplayList('DLY_PLAN') is pass."
 
-	return is_error, message, DlyPerRs
+	return is_error, message, DlyPerRs, income_list
 
 
 def SearchDailyGurdPerformanceEmployeeInformation(request):
@@ -6190,7 +6229,7 @@ def SearchDailyGurdPerformanceEmployeeInformation(request):
 		sql += "left join com_department as b on a.emp_dept=b.dept_id "
 		sql += "left join t_empsts as c on a.emp_status=c.sts_id "
 		sql += "where a.emp_id=" + str(emp_id)
-		print("SQL:", sql)
+		
 		try:
 			with connection.cursor() as cursor:		
 				cursor.execute(sql)
