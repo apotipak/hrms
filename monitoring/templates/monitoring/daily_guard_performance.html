@@ -133,7 +133,7 @@ $(document).on('click', '#id_search_submit_button', function(e) {
 		$.alert({
 		    title: 'Error',
 		    type: 'red',
-		    content: "กรุณาป้อนวันที่เริ่มต้น",
+		    content: "กรุณาป้อนรหัสพนักงาน",
 		    animation: 'zoom',
 		    animationBounce: 1.5,
 		    closeIcon: false,
@@ -187,8 +187,63 @@ $(document).on('click', '#id_search_submit_button', function(e) {
 	}
 
 
-	alert("TODO");
-	console.log(emp_id+","+search_date_from+","+search_date_to);
+	// TODO: Start/End Date validation
+	// Case1: end date must be greater than start date
+
+
+	// TODO: Delete this line
+	// console.log(emp_id+","+search_date_from+","+search_date_to);
+
+	// TODO: show Performance tab
+	$.ajax({
+    	url : "/monitoring/ajax/search_daily_guard_performance/",
+    	type : "POST",
+    	data : {          
+      		csrfmiddlewaretoken: '{{ csrf_token }}',
+      		emp_id: emp_id,
+      		search_date_from: search_date_from,
+      		search_date_to: search_date_to
+    	},
+    	success: function(data) {
+
+    		if(data.is_error) {
+				$.alert({
+				    title: 'Error',
+				    type: 'red',
+				    content: data.message,
+				    animation: 'zoom',
+				    animationBounce: 1.5,
+				    closeIcon: false,
+				    boxWidth: '38%',
+				    useBootstrap: false,
+				});		    			
+    		} else {
+				$.alert({
+				    title: 'Success',
+				    type: 'green',
+				    content: data.message,
+				    animation: 'zoom',
+				    animationBounce: 1.5,
+				    closeIcon: false,
+				    boxWidth: '38%',
+				    useBootstrap: false,
+				});
+    		}		    		
+    	},
+
+    });	
+
+	// TODO: show Schedule tab
+
+
+	// TODO: show Substitute tab
+
+
+	// TODO: show Leave tab
+
+
+	// TODO: show Overtime tab
+
 
 });
 

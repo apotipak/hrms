@@ -5733,8 +5733,7 @@ def ajax_bulk_update_absent_status(request):
 			print("sql:", sql)
 			try:
 				with connection.cursor() as cursor:		
-					cursor.execute(sql)
-					cursor.close()
+					cursor.execute(sql)					
 				message = "ปรับสถานะการเข้างานเป็น <b>Absent</b> สำเร็จ"
 			except db.OperationalError as e:
 				response = JsonResponse(data={"success": True,"is_error": True,"message": "<b>Please send this error to IT team or try again.</b><br>" + str(e)})
@@ -5744,9 +5743,337 @@ def ajax_bulk_update_absent_status(request):
 				response = JsonResponse(data={"success": True,"is_error": True,"message": "<b>Please send this error to IT team or try again.</b><br>" + str(e)})
 				response.status_code = 200
 				return response		
-				
+			finally:
+				cursor.close()
+
 	response = JsonResponse(data={"success": True,"is_error": is_error,"message": message})
 	response.status_code = 200
 	return response
 
 
+
+def DropTable(table_name):
+	is_success = False
+	message = ""
+
+	sql = "if exists (select * from sysobjects where id=object_id('" + str(table_name) + "')) drop table " + str(table_name)
+	try:
+		with connection.cursor() as cursor:		
+			cursor.execute(sql)
+
+		print("Log: drop table " + str(table_name) + " success")
+		is_success = True
+		message = "Drop table success"
+	except db.OperationalError as e:
+		is_success = False
+		message = "<b>Please send this error to IT team.</b><br>" + str(e)
+	except db.Error as e:
+		is_success = False
+		message = "<b>Please send this error to IT team.</b><br>" + str(e)
+	finally:
+		cursor.close()
+	
+	return is_success, message
+
+
+@login_required(login_url='/accounts/login/')
+@permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
+def SearchDailyGurdPerformance(request):
+	is_error = True
+	message = ""
+	emp_id = request.POST.get('emp_id')
+	user_first_name = request.user.first_name
+	
+	# search_date_from = request.POST.get('search_date_from')
+	# search_date_to = request.POST.get('search_date_to')	
+	search_date_from = datetime.datetime.strptime(request.POST.get('search_date_from'), '%d/%m/%Y').date()
+	search_date_to = datetime.datetime.strptime(request.POST.get('search_date_to'), '%d/%m/%Y').date()
+
+	performance_list = None
+	schedule_list = None
+	substitue_list = None
+	leave_list = None
+	overtime_list = None
+
+	'''
+	message = "%s | %s | %s" %(emp_id, search_date_from, search_date_to)	
+	response = JsonResponse(data={"success": True,"is_error": is_error,"message": message})
+	response.status_code = 200
+	return response	
+	'''
+
+	# Call ChkValidInput(1)
+	if (emp_id=="") or (search_date_from=="") or (search_date_to==""):
+		message = "ป้อนข้อมูลไม่ถูกต้อง กรุณาตรวจสอบอีกครั้ง"
+		response = JsonResponse(data={"success": True,"is_error": True,"message": message})
+		response.status_code = 200
+		return response	
+
+	# TODO: validate Start Date must not over than End Date
+
+	# TODO: validate emp_id is existed
+	sql = "select count(*) from v_hdlyplan where emp_id=" + str(emp_id)
+	try:
+		with connection.cursor() as cursor:		
+			cursor.execute(sql)
+			count = cursor.fetchone()[0]
+
+		if count <= 0:
+			is_error = True
+			message = "รหัสพนักงาน <b>" + str(emp_id) + "</b> ไม่มีอยู่ในระบบ"
+		else:
+			is_error = False
+			message = "Pass"
+
+	except db.OperationalError as e:
+		response = JsonResponse(data={"success": True, "is_error": True, "message": "<b>Please send this error to IT team.</b><br>" + str(e)})
+		response.status_code = 200
+		return response
+	except db.Error as e:
+		response = JsonResponse(data={"success": True, "is_error": True, "message": "<b>Please send this error to IT team.</b><br>" + str(e)})
+		response.status_code = 200
+		return response		
+	finally:
+		cursor.close()
+
+	# if emp_id is existed
+	# TODO: drop all 5 user tables (usertable, usertable1, usertable2, usertable3, usertable4)
+	is_drop_table_success, message = DropTable(user_first_name)
+
+	if is_drop_table_success:		
+		DropTable(user_first_name + "1")
+		DropTable(user_first_name + "2")
+		DropTable(user_first_name + "3")
+		DropTable(user_first_name + "4")
+
+		sql = "select distinct * into " + str(user_first_name + "1") + " from v_hdlyplan "
+		sql += "where emp_id=" + str(emp_id) + " "
+		sql += "and dly_date>='" + str(search_date_from) + "' "
+		sql += "and dly_date<='" + str(search_date_to) + "'"
+		try:
+			with connection.cursor() as cursor:		
+				cursor.execute(sql)
+		except db.OperationalError as e:
+			response = JsonResponse(data={"success": True, "is_error": True, "message": "<b>Please send this error to IT team.</b><br>" + str(e)})
+			response.status_code = 200
+			return response
+		except db.Error as e:
+			response = JsonResponse(data={"success": True, "is_error": True, "message": "<b>Please send this error to IT team.</b><br>" + str(e)})
+			response.status_code = 200
+			return response
+		finally:
+			cursor.close()
+
+
+		sql = "alter table " + str(user_first_name + "1") + " add Customer_Flag nvarchar(1) NULL"
+		try:
+			with connection.cursor() as cursor:		
+				cursor.execute(sql)
+		except db.OperationalError as e:
+			response = JsonResponse(data={"success": True, "is_error": True, "message": "<b>Please send this error to IT team.</b><br>" + str(e)})
+			response.status_code = 200
+			return response
+		except db.Error as e:
+			response = JsonResponse(data={"success": True, "is_error": True, "message": "<b>Please send this error to IT team.</b><br>" + str(e)})
+			response.status_code = 200
+			return response
+		finally:
+			cursor.close()
+
+
+		sql = "select distinct * into " + str(user_first_name + "2") + " from v_dlyplan "
+		sql += "where emp_id=" + str(emp_id) + " "
+		sql += "and dly_date>='" + str(search_date_from) + "' "
+		sql += "and dly_date<='" + str(search_date_to) + "'"
+		try:
+			with connection.cursor() as cursor:		
+				cursor.execute(sql)
+		except db.OperationalError as e:
+			response = JsonResponse(data={"success": True, "is_error": True, "message": "<b>Please send this error to IT team.</b><br>" + str(e)})
+			response.status_code = 200
+			return response
+		except db.Error as e:
+			response = JsonResponse(data={"success": True, "is_error": True, "message": "<b>Please send this error to IT team.</b><br>" + str(e)})
+			response.status_code = 200
+			return response
+		finally:
+			cursor.close()
+
+
+		sql = "select distinct * into " + str(user_first_name + "3") + " from v_dlyplan "
+		sql += "where relieft_id=" + str(emp_id) + " "
+		sql += "and dly_date>='" + str(search_date_from) + "' "
+		sql += "and dly_date<='" + str(search_date_to) + "'"
+		try:
+			with connection.cursor() as cursor:		
+				cursor.execute(sql)
+		except db.OperationalError as e:
+			response = JsonResponse(data={"success": True, "is_error": True, "message": "<b>Please send this error to IT team.</b><br>" + str(e)})
+			response.status_code = 200
+			return response
+		except db.Error as e:
+			response = JsonResponse(data={"success": True, "is_error": True, "message": "<b>Please send this error to IT team.</b><br>" + str(e)})
+			response.status_code = 200
+			return response
+		finally:
+			cursor.close()
+
+
+		sql = "select distinct * into " + str(user_first_name + "4") + " from v_hdlyplan "
+		sql += "where relieft_id=" + str(emp_id) + " "
+		sql += "and dly_date>='" + str(search_date_from) + "' "
+		sql += "and dly_date<='" + str(search_date_to) + "'"
+		try:
+			with connection.cursor() as cursor:		
+				cursor.execute(sql)
+		except db.OperationalError as e:
+			response = JsonResponse(data={"success": True, "is_error": True, "message": "<b>Please send this error to IT team.</b><br>" + str(e)})
+			response.status_code = 200
+			return response
+		except db.Error as e:
+			response = JsonResponse(data={"success": True, "is_error": True, "message": "<b>Please send this error to IT team.</b><br>" + str(e)})
+			response.status_code = 200
+			return response
+		finally:
+			cursor.close()
+
+		sql = "alter table " + str(user_first_name + "4") + " add Customer_Flag nvarchar(1) NULL"
+		try:
+			with connection.cursor() as cursor:		
+				cursor.execute(sql)
+		except db.OperationalError as e:
+			response = JsonResponse(data={"success": True, "is_error": True, "message": "<b>Please send this error to IT team.</b><br>" + str(e)})
+			response.status_code = 200
+			return response
+		except db.Error as e:
+			response = JsonResponse(data={"success": True, "is_error": True, "message": "<b>Please send this error to IT team.</b><br>" + str(e)})
+			response.status_code = 200
+			return response
+		finally:
+			cursor.close()
+
+
+		sql = "select * into " + str(user_first_name) + " " 
+		sql += "from " + str(user_first_name + "1") + " "
+		sql += "union select * from " + str(user_first_name + "2") + " "
+		sql += "union select * from " + str(user_first_name + "3") + " "
+		sql += "union select * from " + str(user_first_name + "4") + " "
+		# print("SQL:", sql)
+
+		try:
+			with connection.cursor() as cursor:		
+				cursor.execute(sql)
+		except db.OperationalError as e:
+			response = JsonResponse(data={"success": True, "is_error": True, "message": "<b>Please send this error to IT team.</b><br>" + str(e)})
+			response.status_code = 200
+			return response
+		except db.Error as e:
+			response = JsonResponse(data={"success": True, "is_error": True, "message": "<b>Please send this error to IT team.</b><br>" + str(e)})
+			response.status_code = 200
+			return response
+		finally:
+			cursor.close()
+
+
+		# TODO: Call DisplayList("DLY_PLAN")
+		is_error, error_message = DisplayList("DLY_PLAN", user_first_name, emp_id, search_date_from, search_date_to)
+		if is_error:
+			is_error = True
+			message = error_message
+		else:
+			is_error = False
+			message = error_message
+
+
+		# TODO: Call DisplayList("DLY_OT")
+		# TODO: Call DisplayList("DLY_SUB")
+		# TODO: Call DisplayList("SCH_PLAN")
+		# TODO: Call DisplayList("EMP_LEAVE_ACT")
+		# TODO: Call DisplayList("EMP_LEAVE_PLAN")
+		# TODO: Call DisplayList("ABSENT_DLY_PLAN")
+
+
+		DropTable(user_first_name)
+		DropTable(user_first_name + "1")
+		DropTable(user_first_name + "2")
+		DropTable(user_first_name + "3")
+		DropTable(user_first_name + "4")
+
+		# is_error = False
+		# message = "Prepare temp tables complete."
+	else:
+		is_error = True
+		message = "Can't drop table " + str(user_first_name)
+
+	response = JsonResponse(data={"success": True,"is_error": is_error,"message": message})
+	response.status_code = 200
+	return response	
+
+
+def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_date_to):
+	if (table_name=="DLY_PLAN"):
+		sql = "update " + str(user_first_name) + " "
+		sql += "set shf_amt_hr = ot_hr_amt "
+		sql += "where (ot_hr_amt<>0 and pay_type='TPA')"
+		print("debug:", sql)
+		try:
+			with connection.cursor() as cursor:		
+				cursor.execute(sql)
+		except db.OperationalError as e:
+			is_error = True
+			message = "<b>Please send this error to IT team.</b><br>" + str(e)
+			return is_error, message
+		except db.Error as e:
+			is_error = True
+			message = "<b>Please send this error to IT team.</b><br>" + str(e)
+			return is_error, message
+		finally:
+			cursor.close()
+
+
+		sql = "update "	+ str(user_first_name) + " "
+		sql += "set shf_amt_hr = (shf_amt_hr + ot_hr_amt) "
+		sql += "where (ot_hr_amt<>0 and relieft_id<>0 "
+		sql += "or (ot_hr_amt<>0 and pay_type<>'TPA')"
+
+
+		sql = "update " + str(user_first_name) + " "
+		sql += "set shf_amt_hr='0' "
+		sql += "where left(ltrim(shf_desc),3)='999' "
+		sql += "and absent='1'"
+
+		sql = "select distinct * from " + str(user_first_name) + " "
+		sql += "where emp_id=" + str(emp_id) + " "
+		sql += "and dly_date>='" + str(search_date_from) + "' "
+		sql += "and dly_date<='" + str(search_date_to) + "' "
+		sql += "order by dly_datesch_shift"
+
+		sql = "if exists (select * from dbo.sysobjects where id=object_id(N'[dbo].[R_D500]') and OBJECTPROPERTY(id,N'IsUserTable')=1) "
+		sql += "drop table [dbo].[R_D500]"
+
+
+		sql = "select distinct emp_id,rtrim(emp_fname_th)+' ' + rtrim(emp_lname_th) as fname,cnt_id,dly_date,sch_shift, "
+		sql += "shf_desc,sch_rank,pay_type,bas_amt,bon_amt,pub_amt,otm_amt,dof_amt+ex_dof_amt as dof,spare, "
+		sql += "tel_amt,wage_id,shf_amt_hr,ot_hr_amt,absent,remark "
+		sql += "into R_D500 from " + str(user_first_name) + " "
+		sql += "where emp_id=" + str(emp_id) + " "
+		sql += "and dly_date>='" + str(search_date_from) + "' "
+		sql += "and dly_date<='" + str(search_date_to) + "' "
+		sql += "and pay_type<>'ABS' order by dly_date,sch_shift"
+
+		# A1,A2,A3,A4,A5,A6,A7,A8 = 0
+
+		DropTable(user_first_name + "_TMPC")
+		sql = "select distinct * into " + str(user_first_name + "_TMPC") + " "
+		sql += "from " + str(user_first_name) + " "
+		sql += "where emp_id=" + str(emp_id) + " "
+		sql += "and dly_date>='" + str(search_date_from) + "' "
+		sql += "and dly_date<='" + str(search_date_to) + "' "
+		sql += "order by dly_date,sch_shift"
+
+		is_error = False
+		message = "DisplayList('DLY_PLAN') is pass."
+
+		print("log: call DisplayList('DLY_PLAN') is pass")
+
+	return is_error, message
