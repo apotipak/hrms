@@ -461,11 +461,79 @@ $(document).on('click', '#id_search_submit_button', function(e) {
 	// TODO: Delete this line
 	// console.log(emp_id+","+search_date_from+","+search_date_to);
 
-	// TODO: show Performance tab
-	showLoading();
+	// TODO: show Performance tab	
 	$("#id_search_submit_button").text("Processing...");
 	$("#id_search_submit_button").attr("disabled", true);
 
+
+	showLoading();    		
+	displayList(emp_id, search_date_from, search_date_to);
+	
+
+	// TODO: show Schedule tab
+
+
+	// TODO: show Substitute tab
+
+
+	// TODO: show Leave tab
+
+
+	// TODO: show Overtime tab
+
+
+});
+
+$(document).on('click', '#id_search_cancel_button', function(e) {    	
+	$("#daily_guard_performance_search_form").trigger("reset");
+	$("#id_employee_information_form").trigger("reset");
+	$("#id_income_information_form").trigger("reset");
+
+	// Clear tables
+	$("#performance_list_table tbody").empty();
+
+	$("#id_search_emp_id").focus();
+});
+
+
+function showLoading() {
+	$.LoadingOverlaySetup({
+	    background      : "rgba(0, 0, 0, 0.5)",
+	    image           : "/static/img/logo-small.png",
+	    imageAnimation  : "1.5s fadein",
+	    imageColor      : "#ffcc00"
+	});
+	$.LoadingOverlay("show");	
+}
+
+function convertStringToDDMMYYYY(strdate) {
+	var new_date = ""
+	var new_date_temp = new Date(strdate);
+	var dd = String(new_date_temp.getDate()).padStart(2, '0');
+	var mm = String(new_date_temp.getMonth() + 1).padStart(2, '0');
+	var yyyy = new_date_temp.getFullYear();
+	new_date = dd + '/' + mm + '/' + yyyy;
+
+	return new_date;
+}
+
+function convertStringToDDMMYYYYHHSS(strdate) {
+	var new_date = ""
+	var new_date_temp = new Date(strdate);
+	var dd = String(new_date_temp.getDate()).padStart(2, '0');
+	var mm = String(new_date_temp.getMonth() + 1).padStart(2, '0');
+	var yyyy = new_date_temp.getFullYear();
+	var hh = new_date_temp.getHours();
+	var mm = new_date_temp.getMinutes();
+	
+	new_date = dd + '/' + mm + '/' + yyyy + " " + hh + ":" + mm;
+
+	return new_date;
+}
+
+
+function displayList(emp_id, search_date_from, search_date_to) {
+	//showLoading();
 	$.ajax({
     	url : "/monitoring/ajax/search_daily_guard_performance/",
     	type : "POST",
@@ -489,20 +557,6 @@ $(document).on('click', '#id_search_submit_button', function(e) {
 				    useBootstrap: false,
 				});		    			
     		} else {
-    			/*
-				$.alert({
-				    title: 'Success',
-				    type: 'green',
-				    content: data.message,
-				    animation: 'zoom',
-				    animationBounce: 1.5,
-				    closeIcon: false,
-				    boxWidth: '38%',
-				    useBootstrap: false,
-				});
-				*/
-
-				//performance_list_table
 				performance_list_count = data.performance_list.length
 				if(performance_list_count>0) {
 					result = "<table id='performance_list_table'>";
@@ -624,70 +678,22 @@ $(document).on('click', '#id_search_submit_button', function(e) {
 
 			$("#id_search_submit_button").text("Search");
 			$("#id_search_submit_button").attr("disabled", false);
+
+
+			// TODO: Show Overtime Table
+
+
+			// TODO: Show Substitute table
+
+
+			// TODO: Show Schedule table
+			
+
+
     		$.LoadingOverlay("hide");
     	},
 
     });	
-
-	// TODO: show Schedule tab
-
-
-	// TODO: show Substitute tab
-
-
-	// TODO: show Leave tab
-
-
-	// TODO: show Overtime tab
-
-
-});
-
-$(document).on('click', '#id_search_cancel_button', function(e) {    	
-	$("#daily_guard_performance_search_form").trigger("reset");
-	$("#id_employee_information_form").trigger("reset");
-	$("#id_income_information_form").trigger("reset");
-
-	// Clear tables
-	$("#performance_list_table tbody").empty();
-
-	$("#id_search_emp_id").focus();
-});
-
-
-function showLoading() {
-	$.LoadingOverlaySetup({
-	    background      : "rgba(0, 0, 0, 0.5)",
-	    image           : "/static/img/logo-small.png",
-	    imageAnimation  : "1.5s fadein",
-	    imageColor      : "#ffcc00"
-	});
-	$.LoadingOverlay("show");	
-}
-
-function convertStringToDDMMYYYY(strdate) {
-	var new_date = ""
-	var new_date_temp = new Date(strdate);
-	var dd = String(new_date_temp.getDate()).padStart(2, '0');
-	var mm = String(new_date_temp.getMonth() + 1).padStart(2, '0');
-	var yyyy = new_date_temp.getFullYear();
-	new_date = dd + '/' + mm + '/' + yyyy;
-
-	return new_date;
-}
-
-function convertStringToDDMMYYYYHHSS(strdate) {
-	var new_date = ""
-	var new_date_temp = new Date(strdate);
-	var dd = String(new_date_temp.getDate()).padStart(2, '0');
-	var mm = String(new_date_temp.getMonth() + 1).padStart(2, '0');
-	var yyyy = new_date_temp.getFullYear();
-	var hh = new_date_temp.getHours();
-	var mm = new_date_temp.getMinutes();
-	
-	new_date = dd + '/' + mm + '/' + yyyy + " " + hh + ":" + mm;
-
-	return new_date;
 }
 
 </script>

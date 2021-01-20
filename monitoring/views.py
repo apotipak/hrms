@@ -5784,16 +5784,15 @@ def SearchDailyGurdPerformance(request):
 	emp_id = request.POST.get('emp_id')
 	user_first_name = request.user.first_name
 	
-	# search_date_from = request.POST.get('search_date_from')
-	# search_date_to = request.POST.get('search_date_to')	
 	search_date_from = datetime.datetime.strptime(request.POST.get('search_date_from'), '%d/%m/%Y').date()
 	search_date_to = datetime.datetime.strptime(request.POST.get('search_date_to'), '%d/%m/%Y').date()
 
 	performance_list = None
+	overtime_list = None
 	schedule_list = None
 	substitue_list = None
 	leave_list = None
-	overtime_list = None
+	
 
 	'''
 	message = "%s | %s | %s" %(emp_id, search_date_from, search_date_to)	
@@ -5986,22 +5985,43 @@ def SearchDailyGurdPerformance(request):
 			message = error_message
 
 
-		# TODO: Call DisplayList("DLY_OT")
+		# TODO: Call DisplayList("DLY_OT")		
+		is_error, error_message, overtime_list = DisplayList("DLY_OT", user_first_name, emp_id, search_date_from, search_date_to)
+		if is_error:
+			is_error = True
+			message = error_message
+		else:
+			is_error = False
+			message = error_message
+
+
+
 		# TODO: Call DisplayList("DLY_SUB")
+
+
+
 		# TODO: Call DisplayList("SCH_PLAN")
+		is_error, error_message = DisplayList("SCH_PLAN", user_first_name, emp_id, search_date_from, search_date_to)
+		if is_error:
+			is_error = True
+			message = error_message
+		else:
+			is_error = False
+			message = error_message
+
+
+
 		# TODO: Call DisplayList("EMP_LEAVE_ACT")
 		# TODO: Call DisplayList("EMP_LEAVE_PLAN")
 		# TODO: Call DisplayList("ABSENT_DLY_PLAN")
 
-
+		'''
 		DropTable(user_first_name)
 		DropTable(user_first_name + "1")
 		DropTable(user_first_name + "2")
 		DropTable(user_first_name + "3")
-		DropTable(user_first_name + "4")
-
-		# is_error = False
-		# message = "Prepare temp tables complete."
+		DropTable(user_first_name + "4")		
+		'''
 	else:
 		is_error = True
 		message = "Can't drop table " + str(user_first_name)
@@ -6012,6 +6032,69 @@ def SearchDailyGurdPerformance(request):
 
 
 def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_date_to):
+
+	if(table_name=="SCH_PLAN"):
+		is_error = True
+		message = "<b>SCH_PLAN</b>: "
+		sql = "select b.*,k.emp_fname_th,k.emp_lname_th,"
+		sql += "c.shf_desc as shf_mon,"
+		sql += "d.shf_desc as shf_tue,"
+		sql += "e.shf_desc as shf_wed,"
+		sql += "f.shf_desc as shf_thu,"
+		sql += "g.shf_desc as shf_fri,"
+		sql += "h.shf_desc as shf_sat,"
+		sql += "i.shf_desc as shf_sun "
+		sql += "from cus_contract as a left join sch_plan as b on a.cnt_id=b.cnt_id "
+		sql += "left join v_employee as k on b.emp_id=k.emp_id "		
+		sql += "left join t_shift as c on b.sch_shf_mon=c.shf_id "
+		sql += "left join t_shift as d on b.sch_shf_tue=d.shf_id "
+		sql += "left join t_shift as e on b.sch_shf_wed=e.shf_id "
+		sql += "left join t_shift as f on b.sch_shf_thu=f.shf_id "
+		sql += "left join t_shift as g on b.sch_shf_fri=g.shf_id "
+		sql += "left join t_shift as h on b.sch_shf_sat=h.shf_id "
+		sql += "left join t_shift as i on b.sch_shf_sun=i.shf_id "		
+		sql += "where b.emp_id=" + str(emp_id) + " "
+		sql += "and b.upd_flag<>'D' "
+		sql += "order by sch_date_frm desc, sch_no asc"
+		print("SQL:", sql)
+		return is_error, message
+	
+
+	if(table_name=="DLY_OT"):
+		is_error = True
+		message = "<b>DLY_OT</b>: "
+		DlyPerRs_DLYOT = None
+		sql = "select distinct "
+		sql += "absent,sch_no,emp_id,dly_date,emp_fname_th,sch_rank,shf_desc,prd_id,cnt_id,relieft,relieft_id,remp_fname_th,remp_lname_th,tel_man,"
+		sql += "tel_time,tel_amt,tel_paid,ot,ot_reason,ot_res_th,ot_time_frm,ot_time_to,ot_hr_amt,ot_pay_amt,spare,wage_id,pay_type,soc,pub,paid,shf_type,remark,sch_shift "
+		sql += "from " + str(user_first_name) + " where emp_id=" + str(emp_id) + " and ot_hr_amt>0 "
+		sql += "and dly_date>='" + str(search_date_from) + "' "
+		sql += "and dly_date<='" + str(search_date_to) + "' "
+		sql += "order by sch_shift"
+		# print("SQL:", sql)
+		try:
+			with connection.cursor() as cursor:		
+				cursor.execute(sql)
+				DlyPerRs_DLYOT = cursor.fetchall()
+			message += "Success"
+			is_error = False
+		except db.OperationalError as e:
+			is_error = True
+			message += message + "Error! Please send this error to IT team.<br>" + str(e)
+			return is_error, message
+		except db.Error as e:
+			is_error = True
+			message += message + "Error! Please send this error to IT team.<br>" + str(e)
+			return is_error, message
+		finally:
+			cursor.close()
+		if DlyPerRs_DLYOT is not None:
+			if len(DlyPerRs_DLYOT) > 0:
+				absent = ""
+		# print("DLY_OT:", message)
+		return is_error, message, DlyPerRs_DLYOT
+
+
 	if (table_name=="DLY_PLAN"):
 		DlyPerRs = None
 		income_list = []
@@ -6074,8 +6157,7 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 		finally:
 			cursor.close()
 
-		# DlyPerRs
-		
+		# DlyPerRs		
 		sql = "select distinct * from " + str(user_first_name) + " "
 		sql += "where emp_id=" + str(emp_id) + " "
 		sql += "and dly_date>='" + str(search_date_from) + "' "
