@@ -6006,6 +6006,7 @@ def SearchDailyGurdPerformance(request):
 			message = error_message
 
 
+
 		# TODO: Call DisplayList("SCH_PLAN")
 		is_error, error_message, schedule_list = DisplayList("SCH_PLAN", user_first_name, emp_id, search_date_from, search_date_to)
 		if is_error:
@@ -6077,7 +6078,7 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 		sql += "where emp_id=" + str(emp_id) + " "
 		sql += "and absent=1 and sch_shift<>99 and year(dly_date)=year(getdate()) "
 		sql += "order by dly_date desc"
-		print("ABSENT_DLY_PLAN SQL:", sql)
+		# print("ABSENT_DLY_PLAN SQL:", sql)
 		try:
 			with connection.cursor() as cursor:		
 				cursor.execute(sql)
@@ -6161,7 +6162,7 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 		sql += "and dly_date>='" + str(search_date_from) + "' "
 		sql += "and dly_date<='" + str(search_date_to) + "' "
 		sql += "order by sch_shift"
-		# print("DLY_SUB SQL:", sql)
+		print("DLY_SUB SQL:", sql)
 		try:
 			with connection.cursor() as cursor:		
 				cursor.execute(sql)
