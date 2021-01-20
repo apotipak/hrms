@@ -5995,9 +5995,14 @@ def SearchDailyGurdPerformance(request):
 			message = error_message
 
 
-
 		# TODO: Call DisplayList("DLY_SUB")
-
+		is_error, error_message, substitute_list = DisplayList("DLY_SUB", user_first_name, emp_id, search_date_from, search_date_to)
+		if is_error:
+			is_error = True
+			message = error_message
+		else:
+			is_error = False
+			message = error_message
 
 
 		# TODO: Call DisplayList("SCH_PLAN")
@@ -6026,12 +6031,40 @@ def SearchDailyGurdPerformance(request):
 		is_error = True
 		message = "Can't drop table " + str(user_first_name)
 
-	response = JsonResponse(data={"success": True,"is_error": is_error,"message": message, "performance_list": performance_list, "income_list": income_list, "schedule_list": schedule_list})
+	response = JsonResponse(data={"success": True,"is_error": is_error,"message": message, "performance_list": performance_list, "income_list": income_list, "schedule_list": schedule_list, "substitute_list":substitute_list})
 	response.status_code = 200
 	return response	
 
 
 def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_date_to):
+
+	if(table_name=="DLY_SUB"):
+		is_error = True
+		message = "<b>DLY_SUB</b>: "
+		DlyPerRs_DLYSUB = None
+		sql = "select distinct * from " + str(user_first_name) + " where relieft_id=" + str(emp_id) + " "
+		sql += "and dly_date>='" + str(search_date_from) + "' "
+		sql += "and dly_date<='" + str(search_date_to) + "' "
+		sql += "order by sch_shift"
+		print("SQL:", sql)
+		try:
+			with connection.cursor() as cursor:		
+				cursor.execute(sql)
+				DlyPerRs_DLYSUB = cursor.fetchall()
+			message += "Success"
+			is_error = False
+		except db.OperationalError as e:
+			is_error = True
+			message += message + "Error! Please send this error to IT team.<br>" + str(e)
+			return is_error, message
+		except db.Error as e:
+			is_error = True
+			message += message + "Error! Please send this error to IT team.<br>" + str(e)
+			return is_error, message
+		finally:
+			cursor.close()		
+		return is_error, message, DlyPerRs_DLYSUB
+
 
 	if(table_name=="SCH_PLAN"):
 		is_error = True

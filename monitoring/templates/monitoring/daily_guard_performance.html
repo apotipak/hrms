@@ -485,12 +485,16 @@ $(document).on('click', '#id_search_submit_button', function(e) {
 });
 
 $(document).on('click', '#id_search_cancel_button', function(e) {    	
+
+	// Clear Forms
 	$("#daily_guard_performance_search_form").trigger("reset");
 	$("#id_employee_information_form").trigger("reset");
 	$("#id_income_information_form").trigger("reset");
 
-	// Clear tables
+	// Clear Tables
 	$("#performance_list_table tbody").empty();
+	$("#performance_list_table tbody").empty();
+	$("#schedule_list_table tbody").empty();
 
 	$("#id_search_emp_id").focus();
 });
