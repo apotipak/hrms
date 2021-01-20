@@ -647,7 +647,11 @@ $(document).on('click', '#id_search_cancel_button', function(e) {
 	$("#daily_guard_performance_search_form").trigger("reset");
 	$("#id_employee_information_form").trigger("reset");
 	$("#id_income_information_form").trigger("reset");
-	$("#id_search_emp_id").focus();	
+
+	// Clear tables
+	$("#performance_list_table tbody").empty();
+
+	$("#id_search_emp_id").focus();
 });
 
 
