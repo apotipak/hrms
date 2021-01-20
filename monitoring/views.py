@@ -5792,8 +5792,9 @@ def SearchDailyGurdPerformance(request):
 	schedule_list = None
 	substitue_list = None
 	leave_list = None
+	emp_leave_plan_list = None
+	absent_dly_plan_list = None
 	
-
 	'''
 	message = "%s | %s | %s" %(emp_id, search_date_from, search_date_to)	
 	response = JsonResponse(data={"success": True,"is_error": is_error,"message": message})
@@ -6017,8 +6018,36 @@ def SearchDailyGurdPerformance(request):
 
 
 		# TODO: Call DisplayList("EMP_LEAVE_ACT")
+		is_error, error_message, leave_list = DisplayList("EMP_LEAVE_ACT", user_first_name, emp_id, search_date_from, search_date_to)
+		if is_error:
+			is_error = True
+			message = error_message
+		else:
+			is_error = False
+			message = error_message
+
+
+
 		# TODO: Call DisplayList("EMP_LEAVE_PLAN")
+		is_error, error_message, emp_leave_plan_list = DisplayList("EMP_LEAVE_PLAN", user_first_name, emp_id, search_date_from, search_date_to)
+		if is_error:
+			is_error = True
+			message = error_message
+		else:
+			is_error = False
+			message = error_message
+
+
+
 		# TODO: Call DisplayList("ABSENT_DLY_PLAN")
+		is_error, error_message, absent_dly_plan_list = DisplayList("ABSENT_DLY_PLAN", user_first_name, emp_id, search_date_from, search_date_to)
+		if is_error:
+			is_error = True
+			message = error_message
+		else:
+			is_error = False
+			message = error_message
+
 
 		'''
 		DropTable(user_first_name)
@@ -6031,12 +6060,98 @@ def SearchDailyGurdPerformance(request):
 		is_error = True
 		message = "Can't drop table " + str(user_first_name)
 
-	response = JsonResponse(data={"success": True,"is_error": is_error,"message": message, "performance_list": performance_list, "income_list": income_list, "schedule_list": schedule_list, "substitute_list":substitute_list})
+	response = JsonResponse(data={"success": True,"is_error": is_error,"message": message, 
+		"performance_list": performance_list, "income_list": income_list, "overtime_list":overtime_list, 
+		"schedule_list": schedule_list, "substitute_list":substitute_list, "leave_list":leave_list, "emp_leave_plan_list": emp_leave_plan_list, "absent_dly_plan_list": absent_dly_plan_list})
+
 	response.status_code = 200
 	return response	
 
 
 def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_date_to):
+	if(table_name=="ABSENT_DLY_PLAN"):
+		is_error = True
+		message = "<b>ABSENT_DLY_PLAN</b>: "
+		DlyPerRs_ABSENTDLYPLAN = None
+		sql = "select emp_id,dly_date,cnt_id,sch_shift,shf_desc,upd_date,upd_by,upd_flag from " + str(user_first_name) + " "		
+		sql += "where emp_id=" + str(emp_id) + " "
+		sql += "and absent=1 and sch_shift<>99 and year(dly_date)=year(getdate()) "
+		sql += "order by dly_date desc"
+		print("ABSENT_DLY_PLAN SQL:", sql)
+		try:
+			with connection.cursor() as cursor:		
+				cursor.execute(sql)
+				DlyPerRs_ABSENTDLYPLAN = cursor.fetchall()
+			message += "Success"
+			is_error = False
+		except db.OperationalError as e:
+			is_error = True
+			message += message + "Error! Please send this error to IT team.<br>" + str(e)
+			return is_error, message
+		except db.Error as e:
+			is_error = True
+			message += message + "Error! Please send this error to IT team.<br>" + str(e)
+			return is_error, message
+		finally:
+			cursor.close()		
+		return is_error, message, DlyPerRs_ABSENTDLYPLAN
+
+
+	if(table_name=="EMP_LEAVE_PLAN"):
+		is_error = True
+		message = "<b>EMP_LEAVE_PLAN</b>: "
+		DlyPerRs_EMPLEAVEPLAN = None
+		sql = "select b.*,c.lve_th from v_employee as a left join emp_leave_plan as b on a.emp_id=b.emp_id "
+		sql += "left join t_leave as c on b.lve_id=c.lve_id "
+		sql += "where a.emp_id= " + str(emp_id) + " "
+		sql += "and b.lve_year>=year(getdate())"
+		# print("EMP_LEAVE_PLAN SQL:", sql)
+		try:
+			with connection.cursor() as cursor:		
+				cursor.execute(sql)
+				DlyPerRs_EMPLEAVEPLAN = cursor.fetchall()
+			message += "Success"
+			is_error = False
+		except db.OperationalError as e:
+			is_error = True
+			message += message + "Error! Please send this error to IT team.<br>" + str(e)
+			return is_error, message
+		except db.Error as e:
+			is_error = True
+			message += message + "Error! Please send this error to IT team.<br>" + str(e)
+			return is_error, message
+		finally:
+			cursor.close()		
+		return is_error, message, DlyPerRs_EMPLEAVEPLAN
+
+
+	if(table_name=="EMP_LEAVE_ACT"):
+		is_error = True
+		message = "<b>EMP_LEAVE_ACT</b>: "
+		DlyPerRs_EMPLEAVEACT = None
+
+		sql = "select b.*,c.lve_th from v_employee as a left join emp_leave_act as b on a.emp_id=b.emp_id "
+		sql += "left join t_leave as c on b.lve_id=c.lve_id "		
+		sql += "where a.emp_id= " + str(emp_id) + " and b.lve_date_frm>='" + str(search_date_from) + "' "	
+		# print("EMP_LEAVE_ACT SQL:", sql)
+		try:
+			with connection.cursor() as cursor:		
+				cursor.execute(sql)
+				DlyPerRs_EMPLEAVEACT = cursor.fetchall()
+			message += "Success"
+			is_error = False
+		except db.OperationalError as e:
+			is_error = True
+			message += message + "Error! Please send this error to IT team.<br>" + str(e)
+			return is_error, message
+		except db.Error as e:
+			is_error = True
+			message += message + "Error! Please send this error to IT team.<br>" + str(e)
+			return is_error, message
+		finally:
+			cursor.close()		
+		return is_error, message, DlyPerRs_EMPLEAVEACT
+
 
 	if(table_name=="DLY_SUB"):
 		is_error = True
@@ -6046,7 +6161,7 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 		sql += "and dly_date>='" + str(search_date_from) + "' "
 		sql += "and dly_date<='" + str(search_date_to) + "' "
 		sql += "order by sch_shift"
-		print("SQL:", sql)
+		# print("DLY_SUB SQL:", sql)
 		try:
 			with connection.cursor() as cursor:		
 				cursor.execute(sql)
