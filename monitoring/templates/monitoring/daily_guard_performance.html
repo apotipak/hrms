@@ -91,38 +91,38 @@
 				<form id="id_income_information_form">
 				  <div class="form-row">
 				    <div class="col">
-				      <label>Hours</label>
-				      <input type="text" class="form-control form-control-sm" placeholder="Hours" id="id_hours" readonly="">
+				      <label>Hours&nbsp;&nbsp;<small>รวมชั่วโมงทำงาน</small></label>
+				      <input type="text" class="form-control form-control-md bg-light border-success" placeholder="Hours" id="id_hours" readonly="">
 				    </div>
 
 				    <div class="col">
-				      <label>Day</label>
-				      <input type="text" class="form-control form-control-sm" placeholder="Day" id="id_day" readonly="">
+				      <label>Day&nbsp;&nbsp;<small>รวมวันทำงาน</small></label>
+				      <input type="text" class="form-control form-control-md bg-light border-success" placeholder="Day" id="id_day" readonly="">
 				    </div>
 
 				    <div class="col">
-				      <label>BAS</label>
-				      <input type="text" class="form-control form-control-sm" placeholder="BAS" id="id_bas" readonly="">
+				      <label>BAS&nbsp;&nbsp;<small>รายได้หลัก</small></label>
+				      <input type="text" class="form-control form-control-md bg-light border-success" placeholder="BAS" id="id_bas" readonly="">
 				    </div>
 
 				    <div class="col">
-				      <label>GOT</label>
-				      <input type="text" class="form-control form-control-sm" placeholder="GOT" id="id_got" readonly="">
+				      <label>GOT&nbsp;&nbsp;<small>ได้ค่าล่วงเวลา</small></label>
+				      <input type="text" class="form-control form-control-md bg-light border-success" placeholder="GOT" id="id_got" readonly="">
 				    </div>
 
 				    <div class="col">
-				      <label>BON</label>
-				      <input type="text" class="form-control form-control-sm" placeholder="BON" id="id_bon" readonly="">
+				      <label>BON&nbsp;&nbsp;<small>ได้โบนัส</small></label>
+				      <input type="text" class="form-control form-control-md bg-light border-success" placeholder="BON" id="id_bon" readonly="">
 				    </div>
 
 				    <div class="col">
-				      <label>PUB</label>
-				      <input type="text" class="form-control form-control-sm" placeholder="PUB" id="id_pub" readonly="">
+				      <label>PUB&nbsp;&nbsp;<small>ทำตรงวันหยุดราชการ</small></label>
+				      <input type="text" class="form-control form-control-md bg-light border-success" placeholder="PUB" id="id_pub" readonly="">
 				    </div>
 
 				    <div class="col">
-				      <label>DOF</label>
-				      <input type="text" class="form-control form-control-sm" placeholder="DOF" id="id_dof" readonly="">
+				      <label>DOF&nbsp;&nbsp;<small>ทำตรงวันหยุด</small></label>
+				      <input type="text" class="form-control form-control-md bg-light border-success" placeholder="DOF" id="id_dof" readonly="">
 				    </div>
 				  </div>
 
@@ -211,7 +211,7 @@
 		            <div class="tab-pane fade show pt-2 row" id="tab3" role="tabpanel" aria-labelledby="tab3-tab">
 		            	<div id="id_substitute_list" class="bg-light table-responsive">
 							<font size='2em;'>
-							<table id='substitute_list_table' class='table table-sm'>							
+							<table id='substitute_list_table' class='table table-sm table-hover'>							
 							  <tbody>
 							    <tr>
 							      <td class="text-center"><br><br><br><br>There is no data.<br><br><br></td>
@@ -227,7 +227,7 @@
 		            <div class="tab-pane fade show pt-2 row" id="tab4" role="tabpanel" aria-labelledby="tab4-tab">
 		            	<div id="id_leave_list" class="bg-light table-responsive">
 							<font size='2em;'>
-							<table id='leave_list_table' class='table table-sm'>							
+							<table id='leave_list_table' class='table table-sm table-hover'>							
 							  <tbody>
 							    <tr>
 							      <td class="text-center"><br><br><br><br>There is no data.<br><br><br></td>
@@ -243,7 +243,7 @@
 		            <div class="tab-pane fade show pt-2 row" id="tab5" role="tabpanel" aria-labelledby="tab5-tab">
 		            	<div id="id_overtime_list" class="bg-light table-responsive">
 							<font size='2em;'>
-							<table id='overtime_list_table' class='table table-sm'>							
+							<table id='overtime_list_table' class='table table-sm table-hover'>							
 							  <tbody>
 							    <tr>
 							      <td class="text-center"><br><br><br><br>There is no data.<br><br><br></td>
@@ -532,8 +532,11 @@ function convertStringToDDMMYYYYHHSS(strdate) {
 	var dd = String(new_date_temp.getDate()).padStart(2, '0');
 	var mm = String(new_date_temp.getMonth() + 1).padStart(2, '0');
 	var yyyy = new_date_temp.getFullYear();
-	var hh = String(new_date_temp.getHours()).padStart(2, '0');
-	var mm = String(new_date_temp.getMinutes()).padStart(2, '0');
+
+	var hh = new_date_temp.getHours();
+	var mm = new_date_temp.getMinutes();	
+	//var hh = String(new_date_temp.getHours()).padStart(2, '0');
+	//var mm = String(new_date_temp.getMinutes()).padStart(2, '0');
 	
 	new_date = dd + '/' + mm + '/' + yyyy + " " + hh + ":" + mm;
 
@@ -694,7 +697,7 @@ function displayList(emp_id, search_date_from, search_date_to) {
 
 			// TODO: Show Substitute table
 			if(data.substitute_list.length>0) {
-				result = "<table id='performance_list_table'>";
+				result = "<table id='substitute_list_table'>";
 				result += "  <thead class=thead-light>";
 				result += "    <tr>";
 				result += "      <th scope='col'>No</th>";
@@ -734,7 +737,7 @@ function displayList(emp_id, search_date_from, search_date_to) {
 					result += "<td>" + shf_desc + "</td>";
 
 					if(relief_status) {
-						result += "<td><i class='fas fa-check fa-xs text-success'></i></td>";						
+						result += "<td><i class='fas fa-check fa-xs text-success'></i></td>";
 					} else {
 						result += "<td>" + relief_status + "</td>";
 					}
@@ -742,6 +745,7 @@ function displayList(emp_id, search_date_from, search_date_to) {
 					result += "<td>" + rel_id + "</td>";
 					result += "<td>" + wage_id + "</td>";
 					result += "<td>" + pay_type + "</td>";
+					result += "</tr>";
 					count++;
 				}
 				result += "  </tbody>";
@@ -753,9 +757,82 @@ function displayList(emp_id, search_date_from, search_date_to) {
 			}
 
 
+
+			// TODO: Show Leave table
+			if(data.leave_list.length>0) {
+				result = "<table id='leave_list_table'>";
+				result += "  <thead class=thead-light>";
+				result += "    <tr>";
+				result += "      <th scope='col'>No</th>";
+				result += "		 <th scope='col'>Leave ID</th>";
+				result += "      <th scope='col'>From Date</th>";				
+				result += "		 <th scope='col'>To Date</th>";
+				result += "      <th scope='col'>Amt.Day</th>";
+				result += "      <th scope='col'>Amt.Hrs</th>";
+				result += "      <th scope='col'>Ref.Doc</th>";
+				result += "      <th scope='col'>Ref.Date</th>";
+				result += "      <th scope='col'>Amount</th>";
+				result += "      <th scope='col'>Period Paid</th>";
+				result += "      <th scope='col'>Paid</th>";
+				result += "      <th scope='col'>Upd.Date</th>";
+				result += "      <th scope='col'>Upd.By</th>";
+				result += "      <th scope='col'>Upd.Flag</th>";
+				result += "    </tr>";
+				result += "  </thead>";
+				result += "  <tbody>";
+				count = 1;				
+				for(i=0;i<data.leave_list.length;i++) {
+					lve_id = data.leave_list[i][2];
+					lve_th = data.leave_list[i][21];
+					lve_date_frm = data.leave_list[i][5];
+					lve_date_to = data.leave_list[i][6];
+					lve_day = data.leave_list[i][7];
+					lve_hr = data.leave_list[i][8];
+					lve_doc_no = data.leave_list[i][9];
+					lve_doc_date = convertStringToDDMMYYYY(data.leave_list[i][10]);
+					lve_amt = data.leave_list[i][12];
+					prd_id = data.leave_list[i][14];
+					lve_paid = data.leave_list[i][15];
+					upd_date = data.leave_list[i][16];
+					upd_by = data.leave_list[i][17];
+					upd_flag = data.leave_list[i][18];
+					result += "<tr>";
+					result += "<td>" + count + "</td>";
+					result += "<td>" + lve_id + " " + lve_th + "</td>";
+					result += "<td>" + lve_date_frm + "</td>";
+					result += "<td>" + lve_date_to + "</td>";
+					result += "<td>" + lve_day + "</td>";
+					result += "<td>" + lve_hr + "</td>";
+					result += "<td>" + lve_doc_no + "</td>";
+					result += "<td>" + lve_doc_date + "</td>";
+					result += "<td>" + lve_amt + "</td>";
+					result += "<td>" + prd_id + "</td>";
+
+					if(lve_paid) {
+						result += "<td><i class='fas fa-check fa-xs text-success'></i></td>";						
+					} else {
+						result += "<td>&nbsp;</td>";
+					}
+					
+					result += "<td>" + upd_date + "</td>";
+					result += "<td>" + upd_by + "</td>";
+					result += "<td>" + upd_flag + "</td>";
+					result += "</tr>";
+					count++;
+				}
+				result += "  </tbody>";
+				result += "</table>";
+
+				$("#leave_list_table").html(result);
+			} else {
+				alert("There is no data.");
+			}								
+
+
+
 			// TODO: Show Schedule table
 			if(data.schedule_list.length>0) {
-				result = "<table id='performance_list_table'>";
+				result = "<table id='schedule_list_table'>";
 				result += "  <thead class=thead-light>";
 				result += "    <tr>";
 				result += "      <th scope='col'>No</th>";
