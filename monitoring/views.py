@@ -6258,13 +6258,17 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 
 
 	if (table_name=="DLY_PLAN"):
+		is_error = True
+		message = "<b>DLY_PLAN</b>: "
 		DlyPerRs = None
 		income_list = []
 
 		# UPDATE 1
 		sql = "update " + str(user_first_name) + " "
 		sql += "set shf_amt_hr = ot_hr_amt "
-		sql += "where (ot_hr_amt<>0 and pay_type='TPA')"
+		sql += "where (ot_hr_amt<>0 and relieft_id<>0) "
+		sql += "or (ot_hr_amt<>0 and pay_type='TPA')"
+		# print("SQL:", sql)
 		try:
 			with connection.cursor() as cursor:		
 				cursor.execute(sql)
@@ -6278,6 +6282,8 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 			return is_error, message
 		finally:
 			cursor.close()
+		
+		#return is_error, message, DlyPerRs, income_list
 
 
 		# UPDATE 2
@@ -6399,6 +6405,7 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 		sql += "and dly_date>='" + str(search_date_from) + "' "
 		sql += "and dly_date<='" + str(search_date_to) + "' "
 		sql += "order by dly_date,sch_shift"
+		print("SQL:", sql)
 		try:
 			with connection.cursor() as cursor:		
 				cursor.execute(sql)
@@ -6428,9 +6435,10 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 					dof_amt = DlyPerRs[i][53] if DlyPerRs[i][53]>0 else 0
 					ex_dof_amt = DlyPerRs[i][62] if DlyPerRs[i][62]>0 else 0
 
-					if absent:
+					if absent==int(1):
 						print("absent = true")
 					else:
+						print("shf_amt_hr =", shf_amt_hr)
 						A1 = A1 + shf_amt_hr
 						A2 = A2 + 1
 						A3 = A3 + bas_amt

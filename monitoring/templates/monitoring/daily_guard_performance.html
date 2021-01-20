@@ -90,7 +90,7 @@
 			  <div class="card-body">
 				<form id="id_income_information_form">
 				  <div class="form-row">
-				    <div class="col">
+				    <div class="col text-center">
 				      <label>Hours&nbsp;&nbsp;<small>รวมชั่วโมงทำงาน</small></label>
 				      <input type="text" class="form-control form-control-md bg-light border-success" placeholder="Hours" id="id_hours" readonly="">
 				    </div>
@@ -484,19 +484,6 @@ $(document).on('click', '#id_search_submit_button', function(e) {
 
 	showLoading();    		
 	displayList(emp_id, search_date_from, search_date_to);
-	
-
-	// TODO: show Schedule tab
-
-
-	// TODO: show Substitute tab
-
-
-	// TODO: show Leave tab
-
-
-	// TODO: show Overtime tab
-
 
 });
 
@@ -607,7 +594,7 @@ function displayList(emp_id, search_date_from, search_date_to) {
 					result += "      <th scope='col'>Tel</th>";
 					result += "      <th scope='col'>Call Time</th>";
 					result += "      <th scope='col'>Call Amt</th>";
-					result += "      <th scope='col'>Call Paid</th>";
+					result += "      <th scope='col' class='text-center'>Call Paid</th>";
 					result += "      <th scope='col'>OT</th>";
 
 
@@ -668,7 +655,7 @@ function displayList(emp_id, search_date_from, search_date_to) {
 							result += "<td><i class='fas fa-phone-alt fa-xs text-success'></i></td>";
 							result += "<td>" + tel_time + "</td>";
 							result += "<td>" + tel_amt + "</td>";
-							result += "<td><i class='fas fa-check fa-xs text-success'></i></td>";
+							result += "<td class='text-center'><i class='fas fa-check fa-xs text-success'></i></td>";
 						} else {
 							result += "<td>&nbsp;</td>";
 							result += "<td>&nbsp;</td>";
@@ -690,12 +677,17 @@ function displayList(emp_id, search_date_from, search_date_to) {
 
 					$("#performance_list_table").html(result);
 
+
+					var hours = Number(data.income_list[0]).toFixed(2).replace(/\.00$/, '');
+					var bas = Number(data.income_list[2]).toFixed(2).replace(/\.00$/, '');
+					var bon = Number(data.income_list[4]).toFixed(2).replace(/\.00$/, '');
+
 					// Fillin income list
-					$("#id_hours").val(data.income_list[0]);
+					$("#id_hours").val(hours);
 					$("#id_day").val(data.income_list[1]);
-					$("#id_bas").val(data.income_list[2]);
+					$("#id_bas").val(bas);
 					$("#id_got").val(data.income_list[3]);
-					$("#id_bon").val(data.income_list[4]);
+					$("#id_bon").val(bon);
 					$("#id_pub").val(data.income_list[5]);
 					$("#id_dof").val(data.income_list[6]);					
 				} else {
@@ -722,9 +714,9 @@ function displayList(emp_id, search_date_from, search_date_to) {
 				result += "      <th scope='col'>Spare</th>";
 				result += "      <th scope='col'>Wage</th>";
 				result += "      <th scope='col'>Pay Type</th>";
-				result += "      <th scope='col'>SOC</th>";
-				result += "      <th scope='col'>PUB</th>";
-				result += "      <th scope='col'>Paid</th>";
+				result += "      <th scope='col' class='text-center'>SOC</th>";
+				result += "      <th scope='col' class='text-center'>PUB</th>";
+				result += "      <th scope='col' class='text-center'>Paid</th>";
 				result += "    </tr>";
 				result += "  </thead>";
 				result += "  <tbody>";
@@ -768,21 +760,21 @@ function displayList(emp_id, search_date_from, search_date_to) {
 					result += "<td>" + pay_type + "</td>";
 
 					if(soc_status) {
-						result += "<td><i class='fas fa-check fa-xs text-success'></i></td>";
+						result += "<td class='text-center'><i class='fas fa-check fa-xs text-success'></i></td>";
 					} else {						
-						result += "<td><i class='fas fa-times fa-xs text-danger'></i></td>";
+						result += "<td class='text-center'><i class='fas fa-times fa-xs text-danger'></i></td>";
 					}
 					
 					if(pub_status) {
-						result += "<td><i class='fas fa-check fa-xs text-success'></i></td>";
+						result += "<td class='text-center'><i class='fas fa-check fa-xs text-success'></i></td>";
 					} else {						
-						result += "<td><i class='fas fa-times fa-xs text-danger'></i></td>";
+						result += "<td class='text-center'><i class='fas fa-times fa-xs text-danger'></i></td>";
 					}
 
 					if(paid_status) {
-						result += "<td><i class='fas fa-check fa-xs text-success'></i></td>";
+						result += "<td class='text-center'><i class='fas fa-check fa-xs text-success'></i></td>";
 					} else {						
-						result += "<td><i class='fas fa-times fa-xs text-danger'></i></td>";
+						result += "<td class='text-center'><i class='fas fa-times fa-xs text-danger'></i></td>";
 					}
 
 					result += "</tr>";
