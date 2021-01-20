@@ -180,7 +180,7 @@
 		            <div class="tab-pane fade show active pt-2" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
 		            	<div id="id_performance_list" class="table-responsive bg-light">
 							<font size='2em;'>
-							<table id='performance_list_table' class='table table-sm'>
+							<table id='performance_list_table' class='table table-sm table-hover'>
 							  <tbody>
 							    <tr>
 							      <td class="text-center"><br><br><br><br>There is no data.<br><br><br></td>
@@ -195,7 +195,7 @@
 		            <div class="tab-pane fade show pt-2 row" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
 		            	<div id="id_schedule_list" class="bg-light table-responsive">
 							<font size='2em;'>
-							<table id='schedule_list_table' class='table table-sm'>							
+							<table id='schedule_list_table' class='table table-sm table-hover'>							
 							  <tbody>
 							    <tr>
 							      <td class="text-center"><br><br><br><br>There is no data.<br><br><br></td>
@@ -523,8 +523,8 @@ function convertStringToDDMMYYYYHHSS(strdate) {
 	var dd = String(new_date_temp.getDate()).padStart(2, '0');
 	var mm = String(new_date_temp.getMonth() + 1).padStart(2, '0');
 	var yyyy = new_date_temp.getFullYear();
-	var hh = new_date_temp.getHours();
-	var mm = new_date_temp.getMinutes();
+	var hh = String(new_date_temp.getHours()).padStart(2, '0');
+	var mm = String(new_date_temp.getMinutes()).padStart(2, '0');
 	
 	new_date = dd + '/' + mm + '/' + yyyy + " " + hh + ":" + mm;
 
@@ -687,7 +687,153 @@ function displayList(emp_id, search_date_from, search_date_to) {
 
 
 			// TODO: Show Schedule table
-			
+			if(data.schedule_list.length>0) {
+				result = "<table id='performance_list_table'>";
+				result += "  <thead class=thead-light>";
+				result += "    <tr>";
+				result += "      <th scope='col'>No</th>";
+				result += "		 <th scope='col'>Cnt.No</th>";
+				result += "		 <th scope='col'>Eff.Frm</th>";
+				result += "      <th scope='col'>Eff.To</th>";
+				result += "      <th scope='col'>MON</th>";
+				result += "      <th scope='col'>TUE</th>";
+				result += "      <th scope='col'>WED</th>";
+				result += "      <th scope='col'>THU</th>";
+				result += "      <th scope='col'>FRI</th>";
+				result += "      <th scope='col'>SAT</th>";
+				result += "      <th scope='col'>SUN</th>";
+				result += "      <th scope='col'>Status</th>";
+				result += "      <th scope='col'>Upd.Date</th>";
+				result += "      <th scope='col'>Upd.By</th>";
+				result += "      <th scope='col'>Upd.Flag</th>";
+				result += "    </tr>";
+				result += "  </thead>";
+				result += "  <tbody>";
+				count = 1;				
+				for(i=0;i<data.schedule_list.length;i++) {
+					sch_no = data.schedule_list[i][0];
+					cnt_id = data.schedule_list[i][2];
+					srv_id = data.schedule_list[i][1];
+					emp_id = data.schedule_list[i][3];
+					emp_fname_th = data.schedule_list[i][19];
+					emp_lname_th = data.schedule_list[i][20];
+					sch_rank = data.schedule_list[i][4];
+					sch_date_frm = convertStringToDDMMYYYY(data.schedule_list[i][6]);
+					sch_date_to = convertStringToDDMMYYYY(data.schedule_list[i][7]);
+					shf_mon = data.schedule_list[i][8];
+					shf_tue = data.schedule_list[i][9];
+					shf_wed = data.schedule_list[i][10];
+					shf_thu = data.schedule_list[i][11];
+					shf_fri = data.schedule_list[i][12];
+					shf_sat = data.schedule_list[i][13];
+					shf_sun = data.schedule_list[i][14];
+					sch_active = data.schedule_list[i][15];
+					upd_date = convertStringToDDMMYYYYHHSS(data.schedule_list[i][16]);
+					upd_by = data.schedule_list[i][17];
+					upd_flag = data.schedule_list[i][18];					
+					result += "<tr>";
+					result += "<td>" + count + "</td>";
+					result += "<td>" + cnt_id + "</td>";
+					result += "<td>" + sch_date_frm + "</td>";
+					result += "<td>" + sch_date_to + "</td>";
+
+					//result += "<td>" + shf_mon + "</td>";
+					if (shf_mon==99) {
+						if(sch_active)
+							result += "<td class='text-danger'><b>DOF</b></td>";
+						else
+							result += "<td>DOF</td>";
+					}
+					else
+						result += "<td>" + shf_mon + "</td>";							
+
+
+					//result += "<td>" + shf_tue + "</td>";
+					if (shf_tue==99) {
+						if(sch_active)
+							result += "<td class='text-danger'><b>DOF</b></td>";
+						else
+							result += "<td>DOF</td>";
+					}
+					else
+						result += "<td>" + shf_tue + "</td>";							
+
+
+					//result += "<td>" + shf_wed + "</td>";
+					if (shf_wed==99) {
+						if(sch_active)
+							result += "<td class='text-danger'><b>DOF</b></td>";
+						else
+							result += "<td>DOF</td>";
+					}
+					else
+						result += "<td>" + shf_wed + "</td>";							
+
+
+					//result += "<td>" + shf_thu + "</td>";
+					if (shf_thu==99) {
+						if(sch_active)
+							result += "<td class='text-danger'><b>DOF</b></td>";
+						else
+							result += "<td>DOF</td>";
+					}
+					else
+						result += "<td>" + shf_thu + "</td>";							
+
+
+					//result += "<td>" + shf_fri + "</td>";
+					if (shf_fri==99) {
+						if(sch_active)
+							result += "<td class='text-danger'><b>DOF</b></td>";
+						else
+							result += "<td>DOF</td>";
+					}
+					else
+						result += "<td>" + shf_fri + "</td>";							
+
+
+					//result += "<td>" + shf_sat + "</td>";
+					if (shf_sat==99) {
+						if(sch_active)
+							result += "<td class='text-danger'><b>DOF</b></td>";
+						else
+							result += "<td>DOF</td>";
+					}
+					else
+						result += "<td>" + shf_sat + "</td>";							
+
+
+					//result += "<td>" + shf_sun + "</td>";
+					if (shf_sun==99) {
+						if(sch_active)
+							result += "<td class='text-danger'><b>DOF</b></td>";
+						else
+							result += "<td>DOF</td>";
+					}
+					else
+						result += "<td>" + shf_sun + "</td>";							
+
+
+					if(sch_active) {
+						result += "<td><span class='badge badge-success'>Active</span></td>";
+					}
+					else
+						result += "<td>&nbsp;</td>";
+
+
+					result += "<td>" + upd_date + "</td>";
+					result += "<td>" + upd_by + "</td>";
+					result += "<td>" + upd_flag + "</td>";					
+					result += "</tr>";
+					count++;
+				}
+				result += "  </tbody>";
+				result += "</table>";
+
+				$("#schedule_list_table").html(result);
+			} else {
+				alert("TODO");
+			}
 
 
     		$.LoadingOverlay("hide");

@@ -6001,7 +6001,7 @@ def SearchDailyGurdPerformance(request):
 
 
 		# TODO: Call DisplayList("SCH_PLAN")
-		is_error, error_message = DisplayList("SCH_PLAN", user_first_name, emp_id, search_date_from, search_date_to)
+		is_error, error_message, schedule_list = DisplayList("SCH_PLAN", user_first_name, emp_id, search_date_from, search_date_to)
 		if is_error:
 			is_error = True
 			message = error_message
@@ -6026,7 +6026,7 @@ def SearchDailyGurdPerformance(request):
 		is_error = True
 		message = "Can't drop table " + str(user_first_name)
 
-	response = JsonResponse(data={"success": True,"is_error": is_error,"message": message, "performance_list": performance_list, "income_list": income_list})
+	response = JsonResponse(data={"success": True,"is_error": is_error,"message": message, "performance_list": performance_list, "income_list": income_list, "schedule_list": schedule_list})
 	response.status_code = 200
 	return response	
 
@@ -6036,6 +6036,8 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 	if(table_name=="SCH_PLAN"):
 		is_error = True
 		message = "<b>SCH_PLAN</b>: "
+		DlyPerRs_SCHPLAN = None
+
 		sql = "select b.*,k.emp_fname_th,k.emp_lname_th,"
 		sql += "c.shf_desc as shf_mon,"
 		sql += "d.shf_desc as shf_tue,"
@@ -6056,9 +6058,25 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 		sql += "where b.emp_id=" + str(emp_id) + " "
 		sql += "and b.upd_flag<>'D' "
 		sql += "order by sch_date_frm desc, sch_no asc"
-		print("SQL:", sql)
-		return is_error, message
-	
+		try:
+			with connection.cursor() as cursor:		
+				cursor.execute(sql)
+				DlyPerRs_SCHPLAN = cursor.fetchall()
+			message += "Success"
+			is_error = False
+		except db.OperationalError as e:
+			is_error = True
+			message += message + "Error! Please send this error to IT team.<br>" + str(e)
+			return is_error, message
+		except db.Error as e:
+			is_error = True
+			message += message + "Error! Please send this error to IT team.<br>" + str(e)
+			return is_error, message
+		finally:
+			cursor.close()
+
+		return is_error, message, DlyPerRs_SCHPLAN
+
 
 	if(table_name=="DLY_OT"):
 		is_error = True
@@ -6071,7 +6089,6 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 		sql += "and dly_date>='" + str(search_date_from) + "' "
 		sql += "and dly_date<='" + str(search_date_to) + "' "
 		sql += "order by sch_shift"
-		# print("SQL:", sql)
 		try:
 			with connection.cursor() as cursor:		
 				cursor.execute(sql)
@@ -6088,10 +6105,6 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 			return is_error, message
 		finally:
 			cursor.close()
-		if DlyPerRs_DLYOT is not None:
-			if len(DlyPerRs_DLYOT) > 0:
-				absent = ""
-		# print("DLY_OT:", message)
 		return is_error, message, DlyPerRs_DLYOT
 
 
