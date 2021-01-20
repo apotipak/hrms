@@ -290,7 +290,7 @@ $(document).ready(function(){
 	*/
 
 	// Test Overtime case
-	const d1 = new Date('01-12-2020 00:00:00');
+	const d1 = new Date('12-01-2020 00:00:00');
 	const d2 = new Date('12-31-2020 00:00:00');	
 	$('#id_search_date_from').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", d1);
 	$('#id_search_date_to').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", d2);
@@ -568,6 +568,9 @@ function displayList(emp_id, search_date_from, search_date_to) {
     	},
     	success: function(data) {
 
+			$("#id_search_submit_button").text("Search");
+			$("#id_search_submit_button").attr("disabled", false);
+
     		if(data.is_error) {
 				$.alert({
 				    title: 'Error',
@@ -696,16 +699,104 @@ function displayList(emp_id, search_date_from, search_date_to) {
 					$("#id_pub").val(data.income_list[5]);
 					$("#id_dof").val(data.income_list[6]);					
 				} else {
+					console.log("performance_list_table has no data");
 					$("#performance_list_table tbody").empty();
 				}			
 				
     		}		    		
 
-			$("#id_search_submit_button").text("Search");
-			$("#id_search_submit_button").attr("disabled", false);
-
-
 			// TODO: Show Overtime Table
+			if(data.overtime_list.length>0) {
+				result = "<table id='overtime_list_table'>";
+				result += "  <thead class=thead-light>";
+				result += "    <tr>";
+				result += "      <th scope='col'>No</th>";
+				result += "		 <th scope='col'>dly_date</th>";
+				result += "      <th scope='col'>Shift</th>";				
+				result += "		 <th scope='col'>OT</th>";
+				result += "      <th scope='col'>Reason</th>";
+				result += "      <th scope='col'>From</th>";
+				result += "      <th scope='col'>To</th>";
+				result += "      <th scope='col'>HR</th>";
+				result += "      <th scope='col'>Paid(OT)</th>";
+				result += "      <th scope='col'>Spare</th>";
+				result += "      <th scope='col'>Wage</th>";
+				result += "      <th scope='col'>Pay Type</th>";
+				result += "      <th scope='col'>SOC</th>";
+				result += "      <th scope='col'>PUB</th>";
+				result += "      <th scope='col'>Paid</th>";
+				result += "    </tr>";
+				result += "  </thead>";
+				result += "  <tbody>";
+				count = 1;				
+				for(i=0;i<data.overtime_list.length;i++) {									
+					dly_date = convertStringToDDMMYYYY(data.overtime_list[i][3]);
+					shf_desc = data.overtime_list[i][6];
+					ot_status = data.overtime_list[i][17];
+					ot_reason_id = data.overtime_list[i][18];
+					ot_res_th = data.overtime_list[i][19];
+					ot_time_frm = convertStringToDDMMYYYY(data.overtime_list[i][20]);
+					ot_time_to = convertStringToDDMMYYYY(data.overtime_list[i][21]);
+					ot_hr_amt = data.overtime_list[i][22];
+					ot_pay_amt = data.overtime_list[i][23];
+					spare = data.overtime_list[i][24];
+					wage_id = data.overtime_list[i][25];
+					pay_type = data.overtime_list[i][26];
+					soc_status = data.overtime_list[i][27];
+					pub_status = data.overtime_list[i][28];
+					paid_status = data.overtime_list[i][29];
+
+					result += "<tr>";
+					result += "<td>" + count + "</td>";
+					result += "<td>" + dly_date + "</td>";
+					result += "<td>" + shf_desc + "</td>";
+
+					if(ot_status) {
+						result += "<td><i class='fas fa-check fa-xs text-success'></i></td>";
+					} else {
+						result += "<td>&nbsp;</td>";
+					}
+
+					
+					result += "<td>" + ot_reason_id + " | " + ot_res_th + "</td>";
+					result += "<td>" + ot_time_frm + "</td>";
+					result += "<td>" + ot_time_to + "</td>";
+					result += "<td>" + ot_hr_amt + "</td>";
+					result += "<td>" + ot_pay_amt + "</td>";
+					result += "<td>" + spare + "</td>";
+					result += "<td>" + wage_id + "</td>";
+					result += "<td>" + pay_type + "</td>";
+
+					if(soc_status) {
+						result += "<td><i class='fas fa-check fa-xs text-success'></i></td>";
+					} else {						
+						result += "<td><i class='fas fa-times fa-xs text-danger'></i></td>";
+					}
+					
+					if(pub_status) {
+						result += "<td><i class='fas fa-check fa-xs text-success'></i></td>";
+					} else {						
+						result += "<td><i class='fas fa-times fa-xs text-danger'></i></td>";
+					}
+
+					if(paid_status) {
+						result += "<td><i class='fas fa-check fa-xs text-success'></i></td>";
+					} else {						
+						result += "<td><i class='fas fa-times fa-xs text-danger'></i></td>";
+					}
+
+					result += "</tr>";
+					count++;
+				}
+				result += "  </tbody>";
+				result += "</table>";
+
+				$("#overtime_list_table").html(result);
+			} else {
+				//alert("substitute_list_table has no data.");
+				console.log("overtime_list_table has no data.");
+				$("#overtime_list_table tbody").empty();
+			}
 
 
 			// TODO: Show Substitute table
@@ -766,7 +857,8 @@ function displayList(emp_id, search_date_from, search_date_to) {
 				
 				$("#substitute_list_table").html(result);
 			} else {
-				alert("substitute_list_table has no data.");
+				//alert("substitute_list_table has no data.");
+				console.log("substitute_list_table has no data.");
 				$("#substitute_list_table tbody").empty();
 			}
 
@@ -839,7 +931,8 @@ function displayList(emp_id, search_date_from, search_date_to) {
 
 				$("#leave_list_table").html(result);
 			} else {
-				alert("leave_list_table has no data.");
+				//alert("leave_list_table has no data.");
+				console.log("leave_list_table has no data.");
 				$("#leave_list_table tbody").empty();
 			}								
 
@@ -991,7 +1084,8 @@ function displayList(emp_id, search_date_from, search_date_to) {
 
 				$("#schedule_list_table").html(result);
 			} else {
-				alert("schedule_list_table has no data.");
+				//alert("schedule_list_table has no data.");
+				console.log("schedule_list_table has no data.");
 				$("#schedule_list_table tbody").empty();
 			}
 

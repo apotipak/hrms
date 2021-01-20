@@ -6050,13 +6050,12 @@ def SearchDailyGurdPerformance(request):
 			message = error_message
 
 
-		'''
 		DropTable(user_first_name)
 		DropTable(user_first_name + "1")
 		DropTable(user_first_name + "2")
 		DropTable(user_first_name + "3")
 		DropTable(user_first_name + "4")		
-		'''
+
 	else:
 		is_error = True
 		message = "Can't drop table " + str(user_first_name)
@@ -6134,7 +6133,7 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 		sql = "select b.*,c.lve_th from v_employee as a left join emp_leave_act as b on a.emp_id=b.emp_id "
 		sql += "left join t_leave as c on b.lve_id=c.lve_id "		
 		sql += "where a.emp_id= " + str(emp_id) + " and b.lve_date_frm>='" + str(search_date_from) + "' "	
-		print("EMP_LEAVE_ACT SQL:", sql)
+		# print("EMP_LEAVE_ACT SQL:", sql)
 		try:
 			with connection.cursor() as cursor:		
 				cursor.execute(sql)
@@ -6238,6 +6237,7 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 		sql += "and dly_date>='" + str(search_date_from) + "' "
 		sql += "and dly_date<='" + str(search_date_to) + "' "
 		sql += "order by sch_shift"
+		print("DLY_OT SQL:", sql)
 		try:
 			with connection.cursor() as cursor:		
 				cursor.execute(sql)
@@ -6439,7 +6439,7 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 						A6 = A6 + pub_amt
 						A7 = A7 + dof_amt
 						A7 = A7 + ex_dof_amt					
-					print("absent:", absent)
+					# print("absent:", absent)
 
 				print("A1:", A1)
 				print("A2:", A2)
