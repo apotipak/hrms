@@ -308,21 +308,20 @@ $(document).ready(function(){
 
 
 	// Test Leave case
+	/*
 	const d1 = new Date('01-01-2021 00:00:00'); // mm-dd-yyyy hh:mm:ss
 	const d2 = new Date('01-31-2021 00:00:00');	// mm-dd-yyyy hh:mm:ss
 	$('#id_search_date_from').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", d1);
 	$('#id_search_date_to').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", d2);
 	$("#id_search_emp_id").val("916");
-
+	*/
 
 	// Test Overtime case
-	/*	
 	const d1 = new Date('12-01-2020 00:00:00'); // mm-dd-yyyy hh:mm:ss
 	const d2 = new Date('12-31-2020 00:00:00');	// mm-dd-yyyy hh:mm:ss
 	$('#id_search_date_from').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", d1);
 	$('#id_search_date_to').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", d2);
 	$("#id_search_emp_id").val("916");
-	*/
 
 	$("#id_search_emp_id").focus();
 });
@@ -533,6 +532,8 @@ $(document).on('click', '#id_search_cancel_button', function(e) {
 	$("#substitute_list_table").html(result);
 	$("#leave_list_table").html(result);
 	$("#overtime_list_table").html(result);
+	$("#emp_leave_plan_table").html(result);
+	$("#absent_dly_plan_table").html(result);									
 
 	$("#id_search_emp_id").focus();
 });
@@ -1041,7 +1042,7 @@ function displayList(emp_id, search_date_from, search_date_to) {
 				result += "</tbody>";
 
 				$("#emp_leave_plan_table").html(result);
-			}								
+			}
 
 			// TODO: Show Summary Daily Absent table
 			if(data.absent_dly_plan_list.length>0) {
