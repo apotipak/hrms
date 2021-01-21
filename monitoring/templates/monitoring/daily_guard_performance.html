@@ -669,13 +669,13 @@ function displayList(emp_id, search_date_from, search_date_to) {
 						tel_paid = data.performance_list[i][27];
 						ot_status = data.performance_list[i][28];
 
-						ot_reason = DlyPerRs[i][29];			
-						spare = DlyPerRs[i][34];
-						wage_id = DlyPerRs[i][35];
+						ot_reason = ""; //DlyPerRs[i][29];			
+						spare = ""; //DlyPerRs[i][34];
+						wage_id = ""; //DlyPerRs[i][35];
 
-						soc_status = DlyPerRs[i][42];
-						pub_status = DlyPerRs[i][43];
-						paid_status = DlyPerRs[i][44];
+						soc_status = ""; //DlyPerRs[i][42];
+						pub_status = ""; //DlyPerRs[i][43];
+						paid_status = ""; //DlyPerRs[i][44];
 
 						result += "<tr>";
 						result += "<td>" + count + "</td>";
@@ -728,9 +728,9 @@ function displayList(emp_id, search_date_from, search_date_to) {
 						result += "<td>" + wage_id + "</td>";
 						result += "<td>&nbsp;</td>";
 
-						result += "<td>" soc_status + "</td>";
-						result += "<td>" pub_status + "</td>";
-						result += "<td>" paid_status + "</td>";
+						result += "<td>" + soc_status + "</td>";
+						result += "<td>" + pub_status + "</td>";
+						result += "<td>" + paid_status + "</td>";
 						result += "<td>&nbsp;</td>";
 
 						result += "</tr>";
