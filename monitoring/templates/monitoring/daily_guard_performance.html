@@ -92,37 +92,37 @@
 				  <div class="form-row">
 				    <div class="col text-center">
 				      <label>Hours&nbsp;&nbsp;<small>รวมชั่วโมงทำงาน</small></label>
-				      <input type="text" class="form-control form-control-md bg-light border-success" placeholder="Hours" id="id_hours" readonly="">
+				      <input type="text" class="form-control form-control-md bg-light border-success" placeholder="" id="id_hours" readonly="">
 				    </div>
 
 				    <div class="col">
 				      <label>Day&nbsp;&nbsp;<small>รวมวันทำงาน</small></label>
-				      <input type="text" class="form-control form-control-md bg-light border-success" placeholder="Day" id="id_day" readonly="">
+				      <input type="text" class="form-control form-control-md bg-light border-success" placeholder="" id="id_day" readonly="">
 				    </div>
 
 				    <div class="col">
 				      <label>BAS&nbsp;&nbsp;<small>รายได้หลัก</small></label>
-				      <input type="text" class="form-control form-control-md bg-light border-success" placeholder="BAS" id="id_bas" readonly="">
+				      <input type="text" class="form-control form-control-md bg-light border-success" placeholder="" id="id_bas" readonly="">
 				    </div>
 
 				    <div class="col">
 				      <label>GOT&nbsp;&nbsp;<small>ได้ค่าล่วงเวลา</small></label>
-				      <input type="text" class="form-control form-control-md bg-light border-success" placeholder="GOT" id="id_got" readonly="">
+				      <input type="text" class="form-control form-control-md bg-light border-success" placeholder="" id="id_got" readonly="">
 				    </div>
 
 				    <div class="col">
 				      <label>BON&nbsp;&nbsp;<small>ได้โบนัส</small></label>
-				      <input type="text" class="form-control form-control-md bg-light border-success" placeholder="BON" id="id_bon" readonly="">
+				      <input type="text" class="form-control form-control-md bg-light border-success" placeholder="" id="id_bon" readonly="">
 				    </div>
 
 				    <div class="col">
 				      <label>PUB&nbsp;&nbsp;<small>ทำตรงวันหยุดราชการ</small></label>
-				      <input type="text" class="form-control form-control-md bg-light border-success" placeholder="PUB" id="id_pub" readonly="">
+				      <input type="text" class="form-control form-control-md bg-light border-success" placeholder="" id="id_pub" readonly="">
 				    </div>
 
 				    <div class="col">
 				      <label>DOF&nbsp;&nbsp;<small>ทำตรงวันหยุด</small></label>
-				      <input type="text" class="form-control form-control-md bg-light border-success" placeholder="DOF" id="id_dof" readonly="">
+				      <input type="text" class="form-control form-control-md bg-light border-success" placeholder="" id="id_dof" readonly="">
 				    </div>
 				  </div>
 
@@ -177,13 +177,13 @@
 		        <div class="tab-content pt-2 container col-12" id="table_list_body">
 
 		        	<!-- Performance Tab -->
-		            <div class="tab-pane fade show active pt-2" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+		            <div class="tab-pane fade show active pt-2 row" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
 		            	<div id="id_performance_list" class="table-responsive bg-light">
 							<font size='2em;'>
 							<table id='performance_list_table' class='table table-sm table-hover'>
 							  <tbody>
 							    <tr>
-							      <td class="text-center"><br><br><br><br>There is no data.<br><br><br></td>
+							      <td class="text-center"><br><br><br><br>There is no data.<br><br><br><br><br></td>
 							    </tr>
 							  </tbody>
 							</table>
@@ -198,7 +198,7 @@
 							<table id='schedule_list_table' class='table table-sm table-hover'>							
 							  <tbody>
 							    <tr>
-							      <td class="text-center"><br><br><br><br>There is no data.<br><br><br></td>
+							      <td class="text-center"><br><br><br><br>There is no data.<br><br><br><br><br></td>
 							    </tr>
 							  </tbody>
 							</table>
@@ -214,7 +214,7 @@
 							<table id='substitute_list_table' class='table table-sm table-hover'>							
 							  <tbody>
 							    <tr>
-							      <td class="text-center"><br><br><br><br>There is no data.<br><br><br></td>
+							      <td class="text-center"><br><br><br><br>There is no data.<br><br><br><br><br></td>
 							    </tr>
 							  </tbody>
 							</table>
@@ -230,7 +230,7 @@
 							<table id='leave_list_table' class='table table-sm table-hover'>							
 							  <tbody>
 							    <tr>
-							      <td class="text-center"><br><br><br><br>There is no data.<br><br><br></td>
+							      <td class="text-center"><br><br><br><br>There is no data.<br><br><br><br><br></td>
 							    </tr>
 							  </tbody>
 							</table>
@@ -246,7 +246,7 @@
 							<table id='overtime_list_table' class='table table-sm table-hover'>							
 							  <tbody>
 							    <tr>
-							      <td class="text-center"><br><br><br><br>There is no data.<br><br><br></td>
+							      <td class="text-center"><br><br><br><br>There is no data.<br><br><br><br><br></td>
 							    </tr>
 							  </tbody>
 							</table>
@@ -281,20 +281,21 @@ $(document).ready(function(){
 
 
 	// Test Leave case
-	/*
-	const d1 = new Date('01-01-2020 00:00:00');
-	const d2 = new Date('01-31-2020 00:00:00');	
+	const d1 = new Date('01-01-2020 00:00:00'); // mm-dd-yyyy hh:mm:ss
+	const d2 = new Date('01-31-2020 00:00:00');	// mm-dd-yyyy hh:mm:ss
+	$('#id_search_date_from').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", d1);
+	$('#id_search_date_to').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", d2);
+	$("#id_search_emp_id").val("916");
+
+
+	// Test Overtime case
+	/*	
+	const d1 = new Date('12-01-2020 00:00:00'); // mm-dd-yyyy hh:mm:ss
+	const d2 = new Date('12-31-2020 00:00:00');	// mm-dd-yyyy hh:mm:ss
 	$('#id_search_date_from').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", d1);
 	$('#id_search_date_to').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", d2);
 	$("#id_search_emp_id").val("916");
 	*/
-
-	// Test Overtime case
-	const d1 = new Date('12-01-2020 00:00:00');
-	const d2 = new Date('12-31-2020 00:00:00');	
-	$('#id_search_date_from').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", d1);
-	$('#id_search_date_to').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", d2);
-	$("#id_search_emp_id").val("916");
 
 	$("#id_search_emp_id").focus();
 });
@@ -495,9 +496,16 @@ $(document).on('click', '#id_search_cancel_button', function(e) {
 	$("#id_income_information_form").trigger("reset");
 
 	// Clear Tables
-	$("#performance_list_table tbody").empty();
-	$("#performance_list_table tbody").empty();
-	$("#schedule_list_table tbody").empty();
+	result = "<tbody>";
+	result += "<tr>";
+	result += "<td colspan='10' class='text-center'><br><br><br><br>There is no data.<br><br><br><br><br></td>";
+	result += "</tr>";
+	result += "</tbody>";	
+	$("#performance_list_table").html(result);
+	$("#schedule_list_table").html(result);
+	$("#substitute_list_table").html(result);
+	$("#leave_list_table").html(result);
+	$("#overtime_list_table").html(result);
 
 	$("#id_search_emp_id").focus();
 });
@@ -1079,6 +1087,11 @@ function displayList(emp_id, search_date_from, search_date_to) {
 				//alert("schedule_list_table has no data.");
 				console.log("schedule_list_table has no data.");
 				$("#schedule_list_table tbody").empty();
+
+				var schedule_list_table = "<tr><td colspan='19' class='text-center'><br><br><br>There is no data.<br><br><br></td></tr>";
+				$("#schedule_list_table thead").empty();
+				$("#schedule_list_table tbody").html(performance_list_table);
+
 			}
 
 
