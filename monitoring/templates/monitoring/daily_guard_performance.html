@@ -91,38 +91,38 @@
 				<form id="id_income_information_form">
 				  <div class="form-row">
 				    <div class="col text-center">
-				      <label>Hours&nbsp;&nbsp;<small>รวมชั่วโมงทำงาน</small></label>
-				      <input type="text" class="form-control form-control-md bg-light border-success" placeholder="" id="id_hours" readonly="">
+				      <label>Hours&nbsp;&nbsp;<small><small>รวมชั่วโมงทำงาน</small></small></label>
+				      <input type="text" class="form-control form-control-md bg-success text-light" style="text-align:center;font-weight:bold;" placeholder="" id="id_hours" readonly="">
 				    </div>
 
 				    <div class="col">
-				      <label>Day&nbsp;&nbsp;<small>รวมวันทำงาน</small></label>
-				      <input type="text" class="form-control form-control-md bg-light border-success" placeholder="" id="id_day" readonly="">
+				      <label>Day&nbsp;&nbsp;<small><small>รวมวันทำงาน</small></small></label>
+				      <input type="text" class="form-control form-control-md bg-success text-light" style="text-align:center;font-weight:bold;" placeholder="" id="id_day" readonly="">
 				    </div>
 
 				    <div class="col">
-				      <label>BAS&nbsp;&nbsp;<small>รายได้หลัก</small></label>
-				      <input type="text" class="form-control form-control-md bg-light border-success" placeholder="" id="id_bas" readonly="">
+				      <label>BAS&nbsp;&nbsp;<small><small>เงินเดือน</small></small></label>
+				      <input type="text" class="form-control form-control-md bg-success text-light" style="text-align:center;font-weight:bold;" placeholder="" id="id_bas" readonly="">
 				    </div>
 
 				    <div class="col">
-				      <label>GOT&nbsp;&nbsp;<small>ได้ค่าล่วงเวลา</small></label>
-				      <input type="text" class="form-control form-control-md bg-light border-success" placeholder="" id="id_got" readonly="">
+				      <label>GOT&nbsp;&nbsp;<small><small>ค่าล่วงเวลา</small></small></label>
+				      <input type="text" class="form-control form-control-md bg-success text-light" style="text-align:center;font-weight:bold;" placeholder="" id="id_got" readonly="">
 				    </div>
 
 				    <div class="col">
-				      <label>BON&nbsp;&nbsp;<small>ได้โบนัส</small></label>
-				      <input type="text" class="form-control form-control-md bg-light border-success" placeholder="" id="id_bon" readonly="">
+				      <label>BON&nbsp;&nbsp;<small><small>โบนัส</small></small></label>
+				      <input type="text" class="form-control form-control-md bg-success text-light" style="text-align:center;font-weight:bold;" placeholder="" id="id_bon" readonly="">
 				    </div>
 
 				    <div class="col">
-				      <label>PUB&nbsp;&nbsp;<small>ทำตรงวันหยุดราชการ</small></label>
-				      <input type="text" class="form-control form-control-md bg-light border-success" placeholder="" id="id_pub" readonly="">
+				      <label>PUB&nbsp;&nbsp;<small><small>ทำวันหยุดราชการ</small></small></label>
+				      <input type="text" class="form-control form-control-md bg-success text-light" style="text-align:center;font-weight:bold;" placeholder="" id="id_pub" readonly="">
 				    </div>
 
 				    <div class="col">
-				      <label>DOF&nbsp;&nbsp;<small>ทำตรงวันหยุด</small></label>
-				      <input type="text" class="form-control form-control-md bg-light border-success" placeholder="" id="id_dof" readonly="">
+				      <label>DOF&nbsp;&nbsp;<small><small>ทำวันหยุด</small></small></label>
+				      <input type="text" class="form-control form-control-md bg-success border-success text-light" style="text-align:center;font-weight:bold;" placeholder="" id="id_dof" readonly="">
 				    </div>
 				  </div>
 
@@ -281,8 +281,8 @@ $(document).ready(function(){
 
 
 	// Test Leave case
-	const d1 = new Date('01-01-2020 00:00:00'); // mm-dd-yyyy hh:mm:ss
-	const d2 = new Date('01-31-2020 00:00:00');	// mm-dd-yyyy hh:mm:ss
+	const d1 = new Date('01-01-2021 00:00:00'); // mm-dd-yyyy hh:mm:ss
+	const d2 = new Date('01-31-2021 00:00:00');	// mm-dd-yyyy hh:mm:ss
 	$('#id_search_date_from').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", d1);
 	$('#id_search_date_to').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", d2);
 	$("#id_search_emp_id").val("916");
@@ -563,7 +563,7 @@ function displayList(emp_id, search_date_from, search_date_to) {
     	},
     	success: function(data) {
 
-			$("#id_search_submit_button").text("Search");
+			$("#id_search_submit_button").html("<i class='fas fa-search'></i>&nbsp;Search</button>&nbsp;");
 			$("#id_search_submit_button").attr("disabled", false);
 
     		if(data.is_error) {
@@ -650,7 +650,7 @@ function displayList(emp_id, search_date_from, search_date_to) {
 						result += "<td>" + dof_amt + "</td>";
 						
 						if(dof_status)
-							result += "<td><i class='fas fa-check fa-xs text-danger'></i></td>";
+							result += "<td><i class='fas fa-check fa-xs text-success'></i></td>";
 						else
 							result += "<td>&nbsp;</td>";
 
@@ -688,19 +688,26 @@ function displayList(emp_id, search_date_from, search_date_to) {
 
 					var hours = Number(data.income_list[0]).toFixed(2).replace(/\.00$/, '');
 					var bas = Number(data.income_list[2]).toFixed(2).replace(/\.00$/, '');
+					var got = Number(data.income_list[3]).toFixed(2).replace(/\.00$/, '');
 					var bon = Number(data.income_list[4]).toFixed(2).replace(/\.00$/, '');
+					var pub = Number(data.income_list[5]).toFixed(2).replace(/\.00$/, '');
+					var dof = Number(data.income_list[6]).toFixed(2).replace(/\.00$/, '');
 
 					// Fillin income list
 					$("#id_hours").val(hours);
 					$("#id_day").val(data.income_list[1]);
 					$("#id_bas").val(bas);
-					$("#id_got").val(data.income_list[3]);
+					$("#id_got").val(got);
 					$("#id_bon").val(bon);
-					$("#id_pub").val(data.income_list[5]);
-					$("#id_dof").val(data.income_list[6]);					
+					$("#id_pub").val(pub);
+					$("#id_dof").val(dof);
 				} else {
-					console.log("performance_list_table has no data");
-					$("#performance_list_table tbody").empty();
+					result = "<tbody>";
+					result += "<tr>";
+					result += "<td colspan='10' class='text-center'><br><br><br><br>There is no data.<br><br><br><br><br></td>";
+					result += "</tr>";
+					result += "</tbody>";	
+					$("#performance_list_table").html(result);					
 				}			
 				
     		}		    		
@@ -793,9 +800,12 @@ function displayList(emp_id, search_date_from, search_date_to) {
 
 				$("#overtime_list_table").html(result);
 			} else {
-				//alert("substitute_list_table has no data.");
-				console.log("overtime_list_table has no data.");
-				$("#overtime_list_table tbody").empty();
+				result = "<tbody>";
+				result += "<tr>";
+				result += "<td colspan='10' class='text-center'><br><br><br><br>There is no data.<br><br><br><br><br></td>";
+				result += "</tr>";
+				result += "</tbody>";	
+				$("#overtime_list_table").html(result);
 			}
 
 
@@ -857,9 +867,12 @@ function displayList(emp_id, search_date_from, search_date_to) {
 				
 				$("#substitute_list_table").html(result);
 			} else {
-				//alert("substitute_list_table has no data.");
-				console.log("substitute_list_table has no data.");
-				$("#substitute_list_table tbody").empty();
+				result = "<tbody>";
+				result += "<tr>";
+				result += "<td colspan='10' class='text-center'><br><br><br><br>There is no data.<br><br><br><br><br></td>";
+				result += "</tr>";
+				result += "</tbody>";	
+				$("#substitute_list_table").html(result);
 			}
 
 
@@ -931,9 +944,12 @@ function displayList(emp_id, search_date_from, search_date_to) {
 
 				$("#leave_list_table").html(result);
 			} else {
-				//alert("leave_list_table has no data.");
-				console.log("leave_list_table has no data.");
-				$("#leave_list_table tbody").empty();
+				result = "<tbody>";
+				result += "<tr>";
+				result += "<td colspan='10' class='text-center'><br><br><br><br>There is no data.<br><br><br><br><br></td>";
+				result += "</tr>";
+				result += "</tbody>";	
+				$("#leave_list_table").html(result);
 			}								
 
 
@@ -1084,14 +1100,12 @@ function displayList(emp_id, search_date_from, search_date_to) {
 
 				$("#schedule_list_table").html(result);
 			} else {
-				//alert("schedule_list_table has no data.");
-				console.log("schedule_list_table has no data.");
-				$("#schedule_list_table tbody").empty();
-
-				var schedule_list_table = "<tr><td colspan='19' class='text-center'><br><br><br>There is no data.<br><br><br></td></tr>";
-				$("#schedule_list_table thead").empty();
-				$("#schedule_list_table tbody").html(performance_list_table);
-
+				result = "<tbody>";
+				result += "<tr>";
+				result += "<td colspan='10' class='text-center'><br><br><br><br>There is no data.<br><br><br><br><br></td>";
+				result += "</tr>";
+				result += "</tbody>";	
+				$("#schedule_list_table").html(result);
 			}
 
 
