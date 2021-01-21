@@ -116,12 +116,12 @@
 				    </div>
 
 				    <div class="col">
-				      <label>PUB&nbsp;&nbsp;<small><small>ทำวันหยุดราชการ</small></small></label>
+				      <label>PUB&nbsp;&nbsp;<small><small>ทำตรงวันหยุดบริษัท</small></small></label>
 				      <input type="text" class="form-control form-control-md bg-success text-light" style="text-align:center;font-weight:bold;" placeholder="" id="id_pub" readonly="">
 				    </div>
 
 				    <div class="col">
-				      <label>DOF&nbsp;&nbsp;<small><small>ทำวันหยุด</small></small></label>
+				      <label>DOF&nbsp;&nbsp;<small><small>ทำตรงวันหยุด</small></small></label>
 				      <input type="text" class="form-control form-control-md bg-success border-success text-light" style="text-align:center;font-weight:bold;" placeholder="" id="id_dof" readonly="">
 				    </div>
 				  </div>
@@ -670,13 +670,18 @@ function displayList(emp_id, search_date_from, search_date_to) {
 						ot_status = data.performance_list[i][28];
 
 						ot_reason = data.performance_list[i][29];
+						ot_time_frm = convertStringToDDMMYYYY(data.performance_list[i][30]);
+						ot_time_to = convertStringToDDMMYYYY(data.performance_list[i][31]);
+						ot_hr_amt = data.performance_list[i][32];
+						ot_pay_amt = data.performance_list[i][33];
+
 						spare = data.performance_list[i][34];
 						wage_id = data.performance_list[i][35];
 						pay_type = data.performance_list[i][37];
 						soc_status = data.performance_list[i][42];
 						pub_status = data.performance_list[i][43];
 						paid_status = data.performance_list[i][44];
-
+						remark = data.performance_list[i][61];
 
 						result += "<tr>";
 						result += "<td>" + count + "</td>";
@@ -719,35 +724,44 @@ function displayList(emp_id, search_date_from, search_date_to) {
 							result += "<td>&nbsp;</td>";
 
 						result += "<td>" + ot_reason + "</td>";
-
-						result += "<td>&nbsp;</td>";
-						result += "<td>&nbsp;</td>";
-						result += "<td>&nbsp;</td>";
-						result += "<td>&nbsp;</td>";
+						result += "<td>" + ot_time_frm + "</td>";
+						result += "<td>" + ot_time_to + "</td>";
+						result += "<td>" + ot_hr_amt + "</td>";
+						result += "<td>" + ot_pay_amt + "</td>";
 
 						result += "<td>" + spare + "</td>";
 						result += "<td>" + wage_id + "</td>";
 						result += "<td>" + pay_type + "</td>";
 
 						if(soc_status) {
-							result += "<td>&nbsp;</td>";
+							result += "<td class='text-center'><i class='fas fa-check fa-xs text-success'></i></td>";
 						} else {
 							result += "<td class='text-center'><i class='fas fa-times fa-xs text-danger'></i></td>";
 						}
 						
 						if(pub_status) {
-							result += "<td>&nbsp;</td>";
+							result += "<td class='text-center'><i class='fas fa-check fa-xs text-success'></i></td>";
 						} else {
 							result += "<td class='text-center'><i class='fas fa-times fa-xs text-danger'></i></td>";
 						}
 
 						if(paid_status) {
-							result += "<td>&nbsp;</td>";
+							result += "<td class='text-center'><i class='fas fa-check fa-xs text-success'></i></td>";
 						} else {
 							result += "<td class='text-center'><i class='fas fa-times fa-xs text-danger'></i></td>";
 						}
 
-						result += "<td>&nbsp;</td>";
+						// REMARK
+						if(remark=="01")
+							result += "<td>D</td>";
+						else if(remark=="02")
+							result += "<td>C</td>";
+						else if(remark=="03")
+							result += "<td>T</td>";
+						else if(remark=="04")
+							result += "<td>R</td>";
+						else
+							result += "<td>&nbsp;</td>";
 
 						result += "</tr>";
 						count++;
