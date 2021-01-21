@@ -6050,12 +6050,13 @@ def SearchDailyGurdPerformance(request):
 			message = error_message
 
 
+		'''
 		DropTable(user_first_name)
 		DropTable(user_first_name + "1")
 		DropTable(user_first_name + "2")
 		DropTable(user_first_name + "3")
 		DropTable(user_first_name + "4")		
-
+		'''
 	else:
 		is_error = True
 		message = "Can't drop table " + str(user_first_name)
@@ -6080,7 +6081,7 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 		sql += "where emp_id=" + str(emp_id) + " "
 		sql += "and absent=1 and sch_shift<>99 and year(dly_date)=year(getdate()) "
 		sql += "order by dly_date desc"
-		print("ABSENT_DLY_PLAN SQL:", sql)
+		# print("ABSENT_DLY_PLAN SQL:", sql)
 		try:
 			with connection.cursor() as cursor:		
 				cursor.execute(sql)
@@ -6188,6 +6189,7 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 		return is_error, message, DlyPerRs_DLYSUB
 
 
+	# SCH_PLAN
 	if(table_name=="SCH_PLAN"):
 		is_error = True
 		message = "<b>SCH_PLAN</b>: "
@@ -6233,6 +6235,7 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 		return is_error, message, DlyPerRs_SCHPLAN
 
 
+	# DLY_OT
 	if(table_name=="DLY_OT"):
 		is_error = True
 		message = "<b>DLY_OT</b>: "
@@ -6264,6 +6267,7 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 		return is_error, message, DlyPerRs_DLYOT
 
 
+	# DLY_PLAN
 	if (table_name=="DLY_PLAN"):
 		is_error = True
 		message = "<b>DLY_PLAN</b>: "
@@ -6338,7 +6342,7 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 		sql += "and dly_date>='" + str(search_date_from) + "' "
 		sql += "and dly_date<='" + str(search_date_to) + "' "
 		sql += "order by dly_date, sch_shift"
-		# print("sql DlyPerRs: ", sql)
+		print("sql DlyPerRs: ", sql)
 		try:
 			with connection.cursor() as cursor:		
 				cursor.execute(sql)
@@ -6353,8 +6357,6 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 			return is_error, message
 		finally:
 			cursor.close()
-
-
 
 		sql = "if exists (select * from dbo.sysobjects where id=object_id(N'[dbo].[R_D500]') and OBJECTPROPERTY(id,N'IsUserTable')=1) "
 		sql += "drop table [dbo].[R_D500]"
@@ -6382,6 +6384,7 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 		sql += "and dly_date>='" + str(search_date_from) + "' "
 		sql += "and dly_date<='" + str(search_date_to) + "' "
 		sql += "and pay_type<>'ABS' order by dly_date,sch_shift"
+		print("SQL:", sql)
 		try:
 			with connection.cursor() as cursor:		
 				cursor.execute(sql)
@@ -6468,6 +6471,7 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 		is_error = False
 		message = "DisplayList('DLY_PLAN') is pass."
 
+	# is_error, error_message, performance_list, income_list = DisplayList("DLY_PLAN", user_first_name, emp_id, search_date_from, search_date_to)
 	return is_error, message, DlyPerRs, income_list
 
 

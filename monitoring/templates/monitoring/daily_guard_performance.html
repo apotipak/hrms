@@ -628,9 +628,9 @@ function displayList(emp_id, search_date_from, search_date_to) {
 					result += "      <th scope='col'>Rel.ID</th>";
 					result += "      <th scope='col'>Name</th>";
 					result += "      <th scope='col' class='text-center'>Tel</th>";
-					result += "      <th scope='col'>Call Time</th>";
-					result += "      <th scope='col'>Call Amt</th>";
-					result += "      <th scope='col' class='text-center'>Call Paid</th>";
+					result += "      <th scope='col' nowrap>Call Time</th>";
+					result += "      <th scope='col' nowrap>Call Amt</th>";
+					result += "      <th scope='col' class='text-center' nowrap>Call Paid</th>";
 					result += "      <th scope='col'>OT</th>";				
 					result += "      <th scope='col'>Reason</th>";
 
@@ -641,10 +641,10 @@ function displayList(emp_id, search_date_from, search_date_to) {
 
 					result += "      <th scope='col'>Spare</th>";
 					result += "      <th scope='col'>Wage</th>";
-					result += "      <th scope='col'>Pay Type</th>";
-					result += "      <th scope='col'>SOC</th>";
-					result += "      <th scope='col'>PUB</th>";
-					result += "      <th scope='col'>Paid</th>";
+					result += "      <th scope='col' nowrap>Pay Type</th>";
+					result += "      <th scope='col' class='txt-center'>SOC</th>";
+					result += "      <th scope='col' class='txt-center'>PUB</th>";
+					result += "      <th scope='col' class='txt-center'>Paid</th>";
 					result += "      <th scope='col'>REMARK</th>";
 
 					result += "    </tr>";
@@ -669,20 +669,21 @@ function displayList(emp_id, search_date_from, search_date_to) {
 						tel_paid = data.performance_list[i][27];
 						ot_status = data.performance_list[i][28];
 
-						ot_reason = ""; //DlyPerRs[i][29];			
-						spare = ""; //DlyPerRs[i][34];
-						wage_id = ""; //DlyPerRs[i][35];
+						ot_reason = data.performance_list[i][29];
+						spare = data.performance_list[i][34];
+						wage_id = data.performance_list[i][35];
+						pay_type = data.performance_list[i][37];
+						soc_status = data.performance_list[i][42];
+						pub_status = data.performance_list[i][43];
+						paid_status = data.performance_list[i][44];
 
-						soc_status = ""; //DlyPerRs[i][42];
-						pub_status = ""; //DlyPerRs[i][43];
-						paid_status = ""; //DlyPerRs[i][44];
 
 						result += "<tr>";
 						result += "<td>" + count + "</td>";
 						result += "<td>" + cnt_id + "</td>";
 						result += "<td>" + dly_date + "</td>";
 						result += "<td>" + rank + "</td>";
-						result += "<td>" + shift + "</td>";
+						result += "<td nowrap>" + shift + "</td>";
 						result += "<td>" + bas_amt + "</td>";
 						result += "<td>" + got_amt + "</td>";
 						result += "<td>" + bon_amt + "</td>";
@@ -701,7 +702,7 @@ function displayList(emp_id, search_date_from, search_date_to) {
 						if(tel_man) {
 							//
 							result += "<td class='text-center'><i class='fas fa-phone-alt fa-xs text-success'></i></td>";
-							result += "<td>" + tel_time + "</td>";
+							result += "<td nowrap>" + tel_time + "</td>";
 							result += "<td>" + tel_amt + "</td>";
 							result += "<td class='text-center'><i class='fas fa-check fa-xs text-success'></i></td>";
 						} else {
@@ -726,11 +727,26 @@ function displayList(emp_id, search_date_from, search_date_to) {
 
 						result += "<td>" + spare + "</td>";
 						result += "<td>" + wage_id + "</td>";
-						result += "<td>&nbsp;</td>";
+						result += "<td>" + pay_type + "</td>";
 
-						result += "<td>" + soc_status + "</td>";
-						result += "<td>" + pub_status + "</td>";
-						result += "<td>" + paid_status + "</td>";
+						if(soc_status) {
+							result += "<td>&nbsp;</td>";
+						} else {
+							result += "<td class='text-center'><i class='fas fa-times fa-xs text-danger'></i></td>";
+						}
+						
+						if(pub_status) {
+							result += "<td>&nbsp;</td>";
+						} else {
+							result += "<td class='text-center'><i class='fas fa-times fa-xs text-danger'></i></td>";
+						}
+
+						if(paid_status) {
+							result += "<td>&nbsp;</td>";
+						} else {
+							result += "<td class='text-center'><i class='fas fa-times fa-xs text-danger'></i></td>";
+						}
+
 						result += "<td>&nbsp;</td>";
 
 						result += "</tr>";
