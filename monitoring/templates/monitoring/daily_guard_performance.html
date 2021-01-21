@@ -23,26 +23,33 @@
 
     		<!-- SEARCH FORM -->
 			<div class="card card-outline card-default" id="daily_attendance_search_card">
+				<div class="card-body">					
+					<div class="row">
 
-				<div class="card-body">
-					
-					<div class="d-flex justify-content-center">
-						<form class="form-inline" name="daily_guard_performance_search_form" id="daily_guard_performance_search_form">
-							<div class="form-inline">
-								<label class="control-label">Employee ID&nbsp;&nbsp;</label>&nbsp;&nbsp;
-							    <input type="number" class="form-control form-control-sm" id="id_search_emp_id">&nbsp;&nbsp;
+						<div class="col-10">
+							<div class="d-flex justify-content-center">
+								<form class="form-inline" name="daily_guard_performance_search_form" id="daily_guard_performance_search_form">
 
-			                    <label class="control-label" for="id_search_by_cnt_id">Date From/To</label>&nbsp;
-			                    <input type="text" id="id_search_date_from" class="form-control form-control-sm" value="">
-			                    <input type="text" id="id_search_date_to" class="form-control form-control-sm" value="">&nbsp;&nbsp;&nbsp;
-							    
-			                    <button id="id_search_submit_button" name="search_submit_button" type="button" class="btn btn-sm btn-primary"><i class="fas fa-search"></i>&nbsp;Search</button>&nbsp;
-						        <button id="id_search_cancel_button" name="search_cancel_button" type="button" class="btn btn-sm btn-secondary">Cancel</button>							    
-							</div>
-						</form>
+									<div class="form-inline">
+										<label class="control-label">Employee ID&nbsp;&nbsp;</label>&nbsp;&nbsp;
+									    <input type="number" class="form-control form-control-sm" id="id_search_emp_id">&nbsp;&nbsp;
+
+					                    <label class="control-label" for="id_search_by_cnt_id">Date From/To</label>&nbsp;
+					                    <input type="text" id="id_search_date_from" class="form-control form-control-sm" value="">
+					                    <input type="text" id="id_search_date_to" class="form-control form-control-sm" value="">&nbsp;&nbsp;&nbsp;
+									    
+					                    <button id="id_search_submit_button" name="search_submit_button" type="button" class="btn btn-sm btn-primary"><i class="fas fa-search"></i>&nbsp;Search</button>&nbsp;
+								        <button id="id_search_cancel_button" name="search_cancel_button" type="button" class="btn btn-sm btn-secondary">Cancel</button>
+									</div>							
+								</form>
+							</div>					
+						</div>
+
+						<div class="col-2">
+							<div class="d-flex flex-row-reverse"><button id="id_print_button" name="print_button" type="button" class="btn btn-sm btn-info"><i class="fas fa-print"></i>&nbsp;Print</button></div>
+						</div>
 
 					</div>
-
 			  	</div>
 			</div>
 			<!-- END SEARCH FORM -->
@@ -435,6 +442,75 @@ $(document).on('keypress', '#id_search_date_from', function(e) {
   	}
   }
 });
+
+
+$(document).on('click', '#id_print_button', function(e) {
+	var emp_id = $("#id_search_emp_id").val();
+	var search_date_from = $("#id_search_date_from").val();
+	var search_date_to = $("#id_search_date_to").val();
+
+	if(emp_id=="") {
+		$.alert({
+		    title: 'Error',
+		    type: 'red',
+		    content: "กรุณาป้อนรหัสพนักงาน",
+		    animation: 'zoom',
+		    animationBounce: 1.5,
+		    closeIcon: false,
+		    boxWidth: '38%',
+		    useBootstrap: false,
+		});
+		
+		return false;
+	}
+
+	if(emp_id=="") {
+		$.alert({
+		    title: 'Error',
+		    type: 'red',
+		    content: "กรุณาป้อนรหัสพนักงาน",
+		    animation: 'zoom',
+		    animationBounce: 1.5,
+		    closeIcon: false,
+		    boxWidth: '38%',
+		    useBootstrap: false,
+		    keys: ['enter', 'shift'],
+		});
+		return false;		
+	} 
+
+	if(search_date_from=="") {
+		$.alert({
+		    title: 'Error',
+		    type: 'red',
+		    content: "กรุณาป้อนวันที่เริ่มต้น",
+		    animation: 'zoom',
+		    animationBounce: 1.5,
+		    closeIcon: false,
+		    boxWidth: '38%',
+		    useBootstrap: false,
+		});
+		return false;
+	}
+
+	if(search_date_to=="") {
+		$.alert({
+		    title: 'Error',
+		    type: 'red',
+		    content: "กรุณาป้อนวันที่สิ้นสุด",
+		    animation: 'zoom',
+		    animationBounce: 1.5,
+		    closeIcon: false,
+		    boxWidth: '38%',
+		    useBootstrap: false,
+		});
+		return false;
+	}
+
+	alert("PRINT");
+
+});
+
 
 $(document).on('click', '#id_search_submit_button', function(e) {    	
 	var emp_id = $("#id_search_emp_id").val();
