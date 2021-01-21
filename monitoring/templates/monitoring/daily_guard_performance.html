@@ -303,8 +303,8 @@ $(document).ready(function(){
 	var today = new Date();
 	var date = today.getDate() + "/" + ("0" + today.getMonth()+1).slice(-2) + '/' + today.getFullYear() + " 00:00";
 
-	//$('#id_search_date_from').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", new Date());	
-	//$('#id_search_date_to').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", new Date());
+	$('#id_search_date_from').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", new Date());	
+	$('#id_search_date_to').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", new Date());
 
 
 	// Test Leave case
@@ -317,11 +317,13 @@ $(document).ready(function(){
 	*/
 
 	// Test Overtime case
+	/*
 	const d1 = new Date('12-01-2020 00:00:00'); // mm-dd-yyyy hh:mm:ss
 	const d2 = new Date('12-31-2020 00:00:00');	// mm-dd-yyyy hh:mm:ss
 	$('#id_search_date_from').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", d1);
 	$('#id_search_date_to').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", d2);
 	$("#id_search_emp_id").val("916");
+	*/
 
 	$("#id_search_emp_id").focus();
 });
@@ -621,18 +623,29 @@ function displayList(emp_id, search_date_from, search_date_to) {
 					result += "      <th scope='col'>BON</th>";
 					result += "      <th scope='col'>PUB</th>";
 					result += "      <th scope='col'>DOF</th>";
-
 					result += "      <th scope='col' class='text-center'>DF</th>";
 					result += "      <th scope='col'>Relief</th>";
 					result += "      <th scope='col'>Rel.ID</th>";
 					result += "      <th scope='col'>Name</th>";
-
 					result += "      <th scope='col' class='text-center'>Tel</th>";
 					result += "      <th scope='col'>Call Time</th>";
 					result += "      <th scope='col'>Call Amt</th>";
 					result += "      <th scope='col' class='text-center'>Call Paid</th>";
-					result += "      <th scope='col'>OT</th>";
+					result += "      <th scope='col'>OT</th>";				
+					result += "      <th scope='col'>Reason</th>";
 
+					result += "      <th scope='col'>From</th>";
+					result += "      <th scope='col'>To</th>";
+					result += "      <th scope='col'>HR</th>";
+					result += "      <th scope='col'>Paid(OT)</th>";
+
+					result += "      <th scope='col'>Spare</th>";
+					result += "      <th scope='col'>Wage</th>";
+					result += "      <th scope='col'>Pay Type</th>";
+					result += "      <th scope='col'>SOC</th>";
+					result += "      <th scope='col'>PUB</th>";
+					result += "      <th scope='col'>Paid</th>";
+					result += "      <th scope='col'>REMARK</th>";
 
 					result += "    </tr>";
 					result += "  </thead>";
@@ -656,14 +669,13 @@ function displayList(emp_id, search_date_from, search_date_to) {
 						tel_paid = data.performance_list[i][27];
 						ot_status = data.performance_list[i][28];
 
+						ot_reason = DlyPerRs[i][29];			
+						spare = DlyPerRs[i][34];
+						wage_id = DlyPerRs[i][35];
 
-						//ot = DlyPerRs[i][28]
-						//ot_reason = DlyPerRs[i][29]
-						//spare = DlyPerRs[i][34]
-						//wage_id = DlyPerRs[i][35]
-						//soc_status = DlyPerRs[i][42]
-						//pub_status = DlyPerRs[i][43]
-						//paid_status = DlyPerRs[i][44]
+						soc_status = DlyPerRs[i][42];
+						pub_status = DlyPerRs[i][43];
+						paid_status = DlyPerRs[i][44];
 
 						result += "<tr>";
 						result += "<td>" + count + "</td>";
@@ -696,7 +708,7 @@ function displayList(emp_id, search_date_from, search_date_to) {
 							result += "<td class='text-center'>&nbsp;</td>";
 							result += "<td>&nbsp;</td>";
 							result += "<td>&nbsp;</td>";
-							result += "<td>&nbsp;</td>";							
+							result += "<td>&nbsp;</td>";
 						}	
 						
 						
@@ -704,6 +716,22 @@ function displayList(emp_id, search_date_from, search_date_to) {
 							result += "<td>" + ot_status + "</td>";
 						else
 							result += "<td>&nbsp;</td>";
+
+						result += "<td>" + ot_reason + "</td>";
+
+						result += "<td>&nbsp;</td>";
+						result += "<td>&nbsp;</td>";
+						result += "<td>&nbsp;</td>";
+						result += "<td>&nbsp;</td>";
+
+						result += "<td>" + spare + "</td>";
+						result += "<td>" + wage_id + "</td>";
+						result += "<td>&nbsp;</td>";
+
+						result += "<td>" soc_status + "</td>";
+						result += "<td>" pub_status + "</td>";
+						result += "<td>" paid_status + "</td>";
+						result += "<td>&nbsp;</td>";
 
 						result += "</tr>";
 						count++;
