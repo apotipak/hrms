@@ -233,9 +233,36 @@
 							      <td class="text-center"><br><br><br><br>There is no data.<br><br><br><br><br></td>
 							    </tr>
 							  </tbody>
-							</table>
+							</table>							
 							</font>
 						</div>
+
+		            	<div id="id_emp_leave_plan_list" class="bg-light table-responsive">
+		            		<div><b>Summary Leave/Year</b></div>
+							<font size='2em;'>
+							<table id='emp_leave_plan_table' class='table table-sm table-hover'>							
+							  <tbody>
+							    <tr>
+							      <td class="text-center"><br><br>There is no data.<br><br><br></td>
+							    </tr>
+							  </tbody>
+							</table>							
+							</font>
+						</div>
+
+		            	<div id="id_absent_dly_plan_list" class="bg-light table-responsive">
+		            		<div><b>Summary Daily Absent</b></div>
+							<font size='2em;'>
+							<table id='absent_dly_plan_table' class='table table-sm table-hover'>							
+							  <tbody>
+							    <tr>
+							      <td class="text-center"><br><br>There is no data.<br><br><br></td>
+							    </tr>
+							  </tbody>
+							</table>							
+							</font>
+						</div>
+
 		        	</div>
 
 
@@ -875,8 +902,7 @@ function displayList(emp_id, search_date_from, search_date_to) {
 				$("#substitute_list_table").html(result);
 			}
 
-
-
+			
 			// TODO: Show Leave table
 			if(data.leave_list.length>0) {
 				result = "<table id='leave_list_table'>";
@@ -928,7 +954,7 @@ function displayList(emp_id, search_date_from, search_date_to) {
 					result += "<td>" + prd_id + "</td>";
 
 					if(lve_paid) {
-						result += "<td><i class='fas fa-check fa-xs text-success'></i></td>";						
+						result += "<td><i class='fas fa-check fa-xs text-success'></i></td>";
 					} else {
 						result += "<td>&nbsp;</td>";
 					}
@@ -946,11 +972,128 @@ function displayList(emp_id, search_date_from, search_date_to) {
 			} else {
 				result = "<tbody>";
 				result += "<tr>";
-				result += "<td colspan='10' class='text-center'><br><br><br><br>There is no data.<br><br><br><br><br></td>";
+				result += "<td colspan='10' class='text-center'><br><br>There is no data.<br><br><br></td>";
 				result += "</tr>";
 				result += "</tbody>";	
 				$("#leave_list_table").html(result);
 			}								
+
+			
+			// TODO: Show Summary Leave/Year table
+			if(data.emp_leave_plan_list.length>0) {
+				result = "<table id='emp_leave_plan_table'>";
+				result += "  <thead class=thead-light>";
+				result += "    <tr>";
+				result += "      <th scope='col'>No</th>";
+				result += "		 <th scope='col'>Leave ID</th>";
+				result += "      <th scope='col'>Plan</th>";				
+				result += "		 <th scope='col'>HR</th>";
+				result += "      <th scope='col'>Act</th>";
+				result += "      <th scope='col'>HR</th>";
+				result += "      <th scope='col'>Miss</th>";
+				result += "      <th scope='col'>HR</th>";
+				result += "      <th scope='col'>Code</th>";
+				result += "      <th scope='col'>Upd.Date</th>";
+				result += "      <th scope='col'>Upd.By</th>";
+				result += "      <th scope='col' class='text-center'>Upd.Flag</th>";
+				result += "    </tr>";
+				result += "  </thead>";
+				result += "  <tbody>";
+				count = 1;				
+				for(i=0;i<data.emp_leave_plan_list.length;i++) {
+					lve_id = data.emp_leave_plan_list[i][3];
+					lve_th = data.emp_leave_plan_list[i][16];
+					lve_plan = data.emp_leave_plan_list[i][5];
+					lve_plan_hr = data.emp_leave_plan_list[i][6];
+					lve_act = data.emp_leave_plan_list[i][7];
+					lve_act_hr = data.emp_leave_plan_list[i][8];
+					lve_miss = data.emp_leave_plan_list[i][9];
+					lve_miss_hr = data.emp_leave_plan_list[i][10];
+					lve_code = data.emp_leave_plan_list[i][4];
+					upd_date = convertStringToDDMMYYYY(data.emp_leave_plan_list[i][11]);
+					upd_by = data.emp_leave_plan_list[i][12];
+					upd_flag = data.emp_leave_plan_list[i][13];
+					result += "<tr>";
+					result += "<td>" + count + "</td>";
+					result += "<td>" + lve_id + " " + lve_th + "</td>";
+					result += "<td>" + lve_plan + "</td>";
+					result += "<td>" + lve_plan_hr + "</td>";
+					result += "<td>" + lve_act + "</td>";
+					result += "<td>" + lve_act_hr + "</td>";
+					result += "<td>" + lve_miss + "</td>";
+					result += "<td>" + lve_miss_hr + "</td>";
+					result += "<td>" + lve_code + "</td>";
+					result += "<td>" + upd_date + "</td>";
+					result += "<td>" + upd_by + "</td>";
+					result += "<td class='text-center'>" + upd_flag + "</td>";
+					result += "</tr>";
+					count++;
+				}
+				result += "  </tbody>";
+				result += "</table>";
+
+				$("#emp_leave_plan_table").html(result);
+			} else {
+				result = "<tbody>";
+				result += "<tr>";
+				result += "<td colspan='10' class='text-center'><br><br>There is no data.<br><br><br></td>";
+				result += "</tr>";
+				result += "</tbody>";
+
+				$("#emp_leave_plan_table").html(result);
+			}								
+
+			// TODO: Show Summary Daily Absent table
+			if(data.absent_dly_plan_list.length>0) {
+				result = "<table id='emp_leave_plan_table'>";
+				result += "  <thead class=thead-light>";
+				result += "    <tr>";
+				result += "      <th scope='col'>No</th>";
+				result += "		 <th scope='col' class='text-center'>Absent</th>";
+				result += "      <th scope='col'>Date</th>";				
+				result += "		 <th scope='col'>Shift</th>";
+				result += "      <th scope='col'>Contract No</th>";
+				result += "      <th scope='col'>Upd.Date</th>";
+				result += "      <th scope='col'>Upd.By</th>";
+				result += "      <th scope='col' class='text-center'>Upd.Flag</th>";
+				result += "    </tr>";
+				result += "  </thead>";
+				result += "  <tbody>";
+				count = 1;				
+				for(i=0;i<data.emp_leave_plan_list.length;i++) {
+					lve_date = convertStringToDDMMYYYY(data.absent_dly_plan_list[i][1]);
+					sch_shift = data.absent_dly_plan_list[i][3];
+					cnt_id = data.absent_dly_plan_list[i][2];					
+					upd_date = convertStringToDDMMYYYY(data.absent_dly_plan_list[i][5]);
+					upd_by = data.absent_dly_plan_list[i][6];
+					upd_flag = data.absent_dly_plan_list[i][7];
+					result += "<tr>";
+					result += "<td>" + count + "</td>";
+					result += "<td class='text-center'><i class='fas fa-times fa-xs text-danger'></i></td>";
+					result += "<td>" + lve_date + "</td>";
+					result += "<td>" + sch_shift + "</td>";
+					result += "<td>" + cnt_id + "</td>";
+					result += "<td>" + upd_date + "</td>";
+					result += "<td>" + upd_by + "</td>";
+					result += "<td class='text-center'>" + upd_flag + "</td>";
+					result += "</tr>";
+					count++;
+				}
+				result += "  </tbody>";
+				result += "</table>";
+
+				$("#absent_dly_plan_table").html(result);
+			} else {
+				result = "<tbody>";
+				result += "<tr>";
+				result += "<td colspan='10' class='text-center'><br><br>There is no data.<br><br><br></td>";
+				result += "</tr>";
+				result += "</tbody>";
+
+				$("#absent_dly_plan_table").html(result);
+			}	
+
+
 
 
 

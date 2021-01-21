@@ -6062,13 +6062,16 @@ def SearchDailyGurdPerformance(request):
 
 	response = JsonResponse(data={"success": True,"is_error": is_error,"message": message, 
 		"performance_list": performance_list, "income_list": income_list, "overtime_list":overtime_list, 
-		"schedule_list": schedule_list, "substitute_list":substitute_list, "leave_list":leave_list, "emp_leave_plan_list": emp_leave_plan_list, "absent_dly_plan_list": absent_dly_plan_list})
+		"schedule_list": schedule_list, "substitute_list":substitute_list, "leave_list":leave_list, 
+		"emp_leave_plan_list": emp_leave_plan_list, "absent_dly_plan_list": absent_dly_plan_list})
 
 	response.status_code = 200
 	return response	
 
 
 def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_date_to):
+
+	# ABSENT_DLY_PLAN
 	if(table_name=="ABSENT_DLY_PLAN"):
 		is_error = True
 		message = "<b>ABSENT_DLY_PLAN</b>: "
@@ -6077,7 +6080,7 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 		sql += "where emp_id=" + str(emp_id) + " "
 		sql += "and absent=1 and sch_shift<>99 and year(dly_date)=year(getdate()) "
 		sql += "order by dly_date desc"
-		# print("ABSENT_DLY_PLAN SQL:", sql)
+		print("ABSENT_DLY_PLAN SQL:", sql)
 		try:
 			with connection.cursor() as cursor:		
 				cursor.execute(sql)
@@ -6097,6 +6100,7 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 		return is_error, message, DlyPerRs_ABSENTDLYPLAN
 
 
+	# EMP_LEAVE_PLAN
 	if(table_name=="EMP_LEAVE_PLAN"):
 		is_error = True
 		message = "<b>EMP_LEAVE_PLAN</b>: "
@@ -6106,6 +6110,7 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 		sql += "where a.emp_id= " + str(emp_id) + " "
 		sql += "and b.lve_year>=year(getdate())"
 		# print("EMP_LEAVE_PLAN SQL:", sql)
+
 		try:
 			with connection.cursor() as cursor:		
 				cursor.execute(sql)
@@ -6125,6 +6130,7 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 		return is_error, message, DlyPerRs_EMPLEAVEPLAN
 
 
+	# EMP_LEAVE_ACT
 	if(table_name=="EMP_LEAVE_ACT"):
 		is_error = True
 		message = "<b>EMP_LEAVE_ACT</b>: "
@@ -6153,6 +6159,7 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 		return is_error, message, DlyPerRs_EMPLEAVEACT
 
 
+	# DLY_SUB
 	if(table_name=="DLY_SUB"):
 		is_error = True
 		message = "<b>DLY_SUB</b>: "
@@ -6237,7 +6244,7 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 		sql += "and dly_date>='" + str(search_date_from) + "' "
 		sql += "and dly_date<='" + str(search_date_to) + "' "
 		sql += "order by sch_shift"
-		print("DLY_OT SQL:", sql)
+		# print("DLY_OT SQL:", sql)
 		try:
 			with connection.cursor() as cursor:		
 				cursor.execute(sql)
@@ -6405,7 +6412,7 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 		sql += "and dly_date>='" + str(search_date_from) + "' "
 		sql += "and dly_date<='" + str(search_date_to) + "' "
 		sql += "order by dly_date,sch_shift"
-		print("SQL:", sql)
+		# print("SQL:", sql)
 		try:
 			with connection.cursor() as cursor:		
 				cursor.execute(sql)
