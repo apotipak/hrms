@@ -32,4 +32,6 @@ urlpatterns += [
     path('daily-performance/', views.DailyGuardPerformance, name='daily-guard-performance'),
     path('ajax/search_daily_guard_performance/', views.SearchDailyGurdPerformance, name='search-daily-guard-performance'),
     path('ajax/search_daily_guard_performance_employee_information/', views.SearchDailyGurdPerformanceEmployeeInformation, name='search-daily-guard-performance-employee-information'),
+
+    url(r'^generate-dgp-500/(?P<emp_id>\d+)/(?P<search_date_from>\d{2}/\d{2}/\d{4})/(?P<search_date_to>\d{2}/\d{2}/\d{4})/$', views.generate_dgp_500, name='generate-dgp-500'),
 ]

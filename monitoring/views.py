@@ -23,6 +23,12 @@ import json
 from datetime import timedelta
 from system.helper import *
 from django.contrib.humanize.templatetags.humanize import naturalday
+from hrms.settings import MEDIA_ROOT
+from docxtpl import DocxTemplate
+from docx2pdf import convert
+from os import path
+from django.http import FileResponse
+
 
 Tpub = 11
 
@@ -6512,3 +6518,50 @@ def SearchDailyGurdPerformanceEmployeeInformation(request):
 	response = JsonResponse(data={"success": True,"is_error": is_error,"message": message, "employee_information": employee_information})
 	response.status_code = 200
 	return response
+
+
+@login_required(login_url='/accounts/login/')
+def generate_dgp_500(request, *args, **kwargs):    
+    base_url = MEDIA_ROOT + '/monitoring/template/'
+    emp_id = kwargs['emp_id']
+    search_date_from = kwargs['search_date_from'] 
+    search_date_to = kwargs['search_date_to'] 
+
+    print("-----------------------")
+    print("emp_id =", emp_id)
+    print("search_date_from =", search_date_from)
+    print("search_date_to =", search_date_to)
+    print("-----------------------")
+
+    context = {
+            'customer': "",
+            'file_name': "",
+            'docx_file_name': "",
+            'pdf_file_name': "",
+            'cnt_id': "",
+            'cnt_doc_no': "",
+            'customer_name': "",
+            'customer_address': "",
+            'customer_site': "",
+            'effect_from': "",
+            'effect_to': "",
+            'items' : [
+                {'desc' : 'test1', 'qty' : 2, 'price' : '0.00' },
+                {'desc' : 'test2', 'qty' : 2, 'price' : '0.00' },
+            ],
+            'is_changed' : True,
+    }
+
+    template_name = base_url + 'DGP_500.docx'
+    file_name = "DGP_500"
+
+    tpl = DocxTemplate(template_name)
+    tpl.render(context)
+    tpl.save(MEDIA_ROOT + '/monitoring/download/' + file_name + ".docx")
+
+    # docx2pdf
+    docx_file = path.abspath("media\\monitoring\\download\\" + file_name + ".docx")
+    pdf_file = path.abspath("media\\monitoring\\download\\" + file_name + ".pdf")    
+    convert(docx_file, pdf_file)
+
+    return FileResponse(open(pdf_file, 'rb'), content_type='application/pdf')
