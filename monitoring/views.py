@@ -6522,46 +6522,102 @@ def SearchDailyGurdPerformanceEmployeeInformation(request):
 
 @login_required(login_url='/accounts/login/')
 def generate_dgp_500(request, *args, **kwargs):    
-    base_url = MEDIA_ROOT + '/monitoring/template/'
-    emp_id = kwargs['emp_id']
-    search_date_from = kwargs['search_date_from'] 
-    search_date_to = kwargs['search_date_to'] 
 
-    print("-----------------------")
-    print("emp_id =", emp_id)
-    print("search_date_from =", search_date_from)
-    print("search_date_to =", search_date_to)
-    print("-----------------------")
+	r_d500_obj = []
+	context = {}
+	emp_id = ""
+	fname = ""
+	fname = ""
+	cnt_id = ""
+	dly_date = ""
+	shf_desc = ""
+	sch_rank = ""
+	pay_type = ""
+	bas_amt = ""
+	bon_amt = ""
+	pub_amt = ""
+	otm_amt = ""
+	dof = ""
+	spare = ""
+	tel_amt = ""
+	wage_id = ""
+	shf_amt_hr = ""
+	ot_hr_amt = ""
+	absent = ""
 
-    context = {
-            'customer': "",
-            'file_name': "",
-            'docx_file_name': "",
-            'pdf_file_name': "",
-            'cnt_id': "",
-            'cnt_doc_no': "",
-            'customer_name': "",
-            'customer_address': "",
-            'customer_site': "",
-            'effect_from': "",
-            'effect_to': "",
-            'items' : [
-                {'desc' : 'test1', 'qty' : 2, 'price' : '0.00' },
-                {'desc' : 'test2', 'qty' : 2, 'price' : '0.00' },
-            ],
-            'is_changed' : True,
-    }
+	base_url = MEDIA_ROOT + '/monitoring/template/'
+	emp_id = kwargs['emp_id']
+	search_date_from = kwargs['search_date_from'] 
+	search_date_to = kwargs['search_date_to'] 
+	template_name = base_url + 'DGP_500.docx'
+	file_name = "DGP_500"
 
-    template_name = base_url + 'DGP_500.docx'
-    file_name = "DGP_500"
+	sql = "select R_D500.EMP_ID,R_D500.FNAME,R_D500.CNT_ID,R_D500.DLY_DATE,"
+	sql += "R_D500.SHF_DESC,R_D500.SCH_RANK,R_D500.PAY_TYPE,R_D500.BAS_AMT,"
+	sql += "R_D500.BON_AMT,R_D500.PUB_AMT,R_D500.OTM_AMT,R_D500.DOF,R_D500.SPARE,"
+	sql += "R_D500.TEL_AMT,R_D500.WAGE_ID,R_D500.SHF_AMT_HR,R_D500.OT_HR_AMT,R_D500.ABSENT "
+	sql += "FROM HRMS.dbo.R_D500 R_D500 "
+	sql += "ORDER BY R_D500.EMP_ID ASC"
 
-    tpl = DocxTemplate(template_name)
-    tpl.render(context)
-    tpl.save(MEDIA_ROOT + '/monitoring/download/' + file_name + ".docx")
+	try:
+		cursor = connection.cursor()
+		cursor.execute(sql)
+		r_d500_obj = cursor.fetchall()
 
-    # docx2pdf
-    docx_file = path.abspath("media\\monitoring\\download\\" + file_name + ".docx")
-    pdf_file = path.abspath("media\\monitoring\\download\\" + file_name + ".pdf")    
-    convert(docx_file, pdf_file)
+		if r_d500_obj is not None:
+			if len(r_d500_obj)>0:
+				for row in r_d500_obj:
+					fname = row[1]
+					cnt_id = row[2]
+					dly_date = row[3]
+					shf_desc = row[4]
+					sch_rank = row[5]
+					pay_type = row[6]
+					bas_amt = row[7]
+					bon_amt = row[8]
+					pub_amt = row[9]
+					otm_amt = row[10]
+					dof = row[11]
+					spare = row[12]
+					tel_amt = row[13]
+					wage_id = row[14]
+					shf_amt_hr = row[15]
+					ot_hr_amt = row[16]
+					absent = row[17]
 
-    return FileResponse(open(pdf_file, 'rb'), content_type='application/pdf')
+	finally:
+		cursor.close()
+
+	context = {
+	'search_date_from': search_date_from,
+	'search_date_to': search_date_to,
+	'emp_id': emp_id,
+	'fname': fname,
+	'cnt_id': cnt_id,
+	'dly_date': dly_date,
+	'shf_desc': shf_desc,
+	'sch_rank': sch_rank,
+	'pay_type': pay_type,
+	'bas_amt': bas_amt,
+	'bon_amt': bon_amt,
+	'pub_amt': pub_amt,
+	'otm_amt': otm_amt,
+	'dof': dof,
+	'spare': spare,
+	'tel_amt': tel_amt,
+	'wage_id': wage_id,
+	'shf_amt_hr': shf_amt_hr,
+	'ot_hr_amt': ot_hr_amt,
+	'absent': absent,
+	}
+
+	tpl = DocxTemplate(template_name)
+	tpl.render(context)
+	tpl.save(MEDIA_ROOT + '/monitoring/download/' + file_name + ".docx")
+
+	# docx2pdf
+	docx_file = path.abspath("media\\monitoring\\download\\" + file_name + ".docx")
+	pdf_file = path.abspath("media\\monitoring\\download\\" + file_name + ".pdf")    
+	convert(docx_file, pdf_file)
+
+	return FileResponse(open(pdf_file, 'rb'), content_type='application/pdf')
