@@ -6524,6 +6524,7 @@ def SearchDailyGurdPerformanceEmployeeInformation(request):
 def generate_dgp_500(request, *args, **kwargs):    
 
 	r_d500_obj = []
+	pickup_record = []
 	context = {}
 	emp_id = ""
 	fname = ""
@@ -6558,7 +6559,7 @@ def generate_dgp_500(request, *args, **kwargs):
 	sql += "R_D500.TEL_AMT,R_D500.WAGE_ID,R_D500.SHF_AMT_HR,R_D500.OT_HR_AMT,R_D500.ABSENT "
 	sql += "FROM HRMS.dbo.R_D500 R_D500 "
 	sql += "ORDER BY R_D500.EMP_ID ASC"
-
+	print("SQL report:", sql)
 	try:
 		cursor = connection.cursor()
 		cursor.execute(sql)
@@ -6569,7 +6570,8 @@ def generate_dgp_500(request, *args, **kwargs):
 				for row in r_d500_obj:
 					fname = row[1]
 					cnt_id = row[2]
-					dly_date = row[3]
+					dly_date = row[3].strftime("%d/%m/%Y")
+					dly_date_week_day = datetime.datetime.strptime(dly_date, '%d/%m/%Y').strftime('%a')
 					shf_desc = row[4]
 					sch_rank = row[5]
 					pay_type = row[6]
@@ -6585,8 +6587,32 @@ def generate_dgp_500(request, *args, **kwargs):
 					ot_hr_amt = row[16]
 					absent = row[17]
 
+					record = {
+					    "fname": fname,
+					    "cnt_id": cnt_id,
+					    "dly_date": dly_date,
+					    "dly_date_week_day": dly_date_week_day,
+					    "shf_desc": shf_desc,
+					    "sch_rank": sch_rank,
+					    "pay_type": pay_type,
+					    "bas_amt": bas_amt,
+					    "bon_amt": bon_amt,
+					    "pub_amt": pub_amt,
+					    "otm_amt": otm_amt,
+					    "dof": dof,
+					    "spare": spare,
+					    "tel_amt": tel_amt,
+					    "wage_id": wage_id,
+					    "shf_amt_hr": shf_amt_hr,
+					    "ot_hr_amt": ot_hr_amt,
+					    "absent": absent,					    
+					}
+
+					pickup_record.append(record)
 	finally:
 		cursor.close()
+
+	current_datetime = datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
 
 	context = {
 	'search_date_from': search_date_from,
@@ -6609,6 +6635,8 @@ def generate_dgp_500(request, *args, **kwargs):
 	'shf_amt_hr': shf_amt_hr,
 	'ot_hr_amt': ot_hr_amt,
 	'absent': absent,
+	'daily_guard_performance_list': list(pickup_record),
+	'current_datetime': current_datetime,
 	}
 
 	tpl = DocxTemplate(template_name)
