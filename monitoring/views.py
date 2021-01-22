@@ -6567,6 +6567,16 @@ def generate_dgp_500(request, *args, **kwargs):
 
 		if r_d500_obj is not None:
 			if len(r_d500_obj)>0:
+				sum_otm_amt = 0
+				sum_shf_amt_hr = 0
+				sum_bas_amt = 0
+				sum_ot_hr_amt = 0
+				sum_bon_amt = 0
+				sum_pub_amt = 0
+				sum_tel_amt = 0
+				sum_dof = 0
+				sum_spare = 0
+
 				for row in r_d500_obj:
 					fname = row[1]
 					cnt_id = row[2]
@@ -6575,16 +6585,35 @@ def generate_dgp_500(request, *args, **kwargs):
 					shf_desc = row[4]
 					sch_rank = row[5]
 					pay_type = row[6]
-					bas_amt = row[7]
-					bon_amt = row[8]
-					pub_amt = row[9]
+
 					otm_amt = row[10]
-					dof = row[11]
-					spare = row[12]
-					tel_amt = row[13]
-					wage_id = row[14]
+					sum_otm_amt += otm_amt
+						
 					shf_amt_hr = row[15]
+					sum_shf_amt_hr += shf_amt_hr
+
+					bas_amt = row[7]
+					sum_bas_amt += bas_amt
+
 					ot_hr_amt = row[16]
+					sum_ot_hr_amt += ot_hr_amt
+
+					bon_amt = row[8]
+					sum_bon_amt += bon_amt
+
+					pub_amt = row[9]
+					sum_pub_amt += pub_amt
+					
+					tel_amt = row[13]
+					sum_tel_amt += tel_amt
+
+					dof = row[11]
+					sum_dof += dof
+
+					spare = row[12]
+					sum_spare += spare
+
+					wage_id = row[14]					
 					absent = row[17]
 
 					record = {
@@ -6592,20 +6621,20 @@ def generate_dgp_500(request, *args, **kwargs):
 					    "cnt_id": cnt_id,
 					    "dly_date": dly_date,
 					    "dly_date_week_day": dly_date_week_day,
-					    "shf_desc": shf_desc,
+					    "shf_desc": shf_desc,			    
 					    "sch_rank": sch_rank,
 					    "pay_type": pay_type,
-					    "bas_amt": bas_amt,
-					    "bon_amt": bon_amt,
-					    "pub_amt": pub_amt,
-					    "otm_amt": otm_amt,
+					    "otm_amt": otm_amt,					   
+					    "bas_amt": bas_amt,					    
+					    "bon_amt": bon_amt,					    
+					    "pub_amt": pub_amt,					    
 					    "dof": dof,
-					    "spare": spare,
-					    "tel_amt": tel_amt,
+					    "spare": spare,					    
+					    "tel_amt": tel_amt,					    
 					    "wage_id": wage_id,
 					    "shf_amt_hr": shf_amt_hr,
 					    "ot_hr_amt": ot_hr_amt,
-					    "absent": absent,					    
+					    "absent": absent,				    
 					}
 
 					pickup_record.append(record)
@@ -6637,6 +6666,15 @@ def generate_dgp_500(request, *args, **kwargs):
 	'absent': absent,
 	'daily_guard_performance_list': list(pickup_record),
 	'current_datetime': current_datetime,
+	"sum_ot_hr_amt": sum_ot_hr_amt,
+    "sum_otm_amt": sum_otm_amt,
+    "sum_tel_amt": sum_tel_amt,
+    "sum_bas_amt": sum_bas_amt,
+    "sum_bon_amt": sum_bon_amt,
+    "sum_pub_amt": sum_pub_amt,	    
+    "sum_spare": sum_spare,
+    "sum_shf_amt_hr": sum_shf_amt_hr,
+    "sum_dof": sum_dof,
 	}
 
 	tpl = DocxTemplate(template_name)
