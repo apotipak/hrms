@@ -215,7 +215,9 @@ $(document).ready(function() {
   $(".navbar-nav a").each(function() {  
     if(url == (this.href)) {       
       $(this).closest("li").addClass("active");
-      //$(this).closest("li").css("color", "red");
+      $(this).css("color", "#28a745");
+      $(this).css("font-size", "1em");
+      $(this).css("font-weight", "bold");
     }
   });
 
