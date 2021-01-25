@@ -1438,6 +1438,14 @@ def GenerateDailyAttend(request):
 	response_data = {}
 	modified_records = []
 
+	# Check user right
+	form_name = "frmD301"
+	usr_id = getUSR_ID(request.user.username)
+	getPriorityStatus,gUSE,gADD,gEDIT,gDEL,gPREVIEW,gPRINT,gIM,gEX,gSALARY,gType,gOLD = getPriority(usr_id, form_name)
+	print("getPriorityStatus:", getPriorityStatus)
+	if not getPriorityStatus:
+		raise PermissionDenied()
+
 	# Show avatar
 	if request.user.is_superuser:
 	    employee_photo = ""
@@ -1474,8 +1482,6 @@ def GenerateDailyAttend(request):
 @login_required(login_url='/accounts/login/')
 @permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
 def PostDailyAttend(request):
-	print("TEST")
-
 	page_title = settings.PROJECT_NAME
 	db_server = settings.DATABASES['default']['HOST']
 	project_name = settings.PROJECT_NAME
@@ -1486,16 +1492,13 @@ def PostDailyAttend(request):
 	response_data = {}
 	modified_records = []
 
-
-
 	# Check user right
-	form_name = "frmD301"
+	form_name = "frmD302"
 	usr_id = getUSR_ID(request.user.username)
 	getPriorityStatus,gUSE,gADD,gEDIT,gDEL,gPREVIEW,gPRINT,gIM,gEX,gSALARY,gType,gOLD = getPriority(usr_id, form_name)
 	print("getPriorityStatus:", getPriorityStatus)
 	if not getPriorityStatus:
 		raise PermissionDenied()
-	# amnaj
 
 
 	# Show avatar
