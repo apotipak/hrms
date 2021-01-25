@@ -995,9 +995,15 @@
 			$("#id_relief_emp_id").css('border-color','');
 			$("#id_relief_emp_id").css('border-style','');
 
+			/*
 			var tel_man = $("#employee_list_table").find('.highlight').find('td:eq(11)').text();
 			var tel_time = $("#employee_list_table").find('.highlight').find('td:eq(13)').text();
 			var tel_amount = $("#employee_list_table").find('.highlight').find('td:eq(14)').text();
+			*/
+
+			var tel_man = $("#employee_list_table").find('.highlight').find('td:eq(12)').text();
+			var tel_time = $("#employee_list_table").find('.highlight').find('td:eq(14)').text();
+			var tel_amount = $("#employee_list_table").find('.highlight').find('td:eq(15)').text();
 
 			if(tel_man==1) {
 				$("#id_phone_check").prop("checked", true);
@@ -1092,10 +1098,15 @@
 	$("#id_phone_check").change(function() {
 		
 	    if(this.checked) {
-
+	    	/*
 			var tel_man = $("#employee_list_table").find('.highlight').find('td:eq(11)').text();
 			var tel_time = $("#employee_list_table").find('.highlight').find('td:eq(13)').text();
 			var tel_amount = $("#employee_list_table").find('.highlight').find('td:eq(14)').text();
+			*/
+
+			var tel_man = $("#employee_list_table").find('.highlight').find('td:eq(12)').text();
+			var tel_time = $("#employee_list_table").find('.highlight').find('td:eq(14)').text();
+			var tel_amount = $("#employee_list_table").find('.highlight').find('td:eq(15)').text();
 
 			$("#id_call_amount_option").css('border-color','green');
 			$("#id_call_amount_option").css('border-style','solid');
@@ -1134,6 +1145,7 @@
  		$("#id_emp_id").attr("disabled", true);
  		$("#id_sent_spare").attr("disabled", true);
 
+ 		/*
 		result = "";
 		result += "<option value='0' selected></option>";
 		result += "<option value='099'>99   # DAY OFF ########</option>";
@@ -1141,6 +1153,8 @@
 		var $el = $("#id_shift_option");
 		$el.empty();
 		$el.append(result);
+		*/
+
  		$("#id_shift_option").attr("disabled", true);
 
  		$("#emp_id_lookup_button").attr("disabled", true);
@@ -1251,7 +1265,9 @@
 		result += "    <tr>";
 		result += "      <th scope='col' class='d-none' nowrap>Absent Status</th>";
 		result += "      <th scope='col'>&nbsp;</th>";
-		//result += "      <th scope='col'>No</th>";
+		
+		result += "      <th scope='col'>No</th>";
+		
 		result += "      <th scope='col' nowrap>.Emp ID.</th>";
 		result += "      <th scope='col' nowrap>Name</th>";
 		result += "      <th scope='col'>Rank</th>";
@@ -1346,7 +1362,7 @@
 
 
 				// amnaj
-				/*
+				// 2. Ordering number
 				if(shf_type=='D') {
 					day_count++;
 					result += "	     <td>" + day_count +"</td>";
@@ -1359,10 +1375,11 @@
 				} else {
 					result += "	     <td>?</td>";
 				}
-				*/
 
-				// 2. Employee ID
+				// 3. Employee ID
 				result += "	     <td>" + emp_id + "</td>";
+
+
 				result += "	     <td nowrap>" + emp_fname_th + "&nbsp;&nbsp;" + emp_lname_th + "</td>";
 				result += "	     <td>" + sch_rank + "</td>";
 				result += "	     <td nowrap>" + shf_desc + "</td>";
@@ -2336,12 +2353,15 @@
     
     // ID_PHONE_CHECK
     $(document).on('click', '#id_phone_check', function(e) {
-    	//alert("..");
-
+    	/*
 		var tel_man = $("#employee_list_table").find('.highlight').find('td:eq(11)').text();
 		var tel_time = $("#employee_list_table").find('.highlight').find('td:eq(13)').text();
 		var tel_amount = $("#employee_list_table").find('.highlight').find('td:eq(14)').text();
-		//var tel_paid = $("#employee_list_table").find('.highlight').find('td:eq(15)').text();
+		*/
+
+		var tel_man = $("#employee_list_table").find('.highlight').find('td:eq(12)').text();
+		var tel_time = $("#employee_list_table").find('.highlight').find('td:eq(14)').text();
+		var tel_amount = $("#employee_list_table").find('.highlight').find('td:eq(15)').text();
 
 		if($("#id_phone_check").is(":checked"))
 			$("#id_phone_check").prop("checked", true);
@@ -2483,8 +2503,11 @@
 		var cus_vol = $("#id_cus_vol").val();
 
 		var absent_status = $(this).find('td:eq(0)').text();
-		var late_status = $(this).find('td:eq(24)').text();
-		var tel_status = $(this).find('td:eq(11)').text();			
+		//var late_status = $(this).find('td:eq(25)').text();
+		//var tel_status = $(this).find('td:eq(12)').text();			
+		var late_status = $(this).find('td:eq(26)').text();
+		var tel_status = $(this).find('td:eq(13)').text();			
+
 		
 		if($("#id_absent_check").is(":checked"))
 			var ui_absent_status = 1;
@@ -2501,24 +2524,24 @@
 		else
 			var ui_tel_status = 0;
 
-		var emp_id = $(this).find('td:eq(2)').text();
-		var emp_fullname_th = $(this).find('td:eq(3)').text();
-		var sch_rank = $(this).find('td:eq(4)').text();
-		var shf_desc = $(this).find('td:eq(5)').text();	
+		var emp_id = $(this).find('td:eq(3)').text();
+		var emp_fullname_th = $(this).find('td:eq(4)').text();
+		var sch_rank = $(this).find('td:eq(5)').text();
+		var shf_desc = $(this).find('td:eq(6)').text();	
 		var shift_id =  parseInt(shf_desc.substring(0,4));
-		var upd_gen = $(this).find('td:eq(21)').text();
-		var remark = $(this).find('td:eq(22)').text();
-		var tel_time = $(this).find('td:eq(13)').text();
-		var tel_amount = $(this).find('td:eq(14)').text();	
-		var tel_paid = $(this).find('td:eq(15)').text();
-		var relief_status = $(this).find('td:eq(23)').text();
-		var relief_emp_id = $(this).find('td:eq(9)').text();
-		var relief_emp_fullname_th = $(this).find('td:eq(10)').text();
-		var late_full_status = $(this).find('td:eq(25)').text();
-		var ot_reason = $(this).find('td:eq(27)').text();
-		var ot_time_from = $(this).find('td:eq(28)').text();		
-		var ot_time_to = $(this).find('td:eq(29)').text();
-		var ot_hour_amount = $(this).find('td:eq(30)').text();
+		var upd_gen = $(this).find('td:eq(22)').text();
+		var remark = $(this).find('td:eq(23)').text();
+		var tel_time = $(this).find('td:eq(14)').text();
+		var tel_amount = $(this).find('td:eq(15)').text();	
+		var tel_paid = $(this).find('td:eq(16)').text();
+		var relief_status = $(this).find('td:eq(24)').text();
+		var relief_emp_id = $(this).find('td:eq(10)').text();
+		var relief_emp_fullname_th = $(this).find('td:eq(11)').text();
+		var late_full_status = $(this).find('td:eq(26)').text();
+		var ot_reason = $(this).find('td:eq(28)').text();
+		var ot_time_from = $(this).find('td:eq(29)').text();		
+		var ot_time_to = $(this).find('td:eq(30)').text();
+		var ot_hour_amount = $(this).find('td:eq(31)').text();
 
 		var today = new Date();
 		var dd = String(today.getDate()).padStart(2, '0');
@@ -2843,7 +2866,7 @@
     	$("#save_button").attr("disabled", true);
 
     	$("#id_add_new_record_status").val(0);
-    	$("#dailyAttendanceDataEntryForm").trigger("reset");
+    	//$("#dailyAttendanceDataEntryForm").trigger("reset");
 
 
     	if($("#id_absent_check").is(":checked")) {
@@ -3124,166 +3147,9 @@
 												//result = create_attandance_table(data.employee_list);												
 
 
-												result = "";
-												result += "<font size='2em;'>";
-												//result += "<table id='employee_list_table' class='table table-responsive table-sm table-condensed table-wrapper-scroll-y my-custom-scrollbar'>";
-
-												result += "<table id='employee_list_table' class='table table-sm table-condensed my-custom-scrollbar'>";
-												//result += "<table id='employee_list_table' class='table table-sm'>";
-												result += "  <thead>";
-												result += "    <tr>";
-												result += "      <th scope='col' class='d-none' nowrap>Absent Status</th>";
-												result += "      <th scope='col'>&nbsp;</th>";
-												result += "      <th scope='col' nowrap>Emp ID</th>";
-												result += "      <th scope='col' nowrap>Name</th>";
-												result += "      <th scope='col'>Rank</th>";
-												result += "      <th scope='col'>Shift</th>";
-												result += "      <th scope='col'>Late</th>";
-												result += "      <th scope='col'>Full</th>";
-												result += "      <th scope='col'>Relief</th>";
-												result += "      <th scope='col' nowrap>Rel. ID</th>";
-												result += "      <th scope='col'>Name</th>";
-												result += "      <th scope='col' class='d-none'>Tel Status</th>";
-												result += "      <th scope='col'>Tel</th>";
-												result += "      <th scope='col' nowrap>Call Time</th>";
-												result += "      <th scope='col' nowrap>Call Amt</th>";
-												result += "      <th scope='col' nowrap>Call Paid</th>";
-												result += "      <th scope='col'>Spare</th>";
-												result += "      <th scope='col'>Wage</th>";
-												result += "      <th scope='col' nowrap>Upd Date</th>";
-												result += "      <th scope='col' nowrap>Upd By</th>";
-												result += "      <th scope='col' nowrap>Upd Flag</th>";
-												result += "      <th scope='col' class='d-none' nowrap>Upd Gen</th>";
-												result += "      <th scope='col' class='d-none'>Remark</th>";
-												result += "      <th scope='col' class='d-none'>Relief Status</th>";
-												result += "      <th scope='col' class='d-none'>Late Status</th>";
-												result += "      <th scope='col' class='d-none'>Late Full Status</th>";
-												result += "	     <td class='d-none'>OT</td>";
-												result += "	     <td class='d-none'>OT Reason</td>";
-												result += "	     <td class='d-none'>OT Time From</td>";
-												result += "	     <td class='d-none'>OT Time To</td>";
-												result += "	     <td class='d-none'>OT Hour Amount</td>";
-												result += "    </tr>";
-												result += "  </thead>";
-												result += "  <tbody class='sortable'>";
-
-												if(data.employee_list.length>0) {
-
-													for(i=0; i<data.employee_list.length; i++) {
-														emp_id = data.employee_list[i]["emp_id"];
-														emp_fname_th = data.employee_list[i]["emp_fname_th"];
-														emp_lname_th = data.employee_list[i]["emp_lname_th"];
-														sch_rank = data.employee_list[i]["sch_rank"];
-														shf_desc = data.employee_list[i]["shf_desc"];
-														absent = data.employee_list[i]["absent"];
-														tel_status = data.employee_list[i]["tel_status"];
-														tel_man = data.employee_list[i]["tel_man"];
-														tel_time = data.employee_list[i]["tel_time"];
-														tel_amt = data.employee_list[i]["tel_amt"];
-														tel_paid = data.employee_list[i]["tel_paid"];
-														spare = data.employee_list[i]["spare"];
-														wage_id = data.employee_list[i]["wage_id"];
-														
-														upd_date = data.employee_list[i]["upd_date"];
-														upd_date_naturalday = data.employee_list[i]["upd_date_naturalday"];
-														upd_date_naturaltime = data.employee_list[i]["upd_date_naturaltime"];
-
-														upd_by = data.employee_list[i]["upd_by"];
-														upd_flag = data.employee_list[i]["upd_flag"];
-														upd_gen = data.employee_list[i]["upd_gen"];
-														remark = data.employee_list[i]["remark"];
-
-														relief = data.employee_list[i]["relief"];
-														relief_id = data.employee_list[i]["relief_id"];							
-														relief_emp_fullname_th = data.employee_list[i]["Remp_fname_th"] + " " + data.employee_list[i]["Remp_lname_th"]
-														
-														late_status = data.employee_list[i]["late"];
-														late_full_status = data.employee_list[i]["late_full"];		
-
-														ot = data.employee_list[i]["ot"];
-														ot_reason = data.employee_list[i]["ot_reason"];
-														ot_time_frm = data.employee_list[i]["ot_time_frm"];
-														ot_time_to = data.employee_list[i]["ot_time_to"];
-														ot_hr_amt = data.employee_list[i]["ot_hr_amt"];							
-
-														result += "    <tr>";							
-														result += "	     <td class='d-none'>" + absent + "</td>";
-														if(absent==1) {
-															result += "	     <td><font class='text-danger'><i class='fas fa-times fa-xs'></i></font></td>";
-														} else {
-															result += "	     <td><font class='text-success'><i class='fas fa-check fa-xs'></i></font></td>";
-														}
-														
-														result += "	     <td>" + emp_id + "</td>";
-														result += "	     <td nowrap>" + emp_fname_th + "&nbsp;&nbsp;" + emp_lname_th + "</td>";
-														result += "	     <td>" + sch_rank + "</td>";
-														result += "	     <td nowrap>" + shf_desc + "</td>";
-
-														if(late_status)
-															result += "	     <td class='text-center'><font class='text-success'><i class='fas fa-check fa-xs'></i></font></td>";
-														else
-															result += "	     <td>&nbsp;</td>";
-
-														if(late_full_status)
-															result += "	     <td class='text-center'><font class='text-success'><i class='fas fa-check fa-xs'></i></font></td>";
-														else
-															result += "	     <td>&nbsp;</td>";
-
-														if(relief)
-															result += "	     <td class='text-center'><font class='text-success'><i class='fas fa-check fa-xs'></i></font></td>";
-														else
-															result += "	     <td></td>";
-
-														result += "	     <td>" + relief_id + "</td>";
-														result += "	     <td nowrap>" + relief_emp_fullname_th + "</td>";
-														result += "	     <td class='text-center d-none'>" + tel_status + "</td>";
-														result += "	     <td class='text-center'>" + tel_man + "</td>";
-														result += "	     <td nowrap>" + tel_time + "</td>";
-														result += "	     <td>" + tel_amt + "</td>";
-														result += "	     <td>" + tel_paid + "</td>";
-														result += "	     <td>" + parseInt(spare) + "</td>";
-														result += "	     <td>" + wage_id + "</td>";
-														
-														result += "	     <td nowrap>" + upd_date + "</td>";
-														//result += "		<td>" + upd_date + "...&nbsp;<small>" + upd_date + "</small></td>";
-														//result += "	     <td nowrap>..{{upd_date|naturaltime}}</td>";
-														//result += "	     <td nowrap><small>" + upd_date_naturalday + "</small</td>";
-
-														//batman -- save_record
-
-														result += "	     <td>" + upd_by + "</td>";
-														result += "	     <td>" + upd_flag + "</td>";
-														result += "	     <td class='d-none'>" + upd_gen + "</td>";
-														result += "	     <td class='d-none'>" + remark + "</td>";
-														result += "	     <td class='d-none'>" + relief + "</td>";
-														result += "	     <td class='d-none'>" + late_status + "</td>";
-														result += "	     <td class='d-none'>" + late_full_status + "</td>";
-														result += "	     <td class='d-none'>" + ot + "</td>";
-														result += "	     <td class='d-none'>" + ot_reason + "</td>";
-														result += "	     <td class='d-none'>" + ot_time_frm + "</td>";
-														result += "	     <td class='d-none'>" + ot_time_to + "</td>";
-														result += "	     <td class='d-none'>" + ot_hr_amt + "</td>";
-																												
-														result += "    </tr>";
-													}
-
-													enableAllElements();
-
-													$("#id_dly_date").attr("readonly", true);
-													$("#id_search_shift_option").attr("readonly", true);
-													$("#id_cus_id").attr("readonly", true);
-													$("#id_cus_brn").attr("readonly", true);
-													$("#id_cus_vol").attr("readonly", true);
-													$("input[name=searchOptions]").attr("disabled",true);
-												}
-												else {
-														result += "    <tr class='text-center'>";
-														result += "	     <td colspan='20'><br><br>There is no data.<br><br><br></td>";
-														result += "	   </tr>"
-												}
-												result += "  </tbody>";
-												result += "</table>";					
-												result += "</font>";
+												// amnaj1
+												// Get Attandance Employee List
+												result = create_attandance_table(data.employee_list);
 												
 
 												$('#id_employee_list').html(result);
