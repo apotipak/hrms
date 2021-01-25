@@ -150,9 +150,10 @@
 							<font size='2em;'>
 
 							<!--<table id='employee_list_table' class='table table-responsive table-sm table-condensed table-wrapper-scroll-y my-custom-scrollbar'>-->
-							<table id='employee_list_table' class='table table-sm'>							
-							  <thead>
 
+							<!--<table id='employee_list_table' class='table table-sm'>-->
+							<table id='employee_list_table' class='table table-responsive table-sm table-condensed table-wrapper-scroll-y my-custom-scrollbar'>
+							  <thead>
 							    <tr>
 							      <th scope='col' class='d-none' nowrap>Absent Status</th>
 							      <th scope="col">&nbsp;</th>
@@ -1240,7 +1241,11 @@
     	result = "";
 		result = "";
 		result += "<font size='2em;'>";
-		result += "<table id='employee_list_table' class='table table-sm'>";
+		
+		//result += "<table id='employee_list_table' class='table table-sm'>";
+		result += "<table id='employee_list_table' class='table table-sm table-fixed table-condensed table-wrapper-scroll-y my-custom-scrollbar'>";
+		//result += "<table id='employee_list_table' class='table table-responsive table-sm table-condensed table-wrapper-scroll-y my-custom-scrollbar'>";		
+
 		result += "  <thead>";
 		result += "    <tr>";
 		result += "      <th scope='col' class='d-none' nowrap>Absent Status</th>";
@@ -2359,9 +2364,11 @@
     	var result = "";
 		result += "<font size='2em;'>";
 		//result += "<table id='employee_list_table' class='table table-sm table-fixed table-condensed table-wrapper-scroll-y my-custom-scrollbar'>";
-		//result += "<table id='employee_list_table' class='table table-responsive table-sm table-condensed table-wrapper-scroll-y my-custom-scrollbar'>";
+		result += "<table id='employee_list_table' class='table table-responsive table-sm table-condensed table-wrapper-scroll-y my-custom-scrollbar'>";
 		//result += "<table id='employee_list_table' class='table table-sm table-condensed my-custom-scrollbar'>";
-		result += "<table id='employee_list_table' class='table table-sm'>";
+		
+		//result += "<table id='employee_list_table' class='table table-sm'>";
+
 		result += "  <thead>";
 		result += "    <tr>";
 		result += "      <th scope='col'>&nbsp;</th>";
@@ -2778,9 +2785,7 @@
     	$("#reset_button").attr("disabled", false);
     	$("#save_button").attr("disabled", false);
     	$("#delete_button").attr("disabled", true);
-
-    	$("#dailyAttendanceDataEntryForm").trigger("reset");
-
+    
     	$("#id_emp_id").attr("disabled", false);
     	$("#emp_id_lookup_button").attr("disabled", false);
 		$("#id_sent_spare").attr("disabled", false);
@@ -2796,6 +2801,9 @@
 		$("#id_phone_check").next("label").show();
 
 
+		current_shift_option = $("#id_shift_option").val();
+		$("#dailyAttendanceDataEntryForm").trigger("reset");
+		$("#id_shift_option").val(current_shift_option);
 
         $('#id_emp_id').focus();     
     });
@@ -3091,13 +3099,13 @@
 												result += "<font size='2em;'>";
 												//result += "<table id='employee_list_table' class='table table-responsive table-sm table-condensed table-wrapper-scroll-y my-custom-scrollbar'>";
 
-												//result += "<table id='employee_list_table' class='table table-sm table-condensed my-custom-scrollbar'>";
-												result += "<table id='employee_list_table' class='table table-sm'>";
+												result += "<table id='employee_list_table' class='table table-sm table-condensed my-custom-scrollbar'>";
+												//result += "<table id='employee_list_table' class='table table-sm'>";
 												result += "  <thead>";
 												result += "    <tr>";
 												result += "      <th scope='col' class='d-none' nowrap>Absent Status</th>";
 												result += "      <th scope='col'>&nbsp;</th>";
-												result += "      <th scope='col' nowrap>Emp ID.</th>";
+												result += "      <th scope='col' nowrap>Emp ID</th>";
 												result += "      <th scope='col' nowrap>Name</th>";
 												result += "      <th scope='col'>Rank</th>";
 												result += "      <th scope='col'>Shift</th>";
