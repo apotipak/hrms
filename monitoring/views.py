@@ -2234,6 +2234,7 @@ def ajax_get_attendance_information(request):
 	form_name = "frmD200"	# ค่าได้มาจากชื่อฟอร์ม D200: Daily Attendance
 	username = request.user.username	# ชื่อผู้ล็อคอิน
 	attendance_date = request.POST.get('attendance_date')
+	shift_option = request.POST.get('shift_option')
 	cus_id = request.POST.get('cus_id').lstrip("0")
 	cus_brn = request.POST.get('cus_brn')
 	cus_vol = request.POST.get('cus_vol')
@@ -2526,16 +2527,16 @@ def ajax_get_attendance_information(request):
 			response.status_code = 200
 			return response
 		elif end_chk!=1:
-			table = ", Customer_Flag from v_dlyplan where cnt_id=" + str(cnt_id) + " and dly_date='" + str(daily_attendance_date) + "' and customer_flag<>'D' order by sch_shift,emp_id"
+			table = ", Customer_Flag from v_dlyplan where cnt_id=" + str(cnt_id) + " and dly_date='" + str(daily_attendance_date) + "' and customer_flag<>'D' "
 		else:
 			if daily_attendance_date==today_date.date():
-				table = ", Customer_Flag from v_dlyplan where cnt_id=" + str(cnt_id) + " and dly_date='" + str(daily_attendance_date) + "' and customer_flag<>'D' order by sch_shift,emp_id"
+				table = ", Customer_Flag from v_dlyplan where cnt_id=" + str(cnt_id) + " and dly_date='" + str(daily_attendance_date) + "' and customer_flag<>'D' "
 			elif daily_attendance_date < today_date.date():
 				# เช็คล็อคอินยูสเซอร์เป็น CMS_SUP หรือไม่
 				if username=='CMS_SUP':							
 					# aeiou
 					view_name = "v_hdlyplan"
-					table = " from " + str(view_name) + " where cnt_id=" + str(cnt_id) + " and dly_date='" + str(daily_attendance_date) + "' order by sch_shift,emp_id"
+					table = " from " + str(view_name) + " where cnt_id=" + str(cnt_id) + " and dly_date='" + str(daily_attendance_date) + "' "
 
 		# Get employee schedule list (v_dlyplan)
 		sql = "select distinct "
@@ -2555,6 +2556,14 @@ def ajax_get_attendance_information(request):
 		# sql += " from v_dlyplan where cnt_id=1486000001 and dly_date='2021-01-11' order by sch_shift,emp_id"
 		sql += table
 		
+		print("shift_option:", shift_option)
+
+		if shift_option=="2":
+			sql += "and shf_type='D' "
+		elif shift_option=="3":
+			sql += "and shf_type='N' "
+
+		sql += " order by sch_shift, emp_id"
 		print("______sql 3_____ = " + str(sql))
 
 		cursor = connection.cursor()

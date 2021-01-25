@@ -10,14 +10,16 @@
  	<!-- Content Wrapper. Contains page content -->
 	<div class="content-wrapper">
 	
+		<!--
 		<div class="content-header">
 			<div class="col-6 offset-3">
 
 			</div>
 		</div>
+		-->
 
     	<!-- Main content -->
-    	<section class="content">
+    	<section class="content pt-2">
 
     		<!-- SEARCH FORM -->
 			<div class="card card-outline card-default" id="daily_attendance_search_card">
@@ -1462,6 +1464,7 @@
         $('#id_cus_vol').val(id_cus_vol);
 
         var attendance_date = $('#id_dly_date').val();
+		var shift_option = $("#id_search_shift_option").val();
       	var cus_id = $('#id_cus_id').val();
       	var cus_brn = $('#id_cus_brn').val();
       	var cus_vol = $('#id_cus_vol').val();
@@ -1472,6 +1475,7 @@
 			data : {
 		  		csrfmiddlewaretoken: '{{ csrf_token }}',
 		  		attendance_date: attendance_date,
+		  		shift_option: shift_option,
 		  		cus_id: cus_id,
 		  		cus_brn: cus_brn,
 		  		cus_vol: cus_vol,
