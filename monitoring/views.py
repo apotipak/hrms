@@ -2496,7 +2496,7 @@ def ajax_get_attendance_information(request):
 		# print("today_date = " + str(today_date))
 
 		daily_attendance_date = datetime.datetime.strptime(request.POST.get('attendance_date'), '%d/%m/%Y').date()		
-		print("daily_attendance_date = " + str(daily_attendance_date))			
+		# print("daily_attendance_date = " + str(daily_attendance_date))			
 
 
 
@@ -2555,7 +2555,7 @@ def ajax_get_attendance_information(request):
 		# sql += " from v_dlyplan where cnt_id=1486000001 and dly_date='2021-01-11' order by sch_shift,emp_id"
 		sql += table
 		
-		# print("______sql 3_____ = " + str(sql))
+		print("______sql 3_____ = " + str(sql))
 
 		cursor = connection.cursor()
 		# cursor.execute(sql, [cnt_id, attendance_date])

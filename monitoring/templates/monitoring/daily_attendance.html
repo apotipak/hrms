@@ -1243,13 +1243,15 @@
 		result += "<font size='2em;'>";
 		
 		//result += "<table id='employee_list_table' class='table table-sm'>";
-		result += "<table id='employee_list_table' class='table table-sm table-fixed table-condensed table-wrapper-scroll-y my-custom-scrollbar'>";
-		//result += "<table id='employee_list_table' class='table table-responsive table-sm table-condensed table-wrapper-scroll-y my-custom-scrollbar'>";		
+		//result += "<table id='employee_list_table' class='table table-sm table-fixed table-condensed table-wrapper-scroll-y my-custom-scrollbar'>";
 
+
+		result += "<table id='employee_list_table' class='table table-responsive table-sm table-condensed table-wrapper-scroll-y my-custom-scrollbar'>";		
 		result += "  <thead>";
 		result += "    <tr>";
 		result += "      <th scope='col' class='d-none' nowrap>Absent Status</th>";
 		result += "      <th scope='col'>&nbsp;</th>";
+		result += "      <th scope='col'>No</th>";
 		result += "      <th scope='col' nowrap>Emp ID</th>";
 		result += "      <th scope='col' nowrap>Name</th>";
 		result += "      <th scope='col'>Rank</th>";
@@ -1280,17 +1282,23 @@
 		result += "      <th scope='col' class='d-none'>OT Time From</th>";
 		result += "      <th scope='col' class='d-none'>OT Time To</th>";
 		result += "      <th scope='col' class='d-none'>OT Hour Amount</th>";
+
+		result += "      <th scope='col' class='d-none'>Shift Type</th>";
 		
 		result += "    </tr>";
 		result += "  </thead>";
 		result += "  <tbody class='sortable'>";    	
 
 		if(employee_list.length>0) {
-			
+			day_count = 0;
+			night_count = 0;
+			dof_count = 0;
+
 			for(i=0; i<employee_list.length; i++) {
 				emp_id = employee_list[i]["emp_id"];
 				emp_fname_th = employee_list[i]["emp_fname_th"];
 				emp_lname_th = employee_list[i]["emp_lname_th"];
+				shf_type = employee_list[i]["shf_type"];
 				sch_rank = employee_list[i]["sch_rank"];
 				shf_desc = employee_list[i]["shf_desc"];
 				absent = employee_list[i]["absent"];
@@ -1331,7 +1339,23 @@
 				} else {
 					result += "	     <td><font class='text-success'><i class='fas fa-check fa-xs'></i></font></td>";
 				}
-				
+
+
+				// amnaj
+				if(shf_type=='D') {
+					day_count++;
+					result += "	     <td>" + day_count +"</td>";
+				} else if(shf_type=='N') {
+					night_count++;
+					result += "	     <td>" + night_count +"</td>";
+				} else if(shf_type=='O') {
+					dof_count++;
+					result += "	     <td>" + dof_count +"</td>";
+				} else {
+					result += "	     <td>?</td>";
+				}
+
+
 				result += "	     <td>" + emp_id + "</td>";
 				result += "	     <td nowrap>" + emp_fname_th + "&nbsp;&nbsp;" + emp_lname_th + "</td>";
 				result += "	     <td>" + sch_rank + "</td>";
@@ -1377,7 +1401,8 @@
 				result += "	     <td class='d-none'>" + ot_time_frm + "</td>";
 				result += "	     <td class='d-none'>" + ot_time_to + "</td>";
 				result += "	     <td class='d-none'>" + ot_hr_amt + "</td>";
-				//batman
+
+				result += "	     <td class='d-none'>" + shf_type + "</td>";
 
 				result += "    </tr>";
 			}
@@ -1666,9 +1691,6 @@
 					}
 
 					
-
-
-					// amnaj
 					// Get Customer Schedule List
 					number_of_rows = data.customer_schedule_list.length;
 					if(number_of_rows>0) {
