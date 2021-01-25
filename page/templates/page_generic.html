@@ -209,6 +209,16 @@ $(document).ready(function() {
     $(".sec").html(( seconds < 10 ? "0" : "" ) + seconds);
     },1000);
   });
+
+
+  var url = window.location.href; 
+  $(".navbar-nav a").each(function() {  
+    if(url == (this.href)) {       
+      $(this).closest("li").addClass("active");
+      //$(this).closest("li").css("color", "red");
+    }
+  });
+
 </script>
 
 {% block javascript %}{% endblock %}

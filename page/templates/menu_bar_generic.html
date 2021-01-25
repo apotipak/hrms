@@ -27,6 +27,8 @@
       </li>
       {% endif %}
 
+
+      <!-- Control Room -->
       {%comment%}
       {% if perms.monitoring.view_dlyplan %}
       <li class="nav-item d-none d-sm-inline-block">
@@ -34,6 +36,20 @@
       </li>
       {% endif %}
       {%endcomment%}
+
+
+      {% if perms.monitoring.view_dlyplan %}
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="{% url 'schedule-maintenance' %}" class="nav-link">Schedule Maintenance</a>
+      </li>      
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="{% url 'daily-attendance' %}" class="nav-link actived">Daily Attendance</a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="{% url 'daily-guard-performance' %}" class="nav-link">Daily Guard Performance</a>
+      </li>      
+      {% endif %}
+
 
     </ul>
 
