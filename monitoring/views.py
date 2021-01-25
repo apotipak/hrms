@@ -6545,6 +6545,15 @@ def generate_dgp_500(request, *args, **kwargs):
 	shf_amt_hr = ""
 	ot_hr_amt = ""
 	absent = ""
+	sum_otm_amt = 0
+	sum_shf_amt_hr = 0
+	sum_bas_amt = 0
+	sum_ot_hr_amt = 0
+	sum_bon_amt = 0
+	sum_pub_amt = 0
+	sum_tel_amt = 0
+	sum_dof = 0
+	sum_spare = 0	
 
 	base_url = MEDIA_ROOT + '/monitoring/template/'
 	emp_id = kwargs['emp_id']
@@ -6567,15 +6576,7 @@ def generate_dgp_500(request, *args, **kwargs):
 
 		if r_d500_obj is not None:
 			if len(r_d500_obj)>0:
-				sum_otm_amt = 0
-				sum_shf_amt_hr = 0
-				sum_bas_amt = 0
-				sum_ot_hr_amt = 0
-				sum_bon_amt = 0
-				sum_pub_amt = 0
-				sum_tel_amt = 0
-				sum_dof = 0
-				sum_spare = 0
+
 
 				for row in r_d500_obj:
 					fname = row[1]
