@@ -1333,7 +1333,11 @@
 				ot_hr_amt = employee_list[i]["ot_hr_amt"];				
 		
 				result += "    <tr>";							
+
+				// 0. Absent status
 				result += "	     <td class='d-none'>" + absent + "</td>";
+
+				// 1. Absent sign
 				if(absent==1) {
 					result += "	     <td><font class='text-danger'><i class='fas fa-times fa-xs'></i></font></td>";
 				} else {
@@ -1357,6 +1361,7 @@
 				}
 				*/
 
+				// 2. Employee ID
 				result += "	     <td>" + emp_id + "</td>";
 				result += "	     <td nowrap>" + emp_fname_th + "&nbsp;&nbsp;" + emp_lname_th + "</td>";
 				result += "	     <td>" + sch_rank + "</td>";
@@ -2394,7 +2399,8 @@
 
 		result += "  <thead>";
 		result += "    <tr>";
-		result += "      <th scope='col'>&nbsp;</th>";
+		result += "      <th scope='col'>&nbsp;</th>";	// absent_statas
+
 		result += "      <th scope='col' nowrap>Emp ID</th>";
 		result += "      <th scope='col'>Name</th>";
 		result += "      <th scope='col'>Rank</th>";
