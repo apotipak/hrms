@@ -728,7 +728,7 @@
 					<table class="table table-sm table-bordered">
 					  <thead>
 					    <tr>
-					      <td colspan="4" class="text-center bg-success"><b>Normal</b></td>
+					      <td colspan="4" class="text-center bg-info"><b>Normal</b></td>
 					    </tr>
 					  </thead>
 					  <tbody>
@@ -759,7 +759,7 @@
 					<table class="table table-sm table-bordered">
 					  <thead>
 					    <tr>
-					      <td colspan="4" class="text-center bg-success"><b>Public</b></th>
+					      <td colspan="4" class="text-center bg-info"><b>Public</b></th>
 					    </tr>
 					  </thead>
 					  <tbody>
@@ -1270,11 +1270,10 @@
 
 		result += "  <thead>";
 		result += "    <tr>";
+
 		result += "      <th scope='col' class='d-none' nowrap>Absent Status</th>";
-		result += "      <th scope='col'>&nbsp;</th>";
-		
+		result += "      <th scope='col'>&nbsp;</th>";		
 		result += "      <th scope='col'>No</th>";
-		
 		result += "      <th scope='col' nowrap>Emp ID</th>";
 		result += "      <th scope='col' nowrap>Name</th>";
 		result += "      <th scope='col'>Rank</th>";
@@ -1282,6 +1281,8 @@
 		result += "      <th scope='col'>Late</th>";
 		result += "      <th scope='col'>Full</th>";
 		result += "      <th scope='col'>Relief</th>";
+		// 10
+		
 		result += "      <th scope='col' nowrap>Rel. ID</th>";
 		result += "      <th scope='col'>Name</th>";
 		result += "      <th scope='col' class='d-none'>Tel Status</th>";
@@ -1292,6 +1293,8 @@
 		result += "      <th scope='col'>Spare</th>";
 		result += "      <th scope='col'>Wage</th>";
 		result += "      <th scope='col' nowrap>Upd Date</th>";
+		// 20
+
 		result += "      <th scope='col' nowrap>Upd By</th>";
 		result += "      <th scope='col' nowrap>Upd Flag</th>";
 		result += "      <th scope='col' class='d-none' nowrap>Upd Gen</th>";
@@ -1299,15 +1302,16 @@
 		result += "      <th scope='col' class='d-none'>Relief Status</th>";
 		result += "      <th scope='col' class='d-none'>Late Status</th>";
 		result += "      <th scope='col' class='d-none'>Late Full Status</th>";
-
 		result += "      <th scope='col' class='d-none'>OT</th>";
 		result += "      <th scope='col' class='d-none'>OT Reason</th>";
 		result += "      <th scope='col' class='d-none'>OT Time From</th>";
+		// 30
+
 		result += "      <th scope='col' class='d-none'>OT Time To</th>";
 		result += "      <th scope='col' class='d-none'>OT Hour Amount</th>";
+		result += "      <th scope='col' class='d-none'>Shift Type</th>";		
+		// 33
 
-		result += "      <th scope='col' class='d-none'>Shift Type</th>";
-		
 		result += "    </tr>";
 		result += "  </thead>";
 		result += "  <tbody class='sortable'>";    	
@@ -1387,51 +1391,105 @@
 				result += "	     <td>" + emp_id + "</td>";
 
 
+				// 4. emp_fname_th
 				result += "	     <td nowrap>" + emp_fname_th + "&nbsp;&nbsp;" + emp_lname_th + "</td>";
+
+				// 5. sch_rank
 				result += "	     <td>" + sch_rank + "</td>";
+
+				// 6. shf_desc
 				result += "	     <td nowrap>" + shf_desc + "</td>";
 				
+				// 7. late_status
 				if(late_status)
 					result += "	     <td class='text-center'><font class='text-success'><i class='fas fa-check fa-xs'></i></font></td>";
 				else
 					result += "	     <td>&nbsp;</td>";
 				
+				// 8. late_full_status
 				if(late_full_status)
 					result += "	     <td class='text-center'><font class='text-success'><i class='fas fa-check fa-xs'></i></font></td>";
 				else
 					result += "	     <td>&nbsp;</td>";
 
+				// 9. relief_status
 				if(relief)
 					result += "	     <td class='text-center'><font class='text-success'><i class='fas fa-check fa-xs'></i></font></td>";
 				else
 					result += "	     <td>&nbsp;</td>";
 
+				// 10. relief_id
 				result += "	     <td>" + relief_id + "</td>";
+
+				// 11. relief_emp_fullname_th
 				result += "	     <td nowrap>" + relief_emp_fullname_th + "</td>";
+
+				// 12. tel_status
 				result += "	     <td class='text-center d-none'>" + tel_status + "</td>";
+
+				// 13. tel_man
 				result += "	     <td class='text-center'>" + tel_man + "</td>";
+
+				// 14. tel_time
 				result += "	     <td nowrap>" + tel_time + "</td>";
+
+				// 15. tel_amt
 				result += "	     <td>" + tel_amt + "</td>";
-				result += "	     <td>" + tel_paid + "</td>";
+
+				// 16. tel_paikd
+				if(tel_paid) {
+					result += "	     <td><font class='text-success'><i class='fas fa-check fa-xs'></i></font></td>";
+				} else {
+					result += "	     <td>&nbsp;</td>";
+				}
+				
+
+				// 17. spare
 				result += "	     <td>" + parseInt(spare) + "</td>";
+
+				// 18. wage_id
 				result += "	     <td>" + wage_id + "</td>";
 
+				// 19. upd_date
 				result += "	     <td nowrap>" + upd_date + "</td>";
 				
+				// 20. upd_by
 				result += "	     <td>" + upd_by + "</td>";
+
+				// 21. upd_flag
 				result += "	     <td>" + upd_flag + "</td>";
+
+				// 22 . upd_gen
 				result += "	     <td class='d-none'>" + upd_gen + "</td>";
+
+				// 23. remark
 				result += "	     <td class='d-none'>" + remark + "</td>";
+
+				// 24. relief
 				result += "	     <td class='d-none'>" + relief + "</td>";
+
+				// 25. late_status
 				result += "	     <td class='d-none'>" + late_status + "</td>";
+
+				// 26. late_full_status
 				result += "	     <td class='d-none'>" + late_full_status + "</td>";
 
+				// 27. ot
 				result += "	     <td class='d-none'>" + ot + "</td>";
+
+				// 28 ot_reason
 				result += "	     <td class='d-none'>" + ot_reason + "</td>";
+
+				// 29. ot_time_frm
 				result += "	     <td class='d-none'>" + ot_time_frm + "</td>";
+
+				// 30. ot_time_to
 				result += "	     <td class='d-none'>" + ot_time_to + "</td>";
+
+				// 31. ot_hr_amt
 				result += "	     <td class='d-none'>" + ot_hr_amt + "</td>";
 
+				// 32. shf_type
 				result += "	     <td class='d-none'>" + shf_type + "</td>";
 
 				result += "    </tr>";
