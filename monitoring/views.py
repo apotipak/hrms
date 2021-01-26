@@ -1105,17 +1105,18 @@ def ajax_get_employee(request):
 	cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
 	employee_item = []
 
-	# print("__emp_id = " + str(emp_id))
+	print("__emp_id = " + str(emp_id))
 	# print("__relief_status = " + str(relief_status))
 	# print("__relief_emp_id = " + str(relief_emp_id))
 
 	if relief_status==1:
 		# print("______________relief_status = 1")
 
-		if relief_emp_id is not None:			
+		if relief_emp_id is not None:	
 			try:
 				with connection.cursor() as cursor:		
-					cursor.execute("select emp_fname_th,emp_lname_th,emp_rank,emp_dept,emp_type,emp_join_date,emp_term_date,emp_status,sts_th from v_employee where emp_type='D1' and upd_flag<>'D' and sch_active=1 and emp_id=%s",[relief_emp_id])
+					# cursor.execute("select emp_fname_th,emp_lname_th,emp_rank,emp_dept,emp_type,emp_join_date,emp_term_date,emp_status,sts_th from v_employee where emp_type='D1' and upd_flag<>'D' and sch_active=1 and emp_id=%s",[relief_emp_id])
+					cursor.execute("select emp_fname_th,emp_lname_th,emp_rank,emp_dept,emp_type,emp_join_date,emp_term_date,emp_status,sts_th from v_employee where upd_flag<>'D' and sch_active=1 and emp_id=%s",[relief_emp_id])
 					record = cursor.fetchone()
 					if record is not None:
 						emp_fname_th = record[0]
@@ -1232,7 +1233,8 @@ def ajax_get_employee(request):
 
 			try:
 				with connection.cursor() as cursor:		
-					cursor.execute("select emp_fname_th,emp_lname_th,emp_rank,emp_dept,emp_type,emp_join_date,emp_term_date,emp_status,sts_th from v_employee where emp_type='D1' and upd_flag<>'D' and sch_active=1 and emp_id=%s",[emp_id])
+					cursor.execute("select emp_fname_th,emp_lname_th,emp_rank,emp_dept,emp_type,emp_join_date,emp_term_date,emp_status,sts_th from v_employee where upd_flag<>'D' and sch_active=1 and emp_id=%s",[emp_id])
+					# cursor.execute("select emp_fname_th,emp_lname_th,emp_rank,emp_dept,emp_type,emp_join_date,emp_term_date,emp_status,sts_th from v_employee where emp_type='D1' and upd_flag<>'D' and sch_active=1 and emp_id=%s",[emp_id])					
 					record = cursor.fetchone()
 
 					if record is not None:
@@ -3287,6 +3289,8 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 	allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id,Tday7,
 	Tdof,customer_wage_rate_id,customer_zone_id):
 	
+	# return False, "Test"
+
 	# set hardcode value
 	ui_ot_status = 0
 
@@ -3349,6 +3353,8 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 	sql = "select cnt_id,emp_id,absent,late,tel_man,relieft from dly_plan "
 
 	sql += " where cnt_id=" + str(cnt_id) + " and dly_date='" + str(dly_date) + "' and emp_id=" + str(emp_id)
+	print("SQL debug1:", sql)
+
 	cursor = connection.cursor()	
 	cursor.execute(sql)	
 	record_count = cursor.fetchone()
