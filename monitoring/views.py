@@ -2233,6 +2233,8 @@ def ajax_get_attendance_information(request):
 	message = ""
 	form_name = "frmD200"	# ค่าได้มาจากชื่อฟอร์ม D200: Daily Attendance
 	username = request.user.username	# ชื่อผู้ล็อคอิน
+	user_first_name = request.user.first_name
+
 	attendance_date = request.POST.get('attendance_date')
 	shift_option = request.POST.get('shift_option')
 	cus_id = request.POST.get('cus_id').lstrip("0")
@@ -2564,7 +2566,7 @@ def ajax_get_attendance_information(request):
 			sql += "and shf_type='N' "
 
 		sql += " order by sch_shift, emp_id"
-		print("______sql 3_____ = " + str(sql))
+		# print("______sql 3_____ = " + str(sql))
 
 		cursor = connection.cursor()
 		# cursor.execute(sql, [cnt_id, attendance_date])
@@ -2740,6 +2742,7 @@ def ajax_get_attendance_information(request):
 				"remark": remark,
 				"ex_dof_amt": row[62],
 				"Customer_Flag": customer_flag,
+				"update_by_user_first_name": user_first_name,
 			}
 			employee_list.append(record)
 

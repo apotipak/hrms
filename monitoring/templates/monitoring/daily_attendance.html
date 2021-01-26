@@ -1312,6 +1312,9 @@
 		result += "      <th scope='col' class='d-none'>Shift Type</th>";		
 		// 33
 
+		result += "      <th scope='col' class='d-none'>Upd By</th>";
+		// 34
+
 		result += "    </tr>";
 		result += "  </thead>";
 		result += "  <tbody class='sortable'>";    	
@@ -1358,7 +1361,9 @@
 				ot_time_frm = employee_list[i]["ot_time_frm"];
 				ot_time_to = employee_list[i]["ot_time_to"];
 				ot_hr_amt = employee_list[i]["ot_hr_amt"];				
-		
+				
+				update_by_user_first_name = employee_list[i]["update_by_user_first_name"];
+
 				result += "    <tr>";							
 
 				// 0. Absent status
@@ -1454,6 +1459,8 @@
 				result += "	     <td nowrap>" + upd_date + "</td>";
 				
 				// 20. upd_by
+				//<a href='#'' data-toggle='tooltip' title='Some tooltip text!'>
+				//result += "	     <td><a href='#'' data-toggle='tooltip' title='" + update_by_user_first_name + "'>" + upd_by + "</a></td>";
 				result += "	     <td>" + upd_by + "</td>";
 
 				// 21. upd_flag
