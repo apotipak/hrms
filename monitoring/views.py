@@ -4400,7 +4400,7 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 			return False, "กรุณาป้อนกะการทำงานของพนักงาาน"
 
 		# เช็คห้ามคีย์รหัสที่ไม่มีสิทธ์ลงเวร
-		sql = "select emp_id,upd_flag,emp_term_date from v_employee where emp_id=" + str(emp_id)
+		sql = "select emp_id,upd_flag,emp_term_date,sch_active from v_employee where emp_id=" + str(emp_id)
 		cursor = connection.cursor()
 		cursor.execute(sql)
 		employeeobj = cursor.fetchone()
@@ -4408,12 +4408,12 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 		if employeeobj is not None:
 
 			# ตรวจสอบว่าพนักงานถูกลบออกจากระบบไปแล้วหรือไม่
-			if employeeobj[1] == 'D':
+			if employeeobj[1] == 'D' and employeeobj[3] != 1:
 				return False, "พนักงานคนนี้ไม่สามารถนำมาจัดตารางเวรได้เนื่องจากพนักงานโดนลบจากระบบ"
 
 			# ตรวจสอบว่าพนักงานลาออกหรือไม่
-			if employeeobj[2] is not None:
-				return False, "พนักงานคนนี้ไม่สามารถนำมาจัดตารางเวรได้เนื่องจากลาออกตั้งแต่วันที่ <b>" + str(employeeobj[0][2]) + "</b>"
+			if employeeobj[2] is not None and employeeobj[3] != 1:
+				return False, "พนักงานคนนี้ไม่สามารถนำมาจัดตารางเวรได้เนื่องจากลาออกตั้งแต่วันที่ <b>" + str(employeeobj[2]) + "</b>"
 
 			# กรณีไม่มีคนเข้าเวรแทนให้ดูจากไม่มีการเลือกทั้ง Absent และ Relief หรือไม่ ถ้าใช่ให้ตรวจสอบว่าพนักงานลาออกหรือยัง
 			if (ui_absent_status==0) and (ui_relief_status==0):
