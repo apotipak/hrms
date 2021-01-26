@@ -2595,7 +2595,7 @@ def ajax_get_attendance_information(request):
 
 			if row[24]==1:
 				tel_status = 1
-				tel_man = "<span class='text-success'><i class='fas fa-phone-alt'></i></span>"
+				tel_man = "<span class='text-success'><font size='1.5em;'><i class='fas fa-phone-alt'></i></font></span>"
 				
 				if row[25] is not None:
 					tel_time = row[25].strftime("%d/%m/%Y %H:%M")

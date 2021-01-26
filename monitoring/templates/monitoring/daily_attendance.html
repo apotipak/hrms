@@ -161,7 +161,7 @@
 							<!--<table id='employee_list_table' class='table table-sm'>-->
 							
 							<!--<table id='employee_list_table' class='table table-sm table-condensed table-wrapper-scroll-y my-custom-scrollbar'>-->
-							<table id='employee_list_table' class='table table-sm my-custom-scrollbar'>
+							<table id='employee_list_table' class='table table-sm my-custom-scrollbar tableFixHead'>
 							  <thead>
 							    <tr>
 							      <th scope='col' class='d-none' nowrap>Absent Status</th>
@@ -1315,7 +1315,7 @@ $(document).ready(function(){
 
 
 		//result += "<table id='employee_list_table' class='table table-responsive table-sm table-condensed table-wrapper-scroll-y my-custom-scrollbar'>";
-		result += "<table id='employee_list_table' class='table table-sm table-condensed table-wrapper-scroll-y my-custom-scrollbar'>";
+		result += "<table id='employee_list_table' class='table table-sm table-condensed table-wrapper-scroll-y my-custom-scrollbar tableFixHead'>";
 
 		result += "  <thead>";
 		result += "    <tr>";
@@ -1420,9 +1420,9 @@ $(document).ready(function(){
 
 				// 1. Absent sign
 				if(absent==1) {
-					result += "	     <td><font class='text-danger'><i class='fas fa-times fa-xs'></i></font></td>";
+					result += "	     <td text-align='center' vertical-align='middle'><font size='1.8em;' class='text-danger'><i class='fas fa-times fa-xs'></i></font></td>";
 				} else {
-					result += "	     <td><font class='text-success'><i class='fas fa-check fa-xs'></i></font></td>";
+					result += "	     <td vertical-align='middle'><font size='1.8em;' class='text-success'><i class='fas fa-check fa-xs'></i></font></td>";
 				}
 
 
