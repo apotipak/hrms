@@ -22,6 +22,7 @@
     	<section class="content pt-2">
 
     		<!-- SEARCH FORM -->
+			<!--<div class="card card-outline card-default" id="daily_attendance_search_card" style="position: fixed; top:50; width: 100%; z-index: 1;">-->
 			<div class="card card-outline card-default" id="daily_attendance_search_card">
 
 			  <div class="card-body">
@@ -64,6 +65,7 @@
 
 				</div>
 				</form>
+
 			  </div>
 			  <!-- /.card-body -->
 
@@ -119,35 +121,38 @@
 
 		        <!-- Tab Body -->
 		        <div class="tab-content" id="dailyAttendanceBodyTab">
-		            <div class="tab-pane fade show active pt-2" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">		            	
-						<form class="form-inline" id="bulk_shift_status_form">
+
+		            <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+
+						<form class="form-inline mt-1 mb-1" id="bulk_shift_status_form">
 							{% csrf_token %}
 
 							<div id="id_bulk_schedule_option">
-								<div class="form-group mb-2 mt-2">
-									<label for="inputPassword2">Shift</label>&nbsp;&nbsp;
-								    <select id="id_bulk_shift_list_option" class="form-control form-control-sm">
+								<div class="form-group">
+									<label for="id_bulk_shift_list_option">Shift</label>&nbsp;&nbsp;
+								    <select id="id_bulk_shift_list_option" class="form-control form-control-xs">
 									  <option value="0" selected></option>
 								    </select>								    
 								</div>
 							</div>
 
-							<div class="form-group mb-2 mt-2">
+							<div class="form-group">
 								&nbsp;&nbsp;
-							    <select id="id_shift_status" class="form-control form-control-sm">
+							    <select id="id_shift_status" class="form-control form-control-xs">
 								  <option value="0" selected>Not Absent</option>
 								  <option value="1">Absent</option>
 							    </select>
 							    &nbsp;
 							</div>
 
-							<div class="form-group mb-2 mt-3">
-						  		&nbsp;<button type="submit" class="btn btn-primary btn-sm mb-2">Change</button>
+							<div class="form-group">
+						  		&nbsp;<button type="submit" class="btn btn-primary btn-xs">Change</button>
 						  	</div>
 						</form>
 
 
-		            	<div id="id_employee_list" class="bg-light table-responsive">
+		            	<!--<div id="id_employee_list" class="bg-light table-responsive">-->
+		            	<div id="id_employee_list" class="table-responsive table-striped">
 
 							<font size='2em;'>
 
@@ -156,8 +161,7 @@
 							<!--<table id='employee_list_table' class='table table-sm'>-->
 							
 							<!--<table id='employee_list_table' class='table table-sm table-condensed table-wrapper-scroll-y my-custom-scrollbar'>-->
-							<table id='employee_list_table' class='table table-sm table-condensed my-custom-scrollbar'>
-
+							<table id='employee_list_table' class='table table-sm my-custom-scrollbar'>
 							  <thead>
 							    <tr>
 							      <th scope='col' class='d-none' nowrap>Absent Status</th>
@@ -651,8 +655,10 @@
 
 							<div class="form-group col-3 d-inline">
 						      	<label for="id_late_from">Late From</label>     
-						      	<input type="text" id="id_late_from" name="late_from" class="form-control form-control-sm" />
+						      	<input type="text" id="id_late_from" name="late_from" class="form-control form-control-sm" data-inputmask="'mask': '99/99/9999 99:99'" />
 							</div>
+
+
 
 							<div class="form-group col-3 d-inline">
 						      	<label for="id_late_to">Late To</label>
@@ -803,7 +809,50 @@
 
 
 {% block javascript %}
+
 <script>
+
+$(document).ready(function(){
+	$(":input").inputmask();
+	$("#id_late_from").inputmask({
+		mask: '99/99/9999 99:99',
+		placeholder: ' ',
+		showMaskOnHover: false,
+		showMaskOnFocus: false,
+		onBeforePaste: function (pastedValue, opts) {
+			var processedValue = pastedValue;			
+			return processedValue;
+		}
+	});
+
+
+
+	/*
+	$(":input").inputmask();
+	$("#phonemask").inputmask({
+		mask: '999 999 9999',
+		placeholder: ' ',
+		showMaskOnHover: false,
+		showMaskOnFocus: false,
+		onBeforePaste: function (pastedValue, opts) {
+			var processedValue = pastedValue;			
+			return processedValue;
+		}
+	});
+
+	$("#datetimemask").inputmask({
+		mask: '99/99/9999 99:99',
+		placeholder: ' ',
+		showMaskOnHover: false,
+		showMaskOnFocus: false,
+		onBeforePaste: function (pastedValue, opts) {
+			var processedValue = pastedValue;			
+			return processedValue;
+		}
+	});
+	*/
+});
+
 	$("#bulk_shift_status_form").submit(function(e) {
 	    e.preventDefault();
 

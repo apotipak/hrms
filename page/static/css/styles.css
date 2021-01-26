@@ -242,7 +242,8 @@ input:checked + .slider:after {
 
 .my-custom-scrollbar {
 position: relative;
-height: 180px;
+height: 230px;
+width: 100%;
 overflow: auto;
 }
 .table-wrapper-scroll-y {
@@ -284,4 +285,24 @@ input::-webkit-inner-spin-button {
 
 .sortable tr {
     cursor: pointer;
+}
+
+
+/* custom table */
+tr td{
+  padding: 0px 0px 0px 2px !important;
+  margin: 0 !important;
+}
+
+.form-control-xs {
+  height: calc(1em + .575rem + 2px) !important;
+  padding: .125rem .25rem !important;
+  font-size: .75rem !important;
+  line-height: 1.5;
+  border-radius: .2rem;
+}
+
+.card {
+    box-shadow: 0 0 1px rgba(0,0,0,.125), 0 1px 3px rgba(0,0,0,.2);
+    margin-bottom: 0.5rem;
 }
