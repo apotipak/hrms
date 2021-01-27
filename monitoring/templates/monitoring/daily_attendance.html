@@ -8,7 +8,7 @@
 
 {% block content %}
  	<!-- Content Wrapper. Contains page content -->
-	<div class="content-wrapper">
+	<div class="content-wrapper" style="margin:0px; padding:2px;">
 	
 		<!--
 		<div class="content-header">
@@ -19,51 +19,50 @@
 		-->
 
     	<!-- Main content -->
-    	<section class="content pt-2">
+    	<section class="content pt-1">
 
-    		<!-- SEARCH FORM -->
+
+
+    		<!-- SEARCH FORM START -->
 			<!--<div class="card card-outline card-default" id="daily_attendance_search_card" style="position: fixed; top:50; width: 100%; z-index: 1;">-->
 			<div class="card card-outline card-default" id="daily_attendance_search_card">
 
-			  <div class="card-body">
+			  <div class="card-body" style="margin:0; padding:3px 0 2px 0;">
 				<form class="form-inline" name="daily_attendance_search_form" id="daily_attendance_search_form">
 					{% csrf_token %}
 
-			  	<div class="row col-12">
+				  	<div class="row col-12">
 
-			  		<div class="float-left text-left col-5">
-					    <div class="form-inline">
-					        <label class="control-label">Date</label>&nbsp;&nbsp;				        
-					        <input type="text" class="form-control form-control-sm" id="id_dly_date" placeholder="dd/mm/yyyy">&nbsp;&nbsp;
-					    	<label class="control-label">Shift</label>&nbsp;&nbsp;
-					        <select id="id_search_shift_option" class="form-control form-control-sm">
-							  <option value="0">---------</option>
-							  <option value="1" selected="">A | All</option>
-							  <option value="2">D | Day shift</option>
-							  <option value="3">N | Night shift</option>
-					        </select>					        
-					    </div>
+				  		<div class="float-left text-left col-5">
+						    <div class="form-inline">
+						        <label class="control-label">Date</label>&nbsp;&nbsp;				        
+						        <input type="text" class="form-control form-control-sm" id="id_dly_date" placeholder="dd/mm/yyyy">&nbsp;&nbsp;
+						    	<label class="control-label">Shift</label>&nbsp;&nbsp;
+						        <select id="id_search_shift_option" class="form-control form-control-sm">
+								  <option value="0">---------</option>
+								  <option value="1" selected="">A | All</option>
+								  <option value="2">D | Day shift</option>
+								  <option value="3">N | Night shift</option>
+						        </select>					        
+						    </div>
+						</div>
+
+						<div class="float-right text-right col-7">
+						    <div class="form-group">
+			                      <input class="form-check-input" type="radio" name="searchOptions" id="id_search_by_cnt_id" value="1" checked>
+			                      <label class="control-label" for="id_search_by_cnt_id">Contract No</label>&nbsp;
+			                      <input type="number" min=0 id="id_cus_id" class="form-control form-control-sm col-2" value="">&nbsp;
+			                      <input type="number" min=0 id="id_cus_brn" class="form-control form-control-sm col-1" value="">&nbsp;
+			                      <input type="number" min=0 id="id_cus_vol" class="form-control form-control-sm col-1" value="">&nbsp;&nbsp;&nbsp;
+			                      <input class="form-check-input" type="radio" name="searchOptions" id="id_search_by_empid" value="2" readonly>
+			                      <label class="control-label" for="id_search_by_empid">Employee ID</label>&nbsp;
+			                      <input type="text" id="id_search_emp_id" class="form-control form-control-sm col-2" readonly>&nbsp;&nbsp;
+
+			                      <button id="cancelDailyAttendanceButton" name="cancelDailyAttendanceButton" type="button" class="btn btn-sm btn-warning pull-right">Cancel</button>
+		                    </div>
+		                </div>
+		                
 					</div>
-
-					<div class="float-right text-right col-7">
-					    <div class="form-group">
-		                      <input class="form-check-input" type="radio" name="searchOptions" id="id_search_by_cnt_id" value="1" checked>
-		                      <label class="control-label" for="id_search_by_cnt_id">Contract No</label>&nbsp;
-		                      <input type="number" min=0 id="id_cus_id" class="form-control form-control-sm col-2" value="">&nbsp;
-		                      <input type="number" min=0 id="id_cus_brn" class="form-control form-control-sm col-1" value="">&nbsp;
-		                      <input type="number" min=0 id="id_cus_vol" class="form-control form-control-sm col-1" value="">&nbsp;&nbsp;&nbsp;
-		                      <input class="form-check-input" type="radio" name="searchOptions" id="id_search_by_empid" value="2" readonly>
-		                      <label class="control-label" for="id_search_by_empid">Employee ID</label>&nbsp;
-		                      <input type="text" id="id_search_emp_id" class="form-control form-control-sm col-2" readonly>&nbsp;&nbsp;
-
-		                      <button id="cancelDailyAttendanceButton" name="cancelDailyAttendanceButton" type="button" class="btn btn-sm btn-warning pull-right">Cancel</button>
-	                    </div>
-
-
-	                </div>
-	                
-
-				</div>
 				</form>
 
 			  </div>
@@ -76,13 +75,12 @@
 			  -->
 			  <!-- /.card-footer -->
 			</div>
-			<!-- /.card -->
-
+			<!-- SEARCH FORM END -->
 
 
 
 			<!-- DATA ENTRY FORM -->
-			<div class="card card-outline card-secondary" id="daily_attendance_data_entry_card">
+			<div class="card" id="daily_attendance_data_entry_card" style="padding:0px;">
 
 			  <!--
 			  <div class="card-header">
@@ -94,14 +92,14 @@
 			  </div>
 			  -->
 
-			  <div class="card-body">
+			  <div class="card-body" style="padding:0px;">
 				<form class="form-inline" name="daily_attendance_form">
 					{% csrf_token %}
 				</form>
 
 				<!-- Tab Header -->
 		        <div class="clearfix">
-		          <div class="float-left col-12">
+		          <div class="float-left col-12" style="padding:0;">
 		          	<b>
 		            <ul class="nav nav-tabs navbar-expand nav-fill" id="customer" role="tablist">
 
@@ -122,101 +120,246 @@
 		        <!-- Tab Body -->
 		        <div class="tab-content" id="dailyAttendanceBodyTab">
 
-
 		        	<!-- Attendance Information -->
-		            <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+		            <div class="tab-pane fade show active col-12" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
 
-		            	<div class="container pt-3 col-12">
 
-						<form class="form-inline mt-1 mb-1" id="bulk_shift_status_form">
-							{% csrf_token %}
 
-							<div id="id_bulk_schedule_option">
-								<div class="form-group">
-									<label for="id_bulk_shift_list_option">Shift</label>&nbsp;&nbsp;
-								    <select id="id_bulk_shift_list_option" class="form-control form-control-xs">
-									  <option value="0" selected></option>
-								    </select>								    
+
+
+
+		            	<div class="col-10 float-left">
+
+							<form class="form-inline mt-1 mb-2" id="bulk_shift_status_form">
+								{% csrf_token %}
+
+								<div id="id_bulk_schedule_option">
+									<div class="form-group">
+										<label for="id_bulk_shift_list_option">Shift</label>&nbsp;&nbsp;
+									    <select id="id_bulk_shift_list_option" class="form-control form-control-xs">
+										  <option value="0" selected></option>
+									    </select>								    
+									</div>
 								</div>
+
+								<div class="form-group">
+									&nbsp;&nbsp;
+								    <select id="id_shift_status" class="form-control form-control-xs">
+									  <option value="0" selected>Not Absent</option>
+									  <option value="1">Absent</option>
+								    </select>
+								    &nbsp;
+								</div>
+
+								<div class="form-group">
+							  		&nbsp;<button type="submit" class="btn btn-primary btn-xs">Change</button>
+							  	</div>
+							</form>
+
+
+			            	<!--<div id="id_employee_list" class="bg-light table-responsive">-->
+			            	<div id="id_employee_list" class="table-responsive table-striped">
+
+								<font size='2em;'>
+
+								<!--<table id='employee_list_table' class='table table-responsive table-sm table-condensed table-wrapper-scroll-y my-custom-scrollbar'>-->
+
+								<!--<table id='employee_list_table' class='table table-sm'>-->
+								
+								<!--<table id='employee_list_table' class='table table-sm table-condensed table-wrapper-scroll-y my-custom-scrollbar'>-->
+								<table id='employee_list_table' class='table table-sm my-custom-scrollbar tableFixHead'>
+								  <thead>
+								    <tr>
+								      <th scope='col' class='d-none' nowrap>Absent Status</th>
+								      <th scope="col">&nbsp;</th>
+								      <th scope="col" nowrap>Emp ID.</th>
+								      <th scope="col">Name</th>
+								      <th scope="col">Rank</th>
+								      <th scope="col">Shift</th>
+								      <th scope="col">Late</th>
+								      <th scope="col">Full</th>
+								      <th scope="col">Relief</th>
+								      <th scope="col" nowrap>Rel. ID</th>
+								      <th scope="col">Name</th>
+								      <th scope='col' class='d-none'>Tel Status</th>
+								      <th scope="col">TEL</th>
+								      <th scope="col" nowrap>Call Time</th>
+								      <th scope="col" nowrap>Call Amt</th>
+								      <th scope="col" nowrap>Call Paid</th>
+								      <th scope="col">Spare</th>
+								      <th scope="col">Wage</th>
+								      <th scope="col" nowrap>Upd Date</th>
+								      <th scope="col" nowrap>Upd By</th>
+								      <th scope="col" nowrap>Upd Flag</th>
+								      <th scope="col" class='d-none' nowrap>Upd Gen</th>
+								      <th scope="col" class='d-none' nowrap>Remark</th>
+								      <th scope='col' class='d-none'>Relief Status</th>
+								      <th scope='col' class='d-none'>Late Status</th>
+								      <th scope='col' class='d-none'>Late Full Status</th>
+
+								      <th scope='col' class='d-none'>OT</th>
+								      <th scope='col' class='d-none'>OT Reason</th>
+								      <th scope='col' class='d-none'>OT Time From</th>
+								      <th scope='col' class='d-none'>OT Time To</th>
+								      <th scope='col' class='d-none'>OT Hour Amount</th>
+								    </tr>
+
+								  </thead>
+								  <tbody>
+								    <tr>
+								      <td colspan="31" class="text-center"><br><br>There is no data.<br><br><br></td>
+								    </tr>
+								  </tbody>
+								</table>
+								</font>
 							</div>
+							<!--<font size='2em'><span class="text-danger">x</span> is absent.</font>-->							
+						</div>
 
-							<div class="form-group">
-								&nbsp;&nbsp;
-							    <select id="id_shift_status" class="form-control form-control-xs">
-								  <option value="0" selected>Not Absent</option>
-								  <option value="1">Absent</option>
-							    </select>
-							    &nbsp;
+						<!-- amnaj -->
+						<div class="col-2 float-right" style="padding:33px 0 0 0;">
+							<div class="card right-col">
+								<!--
+							    <div class="card-tools text-right pb-2">
+									<button id="add_button" type="button" class="btn btn-success btn-xs"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;{% trans 'New' %}</button>
+									<button id="reset_button" type="button" class="btn btn-secondary btn-xs">&nbsp;{% trans 'Cancel' %}</button>&nbsp;&nbsp;
+						        	<button id="save_button" type="button" class="btn btn-primary btn-xs"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</button>
+						        	<button id="delete_button" type="button" class="btn btn-danger btn-xs"><i class="fas fa-trash fa-sm"></i>&nbsp;&nbsp;{% trans 'Delete' %}</button>
+							    </div>
+								-->
+
+								<div class="col-12" style="padding:0;">
+									<font size='2em;'>
+									<div class="col-12 float-left" style="padding:0 1px 0 0;">
+									<table class="table table-sm table-bordered">
+									  <thead>
+									    <tr>
+									      <td colspan="4" class="text-center bg-info"><b>Normal</b></td>
+									    </tr>
+									  </thead>
+									  <tbody>
+									    <tr>
+									      <td class="text-center"><b>D</b><!--&nbsp;&nbsp;<i class="fas fa-sun"></i>--></td>
+									      <td class="text-center"><div id="totalNDP">0</div></td>
+									      <td class="text-center"><div id="totalNDA">0</div></td>
+									      <td class="text-center"><div id="totalNDM">0</div></td>
+									    </tr>
+									    <tr>
+									      <td class="text-center"><b>N</b><!--&nbsp;&nbsp;<i class="fas fa-moon"></i>--></td>
+									      <td class="text-center"><div id="totalNNP">0</div></td>
+									      <td class="text-center"><div id="totalNNA">0</div></td>
+									      <td class="text-center"><div id="totalNNM">0</div></td>
+									    </tr>
+									  </tbody>
+									</table>
+									</div>
+
+									<div class="col-12 float-right" style="padding:0 0 0 1px;">
+									<table class="table table-sm table-bordered">
+									  <thead>
+									    <tr>
+									      <td colspan="4" class="text-center bg-info"><b>Public</b></td>
+									    </tr>
+									  </thead>
+									  <tbody>
+									    <tr>
+									      <td class="text-center"><b>D</b><!--&nbsp;&nbsp;<i class="fas fa-sun"></i>--></td>
+									      <td class="text-center"><div id="totalPDP">0</div></td>
+									      <td class="text-center"><div id="totalPDA">0</div></td>
+									      <td class="text-center"><div id="totalPDM">0</div></td>
+									    </tr>
+									    <tr>
+									      <td class="text-center"><b>N</b><!--&nbsp;&nbsp;<i class="fas fa-moon"></i>--></td>
+									      <td class="text-center"><div id="totalPNP">0</div></td>
+									      <td class="text-center"><div id="totalPNA">0</div></td>
+									      <td class="text-center"><div id="totalPNM">0</div></td>
+									    </tr>
+									  </tbody>
+									</table>					
+									</div>
+									</font>
+								</div>
+
+
+
+
+							    <!--
+			  					<div class="card-header">
+						            <div class="form-check d-inline">
+						              <label><input class="form-check-input" id="id_absent_check" name="absent_check" type="checkbox" /><span class="text-primary" style="cursor: pointer">Absent</span></label>&nbsp;&nbsp;&nbsp;&nbsp;
+						            </div>
+
+						            <div class="form-check d-inline">
+						              <label><input class="form-check-input" id="id_late_check" name="late_check" type="checkbox" /><span class="text-primary" style="cursor: pointer">Late</span></label>&nbsp;&nbsp;&nbsp;&nbsp;
+						            </div>
+
+						              <label><input class="form-check-input" id="id_phone_check" name="phone_check" type="checkbox" /><span class="text-primary" style="cursor: pointer">Phone</span></label>&nbsp;&nbsp;&nbsp;&nbsp;
+						        </div>
+								-->
+
+						        <!--
+							    <div class="card-tools">
+									<button id="add_button" type="button" class="btn btn-success btn-sm"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;{% trans 'New' %}</button>
+									<button id="reset_button" type="button" class="btn btn-secondary btn-sm">&nbsp;{% trans 'Cancel' %}</button>&nbsp;&nbsp;|&nbsp;&nbsp;
+						        	<button id="save_button" type="button" class="btn btn-primary btn-sm"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</button>
+						        	<button id="delete_button" type="button" class="btn btn-danger btn-sm"><i class="fas fa-trash fa-sm"></i>&nbsp;&nbsp;{% trans 'Delete' %}</button>	
+							    </div>
+								-->
 							</div>
-
-							<div class="form-group">
-						  		&nbsp;<button type="submit" class="btn btn-primary btn-xs">Change</button>
-						  	</div>
-						</form>
+			  			</div>
 
 
-		            	<!--<div id="id_employee_list" class="bg-light table-responsive">-->
-		            	<div id="id_employee_list" class="table-responsive table-striped">
+			  			<div class="col-12" style="padding:0;">
 
-							<font size='2em;'>
+			  				<!--
+			  				<font size='2.8em;'>
+			  				<div class="col-6 float-left">
+					            <div class="form-check d-inline">
+					              <label><input class="form-check-input" id="id_absent_check" name="absent_check" type="checkbox" /><span class="text-primary" style="cursor: pointer">Absent.</span></label>&nbsp;&nbsp;&nbsp;&nbsp;
+					             </div>
 
-							<!--<table id='employee_list_table' class='table table-responsive table-sm table-condensed table-wrapper-scroll-y my-custom-scrollbar'>-->
+					            <div class="form-check d-inline">
+					              <label><input class="form-check-input" id="id_late_check" name="late_check" type="checkbox" /><span class="text-primary" style="cursor: pointer">Late</span></label>&nbsp;&nbsp;&nbsp;&nbsp;
+					            </div>
 
-							<!--<table id='employee_list_table' class='table table-sm'>-->
-							
-							<!--<table id='employee_list_table' class='table table-sm table-condensed table-wrapper-scroll-y my-custom-scrollbar'>-->
-							<table id='employee_list_table' class='table table-sm my-custom-scrollbar tableFixHead'>
-							  <thead>
-							    <tr>
-							      <th scope='col' class='d-none' nowrap>Absent Status</th>
-							      <th scope="col">&nbsp;</th>
-							      <th scope="col" nowrap>Emp ID.</th>
-							      <th scope="col">Name</th>
-							      <th scope="col">Rank</th>
-							      <th scope="col">Shift</th>
-							      <th scope="col">Late</th>
-							      <th scope="col">Full</th>
-							      <th scope="col">Relief</th>
-							      <th scope="col" nowrap>Rel. ID</th>
-							      <th scope="col">Name</th>
-							      <th scope='col' class='d-none'>Tel Status</th>
-							      <th scope="col">TEL</th>
-							      <th scope="col" nowrap>Call Time</th>
-							      <th scope="col" nowrap>Call Amt</th>
-							      <th scope="col" nowrap>Call Paid</th>
-							      <th scope="col">Spare</th>
-							      <th scope="col">Wage</th>
-							      <th scope="col" nowrap>Upd Date</th>
-							      <th scope="col" nowrap>Upd By</th>
-							      <th scope="col" nowrap>Upd Flag</th>
-							      <th scope="col" class='d-none' nowrap>Upd Gen</th>
-							      <th scope="col" class='d-none' nowrap>Remark</th>
-							      <th scope='col' class='d-none'>Relief Status</th>
-							      <th scope='col' class='d-none'>Late Status</th>
-							      <th scope='col' class='d-none'>Late Full Status</th>
+					            <div class="form-check d-inline">
+					              <label><input class="form-check-input" id="id_phone_check" name="phone_check" type="checkbox" /><span class="text-primary" style="cursor: pointer">Phone</span></label>&nbsp;&nbsp;&nbsp;&nbsp;
+					            </div>
+				        	</div>
 
-							      <th scope='col' class='d-none'>OT</th>
-							      <th scope='col' class='d-none'>OT Reason</th>
-							      <th scope='col' class='d-none'>OT Time From</th>
-							      <th scope='col' class='d-none'>OT Time To</th>
-							      <th scope='col' class='d-none'>OT Hour Amount</th>
-							    </tr>
-
-							  </thead>
-							  <tbody>
-							    <tr>
-							      <td colspan="31" class="text-center"><br><br>There is no data.<br><br><br></td>
-							    </tr>
-							  </tbody>
-							</table>
+				            <div class="col-6 float-right text-right">						    
+								<button id="add_button" type="button" class="btn btn-success btn-xs"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;{% trans 'New' %}</button>
+								<button id="reset_button" type="button" class="btn btn-secondary btn-xs">&nbsp;{% trans 'Cancel' %}</button>&nbsp;&nbsp;|&nbsp;&nbsp;
+					        	<button id="save_button" type="button" class="btn btn-primary btn-xs"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</button>
+					        	<button id="delete_button" type="button" class="btn btn-danger btn-xs"><i class="fas fa-trash fa-sm"></i>&nbsp;&nbsp;{% trans 'Delete' %}</button>		        			      
+						    </div>
 							</font>
-						</div>
-						<!--<font size='2em'><span class="text-danger">x</span> is absent.</font>-->
-						</div>
+							-->
+
+
+
+
+			    
+
+
+
+			  			</div>
+
+
+
+
 		        	</div>
 
 
 
+
+
+
+
+
+
+
+		        	<!-- TAB 2 -->
 		        	<!-- Contract / Schedule Information -->
 		            <div class="tab-pane fade show" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
 
@@ -459,350 +602,11 @@
 			<!-- /.card -->
 
 
-					
+			<!-- TEST -->					
     		<!-- EMPLOYEE DETAIL -->
-			<div class="card card-outline card-success">
+    		
 
-			  <div class="card-header">
-			    
-	            <div class="form-check d-inline">
-	            	<!--
-	              <input class="form-check-input" id="id_absent_check" name="absent_check" type="checkbox">
-	              <label class="form-check-label"><b>Absent</b></label>&nbsp;&nbsp;&nbsp;&nbsp;
-					-->
-
-	              <label><input class="form-check-input" id="id_absent_check" name="absent_check" type="checkbox" /><span class="text-primary" style="cursor: pointer">Absent</span></label>&nbsp;&nbsp;&nbsp;&nbsp;
-	            </div>
-
-	            <div class="form-check d-inline">
-	            	<!--
-	              <input class="form-check-input" id="id_late_check" name="late_check" type="checkbox">
-	              <label class="form-check-label"><b>Late</b></label>&nbsp;&nbsp;&nbsp;&nbsp;
-					-->
-	              <label><input class="form-check-input" id="id_late_check" name="late_check" type="checkbox" /><span class="text-primary" style="cursor: pointer">Late</span></label>&nbsp;&nbsp;&nbsp;&nbsp;
-	            </div>
-
-	            <div class="form-check d-inline">
-	            	<!--
-	              <input class="form-check-input" id="id_phone_check" name="phone_check" type="checkbox">
-	              <label class="form-check-label"><b>Phone</b></label>&nbsp;&nbsp;&nbsp;&nbsp;
-	              	-->
-	              <label><input class="form-check-input" id="id_phone_check" name="phone_check" type="checkbox" /><span class="text-primary" style="cursor: pointer">Phone</span></label>&nbsp;&nbsp;&nbsp;&nbsp;
-	            </div>
-
-			    <div class="card-tools">
-					<button id="add_button" type="button" class="btn btn-success btn-sm"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;{% trans 'New' %}</button>
-					<button id="reset_button" type="button" class="btn btn-secondary btn-sm">&nbsp;{% trans 'Cancel' %}</button>&nbsp;&nbsp;|&nbsp;&nbsp;
-		        	<button id="save_button" type="button" class="btn btn-primary btn-sm"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</button>
-		        	<button id="delete_button" type="button" class="btn btn-danger btn-sm"><i class="fas fa-trash fa-sm"></i>&nbsp;&nbsp;{% trans 'Delete' %}</button>		        			      
-			    </div>
-			    <!-- /.card-tools -->
-
-			  </div>
-
-			  <!-- /.card-header -->
-			  <div class="card-body">
-
-
-			  	<div class="col-md-10 float-left">
-
-					<form class="form-row" id="dailyAttendanceDataEntryForm">
-					{% csrf_token %}
-
-					  	<div class="row col-12">
-
-						  <div class="form-row">
-							<div class="form-group col-md-2">
-						      	<label for="id_emp_id">Employee ID</label>     
-								<div class="input-group">                            	
-						      		<input type="number" id="id_emp_id" name="id_emp_id" class="form-control form-control-sm" value="" />
-						      		<button id="emp_id_lookup_button" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url=""><i class="fas fa-search fa-sm"></i></button>
-						    	</div>
-							</div>
-
-						    <div class="form-group col-md-2">
-						      <label for="id_emp_fullname_th">Name</label>
-						      <input type="text" class="form-control form-control-sm" id="id_emp_fullname_th" readonly>
-						    </div>
-
-							<div class="form-group col-1">
-								<label for="id_emp_rank">Rank</label>
-								<input type="text" class="form-control form-control-sm" id="id_emp_rank" readonly>
-							</div>
-
-							<div class="form-group col-1">
-								<label for="id_emp_dept">Dept</label>
-								<input type="text" class="form-control form-control-sm" id="id_emp_dept" readonly>
-							</div>
-
-						    <div class="form-group col-2">
-						      <label class="control-label"><b>Join</b></label>
-						      <input type="text" id="id_emp_join_date" class="form-control form-control-sm" readonly>
-						    </div>
-
-						    <div class="form-group col-2">
-						      <label class="control-label nowrap"><b>Terminate</b></label>
-						      <input type="text" id="id_emp_term_date" class="form-control form-control-sm" readonly>
-						    </div>
-
-						    <div class="form-group col-2">
-						      <label class="control-label"><b>Status</b></label>
-						      <input type="text" id="id_emp_status" class="form-control form-control-sm" readonly>
-						    </div>
-						</div>
-
-					  </div>
-
-
-
-
-
-
-					  <div class="row col-12 hidden" id="relief_employee_section">
-						  
-						  <!--
-				            <div class="form-check">
-				              <input class="form-check-input" id="id_relief_check" name="relief_check" type="checkbox">
-				              <label class="form-check-label">Relief by</label>&nbsp;&nbsp;&nbsp;&nbsp;
-				            </div>
-						  -->
-
-						  <div class="form-row">
-							<div class="form-group col-md-2">
-								<!--
-								<input class="" id="id_relief_check" name="relief_check" type="checkbox">
-						      	<label for="id_relief_emp_id">Relief by</label>     
-								-->
-
-						      	<label><input class="" id="id_relief_check" name="relief_check" type="checkbox" />&nbsp;&nbsp;<span class="text-primary" style="cursor: pointer">Relief by<span></label>
-
-								<div class="input-group">                            	
-						      		<input type="number" id="id_relief_emp_id" name="id_relief_emp_id" class="form-control form-control-sm" readonly="" />
-						      		<button id="relief_emp_id_lookup_button" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url="" disabled=""><i class="fas fa-search fa-sm"></i></button>
-						    	</div>
-							</div>
-
-						    <div class="form-group col-md-2">
-						      <label for="id_relief_emp_fullname_th">Name</label>
-						      <input type="text" class="form-control form-control-sm" id="id_relief_emp_fullname_th" readonly>
-						    </div>
-
-							<div class="form-group col-1">
-								<label for="id_relief_emp_rank">Rank</label>
-								<input type="text" class="form-control form-control-sm" id="id_relief_emp_rank" readonly>
-							</div>
-
-							<div class="form-group col-1">
-								<label for="id_relief_emp_dept">Dept</label>
-								<input type="text" class="form-control form-control-sm" id="id_relief_emp_dept" readonly>
-							</div>
-
-						    <div class="form-group col-2">
-						      <label class="control-label"><b>Join</b></label>
-						      <input type="text" id="id_relief_emp_join_date" class="form-control form-control-sm" readonly>
-						    </div>
-
-						    <div class="form-group col-2">
-						      <label class="control-label nowrap"><b>Terminate</b></label>
-						      <input type="text" id="id_relief_emp_term_date" class="form-control form-control-sm" readonly>
-						    </div>
-
-						    <div class="form-group col-2">
-						      <label class="control-label"><b>Status</b></label>
-						      <input type="text" id="id_relief_emp_status" class="form-control form-control-sm" readonly>
-						    </div>
-						</div>
-
-					  </div>
-
-
-
-
-					  <div class="row col-12">
-						  <div class="form-row">
-
-							<div class="form-group col-3">
-						      	<label for="id_sent_spare">Sent spare</label>     
-						      	<input type="number" id="id_sent_spare" name="sent_spare" class="form-control form-control-sm" />
-							</div>
-							<div class="form-group col-3">
-						      	<label for="id_sent_spare">Shift</label>
-						        <select id="id_shift_option" class="form-control form-control-sm">
-								  <option value="99" selected>99   # DAY OFF ########</option>
-								  <option value="999">999   # ANOTHER SITE #</option>
-						        </select>					        					      	
-							</div>
-
-
-								<div class="form-group col-3">
-							      	<label for="id_call_time">Call Time</label>
-							      	<input type="text" id="id_call_time" name="call_time" class="form-control form-control-sm" readonly />
-								</div>
-
-								<div class="form-group col-3">
-							      	<label for="id_call_amount_option">Call Amount</label>
-
-							        <select id="id_call_amount_option" class="form-control form-control-sm" readonly>
-									  <option value="0" selected>0 บาท</option>
-									  <option value="1">1 บาท</option>
-									  <option value="2">2 บาท</option>
-									  <option value="3">3 บาท</option>
-									  <option value="4">4 บาท</option>
-									  <option value="5">5 บาท</option>
-							        </select>					        					      	
-								</div>
-
-						  </div>
-					  </div>
-
-					  <div class="row">
-						  <div class="form-row">
-
-							<div class="form-group col-3 d-inline">
-						      	<label for="id_late_from">Late From</label>     
-						      	<input type="text" id="id_late_from" name="late_from" class="form-control form-control-sm" data-inputmask="'mask': '99/99/9999 99:99'" />
-							</div>
-
-
-
-							<div class="form-group col-3 d-inline">
-						      	<label for="id_late_to">Late To</label>
-						      	<input type="text" id="id_late_to" name="late_to" class="form-control form-control-sm" />
-							</div>
-
-							<div class="form-group col-3 d-inline">
-						      	<label for="id_late_reason_option">Reason</label>
-						        <select id="id_late_reason_option" class="form-control form-control-sm">
-								  <!--<option value="56" selected>56 | มาสาย</option>-->
-						        </select>	
-							</div>
-
-
-							<div class="form-group col-3">
-						      	<label for="id_late_hour">Total Time (hrs)</label>
-								<div class="input-group">                            	
-						      		<input type="number" id="id_late_hour" name="late_hour" class="form-control form-control-sm" />
-						      		
-						      		<div class="pt-1 pl-2">
-						      			<input type="checkbox" id="id_late_full_paid_check" name="late_full_paid_check" />
-						      			<label for="id_late_full_paid_check"><span class="text-primary" style="cursor: pointer">Full Paid</span></label>
-						      		</div>
-
-						    	</div>
-							</div>
-
-
-
-							<!--
-				            <div class="form-group col-2 d-inline">								
-								<input type="checkbox" id="id_late_full_paid" name="late_full_paid" />	
-								<label for="id_late_full_paid">Full Paid</label>
-				            </div>
-							-->
-
-
-						  </div>
-					  </div>
-
-
-
-					  <div class="row col-12">
-						  <div class="form-row">
-
-							<div class="form-group col-5">
-								<label for="id_job_type_option">Job Type</label>
-						        <select id="id_job_type_option" class="form-control form-control-sm" readonly>
-								  <option value="00" selected>00 :No</option>
-						        </select>								
-						      	
-							</div>
-
-							<div class="form-group col-7">
-						      	<label for="id_remark">Remark</label>     
-						      	<input type="text" id="id_remark" name="remark" class="form-control form-control-sm" readonly />
-							</div>
-
-						  </div>
-					  </div>
-
-					  <input type="hidden" id="id_add_new_record_status" name="add_new_record_status" value=0 />
-
-					</form>
-
-
-
-				</div>
-			
-
-				<div class="col-md-2 float-left">
-					<font size='2em;'> 
-					<table class="table table-sm table-bordered">
-					  <thead>
-					    <tr>
-					      <td colspan="4" class="text-center bg-info"><b>Normal</b></td>
-					    </tr>
-					  </thead>
-					  <tbody>
-					    <tr>
-					      <td class="text-center"><b>D</b><!--&nbsp;&nbsp;<i class="fas fa-sun"></i>--></td>
-					      <td class="text-center"><div id="totalNDP">0</div></td>
-					      <td class="text-center"><div id="totalNDA">0</div></td>
-					      <td class="text-center text-success"><div id="totalNDM">0</div></td>
-					    </tr>
-					    <tr>
-					      <td class="text-center"><b>N</b><!--&nbsp;&nbsp;<i class="fas fa-moon"></i>--></td>
-					      <td class="text-center"><div id="totalNNP">0</div></td>
-					      <td class="text-center"><div id="totalNNA">0</div></td>
-					      <td class="text-center text-success"><div id="totalNNM">0</div></td>
-					    </tr>
-
-					    <!--
-
-						LBLNDP = totalNDP
-						LBLNNP = totalNNP
-						LBLPDP = totalPDP
-						LBLPNP = totalPNP						
-					    -->
-					  </tbody>
-					</table>
-
-					<font size='2em;'> 
-					<table class="table table-sm table-bordered">
-					  <thead>
-					    <tr>
-					      <td colspan="4" class="text-center bg-info"><b>Public</b></th>
-					    </tr>
-					  </thead>
-					  <tbody>
-					    <tr>
-					      <td class="text-center"><b>D</b><!--&nbsp;&nbsp;<i class="fas fa-sun"></i>--></td>
-					      <td class="text-center"><div id="totalPDP">0</div></td>
-					      <td class="text-center"><div id="totalPDA">0</div></td>
-					      <td class="text-center text-success"><div id="totalPDM">0</div></td>
-					    </tr>
-					    <tr>
-					      <td class="text-center"><b>N</b><!--&nbsp;&nbsp;<i class="fas fa-moon"></i>--></td>
-					      <td class="text-center"><div id="totalPNP">0</div></td>
-					      <td class="text-center"><div id="totalPNA">0</div></td>
-					      <td class="text-center text-success"><div id="totalPNM">0</div></td>
-					    </tr>
-					  </tbody>
-					</table>					
-					</font>
-				</div>
-				<!--</form>-->
-			  </div>
-			  <!-- /.card-body -->
-
-			  <!--
-			  <div class="card-footer">
-			  	&nbsp;
-			  </div>
-			  -->
-			  <!-- /.card-footer -->
-
-			</div>
-			<!-- /.card -->
+			<!-- END -->
 
 
 
@@ -1430,8 +1234,6 @@ $(document).ready(function(){
 					result += "	     <td vertical-align='middle'><font size='1.8em;' class='text-success'><i class='fas fa-check fa-xs'></i></font></td>";
 				}
 
-
-				// amnaj
 				// 2. Ordering number
 				if(shf_type=='D') {
 					day_count++;
@@ -1493,21 +1295,21 @@ $(document).ready(function(){
 				result += "	     <td nowrap>" + tel_time + "</td>";
 
 				// 15. tel_amt
-				result += "	     <td>" + tel_amt + "</td>";
+				result += "	     <td class='text-center'>" + tel_amt + "</td>";
 
-				// 16. tel_paikd
+				// 16. tel_paid
 				if(tel_paid) {
-					result += "	     <td><font class='text-success'><i class='fas fa-check fa-xs'></i></font></td>";
+					result += "	     <td class='text-center'><font class='text-success'><i class='fas fa-check fa-xs'></i></font></td>";
 				} else {
 					result += "	     <td>&nbsp;</td>";
 				}
 				
 
 				// 17. spare
-				result += "	     <td>" + parseInt(spare) + "</td>";
+				result += "	     <td class='text-center'>" + parseInt(spare) + "</td>";
 
 				// 18. wage_id
-				result += "	     <td>" + wage_id + "</td>";
+				result += "	     <td class='text-center'>" + wage_id + "</td>";
 
 				// 19. upd_date
 				result += "	     <td nowrap>" + upd_date + "</td>";
@@ -2042,9 +1844,10 @@ $(document).ready(function(){
                 	$("#id_customer_zone_id").val(zone_id);
 					//$("#").val();
 
-					// 
 					$("#daily_attendance_search_form :input").attr("disabled", true);				
 					$("#cancelDailyAttendanceButton").removeAttr("disabled");
+
+					$("#tab2-tab").text(cus_name_th);
 
 				} else {
 
@@ -3274,8 +3077,6 @@ $(document).ready(function(){
 												// Get Attandance Employee List
 												//result = create_attandance_table(data.employee_list);												
 
-
-												// amnaj1
 												// Get Attandance Employee List
 												result = create_attandance_table(data.employee_list);
 												
@@ -4069,6 +3870,8 @@ $(document).ready(function(){
 
         $("#id_customer_wage_rate_id").val(0);
         $("#id_customer_zone_id").val(0);
+
+        $("#tab2-tab").text("Contract / Schedule Information");
 
     	$("#id_cus_id").focus();
     });
