@@ -216,7 +216,6 @@
 							<!--<font size='2em'><span class="text-danger">x</span> is absent.</font>-->							
 						</div>
 
-						<!-- amnaj -->
 						<div class="col-2 float-right" style="padding:33px 0 0 0;">
 							<div class="card right-col">
 								<!--
@@ -309,9 +308,9 @@
 			  			</div>
 
 
+			  			<!--
 			  			<div class="col-12" style="padding:0;">
 
-			  				<!--
 			  				<font size='2.8em;'>
 			  				<div class="col-6 float-left">
 					            <div class="form-check d-inline">
@@ -334,18 +333,292 @@
 					        	<button id="delete_button" type="button" class="btn btn-danger btn-xs"><i class="fas fa-trash fa-sm"></i>&nbsp;&nbsp;{% trans 'Delete' %}</button>		        			      
 						    </div>
 							</font>
-							-->
-
-
-
-
-			    
-
-
-
+		
 			  			</div>
+						-->
+	
 
 
+
+
+			  			<!-- amnaj -->
+
+
+			<div class="card card-outline card-success col-12">
+
+			  <div class="card-header">
+			    
+	            <div class="form-check d-inline">
+
+	              <label><input class="form-check-input" id="id_absent_check" name="absent_check" type="checkbox" /><span class="text-primary" style="cursor: pointer">Absent</span></label>&nbsp;&nbsp;&nbsp;&nbsp;
+	            </div>
+
+	            <div class="form-check d-inline">
+	              <label><input class="form-check-input" id="id_late_check" name="late_check" type="checkbox" /><span class="text-primary" style="cursor: pointer">Late</span></label>&nbsp;&nbsp;&nbsp;&nbsp;
+	            </div>
+
+	            <div class="form-check d-inline">
+	              <label><input class="form-check-input" id="id_phone_check" name="phone_check" type="checkbox" /><span class="text-primary" style="cursor: pointer">Phone</span></label>&nbsp;&nbsp;&nbsp;&nbsp;
+	            </div>
+
+			    <div class="card-tools">
+					<button id="add_button" type="button" class="btn btn-success btn-sm"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;{% trans 'New' %}</button>
+					<button id="reset_button" type="button" class="btn btn-secondary btn-sm">&nbsp;{% trans 'Cancel' %}</button>&nbsp;&nbsp;|&nbsp;&nbsp;
+		        	<button id="save_button" type="button" class="btn btn-primary btn-sm"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</button>
+		        	<button id="delete_button" type="button" class="btn btn-danger btn-sm"><i class="fas fa-trash fa-sm"></i>&nbsp;&nbsp;{% trans 'Delete' %}</button>		        			      
+			    </div>
+			  </div>
+
+
+
+			  <div class="card-body">
+
+
+			  	<div class="col-md-10 float-left">
+
+					<form class="form-row" id="dailyAttendanceDataEntryForm">
+					{% csrf_token %}
+
+					  	<div class="row col-12">
+
+						  <div class="form-row">
+							<div class="form-group col-md-2">
+						      	<label for="id_emp_id">Employee ID</label>     
+								<div class="input-group">                            	
+						      		<input type="number" id="id_emp_id" name="id_emp_id" class="form-control form-control-sm" value="" />
+						      		<button id="emp_id_lookup_button" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url=""><i class="fas fa-search fa-sm"></i></button>
+						    	</div>
+							</div>
+
+						    <div class="form-group col-md-2">
+						      <label for="id_emp_fullname_th">Name</label>
+						      <input type="text" class="form-control form-control-sm" id="id_emp_fullname_th" readonly>
+						    </div>
+
+							<div class="form-group col-1">
+								<label for="id_emp_rank">Rank</label>
+								<input type="text" class="form-control form-control-sm" id="id_emp_rank" readonly>
+							</div>
+
+							<div class="form-group col-1">
+								<label for="id_emp_dept">Dept</label>
+								<input type="text" class="form-control form-control-sm" id="id_emp_dept" readonly>
+							</div>
+
+						    <div class="form-group col-2">
+						      <label class="control-label"><b>Join</b></label>
+						      <input type="text" id="id_emp_join_date" class="form-control form-control-sm" readonly>
+						    </div>
+
+						    <div class="form-group col-2">
+						      <label class="control-label nowrap"><b>Terminate</b></label>
+						      <input type="text" id="id_emp_term_date" class="form-control form-control-sm" readonly>
+						    </div>
+
+						    <div class="form-group col-2">
+						      <label class="control-label"><b>Status</b></label>
+						      <input type="text" id="id_emp_status" class="form-control form-control-sm" readonly>
+						    </div>
+						</div>
+
+					  </div>
+
+
+
+
+
+
+					  <div class="row col-12 hidden" id="relief_employee_section">
+						  
+
+						  <div class="form-row">
+							<div class="form-group col-md-2">
+
+						      	<label><input class="" id="id_relief_check" name="relief_check" type="checkbox" />&nbsp;&nbsp;<span class="text-primary" style="cursor: pointer">Relief by<span></label>
+
+								<div class="input-group">                            	
+						      		<input type="number" id="id_relief_emp_id" name="id_relief_emp_id" class="form-control form-control-sm" readonly="" />
+						      		<button id="relief_emp_id_lookup_button" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url="" disabled=""><i class="fas fa-search fa-sm"></i></button>
+						    	</div>
+							</div>
+
+						    <div class="form-group col-md-2">
+						      <label for="id_relief_emp_fullname_th">Name</label>
+						      <input type="text" class="form-control form-control-sm" id="id_relief_emp_fullname_th" readonly>
+						    </div>
+
+							<div class="form-group col-1">
+								<label for="id_relief_emp_rank">Rank</label>
+								<input type="text" class="form-control form-control-sm" id="id_relief_emp_rank" readonly>
+							</div>
+
+							<div class="form-group col-1">
+								<label for="id_relief_emp_dept">Dept</label>
+								<input type="text" class="form-control form-control-sm" id="id_relief_emp_dept" readonly>
+							</div>
+
+						    <div class="form-group col-2">
+						      <label class="control-label"><b>Join</b></label>
+						      <input type="text" id="id_relief_emp_join_date" class="form-control form-control-sm" readonly>
+						    </div>
+
+						    <div class="form-group col-2">
+						      <label class="control-label nowrap"><b>Terminate</b></label>
+						      <input type="text" id="id_relief_emp_term_date" class="form-control form-control-sm" readonly>
+						    </div>
+
+						    <div class="form-group col-2">
+						      <label class="control-label"><b>Status</b></label>
+						      <input type="text" id="id_relief_emp_status" class="form-control form-control-sm" readonly>
+						    </div>
+						</div>
+
+					  </div>
+
+
+
+
+					  <div class="row col-12">
+						  <div class="form-row">
+
+							<div class="form-group col-3">
+						      	<label for="id_sent_spare">Sent spare</label>     
+						      	<input type="number" id="id_sent_spare" name="sent_spare" class="form-control form-control-sm" />
+							</div>
+							<div class="form-group col-3">
+						      	<label for="id_sent_spare">Shift</label>
+						        <select id="id_shift_option" class="form-control form-control-sm">
+								  <option value="99" selected>99   # DAY OFF ########</option>
+								  <option value="999">999   # ANOTHER SITE #</option>
+						        </select>					        					      	
+							</div>
+
+
+								<div class="form-group col-3">
+							      	<label for="id_call_time">Call Time</label>
+							      	<input type="text" id="id_call_time" name="call_time" class="form-control form-control-sm" readonly />
+								</div>
+
+								<div class="form-group col-3">
+							      	<label for="id_call_amount_option">Call Amount</label>
+
+							        <select id="id_call_amount_option" class="form-control form-control-sm" readonly>
+									  <option value="0" selected>0 บาท</option>
+									  <option value="1">1 บาท</option>
+									  <option value="2">2 บาท</option>
+									  <option value="3">3 บาท</option>
+									  <option value="4">4 บาท</option>
+									  <option value="5">5 บาท</option>
+							        </select>					        					      	
+								</div>
+
+						  </div>
+					  </div>
+
+					  <div class="row">
+						  <div class="form-row">
+
+							<div class="form-group col-3 d-inline">
+						      	<label for="id_late_from">Late From</label>     
+						      	<input type="text" id="id_late_from" name="late_from" class="form-control form-control-sm" data-inputmask="'mask': '99/99/9999 99:99'" />
+							</div>
+
+
+
+							<div class="form-group col-3 d-inline">
+						      	<label for="id_late_to">Late To</label>
+						      	<input type="text" id="id_late_to" name="late_to" class="form-control form-control-sm" />
+							</div>
+
+							<div class="form-group col-3 d-inline">
+						      	<label for="id_late_reason_option">Reason</label>
+						        <select id="id_late_reason_option" class="form-control form-control-sm">
+								  <!--<option value="56" selected>56 | มาสาย</option>-->
+						        </select>	
+							</div>
+
+
+							<div class="form-group col-3">
+						      	<label for="id_late_hour">Total Time (hrs)</label>
+								<div class="input-group">                            	
+						      		<input type="number" id="id_late_hour" name="late_hour" class="form-control form-control-sm" />
+						      		
+						      		<div class="pt-1 pl-2">
+						      			<input type="checkbox" id="id_late_full_paid_check" name="late_full_paid_check" />
+						      			<label for="id_late_full_paid_check"><span class="text-primary" style="cursor: pointer">Full Paid</span></label>
+						      		</div>
+
+						    	</div>
+							</div>
+
+
+						  </div>
+					  </div>
+
+
+
+					  <div class="row col-12">
+						  <div class="form-row">
+
+							<div class="form-group col-5">
+								<label for="id_job_type_option">Job Type</label>
+						        <select id="id_job_type_option" class="form-control form-control-sm" readonly>
+								  <option value="00" selected>00 :No</option>
+						        </select>								
+						      	
+							</div>
+
+							<div class="form-group col-7">
+						      	<label for="id_remark">Remark</label>     
+						      	<input type="text" id="id_remark" name="remark" class="form-control form-control-sm" readonly />
+							</div>
+
+						  </div>
+					  </div>
+
+					  <input type="hidden" id="id_add_new_record_status" name="add_new_record_status" value=0 />
+
+					</form>
+
+
+
+				</div>
+			
+				<!--
+				<div class="col-md-2 float-left">
+					<font size='2em;'> 
+					<table class="table table-sm table-bordered">
+					  <thead>
+					    <tr>
+					      <td colspan="4" class="text-center bg-info"><b>Normal</b></td>
+					    </tr>
+					  </thead>
+					  <tbody>
+					    <tr>
+					      <td class="text-center"><b>D</b>&nbsp;&nbsp;<i class="fas fa-sun"></i></td>
+					      <td class="text-center"><div id="totalNDP">0</div></td>
+					      <td class="text-center"><div id="totalNDA">0</div></td>
+					      <td class="text-center text-success"><div id="totalNDM">0</div></td>
+					    </tr>
+					    <tr>
+					      <td class="text-center"><b>N</b>&nbsp;&nbsp;<i class="fas fa-moon"></i></td>
+					      <td class="text-center"><div id="totalNNP">0</div></td>
+					      <td class="text-center"><div id="totalNNA">0</div></td>
+					      <td class="text-center text-success"><div id="totalNNM">0</div></td>
+					    </tr>
+
+					  </tbody>
+					</table>
+
+				</div>
+				-->
+
+			  </div>
+
+			</div>
+			
+
+			  			<!-- amnaj -->
 
 
 		        	</div>
