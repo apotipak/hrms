@@ -730,7 +730,7 @@ def ajax_save_customer_schedule_plan(request):
 				sch_plan_obj = cursor.fetchone()
 
 			if sch_plan_obj is not None:
-				if sch_plan_obj > 0:
+				if len(sch_plan_obj) > 0:
 					sch_plan_count = len(sch_plan_obj)
 
 		except db.OperationalError as e:
