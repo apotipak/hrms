@@ -345,7 +345,7 @@
 
 			<div class="card daily-attendance col-12">
 
-			  <div class="card-header">
+			  <div class="card-header" style="padding:0;">
 			    
 	            <div class="form-check d-inline">
 
@@ -360,11 +360,11 @@
 	              <label><input class="form-check-input" id="id_phone_check" name="phone_check" type="checkbox" /><span class="text-primary" style="cursor: pointer">Phone</span></label>&nbsp;&nbsp;&nbsp;&nbsp;
 	            </div>
 
-			    <div class="card-tools">
-					<button id="add_button" type="button" class="btn btn-success btn-sm"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;{% trans 'New' %}</button>
-					<button id="reset_button" type="button" class="btn btn-secondary btn-sm">&nbsp;{% trans 'Cancel' %}</button>&nbsp;&nbsp;|&nbsp;&nbsp;
-		        	<button id="save_button" type="button" class="btn btn-primary btn-sm"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</button>
-		        	<button id="delete_button" type="button" class="btn btn-danger btn-sm"><i class="fas fa-trash fa-sm"></i>&nbsp;&nbsp;{% trans 'Delete' %}</button>		        			      
+			    <div class="float-right">
+					<button id="add_button" type="button" class="btn btn-success btn-xs"><i class="fas fa-plus fa-xs"></i>&nbsp;&nbsp;{% trans 'New' %}</button>
+					<button id="reset_button" type="button" class="btn btn-secondary btn-xs">&nbsp;{% trans 'Cancel' %}</button>&nbsp;&nbsp;|&nbsp;&nbsp;
+		        	<button id="save_button" type="button" class="btn btn-primary btn-xs"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</button>
+		        	<button id="delete_button" type="button" class="btn btn-danger btn-xs"><i class="fas fa-trash fa-sm"></i>&nbsp;&nbsp;{% trans 'Delete' %}</button>		        			      
 			    </div>
 			  </div>
 
