@@ -650,6 +650,8 @@ function convertStringToDDMMYYYY(strdate) {
 }
 
 function convertStringToDDMMYYYYHHSS(strdate) {
+	//console.log(strdate);
+
 	var new_date = ""
 	var new_date_temp = new Date(strdate);
 	var dd = String(new_date_temp.getDate()).padStart(2, '0');
@@ -657,11 +659,12 @@ function convertStringToDDMMYYYYHHSS(strdate) {
 	var yyyy = new_date_temp.getFullYear();
 
 	var hh = new_date_temp.getHours();
-	var mm = new_date_temp.getMinutes();	
 	//var hh = String(new_date_temp.getHours()).padStart(2, '0');
-	//var mm = String(new_date_temp.getMinutes()).padStart(2, '0');
 	
-	new_date = dd + '/' + mm + '/' + yyyy + " " + hh + ":" + mm;
+	//var min = new_date_temp.getMinutes();	
+	var min = String(new_date_temp.getMinutes()).padStart(2, '0');
+	
+	new_date = dd + '/' + mm + '/' + yyyy + " " + hh + ":" + min;
 
 	return new_date;
 }
@@ -1260,7 +1263,9 @@ function displayList(emp_id, search_date_from, search_date_to) {
 				result += "      <th scope='col'>SAT</th>";
 				result += "      <th scope='col'>SUN</th>";
 				result += "      <th scope='col'>Status</th>";
+				
 				result += "      <th scope='col'>Upd.Date</th>";
+
 				result += "      <th scope='col'>Upd.By</th>";
 				result += "      <th scope='col'>Upd.Flag</th>";
 				result += "    </tr>";
@@ -1285,7 +1290,12 @@ function displayList(emp_id, search_date_from, search_date_to) {
 					shf_sat = data.schedule_list[i][13];
 					shf_sun = data.schedule_list[i][14];
 					sch_active = data.schedule_list[i][15];
-					upd_date = convertStringToDDMMYYYYHHSS(data.schedule_list[i][16]);
+
+					upd_date = convertStringToDDMMYYYYHHSS(data.schedule_list[i][16]);					
+					//upd_date = data.schedule_list[i][16];
+					//upd_date = new Date(Date.parse(data.schedule_list[i][16]));
+					//upd_date = convertStringToDDMMYYYYHHSS(upd_date);
+
 					upd_by = data.schedule_list[i][17];
 					upd_flag = data.schedule_list[i][18];					
 					result += "<tr>";

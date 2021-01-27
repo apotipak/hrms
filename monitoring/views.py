@@ -6257,6 +6257,7 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 		sql += "where b.emp_id=" + str(emp_id) + " "
 		sql += "and b.upd_flag<>'D' "
 		sql += "order by sch_date_frm desc, sch_no asc"
+		print("SQL debug:", sql)
 		try:
 			with connection.cursor() as cursor:		
 				cursor.execute(sql)
