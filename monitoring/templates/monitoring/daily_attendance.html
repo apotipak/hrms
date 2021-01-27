@@ -1662,7 +1662,7 @@ $(document).ready(function(){
         $('#id_cus_vol').val(id_cus_vol);
 
         var attendance_date = $('#id_dly_date').val();
-		var shift_option = $("#id_search_shift_option").val();
+		var search_shift_option = $("#id_search_shift_option").val();
       	var cus_id = $('#id_cus_id').val();
       	var cus_brn = $('#id_cus_brn').val();
       	var cus_vol = $('#id_cus_vol').val();
@@ -1673,7 +1673,7 @@ $(document).ready(function(){
 			data : {
 		  		csrfmiddlewaretoken: '{{ csrf_token }}',
 		  		attendance_date: attendance_date,
-		  		shift_option: shift_option,
+		  		search_shift_option: search_shift_option,
 		  		cus_id: cus_id,
 		  		cus_brn: cus_brn,
 		  		cus_vol: cus_vol,
@@ -3162,6 +3162,8 @@ $(document).ready(function(){
 		var totalPNA = $("#totalPNA").text();
 		var totalPNM = $("#totalPNM").text();
 
+		var search_shift_option = $("#id_search_shift_option").val();
+
 		if(emp_id=="") {
 			/*
 		  	$(document).Toasts('create', {
@@ -3265,8 +3267,8 @@ $(document).ready(function(){
 	    			$("#id_emp_term_date").val(data.emp_term_date);
 
 	    			$("#save_button").attr("disabled", false);
-	    			$("#delete_button").attr("disabled", true);
-	    				    			
+	    			$("#delete_button").attr("disabled", true);	    			    		
+
 					$.ajax({
 				    	url : "/monitoring/ajax/save_daily_attendance",
 				    	type : "GET",
@@ -3325,6 +3327,7 @@ $(document).ready(function(){
 										data : {          
 									  		csrfmiddlewaretoken: '{{ csrf_token }}',
 									  		attendance_date: dly_date,
+									  		search_shift_option: search_shift_option,
 									  		cus_id: cus_id,
 									  		cus_brn: cus_brn,
 									  		cus_vol: cus_vol,

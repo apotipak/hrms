@@ -2260,7 +2260,14 @@ def ajax_get_attendance_information(request):
 	user_first_name = request.user.first_name
 
 	attendance_date = request.POST.get('attendance_date')
-	shift_option = request.POST.get('shift_option')
+
+	# amnaj1
+	search_shift_option = request.POST.get('search_shift_option')	
+	# shift_option = request.POST.get('search_shift_option')
+
+	# print("search_shift_option:", search_shift_option)
+	# print("shift_option:", shift_option)
+
 	cus_id = request.POST.get('cus_id').lstrip("0")
 	cus_brn = request.POST.get('cus_brn')
 	cus_vol = request.POST.get('cus_vol')
@@ -2582,11 +2589,11 @@ def ajax_get_attendance_information(request):
 		# sql += " from v_dlyplan where cnt_id=1486000001 and dly_date='2021-01-11' order by sch_shift,emp_id"
 		sql += table
 		
-		print("shift_option:", shift_option)
+		print("shift_option:", search_shift_option)
 
-		if shift_option=="2":
+		if search_shift_option=="2":
 			sql += "and shf_type='D' "
-		elif shift_option=="3":
+		elif search_shift_option=="3":
 			sql += "and shf_type='N' "
 
 		sql += " order by sch_shift, emp_id"
