@@ -2589,7 +2589,7 @@ def ajax_get_attendance_information(request):
 		# sql += " from v_dlyplan where cnt_id=1486000001 and dly_date='2021-01-11' order by sch_shift,emp_id"
 		sql += table
 		
-		print("shift_option:", search_shift_option)
+		print("search_shift_option:", search_shift_option)
 
 		if search_shift_option=="2":
 			sql += "and shf_type='D' "
@@ -2603,8 +2603,53 @@ def ajax_get_attendance_information(request):
 		# cursor.execute(sql, [cnt_id, attendance_date])
 		cursor.execute(sql)
 		rows = cursor.fetchall()
-		
+		cursor.close()
+
+
+		# Check Leave Status - Server side
 		# print("rows:", len(rows))
+		where_in = " "
+		count = 0
+		for row in rows:
+			emp_id_temp = row[14]
+			if emp_id_temp!= "":
+				if count==len(rows)-1:
+					where_in += str(emp_id_temp)
+				else:
+					where_in += str(emp_id_temp) + ","
+			count += 1
+		
+
+		emp_leave_list = []
+		# print("where_in:", where_in)
+		sql_where_in = "select emp_id from emp_leave_act where getdate() between lve_date_frm and lve_date_to and emp_id in (" + where_in + ")"
+		# print("sql_where_in:", sql_where_in)
+		cursor = connection.cursor()
+		cursor.execute(sql_where_in)
+		records = cursor.fetchall()
+		cursor.close()
+		if records is not None:
+			for item in records:
+				emp_leave_list.append(item[0])	
+		# print("Number of records:", len(emp_leave_list))
+
+
+		# Check Leave Status - Client side
+		'''
+		if len(rows)>0:
+			cursor = connection.cursor()
+			for row in rows:
+				emp_id_temp = row[14]
+				sql = "select emp_id from emp_leave_act where getdate() between lve_date_frm and lve_date_to and emp_id=" + str(emp_id_temp)
+				cursor.execute(sql)
+				item = cursor.fetchone()
+				if item is not None:
+					record = {"emp_id": item[0]}
+					emp_leave_list.append(record)
+					# print("emp_id_temp", item[0])
+			cursor.close()
+		'''
+
 
 		'''
 		response = JsonResponse(data={"success": True,"is_found": False,"message": "T"})
@@ -2701,7 +2746,11 @@ def ajax_get_attendance_information(request):
 				ot_hr_amt = int(row[32])
 			else:
 				ot_hr_amt = 0
-
+			
+			if row[14] in emp_leave_list:
+				emp_leave_status = 1
+			else:
+				emp_leave_status = 0
 
 			record = {
 				"emp_fname_th": row[0].strip(),
@@ -2774,6 +2823,7 @@ def ajax_get_attendance_information(request):
 				"ex_dof_amt": row[62],
 				"Customer_Flag": customer_flag,
 				"update_by_user_first_name": user_first_name,
+				"emp_leave_status": emp_leave_status,
 			}
 			employee_list.append(record)
 
@@ -2800,6 +2850,7 @@ def ajax_get_attendance_information(request):
 	    "customer_contract_service_list": list(customer_contract_service_list),
 	    "customer_schedule_list": list(customer_schedule_list),
 	    "employee_list": list(employee_list),
+	    "employee_leave_list": list(emp_leave_list),
 	    "ot_reason_list": list(ot_reason_list),
 	    "contract_info": list(contract_info_obj),
 	    "totalNDP": totalNDP,
@@ -2885,7 +2936,7 @@ def get_DLY_PLAN_OR_HIS_DLY_PLAN(dly_date):
 	is_error_status = False
 	error_message = "Success"
 
-	print("dly_date:", dly_date)
+	# print("dly_date:", dly_date)
 	sql = "select end_chk from t_date where date_chk='" + str(dly_date) + "'"
 	cursor = connection.cursor()	
 	cursor.execute(sql)	
@@ -3382,7 +3433,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 	sql = "select cnt_id,emp_id,absent,late,tel_man,relieft from dly_plan "
 
 	sql += " where cnt_id=" + str(cnt_id) + " and dly_date='" + str(dly_date) + "' and emp_id=" + str(emp_id)
-	print("SQL debug1:", sql)
+	# print("SQL debug1:", sql)
 
 	cursor = connection.cursor()	
 	cursor.execute(sql)	
@@ -3649,7 +3700,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		sql += "and emp_id=" + str(emp_id) + " "
 		sql += "and sch_shift=" + str(shift_id)
 
-		print("sql check:", sql)
+		# print("sql check:", sql)
 		# return False, "TEST"
 
 		try:
@@ -3665,7 +3716,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 			message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
 
 
-		print("sql test: ", sql)
+		# print("sql test: ", sql)
 		# return False, "A2"
 
 
@@ -4907,7 +4958,7 @@ def editRecord_old(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_de
 		
 	# Check Manpower
 	# sql = "select count(*) from v_dlyplan_shift where cnt_id='" + str(cnt_id) + "' and left(remark,2)='" + str(remark) + "' and shf_type=" + str(job_type) + " and absent=0 and dly_date='" + str(dly_date) + "'"
-	print("sql = " + str(sql))
+	# print("sql = " + str(sql))
 	cursor = connection.cursor()
 	cursor.execute(sql)
 	rows = cursor.fetchone()
@@ -4925,8 +4976,8 @@ def editRecord_old(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_de
 		today_date = settings.TODAY_DATE.strftime("%Y-%m-%y")
 		daily_attendance_date = dly_date.strftime("%Y-%m-%y")
 
-		print("today_date = " + str(today_date))
-		print("daily_attendance_date = " + str(daily_attendance_date))
+		# print("today_date = " + str(today_date))
+		# print("daily_attendance_date = " + str(daily_attendance_date))
 
 		# d1 = time.strptime(settings.TODAY_DATE, "%d/%m/%Y")
 		# d2 = time.strptime(dly_date, "%d/%m/%Y")
@@ -4973,8 +5024,8 @@ def editRecord_old(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_de
 					
 			cursor.close
 
-			print("informed_number = " + str(informedNumber))
-			print("contract_number = " + str(contractNumber))
+			# print("informed_number = " + str(informedNumber))
+			# print("contract_number = " + str(contractNumber))
 
 			if(informedNumber >= contractNumber):
 				is_pass = False
@@ -5088,7 +5139,7 @@ def editRecord_old(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_de
 	# ***********************************************
 	if is_pass:
 		if phone_status==1:
-			print("TODO: เช็คพนักงาานเข้าเวรที่หน่วยงานอื่นไปแล้ว")
+			# print("TODO: เช็คพนักงาานเข้าเวรที่หน่วยงานอื่นไปแล้ว")
 			is_pass = False
 
 
@@ -5402,7 +5453,7 @@ def checkManPower(cnt_id, job_type, shift_type, dly_date):
 	cursor.close	
 
 	if rows is not None:
-		print("no. of rows = " + str(len(rows)))
+		# print("no. of rows = " + str(len(rows)))
 		if len(rows)==0:
 			aManPower = 0
 		else:
@@ -5801,7 +5852,7 @@ def ajax_bulk_update_absent_status(request):
 			sql += " where dly_date='" + str(CurDate) + "'"
 			sql += " and sch_shift=" + str(shift_id)
 			sql += " and cnt_id=" + str(cnt_id)
-			print("sql:", sql)
+			# print("sql:", sql)
 			try:
 				with connection.cursor() as cursor:		
 					cursor.execute(sql)					
@@ -5832,7 +5883,7 @@ def DropTable(table_name):
 		with connection.cursor() as cursor:		
 			cursor.execute(sql)
 
-		print("Log: drop table " + str(table_name) + " success")
+		# print("Log: drop table " + str(table_name) + " success")
 		is_success = True
 		message = "Drop table success"
 	except db.OperationalError as e:
@@ -6286,7 +6337,7 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 		sql += "where b.emp_id=" + str(emp_id) + " "
 		sql += "and b.upd_flag<>'D' "
 		sql += "order by sch_date_frm desc, sch_no asc"
-		print("SQL debug:", sql)
+		# print("SQL debug:", sql)
 		try:
 			with connection.cursor() as cursor:		
 				cursor.execute(sql)
@@ -6414,7 +6465,7 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 		sql += "and dly_date>='" + str(search_date_from) + "' "
 		sql += "and dly_date<='" + str(search_date_to) + "' "
 		sql += "order by dly_date, sch_shift"
-		print("sql DlyPerRs: ", sql)
+		# print("sql DlyPerRs: ", sql)
 		try:
 			with connection.cursor() as cursor:		
 				cursor.execute(sql)
@@ -6456,7 +6507,7 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 		sql += "and dly_date>='" + str(search_date_from) + "' "
 		sql += "and dly_date<='" + str(search_date_to) + "' "
 		sql += "and pay_type<>'ABS' order by dly_date,sch_shift"
-		print("SQL:", sql)
+		# print("SQL:", sql)
 		try:
 			with connection.cursor() as cursor:		
 				cursor.execute(sql)
@@ -6520,7 +6571,7 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 					if absent==int(1):
 						print("absent = true")
 					else:
-						print("shf_amt_hr =", shf_amt_hr)
+						# print("shf_amt_hr =", shf_amt_hr)
 						A1 = A1 + shf_amt_hr
 						A2 = A2 + 1
 						A3 = A3 + bas_amt
@@ -6531,6 +6582,7 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 						A7 = A7 + ex_dof_amt					
 					# print("absent:", absent)
 
+				'''
 				print("A1:", A1)
 				print("A2:", A2)
 				print("A3:", A3)
@@ -6538,6 +6590,8 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 				print("A5:", A5)
 				print("A6:", A6)
 				print("A7:", A7)
+				'''
+				
 				income_list = [A1,A2,A3,A4,A5,A6,A7]
 
 		is_error = False
@@ -6634,7 +6688,7 @@ def generate_dgp_500(request, *args, **kwargs):
 	sql += "R_D500.TEL_AMT,R_D500.WAGE_ID,R_D500.SHF_AMT_HR,R_D500.OT_HR_AMT,R_D500.ABSENT "
 	sql += "FROM HRMS.dbo.R_D500 R_D500 "
 	sql += "ORDER BY R_D500.EMP_ID ASC"
-	print("SQL report:", sql)
+	# print("SQL report:", sql)
 	try:
 		cursor = connection.cursor()
 		cursor.execute(sql)

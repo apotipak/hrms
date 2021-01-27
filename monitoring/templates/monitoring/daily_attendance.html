@@ -1020,7 +1020,8 @@ $(document).ready(function(){
 									//$('#id_bulk_schedule_option').text("");
 
 									// Get Attandance Employee List
-									result = create_attandance_table(data.employee_list);
+									employee_leave_list = None
+									result = create_attandance_table(data.employee_list, employee_leave_list);
 
 									$('#id_employee_list').html(result);
 
@@ -1386,7 +1387,8 @@ $(document).ready(function(){
     });
 
 
-    function create_attandance_table(employee_list) {
+    function create_attandance_table(employee_list, employee_leave_list) {
+
     	result = "";
 		result = "";
 		result += "<font size='2em;'>";
@@ -1493,8 +1495,12 @@ $(document).ready(function(){
 				ot_hr_amt = employee_list[i]["ot_hr_amt"];				
 				
 				update_by_user_first_name = employee_list[i]["update_by_user_first_name"];
+				emp_leave_status = employee_list[i]["emp_leave_status"];
 
-				result += "    <tr>";							
+		    	if(emp_leave_status==1)
+					result += "    <tr class='text-danger'>";
+				else
+					result += "    <tr>";
 
 				// 0. Absent status
 				result += "	     <td class='d-none'>" + absent + "</td>";
@@ -1720,7 +1726,7 @@ $(document).ready(function(){
 
 					
 					// Get Attandance Employee List
-					result = create_attandance_table(data.employee_list);
+					result = create_attandance_table(data.employee_list, data.employee_leave_list);
 
 					$('#id_employee_list').html(result);
 
@@ -2121,6 +2127,7 @@ $(document).ready(function(){
 
 					$("#tab2-tab").text(cus_name_th);
 
+					$.LoadingOverlay("hide");
 				} else {
 
 					error_message = data.message
@@ -2147,12 +2154,14 @@ $(document).ready(function(){
 					    boxWidth: '38%',
 					    useBootstrap: false,
 					});
-					*/				
+					*/
+
+					$.LoadingOverlay("hide");			
 				}
 			}
 		});
 
-		$.LoadingOverlay("hide");
+		//$.LoadingOverlay("hide");
       	
       }
     });
@@ -3353,7 +3362,8 @@ $(document).ready(function(){
 												//result = create_attandance_table(data.employee_list);												
 
 												// Get Attandance Employee List
-												result = create_attandance_table(data.employee_list);
+												employee_leave_list = None
+												result = create_attandance_table(data.employee_list, employee_leave_list);
 												
 
 												$('#id_employee_list').html(result);
@@ -4008,7 +4018,8 @@ $(document).ready(function(){
 												//$('#id_bulk_schedule_option').text("");
 
 												// Get Attandance Employee List
-												result = create_attandance_table(data.employee_list);
+												employee_leave_list = None
+												result = create_attandance_table(data.employee_list, employee_leave_list);
 
 												$('#id_employee_list').html(result);
 
