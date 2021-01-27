@@ -31,9 +31,11 @@ class ScheduleMaintenanceForm(forms.Form):
         self.fields['cus_vol'].initial = "001"        
         '''
 
+        '''
         self.fields['cus_id'].initial = "1486"
         self.fields['cus_brn'].initial = "000"
         self.fields['cus_vol'].initial = "001"
+        '''
 
 def present_or_future_date(value):
     if value < datetime.date.today():

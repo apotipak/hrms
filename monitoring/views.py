@@ -720,8 +720,30 @@ def ajax_save_customer_schedule_plan(request):
 		# RULE-1: Check if an employee is existed in another schedule		
 		# employee = SchPlan.objects.filter(emp_id=emp_id).exclude(upd_flag='D').exclude(sch_active="")
 		# select * from sch_plan where emp_id=916 and sch_active=1 and upd_flag!='D'
-		sch_plan_count = SchPlan.objects.filter(emp_id=emp_id).exclude(upd_flag='D').exclude(sch_active="").count()		
+		#  sch_plan_count = SchPlan.objects.filter(emp_id=emp_id).exclude(upd_flag='D').exclude(sch_active="").count()
+		
+		sch_plan_count = 0		
+		sql = "select * from sch_plan where emp_id=" + emp_id + " and sch_active=1 and upd_flag!='D'"
+		try:
+			with connection.cursor() as cursor:		
+				cursor.execute(sql)
+				sch_plan_obj = cursor.fetchone()
 
+			if sch_plan_obj is not None:
+				if sch_plan_obj > 0:
+					sch_plan_count = len(sch_plan_obj)
+
+		except db.OperationalError as e:
+			is_found = False
+			message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+		except db.Error as e:
+			is_found = False
+			message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+		finally:
+			cursor.close()
+
+		# amnaj
+		print("sch_plan_count:", sch_plan_count)		
 		if sch_plan_count > 0:
 			try:
 				#sch_plan = SchPlan.objects.filter(emp_id=emp_id).exclude(upd_flag='D').exclude(sch_active="").get()
