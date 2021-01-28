@@ -2275,6 +2275,7 @@ def ajax_get_attendance_information(request):
 	cus_no = cus_id + cus_brn.zfill(3)	
 	schedule_list = []
 	employee_list = []
+	emp_leave_list = []
 	ot_reason_list = []
 	contract_info_obj = None
 	customer_contract_service_list = None
@@ -2620,7 +2621,7 @@ def ajax_get_attendance_information(request):
 			count += 1
 		
 
-		emp_leave_list = []
+		# emp_leave_list = []
 		# print("where_in:", where_in)
 		sql_where_in = "select emp_id from emp_leave_act where getdate() between lve_date_frm and lve_date_to and emp_id in (" + where_in + ")"
 		# print("sql_where_in:", sql_where_in)
@@ -6591,7 +6592,7 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 				print("A6:", A6)
 				print("A7:", A7)
 				'''
-				
+
 				income_list = [A1,A2,A3,A4,A5,A6,A7]
 
 		is_error = False
