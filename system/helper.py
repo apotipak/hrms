@@ -45,7 +45,7 @@ def getPriority(usr_id, form_name):
 	
 	# Get Module Name
 	sql = "select mod_id,mod_type,mod_fre,mod_th,mod_en,con_type,mod_grp,frm_name,rep_name1,rep_name,paper,mod_sql,mod_into,mod_where,mod_table from module where frm_name='" + form_name + "'"	
-	print("SQL module:", sql)
+	# print("SQL module:", sql)
 	cursor = connection.cursor()	
 	cursor.execute(sql)	
 	module = cursor.fetchall()
@@ -66,7 +66,7 @@ def getPriority(usr_id, form_name):
 	# Get Policy
 	if is_pass:
 		sql = "select plc_id,ust_id,mod_id,plc_use,plc_add,plc_edit,plc_del,plc_preview,plc_print,plc_im,plc_ex,plc_salary,plc_type,plc_old,upd_date,upd_by,upd_flag,usr_id from policy where usr_id='" + str(usr_id) + "' and mod_id=" + str(MDL)
-		print("SQL policy:", sql)
+		# print("SQL policy:", sql)
 
 		cursor = connection.cursor()	
 		cursor.execute(sql)	

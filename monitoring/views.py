@@ -742,8 +742,7 @@ def ajax_save_customer_schedule_plan(request):
 		finally:
 			cursor.close()
 
-		# amnaj
-		print("sch_plan_count:", sch_plan_count)		
+		# print("sch_plan_count:", sch_plan_count)		
 		if sch_plan_count > 0:
 			try:
 				#sch_plan = SchPlan.objects.filter(emp_id=emp_id).exclude(upd_flag='D').exclude(sch_active="").get()
@@ -2258,15 +2257,8 @@ def ajax_get_attendance_information(request):
 	form_name = "frmD200"	# ค่าได้มาจากชื่อฟอร์ม D200: Daily Attendance
 	username = request.user.username	# ชื่อผู้ล็อคอิน
 	user_first_name = request.user.first_name
-
 	attendance_date = request.POST.get('attendance_date')
-
-	# amnaj1
 	search_shift_option = request.POST.get('search_shift_option')	
-	# shift_option = request.POST.get('search_shift_option')
-
-	# print("search_shift_option:", search_shift_option)
-	# print("shift_option:", shift_option)
 
 	cus_id = request.POST.get('cus_id').lstrip("0")
 	cus_brn = request.POST.get('cus_brn')
@@ -2402,8 +2394,23 @@ def ajax_get_attendance_information(request):
 		# 999  # ANOTHER SITE #
 
 		# Get Day of Week
-		dayOfWeek = curDate.weekday()
-		# print("Day of week = " + str(dayOfWeek))
+		dayOfWeek = daily_attendance_date.strftime('%w')
+		if dayOfWeek=="1":
+			DayCurDate = "SRV_MON"
+		elif dayOfWeek=="2":
+			DayCurDate = "SRV_TUE"
+		elif dayOfWeek=="3":
+			DayCurDate = "SRV_WED"
+		elif dayOfWeek=="4":
+			DayCurDate = "SRV_THU"
+		elif dayOfWeek=="5":
+			DayCurDate = "SRV_FRI"
+		elif dayOfWeek=="6":
+			DayCurDate = "SRV_SAT"
+		elif dayOfWeek=="7":
+			DayCurDate = "SRV_SUN"
+		else:
+			DayCurDate = "0"
 
 
 		# Provide contract service list dropdown
@@ -2412,8 +2419,18 @@ def ajax_get_attendance_information(request):
 		# Check Total
 		# NUM_SERVICE TOTAL
 		# select cnt_id,shf_type,sum(srv_wed) as srv_num, sum(srv_pub) as srv_pub from v_contract as a where cnt_id=1008000001 and srv_active=1 and cus_service_flag <> 'D' group by cnt_id,shf_type
+		# sql = "select cnt_id,shf_type,sum(srv_wed) as srv_num, sum(srv_pub) as srv_pub from v_contract as a where cnt_id=" + str(cnt_id) + " and srv_active=1 and cus_service_flag <> 'D' group by cnt_id,shf_type"
+		
+		sql = "select cnt_id,shf_type,sum(" + DayCurDate + ") as srv_num, sum(srv_pub) as srv_pub "
+		sql += "from v_contract as a where cnt_id=" + str(cnt_id) + " and srv_active=1 "
+		sql += "and cus_service_flag <> 'D' "
+		sql += "and srv_eff_frm<='" + str(curDate) + "' group by cnt_id,shf_type"
+		# print("SQL debug:", sql)
+
+		# amnaj
 		cursor = connection.cursor()
-		cursor.execute("select cnt_id,shf_type,sum(srv_wed) as srv_num, sum(srv_pub) as srv_pub from v_contract as a where cnt_id=%s and srv_active=1 and cus_service_flag <> 'D' group by cnt_id,shf_type", [cnt_id])
+		# cursor.execute("select cnt_id,shf_type,sum(srv_wed) as srv_num, sum(srv_pub) as srv_pub from v_contract as a where cnt_id=%s and srv_active=1 and cus_service_flag <> 'D' group by cnt_id,shf_type", [cnt_id])
+		cursor.execute(sql)
 		rows = cursor.fetchall()
 		cursor.close
 
@@ -2590,7 +2607,7 @@ def ajax_get_attendance_information(request):
 		# sql += " from v_dlyplan where cnt_id=1486000001 and dly_date='2021-01-11' order by sch_shift,emp_id"
 		sql += table
 		
-		print("search_shift_option:", search_shift_option)
+		# print("search_shift_option:", search_shift_option)
 
 		if search_shift_option=="2":
 			sql += "and shf_type='D' "
