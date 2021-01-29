@@ -339,7 +339,6 @@
 
 
 
-			  			<!-- amnaj -->
 
 
 
@@ -539,6 +538,8 @@
   <div class="col-3">   
   	<div class="input-group">
 		<span style="font-size:0.9rem;padding:3px 0 0 0;"><b>Late From</b>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+		<!-- amnaj -->
+  		<!--<input type="datetime" id="id_late_from" name="late_from" class="form-control form-control-xs" placeholder="dd-mm-yyyy" value="" min="1997-01-01" max="2030-12-31" />-->
   		<input type="text" id="id_late_from" name="late_from" class="form-control form-control-xs" data-inputmask="'mask': '99/99/9999 99:99'" />
   	</div>
   </div>
@@ -547,6 +548,7 @@
   	<div class="input-group">
 		<span style="font-size:0.9rem;padding:3px 0 0 0;"><b>Late To</b>&nbsp;&nbsp;&nbsp;&nbsp;</span>
   		<input type="text" id="id_late_to" name="late_to" class="form-control form-control-xs" data-inputmask="'mask': '99/99/9999 99:99'" />
+  		<!--<input type="datetime-local" id="id_late_to" name="late_to" class="form-control form-control-xs" />-->
   	</div>
   </div>
 
@@ -653,7 +655,6 @@
 			</div>
 			
 
-			  			<!-- amnaj -->
 
 
 		        	</div>
@@ -930,7 +931,11 @@
 <script>
 
 $(document).ready(function(){
+
 	$(":input").inputmask();
+
+
+	/*
 	$("#id_late_from").inputmask({
 		mask: '99/99/9999 99:99',
 		placeholder: ' ',
@@ -941,7 +946,7 @@ $(document).ready(function(){
 			return processedValue;
 		}
 	});
-
+	*/
 
 
 	/*
@@ -1202,6 +1207,273 @@ $(document).ready(function(){
 	});
 
 
+
+// amnaj
+$('#id_late_from1').on('click', function() {
+    //var length = $(this).val().length;
+    
+    /*
+    click_point = this.selectionStart;
+    console.log("click_point: " + click_point);
+
+    if(click_point==0)
+    	this.setSelectionRange(0, 2);
+
+    if(click_point==1)
+    	this.setSelectionRange(0, 2);
+
+    if(click_point==2)
+    	this.setSelectionRange(0, 2);
+
+    if(click_point==9)
+    	this.setSelectionRange(11, 13);
+
+    if(click_point==10)
+    	this.setSelectionRange(11, 13);
+
+    if(click_point==11)
+    	this.setSelectionRange(11, 13);
+
+    if(click_point==12)
+    	this.setSelectionRange(11, 13);
+
+    if(click_point==14)
+    	this.setSelectionRange(14, 16);
+
+    if(click_point==15)
+    	this.setSelectionRange(14, 16);
+
+    if(click_point==16)
+    	this.setSelectionRange(14, 16);
+    */
+});
+
+$("#id_late_from1").bind("keyup",function(e){
+	var keynum;
+	var keycode;
+	var keyup_point;
+	var old_value;
+
+	keyup_point = this.selectionStart;
+	old_value = this.value;
+		
+	//28/01/2021 00:00
+	
+  	if(window.event) { // IE                  
+    	keynum = e.key;
+    	keycode = e.keyCode;
+  	} else if(e.which){ // Netscape/Firefox/Opera                 
+    	keynum = e.which;
+    	keycode = e.keyCode;
+  	}    
+    
+    //keynum = "0" + keynum;
+    console.log("keycode:" + keycode + " | keyup_point:" + keyup_point);
+	
+	if(keycode==13) { // enter
+		
+		/*
+		if(keyup_point==0 || keyup_point==1 || keyup_point==2) {
+			this.setSelectionRange(3, 5);
+		}
+		*/
+
+		if(keyup_point==10 || keyup_point==11 || keyup_point==13) {
+			this.setSelectionRange(11, 13);	
+			//return false;
+		}
+				
+	}
+
+	if(keycode==96) { // numpad 
+		this.setSelectionRange(11, 13);
+	}
+
+    if(keycode==37) { // left arrow
+    	if(keyup_point==3) {
+    		this.setSelectionRange(0, 2);
+    	}
+
+    	if(keyup_point==6) {
+    		this.setSelectionRange(3, 5);
+    	}
+
+    	if(keyup_point==11) {
+    		this.setSelectionRange(6, 10);
+    	}
+
+    	if(keyup_point==14) {
+    		this.setSelectionRange(11, 13);
+    	}
+
+    	if(keyup_point==15) {
+    		this.setSelectionRange(14, 16);
+    	}
+
+    	if(keyup_point==16) {
+    		$("#id_late_to").focus();
+    	}
+
+    }
+
+    if(keycode==39) { // right arrow
+    	if(keyup_point==5) {
+    		this.setSelectionRange(6, 10);
+    	}
+
+    	if(keyup_point==2) {
+    		this.setSelectionRange(3, 5);
+    	}
+
+    	if(keyup_point==10) {
+    		this.setSelectionRange(11, 13);	
+    	}
+
+    	if(keyup_point==12) {
+    		this.setSelectionRange(6, 10);	
+    	}
+
+    	if(keyup_point==13) {
+    		this.setSelectionRange(14, 16);	
+    	}
+
+    	if(keyup_point==14) {
+    		this.setSelectionRange(14, 16);	
+    	}    	
+    }
+});
+
+$("#id_late_from").inputmask("99/99/9999 99:99");
+$("#id_late_from").bind("focus",function(e){
+	console.log("id_late_from_focus");
+
+	var keynum;
+	var keycode;
+	var keyup_point;
+	var old_value;
+
+	keyup_point = this.selectionStart;
+	
+  	if(window.event) { // IE                  
+    	keynum = e.key;
+    	keycode = e.keyCode;
+  	} else if(e.which){ // Netscape/Firefox/Opera                 
+    	keynum = e.which;
+    	keycode = e.keyCode;
+  	}    
+
+	console.log("keycode1:" + keycode + " | keyup_point1:" + keyup_point);	
+
+	if(e.keyCode!=undefined) {
+		this.setSelectionRange(11, 11);		
+	} else {
+		//console.log("undefined");
+		//console.log("value:" + this.value);
+		this.setSelectionRange(11, 13);
+	}
+	
+});
+$("#id_late_from").bind("keyup",function(e){
+	console.log("id_late_from_keyup");
+	var keynum;
+	var keycode;
+	var keyup_point;
+	var old_value;
+
+	keyup_point = this.selectionStart;
+	
+  	if(window.event) { // IE                  
+    	keynum = e.key;
+    	keycode = e.keyCode;
+  	} else if(e.which){ // Netscape/Firefox/Opera                 
+    	keynum = e.which;
+    	keycode = e.keyCode;
+  	}    
+
+	console.log("keycode:" + e.keyCode + " | keyup_point:" + keyup_point);	
+	if(e.keyCode==13) { // enter		
+		if(keyup_point==11) {
+			console.log("test");
+			this.setSelectionRange(11, 13);
+		}
+				
+		this.setSelectionRange(11, 13);
+	}
+
+	if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105)) {
+		console.log("use keypad");
+		
+		if(keyup_point==11) {
+			this.setSelectionRange(11, 13);	
+		}
+
+		if(keyup_point==14) {
+			this.setSelectionRange(14, 16);		
+			console.log("14,16");
+		}
+	}
+
+	if(e.keyCode >= 37) {
+		if(keyup_point==13 || keyup_point==14) {
+			this.setSelectionRange(11, 13);		
+		}
+	}
+
+	if(e.keyCode >= 39) {
+		if(keyup_point==13 || keyup_point==14) {
+			this.setSelectionRange(14, 16);		
+		}		
+	}
+});
+
+
+
+
+
+$("#id_late_to").inputmask("99/99/9999 99:99");
+$("#id_late_to").bind("focus",function(e){
+	console.log("id_late_to_focus");
+
+	var keynum;
+	var keycode;
+	var keyup_point;
+	var old_value;
+
+	keyup_point = this.selectionStart;
+	
+  	if(window.event) { // IE                  
+    	keynum = e.key;
+    	keycode = e.keyCode;
+  	} else if(e.which){ // Netscape/Firefox/Opera                 
+    	keynum = e.which;
+    	keycode = e.keyCode;
+  	}    
+
+	console.log("keycode1:" + keycode + " | keyup_point1:" + keyup_point);	
+
+	if(e.keyCode!=undefined) {
+		this.setSelectionRange(11, 11);		
+	} else {
+		//console.log("undefined");
+		//console.log("value:" + this.value);
+		this.setSelectionRange(11, 13);
+	}
+	
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	$("#id_late_check").change(function() {
 
 		var today = new Date();
@@ -1235,6 +1507,10 @@ $(document).ready(function(){
 	   		$("#id_late_full_paid_check").attr("disabled", false);
 
 			// Set Late From/To
+			// var current_date = moment().format('YYYY-MM-DDTHH:mm:ss');	
+			var current_date = moment().format('YYYY-MM-DD HH:mm');
+
+			// "yyyy-MM-ddThh:mm"
 			$("#id_late_from").val(late_date_from);
 			$("#id_late_to").val(late_date_to);
 
@@ -2376,8 +2652,7 @@ $(document).ready(function(){
 
 
 
-
-
+	// amnaj
 	$(document).on('keypress', '#id_relief_emp_id', function(e) {
 
 		$("#id_relief_check").prop("checked", true);
@@ -2445,7 +2720,7 @@ $(document).ready(function(){
 				    useBootstrap: false,
 				});
 
-	    		$("#id_relief_emp_id").focus();
+	    		$("#id_relief_emp_id").focus();``
 	    		return false;
 
 			} else {
@@ -2495,11 +2770,13 @@ $(document).ready(function(){
 							$("#id_relief_emp_rank").val(data.emp_rank);
 			    			$("#id_relief_emp_dept").val(data.emp_dept);
 			    			$("#id_relief_emp_status").val(data.emp_status);
+
 			    			if(data.emp_status_id=='9') {		    				
 				    			$("#id_relief_emp_status").animate({color:'red'}, 1000);
 			    			} else {
 			    				$("#id_relief_emp_status").animate({color:'#495057'}, 1000);
 			    			}
+
 			    			$("#id_relief_emp_join_date").val(data.emp_join_date);
 			    			$("#id_relief_emp_term_date").val(data.emp_term_date);
 

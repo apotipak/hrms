@@ -29,6 +29,7 @@ from docx2pdf import convert
 from os import path
 from django.http import FileResponse
 from django.core.exceptions import PermissionDenied
+from django.views.decorators.cache import never_cache
 
 
 Tpub = 11
@@ -1377,6 +1378,7 @@ def ajax_get_employee_photo(request):
 
 @login_required(login_url='/accounts/login/')
 @permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
+@never_cache
 def DailyAttendance(request):
 	page_title = settings.PROJECT_NAME
 	db_server = settings.DATABASES['default']['HOST']
