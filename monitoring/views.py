@@ -2397,6 +2397,9 @@ def ajax_get_attendance_information(request):
 
 		# Get Day of Week
 		dayOfWeek = daily_attendance_date.strftime('%w')
+		print("dayOfWeek:", dayOfWeek)
+		print("dayOfWeek:", daily_attendance_date.strftime('%a'))
+
 		if dayOfWeek=="1":
 			DayCurDate = "SRV_MON"
 		elif dayOfWeek=="2":
@@ -2410,6 +2413,8 @@ def ajax_get_attendance_information(request):
 		elif dayOfWeek=="6":
 			DayCurDate = "SRV_SAT"
 		elif dayOfWeek=="7":
+			DayCurDate = "SRV_SUN"
+		elif dayOfWeek=="0":
 			DayCurDate = "SRV_SUN"
 		else:
 			DayCurDate = "0"
@@ -2427,7 +2432,7 @@ def ajax_get_attendance_information(request):
 		sql += "from v_contract as a where cnt_id=" + str(cnt_id) + " and srv_active=1 "
 		sql += "and cus_service_flag <> 'D' "
 		sql += "and srv_eff_frm<='" + str(curDate) + "' group by cnt_id,shf_type"
-		# print("SQL debug:", sql)
+		print("SQL debug:", sql)
 
 		# amnaj
 		cursor = connection.cursor()
@@ -2617,7 +2622,7 @@ def ajax_get_attendance_information(request):
 			sql += "and shf_type='N' "
 
 		sql += " order by sch_shift, emp_id"
-		# print("______sql 3_____ = " + str(sql))
+		print("______sql 3_____ = " + str(sql))
 
 		cursor = connection.cursor()
 		# cursor.execute(sql, [cnt_id, attendance_date])
