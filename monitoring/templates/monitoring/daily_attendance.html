@@ -1599,7 +1599,7 @@ $("#id_late_hour").click( function() {
 
 		result += "      <th scope='col' class='d-none' nowrap>Absent Status</th>";
 		result += "      <th scope='col'>&nbsp;</th>";		
-		result += "      <th scope='col'>No</th>";
+		result += "      <th scope='col' class='text-center'>No</th>";
 		result += "      <th scope='col' nowrap>Emp ID</th>";
 		result += "      <th scope='col' nowrap>Name</th>";
 		result += "      <th scope='col'>Rank</th>";
@@ -1709,13 +1709,13 @@ $("#id_late_hour").click( function() {
 				// 2. Ordering number
 				if(shf_type=='D') {
 					day_count++;
-					result += "	     <td>" + day_count +"</td>";
+					result += "	     <td class='text-center'>" + day_count +"</td>";
 				} else if(shf_type=='N') {
 					night_count++;
-					result += "	     <td>" + night_count +"</td>";
+					result += "	     <td class='text-center'>" + night_count +"</td>";
 				} else if(shf_type=='O') {
 					dof_count++;
-					result += "	     <td>" + dof_count +"</td>";
+					result += "	     <td class='text-center'>" + dof_count +"</td>";
 				} else {
 					result += "	     <td>?</td>";
 				}
@@ -1771,7 +1771,7 @@ $("#id_late_hour").click( function() {
 
 				// 16. tel_paid
 				if(tel_paid) {
-					result += "	     <td class='text-center'><font class='text-success'><i class='fas fa-check fa-xs'></i></font></td>";
+					result += "	     <td class='text-center'><font size='1.83m;' class='text-success'><i class='fas fa-check fa-xs'></i></font></td>";
 				} else {
 					result += "	     <td>&nbsp;</td>";
 				}

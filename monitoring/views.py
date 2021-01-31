@@ -2400,7 +2400,9 @@ def ajax_get_attendance_information(request):
 		print("dayOfWeek:", dayOfWeek)
 		print("dayOfWeek:", daily_attendance_date.strftime('%a'))
 
-		if dayOfWeek=="1":
+		if dayOfWeek=="0":
+			DayCurDate = "SRV_SUN"
+		elif dayOfWeek=="1":
 			DayCurDate = "SRV_MON"
 		elif dayOfWeek=="2":
 			DayCurDate = "SRV_TUE"
@@ -2412,10 +2414,6 @@ def ajax_get_attendance_information(request):
 			DayCurDate = "SRV_FRI"
 		elif dayOfWeek=="6":
 			DayCurDate = "SRV_SAT"
-		elif dayOfWeek=="7":
-			DayCurDate = "SRV_SUN"
-		elif dayOfWeek=="0":
-			DayCurDate = "SRV_SUN"
 		else:
 			DayCurDate = "0"
 
