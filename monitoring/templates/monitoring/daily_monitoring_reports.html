@@ -47,7 +47,7 @@
 						    <div class="card-header" role="tab" id="headingOne1" style="padding:2px 0 2px 8px;">
 						      <a class="text-dark" data-toggle="collapse" data-parent="#accordionEx" href="#collapseOne1" aria-expanded="true" aria-controls="collapseOne1">
 						        <h6 class="mb-0">
-						         CUSTOMER & CONTRACT&nbsp;&nbsp;&nbsp;<small><i class="fas fa-angle-down rotate-icon"></i></small>
+						         <b>CUSTOMER & CONTRACT</b>&nbsp;&nbsp;&nbsp;<small><i class="fas fa-angle-down rotate-icon"></i></small>
 						        </h6>
 						      </a>
 						    </div>
@@ -58,7 +58,7 @@
 								<table class="table table-hover"> 
 								  <tbody>
 								    <tr>
-								    	<td><a href="#">1. Contract List</a></td>
+								    	<td><a href="#" class="text-secondary" onclick="load_report('Contract List', 'cnt_contract_status')">1. Contract List</a></td>
 								    </tr>
 								  </tbody>
 								</table>
@@ -75,7 +75,7 @@
 						    <div class="card-header" role="tab" id="headingTwo2" style="padding:2px 0 2px 8px;">
 						      <a class="collapsed text-dark" data-toggle="collapse" data-parent="#accordionEx" href="#collapseTwo2" aria-expanded="false" aria-controls="collapseTwo2">
 						        <h6 class="mb-0">
-						        	SCHEDULE & DAILY ATTEND&nbsp;&nbsp;&nbsp;<small><i class="fas fa-angle-down rotate-icon"></i></small>
+						        	<b>SCHEDULE & DAILY ATTEND</b>&nbsp;&nbsp;&nbsp;<small><i class="fas fa-angle-down rotate-icon"></i></small>
 						        </h6>
 						      </a>
 						    </div>
@@ -86,10 +86,10 @@
 								<table class="table table-hover"> 
 								  <tbody>
 								    <tr>
-								    	<td><a href="#">1. GPM_Continue 7 Work Day List</a></td>
+								    	<td><a href="#" class="text-secondary" onclick="load_report('GPM Continue 7 Work Day List', 'gpm_7day')">1. GPM_Continue 7 Work Day List</a></td>
 								    </tr>
 								    <tr>
-										<td><a href="#">2. GPM_Reject Continue 7 Work Day List</a></td>
+										<td><a href="#" class="text-secondary" onclick="load_report('GPM Reject Continue 7 Work Day List', 'gpm_r7day')">2. GPM_Reject Continue 7 Work Day List</a></td>
 								    </tr>
 								    <tr>
 								    	<td></td>
@@ -114,7 +114,7 @@
 						      <a class="collapsed text-dark" data-toggle="collapse" data-parent="#accordionEx" href="#collapseThree3"
 						        aria-expanded="false" aria-controls="collapseThree3">
 						        <h6 class="mb-0">
-						          PERSONAL&nbsp;&nbsp;&nbsp;<small><i class="fas fa-angle-down rotate-icon"></i></small>
+						        	<b>PERSONAL</b>&nbsp;&nbsp;&nbsp;<small><i class="fas fa-angle-down rotate-icon"></i></small>
 						        </h6>
 						      </a>
 						    </div>
@@ -125,16 +125,16 @@
 								<table class="table table-hover"> 
 								  <tbody>
 								    <tr>
-								    	<td><a href="#">1. Guard Working by Zone</a></td>
+								    	<td><a href="#" class="text-secondary" onclick="load_report('Guard Working by Zone', 'psn_emp_zone')">1. Guard Working by Zone</a></td>
 								    </tr>
 								    <tr>
-										<td><a href="#">2. Terminate Employee List</a></td>
+										<td><a href="#" class="text-secondary" onclick="load_report('Terminate Employee List', 'psn_terminate_g07')">2. Terminate Employee List</a></td>
 								    </tr>
 								    <tr>
-								    	<td><a href="#">3. Terminate Employee Date</a></td>
+								    	<td><a href="#" class="text-secondary" onclick="load_report('Terminate Employee Date', 'psn_terminate_g09')">3. Terminate Employee Date</a></td>
 								    </tr>
 								    <tr>
-								    	<td><a href="#">4. Terminate Employee Zone</a></td>
+								    	<td><a href="#" class="text-secondary" onclick="load_report('Terminate Employee Zone', 'psn_term_zone')">4. Terminate Employee Zone</a></td>
 								    </tr>    
 								  </tbody>
 								</table>
@@ -152,15 +152,50 @@
 					<div class="col-md-9">
 						<div class="card">
 
-						  <div class="card-header p-2" id="daily_report_title">
-						  	TITLE
-						  </div>
+							<div class="row" style="padding:2px 3px 3px 4px;">
+								<div class="col-8">
+									<div class="d-flex left pt-2">
+										<h5><div id="id_report_name"><i class="fas fa-chart-line"></i>&nbsp;&nbsp;Report Name</div></h5>
+									</div>					
+								</div>
 
-						  <div class="card-body" id="daily_report_form">
-						    FORM
-						  </div>
+								<div class="col-4 pt-1">
+									<div class="d-flex flex-row-reverse">
+							            <button class="btn btn-outline-info btn-sm dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							              <i class="fas fa-print fa-sm"></i>&nbsp;&nbsp;Print
+							            </button>
+
+							            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink"> 
+							            	<font size="2em;">
+							              <a class="dropdown-item" href="#" onclick="print_document()"><i class="fa fa-eye text-secondary" aria-hidden="true"></i>&nbsp;&nbsp;Display on screen</a>
+							              <a class="dropdown-item" href="#">&nbsp;<i class="far fa-file-excel text-secondary"></i>&nbsp;&nbsp;Download Excel file</a>
+							          		</font>
+							            </div>
+
+									</div>
+								</div>
+							</div>
+						</div>
+
+
+						<div class="card">
+
+							<div class="row">
+								<div class="col-12">
+									<div class="d-flex left">									
+										<form class="form-inline" name="daily_report_search_form" id="daily_report_search_form">
+											<div class="form-inline">
+												&nbsp;										
+											</div>
+										</form>
+									</div>					
+								</div>
+							</div>
 
 						</div>
+
+
+
 					</div>
 	      		</div>
 	  		</div>
@@ -174,17 +209,24 @@
 <script>	
 	
 $(document).ready(function(){
+	/*
+	$('.panel-collapse').on('show.bs.collapse', function () {
+		$(this).siblings('.panel-heading').addClass('active');
+	});
 
- $('.panel-collapse').on('show.bs.collapse', function () {
-    $(this).siblings('.panel-heading').addClass('active');
-  });
+	$('.panel-collapse').on('hide.bs.collapse', function () {
+		$(this).siblings('.panel-heading').removeClass('active');
+	});
+	*/
 
-  $('.panel-collapse').on('hide.bs.collapse', function () {
-    $(this).siblings('.panel-heading').removeClass('active');
-  });
 
 });
 
+
+function load_report(report_name, report_id) {
+	//alert("Loade report:" + report_name);
+	$("#id_report_name").html("<i class='fas fa-chart-line'></i>&nbsp;" + report_name);
+}
 
 </script>
 {% endblock %}
