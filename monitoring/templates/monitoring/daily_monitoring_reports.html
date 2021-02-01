@@ -152,10 +152,10 @@
 					<div class="col-md-9">
 						<div class="card">
 
-							<div class="row" style="padding:2px 4px 3px 4px;">
+							<div class="row" style="padding:3px 6px 3px 4px;">
 								<div class="col-8">
 									<div class="d-flex left pt-2">
-										<h5><div id="id_report_name"><i class="fas fa-chart-line"></i>&nbsp;&nbsp;Report Name</div></h5>
+										<h5><i class="fas fa-chart-line"></i>&nbsp;&nbsp;<span id="id_report_name">Report Name</span></h5>
 									</div>					
 								</div>
 
@@ -180,14 +180,12 @@
 
 						<div class="card">
 
-							<div class="row">
+							<div class="row" style="padding: 3px;">
 								<div class="col-12">
-									<div class="d-flex left">									
-										<form class="form-inline" name="daily_report_search_form" id="daily_report_search_form">
-											<div class="form-inline">
-												&nbsp;										
-											</div>
-										</form>
+									<div class="d-flex left">
+										<div class="col-12 pt-3" id="id_report_form">
+											<div class='alert alert-info' role='alert'>Please select a report.</div>
+										</div>
 									</div>					
 								</div>
 							</div>
@@ -208,23 +206,49 @@
 {% block javascript %}
 <script>	
 	
-$(document).ready(function(){
-	/*
-	$('.panel-collapse').on('show.bs.collapse', function () {
-		$(this).siblings('.panel-heading').addClass('active');
-	});
-
-	$('.panel-collapse').on('hide.bs.collapse', function () {
-		$(this).siblings('.panel-heading').removeClass('active');
-	});
-	*/
-
-
+$(document).ready(function() {
+	//
 });
 
 
 function load_report(report_name, report_id) {
-	$("#id_report_name").html("<i class='fas fa-chart-line'></i>&nbsp;" + report_name);
+	$("#id_report_name").html(report_name);
+
+	html = "<div class='alert alert-warning' role='alert'>";
+  	html += "<i class='fas fa-exclamation-circle'></i>&nbsp;Sorry. This report is not available.";
+	html += "</div>";
+
+	switch(report_id) {
+		case "psn_emp_zone":
+			break;
+
+		case "psn_terminate_g07":
+			/*
+			html = "";
+			html += "<form>";
+			html += "  <div class='row'>";
+			html += "    <div class='col'>";
+			html += "      <input type='text' class='form-control form-control-sm' placeholder='Employee ID'>";
+			html += "    </div>";
+			html += "    <div class='col'>";
+			html += "      <input type='text' class='form-control form-control-sm' placeholder='Last name'>";
+			html += "    </div>";
+			html += "  </div>";
+			html += "</form>";
+			*/
+			break;
+
+		case "psn_terminate_g09":
+			break;
+
+		case "psn_term_zone":
+			break;
+
+		default:			
+			break;
+	}
+
+	$("#id_report_form").html(html);
 }
 
 </script>
