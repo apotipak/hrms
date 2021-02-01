@@ -6732,8 +6732,8 @@ def generate_dgp_500(request, *args, **kwargs):
 					pay_type = row[6]
 					otm_amt = row[10]
 
-					# if pay_type!="LWO":
-					#	sum_otm_amt += otm_amt
+					if pay_type!="LWO":
+						sum_otm_amt += otm_amt
 						
 					shf_amt_hr = row[15]
 					if pay_type!="LWO":
@@ -6799,7 +6799,7 @@ def generate_dgp_500(request, *args, **kwargs):
 	current_datetime = datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
 
 	print("sum_pub_amt:", sum_pub_amt)
-	
+
 	context = {
 	'search_date_from': search_date_from,
 	'search_date_to': search_date_to,
