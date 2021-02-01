@@ -7008,7 +7008,7 @@ def export_dgp_500_xls(request):
 	font_style.font.bold = True
 	for col_num in range(len(row)):
 		if(col_num==0):
-			ws.write(row_num, 0, counter, font_style)
+			ws.write(row_num, 0, counter-1, font_style)
 		elif(col_num==1):
 			ws.write(row_num, 1, "Days", font_style)			
 		elif(col_num==5):
