@@ -7032,3 +7032,41 @@ def export_dgp_500_xls(request):
 
 	wb.save(response)
 	return response
+
+
+@login_required(login_url='/accounts/login/')
+@permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
+def DailyMonitoringReports(request):
+	page_title = settings.PROJECT_NAME
+	db_server = settings.DATABASES['default']['HOST']
+	project_name = settings.PROJECT_NAME
+	project_version = settings.PROJECT_VERSION
+	today_date = settings.TODAY_DATE	
+
+	template_name = 'monitoring/daily_monitoring_reports.html'
+	response_data = {}
+	modified_records = []
+
+	if request.user.is_superuser:
+	    employee_photo = ""
+	else:
+		if request.user.username!="CMS_SUP":
+		    employee_info = EmpPhoto.objects.filter(emp_id=request.user.username).get()   
+		    employee_photo = b64encode(employee_info.image).decode("utf-8")        
+		else:
+		    employee_info = None
+		    employee_photo = None		
+
+	if request.method == "POST":
+		if form.is_valid():          
+			form = ScheduleMaintenanceForm(request.POST, user=request.user)
+			response_data['form_is_valid'] = True            
+		else:            
+			response_data['form_is_valid'] = False
+		return JsonResponse(response_data)     
+	else:
+		form = ScheduleMaintenanceForm()
+
+	return render(request, template_name, {'page_title': page_title, 'project_name': project_name, 'project_version': project_version, 'db_server': db_server, 'today_date': today_date, 'form': form, 'employee_photo': employee_photo,'database': settings.DATABASES['default']['NAME'],'host': settings.DATABASES['default']['HOST']})
+
+

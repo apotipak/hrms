@@ -1,0 +1,190 @@
+{% extends "page_generic.html" %}
+{% load i18n %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %}{{ page_title}} - Daily Monitoring Reports{% endblock %}
+{% load static %}
+
+{% block content %}
+ 	<!-- Content Wrapper. Contains page content -->
+	<div class="content-wrapper">
+	
+	    <!-- Main content -->
+		<section class="content pt-2">
+			<div class="container-fluid">
+	        	<div class="row">
+		        	<div class="col-md-3">
+
+		        		<!--
+			            <div class="card card-secondary card-outline">
+			              <div class="card-body box-profile">
+			                <div class="text-center">
+			                </div>
+			                <h3 class="profile-username text-center">{{ employee.emp_fname_th }} {{ employee.emp_lname_th }}</h3>
+			                <p class="text-muted text-center">{{ employee.pos_en }}</p>
+			                <ul class="list-group list-group-unbordered mb-3">
+			                  <li class="list-group-item">
+			                    <b>CUSTOMER & CONTRACT</b>
+			                  </li>                        
+			                  <li class="list-group-item">
+			                    <b>SCHEDULE & DAILY ATTEND</b>
+			                  </li>                      
+			                  <li class="list-group-item">
+			                    <b>PERSONAL</b>
+			                  </li>
+			                </ul>
+			              </div>
+			            </div>
+		        		-->
+    
+						<!--Accordion wrapper-->
+						<div class="accordion md-accordion" id="accordionEx" role="tablist" aria-multiselectable="true">
+
+						  <!-- Accordion card -->
+						  <div class="card">
+
+						    <!-- Card header -->
+						    <div class="card-header" role="tab" id="headingOne1" style="padding:2px 0 2px 8px;">
+						      <a class="text-dark" data-toggle="collapse" data-parent="#accordionEx" href="#collapseOne1" aria-expanded="true" aria-controls="collapseOne1">
+						        <h5 class="mb-0">
+						         CUSTOMER & CONTRACT&nbsp;&nbsp;&nbsp;<small><i class="fas fa-angle-down rotate-icon"></i></small>
+						        </h5>
+						      </a>
+						    </div>
+
+						    <!-- Card body -->
+						    <div id="collapseOne1" class="collapse show" role="tabpanel" aria-labelledby="headingOne1" data-parent="#accordionEx">
+						      <div class="card-body" style="padding:0 0 0 8px;">
+								<table class="table table-hover"> 
+								  <tbody>
+								    <tr>
+								    	<td><a href="#">1. Contract List</a></td>
+								    </tr>
+								  </tbody>
+								</table>
+						      </div>
+						    </div>
+
+						  </div>
+						  <!-- Accordion card -->
+
+						  <!-- Accordion card -->
+						  <div class="card">
+
+						    <!-- Card header -->
+						    <div class="card-header" role="tab" id="headingTwo2" style="padding:2px 0 2px 8px;">
+						      <a class="collapsed text-dark" data-toggle="collapse" data-parent="#accordionEx" href="#collapseTwo2" aria-expanded="false" aria-controls="collapseTwo2">
+						        <h5 class="mb-0">
+						        	SCHEDULE & DAILY ATTEND&nbsp;&nbsp;&nbsp;<small><i class="fas fa-angle-down rotate-icon"></i></small>
+						        </h5>
+						      </a>
+						    </div>
+
+						    <!-- Card body -->
+						    <div id="collapseTwo2" class="collapse" role="tabpanel" aria-labelledby="headingTwo2" data-parent="#accordionEx">
+						      <div class="card-body" style="padding:0 0 0 5px;">
+								<table class="table table-hover"> 
+								  <tbody>
+								    <tr>
+								    	<td><a href="#">1. GPM_Continue 7 Work Day List</a></td>
+								    </tr>
+								    <tr>
+										<td><a href="#">2. GPM_Reject Continue 7 Work Day List</a></td>
+								    </tr>
+								    <tr>
+								    	<td></td>
+								    </tr>
+								    <tr>
+								    	<td></td>
+								    </tr>    
+								  </tbody>
+								</table>
+
+						      </div>
+						    </div>
+
+						  </div>
+						  <!-- Accordion card -->
+
+						  <!-- Accordion card -->
+						  <div class="card">
+
+						    <!-- Card header -->
+						    <div class="card-header" role="tab" id="headingThree3" style="padding:2px 0 2px 8px;">
+						      <a class="collapsed text-dark" data-toggle="collapse" data-parent="#accordionEx" href="#collapseThree3"
+						        aria-expanded="false" aria-controls="collapseThree3">
+						        <h5 class="mb-0">
+						          PERSONAL&nbsp;&nbsp;&nbsp;<small><i class="fas fa-angle-down rotate-icon"></i></small>
+						        </h5>
+						      </a>
+						    </div>
+
+						    <!-- Card body -->
+						    <div id="collapseThree3" class="collapse" role="tabpanel" aria-labelledby="headingThree3" data-parent="#accordionEx">
+						      <div class="card-body" style="padding:0 0 0 5px;">
+								<table class="table table-hover"> 
+								  <tbody>
+								    <tr>
+								    	<td><a href="#">1. Guard Working by Zone</a></td>
+								    </tr>
+								    <tr>
+										<td><a href="#">2. Terminate Employee List</a></td>
+								    </tr>
+								    <tr>
+								    	<td><a href="#">3. Terminate Employee Date</a></td>
+								    </tr>
+								    <tr>
+								    	<td><a href="#">4. Terminate Employee Zone</a></td>
+								    </tr>    
+								  </tbody>
+								</table>
+						      </div>
+						    </div>
+
+						  </div>
+						</div>
+
+		        	</div>
+
+
+
+
+					<div class="col-md-9">
+						<div class="card">
+
+						  <div class="card-header p-2">
+						  	&nbsp;
+						  </div>
+
+						  <div class="card-body">
+						    <div class="tab-content"></div>
+						  </div>
+
+						</div>
+					</div>
+	      		</div>
+	  		</div>
+		</section>
+  
+	</div>
+{% endblock %}
+
+
+{% block javascript %}
+<script>	
+	
+$(document).ready(function(){
+
+ $('.panel-collapse').on('show.bs.collapse', function () {
+    $(this).siblings('.panel-heading').addClass('active');
+  });
+
+  $('.panel-collapse').on('hide.bs.collapse', function () {
+    $(this).siblings('.panel-heading').removeClass('active');
+  });
+
+});
+
+
+</script>
+{% endblock %}
