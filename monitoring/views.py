@@ -6895,7 +6895,7 @@ def export_dgp_500_xls(request):
 	sql += "R_D500.FNAME, R_D500.SCH_RANK, R_D500.ABSENT "
 	sql += "FROM HRMS.dbo.R_D500 R_D500 "
 	sql += "ORDER BY R_D500.EMP_ID ASC"
-	print("SQL: ", sql)
+	# print("SQL: ", sql)
 	try:
 		cursor = connection.cursor()
 		cursor.execute(sql)
@@ -6916,17 +6916,22 @@ def export_dgp_500_xls(request):
 	font_style.font.bold = True
 
 	# First Row, First Column
-	ws.write(1, 6, "Daily Guard Performance", font_style)
+	font_style = xlwt.easyxf('font: bold 1,height 280;')
+	ws.write(1, 5, "Daily Guard Performance", font_style)
+
+	font_style = xlwt.XFStyle()
 	ws.write(3, 0, "Employee ID : " + str(emp_id))
 	ws.write(4, 0, "Employee Name : " + str(fullname_th))
 	ws.write(5, 0, "Employee Rank : " + str(sch_rank))
-	ws.write(2, 5, "From Date : " + str(search_date_from))
-	ws.write(2, 8, "To Date : " + str(search_date_to))
-	ws.write(2, 15, "Print Date : " + str(datetime.datetime.now().strftime('%d/%m/%Y %H:%M')))
+
+	ws.write(2, 14, "From Date : " + str(search_date_from))
+	ws.write(3, 14, "To Date : " + str(search_date_to))	
+	ws.write(4, 14, "Print Date : " + str(datetime.datetime.now().strftime('%d/%m/%Y %H:%M')))
 
 	ws.col(1).width = int(13*260)
 	ws.col(3).width = int(10*260)
 	ws.col(4).width = int(25*260)
+	ws.col(15).width = int(10*260)
 
 	columns = ['', 'CONTRACT', 'DATE', 'DAY', 'SHIFT', 'OT', 'HOURS', 'BAS', 'GOT', 'BON', 'PUB', 'TEL', 'DOF', 'SPARE', 'WAGE', 'PAY TYPE', 'REMARK']
 	for col_num in range(len(columns)):
@@ -7004,6 +7009,8 @@ def export_dgp_500_xls(request):
 	for col_num in range(len(row)):
 		if(col_num==0):
 			ws.write(row_num, 0, counter, font_style)
+		elif(col_num==1):
+			ws.write(row_num, 1, "Days", font_style)			
 		elif(col_num==5):
 			ws.write(row_num, 5, sum_otm_amt, font_style)
 		elif(col_num==6):
