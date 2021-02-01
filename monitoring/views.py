@@ -6732,11 +6732,12 @@ def generate_dgp_500(request, *args, **kwargs):
 					pay_type = row[6]
 					otm_amt = row[10]
 
-					if pay_type!="LWO":
-						sum_otm_amt += otm_amt
+					# if pay_type!="LWO":
+					#	sum_otm_amt += otm_amt
 						
 					shf_amt_hr = row[15]
-					sum_shf_amt_hr += shf_amt_hr
+					if pay_type!="LWO":
+						sum_shf_amt_hr += shf_amt_hr
 
 					bas_amt = row[7]
 					sum_bas_amt += bas_amt
