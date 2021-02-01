@@ -6716,12 +6716,13 @@ def generate_dgp_500(request, *args, **kwargs):
 		cursor = connection.cursor()
 		cursor.execute(sql)
 		r_d500_obj = cursor.fetchall()
+		counter = 1
 
 		if r_d500_obj is not None:
 			if len(r_d500_obj)>0:
 
-
 				for row in r_d500_obj:
+					number = counter
 					fname = row[1]
 					cnt_id = row[2]
 					dly_date = row[3].strftime("%d/%m/%Y")
@@ -6761,6 +6762,7 @@ def generate_dgp_500(request, *args, **kwargs):
 					absent = row[17]
 
 					record = {
+						"number": number,
 					    "fname": fname,
 					    "cnt_id": cnt_id,
 					    "dly_date": dly_date,
@@ -6778,9 +6780,10 @@ def generate_dgp_500(request, *args, **kwargs):
 					    "wage_id": wage_id,
 					    "shf_amt_hr": shf_amt_hr,
 					    "ot_hr_amt": ot_hr_amt,
-					    "absent": absent,				    
+					    "absent": absent,			    
 					}
 
+					counter = counter + 1
 					pickup_record.append(record)
 	finally:
 		cursor.close()
@@ -6819,6 +6822,7 @@ def generate_dgp_500(request, *args, **kwargs):
     "sum_spare": sum_spare,
     "sum_shf_amt_hr": sum_shf_amt_hr,
     "sum_dof": sum_dof,
+    "total_row": counter,
 	}
 
 	tpl = DocxTemplate(template_name)
