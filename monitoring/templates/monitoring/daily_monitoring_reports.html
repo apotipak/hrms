@@ -288,8 +288,7 @@ $(document).ready(function() {
 });
 
 
-function load_report(report_name, report_id) {
-	
+function load_report(report_name, report_id) {	
 	html = "<div class='alert alert-warning' role='alert'>&nbsp;Sorry. This report is not available.</div>";
 
 	switch(report_id) {
@@ -315,21 +314,6 @@ function load_report(report_name, report_id) {
 			html += "          <input type='text' class='form-control form-control-sm' id='id_dept_zone'>";
 			html += "        </div>";
 			html += "      </div>";
-
-			/*
-			html += "      <div class='form-group row'>";
-			html += "        <label class='col-3 col-form-label'>Year</label>";
-			html += "        <div class='col-9'>";
-			html += "          <input type='text' class='form-control form-control-sm' id='id_year'>";
-			html += "        </div>";
-			html += "      </div>";
-			html += "      <div class='form-group row'>";
-			html += "        <label class='col-3 col-form-label'>Month</label>";
-			html += "        <div class='col-9'>";
-			html += "          <input type='text' class='form-control form-control-sm' id='id_month'>";
-			html += "        </div>";
-			html += "      </div>";
-			*/
 
 			html += "      <div class='form-group row'>";
 			html += "        <label class='col-3 col-form-label'>Year / Month</label>";
@@ -375,6 +359,59 @@ function load_report(report_name, report_id) {
 
 	$("#id_report_form").html(html);
 }
+
+
+function print_document() {
+	var report_name = $("#id_report_name").text();	
+	if(report_name=="Report Name") {
+		$.alert({
+		    title: 'Error',
+		    type: 'red',
+		    content: "กรุณาเลือกรายงานก่อนสั่งพิมพ์",
+		    animation: 'zoom',
+		    animationBounce: 1.5,
+		    closeIcon: false,
+		    boxWidth: '38%',
+		    useBootstrap: false,
+		});		
+		return false;
+	}
+
+	//
+	switch(report_name) {
+		case "psn_emp_zone":
+			$("#id_report_name").html(report_name);
+			break;
+
+		case "psn_terminate_g07":
+			break;
+
+		default:
+			break;
+	}
+
+}
+
+
+function download_document() {
+	var report_name = $("#id_report_name").text();	
+	if(report_name=="Report Name") {
+		$.alert({
+		    title: 'Error',
+		    type: 'red',
+		    content: "กรุณาเลือกรายงานก่อนดาวน์โหลดไฟล์",
+		    animation: 'zoom',
+		    animationBounce: 1.5,
+		    closeIcon: false,
+		    boxWidth: '38%',
+		    useBootstrap: false,
+		});		
+		return false;
+	}
+
+	//
+}
+
 
 </script>
 {% endblock %}
