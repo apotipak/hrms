@@ -6822,7 +6822,7 @@ def generate_dgp_500(request, *args, **kwargs):
     "sum_spare": sum_spare,
     "sum_shf_amt_hr": sum_shf_amt_hr,
     "sum_dof": sum_dof,
-    "total_row": counter,
+    "total_row": counter-1,
 	}
 
 	tpl = DocxTemplate(template_name)
