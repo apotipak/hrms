@@ -6711,7 +6711,7 @@ def generate_dgp_500(request, *args, **kwargs):
 	sql += "R_D500.TEL_AMT,R_D500.WAGE_ID,R_D500.SHF_AMT_HR,R_D500.OT_HR_AMT,R_D500.ABSENT "
 	sql += "FROM HRMS.dbo.R_D500 R_D500 "
 	sql += "ORDER BY R_D500.EMP_ID ASC"
-	# print("SQL report:", sql)
+	print("SQL report:", sql)
 	try:
 		cursor = connection.cursor()
 		cursor.execute(sql)
@@ -6798,6 +6798,8 @@ def generate_dgp_500(request, *args, **kwargs):
 
 	current_datetime = datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
 
+	print("sum_pub_amt:", sum_pub_amt)
+	
 	context = {
 	'search_date_from': search_date_from,
 	'search_date_to': search_date_to,
