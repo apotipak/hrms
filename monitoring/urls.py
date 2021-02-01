@@ -37,4 +37,5 @@ urlpatterns += [
     path('ajax/search_daily_guard_performance_employee_information/', views.SearchDailyGurdPerformanceEmployeeInformation, name='search-daily-guard-performance-employee-information'),
 
     url(r'^generate-dgp-500/(?P<emp_id>\d+)/(?P<search_date_from>\d{2}/\d{2}/\d{4})/(?P<search_date_to>\d{2}/\d{2}/\d{4})/$', views.generate_dgp_500, name='generate-dgp-500'),
+    url(r'^export/xls/$', views.export_dgp_500_xls, name='export_dgp_500_xls'),
 ]

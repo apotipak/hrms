@@ -30,6 +30,7 @@ from os import path
 from django.http import FileResponse
 from django.core.exceptions import PermissionDenied
 from django.views.decorators.cache import never_cache
+import xlwt
 
 
 Tpub = 11
@@ -6845,3 +6846,148 @@ def generate_dgp_500(request, *args, **kwargs):
 	convert(docx_file, pdf_file)
 
 	return FileResponse(open(pdf_file, 'rb'), content_type='application/pdf')
+
+
+@login_required(login_url='/accounts/login/')
+def export_dgp_500_xls(request):
+	response = HttpResponse(content_type='application/ms-excel')
+	response['Content-Disposition'] = 'attachment; filename="DGP_500.xls"'
+
+	r_d500_obj = []
+	pickup_record = []
+	context = {}
+	emp_id = ""
+	fname = ""
+	cnt_id = ""
+	dly_date = ""
+	shf_desc = ""
+	sch_rank = ""
+	pay_type = ""
+	bas_amt = ""
+	bon_amt = ""
+	pub_amt = ""
+	otm_amt = ""
+	dof = ""
+	spare = ""
+	tel_amt = ""
+	wage_id = ""
+	shf_amt_hr = ""
+	ot_hr_amt = ""
+	absent = ""
+	sum_otm_amt = 0
+	sum_shf_amt_hr = 0
+	sum_bas_amt = 0
+	sum_ot_hr_amt = 0
+	sum_bon_amt = 0
+	sum_pub_amt = 0
+	sum_tel_amt = 0
+	sum_dof = 0
+	sum_spare = 0
+
+	wb = xlwt.Workbook(encoding='utf-8')
+	ws = wb.add_sheet('DGP_500')
+
+	sql = "select "
+	sql += "0 as col0, "
+	sql += "R_D500.CNT_ID, R_D500.DLY_DATE, 3 as col3, R_D500.SHF_DESC, R_D500.OTM_AMT, R_D500.SHF_AMT_HR,"
+	sql += "R_D500.BAS_AMT, R_D500.OT_HR_AMT, R_D500.BON_AMT, R_D500.PUB_AMT, R_D500.TEL_AMT,"
+	sql += "R_D500.DOF, R_D500.SPARE, R_D500.WAGE_ID, R_D500.PAY_TYPE, R_D500.EMP_ID,"
+	sql += "R_D500.FNAME, R_D500.SCH_RANK, R_D500.ABSENT "
+	sql += "FROM HRMS.dbo.R_D500 R_D500 "
+	sql += "ORDER BY R_D500.EMP_ID ASC"
+
+	try:
+		cursor = connection.cursor()
+		cursor.execute(sql)
+		r_d500_obj = cursor.fetchall()
+	finally:
+		cursor.close()
+
+	if r_d500_obj is not None:
+		if len(r_d500_obj)>0:
+			emp_id = r_d500_obj[0][16]
+			fullname_th = r_d500_obj[0][17]
+			sch_rank = r_d500_obj[0][18]
+			search_date_from = r_d500_obj[0][2].strftime('%d/%m/%Y')
+			search_date_to = r_d500_obj[len(r_d500_obj)-1][2].strftime('%d/%m/%Y')
+			
+
+	font_style = xlwt.XFStyle()
+	font_style.font.bold = True
+
+	# First Row, First Column
+	ws.write(1, 6, "Daily Guard Performance", font_style)
+	ws.write(3, 0, "Employee ID : " + str(emp_id))
+	ws.write(4, 0, "Employee Name : " + str(fullname_th))
+	ws.write(5, 0, "Employee Rank : " + str(sch_rank))
+	ws.write(2, 5, "From Date : " + str(search_date_from))
+	ws.write(2, 8, "To Date : " + str(search_date_to))
+	ws.write(2, 15, "Print Date : " + str(datetime.datetime.now().strftime('%d/%m/%Y %H:%M')))
+
+	columns = ['', 'CONTRACT', 'DATE', 'DAY', 'SHIFT', 'OT', 'HOURS', 'BAS', 'GOT', 'BON', 'PUB', 'TEL', 'DOF', 'SPARE', 'WAGE', 'PAY TYPE', 'REMARK']
+	for col_num in range(len(columns)):
+		ws.write(7, col_num, columns[col_num], font_style)
+
+	# Sheet body, remaining rows
+	font_style = xlwt.XFStyle()
+
+	# Sheet header, first row
+	row_num = 8
+	counter = 1
+
+	for row in r_d500_obj:
+		number = counter
+		fname = row[17]
+		cnt_id = str(row[2])
+		dly_date = row[2].strftime("%d/%m/%Y")
+		dly_date_week_day = datetime.datetime.strptime(dly_date, '%d/%m/%Y').strftime('%a')
+		shf_desc = row[5]
+		sch_rank = row[18]
+		pay_type = row[15]
+		otm_amt = row[5]
+
+		if pay_type!="LWO":
+			sum_otm_amt += otm_amt
+			
+		shf_amt_hr = row[6]
+		if pay_type!="LWO":
+			sum_shf_amt_hr += shf_amt_hr
+
+		bas_amt = row[7]
+		sum_bas_amt += bas_amt
+
+		ot_hr_amt = row[8]
+		sum_ot_hr_amt += ot_hr_amt
+
+		bon_amt = row[9]
+		sum_bon_amt += bon_amt
+
+		pub_amt = row[10]
+		sum_pub_amt += pub_amt
+		
+		tel_amt = row[11]
+		sum_tel_amt += tel_amt
+
+		dof = row[12]
+		sum_dof += dof
+
+		spare = row[13]
+		sum_spare += spare
+
+		wage_id = row[13]					
+		absent = row[19]
+		
+		for col_num in range(len(row)):
+
+			if(col_num==0):
+				ws.write(row_num, 0, counter, font_style)
+			elif (col_num==16) or (col_num==17) or (col_num==18) or (col_num==19):
+				ws.write(row_num, col_num, "", font_style)
+			else:
+				ws.write(row_num, col_num, row[col_num], font_style)
+
+		row_num += 1
+		counter += 1
+
+	wb.save(response)
+	return response
