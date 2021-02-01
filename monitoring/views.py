@@ -6790,6 +6790,12 @@ def generate_dgp_500(request, *args, **kwargs):
 	finally:
 		cursor.close()
 
+	counter = counter -1
+	if counter>0:
+		total_row = str(counter) + str(" Days")
+	else:
+		total_row = str(counter) + str(" Day")
+
 	current_datetime = datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
 
 	context = {
@@ -6824,7 +6830,7 @@ def generate_dgp_500(request, *args, **kwargs):
     "sum_spare": sum_spare,
     "sum_shf_amt_hr": sum_shf_amt_hr,
     "sum_dof": sum_dof,
-    "total_row": counter-1,
+    "total_row": total_row,
 	}
 
 	tpl = DocxTemplate(template_name)
