@@ -6924,6 +6924,10 @@ def export_dgp_500_xls(request):
 	ws.write(2, 8, "To Date : " + str(search_date_to))
 	ws.write(2, 15, "Print Date : " + str(datetime.datetime.now().strftime('%d/%m/%Y %H:%M')))
 
+	ws.col(1).width = int(13*260)
+	ws.col(3).width = int(10*260)
+	ws.col(4).width = int(25*260)
+
 	columns = ['', 'CONTRACT', 'DATE', 'DAY', 'SHIFT', 'OT', 'HOURS', 'BAS', 'GOT', 'BON', 'PUB', 'TEL', 'DOF', 'SPARE', 'WAGE', 'PAY TYPE', 'REMARK']
 	for col_num in range(len(columns)):
 		ws.write(7, col_num, columns[col_num], font_style)
@@ -6939,8 +6943,10 @@ def export_dgp_500_xls(request):
 		number = counter
 		fname = row[17]
 		cnt_id = str(row[2])
-		dly_date = row[2].strftime("%d/%m/%Y")
+		dly_date = str(row[2].strftime("%d/%m/%Y"))		
 		dly_date_week_day = datetime.datetime.strptime(dly_date, '%d/%m/%Y').strftime('%a')
+		# print("dly_date_week_day:", dly_date_week_day)
+		dly_date_str = str(dly_date)
 		shf_desc = row[5]
 		sch_rank = row[18]
 		pay_type = row[15]
@@ -6981,6 +6987,10 @@ def export_dgp_500_xls(request):
 
 			if(col_num==0):
 				ws.write(row_num, 0, counter, font_style)
+			elif(col_num==2):
+				ws.write(row_num, 2, dly_date_week_day.upper(), font_style)
+			elif(col_num==3):
+				ws.write(row_num, 3, dly_date_str, font_style)
 			elif (col_num==16) or (col_num==17) or (col_num==18) or (col_num==19):
 				ws.write(row_num, col_num, "", font_style)
 			else:
