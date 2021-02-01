@@ -154,7 +154,7 @@
 
 							<div class="row" style="padding:3px 6px 3px 4px;">
 								<div class="col-8">
-									<div class="d-flex left pt-2">
+									<div class="d-flex left pt-2 pl-1">
 										<h5><i class="fas fa-chart-line"></i>&nbsp;&nbsp;<span id="id_report_name">Report Name</span></h5>
 									</div>					
 								</div>
@@ -183,8 +183,85 @@
 							<div class="row" style="padding: 3px;">
 								<div class="col-12">
 									<div class="d-flex left">
-										<div class="col-12 pt-3" id="id_report_form">
-											<div class='alert alert-info' role='alert'>Please select a report.</div>
+										<div class="col-8 offset-2 pt-3 pb-1" id="id_report_form">
+											
+											<!--<div class='alert alert-info' role='alert'>Please select a report.</div>-->
+											
+			
+
+
+			{% comment %}
+            <div class="card card-info" style="box-shadow: none;">
+              <form class="form-horizontal">
+                <div class="card-body">
+
+                  <div class="form-group row">
+                    <label class="col-3 col-form-label">Employee Type</label>
+                    <div class="col-9">
+                      <input type="text" class="form-control form-control-sm" id="id_emp_type">
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label class="col-3 col-form-label">Dept / Zone</label>
+                    <div class="col-9">
+                      <input type="text" class="form-control form-control-sm" id="id_dept_zone">
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label class="col-3 col-form-label">Year</label>
+                    <div class="col-9">
+                      <input type="text" class="form-control form-control-sm" id="id_year">
+                    </div>
+                  </div>
+
+
+                  <div class="form-group row">
+                    <label class="col-3 col-form-label">Month</label>
+                    <div class="col-9">
+                      <input type="text" class="form-control form-control-sm" id="id_month">
+                    </div>
+                  </div>
+
+
+                  <div class="form-group row">
+                    <label class="col-3 col-form-label">Employee ID</label>
+
+                    <div class="col-9" style="padding:0px;">
+                    	<div class="col-6 float-left">
+                      		<input type="text" class="form-control form-control-sm" id="id_emp_id_from" value="0">
+                      	</div>
+
+                      	<div class="col-6 float-right">
+                      		<input type="text" class="form-control form-control-sm" id="id_emp_id_to" value="9999999">
+                      	</div>
+                    </div>
+                  </div>
+
+                  <!--
+                  <div class="form-group row">
+                    <div class="offset-3 col-8">
+                      <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="exampleCheck2">
+                        <label class="form-check-label" for="exampleCheck2">Report English</label>
+                      </div>
+                    </div>
+                  </div>
+              	  -->
+
+                </div>
+                <!--
+                <div class="card-footer text-right">
+                  <button type="submit" class="btn btn-default">Cancel</button>
+                  <button type="submit" class="btn btn-info">Sign in</button>
+                </div>
+            	-->
+              </form>
+            </div>
+            {% endcomment %}
+
+
 										</div>
 									</div>					
 								</div>
@@ -212,39 +289,87 @@ $(document).ready(function() {
 
 
 function load_report(report_name, report_id) {
-	$("#id_report_name").html(report_name);
-
-	html = "<div class='alert alert-warning' role='alert'>";
-  	html += "<i class='fas fa-exclamation-circle'></i>&nbsp;Sorry. This report is not available.";
-	html += "</div>";
+	
+	html = "<div class='alert alert-warning' role='alert'>&nbsp;Sorry. This report is not available.</div>";
 
 	switch(report_id) {
 		case "psn_emp_zone":
+			$("#id_report_name").html(report_name);
 			break;
 
-		case "psn_terminate_g07":
-			/*
+		case "psn_terminate_g07":			
+			$("#id_report_name").html(report_name + " | <small>รายชื่อพนักงานลาออก</small>");
 			html = "";
-			html += "<form>";
-			html += "  <div class='row'>";
-			html += "    <div class='col'>";
-			html += "      <input type='text' class='form-control form-control-sm' placeholder='Employee ID'>";
-			html += "    </div>";
-			html += "    <div class='col'>";
-			html += "      <input type='text' class='form-control form-control-sm' placeholder='Last name'>";
-			html += "    </div>";
-			html += "  </div>";
-			html += "</form>";
+			html += "<div class='card card-info' style='box-shadow: none;'>";
+			html += "  <form class='form-horizontal'>";
+			html += "    <div class='card-body'>";
+			html += "      <div class='form-group row'>";
+			html += "        <label class='col-3 col-form-label'>Employee Type</label>";
+			html += "        <div class='col-9'>";
+			html += "          <input type='text' class='form-control form-control-sm' id='id_emp_type'>";
+			html += "        </div>";
+			html += "      </div>";
+			html += "      <div class='form-group row'>";
+			html += "        <label class='col-3 col-form-label'>Dept / Zone</label>";
+			html += "        <div class='col-9'>";
+			html += "          <input type='text' class='form-control form-control-sm' id='id_dept_zone'>";
+			html += "        </div>";
+			html += "      </div>";
+
+			/*
+			html += "      <div class='form-group row'>";
+			html += "        <label class='col-3 col-form-label'>Year</label>";
+			html += "        <div class='col-9'>";
+			html += "          <input type='text' class='form-control form-control-sm' id='id_year'>";
+			html += "        </div>";
+			html += "      </div>";
+			html += "      <div class='form-group row'>";
+			html += "        <label class='col-3 col-form-label'>Month</label>";
+			html += "        <div class='col-9'>";
+			html += "          <input type='text' class='form-control form-control-sm' id='id_month'>";
+			html += "        </div>";
+			html += "      </div>";
 			*/
+
+			html += "      <div class='form-group row'>";
+			html += "        <label class='col-3 col-form-label'>Year / Month</label>";
+			html += "        <div class='col-9' style='padding:0px;'>";
+			html += "        	<div class='col-6 float-left'>";
+			html += "          		<input type='text' class='form-control form-control-sm' id='id_year' placeholder='Year'>";
+			html += "          	</div>";
+			html += "          	<div class='col-6 float-right'>";
+			html += "          		<input type='text' class='form-control form-control-sm' id='id_month' placeholder='Month'>";
+			html += "          	</div>";
+			html += "        </div>";		
+			html += "      </div>";
+
+			html += "      <div class='form-group row'>";
+			html += "        <label class='col-3 col-form-label'>Employee ID</label>";
+			html += "        <div class='col-9' style='padding:0px;'>";
+			html += "        	<div class='col-6 float-left'>";
+			html += "          		<input type='text' class='form-control form-control-sm' id='id_emp_id_from' value='0'>";
+			html += "          	</div>";
+			html += "          	<div class='col-6 float-right'>";
+			html += "          		<input type='text' class='form-control form-control-sm' id='id_emp_id_to' value='9999999'>";
+			html += "          	</div>";
+			html += "        </div>";		
+			html += "      </div>";
+
+			html += "    </div>";
+			html += "  </form>";
+			html += "</div>";
 			break;
 
 		case "psn_terminate_g09":
+			$("#id_report_name").html(report_name + " | <small>รายชื่อพนักงานลาออก (ระบุวัน)</small>");
 			break;
 
 		case "psn_term_zone":
+			$("#id_report_name").html(report_name + " | <small>รายชื่อพนักงานลาออก (ระบุโซน)</small>");
 			break;
 
-		default:			
+		default:
+			$("#id_report_name").html("");
 			break;
 	}
 
