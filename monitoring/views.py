@@ -6895,7 +6895,7 @@ def export_dgp_500_xls(request):
 	sql += "R_D500.FNAME, R_D500.SCH_RANK, R_D500.ABSENT "
 	sql += "FROM HRMS.dbo.R_D500 R_D500 "
 	sql += "ORDER BY R_D500.EMP_ID ASC"
-
+	print("SQL: ", sql)
 	try:
 		cursor = connection.cursor()
 		cursor.execute(sql)
@@ -6947,7 +6947,7 @@ def export_dgp_500_xls(request):
 		dly_date_week_day = datetime.datetime.strptime(dly_date, '%d/%m/%Y').strftime('%a')
 		# print("dly_date_week_day:", dly_date_week_day)
 		dly_date_str = str(dly_date)
-		shf_desc = row[5]
+		shf_desc = row[4]
 		sch_rank = row[18]
 		pay_type = row[15]
 		otm_amt = row[5]
@@ -6984,7 +6984,6 @@ def export_dgp_500_xls(request):
 		absent = row[19]
 		
 		for col_num in range(len(row)):
-
 			if(col_num==0):
 				ws.write(row_num, 0, counter, font_style)
 			elif(col_num==2):
@@ -6998,6 +6997,31 @@ def export_dgp_500_xls(request):
 
 		row_num += 1
 		counter += 1
+
+	# Sum
+	font_style = xlwt.XFStyle()
+	font_style.font.bold = True
+	for col_num in range(len(row)):
+		if(col_num==0):
+			ws.write(row_num, 0, counter, font_style)
+		elif(col_num==5):
+			ws.write(row_num, 5, sum_otm_amt, font_style)
+		elif(col_num==6):
+			ws.write(row_num, 6, sum_shf_amt_hr, font_style)
+		elif(col_num==7):
+			ws.write(row_num, 7, sum_bas_amt, font_style)
+		elif(col_num==8):
+			ws.write(row_num, 8, sum_ot_hr_amt, font_style)
+		elif(col_num==9):
+			ws.write(row_num, 9, sum_bon_amt, font_style)
+		elif(col_num==10):
+			ws.write(row_num, 10, sum_pub_amt, font_style)
+		elif(col_num==11):
+			ws.write(row_num, 11, sum_tel_amt, font_style)			
+		elif(col_num==12):
+			ws.write(row_num, 12, sum_dof, font_style)
+		elif(col_num==13):
+			ws.write(row_num, 13, sum_spare, font_style)
 
 	wb.save(response)
 	return response
