@@ -6920,6 +6920,7 @@ def export_dgp_500_xls(request):
 	ws.write(1, 5, "Daily Guard Performance", font_style)
 
 	font_style = xlwt.XFStyle()
+	font_style = xlwt.easyxf('font: height 160;')
 	ws.write(3, 0, "Employee ID : " + str(emp_id))
 	ws.write(4, 0, "Employee Name : " + str(fullname_th))
 	ws.write(5, 0, "Employee Rank : " + str(sch_rank))
@@ -6939,6 +6940,7 @@ def export_dgp_500_xls(request):
 
 	# Sheet body, remaining rows
 	font_style = xlwt.XFStyle()
+	font_style = xlwt.easyxf('font: height 160;')
 
 	# Sheet header, first row
 	row_num = 8
@@ -7005,6 +7007,8 @@ def export_dgp_500_xls(request):
 
 	# Sum
 	font_style = xlwt.XFStyle()
+	font_style = xlwt.easyxf('font: height 160;')
+	
 	font_style.font.bold = True
 	for col_num in range(len(row)):
 		if(col_num==0):

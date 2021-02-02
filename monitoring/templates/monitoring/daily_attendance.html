@@ -1214,9 +1214,11 @@ $(document).ready(function(){
 $("#id_late_from").inputmask("99/99/9999 99:99");
 $("#id_late_from").bind("focus",function(e){
 	if(e.keyCode!=undefined) {
-		this.setSelectionRange(11, 11);		
+		//console.log("a");
+		this.setSelectionRange(11, 12);		
 	} else {
-		this.setSelectionRange(11, 13);
+		//console.log("b");
+		this.setSelectionRange(11, 12);
 	}
 	
 });
@@ -1224,80 +1226,189 @@ $("#id_late_from").bind("keyup",function(e){
 	var keyup_point;
 	keyup_point = this.selectionStart;
 	if(e.keyCode==13) { // enter		
+
+		/*
 		if(keyup_point==11) {
 			this.setSelectionRange(11, 13);
 		}				
 		this.setSelectionRange(11, 13);
+		*/
+
+		$("#id_late_to").focus();
 	}
 
-	if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105)) {		
+	if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105)) {
+		//console.log("number 0-9 keyup_point:" + keyup_point);
 		if(keyup_point==11) {
 			this.setSelectionRange(11, 13);	
 		}
-
+		if(keyup_point==12) {
+			this.setSelectionRange(12, 13);
+		}				
 		if(keyup_point==14) {
-			this.setSelectionRange(14, 16);		
+			this.setSelectionRange(14, 15);
+		}
+		if(keyup_point==15) {
+			this.setSelectionRange(15, 16);
 		}
 	}
 
-	if(e.keyCode >= 37) {
-		if(keyup_point==13 || keyup_point==14) {
+	if(e.keyCode == 37) {
+		//console.log("left arrow keyup_point:" + keyup_point);
+		if(keyup_point==12) {
+			this.setSelectionRange(11, 12);
+		}
+
+		if(keyup_point==13) {
 			this.setSelectionRange(11, 13);		
 		}
+
+		if(keyup_point==14) {
+			this.setSelectionRange(12, 13);
+		}
+
+		if(keyup_point==15) {
+			this.setSelectionRange(14, 15);
+		}		
+
+		if(keyup_point==16) {
+			this.setSelectionRange(15, 16);
+		}		
+
 	}
 
-	if(e.keyCode >= 39) {
-		if(keyup_point==13 || keyup_point==14) {
-			this.setSelectionRange(14, 16);		
+	if(e.keyCode == 39) {
+		//console.log("right arrow keyup_point:" + keyup_point);
+		if(keyup_point==12) {
+			this.setSelectionRange(12, 13);
+		}		
+
+		if(keyup_point==13) {
+			this.setSelectionRange(14, 15);		
+		}		
+
+		if(keyup_point==14) {
+			this.setSelectionRange(15, 16);
+		}
+
+		if(keyup_point==15) {
+			this.setSelectionRange(15, 16);
 		}		
 	}
 });
+
 
 
 
 $("#id_late_to").inputmask("99/99/9999 99:99");
 $("#id_late_to").bind("focus",function(e){
 	if(e.keyCode!=undefined) {
-		this.setSelectionRange(11, 11);		
+		console.log("a");
+		this.setSelectionRange(11, 12);		
 	} else {
-		this.setSelectionRange(11, 13);
-	}
-	
+		console.log("b");
+		const input = document.getElementById('id_late_to');
+		window.setTimeout(function() {
+        	input.setSelectionRange(11, 12);
+        }, 10);
+	}	
 });
+$("#id_late_to").bind("focusout",function(e){
+	console.log("focus out");
+	event.preventDefault();
+	var late_from = $("#id_late_from").val().split(' ');
+	var late_from_day = late_from[0].split(/\//);
+	var late_from_time = late_from[1];
+	var late_from_day_time = late_from_day[1] + '/' + late_from_day[0] + '/' + late_from_day[2] + ' ' + late_from_time;
+	var late_from_date = new Date(late_from_day_time);
+	var late_to = $("#id_late_to").val().split(' ');
+	var late_to_day = late_to[0].split(/\//);
+	var late_to_time = late_to[1];
+	var late_to_day_time = late_to_day[1] + '/' + late_to_day[0] + '/' + late_to_day[2] + ' ' + late_to_time;
+	var late_to_date = new Date(late_from_day_time);
+	var moment_late_from_day_time = late_from_day[2] + '-' + late_from_day[1] + '-' + late_from_day[0] + ' ' + late_from_time;
+	var moment_late_to_day_time = late_to_day[2] + '-' + late_to_day[1] + '-' + late_to_day[0] + ' ' + late_to_time;
+	var moment_late_from = moment(moment_late_from_day_time);
+	var moment_late_to = moment(moment_late_to_day_time);	
+	var duration = moment.duration(moment_late_to.diff(moment_late_from));
+	var hours = duration.asHours();	
+	$("#id_late_hour").val(hours);	
+});
+
 $("#id_late_to").bind("keyup",function(e){
 	var keyup_point;
 	keyup_point = this.selectionStart;
-	if(e.keyCode==13) {
+	if(e.keyCode==13) { // enter		
+
+		/*
 		if(keyup_point==11) {
-			console.log("test");
 			this.setSelectionRange(11, 13);
 		}				
 		this.setSelectionRange(11, 13);
+		*/
+		
+		$("#id_late_hour").focus();
 	}
 
 	if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105)) {
-		console.log("use keypad");
-		
+		console.log("number 0-9 keyup_point:" + keyup_point);
 		if(keyup_point==11) {
 			this.setSelectionRange(11, 13);	
 		}
+		if(keyup_point==12) {
+			this.setSelectionRange(12, 13);
+		}				
 		if(keyup_point==14) {
-			this.setSelectionRange(14, 16);		
+			this.setSelectionRange(14, 15);
+		}
+		if(keyup_point==15) {
+			this.setSelectionRange(15, 16);
 		}
 	}
 
-	if(e.keyCode >= 37) {
-		if(keyup_point==13 || keyup_point==14) {
+	if(e.keyCode == 37) {
+		console.log("left arrow keyup_point:" + keyup_point);
+		if(keyup_point==12) {
+			this.setSelectionRange(11, 12);
+		}
+
+		if(keyup_point==13) {
 			this.setSelectionRange(11, 13);		
 		}
+
+		if(keyup_point==14) {
+			this.setSelectionRange(12, 13);
+		}
+
+		if(keyup_point==15) {
+			this.setSelectionRange(14, 15);
+		}		
+
+		if(keyup_point==16) {
+			this.setSelectionRange(15, 16);
+		}
 	}
 
-	if(e.keyCode >= 39) {
-		if(keyup_point==13 || keyup_point==14) {
-			this.setSelectionRange(14, 16);		
+	if(e.keyCode == 39) {
+		console.log("right arrow keyup_point:" + keyup_point);
+		if(keyup_point==12) {
+			this.setSelectionRange(12, 13);
 		}		
+
+		if(keyup_point==13) {
+			this.setSelectionRange(14, 15);		
+		}		
+
+		if(keyup_point==14) {
+			this.setSelectionRange(15, 16);
+		}
+
+		if(keyup_point==15) {
+			this.setSelectionRange(15, 16);
+		}
 	}
 });
+
 
 
 $("#id_late_hour").bind("keypress",function(e){	
@@ -1307,6 +1418,27 @@ $("#id_late_hour").bind("keypress",function(e){
 		late_to = $("#id_late_to").val();
 		console.log("id_late_hour_keypress");
 	}
+});
+
+$("#id_late_hour").bind("focus",function(e){
+	event.preventDefault();
+	var late_from = $("#id_late_from").val().split(' ');
+	var late_from_day = late_from[0].split(/\//);
+	var late_from_time = late_from[1];
+	var late_from_day_time = late_from_day[1] + '/' + late_from_day[0] + '/' + late_from_day[2] + ' ' + late_from_time;
+	var late_from_date = new Date(late_from_day_time);
+	var late_to = $("#id_late_to").val().split(' ');
+	var late_to_day = late_to[0].split(/\//);
+	var late_to_time = late_to[1];
+	var late_to_day_time = late_to_day[1] + '/' + late_to_day[0] + '/' + late_to_day[2] + ' ' + late_to_time;
+	var late_to_date = new Date(late_from_day_time);
+	var moment_late_from_day_time = late_from_day[2] + '-' + late_from_day[1] + '-' + late_from_day[0] + ' ' + late_from_time;
+	var moment_late_to_day_time = late_to_day[2] + '-' + late_to_day[1] + '-' + late_to_day[0] + ' ' + late_to_time;
+	var moment_late_from = moment(moment_late_from_day_time);
+	var moment_late_to = moment(moment_late_to_day_time);	
+	var duration = moment.duration(moment_late_to.diff(moment_late_from));
+	var hours = duration.asHours();	
+	$("#id_late_hour").val(hours);
 });
 
 $("#id_late_hour").click( function() {
