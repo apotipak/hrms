@@ -1354,11 +1354,19 @@ $("#id_late_hour").click( function() {
 
 	$("#id_late_check").change(function() {
 
-		var today = new Date();
-		var date = today.getDate() + "/" + ("0" + today.getMonth()+1).slice(-2) + '/' + today.getFullYear() + " 00:00";
-		
-		var late_date_from = today.getDate() + "/" + ("0" + today.getMonth()+1).slice(-2) + '/' + today.getFullYear() + " 00:00";
-		var late_date_to = today.getDate() + "/" + ("0" + today.getMonth()+1).slice(-2) + '/' + today.getFullYear() + " 00:00";
+		var now     = new Date(); 
+        var year    = now.getFullYear();
+        var month   = now.getMonth()+1; 
+        var day     = now.getDate();
+        if(month.toString().length == 1) {
+             month = '0'+month;
+        }
+        if(day.toString().length == 1) {
+             day = '0'+day;
+        }   
+        var dateTime = day+'/'+month+'/'+year+' '+'00:00';
+		var late_date_from = dateTime;
+		var late_date_to = dateTime;
 
 		//$("#id_relief_emp_id").css('border-color','red');
 		//$("#id_relief_emp_id").css('border-style','solid');
