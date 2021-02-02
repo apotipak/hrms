@@ -593,7 +593,7 @@
                 <th scope="col">{% trans 'Eff To' %}</th>            
                 <th scope="col" nowrap>{% trans 'Shift Time' %}</th>
                 <th scope="col">{% trans 'Qty' %}</th>
-                <th scope="col">{% trans 'Rank' %}</th>
+                <th scope="col" class="text-center">{% trans 'Rank' %}</th>
                 <th scope="col">{% trans 'Rate' %}</th>
                 <th scope="col">{% trans 'Ext.Cost' %}</th>
                 <th scope="col">{% trans 'MON' %}</th>
@@ -609,14 +609,16 @@
                 <th>&nbsp;</th>
               </tr>
               <tbody>
-                {% for item in cus_service %}
+
+
+                {% for item in cus_service_list %}
                   <tr>
                   {% if item.srv_active %}
                   <td><small><a href="javascript:void(0);">{{item.srv_eff_frm|date:'d/m/Y'}}</a></small></td>
                   <td><small><a href="javascript:void(0);">{{item.srv_eff_to|date:'d/m/Y'}}</a></small></td>
-                  <td><small><a href="javascript:void(0);">{{item.srv_shif_id.shf_desc}}</a></small></td>
+                  <td><small><a href="javascript:void(0);">{{item.shf_desc}}</a></small></td>
                   <td align="center"><small><a href="javascript:void(0);">{{item.srv_qty}}</a></small></td>
-                  <td><small><a href="javascript:void(0);">{{item.srv_rank_id}}</a></small></td>
+                  <td class="text-center"><small><a href="javascript:void(0);">{{item.srv_rank}}</a></small></td>
                   <td align="right"><small><a href="javascript:void(0);">{{item.srv_cost|stringformat:".0f"}}</a></small></td>
                   <td align="right"><small><a href="javascript:void(0);">{{item.srv_rate|stringformat:".0f"}}</a></small></td>
                   <td align="center"><small><a href="javascript:void(0);">{{item.srv_mon}}</a></small></td>
@@ -632,9 +634,9 @@
                   {% else %}
                   <td><small>{{item.srv_eff_frm|date:'d/m/Y'}}</small></td>
                   <td><small>{{item.srv_eff_to|date:'d/m/Y'}}</small></td>
-                  <td><small>{{item.srv_shif_id.shf_desc}}</small></td>
+                  <td><small>{{item.shf_desc}}</small></td>
                   <td align="center"><small>{{item.srv_qty}}</small></td>
-                  <td><small>{{item.srv_rank_id}}</small></td>
+                  <td class="text-center"><small>{{item.srv_rank}}</small></td>
                   <td align="right"><small>{{item.srv_rate|stringformat:".0f"}}</small></td>
                   <td align="right"><small>{{item.srv_cost_rate|stringformat:".0f"}}</small></td>
                   <td align="center"><small>{{item.srv_mon}}</small></td>
