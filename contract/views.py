@@ -562,7 +562,7 @@ def ContractUpdate(request, pk):
         finally:
             cursor.close()
 
-
+        # amnaj
         for item in cus_service_obj:
             record = {
                 "srv_id": item[0],
@@ -2075,9 +2075,9 @@ def reload_service_list(request):
     print("*******************************")
 
     cnt_id = request.GET["cnt_id"]
-
-    data = CusService.objects.all().exclude(upd_flag='D').filter(cnt_id=cnt_id).order_by('-srv_active')
-    
+    # amnaj
+    '''
+    data = CusService.objects.all().exclude(upd_flag='D').filter(cnt_id=cnt_id).order_by('-srv_active')    
     cus_service_list=[]
     for d in data:
         record = {
@@ -2102,6 +2102,50 @@ def reload_service_list(request):
             "srv_pub": d.srv_pub,
             "srv_rem": d.srv_rem,
             "srv_active": d.srv_active,
+        }
+        cus_service_list.append(record)
+    '''
+    cus_service_list = []
+    sql = "Select a.srv_id,a.srv_shif_id,b.shf_desc,b.shf_type,a.srv_rank, c.rank_en,a.srv_eff_frm,a.srv_eff_to,a.srv_qty,"
+    sql += "a.srv_mon,a.srv_tue,a.srv_wed,a.srv_thu,a.srv_fri,a.srv_sat,a.srv_sun,a.srv_pub,a.srv_rate,a.srv_cost,a.srv_cost_rate,"
+    sql += "a.srv_rem,a.srv_active, a.upd_date,a.upd_by,a.upd_flag From cus_service as a left join t_shift as b on a.srv_shif_id=b.shf_id "
+    sql += "left join com_rank as c on a.srv_rank=c.rank_id Where  a.upd_flag<>'D' and a.cnt_id = " + str(cnt_id) + " "        
+    sql += "order by a.srv_active desc,b.shf_type,a.srv_rank desc;"
+    try:
+        with connection.cursor() as cursor:     
+            cursor.execute(sql)
+            cus_service_obj = cursor.fetchall()
+    except db.OperationalError as e:
+        is_found = False
+        message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+    except db.Error as e:
+        is_found = False
+        message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+    finally:
+        cursor.close()
+
+    for item in cus_service_obj:
+        record = {
+            "srv_id": item[0],
+            "srv_eff_frm": item[6],
+            "srv_eff_to": item[7],
+            "shf_desc": item[2],
+            "srv_qty": item[8],
+            "srv_rank": item[4],
+            "srv_rate": item[17],
+            "srv_cost": item[18],
+            "srv_mon": item[9],
+            "srv_tue": item[10],
+            "srv_wed": item[11],
+            "srv_thu": item[12],
+            "srv_fri": item[13],
+            "srv_sat": item[14],
+            "srv_sun": item[15],
+            "srv_pub": item[16],
+            "srv_rem": item[20],
+            "srv_active": item[21],
+            "upd_date": item[22].strftime("%d/%m/%Y %H:%M:%S"),
+            "upd_by": item[23],
         }
         cus_service_list.append(record)
 
