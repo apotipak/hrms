@@ -42,7 +42,7 @@
             {% csrf_token %}
             <div class="form-row">
 
-              <div class="col-8">
+              <div class="col-3">
                 {% if form.cus_id.errors %}                
                   {% render_field form.cus_id class="form-control form-control-md is-invalid" %}                
 
@@ -53,12 +53,11 @@
                   {% endfor %}
                 {% else %}
 
-                  {% render_field form.cus_id class="form-control form-control-md" %}
+                  {% render_field form.cus_id class="form-control form-control-sm" %}
 
                 {% endif %}
               </div>
               
-              {% comment %}
               <div class="col-3">
                 {% if form.cus_brn.errors %}                
                   {% render_field form.cus_brn class="form-control form-control-sm is-invalid" %}
@@ -71,9 +70,7 @@
                   {% render_field form.cus_brn class="form-control form-control-sm" %}
                 {% endif %}              
               </div>
-              {% endcomment %}
 
-              {% comment %}
               <div class="col-3">
                 {% if form.cus_vol.errors %}                
                   {% render_field form.cus_vol class="form-control form-control-sm is-invalid" %}
@@ -86,10 +83,9 @@
                   {% render_field form.cus_vol class="form-control form-control-sm" %}
                 {% endif %}              
               </div>
-              {% endcomment %}
 
               <div colass="col-2">
-                <button id="search_contract_button" type="button" class="btn btn-md btn-primary col-xs-2"><i class="fas fa-search fa-md"></i>&nbsp;{% trans 'Search' %}</button>
+                <button id="search_contract_button" type="button" class="btn btn-sm btn-primary col-xs-2"><i class="fas fa-search fa-sm"></i>&nbsp;{% trans 'Search' %}</button>
               </div>
 
             </div>
@@ -261,19 +257,121 @@
   $('#id_cus_id').focus();
   $("#id_cus_id").select();
   
-  $(document).on('keypress', '#id_cus_id', function(e) {
+  $(document).on('keypress', '#id_cus_id_old', function(e) {
     if(e.which == 13) {      
       e.preventDefault();
-      cus_id = $("#id_cus_id").val();
+
+
+      cus_id = $("#id_cus_id").val();      
+      cus_brn = $('#id_cus_brn').val();
+      cus_vol = $('#id_cus_vol').val();
+
+      if(cus_id=="") {
+        $(document).Toasts('create', {
+          class: "bg-danger", 
+          title: "{% trans 'System message' %}",
+          subtitle: '',
+          autohide: true,
+          delay: 2000,
+          body: "Please select Customer ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+          autoDismiss: true,
+          close: true,
+          autoremove: true,
+        });        
+        $('#id_cus_id').focus();    
+        return false;
+      }
+
+      if(cus_brn=="") {
+        $('#id_cus_brn').focus();
+        return false;  
+      }
+
+      if(cus_vol=="") {
+        $('#id_cus_vol').focus();
+        return false;
+      }
 
       if(cus_id <= 0) {
-        $('#id_cus_id').focus();        
+        $('#id_cus_id').focus();      
       } else {
         $("#search_contract_form").submit();
         $("#id_cus_id").select();
       }
     }
   });
+
+
+$(document).on('keypress', '#id_cus_id', function(e) {
+  if(e.which == 13) {      
+    e.preventDefault();
+
+    var obj = $(this);
+        var id_cus_id = obj.val();
+        while (id_cus_id.length < 7) 
+          id_cus_id = "0" + id_cus_id;        
+        $('#id_cus_id').val(id_cus_id);
+
+    $('#id_cus_brn').focus();
+    $('#id_cus_brn').select();
+  }
+});
+
+$(document).on('keypress', '#id_cus_brn', function(e) {
+  if(e.which == 13) {      
+    e.preventDefault();
+
+    var obj = $(this);
+        var id_cus_brn = obj.val();
+        while (id_cus_brn.length < 3) 
+          id_cus_brn = "0" + id_cus_brn;
+        $('#id_cus_brn').val(id_cus_brn);
+    $('#id_cus_vol').focus();
+    $('#id_cus_vol').select();
+  }
+});
+
+
+$(document).on('keypress', '#id_cus_vol', function(e) {
+  if(e.which == 13) {      
+    e.preventDefault();
+
+    // TODO: field validation
+    cus_id = $('#id_cus_id').val();
+    cus_brn = $('#id_cus_brn').val();
+    cus_vol = $('#id_cus_vol').val();
+    
+    if(cus_id=="") {
+      alert("Please entet Customer ID.");
+      $('#id_cus_id').focus();        
+      return false;
+    }
+
+    if(cus_brn=="") {
+      alert("Please entet Customer Branch.");
+      $('#id_cus_brn').focus();
+      return false;     
+    }
+
+    if(cus_vol=="") {
+      alert("Please entet Customer Volume.");
+      $('#id_cus_vol').focus();
+      return false;
+    }
+
+    var obj = $(this);
+    var id_cus_vol = obj.val();
+    while (id_cus_vol.length < 3) 
+      id_cus_vol = "0" + id_cus_vol;
+    
+    $("#search_contract_form").submit();
+    
+  }
+});
+
+
+
+
 
   $("#id_cus_id").on('click', function(){
     //$(this).select();

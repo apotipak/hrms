@@ -964,6 +964,10 @@
       $('#id_cus_id').val(id_cus_id);
       
       cus_id = $("#id_cus_id").val();
+      if(cus_id==0) {
+        this.select();
+        return false;
+      }
 
       if(cus_id=="") {
         $('#id_cus_id').focus();
@@ -976,13 +980,12 @@
             cus_id: cus_id,
           },
           success : function(json) {        
-            if(json.is_existed) {
+            if(json.is_existed) {              
               //$('#customer_name_title').html("<i class='fas fa-user-edit'></i>&nbsp;&nbsp;<strong>" + json.cus_name_th + "</strong>");
               $('#customer_name_title').html("<h3 class='m-0 text-dark'>" + json.cus_name_th + "<small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-primary'></i></button></small></h3>");
-
               $('#id_cus_brn').focus();
-            } else {
-              alert("Customer " + cus_id + " does not existed. Please create a new customer.");
+
+            } else {              
               $('#id_cus_id').focus();
             }
           },
@@ -1034,8 +1037,8 @@
         success : function(json) {        
           if(json.is_existed) {
             //$('#customer_name_title').html("<i class='fas fa-user-edit'></i>&nbsp;&nbsp;<strong>" + json.cus_name_th + "</strong>");
-            $('#customer_name_title').html("<h3 class='m-0 text-dark'>" + json.cus_name_th + "<small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-primary'></i></button></small></h3>");
-            
+            $('#customer_name_title').html("<h3 class='m-0 text-dark'>" + json.cus_name_th + "<small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-primary'></i></button></small></h3>");                    
+
             $('#id_cus_name_th').val(json.cus_name_th);
             $('#id_cus_sht_th').val(json.cus_sht_th);
             $('#id_cus_add_th').val(json.cus_add_th);
@@ -1103,8 +1106,20 @@
       var cus_vol_text = $('#id_cus_vol').val();
 
       if(cnt_id=='' || cnt_id==null) {
-        alert("Contract ID is required!");
+        $.alert({
+            title: 'Error',
+            type: 'red',
+            content: "Contract ID is required!",
+            animation: 'zoom',
+            animationBounce: 1.5,
+            closeIcon: false,
+            boxWidth: '38%',
+            useBootstrap: false,
+        });
+
         $('#id_cus_id').focus();
+        return false;
+
       } else if(cus_brn=='' || cus_brn==null) {
         alert("Customer Branch is required");
         $('#id_cus_brn').focus();
@@ -1394,6 +1409,8 @@
     $("#id_cnt_active").prop("active", false);
 
     $("#service_list_table .card-body").html("");
+
+     $('#customer_name_title').html("");
 
     $("#id_cus_id").focus();
   });

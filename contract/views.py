@@ -97,42 +97,49 @@ def contract_create(request):
 @permission_required('contract.view_cuscontract', login_url='/accounts/login/')
 def get_cus_main(request):
     cus_id = request.POST.get('cus_id')    
+    print("cus_id:", cus_id)
+
+    if cus_id==0:
+        response = JsonResponse(data={
+            "success": True,
+            "is_existed": False,
+            "class": "bg-danger",
+            "message": "Not found",  
+            "cus_name_th": "",
+            "cus_name_en": "",
+        })
+        return response
 
     if cus_id is not None:
         try:                
             cusmain = CusMain.objects.filter(cus_id__exact=cus_id).get()
-            cus_name_th = cusmain.cus_name_th
-            cus_name_en = cusmain.cus_name_en
 
-            response = JsonResponse(data={
-                "success": True,
-                "class": "bg-danger",
-                "message": "",
-                "is_existed": True,
-                "cus_name_th": cus_name_th,
-                "cus_name_en": cus_name_en,
-            })
-            response.status_code = 200
-            return response
+            if cusmain is not None:
+                is_existed = True
+                alert_class = "bg-success"
+                cus_name_th = cusmain.cus_name_th
+                cus_name_en = cusmain.cus_name_en
+            else:
+                is_existed = False
+                alert_class = "bg-danger"
+                cus_name_th = ""
+                cus_name_en = ""
+
         except CusMain.DoesNotExist:
-            response = JsonResponse(data={
-                "success": True,
-                "class": "bg-danger",
-                "message": "",
-                "is_existed": False,
-                "cus_name_th": "",
-                "cus_name_en": "",
-            })
-            response.status_code = 200
-            return response            
+            is_existed = False
+            alert_class = "bg-danger"
+            cus_name_th = ""
+            cus_name_en = ""
+
+    print("is_existed:", is_existed)
 
     response = JsonResponse(data={
         "success": True,
-        "class": "bg-danger",
-        "message": "",
-        "is_existed": True,
-        "cus_name_th": "",
-        "cus_name_en": "",
+        "is_existed": is_existed,
+        "class": alert_class,
+        "message": "",        
+        "cus_name_th": cus_name_th,
+        "cus_name_en": cus_name_en,
     })
     return response
 

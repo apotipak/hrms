@@ -5,7 +5,10 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.ContractList, name='contract-list'),
-    path('contract/create', views.contract_create, name='contract_create'),
+    
+    # path('contract/create', views.contract_create, name='contract_create'),
+    path('contract/manage', views.contract_create, name='contract_create'),
+
     path('contract/<int:pk>/update', views.ContractUpdate, name='contract-update'),
     url(r'^ajax/update_contract/$', views.UpdateContract, name='update-contract'),
     url(r'^ajax/create_contract/$', views.CreateContract, name='create-contract'),
