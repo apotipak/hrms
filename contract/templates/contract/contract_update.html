@@ -622,8 +622,10 @@
                   <td><small><a href="javascript:void(0);">{{item.shf_desc}}</a></small></td>
                   <td align="center"><small><a href="javascript:void(0);">{{item.srv_qty}}</a></small></td>
                   <td class="text-center"><small><a href="javascript:void(0);">{{item.srv_rank}}</a></small></td>
+
                   <td align="right"><small><a href="javascript:void(0);">{{item.srv_cost|stringformat:".2f"|intcomma}}</a></small></td>                  
                   <td align="right"><small><a href="javascript:void(0);">{{item.srv_rate|stringformat:".2f"|intcomma}}</a></small></td>
+
                   <td align="center"><small><a href="javascript:void(0);">{{item.srv_mon}}</a></small></td>
                   <td align="center"><small><a href="javascript:void(0);">{{item.srv_tue}}</a></small></td>
                   <td align="center"><small><a href="javascript:void(0);">{{item.srv_wed}}</a></small></td>
@@ -634,14 +636,18 @@
                   <td align="center"><small><a href="javascript:void(0);">{{item.srv_pub}}</a></small></td>
                   <td><small><a href="javascript:void(0);">{{item.srv_rem}}</a></small></td>
                   <td><span class="badge badge-success">{% trans 'Active' %}</span></td>
+
                   {% else %}
+
                   <td><small>{{item.srv_eff_frm|date:'d/m/Y'}}</small></td>
                   <td><small>{{item.srv_eff_to|date:'d/m/Y'}}</small></td>
                   <td><small>{{item.shf_desc}}</small></td>
                   <td align="center"><small>{{item.srv_qty}}</small></td>
                   <td class="text-center"><small>{{item.srv_rank}}</small></td>
+                  
                   <td align="right"><small>{{item.srv_rate|stringformat:".2f"|intcomma}}</small></td>
-                  <td align="right"><small>{{item.srv_cost_rate|stringformat:".2f"|intcomma}}</small></td>
+                  <td align="right"><small>{{item.srv_cost|stringformat:".2f"|intcomma}}</small></td>
+
                   <td align="center"><small>{{item.srv_mon}}</small></td>
                   <td align="center"><small>{{item.srv_tue}}</small></td>
                   <td align="center"><small>{{item.srv_wed}}</small></td>
@@ -1219,7 +1225,7 @@
             result += "  <div class='col-md-12 table-responsive'>";
             result += "    <table id='customer-list-table1' class='table table-bordered table-sm'>";
             result += "      <tr class='table-secondary'>";
-            result += "        <th>{% trans 'Eff Frm' %}</th>";
+            result += "        <th>{% trans 'Eff Frm' %}*</th>";
             result += "        <th scope='col'>{% trans 'Eff To' %}</th>";
             result += "        <th scope='col' nowrap>{% trans 'Shift Time' %}</th>";
             result += "        <th scope='col'>{% trans 'Qty' %}</th>";
@@ -1626,7 +1632,7 @@
               result += "  <div class='col-md-12 table-responsive'>";
               result += "    <table id='customer-list-table1' class='table table-bordered table-sm'>";
               result += "      <tr class='table-secondary'>";
-              result += "        <th>{% trans 'Eff Frm' %}</th>";
+              result += "        <th>{% trans 'Eff Frm' %}_</th>";
               result += "        <th scope='col'>{% trans 'Eff To' %}</th>";
               result += "        <th scope='col' nowrap>{% trans 'Shift Time' %}</th>";
               result += "        <th scope='col'>{% trans 'Qty' %}</th>";
@@ -1879,7 +1885,7 @@
             result += "  <div class='col-md-12 table-responsive'>";
             result += "    <table id='customer-list-table1' class='table table-bordered table-sm'>";
             result += "      <tr class='table-secondary'>";
-            result += "        <th>{% trans 'Eff Frm' %}</th>";
+            result += "        <th>{% trans 'Eff Frm' %}..</th>";
             result += "        <th scope='col'>{% trans 'Eff To' %}</th>";
             result += "        <th scope='col' nowrap>{% trans 'Shift Time' %}</th>";
             result += "        <th scope='col'>{% trans 'Qty' %}</th>";
