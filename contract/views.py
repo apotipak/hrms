@@ -319,12 +319,13 @@ def get_cus_contract(request):
             try:                 
                 cuscontract = CusContract.objects.filter(cnt_id=cnt_id).get()
 
-                cnt_active = cuscontract.cnt_active
+                cnt_active = cuscontract.cnt_active                            
                 if cnt_active:
                     cnt_active = 1
                 else:
                     cnt_active = 0                
 
+                cnt_then = cuscontract.cnt_then                
                 cnt_doc_no = cuscontract.cnt_doc_no                
                 
                 if cuscontract.cnt_doc_date is not None:
@@ -389,6 +390,7 @@ def get_cus_contract(request):
                     "message": "",
                     "is_existed": True,
                     "cnt_id": cnt_id,
+                    "cnt_then": cnt_then,
                     "cnt_active": cnt_active,
                     "cnt_doc_no": cnt_doc_no,
                     "cnt_doc_date": cnt_doc_date,

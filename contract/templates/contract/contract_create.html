@@ -1222,6 +1222,16 @@
               $("#id_cnt_autoexpire").prop("checked", false);
             }
 
+            if(json.cnt_then=="T") {
+              $("#id_print_th").prop("checked", true); 
+              $("#id_print_en").prop("checked", false); 
+            }
+
+            if(json.cnt_then=="E") {
+              $("#id_print_en").prop("checked", true); 
+              $("#id_print_th").prop("checked", false); 
+            }
+
             $("#main-content :input").attr("disabled", false);
             $("#contract_number_form :input").attr("disabled", true);            
             $("#id_cnt_doc_no").focus();
