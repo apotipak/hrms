@@ -1574,8 +1574,9 @@
   };
 
   function cus_contract_select_wagerate(wage_id, wage_th, wage_en, wage_8hr) {
-    $("#id_cnt_wage_id_text").val(wage_id + "  |  " + wage_th + "    " + wage_8hr);
+    $("#id_cnt_wage_id_text").val(wage_th + "    " + wage_8hr);
     $("#id_cnt_wage_id").val(wage_id);
+    $("#id_wage_id_text").val(wage_id);
     $("#wageratemodal").modal("hide");    
   };
 

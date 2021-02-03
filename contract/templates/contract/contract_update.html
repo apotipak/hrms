@@ -499,7 +499,7 @@
                 <label for="id_cnt_wage_id">{% trans 'Wage Rate' %}</label>
                 <div class="input-group-append">
                 
-                  <input type="text" value="{{contract.cnt_wage_id_id}} " class="col-1 bg-success form-control form-control-sm text-center" readonly="">
+                  <input type="text" id="id_wage_id_text" value="{{contract.cnt_wage_id_id}} " class="col-1 bg-success form-control form-control-sm text-center" readonly="">
 
                   <input type="text" id="id_cnt_wage_id_text" name="cnt_wage_id" class="form-control form-control-sm" value="{{contract.cnt_wage_id.wage_en}}&nbsp;&nbsp;|&nbsp;&nbsp;{{contract.cnt_wage_id.wage_8hr}}" readonly>
                 
@@ -1029,9 +1029,11 @@
 
 
   function cus_contract_select_wagerate(wage_id, wage_th, wage_en, wage_8hr) {
+
     $("#id_cnt_wage_id_text").val(wage_th + "    |    " + wage_8hr);
     $("#id_cnt_wage_id").val(wage_id);
-    $("#wageratemodal").modal("hide");    
+    $("#id_wage_id_text").val(wage_id);
+    $("#wageratemodal").modal("hide");
   };
 
   function cus_contract_search_wagerate_modal() {
