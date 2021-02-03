@@ -2126,9 +2126,9 @@ def reload_service_list(request):
 
     for item in cus_service_obj:
         record = {
-            "srv_id": item[0],
-            "srv_eff_frm": item[6],
-            "srv_eff_to": item[7],
+            "srv_id": item[0],                    
+            "srv_eff_frm": item[6].strftime("%d/%m/%Y"),
+            "srv_eff_to": item[7].strftime("%d/%m/%Y"),
             "shf_desc": item[2],
             "srv_qty": item[8],
             "srv_rank": item[4],

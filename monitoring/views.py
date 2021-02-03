@@ -3393,7 +3393,8 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 	allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id,Tday7,
 	Tdof,customer_wage_rate_id,customer_zone_id):
 	
-	# return False, "Test"
+	# message = str(late_from) + " | " + str(late_to) + " | " + str(late_hour) + " | " + str(job_type)
+	# return False, message
 
 	# set hardcode value
 	ui_ot_status = 0
@@ -3569,13 +3570,14 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 			Ttel_paid = 0		
 
 		# OVERTIME
+		# late_from, late_to,late_reason_option, late_hour, late_full_paid_status
 		Tot = 0 if ui_ot_status==0 else 1
 		if (Tot==1) or (Tlate==1):
-			Tot_reason = ot_reason
-			Tot_time_frm = ot_time_frm
-			Tot_time_to = ot_time_to
+			Tot_reason = late_reason_option
+			Tot_time_frm = late_from
+			Tot_time_to = late_to
 			# TODO: Tot_hr_amt
-			Tot_hr_amt = 0
+			Tot_hr_amt = late_hour
 			Tot_pay_amt = 0
 			if Tot==1:
 				Tpay_type = "BAS"
@@ -3608,7 +3610,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		Twage_id = customer_wage_rate_id
 		Twage_no = str(Twage_id) + str(emp_rank)
 		Tpay_type = 1 if ui_ot_status==1 else ""
-		Tsoc = 1 if Tot_hr_amt>=8 else 0
+		Tsoc = 1 if float(Tot_hr_amt)>=8 else 0
 		TRemark = job_type + " " + remark
 
 		#message = "%s, %s, %s, %s, %s" % (Twage_id, Twage_no, Tpay_type, Tsoc, TRemark)
@@ -3718,7 +3720,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		sql += "upd_date='" + str(datetime.datetime.now())[:-10] + "',"		
 		sql += "upd_by='" + str(username) + "',"
 		sql += "upd_flag='E'" + ","
-		sql += "remark='" + str(remark) + "' "
+		sql += "remark='" + str(job_type) + "' "		
 		sql += "where cnt_id=" + str(cnt_id) + " "
 		sql += "and dly_date='" + str(dly_date) + "' "
 		sql += "and emp_id=" + str(emp_id) + " "
@@ -4575,7 +4577,7 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 					return False, "กรุณาระบุจำนวนชั่วโมงที่ได้โอที"
 
 				# ตรวจสอบจำนวนชั่วโมงที่ได้โอทีต้องไม่เกิน 2 ชั่วโมง
-				if int(late_hour) > 2:
+				if float(late_hour) > 2:
 					return False, "จำนวนชั่วโมงควงรอเกิน 2 ชั่วโมง"
 
 
@@ -4662,8 +4664,11 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 				cursor.execute(sql)
 				record = cursor.fetchone()
 				cursor.close()
+				# ironman
 				if record is not None:
-					return False, "พนักงานรหัส <b>" + str(relief_emp_id) + "</b> เข้าเวรที่หน่วยงานอื่น"		
+					# ถ้าเป็นการมาสายให้บันทึกได้
+					if ui_late_status!=1:
+						return False, "พนักงานรหัส <b>" + str(relief_emp_id) + "</b> เข้าเวรที่หน่วยงานอื่น"		
 
 
 			# เช็คห้ามพนักงานทำงานในวัน Day Off จากตาราง SYS_GPMDOF

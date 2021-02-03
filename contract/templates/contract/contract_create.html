@@ -1091,6 +1091,7 @@
     }
   });
 
+
   $(document).on('keypress', '#id_cus_vol', function(e) {
     if(e.which == 13) {      
       e.preventDefault();
@@ -1512,7 +1513,7 @@
         if(json.form_is_valid) {
           $(document).Toasts('create', {
             class: json.class, 
-            title: "{% trans 'System message' %}",
+            title: "{% trans 'Message' %}",
             subtitle: '',
             autohide: true,
             delay: 2000,
@@ -1935,7 +1936,7 @@
     if(srv_rank_id_new=='') {
       $(document).Toasts('create', {
         class: 'bg-danger', 
-        title: "{% trans 'System Message' %}",
+        title: "{% trans 'Message' %}",
         subtitle: '',
         autohide: true,
         delay: 2000,      
@@ -1950,7 +1951,7 @@
     if(srv_shift_id_new=='') {
       $(document).Toasts('create', {
         class: 'bg-danger', 
-        title: "{% trans 'System Message' %}",
+        title: "{% trans 'Message' %}",
         subtitle: '',
         autohide: true,
         delay: 2000,      
@@ -1965,7 +1966,7 @@
     if(srv_qty_new=='') {
       $(document).Toasts('create', {
         class: 'bg-danger', 
-        title: "{% trans 'System Message' %}",
+        title: "{% trans 'Message' %}",
         subtitle: '',
         autohide: true,
         delay: 2000,      
@@ -1980,7 +1981,7 @@
     if(srv_rate_new=='') {
       $(document).Toasts('create', {
         class: 'bg-danger', 
-        title: "{% trans 'System Message' %}",
+        title: "{% trans 'Message' %}",
         subtitle: '',
         autohide: true,
         delay: 2000,      
@@ -2025,7 +2026,7 @@
       success: function (data) {
         $(document).Toasts('create', {
           class: data.class, 
-          title: "{% trans 'System Message' %}",
+          title: "{% trans 'Message' %}",
           subtitle: '',
           autohide: true,
           delay: 2000,      
@@ -2154,7 +2155,7 @@
       error: function(data){
         $(document).Toasts('create', {
           class: 'bg-danger', 
-          title: "{% trans 'System Message' %}",
+          title: "{% trans 'Message' %}",
           subtitle: '',
           autohide: true,
           delay: 2000,      
@@ -2200,7 +2201,7 @@
     if(srv_rank_id_new=='') {
       $(document).Toasts('create', {
         class: 'bg-danger', 
-        title: "{% trans 'System Message' %}",
+        title: "{% trans 'Message' %}",
         subtitle: '',
         autohide: true,
         delay: 2000,      
@@ -2215,7 +2216,7 @@
     if(srv_shift_id_new=='') {
       $(document).Toasts('create', {
         class: 'bg-danger', 
-        title: "{% trans 'System Message' %}",
+        title: "{% trans 'Message' %}",
         subtitle: '',
         autohide: true,
         delay: 2000,      
@@ -2230,7 +2231,7 @@
     if(srv_qty_new=='') {
       $(document).Toasts('create', {
         class: 'bg-danger', 
-        title: "{% trans 'System Message' %}",
+        title: "{% trans 'Message' %}",
         subtitle: '',
         autohide: true,
         delay: 2000,      
@@ -2245,7 +2246,7 @@
     if(srv_rate_new=='') {
       $(document).Toasts('create', {
         class: 'bg-danger', 
-        title: "{% trans 'System Message' %}",
+        title: "{% trans 'Message' %}",
         subtitle: '',
         autohide: true,
         delay: 2000,      
@@ -2288,7 +2289,7 @@
       success: function (data) {
         $(document).Toasts('create', {
           class: data.class, 
-          title: "{% trans 'System Message' %}",
+          title: "{% trans 'Message' %}",
           subtitle: '',
           autohide: true,
           delay: 2000,      
@@ -2417,7 +2418,7 @@
       error: function(data){
         $(document).Toasts('create', {
           class: 'bg-danger', 
-          title: "{% trans 'System Message' %}",
+          title: "{% trans 'Message' %}",
           subtitle: '',
           autohide: true,
           delay: 2000,      
@@ -2493,7 +2494,7 @@
         success: function (data) {
           $(document).Toasts('create', {
             class: data.class, 
-            title: "{% trans 'System Message' %}",
+            title: "{% trans 'Message' %}",
             subtitle: '',
             autohide: true,
             delay: 2000,      
@@ -2645,7 +2646,7 @@
 
           $(document).Toasts('create', {
             class: data.class, 
-            title: "{% trans 'System Message' %}",
+            title: "{% trans 'Message' %}",
             subtitle: '',
             autohide: true,
             delay: 2000,      
@@ -3031,15 +3032,127 @@
     });
   });
 
+
 </script>
 
 
 <script>
+    
+  $("#id_cnt_doc_date").bind("focus",function(e){
+    console.log("id_cnt_doc_date");    
+    if(e.keyCode!=undefined) {
+      console.log("a");
+      this.setSelectionRange(11, 12);   
+    } else {
+      console.log("b");
+      this.setSelectionRange(0, 2);
+    }  
+  });
+
+  $("#id_cnt_doc_date").bind("keyup",function(e){
+    var keyup_point;
+    keyup_point = this.selectionStart;
+    if(e.keyCode==13) { // enter    
+
+      /*
+      if(keyup_point==11) {
+        this.setSelectionRange(11, 13);
+      }       
+      this.setSelectionRange(11, 13);
+      */
+
+      //$("#id_late_to").focus();
+    }
+
+    if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105)) {
+      console.log("number 0-9 keyup_point:" + keyup_point);
+      if(keyup_point==11) {
+        this.setSelectionRange(11, 13); 
+      }
+      if(keyup_point==12) {
+        this.setSelectionRange(12, 13);
+      }       
+      if(keyup_point==14) {
+        this.setSelectionRange(14, 15);
+      }
+      if(keyup_point==15) {
+        this.setSelectionRange(15, 16);
+      }
+    }
+
+    if(e.keyCode == 37) {
+      //console.log("left arrow keyup_point:" + keyup_point);
+      if(keyup_point==12) {
+        this.setSelectionRange(11, 12);
+      }
+
+      if(keyup_point==13) {
+        this.setSelectionRange(11, 13);   
+      }
+
+      if(keyup_point==14) {
+        this.setSelectionRange(12, 13);
+      }
+
+      if(keyup_point==15) {
+        this.setSelectionRange(14, 15);
+      }   
+
+      if(keyup_point==16) {
+        this.setSelectionRange(15, 16);
+      }   
+
+    }
+
+    if(e.keyCode == 39) {
+      //console.log("right arrow keyup_point:" + keyup_point);
+      if(keyup_point==12) {
+        this.setSelectionRange(12, 13);
+      }   
+
+      if(keyup_point==13) {
+        this.setSelectionRange(14, 15);   
+      }   
+
+      if(keyup_point==14) {
+        this.setSelectionRange(15, 16);
+      }
+
+      if(keyup_point==15) {
+        this.setSelectionRange(15, 16);
+      }   
+    }
+  });
+
+
+
+  $("#id_cnt_doc_date").on('focus blur click',function () {
+    console.log("focus blur click");
+    $("#id_cnt_doc_date").datepicker('hide');
+  });
+
   $(function () {
+
+
+    $("#id_cnt_doc_date").datepicker({
+      format: 'dd/mm/yyyy',
+      autoclose: true,
+      orientation: "bottom",
+      constrainInput: false,
+      onSelect: function () {
+        console.log("AA");
+        $(this).off( "focus" );
+      }        
+    }).on('keypress', function (e) {
+      //e.preventDefault();
+      //return false;
+    });
+
     $("#dtp_cnt_doc_date").datepicker({
       format: 'dd/mm/yyyy',
       autoclose: true,
-      orientation: "bottom"
+      orientation: "bottom",
+      constrainInput: false
     });
 
     $("#dtp_cnt_eff_frm").datepicker({
