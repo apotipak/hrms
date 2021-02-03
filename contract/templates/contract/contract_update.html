@@ -2080,44 +2080,44 @@
             result += "<div class='form-row col-6'>";
             result += "<div class='form-group col-3'>";
             result += "<label for='id_srv_mon_new'>{% trans 'Mon' %}</label>";
-            result += "<input id='id_srv_mon_new' type='number' class='form-control form-control-sm' value='1'>";
+            result += "<input id='id_srv_mon_new' type='number' class='form-control form-control-sm' value='0'>";
             result += "</div>";
 
             result += "<div class='form-group col-3'>";
             result += "<label for='id_srv_tue_new'>{% trans 'Tue' %}</label>";
-            result += "<input id='id_srv_tue_new' type='number' class='form-control form-control-sm' value='1'>";
+            result += "<input id='id_srv_tue_new' type='number' class='form-control form-control-sm' value='0'>";
             result += "</div>";
 
             result += "<div class='form-group col-3'>";
             result += "<label for='id_srv_wed_new'>{% trans 'Wed' %}</label>";
-            result += "<input id='id_srv_wed_new' type='number' class='form-control form-control-sm' value='1'>";
+            result += "<input id='id_srv_wed_new' type='number' class='form-control form-control-sm' value='0'>";
             result += "</div>";
 
             result += "<div class='form-group col-3'>";
             result += "<label for='id_srv_thu_new'>{% trans 'Thu' %}</label>";
-            result += "<input id='id_srv_thu_new' type='number' class='form-control form-control-sm' value='1'>";
+            result += "<input id='id_srv_thu_new' type='number' class='form-control form-control-sm' value='0'>";
             result += "</div>";
 
             result += "</div>";
             result += "<div class='form-row col-6'>";
             result += "<div class='form-group col-3'>";
             result += "<label for='id_srv_fri_new'>{% trans 'Fri' %}</label>";
-            result += "<input id='id_srv_fri_new' type='number' class='form-control form-control-sm' value='1'>";
+            result += "<input id='id_srv_fri_new' type='number' class='form-control form-control-sm' value='0'>";
             result += "</div>";
 
             result += "<div class='form-group col-3'>";
             result += "<label for='id_srv_sat_new'>{% trans 'Sat' %}</label>";
-            result += "<input id='id_srv_sat_new' type='number' class='form-control form-control-sm' value='1'>";
+            result += "<input id='id_srv_sat_new' type='number' class='form-control form-control-sm' value='0'>";
             result += "</div>";
 
             result += "<div class='form-group col-3'>";
             result += "<label for='id_srv_sun_new'>{% trans 'Sun' %}</label>";
-            result += "<input id='id_srv_sun_new' type='number' class='form-control form-control-sm' value='1'>";
+            result += "<input id='id_srv_sun_new' type='number' class='form-control form-control-sm' value='0'>";
             result += "</div>";
 
             result += "<div class='form-group col-3'>";
             result += "<label for='id_srv_pub_new'>{% trans 'Pub' %}</label>";
-            result += "<input id='id_srv_pub_new' type='number' class='form-control form-control-sm' value='1'>";
+            result += "<input id='id_srv_pub_new' type='number' class='form-control form-control-sm' value='0'>";
             result += "</div>";
 
             result += "</div>";
@@ -2126,7 +2126,7 @@
             result += "<div class='form-row'>";
             result += "<div class='form-group col-md-3'>";
             result += "<label for='id_srv_qty_new'>{% trans 'QTY' %}</label>";
-            result += "<input id='id_srv_qty_new' type='number' class='form-control form-control-sm' value='1'>";
+            result += "<input id='id_srv_qty_new' type='number' class='form-control form-control-sm' value='0'>";
             result += "</div>";
 
             result += "<div class='form-group col-md-3'>";
@@ -2167,9 +2167,7 @@
             $("#add_new_service_list_modal .modal-body").html(result);
             $('#add_new_service_list_modal').on('shown.bs.modal', function (e) {
               $('#id_srv_qty_new').focus();
-            });            
-            //amnaj
-
+            });
           },
           error: function(data){
             $("#add_new_service_list_modal .modal-body").html("{% trans 'There is no data.' %}");

@@ -2893,44 +2893,44 @@
             result += "<div class='form-row col-6'>";
             result += "<div class='form-group col-3'>";
             result += "<label for='id_srv_mon_new'>{% trans 'Mon' %}</label>";
-            result += "<input id='id_srv_mon_new' type='number' class='form-control form-control-sm' value='1'>";
+            result += "<input id='id_srv_mon_new' type='number' class='form-control form-control-sm' value='0'>";
             result += "</div>";
 
             result += "<div class='form-group col-3'>";
             result += "<label for='id_srv_tue_new'>{% trans 'Tue' %}</label>";
-            result += "<input id='id_srv_tue_new' type='number' class='form-control form-control-sm' value='1'>";
+            result += "<input id='id_srv_tue_new' type='number' class='form-control form-control-sm' value='0'>";
             result += "</div>";
 
             result += "<div class='form-group col-3'>";
             result += "<label for='id_srv_wed_new'>{% trans 'Wed' %}</label>";
-            result += "<input id='id_srv_wed_new' type='number' class='form-control form-control-sm' value='1'>";
+            result += "<input id='id_srv_wed_new' type='number' class='form-control form-control-sm' value='0'>";
             result += "</div>";
 
             result += "<div class='form-group col-3'>";
             result += "<label for='id_srv_thu_new'>{% trans 'Thu' %}</label>";
-            result += "<input id='id_srv_thu_new' type='number' class='form-control form-control-sm' value='1'>";
+            result += "<input id='id_srv_thu_new' type='number' class='form-control form-control-sm' value='0'>";
             result += "</div>";
 
             result += "</div>";
             result += "<div class='form-row col-6'>";
             result += "<div class='form-group col-3'>";
             result += "<label for='id_srv_fri_new'>{% trans 'Fri' %}</label>";
-            result += "<input id='id_srv_fri_new' type='number' class='form-control form-control-sm' value='1'>";
+            result += "<input id='id_srv_fri_new' type='number' class='form-control form-control-sm' value='0'>";
             result += "</div>";
 
             result += "<div class='form-group col-3'>";
             result += "<label for='id_srv_sat_new'>{% trans 'Sat' %}</label>";
-            result += "<input id='id_srv_sat_new' type='number' class='form-control form-control-sm' value='1'>";
+            result += "<input id='id_srv_sat_new' type='number' class='form-control form-control-sm' value='0'>";
             result += "</div>";
 
             result += "<div class='form-group col-3'>";
             result += "<label for='id_srv_sun_new'>{% trans 'Sun' %}</label>";
-            result += "<input id='id_srv_sun_new' type='number' class='form-control form-control-sm' value='1'>";
+            result += "<input id='id_srv_sun_new' type='number' class='form-control form-control-sm' value='0'>";
             result += "</div>";
 
             result += "<div class='form-group col-3'>";
             result += "<label for='id_srv_pub_new'>{% trans 'Pub' %}</label>";
-            result += "<input id='id_srv_pub_new' type='number' class='form-control form-control-sm' value='1'>";
+            result += "<input id='id_srv_pub_new' type='number' class='form-control form-control-sm' value='0'>";
             result += "</div>";
 
             result += "</div>";
@@ -2939,7 +2939,7 @@
             result += "<div class='form-row'>";
             result += "<div class='form-group col-md-3'>";
             result += "<label for='id_srv_qty_new'>{% trans 'QTY' %}</label>";
-            result += "<input id='id_srv_qty_new' type='number' class='form-control form-control-sm' value='1'>";
+            result += "<input id='id_srv_qty_new' type='number' class='form-control form-control-sm' value='0'>";
             result += "</div>";
 
             result += "<div class='form-group col-md-3'>";
@@ -2978,6 +2978,9 @@
             result += "</div>";
 
             $("#add_new_service_list_modal .modal-body").html(result);            
+            $('#add_new_service_list_modal').on('shown.bs.modal', function (e) {
+              $('#id_srv_qty_new').focus();
+            });            
           },
           error: function(data){
             $("#add_new_service_list_modal .modal-body").html("{% trans 'There is no data.' %}");
@@ -3236,7 +3239,10 @@
       });
 
       // SRV_QTY_NEW
-      $('#id_srv_qty_new').on('keypress', function (e) {
+      $('#id_srv_qty_new').on('focus', function (e) {
+        $(this).select();
+      });      
+      $('#id_srv_qty_new').on('keypress', function (e) {        
         var qty = $(this);
         if(e.which === 13) {
           if(qty.val() > 0) {
@@ -3249,9 +3255,21 @@
             $('#id_srv_sat_new').val(day);
             $('#id_srv_sun_new').val(day);
             $('#id_srv_pub_new').val(day);
-          } else {
-            $(this).val(1);
-            day = 1;
+          } else if(qty.val() == 0) {
+            $(this).val(0);
+            day = 0;
+            $('#id_srv_mon_new').val(day);
+            $('#id_srv_tue_new').val(day);
+            $('#id_srv_wed_new').val(day);
+            $('#id_srv_thu_new').val(day);
+            $('#id_srv_fri_new').val(day);
+            $('#id_srv_sat_new').val(day);
+            $('#id_srv_sun_new').val(day);
+            $('#id_srv_pub_new').val(day);            
+          }
+          else {
+            $(this).val(0);
+            day = 0;
             $('#id_srv_mon_new').val(day);
             $('#id_srv_tue_new').val(day);
             $('#id_srv_wed_new').val(day);
@@ -3281,6 +3299,10 @@
       });
 
 
+      // SRV_RATE_NEW
+      $('#id_srv_rate_new').on('focus', function (e) {
+        $(this).select();
+      });
       $('#id_srv_rate_new').on('keyup', function (e) {        
         var cost = $(this);
         if(e.which === 13){
@@ -3295,6 +3317,123 @@
         if(e.which === 13)
           $('#id_srv_rem_new').focus();      
       });
+
+
+      // SRV_REMARK_NEW
+      $('#id_srv_rem_new').on('focus', function (e) {
+        $(this).select();
+      });            
+      $('#id_srv_rem_new').on('keypress', function (e) {
+        if(e.which === 13){
+          $('#id_srv_cost_rate_new').focus();
+          event.preventDefault();
+          return false;        
+        }
+      });
+
+      // SRV_COST_RATE_NEW
+      $('#id_srv_cost_rate_new').on('focus', function (e) {
+        $(this).select();
+      });
+
+
+      // SRV_MON_NEW
+      $('#id_srv_mon_new').on('focus', function (e) {
+        $(this).select();
+      });      
+      $('#id_srv_mon_new').on('keypress', function (e) {
+        if(e.which === 13){
+          $('#id_srv_tue_new').focus();
+          event.preventDefault();
+          return false;        
+        }
+      });
+
+      // SRV_TUE_NEW
+      $('#id_srv_tue_new').on('focus', function (e) {
+        $(this).select();
+      });      
+      $('#id_srv_tue_new').on('keypress', function (e) {
+        if(e.which === 13){
+          $('#id_srv_wed_new').focus();
+          event.preventDefault();
+          return false;        
+        }
+      });
+
+      // SRV_WED_NEW
+      $('#id_srv_wed_new').on('focus', function (e) {
+        $(this).select();
+      });      
+      $('#id_srv_wed_new').on('keypress', function (e) {
+        if(e.which === 13){
+          $('#id_srv_thu_new').focus();
+          event.preventDefault();
+          return false;        
+        }
+      });
+
+      // SRV_THU_NEW
+      $('#id_srv_thu_new').on('focus', function (e) {
+        $(this).select();
+      });
+      $('#id_srv_thu_new').on('keypress', function (e) {
+        if(e.which === 13){
+          $('#id_srv_fri_new').focus();
+          event.preventDefault();
+          return false;        
+        }
+      });
+
+      // SRV_FRI_NEW
+      $('#id_srv_fri_new').on('focus', function (e) {
+        $(this).select();
+      });      
+      $('#id_srv_fri_new').on('keypress', function (e) {
+        if(e.which === 13){
+          $('#id_srv_sat_new').focus();
+          event.preventDefault();
+          return false;        
+        }
+      });
+
+      // SRV_SAT_NEW
+      $('#id_srv_sat_new').on('focus', function (e) {
+        $(this).select();
+      });      
+      $('#id_srv_sat_new').on('keypress', function (e) {
+        if(e.which === 13){
+          $('#id_srv_sun_new').focus();
+          event.preventDefault();
+          return false;        
+        }
+      });
+
+      // SRV_SUN_NEW
+      $('#id_srv_sun_new').on('focus', function (e) {
+        $(this).select();
+      });      
+      $('#id_srv_sun_new').on('keypress', function (e) {
+        if(e.which === 13){
+          $('#id_srv_pub_new').focus();
+          event.preventDefault();
+          return false;        
+        }
+      });
+
+
+      // SRV_PUB_NEW
+      $('#id_srv_pub_new').on('focus', function (e) {
+        $(this).select();
+      });      
+      $('#id_srv_pub_new').on('keypress', function (e) {
+        if(e.which === 13){
+          $('#id_srv_qty_new').focus();
+          event.preventDefault();
+          return false;        
+        }
+      });   
+                  
     });
 
 
