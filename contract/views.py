@@ -355,6 +355,8 @@ def get_cus_contract(request):
 
                 cnt_wage_id = cuscontract.cnt_wage_id_id
                 cnt_wage_text = str(cuscontract.cnt_wage_id_id) + "  |  " + str(cuscontract.cnt_wage_id.wage_en) + "    " + str(cuscontract.cnt_wage_id.wage_8hr)
+                cnt_wage_en = cuscontract.cnt_wage_id.wage_en
+                cnt_wage_8hr = cuscontract.cnt_wage_id.wage_8hr
                 cnt_guard_amt = cuscontract.cnt_guard_amt
                 cnt_sale_amt = cuscontract.cnt_sale_amt
                 cnt_new = cuscontract.cnt_new
@@ -399,7 +401,9 @@ def get_cus_contract(request):
                     "cnt_sign_frm": cnt_sign_frm,
                     "cnt_sign_to": cnt_sign_to,
                     "cnt_wage_id": cnt_wage_id,
+                    "cnt_wage_en": cnt_wage_en,
                     "cnt_wage_text": cnt_wage_text,
+                    "cnt_wage_8hr": cnt_wage_8hr,
                     "cnt_guard_amt": cnt_guard_amt,
                     "cnt_sale_amt": cnt_sale_amt,
                     "cnt_new": cnt_new,

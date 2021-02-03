@@ -463,7 +463,8 @@
               <div class="form-group col-md-12">
                 <label for="id_cnt_wage_id">{% trans 'Wage Rate' %}</label>
                 <div class="input-group-append">
-                
+                  
+                  <input type="text" id="id_wage_id_text" value="{{contract.cnt_wage_id_id}} " class="col-1 bg-success form-control form-control-sm text-center" readonly="">
                   <input type="text" id="id_cnt_wage_id_text" name="cnt_wage_id" class="form-control form-control-sm" value="{{contract.cnt_wage_id.wage_en}}&nbsp;&nbsp;|&nbsp;&nbsp;{{contract.cnt_wage_id.wage_8hr}}" readonly>
                 
                   <input type="hidden" id="id_cnt_wage_id" name="cnt_wage_id" value="{{ contract.cnt_wage_id_id|default_if_none:'' }}">
@@ -1196,7 +1197,8 @@
             $("#id_cnt_sign_to").val(json.cnt_sign_to);
             $("#id_cnt_wage_id").val(json.cnt_wage_id);
             
-            $("#id_cnt_wage_id_text").val(json.cnt_wage_text);            
+            $("#id_wage_id_text").val(json.cnt_wage_id);
+            $("#id_cnt_wage_id_text").val(json.cnt_wage_en + "  |  " + json.cnt_wage_8hr);
 
             $("#id_cnt_guard_amt").val(json.cnt_guard_amt);
             $("#id_cnt_sale_amt").val(json.cnt_sale_amt);
