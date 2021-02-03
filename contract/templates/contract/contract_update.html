@@ -763,7 +763,7 @@
       
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLongTitle">
-          <i class="fas fa-pen fa-sm text-secondary"></i>&nbsp;&nbsp;<strong>{% trans 'Edit service' %}</strong>
+          <small><i class="fas fa-pen fa-sm text-secondary"></i>&nbsp;&nbsp;</small><strong>{% trans 'Edit service' %}</strong>
           <input id="id_select_customer_service_id" type="hidden" readonly>
         </h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -912,7 +912,6 @@
     else
       cnt_autoexpire = 0;
 
-    // amnaj
     var printOptionValue = $("input[name='printOptions']:checked").val();
 
     // cnt_doc_no
@@ -1197,7 +1196,6 @@
             autoremove: true,
           });                    
 
-          // amnaj
           // Refresh Guard Amount, Sale Amount value
           $('#id_cnt_guard_amt').val(data.active_cnt_guard_amt);
           $('#id_cnt_sale_amt').val(data.active_cnt_sale_amt);
@@ -1306,7 +1304,6 @@
             result += "  </div>";
             result += "</div>";
 
-            //amnaj
             $("#service_list .card-body").html(result);
             $("#add_new_service_list_modal").modal("hide");
 
@@ -1325,6 +1322,7 @@
 
 
   function update_customer_service(service_id) {
+    
     if (service_id != null) {
 
       $('#id_select_customer_service_id').val(service_id);
@@ -1517,6 +1515,11 @@
             result += "</div>";
 
             $("#update_service_modal .modal-body").html(result);
+            
+            $('#update_service_modal').on('shown.bs.modal', function (e) {
+              $('#id_srv_qty').focus();
+            });
+            // amnaj
           },
           error: function(data){
             $("#update_service_modal .modal-body").html("{% trans 'There is no data.' %}");
@@ -1854,7 +1857,6 @@
           autoremove: true,
         });
 
-        // amnaj        
         // Refresh Guard Amount, Sale Amount value
         $('#id_cnt_guard_amt').val(data.active_cnt_guard_amt);
         $('#id_cnt_sale_amt').val(data.active_cnt_sale_amt);
@@ -1961,7 +1963,6 @@
             result += "  </div>";
             result += "</div>";
 
-            //amnaj
             $("#service_list .card-body").html(result);
             $("#add_new_service_list_modal").modal("hide");      
 
@@ -2165,7 +2166,6 @@
       });
 
       $("#add_new_service_list_modal").modal("show");
-
     });
 
     $('#wage_rate_lookup').on('click', function (e) {
@@ -2304,7 +2304,7 @@
       });
 
       // SRV_QTY_NEW
-      $('#id_srv_qty_new').on('keypress', function (e) {
+      $('#id_srv_qty_new').on('keypress', function (e) {        
         var qty = $(this);
         if(e.which === 13) {
           if(qty.val() > 0) {
@@ -2317,9 +2317,21 @@
             $('#id_srv_sat_new').val(day);
             $('#id_srv_sun_new').val(day);
             $('#id_srv_pub_new').val(day);
-          } else {
-            $(this).val(1);
-            day = 1;
+          } else if(qty.val() == 0) {
+            $(this).val(0);
+            day = 0;
+            $('#id_srv_mon_new').val(day);
+            $('#id_srv_tue_new').val(day);
+            $('#id_srv_wed_new').val(day);
+            $('#id_srv_thu_new').val(day);
+            $('#id_srv_fri_new').val(day);
+            $('#id_srv_sat_new').val(day);
+            $('#id_srv_sun_new').val(day);
+            $('#id_srv_pub_new').val(day);            
+          }
+          else {
+            $(this).val(0);
+            day = 0;
             $('#id_srv_mon_new').val(day);
             $('#id_srv_tue_new').val(day);
             $('#id_srv_wed_new').val(day);
@@ -2367,6 +2379,10 @@
 
     });
 
+
+
+
+
     // Update service modal
     $('#update_service_modal').on('shown.bs.modal', function (e) {
 
@@ -2385,11 +2401,25 @@
       }); 
 
       // SRV_QTY
+      $('#id_srv_qty').on('focus', function (e) {
+        $(this).select();
+      });
       $('#id_srv_qty').on('keypress', function (e) {
-        var qty = $(this);
+        var qty = $(this).val();
+
         if(e.which === 13) {
-          if(qty.val() > 0) {
-            day = qty.val();
+          if(qty > 0) {
+            day = qty;
+            $('#id_srv_mon').val(day);
+            $('#id_srv_tue').val(day);
+            $('#id_srv_wed').val(day);
+            $('#id_srv_thu').val(day);
+            $('#id_srv_fri').val(day);
+            $('#id_srv_sat').val(day);
+            $('#id_srv_sun').val(day);
+            $('#id_srv_pub').val(day);
+          }else if(qty == 0) {
+            day = 0;
             $('#id_srv_mon').val(day);
             $('#id_srv_tue').val(day);
             $('#id_srv_wed').val(day);
@@ -2399,8 +2429,8 @@
             $('#id_srv_sun').val(day);
             $('#id_srv_pub').val(day);
           } else {
-            $(this).val(1);
-            day = 1;
+            $(this).val(0);
+            day = 0;
             $('#id_srv_mon').val(day);
             $('#id_srv_tue').val(day);
             $('#id_srv_wed').val(day);
@@ -2430,9 +2460,10 @@
 
 
 
-
-
-      // amnaj
+      // id_srv_rate
+      $('#id_srv_rate').on('focus', function (e) {
+        $(this).select();
+      });      
       $('#id_srv_rate').on('keyup', function (e) {        
         var cost = $(this);
         if(e.which === 13){
@@ -2443,17 +2474,16 @@
           $('#id_srv_cost').val(total);
         }
       });
-
       $('#id_srv_rate').on('keypress', function (e) {        
         if(e.which === 13)
           $('#id_srv_rem').focus();      
       });
 
 
-
-
-
       // SRV_MON
+      $('#id_srv_mon').on('focus', function (e) {
+        $(this).select();
+      });      
       $('#id_srv_mon').on('keypress', function (e) {
         if(e.which === 13){
           $('#id_srv_tue').focus();
@@ -2463,6 +2493,9 @@
       });
 
       // SRV_TUE
+      $('#id_srv_tue').on('focus', function (e) {
+        $(this).select();
+      });      
       $('#id_srv_tue').on('keypress', function (e) {
         if(e.which === 13){
           $('#id_srv_wed').focus();
@@ -2472,6 +2505,9 @@
       });
 
       // SRV_WED
+      $('#id_srv_wed').on('focus', function (e) {
+        $(this).select();
+      });      
       $('#id_srv_wed').on('keypress', function (e) {
         if(e.which === 13){
           $('#id_srv_thu').focus();
@@ -2480,6 +2516,10 @@
         }
       });
 
+      // SRV_THU
+      $('#id_srv_thu').on('focus', function (e) {
+        $(this).select();
+      });
       $('#id_srv_thu').on('keypress', function (e) {
         if(e.which === 13){
           $('#id_srv_fri').focus();
@@ -2489,6 +2529,9 @@
       });
 
       // SRV_FRI
+      $('#id_srv_fri').on('focus', function (e) {
+        $(this).select();
+      });      
       $('#id_srv_fri').on('keypress', function (e) {
         if(e.which === 13){
           $('#id_srv_sat').focus();
@@ -2498,6 +2541,9 @@
       });
 
       // SRV_SAT
+      $('#id_srv_sat').on('focus', function (e) {
+        $(this).select();
+      });      
       $('#id_srv_sat').on('keypress', function (e) {
         if(e.which === 13){
           $('#id_srv_sun').focus();
@@ -2507,6 +2553,9 @@
       });
 
       // SRV_SUN
+      $('#id_srv_sun').on('focus', function (e) {
+        $(this).select();
+      });      
       $('#id_srv_sun').on('keypress', function (e) {
         if(e.which === 13){
           $('#id_srv_pub').focus();
@@ -2514,7 +2563,39 @@
           return false;        
         }
       });
-      
+
+
+      // SRV_PUB
+      $('#id_srv_pub').on('focus', function (e) {
+        $(this).select();
+      });      
+      $('#id_srv_pub').on('keypress', function (e) {
+        if(e.which === 13){
+          $('#id_srv_qty').focus();
+          event.preventDefault();
+          return false;        
+        }
+      });      
+
+
+      // SRV_REM
+      $('#id_srv_rem').on('focus', function (e) {
+        $(this).select();
+      });            
+      $('#id_srv_rem').on('keypress', function (e) {
+        if(e.which === 13){
+          $('#id_srv_cost_rate').focus();
+          event.preventDefault();
+          return false;        
+        }
+      });
+
+
+      // SRV_COST_RATE
+      $('#id_srv_cost_rate').on('focus', function (e) {
+        $(this).select();
+      });            
+
     });
 
   });
