@@ -3,6 +3,7 @@
 {% load i18n %}
 {% load static %}
 {% load widget_tweaks %}
+{% load humanize %}
 
 {% block title %}{{ page_title}} - {% trans 'Create New Contract' %} {% endblock %}
 
@@ -1201,7 +1202,10 @@
             $("#id_cnt_wage_id_text").val(json.cnt_wage_en + "  |  " + json.cnt_wage_8hr);
 
             $("#id_cnt_guard_amt").val(json.cnt_guard_amt);
+            
             $("#id_cnt_sale_amt").val(json.cnt_sale_amt);
+            //$("#id_cnt_sale_amt").val(json.cnt_sale_amt.toString());
+            //$("#id_cnt_sale_amt").val(parseFloat(json.cnt_sale_amt).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'));
 
             if(json.cnt_new=='N') {
               $("#id_cnt_new").prop("checked", true);
@@ -1278,7 +1282,10 @@
                   result += "      </tr>";
                   result += "      <tbody>";
 
-                  for(var i=0; i<data.cus_service_list.length; i++) {            
+                  for(var i=0; i<data.cus_service_list.length; i++) {
+                    srv_cost_text = data.cus_service_list[i]["srv_cost"].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    srv_rate_text = data.cus_service_list[i]["srv_rate"].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
                     result += "          <tr>";
                     if(data.cus_service_list[i]["srv_active"]==1) {
                       result += "          <td><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_eff_frm"] + "</small></a></td>";
@@ -1286,8 +1293,13 @@
                       result += "          <td><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["shf_desc"] + "</small></a></td>";
                       result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_qty"] + "</small></a></td>";
                       result += "          <td><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_rank"] + "</small></td>";
-                      result += "          <td align='right'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_rate"] + "</small></a></td>";
-                      result += "          <td align='right'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_cost"] + "</small></a></td>";
+                      
+                      //result += "          <td align='right'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_rate"] + "</small></a></td>";
+                      result += "          <td align='right'><a href='javascript:void(0);'><small>" + srv_rate_text + "</small></a></td>";
+                      
+                      //result += "          <td align='right'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_cost"] + "</small></a></td>";
+                      result += "          <td align='right'><a href='javascript:void(0);'><small>" + srv_cost_text + "</small></a></td>";
+                      
                       result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_mon"] + "</small></a></td>";
                       result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_tue"] + "</small></a></td>";
                       result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_wed"] + "</small></a></td>";
@@ -1304,8 +1316,13 @@
                       result += "          <td><small>" + data.cus_service_list[i]["shf_desc"] + "</small></td>";
                       result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_qty"] + "</small></td>";
                       result += "          <td><small>" + data.cus_service_list[i]["srv_rank"] + "</small></td>";
-                      result += "          <td align='right'><small>" + data.cus_service_list[i]["srv_rate"] + "</small></td>";
-                      result += "          <td align='right'><small>" + data.cus_service_list[i]["srv_cost"] + "</small></td>";
+
+                      //result += "          <td align='right'><small>" + data.cus_service_list[i]["srv_rate"] + "</small></td>";
+                      result += "          <td align='right'><small>" + srv_rate_text + "</small></td>";
+                      
+                      //result += "          <td align='right'><small>" + data.cus_service_list[i]["srv_cost"] + "</small></td>";
+                      result += "          <td align='right'><small>" + srv_cost_text + "</small></td>";
+  
                       result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_mon"] + "</small></td>";
                       result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_tue"] + "</small></td>";
                       result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_wed"] + "</small></td>";
