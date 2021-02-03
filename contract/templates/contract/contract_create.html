@@ -289,13 +289,13 @@
               {% else %}
               <input class="form-check-input" id="id_cnt_new" name="cnt_new" type="checkbox">
               {% endif %}
-              <label class="form-check-label">New Report</label>&nbsp;&nbsp;&nbsp;&nbsp;
+              <label for="id_cnt_new" class="form-check-label" style="cursor: pointer;">New Report</label>&nbsp;&nbsp;&nbsp;&nbsp;
             </div>
 
             <!-- Amendment Flag -->
             <div class="form-check d-inline">
               <input class="form-check-input" id="id_amendment" name="amendment" type="checkbox">
-              <label class="form-check-label">Amendment</label>&nbsp;&nbsp;&nbsp;&nbsp;
+              <label for="id_amendment" class="form-check-label" style="cursor: pointer;">Amendment</label>&nbsp;&nbsp;&nbsp;&nbsp;
             </div>
 
             <!-- Display Address condition | C or S -->
@@ -305,7 +305,7 @@
               <label id="id_cnt_print_label" class="form-check-label">Customer</label>&nbsp;&nbsp;&nbsp;&nbsp;
               {% else %}
               <input class="form-check-input" id="id_cnt_print" name="cnt_print" type="checkbox">
-              <label id="id_cnt_print_label" class="form-check-label">Site Address</label>&nbsp;&nbsp;&nbsp;&nbsp;
+              <label for="id_cnt_print" id="id_cnt_print_label" class="form-check-label" style="cursor: pointer;">Site Address</label>&nbsp;&nbsp;&nbsp;&nbsp;
               {% endif %}
             </div>
 
@@ -316,10 +316,9 @@
               {% else %}
               <input class="form-check-input" id="id_cnt_autoexpire" name="cnt_autoexpire" type="checkbox">
               {% endif %}
-              <label class="form-check-label text-danger">Auto expire</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <!--<label class="form-check-label text-danger">Auto expire</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
+              <label for="id_cnt_autoexpire" class="form-check-label text-danger" style="cursor: pointer;">Auto expire</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-            &nbsp;|&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;
             {% if contract.cnt_then == 'T' %}
             <div class="form-check form-check-inline">
               Print &nbsp;&nbsp;&nbsp;              
@@ -332,13 +331,13 @@
             </div>
             {% else %}
             <div class="form-check form-check-inline">
-              Print &nbsp;&nbsp;&nbsp;              
+              Print &nbsp;&nbsp;          
               <input class="form-check-input" type="radio" name="printOptions" id="id_print_th" value="T">
-              <label class="form-check-label" for="id_print_th">Thai</label>
+              <label class="form-check-label" for="id_print_th" style="cursor: pointer;">Thai</label>
             </div>
             <div class="form-check form-check-inline">
               <input class="form-check-input" type="radio" name="printOptions" id="id_print_en" value="E" checked>
-              <label class="form-check-label" for="id_print_en">English</label>
+              <label class="form-check-label" for="id_print_en" style="cursor: pointer;">English</label>
             </div>
             {% endif %}
                           
