@@ -2158,7 +2158,12 @@
             result += "</div>";          
             result += "</div>";
 
-            $("#add_new_service_list_modal .modal-body").html(result);            
+            $("#add_new_service_list_modal .modal-body").html(result);
+            $('#add_new_service_list_modal').on('shown.bs.modal', function (e) {
+              $('#id_srv_qty_new').focus();
+            });            
+            //amnaj
+
           },
           error: function(data){
             $("#add_new_service_list_modal .modal-body").html("{% trans 'There is no data.' %}");
@@ -2285,11 +2290,6 @@
           $('#id_t_shift_id_new').focus();
       });
 
-      $("#id_t_shift_id_new").change(function () {
-          //var end = this.value;
-          //var firstDropVal = $('#pick').val();
-          $('#id_srv_qty_new').focus();
-      });
 
       $("#id_dtp_cnt_eff_frm_new").datepicker({
         format: 'dd/mm/yyyy',
@@ -2304,6 +2304,12 @@
       });
 
       // SRV_QTY_NEW
+      $('#id_srv_qty_new').on('focus', function (e) {
+        $(this).select();
+      });
+      $("#id_t_shift_id_new").change(function () {
+          $('#id_srv_qty_new').focus();
+      });      
       $('#id_srv_qty_new').on('keypress', function (e) {        
         var qty = $(this);
         if(e.which === 13) {
@@ -2348,7 +2354,6 @@
           return false;        
         }
       });
-      //
       $('#id_srv_qty_new').on('keyup', function (e) {
         var qty = $(this);
         if(e.which === 13){
@@ -2360,8 +2365,10 @@
         }
       });
 
-
-
+      // SRV_RATE_NEW
+      $('#id_srv_rate_new').on('focus', function (e) {
+        $(this).select();
+      });      
       $('#id_srv_rate_new').on('keyup', function (e) {        
         var cost = $(this);
         if(e.which === 13){
@@ -2376,6 +2383,122 @@
         if(e.which === 13)
           $('#id_srv_rem_new').focus();      
       });
+
+      // SRV_REMARK_NEW
+      $('#id_srv_rem_new').on('focus', function (e) {
+        $(this).select();
+      });            
+      $('#id_srv_rem_new').on('keypress', function (e) {
+        if(e.which === 13){
+          $('#id_srv_cost_rate_new').focus();
+          event.preventDefault();
+          return false;        
+        }
+      });
+
+      // SRV_COST_RATE_NEW
+      $('#id_srv_cost_rate_new').on('focus', function (e) {
+        $(this).select();
+      });
+
+
+      // SRV_MON_NEW
+      $('#id_srv_mon_new').on('focus', function (e) {
+        $(this).select();
+      });      
+      $('#id_srv_mon_new').on('keypress', function (e) {
+        if(e.which === 13){
+          $('#id_srv_tue_new').focus();
+          event.preventDefault();
+          return false;        
+        }
+      });
+
+      // SRV_TUE_NEW
+      $('#id_srv_tue_new').on('focus', function (e) {
+        $(this).select();
+      });      
+      $('#id_srv_tue_new').on('keypress', function (e) {
+        if(e.which === 13){
+          $('#id_srv_wed_new').focus();
+          event.preventDefault();
+          return false;        
+        }
+      });
+
+      // SRV_WED_NEW
+      $('#id_srv_wed_new').on('focus', function (e) {
+        $(this).select();
+      });      
+      $('#id_srv_wed_new').on('keypress', function (e) {
+        if(e.which === 13){
+          $('#id_srv_thu_new').focus();
+          event.preventDefault();
+          return false;        
+        }
+      });
+
+      // SRV_THU_NEW
+      $('#id_srv_thu_new').on('focus', function (e) {
+        $(this).select();
+      });
+      $('#id_srv_thu_new').on('keypress', function (e) {
+        if(e.which === 13){
+          $('#id_srv_fri_new').focus();
+          event.preventDefault();
+          return false;        
+        }
+      });
+
+      // SRV_FRI_NEW
+      $('#id_srv_fri_new').on('focus', function (e) {
+        $(this).select();
+      });      
+      $('#id_srv_fri_new').on('keypress', function (e) {
+        if(e.which === 13){
+          $('#id_srv_sat_new').focus();
+          event.preventDefault();
+          return false;        
+        }
+      });
+
+      // SRV_SAT_NEW
+      $('#id_srv_sat_new').on('focus', function (e) {
+        $(this).select();
+      });      
+      $('#id_srv_sat_new').on('keypress', function (e) {
+        if(e.which === 13){
+          $('#id_srv_sun_new').focus();
+          event.preventDefault();
+          return false;        
+        }
+      });
+
+      // SRV_SUN_NEW
+      $('#id_srv_sun_new').on('focus', function (e) {
+        $(this).select();
+      });      
+      $('#id_srv_sun_new').on('keypress', function (e) {
+        if(e.which === 13){
+          $('#id_srv_pub_new').focus();
+          event.preventDefault();
+          return false;        
+        }
+      });
+
+
+      // SRV_PUB_NEW
+      $('#id_srv_pub_new').on('focus', function (e) {
+        $(this).select();
+      });      
+      $('#id_srv_pub_new').on('keypress', function (e) {
+        if(e.which === 13){
+          $('#id_srv_qty_new').focus();
+          event.preventDefault();
+          return false;        
+        }
+      });      
+
 
     });
 
@@ -2578,7 +2701,7 @@
       });      
 
 
-      // SRV_REM
+      // SRV_REMARK
       $('#id_srv_rem').on('focus', function (e) {
         $(this).select();
       });            
