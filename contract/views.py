@@ -537,9 +537,9 @@ def ContractList(request):
 def ContractUpdate(request, pk):
     template_name = 'contract/contract_update.html'
     
-    cus_contract = get_object_or_404(CusContract, pk=pk)    
+    cus_contract = get_object_or_404(CusContract, pk=pk)
+
     if cus_contract is not None:
-        # print("wage_en = " + str(cus_contract.cnt_wage_id.wage_en))
         cusmain = CusMain.objects.filter(cus_id=cus_contract.cus_id).get()
         customer = Customer.objects.filter(cus_id=cus_contract.cus_id, cus_brn=cus_contract.cus_brn).get()
         cus_service = CusService.objects.filter(cnt_id=cus_contract.cnt_id).exclude(upd_flag='D').order_by('-srv_active','srv_shif_id')
