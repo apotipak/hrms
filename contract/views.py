@@ -1165,6 +1165,14 @@ def CreateContract(request):
                         modified_records.append(record)
                         field_is_modified_count = field_is_modified_count + 1
 
+                # CNT_TH_EN
+                if (cnt_then is not None):
+                    field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "Print TH/EN", cuscontract.cnt_then, cnt_then, "E", request)
+                    if field_is_modified:
+                        cuscontract.cnt_then = cnt_then
+                        modified_records.append(record)
+                        field_is_modified_count = field_is_modified_count + 1
+
                 # Modified user
                 if field_is_modified_count > 0:
                     cuscontract.upd_date = datetime.datetime.now()

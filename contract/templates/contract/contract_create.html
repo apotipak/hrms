@@ -1460,6 +1460,7 @@
     else
       cnt_autoexpire = 0;
 
+
     // cnt_doc_no
     cnt_doc_no = $('#id_cnt_doc_no').val();
     // cnt_doc_date
@@ -1487,13 +1488,12 @@
     // cnt_zone_id = $('#id_cnt_zone_id').val();
 
     // cnt_th_en
-    // cnt_then = $('#id_cnt_then').val();
+    cnt_then = $('input[name="printOptions"]:checked').val();
 
     // cnt_print
     // cnt_print = $('#id_cnt_print').val();
 
-
-    console.log(cnt_new + ", " + amendment_flag + ", " + cnt_print + ", " + cnt_autoexpire + ", " + cnt_active);
+    //console.log(cnt_new + ", " + amendment_flag + ", " + cnt_print + ", " + cnt_autoexpire + ", " + cnt_active);
   
     $.ajax({
       url : "/contract/ajax/create_contract/",
@@ -1506,6 +1506,7 @@
         cnt_active: cnt_active,
         cnt_new: cnt_new,
         cnt_print: cnt_print,
+        cnt_then: cnt_then,
         cnt_autoexpire: cnt_autoexpire,
         cnt_doc_no: cnt_doc_no,
         cnt_doc_date: cnt_doc_date,
