@@ -434,7 +434,7 @@
               <div class="form-group col-md-6">
                 <label>&nbsp;</label>                
                 <div class="input-group date" id="dtp_cnt_doc_date" data-target-input="nearest">
-                  <input type="checkbox" id="chkCNTDocDate" class="form-inline float-left" onclick="disableCNTDocDate()" style="margin-top:9px;">&nbsp;
+                  <input type="checkbox" id="chkCNTDocDate" class="form-inline float-left" onclick="checkCNTDocDate()" style="margin-top:9px;">&nbsp;
                   {{ form.cnt_doc_date }}                  
                   <!--
                   <div class="input-group-append" data-target="#dtp_cnt_doc_date" data-toggle="datepicker">
@@ -873,29 +873,23 @@
   };
 
 
-  function disableCNTDocDate(){
+  function checkCNTDocDate(){
     
     chkCNTDocDateStatus = $("#chkCNTDocDate").is(":checked");
     console.log(chkCNTDocDateStatus);
     if(chkCNTDocDateStatus) {
-      $("#id_cnt_doc_date").attr("disabled", true);
-    } else {
       $("#id_cnt_doc_date").attr("disabled", false);
-    }
-    
-    //$("#id_cnt_doc_date").focus();
-    
-    
-    /*
-    durationFromStatus =  $("#chkDurationFromDisable").is(":checked");    
-    $("#id_duration_from").val($("#id_duration_from").val());
-    
-    if(durationFromStatus) {
-      $("#id_duration_from").attr("disabled", false);
+      //$("#id_cnt_doc_date").prop('disabled', false);
+      $("#id_cnt_doc_date").focus();
+      //document.getElementById("id_cnt_doc_date").disabled = true;
     } else {
-      $("#id_duration_from").attr("disabled", true);
+      $("#id_cnt_doc_date").attr("disabled", true);
+      //$("#id_cnt_doc_date").prop('disabled', true);
+      //document.getElementById("id_cnt_doc_date").disabled = false;
+      $("#id_cnt_eff_frm").focus();
     }
-    */
+    
+    return false;
   }
 
 
@@ -907,9 +901,17 @@
     $(document).on('keypress', '#id_cnt_doc_no', function(e) {
       if(e.which == 13) {      
         e.preventDefault();
-        $('#id_cnt_doc_date').focus();
+
+        chkCNTDocDateStatus = $("#chkCNTDocDate").is(":checked");
+        if(chkCNTDocDateStatus)
+          $('#id_cnt_doc_date').focus();
+        else
+          $('#id_cnt_eff_frm').focus();
       }
     });
+
+
+
 
 
     // ID_CNT_DOC_DATE
@@ -920,14 +922,15 @@
         $('#id_cnt_eff_frm').focus();
       }
     });    
+    
     $("#id_cnt_doc_date").bind("focus",function(e){
-      chkCNTDocDateStatus = $("#chkCNTDocDate").is(":checked");
-      if(chkCNTDocDateStatus) {
-        $('#id_cnt_eff_frm').focus();
-        return false;
-      }
+      //chkCNTDocDateStatus = $("#chkCNTDocDate").is(":checked");
+      //if(chkCNTDocDateStatus) {
+      //  $('#id_cnt_eff_frm').focus();
+      //  return false;
+      //}
 
-      console.log("id_cnt_eff_frm_focus" + " | " + e.keyCode);
+      console.log("id_cnt_doc_date_focus" + " | " + e.keyCode);
       if(e.keyCode!=undefined) {
         this.setSelectionRange(0,2);
       } else {
@@ -937,15 +940,16 @@
         }, 0);
       }
     });
-    $("#id_cnt_doc_date").bind("focusout",function(e){      
+    
+    $("#id_cnt_doc_date1").bind("focusout",function(e){
       var keyup_value;
       keyup_value = this.value;
       // isValidDate()
       if(isValidDate(keyup_value)) {
-        console.log("TRUE");
+        //console.log("TRUE");
         $('#id_cnt_eff_frm').focus();
       } else {
-        console.log("FALSE");        
+        //console.log("FALSE");        
         $('#id_cnt_doc_date').focus();
         $(document).Toasts('create', {
           class: "bg-danger", 
@@ -960,6 +964,7 @@
         });        
       }      
     });
+
     $("#id_cnt_doc_date").bind("keyup",function(e){
       var keyup_point;
       var keyup_value;
@@ -1044,6 +1049,9 @@
 
 
 
+
+
+
     // ID_CNT_EFF_FRM
     /*
     $(document).on('keypress', '#id_cnt_eff_frm', function(e) {
@@ -1071,7 +1079,7 @@
         }, 0);
       }
     });
-    $("#id_cnt_eff_frm").bind("focusout",function(e){      
+    $("#id_cnt_eff_frm1").bind("focusout",function(e){      
       var keyup_value;
       keyup_value = this.value;
       // isValidDate()
@@ -1206,7 +1214,7 @@
         }, 0);
       }
     });
-    $("#id_cnt_eff_to").bind("focusout",function(e){      
+    $("#id_cnt_eff_to1").bind("focusout",function(e){      
       var keyup_value;
       keyup_value = this.value;
       // isValidDate()
@@ -1337,7 +1345,7 @@
       }
     });
     $("#id_cnt_sign_frm").bind("focus",function(e){
-      console.log("id_cnt_eff_to_focus" + " | " + e.keyCode);
+      console.log("id_cnt_sign_frm_focus" + " | " + e.keyCode);
       if(e.keyCode!=undefined) {
         this.setSelectionRange(0,2);
       } else {
@@ -1347,7 +1355,7 @@
         }, 0);
       }
     });
-    $("#id_cnt_sign_frm").bind("focusout",function(e){      
+    $("#id_cnt_sign_frm1").bind("focusout",function(e){      
       var keyup_value;
       keyup_value = this.value;
       // isValidDate()
@@ -1478,7 +1486,7 @@
       }
     });
     $("#id_cnt_sign_to").bind("focus",function(e){
-      console.log("id_cnt_eff_to_focus" + " | " + e.keyCode);
+      console.log("id_cnt_sign_to_focus" + " | " + e.keyCode);
       if(e.keyCode!=undefined) {
         this.setSelectionRange(0,2);
       } else {
@@ -1488,7 +1496,7 @@
         }, 0);
       }
     });
-    $("#id_cnt_sign_to").bind("focusout",function(e){      
+    $("#id_cnt_sign_to1").bind("focusout",function(e){      
       var keyup_value;
       keyup_value = this.value;
       // isValidDate()
