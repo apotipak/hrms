@@ -7012,7 +7012,7 @@ def export_dgp_500_xls(request):
 
 	# Sum
 	font_style = xlwt.XFStyle()
-	font_style = xlwt.easyxf('font: height 160;')
+	font_style = xlwt.easyxf('font: height 180;')
 	
 	font_style.font.bold = True
 	for col_num in range(len(row)):
