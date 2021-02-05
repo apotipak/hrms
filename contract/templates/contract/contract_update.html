@@ -437,8 +437,13 @@
                 <div class="input-group date" id="dtp_cnt_doc_date" data-target-input="nearest">
                   
                   {% if contract.cnt_doc_date|date:"d/m/Y" != "" %}
+                    {% if contract.cnt_eff_frm|date:"d/m/Y" != "31/12/2999" %}
                     <input type="checkbox" checked id="chkCNTDocDate" class="form-inline float-left" onclick="checkCNTDocDateStatus()" style="margin-top:9px;">&nbsp;
                     <input type="text" name="cnt_doc_date" class="form-control form-control-sm" id="id_cnt_doc_date" value="{{contract.cnt_doc_date|date:'d/m/Y'}}" required="">
+                    {% else %}
+                    <input type="checkbox" id="chkCNTDocDate" class="form-inline float-left" onclick="checkCNTDocDateStatus()" style="margin-top:9px;">&nbsp;
+                    <input type="text" name="cnt_doc_date" class="form-control form-control-sm" id="id_cnt_doc_date" value="{% now 'd/m/Y'%}" required="" readonly="">
+                    {% endif %}
                   {% else %}
                     <input type="checkbox" id="chkCNTDocDate" class="form-inline float-left" onclick="checkCNTDocDateStatus()" style="margin-top:9px;">&nbsp;
                     <input type="text" name="cnt_doc_date" class="form-control form-control-sm" id="id_cnt_doc_date" value="{% now 'd/m/Y'%}" required="" readonly="">
@@ -615,7 +620,7 @@
               </div>
               <div class="form-group col-md-6">
                 <label for="id_cnt_sale_amt">{% trans 'Sale Amount' %}</label>
-                <input type="text" id="id_cnt_sale_amt" name="cnt_sale_amt" class="form-control form-control-sm text-right" value="{{contract.cnt_sale_amt|stringformat:'0.2f'|intcomma}}" readonly>
+                <input type="text" id="id_cnt_sale_amt" name="cnt_sale_amt" class="form-control form-control-sm text-right" value="{{contract.cnt_sale_amt}}" readonly>
               </div>              
             </div>
 
@@ -959,11 +964,12 @@
   function checkCNTDocDateStatus(){    
     chkCNTDocDateStatus = $("#chkCNTDocDate").is(":checked");
     if(chkCNTDocDateStatus) {
-      $("#id_cnt_doc_date").attr("disabled", false);
+      $('#id_cnt_doc_date').attr('readonly', false);
+      $('#id_cnt_doc_date').attr("disabled", false);      
       $("#id_cnt_doc_date").focus();
     } else {
-      $("#id_cnt_doc_date").attr("disabled", true);
-      $("#id_cnt_eff_frm").focus();
+      $('#id_cnt_doc_date').attr('readonly', true);
+      $('#id_cnt_doc_date').attr("disabled", true);
     }    
     return false;
   }
@@ -1361,10 +1367,8 @@
           chkCNTSignFromStatus = $("#chkCNTSignFrom").is(":checked");
           chkCNTSignToStatus = $("#chkCNTSignTo").is(":checked");
 
-          if(chkCNTEffToStatus)
-            $('#id_cnt_eff_to').focus();
-          else if(chkCNTSignFromStatus)
-            $('#id_cnt_sign_from').focus();
+          if(chkCNTSignFromStatus)
+            $('#id_cnt_sign_frm').focus();
           else if(chkCNTSignToStatus)
             $('#id_cnt_sign_to').focus();
           else
@@ -1834,16 +1838,27 @@
 
     // cnt_doc_no
     cnt_doc_no = $('#id_cnt_doc_no').val();
+    
     // cnt_doc_date
-    cnt_doc_date = $('#id_cnt_eff_frm').val();
+    cnt_doc_date = $('#id_cnt_doc_date').val();
+    cnt_doc_date_status = $("#chkCNTDocDate").val();
+
     // cnt_eff_frm
     cnt_eff_frm = $('#id_cnt_eff_frm').val();
+    cnt_eff_frm_status = $('#chkCNTEffFrom').val();
+
     // cnt_eff_to
     cnt_eff_to = $('#id_cnt_eff_to').val();
+    cnt_eff_to_status = $('#chkCNTEffTo').val();
+
     // cnt_sign_frm
     cnt_sign_frm = $('#id_cnt_sign_frm').val();
+    cnt_sign_frm_status = $('#chkCNTSignFrom').val();
+
     // cnt_sign_to
     cnt_sign_to = $('#id_cnt_sign_to').val();
+    cnt_sign_to_status = $('#chkCNTSignTo').val();
+
     // cnt_wage_id
     cnt_wage_id = $('#id_cnt_wage_id').val();
     // cnt_sale_amt
@@ -1865,7 +1880,7 @@
     // cnt_print = $('#id_cnt_print').val();
 
 
-    console.log(cnt_new + ", " + amendment_flag + ", " + cnt_print + ", " + cnt_autoexpire + ", " + cnt_active);
+    //console.log(cnt_new + ", " + amendment_flag + ", " + cnt_print + ", " + cnt_autoexpire + ", " + cnt_active);
   
     $.ajax({
       url : "/contract/ajax/update_contract/",
@@ -1879,11 +1894,22 @@
         cnt_autoexpire: cnt_autoexpire,
         cnt_then: printOptionValue,
         cnt_doc_no: cnt_doc_no,
+        
         cnt_doc_date: cnt_doc_date,
+        cnt_doc_date_status: cnt_doc_date_status,
+
         cnt_eff_frm: cnt_eff_frm,
+        cnt_eff_frm_status: cnt_eff_frm_status,
+
         cnt_eff_to: cnt_eff_to,
+        cnt_eff_to_status: cnt_eff_to_status,
+
         cnt_sign_frm: cnt_sign_frm,
+        cnt_sign_frm_status: cnt_sign_frm_status,
+
         cnt_sign_to: cnt_sign_to,
+        cnt_sign_to_status: cnt_sign_to_status,
+
         cnt_wage_id: cnt_wage_id,
         cnt_sale_amt: cnt_sale_amt,
         cnt_guard_amt: cnt_guard_amt,
@@ -1897,7 +1923,7 @@
         if(json.form_is_valid) {
           $(document).Toasts('create', {
             class: json.class, 
-            title: "{% trans 'System message' %}",
+            title: "{% trans 'Message' %}",
             subtitle: '',
             autohide: true,
             delay: 2000,
@@ -2104,7 +2130,7 @@
 
           $(document).Toasts('create', {
             class: data.class, 
-            title: "{% trans 'System Message' %}",
+            title: "{% trans 'Message' %}",
             subtitle: '',
             autohide: true,
             delay: 2000,      
@@ -2511,7 +2537,7 @@
         success: function (data) {
           $(document).Toasts('create', {
             class: data.class, 
-            title: "{% trans 'System Message' %}",
+            title: "{% trans 'Message' %}",
             subtitle: '',
             autohide: true,
             delay: 2000,      
@@ -2676,7 +2702,7 @@
     if(srv_rank_id_new=='') {
       $(document).Toasts('create', {
         class: 'bg-danger', 
-        title: "{% trans 'System Message' %}",
+        title: "{% trans 'Message' %}",
         subtitle: '',
         autohide: true,
         delay: 2000,      
@@ -2691,7 +2717,7 @@
     if(srv_shift_id_new=='') {
       $(document).Toasts('create', {
         class: 'bg-danger', 
-        title: "{% trans 'System Message' %}",
+        title: "{% trans 'Message' %}",
         subtitle: '',
         autohide: true,
         delay: 2000,      
@@ -2706,7 +2732,7 @@
     if(srv_qty_new=='') {
       $(document).Toasts('create', {
         class: 'bg-danger', 
-        title: "{% trans 'System Message' %}",
+        title: "{% trans 'Message' %}",
         subtitle: '',
         autohide: true,
         delay: 2000,      
@@ -2721,7 +2747,7 @@
     if(srv_rate_new=='') {
       $(document).Toasts('create', {
         class: 'bg-danger', 
-        title: "{% trans 'System Message' %}",
+        title: "{% trans 'Message' %}",
         subtitle: '',
         autohide: true,
         delay: 2000,      
@@ -2764,7 +2790,7 @@
       success: function (data) {
         $(document).Toasts('create', {
           class: data.class, 
-          title: "{% trans 'System Message' %}",
+          title: "{% trans 'Message' %}",
           subtitle: '',
           autohide: true,
           delay: 2000,      
@@ -2893,7 +2919,7 @@
       error: function(data){
         $(document).Toasts('create', {
           class: 'bg-danger', 
-          title: "{% trans 'System Message' %}",
+          title: "{% trans 'Message' %}",
           subtitle: '',
           autohide: true,
           delay: 2000,      

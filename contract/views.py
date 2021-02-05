@@ -676,36 +676,88 @@ def UpdateContract(request):
             cnt_id = request.POST.get('cnt_id')
             cnt_active = request.POST.get('cnt_active')            
             cnt_doc_no = request.POST.get('cnt_doc_no')
-
-            cnt_doc_date = request.POST.get('cnt_doc_date')
-            if cnt_doc_date is not None and cnt_doc_date != "":
-                cnt_doc_date = datetime.datetime.strptime(cnt_doc_date, "%d/%m/%Y")
+            
+            cnt_doc_date_status = request.POST.get('cnt_doc_date_status')
+            if cnt_doc_date_status:
+                cnt_doc_date = "2999-12-31"
             else:
-                cnt_doc_date = None
+                cnt_doc_date = request.POST.get('cnt_doc_date')
+                if cnt_doc_date is not None and cnt_doc_date != "":
+                    cnt_doc_date = datetime.datetime.strptime(cnt_doc_date, "%d/%m/%Y")
+                else:
+                    cnt_doc_date = None
+                
 
+            '''
             cnt_eff_frm = request.POST.get('cnt_eff_frm')
             if cnt_eff_frm is not None and cnt_eff_frm != "":
                 cnt_eff_frm = datetime.datetime.strptime(cnt_eff_frm, "%d/%m/%Y")
             else:
                 cnt_eff_frm = None
+            '''
+            cnt_eff_frm_status = request.POST.get('cnt_eff_frm_status')
+            if cnt_eff_frm_status:
+                cnt_eff_frm = "2999-12-31"
+            else:
+                cnt_eff_frm = request.POST.get('cnt_eff_frm')
+                if cnt_eff_frm is not None and cnt_eff_frm != "":
+                    cnt_eff_frm = datetime.datetime.strptime(cnt_eff_frm, "%d/%m/%Y")
+                else:
+                    cnt_eff_frm = None
 
+
+
+            '''
             cnt_eff_to = request.POST.get('cnt_eff_to')
             if cnt_eff_to is not None and cnt_eff_to != "":
                 cnt_eff_to = datetime.datetime.strptime(cnt_eff_to, "%d/%m/%Y")
             else:
                 cnt_eff_to = None
+            '''
+            cnt_eff_to_status = request.POST.get('cnt_eff_to_status')
+            if cnt_eff_to_status:
+                cnt_eff_to = "2999-12-31"
+            else:
+                cnt_eff_to = request.POST.get('cnt_eff_to')
+                if cnt_eff_to is not None and cnt_eff_to != "":
+                    cnt_eff_to = datetime.datetime.strptime(cnt_eff_to, "%d/%m/%Y")
+                else:
+                    cnt_eff_to = None
 
+
+            '''
             cnt_sign_frm = request.POST.get('cnt_sign_frm')
             if cnt_sign_frm is not None and cnt_sign_frm != "":
                 cnt_sign_frm = datetime.datetime.strptime(cnt_sign_frm, "%d/%m/%Y")
             else:
                 cnt_sign_frm = None
+            '''
+            cnt_sign_from_status = request.POST.get('cnt_sign_frm_status')
+            if cnt_sign_from_status:
+                cnt_sign_frm = "2999-12-31"
+            else:
+                cnt_sign_frm = request.POST.get('cnt_sign_frm')
+                if cnt_sign_frm is not None and cnt_sign_frm != "":
+                    cnt_sign_frm = datetime.datetime.strptime(cnt_sign_frm, "%d/%m/%Y")
+                else:
+                    cnt_sign_frm = None
 
+            '''
             cnt_sign_to = request.POST.get('cnt_sign_to')
             if cnt_sign_to is not None and cnt_sign_to != "":
                 cnt_sign_to = datetime.datetime.strptime(cnt_sign_to, "%d/%m/%Y")
             else:
                 cnt_sign_to = None
+            '''
+            cnt_sign_to_status = request.POST.get('cnt_sign_to_status')
+            if cnt_sign_to_status:
+                cnt_sign_to = "2999-12-31"
+            else:
+                cnt_sign_to = request.POST.get('cnt_sign_to')
+                if cnt_sign_to is not None and cnt_sign_to != "":
+                    cnt_sign_to = datetime.datetime.strptime(cnt_sign_to, "%d/%m/%Y")
+                else:
+                    cnt_sign_to = None
 
             cnt_apr_by = request.POST.get('cnt_apr_by_id')            
             cnt_guard_amt = request.POST.get('cnt_guard_amt')
