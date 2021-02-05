@@ -2578,6 +2578,20 @@
 
     // cnt_wage_id
     cnt_wage_id = $('#id_cnt_wage_id').val();
+    if(cnt_wage_id=="") {
+      $.alert({
+          title: 'Error',
+          type: 'red',
+          content: "กรุณาป้อนค่าแรง",
+          animation: 'zoom',
+          animationBounce: 1.5,
+          closeIcon: false,
+          boxWidth: '38%',
+          useBootstrap: false,
+      });
+      return false;      
+    }
+
     // cnt_sale_amt
     cnt_sale_amt = $('#id_cnt_sale_amt').val();
     // cnt_guard_amt
@@ -4312,7 +4326,7 @@
       */
 
     // ID_DTP_CNT_EFF_TO_NEW  
-    
+
     $("#id_dtp_cnt_eff_to_new").inputmask("99/99/9999");
     $(document).on('keypress', '#id_dtp_cnt_eff_to_new', function(e) {
       if(e.which == 13) {      

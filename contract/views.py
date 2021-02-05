@@ -1100,6 +1100,7 @@ def CreateContract(request):
                 cnt_sale_amt = float(cnt_sale_amt)
 
             cnt_wage_id = request.POST.get('cnt_wage_id')
+            
             # cnt_zone = request.POST.get('cnt_zone_id')
             cnt_autoexpire = request.POST.get('cnt_autoexpire')
             cnt_then = request.POST.get('cnt_then')
@@ -1314,7 +1315,7 @@ def CreateContract(request):
                     cnt_apr_by_id = int(cnt_apr_by),
                     cnt_guard_amt = cnt_guard_amt,
                     cnt_sale_amt = cnt_sale_amt,
-                    cnt_wage_id_id = 1,
+                    cnt_wage_id_id = cnt_wage_id,
                     cnt_zone = 0,
                     cnt_autoexpire = cnt_autoexpire,
                     cnt_then = 'T',
@@ -1325,7 +1326,7 @@ def CreateContract(request):
                 )
                 c.save()                
                 response_data['form_is_valid'] = True
-                response_data['result'] = "Saved success."
+                response_data['result'] = "สร้างสัญญาใหม่สำเร็จ"
                 response_data['class'] = "bg-success"
         else:
             print("form is invalid")
