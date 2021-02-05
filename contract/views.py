@@ -1663,7 +1663,13 @@ def add_new_service(request):
     srv_eff_from = datetime.datetime.strptime(request.GET["srv_eff_frm_new"], "%d/%m/%Y").date()
 
     # srv_eff_to = request.GET["srv_eff_to_new"].strftime("%d/%m/%Y")
-    srv_eff_to = datetime.datetime.strptime(request.GET["srv_eff_to_new"], "%d/%m/%Y").date()
+    # srv_eff_to = datetime.datetime.strptime(request.GET["srv_eff_to_new"], "%d/%m/%Y").date()
+
+    srv_eff_to_new_status = request.GET["srv_eff_to_new_status"]    
+    if srv_eff_to_new_status=="1":
+        srv_eff_to = datetime.datetime.strptime(request.GET["srv_eff_to_new"], "%d/%m/%Y").date()
+    else:
+        srv_eff_to = "2999-12-31"
 
     srv_rank = request.GET["srv_rank_new"]
     srv_shift_id = request.GET["srv_shift_id_new"]
@@ -1872,10 +1878,10 @@ def save_customer_service_item(request):
     srv_eff_to_status = request.GET["srv_eff_to_status"]
     print("srv_eff_to_status:", srv_eff_to_status)
 
-    if srv_eff_to_status==1:
-        srv_eff_to = "31/12/2999"
+    if srv_eff_to_status=="1":
+        srv_eff_to = request.GET["srv_eff_to"]        
     else:
-        srv_eff_to = request.GET["srv_eff_to"]
+        srv_eff_to = "31/12/2999"
 
     srv_rank = request.GET["srv_rank"]
     srv_shift_id = request.GET["srv_shift_id"]     
