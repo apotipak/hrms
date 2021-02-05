@@ -1302,9 +1302,13 @@ def CreateContract(request):
                     cus_brn = cus_brn,
                     cus_vol = cus_vol,
                     cnt_active = cnt_active,
+
+                    cnt_eff_frm = cnt_eff_frm,
+                    cnt_eff_to = cnt_eff_to,
+                    
                     cnt_sign_frm = cnt_sign_frm,
                     cnt_sign_to = cnt_sign_to,
-                    cnt_eff_to = cnt_eff_to,
+                    
                     cnt_doc_no = cnt_doc_no,
                     cnt_doc_date = cnt_doc_date,
                     cnt_apr_by_id = int(cnt_apr_by),
