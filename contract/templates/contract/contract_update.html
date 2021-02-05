@@ -2507,7 +2507,8 @@
             } else {
               result += "            <input id='id_srv_active' class='form-check-input' type='checkbox'>";
             }            
-            result += "            <label class='form-check-label'>{% trans 'Active' %}</label>";
+            //result += "            <label class='form-check-label'>{% trans 'Active' %}</label>";
+            result += "            <label for='id_srv_active' class='form-check-label' style='cursor: pointer;'>{% trans 'Active' %}</label>";
             result += "          </div>";
             result += "        </div>";
 
@@ -3199,7 +3200,8 @@
             result += "<label for='id_srv_active_new'>&nbsp;</label>";
             result += "<div class='form-check'>";
             result += "<input id='id_srv_active_new' class='form-check-input' type='checkbox'>";
-            result += "<label class='form-check-label'>{% trans 'Active' %}</label>";
+            //result += "<label class='form-check-label'>{% trans 'Active' %}</label>";
+            result += "<label for='id_srv_active_new' class='form-check-label' style='cursor: pointer;'>{% trans 'Active' %}</label>";
             result += "</div>";                                              
             result += "</div>";
             result += "</div>";
