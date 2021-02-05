@@ -2336,25 +2336,47 @@
             result += "    <div class='card-body'>";
             result += "      <div class='form-row'>";
         
+
+
+
+
           // SRV_EFF_FROM
             result += "  <div class='form-group col-md-3'>";
             result += "    <label>Effect From</label>";
             result += "    <div class='input-group date' id='dtp_srv_eff_frm_date' data-target-input='nearest'>";                        
-            result += "      <input type='text' name='srv_eff_frm' value='" + data.srv_eff_frm + "' class='form-control form-control-sm' id='id_srv_eff_frm' placeholder='dd/mm/yyyy' required=''>";
-            result += "      <div class='input-group-append' data-target='#dtp_srv_eff_frm_date' data-toggle='datepicker'>";
-            result += "        <div class='input-group-text text-primary'><i class='fa fa-calendar'></i></div>";
-            result += "      </div>";
-            result += "    </div>";            
+
+
+            result += "   <input type='checkbox' checked id='chkCNTEffFromNew' class='form-inline float-left' onclick='checkCNTEffFromNewStatus()' style='margin-top:9px;'>&nbsp;";
+            result += "   <input type='text' name='srv_eff_frm' class='form-control form-control-sm' id='id_srv_eff_frm' placeholder='dd/mm/yyyy' value='" + data.srv_eff_frm + "'>";
+
+            //result += "      <input type='text' name='srv_eff_frm' value='" + data.srv_eff_frm + "' class='form-control form-control-sm' id='id_srv_eff_frm' placeholder='dd/mm/yyyy' required=''>";
+            //result += "      <div class='input-group-append' data-target='#dtp_srv_eff_frm_date' data-toggle='datepicker'>";
+            //result += "        <div class='input-group-text text-primary'><i class='fa fa-calendar'></i></div>";
+            //result += "      </div>";
+
+            result += "    </div>";
             result += "  </div>";
+
 
             // SRV_EFF_TO
             result += "  <div class='form-group col-md-3'>";
             result += "    <label>Effect To</label>";
             result += "    <div class='input-group date' id='dtp_srv_eff_to_date' data-target-input='nearest'>";                        
-            result += "      <input type='text' name='srv_eff_to' value='" + data.srv_eff_to + "' class='form-control form-control-sm' id='id_srv_eff_to' placeholder='dd/mm/yyyy' required=''>";
-            result += "      <div class='input-group-append' data-target='#dtp_srv_eff_to_date' data-toggle='datepicker'>";
-            result += "        <div class='input-group-text text-primary'><i class='fa fa-calendar'></i></div>";
-            result += "      </div>";
+            
+
+            if(data.srv_eff_to=="31/12/2999") {
+              result += "   <input type='checkbox' id='chkCNTEffToNew' class='form-inline float-left' onclick='checkCNTEffToNewStatus()' style='margin-top:9px;'>&nbsp;";
+              result += "   <input type='text' name='srv_eff_to' class='form-control form-control-sm' id='id_srv_eff_to' placeholder='dd/mm/yyyy' value='" + data.srv_eff_to + "' readonly>";
+            } else {
+              result += "   <input type='checkbox' checked id='chkCNTEffToNew' class='form-inline float-left' onclick='checkCNTEffToNewStatus()' style='margin-top:9px;'>&nbsp;";
+              result += "   <input type='text' name='srv_eff_to' class='form-control form-control-sm' id='id_srv_eff_to' placeholder='dd/mm/yyyy' value='" + data.srv_eff_to + "'>";
+            }
+            
+            //result += "      <input type='text' name='srv_eff_to' value='" + data.srv_eff_to + "' class='form-control form-control-sm' id='id_srv_eff_to' placeholder='dd/mm/yyyy' required=''>";
+            //result += "      <div class='input-group-append' data-target='#dtp_srv_eff_to_date' data-toggle='datepicker'>";
+            //result += "        <div class='input-group-text text-primary'><i class='fa fa-calendar'></i></div>";
+            //result += "      </div>";
+
             result += "    </div>";            
             result += "  </div>";
 
@@ -3652,6 +3674,7 @@
     $('#update_service_modal').on('shown.bs.modal', function (e) {
 
       // SRV_EFF_FRM
+      /*
       $("#dtp_srv_eff_frm_date").datepicker({
         format: 'dd/mm/yyyy',
         autoclose: true,
@@ -3664,6 +3687,7 @@
         autoclose: true,
         orientation: "bottom"
       }); 
+      */
 
       // SRV_QTY
       $('#id_srv_qty').on('focus', function (e) {
