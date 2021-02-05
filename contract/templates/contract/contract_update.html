@@ -431,6 +431,8 @@
                 <input id="id_cnt_doc_no" name="cnt_doc_no" type="text" class="form-control form-control-sm" value="{{contract.cnt_doc_no|default_if_none:''}}">
               </div>
               
+
+
               <!-- cnt_doc_date -->
               <div class="form-group col-md-6">
                 <label>&nbsp;</label>                
@@ -459,6 +461,7 @@
                     <div class="input-group-text text-primary"><i class="fa fa-calendar"></i></div>
                   </div>
                   -->
+
                 </div>                
               </div>
 
@@ -1000,6 +1003,25 @@
     }    
   }
 
+  function checkCNTEffToNewStatus() { 
+    //amnaj
+    //$('#add_new_service_list_modal').on('shown.bs.modal', function (e) {
+
+    //console.log("1");
+    chkCNTEffToNewStatus = $("#chkCNTEffToNew").is(":checked");
+
+    if(chkCNTEffToNewStatus) {
+      $('#id_dtp_cnt_eff_to_new').attr('readonly', false);
+      $('#id_dtp_cnt_eff_to_new').attr("disabled", false);            
+      $("#id_dtp_cnt_eff_to_new").focus();
+    } else {
+      $('#id_dtp_cnt_eff_to_new').attr('readonly', true);
+      $('#id_dtp_cnt_eff_to_new').attr("disabled", true);            
+      $("#id_dtp_cnt_eff_to_new").focus();
+    }
+
+    //});
+  }
 
   function checkCNTSignFromStatus() {
 
@@ -1486,6 +1508,7 @@
         }
       }
     });
+
 
 
 
@@ -2980,30 +3003,51 @@
             var result = ""
             result += "";
 
+
             result += "<div class='row'>";
             result += "<div class='col-12'>";
             result += "<div class='card card-info'>";
             result += "<div class='card-body'>";
             result += "<div class='form-row'>";                  
+
             result += "<div class='form-group col-md-3'>";
-            result += "<label for='id_dtp_cnt_eff_frm_new'>{% trans 'Effect Term From' %}</label>";
-            result += "<div class='input-group date' data-target-input='nearest'>";
-            result += "<input type='text' name='dtp_cnt_eff_frm_new' class='form-control form-control-sm' id='id_dtp_cnt_eff_frm_new' placeholder='dd/mm/yyyy' value='" + cnt_eff_frm + "'>";
-            result += "<div class='input-group-append' data-target='#dtp_cnt_eff_frm_new' data-toggle='datepicker'>";
-            result += "<div class='input-group-text text-primary'><i class='fa fa-calendar'></i></div>";
-            result += "</div>";
+            result += " <label for='id_dtp_cnt_eff_frm_new'>{% trans 'Effect Term From' %}</label>";
+            result += " <div class='input-group date' data-target-input='nearest'>";
+            
+
+            result += "   <input type='checkbox' checked id='chkCNTEffFromNew' class='form-inline float-left' onclick='checkCNTEffFromNewStatus()' style='margin-top:9px;'>&nbsp;";
+            result += "   <input type='text' name='dtp_cnt_eff_frm_new' class='form-control form-control-sm' id='id_dtp_cnt_eff_frm_new' placeholder='dd/mm/yyyy' value='" + cnt_eff_frm + "'>";
+            
+            //result += "   <div class='input-group-append' data-target='#dtp_cnt_eff_frm_new' data-toggle='datepicker'>";
+            //result += "   <div class='input-group-text text-primary'><i class='fa fa-calendar'></i></div>";
+            //result += " </div>";
+
             result += "</div>";              
             result += "</div>";
 
+
+
             result += "<div class='form-group col-md-3'>";
-            result += "<label for='id_dtp_cnt_eff_to_new'>{% trans 'Effect Term To' %}</label>";
-            result += "<div class='input-group date' data-target-input='nearest'>";
-            result += "<input type='text' name='dtp_cnt_eff_to_new' class='form-control form-control-sm' id='id_dtp_cnt_eff_to_new' placeholder='dd/mm/yyyy' value='" + cnt_eff_to + "'>";
-            result += "<div class='input-group-append' data-target='#dtp_cnt_eff_to_new' data-toggle='datepicker'>";
-            result += "<div class='input-group-text text-primary'><i class='fa fa-calendar'></i></div>";
+            result += " <label for='id_dtp_cnt_eff_to_new'>{% trans 'Effect Term To' %}</label>";
+            result += " <div class='input-group date' data-target-input='nearest'>";
+
+
+            // amnaj
+            if ($('#chkCNTEffTo').is(":checked")) {
+              result += "   <input type='checkbox' checked id='chkCNTEffToNew' class='form-inline float-left' onclick='checkCNTEffToNewStatus()' style='margin-top:9px;'>&nbsp;";
+              result += "   <input type='text' name='dtp_cnt_eff_to_new' class='form-control form-control-sm' id='id_dtp_cnt_eff_to_new' placeholder='dd/mm/yyyy' value='" + cnt_eff_to + "'>";
+            } else {
+              result += "   <input type='checkbox' id='chkCNTEffToNew' class='form-inline float-left' onclick='checkCNTEffToNewStatus()' style='margin-top:9px;'>&nbsp;";
+              result += "   <input type='text' name='dtp_cnt_eff_to_new' class='form-control form-control-sm' id='id_dtp_cnt_eff_to_new' placeholder='dd/mm/yyyy' value='" + cnt_eff_to + "' readonly=''>";
+            }
+            
+            //result += "   <div class='input-group-append' data-target='#dtp_cnt_eff_to_new' data-toggle='datepicker'>";
+            //result += "     <div class='input-group-text text-primary'><i class='fa fa-calendar'></i></div>";
+            //result += "   </div>";
+
+            result += " </div>";              
             result += "</div>";
-            result += "</div>";              
-            result += "</div>";
+
 
             // COM_RANK
             result += "        <div class='form-group col-md-3'>";
@@ -3245,6 +3289,7 @@
     });    
     */
 
+    // amnaj
     // MODAL - Add new service
     $('#add_new_service_list_modal').on('shown.bs.modal', function (e) {
 
@@ -3253,6 +3298,8 @@
       });
 
 
+
+      /*
       $("#id_dtp_cnt_eff_frm_new").datepicker({
         format: 'dd/mm/yyyy',
         autoclose: true,
@@ -3264,6 +3311,132 @@
         autoclose: true,
         orientation: "bottom"
       });
+      */
+
+    // ID_DTP_CNT_EFF_TO_NEW  
+    $("#id_dtp_cnt_eff_to_new").inputmask("99/99/9999");
+    $(document).on('keypress', '#id_dtp_cnt_eff_to_new', function(e) {
+      if(e.which == 13) {      
+        e.preventDefault();
+
+        var keyup_value;
+        keyup_value = this.value;
+
+        if(isValidDate(keyup_value)) {
+          $('#id_srv_qty_new').focus();
+        } else {
+          $('#id_dtp_cnt_eff_to_new').focus();
+          $(document).Toasts('create', {
+            class: "bg-danger", 
+            title: "{% trans 'Error' %}",
+            subtitle: '',
+            autohide: true,
+            delay: 2000,
+            body: "ข้อมูลวันที่ไม่ถูกต้อง",
+            autoDismiss: true,
+            close: true,
+            autoremove: true,
+          });        
+        }
+      }
+    });
+    
+    $("#id_dtp_cnt_eff_to_new").bind("focus",function(e){
+      console.log("id_cnt_eff_to_focus" + " | " + e.keyCode);
+      if(e.keyCode!=undefined) {
+        this.setSelectionRange(0,2);
+      } else {
+        const input = document.getElementById('id_dtp_cnt_eff_to_new');
+        window.setTimeout(function() {
+          input.setSelectionRange(0,2);
+        }, 0);
+      }
+    });
+
+    $("#id_dtp_cnt_eff_to_new").bind("keyup",function(e){
+      var keyup_point;
+      var keyup_value;
+
+      keyup_point = this.selectionStart;
+      keyup_value = this.value;
+
+      // NUMERIC PAD
+      if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105)) {
+        console.log("numpad: " + keyup_point + " | value: " + keyup_value);
+
+        if(keyup_point==3) {
+          // isValidDate()
+          if(isValidDate(keyup_value)) {
+            console.log("TRUE");
+          } else {
+            console.log("FALSE");
+          }
+
+          if(keyup_value.substring(0,2)>31) {
+            this.setSelectionRange(0, 2);
+          } else {
+            this.setSelectionRange(3, 5);
+          }
+          return false;
+        }
+
+        if(keyup_point==6) {
+          if(keyup_value.substring(3, 5)>12) {
+            this.setSelectionRange(3, 5);
+          } else {
+            this.setSelectionRange(6, 10);
+          }
+          return false;
+        }
+      }
+
+      // LEFT
+      if(e.keyCode == 37) {
+        console.log("left arrow keyup_point:" + keyup_point);
+        if(keyup_point==2) {
+          this.setSelectionRange(2, 5);
+        }   
+        if(keyup_point==3) {
+          this.setSelectionRange(0, 2);
+        }           
+        if(keyup_point==6) {
+          this.setSelectionRange(3, 5);
+        }
+        if(keyup_point==9) {
+          this.setSelectionRange(6, 10);
+        }        
+      }
+
+      // RIGHT
+      if(e.keyCode == 39) {
+        console.log("right arrow keyup_point:" + keyup_point);
+
+        if(keyup_point==2) {
+          console.log("value:" + keyup_value);
+                
+          // isValidDate()
+          if(isValidDate(keyup_value)) {
+            console.log("TRUE");
+            this.setSelectionRange(3, 5);
+          } else {
+            console.log("FALSE");
+            this.setSelectionRange(0, 2);
+          }
+        } 
+        if(keyup_point==5) {
+          if(isValidDate(keyup_value)) {
+            console.log("TRUE");
+            this.setSelectionRange(6, 10);
+          } else {
+            console.log("FALSE");
+            this.setSelectionRange(3, 5);
+          }                  
+        }
+      }
+    });
+
+
+
 
       // SRV_QTY_NEW
       $('#id_srv_qty_new').on('focus', function (e) {
