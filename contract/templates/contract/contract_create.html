@@ -399,8 +399,22 @@
               <div class="form-group col-md-6">
                 <label>&nbsp;</label>                
                 <div class="input-group date" id="dtp_cnt_doc_date" data-target-input="nearest">
-                  {{ contract_create_form.cnt_doc_date }}
+
+                  {% if contract.cnt_doc_date|date:"d/m/Y" != "" %}
+                    {% if contract.cnt_eff_frm|date:"d/m/Y" != "31/12/2999" %}
+                    <input type="checkbox" checked id="chkCNTDocDate" class="form-inline float-left" onclick="checkCNTDocDateStatus()" style="margin-top:9px;">&nbsp;
+                    <input type="text" name="cnt_doc_date" class="form-control form-control-sm" id="id_cnt_doc_date" value="{{contract.cnt_doc_date|date:'d/m/Y'}}" required="">
+                    {% else %}
+                    <input type="checkbox" id="chkCNTDocDate" class="form-inline float-left" onclick="checkCNTDocDateStatus()" style="margin-top:9px;">&nbsp;
+                    <input type="text" name="cnt_doc_date" class="form-control form-control-sm" id="id_cnt_doc_date" value="{% now 'd/m/Y'%}" required="" readonly="">
+                    {% endif %}
+                  {% else %}
+                    <input type="checkbox" id="chkCNTDocDate" class="form-inline float-left" onclick="checkCNTDocDateStatus()" style="margin-top:9px;">&nbsp;
+                    <input type="text" name="cnt_doc_date" class="form-control form-control-sm" id="id_cnt_doc_date" value="{% now 'd/m/Y'%}" required="" readonly="">
+                  {% endif %}
+
                   <!--
+                  {{ contract_create_form.cnt_doc_date }}
                   <div class="input-group-append" data-target="#dtp_cnt_doc_date" data-toggle="datepicker">
                     <div class="input-group-text text-primary"><i class="fa fa-calendar"></i></div>
                   </div>
@@ -415,8 +429,22 @@
               <div class="form-group col-md-6">
                 <label for="id_cnt_eff_frm">{% trans 'Effect Term' %}</label>
                 <div class="input-group date" id="dtp_cnt_eff_frm" data-target-input="nearest">
-                  {{ contract_create_form.cnt_eff_frm }}
+
+                  {% if contract.cnt_eff_frm|date:"d/m/Y" != "" %}
+                    {% if contract.cnt_eff_frm|date:"d/m/Y" != "31/12/2999" %}
+                    <input type="checkbox" checked id="chkCNTEffFrom" class="form-inline float-left" onclick="checkCNTEffFromStatus()" style="margin-top:9px;">&nbsp;
+                    <input type="text" name="id_cnt_eff_frm" class="form-control form-control-sm" id="id_cnt_eff_frm" value="{{contract.cnt_eff_frm|date:'d/m/Y'}}" required="">
+                    {% else %}
+                    <input type="checkbox" id="chkCNTEffFrom" class="form-inline float-left" onclick="checkCNTEffFromStatus()" style="margin-top:9px;">&nbsp;
+                    <input type="text" name="id_cnt_eff_frm" class="form-control form-control-sm" id="id_cnt_eff_frm" value="{% now 'd/m/Y'%}" readonly>
+                    {% endif %}
+                  {% else %}
+                    <input type="checkbox" id="chkCNTEffFrom" class="form-inline float-left" onclick="checkCNTEffFromStatus()" style="margin-top:9px;">&nbsp;
+                    <input type="text" name="id_cnt_eff_frm" class="form-control form-control-sm" id="id_cnt_eff_frm" value="{% now 'd/m/Y'%}" readonly>
+                  {% endif %}
+
                   <!--
+                  {{ contract_create_form.cnt_eff_frm }}
                   <div class="input-group-append" data-target="#dtp_cnt_eff_frm" data-toggle="datepicker">
                     <div class="input-group-text text-primary"><i class="fa fa-calendar"></i></div>
                   </div>
@@ -428,8 +456,22 @@
               <div class="form-group col-md-6">
                 <label for="id_cnt_eff_to">&nbsp;</label>
                 <div class="input-group date" id="dtp_cnt_eff_to" data-target-input="nearest">
+
+                  {% if contract.cnt_eff_to|date:"d/m/Y" != "" %}
+                    {% if contract.cnt_eff_to|date:"d/m/Y" != "31/12/2999" %}
+                    <input type="checkbox" checked id="chkCNTEffTo" class="form-inline float-left" onclick="checkCNTEffToStatus()" style="margin-top:9px;">&nbsp;
+                    <input type="text" name="id_cnt_eff_to" class="form-control form-control-sm" id="id_cnt_eff_to" value="{{contract.cnt_eff_to|date:'d/m/Y'}}" required="">
+                    {% else %}
+                    <input type="checkbox" id="chkCNTEffTo" class="form-inline float-left" onclick="checkCNTEffToStatus()" style="margin-top:9px;">&nbsp;
+                    <input type="text" name="id_cnt_eff_to" class="form-control form-control-sm" id="id_cnt_eff_to" value="{% now 'd/m/Y'%}" required="" readonly="">                    
+                    {% endif %}
+                  {% else %}
+                    <input type="checkbox" id="chkCNTEffTo" class="form-inline float-left" onclick="checkCNTEffToStatus()" style="margin-top:9px;">&nbsp;
+                    <input type="text" name="id_cnt_eff_to" class="form-control form-control-sm" id="id_cnt_eff_to" value="{% now 'd/m/Y'%}" required="" readonly="">
+                  {% endif %}
+  
+                  <!--                  
                   {{ contract_create_form.cnt_eff_to }}
-                  <!--
                   <div class="input-group-append" data-target="#dtp_cnt_eff_to" data-toggle="datepicker">
                     <div class="input-group-text text-primary"><i class="fa fa-calendar"></i></div>
                   </div>
@@ -442,8 +484,21 @@
               <div class="form-group col-md-6">
                 <label for="id_cnt_sign_frm">{% trans 'Contract Term' %}</label>
                 <div class="input-group date" id="dtp_cnt_sign_frm" data-target-input="nearest">
-                  {{ contract_create_form.cnt_sign_frm }}
+
+                  {% if contract.cnt_sign_frm|date:"d/m/Y" != "" %}
+                    {% if contract.cnt_sign_frm|date:"d/m/Y" != "31/12/2999" %}
+                    <input type="checkbox" checked id="chkCNTSignFrom" class="form-inline float-left" onclick="checkCNTSignFromStatus()" style="margin-top:9px;">&nbsp;
+                    <input type="text" name="id_cnt_sign_frm" class="form-control form-control-sm" id="id_cnt_sign_frm" value="{{contract.cnt_sign_frm|date:'d/m/Y'}}" required="">
+                    {% else %}
+                    <input type="checkbox" id="chkCNTSignFrom" class="form-inline float-left" onclick="checkCNTSignFromStatus()" style="margin-top:9px;">&nbsp;
+                    <input type="text" name="id_cnt_sign_frm" class="form-control form-control-sm" id="id_cnt_sign_frm" value="{% now 'd/m/Y'%}" required="" readonly="">                    
+                    {% endif %}
+                  {% else %}
+                    <input type="checkbox" id="chkCNTSignFrom" class="form-inline float-left" onclick="checkCNTSignFromStatus()" style="margin-top:9px;">&nbsp;
+                    <input type="text" name="id_cnt_sign_frm" class="form-control form-control-sm" id="id_cnt_sign_frm" value="{% now 'd/m/Y'%}" required="" readonly="">
+                  {% endif %}
                   <!--
+                  {{ contract_create_form.cnt_sign_frm }}
                   <div class="input-group-append" data-target="#dtp_cnt_sign_frm" data-toggle="datepicker">
                     <div class="input-group-text text-primary"><i class="fa fa-calendar"></i></div>
                   </div>
@@ -454,8 +509,22 @@
               <div class="form-group col-md-6">
                 <label for="id_cnt_sign_to">&nbsp;</label>
                 <div class="input-group date" id="dtp_cnt_sign_to" data-target-input="nearest">
+
+                  {% if contract.cnt_sign_to|date:"d/m/Y" != "" %}
+                    {% if contract.cnt_sign_to|date:"d/m/Y" != "31/12/2999" %}
+                    <input type="checkbox" checked id="chkCNTSignTo" class="form-inline float-left" onclick="checkCNTSignToStatus()" style="margin-top:9px;">&nbsp;
+                    <input type="text" name="id_cnt_sign_to" class="form-control form-control-sm" id="id_cnt_sign_to" value="{{contract.cnt_sign_to|date:'d/m/Y'}}" required="">
+                    {% else %}
+                    <input type="checkbox" id="chkCNTSignTo" class="form-inline float-left" onclick="checkCNTSignToStatus()" style="margin-top:9px;">&nbsp;
+                    <input type="text" name="id_cnt_sign_to" class="form-control form-control-sm" id="id_cnt_sign_to" value="{% now 'd/m/Y'%}" required="" readonly="">                    
+                    {% endif %}
+                  {% else %}
+                    <input type="checkbox" id="chkCNTSignTo" class="form-inline float-left" onclick="checkCNTSignToStatus()" style="margin-top:9px;">&nbsp;
+                    <input type="text" name="id_cnt_sign_to" class="form-control form-control-sm" id="id_cnt_sign_to" value="{% now 'd/m/Y'%}" required="" readonly="">
+                  {% endif %}
+
+                  <!--                  
                   {{ contract_create_form.cnt_sign_to }}
-                  <!--
                   <div class="input-group-append" data-target="#dtp_cnt_sign_to" data-toggle="datepicker">
                     <div class="input-group-text text-primary"><i class="fa fa-calendar"></i></div>
                   </div>
@@ -475,9 +544,15 @@
                 <label for="id_cnt_wage_id">{% trans 'Wage Rate' %}</label>
                 <div class="input-group-append">
                   
+                  <input type="text" id="id_wage_id_text" value="{{contract.cnt_wage_id_id}} " class="col-1 bg-success form-control form-control-sm text-center" style="border-style: none none none none; border-top-right-radius:0px;border-bottom-right-radius:0px; font-weight: normal; font-size: 16px;" readonly="">
+
+                  <input type="text" id="id_cnt_wage_id_text" name="cnt_wage_id" class="form-control form-control-sm" value="{{contract.cnt_wage_id.wage_en}}{{contract.cnt_wage_id.wage_8hr}}" style="border-style: none none none none; border-top-left-radius:0px;border-bottom-left-radius:0px;" readonly>
+
+                  <!--
                   <input type="text" id="id_wage_id_text" value="{{contract.cnt_wage_id_id}} " class="col-1 bg-success form-control form-control-sm text-center" readonly="">
                   <input type="text" id="id_cnt_wage_id_text" name="cnt_wage_id" class="form-control form-control-sm" value="" readonly>
-                
+                  -->
+                  
                   <input type="hidden" id="id_cnt_wage_id" name="cnt_wage_id" value="{{ contract.cnt_wage_id_id|default_if_none:'' }}">
 
                   <button id="wage_rate_lookup" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url="{% url 'get_wagerate_list' %}"><i class="fas fa-search fa-sm"></i></button>
@@ -949,19 +1024,109 @@
       return day > 0 && day <= monthLength[month - 1];
   };
 
+  function checkCNTDocDateStatus(){    
+    chkCNTDocDateStatus = $("#chkCNTDocDate").is(":checked");
+    if(chkCNTDocDateStatus) {
+      $('#id_cnt_doc_date').attr('readonly', false);
+      $('#id_cnt_doc_date').attr("disabled", false);      
+      $("#id_cnt_doc_date").focus();
+    } else {
+      $('#id_cnt_doc_date').attr('readonly', true);
+      $('#id_cnt_doc_date').attr("disabled", true);
+    }    
+    return false;
+  }
+
+
+  function checkCNTEffFromStatus() { 
+    chkCNTEffFromStatus = $("#chkCNTEffFrom").is(":checked");
+    if(chkCNTEffFromStatus) {      
+      $('#id_cnt_eff_frm').attr('readonly', false);
+      $('#id_cnt_eff_frm').attr("disabled", false);      
+      $("#id_cnt_eff_frm").focus();
+    } else {
+      $("#id_cnt_eff_frm").attr("disabled", true);
+      $('#id_cnt_eff_frm').attr('readonly', true);      
+    }    
+  }
+
+
+  function checkCNTEffToStatus() { 
+    chkCNTEffToStatus = $("#chkCNTEffTo").is(":checked");
+    if(chkCNTEffToStatus) {      
+      $('#id_cnt_eff_to').attr('readonly', false);
+      $('#id_cnt_eff_to').attr("disabled", false);      
+      $("#id_cnt_eff_to").focus();
+    } else {
+      $("#id_cnt_eff_to").attr("disabled", true);
+      $('#id_cnt_eff_to').attr('readonly', true);
+    }    
+  }
+
+
+  function checkCNTSignFromStatus() {
+
+    chkCNTSignFromStatus = $("#chkCNTSignFrom").is(":checked");
+    if(chkCNTSignFromStatus) {      
+      console.log("check");
+      $('#id_cnt_sign_frm').attr('readonly', false);
+      $('#id_cnt_sign_frm').attr("disabled", false);      
+      $("#id_cnt_sign_frm").focus();
+    } else {
+      console.log("not check");
+      $("#id_cnt_sign_frm").attr("disabled", true);
+      $('#id_cnt_sign_frm').attr('readonly', true);
+    }    
+  }
+
+
+  function checkCNTSignToStatus() { 
+    chkCNTSignToStatus = $("#chkCNTSignTo").is(":checked");
+    if(chkCNTSignToStatus) {      
+      $('#id_cnt_sign_to').attr('readonly', false);
+      $('#id_cnt_sign_to').attr("disabled", false);      
+      $("#id_cnt_sign_to").focus();
+    } else {
+      $("#id_cnt_sign_to").attr("disabled", true);
+      $('#id_cnt_sign_to').attr('readonly', true);
+    }    
+  }
+
+
+
+
+
+
+
   $(document).ready(function(){
     $("#id_cnt_doc_no").focus();
 
 
-    //amnaj
     // ID_CNT_DOC_NO
     $(document).on('keypress', '#id_cnt_doc_no', function(e) {
       if(e.which == 13) {      
         e.preventDefault();
-        $('#id_cnt_doc_date').focus();
+
+        chkCNTDocDateStatus = $("#chkCNTDocDate").is(":checked");
+        chkCNTEffFromStatus = $("#chkCNTEffFrom").is(":checked");
+        chkCNTEffToStatus = $("#chkCNTEffTo").is(":checked");
+        chkCNTSignFromStatus = $("#chkCNTSignFrom").is(":checked");
+        chkCNTSignToStatus = $("#chkCNTSignTo").is(":checked");
+
+        if(chkCNTDocDateStatus)
+          $('#id_cnt_doc_date').focus();
+        else if(chkCNTEffFromStatus)
+          $('#id_cnt_eff_frm').focus();
+        else if(chkCNTEffToStatus)
+          $('#id_cnt_eff_to').focus();
+        else if(chkCNTSignFromStatus)
+          $('#id_cnt_sign_frm').focus();
+        else if(chkCNTSignToStatus)
+          $('#id_cnt_sign_to').focus();
+        else
+          return false;
       }
     });
-
 
 
     // ID_CNT_DOC_DATE
@@ -969,11 +1134,49 @@
     $(document).on('keypress', '#id_cnt_doc_date', function(e) {
       if(e.which == 13) {      
         e.preventDefault();
-        $('#id_cnt_eff_frm').focus();
+
+        var keyup_value;
+        keyup_value = this.value;
+
+        if(isValidDate(keyup_value)) {
+
+          chkCNTDocDateStatus = $("#chkCNTDocDate").is(":checked");
+          chkCNTEffFromStatus = $("#chkCNTEffFrom").is(":checked");
+          chkCNTEffToStatus = $("#chkCNTEffTo").is(":checked");
+          chkCNTSignFromStatus = $("#chkCNTSignFrom").is(":checked");
+          chkCNTSignToStatus = $("#chkCNTSignTo").is(":checked");
+
+          if(chkCNTEffFromStatus)
+            $('#id_cnt_eff_frm').focus();
+          else if(chkCNTEffToStatus)
+            $('#id_cnt_eff_to').focus();
+          else if(chkCNTSignFromStatus)
+            $('#id_cnt_sign_frm').focus();
+          else if(chkCNTSignToStatus)
+            $('#id_cnt_sign_to').focus();
+          else
+            $('#id_cnt_doc_no').focus();
+
+        } else {
+          $('#id_cnt_doc_date').focus();
+
+          $(document).Toasts('create', {
+            class: "bg-danger", 
+            title: "{% trans 'Error' %}",
+            subtitle: '',
+            autohide: true,
+            delay: 2000,
+            body: "ข้อมูลวันที่ไม่ถูกต้อง",
+            autoDismiss: true,
+            close: true,
+            autoremove: true,
+          });        
+        }
       }
     });    
+    
     $("#id_cnt_doc_date").bind("focus",function(e){
-      console.log("id_cnt_eff_frm_focus" + " | " + e.keyCode);
+      console.log("id_cnt_doc_date_focus" + " | " + e.keyCode);
       if(e.keyCode!=undefined) {
         this.setSelectionRange(0,2);
       } else {
@@ -983,29 +1186,7 @@
         }, 0);
       }
     });
-    $("#id_cnt_doc_date").bind("focusout",function(e){      
-      var keyup_value;
-      keyup_value = this.value;
-      // isValidDate()
-      if(isValidDate(keyup_value)) {
-        console.log("TRUE");
-        $('#id_cnt_eff_frm').focus();
-      } else {
-        console.log("FALSE");        
-        $('#id_cnt_doc_date').focus();
-        $(document).Toasts('create', {
-          class: "bg-danger", 
-          title: "{% trans 'Error' %}",
-          subtitle: '',
-          autohide: true,
-          delay: 2000,
-          body: "ข้อมูลวันที่ไม่ถูกต้อง",
-          autoDismiss: true,
-          close: true,
-          autoremove: true,
-        });        
-      }      
-    });
+
     $("#id_cnt_doc_date").bind("keyup",function(e){
       var keyup_point;
       var keyup_value;
@@ -1089,15 +1270,51 @@
     });
 
 
-
     // ID_CNT_EFF_FRM
     $("#id_cnt_eff_frm").inputmask("99/99/9999");
     $(document).on('keypress', '#id_cnt_eff_frm', function(e) {
       if(e.which == 13) {      
         e.preventDefault();
-        $('#id_cnt_eff_to').focus();
+        
+        var keyup_value;
+        keyup_value = this.value;
+
+        if(isValidDate(keyup_value)) {
+
+          chkCNTDocDateStatus = $("#chkCNTDocDate").is(":checked");
+          chkCNTEffFromStatus = $("#chkCNTEffFrom").is(":checked");
+          chkCNTEffToStatus = $("#chkCNTEffTo").is(":checked");
+          chkCNTSignFromStatus = $("#chkCNTSignFrom").is(":checked");
+          chkCNTSignToStatus = $("#chkCNTSignTo").is(":checked");
+
+          if(chkCNTEffToStatus)
+            $('#id_cnt_eff_to').focus();
+          else if(chkCNTSignFromStatus)
+            $('#id_cnt_sign_frm').focus();
+          else if(chkCNTSignToStatus)
+            $('#id_cnt_sign_to').focus();
+          else
+            $('#id_cnt_doc_no').focus();
+
+        } else {
+          $('#id_cnt_eff_frm').focus();
+
+          $(document).Toasts('create', {
+            class: "bg-danger", 
+            title: "{% trans 'Error' %}",
+            subtitle: '',
+            autohide: true,
+            delay: 2000,
+            body: "ข้อมูลวันที่ไม่ถูกต้อง",
+            autoDismiss: true,
+            close: true,
+            autoremove: true,
+          });        
+        }
+
       }
-    });    
+    });
+
     $("#id_cnt_eff_frm").bind("focus",function(e){
       console.log("id_cnt_eff_frm_focus" + " | " + e.keyCode);
       if(e.keyCode!=undefined) {
@@ -1109,29 +1326,7 @@
         }, 0);
       }
     });
-    $("#id_cnt_eff_frm").bind("focusout",function(e){      
-      var keyup_value;
-      keyup_value = this.value;
-      // isValidDate()
-      if(isValidDate(keyup_value)) {
-        console.log("TRUE");
-        $('#id_cnt_eff_to').focus();
-      } else {
-        console.log("FALSE");        
-        $('#id_cnt_eff_frm').focus();
-        $(document).Toasts('create', {
-          class: "bg-danger", 
-          title: "{% trans 'Error' %}",
-          subtitle: '',
-          autohide: true,
-          delay: 2000,
-          body: "ข้อมูลวันที่ไม่ถูกต้อง",
-          autoDismiss: true,
-          close: true,
-          autoremove: true,
-        });        
-      }      
-    });
+
     $("#id_cnt_eff_frm").bind("keyup",function(e){
       var keyup_point;
       var keyup_value;
@@ -1217,13 +1412,47 @@
 
 
 
-
     // ID_CNT_EFF_TO    
     $("#id_cnt_eff_to").inputmask("99/99/9999");
     $(document).on('keypress', '#id_cnt_eff_to', function(e) {
       if(e.which == 13) {      
         e.preventDefault();
-        $('#id_cnt_sign_frm').focus();
+
+        var keyup_value;
+        keyup_value = this.value;
+
+        if(isValidDate(keyup_value)) {
+
+          chkCNTDocDateStatus = $("#chkCNTDocDate").is(":checked");
+          chkCNTEffFromStatus = $("#chkCNTEffFrom").is(":checked");
+          chkCNTEffToStatus = $("#chkCNTEffTo").is(":checked");
+          chkCNTSignFromStatus = $("#chkCNTSignFrom").is(":checked");
+          chkCNTSignToStatus = $("#chkCNTSignTo").is(":checked");
+
+          if(chkCNTSignFromStatus)
+            $('#id_cnt_sign_frm').focus();
+          else if(chkCNTSignToStatus)
+            $('#id_cnt_sign_to').focus();
+          else
+            $('#id_cnt_doc_no').focus();
+
+        } else {
+          $('#id_cnt_eff_to').focus();
+
+          $(document).Toasts('create', {
+            class: "bg-danger", 
+            title: "{% trans 'Error' %}",
+            subtitle: '',
+            autohide: true,
+            delay: 2000,
+            body: "ข้อมูลวันที่ไม่ถูกต้อง",
+            autoDismiss: true,
+            close: true,
+            autoremove: true,
+          });        
+        }
+
+
       }
     });
     $("#id_cnt_eff_to").bind("focus",function(e){
@@ -1237,29 +1466,7 @@
         }, 0);
       }
     });
-    $("#id_cnt_eff_to").bind("focusout",function(e){      
-      var keyup_value;
-      keyup_value = this.value;
-      // isValidDate()
-      if(isValidDate(keyup_value)) {
-        console.log("TRUE");
-        $('#id_cnt_sign_frm').focus();
-      } else {
-        console.log("FALSE");        
-        $('#id_cnt_eff_to').focus();
-        $(document).Toasts('create', {
-          class: "bg-danger", 
-          title: "{% trans 'Error' %}",
-          subtitle: '',
-          autohide: true,
-          delay: 2000,
-          body: "ข้อมูลวันที่ไม่ถูกต้อง",
-          autoDismiss: true,
-          close: true,
-          autoremove: true,
-        });        
-      }      
-    });
+
     $("#id_cnt_eff_to").bind("keyup",function(e){
       var keyup_point;
       var keyup_value;
@@ -1347,16 +1554,53 @@
 
 
 
+
+
+
+
     // ID_CNT_SIGN_FRM
     $("#id_cnt_sign_frm").inputmask("99/99/9999");
     $(document).on('keypress', '#id_cnt_sign_frm', function(e) {
       if(e.which == 13) {      
         e.preventDefault();
-        $('#id_cnt_sign_to').focus();
+        
+        var keyup_value;
+        keyup_value = this.value;
+
+        if(isValidDate(keyup_value)) {
+
+          chkCNTDocDateStatus = $("#chkCNTDocDate").is(":checked");
+          chkCNTEffFromStatus = $("#chkCNTEffFrom").is(":checked");
+          chkCNTEffToStatus = $("#chkCNTEffTo").is(":checked");
+          chkCNTSignFromStatus = $("#chkCNTSignFrom").is(":checked");
+          chkCNTSignToStatus = $("#chkCNTSignTo").is(":checked");
+
+          if(chkCNTSignToStatus)
+            $('#id_cnt_sign_to').focus();
+          else
+            $('#id_cnt_doc_no').focus();
+
+        } else {
+          $('#id_cnt_sign_frm').focus();
+
+          $(document).Toasts('create', {
+            class: "bg-danger", 
+            title: "{% trans 'Error' %}",
+            subtitle: '',
+            autohide: true,
+            delay: 2000,
+            body: "ข้อมูลวันที่ไม่ถูกต้อง",
+            autoDismiss: true,
+            close: true,
+            autoremove: true,
+          });        
+        }
+
+
       }
     });
     $("#id_cnt_sign_frm").bind("focus",function(e){
-      console.log("id_cnt_eff_to_focus" + " | " + e.keyCode);
+      console.log("id_cnt_sign_frm_focus" + " | " + e.keyCode);
       if(e.keyCode!=undefined) {
         this.setSelectionRange(0,2);
       } else {
@@ -1366,29 +1610,7 @@
         }, 0);
       }
     });
-    $("#id_cnt_sign_frm").bind("focusout",function(e){      
-      var keyup_value;
-      keyup_value = this.value;
-      // isValidDate()
-      if(isValidDate(keyup_value)) {
-        console.log("TRUE");
-        $('#id_cnt_sign_to').focus();
-      } else {
-        console.log("FALSE");        
-        $('#id_cnt_sign_frm').focus();
-        $(document).Toasts('create', {
-          class: "bg-danger", 
-          title: "{% trans 'Error' %}",
-          subtitle: '',
-          autohide: true,
-          delay: 2000,
-          body: "ข้อมูลวันที่ไม่ถูกต้อง",
-          autoDismiss: true,
-          close: true,
-          autoremove: true,
-        });        
-      }      
-    });
+
     $("#id_cnt_sign_frm").bind("keyup",function(e){
       var keyup_point;
       var keyup_value;
@@ -1478,16 +1700,49 @@
 
 
 
+
+
     // ID_CNT_SIGN_TO
     $("#id_cnt_sign_to").inputmask("99/99/9999");
     $(document).on('keypress', '#id_cnt_sign_to', function(e) {
       if(e.which == 13) {      
         e.preventDefault();
-        $('#id_cnt_doc_no').focus();
+
+        //$('#id_cnt_doc_no').focus();
+        var keyup_value;
+        keyup_value = this.value;
+
+        if(isValidDate(keyup_value)) {
+
+          chkCNTDocDateStatus = $("#chkCNTDocDate").is(":checked");
+          chkCNTEffFromStatus = $("#chkCNTEffFrom").is(":checked");
+          chkCNTEffToStatus = $("#chkCNTEffTo").is(":checked");
+          chkCNTSignFromStatus = $("#chkCNTSignFrom").is(":checked");
+          chkCNTSignToStatus = $("#chkCNTSignTo").is(":checked");
+
+          $('#id_cnt_doc_no').focus();
+
+        } else {
+          $('#id_cnt_sign_to').focus();
+
+          $(document).Toasts('create', {
+            class: "bg-danger", 
+            title: "{% trans 'Error' %}",
+            subtitle: '',
+            autohide: true,
+            delay: 2000,
+            body: "ข้อมูลวันที่ไม่ถูกต้อง",
+            autoDismiss: true,
+            close: true,
+            autoremove: true,
+          });        
+        }
+
       }
     });
+
     $("#id_cnt_sign_to").bind("focus",function(e){
-      console.log("id_cnt_eff_to_focus" + " | " + e.keyCode);
+      console.log("id_cnt_sign_to_focus" + " | " + e.keyCode);
       if(e.keyCode!=undefined) {
         this.setSelectionRange(0,2);
       } else {
@@ -1497,29 +1752,7 @@
         }, 0);
       }
     });
-    $("#id_cnt_sign_to").bind("focusout",function(e){      
-      var keyup_value;
-      keyup_value = this.value;
-      // isValidDate()
-      if(isValidDate(keyup_value)) {
-        console.log("TRUE");
-        $('#id_cnt_doc_no').focus();
-      } else {
-        console.log("FALSE");        
-        $('#id_cnt_sign_to').focus();
-        $(document).Toasts('create', {
-          class: "bg-danger", 
-          title: "{% trans 'Error' %}",
-          subtitle: '',
-          autohide: true,
-          delay: 2000,
-          body: "ข้อมูลวันที่ไม่ถูกต้อง",
-          autoDismiss: true,
-          close: true,
-          autoremove: true,
-        });        
-      }      
-    });
+
     $("#id_cnt_sign_to").bind("keyup",function(e){
       var keyup_point;
       var keyup_value;
@@ -1601,6 +1834,15 @@
         }
       }
     });
+
+
+
+
+
+
+
+
+
 
 
 
