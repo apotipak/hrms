@@ -2717,7 +2717,13 @@
   function save_new_service() {
     cnt_id = "{{contract.cnt_id}}";
     srv_eff_frm_new = $('#id_dtp_cnt_eff_frm_new').val();
+
     srv_eff_to_new = $('#id_dtp_cnt_eff_to_new').val();
+    if ($('#chkCNTEffToNew').is(":checked"))
+      srv_eff_to_new_status = 1;
+    else
+      srv_eff_to_new_status = 0;
+
     srv_rank_id_new = $('#id_com_rank_rank_id_new').val(); 
     srv_shift_id_new = $('#id_t_shift_id_new').val();      
     srv_mon_new = $('#id_srv_mon_new').val();
@@ -2810,6 +2816,7 @@
         cnt_id: cnt_id,
         srv_eff_frm_new: srv_eff_frm_new,
         srv_eff_to_new: srv_eff_to_new,
+        srv_eff_to_new_status: srv_eff_to_new_status,
         srv_rank_new: srv_rank_id_new,
         srv_shift_id_new: srv_shift_id_new,
         srv_qty_new: srv_qty_new,

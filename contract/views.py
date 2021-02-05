@@ -1763,7 +1763,15 @@ def save_new_service(request):
     srv_eff_from = datetime.datetime.strptime(request.GET["srv_eff_frm_new"], "%d/%m/%Y").date()
 
     # srv_eff_to = request.GET["srv_eff_to_new"].strftime("%d/%m/%Y")
-    srv_eff_to = datetime.datetime.strptime(request.GET["srv_eff_to_new"], "%d/%m/%Y").date()
+    # srv_eff_to = datetime.datetime.strptime(request.GET["srv_eff_to_new"], "%d/%m/%Y").date()
+
+    srv_eff_to_status = request.GET["srv_eff_to_new_status"]
+    print("srv_eff_to_status:", srv_eff_to_status)
+    if srv_eff_to_status=="0":
+        srv_eff_to = "2999-12-31"
+    else:
+        srv_eff_to = datetime.datetime.strptime(request.GET["srv_eff_to_new"], "%d/%m/%Y").date()
+
 
     srv_rank = request.GET["srv_rank_new"]
     srv_shift_id = request.GET["srv_shift_id_new"]
@@ -1843,7 +1851,7 @@ def save_new_service(request):
 
     response = JsonResponse(data={
         "success": True,
-        "message": "Success.",
+        "message": "บันทึกรายการสำเร็จ",
         "class": "bg-success",
         "cnt_id": cnt_id,
         "active_cnt_guard_amt": active_cnt_guard_amt,
