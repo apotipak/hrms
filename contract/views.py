@@ -1862,10 +1862,21 @@ def save_new_service(request):
     return response
 
 
+
+# Save existed service
 def save_customer_service_item(request):
     srv_id = request.GET["srv_id"]
     srv_eff_from = request.GET["srv_eff_frm"]
-    srv_eff_to = request.GET["srv_eff_to"]
+    
+    
+    srv_eff_to_status = request.GET["srv_eff_to_status"]
+    print("srv_eff_to_status:", srv_eff_to_status)
+
+    if srv_eff_to_status==1:
+        srv_eff_to = "31/12/2999"
+    else:
+        srv_eff_to = request.GET["srv_eff_to"]
+
     srv_rank = request.GET["srv_rank"]
     srv_shift_id = request.GET["srv_shift_id"]     
     srv_qty = request.GET["srv_qty"]
@@ -2091,7 +2102,7 @@ def save_customer_service_item(request):
                 # Return result
                 response = JsonResponse(data={
                     "success": True,
-                    "message": "Saved success.",
+                    "message": "บันทึกรายการสำเร็จ",
                     "class": "bg-success",
                     "cnt_id": cnt_id,
                     "active_cnt_guard_amt": active_cnt_guard_amt,

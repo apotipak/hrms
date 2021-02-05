@@ -1003,11 +1003,12 @@
     }    
   }
 
+  // Add new service
   function checkCNTEffToNewStatus() { 
     //amnaj
     //$('#add_new_service_list_modal').on('shown.bs.modal', function (e) {
 
-    //console.log("1");
+    console.log("1");
     chkCNTEffToNewStatus = $("#chkCNTEffToNew").is(":checked");
 
     if(chkCNTEffToNewStatus) {
@@ -1022,6 +1023,23 @@
 
     //});
   }
+
+
+  // Edit service
+  function checkCNTEffToNewStatusEdit() {
+    //amnaj
+    chkCNTEffToNewStatus = $("#chkCNTEffToNewEdit").is(":checked");
+    if(chkCNTEffToNewStatus) {
+      $('#id_srv_eff_to').attr('readonly', false);
+      $('#id_srv_eff_to').attr("disabled", false);            
+      $("#id_srv_eff_to").focus();
+    } else {
+      $('#id_srv_eff_to').attr('readonly', true);
+      $('#id_srv_eff_to').attr("disabled", true);            
+      $("#id_srv_eff_to").focus();
+    }
+  }
+
 
   function checkCNTSignFromStatus() {
 
@@ -2358,6 +2376,7 @@
             result += "  </div>";
 
 
+            // amnaj update_service
             // SRV_EFF_TO
             result += "  <div class='form-group col-md-3'>";
             result += "    <label>Effect To</label>";
@@ -2365,10 +2384,10 @@
             
 
             if(data.srv_eff_to=="31/12/2999") {
-              result += "   <input type='checkbox' id='chkCNTEffToNew' class='form-inline float-left' onclick='checkCNTEffToNewStatus()' style='margin-top:9px;'>&nbsp;";
+              result += "   <input type='checkbox' id='chkCNTEffToNewEdit' class='form-inline float-left' onclick='checkCNTEffToNewStatusEdit()' style='margin-top:9px;'>&nbsp;";
               result += "   <input type='text' name='srv_eff_to' class='form-control form-control-sm' id='id_srv_eff_to' placeholder='dd/mm/yyyy' value='" + data.srv_eff_to + "' readonly>";
             } else {
-              result += "   <input type='checkbox' checked id='chkCNTEffToNew' class='form-inline float-left' onclick='checkCNTEffToNewStatus()' style='margin-top:9px;'>&nbsp;";
+              result += "   <input type='checkbox' checked id='chkCNTEffToNewEdit' class='form-inline float-left' onclick='checkCNTEffToNewStatusEdit()' style='margin-top:9px;'>&nbsp;";
               result += "   <input type='text' name='srv_eff_to' class='form-control form-control-sm' id='id_srv_eff_to' placeholder='dd/mm/yyyy' value='" + data.srv_eff_to + "'>";
             }
             
@@ -2548,7 +2567,14 @@
       alert("Service ID not found!");      
     } else {
       srv_eff_frm = $('#id_srv_eff_frm').val();
+    
       srv_eff_to = $('#id_srv_eff_to').val();
+      if ($('#chkCNTEffToNewEdit').is(":checked"))
+        srv_eff_to_status = 1;
+      else
+        srv_eff_to_status = 0;
+
+
       srv_rank = $('#id_cus_service_srv_rank').val(); 
       srv_shift_id = $('#id_cus_service_srv_shift').val();      
       srv_qty = $('#id_srv_qty').val();        
@@ -2579,6 +2605,7 @@
           srv_id: srv_id,
           srv_eff_frm: srv_eff_frm,
           srv_eff_to: srv_eff_to,
+          srv_eff_to_status: srv_eff_to_status,
           srv_rank: srv_rank,
           srv_shift_id: srv_shift_id,
           srv_qty: srv_qty,
@@ -2660,7 +2687,10 @@
                 if(data.cus_service_list[i]["srv_active"]==1) {
                   result += "          <td><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_eff_frm"] + "</small></a></td>";
                   result += "          <td><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_eff_to"] + "</small></a></td>";
-                  result += "          <td><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_shift_text"] + "</small></a></td>";
+                  
+                  //result += "          <td><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_shift_text"] + "</small></a></td>";
+                  result += "          <td><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["shf_desc"] + "</small></a></td>";
+
                   result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_qty"] + "</small></a></td>";
                   result += "          <td><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_rank"] + "</small></td>";
                   result += "          <td align='right'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_rate"] + "</small></a></td>";
@@ -2678,7 +2708,7 @@
                 else {
                   result += "          <td><small>" + data.cus_service_list[i]["srv_eff_frm"] + "</small></td>";
                   result += "          <td><small>" + data.cus_service_list[i]["srv_eff_to"] + "</small></td>";
-                  result += "          <td><small>" + data.cus_service_list[i]["srv_shift_text"] + "</small></td>";
+                  result += "          <td><small>" + data.cus_service_list[i]["shf_desc"] + "</small></td>";
                   result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_qty"] + "</small></td>";
                   result += "          <td><small>" + data.cus_service_list[i]["srv_rank"] + "</small></td>";
                   result += "          <td align='right'><small>" + data.cus_service_list[i]["srv_rate"] + "</small></td>";
@@ -3060,7 +3090,7 @@
             result += " <label for='id_dtp_cnt_eff_to_new'>{% trans 'Effect Term To' %}</label>";
             result += " <div class='input-group date' data-target-input='nearest'>";
 
-
+            // add new service
             // amnaj
             if ($('#chkCNTEffTo').is(":checked")) {
               result += "   <input type='checkbox' checked id='chkCNTEffToNew' class='form-inline float-left' onclick='checkCNTEffToNewStatus()' style='margin-top:9px;'>&nbsp;";
@@ -3669,7 +3699,7 @@
 
 
 
-
+    // amnaj
     // MODAL - Update service
     $('#update_service_modal').on('shown.bs.modal', function (e) {
 
@@ -3688,6 +3718,127 @@
         orientation: "bottom"
       }); 
       */
+
+    // ID_SRV_EFF_TO
+    $("#id_srv_eff_to").inputmask("99/99/9999");
+    $(document).on('keypress', '#id_srv_eff_to', function(e) {
+      if(e.which == 13) {      
+        e.preventDefault();
+
+        var keyup_value;
+        keyup_value = this.value;
+
+        if(isValidDate(keyup_value)) {
+          $('#id_srv_qty_new').focus();
+        } else {
+          $('#id_srv_eff_to').focus();
+          $(document).Toasts('create', {
+            class: "bg-danger", 
+            title: "{% trans 'Error' %}",
+            subtitle: '',
+            autohide: true,
+            delay: 2000,
+            body: "ข้อมูลวันที่ไม่ถูกต้อง",
+            autoDismiss: true,
+            close: true,
+            autoremove: true,
+          });        
+        }
+      }
+    });
+    
+    $("#id_srv_eff_to").bind("focus",function(e){
+      if(e.keyCode!=undefined) {
+        this.setSelectionRange(0,2);
+      } else {
+        const input = document.getElementById('id_srv_eff_to');
+        window.setTimeout(function() {
+          input.setSelectionRange(0,2);
+        }, 0);
+      }
+    });
+
+    $("#id_srv_eff_to").bind("keyup",function(e){
+      var keyup_point;
+      var keyup_value;
+
+      keyup_point = this.selectionStart;
+      keyup_value = this.value;
+
+      // NUMERIC PAD
+      if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105)) {
+        console.log("numpad: " + keyup_point + " | value: " + keyup_value);
+
+        if(keyup_point==3) {
+          // isValidDate()
+          if(isValidDate(keyup_value)) {
+            console.log("TRUE");
+          } else {
+            console.log("FALSE");
+          }
+
+          if(keyup_value.substring(0,2)>31) {
+            this.setSelectionRange(0, 2);
+          } else {
+            this.setSelectionRange(3, 5);
+          }
+          return false;
+        }
+
+        if(keyup_point==6) {
+          if(keyup_value.substring(3, 5)>12) {
+            this.setSelectionRange(3, 5);
+          } else {
+            this.setSelectionRange(6, 10);
+          }
+          return false;
+        }
+      }
+
+      // LEFT
+      if(e.keyCode == 37) {
+        console.log("left arrow keyup_point:" + keyup_point);
+        if(keyup_point==2) {
+          this.setSelectionRange(2, 5);
+        }   
+        if(keyup_point==3) {
+          this.setSelectionRange(0, 2);
+        }           
+        if(keyup_point==6) {
+          this.setSelectionRange(3, 5);
+        }
+        if(keyup_point==9) {
+          this.setSelectionRange(6, 10);
+        }        
+      }
+
+      // RIGHT
+      if(e.keyCode == 39) {
+        console.log("right arrow keyup_point:" + keyup_point);
+
+        if(keyup_point==2) {
+          console.log("value:" + keyup_value);
+                
+          // isValidDate()
+          if(isValidDate(keyup_value)) {
+            console.log("TRUE");
+            this.setSelectionRange(3, 5);
+          } else {
+            console.log("FALSE");
+            this.setSelectionRange(0, 2);
+          }
+        } 
+        if(keyup_point==5) {
+          if(isValidDate(keyup_value)) {
+            console.log("TRUE");
+            this.setSelectionRange(6, 10);
+          } else {
+            console.log("FALSE");
+            this.setSelectionRange(3, 5);
+          }                  
+        }
+      }
+    });
 
       // SRV_QTY
       $('#id_srv_qty').on('focus', function (e) {
