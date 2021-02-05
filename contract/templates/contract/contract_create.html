@@ -330,7 +330,7 @@
               <input class="form-check-input" type="radio" name="printOptions" id="id_print_en" value="E">
               <label class="form-check-label" for="id_print_en">English</label>
             </div>
-            {% else %}
+            {% elif contract.cnt_then == 'E' %}
             <div class="form-check form-check-inline">
               Print &nbsp;&nbsp;          
               <input class="form-check-input" type="radio" name="printOptions" id="id_print_th" value="T">
@@ -340,6 +340,16 @@
               <input class="form-check-input" type="radio" name="printOptions" id="id_print_en" value="E" checked>
               <label class="form-check-label" for="id_print_en" style="cursor: pointer;">English</label>
             </div>
+            {% else %}
+            <div class="form-check form-check-inline">
+              Print &nbsp;&nbsp;          
+              <input class="form-check-input" type="radio" name="printOptions" id="id_print_th" value="T" checked>
+              <label class="form-check-label" for="id_print_th" style="cursor: pointer;">Thai</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="printOptions" id="id_print_en" value="E">
+              <label class="form-check-label" for="id_print_en" style="cursor: pointer;">English</label>
+            </div>          
             {% endif %}
                           
             </div>                        
@@ -552,7 +562,7 @@
                   <input type="text" id="id_wage_id_text" value="{{contract.cnt_wage_id_id}} " class="col-1 bg-success form-control form-control-sm text-center" readonly="">
                   <input type="text" id="id_cnt_wage_id_text" name="cnt_wage_id" class="form-control form-control-sm" value="" readonly>
                   -->
-                  
+
                   <input type="hidden" id="id_cnt_wage_id" name="cnt_wage_id" value="{{ contract.cnt_wage_id_id|default_if_none:'' }}">
 
                   <button id="wage_rate_lookup" type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-url="{% url 'get_wagerate_list' %}"><i class="fas fa-search fa-sm"></i></button>
@@ -2092,6 +2102,13 @@
           }
 
           if(json.is_existed) {
+
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0');
+            var yyyy = today.getFullYear();
+            today = dd + '/' + mm + '/' + yyyy;
+
             cnt_id = json.cnt_id;       
 
             if(json.cnt_active) {
@@ -2101,11 +2118,76 @@
             }
 
             $("#id_cnt_doc_no").val(json.cnt_doc_no);
-            $("#id_cnt_doc_date").val(json.cnt_doc_date);
-            $("#id_cnt_eff_frm").val(json.cnt_eff_frm);
-            $("#id_cnt_eff_to").val(json.cnt_eff_to);
-            $("#id_cnt_sign_frm").val(json.cnt_sign_frm);
-            $("#id_cnt_sign_to").val(json.cnt_sign_to);
+            
+            console.log("doc_date:" + json.cnt_doc_date + " | eff_frm:" + json.cnt_eff_frm + " | eff_to:" + json.cnt_eff_to + " | sign_frm:" + json.cnt_sign_frm + " | sign_to:" + json.cnt_sign_to);
+
+
+            if(json.cnt_doc_date==null || json.cnt_doc_date=="31/12/2999") {
+              $("#chkCNTDocDate").prop("checked", false);
+              $('#id_cnt_doc_date').attr('readonly', true);
+              $('#id_cnt_doc_date').attr("disabled", true);
+              $("#id_cnt_doc_date").val(today);
+            } else {
+              $("#chkCNTDocDate").prop("checked", true);
+              $('#id_cnt_doc_date').attr('readonly', false);
+              $('#id_cnt_doc_date').attr("disabled", false);      
+              $("#id_cnt_doc_date").val(json.cnt_doc_date);              
+            }
+            
+
+            if(json.cnt_eff_frm==null || json.cnt_eff_frm=="31/12/2999") {
+              $("#chkCNTEffFrom").prop("checked", false);
+              $('#id_cnt_eff_frm').attr('readonly', true);
+              $('#id_cnt_eff_frm').attr("disabled", true);
+              $("#id_cnt_eff_frm").val(today);              
+            } else {
+              $("#chkCNTEffFrom").prop("checked", true);
+              $('#id_cnt_eff_frm').attr('readonly', false);
+              $('#id_cnt_eff_frm').attr("disabled", false);
+              $("#id_cnt_eff_frm").val(json.cnt_eff_frm);
+            }
+
+
+            if(json.cnt_eff_to==null || json.cnt_eff_to=="31/12/2999") {
+              $("#chkCNTEffTo").prop("checked", false);
+              $('#id_cnt_eff_to').attr('readonly', true);
+              $('#id_cnt_eff_to').attr("disabled", true);
+              $("#id_cnt_eff_to").val(today);
+            } else {
+              $("#chkCNTEffTo").prop("checked", true);
+              $('#id_cnt_eff_to').attr('readonly', false);
+              $('#id_cnt_eff_to').attr("disabled", false);
+              $("#id_cnt_eff_to").val(json.cnt_eff_to);
+            }
+
+            
+            if(json.cnt_sign_frm==null|| json.cnt_sign_frm=="31/12/2999") {
+              $("#chkCNTSignFrom").prop("checked", false);
+              $('#id_cnt_sign_frm').attr('readonly', true);
+              $('#id_cnt_sign_frm').attr("disabled", true);
+              $("#id_cnt_sign_frm").val(today);
+            } else {
+              $("#chkCNTSignFrom").prop("checked", true);
+              $('#id_cnt_sign_frm').attr('readonly', false);
+              $('#id_cnt_sign_frm').attr("disabled", false);
+              $("#id_cnt_sign_frm").val(json.cnt_sign_frm);
+            }
+
+            
+            if(json.cnt_sign_to==null|| json.cnt_sign_to=="31/12/2999") {
+              $("#chkCNTSignTo").prop("checked", false);
+              $('#id_cnt_sign_to').attr('readonly', true);
+              $('#id_cnt_sign_to').attr("disabled", true);
+              $("#id_cnt_sign_to").val(today);              
+            } else {
+              $("#chkCNTSignTo").prop("checked", true);
+              $('#id_cnt_sign_to').attr('readonly', false);
+              $('#id_cnt_sign_to').attr("disabled", false);
+              $("#id_cnt_sign_to").val(json.cnt_sign_to);
+            }
+
+
+            
             $("#id_cnt_wage_id").val(json.cnt_wage_id);
             
             $("#id_wage_id_text").val(json.cnt_wage_id);
@@ -2157,7 +2239,7 @@
             $("#id_cnt_doc_no").focus();
 
             // Show cus_service if existed.
-            if(json.cus_service_list.length > 0) {              
+            if(json.cus_service_list.length > 0) {
               // Reloade service list table
               $.ajax({
                 url : "/contract/ajax/reload_service_list",
@@ -2295,11 +2377,32 @@
               $("#id_cus_brn").focus();
             } else {              
               
-              //alert("new contract")
+              alert("new contract")
               
               $("#main-content :input").attr("disabled", false);
               $("#contract_number_form :input").attr("disabled", true);
-              $("#id_cnt_doc_no").focus();              
+              
+              $("#chkCNTDocDate").prop("checked", true);
+              $("#chkCNTEffFrom").prop("checked", true);
+              $("#chkCNTEffTo").prop("checked", true);
+              $("#chkCNTSignFrom").prop("checked", true);
+              $("#chkCNTSignTo").prop("checked", true);
+
+
+              $('#id_cnt_doc_date').attr('readonly', false);
+              $('#id_cnt_doc_date').attr("disabled", false);      
+
+              $('#id_cnt_eff_frm').attr('readonly', false);
+              $('#id_cnt_eff_frm').attr("disabled", false);      
+              $('#id_cnt_eff_to').attr('readonly', false);
+              $('#id_cnt_eff_to').attr("disabled", false);      
+
+              $('#id_cnt_sign_frm').attr('readonly', false);
+              $('#id_cnt_sign_frm').attr("disabled", false);      
+              $('#id_cnt_sign_to').attr('readonly', false);
+              $('#id_cnt_sign_to').attr("disabled", false);      
+
+              $("#id_cnt_doc_no").focus();                         
             }
 
           }             
@@ -2396,16 +2499,51 @@
 
     // cnt_doc_no
     cnt_doc_no = $('#id_cnt_doc_no').val();
+
+
+
     // cnt_doc_date
     cnt_doc_date = $('#id_cnt_doc_date').val();
+    if ($('#chkCNTDocDate').is(":checked"))
+      cnt_doc_date_status = 1;
+    else
+      cnt_doc_date_status = 0;
+
+
     // cnt_eff_frm
-    cnt_eff_frm = $('#id_cnt_eff_frm').val();
+    cnt_eff_frm = $('#id_cnt_eff_frm').val();    
+    if ($('#chkCNTEffFrom').is(":checked"))
+      cnt_eff_frm_status = 1;
+    else
+      cnt_eff_frm_status = 0;
+
+
     // cnt_eff_to
     cnt_eff_to = $('#id_cnt_eff_to').val();
+    if ($('#chkCNTEffTo').is(":checked"))
+      cnt_eff_to_status = 1;
+    else
+      cnt_eff_to_status = 0;
+
+
     // cnt_sign_frm
     cnt_sign_frm = $('#id_cnt_sign_frm').val();
+    if ($('#chkCNTSignFrom').is(":checked"))
+      cnt_sign_frm_status = 1;
+    else
+      cnt_sign_frm_status = 0;
+
+  
     // cnt_sign_to
     cnt_sign_to = $('#id_cnt_sign_to').val();
+    if ($('#chkCNTSignTo').is(":checked"))
+      cnt_sign_to_status = 1;
+    else
+      cnt_sign_to_status = 0;
+    
+
+
+
     // cnt_wage_id
     cnt_wage_id = $('#id_cnt_wage_id').val();
     // cnt_sale_amt
@@ -2442,11 +2580,22 @@
         cnt_then: cnt_then,
         cnt_autoexpire: cnt_autoexpire,
         cnt_doc_no: cnt_doc_no,
+
         cnt_doc_date: cnt_doc_date,
+        cnt_doc_date_status: cnt_doc_date_status,
+
         cnt_eff_frm: cnt_eff_frm,
+        cnt_eff_frm_status: cnt_eff_frm_status,
+
         cnt_eff_to: cnt_eff_to,
+        cnt_eff_to_status: cnt_eff_to_status,
+
         cnt_sign_frm: cnt_sign_frm,
+        cnt_sign_frm_status: cnt_sign_frm_status,
+
         cnt_sign_to: cnt_sign_to,
+        cnt_sign_to_status: cnt_sign_to_status,
+
         cnt_wage_id: cnt_wage_id,
         cnt_sale_amt: cnt_sale_amt,
         cnt_guard_amt: cnt_guard_amt,

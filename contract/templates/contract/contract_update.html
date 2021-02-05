@@ -1841,23 +1841,43 @@
     
     // cnt_doc_date
     cnt_doc_date = $('#id_cnt_doc_date').val();
-    cnt_doc_date_status = $("#chkCNTDocDate").val();
+    if ($('#chkCNTDocDate').is(":checked"))
+      cnt_doc_date_status = 1;
+    else
+      cnt_doc_date_status = 0;
+
 
     // cnt_eff_frm
-    cnt_eff_frm = $('#id_cnt_eff_frm').val();
-    cnt_eff_frm_status = $('#chkCNTEffFrom').val();
+    cnt_eff_frm = $('#id_cnt_eff_frm').val();    
+    if ($('#chkCNTEffFrom').is(":checked"))
+      cnt_eff_frm_status = 1;
+    else
+      cnt_eff_frm_status = 0;
+
 
     // cnt_eff_to
     cnt_eff_to = $('#id_cnt_eff_to').val();
-    cnt_eff_to_status = $('#chkCNTEffTo').val();
+    if ($('#chkCNTEffTo').is(":checked"))
+      cnt_eff_to_status = 1;
+    else
+      cnt_eff_to_status = 0;
+
 
     // cnt_sign_frm
     cnt_sign_frm = $('#id_cnt_sign_frm').val();
-    cnt_sign_frm_status = $('#chkCNTSignFrom').val();
+    if ($('#chkCNTSignFrom').is(":checked"))
+      cnt_sign_frm_status = 1;
+    else
+      cnt_sign_frm_status = 0;
 
+  
     // cnt_sign_to
     cnt_sign_to = $('#id_cnt_sign_to').val();
-    cnt_sign_to_status = $('#chkCNTSignTo').val();
+    if ($('#chkCNTSignTo').is(":checked"))
+      cnt_sign_to_status = 1;
+    else
+      cnt_sign_to_status = 0;
+
 
     // cnt_wage_id
     cnt_wage_id = $('#id_cnt_wage_id').val();

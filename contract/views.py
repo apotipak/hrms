@@ -333,10 +333,12 @@ def get_cus_contract(request):
                 else:
                     cnt_doc_date = datetime.datetime.now().strftime("%d/%m/%Y")
                 
-                if cuscontract.cnt_eff_frm is not None:
+                if cuscontract.cnt_eff_frm is not None:                    
                     cnt_eff_frm = cuscontract.cnt_eff_frm.strftime("%d/%m/%Y")
                 else:
-                    cnt_eff_frm = datetime.datetime.now().strftime("%d/%m/%Y")
+                    # cnt_eff_frm = datetime.datetime.now().strftime("%d/%m/%Y")
+                    # cnt_eff_frm = "31/12/2999"
+                    cnt_eff_frm = None
 
                 if cuscontract.cnt_eff_to is not None:
                     cnt_eff_to = cuscontract.cnt_eff_to.strftime("%d/%m/%Y")
@@ -568,7 +570,6 @@ def ContractUpdate(request, pk):
         finally:
             cursor.close()
 
-        # amnaj
         for item in cus_service_obj:
             record = {
                 "srv_id": item[0],
@@ -677,8 +678,9 @@ def UpdateContract(request):
             cnt_active = request.POST.get('cnt_active')            
             cnt_doc_no = request.POST.get('cnt_doc_no')
             
+
             cnt_doc_date_status = request.POST.get('cnt_doc_date_status')
-            if cnt_doc_date_status:
+            if cnt_doc_date_status=="0":
                 cnt_doc_date = "2999-12-31"
             else:
                 cnt_doc_date = request.POST.get('cnt_doc_date')
@@ -688,15 +690,8 @@ def UpdateContract(request):
                     cnt_doc_date = None
                 
 
-            '''
-            cnt_eff_frm = request.POST.get('cnt_eff_frm')
-            if cnt_eff_frm is not None and cnt_eff_frm != "":
-                cnt_eff_frm = datetime.datetime.strptime(cnt_eff_frm, "%d/%m/%Y")
-            else:
-                cnt_eff_frm = None
-            '''
             cnt_eff_frm_status = request.POST.get('cnt_eff_frm_status')
-            if cnt_eff_frm_status:
+            if cnt_eff_frm_status=="0":
                 cnt_eff_frm = "2999-12-31"
             else:
                 cnt_eff_frm = request.POST.get('cnt_eff_frm')
@@ -706,16 +701,8 @@ def UpdateContract(request):
                     cnt_eff_frm = None
 
 
-
-            '''
-            cnt_eff_to = request.POST.get('cnt_eff_to')
-            if cnt_eff_to is not None and cnt_eff_to != "":
-                cnt_eff_to = datetime.datetime.strptime(cnt_eff_to, "%d/%m/%Y")
-            else:
-                cnt_eff_to = None
-            '''
             cnt_eff_to_status = request.POST.get('cnt_eff_to_status')
-            if cnt_eff_to_status:
+            if cnt_eff_to_status=="0":
                 cnt_eff_to = "2999-12-31"
             else:
                 cnt_eff_to = request.POST.get('cnt_eff_to')
@@ -725,15 +712,8 @@ def UpdateContract(request):
                     cnt_eff_to = None
 
 
-            '''
-            cnt_sign_frm = request.POST.get('cnt_sign_frm')
-            if cnt_sign_frm is not None and cnt_sign_frm != "":
-                cnt_sign_frm = datetime.datetime.strptime(cnt_sign_frm, "%d/%m/%Y")
-            else:
-                cnt_sign_frm = None
-            '''
             cnt_sign_from_status = request.POST.get('cnt_sign_frm_status')
-            if cnt_sign_from_status:
+            if cnt_sign_from_status=="0":
                 cnt_sign_frm = "2999-12-31"
             else:
                 cnt_sign_frm = request.POST.get('cnt_sign_frm')
@@ -742,15 +722,8 @@ def UpdateContract(request):
                 else:
                     cnt_sign_frm = None
 
-            '''
-            cnt_sign_to = request.POST.get('cnt_sign_to')
-            if cnt_sign_to is not None and cnt_sign_to != "":
-                cnt_sign_to = datetime.datetime.strptime(cnt_sign_to, "%d/%m/%Y")
-            else:
-                cnt_sign_to = None
-            '''
             cnt_sign_to_status = request.POST.get('cnt_sign_to_status')
-            if cnt_sign_to_status:
+            if cnt_sign_to_status=="0":
                 cnt_sign_to = "2999-12-31"
             else:
                 cnt_sign_to = request.POST.get('cnt_sign_to')
@@ -1032,7 +1005,10 @@ def CreateContract(request):
             cnt_active = request.POST.get('cnt_active')            
             cnt_doc_no = request.POST.get('cnt_doc_no')
 
+            
+            '''
             cnt_doc_date = request.POST.get('cnt_doc_date')
+            cnt_doc_date_status = request.POST.get('cnt_doc_date_status')
             if cnt_doc_date is not None:
                 cnt_doc_date = datetime.datetime.strptime(cnt_doc_date, "%d/%m/%Y")
 
@@ -1051,6 +1027,62 @@ def CreateContract(request):
             cnt_sign_to = request.POST.get('cnt_sign_to')
             if cnt_sign_to is not None:
                 cnt_sign_to = datetime.datetime.strptime(cnt_sign_to, "%d/%m/%Y")
+
+            '''
+
+            cnt_doc_date_status = request.POST.get('cnt_doc_date_status')
+            if cnt_doc_date_status=="0":
+                cnt_doc_date = "2999-12-31"
+            else:
+                cnt_doc_date = request.POST.get('cnt_doc_date')
+                if cnt_doc_date is not None and cnt_doc_date != "":
+                    cnt_doc_date = datetime.datetime.strptime(cnt_doc_date, "%d/%m/%Y")
+                else:
+                    cnt_doc_date = None
+                
+
+            cnt_eff_frm_status = request.POST.get('cnt_eff_frm_status')
+            if cnt_eff_frm_status=="0":
+                cnt_eff_frm = "2999-12-31"
+            else:
+                cnt_eff_frm = request.POST.get('cnt_eff_frm')
+                if cnt_eff_frm is not None and cnt_eff_frm != "":
+                    cnt_eff_frm = datetime.datetime.strptime(cnt_eff_frm, "%d/%m/%Y")
+                else:
+                    cnt_eff_frm = None
+
+
+            cnt_eff_to_status = request.POST.get('cnt_eff_to_status')
+            if cnt_eff_to_status=="0":
+                cnt_eff_to = "2999-12-31"
+            else:
+                cnt_eff_to = request.POST.get('cnt_eff_to')
+                if cnt_eff_to is not None and cnt_eff_to != "":
+                    cnt_eff_to = datetime.datetime.strptime(cnt_eff_to, "%d/%m/%Y")
+                else:
+                    cnt_eff_to = None
+
+
+            cnt_sign_from_status = request.POST.get('cnt_sign_frm_status')
+            if cnt_sign_from_status=="0":
+                cnt_sign_frm = "2999-12-31"
+            else:
+                cnt_sign_frm = request.POST.get('cnt_sign_frm')
+                if cnt_sign_frm is not None and cnt_sign_frm != "":
+                    cnt_sign_frm = datetime.datetime.strptime(cnt_sign_frm, "%d/%m/%Y")
+                else:
+                    cnt_sign_frm = None
+
+            cnt_sign_to_status = request.POST.get('cnt_sign_to_status')
+            if cnt_sign_to_status=="0":
+                cnt_sign_to = "2999-12-31"
+            else:
+                cnt_sign_to = request.POST.get('cnt_sign_to')
+                if cnt_sign_to is not None and cnt_sign_to != "":
+                    cnt_sign_to = datetime.datetime.strptime(cnt_sign_to, "%d/%m/%Y")
+                else:
+                    cnt_sign_to = None
+
 
             cnt_apr_by = request.POST.get('cnt_apr_by_id')
 
@@ -1084,6 +1116,7 @@ def CreateContract(request):
             print("cnt_active = " + str(cnt_active))
             print("cnt_doc_no = " + str(cnt_doc_no))
             print("cnt_doc_date = " + str(cnt_doc_date))
+            print("cnt_doc_date_status = " + str(cnt_doc_date_status))
             print("cnt_eff_frm = " + str(cnt_eff_frm))
             print("cnt_eff_to = " + str(cnt_eff_to))
             print("cnt_sign_frm = " + str(cnt_sign_frm))
@@ -1254,11 +1287,11 @@ def CreateContract(request):
                     # ./History Log                     
 
                     response_data['form_is_valid'] = True
-                    response_data['result'] = "Saved success."
+                    response_data['result'] = "บันทึกรายการสำเร็จ"
                     response_data['class'] = "bg-success"
                 else:
                     response_data['form_is_valid'] = True
-                    response_data['result'] = "Sorry, nothing to update."
+                    response_data['result'] = "ยังไม่มีการแก้ไขข้อมูล"
                     response_data['class'] = "bg-warning"
                
             except CusContract.DoesNotExist:
@@ -2141,7 +2174,7 @@ def reload_service_list(request):
     print("*******************************")
 
     cnt_id = request.GET["cnt_id"]
-    # amnaj
+
     '''
     data = CusService.objects.all().exclude(upd_flag='D').filter(cnt_id=cnt_id).order_by('-srv_active')    
     cus_service_list=[]
@@ -2319,7 +2352,6 @@ def delete_customer_contract(request):
     cnt_id = data.cnt_id 
     data.save()
 
-    # amnaj delete
     # cus_service_data = CusService.objects.all().filter(cnt_id=cnt_id).delete()
 
     try:

@@ -105,9 +105,9 @@ class ContractCreateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ContractCreateForm, self).__init__(*args, **kwargs)        
         instance = getattr(self, 'instance', None)                        
-        self.fields['cus_id'].widget.attrs.update({'class': 'form-control form-control-md col-3', 'placeholder': _('')})
-        self.fields['cus_brn'].widget.attrs.update({'class': 'form-control form-control-md col-2', 'placeholder': _('')})
-        self.fields['cus_vol'].widget.attrs.update({'class': 'form-control form-control-md col-2', 'placeholder': _('')})
+        self.fields['cus_id'].widget.attrs.update({'class': 'form-control form-control-md col-3', 'placeholder': _(''), 'autocomplete':'off'})
+        self.fields['cus_brn'].widget.attrs.update({'class': 'form-control form-control-md col-2', 'placeholder': _(''), 'autocomplete':'off'})
+        self.fields['cus_vol'].widget.attrs.update({'class': 'form-control form-control-md col-2', 'placeholder': _(''), 'autocomplete':'off'})
 
         self.fields['cnt_doc_date'].widget.attrs.update({'class': 'form-control form-control-sm', 'id': 'id_cnt_doc_date', 'placeholder': _('dd/mm/yyyy')})
         self.fields['cnt_eff_frm'].widget.attrs.update({'class': 'form-control form-control-sm', 'id': 'id_cnt_eff_frm', 'placeholder': _('dd/mm/yyyy')})
