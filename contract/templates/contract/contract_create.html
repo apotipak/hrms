@@ -551,7 +551,7 @@
 
             <div class="form-row">
               <div class="form-group col-md-12">
-                <label for="id_cnt_wage_id">{% trans 'Wage Rate' %}</label>
+                <label for="id_cnt_wage_id"><span class='text-danger'>*</span>&nbsp;{% trans 'Wage Rate' %}</label>
                 <div class="input-group-append">
                   
                   <input type="text" id="id_wage_id_text" value="{{contract.cnt_wage_id_id}} " class="col-1 bg-success form-control form-control-sm text-center" style="border-style: none none none none; border-top-right-radius:0px;border-bottom-right-radius:0px; font-weight: normal; font-size: 16px;" readonly="">
@@ -2467,8 +2467,23 @@
       alert("Customer Volume is required");
       $('#id_cus_vol').focus();
     } else {
-      
-      contract_form_validation(cus_id, cus_brn, cus_vol);
+
+    var wage_id = $("#id_cnt_wage_id").val();
+    if(wage_id=="") {
+      $.alert({
+          title: 'Error',
+          type: 'red',
+          content: "กรุณาป้อนค่าแรง",
+          animation: 'zoom',
+          animationBounce: 1.5,
+          closeIcon: false,
+          boxWidth: '38%',
+          useBootstrap: false,
+      });
+      return false;      
+    }
+
+    contract_form_validation(cus_id, cus_brn, cus_vol);
 
     }
   });
@@ -2701,7 +2716,7 @@
   };
 
   function cus_contract_select_wagerate(wage_id, wage_th, wage_en, wage_8hr) {
-    $("#id_cnt_wage_id_text").val(wage_th + "    " + wage_8hr);
+    $("#id_cnt_wage_id_text").val(wage_th + " | " + wage_8hr);
     $("#id_cnt_wage_id").val(wage_id);
     $("#id_wage_id_text").val(wage_id);
     $("#wageratemodal").modal("hide");    
