@@ -727,9 +727,9 @@
                   <td align="center"><small><a href="javascript:void(0);">{{item.srv_qty}}</a></small></td>
                   <td class="text-center"><small><a href="javascript:void(0);">{{item.srv_rank}}</a></small></td>
 
-                  <td align="right"><small><a href="javascript:void(0);">{{item.srv_cost|stringformat:".2f"|intcomma}}</a></small></td>                  
                   <td align="right"><small><a href="javascript:void(0);">{{item.srv_rate|stringformat:".2f"|intcomma}}</a></small></td>
-
+                  <td align="right"><small><a href="javascript:void(0);">{{item.srv_cost|stringformat:".2f"|intcomma}}</a></small></td>                  
+                  
                   <td align="center"><small><a href="javascript:void(0);">{{item.srv_mon}}</a></small></td>
                   <td align="center"><small><a href="javascript:void(0);">{{item.srv_tue}}</a></small></td>
                   <td align="center"><small><a href="javascript:void(0);">{{item.srv_wed}}</a></small></td>
@@ -2215,7 +2215,7 @@
             result += "  <div class='col-md-12 table-responsive'>";
             result += "    <table id='customer-list-table1' class='table table-bordered table-sm'>";
             result += "      <tr class='table-secondary'>";
-            result += "        <th>{% trans 'Eff Frm' %}*</th>";
+            result += "        <th>{% trans 'Eff Frm' %}</th>";
             result += "        <th scope='col'>{% trans 'Eff To' %}</th>";
             result += "        <th scope='col' nowrap>{% trans 'Shift Time' %}</th>";
             result += "        <th scope='col'>{% trans 'Qty' %}</th>";
@@ -2244,8 +2244,10 @@
                 result += "          <td><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["shf_desc"] + "</small></a></td>";
                 result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_qty"] + "</small></a></td>";
                 result += "          <td><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_rank"] + "</small></td>";
+
                 result += "          <td align='right'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_rate"] + "</small></a></td>";
                 result += "          <td align='right'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_cost"] + "</small></a></td>";
+                                
                 result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_mon"] + "</small></a></td>";
                 result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_tue"] + "</small></a></td>";
                 result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_wed"] + "</small></a></td>";
@@ -2262,8 +2264,10 @@
                 result += "          <td><small>" + data.cus_service_list[i]["shf_desc"] + "</small></td>";
                 result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_qty"] + "</small></td>";
                 result += "          <td><small>" + data.cus_service_list[i]["srv_rank"] + "</small></td>";
+                
                 result += "          <td align='right'><small>" + data.cus_service_list[i]["srv_rate"] + "</small></td>";
                 result += "          <td align='right'><small>" + data.cus_service_list[i]["srv_cost"] + "</small></td>";
+                
                 result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_mon"] + "</small></td>";
                 result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_tue"] + "</small></td>";
                 result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_wed"] + "</small></td>";
@@ -2683,13 +2687,13 @@
                   //result += "          <td><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_shift_text"] + "</small></a></td>";
                   result += "          <td><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["shf_desc"] + "</small></a></td>";
 
-
-
                   //ironman
                   result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_qty"] + "</small></a></td>";
                   result += "          <td><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_rank"] + "</small></td>";
+
                   result += "          <td align='right'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_rate"] + "</small></a></td>";
                   result += "          <td align='right'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_cost"] + "</small></a></td>";
+                  
                   result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_mon"] + "</small></a></td>";
                   result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_tue"] + "</small></a></td>";
                   result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_wed"] + "</small></a></td>";
@@ -2706,8 +2710,10 @@
                   result += "          <td><small>" + data.cus_service_list[i]["shf_desc"] + "</small></td>";
                   result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_qty"] + "</small></td>";
                   result += "          <td><small>" + data.cus_service_list[i]["srv_rank"] + "</small></td>";
+                  
                   result += "          <td align='right'><small>" + data.cus_service_list[i]["srv_rate"] + "</small></td>";
-                  result += "          <td align='right'><small>" + data.cus_service_list[i]["srv_cost"] + "</small></td>";
+                  result += "          <td align='right'><small>" + data.cus_service_list[i]["srv_cost"] + "</small></td>";                  
+                  
                   result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_mon"] + "</small></td>";
                   result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_tue"] + "</small></td>";
                   result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_wed"] + "</small></td>";
@@ -2950,8 +2956,10 @@
                 result += "          <td><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["shf_desc"] + "</small></a></td>";
                 result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_qty"] + "</small></a></td>";
                 result += "          <td><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_rank"] + "</small></td>";
+
                 result += "          <td align='right'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_rate"] + "</small></a></td>";
                 result += "          <td align='right'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_cost"] + "</small></a></td>";
+
                 result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_mon"] + "</small></a></td>";
                 result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_tue"] + "</small></a></td>";
                 result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_wed"] + "</small></a></td>";
@@ -2968,8 +2976,10 @@
                 result += "          <td><small>" + data.cus_service_list[i]["shf_desc"] + "</small></td>";
                 result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_qty"] + "</small></td>";
                 result += "          <td><small>" + data.cus_service_list[i]["srv_rank"] + "</small></td>";
+                
                 result += "          <td align='right'><small>" + data.cus_service_list[i]["srv_rate"] + "</small></td>";
                 result += "          <td align='right'><small>" + data.cus_service_list[i]["srv_cost"] + "</small></td>";
+
                 result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_mon"] + "</small></td>";
                 result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_tue"] + "</small></td>";
                 result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_wed"] + "</small></td>";
