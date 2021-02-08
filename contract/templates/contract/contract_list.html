@@ -366,8 +366,9 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
     while (id_cus_vol.length < 3) 
       id_cus_vol = "0" + id_cus_vol;
     
-    $("#search_contract_form").submit();
-    
+    $('#id_cus_vol').val(id_cus_vol);
+
+    $("#search_contract_form").submit();    
   }
 });
 
