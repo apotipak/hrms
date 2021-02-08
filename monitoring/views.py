@@ -2632,30 +2632,30 @@ def ajax_get_attendance_information(request):
 
 		# Check Leave Status - Server side
 		# print("rows:", len(rows))
-		where_in = " "
-		count = 0
-		for row in rows:
-			emp_id_temp = row[14]
-			if emp_id_temp!= "":
-				if count==len(rows)-1:
-					where_in += str(emp_id_temp)
-				else:
-					where_in += str(emp_id_temp) + ","
-			count += 1
-		
+		if(len(rows)>0):
+			where_in = " "
+			count = 0
+			for row in rows:
+				emp_id_temp = row[14]
+				if emp_id_temp!= "":
+					if count==len(rows)-1:
+						where_in += str(emp_id_temp)
+					else:
+						where_in += str(emp_id_temp) + ","
+				count += 1
 
-		# emp_leave_list = []
-		# print("where_in:", where_in)
-		sql_where_in = "select emp_id from emp_leave_act where getdate() between lve_date_frm and lve_date_to and emp_id in (" + where_in + ")"
-		# print("sql_where_in:", sql_where_in)
-		cursor = connection.cursor()
-		cursor.execute(sql_where_in)
-		records = cursor.fetchall()
-		cursor.close()
-		if records is not None:
-			for item in records:
-				emp_leave_list.append(item[0])	
-		# print("Number of records:", len(emp_leave_list))
+			# emp_leave_list = []
+			# print("where_in:", where_in)
+			sql_where_in = "select emp_id from emp_leave_act where getdate() between lve_date_frm and lve_date_to and emp_id in (" + where_in + ")"
+			print("sql_where_in:", sql_where_in)
+			cursor = connection.cursor()
+			cursor.execute(sql_where_in)
+			records = cursor.fetchall()
+			cursor.close()
+			if records is not None:
+				for item in records:
+					emp_leave_list.append(item[0])	
+			# print("Number of records:", len(emp_leave_list))				
 
 
 		# Check Leave Status - Client side
