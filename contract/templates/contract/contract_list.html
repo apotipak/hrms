@@ -307,10 +307,10 @@ $(document).on('keypress', '#id_cus_id', function(e) {
     e.preventDefault();
 
     var obj = $(this);
-        var id_cus_id = obj.val();
-        while (id_cus_id.length < 7) 
-          id_cus_id = "0" + id_cus_id;        
-        $('#id_cus_id').val(id_cus_id);
+    var id_cus_id = obj.val();
+    while (id_cus_id.length < 7) 
+      id_cus_id = "0" + id_cus_id;        
+    $('#id_cus_id').val(id_cus_id);
 
     $('#id_cus_brn').focus();
     $('#id_cus_brn').select();
@@ -353,11 +353,13 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
       return false;     
     }
 
+    /*
     if(cus_vol=="") {
       alert("Please entet Customer Volume.");
       $('#id_cus_vol').focus();
       return false;
     }
+    */
 
     var obj = $(this);
     var id_cus_vol = obj.val();
