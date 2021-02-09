@@ -553,7 +553,7 @@
                 <label for="id_cnt_wage_id"><span class='text-danger'>*</span>&nbsp;{% trans 'Wage Rate' %}</label>
                 <div class="input-group-append">
                   
-                  <input type="text" id="id_wage_id_text" value="{{contract.cnt_wage_id_id}} " class="col-1 bg-success form-control form-control-sm text-center" style="border-style: none none none none; border-top-right-radius:0px;border-bottom-right-radius:0px; font-weight: bold; font-size: 16px;" readonly="">
+                  <input type="text" id="id_wage_id_text" value="{{contract.cnt_wage_id_id}} " class="col-1 bg-green form-control form-control-sm text-center" style="border-style: none none none none; border-top-right-radius:0px;border-bottom-right-radius:0px; font-weight: bold; font-size: 16px;" readonly="">
 
                   <input type="text" id="id_cnt_wage_id_text" name="cnt_wage_id" class="form-control form-control-sm" value="{{contract.cnt_wage_id.wage_en}}{{contract.cnt_wage_id.wage_8hr}}" style="border-style: 1px none 1px none; border-top-left-radius:0px;border-bottom-left-radius:0px;  border-top-right-radius:0px; border-bottom-right-radius:0px;" readonly>
 
@@ -574,15 +574,14 @@
               <div class="form-group col-md-6">
                 <label for="id_cnt_guard_amt">{% trans 'Guard Amount' %}</label>
                 <!--{{ contract_create_form.cnt_guard_amt }}-->
-                <input type="number" name="cnt_guard_amt" value="0" min="0" step="any" class="form-control form-control-sm text-right" id="id_cnt_guard_amt" readonly="" disabled="disabled" style="font-weight: bold; font-size: 18px;">
+                <input type="number" name="cnt_guard_amt" min="0" step="any" class="form-control form-control-sm text-right" id="id_cnt_guard_amt" readonly="" disabled="disabled" style="font-weight: bold; font-size: 18px;">
               </div>
               <div class="form-group col-md-6">
                 <label for="id_cnt_sale_amt">{% trans 'Sale Amount' %}</label>
                 <!--amnaj-->
                 <!--{{ contract_create_form.cnt_sale_amt }}-->
                 <!--<input type="text" id="id_cnt_sale_amt" name="cnt_sale_amt" class="form-control form-control-sm text-right inputmasking" value="0" readonly="">-->                
-                <input type="text" class="form-control form-control-sm text-right " id="id_cnt_sale_amt" name="cnt_sale_amt" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': ' ', 'placeholder': '0'" readonly="" value="0" style="font-weight: bold; font-size: 18px;">
-
+                <input type="text" min="0" class="form-control form-control-sm text-right " id="id_cnt_sale_amt" name="cnt_sale_amt" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': ' ', 'placeholder': '0.00'" readonly="" style="font-weight: bold; font-size: 18px;">
               </div>              
             </div>
 
@@ -2280,11 +2279,22 @@
               $("#id_cnt_wage_id_text").val("");
             }
             
-            $("#id_cnt_guard_amt").val(json.cnt_guard_amt);
+            if(json.cnt_guard_amt==0) {
+              $("#id_cnt_guard_amt").val("");
+            } else {
+              $("#id_cnt_guard_amt").val(json.cnt_guard_amt);    
+            }
             
-            $("#id_cnt_sale_amt").val(json.cnt_sale_amt);
+
             //$("#id_cnt_sale_amt").val(json.cnt_sale_amt.toString());
             //$("#id_cnt_sale_amt").val(parseFloat(json.cnt_sale_amt).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'));
+            //$("#id_cnt_sale_amt").val(json.cnt_sale_amt);
+            // amnaj
+            if(json.cnt_sale_amt==0) {
+              $("#id_cnt_sale_amt").val(0.00);
+            } else {
+              $("#id_cnt_sale_amt").val(json.cnt_sale_amt);
+            }                    
 
             if(json.cnt_new=='N') {
               $("#id_cnt_new").prop("checked", true);
@@ -2953,7 +2963,7 @@
 
           $("#id_cnt_doc_no").val(json.cnt_doc_no);
           
-          console.log("doc_date:" + json.cnt_doc_date + " | eff_frm:" + json.cnt_eff_frm + " | eff_to:" + json.cnt_eff_to + " | sign_frm:" + json.cnt_sign_frm + " | sign_to:" + json.cnt_sign_to);
+          //console.log("doc_date:" + json.cnt_doc_date + " | eff_frm:" + json.cnt_eff_frm + " | eff_to:" + json.cnt_eff_to + " | sign_frm:" + json.cnt_sign_frm + " | sign_to:" + json.cnt_sign_to);
 
 
           if(json.cnt_doc_date==null || json.cnt_doc_date=="31/12/2999") {
@@ -3035,6 +3045,7 @@
           $("#id_cnt_guard_amt").val(json.cnt_guard_amt);
           
           $("#id_cnt_sale_amt").val(json.cnt_sale_amt);
+          console.log(json.cnt_sale_amt);
           //$("#id_cnt_sale_amt").val(json.cnt_sale_amt.toString());
           //$("#id_cnt_sale_amt").val(parseFloat(json.cnt_sale_amt).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'));
 
