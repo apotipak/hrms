@@ -3342,6 +3342,11 @@ def download_contract(request, *args, **kwargs):
             #srv_rate_total_en_word = num2words(srv_rate_day + srv_rate_night, lang='en')
             srv_rate_total_en_word = num2words(srv_rate_day + srv_rate_night, lang='en').upper()
             
+            if customer.cus_brn==0:
+                customer_id = customer.cus_id
+            else:
+                customer_id = str(customer.cus_id) + "-" + str(customer.cus_brn)
+
             context = {
                 'customer': customer,
                 'file_name': file_name,
@@ -3372,7 +3377,7 @@ def download_contract(request, *args, **kwargs):
 
                 'cusbill_site_cus_zip': cusbill.cus_zip,
 
-                'customer_id': customer.cus_id,
+                'customer_id': customer_id,
                 'customer_name_th': customer.cus_name_th,
                 'customer_name_en': customer.cus_name_en,
                 'customer_address_th': customer.cus_add1_th,
