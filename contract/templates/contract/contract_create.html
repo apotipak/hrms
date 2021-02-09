@@ -3936,7 +3936,11 @@
             result += "      </tr>";
             result += "      <tbody>";
 
-            for(var i=0; i<data.cus_service_list.length; i++) {            
+            for(var i=0; i<data.cus_service_list.length; i++) { 
+
+              srv_cost_text = data.cus_service_list[i]["srv_cost"].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+              srv_rate_text = data.cus_service_list[i]["srv_rate"].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
               result += "          <tr>";
               if(data.cus_service_list[i]["srv_active"]==1) {
                 result += "          <td><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_eff_frm"] + "</small></a></td>";
@@ -4308,8 +4312,7 @@
   }
 
 
-  function save_customer_service_item() {
-    
+  function save_customer_service_item() {    
     srv_id = $('#id_select_customer_service_id').val();    
 
     if(srv_id == null || srv_id == "") {
@@ -4391,7 +4394,7 @@
           // Refresh Guard Amount, Sale Amount value
           $('#id_cnt_guard_amt').val(data.active_cnt_guard_amt);
           $('#id_cnt_sale_amt').val(data.active_cnt_sale_amt);
-
+          
           // Reloade service list table
           $.ajax({
             url : "/contract/ajax/reload_service_list",
@@ -4431,7 +4434,11 @@
               result += "      </tr>";
               result += "      <tbody>";
 
+              // amnaj
               for(var i=0; i<data.cus_service_list.length; i++) {            
+                srv_cost_text = data.cus_service_list[i]["srv_cost"].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                srv_rate_text = data.cus_service_list[i]["srv_rate"].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
                 result += "          <tr>";
                 if(data.cus_service_list[i]["srv_active"]==1) {
                   result += "          <td><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_eff_frm"] + "</small></a></td>";
@@ -4593,6 +4600,9 @@
             result += "      <tbody>";
 
             for(var i=0; i<data.cus_service_list.length; i++) {            
+              srv_cost_text = data.cus_service_list[i]["srv_cost"].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+              srv_rate_text = data.cus_service_list[i]["srv_rate"].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+              
               result += "          <tr>";
               if(data.cus_service_list[i]["srv_active"]==1) {
                 result += "          <td><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_eff_frm"] + "</small></a></td>";

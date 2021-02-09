@@ -2051,7 +2051,10 @@ def save_new_service(request):
 
 
 # Save existed service
-def save_customer_service_item(request):    
+def save_customer_service_item(request):
+
+    print("debug")
+    
     srv_id = request.GET["srv_id"]
     srv_eff_from = request.GET["srv_eff_frm"]
     
