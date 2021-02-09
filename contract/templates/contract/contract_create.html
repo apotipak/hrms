@@ -576,9 +576,12 @@
                 {{ contract_create_form.cnt_guard_amt }}
               </div>
               <div class="form-group col-md-6">
-                <label for="id_cnt_sale_amt">{% trans 'Sale Amount' %}.</label>
+                <label for="id_cnt_sale_amt">{% trans 'Sale Amount' %}</label>
+                <!--amnaj-->
                 <!--{{ contract_create_form.cnt_sale_amt }}-->
-                <input type="text" id="id_cnt_sale_amt" name="cnt_sale_amt" class="form-control form-control-sm text-right inputmasking" value="0" readonly="">
+                <!--<input type="text" id="id_cnt_sale_amt" name="cnt_sale_amt" class="form-control form-control-sm text-right inputmasking" value="0" readonly="">-->                
+                <input type="text" class="form-control form-control-sm text-right" id="id_cnt_sale_amt" name="cnt_sale_amt" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': ' ', 'placeholder': '0'" readonly="" value="0">
+
               </div>              
             </div>
 
@@ -1157,24 +1160,9 @@
   }
 
 
-
-
-
-
-
   $(document).ready(function(){
-    //$("#id_cnt_sale_amt").inputmask("99/99/9999");
-    /*
-    Inputmask("(,99){*|1}(,999){1|1}",
-     {
-         positionCaretOnClick: "radixFocus",
-         _radixDance: true,
-         radixPoint: ".",
-         numericInput: true,
-         placeholder: "0"
-     }
-    ).mask(".inputmasking");
-    */
+    // amnaj
+    $('input').inputmask();
 
     $("#id_cnt_doc_no").focus();
 
@@ -4434,7 +4422,6 @@
               result += "      </tr>";
               result += "      <tbody>";
 
-              // amnaj
               for(var i=0; i<data.cus_service_list.length; i++) {            
                 srv_cost_text = data.cus_service_list[i]["srv_cost"].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                 srv_rate_text = data.cus_service_list[i]["srv_rate"].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
