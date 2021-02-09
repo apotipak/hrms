@@ -576,9 +576,9 @@
                 {{ contract_create_form.cnt_guard_amt }}
               </div>
               <div class="form-group col-md-6">
-                <label for="id_cnt_sale_amt">{% trans 'Sale Amount' %}</label>
+                <label for="id_cnt_sale_amt">{% trans 'Sale Amount' %}.</label>
                 <!--{{ contract_create_form.cnt_sale_amt }}-->
-                <input type="text" id="id_cnt_sale_amt" name="cnt_sale_amt" class="form-control form-control-sm text-right inputmasking" value="62000.00" readonly="">
+                <input type="text" id="id_cnt_sale_amt" name="cnt_sale_amt" class="form-control form-control-sm text-right inputmasking" value="0" readonly="">
               </div>              
             </div>
 
@@ -4602,7 +4602,7 @@
             for(var i=0; i<data.cus_service_list.length; i++) {            
               srv_cost_text = data.cus_service_list[i]["srv_cost"].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
               srv_rate_text = data.cus_service_list[i]["srv_rate"].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-              
+
               result += "          <tr>";
               if(data.cus_service_list[i]["srv_active"]==1) {
                 result += "          <td><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_eff_frm"] + "</small></a></td>";
