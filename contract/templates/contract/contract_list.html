@@ -137,7 +137,7 @@
             <table id="customer-list-table" class="table table-bordered table-striped table-sm">
               <thead>
               <tr>
-                <th scope="col">{% trans 'Contract ID' %}</th>
+                <th scope="col" nowrap>{% trans 'Contract ID' %}</th>
                 <th scope="col">{% trans 'Customer Name (TH)' %}</th>
                 <th scope="col">{% trans 'Customer Name (EN)' %}</th>
                 <th scope="col">&nbsp;</th>
@@ -578,7 +578,7 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
               result += "<table id='customer-list-table' class='table table-bordered table-striped table-sm'>";
               result += "  <thead>";
               result += "  <tr>";
-              result += "    <th scope='col'>{% trans 'Contract ID' %}</th>";
+              result += "    <th scope='col' nowrap>{% trans 'Contract ID' %}*</th>";
               result += "    <th scope='col'>{% trans 'Customer Name (TH)' %}</th>";
               result += "    <th scope='col'>{% trans 'Customer Name (EN)' %}</th>";
               result += "    <th scope='col'>&nbsp;</th>";
@@ -589,7 +589,7 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
               if(data.cus_contract_list.length > 0) {
               for(var i=0; i<data.cus_contract_list.length; i++) {
                 result += "  <tr>";          
-                result += "      <td>" + data.cus_contract_list[i]["cnt_id"] + "</td>";
+                result += "      <td nowrap>" + data.cus_contract_list[i]["cnt_id"] + "</td>";
                 result += "      <td><a href=''>" + data.cus_contract_list[i]["cus_name_th"] + "</a></td>";
                 result += "      <td><a href=''>" + data.cus_contract_list[i]["cus_name_en"] + "</a></td>";
                 result += "      <td class='text-right py-0 align-middle'>";
