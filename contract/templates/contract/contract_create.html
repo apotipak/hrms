@@ -1162,6 +1162,7 @@
   $(document).ready(function(){
     //amnaj
     $('input').inputmask();
+
     $("#id_cnt_doc_no").focus();
 
     $(document).on('keyup keypress', '#id_cus_contract_search_text', function(e) {
@@ -1205,8 +1206,17 @@
     });
 
 
+
     // ID_CNT_DOC_DATE
-    $("#id_cnt_doc_date").inputmask("99/99/9999");
+
+    $("#id_cnt_doc_date").inputmask("dd/mm/yyyy", {
+      placeholder: "dd/mm/yyyy",
+      insertMode: false, 
+      showMaskOnHover: false,
+      alias: "datetime",
+     }
+    );
+
     $(document).on('keypress', '#id_cnt_doc_date', function(e) {
       if(e.which == 13) {      
         e.preventDefault();
@@ -1252,6 +1262,12 @@
     });    
     
     $("#id_cnt_doc_date").bind("focus",function(e){
+
+      window.setTimeout(function() {
+        $("#id_cnt_doc_date").select();
+      }, 0);
+
+      /*      
       console.log("id_cnt_doc_date_focus" + " | " + e.keyCode);
       if(e.keyCode!=undefined) {
         this.setSelectionRange(0,2);
@@ -1261,9 +1277,11 @@
           input.setSelectionRange(0,2);
         }, 0);
       }
+      */
     });
 
     $("#id_cnt_doc_date").bind("keyup",function(e){
+      /*
       var keyup_point;
       var keyup_value;
 
@@ -1343,11 +1361,19 @@
           }                  
         }
       }
+      */
     });
 
 
     // ID_CNT_EFF_FRM
-    $("#id_cnt_eff_frm").inputmask("99/99/9999");
+    //$("#id_cnt_eff_frm").inputmask("99/99/9999");
+    $("#id_cnt_eff_frm").inputmask("dd/mm/yyyy", {
+      placeholder: "dd/mm/yyyy",
+      insertMode: false, 
+      showMaskOnHover: false,
+      alias: "datetime",
+     }
+    );
     $(document).on('keypress', '#id_cnt_eff_frm', function(e) {
       if(e.which == 13) {      
         e.preventDefault();
@@ -1392,6 +1418,11 @@
     });
 
     $("#id_cnt_eff_frm").bind("focus",function(e){
+      window.setTimeout(function() {
+        $("#id_cnt_eff_frm").select();
+      }, 0);
+
+      /*
       console.log("id_cnt_eff_frm_focus" + " | " + e.keyCode);
       if(e.keyCode!=undefined) {
         this.setSelectionRange(0,2);
@@ -1401,9 +1432,11 @@
           input.setSelectionRange(0,2);
         }, 0);
       }
+      */
     });
 
     $("#id_cnt_eff_frm").bind("keyup",function(e){
+      /*
       var keyup_point;
       var keyup_value;
 
@@ -1483,13 +1516,21 @@
           }                  
         }
       }
+      */
     });
 
 
 
 
-    // ID_CNT_EFF_TO    
-    $("#id_cnt_eff_to").inputmask("99/99/9999");
+    // ID_CNT_EFF_TO        
+    $("#id_cnt_eff_to").inputmask("dd/mm/yyyy", {
+      placeholder: "dd/mm/yyyy",
+      insertMode: false, 
+      showMaskOnHover: false,
+      alias: "datetime",
+     }
+    );
+
     $(document).on('keypress', '#id_cnt_eff_to', function(e) {
       if(e.which == 13) {      
         e.preventDefault();
@@ -1532,6 +1573,11 @@
       }
     });
     $("#id_cnt_eff_to").bind("focus",function(e){
+      window.setTimeout(function() {
+        $("#id_cnt_eff_to").select();
+      }, 0);
+
+      /*
       console.log("id_cnt_eff_to_focus" + " | " + e.keyCode);
       if(e.keyCode!=undefined) {
         this.setSelectionRange(0,2);
@@ -1541,9 +1587,11 @@
           input.setSelectionRange(0,2);
         }, 0);
       }
+      */
     });
 
     $("#id_cnt_eff_to").bind("keyup",function(e){
+      /*
       var keyup_point;
       var keyup_value;
 
@@ -1623,19 +1671,21 @@
           }                  
         }
       }
+      */
     });
 
 
 
 
+    // ID_CNT_SIGN_FRM    
+    $("#id_cnt_sign_frm").inputmask("dd/mm/yyyy", {
+      placeholder: "dd/mm/yyyy",
+      insertMode: false, 
+      showMaskOnHover: false,
+      alias: "datetime",
+     }
+    );
 
-
-
-
-
-
-    // ID_CNT_SIGN_FRM
-    $("#id_cnt_sign_frm").inputmask("99/99/9999");
     $(document).on('keypress', '#id_cnt_sign_frm', function(e) {
       if(e.which == 13) {      
         e.preventDefault();
@@ -1676,6 +1726,11 @@
       }
     });
     $("#id_cnt_sign_frm").bind("focus",function(e){
+      window.setTimeout(function() {
+        $("#id_cnt_sign_frm").select();
+      }, 0);
+      
+      /*      
       console.log("id_cnt_sign_frm_focus" + " | " + e.keyCode);
       if(e.keyCode!=undefined) {
         this.setSelectionRange(0,2);
@@ -1685,9 +1740,11 @@
           input.setSelectionRange(0,2);
         }, 0);
       }
+      */
     });
 
     $("#id_cnt_sign_frm").bind("keyup",function(e){
+      /*
       var keyup_point;
       var keyup_value;
 
@@ -1767,19 +1824,22 @@
           }                  
         }
       }
+      */
     });
 
 
 
 
-
-
-
-
-
-
     // ID_CNT_SIGN_TO
-    $("#id_cnt_sign_to").inputmask("99/99/9999");
+    
+    $("#id_cnt_sign_to").inputmask("dd/mm/yyyy", {
+      placeholder: "dd/mm/yyyy",
+      insertMode: false, 
+      showMaskOnHover: false,
+      alias: "datetime",
+     }
+    );
+
     $(document).on('keypress', '#id_cnt_sign_to', function(e) {
       if(e.which == 13) {      
         e.preventDefault();
@@ -1818,6 +1878,11 @@
     });
 
     $("#id_cnt_sign_to").bind("focus",function(e){
+      window.setTimeout(function() {
+        $("#id_cnt_sign_to").select();
+      }, 0);
+
+      /*
       console.log("id_cnt_sign_to_focus" + " | " + e.keyCode);
       if(e.keyCode!=undefined) {
         this.setSelectionRange(0,2);
@@ -1827,9 +1892,11 @@
           input.setSelectionRange(0,2);
         }, 0);
       }
+      */
     });
 
     $("#id_cnt_sign_to").bind("keyup",function(e){
+      /*
       var keyup_point;
       var keyup_value;
 
@@ -1909,19 +1976,8 @@
           }                  
         }
       }
+      */
     });
-
-
-
-
-
-
-
-
-
-
-
-
 
   });
 
@@ -1934,12 +1990,6 @@
     $("#main-content :input").attr("disabled", true);
 
   });
-
-
-
-
-
-
 
   $(document).on('keypress', '#id_cus_id', function(e) {
     if(e.which == 13) {      
