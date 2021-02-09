@@ -2042,7 +2042,10 @@
         success : function(json) {        
           if(json.is_existed) {
             //$('#customer_name_title').html("<i class='fas fa-user-edit'></i>&nbsp;&nbsp;<strong>" + json.cus_name_th + "</strong>");
-            $('#customer_name_title').html("<h4 class='m-0 text-dark'>" + json.cus_name_th + "<small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-primary'></i></button></small></h4>");                    
+            //$('#customer_name_title').html("<h4 class='m-0 text-dark'>" + json.cus_name_th + "<small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-primary'></i></button></small></h4>");
+
+            //amnaj
+            $('#customer_name_title').html("<h4 class='m-0 text-dark'>" + json.cus_name_th + "&nbsp;&nbsp;&nbsp;<small>" + json.cus_zone_id + " | " + json.cus_zone_th + "</small>" + "<small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-primary'></i></button></small></h4>");            
 
             $('#id_cus_name_th').val(json.cus_name_th);
             $('#id_cus_sht_th').val(json.cus_sht_th);
@@ -2787,7 +2790,7 @@
   function loadContract(cnt_id) {
     cnt_id_text = cnt_id.toString();
     cus_id = cnt_id_text.substring(0, 4);
-    cus_brn = cnt_id_text.substring(5, 8);
+    cus_brn = cnt_id_text.substring(4, 7);
     cus_vol = cnt_id_text.substring(7, 10);
 
     $("#id_cus_id").val(cus_id);
@@ -2803,7 +2806,10 @@
       },
       success : function(json) {        
         if(json.is_existed) {                      
-          $('#customer_name_title').html("<h4 class='m-0 text-dark'>" + json.cus_name_th + "<small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-primary'></i></button></small></h4>");
+          //$('#customer_name_title').html("<h4 class='m-0 text-dark'>" + json.cus_name_th + "<small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-primary'></i></button></small></h4>");
+
+          $('#customer_name_title').html("<h4 class='m-0 text-dark'>" + json.cus_name_th + "&nbsp;&nbsp;&nbsp;<small>" + json.cus_zone_id + " | " + json.cus_zone_th + "</small>" + "<small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-primary'></i></button></small></h4>");
+
           loadCusBrn(cus_brn);
           loadCusVol(cus_id, cus_brn, cus_vol);
         } else {              
