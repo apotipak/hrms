@@ -458,7 +458,7 @@ def ContractList(request):
     project_name = settings.PROJECT_NAME
     project_version = settings.PROJECT_VERSION
     today_date = settings.TODAY_DATE
-    item_per_page = 15
+    item_per_page = 5
 
     if request.method == "POST":    	
         data = dict()
@@ -1433,6 +1433,80 @@ def get_wagerate_list(request):
 
 
 @login_required(login_url='/accounts/login/')
+def get_contract_list(request):
+
+    print("****************************")
+    print("FUNCTION: get_contract_list")
+    print("****************************")
+
+    item_per_page = 5
+
+    if request.method == "POST":
+        # data = TDistrict.objects.filter('wage_id=current_wagerate_id')        
+        sql = "SELECT cnt_id,cus_name_th,cus_name_en FROM cus_contract  as a left join customer  as b on a.cus_id=b.cus_id  and a.cus_brn=b.cus_brn WHERE not(cnt_id is null)  Order by cnt_id;"
+        data = CusContract.objects.raw(sql)
+
+        page = 1
+        paginator = Paginator(data, item_per_page)
+        is_paginated = True if paginator.num_pages > 1 else False        
+
+        try:
+            current_page = paginator.get_page(page)
+        except InvalidPage as e:
+            raise Http404(str(e))
+    else:
+        print("method get")
+        # data = TWagezone.objects.all().filter(w2004=1)
+        # data = CusContract.objects.all()
+
+        sql = "SELECT cnt_id,cus_name_th,cus_name_en FROM cus_contract  as a left join customer  as b on a.cus_id=b.cus_id  and a.cus_brn=b.cus_brn WHERE not(cnt_id is null)  Order by cnt_id;"
+        data = CusContract.objects.raw(sql)
+
+        paginator = Paginator(data, item_per_page)
+        is_paginated = True if paginator.num_pages > 1 else False
+        page = request.GET.get('page', 1) or 1
+        try:
+            current_page = paginator.get_page(page)
+        except InvalidPage as e:
+            raise Http404(str(e))   
+
+    if current_page:
+        current_page_number = current_page.number
+        current_page_paginator_num_pages = current_page.paginator.num_pages
+
+        pickup_dict = {}
+        pickup_records=[]
+        
+        for d in current_page:
+            record = {
+                "cnt_id": d.cnt_id,
+                "cus_name_th": d.cus_name_th,
+                "cus_name_en": d.cus_name_en,
+            }            
+            pickup_records.append(record)
+
+        response = JsonResponse(data={
+            "success": True,
+            "is_paginated": is_paginated,
+            "page" : page,
+            "next_page" : page + 1,
+            "current_page_number" : current_page_number,
+            "current_page_paginator_num_pages" : current_page_paginator_num_pages,
+            "results": list(pickup_records)         
+            })
+        response.status_code = 200
+        return response
+    else:
+        response = JsonResponse({"error": "there was an error"})
+        response.status_code = 403
+        return response
+
+    return JsonResponse(data={"success": False, "results": ""})
+
+
+
+
+@login_required(login_url='/accounts/login/')
 def get_wagerate_list_modal(request):
 
     print("**********************************")    
@@ -1526,6 +1600,103 @@ def get_wagerate_list_modal(request):
         return response
 
     return JsonResponse(data={"success": False, "results": ""})
+
+
+
+@login_required(login_url='/accounts/login/')
+def get_contract_list_modal(request):
+
+    print("**********************************")    
+    print("FUNCTION: get_contract_list_modal")
+    print("**********************************")
+
+    data = []
+    item_per_page = 5
+    page_no = request.GET["page_no"]
+    search_option = request.GET["search_option"]
+    search_text = request.GET["search_text"]
+
+    print("search_option:", search_option)
+    print("search_text:", search_text)
+    
+
+    if search_option == '1':
+        data = TWagezone.objects.all().filter(wage_id__exact=search_text).filter(w2004=1)
+
+    if search_option == '2':
+        data = TWagezone.objects.all().filter(wage_th__contains=search_text).filter(w2004=1)
+
+    if search_option == '3':
+        data = TWagezone.objects.all().filter(wage_en__contains=search_text).filter(w2004=1)
+
+    if data is not None:
+        print("not null")
+        page = int(page_no)
+
+        next_page = page + 1
+        if page >= 1:
+            previous_page = page - 1
+        else:
+            previous_page = 0
+
+
+        paginator = Paginator(data, item_per_page)
+        is_paginated = True if paginator.num_pages > 1 else False        
+
+        try:
+            current_page = paginator.get_page(page)
+        except InvalidPage as e:
+            raise Http404(str(e))
+
+        if current_page:
+
+            current_page_number = current_page.number
+            current_page_paginator_num_pages = current_page.paginator.num_pages
+
+            pickup_dict = {}
+            pickup_records=[]
+            
+            for d in current_page:
+                record = {
+                    "wage_id": d.wage_id,
+                    "wage_th": d.wage_th,
+                    "wage_en": d.wage_en,
+                    "wage_8hr": d.wage_8hr,
+                }
+                pickup_records.append(record)
+
+            response = JsonResponse(data={
+                "success": True,
+                "is_paginated": is_paginated,
+                "page" : page,
+                "next_page" : next_page,
+                "previous_page" : previous_page,
+                "current_page_number" : current_page_number,
+                "current_page_paginator_num_pages" : current_page_paginator_num_pages,
+                "results": list(pickup_records)         
+                })
+            response.status_code = 200
+            return response
+        else:
+            # print("not found")      
+            response = JsonResponse(data={
+                "success": False,
+                "results": [],
+            })
+            response.status_code = 403
+            return response
+    else:        
+        print("not found 2")
+        response = JsonResponse(data={
+            "success": False,
+            "error"
+            "results": [],
+        })
+        response.status_code = 403
+        return response
+
+    return JsonResponse(data={"success": False, "results": ""})
+
 
 
 def update_customer_service(request):

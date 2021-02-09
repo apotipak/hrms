@@ -12,8 +12,13 @@ urlpatterns = [
     path('contract/<int:pk>/update', views.ContractUpdate, name='contract-update'),
     url(r'^ajax/update_contract/$', views.UpdateContract, name='update-contract'),
     url(r'^ajax/create_contract/$', views.CreateContract, name='create-contract'),
-    url(r'^ajax/get_wagerate_list/$', views.get_wagerate_list, name='get_wagerate_list'),    
+    
+    url(r'^ajax/get_wagerate_list/$', views.get_wagerate_list, name='get_wagerate_list'),
+    url(r'^ajax/get_contract_list/$', views.get_contract_list, name='get_contract_list'),    
+
     url(r'^ajax/get_wagerate_list_modal/$', views.get_wagerate_list_modal, name='get_wagerate_list_modal'),
+    url(r'^ajax/get_contract_list_modal/$', views.get_contract_list_modal, name='get_contract_list_modal'),
+
     url(r'^ajax/update_customer_service/$', views.update_customer_service, name='update_customer_service'),
     url(r'^ajax/save_new_service/$', views.save_new_service, name='save_new_service'),
     url(r'^ajax/add_new_service/$', views.add_new_service, name='add_new_service'),

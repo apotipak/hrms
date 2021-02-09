@@ -23,7 +23,10 @@
           {% render_field contract_create_form.cus_id %}&nbsp;
           {% render_field contract_create_form.cus_brn %}&nbsp;&nbsp;
           <label for="inputPassword6">Vol</label>&nbsp;&nbsp;
-          {% render_field contract_create_form.cus_vol %}
+          {% render_field contract_create_form.cus_vol %}&nbsp;
+        
+          <button id="contract_lookup" type="button" class="btn btn-outline-primary btn-md" data-toggle="modal" data-url="{% url 'get_contract_list' %}"><i class="fas fa-question"></i></button>
+
         </div>
       </div>
     </form>
@@ -41,7 +44,7 @@
       <div class="card-header">
         <h1 class="card-title pt-2">
           <span id="customer_name_title">            
-            <h3 class="m-0 text-dark">{{customer.cus_name_th}}<small>&nbsp;&nbsp;<button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-angle-down text-primary"></i></button></small></h3>            
+            <h4 class="m-0 text-dark">{{customer.cus_name_th}}<small>&nbsp;&nbsp;<button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-angle-down text-primary"></i></button></small></h4>
           </span>
           <!--<button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-angle-down text-primary"></i></button>-->
         </h1>
@@ -983,7 +986,7 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">{% trans 'Select a Wage Rate' %}</h5>
+        <h5 class="modal-title">{% trans 'Select a Wage Rate' %}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -997,6 +1000,28 @@
     </div>
   </div>
 </div>
+
+
+<!-- Search Contract Modal -->
+<div class="modal fade" id="search_contract_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-search"></i>&nbsp;{% trans 'Select a Contract' %}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        {% trans 'Loading...' %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">{% trans 'Close' %}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- /.content-wrapper -->
 {% endblock %}
 
@@ -1156,6 +1181,14 @@
     */
 
     $("#id_cnt_doc_no").focus();
+
+    $(document).on('keyup keypress', '#id_cus_contract_search_text', function(e) {
+      if(e.which == 13) {
+        e.preventDefault();
+        return false;
+      }
+    });
+
 
     // ID_CNT_DOC_NO
     $(document).on('keypress', '#id_cnt_doc_no', function(e) {
@@ -1949,7 +1982,12 @@
           success : function(json) {        
             if(json.is_existed) {              
               //$('#customer_name_title').html("<i class='fas fa-user-edit'></i>&nbsp;&nbsp;<strong>" + json.cus_name_th + "</strong>");
-              $('#customer_name_title').html("<h3 class='m-0 text-dark'>" + json.cus_name_th + "<small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-primary'></i></button></small></h3>");
+              $('#customer_name_title').html("<h4 class='m-0 text-dark'>" + json.cus_name_th + "<small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-primary'></i></button></small></h4>");
+
+
+              //<small>&nbsp;&nbsp;&nbsp;&nbsp;<span class='badge badge-info'>{{ customer.cus_zone_id }} | {{ customer.cus_zone.zone_en }}</span></small>
+              //<small><button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-primary'></i></button></small>
+
               $('#id_cus_brn').focus();
 
             } else {              
@@ -2004,7 +2042,7 @@
         success : function(json) {        
           if(json.is_existed) {
             //$('#customer_name_title').html("<i class='fas fa-user-edit'></i>&nbsp;&nbsp;<strong>" + json.cus_name_th + "</strong>");
-            $('#customer_name_title').html("<h3 class='m-0 text-dark'>" + json.cus_name_th + "<small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-primary'></i></button></small></h3>");                    
+            $('#customer_name_title').html("<h4 class='m-0 text-dark'>" + json.cus_name_th + "<small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-primary'></i></button></small></h4>");                    
 
             $('#id_cus_name_th').val(json.cus_name_th);
             $('#id_cus_sht_th').val(json.cus_sht_th);
@@ -2738,6 +2776,460 @@
     $("#wageratemodal").modal("hide");    
   };
 
+  function cus_contract_select_item(cnt_id, cnt_name_th, cnt_name_en) {    
+    
+    loadContract(cnt_id);
+
+    $("#search_contract_modal").modal("hide");    
+  };
+
+
+  function loadContract(cnt_id) {
+    cnt_id_text = cnt_id.toString();
+    cus_id = cnt_id_text.substring(0, 4);
+    cus_brn = cnt_id_text.substring(5, 8);
+    cus_vol = cnt_id_text.substring(7, 10);
+
+    $("#id_cus_id").val(cus_id);
+    $("#id_cus_brn").val(cus_brn);
+    $("#id_cus_vol").val(cus_vol);
+
+    $.ajax({
+      url : "/contract/ajax/get_cus_main/",
+      type : "POST",
+      data : {          
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        cus_id: cus_id,
+      },
+      success : function(json) {        
+        if(json.is_existed) {                      
+          $('#customer_name_title').html("<h4 class='m-0 text-dark'>" + json.cus_name_th + "<small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-primary'></i></button></small></h4>");
+          loadCusBrn(cus_brn);
+          loadCusVol(cus_id, cus_brn, cus_vol);
+        } else {              
+          alert("Error");
+        }
+      },
+    }); 
+  }
+
+  function loadCusBrn() {
+    $.ajax({
+      url : "/contract/ajax/get_customer/",
+      type : "POST",
+      data : {          
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        cus_id: cus_id,
+        cus_brn: cus_brn,
+      },
+      success : function(json) {        
+        if(json.is_existed) {          
+          $('#customer_name_title').html("<h4 class='m-0 text-dark'>" + json.cus_name_th + "<small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-primary'></i></button></small></h4>");                    
+
+          $('#id_cus_name_th').val(json.cus_name_th);
+          $('#id_cus_sht_th').val(json.cus_sht_th);
+          $('#id_cus_add_th').val(json.cus_add_th);
+          $('#id_cus_subdist_th').val(json.cus_subdist_th);
+          $('#id_cus_zip_th').val(json.cus_zip_th);        
+          $('#id_cus_district_th').val(json.cus_district_th);
+          $('#id_cus_city_th').val(json.cus_city_th);
+          $('#id_cus_country_th').val(json.cus_country_th);
+          $('#id_site_contact_id_th').val(json.site_contact_id_th);
+          $('#id_site_contact_con_th').val(json.site_contact_con_th);
+          $('#id_site_contact_con_position_th').val(json.site_contact_con_position_th);
+          $('#id_site_contact_con_mobile_th').val(json.site_contact_con_mobile_th);
+          $('#id_site_contact_con_email_th').val(json.site_contact_con_email_th);
+
+          // EN
+          $('#id_cus_name_en').val(json.cus_name_en);
+          $('#id_cus_sht_en').val(json.cus_sht_en);
+          $('#id_cus_add_en').val(json.cus_add_en);
+          $('#id_cus_subdist_en').val(json.cus_subdist_en);
+          $('#id_cus_zip_en').val(json.cus_zip_en);        
+          $('#id_cus_district_en').val(json.cus_district_en);
+          $('#id_cus_city_en').val(json.cus_city_en);
+          $('#id_cus_country_en').val(json.cus_country_en);
+          $('#id_site_contact_id_en').val(json.site_contact_id_en);
+          $('#id_site_contact_con_en').val(json.site_contact_con_en);
+          $('#id_site_contact_con_position_en').val(json.site_contact_con_position_en);
+          $('#id_site_contact_con_mobile_en').val(json.site_contact_con_mobile_en);
+          $('#id_site_contact_con_email_en').val(json.site_contact_con_email_en);
+        
+          $('#id_cus_tel_th').val(json.cus_tel);
+          $('#id_cus_fax_th').val(json.cus_fax);
+          $('#id_cus_email_th').val(json.cus_email);
+          $('#id_cus_tel_en').val(json.cus_tel);
+          $('#id_cus_fax_en').val(json.cus_fax);
+          $('#id_cus_email_en').val(json.cus_email);
+
+          $('#id_cus_zone_th').val(json.cus_zone_id + " | " + json.cus_zone_th);
+          $('#id_cus_zone_en').val(json.cus_zone_id + " | " + json.cus_zone_en);
+
+          $('#id_cus_vol').focus();
+        }
+        else {
+          alert("Customer " + cus_id + " Branch " + cus_brn + " does not existed. Please create a new customer.");
+          $('#id_cus_brn').focus();
+        }
+      },
+    });
+  }
+
+  function loadCusVol(cus_id, cus_brn, cus_vol) {
+    $.ajax({
+      //url : "/contract/ajax/get_attendance_information/",
+      url : "/contract/ajax/get_cus_contract/",        
+      type : "POST",
+      data : {
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        cus_id: cus_id,
+        cus_brn: cus_brn,
+        cus_vol: cus_vol,
+      },
+      success : function(json) {        
+
+        // check if contract used to be deleted          
+        var upd_flag = json.cnt_upd_flag;
+        var cnt_id = json.cnt_id;
+
+        $("#id_cnt_id_temp").val(cnt_id);
+        // $("#id_contract_number").text("No." + cnt_id);
+        $("#id_contract_number").text("");
+
+        if(upd_flag=='D') {    
+          var retVal = confirm("Would you like to undelete Contract No." + cnt_id + " ?");
+                    
+          if( retVal == true ) {
+            // Change upd_flag to 'R'
+            $.ajax({
+              url: "/contract/ajax/ajax_undelete_contract/",
+              type: "POST",
+              data: {        
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                cnt_id: cnt_id,
+              },
+              success: function(data) {
+                
+              },
+              error: function(data) {
+                
+              },
+            });
+          } else {
+
+          }
+        } else {
+
+        }
+
+        if(json.is_existed) {
+
+          var today = new Date();
+          var dd = String(today.getDate()).padStart(2, '0');
+          var mm = String(today.getMonth() + 1).padStart(2, '0');
+          var yyyy = today.getFullYear();
+          today = dd + '/' + mm + '/' + yyyy;
+
+          cnt_id = json.cnt_id;       
+
+          if(json.cnt_active) {
+            $("#id_cnt_active").prop("checked", true);
+          } else {
+            $("#id_cnt_active").prop("checked", false);
+          }
+
+          $("#id_cnt_doc_no").val(json.cnt_doc_no);
+          
+          console.log("doc_date:" + json.cnt_doc_date + " | eff_frm:" + json.cnt_eff_frm + " | eff_to:" + json.cnt_eff_to + " | sign_frm:" + json.cnt_sign_frm + " | sign_to:" + json.cnt_sign_to);
+
+
+          if(json.cnt_doc_date==null || json.cnt_doc_date=="31/12/2999") {
+            $("#chkCNTDocDate").prop("checked", false);
+            $('#id_cnt_doc_date').attr('readonly', true);
+            $('#id_cnt_doc_date').attr("disabled", true);
+            $("#id_cnt_doc_date").val(today);
+          } else {
+            $("#chkCNTDocDate").prop("checked", true);
+            $('#id_cnt_doc_date').attr('readonly', false);
+            $('#id_cnt_doc_date').attr("disabled", false);      
+            $("#id_cnt_doc_date").val(json.cnt_doc_date);              
+          }
+          
+
+          if(json.cnt_eff_frm==null || json.cnt_eff_frm=="31/12/2999") {
+            $("#chkCNTEffFrom").prop("checked", false);
+            $('#id_cnt_eff_frm').attr('readonly', true);
+            $('#id_cnt_eff_frm').attr("disabled", true);
+            $("#id_cnt_eff_frm").val(today);              
+          } else {
+            $("#chkCNTEffFrom").prop("checked", true);
+            $('#id_cnt_eff_frm').attr('readonly', false);
+            $('#id_cnt_eff_frm').attr("disabled", false);
+            $("#id_cnt_eff_frm").val(json.cnt_eff_frm);
+          }
+
+
+          if(json.cnt_eff_to==null || json.cnt_eff_to=="31/12/2999") {
+            $("#chkCNTEffTo").prop("checked", false);
+            $('#id_cnt_eff_to').attr('readonly', true);
+            $('#id_cnt_eff_to').attr("disabled", true);
+            $("#id_cnt_eff_to").val(today);
+          } else {
+            $("#chkCNTEffTo").prop("checked", true);
+            $('#id_cnt_eff_to').attr('readonly', false);
+            $('#id_cnt_eff_to').attr("disabled", false);
+            $("#id_cnt_eff_to").val(json.cnt_eff_to);
+          }
+
+          
+          if(json.cnt_sign_frm==null|| json.cnt_sign_frm=="31/12/2999") {
+            $("#chkCNTSignFrom").prop("checked", false);
+            $('#id_cnt_sign_frm').attr('readonly', true);
+            $('#id_cnt_sign_frm').attr("disabled", true);
+            $("#id_cnt_sign_frm").val(today);
+          } else {
+            $("#chkCNTSignFrom").prop("checked", true);
+            $('#id_cnt_sign_frm').attr('readonly', false);
+            $('#id_cnt_sign_frm').attr("disabled", false);
+            $("#id_cnt_sign_frm").val(json.cnt_sign_frm);
+          }
+
+          
+          if(json.cnt_sign_to==null|| json.cnt_sign_to=="31/12/2999") {
+            $("#chkCNTSignTo").prop("checked", false);
+            $('#id_cnt_sign_to').attr('readonly', true);
+            $('#id_cnt_sign_to').attr("disabled", true);
+            $("#id_cnt_sign_to").val(today);              
+          } else {
+            $("#chkCNTSignTo").prop("checked", true);
+            $('#id_cnt_sign_to').attr('readonly', false);
+            $('#id_cnt_sign_to').attr("disabled", false);
+            $("#id_cnt_sign_to").val(json.cnt_sign_to);
+          }
+
+
+          
+          $("#id_cnt_wage_id").val(json.cnt_wage_id);
+          
+          $("#id_wage_id_text").val(json.cnt_wage_id);
+
+          if(json.cnt_wage_en!="") {
+            $("#id_cnt_wage_id_text").val(json.cnt_wage_en + "  |  " + json.cnt_wage_8hr);  
+          } else {
+            $("#id_cnt_wage_id_text").val("");
+          }
+          
+          $("#id_cnt_guard_amt").val(json.cnt_guard_amt);
+          
+          $("#id_cnt_sale_amt").val(json.cnt_sale_amt);
+          //$("#id_cnt_sale_amt").val(json.cnt_sale_amt.toString());
+          //$("#id_cnt_sale_amt").val(parseFloat(json.cnt_sale_amt).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'));
+
+          if(json.cnt_new=='N') {
+            $("#id_cnt_new").prop("checked", true);
+          } else {
+            $("#id_cnt_new").prop("checked", false);
+          }
+
+          if(json.cnt_print=='C') {
+            $("#id_cnt_print").prop("checked", true);
+            $('#id_cnt_print_label').text('Customer');
+          } else {
+            $("#id_cnt_print").prop("checked", false);
+            $('#id_cnt_print_label').text('Site Address');
+          }
+
+          if(json.cnt_autoexpire) {
+            $("#id_cnt_autoexpire").prop("checked", true);
+          } else {
+            $("#id_cnt_autoexpire").prop("checked", false);
+          }
+
+          if(json.cnt_then=="T") {
+            $("#id_print_th").prop("checked", true); 
+            $("#id_print_en").prop("checked", false); 
+          }
+
+          if(json.cnt_then=="E") {
+            $("#id_print_en").prop("checked", true); 
+            $("#id_print_th").prop("checked", false); 
+          }
+
+          $("#main-content :input").attr("disabled", false);
+          $("#contract_number_form :input").attr("disabled", true);            
+          $("#id_cnt_doc_no").focus();
+
+          // Show cus_service if existed.
+          if(json.cus_service_list.length > 0) {
+            // Reloade service list table
+            $.ajax({
+              url : "/contract/ajax/reload_service_list",
+              type: 'get',          
+              dataType: 'json',
+              data: {
+                cnt_id: cnt_id,
+              },
+              beforeSend: function () {
+                
+              },    
+              success: function (data) {
+
+                result = "";
+                result += "<div class='row'>";
+                result += "  <div class='col-md-12 table-responsive'>";
+                result += "    <table id='customer-list-table1' class='table table-bordered table-sm'>";
+                result += "      <tr class='table-secondary'>";
+                result += "        <th>{% trans 'Eff Frm' %}</th>";
+                result += "        <th scope='col'>{% trans 'Eff To' %}</th>";
+                result += "        <th scope='col' nowrap>{% trans 'Shift Time' %}</th>";
+                result += "        <th scope='col' class='text-center'>{% trans 'Qty' %}</th>";
+                result += "        <th scope='col' class='text-center'>{% trans 'Rank' %}</th>";
+                result += "        <th scope='col'>{% trans 'Rate' %}</th>";
+                result += "        <th scope='col'>{% trans 'Ext.Cost' %}</th>";
+                result += "        <th scope='col'>{% trans 'MON' %}</th>";
+                result += "        <th scope='col'>{% trans 'TUE' %}</th>";
+                result += "        <th scope='col'>{% trans 'WED' %}</th>";
+                result += "        <th scope='col'>{% trans 'THU' %}</th>";
+                result += "        <th scope='col'>{% trans 'FRI' %}</th>";
+                result += "        <th scope='col'>{% trans 'SAT' %}</th>";
+                result += "        <th scope='col'>{% trans 'SUN' %}</th>";
+                result += "        <th scope='col'>{% trans 'PUB' %}</th>";
+                result += "        <th scope='col'>{% trans 'Remark' %}</th>";
+                result += "        <th scope='col'>{% trans 'Active' %}</th>";
+                result += "        <th>&nbsp;</th>";
+                result += "      </tr>";
+                result += "      <tbody>";
+
+                // id_cus_vol enter
+                for(var i=0; i<data.cus_service_list.length; i++) {
+                  srv_cost_text = data.cus_service_list[i]["srv_cost"].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                  srv_rate_text = data.cus_service_list[i]["srv_rate"].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+                  result += "          <tr>";
+                  if(data.cus_service_list[i]["srv_active"]==1) {
+                    result += "          <td><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_eff_frm"] + "</small></a></td>";
+                    result += "          <td><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_eff_to"] + "</small></a></td>";
+                    result += "          <td><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["shf_desc"] + "</small></a></td>";
+                    result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_qty"] + "</small></a></td>";
+                    result += "          <td class='text-center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_rank"] + "</small></td>";
+                    
+                    //result += "          <td align='right'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_rate"] + "</small></a></td>";
+                    result += "          <td align='right'><a href='javascript:void(0);'><small>" + srv_rate_text + "</small></a></td>";                      
+                    //result += "          <td align='right'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_cost"] + "</small></a></td>";
+                    result += "          <td align='right'><a href='javascript:void(0);'><small>" + srv_cost_text + "</small></a></td>";
+                    
+                    result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_mon"] + "</small></a></td>";
+                    result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_tue"] + "</small></a></td>";
+                    result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_wed"] + "</small></a></td>";
+                    result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_thu"] + "</small></a></td>";
+                    result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_fri"] + "</small></a></td>";
+                    result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_sat"] + "</small></a></td>";
+                    result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_sun"] + "</small></a></td>";
+                    result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_pub"] + "</small></a></td>";
+                    result += "          <td><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_rem"] + "</small></a></td>";
+                    }
+                  else {
+                    result += "          <td><small>" + data.cus_service_list[i]["srv_eff_frm"] + "</small></td>";
+                    result += "          <td><small>" + data.cus_service_list[i]["srv_eff_to"] + "</small></td>";
+                    result += "          <td><small>" + data.cus_service_list[i]["shf_desc"] + "</small></td>";
+                    result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_qty"] + "</small></td>";
+                    result += "          <td class='text-center'><small>" + data.cus_service_list[i]["srv_rank"] + "</small></td>";
+
+                    //result += "          <td align='right'><small>" + data.cus_service_list[i]["srv_rate"] + "</small></td>";
+                    result += "          <td align='right'><small>" + srv_rate_text + "</small></td>";                      
+                    //result += "          <td align='right'><small>" + data.cus_service_list[i]["srv_cost"] + "</small></td>";
+                    result += "          <td align='right'><small>" + srv_cost_text + "</small></td>";
+
+                    result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_mon"] + "</small></td>";
+                    result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_tue"] + "</small></td>";
+                    result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_wed"] + "</small></td>";
+                    result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_thu"] + "</small></td>";
+                    result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_fri"] + "</small></td>";
+                    result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_sat"] + "</small></td>";
+                    result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_sun"] + "</small></td>";
+                    result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_pub"] + "</small></td>";
+                    result += "          <td><small>" + data.cus_service_list[i]["srv_rem"] + "</small></td>";
+                  }
+
+                  if(data.cus_service_list[i]["srv_active"]==1)
+                    result += "          <td><span class='badge badge-success'>{% trans 'Active' %}</span></td>";
+                  else
+                    result += "          <td><span class='badge badge-secondary'>{% trans 'Pending' %}</span></td>";
+                
+                  result += "          <td>";
+                  result += "            <div class='btn-group btn-group-sm nowrap'>";
+                  result += "              <small>";
+                  result += "              <button type='button' onclick='update_customer_service(" + data.cus_service_list[i]["srv_id"] + ")' class='btn btn-info btn-xs js-update-contract-service' data-toggle='modal'>&nbsp;<i class='fas fa-pen fa-xs'></i>&nbsp;</button>";
+
+                  result += "              <button type='button' onclick='delete_customer_service(" + data.cus_service_list[i]["srv_id"] + ")' class='btn btn-danger btn-xs js-delete-contract-service'>";
+                  result += "                &nbsp;<i class='fas fa-trash fa-xs'></i>&nbsp;";
+                  result += "              </button>";
+                  result += "              </small>";
+                  result += "            </div>";
+                  result += "          </td>";
+                }
+                  result += "          </tr>";
+                
+                result += "      </tbody>";
+                result += "    </table>";
+                result += "  </div>";
+                result += "</div>";
+
+                $("#service_list_table .card-body").html(result);
+              },
+              error: function(data){
+                // do nothing        
+              }
+            });    
+
+
+
+
+          }
+
+        } else {
+
+          if(json.customer_not_existed) {
+            alert("Customer " + cus_id + " Branch " + cus_brn + " does not existed. Please create a new customer.");
+
+            $("#main-content :input").attr("disabled", true);
+            $("#contract_number_form :input").attr("disabled", false);
+            $("#id_cus_brn").focus();
+          } else {              
+            
+            //alert("new contract")
+            
+            $("#main-content :input").attr("disabled", false);
+            $("#contract_number_form :input").attr("disabled", true);
+            
+            $("#chkCNTDocDate").prop("checked", true);
+            $("#chkCNTEffFrom").prop("checked", true);
+            $("#chkCNTEffTo").prop("checked", true);
+            $("#chkCNTSignFrom").prop("checked", true);
+            $("#chkCNTSignTo").prop("checked", true);
+
+
+            $('#id_cnt_doc_date').attr('readonly', false);
+            $('#id_cnt_doc_date').attr("disabled", false);      
+
+            $('#id_cnt_eff_frm').attr('readonly', false);
+            $('#id_cnt_eff_frm').attr("disabled", false);      
+            $('#id_cnt_eff_to').attr('readonly', false);
+            $('#id_cnt_eff_to').attr("disabled", false);      
+
+            $('#id_cnt_sign_frm').attr('readonly', false);
+            $('#id_cnt_sign_frm').attr("disabled", false);      
+            $('#id_cnt_sign_to').attr('readonly', false);
+            $('#id_cnt_sign_to').attr("disabled", false);      
+
+            $("#id_cnt_doc_no").focus();                         
+          }
+
+        }             
+      },
+    });
+  }
+
   function cus_contract_search_wagerate_modal() {
     current_wage_id = $('#id_cnt_wage_id').val();
     search_option = $('#id_cus_contract_wagerate_option').val();
@@ -2856,6 +3348,142 @@
         }          
     });
   }
+
+
+ 
+
+  function cus_contract_search_modal() {    
+    page_no = 1;
+    search_option = $('#id_cus_contract_search_option').val(); //1=cnt_id, 2=cus_name_th, 3=cus_name_en
+    search_text = $('#id_cus_contract_search_text').val();
+    //console.log(search_option + " | " + search_text);
+    if(search_text=="") {
+      $.alert({
+          title: 'Error',
+          type: 'red',
+          content: "กรุณาป้อนข้อมูลที่ต้องการค้นหา",
+          animation: 'zoom',
+          animationBounce: 1.5,
+          closeIcon: false,
+          boxWidth: '38%',
+          useBootstrap: false,
+      });      
+      return false;
+    } else {
+      //return false;
+    }  
+
+    $.ajax({
+        url : "/contract/ajax/get_contract_list_modal",
+        type: 'get',   
+        dataType: 'json',
+        data : {          
+          page_no : page_no,
+          search_option : search_option,          
+          search_text : search_text,
+        },
+        success: function (data) {
+          var result = ""
+          var count = data.results.length;
+          var wage_id = data.results[0]["wage_id"];
+          var wage_th = data.results[0]["wage_th"];
+          var wage_en = data.results[0]["wage_en"];
+          var wage_8hr = data.results[0]["wage_8hr"];
+
+          result += "<div class='row col-12'>";
+          result += "<div class='col-8 offset-3 pb-2'>";
+          result += "<form id='cus_contract_search_wagerate_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
+          result += "  <div class='form-group mx-sm-3 mb-2'>";
+          result += "  <select name='cus_contract_wagerate_option' class='form-control form-control-sm' required id='id_cus_contract_wagerate_option'>";
+          result += "    <option value='1' selected>Wage ID</option>";
+          result += "    <option value='2'>Wage (TH)</option>";
+          result += "    <option value='3'>Wage (EN)</option>";
+          result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";
+          result += "    <label for='id_cus_contract_wagerate_search_text' class='sr-only'>Search</label>";            
+          result += "    <input type='text' class='form-control form-control-sm' id='id_cus_contract_wagerate_search_text' name='cus_contract_wagerate_search_text' placeholder=''>";
+          result += "  </div>";
+          result += "<a href='javascript:cus_contract_search_wagerate_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";
+          result += "</form>";
+          result += "</div>";
+
+          result += "<div class='row col-12'>";
+          result += "<table class='table table-hover table-sm'>";
+          result += " <thead>";
+          result += "   <tr>";
+          result += "     <th scope='col'>{% trans 'Wage ID' %}</th>";
+          result += "     <th scope='col'>{% trans 'Wage (TH)' %}</th>";
+          result += "     <th scope='col'>{% trans 'Wage (EN)' %}</th>";
+          result += "     <th scope='col'>&nbsp;</th>";
+          result += "   </tr>";
+          result += " </thead>";
+          result += "<tbody>";
+          result += "</div>";
+          result += "<div>";
+
+          for(var i=0; i<count; i++) {              
+            var wage_id = data.results[i]["wage_id"];
+            var wage_th = data.results[i]["wage_th"];
+            var wage_en = data.results[i]["wage_en"];
+            var wage_8hr = data.results[i]["wage_8hr"];
+
+            result += "<tr>";
+            result += "<td>" + wage_id + "</td>";        
+            result += "<td>" + wage_th + "</td>";
+            result += "<td>" + wage_en + "</td>";
+            
+            result += "<td><a href='javascript:cus_contract_select_wagerate(" + wage_id + ",\"" + wage_th + "\",\"" + wage_en + "\",\"" + wage_8hr + "\");' type='button' class='btn btn-outline-primary btn-sm'>Select</a></td>";
+
+            result += "</tr>";              
+          }
+          result += " </tbody>";
+          result += "</table>";
+
+          if(data.is_paginated) {
+            result += "<div>";
+            result += "  <span>";
+            if(data.previous_page != 0) {
+              result += " <a href='javascript:get_cus_main_district_lookup(" + data.previous_page + ");'>" + "<i class='fas fa-arrow-circle-left'></i></a> ";
+            }
+            result += data.current_page_number + " / " + data.current_page_paginator_num_pages;
+            result += " <a href='javascript:get_cus_main_district_lookup(" + data.next_page + ");'>" + "<i class='fas fa-arrow-circle-right'></i></a>";
+            result += "    </span>";
+            result += "</div>";
+          }
+          
+          $("#wageratemodal .modal-body").html(result);          
+        },
+        error: function(data){
+          result = "";
+          result += "<div class='row col-12'>";
+          result += "<div class='col-8 offset-3 pb-2'>";
+          result += "<form id='cus_main_search_district_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
+          result += "  <div class='form-group mx-sm-3 mb-2'>";
+          result += "  <select name='cus_contract_wagerate_option' class='form-control form-control-sm' required id='id_cus_contract_wagerate_option'>";
+          result += "    <option value='1' selected>Wage ID</option>";
+          result += "    <option value='2'>Wage (TH)</option>";
+          result += "    <option value='3'>Wage (EN)</option>";
+          result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";
+          result += "    <label for='id_cus_contract_search_wagerate' class='sr-only'>Search</label>";            
+          result += "    <input type='text' class='form-control form-control-sm' id='id_cus_contract_wagerate_search_text' name='cus_contract_wagerate_search_text' placeholder=''>";
+          result += "  </div>";
+          result += "<a href='javascript:cus_contract_search_wagerate_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";            
+          result += "</form>";
+          result += "</div>";
+
+          result += "<table class='table table-hover table-sm'>";
+          result += " <thead>";
+          result += "   <tr>";
+          result += "     <td colspan='4' class='text-center'><br>Not found.<br><br></td>";
+          result += "   </tr>";
+          result += " </thead>";
+          result += "</tbody>";
+          result += "</table>";
+
+          $("#wageratemodal .modal-body").html(result);
+        }          
+    });
+  }
+
 
   function delete_customer_service(service_id) {
     $('#id_select_customer_service_id').val(service_id);
@@ -3242,7 +3870,6 @@
 
         // Reloade service list table
         // save service
-        // amnaj
         $.ajax({
           url : "/contract/ajax/reload_service_list",
           type: 'get',          
@@ -4296,8 +4923,92 @@
           error: function(data){
             $("#wageratemodal .modal-body").html("{% trans 'There is no data.' %}");
           }          
-      });
+      });      
     });
+
+
+    $('#contract_lookup').on('click', function (e) {
+      
+      var obj = $(this);  
+      $.ajax({
+          url: obj.attr("data-url"),
+          type: 'get',          
+          dataType: 'json',
+          beforeSend: function () {
+            $("#search_contract_modal").modal("show");
+            $('#search_contract_modal').on('shown.bs.modal', function () {
+              $("#id_cus_contract_search_text").focus();
+            });            
+          },
+          success: function (data) {
+            var result = ""
+            var count = data.results.length;
+            var wage_id = data.results[0]["wage_id"];
+            var wage_th = data.results[0]["wage_th"];
+            var wage_en = data.results[0]["wage_en"];
+
+
+            result += "<div class='row col-12'>";
+            result += "<div class='col-8 offset-3 pb-2'>";
+            result += "<form id='search_contract_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
+            result += "  <div class='form-group mx-sm-3 mb-2'>";
+            result += "  <select name='cus_contract_search_option' class='form-control form-control-sm' required id='id_cus_contract_search_option'>";
+            result += "    <option value='1'>Contract ID</option>";
+            result += "    <option value='2' selected>Name (TH)</option>";
+            result += "    <option value='3'>Name (EN)</option>";
+            result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";
+            result += "    <label for='id_cus_main_search_district' class='sr-only'>Search</label>";            
+            result += "    <input type='text' class='form-control form-control-sm' id='id_cus_contract_search_text' name='cus_contract_search_text' autocomplete='off'>";
+            result += "  </div>";
+            result += "<a href='javascript:cus_contract_search_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";            
+            result += "</form>";
+            result += "</div>";
+
+            result += "<font size='2.5em;'>";       
+            result += "<div class='row col-12 table-responsive'>";
+            
+            result += "<table class='table table-hover table-striped'>";
+            result += " <thead>";
+            result += "   <tr>";
+            result += "     <th scope='col'>{% trans 'Contract ID' %}</th>";
+            result += "     <th scope='col'>{% trans 'Contract Name (TH)' %}</th>";
+            result += "     <th scope='col'>{% trans 'Contract Name (EN)' %}</th>";
+            result += "     <th scope='col'>&nbsp;</th>";
+            result += "   </tr>";
+            result += " </thead>";
+
+            
+            result += "<tbody>";
+            result += "</div>";
+            result += "<div>";
+
+            for(var i=0; i<count; i++) {              
+              var cnt_id = data.results[i]["cnt_id"];
+              var cus_name_th = data.results[i]["cus_name_th"];
+              var cus_name_en = data.results[i]["cus_name_en"];
+
+              result += "<tr>";
+              result += "<td>" + cnt_id + "</td>";        
+              result += "<td>" + cus_name_th + "</td>";
+              result += "<td>" + cus_name_en + "</td>";
+              result += "<td class='text-right'><a href='javascript:cus_contract_select_item(" + cnt_id + ",\"" + cus_name_th + "\",\"" + cus_name_en + "\");' type='button' class='btn btn-outline-primary btn-sm'>Select</a></td>";
+              result += "</tr>";              
+            }
+            result += " </tbody>";            
+            result += "</table>";
+            result += "</font>";
+            result += "</div>";
+
+            $("#search_contract_modal .modal-body").html(result);     
+            
+
+          },
+          error: function(data){
+            $("#search_contract_modal .modal-body").html("{% trans 'There is no data.' %}");
+          }          
+      });      
+    });    
+
   });
 
 
@@ -5031,6 +5742,8 @@
       '_blank'
     );
   }
+
+
 
 </script>
 
