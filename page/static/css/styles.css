@@ -137,7 +137,7 @@ input:checked + .slider:before {
   transform: translate(-50%,-50%);
   top: 50%;
   left: 50%;
-  font-size: 12px;
+  font-size: 11px;
   font-family: Verdana, sans-serif;
 }
 input:checked + .slider:after {
