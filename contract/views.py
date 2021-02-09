@@ -1664,8 +1664,8 @@ def get_contract_list_modal(request):
             for d in current_page:
                 cus_name_th = d.cus_name_th.replace("\"", "")
                 cus_name_th = d.cus_name_th.replace("\'", "")
-                cus_name_en = d.cus_name_th.replace("\"", "")
-                cus_name_en = d.cus_name_th.replace("\'", "")
+                cus_name_en = d.cus_name_en.replace("\"", "")
+                cus_name_en = d.cus_name_en.replace("\'", "")
 
                 record = {
                     "cnt_id": d.cnt_id,
