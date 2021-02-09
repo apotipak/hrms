@@ -1432,77 +1432,6 @@ def get_wagerate_list(request):
     return JsonResponse(data={"success": False, "results": ""})
 
 
-@login_required(login_url='/accounts/login/')
-def get_contract_list(request):
-
-    print("****************************")
-    print("FUNCTION: get_contract_list")
-    print("****************************")
-
-    item_per_page = 5
-
-    if request.method == "POST":
-        # data = TDistrict.objects.filter('wage_id=current_wagerate_id')        
-        sql = "SELECT cnt_id,cus_name_th,cus_name_en FROM cus_contract  as a left join customer  as b on a.cus_id=b.cus_id  and a.cus_brn=b.cus_brn WHERE not(cnt_id is null)  Order by cnt_id;"
-        data = CusContract.objects.raw(sql)
-
-        page = 1
-        paginator = Paginator(data, item_per_page)
-        is_paginated = True if paginator.num_pages > 1 else False        
-
-        try:
-            current_page = paginator.get_page(page)
-        except InvalidPage as e:
-            raise Http404(str(e))
-    else:
-        print("method get")
-        # data = TWagezone.objects.all().filter(w2004=1)
-        # data = CusContract.objects.all()
-
-        sql = "SELECT cnt_id,cus_name_th,cus_name_en FROM cus_contract  as a left join customer  as b on a.cus_id=b.cus_id  and a.cus_brn=b.cus_brn WHERE not(cnt_id is null)  Order by cnt_id;"
-        data = CusContract.objects.raw(sql)
-
-        paginator = Paginator(data, item_per_page)
-        is_paginated = True if paginator.num_pages > 1 else False
-        page = request.GET.get('page', 1) or 1
-        try:
-            current_page = paginator.get_page(page)
-        except InvalidPage as e:
-            raise Http404(str(e))   
-
-    if current_page:
-        current_page_number = current_page.number
-        current_page_paginator_num_pages = current_page.paginator.num_pages
-
-        pickup_dict = {}
-        pickup_records=[]
-        
-        for d in current_page:
-            record = {
-                "cnt_id": d.cnt_id,
-                "cus_name_th": d.cus_name_th,
-                "cus_name_en": d.cus_name_en,
-            }            
-            pickup_records.append(record)
-
-        response = JsonResponse(data={
-            "success": True,
-            "is_paginated": is_paginated,
-            "page" : page,
-            "next_page" : page + 1,
-            "current_page_number" : current_page_number,
-            "current_page_paginator_num_pages" : current_page_paginator_num_pages,
-            "results": list(pickup_records)         
-            })
-        response.status_code = 200
-        return response
-    else:
-        response = JsonResponse({"error": "there was an error"})
-        response.status_code = 403
-        return response
-
-    return JsonResponse(data={"success": False, "results": ""})
-
 
 
 
@@ -1602,6 +1531,77 @@ def get_wagerate_list_modal(request):
     return JsonResponse(data={"success": False, "results": ""})
 
 
+@login_required(login_url='/accounts/login/')
+def get_contract_list(request):
+
+    print("****************************")
+    print("FUNCTION: get_contract_list")
+    print("****************************")
+
+    item_per_page = 500
+
+    if request.method == "POST":
+        # data = TDistrict.objects.filter('wage_id=current_wagerate_id')        
+        sql = "SELECT cnt_id,cus_name_th,cus_name_en FROM cus_contract  as a left join customer  as b on a.cus_id=b.cus_id  and a.cus_brn=b.cus_brn WHERE not(cnt_id is null)  Order by cnt_id;"
+        data = CusContract.objects.raw(sql)
+
+        page = 1
+        paginator = Paginator(data, item_per_page)
+        is_paginated = True if paginator.num_pages > 1 else False        
+
+        try:
+            current_page = paginator.get_page(page)
+        except InvalidPage as e:
+            raise Http404(str(e))
+    else:
+        print("method get")
+        # data = TWagezone.objects.all().filter(w2004=1)
+        # data = CusContract.objects.all()
+
+        sql = "SELECT cnt_id,cus_name_th,cus_name_en FROM cus_contract  as a left join customer  as b on a.cus_id=b.cus_id  and a.cus_brn=b.cus_brn WHERE not(cnt_id is null)  Order by cnt_id;"
+        data = CusContract.objects.raw(sql)
+
+        paginator = Paginator(data, item_per_page)
+        is_paginated = True if paginator.num_pages > 1 else False
+        page = request.GET.get('page', 1) or 1
+        try:
+            current_page = paginator.get_page(page)
+        except InvalidPage as e:
+            raise Http404(str(e))   
+
+    if current_page:
+        current_page_number = current_page.number
+        current_page_paginator_num_pages = current_page.paginator.num_pages
+
+        pickup_dict = {}
+        pickup_records=[]
+        
+        for d in current_page:
+            record = {
+                "cnt_id": d.cnt_id,
+                "cus_name_th": d.cus_name_th,
+                "cus_name_en": d.cus_name_en,
+            }            
+            pickup_records.append(record)
+
+        response = JsonResponse(data={
+            "success": True,
+            "is_paginated": is_paginated,
+            "page" : page,
+            "next_page" : page + 1,
+            "current_page_number" : current_page_number,
+            "current_page_paginator_num_pages" : current_page_paginator_num_pages,
+            "results": list(pickup_records)         
+            })
+        response.status_code = 200
+        return response
+    else:
+        response = JsonResponse({"error": "there was an error"})
+        response.status_code = 403
+        return response
+
+    return JsonResponse(data={"success": False, "results": ""})
+
 
 @login_required(login_url='/accounts/login/')
 def get_contract_list_modal(request):
@@ -1611,34 +1611,39 @@ def get_contract_list_modal(request):
     print("**********************************")
 
     data = []
-    item_per_page = 5
+    item_per_page = 500
     page_no = request.GET["page_no"]
     search_option = request.GET["search_option"]
     search_text = request.GET["search_text"]
 
+    # Replace symbol character
+    search_text = search_text.replace("\"", "'")
+
+    print("page_no:", page_no)
     print("search_option:", search_option)
     print("search_text:", search_text)
-    
 
-    if search_option == '1':
-        data = TWagezone.objects.all().filter(wage_id__exact=search_text).filter(w2004=1)
 
-    if search_option == '2':
-        data = TWagezone.objects.all().filter(wage_th__contains=search_text).filter(w2004=1)
+    # amnaj
+    if search_option == '1':    # Search by cnt_id
+        sql = "select * from customer cus join cus_contract con on cus.cus_id=con.cus_id and cus.cus_brn=con.cus_brn where cnt_id=" + search_text
+        data = CusContract.objects.raw(sql)
 
-    if search_option == '3':
-        data = TWagezone.objects.all().filter(wage_en__contains=search_text).filter(w2004=1)
+    if search_option == '2':    # Search by cus_name_th
+        search_text = "%" + search_text + "%"
+        data = CusContract.objects.raw('select * from customer cus join cus_contract con on cus.cus_id=con.cus_id and cus.cus_brn=con.cus_brn where cus_name_th like %s', tuple([search_text]))
+
+    if search_option == '3':    # Search by cus_name_en
+        search_text = "%" + search_text + "%"
+        data = CusContract.objects.raw('select * from customer cus join cus_contract con on cus.cus_id=con.cus_id and cus.cus_brn=con.cus_brn where cus_name_en like %s', tuple([search_text]))
 
     if data is not None:
-        print("not null")
         page = int(page_no)
-
         next_page = page + 1
         if page >= 1:
             previous_page = page - 1
         else:
             previous_page = 0
-
 
         paginator = Paginator(data, item_per_page)
         is_paginated = True if paginator.num_pages > 1 else False        
@@ -1649,7 +1654,6 @@ def get_contract_list_modal(request):
             raise Http404(str(e))
 
         if current_page:
-
             current_page_number = current_page.number
             current_page_paginator_num_pages = current_page.paginator.num_pages
 
@@ -1657,11 +1661,15 @@ def get_contract_list_modal(request):
             pickup_records=[]
             
             for d in current_page:
+                cus_name_th = d.cus_name_th.replace("\"", "")
+                cus_name_th = d.cus_name_th.replace("\'", "")
+                cus_name_en = d.cus_name_th.replace("\"", "")
+                cus_name_en = d.cus_name_th.replace("\'", "")
+
                 record = {
-                    "wage_id": d.wage_id,
-                    "wage_th": d.wage_th,
-                    "wage_en": d.wage_en,
-                    "wage_8hr": d.wage_8hr,
+                    "cnt_id": d.cnt_id,
+                    "cus_name_th": cus_name_th,
+                    "cus_name_en": cus_name_en,
                 }
                 pickup_records.append(record)
 

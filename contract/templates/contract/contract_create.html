@@ -3352,6 +3352,7 @@
 
  
 
+  //
   function cus_contract_search_modal() {    
     page_no = 1;
     search_option = $('#id_cus_contract_search_option').val(); //1=cnt_id, 2=cus_name_th, 3=cus_name_en
@@ -3385,58 +3386,61 @@
         success: function (data) {
           var result = ""
           var count = data.results.length;
-          var wage_id = data.results[0]["wage_id"];
-          var wage_th = data.results[0]["wage_th"];
-          var wage_en = data.results[0]["wage_en"];
-          var wage_8hr = data.results[0]["wage_8hr"];
+          var cnt_id = data.results[0]["cnt_id"];
+          var cus_name_th = data.results[0]["cus_name_th"];
+          var cus_name_en = data.results[0]["cus_name_en"];
 
           result += "<div class='row col-12'>";
           result += "<div class='col-8 offset-3 pb-2'>";
-          result += "<form id='cus_contract_search_wagerate_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
+          result += "<form id='search_contract_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
           result += "  <div class='form-group mx-sm-3 mb-2'>";
-          result += "  <select name='cus_contract_wagerate_option' class='form-control form-control-sm' required id='id_cus_contract_wagerate_option'>";
-          result += "    <option value='1' selected>Wage ID</option>";
-          result += "    <option value='2'>Wage (TH)</option>";
-          result += "    <option value='3'>Wage (EN)</option>";
+          result += "  <select name='cus_contract_search_option' class='form-control form-control-sm' required id='id_cus_contract_search_option'>";
+          result += "    <option value='1'>Contract ID</option>";
+          result += "    <option value='2' selected>Name (TH)</option>";
+          result += "    <option value='3'>Name (EN)</option>";
           result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";
-          result += "    <label for='id_cus_contract_wagerate_search_text' class='sr-only'>Search</label>";            
-          result += "    <input type='text' class='form-control form-control-sm' id='id_cus_contract_wagerate_search_text' name='cus_contract_wagerate_search_text' placeholder=''>";
+          result += "    <label for='id_cus_main_search_district' class='sr-only'>Search</label>";            
+          result += "    <input type='text' class='form-control form-control-sm' id='id_cus_contract_search_text' name='cus_contract_search_text' autocomplete='off' value=''>";
           result += "  </div>";
-          result += "<a href='javascript:cus_contract_search_wagerate_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";
+          result += "<a href='javascript:cus_contract_search_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";            
           result += "</form>";
           result += "</div>";
 
-          result += "<div class='row col-12'>";
-          result += "<table class='table table-hover table-sm'>";
+          result += "<font size='2.5em;'>";       
+          result += "<div class='row col-12 table-responsive'>";
+          
+          result += "<table class='table table-hover table-striped table-wrapper-scroll-y my-custom-scrollbar'>";
+          //result += "<table class='table table-hover table-striped'>";
           result += " <thead>";
           result += "   <tr>";
-          result += "     <th scope='col'>{% trans 'Wage ID' %}</th>";
-          result += "     <th scope='col'>{% trans 'Wage (TH)' %}</th>";
-          result += "     <th scope='col'>{% trans 'Wage (EN)' %}</th>";
+          result += "     <th scope='col' class='text-left' nowrap>{% trans 'Contract ID' %}</th>";
+          result += "     <th scope='col' class='text-left'>{% trans 'Customer Name (TH)' %}</th>";
+          result += "     <th scope='col' class='text-left'>{% trans 'Customer Name (EN)' %}</th>";
           result += "     <th scope='col'>&nbsp;</th>";
           result += "   </tr>";
           result += " </thead>";
+
+          
           result += "<tbody>";
-          result += "</div>";
-          result += "<div>";
+          //result += "</div>";
+          //result += "<div>";
 
           for(var i=0; i<count; i++) {              
-            var wage_id = data.results[i]["wage_id"];
-            var wage_th = data.results[i]["wage_th"];
-            var wage_en = data.results[i]["wage_en"];
-            var wage_8hr = data.results[i]["wage_8hr"];
+            var cnt_id = data.results[i]["cnt_id"];
+            var cus_name_th = data.results[i]["cus_name_th"];
+            var cus_name_en = data.results[i]["cus_name_en"];
 
             result += "<tr>";
-            result += "<td>" + wage_id + "</td>";        
-            result += "<td>" + wage_th + "</td>";
-            result += "<td>" + wage_en + "</td>";
-            
-            result += "<td><a href='javascript:cus_contract_select_wagerate(" + wage_id + ",\"" + wage_th + "\",\"" + wage_en + "\",\"" + wage_8hr + "\");' type='button' class='btn btn-outline-primary btn-sm'>Select</a></td>";
-
+            result += "<td class='align-middle'>" + cnt_id + "</td>";        
+            result += "<td class='align-middle'>" + cus_name_th + "</td>";
+            result += "<td class='align-middle'>" + cus_name_en + "</td>";
+            result += "<td><a href='javascript:cus_contract_select_item(" + cnt_id + ",\"" + cus_name_th + "\",\"" + cus_name_en + "\");' type='button' class='btn btn-outline-primary btn-sm'>Select</a></td>";
             result += "</tr>";              
           }
-          result += " </tbody>";
+          result += " </tbody>";            
           result += "</table>";
+          result += "</font>";
+          result += "</div>";
 
           if(data.is_paginated) {
             result += "<div>";
@@ -3450,23 +3454,23 @@
             result += "</div>";
           }
           
-          $("#wageratemodal .modal-body").html(result);          
+          $("#search_contract_modal .modal-body").html(result);          
         },
-        error: function(data){
+        error: function(data){          
           result = "";
           result += "<div class='row col-12'>";
           result += "<div class='col-8 offset-3 pb-2'>";
           result += "<form id='cus_main_search_district_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
           result += "  <div class='form-group mx-sm-3 mb-2'>";
-          result += "  <select name='cus_contract_wagerate_option' class='form-control form-control-sm' required id='id_cus_contract_wagerate_option'>";
-          result += "    <option value='1' selected>Wage ID</option>";
-          result += "    <option value='2'>Wage (TH)</option>";
-          result += "    <option value='3'>Wage (EN)</option>";
-          result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";
-          result += "    <label for='id_cus_contract_search_wagerate' class='sr-only'>Search</label>";            
-          result += "    <input type='text' class='form-control form-control-sm' id='id_cus_contract_wagerate_search_text' name='cus_contract_wagerate_search_text' placeholder=''>";
+          result += "  <select name='cus_contract_search_option' class='form-control form-control-sm' required id='id_cus_contract_search_option'>";
+          result += "    <option value='1'>Contract ID</option>";
+          result += "    <option value='2' selected>Name (TH)</option>";
+          result += "    <option value='3'>Name (EN)</option>";
+          result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";          
+          result += "    <label for='id_cus_main_search_district' class='sr-only'>Search</label>";            
+          result += "    <input type='text' class='form-control form-control-sm' id='id_cus_contract_search_text' name='cus_contract_search_text' autocomplete='off' value=''>";          
           result += "  </div>";
-          result += "<a href='javascript:cus_contract_search_wagerate_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";            
+          result += "<a href='javascript:cus_contract_search_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";
           result += "</form>";
           result += "</div>";
 
@@ -3479,7 +3483,7 @@
           result += "</tbody>";
           result += "</table>";
 
-          $("#wageratemodal .modal-body").html(result);
+          $("#search_contract_modal .modal-body").html(result);
         }          
     });
   }
@@ -4943,10 +4947,9 @@
           success: function (data) {
             var result = ""
             var count = data.results.length;
-            var wage_id = data.results[0]["wage_id"];
-            var wage_th = data.results[0]["wage_th"];
-            var wage_en = data.results[0]["wage_en"];
-
+            var cnt_id = data.results[0]["cnt_id"];
+            var cus_name_th = data.results[0]["cus_name_th"];
+            var cus_name_en = data.results[0]["cus_name_en"];
 
             result += "<div class='row col-12'>";
             result += "<div class='col-8 offset-3 pb-2'>";
@@ -4958,7 +4961,7 @@
             result += "    <option value='3'>Name (EN)</option>";
             result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";
             result += "    <label for='id_cus_main_search_district' class='sr-only'>Search</label>";            
-            result += "    <input type='text' class='form-control form-control-sm' id='id_cus_contract_search_text' name='cus_contract_search_text' autocomplete='off'>";
+            result += "    <input type='text' class='form-control form-control-sm' id='id_cus_contract_search_text' name='cus_contract_search_text' autocomplete='off' value=''>";
             result += "  </div>";
             result += "<a href='javascript:cus_contract_search_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";            
             result += "</form>";
@@ -4967,12 +4970,13 @@
             result += "<font size='2.5em;'>";       
             result += "<div class='row col-12 table-responsive'>";
             
-            result += "<table class='table table-hover table-striped'>";
+            //<table class='table table-responsive table-sm table-striped table-condensed table-wrapper-scroll-y my-custom-scrollbar' id="
+            result += "<table class='table table-hover table-striped table-wrapper-scroll-y my-custom-scrollbar'>";
             result += " <thead>";
-            result += "   <tr>";
-            result += "     <th scope='col'>{% trans 'Contract ID' %}</th>";
-            result += "     <th scope='col'>{% trans 'Contract Name (TH)' %}</th>";
-            result += "     <th scope='col'>{% trans 'Contract Name (EN)' %}</th>";
+            result += "   <tr class='text-left'>";
+            result += "     <th scope='col' class='text-left' nowrap>{% trans 'Contract ID' %}.</th>";
+            result += "     <th scope='col' class='text-left'>{% trans 'Customer Name (TH)' %}</th>";
+            result += "     <th scope='col' class='text-left'>{% trans 'Customer Name (EN)' %}</th>";
             result += "     <th scope='col'>&nbsp;</th>";
             result += "   </tr>";
             result += " </thead>";
@@ -4988,9 +4992,9 @@
               var cus_name_en = data.results[i]["cus_name_en"];
 
               result += "<tr>";
-              result += "<td>" + cnt_id + "</td>";        
-              result += "<td>" + cus_name_th + "</td>";
-              result += "<td>" + cus_name_en + "</td>";
+              result += "<td class='align-middle'>" + cnt_id + "</td>";        
+              result += "<td class='align-middle'>" + cus_name_th + "</td>";
+              result += "<td class='align-middle'>" + cus_name_en + "</td>";
               result += "<td class='text-right'><a href='javascript:cus_contract_select_item(" + cnt_id + ",\"" + cus_name_th + "\",\"" + cus_name_en + "\");' type='button' class='btn btn-outline-primary btn-sm'>Select</a></td>";
               result += "</tr>";              
             }
