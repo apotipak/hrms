@@ -2054,7 +2054,7 @@ def save_new_service(request):
 def save_customer_service_item(request):
 
     print("debug")
-    
+
     srv_id = request.GET["srv_id"]
     srv_eff_from = request.GET["srv_eff_frm"]
     
@@ -2846,7 +2846,9 @@ def generate_contract(request, *args, **kwargs):
                 'customer_address_th': customer.cus_add1_th,
                 'customer_address_en': customer.cus_add1_en,                
                 'customer_site_th': customer.cus_add1_th,
+                'customer_site_add2_th': customer.cus_add2_th,
                 'customer_site_en': customer.cus_add1_en,
+                'customer_site_add2_en': customer.cus_add2_en,
                 'customer_site_cus_subdist_th': customer.cus_subdist_th,
                 'customer_site_cus_subdist_en': customer.cus_subdist_en,
                 'customer_site_cus_district_th': customer.cus_district.dist_th,
