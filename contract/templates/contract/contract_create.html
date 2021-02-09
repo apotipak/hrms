@@ -1184,8 +1184,14 @@
 
     $(document).on('keyup keypress', '#id_cus_contract_search_text', function(e) {
       if(e.which == 13) {
+        
         e.preventDefault();
-        return false;
+        if(this.value=="") {
+          return false;  
+        } else {
+          cus_contract_search_modal();
+        }
+        
       }
     });
 

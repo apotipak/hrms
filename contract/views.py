@@ -1626,8 +1626,9 @@ def get_contract_list_modal(request):
 
     # amnaj
     if search_option == '1':    # Search by cnt_id
-        sql = "select * from customer cus join cus_contract con on cus.cus_id=con.cus_id and cus.cus_brn=con.cus_brn where cnt_id=" + search_text
-        data = CusContract.objects.raw(sql)
+        # sql = "select * from customer cus join cus_contract con on cus.cus_id=con.cus_id and cus.cus_brn=con.cus_brn where cnt_id=" + search_text        
+        search_text = search_text + "%"
+        data = CusContract.objects.raw('select * from customer cus join cus_contract con on cus.cus_id=con.cus_id and cus.cus_brn=con.cus_brn where cnt_id like %s', tuple([search_text]))
 
     if search_option == '2':    # Search by cus_name_th
         search_text = "%" + search_text + "%"
