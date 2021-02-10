@@ -4847,15 +4847,8 @@
             result += "<label for='id_dtp_cnt_eff_frm_new'>{% trans 'Effect Term From' %}</label>";            
             result += "<div class='input-group date' data-target-input='nearest'>";
 
-
             result += "   <input type='checkbox' checked id='chkCNTEffFromNew' class='form-inline float-left' onclick='checkCNTEffFromNewStatus()' style='margin-top:9px;'>&nbsp;";
             result += "   <input type='text' name='dtp_cnt_eff_frm_new' class='form-control form-control-sm' id='id_dtp_cnt_eff_frm_new' placeholder='dd/mm/yyyy' value='" + cnt_eff_frm + "'>";
-
-            //result += "<input type='text' name='dtp_cnt_eff_frm_new' class='form-control form-control-sm' id='id_dtp_cnt_eff_frm_new' placeholder='dd/mm/yyyy' value='" + cnt_eff_frm + "'>";
-            //result += "<div class='input-group-append' data-target='#dtp_cnt_eff_frm_new' data-toggle='datepicker'>";
-            //result += "<div class='input-group-text text-primary'><i class='fa fa-calendar'></i></div>";
-            //result += "</div>";
-
 
             result += "</div>";              
             result += "</div>";
@@ -4864,7 +4857,6 @@
             result += "<label for='id_dtp_cnt_eff_to_new'>{% trans 'Effect Term To' %}</label>";
             result += "<div class='input-group date' data-target-input='nearest'>";
 
-
             if ($('#chkCNTEffTo').is(":checked")) {
               result += "   <input type='checkbox' checked id='chkCNTEffToNew' class='form-inline float-left' onclick='checkCNTEffToNewStatus()' style='margin-top:9px;'>&nbsp;";
               result += "   <input type='text' name='dtp_cnt_eff_to_new' class='form-control form-control-sm' id='id_dtp_cnt_eff_to_new' placeholder='dd/mm/yyyy' value='" + cnt_eff_to + "'>";
@@ -4872,12 +4864,6 @@
               result += "   <input type='checkbox' id='chkCNTEffToNew' class='form-inline float-left' onclick='checkCNTEffToNewStatus()' style='margin-top:9px;'>&nbsp;";
               result += "   <input type='text' name='dtp_cnt_eff_to_new' class='form-control form-control-sm' id='id_dtp_cnt_eff_to_new' placeholder='dd/mm/yyyy' value='" + cnt_eff_to + "' readonly=''>";
             }
-
-            //result += "<input type='text' name='dtp_cnt_eff_to_new' class='form-control form-control-sm' id='id_dtp_cnt_eff_to_new' placeholder='dd/mm/yyyy' value='" + cnt_eff_to + "'>";
-            //result += "<div class='input-group-append' data-target='#dtp_cnt_eff_to_new' data-toggle='datepicker'>";
-            //result += "<div class='input-group-text text-primary'><i class='fa fa-calendar'></i></div>";
-            //result += "</div>";
-
 
             result += "</div>";              
             result += "</div>";
