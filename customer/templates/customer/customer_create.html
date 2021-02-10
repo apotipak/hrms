@@ -12,9 +12,8 @@
 <div class="content-wrapper">
   
 
-  <!-- Content Header (Page header) -->
-  <div class="content-header">
-  
+  <!-- Content Header (Page header) -->  
+  <div class="content-header pt-2" style="padding:0">
     <form id="customer_code_form" method="POST">
     {% csrf_token %}
 
@@ -25,23 +24,15 @@
           <h4 class="display-6 m-0 text-dark">Add New Customer</h4>
         </div>
         -->
-        <div class="col-6 offset-2">
+        <div class="col-8 offset-2">
 
           <div class="form-row">
-
-            <div class="col-4 mt-1 text-nowrap text-right">
-              <strong>Customer Code</strong>&nbsp;&nbsp;&nbsp;
+            <div class="col-3 mt-1 text-nowrap text-right"><strong>Customer Code</strong>&nbsp;&nbsp;&nbsp;</div>
+            <div class="col-3"><input type="text" name="cus_id" class="form-control form-control-md" required="" id="id_cus_id" placeholder="ID" autocomplete="off"></div>
+            <div class="col-3"><input type="text" name="cus_brn" class="form-control form-control-md" id="id_cus_brn" placeholder="BRANCH" autocomplete="off"></div>
+            <div class="col-3">
+              <button id="customer_lookup" type="button" class="btn btn-outline-primary btn-md" data-toggle="modal" data-url="{% url 'get_customer_list' %}"><i class="fas fa-search fa-md"></i></button>
             </div>
-
-            <div class="col-4">              
-              {% render_field customer_code_create_form.cus_id %}
-            </div>
-            
-            <div class="col-4">
-              <!--<input type="text" class="form-control form-control-sm" id="id_cus_site_cus_brn" name="cus_site_cus_brn">-->
-              {% render_field customer_code_create_form.cus_brn %}
-            </div>
-
           </div>
 
         </div>
@@ -51,6 +42,11 @@
     </form>
 
   </div>
+  <!--amnaj-->
+  <!-- Header -->
+
+
+
 
   <!-- Main content -->  
   <section class="content" id="main-content">
@@ -1429,6 +1425,20 @@
 
   });
 
+  // amnaj
+  $('#customer_lookup').on('click', function (e) {
+    //$("#id_search_number_of_found_record").html("");
+    //var obj = $(this);  
+    alert("In progress.");
+  });
+
+  $("#id_cus_id").bind("focus",function(e){
+    window.setTimeout(function() {
+      $("#id_cus_id").select();
+    }, 0);
+  });
+
+
   $(document).on('keyup keypress', '#cus_site_search_district_modal_form input[type="text"]', function(e) {
     if(e.which == 13) {
       e.preventDefault();
@@ -1633,8 +1643,6 @@
     cus_main_cus_contact_con_mobile = $('#id_cus_main_cus_contact_con_mobile').val();
     cus_main_cus_contact_con_email = $('#id_cus_main_cus_contact_con_email').val();
 
-    // amnaj
-
     if(cus_main_cus_active==1)
       $('#id_cus_bill_cus_active').prop('checked', true);
     else
@@ -1735,7 +1743,6 @@
     cus_site_select_district_id = $('#id_cus_site_select_district_id').val();
     cus_site_site_zone = $('#id_cus_site_cus_zone').val();
 
-    // amnaj
     cus_site_site_contact_id = $('#id_cus_site_site_contact_id').val();
     cus_site_site_contact_cus_title_id = $("#id_cus_site_cus_contact_title_list").val();
     cus_site_site_contact_con_fname_th = $("#id_cus_site_site_contact_fname_th").val();
@@ -1751,6 +1758,7 @@
     cus_site_site_contact_con_mobile = $('#id_cus_site_site_contact_con_mobile').val();
     cus_site_site_contact_con_email = $('#id_cus_site_site_contact_con_email').val();
 
+    /*
     console.log(
       cus_site_select_district_id + "," +
       cus_site_site_contact_id + "," + 
@@ -1767,6 +1775,7 @@
       cus_site_site_contact_con_mobile + "," +
       cus_site_site_contact_con_email
       );
+    */
 
     if(cus_site_cus_active==1)
       $('#id_cus_bill_cus_active').prop('checked', true);

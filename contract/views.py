@@ -1541,6 +1541,17 @@ def get_wagerate_list_modal(request):
 
 
 @login_required(login_url='/accounts/login/')
+def get_customer_list(request):
+
+    print("****************************")
+    print("FUNCTION: get_customer_list")
+    print("****************************")
+
+    item_per_page = 500
+    return JsonResponse(data={"success": False, "results": ""})
+    
+
+@login_required(login_url='/accounts/login/')
 def get_contract_list(request):
 
     print("****************************")
