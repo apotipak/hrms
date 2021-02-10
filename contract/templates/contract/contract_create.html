@@ -624,14 +624,13 @@
 
 
 
-
     <div id="service_list_table" class="card card-default">
 
       <div class="card-header" style="background-color: #DCDCDC; padding:5px 15px 5px 5px;">
         <h1 class="card-title pt-1"><!--<i class="fas fa-user-clock"></i>&nbsp;&nbsp;--><strong>{% trans 'Service List' %}</strong></h1>
         <div class="card-tools">        
           <button id="add_service_button" type="button" class="btn btn-success btn-sm" data-toggle="modal"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;{% trans 'Add new service' %}</button>
-        </div>        
+        </div>     
       </div>
 
       <!-- Service List -->      
@@ -889,24 +888,30 @@
 </div>
 
 
+
+
+<!-- amnaj -->
 <!-- Add new service modal -->
 <div class="modal fade" id="add_new_service_list_modal" tabindex="-1" role="dialog">
 
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-plus fa-sm text-secondary"></i>&nbsp;&nbsp;<strong>{% trans 'Add new service' %}</strong></h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <div class="modal-header bg-success text-white" style="padding:7px;">
+        <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-plus fa-sm text-white"></i>&nbsp;&nbsp;<strong>{% trans 'Add new service' %}</strong></h5>
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       
-      <div class="modal-body"></div>
+      <!--<div class="modal-body"></div>-->
+      <div class="modal-body" style="padding:5px 5px 2px 5px;">
+        <span class="text-center">{% trans 'Loading...' %}</span>
+      </div>
 
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary btn-md" data-dismiss="modal">{% trans 'Close' %}</button>
-        <button onclick="add_new_service()" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}&nbsp;&nbsp;</button>
+      <div class="modal-footer" style="padding:5px 5px 5px 0;">
+        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">&nbsp;&nbsp;{% trans 'Close' %}&nbsp;&nbsp;</button>
+        <button onclick="add_new_service()" type="button" class="btn btn-primary btn-sm"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}&nbsp;&nbsp;</button>
       </div>
     </div>
   </div>
@@ -2288,7 +2293,6 @@
               $("#id_cus_id").focus();
 
               return false;
-              //amnaj
             }
           } else {
 
@@ -2903,9 +2907,6 @@
     cus_id = cnt_id_text.substring(0, 4);
     cus_brn = cnt_id_text.substring(4, 7);
     cus_vol = cnt_id_text.substring(7, 10);
-
-    //amnaj
-    //alert(cnt_id);
 
     while (cus_id.length < 7) 
       cus_id = "0" + cus_id;    
