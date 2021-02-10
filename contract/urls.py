@@ -9,8 +9,8 @@ urlpatterns = [
     # path('contract/create', views.contract_create, name='contract_create'),
     path('contract/manage', views.contract_create, name='contract_create'),
 
-    path('contract/<int:pk>/update', views.ContractUpdate, name='contract-update'),
-    url(r'^ajax/update_contract/$', views.UpdateContract, name='update-contract'),
+    # path('contract/<int:pk>/update', views.ContractUpdate, name='contract-update'),
+    # url(r'^ajax/update_contract/$', views.UpdateContract, name='update-contract'),
     url(r'^ajax/create_contract/$', views.CreateContract, name='create-contract'),
     
     url(r'^ajax/get_wagerate_list/$', views.get_wagerate_list, name='get_wagerate_list'),
