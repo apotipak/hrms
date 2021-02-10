@@ -909,7 +909,10 @@
       </div>
     </div>
   </div>
+
 </div>
+
+
 
 <!-- Update Service Modal -->
 <div class="modal fade" id="update_service_modal" tabindex="-1" role="dialog">
@@ -1008,21 +1011,29 @@
 </div>
 
 
+<!-- amnaj -->
 <!-- Search Contract Modal -->
 <div class="modal fade" id="search_contract_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
-      <div class="modal-header">
+
+      <div class="modal-header bg-primary text-white" style="padding:7px;">
         <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-search"></i>&nbsp;{% trans 'Select a Contract' %}</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
-        {% trans 'Loading...' %}
+
+      <div class="modal-body" style="padding:15px 0 0 12px;">
+        <span class="text-center">{% trans 'Loading...' %}</span>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">{% trans 'Close' %}</button>
+
+      <div class="modal-footer" style="padding:5px 5px 5px 0;">
+
+        <div class='float-left text-left col-10 pl-4'><span id="id_search_number_of_found_record"></span></div>
+        <div class="float-right text-right col-2">
+          <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">{% trans 'Close' %}</button>
+        </div>
       </div>
     </div>
   </div>
@@ -2727,10 +2738,8 @@
     //cnt_apr_by_text
     cnt_apr_by_text = $('#id_cnt_apr_by_text').val(); 
 
-    // amnaj
     // zone
     cnt_zone_id = $('#id_cus_zone_id').val();    
-    //console.log(cnt_zone_id);
 
     // cnt_th_en
     cnt_then = $('input[name="printOptions"]:checked').val();
@@ -3467,69 +3476,59 @@
           var cus_name_th = data.results[0]["cus_name_th"];
           var cus_name_en = data.results[0]["cus_name_en"];
 
-          result += "<div class='row col-12'>";
-          result += "<div class='col-8 offset-3 pb-2'>";
-          result += "<form id='search_contract_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
-          result += "  <div class='form-group mx-sm-3 mb-2'>";
-          result += "  <select name='cus_contract_search_option' class='form-control form-control-sm' required id='id_cus_contract_search_option'>";
-          result += "    <option value='1'>Contract ID</option>";
-          result += "    <option value='2' selected>Name (TH)</option>";
-          result += "    <option value='3'>Name (EN)</option>";
-          result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";
-          result += "    <label for='id_cus_main_search_district' class='sr-only'>Search</label>";            
-          result += "    <input type='text' class='form-control form-control-sm' id='id_cus_contract_search_text' name='cus_contract_search_text' autocomplete='off' value=''>";
-          result += "  </div>";
-          result += "<a href='javascript:cus_contract_search_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";            
-          result += "</form>";
-          result += "</div>";
+          // amnaj search modal
+            result += "<div class='row col-12' stye='padding:0;'>";
 
-          result += "<font size='2.5em;'>";       
-          result += "<div class='row col-12 table-responsive'>";
-          
-          result += "<table class='table table-hover table-striped table-wrapper-scroll-y my-custom-scrollbar'>";
-          //result += "<table class='table table-hover table-striped'>";
-          result += " <thead>";
-          result += "   <tr>";
-          result += "     <th scope='col' class='text-left' nowrap>{% trans 'Contract ID' %}</th>";
-          result += "     <th scope='col' class='text-left'>{% trans 'Customer Name (TH)' %}</th>";
-          result += "     <th scope='col' class='text-left'>{% trans 'Customer Name (EN)' %}</th>";
-          result += "     <th scope='col'>&nbsp;</th>";
-          result += "   </tr>";
-          result += " </thead>";
-
-          
-          result += "<tbody>";
-          //result += "</div>";
-          //result += "<div>";
-
-          for(var i=0; i<count; i++) {              
-            var cnt_id = data.results[i]["cnt_id"];
-            var cus_name_th = data.results[i]["cus_name_th"];
-            var cus_name_en = data.results[i]["cus_name_en"];
-
-            result += "<tr>";
-            result += "<td class='align-middle'>" + cnt_id + "</td>";        
-            result += "<td class='align-middle'>" + cus_name_th + "</td>";
-            result += "<td class='align-middle'>" + cus_name_en + "</td>";
-            result += "<td><a href='javascript:cus_contract_select_item(" + cnt_id + ",\"" + cus_name_th + "\",\"" + cus_name_en + "\");' type='button' class='btn btn-outline-primary btn-sm'>Select</a></td>";
-            result += "</tr>";              
-          }
-          result += " </tbody>";            
-          result += "</table>";
-          result += "</font>";
-          result += "</div>";
-
-          if(data.is_paginated) {
-            result += "<div>";
-            result += "  <span>";
-            if(data.previous_page != 0) {
-              result += " <a href='javascript:get_cus_main_district_lookup(" + data.previous_page + ");'>" + "<i class='fas fa-arrow-circle-left'></i></a> ";
-            }
-            result += data.current_page_number + " / " + data.current_page_paginator_num_pages;
-            result += " <a href='javascript:get_cus_main_district_lookup(" + data.next_page + ");'>" + "<i class='fas fa-arrow-circle-right'></i></a>";
-            result += "    </span>";
+            result += "<div class='col-8 offset-3 pb-2'>";
+            result += "<form id='search_contract_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
+            result += "  <div class='form-group mx-sm-3 mb-2'>";
+            result += "  <select name='cus_contract_search_option' class='form-control form-control-sm' required id='id_cus_contract_search_option'>";
+            result += "    <option value='1'>Contract ID</option>";
+            result += "    <option value='2' selected>Customer Name (TH)</option>";
+            result += "    <option value='3'>Customer Name (EN)</option>";
+            result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";
+            result += "    <label for='id_cus_main_search_district' class='sr-only'>Search</label>";            
+            result += "    <input type='text' class='form-control form-control-sm' id='id_cus_contract_search_text' name='cus_contract_search_text' autocomplete='off' value=''>";
+            result += "  </div>";
+            result += "<a href='javascript:cus_contract_search_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";            
+            result += "</form>";
             result += "</div>";
-          }
+
+            
+            result += "<div class='table-responsive' stye='padding:0;'>";
+            
+            //<table class='table table-responsive table-sm table-striped table-condensed table-wrapper-scroll-y my-custom-scrollbar' id="
+            result += "<table class='table table-hover table-striped table-wrapper-scroll-y my-custom-scrollbar w-100'>";
+            result += " <thead>";
+            result += "   <tr class='text-left'>";
+            result += "     <th scope='col' class='text-left' nowrap>{% trans 'Contract ID' %}.</th>";
+            result += "     <th scope='col' class='text-left'>{% trans 'Customer Name (TH)' %}</th>";
+            result += "     <th scope='col' class='text-left'>{% trans 'Customer Name (EN)' %}</th>";
+            result += "     <th scope='col'>&nbsp;</th>";
+            result += "   </tr>";
+            result += " </thead>";
+
+            result += "<tbody style='font-size:13px;'>";
+            result += "</div>";
+            result += "<div>";
+
+            for(var i=0; i<count; i++) {              
+              var cnt_id = data.results[i]["cnt_id"];
+              var cus_name_th = data.results[i]["cus_name_th"];
+              var cus_name_en = data.results[i]["cus_name_en"];
+
+              result += "<tr>";
+              result += "<td class='align-middle'>" + cnt_id + "</td>";        
+              result += "<td class='align-middle'>" + cus_name_th + "</td>";
+              result += "<td class='align-middle'>" + cus_name_en + "</td>";
+              result += "<td class='text-right'><a href='javascript:cus_contract_select_item(" + cnt_id + ",\"" + cus_name_th + "\",\"" + cus_name_en + "\");' type='button' class='btn btn-outline-primary btn-sm'>&nbsp;&nbsp;Select&nbsp;&nbsp;</a></td>";
+              result += "</tr>";          
+            }
+            result += " </tbody>";
+            result += "</table>";            
+            result += "</div>";
+
+            $("#id_search_number_of_found_record").html("ค้นหา&nbsp;&nbsp;&nbsp;<span class='text-success'><b>" + search_text + "</b></span>&nbsp;&nbsp;&nbsp;พบทั้งหมด&nbsp;&nbsp;<b>" + count + "</b>&nbsp;&nbsp;รายการ");
           
           $("#search_contract_modal .modal-body").html(result);          
         },
@@ -3554,12 +3553,13 @@
           result += "<table class='table table-hover table-sm'>";
           result += " <thead>";
           result += "   <tr>";
-          result += "     <td colspan='4' class='text-center'><br>Not found.<br><br></td>";
+          result += "     <td colspan='4' class='text-center'><br>ไม่พบรายการ &nbsp;&nbsp;<b>" + search_text + "</b><br><br></td>";
           result += "   </tr>";
           result += " </thead>";
           result += "</tbody>";
           result += "</table>";
 
+          $("#id_search_number_of_found_record").html("");
           $("#search_contract_modal .modal-body").html(result);
         }          
     });
@@ -5027,7 +5027,7 @@
 
 
     $('#contract_lookup').on('click', function (e) {
-      
+      $("#id_search_number_of_found_record").html("");
       var obj = $(this);  
       $.ajax({
           url: obj.attr("data-url"),
@@ -5046,14 +5046,16 @@
             var cus_name_th = data.results[0]["cus_name_th"];
             var cus_name_en = data.results[0]["cus_name_en"];
 
-            result += "<div class='row col-12'>";
+            // amnaj lookup
+            result += "<div class='row col-12' stye='padding:0;'>";
+
             result += "<div class='col-8 offset-3 pb-2'>";
             result += "<form id='search_contract_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
             result += "  <div class='form-group mx-sm-3 mb-2'>";
             result += "  <select name='cus_contract_search_option' class='form-control form-control-sm' required id='id_cus_contract_search_option'>";
             result += "    <option value='1'>Contract ID</option>";
-            result += "    <option value='2' selected>Name (TH)</option>";
-            result += "    <option value='3'>Name (EN)</option>";
+            result += "    <option value='2' selected>Customer Name (TH)</option>";
+            result += "    <option value='3'>Customer Name (EN)</option>";
             result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";
             result += "    <label for='id_cus_main_search_district' class='sr-only'>Search</label>";            
             result += "    <input type='text' class='form-control form-control-sm' id='id_cus_contract_search_text' name='cus_contract_search_text' autocomplete='off' value=''>";
@@ -5062,8 +5064,8 @@
             result += "</form>";
             result += "</div>";
 
-            result += "<font size='2.5em;'>";       
-            result += "<div class='row col-12 table-responsive'>";
+            
+            result += "<div class='table-responsive' stye='padding:0;'>";
             
             //<table class='table table-responsive table-sm table-striped table-condensed table-wrapper-scroll-y my-custom-scrollbar' id="
             result += "<table class='table table-hover table-striped table-wrapper-scroll-y my-custom-scrollbar'>";
@@ -5076,8 +5078,7 @@
             result += "   </tr>";
             result += " </thead>";
 
-            
-            result += "<tbody>";
+            result += "<tbody style='font-size:13px;'>";
             result += "</div>";
             result += "<div>";
 
@@ -5090,12 +5091,11 @@
               result += "<td class='align-middle'>" + cnt_id + "</td>";        
               result += "<td class='align-middle'>" + cus_name_th + "</td>";
               result += "<td class='align-middle'>" + cus_name_en + "</td>";
-              result += "<td class='text-right'><a href='javascript:cus_contract_select_item(" + cnt_id + ",\"" + cus_name_th + "\",\"" + cus_name_en + "\");' type='button' class='btn btn-outline-primary btn-sm'>Select</a></td>";
+              result += "<td class='text-right'><a href='javascript:cus_contract_select_item(" + cnt_id + ",\"" + cus_name_th + "\",\"" + cus_name_en + "\");' type='button' class='btn btn-outline-primary btn-sm'>&nbsp;&nbsp;Select&nbsp;&nbsp;</a></td>";
               result += "</tr>";              
             }
-            result += " </tbody>";            
-            result += "</table>";
-            result += "</font>";
+            result += " </tbody>";
+            result += "</table>";            
             result += "</div>";
 
             $("#search_contract_modal .modal-body").html(result);     
