@@ -182,6 +182,7 @@
                   <div class="form-group col-md-2">
                     <label for="id_cus_zone_th">{% trans 'Zone' %}</label>
                     <input id="id_cus_zone_th" type="text" class="form-control form-control-sm" readonly>
+                    <input id="id_cus_zone_id" name="cus_zone_id" type="hidden">
                   </div>                  
 
                 </div>
@@ -1166,7 +1167,6 @@
 
 
   $(document).ready(function(){
-    //amnaj
     $('input').inputmask();
 
     $("#id_cnt_doc_no").focus();
@@ -2132,6 +2132,7 @@
             $('#id_cus_fax_en').val(json.cus_fax);
             $('#id_cus_email_en').val(json.cus_email);
 
+            $("#id_cus_zone_id").val(json.cus_zone_id);
             $('#id_cus_zone_th').val(json.cus_zone_id + " | " + json.cus_zone_th);
             $('#id_cus_zone_en').val(json.cus_zone_id + " | " + json.cus_zone_en);
 
@@ -2624,6 +2625,7 @@
     $('#customer_name_title').html("");
 
     $("#id_cnt_wage_id").val("");
+    $("#id_cus_zone_id").val("");
 
     $("#id_cus_id").focus();
   });
@@ -2661,11 +2663,8 @@
     else
       cnt_autoexpire = 0;
 
-
     // cnt_doc_no
     cnt_doc_no = $('#id_cnt_doc_no').val();
-
-
 
     // cnt_doc_date
     cnt_doc_date = $('#id_cnt_doc_date').val();
@@ -2706,9 +2705,6 @@
     else
       cnt_sign_to_status = 0;
 
-
-
-
     // cnt_wage_id
     cnt_wage_id = $('#id_cnt_wage_id').val();
     if(cnt_wage_id=="") {
@@ -2734,8 +2730,10 @@
     //cnt_apr_by_text
     cnt_apr_by_text = $('#id_cnt_apr_by_text').val(); 
 
+    // amnaj
     // zone
-    // cnt_zone_id = $('#id_cnt_zone_id').val();
+    cnt_zone_id = $('#id_cus_zone_id').val();    
+    //console.log(cnt_zone_id);
 
     // cnt_th_en
     cnt_then = $('input[name="printOptions"]:checked').val();
@@ -2780,6 +2778,7 @@
         cnt_guard_amt: cnt_guard_amt,
         cnt_apr_by_id: cnt_apr_by_id,
         cnt_apr_by_text: cnt_apr_by_text,
+        cnt_zone_id: cnt_zone_id,
       },
       success : function(json) {        
         if(json.form_is_valid) {
@@ -2940,6 +2939,7 @@
           $('#id_cus_fax_en').val(json.cus_fax);
           $('#id_cus_email_en').val(json.cus_email);
 
+          $("#id_cus_zone_id").val(json.cus_zone_id);
           $('#id_cus_zone_th').val(json.cus_zone_id + " | " + json.cus_zone_th);
           $('#id_cus_zone_en').val(json.cus_zone_id + " | " + json.cus_zone_en);
 
@@ -5166,7 +5166,6 @@
   
 
 
-    // amnaj
     // Add new service modal
     $('#add_new_service_list_modal').on('shown.bs.modal', function (e) {
 

@@ -995,7 +995,7 @@ def CreateContract(request):
         form = ContractUpdateForm(request.POST)
 
         if form.is_valid():
-            print("Form is valid")
+            # print("Form is valid")
 
             # Get values
             cus_id = request.POST.get('cus_id')
@@ -1101,12 +1101,11 @@ def CreateContract(request):
 
             cnt_wage_id = request.POST.get('cnt_wage_id')
             
-            # cnt_zone = request.POST.get('cnt_zone_id')
+            cnt_zone_id = request.POST.get('cnt_zone_id')
             cnt_autoexpire = request.POST.get('cnt_autoexpire')
             cnt_then = request.POST.get('cnt_then')
             cnt_print = request.POST.get('cnt_print')
             cnt_new = request.POST.get('cnt_new')
-            # upd_date = timezone.now()
             upd_date = datetime.datetime.now()
             upd_by = request.user.first_name
             upd_flag = 'E'
@@ -1133,6 +1132,7 @@ def CreateContract(request):
             print("upd_date  = " + str(upd_date))
             print("upd_by  = " + str(upd_by))
             print("upd_flag  = " + str(upd_flag))
+            print("cnt_zone_id =", cnt_zone_id)
             print("--------- END  ------------")
             print("")
             print("")
@@ -1231,6 +1231,15 @@ def CreateContract(request):
                         modified_records.append(record)
                         field_is_modified_count = field_is_modified_count + 1
 
+                # Cnt Zone ID
+                if (cnt_zone_id is not None):
+                    field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "Cnt Zone ID", int(cuscontract.cnt_zone), int(cnt_zone_id), "E", request)
+                    if field_is_modified:
+                        cuscontract.cnt_zone = int(cnt_zone_id)
+                        modified_records.append(record)
+                        field_is_modified_count = field_is_modified_count + 1
+
+
                 # Guard Amount
                 if (cnt_guard_amt is not None):
                     field_is_modified, record = check_modified_field("CUS_CONTRACT", cnt_id, "Guard Amount", int(cuscontract.cnt_guard_amt), int(cnt_guard_amt), "E", request)
@@ -1315,8 +1324,8 @@ def CreateContract(request):
                     cnt_apr_by_id = int(cnt_apr_by),
                     cnt_guard_amt = cnt_guard_amt,
                     cnt_sale_amt = cnt_sale_amt,
-                    cnt_wage_id_id = cnt_wage_id,
-                    cnt_zone = 0,
+                    cnt_zone = cnt_zone_id,
+                    cnt_wage_id_id = cnt_wage_id,                    
                     cnt_autoexpire = cnt_autoexpire,
                     cnt_then = 'T',
                     upd_date = datetime.datetime.now(),
