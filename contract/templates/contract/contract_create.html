@@ -45,9 +45,7 @@
       <div class="card-header" style="padding:8px 15px 4px 4px;">
         
         <h1 class="card-title">
-          <span id="customer_name_title">
-            <h5 class="m-0 text-dark"><b>{{customer.cus_name_th}}</b><small>&nbsp;&nbsp;<button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-angle-down text-dark"></i></button></small></h5>            
-          </span>
+          <span id="customer_name_title">No Selected Contract</span>
           <!--<button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-angle-down text-primary"></i></button>-->
         </h1>
 
@@ -728,7 +726,7 @@
 
                 {% endfor %}                  
                 {% else %}
-                  <tr><td colspan='18' class='text-center'><br><br>There is no data.<br><br><br></td></tr>
+                  <tr><td colspan='18' class='text-center'><br><br><br><br>There is no data.<br><br><br><br><br></td></tr>
               {% endif %}                
               </tbody>
             </table>
@@ -1992,8 +1990,10 @@
 
   $(document).ready(function(){
     $('#id_cus_id').focus();
-    $('#customer_name_title').html("");
+    $('#customer_name_title').html("<h4><i class='far fa-question-circle fa-sm'></i>&nbsp;Customer</h4>");
     $("#main-content :input").attr("disabled", true);
+
+
 
   });
 
@@ -2621,9 +2621,8 @@
     $("#id_cnt_active").prop("active", false);
 
     $("#service_list_table .card-body").html("");
-
-    $('#customer_name_title').html("");
-
+    
+    $('#customer_name_title').html("<h4><i class='far fa-question-circle fa-sm'></i>&nbsp;Customer</h4>");
     $("#id_cnt_wage_id").val("");
     $("#id_cus_zone_id").val("");
 
