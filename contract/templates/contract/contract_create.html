@@ -996,13 +996,13 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">{% trans 'Select a Wage Rate' %}</h5>
+        <h5 class="modal-title"><i class="fas fa-search"></i>&nbsp;{% trans 'Select a Wage Rate' %}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        {% trans 'Loading...' %}
+        <span class="text-center">{% trans 'Loading...' %}</span>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">{% trans 'Close' %}</button>
@@ -1197,6 +1197,19 @@
       }
     });
 
+
+    $(document).on('keyup keypress', '#id_cus_contract_wagerate_search_text', function(e) {
+      if(e.which == 13) {
+        
+        e.preventDefault();
+        if(this.value=="") {
+          return false;  
+        } else {
+          cus_contract_search_wagerate_modal();
+        }
+        
+      }
+    });
 
     // ID_CNT_DOC_NO
     $(document).on('keypress', '#id_cnt_doc_no', function(e) {
@@ -3363,7 +3376,7 @@
           result += "    <option value='3'>Wage (EN)</option>";
           result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";
           result += "    <label for='id_cus_contract_wagerate_search_text' class='sr-only'>Search</label>";            
-          result += "    <input type='text' class='form-control form-control-sm' id='id_cus_contract_wagerate_search_text' name='cus_contract_wagerate_search_text' placeholder=''>";
+          result += "    <input type='text' class='form-control form-control-sm' id='id_cus_contract_wagerate_search_text' name='cus_contract_wagerate_search_text' placeholder='' autocomplete='off' >";
           result += "  </div>";
           result += "<a href='javascript:cus_contract_search_wagerate_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";
           result += "</form>";
@@ -3427,7 +3440,7 @@
           result += "    <option value='3'>Wage (EN)</option>";
           result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";
           result += "    <label for='id_cus_contract_search_wagerate' class='sr-only'>Search</label>";            
-          result += "    <input type='text' class='form-control form-control-sm' id='id_cus_contract_wagerate_search_text' name='cus_contract_wagerate_search_text' placeholder=''>";
+          result += "    <input type='text' class='form-control form-control-sm' id='id_cus_contract_wagerate_search_text' name='cus_contract_wagerate_search_text' placeholder='' autocomplete='off' >";
           result += "  </div>";
           result += "<a href='javascript:cus_contract_search_wagerate_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";            
           result += "</form>";
@@ -4991,7 +5004,7 @@
             result += "    <option value='3'>Wage (EN)</option>";
             result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";
             result += "    <label for='id_cus_main_search_district' class='sr-only'>Search</label>";            
-            result += "    <input type='text' class='form-control form-control-sm' id='id_cus_contract_wagerate_search_text' name='cus_contract_wagerate_search_text' placeholder=''>";
+            result += "    <input type='text' class='form-control form-control-sm' id='id_cus_contract_wagerate_search_text' name='cus_contract_wagerate_search_text' placeholder='' autocomplete='off' >";
             result += "  </div>";
             result += "<a href='javascript:cus_contract_search_wagerate_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";            
             result += "</form>";
