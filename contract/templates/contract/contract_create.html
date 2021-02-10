@@ -45,7 +45,8 @@
       <div class="card-header" style="padding:8px 15px 4px 4px;">
         
         <h1 class="card-title">
-          <span id="customer_name_title">No Selected Contract</span>
+          <span id="customer_name_title"><button type='button' class='btn btn-success'><span style='font-size:18px;font-weight:bold;'>Customer Name</span>&nbsp;&nbsp;<span class='badge badge-light'>Zone&nbsp;&nbsp;</span></button></span>
+          
           <!--<button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-angle-down text-primary"></i></button>-->
         </h1>
 
@@ -282,7 +283,7 @@
       <div class="card-header" style="background-color: #DCDCDC; padding:5px 18px 0 0;">                
         <!--<div class="float-left"><h2 class="m-0 text-dark">{{contract.cnt_id}}</h2></div>-->
         <div class="float-left pl-1">
-          <h1 class="card-title pt-1"><i class="nav-icon fa fa-handshake"></i>&nbsp;&nbsp;<strong>{% trans 'Contract Info' %}</strong></h1>
+          <h1 class="card-title pt-1"><!--<i class="nav-icon fa fa-handshake"></i>&nbsp;&nbsp;--><strong>{% trans 'Contract Info' %}</strong></h1>
         </div>
         
         <div class="card-tools">
@@ -627,7 +628,7 @@
     <div id="service_list_table" class="card card-default">
 
       <div class="card-header" style="background-color: #DCDCDC; padding:5px 15px 5px 5px;">
-        <h1 class="card-title pt-1"><i class="fas fa-user-clock"></i>&nbsp;&nbsp;<strong>{% trans 'Service List' %}</strong></h1>
+        <h1 class="card-title pt-1"><!--<i class="fas fa-user-clock"></i>&nbsp;&nbsp;--><strong>{% trans 'Service List' %}</strong></h1>
         <div class="card-tools">        
           <button id="add_service_button" type="button" class="btn btn-success btn-sm" data-toggle="modal"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;{% trans 'Add new service' %}</button>
         </div>        
@@ -2004,11 +2005,8 @@
 
   $(document).ready(function(){
     $('#id_cus_id').focus();
-    $('#customer_name_title').html("<h4><i class='far fa-question-circle fa-sm'></i>&nbsp;Customer</h4>");
+    $('#customer_name_title').html("<button type='button' class='btn btn-success'><span style='font-size:18px;font-weight:bold;'>Customer Name</span>&nbsp;&nbsp;&nbsp;<span class='badge badge-light'>Zone</span></button>");
     $("#main-content :input").attr("disabled", true);
-
-
-
   });
 
   $(document).on('keypress', '#id_cus_id', function(e) {
@@ -2046,7 +2044,9 @@
                 cus_name_th_new = json.cus_name_th.substring(0,70) + "...";
               }
 
-              $('#customer_name_title').html("<h5 class='m-0 text-dark'><b>" + cus_name_th_new + "</b><small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-dark'></i></button></small></h5>");                
+              //$('#customer_name_title').html("<h5 class='m-0 text-dark'><b>" + cus_name_th_new + "</b><small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-dark'></i></button></small></h5>");                
+
+              $('#customer_name_title').html("<button type='button' class='btn btn-success'><span style='font-size:18px;font-weight:bold;'>" + cus_name_th_new + "</span>&nbsp;&nbsp;&nbsp;<span class='badge badge-light'>Zone" + "</span></button><small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-dark'></i></button></small>");
 
               $('#id_cus_brn').focus();
 
@@ -2108,7 +2108,9 @@
               cus_name_th_new = json.cus_name_th.substring(0,70) + "...";
             }
 
-            $('#customer_name_title').html("<h5 class='m-0 text-dark'><b>" + cus_name_th_new + "</b>&nbsp;&nbsp;&nbsp;<span class='badge badge-info'>" + json.cus_zone_id + " | " + json.cus_zone_th + "</span>" + "<small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-dark'></i></button></small></h5>");   
+            //$('#customer_name_title').html("<h5 class='m-0 text-dark'><b>" + cus_name_th_new + "</b>&nbsp;&nbsp;&nbsp;<span class='badge badge-info'>" + json.cus_zone_id + " | " + json.cus_zone_th + "</span>" + "<small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-dark'></i></button></small></h5>");   
+
+            $('#customer_name_title').html("<button type='button' class='btn btn-success'><span style='font-size:18px;font-weight:bold;'>" + cus_name_th_new + "</span>&nbsp;&nbsp;&nbsp;<span class='badge badge-light'>" + json.cus_zone_id + " | " + json.cus_zone_th + "</span></button><small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-dark'></i></button></small>");
 
             $('#id_cus_name_th').val(json.cus_name_th);
             $('#id_cus_sht_th').val(json.cus_sht_th);
@@ -2631,7 +2633,10 @@
 
     // Clear data
     $("#service_list_table tbody").html("<tr><td colspan='18' class='text-center'><br><br><br>There is no data.<br><br><br><br></td></tr>");
-    $('#customer_name_title').html("<h4><i class='far fa-question-circle fa-sm'></i>&nbsp;Customer</h4>");
+    
+    //$('#customer_name_title').html("<h4><i class='far fa-question-circle fa-sm'></i>&nbsp;Customer</h4>");
+    $('#customer_name_title').html("<button type='button' class='btn btn-success'><span style='font-size:18px;font-weight:bold;'>Customer Name</span>&nbsp;&nbsp;&nbsp;<span class='badge badge-light'>Zone</span></button>");
+
     $("#id_cnt_wage_id").val("");
     $("#id_cus_zone_id").val("");
 
@@ -2879,7 +2884,10 @@
             cus_name_th_new = json.cus_name_th.substring(0,70) + "...";
           }
 
-          $('#customer_name_title').html("<h5 class='m-0 text-dark'><b>" + cus_name_th_new + "</b>&nbsp;&nbsp;&nbsp;<small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-dark'></i></button></small></h5>");
+          //$('#customer_name_title').html("<h5 class='m-0 text-dark'><b>" + cus_name_th_new + "</b>&nbsp;&nbsp;&nbsp;<small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-dark'></i></button></small></h5>");
+          //$('#customer_name_title').html("<button type='button' class='btn btn-primary'>" + cus_name_th_new + "&nbsp;&nbsp;&nbsp;<span class='badge badge-light'>" + json.cus_zone_id + " | " + json.cus_zone_th + "</span></button>");
+
+          $('#customer_name_title').html("<button type='button' class='btn btn-success'><span style='font-size:18px;font-weight:bold;'>" + cus_name_th_new + "</span>&nbsp;&nbsp;&nbsp;<span class='badge badge-light'>" + json.cus_zone_id + " | " + json.cus_zone_th + "</span></button>");
 
           loadCusBrn(cus_brn);
           loadCusVol(cus_id, cus_brn, cus_vol);
@@ -2907,7 +2915,11 @@
             cus_name_th_new = json.cus_name_th.substring(0,70) + "...";
           }
 
-          $('#customer_name_title').html("<h5 class='m-0 text-dark'><b>" + cus_name_th_new + "</b>&nbsp;&nbsp;&nbsp;<span class='badge badge-info'>" + json.cus_zone_id + " | " + json.cus_zone_th + "</span>" + "<small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-dark'></i></button></small></h5>");
+          //$('#customer_name_title').html("<h5 class='m-0 text-dark'><b>" + cus_name_th_new + "</b>&nbsp;&nbsp;&nbsp;<span class='badge badge-info'>" + json.cus_zone_id + " | " + json.cus_zone_th + "</span>" + "<small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-dark'></i></button></small></h5>");
+
+          //$('#customer_name_title').html("<button type='button' class='btn btn-primary'>" + cus_name_th_new + "&nbsp;&nbsp;&nbsp;<span class='badge badge-light'>" + json.cus_zone_id + " | " + json.cus_zone_th + "</span></button>");
+
+          $('#customer_name_title').html("<button type='button' class='btn btn-success'><span style='font-size:18px;font-weight:bold;'>" + cus_name_th_new + "</span>&nbsp;&nbsp;&nbsp;<span class='badge badge-light'>" + json.cus_zone_id + " | " + json.cus_zone_th + "</span></button><small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-dark'></i></button></small>");          
 
           $('#id_cus_name_th').val(json.cus_name_th);
           $('#id_cus_sht_th').val(json.cus_sht_th);
