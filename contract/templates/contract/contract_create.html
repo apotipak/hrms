@@ -638,12 +638,14 @@
         <div class="row">
           
           <div class="col-md-12 table-responsive">
-            <table id="customer-list-table1" class="table table-bordered table-sm">
+
+          <table id='customer-list-table' class='table table-striped table-sm'>
+            <thead class='thead-light'>
               <tr class="table-secondary">
                 <th>{% trans 'Eff Frm' %}</th>
                 <th scope="col">{% trans 'Eff To' %}</th>            
                 <th scope="col" nowrap>{% trans 'Shift Time' %}</th>
-                <th scope="col">{% trans 'Qty' %}</th>
+                <th scope="col">{% trans 'QTY' %}</th>
                 <th scope="col">{% trans 'Rank' %}</th>
                 <th scope="col">{% trans 'Rate' %}</th>
                 <th scope="col">{% trans 'Ext.Cost' %}</th>
@@ -659,6 +661,7 @@
                 <th scope="col">{% trans 'Active' %}</th>
                 <th>&nbsp;</th>
               </tr>
+            </thead>
               <tbody>
 
                 {% if cus_service %}
@@ -726,7 +729,7 @@
 
                 {% endfor %}                  
                 {% else %}
-                  <tr><td colspan='18' class='text-center'><br><br><br><br>There is no data.<br><br><br><br><br></td></tr>
+                  <tr><td colspan='18' class='text-center'><br><br><br>There is no data.<br><br><br><br><br></tr>
               {% endif %}                
               </tbody>
             </table>
@@ -2150,6 +2153,7 @@
   });
 
 
+  // ID_CUS_VOL CLICK
   $(document).on('keypress', '#id_cus_vol', function(e) {
     if(e.which == 13) {      
       e.preventDefault();
@@ -2403,8 +2407,9 @@
                   result = "";
                   result += "<div class='row'>";
                   result += "  <div class='col-md-12 table-responsive'>";
-                  result += "    <table id='customer-list-table1' class='table table-bordered table-sm'>";
-                  result += "      <tr class='table-secondary'>";
+                  result += "    <table id='customer-list-table' class='table table-striped table-sm'>";
+                  result += "      <thead class='thead-light'>";
+                  result += "      <tr>";
                   result += "        <th>{% trans 'Eff Frm' %}</th>";
                   result += "        <th scope='col'>{% trans 'Eff To' %}</th>";
                   result += "        <th scope='col' nowrap>{% trans 'Shift Time' %}</th>";
@@ -2412,22 +2417,21 @@
                   result += "        <th scope='col' class='text-center'>{% trans 'Rank' %}</th>";
                   result += "        <th scope='col'>{% trans 'Rate' %}</th>";
                   result += "        <th scope='col'>{% trans 'Ext.Cost' %}</th>";
-                  result += "        <th scope='col'>{% trans 'MON' %}</th>";
-                  result += "        <th scope='col'>{% trans 'TUE' %}</th>";
-                  result += "        <th scope='col'>{% trans 'WED' %}</th>";
-                  result += "        <th scope='col'>{% trans 'THU' %}</th>";
-                  result += "        <th scope='col'>{% trans 'FRI' %}</th>";
-                  result += "        <th scope='col'>{% trans 'SAT' %}</th>";
-                  result += "        <th scope='col'>{% trans 'SUN' %}</th>";
-                  result += "        <th scope='col'>{% trans 'PUB' %}</th>";
+                  result += "        <th scope='col' class='text-center'>{% trans 'MON' %}</th>";
+                  result += "        <th scope='col' class='text-center'>{% trans 'TUE' %}</th>";
+                  result += "        <th scope='col' class='text-center'>{% trans 'WED' %}</th>";
+                  result += "        <th scope='col' class='text-center'>{% trans 'THU' %}</th>";
+                  result += "        <th scope='col' class='text-center'>{% trans 'FRI' %}</th>";
+                  result += "        <th scope='col' class='text-center'>{% trans 'SAT' %}</th>";
+                  result += "        <th scope='col' class='text-center'>{% trans 'SUN' %}</th>";
+                  result += "        <th scope='col' class='text-center'>{% trans 'PUB' %}</th>";
                   result += "        <th scope='col'>{% trans 'Remark' %}</th>";
-                  result += "        <th scope='col'>{% trans 'Active' %}</th>";
+                  result += "        <th scope='col'>{% trans 'Status' %}</th>";
                   result += "        <th>&nbsp;</th>";
                   result += "      </tr>";
-                  result += "      <tbody>";
-
-                  
-                  
+                  result += "     </thead>";
+                  result += "     <tbody>";
+                                    
                   for(var i=0; i<data.cus_service_list.length; i++) {
                     srv_cost_text = data.cus_service_list[i]["srv_cost"].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                     srv_rate_text = data.cus_service_list[i]["srv_rate"].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -2439,12 +2443,8 @@
                       result += "          <td><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["shf_desc"] + "</small></a></td>";
                       result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_qty"] + "</small></a></td>";
                       result += "          <td class='text-center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_rank"] + "</small></td>";
-                      
-                      //result += "          <td align='right'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_rate"] + "</small></a></td>";
-                      result += "          <td align='right'><a href='javascript:void(0);'><small>" + srv_rate_text + "</small></a></td>";                      
-                      //result += "          <td align='right'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_cost"] + "</small></a></td>";
-                      result += "          <td align='right'><a href='javascript:void(0);'><small>" + srv_cost_text + "</small></a></td>";
-                      
+                      result += "          <td align='left'><a href='javascript:void(0);'><small>" + srv_rate_text + "</small></a></td>";                      
+                      result += "          <td align='left'><a href='javascript:void(0);'><small>" + srv_cost_text + "</small></a></td>";                      
                       result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_mon"] + "</small></a></td>";
                       result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_tue"] + "</small></a></td>";
                       result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_wed"] + "</small></a></td>";
@@ -2461,12 +2461,8 @@
                       result += "          <td><small>" + data.cus_service_list[i]["shf_desc"] + "</small></td>";
                       result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_qty"] + "</small></td>";
                       result += "          <td class='text-center'><small>" + data.cus_service_list[i]["srv_rank"] + "</small></td>";
-
-                      //result += "          <td align='right'><small>" + data.cus_service_list[i]["srv_rate"] + "</small></td>";
-                      result += "          <td align='right'><small>" + srv_rate_text + "</small></td>";                      
-                      //result += "          <td align='right'><small>" + data.cus_service_list[i]["srv_cost"] + "</small></td>";
-                      result += "          <td align='right'><small>" + srv_cost_text + "</small></td>";
-  
+                      result += "          <td align='left'><small>" + srv_rate_text + "</small></td>";                      
+                      result += "          <td align='left'><small>" + srv_cost_text + "</small></td>";  
                       result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_mon"] + "</small></td>";
                       result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_tue"] + "</small></td>";
                       result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_wed"] + "</small></td>";
@@ -2620,8 +2616,10 @@
     // TODO - disable Active button when click Cancel button
     $("#id_cnt_active").prop("active", false);
 
-    $("#service_list_table .card-body").html("");
     
+
+    // Clear data
+    $("#service_list_table tbody").html("<tr><td colspan='18' class='text-center'><br><br><br>There is no data.<br><br><br><br></td></tr>");
     $('#customer_name_title').html("<h4><i class='far fa-question-circle fa-sm'></i>&nbsp;Customer</h4>");
     $("#id_cnt_wage_id").val("");
     $("#id_cus_zone_id").val("");
@@ -3152,6 +3150,7 @@
               },    
               success: function (data) {
 
+                /*
                 result = "";
                 result += "<div class='row'>";
                 result += "  <div class='col-md-12 table-responsive'>";
@@ -3177,6 +3176,35 @@
                 result += "        <th>&nbsp;</th>";
                 result += "      </tr>";
                 result += "      <tbody>";
+                */
+
+                result = "";
+                result += "<div class='row'>";
+                result += "  <div class='col-md-12 table-responsive'>";
+                result += "    <table id='customer-list-table' class='table table-striped table-sm'>";
+                result += "      <thead class='thead-light'>";
+                result += "      <tr>";
+                result += "        <th>{% trans 'Eff Frm' %}</th>";
+                result += "        <th scope='col'>{% trans 'Eff To' %}</th>";
+                result += "        <th scope='col' nowrap>{% trans 'Shift Time' %}</th>";
+                result += "        <th scope='col' class='text-center'>{% trans 'Qty' %}</th>";
+                result += "        <th scope='col' class='text-center'>{% trans 'Rank' %}</th>";
+                result += "        <th scope='col'>{% trans 'Rate' %}</th>";
+                result += "        <th scope='col'>{% trans 'Ext.Cost' %}</th>";
+                result += "        <th scope='col' class='text-center'>{% trans 'MON' %}</th>";
+                result += "        <th scope='col' class='text-center'>{% trans 'TUE' %}</th>";
+                result += "        <th scope='col' class='text-center'>{% trans 'WED' %}</th>";
+                result += "        <th scope='col' class='text-center'>{% trans 'THU' %}</th>";
+                result += "        <th scope='col' class='text-center'>{% trans 'FRI' %}</th>";
+                result += "        <th scope='col' class='text-center'>{% trans 'SAT' %}</th>";
+                result += "        <th scope='col' class='text-center'>{% trans 'SUN' %}</th>";
+                result += "        <th scope='col' class='text-center'>{% trans 'PUB' %}</th>";
+                result += "        <th scope='col'>{% trans 'Remark' %}</th>";
+                result += "        <th scope='col'>{% trans 'Status' %}</th>";
+                result += "        <th>&nbsp;</th>";
+                result += "      </tr>";
+                result += "     </thead>";
+                result += "     <tbody>";
 
                 // id_cus_vol enter
                 for(var i=0; i<data.cus_service_list.length; i++) {
@@ -3964,6 +3992,7 @@
           },    
           success: function (data) {
 
+            /*
             result = "";
             result += "<div class='row'>";
             result += "  <div class='col-md-12 table-responsive'>";
@@ -3989,6 +4018,36 @@
             result += "        <th>&nbsp;</th>";
             result += "      </tr>";
             result += "      <tbody>";
+            */
+            
+            result = "";
+            result += "<div class='row'>";
+            result += "  <div class='col-md-12 table-responsive'>";
+            result += "    <table id='customer-list-table' class='table table-striped table-sm'>";
+            result += "      <thead class='thead-light'>";
+            result += "      <tr>";
+            result += "        <th>{% trans 'Eff Frm' %}</th>";
+            result += "        <th scope='col'>{% trans 'Eff To' %}</th>";
+            result += "        <th scope='col' nowrap>{% trans 'Shift Time' %}</th>";
+            result += "        <th scope='col' class='text-center'>{% trans 'Qty' %}</th>";
+            result += "        <th scope='col' class='text-center'>{% trans 'Rank' %}</th>";
+            result += "        <th scope='col'>{% trans 'Rate' %}</th>";
+            result += "        <th scope='col'>{% trans 'Ext.Cost' %}</th>";
+            result += "        <th scope='col' class='text-center'>{% trans 'MON' %}</th>";
+            result += "        <th scope='col' class='text-center'>{% trans 'TUE' %}</th>";
+            result += "        <th scope='col' class='text-center'>{% trans 'WED' %}</th>";
+            result += "        <th scope='col' class='text-center'>{% trans 'THU' %}</th>";
+            result += "        <th scope='col' class='text-center'>{% trans 'FRI' %}</th>";
+            result += "        <th scope='col' class='text-center'>{% trans 'SAT' %}</th>";
+            result += "        <th scope='col' class='text-center'>{% trans 'SUN' %}</th>";
+            result += "        <th scope='col' class='text-center'>{% trans 'PUB' %}</th>";
+            result += "        <th scope='col'>{% trans 'Remark' %}</th>";
+            result += "        <th scope='col'>{% trans 'Status' %}</th>";
+            result += "        <th>&nbsp;</th>";
+            result += "      </tr>";
+            result += "     </thead>";
+            result += "     <tbody>";
+
 
             for(var i=0; i<data.cus_service_list.length; i++) { 
 
@@ -4241,6 +4300,7 @@
           },    
           success: function (data) {
 
+            /*
             result = "";
             result += "<div class='row'>";
             result += "  <div class='col-md-12 table-responsive'>";
@@ -4266,6 +4326,35 @@
             result += "        <th>&nbsp;</th>";
             result += "      </tr>";
             result += "      <tbody>";
+            */
+
+            result = "";
+            result += "<div class='row'>";
+            result += "  <div class='col-md-12 table-responsive'>";
+            result += "    <table id='customer-list-table' class='table table-striped table-sm'>";
+            result += "      <thead class='thead-light'>";
+            result += "      <tr>";
+            result += "        <th>{% trans 'Eff Frm' %}</th>";
+            result += "        <th scope='col'>{% trans 'Eff To' %}</th>";
+            result += "        <th scope='col' nowrap>{% trans 'Shift Time' %}</th>";
+            result += "        <th scope='col' class='text-center'>{% trans 'Qty' %}</th>";
+            result += "        <th scope='col' class='text-center'>{% trans 'Rank' %}</th>";
+            result += "        <th scope='col'>{% trans 'Rate' %}</th>";
+            result += "        <th scope='col'>{% trans 'Ext.Cost' %}</th>";
+            result += "        <th scope='col' class='text-center'>{% trans 'MON' %}</th>";
+            result += "        <th scope='col' class='text-center'>{% trans 'TUE' %}</th>";
+            result += "        <th scope='col' class='text-center'>{% trans 'WED' %}</th>";
+            result += "        <th scope='col' class='text-center'>{% trans 'THU' %}</th>";
+            result += "        <th scope='col' class='text-center'>{% trans 'FRI' %}</th>";
+            result += "        <th scope='col' class='text-center'>{% trans 'SAT' %}</th>";
+            result += "        <th scope='col' class='text-center'>{% trans 'SUN' %}</th>";
+            result += "        <th scope='col' class='text-center'>{% trans 'PUB' %}</th>";
+            result += "        <th scope='col'>{% trans 'Remark' %}</th>";
+            result += "        <th scope='col'>{% trans 'Status' %}</th>";
+            result += "        <th>&nbsp;</th>";
+            result += "      </tr>";
+            result += "     </thead>";
+            result += "     <tbody>";
 
             for(var i=0; i<data.cus_service_list.length; i++) {            
               result += "          <tr>";
@@ -4461,7 +4550,7 @@
               
             },    
             success: function (data) {
-
+              /*
               result = "";
               result += "<div class='row'>";
               result += "  <div class='col-md-12 table-responsive'>";
@@ -4487,6 +4576,35 @@
               result += "        <th>&nbsp;</th>";
               result += "      </tr>";
               result += "      <tbody>";
+              */
+
+              result = "";
+              result += "<div class='row'>";
+              result += "  <div class='col-md-12 table-responsive'>";
+              result += "    <table id='customer-list-table' class='table table-striped table-sm'>";
+              result += "      <thead class='thead-light'>";
+              result += "      <tr>";
+              result += "        <th>{% trans 'Eff Frm' %}</th>";
+              result += "        <th scope='col'>{% trans 'Eff To' %}</th>";
+              result += "        <th scope='col' nowrap>{% trans 'Shift Time' %}</th>";
+              result += "        <th scope='col' class='text-center'>{% trans 'Qty' %}</th>";
+              result += "        <th scope='col' class='text-center'>{% trans 'Rank' %}</th>";
+              result += "        <th scope='col'>{% trans 'Rate' %}</th>";
+              result += "        <th scope='col'>{% trans 'Ext.Cost' %}</th>";
+              result += "        <th scope='col' class='text-center'>{% trans 'MON' %}</th>";
+              result += "        <th scope='col' class='text-center'>{% trans 'TUE' %}</th>";
+              result += "        <th scope='col' class='text-center'>{% trans 'WED' %}</th>";
+              result += "        <th scope='col' class='text-center'>{% trans 'THU' %}</th>";
+              result += "        <th scope='col' class='text-center'>{% trans 'FRI' %}</th>";
+              result += "        <th scope='col' class='text-center'>{% trans 'SAT' %}</th>";
+              result += "        <th scope='col' class='text-center'>{% trans 'SUN' %}</th>";
+              result += "        <th scope='col' class='text-center'>{% trans 'PUB' %}</th>";
+              result += "        <th scope='col'>{% trans 'Remark' %}</th>";
+              result += "        <th scope='col'>{% trans 'Status' %}</th>";
+              result += "        <th>&nbsp;</th>";
+              result += "      </tr>";
+              result += "     </thead>";
+              result += "     <tbody>";
 
               for(var i=0; i<data.cus_service_list.length; i++) {            
                 srv_cost_text = data.cus_service_list[i]["srv_cost"].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -4625,7 +4743,7 @@
             
           },    
           success: function (data) {
-
+            /*
             result = "";
             result += "<div class='row'>";
             result += "  <div class='col-md-12 table-responsive'>";
@@ -4651,6 +4769,35 @@
             result += "        <th>&nbsp;</th>";
             result += "      </tr>";
             result += "      <tbody>";
+            */
+      
+            result = "";
+            result += "<div class='row'>";
+            result += "  <div class='col-md-12 table-responsive'>";
+            result += "    <table id='customer-list-table' class='table table-striped table-sm'>";
+            result += "      <thead class='thead-light'>";
+            result += "      <tr>";
+            result += "        <th>{% trans 'Eff Frm' %}</th>";
+            result += "        <th scope='col'>{% trans 'Eff To' %}</th>";
+            result += "        <th scope='col' nowrap>{% trans 'Shift Time' %}</th>";
+            result += "        <th scope='col' class='text-center'>{% trans 'Qty' %}</th>";
+            result += "        <th scope='col' class='text-center'>{% trans 'Rank' %}</th>";
+            result += "        <th scope='col'>{% trans 'Rate' %}</th>";
+            result += "        <th scope='col'>{% trans 'Ext.Cost' %}</th>";
+            result += "        <th scope='col' class='text-center'>{% trans 'MON' %}</th>";
+            result += "        <th scope='col' class='text-center'>{% trans 'TUE' %}</th>";
+            result += "        <th scope='col' class='text-center'>{% trans 'WED' %}</th>";
+            result += "        <th scope='col' class='text-center'>{% trans 'THU' %}</th>";
+            result += "        <th scope='col' class='text-center'>{% trans 'FRI' %}</th>";
+            result += "        <th scope='col' class='text-center'>{% trans 'SAT' %}</th>";
+            result += "        <th scope='col' class='text-center'>{% trans 'SUN' %}</th>";
+            result += "        <th scope='col' class='text-center'>{% trans 'PUB' %}</th>";
+            result += "        <th scope='col'>{% trans 'Remark' %}</th>";
+            result += "        <th scope='col'>{% trans 'Status' %}</th>";
+            result += "        <th>&nbsp;</th>";
+            result += "      </tr>";
+            result += "     </thead>";
+            result += "     <tbody>";
 
             for(var i=0; i<data.cus_service_list.length; i++) {            
               srv_cost_text = data.cus_service_list[i]["srv_cost"].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
