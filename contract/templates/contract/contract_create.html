@@ -3523,6 +3523,7 @@
           },
           beforeSend: function () {
             $("#update_service_modal").modal("show");
+            $("#update_service_modal").draggable(); 
           },    
           success: function (data) {
 
@@ -3723,6 +3724,8 @@
             result += "</div>";
 
             $("#update_service_modal .modal-body").html(result);            
+            //$("#update_service_modal .modal-body").html(result);
+
           },
           error: function(data){
             $("#update_service_modal .modal-body").html("{% trans 'There is no data.' %}");
