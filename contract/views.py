@@ -933,7 +933,7 @@ def UpdateContract(request):
                     # ./History Log                     
 
                     response_data['form_is_valid'] = True
-                    response_data['result'] = "Saved success."
+                    response_data['result'] = "บันทึกรายการสำเร็จ"
                     response_data['class'] = "bg-success"
                 else:
                     response_data['form_is_valid'] = True
@@ -1952,7 +1952,7 @@ def add_new_service(request):
 
     response = JsonResponse(data={
         "success": True,
-        "message": "Success.",
+        "message": "บันทึกรายการสำเร็จ",
         "class": "bg-success",
         "cnt_id": cnt_id,
         "active_cnt_guard_amt": active_cnt_guard_amt,
