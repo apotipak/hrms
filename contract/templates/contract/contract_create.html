@@ -2383,9 +2383,9 @@
                     }
 
                     if(data.cus_service_list[i]["srv_active"]==1)
-                      result += "          <td><span class='badge badge-success'>{% trans 'Active' %}</span></td>";
+                      result += "          <td class='text-left'><span class='badge badge-success'>{% trans 'Active' %}</span></td>";
                     else
-                      result += "          <td><span class='badge badge-secondary'>{% trans 'Pending' %}</span></td>";
+                      result += "          <td class='text-left'><span class='badge badge-secondary'>{% trans 'Pending' %}</span></td>";
                   
                     result += "          <td class='text-right' nowrap>";
                     result += "            <div class='btn-group btn-group-sm nowrap'>";
@@ -4540,7 +4540,7 @@
             result += "        <th scope='col' class='text-center'>{% trans 'SUN' %}</th>";
             result += "        <th scope='col' class='text-center'>{% trans 'PUB' %}</th>";
             result += "        <th scope='col'>{% trans 'Remark' %}</th>";
-            result += "        <th scope='col'>{% trans 'Status' %}</th>";
+            result += "        <th class='text-left' scope='col'>{% trans 'Status' %}</th>";
             result += "        <th scope='col'>&nbsp;</th>";
             result += "      </tr>";
             result += "     </thead>";
