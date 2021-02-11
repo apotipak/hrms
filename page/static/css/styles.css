@@ -240,15 +240,23 @@ input:checked + .slider:after {
     border: none;
 }
 
+
 .my-custom-scrollbar {
-position: relative;
-height: 250px;
-width: 100%;
-overflow: auto;
+  position: relative;
+  height: 250px;
+  width: 100%;
+  overflow: auto;
 }
 .table-wrapper-scroll-y {
-display: block;
+  display: block;
 }
+
+
+.tableFixHead          { overflow-y: auto; height: 330px; }
+.tableFixHead thead th { position: sticky; top: 0; z-index:1;}
+.tableFixHead table  { border-collapse: collapse; width: 100%; }
+.tableFixHead th, td { padding: 8px 16px; }
+.tableFixHead th     { background:#eee;}
 
 
 /*
