@@ -274,11 +274,10 @@
     <div class="clearfix pt-1"></div>
 
 
-    <!-- CONTRACT INFO -->
+    <!-- Contract Info Header -->
     <div class="card card-default">
 
       <div class="card-header" style="background-color: #DCDCDC; padding:5px 18px 0 0;">                
-        <!--<div class="float-left"><h2 class="m-0 text-dark">{{contract.cnt_id}}</h2></div>-->
         <div class="float-left pl-1">
           <h1 class="card-title pt-1"><i class="far fa-file-alt"></i>&nbsp;&nbsp;<strong>{% trans 'Contract Info' %}</strong></h1>
         </div>
@@ -359,7 +358,6 @@
             </div>                        
 
             <div class="float-right">
-
               <div class="btn-group" style="padding:0;">
                 <label class="switch">                                 
                   {% if contract.cnt_active|default_if_none:0 %}
@@ -370,42 +368,36 @@
                   <div class="slider"></div>
                 </label>  
               </div>
-
             </div>
 
-
-
-
           </div>
-
-          {% comment %}
-          &nbsp;        
-          {% render_field contract_create_form.cnt_active id="id_cnt_active" class="form-control" type="checkbox" data-toggle="toggle" data-on="Active" data-off="Pending" data-onstyle="success" data-offstyle="danger"%}
-          {% endcomment %}
-
         </div>
       </div>
       <!-- /.card-header -->
 
-      <div class="card-body" style="background-color: #F0F0F0;">
+
+
+      <!-- Contract Info Form -->
+      <div class="card-body" style="background-color: #F0F0F0;padding:5px 5px 5px 5px;">
 
 
         <div class="row">
 
           <div class="col-6">
 
+
             <div class="form-row">
+              
               <!-- cnt_doc_no -->
-              <div class="form-group col-md-6">
-                <label for="id_cnt_doc_no">{% trans 'Contract Ref.' %}</label>
-                <input id="id_cnt_doc_no" name="cnt_doc_no" type="text" class="form-control form-control-sm" value="{{contract.cnt_doc_no|default_if_none:''}}" autocomplete="off">
+              <div class="form-inline col-6">
+                <label for="id_cnt_doc_no">{% trans 'Contract Ref.' %}&nbsp;&nbsp;</label>
+                <input id="id_cnt_doc_no" name="cnt_doc_no" type="text" class="form-control form-control-sm w-100" value="{{contract.cnt_doc_no|default_if_none:''}}" autocomplete="off">
               </div>
               
               <!-- cnt_doc_date -->
-              <div class="form-group col-md-6">
+              <div class="form-inline col-6">
                 <label>&nbsp;</label>                
-                <div class="input-group date" id="dtp_cnt_doc_date" data-target-input="nearest">
-
+                <div class="input-group date w-100" id="dtp_cnt_doc_date" data-target-input="nearest">
                   {% if contract.cnt_doc_date|date:"d/m/Y" != "" %}
                     {% if contract.cnt_eff_frm|date:"d/m/Y" != "31/12/2999" %}
                     <input type="checkbox" checked id="chkCNTDocDate" class="form-inline float-left" onclick="checkCNTDocDateStatus()" style="margin-top:9px;">&nbsp;
@@ -418,35 +410,31 @@
                     <input type="checkbox" id="chkCNTDocDate" class="form-inline float-left" onclick="checkCNTDocDateStatus()" style="margin-top:9px;">&nbsp;
                     <input type="text" name="cnt_doc_date" class="form-control form-control-sm" id="id_cnt_doc_date" value="{% now 'd/m/Y'%}" required="" readonly="">
                   {% endif %}
-
-                  <!--
-                  {{ contract_create_form.cnt_doc_date }}
-                  <div class="input-group-append" data-target="#dtp_cnt_doc_date" data-toggle="datepicker">
-                    <div class="input-group-text text-primary"><i class="fa fa-calendar"></i></div>
-                  </div>
-                  -->
                 </div>                
               </div>
 
             </div>
 
+
             <div class="form-row">
-              <!-- cnt_eff_frm -->
-              <div class="form-group col-md-6">
+
+              <!-- Effect Term From -->
+              <div class="form-inline col-6">
                 <label for="id_cnt_eff_frm">{% trans 'Effect Term' %}</label>
-                <div class="input-group date" id="dtp_cnt_eff_frm" data-target-input="nearest">
+
+                <div class="input-group date w-100" id="dtp_cnt_eff_frm" data-target-input="nearest">
 
                   {% if contract.cnt_eff_frm|date:"d/m/Y" != "" %}
                     {% if contract.cnt_eff_frm|date:"d/m/Y" != "31/12/2999" %}
-                    <input type="checkbox" checked id="chkCNTEffFrom" class="form-inline float-left" onclick="checkCNTEffFromStatus()" style="margin-top:9px;">&nbsp;
-                    <input type="text" name="id_cnt_eff_frm" class="form-control form-control-sm" id="id_cnt_eff_frm" value="{{contract.cnt_eff_frm|date:'d/m/Y'}}" required="">
+                    <input type="checkbox" checked id="chkCNTEffFrom" class="form-inline" onclick="checkCNTEffFromStatus()" style="margin-top:9px;">&nbsp;
+                    <input type="text" name="id_cnt_eff_frm" class="form-control form-control-sm float-right text-left" id="id_cnt_eff_frm" value="{{contract.cnt_eff_frm|date:'d/m/Y'}}" required="">
                     {% else %}
                     <input type="checkbox" id="chkCNTEffFrom" class="form-inline float-left" onclick="checkCNTEffFromStatus()" style="margin-top:9px;">&nbsp;
-                    <input type="text" name="id_cnt_eff_frm" class="form-control form-control-sm" id="id_cnt_eff_frm" value="{% now 'd/m/Y'%}" readonly>
+                    <input type="text" name="id_cnt_eff_frm" class="form-control form-control-sm float-right text-left" id="id_cnt_eff_frm" value="{% now 'd/m/Y'%}" readonly>
                     {% endif %}
                   {% else %}
                     <input type="checkbox" id="chkCNTEffFrom" class="form-inline float-left" onclick="checkCNTEffFromStatus()" style="margin-top:9px;">&nbsp;
-                    <input type="text" name="id_cnt_eff_frm" class="form-control form-control-sm" id="id_cnt_eff_frm" value="{% now 'd/m/Y'%}" readonly>
+                    <input type="text" name="id_cnt_eff_frm" class="form-control form-control-sm float-right text-left" id="id_cnt_eff_frm" value="{% now 'd/m/Y'%}" readonly>
                   {% endif %}
 
                   <!--
@@ -458,10 +446,10 @@
                 </div>
               </div>
               
-              <!-- cnt_eff_to -->
-              <div class="form-group col-md-6">
+              <!-- Effect Term To -->
+              <div class="form-inline col-md-6">
                 <label for="id_cnt_eff_to">&nbsp;</label>
-                <div class="input-group date" id="dtp_cnt_eff_to" data-target-input="nearest">
+                <div class="input-group date w-100" id="dtp_cnt_eff_to" data-target-input="nearest">
 
                   {% if contract.cnt_eff_to|date:"d/m/Y" != "" %}
                     {% if contract.cnt_eff_to|date:"d/m/Y" != "31/12/2999" %}
@@ -486,21 +474,22 @@
               </div>              
             </div>
 
+            <!-- cnt_sign_frm -->
             <div class="form-row">
-              <div class="form-group col-md-6">
+              <div class="form-inline col-6">
                 <label for="id_cnt_sign_frm">{% trans 'Contract Term' %}</label>
-                <div class="input-group date" id="dtp_cnt_sign_frm" data-target-input="nearest">
+                <div class="input-group date w-100" id="dtp_cnt_sign_frm" data-target-input="nearest">
 
                   {% if contract.cnt_sign_frm|date:"d/m/Y" != "" %}
                     {% if contract.cnt_sign_frm|date:"d/m/Y" != "31/12/2999" %}
-                    <input type="checkbox" checked id="chkCNTSignFrom" class="form-inline float-left" onclick="checkCNTSignFromStatus()" style="margin-top:9px;">&nbsp;
+                    <input type="checkbox" checked id="chkCNTSignFrom" class="form-inline float-right text-right" onclick="checkCNTSignFromStatus()" style="margin-top:9px;">&nbsp;
                     <input type="text" name="id_cnt_sign_frm" class="form-control form-control-sm" id="id_cnt_sign_frm" value="{{contract.cnt_sign_frm|date:'d/m/Y'}}" required="">
                     {% else %}
-                    <input type="checkbox" id="chkCNTSignFrom" class="form-inline float-left" onclick="checkCNTSignFromStatus()" style="margin-top:9px;">&nbsp;
+                    <input type="checkbox" id="chkCNTSignFrom" class="form-inline float-right text-right" onclick="checkCNTSignFromStatus()" style="margin-top:9px;">&nbsp;
                     <input type="text" name="id_cnt_sign_frm" class="form-control form-control-sm" id="id_cnt_sign_frm" value="{% now 'd/m/Y'%}" required="" readonly="">                    
                     {% endif %}
                   {% else %}
-                    <input type="checkbox" id="chkCNTSignFrom" class="form-inline float-left" onclick="checkCNTSignFromStatus()" style="margin-top:9px;">&nbsp;
+                    <input type="checkbox" id="chkCNTSignFrom" class="form-inline float-right text-right" onclick="checkCNTSignFromStatus()" style="margin-top:9px;">&nbsp;
                     <input type="text" name="id_cnt_sign_frm" class="form-control form-control-sm" id="id_cnt_sign_frm" value="{% now 'd/m/Y'%}" required="" readonly="">
                   {% endif %}
                   <!--
@@ -512,9 +501,9 @@
                 </div>
               </div>
 
-              <div class="form-group col-md-6">
+              <div class="form-inline col-md-6">
                 <label for="id_cnt_sign_to">&nbsp;</label>
-                <div class="input-group date" id="dtp_cnt_sign_to" data-target-input="nearest">
+                <div class="input-group date col-12" id="dtp_cnt_sign_to" data-target-input="nearest">
 
                   {% if contract.cnt_sign_to|date:"d/m/Y" != "" %}
                     {% if contract.cnt_sign_to|date:"d/m/Y" != "31/12/2999" %}
@@ -546,45 +535,34 @@
           <div class="col-6">
 
             <div class="form-row">
-              <div class="form-group col-md-12">
-                <label for="id_cnt_wage_id"><span class='text-danger'>*</span>&nbsp;{% trans 'Wage Rate' %}</label>
-                <div class="input-group-append">
-                  
-                  <input type="text" id="id_wage_id_text" value="{{contract.cnt_wage_id_id}} " class="col-1 bg-green form-control form-control-sm text-center" style="border-style: none none none none; border-top-right-radius:0px;border-bottom-right-radius:0px; font-weight: bold; font-size: 16px;" readonly="">
-
-                  <input type="text" id="id_cnt_wage_id_text" name="cnt_wage_id" class="form-control form-control-sm" value="{{contract.cnt_wage_id.wage_en}}{{contract.cnt_wage_id.wage_8hr}}" style="border-style: 1px none 1px none; border-top-left-radius:0px;border-bottom-left-radius:0px;  border-top-right-radius:0px; border-bottom-right-radius:0px;" readonly>
-
-                  <!--
-                  <input type="text" id="id_wage_id_text" value="{{contract.cnt_wage_id_id}} " class="col-1 bg-success form-control form-control-sm text-center" readonly="">
-                  <input type="text" id="id_cnt_wage_id_text" name="cnt_wage_id" class="form-control form-control-sm" value="" readonly>
-                  -->
-
+              <div class="form-inline col-12">
+                <label for="id_cnt_wage_id"><span class='text-danger'>*</span>&nbsp;{% trans 'Wage Rate' %}&nbsp;&nbsp;</label>
+                <div class="input-group-append col-12">
+                  <input type="text" id="id_wage_id_text" value="{{contract.cnt_wage_id_id}} " class="bg-green form-control form-control-sm text-center col-1" style="border-style: none none none none; border-top-right-radius:0px;border-bottom-right-radius:0px; font-weight: bold; font-size: 16px;" readonly="">
+                  <input type="text" id="id_cnt_wage_id_text" name="cnt_wage_id" class="form-control form-control-sm col-10" value="{{contract.cnt_wage_id.wage_en}}{{contract.cnt_wage_id.wage_8hr}}" style="border-style: 1px none 1px none; border-top-left-radius:0px;border-bottom-left-radius:0px;  border-top-right-radius:0px; border-bottom-right-radius:0px;" readonly>                  
+                  <button id="wage_rate_lookup" type="button" class="btn btn-outline-primary btn-sm col-1" style="border-top-left-radius:0px;border-bottom-left-radius:0px;"data-toggle="modal" data-url="{% url 'get_wagerate_list' %}"><i class="fas fa-search fa-sm"></i></button>
                   <input type="hidden" id="id_cnt_wage_id" name="cnt_wage_id" value="{{ contract.cnt_wage_id_id|default_if_none:'' }}">
-
-                  <button id="wage_rate_lookup" type="button" class="btn btn-outline-primary btn-sm" style="border-top-left-radius:0px;border-bottom-left-radius:0px;"data-toggle="modal" data-url="{% url 'get_wagerate_list' %}"><i class="fas fa-search fa-sm"></i></button>
-                                  
                 </div>                
               </div>
             </div>
 
             <div class="form-row">
-              <div class="form-group col-md-6">
-                <label for="id_cnt_guard_amt">{% trans 'Guard Amount' %}</label>
-                <!--{{ contract_create_form.cnt_guard_amt }}-->
-                <input type="number" name="cnt_guard_amt" min="0" step="any" class="form-control form-control-sm text-right" id="id_cnt_guard_amt" readonly="" disabled="disabled" style="font-weight: bold; font-size: 18px;">
+
+              <div class="form-inline col-6">
+                <label for="id_cnt_guard_amt">{% trans 'Guard Amount' %}&nbsp;&nbsp;</label>
+                <input type="number" name="cnt_guard_amt" min="0" step="any" class="form-control form-control-sm text-right col-12" id="id_cnt_guard_amt" readonly="" disabled="disabled" style="font-weight: bold; font-size: 18px;">
               </div>
-              <div class="form-group col-md-6">
+
+              <div class="form-inline col-md-6">
                 <label for="id_cnt_sale_amt">{% trans 'Sale Amount' %}</label>
-                <!--{{ contract_create_form.cnt_sale_amt }}-->
-                <!--<input type="text" id="id_cnt_sale_amt" name="cnt_sale_amt" class="form-control form-control-sm text-right inputmasking" value="0" readonly="">-->                
-                <input type="text" min="0" class="form-control form-control-sm text-right " id="id_cnt_sale_amt" name="cnt_sale_amt" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': ' ', 'placeholder': '0.00'" readonly="" style="font-weight: bold; font-size: 18px;">
+                <input type="text" min="0" class="form-control form-control-sm text-right col-12" id="id_cnt_sale_amt" name="cnt_sale_amt" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': ' ', 'placeholder': '0.00'" readonly="" style="font-weight: bold; font-size: 18px;">
               </div>              
             </div>
 
             <div class="form-row">
-              <div class="form-group col-md-12">
+              <div class="form-inline col-12">
                 <label for="id_cnt_apr_by_id">{% trans 'Authorized by' %}</label>
-                {{ contract_create_form.cnt_apr_by_text }}
+                <input type="text" name="cnt_apr_by_text" value="ดร.ชนัต สุขสุวรรณธร (Dr.Chanat Suksuwannatorn)" class="form-control form-control-sm col-12" id="id_cnt_apr_by_text" readonly="" disabled="disabled">
                 <input type="hidden" id="id_cnt_apr_by_id" name="cnt_apr_by_id" value=100000>
 
               </div>                               
