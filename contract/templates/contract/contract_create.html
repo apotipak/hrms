@@ -2334,7 +2334,7 @@
                   result = "";
                   result += "<div class='row'>";
                   result += "  <div class='col-md-12 table-responsive'>";
-                  result += "    <table id='customer-list-table' class='table table-striped table-sm'>";
+                  result += "    <table id='customer-list-table' class='table table-striped table-sm table-hover'>";
                   result += "      <thead class='thead-light'>";
                   result += "      <tr>";
                   result += "        <th>{% trans 'Eff Frm' %}</th>";
@@ -2398,7 +2398,7 @@
                       result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_sat"] + "</small></td>";
                       result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_sun"] + "</small></td>";
                       result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_pub"] + "</small></td>";
-                      result += "          <td><small>" + data.cus_service_list[i]["srv_rem"] + "</small></td>";
+                      result += "          <td><small>" + data.cus_service_list[i]["srv_rem"] + "</small>..</td>";
                     }
 
                     if(data.cus_service_list[i]["srv_active"]==1)
@@ -2406,7 +2406,7 @@
                     else
                       result += "          <td><span class='badge badge-secondary'>{% trans 'Pending' %}</span></td>";
                   
-                    result += "          <td>";
+                    result += "          <td class='text-right'>";
                     result += "            <div class='btn-group btn-group-sm nowrap'>";
                     result += "              <small>";
                     result += "              <button type='button' onclick='update_customer_service(" + data.cus_service_list[i]["srv_id"] + ")' class='btn btn-info btn-xs js-update-contract-service' data-toggle='modal'>&nbsp;<i class='fas fa-pen fa-xs'></i>&nbsp;</button>";
@@ -3093,7 +3093,7 @@
                 result = "";
                 result += "<div class='row'>";
                 result += "  <div class='col-md-12 table-responsive'>";
-                result += "    <table id='customer-list-table' class='table table-striped table-sm'>";
+                result += "    <table id='customer-list-table' class='table table-striped table-sm table-hover'>";
                 result += "      <thead class='thead-light'>";
                 result += "      <tr>";
                 result += "        <th>{% trans 'Eff Frm' %}</th>";
@@ -3174,7 +3174,7 @@
                   else
                     result += "          <td><span class='badge badge-secondary'>{% trans 'Pending' %}</span></td>";
                 
-                  result += "          <td>";
+                  result += "          <td class='text-right'>";
                   result += "            <div class='btn-group btn-group-sm nowrap'>";
                   result += "              <small>";
                   result += "              <button type='button' onclick='update_customer_service(" + data.cus_service_list[i]["srv_id"] + ")' class='btn btn-info btn-xs js-update-contract-service' data-toggle='modal'>&nbsp;<i class='fas fa-pen fa-xs'></i>&nbsp;</button>";
@@ -3899,7 +3899,7 @@
             result = "";
             result += "<div class='row'>";
             result += "  <div class='col-md-12 table-responsive'>";
-            result += "    <table id='customer-list-table' class='table table-striped table-sm'>";
+            result += "    <table id='customer-list-table' class='table table-striped table-sm table-hover'>";
             result += "      <thead class='thead-light'>";
             result += "      <tr>";
             result += "        <th>{% trans 'Eff Frm' %}</th>";
@@ -3981,7 +3981,7 @@
               else
                 result += "          <td><span class='badge badge-secondary'>{% trans 'Pending' %}</span></td>";
             
-              result += "          <td>";
+              result += "          <td class='text-right'>";
               result += "            <div class='btn-group btn-group-sm nowrap'>";
               result += "              <small>";
               result += "              <button type='button' onclick='update_customer_service(" + data.cus_service_list[i]["srv_id"] + ")' class='btn btn-info btn-xs js-update-contract-service' data-toggle='modal'>&nbsp;<i class='fas fa-pen fa-xs'></i>&nbsp;</button>";
@@ -4179,7 +4179,7 @@
             result = "";
             result += "<div class='row'>";
             result += "  <div class='col-md-12 table-responsive'>";
-            result += "    <table id='customer-list-table' class='table table-striped table-sm'>";
+            result += "    <table id='customer-list-table' class='table table-striped table-sm table-hover'>";
             result += "      <thead class='thead-light'>";
             result += "      <tr>";
             result += "        <th>{% trans 'Eff Frm' %}</th>";
@@ -4256,7 +4256,7 @@
               else
                 result += "          <td><span class='badge badge-secondary'>{% trans 'Pending' %}</span></td>";
             
-              result += "          <td>";
+              result += "          <td class='text-right'>";
               result += "            <div class='btn-group btn-group-sm nowrap'>";
               result += "              <small>";
               result += "              <button type='button' onclick='update_customer_service(" + data.cus_service_list[i]["srv_id"] + ")' class='btn btn-info btn-xs js-update-contract-service' data-toggle='modal'>&nbsp;<i class='fas fa-pen fa-xs'></i>&nbsp;</button>";
@@ -4402,7 +4402,7 @@
               result = "";
               result += "<div class='row'>";
               result += "  <div class='col-md-12 table-responsive'>";
-              result += "    <table id='customer-list-table' class='table table-striped table-sm'>";
+              result += "    <table id='customer-list-table' class='table table-striped table-sm table-hover'>";
               result += "      <thead class='thead-light'>";
               result += "      <tr>";
               result += "        <th>{% trans 'Eff Frm' %}</th>";
@@ -4482,7 +4482,7 @@
                 else
                   result += "          <td><span class='badge badge-secondary'>{% trans 'Pending' %}</span></td>";
               
-                result += "          <td>";
+                result += "          <td class='text-right'>";
                 result += "            <div class='btn-group btn-group-sm nowrap'>";
                 result += "              <small>";
                 result += "              <button type='button' onclick='update_customer_service(" + data.cus_service_list[i]["srv_id"] + ")' class='btn btn-info btn-xs js-update-contract-service' data-toggle='modal'>&nbsp;<i class='fas fa-pen fa-xs'></i>&nbsp;</button>";
@@ -4568,7 +4568,7 @@
             result = "";
             result += "<div class='row'>";
             result += "  <div class='col-md-12 table-responsive'>";
-            result += "    <table id='customer-list-table' class='table table-striped table-sm'>";
+            result += "    <table id='customer-list-table' class='table table-striped table-sm table-hover'>";
             result += "      <thead class='thead-light'>";
             result += "      <tr>";
             result += "        <th>{% trans 'Eff Frm' %}</th>";
@@ -4648,7 +4648,7 @@
               else
                 result += "          <td><span class='badge badge-secondary'>{% trans 'Pending' %}</span></td>";
             
-              result += "          <td>";
+              result += "          <td class='text-right'>";
               result += "            <div class='btn-group btn-group-sm nowrap'>";
               result += "              <small>";
               result += "              <button type='button' onclick='update_customer_service(" + data.cus_service_list[i]["srv_id"] + ")' class='btn btn-info btn-xs js-update-contract-service' data-toggle='modal'>&nbsp;<i class='fas fa-pen fa-xs'></i>&nbsp;</button>";
