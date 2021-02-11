@@ -538,7 +538,6 @@
   <div class="col-3">   
   	<div class="input-group">
 		<span style="font-size:0.9rem;padding:3px 0 0 0;"><b>Late From</b>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-		<!-- amnaj -->
   		<!--<input type="datetime" id="id_late_from" name="late_from" class="form-control form-control-xs" placeholder="dd-mm-yyyy" value="" min="1997-01-01" max="2030-12-31" />-->
   		<input type="text" id="id_late_from" name="late_from" class="form-control form-control-xs" data-inputmask="'mask': '99/99/9999 99:99'" />
   	</div>
@@ -984,7 +983,8 @@ $(document).ready(function(){
       	var cus_id = $('#id_cus_id').val();
       	var cus_brn = $('#id_cus_brn').val();
       	var cus_vol = $('#id_cus_vol').val();
-
+      	var search_shift_option = $("#id_search_shift_option").val();
+      	      	      	
 	    if(bulk_shift_id=="0" || bulk_shift_id=="" || bulk_shift_status=="") {
 			$.alert({
 			    title: 'Error',
@@ -1036,6 +1036,7 @@ $(document).ready(function(){
 						    useBootstrap: false,
 						});
 
+						//amnaj
 						$.ajax({
 							url : "/monitoring/ajax/get_attendance_information/",
 							type : "POST",
@@ -1045,6 +1046,7 @@ $(document).ready(function(){
 						  		cus_id: cus_id,
 						  		cus_brn: cus_brn,
 						  		cus_vol: cus_vol,
+						  		search_shift_option: search_shift_option,
 							},
 							success : function(data) {
 								if(data.is_found) {
@@ -1978,10 +1980,7 @@ $("#id_late_hour").click( function() {
     	return result;
     }
 
-
-
-
-
+    
 	// ID_CUS_VOL    
     $(document).on('keypress', '#id_cus_vol', function(e) {
       if(e.which == 13) {            
@@ -2003,6 +2002,7 @@ $("#id_late_hour").click( function() {
       	var cus_brn = $('#id_cus_brn').val();
       	var cus_vol = $('#id_cus_vol').val();
 
+      	// amnaj
 		$.ajax({
 			url : "/monitoring/ajax/get_attendance_information/",
 			type : "POST",
@@ -2664,9 +2664,7 @@ $("#id_late_hour").click( function() {
 		}
 	});
 
-
-
-	// amnaj
+	
 	$(document).on('keypress', '#id_relief_emp_id', function(e) {
 
 		$("#id_relief_check").prop("checked", true);
