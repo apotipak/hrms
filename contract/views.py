@@ -1087,13 +1087,14 @@ def CreateContract(request):
             cnt_apr_by = request.POST.get('cnt_apr_by_id')
 
 
-            cnt_guard_amt = request.POST.get('cnt_guard_amt')    
+            cnt_guard_amt = request.POST.get('cnt_guard_amt')
             if cnt_guard_amt == "":
                 cnt_guard_amt = 0
             else:
                 cnt_guard_amt = int(cnt_guard_amt)
 
-            cnt_sale_amt = request.POST.get('cnt_sale_amt')
+            cnt_sale_amt = request.POST.get('cnt_sale_amt').replace(",", "")
+            
             if cnt_sale_amt == "":
                 cnt_sale_amt = 0
             else:
@@ -1549,7 +1550,7 @@ def get_customer_list(request):
 
     item_per_page = 500
     return JsonResponse(data={"success": False, "results": ""})
-    
+
 
 @login_required(login_url='/accounts/login/')
 def get_contract_list(request):

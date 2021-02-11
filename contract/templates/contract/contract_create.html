@@ -40,20 +40,22 @@
       {% csrf_token %}
 
     
-    <div class="card card-default collapsed-card" style="background-color: #DCDCDC;">
+
+    <!-- HEADER -->
+    <div class="card card-default collapsed-card" style="background-color: #018349;">
 
       <div class="card-header" style="padding:8px 15px 4px 4px;">
         
         <h1 class="card-title">
-          <span id="customer_name_title"><button type='button' class='btn btn-success'><span style='font-size:18px;font-weight:bold;'>Customer Name</span>&nbsp;&nbsp;<span class='badge badge-light'>Zone&nbsp;&nbsp;</span></button></span>
+          <span id="customer_name_title"><button type='button' class='btn text-light' style="background-color: #018349;"><span style='font-size:18px;font-weight:bold;'>Customer Name</span>&nbsp;&nbsp;<span class='badge badge-light'>Zone&nbsp;&nbsp;</span></button></span>
           
           <!--<button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-angle-down text-primary"></i></button>-->
         </h1>
 
-        <div class="card-tools">
+        <div class="card-tools pt-1 pr-1">
 
 
-          <button class="btn btn-info btn-sm dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <button class="btn btn-outline-light btn-sm dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-print fa-sm"></i>&nbsp;&nbsp;Print
           </button>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
@@ -66,8 +68,8 @@
           </div>
 
           &nbsp;&nbsp;
-          <button id="cancelCreateContract" type="reset" class="btn btn-sm btn-warning pull-right">Cancel</button>
-          <button id="saveContract" class="btn btn-sm btn-primary"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</button>
+          <button id="cancelCreateContract" type="reset" class="btn btn-sm btn-outline-light pull-right">Cancel</button>
+          <button id="saveContract" class="btn btn-sm btn-outline-light">&nbsp;&nbsp;&nbsp;<i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}&nbsp;&nbsp;&nbsp;</button>
 
           <!--
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -275,10 +277,8 @@
 
 
 
-
+    <!-- CONTRACT INFO -->
     <div class="card card-default">
-
-
 
       <div class="card-header" style="background-color: #DCDCDC; padding:5px 18px 0 0;">                
         <!--<div class="float-left"><h2 class="m-0 text-dark">{{contract.cnt_id}}</h2></div>-->
@@ -2027,11 +2027,9 @@
   });
 
 
-
-
   $(document).ready(function(){
     $('#id_cus_id').focus();
-    $('#customer_name_title').html("<button type='button' class='btn btn-success'><span style='font-size:18px;font-weight:bold;'>Customer Name</span>&nbsp;&nbsp;&nbsp;<span class='badge badge-light'>Zone</span></button>");
+    $('#customer_name_title').html("<button type='button' class='btn text-light' style='background-color: #018349;'><span style='font-size:18px;font-weight:bold;'>Customer Name</span>&nbsp;&nbsp;&nbsp;<span class='badge badge-light'>Zone</span></button>");
     $("#main-content :input").attr("disabled", true);
   });
 
@@ -2070,9 +2068,8 @@
                 cus_name_th_new = json.cus_name_th.substring(0,70) + "...";
               }
 
-              //$('#customer_name_title').html("<h5 class='m-0 text-dark'><b>" + cus_name_th_new + "</b><small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-dark'></i></button></small></h5>");                
 
-              $('#customer_name_title').html("<button type='button' class='btn btn-success'><span style='font-size:18px;font-weight:bold;'>" + cus_name_th_new + "</span>&nbsp;&nbsp;&nbsp;<span class='badge badge-light'>Zone" + "</span></button><small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-dark'></i></button></small>");
+              $('#customer_name_title').html("<button type='button' class='btn text-light' style='background-color: #018349;'><span style='font-size:18px;font-weight:bold;'>" + cus_name_th_new + "</span>&nbsp;&nbsp;&nbsp;<span class='badge badge-light'>Zone" + "</span></button><small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-light'></i></button></small>");
 
               $('#id_cus_brn').focus();
 
@@ -2134,9 +2131,8 @@
               cus_name_th_new = json.cus_name_th.substring(0,70) + "...";
             }
 
-            //$('#customer_name_title').html("<h5 class='m-0 text-dark'><b>" + cus_name_th_new + "</b>&nbsp;&nbsp;&nbsp;<span class='badge badge-info'>" + json.cus_zone_id + " | " + json.cus_zone_th + "</span>" + "<small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-dark'></i></button></small></h5>");   
 
-            $('#customer_name_title').html("<button type='button' class='btn btn-success'><span style='font-size:18px;font-weight:bold;'>" + cus_name_th_new + "</span>&nbsp;&nbsp;&nbsp;<span class='badge badge-light'>" + json.cus_zone_id + " | " + json.cus_zone_th + "</span></button><small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-dark'></i></button></small>");
+            $('#customer_name_title').html("<button type='button' class='btn text-light' style='background-color: #018349;'><span style='font-size:18px;font-weight:bold;'>" + cus_name_th_new + "</span>&nbsp;&nbsp;&nbsp;<span class='badge badge-light'>" + json.cus_zone_id + " | " + json.cus_zone_th + "</span></button><small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-light'></i></button></small>");
 
             $('#id_cus_name_th').val(json.cus_name_th);
             $('#id_cus_sht_th').val(json.cus_sht_th);
@@ -2287,7 +2283,7 @@
               $("#contract_number_form :input").attr("disabled", false);
               $("#id_cnt_active").prop("active", false);
               $("#service_list_table tbody").html("<tr><td colspan='18' class='text-center'><br><br><br>There is no data.<br><br><br><br></td></tr>");
-              $('#customer_name_title').html("<button type='button' class='btn btn-success'><span style='font-size:18px;font-weight:bold;'>Customer Name</span>&nbsp;&nbsp;&nbsp;<span class='badge badge-light'>Zone</span></button>");
+              $('#customer_name_title').html("<button type='button' class='btn text-light' style='background-color: #018349;'><span style='font-size:18px;font-weight:bold;'>Customer Name</span>&nbsp;<span class='badge badge-light'>Zone</span></button>");
               $("#id_cnt_wage_id").val("");
               $("#id_cus_zone_id").val("");
               $("#id_cus_id").focus();
@@ -2677,9 +2673,8 @@
 
     // Clear data
     $("#service_list_table tbody").html("<tr><td colspan='18' class='text-center'><br><br><br>There is no data.<br><br><br><br></td></tr>");
-    
-    //$('#customer_name_title').html("<h4><i class='far fa-question-circle fa-sm'></i>&nbsp;Customer</h4>");
-    $('#customer_name_title').html("<button type='button' class='btn btn-success'><span style='font-size:18px;font-weight:bold;'>Customer Name</span>&nbsp;&nbsp;&nbsp;<span class='badge badge-light'>Zone</span></button>");
+        
+    $('#customer_name_title').html("<button type='button' class='btn text-light' style='background-color: #018349;'><span style='font-size:18px;font-weight:bold;'>Customer Name</span>&nbsp;&nbsp;&nbsp;<span class='badge badge-light'>Zone</span></button>");
 
     $("#id_cnt_wage_id").val("");
     $("#id_cus_zone_id").val("");
@@ -2779,7 +2774,8 @@
     }
 
     // cnt_sale_amt
-    cnt_sale_amt = $('#id_cnt_sale_amt').val();
+    cnt_sale_amt = $('#id_cnt_sale_amt').val().replace(",","");    
+
     // cnt_guard_amt
     cnt_guard_amt = $('#id_cnt_guard_amt').val();
     //cnt_apr_by_id
@@ -2933,10 +2929,7 @@
             cus_name_th_new = json.cus_name_th.substring(0,70) + "...";
           }
 
-          //$('#customer_name_title').html("<h5 class='m-0 text-dark'><b>" + cus_name_th_new + "</b>&nbsp;&nbsp;&nbsp;<small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-dark'></i></button></small></h5>");
-          //$('#customer_name_title').html("<button type='button' class='btn btn-primary'>" + cus_name_th_new + "&nbsp;&nbsp;&nbsp;<span class='badge badge-light'>" + json.cus_zone_id + " | " + json.cus_zone_th + "</span></button>");
-
-          $('#customer_name_title').html("<button type='button' class='btn btn-success'><span style='font-size:18px;font-weight:bold;'>" + cus_name_th_new + "</span>&nbsp;&nbsp;&nbsp;<span class='badge badge-light'>" + json.cus_zone_id + " | " + json.cus_zone_th + "</span></button>");
+          $('#customer_name_title').html("<button type='button' class='btn text-light' style='background-color: #018349;'><span style='font-size:18px;font-weight:bold;'>" + cus_name_th_new + "</span>&nbsp;&nbsp;&nbsp;<span class='badge badge-light'>" + json.cus_zone_id + " | " + json.cus_zone_th + "</span></button>");
 
           loadCusBrn(cus_brn);
           loadCusVol(cus_id, cus_brn, cus_vol);
@@ -2966,11 +2959,7 @@
             cus_name_th_new = json.cus_name_th.substring(0,70) + "...";
           }
 
-          //$('#customer_name_title').html("<h5 class='m-0 text-dark'><b>" + cus_name_th_new + "</b>&nbsp;&nbsp;&nbsp;<span class='badge badge-info'>" + json.cus_zone_id + " | " + json.cus_zone_th + "</span>" + "<small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-dark'></i></button></small></h5>");
-
-          //$('#customer_name_title').html("<button type='button' class='btn btn-primary'>" + cus_name_th_new + "&nbsp;&nbsp;&nbsp;<span class='badge badge-light'>" + json.cus_zone_id + " | " + json.cus_zone_th + "</span></button>");
-
-          $('#customer_name_title').html("<button type='button' class='btn btn-success'><span style='font-size:18px;font-weight:bold;'>" + cus_name_th_new + "</span>&nbsp;&nbsp;&nbsp;<span class='badge badge-light'>" + json.cus_zone_id + " | " + json.cus_zone_th + "</span></button><small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-dark'></i></button></small>");          
+          $('#customer_name_title').html("<button type='button' class='btn text-light' style='background-color: #018349;'><span style='font-size:18px;font-weight:bold;'>" + cus_name_th_new + "</span>&nbsp;&nbsp;&nbsp;<span class='badge badge-light'>" + json.cus_zone_id + " | " + json.cus_zone_th + "</span></button><small><button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-light'></i></button></small>");          
 
           $('#id_cus_name_th').val(json.cus_name_th);
           $('#id_cus_sht_th').val(json.cus_sht_th);
