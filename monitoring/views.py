@@ -2433,7 +2433,6 @@ def ajax_get_attendance_information(request):
 		sql += "and srv_eff_frm<='" + str(curDate) + "' group by cnt_id,shf_type"
 		print("SQL debug:", sql)
 
-		# amnaj
 		cursor = connection.cursor()
 		# cursor.execute("select cnt_id,shf_type,sum(srv_wed) as srv_num, sum(srv_pub) as srv_pub from v_contract as a where cnt_id=%s and srv_active=1 and cus_service_flag <> 'D' group by cnt_id,shf_type", [cnt_id])
 		cursor.execute(sql)
@@ -2981,6 +2980,8 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 	remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,
 	allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id,Tday7,Tdof,customer_wage_rate_id,customer_zone_id):
 	
+	# return False, "debug"
+
 	is_pass = True
 	message = ""	
 
@@ -3008,7 +3009,7 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 	if dly_date < today_date.date():
 		sql = "select cnt_id,sch_shift from HIS_DLY_PLAN "
 	'''
-
+	
 	sql += " where cnt_id=" + str(cnt_id)
 	sql += " and sch_shift=" + str(shift_id)
 	sql += " and absent=0 and dly_date='" + str(dly_date) + "'"
@@ -3028,7 +3029,6 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 	if informno >= srv_qty:
 		return False, "พนักงานที่แจ้งเวรมากกว่าที่มีอยู่ในสัญญา: <b>" + str(cnt_id) + "</b>"
 	# **************** END ******************
-
 
 	# Rule 2 Check Manpower
 	# ****** START *********
@@ -3050,11 +3050,11 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 	cursor.execute(sql)	
 	record_count = cursor.fetchall()
 	cursor.close()
-	amanpower = len(record_count) if len(record_count)>0 else 0
-
+	amanpower = len(record_count) if len(record_count)>0 else 0	
 
 	# Rule 3 ChkValidInput(2)
 	# ****** START **********
+
 	is_pass, message = chkValidInput(2,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,
 		shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,
 		relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,
@@ -3066,6 +3066,10 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 	else:
 		return False, message
 	# ******* END ***********	
+
+
+	# amnaj
+	# return False, "debug111"
 
 	# Call SetVariable("DLY_PLAN")
 	Tsch_no = 0
@@ -3173,6 +3177,8 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 			return False, "You don't have a permission to Add/Edit passed date."
 	'''
 
+	# return False, "debug"
+
 	is_error_status, error_message, table_name = get_DLY_PLAN_OR_HIS_DLY_PLAN(dly_date)
 	if is_error_status:
 		return False, error_message
@@ -3239,7 +3245,7 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 	return is_pass, message
 
 
-
+	# return False, "debug"
 
 
 
@@ -3260,13 +3266,8 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 	# ****** END *********
 
 
-
-
-	return True, "PASS"
-
-
-
-
+	# return True, "PASS"
+	# return False, "debug"
 
 	if shift_id!="99":
 		# ************************************************
@@ -3318,6 +3319,7 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 		# *****************************************
 		# RULE 4 - Validate all input
 		# *****************************************				
+		# return False, "debug"
 		if is_pass:
 			is_not_error, message = validateInput(dly_date, cnt_id, emp_id, shift_id, shift_type, shift_name, job_type, totalNDP, totalNDA, totalNDM, totalNNP, totalNNA, totalNNM, totalPDP, totalPDA, totalPDM, totalPNP, totalPNA, totalPNM, absent_status, late_status, phone_status, relief_status)
 			if is_not_error:
@@ -4489,6 +4491,7 @@ def editRecord_temp(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_d
 
 
 
+# amnaj
 def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,
 	ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,
 	totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,
@@ -4598,20 +4601,96 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 				if record is not None:
 					return False, "พนักงานเข้างานที่หน่วยงานอื่น"
 
+				# amnaj
 				# CheckBetweenShift()
+				CheckBetweenShift = False
+
 				sql = "select a.*,b.shf_type,b.shf_time_frm,b.shf_time_to"
 				sql += " from dly_plan a left join t_shift b on a.sch_shift=b.shf_id"
 				sql += " where a.dly_date='" + str(dly_date) + "'"
 				sql += " and a.emp_id=" + str(emp_id)
 				sql += " and a.absent=0"
+				print("SQL:", sql)
 				cursor = connection.cursor()
 				cursor.execute(sql)
 				record = cursor.fetchone()
-				cursor.close()				
-				if record is not None:
+				cursor.close()			
+				if record is not None:					
 					# TODO: ตรวจสอบกรณียอมให้พนักงานเข้าเวรคร่อมกับหน่วยงานที่เข้าเวรอยู่ล้ว
-					return False, "พนักงานเข้าเวรคร่อมกับหน่วยงาน"
+					messcross = str(record[0]) + " Shift No =" + str(record[3])
+					print(messcross)
 
+					Shp = shift_id
+					# print(Shp)
+					Gtype = record[47]
+					# print(Gtype)
+					Gfrom = record[48]
+					# print(Gfrom)
+					Gto = record[49]
+					# print(Gto)
+					if Shp != 0:
+						sql = "Select SHF_TYPE, SHF_TIME_FRM, SHF_TIME_TO from t_shift where shf_id=" + str(Shp)
+						cursor = connection.cursor()
+						cursor.execute(sql)
+						check_dup_record = cursor.fetchone()
+						cursor.close()			
+						if check_dup_record is not None:
+							Stype = check_dup_record[0]
+							Sfrom = check_dup_record[1]
+							Sto = check_dup_record[2]
+
+						if Sfrom != 0 and Gfrom != 0:
+							print("???")
+						else:
+							print("Exit Function")
+
+					'''
+					Hst = 0
+					Hen = 0
+					HDiff = 0
+					mdiff = 0
+					Timecross = 0
+					'''
+
+					if Gfrom < Sfrom:
+						sql = "SELECT TIME_VALUE FROM "
+						sql += "( "
+						sql += "SELECT TIME_VALUE FROM T_TIME "
+						sql += " WHERE TIME_VALUE BETWEEN " + str(Gfrom) + " AND " + str(Gto)
+						if Sto > Sfrom:
+							sql += ") a WHERE TIME_VALUE BETWEEN " + str(Sfrom) + " AND " + str(Sto)
+						else:
+							sql += ") a WHERE TIME_VALUE BETWEEN " + str(Sfrom) + " AND  2400"
+					elif Gfrom > Sfrom:
+						sql = "SELECT TIME_VALUE FROM "
+						sql += "( "
+						sql += "SELECT TIME_VALUE FROM T_TIME "
+						sql += " WHERE TIME_VALUE BETWEEN " + str(Sfrom) + " AND " + str(Sto)
+						if Gto > Gfrom:
+							sql += ") a WHERE TIME_VALUE BETWEEN " + str(Gfrom) + " AND " + str(Gto)
+						else:
+							sql += ") a WHERE TIME_VALUE BETWEEN " + str(Gfrom) + " AND  2400"
+					else:
+						print("Exit Function")
+
+					# print("SQLL:", sql)					
+					cursor = connection.cursor()
+					cursor.execute(sql)
+					check_dup_record = cursor.fetchone()
+					cursor.close()
+
+					if check_dup_record is not None:
+						CheckBetweenShift = False
+					else:
+						if Gto == Sfrom:
+							CheckBetweenShift = False
+							print("Exit Function")	
+						else:
+							CheckBetweenShift = True
+							return False, "พนักงานเข้าเวรคร่อมกับหน่วยงาน"
+
+			# amnaj	
+			# return False, "ABC"
 
 			# ป้องกันการกลับมาแก้ไข Absent หากรปภ.เข้าเวรอื่นอยู่และเวลาคร่อมกับหน่วยงานอื่น
 			if ui_relief_status==1:
@@ -5392,6 +5471,7 @@ def ajax_save_daily_attendance(request):
 		# print("Add Mode")
 		# is_add_record_success, message = addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id,Tday7,Tdof)
 		is_add_record_success, message = addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id,Tday7,Tdof,customer_wage_rate_id,customer_zone_id)
+
 		if is_add_record_success:
 			success_status = True
 			title = "Success"
@@ -5504,6 +5584,10 @@ def checkManPower(cnt_id, job_type, shift_type, dly_date):
 def validateInput(dly_date, cnt_id, emp_id, shift_id, shift_type, shift_name, job_type, totalNDP, totalNDA, totalNDM, totalNNP, totalNNA, totalNNM, totalPDP, totalPDA, totalPDM, totalPNP, totalPNA, totalPNM, absent_status, late_status, phone_status, relief_status):
 	isPass = True
 	message = ""
+
+
+	# amnaj
+	# return True, "AA"
 
 	is_public_holiday, message = isPublicHoliday(dly_date)
 
