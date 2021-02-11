@@ -12,6 +12,9 @@
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper bg-white">
   
+
+
+  <!-- SEARCH -->
   <div class="content-header pt-2" style="padding:0">
     <div class="col-6 offset-3">
     <form id="contract_number_form" method="POST" class="form-inline">
@@ -41,7 +44,7 @@
 
     
 
-    <!-- HEADER -->
+    <!-- CUSTOMER HEADER -->
     <div class="card card-default collapsed-card" style="background-color: #018349;">
 
       <div class="card-header" style="padding:8px 15px 4px 4px;">
@@ -71,16 +74,10 @@
           <button id="cancelCreateContract" type="reset" class="btn btn-sm btn-outline-light pull-right">Cancel</button>
           <button id="saveContract" class="btn btn-sm btn-outline-light">&nbsp;&nbsp;&nbsp;<i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}&nbsp;&nbsp;&nbsp;</button>
 
-          <!--
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus text-primary"></i></button>
-          -->
         </div>
-
-
       </div>
 
-      <div class="card-body" style="background-color: #E8E8E8; padding:4px 2px 2px 2px;">
+      <div class="card-body" style="background-color: #a6caae; padding:4px 2px 2px 2px;">
 
         <div class="" id="show-error">
         {% if contract_create_form.errors %}
@@ -107,10 +104,10 @@
 
             <ul class="nav nav-tabs" id="myTab" role="tablist">
               <li class="nav-item">
-                <a class="nav-link active" id="thai-tab" data-toggle="tab" href="#thai" role="tab" aria-controls="thai" aria-selected="true">TH</a>
+                <a class="nav-link active text-dark" id="thai-tab" data-toggle="tab" href="#thai" role="tab" aria-controls="thai" aria-selected="true">TH</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" id="english-tab" data-toggle="tab" href="#english" role="tab" aria-controls="english" aria-selected="false">EN</a>
+                <a class="nav-link text-dark" id="english-tab" data-toggle="tab" href="#english" role="tab" aria-controls="english" aria-selected="false">EN</a>
               </li>
             </ul>
 
@@ -274,7 +271,7 @@
 
 
 
-
+    <div class="clearfix pt-1"></div>
 
 
     <!-- CONTRACT INFO -->
@@ -624,6 +621,10 @@
 
 
 
+    <div class="clearfix pt-1"></div>    
+
+
+    <!-- SERVICE LIST -->
     <div id="service_list_table" class="card card-default">
 
       <div class="card-header" style="background-color: #DCDCDC; padding:5px 15px 5px 5px;">
