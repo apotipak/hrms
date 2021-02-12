@@ -17,9 +17,15 @@
 		  <div class="form-row">
 		    <div class="form-group">
 		      <label for="inputPassword6">Schedule No</label>&nbsp;&nbsp;
-		      {% render_field form.cus_id %}&nbsp;
-		      {% render_field form.cus_brn %}&nbsp;
-		      {% render_field form.cus_vol %}&nbsp;&nbsp;
+		      <!--{% render_field form.cus_id %}&nbsp;-->
+		      <input type="number"  maxlength="4" name="cus_id" class="form-control form-control-md col-2" placeholder="" required="" id="id_cus_id" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">&nbsp;
+		      
+		      <!--{% render_field form.cus_brn %}&nbsp;-->
+		      <input type="number"  maxlength="3" name="cus_brn" class="form-control form-control-md col-2" placeholder="" required="" id="id_cus_brn" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">&nbsp;
+
+		      <!--{% render_field form.cus_vol %}&nbsp;&nbsp;-->
+		      <input type="number"  maxlength="3" name="cus_vol" class="form-control form-control-md col-2" placeholder="" required="" id="id_cus_vol" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">&nbsp;&nbsp;
+
 		      <button id="cancelCustomerServicePersonButton" type="button" class="btn btn-md btn-warning pull-right">Cancel</button>
 		    </div>
 		  </div>
