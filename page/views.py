@@ -12,6 +12,7 @@ from django.contrib import messages
 from django.utils.translation import ugettext as _
 from page.rules import *
 from base64 import b64encode
+import os
 
 
 @login_required(login_url='/accounts/login/')
@@ -155,3 +156,7 @@ def userlanguage(request):
         'database': settings.DATABASES['default']['NAME'],
         'host': settings.DATABASES['default']['HOST'],        
     })
+
+
+def openCarFormPage(request):    
+    return render(request, 'page/open_car_form_page.html') 

@@ -1,5 +1,9 @@
+from django.http import HttpResponse
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
 from django.db import connection
 import datetime
+import os
 
 
 def convertStringToDate(str_date):
@@ -122,3 +126,8 @@ def getDayPub(strDate):
 			return 1
 		else:
 			return 0
+
+
+def openCarForm(request):
+    os.startfile("C:\CARFORM\Carform.exe")
+    return render(request, 'page/open_car_form_page.html') 

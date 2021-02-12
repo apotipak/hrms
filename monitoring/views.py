@@ -3066,9 +3066,7 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 	else:
 		return False, message
 	# ******* END ***********	
-
-
-	# amnaj
+	
 	# return False, "debug111"
 
 	# Call SetVariable("DLY_PLAN")
@@ -3395,6 +3393,8 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 	allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id,Tday7,
 	Tdof,customer_wage_rate_id,customer_zone_id):
 	
+	print("tel_time BBBB:", tel_time)
+
 	# message = str(late_from) + " | " + str(late_to) + " | " + str(late_hour) + " | " + str(job_type)
 	# return False, message
 
@@ -3571,6 +3571,9 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 			Ttel_amt = 0
 			Ttel_paid = 0		
 
+
+		print("AAAA")
+
 		# OVERTIME
 		# late_from, late_to,late_reason_option, late_hour, late_full_paid_status
 		Tot = 0 if ui_ot_status==0 else 1
@@ -3688,11 +3691,13 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		sql += "relieft_id=" + str(Trelief_id) + ","
 		sql += "tel_man=" + str(tel_man) + ","
 
-
+		'''
 		if (Ttel_time is None):
 			sql += "tel_time=null,"			
 		else:
 			sql += "tel_time='" + str(Ttel_time) + "',"
+		'''
+		sql += "tel_time='" + str(datetime.datetime.now())[:-10] + "',"
 
 		sql += "tel_amt=" + str(Ttel_amt) + ","
 		sql += "tel_paid=" + str(Ttel_paid) + ","
@@ -3719,7 +3724,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		sql += "pub=" + str(Tpub) + ","
 		sql += "dof=" + str(Tdof) + ","		
 		sql += "day7=" + str(Tday7) + ","		
-		sql += "upd_date='" + str(datetime.datetime.now())[:-10] + "',"		
+		sql += "upd_date='" + str(datetime.datetime.now())[:-10] + "',"
 		sql += "upd_by='" + str(username) + "',"
 		sql += "upd_flag='E'" + ","
 		sql += "remark='" + str(job_type) + "' "		
@@ -3728,7 +3733,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		sql += "and emp_id=" + str(emp_id) + " "
 		sql += "and sch_shift=" + str(shift_id)
 
-		# print("sql check:", sql)
+		print("sql check:", sql)
 		# return False, "TEST"
 
 		try:
@@ -4490,8 +4495,6 @@ def editRecord_temp(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_d
 	return is_pass, message
 
 
-
-# amnaj
 def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,
 	ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,
 	totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,
@@ -4601,7 +4604,6 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 				if record is not None:
 					return False, "พนักงานเข้างานที่หน่วยงานอื่น"
 
-				# amnaj
 				# CheckBetweenShift()
 				CheckBetweenShift = False
 
@@ -4689,7 +4691,6 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 							CheckBetweenShift = True
 							return False, "พนักงานเข้าเวรคร่อมกับหน่วยงาน"
 
-			# amnaj	
 			# return False, "ABC"
 
 			# ป้องกันการกลับมาแก้ไข Absent หากรปภ.เข้าเวรอื่นอยู่และเวลาคร่อมกับหน่วยงานอื่น
@@ -5457,6 +5458,7 @@ def ajax_save_daily_attendance(request):
 	if AEdly == 0: # EDIT MODE
 		# print("Edit Mode")
 
+		# amnaj
 		is_edit_record_success, message = editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id,Tday7,Tdof,customer_wage_rate_id,customer_zone_id)
 		if is_edit_record_success:
 			success_status = True
@@ -5585,8 +5587,6 @@ def validateInput(dly_date, cnt_id, emp_id, shift_id, shift_type, shift_name, jo
 	isPass = True
 	message = ""
 
-
-	# amnaj
 	# return True, "AA"
 
 	is_public_holiday, message = isPublicHoliday(dly_date)
