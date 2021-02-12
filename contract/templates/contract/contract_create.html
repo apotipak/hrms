@@ -23,10 +23,15 @@
       <div class="form-row">
         <div class="form-group">
           <label for="inputPassword6">Contract No</label>&nbsp;&nbsp;
-          {% render_field contract_create_form.cus_id %}&nbsp;
-          {% render_field contract_create_form.cus_brn %}&nbsp;&nbsp;
+          <!--{% render_field contract_create_form.cus_id %}&nbsp;-->
+          <input type="number" maxlength="4" name="cus_id" step="any" class="form-control form-control-md col-3" placeholder="" autocomplete="off" id="id_cus_id" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">&nbsp;
+
+          <!--{% render_field contract_create_form.cus_brn %}&nbsp;&nbsp;-->
+          <input type="number" maxlength="3" name="cus_brn" step="any" class="form-control form-control-md col-2" placeholder="" autocomplete="off" id="id_cus_brn" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">&nbsp;
+
           <label for="inputPassword6">Vol</label>&nbsp;&nbsp;
-          {% render_field contract_create_form.cus_vol %}&nbsp;
+          <!--{% render_field contract_create_form.cus_vol %}&nbsp;-->
+          <input type="number" maxlength="3" name="cus_vol" step="any" class="form-control form-control-md col-2" placeholder="" autocomplete="off" id="id_cus_vol" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">&nbsp;
         
           <button id="contract_lookup" type="button" class="btn btn-outline-primary btn-md" data-toggle="modal" data-url="{% url 'get_contract_list' %}"><i class="fas fa-search fa-md"></i></button>
 
