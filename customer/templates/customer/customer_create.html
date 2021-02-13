@@ -51,60 +51,70 @@
   <!-- Main content -->  
   <section class="content" id="main-content">
 
-    {% comment %}
+
     <!-- TEST -->
-    <div class="row">          
-      <div class="col-12">
-        <!--<h4>Nav Tabs inside Card Header <small>card-tabs / card-outline-tabs</small></h4>-->
-      </div>
-    </div>
-    <!-- ./row -->
+    <div class="card card-default" style="background-color: #018349;">
 
-    <div class="row">
-      <div class="col-12 col-sm-12 col-md-12 col-lg-12">
-        <div class="card card-success card-tabs">
-
-          <div class="card-header p-0 pt-1">
-
-            <div class="float-left">
-              <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
-                <li class="nav-item">
-                  <a class="nav-link active" id="custom-tabs-one-home-tab" data-toggle="pill" href="#custom-tabs-one-home" role="tab" aria-controls="custom-tabs-one-home" aria-selected="true">Main Office</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" id="custom-tabs-one-profile-tab" data-toggle="pill" href="#custom-tabs-one-profile" role="tab" aria-controls="custom-tabs-one-profile" aria-selected="false">Site</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" id="custom-tabs-one-messages-tab" data-toggle="pill" href="#custom-tabs-one-messages" role="tab" aria-controls="custom-tabs-one-messages" aria-selected="false">Billing</a>
-                </li>
-              </ul>
-            </div>
-
-            <div class="card-tools pt-1 pr-3">
-              <button id="cancelCustomerForm" type="reset" class="btn btn-sm btn-outline-light pull-right">Cancel</button>
-              <button id="saveCustomerForm" class="btn btn-sm btn-outline-light">&nbsp;&nbsp;&nbsp;<i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}&nbsp;&nbsp;&nbsp;</button>
-            </div>            
-          </div>
-
-          <div class="card-body">
-            <div class="tab-content" id="custom-tabs-one-tabContent">
-              <div class="tab-pane fade show active" id="custom-tabs-one-home" role="tabpanel" aria-labelledby="custom-tabs-one-home-tab">
-                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin malesuada lacus ullamcorper dui molestie, sit amet congue quam finibus. Etiam ultricies nunc non magna feugiat commodo. Etiam odio magna, mollis auctor felis vitae, ullamcorper ornare ligula. Proin pellentesque tincidunt nisi, vitae ullamcorper felis aliquam id. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Proin id orci eu lectus blandit suscipit. Phasellus porta, ante et varius ornare, sem enim sollicitudin eros, at commodo leo est vitae lacus. Etiam ut porta sem. Proin porttitor porta nisl, id tempor risus rhoncus quis. In in quam a nibh cursus pulvinar non consequat neque. Mauris lacus elit, condimentum ac condimentum at, semper vitae lectus. Cras lacinia erat eget sapien porta consectetur. 
-              </div>
-              <div class="tab-pane fade" id="custom-tabs-one-profile" role="tabpanel" aria-labelledby="custom-tabs-one-profile-tab">
-                 Mauris tincidunt mi at erat gravida, eget tristique urna bibendum. Mauris pharetra purus ut ligula tempor, et vulputate metus facilisis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Maecenas sollicitudin, nisi a luctus interdum, nisl ligula placerat mi, quis posuere purus ligula eu lectus. Donec nunc tellus, elementum sit amet ultricies at, posuere nec nunc. Nunc euismod pellentesque diam. 
-              </div>
-              <div class="tab-pane fade" id="custom-tabs-one-messages" role="tabpanel" aria-labelledby="custom-tabs-one-messages-tab">
-                 Morbi turpis dolor, vulputate vitae felis non, tincidunt congue mauris. Phasellus volutpat augue id mi placerat mollis. Vivamus faucibus eu massa eget condimentum. Fusce nec hendrerit sem, ac tristique nulla. Integer vestibulum orci odio. Cras nec augue ipsum. Suspendisse ut velit condimentum, mattis urna a, malesuada nunc. Curabitur eleifend facilisis velit finibus tristique. Nam vulputate, eros non luctus efficitur, ipsum odio volutpat massa, sit amet sollicitudin est libero sed ipsum. Nulla lacinia, ex vitae gravida fermentum, lectus ipsum gravida arcu, id fermentum metus arcu vel metus. Curabitur eget sem eu risus tincidunt eleifend ac ornare magna. 
-              </div>              
-            </div>
-
+      <!-- SEARCH -->
+      <div class="card-header" style="padding:8px 15px 4px 4px;">        
+        <h1 class="card-title"><span id="customer_name_title"><button type='button' class='btn text-light' style="background-color: #018349;"><span style='font-size:18px;font-weight:bold;'>CUSTOMER</span></button></span></h1>
+        <div class="card-tools pt-1 pr-1">
+          <button id="cancelCreateContract" type="reset" class="btn btn-sm btn-outline-light pull-right">Cancel</button>
+          <button id="saveContract" class="btn btn-sm btn-outline-light">&nbsp;&nbsp;&nbsp;<i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}&nbsp;&nbsp;&nbsp;</button>
         </div>
-        <!-- /.card -->
       </div>
+      <!-- SEARCH -->
+
+
+      <!-- BODY -->
+      <div class="card-body" style="background-color: #a6caae; padding:4px 2px 2px 2px;">
+        <div class="row">
+          <div class="col-12">
+
+            <!-- Tab Header -->
+            <ul class="nav nav-tabs active text-dark" id="myTab" role="tablist">              
+              <li class="nav-item active"><a class="nav-link text-dark active" id="mainoffice-tab" data-toggle="tab" href="#mainoffice" role="tab" aria-controls="mainoffice">{% trans 'Main Office' %}</a></li>
+              <li class="nav-item"><a class="nav-link text-dark" id="site-tab" data-toggle="tab" href="#site" role="tab" aria-controls="site">{% trans 'Site' %}</a></li>
+              <li class="nav-item"><a class="nav-link text-dark" id="billing-tab" data-toggle="tab" href="#billing" role="tab" aria-controls="billing">{% trans 'Billing' %}</a></li>
+            </ul>
+            <!-- Tab Header -->
+
+
+            <!-- Tab Content -->
+            <div class="tab-content bg-white" id="customerContent" style="padding:2px 5px 2px 5px;">
+              
+              <!-- Main Office Tab -->              
+              <div class="tab-pane fade show active" id="mainoffice" role="tabpanel" aria-labelledby="mainoffice-tab">
+
+
+              </div>
+              
+
+              <!-- Site Tab -->
+              <div class="tab-pane" id="site" role="tabpanel" aria-labelledby="site-tab">
+
+              </div>
+
+
+              <!-- Billing Tab -->
+              <div class="tab-pane fade" id="billing" role="tabpanel" aria-labelledby="billing-tab">
+
+              </div>
+
+
+            </div>
+            <!-- Tab Content -->
+
+
+          </div>
+        </div>
+      </div>
+      <!-- BODY -->
+
     </div>
     <!-- TEST -->
-    {% endcomment %}
+
+
 
 
     <!-- Default box -->
