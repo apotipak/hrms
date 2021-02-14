@@ -3867,7 +3867,7 @@ def save_all_cus_tabs(request):
 
             else:
                 if count_modified_field > 0:
-                    response_data['result'] = "Updated complete."
+                    response_data['result'] = "บันทึกรายการสำเร็จ"
                     response_data['form_is_valid'] = True
                     response_data['class'] = 'bg-success'
 
@@ -3884,7 +3884,7 @@ def save_all_cus_tabs(request):
                         response_data['cus_bill_new_contact_id'] = cus_bill_new_contact_id
 
                 else:
-                    response_data['result'] = "Sorry, nothing to update."
+                    response_data['result'] = "ยังไม่มีรายการที่แก้ไข"
                     response_data['form_is_valid'] = True
                     response_data['class'] = 'bg-warning'
 
