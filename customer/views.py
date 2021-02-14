@@ -151,6 +151,7 @@ def ajax_check_exist_cus_main(request):
                     if cus_main.cus_contact_id is None:
                         print("abc")
                         cus_main_cus_contact_id = 0
+                        cus_main_con_title_id = 129
                         cus_main_cus_contact_title_th = "คุณ"
                         cus_main_cus_contact_fname_th = ""
                         cus_main_cus_contact_lname_th = ""
@@ -166,6 +167,7 @@ def ajax_check_exist_cus_main(request):
                     else:
                         print("xyz")
                         cus_main_cus_contact_id = cus_main.cus_contact_id
+                        cus_main_con_title_id = cus_main.cus_contact.con_title_id
                         cus_main_cus_contact_title_th = cus_main.cus_contact.con_title.title_th
                         cus_main_cus_contact_fname_th = cus_main.cus_contact.con_fname_th
                         cus_main_cus_contact_lname_th = cus_main.cus_contact.con_lname_th
@@ -204,8 +206,8 @@ def ajax_check_exist_cus_main(request):
                         "cus_fax": cus_main.cus_fax,
                         "cus_email": cus_main.cus_email,
                         "cus_zone": cus_main.cus_zone_id,
-                        "cus_contact_id": cus_main.cus_contact_id,
-                        "cus_contact_con_title_id": cus_main.cus_contact.con_title_id,
+                        "cus_contact_id": cus_main_cus_contact_id,
+                        "cus_contact_con_title_id": cus_main_con_title_id,
                         "cus_contact_title_th": cus_main_cus_contact_title_th,
                         "cus_contact_fname_th": cus_main_cus_contact_fname_th,
                         "cus_contact_lname_th": cus_main_cus_contact_lname_th,
@@ -359,6 +361,7 @@ def ajax_check_exist_cus_site(request):
 
                 if customer_site.site_contact_id is None or customer_site.site_contact_id == "":
                     cus_site_site_contact_id = 0
+                    cus_site_site_contact_title_id = 129
                     cus_site_site_contact_title_th = "คุณ"
                     cus_site_site_contact_fname_th = ""
                     cus_site_site_contact_lname_th = ""

@@ -2562,6 +2562,7 @@
     cus_bill_cus_contact_con_mobile = $("#id_cus_bill_cus_contact_con_mobile").val();
     cus_bill_cus_contact_con_email = $("#id_cus_bill_cus_contact_con_email").val();
 
+    /*
     console.log("--------cus_bill---------\n");
     console.log(cus_bill_cus_contact_id + "," + 
       cus_bill_select_contact_title_id + "," +
@@ -2577,6 +2578,7 @@
       cus_bill_cus_contact_con_mobile + "," +
       cus_bill_cus_contact_con_email);
     console.log("--------end---------\n\n\n");
+    */
 
     $.ajax({
       url : "/customer/ajax/save_all_cus_tabs/",
@@ -2626,8 +2628,6 @@
         cus_main_cus_contact_con_nationality_id: cus_main_cus_contact_con_nationality_id,
         cus_main_cus_contact_con_mobile: cus_main_cus_contact_con_mobile,
         cus_main_cus_contact_con_email: cus_main_cus_contact_con_email,
-
-
 
 
 
@@ -2699,7 +2699,7 @@
         if(json.form_is_valid) {
           $(document).Toasts('create', {
             class: json.class, 
-            title: "{% trans 'System message' %}",
+            title: "{% trans 'Message' %}",
             subtitle: '',
             autohide: true,
             delay: 2000,
@@ -2708,6 +2708,8 @@
             close: true,
             autoremove: true,
           });
+
+          alert("abc");
 
           if(json.is_cus_main_has_new_contact) {
             $('#id_cus_main_cus_contact_id').val(json.cus_main_new_contact_id);            
