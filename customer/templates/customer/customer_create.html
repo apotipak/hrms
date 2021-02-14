@@ -113,7 +113,7 @@
 
                   </div>
                 </div>   
-                
+
                 <!-- Main Office Tab Thai -->            
                 <div class="col-md-6 float-left">
                   <div class="card card-info">
@@ -1380,12 +1380,11 @@
       $('#cus_bill_form').trigger("reset");
 
       $("#main-content :input").attr("disabled", true);
-
+      $('#customer_name_title').html("<button type='button' class='btn text-light' style='background-color: #018349;'><span style='font-size:18px;font-weight:bold;'>Customer</span></button>");
     });
 
   });
 
-  // amnaj
   $('#customer_lookup').on('click', function (e) {
     //$("#id_search_number_of_found_record").html("");
     //var obj = $(this);  
@@ -1859,6 +1858,7 @@
 
           $('#id_cus_brn').focus();
 
+          // amnaj
           var cus_main_cus_active = data.results[0]["cus_active"];
           var cus_main_cus_name_th = data.results[0]["cus_name_th"];
           var cus_main_cus_add1_th = data.results[0]["cus_add1_th"];
@@ -1908,6 +1908,8 @@
             $('#id_cus_main_cus_active').val(0);
             $('#id_cus_main_cus_active').prop("checked", false);
           }
+          
+          $('#customer_name_title').html("<button type='button' class='btn text-light' style='background-color: #018349;'><span style='font-size:18px;font-weight:bold;'>" + cus_main_cus_name_th + "</span></button>");
 
           $('#id_cus_main_cus_name_th').val(cus_main_cus_name_th);
           $('#id_cus_main_cus_add1_th').val(cus_main_cus_add1_th);
