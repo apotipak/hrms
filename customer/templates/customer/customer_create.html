@@ -21,8 +21,8 @@
         <div class="col-8 offset-2">
           <div class="form-row">
             <div class="col-3 mt-1 text-nowrap text-right"><strong>Customer Code</strong>&nbsp;&nbsp;&nbsp;</div>
-            <div class="col-3"><input type="text" name="cus_id" class="form-control form-control-md" required="" id="id_cus_id" placeholder="ID" autocomplete="off"></div>
-            <div class="col-3"><input type="text" name="cus_brn" class="form-control form-control-md" id="id_cus_brn" placeholder="BRANCH" autocomplete="off"></div>
+            <div class="col-3"><input type="number" name="cus_id" class="form-control form-control-md" required="" id="id_cus_id" maxlength="4" placeholder="ID" autocomplete="off" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"></div>
+            <div class="col-3"><input type="number" name="cus_brn" class="form-control form-control-md" id="id_cus_brn" maxlength="3" placeholder="BRANCH" autocomplete="off" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"></div>
             <div class="col-3"><button id="customer_lookup" type="button" class="btn btn-outline-primary btn-md" data-toggle="modal" data-url="{% url 'get_customer_list' %}"><i class="fas fa-search fa-md"></i></button></div>
           </div>
         </div>
@@ -1381,6 +1381,8 @@
 
       $("#main-content :input").attr("disabled", true);
       $('#customer_name_title').html("<button type='button' class='btn text-light' style='background-color: #018349;'><span style='font-size:18px;font-weight:bold;'>Customer</span></button>");
+
+      $("#id_cus_id").focus();
     });
 
   });
@@ -1397,6 +1399,11 @@
     }, 0);
   });
 
+  $("#id_cus_brn").bind("focus",function(e){
+    window.setTimeout(function() {
+      $("#id_cus_brn").select();
+    }, 0);
+  });
 
   $(document).on('keyup keypress', '#cus_site_search_district_modal_form input[type="text"]', function(e) {
     if(e.which == 13) {
@@ -1825,15 +1832,6 @@
   $(".nav-tabs a[data-toggle=tab]").on("click", function(e) {
      var cus_id = $('#id_cus_id').val();
      var cus_brn = $('#id_cus_brn').val();
-
-     console.log("nav-tabs click | " + cus_id + ", " + cus_brn);
-
-    /*
-    if ($(this).hasClass("disabled")) {
-      e.preventDefault();
-      return false;
-    }
-    */
   });
 
   // Update Main Office
@@ -1909,7 +1907,12 @@
             $('#id_cus_main_cus_active').prop("checked", false);
           }
           
-          $('#customer_name_title').html("<button type='button' class='btn text-light' style='background-color: #018349;'><span style='font-size:18px;font-weight:bold;'>" + cus_main_cus_name_th + "</span></button>");
+          if(data.results[0]["cus_id"]==null) {
+            $('#customer_name_title').html("<button type='button' class='btn text-light' style='background-color: #018349;'><span style='font-size:18px;font-weight:bold;'>Add new customer</span></button>");
+          }          
+          else {
+            $('#customer_name_title').html("<button type='button' class='btn text-light' style='background-color: #018349;'><span style='font-size:18px;font-weight:bold;'>" + cus_main_cus_name_th + "</span></button>");
+          }
 
           $('#id_cus_main_cus_name_th').val(cus_main_cus_name_th);
           $('#id_cus_main_cus_add1_th').val(cus_main_cus_add1_th);
@@ -2464,6 +2467,7 @@
     cus_main_cus_contact_con_mobile = $("#id_cus_main_cus_contact_con_mobile").val();
     cus_main_cus_contact_con_email = $("#id_cus_main_cus_contact_con_email").val();
 
+    /*
     console.log("--------cus_main---------\n");
     console.log(
       cus_main_cus_contact_id + "," + 
@@ -2480,6 +2484,7 @@
       cus_main_cus_contact_con_mobile + "," +
       cus_main_cus_contact_con_email);
     console.log("--------end---------\n\n\n");
+    */
 
     // CUS_SITE
     if ($('#id_cus_site_cus_active').is(":checked"))
