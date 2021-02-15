@@ -44,13 +44,6 @@
       <div class="card-header" style="padding:8px 15px 4px 4px;">        
         <h1 class="card-title"><span id="customer_name_title"><button type='button' class='btn text-light' style="background-color: #018349;"><span style='font-size:18px;font-weight:bold;'>CUSTOMER</span></button></span></h1>
 
-        <!--
-        <div class="card-tools pt-1 pr-1">
-          <button id="cancelCreateContract" type="reset" class="btn btn-sm btn-outline-light pull-right">Cancel</button>
-          <button id="saveContract" class="btn btn-sm btn-outline-light">&nbsp;&nbsp;&nbsp;<i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}&nbsp;&nbsp;&nbsp;</button>
-        </div>
-        -->
-
         <div class="float-right pt-1 pr-1">
           <button id="cancelSaveAllCustomerTabs" type="button" class="btn btn-sm btn-outline-light pull-right">Cancel</button>
           <button id="saveAllCustomerTabs" type="button" class="btn btn-sm btn-outline-light"><i class="fas fa-save fa-md"></i>&nbsp;&nbsp;{% trans 'Save' %}</button>            
@@ -1565,7 +1558,7 @@
           result += "<div class='row col-12' stye='padding:0;'>";
 
           result += "<div class='col-8 offset-3 pb-2'>";
-          result += "<form id='search_contract_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
+          result += "<form id='search_customer_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
           result += "  <div class='form-group mx-sm-3 mb-2'>";
           result += "  <select name='search_option' class='form-control form-control-sm' required id='id_search_option'>";
           result += "    <option value='1'>Customer Code</option>";
@@ -1586,7 +1579,8 @@
           result += "<table class='table table-hover table-striped table-wrapper-scroll-y my-custom-scrollbar'>";
           result += " <thead>";
           result += "   <tr class='text-left'>";
-          result += "     <th scope='col' class='text-left' nowrap>{% trans 'Customer Code' %}.</th>";
+          result += "     <th scope='col' class='text-left' nowrap>{% trans 'Customer Code' %}</th>";
+          result += "     <th scope='col' class='text-center' nowrap>{% trans 'Branch' %}</th>";
           result += "     <th scope='col' class='text-left'>{% trans 'Customer Name (TH)' %}</th>";
           result += "     <th scope='col' class='text-left'>{% trans 'Customer Name (EN)' %}</th>";
           result += "     <th scope='col'>&nbsp;</th>";
@@ -1604,7 +1598,8 @@
             var cus_name_en = data.results[i]["cus_name_en"];
 
             result += "<tr>";
-            result += "<td class='align-middle'>" + cus_id + "</td>";        
+            result += "<td class='align-middle'>" + cus_id + "</td>";
+            result += "<td class='align-middle text-center'>" + cus_brn + "</td>";
             result += "<td class='align-middle'>" + cus_name_th + "</td>";
             result += "<td class='align-middle'>" + cus_name_en + "</td>";
             result += "<td class='text-right'><a href='javascript:customer_modal_select_item(" + cus_id + "," + cus_brn + ",\"" + cus_name_th + "\",\"" + cus_name_en + "\");' type='button' class='btn btn-outline-primary btn-sm'>&nbsp;&nbsp;Select&nbsp;&nbsp;</a></td>";
@@ -4382,7 +4377,8 @@
           result += "<table class='table table-hover table-striped table-wrapper-scroll-y my-custom-scrollbar w-100'>";
           result += " <thead>";
           result += "   <tr class='text-left'>";
-          result += "     <th scope='col' class='text-left' nowrap>{% trans 'Contract ID' %}.</th>";
+          result += "     <th scope='col' class='text-left' nowrap>{% trans 'Customer Code' %}</th>";
+          result += "     <th scope='col' class='text-center' nowrap>{% trans 'Branch' %}</th>";
           result += "     <th scope='col' class='text-left'>{% trans 'Customer Name (TH)' %}</th>";
           result += "     <th scope='col' class='text-left'>{% trans 'Customer Name (EN)' %}</th>";
           result += "     <th scope='col'>&nbsp;</th>";
@@ -4400,7 +4396,8 @@
             var cus_name_en = data.results[i]["cus_name_en"];
 
             result += "<tr>";
-            result += "<td class='align-middle'>" + cus_id + "</td>";        
+            result += "<td class='align-middle'>" + cus_id + "</td>";
+            result += "<td class='align-middle text-center'>" + cus_brn + "</td>";
             result += "<td class='align-middle'>" + cus_name_th + "</td>";
             result += "<td class='align-middle'>" + cus_name_en + "</td>";
             result += "<td class='text-right'><a href='javascript:customer_select_item(" + cus_id + "," + cus_brn + ",\"" + cus_name_th + "\",\"" + cus_name_en + "\");' type='button' class='btn btn-outline-primary btn-sm'>&nbsp;&nbsp;Select&nbsp;&nbsp;</a></td>";
@@ -4421,7 +4418,7 @@
           result += "<form id='cus_main_search_district_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
           result += "  <div class='form-group mx-sm-3 mb-2'>";
           result += "  <select name='search_option' class='form-control form-control-sm' required id='id_search_option'>";
-          result += "    <option value='1'>Contract ID</option>";
+          result += "    <option value='1'>Customer Code</option>";
           result += "    <option value='2' selected>Name (TH)</option>";
           result += "    <option value='3'>Name (EN)</option>";
           result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";          
