@@ -11,6 +11,7 @@ urlpatterns = [
     path('customer/<int:pk>/update', views.CustomerUpdate, name='cus-main-update'),
    	path('customer/<int:pk>/delete', views.CustomerDelete, name='customer-delete'),
     url(r'^ajax/get_customer_list/$', views.get_customer_list, name='get_customer_list'),
+    url(r'^ajax/get_customer_list_modal/$', views.get_customer_list_modal, name='get_customer_list_modal'),
 ]
 
 urlpatterns += [

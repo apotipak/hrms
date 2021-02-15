@@ -1460,7 +1460,7 @@
     });
     $.LoadingOverlay("show"); 
   }
-    
+
   $(document).ready(function(){
     $('#id_cus_id').focus();
     $("#main-content :input").attr("disabled", true);    
@@ -1483,6 +1483,20 @@
       $('#customer_lookup').attr("disabled", false);
 
       $("#id_cus_id").focus();
+    });
+
+    $(document).on('keyup keypress', '#id_search_text', function(e) {
+      if(e.which == 13) {
+        
+        e.preventDefault();
+        if(this.value=="") {
+          return false;  
+        } else {
+          //console.log("check");
+          customer_search_modal();          
+        }
+        
+      }
     });
 
   });
@@ -1516,14 +1530,14 @@
           result += "<form id='search_contract_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
           result += "  <div class='form-group mx-sm-3 mb-2'>";
           result += "  <select name='search_option' class='form-control form-control-sm' required id='id_search_option'>";
-          result += "    <option value='1'>Contract ID</option>";
+          result += "    <option value='1'>Customer Code</option>";
           result += "    <option value='2' selected>Customer Name (TH)</option>";
           result += "    <option value='3'>Customer Name (EN)</option>";
           result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";
           result += "    <label for='id_cus_main_search_district' class='sr-only'>Search</label>";            
           result += "    <input type='text' class='form-control form-control-sm' id='id_search_text' name='search_text' autocomplete='off' value=''>";
           result += "  </div>";
-          result += "<a href='javascript:cus_contract_search_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";            
+          result += "<a href='javascript:customer_search_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";            
           result += "</form>";
           result += "</div>";
 
@@ -4250,7 +4264,7 @@
 
 
 
-  function customer_modal_select_item(cus_id, cus_brn, cnt_name_th, cnt_name_en) {    
+  function customer_select_item(cus_id, cus_brn, cnt_name_th, cnt_name_en) {
     loadCustomer(cus_id, cus_brn);    
   };
 
@@ -4265,6 +4279,136 @@
     $("#search_customer_modal").modal("hide");    
     $.LoadingOverlay("hide");
   }
+
+
+  function customer_search_modal() {
+
+    page_no = 1;
+    search_option = $('#id_search_option').val(); //1=cus_id, 2=cus_name_th, 3=cus_name_en
+    search_text = $('#id_search_text').val();
+
+    if(search_text=="") {
+      $.alert({
+          title: 'Error',
+          type: 'red',
+          content: "กรุณาป้อนข้อมูลที่ต้องการค้นหา",
+          animation: 'zoom',
+          animationBounce: 1.5,
+          closeIcon: false,
+          boxWidth: '38%',
+          useBootstrap: false,
+      });      
+      return false;
+    } else {
+      //return false;
+    }  
+
+    $.ajax({
+        url : "/customer/ajax/get_customer_list_modal",
+        type: 'get',   
+        dataType: 'json',
+        data : {          
+          page_no : page_no,
+          search_option : search_option,          
+          search_text : search_text,
+        },
+        success: function (data) {
+          var result = ""
+          var count = data.results.length;
+          var cus_id = data.results[0]["cus_id"];
+          var cus_brn = data.results[0]["cus_brn"];
+          var cus_name_th = data.results[0]["cus_name_th"];
+          var cus_name_en = data.results[0]["cus_name_en"];
+
+          result += "<div class='row col-12' stye='padding:0;'>";
+
+          result += "<div class='col-8 offset-3 pb-2'>";
+          result += "<form id='search_customer_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
+          result += "  <div class='form-group mx-sm-3 mb-2'>";
+          result += "  <select name='search_option' class='form-control form-control-sm' required id='id_search_option'>";
+          result += "    <option value='1'>Customer Code</option>";
+          result += "    <option value='2' selected>Customer Name (TH)</option>";
+          result += "    <option value='3'>Customer Name (EN)</option>";
+          result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";
+          result += "    <label for='id_cus_main_search_district' class='sr-only'>Search</label>";            
+          result += "    <input type='text' class='form-control form-control-sm' id='id_search_text' name='search_text' autocomplete='off' value=''>";
+          result += "  </div>";
+          result += "<a href='javascript:customer_search_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";            
+          result += "</form>";
+          result += "</div>";
+
+          
+          result += "<div class='table-responsive' stye='padding:0;'>";
+          
+          //<table class='table table-responsive table-sm table-striped table-condensed table-wrapper-scroll-y my-custom-scrollbar' id="
+          result += "<table class='table table-hover table-striped table-wrapper-scroll-y my-custom-scrollbar w-100'>";
+          result += " <thead>";
+          result += "   <tr class='text-left'>";
+          result += "     <th scope='col' class='text-left' nowrap>{% trans 'Contract ID' %}.</th>";
+          result += "     <th scope='col' class='text-left'>{% trans 'Customer Name (TH)' %}</th>";
+          result += "     <th scope='col' class='text-left'>{% trans 'Customer Name (EN)' %}</th>";
+          result += "     <th scope='col'>&nbsp;</th>";
+          result += "   </tr>";
+          result += " </thead>";
+
+          result += "<tbody style='font-size:13px;'>";
+          result += "</div>";
+          result += "<div>";
+
+          for(var i=0; i<count; i++) {              
+            var cus_id = data.results[i]["cus_id"];
+            var cus_brn = data.results[i]["cus_brn"];
+            var cus_name_th = data.results[i]["cus_name_th"];
+            var cus_name_en = data.results[i]["cus_name_en"];
+
+            result += "<tr>";
+            result += "<td class='align-middle'>" + cus_id + "</td>";        
+            result += "<td class='align-middle'>" + cus_name_th + "</td>";
+            result += "<td class='align-middle'>" + cus_name_en + "</td>";
+            result += "<td class='text-right'><a href='javascript:customer_select_item(" + cus_id + "," + cus_brn + ",\"" + cus_name_th + "\",\"" + cus_name_en + "\");' type='button' class='btn btn-outline-primary btn-sm'>&nbsp;&nbsp;Select&nbsp;&nbsp;</a></td>";
+            result += "</tr>";          
+          }
+          result += " </tbody>";
+          result += "</table>";            
+          result += "</div>";
+
+          $("#id_search_number_of_found_record").html("ค้นหา&nbsp;&nbsp;&nbsp;<span class='text-success'><b>" + search_text + "</b></span>&nbsp;&nbsp;&nbsp;พบทั้งหมด&nbsp;&nbsp;<b>" + count + "</b>&nbsp;&nbsp;รายการ");
+          
+          $("#search_customer_modal .modal-body").html(result);          
+        },
+        error: function(data){          
+          result = "";
+          result += "<div class='row col-12'>";
+          result += "<div class='col-8 offset-3 pb-2'>";
+          result += "<form id='cus_main_search_district_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
+          result += "  <div class='form-group mx-sm-3 mb-2'>";
+          result += "  <select name='search_option' class='form-control form-control-sm' required id='id_search_option'>";
+          result += "    <option value='1'>Contract ID</option>";
+          result += "    <option value='2' selected>Name (TH)</option>";
+          result += "    <option value='3'>Name (EN)</option>";
+          result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";          
+          result += "    <label for='id_cus_main_search_district' class='sr-only'>Search</label>";            
+          result += "    <input type='text' class='form-control form-control-sm' id='id_search_text' name='search_text' autocomplete='off' value=''>";          
+          result += "  </div>";
+          result += "<a href='javascript:customer_search_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";
+          result += "</form>";
+          result += "</div>";
+
+          result += "<table class='table table-hover table-sm'>";
+          result += " <thead>";
+          result += "   <tr>";
+          result += "     <td colspan='4' class='text-center'><br>ไม่พบรายการ &nbsp;&nbsp;<b>" + search_text + "</b><br><br></td>";
+          result += "   </tr>";
+          result += " </thead>";
+          result += "</tbody>";
+          result += "</table>";
+
+          $("#id_search_number_of_found_record").html("");
+          $("#search_customer_modal .modal-body").html(result);
+        }          
+    });
+  }
+
 
 </script>
 

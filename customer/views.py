@@ -4291,3 +4291,105 @@ def get_customer_list(request):
     return JsonResponse(data={"success": False, "results": ""})
 
 
+
+@login_required(login_url='/accounts/login/')
+def get_customer_list_modal(request):
+
+    print("**********************************")    
+    print("FUNCTION: get_customer_list_modalllll")
+    print("**********************************")
+
+    data = []
+    item_per_page = 500
+    page_no = request.GET["page_no"]
+    search_option = request.GET["search_option"]
+    search_text = request.GET["search_text"]
+
+    # Replace symbol character
+    search_text = search_text.replace("\"", "'")    
+ 
+    # amnaj
+    if search_option == '1':    # Search by cus_id
+        search_text = search_text
+        data = Customer.objects.raw('select cus_no,cus_id,cus_brn,cus_name_th,cus_name_en from customer where not (cus_id is null) and cus_id=%s order by cus_id', tuple([search_text]))
+
+    if search_option == '2':    # Search by cus_name_th
+        search_text = "%" + search_text + "%"        
+        data = Customer.objects.raw('select cus_no,cus_id,cus_brn,cus_name_th,cus_name_en from customer where not (cus_id is null) and cus_name_th like %s order by cus_id', tuple([search_text]))
+
+    if search_option == '3':    # Search by cus_name_en
+        search_text = "%" + search_text + "%"
+        data = Customer.objects.raw('select cus_no,cus_id,cus_brn,cus_name_th,cus_name_en from customer where not (cus_id is null) and cus_name_en like %s order by cus_id', tuple([search_text]))
+
+
+    if data is not None:
+        page = int(page_no)
+        next_page = page + 1
+        if page >= 1:
+            previous_page = page - 1
+        else:
+            previous_page = 0
+
+        paginator = Paginator(data, item_per_page)
+        is_paginated = True if paginator.num_pages > 1 else False        
+
+        try:
+            current_page = paginator.get_page(page)
+        except InvalidPage as e:
+            raise Http404(str(e))
+
+        if current_page:
+            print("current_page")
+            current_page_number = current_page.number
+            current_page_paginator_num_pages = current_page.paginator.num_pages
+
+            pickup_dict = {}
+            pickup_records=[]
+            
+            for d in current_page:
+                cus_name_th = d.cus_name_th.replace("\"", "")
+                cus_name_th = d.cus_name_th.replace("\'", "")
+                cus_name_en = d.cus_name_en.replace("\"", "")
+                cus_name_en = d.cus_name_en.replace("\'", "")
+                print(cus_name_th)
+                record = {
+                    "cus_id": d.cus_id,
+                    "cus_brn": d.cus_brn,
+                    "cus_name_th": cus_name_th,
+                    "cus_name_en": cus_name_en,
+                }
+                pickup_records.append(record)
+
+            response = JsonResponse(data={
+                "success": True,
+                "is_paginated": is_paginated,
+                "page" : page,
+                "next_page" : next_page,
+                "previous_page" : previous_page,
+                "current_page_number" : current_page_number,
+                "current_page_paginator_num_pages" : current_page_paginator_num_pages,
+                "results": list(pickup_records)         
+                })
+            response.status_code = 200
+            return response
+        else:
+            print("not found")      
+            response = JsonResponse(data={
+                "success": False,
+                "results": [],
+            })
+            response.status_code = 403
+            return response
+    else:        
+        print("not found 2")
+        response = JsonResponse(data={
+            "success": False,
+            "error"
+            "results": [],
+        })
+        response.status_code = 403
+        return response
+
+    return JsonResponse(data={"success": False, "results": ""})
+
+
