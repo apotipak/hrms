@@ -120,7 +120,6 @@
                 </div>   
 
 
-                <!--amnaj - Main Office Tab -->
                 <!-- Main Office Tab Thai -->            
                 <div class="row">
                   <div class="col-md-6 float-left pb-2">
@@ -529,6 +528,8 @@
 
 
             
+
+            <!-- amnaj - Site Tab -->
             <!-- Site Tab -->          
             <div class="tab-pane" id="site" role="tabpanel" aria-labelledby="site-tab">
 
@@ -568,10 +569,9 @@
 
 
 
-
+            <!-- amnaj - Site Tab -->
             <div class="container-fluid">
-
-              <!-- amnaj - Site Tab -->
+              
               <div class="row">
 
                 <!-- Site Tab Thai -->
@@ -950,42 +950,67 @@
               </div>
 
 
+
+
+
+
+
+
               <!-- Billing Tab -->
               <div class="tab-pane fade" id="billing" role="tabpanel" aria-labelledby="billing-tab">
-            <div class="clearfix">
-              <div class="float-left">&nbsp;</div>
-              <div class="float-right">
-                <div class="float-left pt-2">
-                  &nbsp;
-                </div>
 
-                <label class="switch">                                 
-                  {% if cus_bill.cus_active|default_if_none:0 %}
-                  <input type="checkbox" id="id_cus_bill_cus_active" name="cus_bill_cus_active" value=1 checked>
-                  {% else %}
-                  <input type="checkbox" id="id_cus_bill_cus_active" name="cus_bill_cus_active" value=0>
-                  {% endif %}                  
-                  <div class="slider"></div>
-                </label>
 
-              </div>
-            </div>
+                <div class="clearfix">
+                  <div class="float-left">&nbsp;</div>
+                  <div class="float-right">
 
-            <div class="container-fluid pt-2">
+                    <div class="mailbox-controls">
+                      <div class="btn-group">
+                        &nbsp;
+                      </div>
+
+                      <div class="float-right">
+                        &nbsp;&nbsp;&nbsp;
+                        <div class="btn-group">
+
+                          <label class="switch">                                 
+                            {% if cus_bill.cus_active|default_if_none:0 %}
+                            <input type="checkbox" id="id_cus_bill_cus_active" name="cus_bill_cus_active" value=1 checked>
+                            {% else %}
+                            <input type="checkbox" id="id_cus_bill_cus_active" name="cus_bill_cus_active" value=0>
+                            {% endif %}                  
+                            <div class="slider"></div>
+                          </label>
+
+                        </div>
+                      </div>
+
+                    </div>
+
+                  </div>
+                </div>            
+
+
+
+
+
+
+            <div class="container-fluid">
 
 
             <form id="cus_bill_form" method="POST" action="{% url 'update_cus_bill' %}">
             {% csrf_token %}
 
-              <div class="row pt-3">
+              <div class="row">
 
                 <!-- Billing Tab Thai -->
                 <div class="col-md-6">
 
-                  <div class="card card-info">
-                    <div class="card-header">
-                      <h3 class="card-title">TH</h3>
+                  <div class="card card-secondary" style="background-color: #eee;">
+                    <div class="card-header" style="background-color: #DCDCDC; padding:0 0 0 5px;">                        
+                      <h1 class="card-title text-dark pt-1"><strong>TH</strong></h1>
                     </div>
+
                     <div class="card-body">
 
                       <div class="form-group">  
@@ -1058,11 +1083,14 @@
 
                 <!-- Billing Tab English -->
                 <div class="col-md-6">
-                  <div class="card card-info">
-                    <div class="card-header">
-                      <h3 class="card-title">EN</h3>
+                  <div class="card card-secondary" style="background-color: #eee;">
+                    <div class="card-header" style="background-color: #DCDCDC; padding:0 0 0 5px;">                        
+                      <h1 class="card-title text-dark pt-1"><strong>EN</strong></h1>
                     </div>
+
+
                     <div class="card-body">
+
 
 
                       <div class="form-group">
@@ -1122,13 +1150,13 @@
 
 
 
-
               <!-- Bill Tab - Others -->
-              <div class="row">
+              <div class="row pt-2">
                 <div class="col-md-12">
+                
                   <div class="card card-info">
-                    <div class="card-body"> 
-
+                    
+                    <div class="card-body" style="padding:0 8px 0 8px; background-color: #eee;"> 
 
                       <div class="form-row">
                         
@@ -1195,14 +1223,14 @@
 
 
               <!-- Bill Tab - Contact Information -->
-              <div class="row">
+              <div class="row pt-2 pb-2">
                 <div class="col-md-12">
                   <div class="card card-info">
-                    <div class="card-header">
-                      <h3 class="card-title">Contact Information</h3>
+                    <div class="card-header" style="background-color: #DCDCDC; padding:0 0 0 5px;">                        
+                      <h1 class="card-title pt-1 text-dark"><strong>Contact Information</strong></h1>
                     </div>
-                    <div class="card-body">
-
+                    
+                    <div class="card-body" style="padding:5px 8px 0 8px; background-color: #eee;">
 
                       <div class="form-row">
                         
