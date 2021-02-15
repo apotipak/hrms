@@ -76,6 +76,9 @@
 
             <!-- Tab Content -->
             <div class="tab-content bg-white" id="customerContent" style="padding:2px 5px 2px 5px;">
+
+
+
               
               
               <!-- Main Office Tab -->              
@@ -112,10 +115,12 @@
                     </div>
 
                   </div>
+
+
                 </div>   
 
 
-
+                <!--amnaj - Main Office Tab -->
                 <!-- Main Office Tab Thai -->            
                 <div class="row">
                   <div class="col-md-6 float-left pb-2">
@@ -523,12 +528,14 @@
 
 
 
-
-              <!-- Site Tab -->
-              <div class="tab-pane" id="site" role="tabpanel" aria-labelledby="site-tab">
+            
+            <!-- Site Tab -->          
+            <div class="tab-pane" id="site" role="tabpanel" aria-labelledby="site-tab">
 
             <form id="cus_site_form" method="POST" action="{% url 'update_cus_site' %}">
             {% csrf_token %}
+
+
 
             <div class="clearfix">
               <div class="float-left">&nbsp;</div>
@@ -552,31 +559,29 @@
                       </label>  
                     </div>
                   </div>
+
                 </div>
 
               </div>
             </div>            
 
 
-            <div class="container-fluid pt-2">
 
 
 
+            <div class="container-fluid">
 
-
-
-
-
-              <div class="row pt-3">
+              <!-- amnaj - Site Tab -->
+              <div class="row">
 
                 <!-- Site Tab Thai -->
                 <div class="col-md-6">
-
-
-                  <div class="card card-info">
-                    <div class="card-header">
-                      <h3 class="card-title">TH</h3>
+                  
+                  <div class="card card-secondary" style="background-color: #eee;">
+                    <div class="card-header" style="background-color: #DCDCDC; padding:0 0 0 5px;">                        
+                      <h1 class="card-title text-dark pt-1"><strong>TH</strong></h1>
                     </div>
+
                     <div class="card-body">
 
                       <div class="form-group">  
@@ -642,12 +647,17 @@
                 </div>
                 <!-- Site Tab Thai End -->
 
-                <!-- Site Tab English -->
-                <div class="col-md-6">
-                  <div class="card card-info">
-                    <div class="card-header">
-                      <h3 class="card-title">EN</h3>
-                    </div>
+
+
+
+                  <!-- Main Office Tab English -->
+                  <div class="col-md-6 float-right">
+                    <div class="card card-secondary" style="background-color: #eee;">
+
+                      <div class="card-header" style="background-color: #DCDCDC; padding:0 0 0 5px;">                        
+                        <h1 class="card-title text-dark pt-1"><strong>EN</strong></h1>
+                      </div>
+
                     <div class="card-body">
 
 
@@ -1502,7 +1512,6 @@
   });
 
 
-  // amnaj - lookup
   $('#customer_lookup').on('click', function (e) {
     $("#id_search_number_of_found_record").html("");
 
@@ -2597,7 +2606,7 @@
 
   }
 
-  // amnaj - id_cus_brn
+  
   // cus_brn
   $(document).on('keypress', '#id_cus_brn', function(e) {
     if(e.which == 13) {      
