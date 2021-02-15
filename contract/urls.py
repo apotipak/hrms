@@ -15,7 +15,7 @@ urlpatterns = [
     
     url(r'^ajax/get_wagerate_list/$', views.get_wagerate_list, name='get_wagerate_list'),
     url(r'^ajax/get_contract_list/$', views.get_contract_list, name='get_contract_list'),    
-    url(r'^ajax/get_customer_list/$', views.get_customer_list, name='get_customer_list'),
+    # url(r'^ajax/get_customer_list/$', views.get_customer_list, name='get_customer_list'),
 
     url(r'^ajax/get_wagerate_list_modal/$', views.get_wagerate_list_modal, name='get_wagerate_list_modal'),
     url(r'^ajax/get_contract_list_modal/$', views.get_contract_list_modal, name='get_contract_list_modal'),

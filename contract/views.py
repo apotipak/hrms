@@ -1541,6 +1541,7 @@ def get_wagerate_list_modal(request):
     return JsonResponse(data={"success": False, "results": ""})
 
 
+'''
 @login_required(login_url='/accounts/login/')
 def get_customer_list(request):
 
@@ -1550,6 +1551,7 @@ def get_customer_list(request):
 
     item_per_page = 500
     return JsonResponse(data={"success": False, "results": ""})
+'''
 
 
 @login_required(login_url='/accounts/login/')

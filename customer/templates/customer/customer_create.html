@@ -1414,6 +1414,36 @@
   </div>
 </div>
 
+
+<!-- Search Customer Modal -->
+<div class="modal fade" id="search_customer_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+
+      <div class="modal-header bg-primary text-white" style="padding:7px;">
+        <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-search"></i>&nbsp;{% trans 'Select a Customer' %}</h5>
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body" style="padding:15px 0 0 12px;">
+        <span class="text-center">{% trans 'Loading, please wait...' %}</span>
+      </div>
+
+      <div class="modal-footer" style="padding:5px 5px 5px 0;">
+
+        <div class='float-left text-left col-10 pl-4'><span id="id_search_number_of_found_record"></span></div>
+        <div class="float-right text-right col-2">
+          <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">{% trans 'Close' %}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 <!-- /.content-wrapper -->
 {% endblock %}
 
@@ -1421,6 +1451,16 @@
 
 {% block javascript %}
 <script>
+  function showLoading() {
+    $.LoadingOverlaySetup({
+        background      : "rgba(0, 0, 0, 0.5)",
+        image           : "/static/img/logo-small.png",        
+        imageAnimation  : "1.5s fadein",
+        imageColor      : "#ffcc00"
+    });
+    $.LoadingOverlay("show"); 
+  }
+    
   $(document).ready(function(){
     $('#id_cus_id').focus();
     $("#main-content :input").attr("disabled", true);    
@@ -1448,28 +1488,25 @@
   });
 
 
-  // amnaj
+  // amnaj - lookup
   $('#customer_lookup').on('click', function (e) {
-    //$("#id_search_number_of_found_record").html("");
-    //var obj = $(this);  
-    alert("In progress.");
-
     $("#id_search_number_of_found_record").html("");
+
     var obj = $(this);  
     $.ajax({
         url: obj.attr("data-url"),
         type: 'get',          
         dataType: 'json',
         beforeSend: function () {
-          $("#search_contract_modal").modal("show");
-          $('#search_contract_modal').on('shown.bs.modal', function () {
-            $("#id_cus_contract_search_text").focus();
+          $("#search_customer_modal").modal("show");
+          $('#search_customer_modal').on('shown.bs.modal', function () {
+            $("#id_search_text").focus();
           });            
         },
         success: function (data) {
           var result = ""
           var count = data.results.length;
-          var cnt_id = data.results[0]["cnt_id"];
+          var cus_id = data.results[0]["cus_id"];
           var cus_name_th = data.results[0]["cus_name_th"];
           var cus_name_en = data.results[0]["cus_name_en"];
 
@@ -1478,13 +1515,13 @@
           result += "<div class='col-8 offset-3 pb-2'>";
           result += "<form id='search_contract_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
           result += "  <div class='form-group mx-sm-3 mb-2'>";
-          result += "  <select name='cus_contract_search_option' class='form-control form-control-sm' required id='id_cus_contract_search_option'>";
+          result += "  <select name='search_option' class='form-control form-control-sm' required id='id_search_option'>";
           result += "    <option value='1'>Contract ID</option>";
           result += "    <option value='2' selected>Customer Name (TH)</option>";
           result += "    <option value='3'>Customer Name (EN)</option>";
           result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";
           result += "    <label for='id_cus_main_search_district' class='sr-only'>Search</label>";            
-          result += "    <input type='text' class='form-control form-control-sm' id='id_cus_contract_search_text' name='cus_contract_search_text' autocomplete='off' value=''>";
+          result += "    <input type='text' class='form-control form-control-sm' id='id_search_text' name='search_text' autocomplete='off' value=''>";
           result += "  </div>";
           result += "<a href='javascript:cus_contract_search_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";            
           result += "</form>";
@@ -1497,7 +1534,7 @@
           result += "<table class='table table-hover table-striped table-wrapper-scroll-y my-custom-scrollbar'>";
           result += " <thead>";
           result += "   <tr class='text-left'>";
-          result += "     <th scope='col' class='text-left' nowrap>{% trans 'Contract ID' %}.</th>";
+          result += "     <th scope='col' class='text-left' nowrap>{% trans 'Customer Code' %}.</th>";
           result += "     <th scope='col' class='text-left'>{% trans 'Customer Name (TH)' %}</th>";
           result += "     <th scope='col' class='text-left'>{% trans 'Customer Name (EN)' %}</th>";
           result += "     <th scope='col'>&nbsp;</th>";
@@ -1509,31 +1546,37 @@
           result += "<div>";
 
           for(var i=0; i<count; i++) {              
-            var cnt_id = data.results[i]["cnt_id"];
+            var cus_id = data.results[i]["cus_id"];
+            var cus_brn = data.results[i]["cus_brn"];
             var cus_name_th = data.results[i]["cus_name_th"];
             var cus_name_en = data.results[i]["cus_name_en"];
 
             result += "<tr>";
-            result += "<td class='align-middle'>" + cnt_id + "</td>";        
+            result += "<td class='align-middle'>" + cus_id + "</td>";        
             result += "<td class='align-middle'>" + cus_name_th + "</td>";
             result += "<td class='align-middle'>" + cus_name_en + "</td>";
-            result += "<td class='text-right'><a href='javascript:cus_contract_select_item(" + cnt_id + ",\"" + cus_name_th + "\",\"" + cus_name_en + "\");' type='button' class='btn btn-outline-primary btn-sm'>&nbsp;&nbsp;Select&nbsp;&nbsp;</a></td>";
+            result += "<td class='text-right'><a href='javascript:customer_modal_select_item(" + cus_id + "," + cus_brn + ",\"" + cus_name_th + "\",\"" + cus_name_en + "\");' type='button' class='btn btn-outline-primary btn-sm'>&nbsp;&nbsp;Select&nbsp;&nbsp;</a></td>";
             result += "</tr>";              
           }
           result += " </tbody>";
           result += "</table>";            
           result += "</div>";
 
-          $("#search_contract_modal .modal-body").html(result);     
+          $("#search_customer_modal .modal-body").html(result);     
           
 
         },
         error: function(data){
-          $("#search_contract_modal .modal-body").html("{% trans 'There is no data.' %}");
+          $("#search_customer_modal .modal-body").html("{% trans 'There is no data.' %}");
         }          
     });  
 
   });
+
+
+
+
+
 
   $("#id_cus_id").bind("focus",function(e){
     window.setTimeout(function() {
@@ -1976,6 +2019,140 @@
      var cus_brn = $('#id_cus_brn').val();
   });
 
+
+
+  function enter_id_cus_id(cus_id, cus_brn) {
+    // Check check_exist_cus_main_cus_id
+    $.ajax({
+      url: "/customer/ajax/ajax_check_exist_cus_main/",
+      type: "POST",
+      data: {          
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        cus_id: cus_id,
+        cus_brn: cus_brn,
+      },
+      success: function(data) {
+
+        $('#id_cus_brn').focus();
+
+        var cus_main_cus_active = data.results[0]["cus_active"];
+        var cus_main_cus_name_th = data.results[0]["cus_name_th"];
+        var cus_main_cus_add1_th = data.results[0]["cus_add1_th"];
+        var cus_main_cus_add2_th = data.results[0]["cus_add2_th"];
+        var cus_main_cus_district_id = data.results[0]["cus_district_id"];          
+        var cus_main_subdist_th = data.results[0]["cus_subdist_th"];
+        var cus_main_cus_district_th = data.results[0]["cus_district_th"];          
+        var cus_main_cus_city_th = data.results[0]["cus_city_th"];
+        var cus_main_cus_country_th = data.results[0]["cus_country_th"];
+        
+        var cus_main_cus_name_en = data.results[0]["cus_name_en"];
+        var cus_main_cus_add1_en = data.results[0]["cus_add1_en"];
+        var cus_main_cus_add2_en = data.results[0]["cus_add2_en"];          
+        var cus_main_subdist_en = data.results[0]["cus_subdist_en"];
+        var cus_main_cus_district_en = data.results[0]["cus_district_en"];
+        var cus_main_cus_city_en = data.results[0]["cus_city_en"];
+        var cus_main_cus_country_en = data.results[0]["cus_country_en"];
+
+        var cus_main_cus_zip = data.results[0]["cus_zip"];
+        var cus_main_cus_tel = data.results[0]["cus_tel"];
+        var cus_main_cus_fax = data.results[0]["cus_fax"];
+        var cus_main_cus_email = data.results[0]["cus_email"];
+        var cus_main_cus_zone = data.results[0]["cus_zone"];
+
+        var cus_main_cus_contact_id = data.results[0]["cus_contact_id"];
+        var cus_main_cus_contact_con_title_id = data.results[0]["cus_contact_con_title_id"];          
+        var cus_main_cus_contact_title_th = data.results[0]["cus_contact_title_th"];
+        var cus_main_cus_contact_fname_th = data.results[0]["cus_contact_fname_th"];
+        var cus_main_cus_contact_lname_th = data.results[0]["cus_contact_lname_th"];
+        var cus_main_cus_contact_position_th = data.results[0]["cus_contact_position_th"];
+
+        var cus_main_cus_contact_con_sex = data.results[0]["cus_contact_con_sex"];
+
+        var cus_main_cus_contact_title_en = data.results[0]["cus_contact_title_en"];
+        var cus_main_cus_contact_fname_en = data.results[0]["cus_contact_fname_en"];
+        var cus_main_cus_contact_lname_en = data.results[0]["cus_contact_lname_en"];
+        var cus_main_cus_contact_position_en = data.results[0]["cus_contact_position_en"];
+
+        var cus_contact_con_nationality_id = data.results[0]["cus_contact_con_nationality_id"];
+        var cus_contact_con_mobile = data.results[0]["cus_contact_con_mobile"];
+        var cus_contact_con_email = data.results[0]["cus_contact_con_email"];
+
+        if(cus_main_cus_active==1) {
+          $('#id_cus_main_cus_active').val(1);
+          $('#id_cus_main_cus_active').prop("checked", true);
+        } else {
+          $('#id_cus_main_cus_active').val(0);
+          $('#id_cus_main_cus_active').prop("checked", false);
+        }
+        
+        if(data.results[0]["cus_id"]==null) {
+          $('#customer_name_title').html("<button type='button' class='btn text-light' style='background-color: #018349;'><span style='font-size:18px;font-weight:bold;'>Add new customer</span></button>");
+        }          
+        else {
+          $('#customer_name_title').html("<button type='button' class='btn text-light' style='background-color: #018349;'><span style='font-size:18px;font-weight:bold;'>" + cus_main_cus_name_th + "</span></button>");
+        }
+
+        $('#id_cus_main_cus_name_th').val(cus_main_cus_name_th);
+        $('#id_cus_main_cus_add1_th').val(cus_main_cus_add1_th);
+        $('#id_cus_main_cus_add2_th').val(cus_main_cus_add2_th);
+        $('#id_cus_main_select_district_id').val(cus_main_cus_district_id);
+        $('#id_cus_main_cus_district_dist_th').val(cus_main_cus_district_th);
+        $('#id_cus_main_cus_subdist_th').val(cus_main_subdist_th);
+        $('#id_cus_main_cus_city_th').val(cus_main_cus_city_th);
+        $('#id_cus_main_cus_country_th').val(cus_main_cus_country_th);
+
+        $('#id_cus_main_cus_name_en').val(cus_main_cus_name_en);
+        $('#id_cus_main_cus_add1_en').val(cus_main_cus_add1_en);
+        $('#id_cus_main_cus_add2_en').val(cus_main_cus_add2_en);          
+        $('#id_cus_main_cus_subdist_en').val(cus_main_subdist_en);
+        $('#id_cus_main_cus_city_en').val(cus_main_cus_city_en);
+        $('#id_cus_main_cus_district_en').val(cus_main_cus_district_en);
+        $('#id_cus_main_cus_country_en').val(cus_main_cus_country_en);
+        
+        $('#id_cus_main_cus_zip').val(cus_main_cus_zip);
+        $('#id_cus_main_cus_tel').val(cus_main_cus_tel);
+        $('#id_cus_main_cus_fax').val(cus_main_cus_fax);
+        $('#id_cus_main_cus_email').val(cus_main_cus_email);
+
+        $('#id_cus_main_cus_zone').val(cus_main_cus_zone);
+
+        $('#id_cus_main_cus_contact_id').val(cus_main_cus_contact_id);
+        $('#id_cus_main_cus_contact_title_list').val(cus_main_cus_contact_con_title_id);
+
+        $('#id_cus_main_cus_contact_cus_title_th').val(cus_main_cus_contact_title_th);
+        $('#id_cus_main_cus_contact_con_fname_th').val(cus_main_cus_contact_fname_th);
+        $('#id_cus_main_cus_contact_con_lname_th').val(cus_main_cus_contact_lname_th);          
+        $('#id_cus_main_cus_contact_con_position_th').val(cus_main_cus_contact_position_th);
+
+        if(cus_main_cus_contact_con_sex=='M') {
+          $('#id_sex_male').prop("checked", true);
+          $('#id_sex_female').prop("checked", false);
+        }
+
+        if(cus_main_cus_contact_con_sex=='F') {
+          $('#id_sex_male').prop("checked", false);
+          $('#id_sex_female').prop("checked", true);
+        }
+
+        $('#id_cus_main_cus_contact_cus_title_en').val(cus_main_cus_contact_title_en);
+        $('#id_cus_main_cus_contact_con_fname_en').val(cus_main_cus_contact_fname_en);
+        $('#id_cus_main_cus_contact_con_lname_en').val(cus_main_cus_contact_lname_en);
+        $('#id_cus_main_cus_contact_con_position_en').val(cus_main_cus_contact_position_en);
+
+        $('#id_cus_main_cus_contact_nation_list').val(cus_contact_con_nationality_id);
+        $('#id_cus_main_cus_contact_con_mobile').val(cus_contact_con_mobile);
+        $('#id_cus_main_cus_contact_con_email').val(cus_contact_con_email);
+
+        return true; 
+      },
+      error: function(data) {
+        alert(data.responseJSON.error);
+        return false
+      },
+    });
+  }
+
+
   // Update Main Office
   $(document).on('keypress', '#id_cus_id', function(e) {
     if(e.which == 13) {      
@@ -1985,134 +2162,7 @@
       var cus_id = obj.val();
       var cus_brn = $('#id_cus_brn').val();      
 
-      // Check check_exist_cus_main_cus_id
-      $.ajax({
-        url: "/customer/ajax/ajax_check_exist_cus_main/",
-        type: "POST",
-        data: {          
-          csrfmiddlewaretoken: '{{ csrf_token }}',
-          cus_id: cus_id,
-          cus_brn: cus_brn,
-        },
-        success: function(data) {
-
-          $('#id_cus_brn').focus();
-
-          var cus_main_cus_active = data.results[0]["cus_active"];
-          var cus_main_cus_name_th = data.results[0]["cus_name_th"];
-          var cus_main_cus_add1_th = data.results[0]["cus_add1_th"];
-          var cus_main_cus_add2_th = data.results[0]["cus_add2_th"];
-          var cus_main_cus_district_id = data.results[0]["cus_district_id"];          
-          var cus_main_subdist_th = data.results[0]["cus_subdist_th"];
-          var cus_main_cus_district_th = data.results[0]["cus_district_th"];          
-          var cus_main_cus_city_th = data.results[0]["cus_city_th"];
-          var cus_main_cus_country_th = data.results[0]["cus_country_th"];
-          
-          var cus_main_cus_name_en = data.results[0]["cus_name_en"];
-          var cus_main_cus_add1_en = data.results[0]["cus_add1_en"];
-          var cus_main_cus_add2_en = data.results[0]["cus_add2_en"];          
-          var cus_main_subdist_en = data.results[0]["cus_subdist_en"];
-          var cus_main_cus_district_en = data.results[0]["cus_district_en"];
-          var cus_main_cus_city_en = data.results[0]["cus_city_en"];
-          var cus_main_cus_country_en = data.results[0]["cus_country_en"];
-
-          var cus_main_cus_zip = data.results[0]["cus_zip"];
-          var cus_main_cus_tel = data.results[0]["cus_tel"];
-          var cus_main_cus_fax = data.results[0]["cus_fax"];
-          var cus_main_cus_email = data.results[0]["cus_email"];
-          var cus_main_cus_zone = data.results[0]["cus_zone"];
-
-          var cus_main_cus_contact_id = data.results[0]["cus_contact_id"];
-          var cus_main_cus_contact_con_title_id = data.results[0]["cus_contact_con_title_id"];          
-          var cus_main_cus_contact_title_th = data.results[0]["cus_contact_title_th"];
-          var cus_main_cus_contact_fname_th = data.results[0]["cus_contact_fname_th"];
-          var cus_main_cus_contact_lname_th = data.results[0]["cus_contact_lname_th"];
-          var cus_main_cus_contact_position_th = data.results[0]["cus_contact_position_th"];
-
-          var cus_main_cus_contact_con_sex = data.results[0]["cus_contact_con_sex"];
-
-          var cus_main_cus_contact_title_en = data.results[0]["cus_contact_title_en"];
-          var cus_main_cus_contact_fname_en = data.results[0]["cus_contact_fname_en"];
-          var cus_main_cus_contact_lname_en = data.results[0]["cus_contact_lname_en"];
-          var cus_main_cus_contact_position_en = data.results[0]["cus_contact_position_en"];
-
-          var cus_contact_con_nationality_id = data.results[0]["cus_contact_con_nationality_id"];
-          var cus_contact_con_mobile = data.results[0]["cus_contact_con_mobile"];
-          var cus_contact_con_email = data.results[0]["cus_contact_con_email"];
-
-          if(cus_main_cus_active==1) {
-            $('#id_cus_main_cus_active').val(1);
-            $('#id_cus_main_cus_active').prop("checked", true);
-          } else {
-            $('#id_cus_main_cus_active').val(0);
-            $('#id_cus_main_cus_active').prop("checked", false);
-          }
-          
-          if(data.results[0]["cus_id"]==null) {
-            $('#customer_name_title').html("<button type='button' class='btn text-light' style='background-color: #018349;'><span style='font-size:18px;font-weight:bold;'>Add new customer</span></button>");
-          }          
-          else {
-            $('#customer_name_title').html("<button type='button' class='btn text-light' style='background-color: #018349;'><span style='font-size:18px;font-weight:bold;'>" + cus_main_cus_name_th + "</span></button>");
-          }
-
-          $('#id_cus_main_cus_name_th').val(cus_main_cus_name_th);
-          $('#id_cus_main_cus_add1_th').val(cus_main_cus_add1_th);
-          $('#id_cus_main_cus_add2_th').val(cus_main_cus_add2_th);
-          $('#id_cus_main_select_district_id').val(cus_main_cus_district_id);
-          $('#id_cus_main_cus_district_dist_th').val(cus_main_cus_district_th);
-          $('#id_cus_main_cus_subdist_th').val(cus_main_subdist_th);
-          $('#id_cus_main_cus_city_th').val(cus_main_cus_city_th);
-          $('#id_cus_main_cus_country_th').val(cus_main_cus_country_th);
-
-          $('#id_cus_main_cus_name_en').val(cus_main_cus_name_en);
-          $('#id_cus_main_cus_add1_en').val(cus_main_cus_add1_en);
-          $('#id_cus_main_cus_add2_en').val(cus_main_cus_add2_en);          
-          $('#id_cus_main_cus_subdist_en').val(cus_main_subdist_en);
-          $('#id_cus_main_cus_city_en').val(cus_main_cus_city_en);
-          $('#id_cus_main_cus_district_en').val(cus_main_cus_district_en);
-          $('#id_cus_main_cus_country_en').val(cus_main_cus_country_en);
-          
-          $('#id_cus_main_cus_zip').val(cus_main_cus_zip);
-          $('#id_cus_main_cus_tel').val(cus_main_cus_tel);
-          $('#id_cus_main_cus_fax').val(cus_main_cus_fax);
-          $('#id_cus_main_cus_email').val(cus_main_cus_email);
-
-          $('#id_cus_main_cus_zone').val(cus_main_cus_zone);
-
-          $('#id_cus_main_cus_contact_id').val(cus_main_cus_contact_id);
-          $('#id_cus_main_cus_contact_title_list').val(cus_main_cus_contact_con_title_id);
-
-          $('#id_cus_main_cus_contact_cus_title_th').val(cus_main_cus_contact_title_th);
-          $('#id_cus_main_cus_contact_con_fname_th').val(cus_main_cus_contact_fname_th);
-          $('#id_cus_main_cus_contact_con_lname_th').val(cus_main_cus_contact_lname_th);          
-          $('#id_cus_main_cus_contact_con_position_th').val(cus_main_cus_contact_position_th);
-
-          if(cus_main_cus_contact_con_sex=='M') {
-            $('#id_sex_male').prop("checked", true);
-            $('#id_sex_female').prop("checked", false);
-          }
-
-          if(cus_main_cus_contact_con_sex=='F') {
-            $('#id_sex_male').prop("checked", false);
-            $('#id_sex_female').prop("checked", true);
-          }
-
-          $('#id_cus_main_cus_contact_cus_title_en').val(cus_main_cus_contact_title_en);
-          $('#id_cus_main_cus_contact_con_fname_en').val(cus_main_cus_contact_fname_en);
-          $('#id_cus_main_cus_contact_con_lname_en').val(cus_main_cus_contact_lname_en);
-          $('#id_cus_main_cus_contact_con_position_en').val(cus_main_cus_contact_position_en);
-
-          $('#id_cus_main_cus_contact_nation_list').val(cus_contact_con_nationality_id);
-          $('#id_cus_main_cus_contact_con_mobile').val(cus_contact_con_mobile);
-          $('#id_cus_main_cus_contact_con_email').val(cus_contact_con_email);
-
-          return true; 
-        },
-        error: function(data) {
-          alert(data.responseJSON.error);
-          return false
-        },
-      });
+      enter_id_cus_id(cus_id, cus_brn);
 
       return false;
     }
@@ -2130,6 +2180,410 @@
      }
   }
 
+
+
+
+
+
+
+
+  function enter_id_cus_brn(cus_id, cus_brn) {
+
+    if(cus_id == "" || cus_id==null){
+      alert("Customer Code is required!");
+      $("#id_cus_id").focus();
+      return false;
+    } else if(cus_brn=="" || cus_brn==null){
+      $("#id_cus_brn").val("000");
+      $("#id_cus_brn").focus();
+    }      
+
+    $.ajax({
+      url: "/customer/ajax/ajax_check_exist_cus_site/",
+      type: "POST",
+      data: {          
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        cus_id: cus_id,
+        cus_brn: cus_brn,
+      },
+      success: function(data) {
+        // Check Deleted status
+        var upd_flag = data.results[0]["upd_flag"];
+        var cus_no = data.results[0]["cus_no"];
+        
+        
+        if(upd_flag=='D') {    
+
+          var retVal = confirm("Would you like to undelete Customer No." + cus_no + " ?");
+                    
+          if( retVal == true ) {
+            
+            // Change upd_flag to 'R'
+            $.ajax({
+              url: "/customer/ajax/ajax_undelete_customer/",
+              type: "POST",
+              data: {        
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                cus_no: cus_no,
+              },
+              success: function(data) {
+                
+              },
+              error: function(data) {
+                
+              },
+            });
+
+            $("#main-content :input").attr("disabled", false);
+            $("#id_cus_main_cus_name_th").focus();
+
+            while (cus_brn.length < 3) 
+              cus_brn = "0" + cus_brn;
+            $('#id_cus_brn').val(cus_brn);
+            
+            var customer_option_btype = data.results[0]["customer_option_btype"];
+            var customer_option_op1 = data.results[0]["customer_option_op1"];
+            var customer_option_op2 = data.results[0]["customer_option_op2"];
+            var customer_option_op3 = data.results[0]["customer_option_op3"];
+            var customer_option_op4 = data.results[0]["customer_option_op4"];          
+
+            // Customer Main Office
+            $('#id_cus_main_cus_name_th').focus();          
+            $('#id_cus_main_business_type').val(customer_option_btype);
+            $('#id_cus_main_customer_option_op1').val(customer_option_op1);
+            $('#id_cus_main_customer_option_op2').val(customer_option_op2);
+            $('#id_cus_main_customer_option_op3').val(customer_option_op3);
+            $('#id_cus_main_customer_option_op4').val(customer_option_op4);
+
+            // Customer Site
+            var cus_site_cus_active = data.results[0]["cus_active"];
+            if(cus_site_cus_active==1) {
+              $('#id_cus_site_cus_active').val(1);
+              $('#id_cus_site_cus_active').prop("checked", true);
+            } else {
+              $('#id_cus_site_cus_active').val(0);
+              $('#id_cus_site_cus_active').prop("checked", false);
+            }
+
+            var cus_site_cus_name_th = data.results[0]["cus_name_th"];
+            var cus_site_cus_add1_th = data.results[0]["cus_add1_th"];
+            var cus_site_cus_add2_th = data.results[0]["cus_add2_th"];                  
+            var cus_site_cus_district_id = data.results[0]["cus_district_id"];
+            var cus_site_cus_subdist_th = data.results[0]["cus_subdist_th"];          
+            var cus_site_cus_district_th = data.results[0]["cus_district_th"];
+            var cus_site_cus_city_th = data.results[0]["cus_city_th"];
+            var cus_site_cus_country_th = data.results[0]["cus_country_th"];          
+            var cus_site_cus_name_en = data.results[0]["cus_name_en"];
+            var cus_site_cus_add1_en = data.results[0]["cus_add1_en"];
+            var cus_site_cus_add2_en = data.results[0]["cus_add2_en"];        
+            var cus_site_cus_subdist_en = data.results[0]["cus_subdist_en"];
+            var cus_site_cus_district_en = data.results[0]["cus_district_en"];
+            var cus_site_cus_city_en = data.results[0]["cus_city_en"];
+            var cus_site_cus_country_en = data.results[0]["cus_country_en"];
+            var cus_site_cus_zip = data.results[0]["cus_zip"];
+            var cus_site_cus_tel = data.results[0]["cus_tel"];
+            var cus_site_cus_fax = data.results[0]["cus_fax"];
+            var cus_site_cus_email = data.results[0]["cus_email"];
+            var cus_site_cus_zone = data.results[0]["cus_zone"];
+
+            var cus_site_site_contact_id = data.results[0]["cus_site_site_contact_id"];
+            var cus_site_site_contact_title_th = data.results[0]["cus_site_site_contact_title_th"];
+            var cus_site_site_contact_fname_th = data.results[0]["cus_site_site_contact_fname_th"];
+            var cus_site_site_contact_lname_th = data.results[0]["cus_site_site_contact_lname_th"];
+            var cus_site_site_contact_position_th = data.results[0]["cus_site_site_contact_position_th"];
+
+            var cus_site_site_contact_title_en = data.results[0]["cus_site_site_contact_title_en"];
+            var cus_site_site_contact_fname_en = data.results[0]["cus_site_site_contact_fname_en"];
+            var cus_site_site_contact_lname_en = data.results[0]["cus_site_site_contact_lname_en"];
+            var cus_site_site_contact_position_en = data.results[0]["cus_site_site_contact_position_en"];
+
+            $('#id_cus_site_cus_name_th').val(cus_site_cus_name_th);
+            $('#id_cus_site_cus_add1_th').val(cus_site_cus_add1_th);
+            $('#id_cus_site_cus_add2_th').val(cus_site_cus_add2_th);
+            $('#id_cus_site_cus_subdist_th').val(cus_site_cus_subdist_th);          
+            $('#id_cus_site_cus_district_id').val(cus_site_cus_district_id);
+            $('#id_cus_site_cus_district_dist_th').val(cus_site_cus_district_th);          
+            $('#id_cus_site_cus_city_th').val(cus_site_cus_city_th);          
+            $('#id_cus_site_cus_country_th').val(cus_site_cus_country_th);
+            $('#id_cus_site_cus_name_en').val(cus_site_cus_name_en);
+            $('#id_cus_site_cus_add1_en').val(cus_site_cus_add1_en);
+            $('#id_cus_site_cus_add2_en').val(cus_site_cus_add2_en);
+            $('#id_cus_site_cus_subdist_en').val(cus_site_cus_subdist_en);
+            $('#id_cus_site_cus_district_en').val(cus_site_cus_district_en);
+            $('#id_cus_site_cus_city_en').val(cus_site_cus_city_en);
+            $('#id_cus_site_cus_country_en').val(cus_site_cus_country_en);
+            $('#id_cus_site_cus_zip').val(cus_site_cus_zip);
+            $('#id_cus_site_cus_tel').val(cus_site_cus_tel);
+            $('#id_cus_site_cus_fax').val(cus_site_cus_fax);
+            $('#id_cus_site_cus_email').val(cus_site_cus_email);
+            $('#id_cus_site_cus_zone').val(cus_site_cus_zone);
+            $('#id_cus_site_site_contact_id').val(cus_site_site_contact_id);
+            $('#id_cus_site_site_contact_title_th').val(cus_site_site_contact_title_th);
+            $('#id_cus_site_site_contact_fname_th').val(cus_site_site_contact_fname_th);
+            $('#id_cus_site_site_contact_lname_th').val(cus_site_site_contact_lname_th);
+            $('#id_cus_site_site_contact_position_th').val(cus_site_site_contact_position_th);
+            $('#id_cus_site_site_contact_title_en').val(cus_site_site_contact_title_en);
+            $('#id_cus_site_site_contact_fname_en').val(cus_site_site_contact_fname_en);
+            $('#id_cus_site_site_contact_lname_en').val(cus_site_site_contact_lname_en);
+            $('#id_cus_site_site_contact_position_en').val(cus_site_site_contact_position_en);
+
+
+          } else {
+            $("#id_cus_brn").val("");
+            $("#id_cus_brn").focus();
+            return false;          
+          }            
+        } else {              
+            $("#main-content :input").attr("disabled", false);
+            $("#id_cus_main_cus_name_th").focus();
+
+            while (cus_brn.length < 3) 
+              cus_brn = "0" + cus_brn;
+            $('#id_cus_brn').val(cus_brn);
+            
+            var customer_option_btype = data.results[0]["customer_option_btype"];
+            var customer_option_op1 = data.results[0]["customer_option_op1"];
+            var customer_option_op2 = data.results[0]["customer_option_op2"];
+            var customer_option_op3 = data.results[0]["customer_option_op3"];
+            var customer_option_op4 = data.results[0]["customer_option_op4"];          
+
+            // Customer Main Office
+            $('#id_cus_main_cus_name_th').focus();          
+            $('#id_cus_main_business_type').val(customer_option_btype);
+            $('#id_cus_main_customer_option_op1').val(customer_option_op1);
+            $('#id_cus_main_customer_option_op2').val(customer_option_op2);
+            $('#id_cus_main_customer_option_op3').val(customer_option_op3);
+            $('#id_cus_main_customer_option_op4').val(customer_option_op4);
+
+            // Customer Site
+            var cus_site_cus_active = data.results[0]["cus_active"];
+            if(cus_site_cus_active==1) {
+              $('#id_cus_site_cus_active').val(1);
+              $('#id_cus_site_cus_active').prop("checked", true);
+            } else {
+              $('#id_cus_site_cus_active').val(0);
+              $('#id_cus_site_cus_active').prop("checked", false);
+            }
+
+            var cus_site_cus_name_th = data.results[0]["cus_name_th"];
+            var cus_site_cus_add1_th = data.results[0]["cus_add1_th"];
+            var cus_site_cus_add2_th = data.results[0]["cus_add2_th"];                  
+            var cus_site_cus_district_id = data.results[0]["cus_district_id"];
+            var cus_site_cus_subdist_th = data.results[0]["cus_subdist_th"];          
+            var cus_site_cus_district_th = data.results[0]["cus_district_th"];
+            var cus_site_cus_city_th = data.results[0]["cus_city_th"];
+            var cus_site_cus_country_th = data.results[0]["cus_country_th"];          
+            var cus_site_cus_name_en = data.results[0]["cus_name_en"];
+            var cus_site_cus_add1_en = data.results[0]["cus_add1_en"];
+            var cus_site_cus_add2_en = data.results[0]["cus_add2_en"];        
+            var cus_site_cus_subdist_en = data.results[0]["cus_subdist_en"];
+            var cus_site_cus_district_en = data.results[0]["cus_district_en"];
+            var cus_site_cus_city_en = data.results[0]["cus_city_en"];
+            var cus_site_cus_country_en = data.results[0]["cus_country_en"];
+            var cus_site_cus_zip = data.results[0]["cus_zip"];
+            var cus_site_cus_tel = data.results[0]["cus_tel"];
+            var cus_site_cus_fax = data.results[0]["cus_fax"];
+            var cus_site_cus_email = data.results[0]["cus_email"];
+            var cus_site_cus_zone = data.results[0]["cus_zone"];
+
+            var cus_site_site_contact_id = data.results[0]["cus_site_site_contact_id"];            
+            var cus_site_site_contact_title_id = data.results[0]["cus_site_site_contact_title_id"]
+            var cus_site_site_contact_title_th = data.results[0]["cus_site_site_contact_title_th"];
+            var cus_site_site_contact_con_sex = data.results[0]["cus_site_site_contact_con_sex"];
+            var cus_site_site_contact_fname_th = data.results[0]["cus_site_site_contact_fname_th"];
+            var cus_site_site_contact_lname_th = data.results[0]["cus_site_site_contact_lname_th"];
+            var cus_site_site_contact_position_th = data.results[0]["cus_site_site_contact_position_th"];
+            var cus_site_site_contact_title_en = data.results[0]["cus_site_site_contact_title_en"];
+            var cus_site_site_contact_fname_en = data.results[0]["cus_site_site_contact_fname_en"];
+            var cus_site_site_contact_lname_en = data.results[0]["cus_site_site_contact_lname_en"];
+            var cus_site_site_contact_position_en = data.results[0]["cus_site_site_contact_position_en"];
+            var cus_site_site_contact_con_nationality_id = data.results[0]["cus_site_site_contact_con_nationality_id"];
+            var cus_site_site_contact_con_mobile = data.results[0]["cus_site_site_contact_con_mobile"];
+            var cus_site_site_contact_con_email = data.results[0]["cus_site_site_contact_con_email"];
+            
+            $('#id_cus_site_cus_name_th').val(cus_site_cus_name_th);
+            $('#id_cus_site_cus_add1_th').val(cus_site_cus_add1_th);
+            $('#id_cus_site_cus_add2_th').val(cus_site_cus_add2_th);
+            $('#id_cus_site_cus_subdist_th').val(cus_site_cus_subdist_th);          
+            $('#id_cus_site_cus_district_id').val(cus_site_cus_district_id);
+            $('#id_cus_site_cus_district_dist_th').val(cus_site_cus_district_th);          
+            $('#id_cus_site_cus_city_th').val(cus_site_cus_city_th);          
+            $('#id_cus_site_cus_country_th').val(cus_site_cus_country_th);
+            $('#id_cus_site_cus_name_en').val(cus_site_cus_name_en);
+            $('#id_cus_site_cus_add1_en').val(cus_site_cus_add1_en);
+            $('#id_cus_site_cus_add2_en').val(cus_site_cus_add2_en);
+            $('#id_cus_site_cus_subdist_en').val(cus_site_cus_subdist_en);
+            $('#id_cus_site_cus_district_en').val(cus_site_cus_district_en);
+            $('#id_cus_site_cus_city_en').val(cus_site_cus_city_en);
+            $('#id_cus_site_cus_country_en').val(cus_site_cus_country_en);
+            $('#id_cus_site_cus_zip').val(cus_site_cus_zip);
+            $('#id_cus_site_cus_tel').val(cus_site_cus_tel);
+            $('#id_cus_site_cus_fax').val(cus_site_cus_fax);
+            $('#id_cus_site_cus_email').val(cus_site_cus_email);
+            $('#id_cus_site_cus_zone').val(cus_site_cus_zone);
+            $('#id_cus_site_site_contact_id').val(cus_site_site_contact_id);
+            $('#id_cus_site_site_contact_title_th').val(cus_site_site_contact_title_th);
+
+            if(cus_site_site_contact_con_sex == 'M') {
+              $('#id_cus_site_sex_male').prop("checked", true);
+              $('#id_cus_site_sex_female').prop("checked", false);
+            }
+
+            if(cus_site_site_contact_con_sex == 'F') {
+              $('#id_cus_site_sex_male').prop("checked", false);
+              $('#id_cus_site_sex_female').prop("checked", true);
+            }
+
+
+            $('#id_cus_site_site_contact_fname_th').val(cus_site_site_contact_fname_th);
+            $('#id_cus_site_site_contact_lname_th').val(cus_site_site_contact_lname_th);
+            $('#id_cus_site_site_contact_position_th').val(cus_site_site_contact_position_th);
+            $('#id_cus_site_cus_contact_title_list').val(cus_site_site_contact_title_id);
+            $('#id_cus_site_site_contact_con_title_en').val(cus_site_site_contact_title_en);
+            $('#id_cus_site_site_contact_con_fname_en').val(cus_site_site_contact_fname_en);
+            $('#id_cus_site_site_contact_con_lname_en').val(cus_site_site_contact_lname_en);
+            $('#id_cus_site_site_contact_con_position_en').val(cus_site_site_contact_position_en);
+            $('#id_cus_site_site_contact_nation_list').val(cus_site_site_contact_con_nationality_id);
+            $('#id_cus_site_site_contact_con_mobile').val(cus_site_site_contact_con_mobile);
+            $('#id_cus_site_site_contact_con_email').val(cus_site_site_contact_con_email);
+
+            $("#id_cus_id").attr("disabled", true);
+            $('#id_cus_id').attr('readonly', true);
+            $("#id_cus_brn").attr("disabled", true);
+            $('#id_cus_brn').attr('readonly', true);
+            $('#customer_lookup').attr("disabled", true);
+            console.log("bbb");              
+        }
+      },
+      error: function(data) {
+        alert(data.responseJSON.error);          
+      },
+    });
+
+
+
+    // Fill in CUS_BILL
+    $.ajax({
+      url: "/customer/ajax/ajax_check_exist_cus_bill/",
+      type: "POST",
+      data: {          
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        cus_id: cus_id,
+        cus_brn: cus_brn,
+      },
+      success: function(data) {
+
+        while (cus_brn.length < 3) 
+          cus_brn = "0" + cus_brn;
+          $('#id_cus_brn').val(cus_brn);
+        
+        // Customer Site
+        var cus_bill_cus_active = data.results[0]["cus_active"];
+        if(cus_bill_cus_active==1) {
+          $('#id_cus_bill_cus_active').val(1);
+          $('#id_cus_bill_cus_active').prop("checked", true);
+        } else {
+          $('#id_cus_bill_cus_active').val(0);
+          $('#id_cus_bill_cus_active').prop("checked", false);
+        }
+
+        var cus_bill_cus_name_th = data.results[0]["cus_name_th"];
+        var cus_bill_cus_add1_th = data.results[0]["cus_add1_th"];
+        var cus_bill_cus_add2_th = data.results[0]["cus_add2_th"];                  
+        var cus_bill_cus_district_id = data.results[0]["cus_district_id"];
+        var cus_bill_cus_subdist_th = data.results[0]["cus_subdist_th"];          
+        var cus_bill_cus_district_th = data.results[0]["cus_district_th"];
+        var cus_bill_cus_city_th = data.results[0]["cus_city_th"];
+        var cus_bill_cus_country_th = data.results[0]["cus_country_th"];          
+        var cus_bill_cus_name_en = data.results[0]["cus_name_en"];
+        var cus_bill_cus_add1_en = data.results[0]["cus_add1_en"];
+        var cus_bill_cus_add2_en = data.results[0]["cus_add2_en"];        
+        var cus_bill_cus_subdist_en = data.results[0]["cus_subdist_en"];
+        var cus_bill_cus_district_en = data.results[0]["cus_district_en"];
+        var cus_bill_cus_city_en = data.results[0]["cus_city_en"];
+        var cus_bill_cus_country_en = data.results[0]["cus_country_en"];
+        var cus_bill_cus_zip = data.results[0]["cus_zip"];
+        var cus_bill_cus_tel = data.results[0]["cus_tel"];
+        var cus_bill_cus_fax = data.results[0]["cus_fax"];
+        var cus_bill_cus_email = data.results[0]["cus_email"];
+        var cus_bill_cus_zone = data.results[0]["cus_zone"];
+
+        var cus_bill_cus_contact_id = data.results[0]["cus_bill_cus_contact_id"];          
+        var cus_bill_cus_contact_title_id = data.results[0]["cus_bill_cus_contact_title_id"];
+        var cus_bill_cus_contact_title_th = data.results[0]["cus_bill_cus_contact_title_th"];
+        var cus_bill_cus_contact_con_sex = data.results[0]["cus_bill_cus_contact_con_sex"];
+        var cus_bill_cus_contact_fname_th = data.results[0]["cus_bill_cus_contact_fname_th"];
+        var cus_bill_cus_contact_lname_th = data.results[0]["cus_bill_cus_contact_lname_th"];
+        var cus_bill_cus_contact_position_th = data.results[0]["cus_bill_cus_contact_position_th"];          
+        var cus_bill_cus_contact_title_en = data.results[0]["cus_bill_cus_contact_title_en"];
+        var cus_bill_cus_contact_fname_en = data.results[0]["cus_bill_cus_contact_fname_en"];
+        var cus_bill_cus_contact_lname_en = data.results[0]["cus_bill_cus_contact_lname_en"];
+        var cus_bill_cus_contact_position_en = data.results[0]["cus_bill_cus_contact_position_en"];
+        var cus_bill_cus_contact_con_nationality_id = data.results[0]["cus_bill_cus_contact_con_nationality_id"];
+        var cus_bill_cus_contact_con_mobile = data.results[0]["cus_bill_cus_contact_con_mobile"];
+        var cus_bill_cus_contact_con_email = data.results[0]["cus_bill_cus_contact_con_email"];
+
+        //alert(cus_bill_cus_contact_con_nationality_id);
+
+        $('#id_cus_bill_cus_name_th').val(cus_bill_cus_name_th);
+        $('#id_cus_bill_cus_add1_th').val(cus_bill_cus_add1_th);
+        $('#id_cus_bill_cus_add2_th').val(cus_bill_cus_add2_th);
+        $('#id_cus_bill_cus_subdist_th').val(cus_bill_cus_subdist_th);          
+        $('#id_cus_bill_cus_district_id').val(cus_bill_cus_district_id);
+        
+        $('#id_cus_bill_cus_district_dist_th').val(cus_bill_cus_district_th);
+        //$('#id_cus_bill_cus_district_dist_th').val("aa");
+
+        $('#id_cus_bill_cus_city_th').val(cus_bill_cus_city_th);          
+        $('#id_cus_bill_cus_country_th').val(cus_bill_cus_country_th);
+        $('#id_cus_bill_cus_name_en').val(cus_bill_cus_name_en);
+        $('#id_cus_bill_cus_add1_en').val(cus_bill_cus_add1_en);
+        $('#id_cus_bill_cus_add2_en').val(cus_bill_cus_add2_en);
+        $('#id_cus_bill_cus_subdist_en').val(cus_bill_cus_subdist_en);
+        $('#id_cus_bill_cus_district_en').val(cus_bill_cus_district_en);
+        $('#id_cus_bill_cus_city_en').val(cus_bill_cus_city_en);
+        $('#id_cus_bill_cus_country_en').val(cus_bill_cus_country_en);
+        $('#id_cus_bill_cus_zip').val(cus_bill_cus_zip);
+        $('#id_cus_bill_cus_tel').val(cus_bill_cus_tel);
+        $('#id_cus_bill_cus_fax').val(cus_bill_cus_fax);
+        $('#id_cus_bill_cus_email').val(cus_bill_cus_email);
+        $('#id_cus_bill_cus_zone').val(cus_bill_cus_zone);
+
+        $('#id_cus_bill_cus_contact_id').val(cus_bill_cus_contact_id);
+        $('#id_cus_bill_cus_contact_title_id').val()
+        $('#id_cus_bill_cus_contact_cus_title_th').val(cus_bill_cus_contact_title_th);
+
+        if(cus_bill_cus_contact_con_sex == 'M') {
+          $('#id_cus_bill_sex_male').prop("checked", true);
+          $('#id_cus_bill_sex_female').prop("checked", false);
+        }
+
+        if(cus_bill_cus_contact_con_sex == 'F') {
+          $('#id_cus_bill_sex_male').prop("checked", false);
+          $('#id_cus_bill_sex_female').prop("checked", true);
+        }
+
+        $('#id_cus_bill_cus_contact_con_fname_th').val(cus_bill_cus_contact_fname_th);
+        $('#id_cus_bill_cus_contact_con_lname_th').val(cus_bill_cus_contact_lname_th);
+        $('#id_cus_bill_cus_contact_con_position_th').val(cus_bill_cus_contact_position_th);
+        $('#id_cus_bill_cus_contact_title_list').val(cus_bill_cus_contact_title_id);
+        $('#id_cus_bill_cus_contact_cus_title_en').val(cus_bill_cus_contact_title_en);
+        $('#id_cus_bill_cus_contact_con_fname_en').val(cus_bill_cus_contact_fname_en);
+        $('#id_cus_bill_cus_contact_con_lname_en').val(cus_bill_cus_contact_lname_en);
+        $('#id_cus_bill_cus_contact_con_position_en').val(cus_bill_cus_contact_position_en);
+        $('#id_cus_bill_cus_contact_nation_list').val(cus_bill_cus_contact_con_nationality_id);
+        $('#id_cus_bill_cus_contact_con_mobile').val(cus_bill_cus_contact_con_mobile);
+        $('#id_cus_bill_cus_contact_con_email').val(cus_bill_cus_contact_con_email);
+
+      },
+      error: function(data) {
+        //alert(data.error);    
+      },
+    });      
+
+  }
+
+  // amnaj - id_cus_brn
   // cus_brn
   $(document).on('keypress', '#id_cus_brn', function(e) {
     if(e.which == 13) {      
@@ -2139,401 +2593,15 @@
       var cus_brn = obj.val();
       var cus_id = $('#id_cus_id').val();
 
-      if(cus_id == "" || cus_id==null){
-        alert("Customer Code is required!");
-        $("#id_cus_id").focus();
-        return false;
-      } else if(cus_brn=="" || cus_brn==null){
-        $("#id_cus_brn").val("000");
-        $("#id_cus_brn").focus();
-      }      
-
-      $.ajax({
-        url: "/customer/ajax/ajax_check_exist_cus_site/",
-        type: "POST",
-        data: {          
-          csrfmiddlewaretoken: '{{ csrf_token }}',
-          cus_id: cus_id,
-          cus_brn: cus_brn,
-        },
-        success: function(data) {
-          // Check Deleted status
-          var upd_flag = data.results[0]["upd_flag"];
-          var cus_no = data.results[0]["cus_no"];
-          
-          
-          if(upd_flag=='D') {    
-
-            var retVal = confirm("Would you like to undelete Customer No." + cus_no + " ?");
-                      
-            if( retVal == true ) {
-              
-              // Change upd_flag to 'R'
-              $.ajax({
-                url: "/customer/ajax/ajax_undelete_customer/",
-                type: "POST",
-                data: {        
-                  csrfmiddlewaretoken: '{{ csrf_token }}',
-                  cus_no: cus_no,
-                },
-                success: function(data) {
-                  
-                },
-                error: function(data) {
-                  
-                },
-              });
-
-              $("#main-content :input").attr("disabled", false);
-              $("#id_cus_main_cus_name_th").focus();
-
-              while (cus_brn.length < 3) 
-                cus_brn = "0" + cus_brn;
-              $('#id_cus_brn').val(cus_brn);
-              
-              var customer_option_btype = data.results[0]["customer_option_btype"];
-              var customer_option_op1 = data.results[0]["customer_option_op1"];
-              var customer_option_op2 = data.results[0]["customer_option_op2"];
-              var customer_option_op3 = data.results[0]["customer_option_op3"];
-              var customer_option_op4 = data.results[0]["customer_option_op4"];          
-
-              // Customer Main Office
-              $('#id_cus_main_cus_name_th').focus();          
-              $('#id_cus_main_business_type').val(customer_option_btype);
-              $('#id_cus_main_customer_option_op1').val(customer_option_op1);
-              $('#id_cus_main_customer_option_op2').val(customer_option_op2);
-              $('#id_cus_main_customer_option_op3').val(customer_option_op3);
-              $('#id_cus_main_customer_option_op4').val(customer_option_op4);
-
-              // Customer Site
-              var cus_site_cus_active = data.results[0]["cus_active"];
-              if(cus_site_cus_active==1) {
-                $('#id_cus_site_cus_active').val(1);
-                $('#id_cus_site_cus_active').prop("checked", true);
-              } else {
-                $('#id_cus_site_cus_active').val(0);
-                $('#id_cus_site_cus_active').prop("checked", false);
-              }
-
-              var cus_site_cus_name_th = data.results[0]["cus_name_th"];
-              var cus_site_cus_add1_th = data.results[0]["cus_add1_th"];
-              var cus_site_cus_add2_th = data.results[0]["cus_add2_th"];                  
-              var cus_site_cus_district_id = data.results[0]["cus_district_id"];
-              var cus_site_cus_subdist_th = data.results[0]["cus_subdist_th"];          
-              var cus_site_cus_district_th = data.results[0]["cus_district_th"];
-              var cus_site_cus_city_th = data.results[0]["cus_city_th"];
-              var cus_site_cus_country_th = data.results[0]["cus_country_th"];          
-              var cus_site_cus_name_en = data.results[0]["cus_name_en"];
-              var cus_site_cus_add1_en = data.results[0]["cus_add1_en"];
-              var cus_site_cus_add2_en = data.results[0]["cus_add2_en"];        
-              var cus_site_cus_subdist_en = data.results[0]["cus_subdist_en"];
-              var cus_site_cus_district_en = data.results[0]["cus_district_en"];
-              var cus_site_cus_city_en = data.results[0]["cus_city_en"];
-              var cus_site_cus_country_en = data.results[0]["cus_country_en"];
-              var cus_site_cus_zip = data.results[0]["cus_zip"];
-              var cus_site_cus_tel = data.results[0]["cus_tel"];
-              var cus_site_cus_fax = data.results[0]["cus_fax"];
-              var cus_site_cus_email = data.results[0]["cus_email"];
-              var cus_site_cus_zone = data.results[0]["cus_zone"];
-
-              var cus_site_site_contact_id = data.results[0]["cus_site_site_contact_id"];
-              var cus_site_site_contact_title_th = data.results[0]["cus_site_site_contact_title_th"];
-              var cus_site_site_contact_fname_th = data.results[0]["cus_site_site_contact_fname_th"];
-              var cus_site_site_contact_lname_th = data.results[0]["cus_site_site_contact_lname_th"];
-              var cus_site_site_contact_position_th = data.results[0]["cus_site_site_contact_position_th"];
-
-              var cus_site_site_contact_title_en = data.results[0]["cus_site_site_contact_title_en"];
-              var cus_site_site_contact_fname_en = data.results[0]["cus_site_site_contact_fname_en"];
-              var cus_site_site_contact_lname_en = data.results[0]["cus_site_site_contact_lname_en"];
-              var cus_site_site_contact_position_en = data.results[0]["cus_site_site_contact_position_en"];
-
-              $('#id_cus_site_cus_name_th').val(cus_site_cus_name_th);
-              $('#id_cus_site_cus_add1_th').val(cus_site_cus_add1_th);
-              $('#id_cus_site_cus_add2_th').val(cus_site_cus_add2_th);
-              $('#id_cus_site_cus_subdist_th').val(cus_site_cus_subdist_th);          
-              $('#id_cus_site_cus_district_id').val(cus_site_cus_district_id);
-              $('#id_cus_site_cus_district_dist_th').val(cus_site_cus_district_th);          
-              $('#id_cus_site_cus_city_th').val(cus_site_cus_city_th);          
-              $('#id_cus_site_cus_country_th').val(cus_site_cus_country_th);
-              $('#id_cus_site_cus_name_en').val(cus_site_cus_name_en);
-              $('#id_cus_site_cus_add1_en').val(cus_site_cus_add1_en);
-              $('#id_cus_site_cus_add2_en').val(cus_site_cus_add2_en);
-              $('#id_cus_site_cus_subdist_en').val(cus_site_cus_subdist_en);
-              $('#id_cus_site_cus_district_en').val(cus_site_cus_district_en);
-              $('#id_cus_site_cus_city_en').val(cus_site_cus_city_en);
-              $('#id_cus_site_cus_country_en').val(cus_site_cus_country_en);
-              $('#id_cus_site_cus_zip').val(cus_site_cus_zip);
-              $('#id_cus_site_cus_tel').val(cus_site_cus_tel);
-              $('#id_cus_site_cus_fax').val(cus_site_cus_fax);
-              $('#id_cus_site_cus_email').val(cus_site_cus_email);
-              $('#id_cus_site_cus_zone').val(cus_site_cus_zone);
-              $('#id_cus_site_site_contact_id').val(cus_site_site_contact_id);
-              $('#id_cus_site_site_contact_title_th').val(cus_site_site_contact_title_th);
-              $('#id_cus_site_site_contact_fname_th').val(cus_site_site_contact_fname_th);
-              $('#id_cus_site_site_contact_lname_th').val(cus_site_site_contact_lname_th);
-              $('#id_cus_site_site_contact_position_th').val(cus_site_site_contact_position_th);
-              $('#id_cus_site_site_contact_title_en').val(cus_site_site_contact_title_en);
-              $('#id_cus_site_site_contact_fname_en').val(cus_site_site_contact_fname_en);
-              $('#id_cus_site_site_contact_lname_en').val(cus_site_site_contact_lname_en);
-              $('#id_cus_site_site_contact_position_en').val(cus_site_site_contact_position_en);
-
-
-            } else {
-              $("#id_cus_brn").val("");
-              $("#id_cus_brn").focus();
-              return false;          
-            }            
-          } else {              
-              $("#main-content :input").attr("disabled", false);
-              $("#id_cus_main_cus_name_th").focus();
-
-              while (cus_brn.length < 3) 
-                cus_brn = "0" + cus_brn;
-              $('#id_cus_brn').val(cus_brn);
-              
-              var customer_option_btype = data.results[0]["customer_option_btype"];
-              var customer_option_op1 = data.results[0]["customer_option_op1"];
-              var customer_option_op2 = data.results[0]["customer_option_op2"];
-              var customer_option_op3 = data.results[0]["customer_option_op3"];
-              var customer_option_op4 = data.results[0]["customer_option_op4"];          
-
-              // Customer Main Office
-              $('#id_cus_main_cus_name_th').focus();          
-              $('#id_cus_main_business_type').val(customer_option_btype);
-              $('#id_cus_main_customer_option_op1').val(customer_option_op1);
-              $('#id_cus_main_customer_option_op2').val(customer_option_op2);
-              $('#id_cus_main_customer_option_op3').val(customer_option_op3);
-              $('#id_cus_main_customer_option_op4').val(customer_option_op4);
-
-              // Customer Site
-              var cus_site_cus_active = data.results[0]["cus_active"];
-              if(cus_site_cus_active==1) {
-                $('#id_cus_site_cus_active').val(1);
-                $('#id_cus_site_cus_active').prop("checked", true);
-              } else {
-                $('#id_cus_site_cus_active').val(0);
-                $('#id_cus_site_cus_active').prop("checked", false);
-              }
-
-              var cus_site_cus_name_th = data.results[0]["cus_name_th"];
-              var cus_site_cus_add1_th = data.results[0]["cus_add1_th"];
-              var cus_site_cus_add2_th = data.results[0]["cus_add2_th"];                  
-              var cus_site_cus_district_id = data.results[0]["cus_district_id"];
-              var cus_site_cus_subdist_th = data.results[0]["cus_subdist_th"];          
-              var cus_site_cus_district_th = data.results[0]["cus_district_th"];
-              var cus_site_cus_city_th = data.results[0]["cus_city_th"];
-              var cus_site_cus_country_th = data.results[0]["cus_country_th"];          
-              var cus_site_cus_name_en = data.results[0]["cus_name_en"];
-              var cus_site_cus_add1_en = data.results[0]["cus_add1_en"];
-              var cus_site_cus_add2_en = data.results[0]["cus_add2_en"];        
-              var cus_site_cus_subdist_en = data.results[0]["cus_subdist_en"];
-              var cus_site_cus_district_en = data.results[0]["cus_district_en"];
-              var cus_site_cus_city_en = data.results[0]["cus_city_en"];
-              var cus_site_cus_country_en = data.results[0]["cus_country_en"];
-              var cus_site_cus_zip = data.results[0]["cus_zip"];
-              var cus_site_cus_tel = data.results[0]["cus_tel"];
-              var cus_site_cus_fax = data.results[0]["cus_fax"];
-              var cus_site_cus_email = data.results[0]["cus_email"];
-              var cus_site_cus_zone = data.results[0]["cus_zone"];
-
-              var cus_site_site_contact_id = data.results[0]["cus_site_site_contact_id"];            
-              var cus_site_site_contact_title_id = data.results[0]["cus_site_site_contact_title_id"]
-              var cus_site_site_contact_title_th = data.results[0]["cus_site_site_contact_title_th"];
-              var cus_site_site_contact_con_sex = data.results[0]["cus_site_site_contact_con_sex"];
-              var cus_site_site_contact_fname_th = data.results[0]["cus_site_site_contact_fname_th"];
-              var cus_site_site_contact_lname_th = data.results[0]["cus_site_site_contact_lname_th"];
-              var cus_site_site_contact_position_th = data.results[0]["cus_site_site_contact_position_th"];
-              var cus_site_site_contact_title_en = data.results[0]["cus_site_site_contact_title_en"];
-              var cus_site_site_contact_fname_en = data.results[0]["cus_site_site_contact_fname_en"];
-              var cus_site_site_contact_lname_en = data.results[0]["cus_site_site_contact_lname_en"];
-              var cus_site_site_contact_position_en = data.results[0]["cus_site_site_contact_position_en"];
-              var cus_site_site_contact_con_nationality_id = data.results[0]["cus_site_site_contact_con_nationality_id"];
-              var cus_site_site_contact_con_mobile = data.results[0]["cus_site_site_contact_con_mobile"];
-              var cus_site_site_contact_con_email = data.results[0]["cus_site_site_contact_con_email"];
-              
-              $('#id_cus_site_cus_name_th').val(cus_site_cus_name_th);
-              $('#id_cus_site_cus_add1_th').val(cus_site_cus_add1_th);
-              $('#id_cus_site_cus_add2_th').val(cus_site_cus_add2_th);
-              $('#id_cus_site_cus_subdist_th').val(cus_site_cus_subdist_th);          
-              $('#id_cus_site_cus_district_id').val(cus_site_cus_district_id);
-              $('#id_cus_site_cus_district_dist_th').val(cus_site_cus_district_th);          
-              $('#id_cus_site_cus_city_th').val(cus_site_cus_city_th);          
-              $('#id_cus_site_cus_country_th').val(cus_site_cus_country_th);
-              $('#id_cus_site_cus_name_en').val(cus_site_cus_name_en);
-              $('#id_cus_site_cus_add1_en').val(cus_site_cus_add1_en);
-              $('#id_cus_site_cus_add2_en').val(cus_site_cus_add2_en);
-              $('#id_cus_site_cus_subdist_en').val(cus_site_cus_subdist_en);
-              $('#id_cus_site_cus_district_en').val(cus_site_cus_district_en);
-              $('#id_cus_site_cus_city_en').val(cus_site_cus_city_en);
-              $('#id_cus_site_cus_country_en').val(cus_site_cus_country_en);
-              $('#id_cus_site_cus_zip').val(cus_site_cus_zip);
-              $('#id_cus_site_cus_tel').val(cus_site_cus_tel);
-              $('#id_cus_site_cus_fax').val(cus_site_cus_fax);
-              $('#id_cus_site_cus_email').val(cus_site_cus_email);
-              $('#id_cus_site_cus_zone').val(cus_site_cus_zone);
-              $('#id_cus_site_site_contact_id').val(cus_site_site_contact_id);
-              $('#id_cus_site_site_contact_title_th').val(cus_site_site_contact_title_th);
-
-              if(cus_site_site_contact_con_sex == 'M') {
-                $('#id_cus_site_sex_male').prop("checked", true);
-                $('#id_cus_site_sex_female').prop("checked", false);
-              }
-
-              if(cus_site_site_contact_con_sex == 'F') {
-                $('#id_cus_site_sex_male').prop("checked", false);
-                $('#id_cus_site_sex_female').prop("checked", true);
-              }
-
-
-              $('#id_cus_site_site_contact_fname_th').val(cus_site_site_contact_fname_th);
-              $('#id_cus_site_site_contact_lname_th').val(cus_site_site_contact_lname_th);
-              $('#id_cus_site_site_contact_position_th').val(cus_site_site_contact_position_th);
-              $('#id_cus_site_cus_contact_title_list').val(cus_site_site_contact_title_id);
-              $('#id_cus_site_site_contact_con_title_en').val(cus_site_site_contact_title_en);
-              $('#id_cus_site_site_contact_con_fname_en').val(cus_site_site_contact_fname_en);
-              $('#id_cus_site_site_contact_con_lname_en').val(cus_site_site_contact_lname_en);
-              $('#id_cus_site_site_contact_con_position_en').val(cus_site_site_contact_position_en);
-              $('#id_cus_site_site_contact_nation_list').val(cus_site_site_contact_con_nationality_id);
-              $('#id_cus_site_site_contact_con_mobile').val(cus_site_site_contact_con_mobile);
-              $('#id_cus_site_site_contact_con_email').val(cus_site_site_contact_con_email);
-
-              $("#id_cus_id").attr("disabled", true);
-              $('#id_cus_id').attr('readonly', true);
-              $("#id_cus_brn").attr("disabled", true);
-              $('#id_cus_brn').attr('readonly', true);
-              $('#customer_lookup').attr("disabled", true);
-              console.log("bbb");              
-          }
-        },
-        error: function(data) {
-          alert(data.responseJSON.error);          
-        },
-      });
-
-
-
-      // Fill in CUS_BILL
-      $.ajax({
-        url: "/customer/ajax/ajax_check_exist_cus_bill/",
-        type: "POST",
-        data: {          
-          csrfmiddlewaretoken: '{{ csrf_token }}',
-          cus_id: cus_id,
-          cus_brn: cus_brn,
-        },
-        success: function(data) {
-
-          while (cus_brn.length < 3) 
-            cus_brn = "0" + cus_brn;
-            $('#id_cus_brn').val(cus_brn);
-          
-          // Customer Site
-          var cus_bill_cus_active = data.results[0]["cus_active"];
-          if(cus_bill_cus_active==1) {
-            $('#id_cus_bill_cus_active').val(1);
-            $('#id_cus_bill_cus_active').prop("checked", true);
-          } else {
-            $('#id_cus_bill_cus_active').val(0);
-            $('#id_cus_bill_cus_active').prop("checked", false);
-          }
-
-          var cus_bill_cus_name_th = data.results[0]["cus_name_th"];
-          var cus_bill_cus_add1_th = data.results[0]["cus_add1_th"];
-          var cus_bill_cus_add2_th = data.results[0]["cus_add2_th"];                  
-          var cus_bill_cus_district_id = data.results[0]["cus_district_id"];
-          var cus_bill_cus_subdist_th = data.results[0]["cus_subdist_th"];          
-          var cus_bill_cus_district_th = data.results[0]["cus_district_th"];
-          var cus_bill_cus_city_th = data.results[0]["cus_city_th"];
-          var cus_bill_cus_country_th = data.results[0]["cus_country_th"];          
-          var cus_bill_cus_name_en = data.results[0]["cus_name_en"];
-          var cus_bill_cus_add1_en = data.results[0]["cus_add1_en"];
-          var cus_bill_cus_add2_en = data.results[0]["cus_add2_en"];        
-          var cus_bill_cus_subdist_en = data.results[0]["cus_subdist_en"];
-          var cus_bill_cus_district_en = data.results[0]["cus_district_en"];
-          var cus_bill_cus_city_en = data.results[0]["cus_city_en"];
-          var cus_bill_cus_country_en = data.results[0]["cus_country_en"];
-          var cus_bill_cus_zip = data.results[0]["cus_zip"];
-          var cus_bill_cus_tel = data.results[0]["cus_tel"];
-          var cus_bill_cus_fax = data.results[0]["cus_fax"];
-          var cus_bill_cus_email = data.results[0]["cus_email"];
-          var cus_bill_cus_zone = data.results[0]["cus_zone"];
-
-          var cus_bill_cus_contact_id = data.results[0]["cus_bill_cus_contact_id"];          
-          var cus_bill_cus_contact_title_id = data.results[0]["cus_bill_cus_contact_title_id"];
-          var cus_bill_cus_contact_title_th = data.results[0]["cus_bill_cus_contact_title_th"];
-          var cus_bill_cus_contact_con_sex = data.results[0]["cus_bill_cus_contact_con_sex"];
-          var cus_bill_cus_contact_fname_th = data.results[0]["cus_bill_cus_contact_fname_th"];
-          var cus_bill_cus_contact_lname_th = data.results[0]["cus_bill_cus_contact_lname_th"];
-          var cus_bill_cus_contact_position_th = data.results[0]["cus_bill_cus_contact_position_th"];          
-          var cus_bill_cus_contact_title_en = data.results[0]["cus_bill_cus_contact_title_en"];
-          var cus_bill_cus_contact_fname_en = data.results[0]["cus_bill_cus_contact_fname_en"];
-          var cus_bill_cus_contact_lname_en = data.results[0]["cus_bill_cus_contact_lname_en"];
-          var cus_bill_cus_contact_position_en = data.results[0]["cus_bill_cus_contact_position_en"];
-          var cus_bill_cus_contact_con_nationality_id = data.results[0]["cus_bill_cus_contact_con_nationality_id"];
-          var cus_bill_cus_contact_con_mobile = data.results[0]["cus_bill_cus_contact_con_mobile"];
-          var cus_bill_cus_contact_con_email = data.results[0]["cus_bill_cus_contact_con_email"];
-
-          //alert(cus_bill_cus_contact_con_nationality_id);
-
-          $('#id_cus_bill_cus_name_th').val(cus_bill_cus_name_th);
-          $('#id_cus_bill_cus_add1_th').val(cus_bill_cus_add1_th);
-          $('#id_cus_bill_cus_add2_th').val(cus_bill_cus_add2_th);
-          $('#id_cus_bill_cus_subdist_th').val(cus_bill_cus_subdist_th);          
-          $('#id_cus_bill_cus_district_id').val(cus_bill_cus_district_id);
-          
-          $('#id_cus_bill_cus_district_dist_th').val(cus_bill_cus_district_th);
-          //$('#id_cus_bill_cus_district_dist_th').val("aa");
-
-          $('#id_cus_bill_cus_city_th').val(cus_bill_cus_city_th);          
-          $('#id_cus_bill_cus_country_th').val(cus_bill_cus_country_th);
-          $('#id_cus_bill_cus_name_en').val(cus_bill_cus_name_en);
-          $('#id_cus_bill_cus_add1_en').val(cus_bill_cus_add1_en);
-          $('#id_cus_bill_cus_add2_en').val(cus_bill_cus_add2_en);
-          $('#id_cus_bill_cus_subdist_en').val(cus_bill_cus_subdist_en);
-          $('#id_cus_bill_cus_district_en').val(cus_bill_cus_district_en);
-          $('#id_cus_bill_cus_city_en').val(cus_bill_cus_city_en);
-          $('#id_cus_bill_cus_country_en').val(cus_bill_cus_country_en);
-          $('#id_cus_bill_cus_zip').val(cus_bill_cus_zip);
-          $('#id_cus_bill_cus_tel').val(cus_bill_cus_tel);
-          $('#id_cus_bill_cus_fax').val(cus_bill_cus_fax);
-          $('#id_cus_bill_cus_email').val(cus_bill_cus_email);
-          $('#id_cus_bill_cus_zone').val(cus_bill_cus_zone);
-
-          $('#id_cus_bill_cus_contact_id').val(cus_bill_cus_contact_id);
-          $('#id_cus_bill_cus_contact_title_id').val()
-          $('#id_cus_bill_cus_contact_cus_title_th').val(cus_bill_cus_contact_title_th);
-
-          if(cus_bill_cus_contact_con_sex == 'M') {
-            $('#id_cus_bill_sex_male').prop("checked", true);
-            $('#id_cus_bill_sex_female').prop("checked", false);
-          }
-
-          if(cus_bill_cus_contact_con_sex == 'F') {
-            $('#id_cus_bill_sex_male').prop("checked", false);
-            $('#id_cus_bill_sex_female').prop("checked", true);
-          }
-
-          $('#id_cus_bill_cus_contact_con_fname_th').val(cus_bill_cus_contact_fname_th);
-          $('#id_cus_bill_cus_contact_con_lname_th').val(cus_bill_cus_contact_lname_th);
-          $('#id_cus_bill_cus_contact_con_position_th').val(cus_bill_cus_contact_position_th);
-          $('#id_cus_bill_cus_contact_title_list').val(cus_bill_cus_contact_title_id);
-          $('#id_cus_bill_cus_contact_cus_title_en').val(cus_bill_cus_contact_title_en);
-          $('#id_cus_bill_cus_contact_con_fname_en').val(cus_bill_cus_contact_fname_en);
-          $('#id_cus_bill_cus_contact_con_lname_en').val(cus_bill_cus_contact_lname_en);
-          $('#id_cus_bill_cus_contact_con_position_en').val(cus_bill_cus_contact_position_en);
-          $('#id_cus_bill_cus_contact_nation_list').val(cus_bill_cus_contact_con_nationality_id);
-          $('#id_cus_bill_cus_contact_con_mobile').val(cus_bill_cus_contact_con_mobile);
-          $('#id_cus_bill_cus_contact_con_email').val(cus_bill_cus_contact_con_email);
-
-        },
-        error: function(data) {
-          //alert(data.error);    
-        },
-      });      
-
+      enter_id_cus_brn(cus_id, cus_brn);
 
     }
   });
+
+
+
+
+
 
   $("#cusMainSaveButton").click( function() {
     event.preventDefault();
@@ -4178,6 +4246,24 @@
     $("#id_cus_bill_cus_country_th").val(country_name_th);
     $("#id_cus_bill_cus_country_en").val(country_name_en);
     $("#districtmodal").modal("hide");  
+  }
+
+
+
+  function customer_modal_select_item(cus_id, cus_brn, cnt_name_th, cnt_name_en) {    
+    loadCustomer(cus_id, cus_brn);    
+  };
+
+  function loadCustomer(cus_id, cus_brn) {
+
+    $("#id_cus_id").val(cus_id);
+    $("#id_cus_brn").val(cus_brn);
+
+    showLoading();
+    enter_id_cus_id(cus_id, cus_brn);
+    enter_id_cus_brn(cus_id, cus_brn);
+    $("#search_customer_modal").modal("hide");    
+    $.LoadingOverlay("hide");
   }
 
 </script>
