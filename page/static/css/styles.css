@@ -251,6 +251,14 @@ input:checked + .slider:after {
   display: block;
 }
 
+/* DASHBOARD */
+.dashboard-scrollbar {
+  position: relative;
+  height: 400px;
+  width: 100%;
+  overflow: auto;
+}
+
 
 .tableFixHead { overflow-y: auto; height: 330px; }
 .tableFixHead thead th { position: sticky; top: 0; z-index:1;}

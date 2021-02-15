@@ -43,7 +43,9 @@
                 <div class="icon">                
                   <i class="ion ion-person-stalker"></i>
                 </div>
-                <!--<a href="{% url 'customer-list' %}" class="small-box-footer">Customer list <i class="fas fa-arrow-circle-right"></i></a>-->
+                {% comment %}
+                <a href="{% url 'customer-list' %}" class="small-box-footer">Customer list <i class="fas fa-arrow-circle-right"></i></a>
+                {% endcomment %}
               </div>
             </div>          
 
@@ -57,7 +59,9 @@
                 <div class="icon">                
                   <i class="ion ion-person-stalker"></i>
                 </div>
-                <!--<a href="{% url 'customer-list' %}" class="small-box-footer">Customer list <i class="fas fa-arrow-circle-right"></i></a>-->
+                {% comment %}
+                <a href="{% url 'customer-list' %}" class="small-box-footer">Customer list <i class="fas fa-arrow-circle-right"></i></a>
+                {% endcomment %}
               </div>
             </div>     
 
@@ -71,7 +75,9 @@
                 <div class="icon">                
                   <i class="ion ion-person-stalker"></i>
                 </div>
-                <!--<a href="{% url 'customer-list' %}" class="small-box-footer">Customer list <i class="fas fa-arrow-circle-right"></i></a>-->
+                {% comment %}
+                <a href="{% url 'customer-list' %}" class="small-box-footer">Customer list <i class="fas fa-arrow-circle-right"></i></a>
+                {% endcomment %}
               </div>
             </div>   
 
@@ -104,11 +110,11 @@
         <!-- /.card-header -->
         <div class="card-body p-0">
 
-          <div class="table-responsive table-wrapper-scroll-y my-custom-scrollbar">
+          <div class="table-responsive table-wrapper-scroll-y dashboard-scrollbar">
             <table class="table m-0 table-sm table-striped ">
               <thead>
               <tr>
-                <th>Log ID</th>
+                <th class='text-center'>Log ID</th>
                 <th>User</th>
                 <th>Description</th>
                 <th>Date</th>
@@ -118,7 +124,7 @@
 
               {% for item in history_log %}
               <tr>
-                <td><span class="text-sm">{{item.id}}</span></td>
+                <td class='text-center'><span class="text-sm">{{item.id}}</span></td>
                 <td><span class="text-sm">{{item.log_by}}</span></td>
 
                 {% if item.log_type == 'A' or item.log_type == 'D' or item.log_type == 'R' %}

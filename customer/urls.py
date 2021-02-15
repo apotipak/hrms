@@ -6,8 +6,8 @@ from . import views
 urlpatterns = [
     url(r'^$', views.CustomerList, name='customer-list'),
     url(r'^customer-dashboard/', views.CustomerDashboard, name='customer-dashboard'),  
-    url(r'^contact-list/', views.ContactList, name='contact-list'),    
     
+    url(r'^contact-list/', views.ContactList, name='contact-list'),    
     # path('customer/create', views.CustomerCreate, name='customer-create'),
     path('customer/manage', views.CustomerCreate, name='customer-create'),
 
