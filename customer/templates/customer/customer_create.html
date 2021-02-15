@@ -1436,6 +1436,12 @@
       $("#main-content :input").attr("disabled", true);
       $('#customer_name_title').html("<button type='button' class='btn text-light' style='background-color: #018349;'><span style='font-size:18px;font-weight:bold;'>Customer</span></button>");
 
+      $("#id_cus_id").attr("disabled", false);
+      $('#id_cus_id').attr('readonly', false);
+      $("#id_cus_brn").attr("disabled", false);
+      $('#id_cus_brn').attr('readonly', false);
+      $('#customer_lookup').attr("disabled", false);
+
       $("#id_cus_id").focus();
     });
 
@@ -1447,7 +1453,7 @@
     //$("#id_search_number_of_found_record").html("");
     //var obj = $(this);  
     alert("In progress.");
-    
+
     $("#id_search_number_of_found_record").html("");
     var obj = $(this);  
     $.ajax({
@@ -2271,6 +2277,7 @@
               $('#id_cus_site_site_contact_lname_en').val(cus_site_site_contact_lname_en);
               $('#id_cus_site_site_contact_position_en').val(cus_site_site_contact_position_en);
 
+
             } else {
               $("#id_cus_brn").val("");
               $("#id_cus_brn").focus();
@@ -2389,6 +2396,13 @@
               $('#id_cus_site_site_contact_nation_list').val(cus_site_site_contact_con_nationality_id);
               $('#id_cus_site_site_contact_con_mobile').val(cus_site_site_contact_con_mobile);
               $('#id_cus_site_site_contact_con_email').val(cus_site_site_contact_con_email);
+
+              $("#id_cus_id").attr("disabled", true);
+              $('#id_cus_id').attr('readonly', true);
+              $("#id_cus_brn").attr("disabled", true);
+              $('#id_cus_brn').attr('readonly', true);
+              $('#customer_lookup').attr("disabled", true);
+              console.log("bbb");              
           }
         },
         error: function(data) {
