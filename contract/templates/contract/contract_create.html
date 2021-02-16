@@ -555,7 +555,7 @@
 
               <div class="form-inline col-6">
                 <label for="id_cnt_guard_amt">{% trans 'Guard Amount' %}&nbsp;&nbsp;</label>
-                <input type="number" name="cnt_guard_amt" min="0" step="any" class="form-control form-control-sm text-right col-12" id="id_cnt_guard_amt" readonly="" disabled="disabled" style="font-weight: bold; font-size: 18px;">
+                <input type="number" name="cnt_guard_amt" min="0" step="any" class="form-control form-control-sm text-center text-light col-12" id="id_cnt_guard_amt" value="0" readonly="" disabled="disabled" style="font-weight: bold; font-size: 18px; background-color: #509861;">
               </div>
 
               <div class="form-inline col-md-6">
@@ -2274,7 +2274,7 @@
             }
             
             if(json.cnt_guard_amt==0) {
-              $("#id_cnt_guard_amt").val("");
+              $("#id_cnt_guard_amt").val("0");
             } else {
               $("#id_cnt_guard_amt").val(json.cnt_guard_amt);    
             }
