@@ -42,6 +42,6 @@ urlpatterns += [
 
 # Daily Monitoring Reports
 urlpatterns += [
-    path('daily-monitoring-reports/', views.DailyMonitoringReports, name='daily-monitoring-reports'),
+    # path('daily-monitoring-reports/', views.DailyMonitoringReports, name='daily-monitoring-reports'),
     # url(r'^export/xls/$', views.export_dgp_500_xls, name='export_dgp_500_xls'),    
 ]
