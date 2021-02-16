@@ -4444,9 +4444,11 @@ $("#id_late_hour").click( function() {
     	//$("#id_cus_brn").val("000");
     	//$("#id_cus_vol").val("001");
 
+    	/*
     	$("#id_cus_id").val("");
     	$("#id_cus_brn").val("");
     	$("#id_cus_vol").val("");
+		*/
 
     	clearEmployeeListTable();
     	disableAllElements();
@@ -4492,6 +4494,7 @@ $("#id_late_hour").click( function() {
         $("#tab2-tab").text("Contract / Schedule Information");
 
     	$("#id_cus_id").focus();
+    	$("#id_cus_id").select();
     });
 
  	function clearRedHighlightTextbox() {
