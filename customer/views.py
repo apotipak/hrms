@@ -119,8 +119,7 @@ def ajax_check_exist_cus_main(request):
         group_1_list = []
         group_2_list = []
         customer_option = []
-
-        print("test")
+        
         if form.is_valid():
             try:                
                 cus_main = CusMain.objects.get(pk=cus_id)
@@ -149,7 +148,7 @@ def ajax_check_exist_cus_main(request):
                         cus_main_cus_country_en = cus_main.cus_country.country_en
 
                     if cus_main.cus_contact_id is None:
-                        print("abc")
+                        # print("abc")
                         cus_main_cus_contact_id = 0
                         cus_main_con_title_id = 129
                         cus_main_cus_contact_title_th = "คุณ"
@@ -165,7 +164,7 @@ def ajax_check_exist_cus_main(request):
                         cus_main_cus_contact_con_mobile = ""
                         cus_main_cus_contact_con_email = ""
                     else:
-                        print("xyz")
+                        # print("xyz")
                         cus_main_cus_contact_id = cus_main.cus_contact_id
                         cus_main_con_title_id = cus_main.cus_contact.con_title_id
                         cus_main_cus_contact_title_th = cus_main.cus_contact.con_title.title_th
@@ -180,6 +179,8 @@ def ajax_check_exist_cus_main(request):
                         cus_main_cus_contact_nationality_id = cus_main.cus_contact.con_nation_id
                         cus_main_cus_contact_con_mobile = cus_main.cus_contact.con_mobile
                         cus_main_cus_contact_con_email = cus_main.cus_contact.con_email
+                        cus_main_cus_taxid = cus_main.cus_taxid
+                        # amnaj
 
                     record = {
                         "cus_id": cus_main.cus_id,
@@ -220,6 +221,7 @@ def ajax_check_exist_cus_main(request):
                         "cus_contact_con_nationality_id": cus_main_cus_contact_nationality_id,
                         "cus_contact_con_mobile": cus_main_cus_contact_con_mobile,
                         "cus_contact_con_email": cus_main_cus_contact_con_email,
+                        "cus_main_cus_taxid": cus_main_cus_taxid,
                     }
                     pickup_records.append(record)
                     cus_main_form = CusMainForm(instance=cus_main)
@@ -262,6 +264,7 @@ def ajax_check_exist_cus_main(request):
                     "cus_contact_fname_en": None,
                     "cus_contact_lname_en": None,
                     "cus_contact_position_en": None,
+                    "cus_main_cus_taxid": None,
                 }   
                 pickup_records.append(record)      
             
@@ -468,6 +471,7 @@ def ajax_check_exist_cus_site(request):
                     "customer_option_op2": customer_option_op2,
                     "customer_option_op3": customer_option_op3,
                     "customer_option_op4": customer_option_op4,
+                    
                     "customer_option_opn1": customer_option_opn1,
                 }
 
@@ -3639,9 +3643,8 @@ def save_all_cus_tabs(request):
 
                         try:
                             contact_list = CusContact.objects.filter(cus_id=cus_id, con_fname_th=cus_bill_cus_contact_con_fname_th, con_lname_th=cus_bill_cus_contact_con_lname_th)[:1].get()
-                            
-                            # amnaj
-                            print("bill - update old contact")
+                                                    
+                            # print("bill - update old contact")
 
                             contact_list = CusContact.objects.filter(con_id=cus_bill_cus_contact_id).get()
                             cusbill.cus_contact_id = cus_bill_cus_contact_id
@@ -3703,11 +3706,10 @@ def save_all_cus_tabs(request):
                                 modified_records.append(record)
                                 count_modified_field = count_modified_field + 1
 
-                            # amnaj
                             # CON_NATIONALITY
-                            print("NATION")
-                            print("contact_list.con_nation_id = " + str(contact_list.con_nation_id))
-                            print("cus_bill_cus_contact_con_nationality_id = " + str(cus_bill_cus_contact_con_nationality_id))
+                            # print("NATION")
+                            # print("contact_list.con_nation_id = " + str(contact_list.con_nation_id))
+                            # print("cus_bill_cus_contact_con_nationality_id = " + str(cus_bill_cus_contact_con_nationality_id))
                             field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Contact Nationality", str(contact_list.con_nation_id), str(cus_bill_cus_contact_con_nationality_id), "E", request)
                             if field_is_modified:                                                           
 
@@ -4330,7 +4332,6 @@ def get_customer_list_modal(request):
     # Replace symbol character
     search_text = search_text.replace("\"", "'")    
  
-    # amnaj
     if search_option == '1':    # Search by cus_id
         search_text = search_text
         data = Customer.objects.raw('select cus_no,cus_id,cus_brn,cus_name_th,cus_name_en from customer where not (cus_id is null) and cus_id=%s order by cus_id', tuple([search_text]))

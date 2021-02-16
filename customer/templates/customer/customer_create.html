@@ -294,7 +294,7 @@
                             <label for="id_customer_group_id">{% trans 'Group ID' %}</label>                          
                             <div class="container">
                               {% render_field customer_code_create_form.customer_group_id class="selectGroupID" %}
-                              <input class="groupIDTextBox" id="id_customer_group_id" name="customer_group_id" value="{{customer.cus_taxid|default_if_none:''}}" />
+                              <input class="groupIDTextBox" id="id_customer_group_id" name="customer_group_id" value="{{cus_main.cus_taxid|default_if_none:None}}" />                              
                             </div>                        
                           </div>
 
@@ -2097,6 +2097,9 @@
         var cus_contact_con_mobile = data.results[0]["cus_contact_con_mobile"];
         var cus_contact_con_email = data.results[0]["cus_contact_con_email"];
 
+        var cus_main_cus_taxid = data.results[0]["cus_main_cus_taxid"];
+        //alert(cus_main_cus_taxid);
+
         if(cus_main_cus_active==1) {
           $('#id_cus_main_cus_active').val(1);
           $('#id_cus_main_cus_active').prop("checked", true);
@@ -2162,6 +2165,10 @@
         $('#id_cus_main_cus_contact_nation_list').val(cus_contact_con_nationality_id);
         $('#id_cus_main_cus_contact_con_mobile').val(cus_contact_con_mobile);
         $('#id_cus_main_cus_contact_con_email').val(cus_contact_con_email);
+
+        
+        // WORK
+        $('#id_customer_group_id').val(cus_main_cus_taxid);      
 
         return true; 
       },
@@ -2269,7 +2276,10 @@
 
             // Customer Main Office
             $('#id_cus_main_cus_name_th').focus();          
+            
             $('#id_cus_main_business_type').val(customer_option_btype);
+            //$('#id_cus_main_business_type').val("aa");
+
             $('#id_cus_main_customer_option_op1').val(customer_option_op1);
             $('#id_cus_main_customer_option_op2').val(customer_option_op2);
             $('#id_cus_main_customer_option_op3').val(customer_option_op3);
@@ -2371,7 +2381,12 @@
 
             // Customer Main Office
             $('#id_cus_main_cus_name_th').focus();          
+            
+            
             $('#id_cus_main_business_type').val(customer_option_btype);
+            //$('#id_cus_main_business_type').val("BB");            
+            //$('#id_customer_group_id').val(customer_option_btype);
+
             $('#id_cus_main_customer_option_op1').val(customer_option_op1);
             $('#id_cus_main_customer_option_op2').val(customer_option_op2);
             $('#id_cus_main_customer_option_op3').val(customer_option_op3);
@@ -2477,7 +2492,9 @@
             $("#id_cus_brn").attr("disabled", true);
             $('#id_cus_brn').attr('readonly', true);
             $('#customer_lookup').attr("disabled", true);
-            console.log("bbb");              
+            
+            //console.log("bbb");              
+
         }
       },
       error: function(data) {
@@ -2682,7 +2699,10 @@
     cus_main_cus_tel = $('#id_cus_main_cus_tel').val();
     cus_main_cus_fax = $('#id_cus_main_cus_fax').val();
     cus_main_cus_email = $('#id_cus_main_cus_email').val();
-    cus_main_cus_taxid = $('#id_customer_group_id').val();    
+    
+    // amnaj
+    cus_main_cus_taxid = $('#id_customer_group_id').val();
+
     cus_main_cus_zone = $('#id_cus_main_cus_zone').val();    
     customer_option_btype = $('#id_cus_main_business_type').val();
     customer_option_op1 = $('#id_cus_main_customer_option_op1').val();
