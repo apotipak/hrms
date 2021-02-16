@@ -294,7 +294,7 @@
                             <label for="id_customer_group_id">{% trans 'Group ID' %}</label>                          
                             <div class="container">
                               {% render_field customer_code_create_form.customer_group_id class="selectGroupID" %}
-                              <input class="groupIDTextBox" id="id_customer_group_id" name="customer_group_id" value="{{cus_main.cus_taxid|default_if_none:None}}" />                              
+                              <input class="groupIDTextBox" id="id_customer_group_id_text" name="customer_group_id_text" />
                             </div>                        
                           </div>
 
@@ -2168,7 +2168,8 @@
 
         
         // WORK
-        $('#id_customer_group_id').val(cus_main_cus_taxid);      
+        $('#id_customer_group_id').val(cus_main_cus_taxid);
+        $('#id_customer_group_id_text').val(cus_main_cus_taxid);
 
         return true; 
       },
@@ -2363,7 +2364,8 @@
             $("#id_cus_brn").focus();
             return false;          
           }            
-        } else {              
+        } else {
+
             $("#main-content :input").attr("disabled", false);
             $("#id_cus_main_cus_name_th").focus();
 
@@ -2375,8 +2377,7 @@
             var customer_option_op1 = data.results[0]["customer_option_op1"];
             var customer_option_op2 = data.results[0]["customer_option_op2"];
             var customer_option_op3 = data.results[0]["customer_option_op3"];
-            var customer_option_op4 = data.results[0]["customer_option_op4"];          
-
+            var customer_option_op4 = data.results[0]["customer_option_op4"];
             var customer_option_opn1 = data.results[0]["customer_option_opn1"];
 
             // Customer Main Office
@@ -2463,6 +2464,7 @@
             $('#id_cus_site_cus_zone').val(cus_site_cus_zone);
             $('#id_cus_site_site_contact_id').val(cus_site_site_contact_id);
             $('#id_cus_site_site_contact_title_th').val(cus_site_site_contact_title_th);
+            
 
             if(cus_site_site_contact_con_sex == 'M') {
               $('#id_cus_site_sex_male').prop("checked", true);
@@ -2473,8 +2475,7 @@
               $('#id_cus_site_sex_male').prop("checked", false);
               $('#id_cus_site_sex_female').prop("checked", true);
             }
-
-
+          
             $('#id_cus_site_site_contact_fname_th').val(cus_site_site_contact_fname_th);
             $('#id_cus_site_site_contact_lname_th').val(cus_site_site_contact_lname_th);
             $('#id_cus_site_site_contact_position_th').val(cus_site_site_contact_position_th);
