@@ -329,7 +329,15 @@ def ajax_check_exist_cus_site(request):
                     customer_option_op2 = customer_option.op2
                     customer_option_op3 = customer_option.op3
                     customer_option_op4 = customer_option.op4
-                    customer_option_opn1 = customer_option.opn1
+
+                    if customer_option.opn1 is not None:
+                        if customer_option.opn1 > 0: 
+                            customer_option_opn1 = customer_option.opn1
+                        else:
+                            customer_option_opn1 = 0
+                    else:
+                        customer_option_opn1 = 0
+                        
                     print("BUG1")
                 except CustomerOption.DoesNotExist:
                     print("BUG2")
@@ -471,7 +479,7 @@ def ajax_check_exist_cus_site(request):
                     "customer_option_op2": customer_option_op2,
                     "customer_option_op3": customer_option_op3,
                     "customer_option_op4": customer_option_op4,
-                    
+
                     "customer_option_opn1": customer_option_opn1,
                 }
 
@@ -2777,7 +2785,13 @@ def save_all_cus_tabs(request):
                     customer_option.save()
                     print("save cus_main_customer_option")
                 except CustomerOption.DoesNotExist:
-                    # Insert
+                    # Insert                    
+                    if cus_main_customer_option_opn1:
+                        if not cus_main_customer_option_opn1.isnumeric():
+                            cus_main_customer_option_opn1 = 0                    
+                    
+                    print("cus_main_customer_option_opn1:", cus_main_customer_option_opn1)
+
                     c = CustomerOption(
                         cus_no = cus_no, 
                         btype = cus_main_business_type.replace('&amp;', '&'), 

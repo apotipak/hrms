@@ -129,7 +129,7 @@
                       <div class="card-body" style="padding:8px 0 0 0; background-color: #eee;">
                         <div class="form-group">
                           <div class="input-group">
-                            <label for="id_cus_main_cus_name_th" class="col-sm-4 col-form-label">{% trans 'Customer Name' %}</label>
+                            <label for="id_cus_main_cus_name_th" class="col-sm-4 col-form-label"><span class='text-danger'>*</span>&nbsp;{% trans 'Customer Name' %}</label>
                             <div class="col-sm-8"><input type="text" class="form-control form-control-sm" id="id_cus_main_cus_name_th" name="cus_main_cus_name_th" value="{{ cus_main.cus_name_th }}"></div>
                           </div>
 
@@ -338,7 +338,7 @@
 
                           <div class="form-group col-md-3">
                             <label for="id_cus_main_customer_option_opn1" class="text-danger">{% trans 'GP Margin' %}</label>                        
-                            <input type="number" name="cus_main_customer_option_opn1" value="0.00" class="form-control form-control-sm" id="id_cus_main_customer_option_opn1">                        
+                            <input type="number" name="cus_main_customer_option_opn1" min="0" value="0.00" class="form-control form-control-sm" id="id_cus_main_customer_option_opn1">                        
                           </div>
 
                         </div>
@@ -2379,6 +2379,11 @@
             var customer_option_op3 = data.results[0]["customer_option_op3"];
             var customer_option_op4 = data.results[0]["customer_option_op4"];
             var customer_option_opn1 = data.results[0]["customer_option_opn1"];
+
+            if(isNaN(customer_option_opn1))
+              customer_option_opn1 = 0
+
+            //alert(customer_option_opn1);
 
             // Customer Main Office
             $('#id_cus_main_cus_name_th').focus();          
