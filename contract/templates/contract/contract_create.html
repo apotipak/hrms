@@ -543,7 +543,7 @@
               <div class="form-inline col-12">
                 <label for="id_cnt_wage_id"><span class='text-danger'>*</span>&nbsp;{% trans 'Wage Rate' %}&nbsp;&nbsp;</label>
                 <div class="input-group-append col-12">
-                  <input type="text" id="id_wage_id_text" value="{{contract.cnt_wage_id_id}} " class="bg-green form-control form-control-sm text-center col-1" style="border-style: none none none none; border-top-right-radius:0px;border-bottom-right-radius:0px; font-weight: bold; font-size: 16px;" readonly="">
+                  <input type="text" id="id_wage_id_text" value="{{contract.cnt_wage_id_id}} " class="form-control form-control-sm text-center text-light col-1" style="border-style: none none none none; border-top-right-radius:0px;border-bottom-right-radius:0px; font-weight: bold; font-size: 16px; background-color: #509861;" readonly="">
                   <input type="text" id="id_cnt_wage_id_text" name="cnt_wage_id" class="form-control form-control-sm col-10" value="{{contract.cnt_wage_id.wage_en}}{{contract.cnt_wage_id.wage_8hr}}" style="border-style: 1px none 1px none; border-top-left-radius:0px;border-bottom-left-radius:0px;  border-top-right-radius:0px; border-bottom-right-radius:0px;" readonly>                  
                   <button id="wage_rate_lookup" type="button" class="btn btn-outline-primary btn-sm col-1" style="border-top-left-radius:0px;border-bottom-left-radius:0px;"data-toggle="modal" data-url="{% url 'get_wagerate_list' %}"><i class="fas fa-search fa-sm"></i></button>
                   <input type="hidden" id="id_cnt_wage_id" name="cnt_wage_id" value="{{ contract.cnt_wage_id_id|default_if_none:'' }}">
@@ -560,7 +560,7 @@
 
               <div class="form-inline col-md-6">
                 <label for="id_cnt_sale_amt">{% trans 'Sale Amount' %}</label>
-                <input type="text" min="0" class="form-control form-control-sm text-right col-12" id="id_cnt_sale_amt" name="cnt_sale_amt" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': ' ', 'placeholder': '0.00'" readonly="" style="font-weight: bold; font-size: 18px;">
+                <input type="text" min="0" class="form-control form-control-sm text-right col-12 text-light" id="id_cnt_sale_amt" name="cnt_sale_amt" data-inputmask="'alias': 'numeric', 'groupSeparator': ',', 'autoGroup': true, 'digits': 2, 'digitsOptional': false, 'prefix': ' ', 'placeholder': '0.00'" readonly="" style="font-weight: bold; font-size: 18px; background-color: #509861;">
               </div>              
             </div>
 
@@ -1175,7 +1175,25 @@
 
 
   $(document).ready(function(){
-    $('input').inputmask();
+    //$('input').inputmask();
+    $('#id_cnt_sale_amt').inputmask("decimal", {
+      placeholder: "0",
+      digits: 2,
+      digitsOptional: false,
+      radixPoint: ".",
+      groupSeparator: ".",
+      autoGroup: true,
+      allowPlus: false,
+      allowMinus: false,
+      clearMaskOnLostFocus: false,
+      removeMaskOnSubmit: true,
+      onUnMask: function(maskedValue, unmaskedValue) {
+        var x = unmaskedValue.split('.');
+        if (x.length != 2)
+            return "0.00";
+        return x[0].replace(/\./g, '') + '.' + x[1];
+      }
+    });
 
     $("#id_cnt_doc_no").focus();
 
@@ -2262,7 +2280,8 @@
             }
             
             if(json.cnt_sale_amt==0) {
-              $("#id_cnt_sale_amt").val(0.00);
+              console.log(json.cnt_sale_amt);
+              $("#id_cnt_sale_amt").val(0);
             } else {
               $("#id_cnt_sale_amt").val(json.cnt_sale_amt);
             }                    
@@ -3023,7 +3042,7 @@
           $("#id_cnt_guard_amt").val(json.cnt_guard_amt);
           
           $("#id_cnt_sale_amt").val(json.cnt_sale_amt);
-          console.log(json.cnt_sale_amt);
+          //console.log(json.cnt_sale_amt);
           //$("#id_cnt_sale_amt").val(json.cnt_sale_amt.toString());
           //$("#id_cnt_sale_amt").val(parseFloat(json.cnt_sale_amt).toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'));
 
