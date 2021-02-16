@@ -326,7 +326,10 @@ def ajax_check_exist_cus_site(request):
                     customer_option_op2 = customer_option.op2
                     customer_option_op3 = customer_option.op3
                     customer_option_op4 = customer_option.op4
+                    customer_option_opn1 = customer_option.opn1
+                    print("BUG1")
                 except CustomerOption.DoesNotExist:
+                    print("BUG2")
                     customer_option_btype = ""
                     customer_option_op1 = ""
                     customer_option_op2 = ""
@@ -334,6 +337,9 @@ def ajax_check_exist_cus_site(request):
                     customer_option_op4 = ""
                     customer_option_op5 = ""
                     customer_option_op6 = ""
+                    customer_option_opn1 = ""
+
+                print("customer_option_op1:", customer_option_op1)
 
                 # 2.Bind customer site on Site tab
                 # cus_site_cus_district_id = customer_site.cus_district_id
@@ -462,6 +468,7 @@ def ajax_check_exist_cus_site(request):
                     "customer_option_op2": customer_option_op2,
                     "customer_option_op3": customer_option_op3,
                     "customer_option_op4": customer_option_op4,
+                    "customer_option_opn1": customer_option_opn1,
                 }
 
                 pickup_records.append(record)
@@ -2101,7 +2108,7 @@ def save_all_cus_tabs(request):
     insert_status = False
 
     if request.method == 'POST':
-        print("POST: save_all_cus_tabs()")
+        # print("POST: save_all_cus_tabs()")
 
         form = CusAllTabsForm(request.POST)
 
@@ -2199,6 +2206,7 @@ def save_all_cus_tabs(request):
             cus_main_cus_contact_con_email = request.POST.get('cus_main_cus_contact_con_email')
 
 
+            '''
             print("")
             print("-----------------cus_main-------------")
             print("cus_main_cus_contact_id = " + str(cus_main_cus_contact_id))
@@ -2216,7 +2224,8 @@ def save_all_cus_tabs(request):
             print("cus_main_cus_contact_con_email = " + str(cus_main_cus_contact_con_email))
             print("-------------------end---------------")
             print("")
-    
+            '''
+
             if cus_main_cus_contact_id is not None and cus_main_cus_contact_id != "":
                 # print("not none, not empty")
                 cus_main_cus_contact_id = cus_main_cus_contact_id
@@ -2602,18 +2611,26 @@ def save_all_cus_tabs(request):
                                     count_modified_field = count_modified_field + 1
 
                             # Business GP Margin
+                            print("debug1:", cus_main_customer_option_opn1)
                             if cus_main_customer_option_opn1 is not None and cus_main_customer_option_opn1 != "":
                                 if customer_option.opn1 is not None:
                                     field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "GP Margin", float(customer_option.opn1), float(cus_main_customer_option_opn1), "E", request)
                                 else:
                                     field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "GP Margin", customer_option.opn1, float(cus_main_customer_option_opn1), "E", request)                                    
-                                    
+                                
                                 if field_is_modified:
+                                    print("MODIFIED")
                                     customer_option.opn1 = cus_main_customer_option_opn1 # GP Margin
                                     modified_records.append(record)
                                     count_modified_field = count_modified_field + 1
+                                else:
+                                    print("NOT MODIFIED")
                             else:
-                                customer_option.opn1 = 0
+                                customer_option.opn1 = 0                            
+                            print("debug2:", cus_main_customer_option_opn1)
+
+
+
 
                             if count_modified_field > 0:
                                 # NULL Field Issue
@@ -2845,6 +2862,8 @@ def save_all_cus_tabs(request):
             cus_site_site_contact_con_mobile = request.POST.get('cus_site_site_contact_con_mobile')
             cus_site_site_contact_con_email = request.POST.get('cus_site_site_contact_con_email')
             
+
+            '''
             print("")
             print("-------------- CUS SITE -------------")            
             print("cus_site_site_contact_id = " + str(cus_site_site_contact_id))
@@ -2863,6 +2882,7 @@ def save_all_cus_tabs(request):
             print("")
             print("-------------- CUS SITE -------------")
             print("")
+            '''
 
             if cus_site_site_contact_id is not None and cus_site_site_contact_id != "":
                 # print("not none, not empty")
@@ -3392,6 +3412,7 @@ def save_all_cus_tabs(request):
             
             
 
+            '''
             print("")
             print("-------------- CUS BILL -------------")
             print("cus_bill_cus_contact_id = " + str(cus_bill_cus_contact_id))
@@ -3409,6 +3430,7 @@ def save_all_cus_tabs(request):
             print("cus_site_site_contact_con_email = " + str(cus_bill_cus_contact_con_email))
             print("")
             print("-------------- CUS BILL -------------")
+            '''
 
 
             '''

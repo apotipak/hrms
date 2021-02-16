@@ -2367,6 +2367,8 @@
             var customer_option_op3 = data.results[0]["customer_option_op3"];
             var customer_option_op4 = data.results[0]["customer_option_op4"];          
 
+            var customer_option_opn1 = data.results[0]["customer_option_opn1"];
+
             // Customer Main Office
             $('#id_cus_main_cus_name_th').focus();          
             $('#id_cus_main_business_type').val(customer_option_btype);
@@ -2374,6 +2376,9 @@
             $('#id_cus_main_customer_option_op2').val(customer_option_op2);
             $('#id_cus_main_customer_option_op3').val(customer_option_op3);
             $('#id_cus_main_customer_option_op4').val(customer_option_op4);
+
+            $('#id_cus_main_customer_option_opn1').val(customer_option_opn1);
+
 
             // Customer Site
             var cus_site_cus_active = data.results[0]["cus_active"];
