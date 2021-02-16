@@ -692,6 +692,8 @@
 						        <div class="card-body col-12">
 									<div class="row" style="white-space:nowrap;">
 										<div class="col-12">
+
+											<form id="cusomer_information_form" name="cusomer_information_form">
 							                <div class="form-group row">
 							                    <div class="col-6">
 							                        <label for="id_customer_name_th">Customer Name</label>
@@ -767,8 +769,8 @@
 							                        <label>Effective Term To</label>
 							                        <input type="text" class="form-control form-control-sm" id="id_cnt_eff_to" readonly>
 							                    </div>                                              
-							                </div>                
-
+							                </div> 							                
+							            	</form>
 										</div>
 									</div>
 								</div>
@@ -1036,7 +1038,6 @@ $(document).ready(function(){
 						    useBootstrap: false,
 						});
 
-						//amnaj
 						$.ajax({
 							url : "/monitoring/ajax/get_attendance_information/",
 							type : "POST",
@@ -2002,7 +2003,6 @@ $("#id_late_hour").click( function() {
       	var cus_brn = $('#id_cus_brn').val();
       	var cus_vol = $('#id_cus_vol').val();
 
-      	// amnaj
 		$.ajax({
 			url : "/monitoring/ajax/get_attendance_information/",
 			type : "POST",
@@ -4492,6 +4492,13 @@ $("#id_late_hour").click( function() {
         $("#id_customer_zone_id").val(0);
 
         $("#tab2-tab").text("Contract / Schedule Information");
+
+
+
+        // amnaj                
+        $('#cusomer_information_form').trigger("reset");
+        $("#id_customer_contract_service tbody").html("<tr><td colspan='19' class='text-center'><br><br><br>There is no data.<br><br><br><br></td></tr>");
+        $("#id_customer_schedule_list tbody").html("<tr><td colspan='16' class='text-center'><br><br><br>There is no data.<br><br><br><br></td></tr>");        
 
     	$("#id_cus_id").focus();
     	$("#id_cus_id").select();
