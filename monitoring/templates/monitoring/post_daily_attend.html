@@ -116,10 +116,10 @@ $("#post_button").click( function() {
 	        	text: 'ยืนยัน',
 	            btnClass: 'btn-red any-other-class',
 	            action: function() {
-					$("#post_button").attr("disabled", true);
-					$("#post_button").text("Posting..");	
 
-					/*
+	            	/*
+					$("#post_button").attr("disabled", true);
+					$("#post_button").text("Posting..");					
 					$.ajax({
 				    	url : "/monitoring/ajax/sp_post_daily_attend/",
 				    	type : "POST",
@@ -161,6 +161,19 @@ $("#post_button").click( function() {
 				    	},
 				    });
 				    */
+
+				  	$(document).Toasts('create', {
+				    	class: "bg-info", 
+				    	title: "{% trans 'Message' %}",
+				    	subtitle: '',
+				    	autohide: true,
+				    	delay: 2000,
+				    	body: "อยู่ในระหว่างการทดสอบใช้งาน&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+				    	autoDismiss: true,
+				    	close: true,
+				    	autoremove: true,
+				  	});   
+
 	            }
 	        },
 	        default: {
@@ -173,6 +186,11 @@ $("#post_button").click( function() {
 	    }
 	});
 });
+
+
+function demo() {
+
+}
 
 function get_generate_daily_attend_status(generated_date) {
     $.ajax({
