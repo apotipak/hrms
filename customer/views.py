@@ -179,7 +179,9 @@ def ajax_check_exist_cus_main(request):
                         cus_main_cus_contact_nationality_id = cus_main.cus_contact.con_nation_id
                         cus_main_cus_contact_con_mobile = cus_main.cus_contact.con_mobile
                         cus_main_cus_contact_con_email = cus_main.cus_contact.con_email
+
                         cus_main_cus_taxid = cus_main.cus_taxid
+                        # print("cus_main_cus_taxid:", cus_main_cus_taxid)
                         # amnaj
 
                     record = {
@@ -337,7 +339,7 @@ def ajax_check_exist_cus_site(request):
                             customer_option_opn1 = 0
                     else:
                         customer_option_opn1 = 0
-                        
+
                     print("BUG1")
                 except CustomerOption.DoesNotExist:
                     print("BUG2")
@@ -349,8 +351,6 @@ def ajax_check_exist_cus_site(request):
                     customer_option_op5 = ""
                     customer_option_op6 = ""
                     customer_option_opn1 = ""
-
-                print("customer_option_op1:", customer_option_op1)
 
                 # 2.Bind customer site on Site tab
                 # cus_site_cus_district_id = customer_site.cus_district_id
@@ -390,7 +390,8 @@ def ajax_check_exist_cus_site(request):
                     cus_site_site_contact_con_sex = "M"
                     cus_site_site_contact_nationality_id = 99
                     cus_site_site_contact_con_mobile = ""
-                    cus_site_site_contact_con_email = ""                    
+                    cus_site_site_contact_con_email = ""
+                    customer_cus_taxid = ""                 
                 else:
                     cus_site_site_contact_id = customer_site.site_contact_id
 
@@ -411,6 +412,10 @@ def ajax_check_exist_cus_site(request):
                     cus_site_site_contact_nationality_id = customer_site.site_contact.con_nation_id
                     cus_site_site_contact_con_mobile = customer_site.site_contact.con_mobile
                     cus_site_site_contact_con_email = customer_site.site_contact.con_email
+
+                    customer_cus_taxid = customer_site.cus_taxid
+
+                print("cus_taxid:", customer_cus_taxid)
 
 
                 '''
@@ -481,6 +486,7 @@ def ajax_check_exist_cus_site(request):
                     "customer_option_op4": customer_option_op4,
 
                     "customer_option_opn1": customer_option_opn1,
+                    "customer_cus_taxid": customer_cus_taxid,
                 }
 
                 pickup_records.append(record)
@@ -531,6 +537,7 @@ def ajax_check_exist_cus_site(request):
                     "cus_site_site_contact_con_nationality_id": 99,
                     "cus_site_site_contact_con_mobile": "",
                     "cus_site_site_contact_con_email": "",
+                    "customer_cus_taxid": "",
 
                     "customer_option_btype": "",
                     "customer_option_op1": "",
@@ -2687,7 +2694,7 @@ def save_all_cus_tabs(request):
             #cat
             except CusMain.DoesNotExist:
                 insert_status = True
-                cus_main_cus_taxid = request.POST.get('cus_main_cus_taxid')                
+                cus_main_cus_taxid = request.POST.get('cus_main_cus_taxid')
 
                 if int(cus_main_cus_active) == 1:
                     cus_main = 1
@@ -2824,6 +2831,7 @@ def save_all_cus_tabs(request):
             cus_site_cus_add2_en = request.POST.get('cus_site_cus_add2_en')
             cus_site_cus_subdist_en = request.POST.get('cus_site_cus_subdist_en')            
             cus_site_cus_zip = request.POST.get('cus_site_cus_zip')
+            cus_site_cus_taxid = request.POST.get('cus_site_cus_taxid')
 
             if not cus_site_cus_zip:
                 cus_site_cus_zip = None
@@ -3064,6 +3072,16 @@ def save_all_cus_tabs(request):
                             count_modified_field = count_modified_field + 1
                     '''
 
+                    # Group ID - cus_taxid                    
+                    cus_site_cus_taxid = request.POST.get('cus_site_cus_taxid')            
+                    if (cus_site_cus_taxid is not None):
+                        field_is_modified, record = check_modified_field("CUSTOMER", cus_no, "CUS_TAXID", customer.cus_taxid, cus_site_cus_taxid, "E", request)
+                        if field_is_modified:
+                            customer.cus_taxid = cus_site_cus_taxid
+                            modified_records.append(record)
+                            count_modified_field = count_modified_field + 1
+
+
                     # CUS_ZONE
                     # customer.cus_zone_id = cus_site_cus_zone
                     if cus_site_cus_zone is not None:
@@ -3258,6 +3276,8 @@ def save_all_cus_tabs(request):
             except Customer.DoesNotExist:
                 insert_status = True
 
+                cus_site_cus_taxid = request.POST.get('cus_site_cus_taxid')
+
                 if int(cus_site_cus_active) == 1:
                     cus_site = 1
                 else:
@@ -3286,6 +3306,7 @@ def save_all_cus_tabs(request):
                         upd_date = datetime.datetime.now()
                         upd_by = request.user.first_name
                         upd_flag = 'A'
+
 
                         new_contact = CusContact(
                             con_id = cus_site_new_contact_id,
@@ -3316,6 +3337,7 @@ def save_all_cus_tabs(request):
                     cus_no = cus_no,
                     cus_id = cus_id,
                     cus_brn = cus_brn,
+                    cus_taxid = cus_site_cus_taxid,
                     cus_name_th = cus_site_cus_name_th,
                     cus_add1_th = cus_site_cus_add1_th,
                     cus_add2_th = cus_site_cus_add2_th,
@@ -3331,7 +3353,6 @@ def save_all_cus_tabs(request):
                     cus_tel = cus_site_cus_tel,
                     cus_fax = cus_site_cus_fax,
                     cus_email = cus_site_cus_email,
-                    cus_taxid = cus_main_cus_taxid,
                     cus_zone_id = cus_site_cus_zone,
                     cus_contact_id = cus_site_site_contact_id,
                     site_contact_id = cus_site_site_contact_id,

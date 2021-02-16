@@ -2328,6 +2328,8 @@
             var cus_site_site_contact_lname_en = data.results[0]["cus_site_site_contact_lname_en"];
             var cus_site_site_contact_position_en = data.results[0]["cus_site_site_contact_position_en"];
 
+            var customer_cus_taxid = data.results[0]["customer_cus_taxid"];
+
             $('#id_cus_site_cus_name_th').val(cus_site_cus_name_th);
             $('#id_cus_site_cus_add1_th').val(cus_site_cus_add1_th);
             $('#id_cus_site_cus_add2_th').val(cus_site_cus_add2_th);
@@ -2358,6 +2360,7 @@
             $('#id_cus_site_site_contact_lname_en').val(cus_site_site_contact_lname_en);
             $('#id_cus_site_site_contact_position_en').val(cus_site_site_contact_position_en);
 
+            $('#id_customer_group_id_text').val(customer_cus_taxid);
 
           } else {
             $("#id_cus_brn").val("");
@@ -2378,6 +2381,8 @@
             var customer_option_op2 = data.results[0]["customer_option_op2"];
             var customer_option_op3 = data.results[0]["customer_option_op3"];
             var customer_option_op4 = data.results[0]["customer_option_op4"];
+
+            // margin
             var customer_option_opn1 = data.results[0]["customer_option_opn1"];
 
             if(isNaN(customer_option_opn1))
@@ -2398,6 +2403,7 @@
             $('#id_cus_main_customer_option_op3').val(customer_option_op3);
             $('#id_cus_main_customer_option_op4').val(customer_option_op4);
 
+            // margin
             $('#id_cus_main_customer_option_opn1').val(customer_option_opn1);
 
 
@@ -2446,6 +2452,8 @@
             var cus_site_site_contact_con_nationality_id = data.results[0]["cus_site_site_contact_con_nationality_id"];
             var cus_site_site_contact_con_mobile = data.results[0]["cus_site_site_contact_con_mobile"];
             var cus_site_site_contact_con_email = data.results[0]["cus_site_site_contact_con_email"];
+            var customer_cus_taxid = data.results[0]["customer_cus_taxid"];
+
             
             $('#id_cus_site_cus_name_th').val(cus_site_cus_name_th);
             $('#id_cus_site_cus_add1_th').val(cus_site_cus_add1_th);
@@ -2470,6 +2478,8 @@
             $('#id_cus_site_site_contact_id').val(cus_site_site_contact_id);
             $('#id_cus_site_site_contact_title_th').val(cus_site_site_contact_title_th);
             
+            $('#id_customer_group_id').val(customer_cus_taxid);
+            $('#id_customer_group_id_text').val(customer_cus_taxid);
 
             if(cus_site_site_contact_con_sex == 'M') {
               $('#id_cus_site_sex_male').prop("checked", true);
@@ -2760,6 +2770,7 @@
     else
       cus_site_cus_active = 0;
 
+    cus_site_cus_taxid = $('#id_customer_group_id').val();
     cus_site_cus_name_th = $('#id_cus_site_cus_name_th').val();
     cus_site_cus_add1_th = $('#id_cus_site_cus_add1_th').val();
     cus_site_cus_add2_th = $('#id_cus_site_cus_add2_th').val();    
@@ -2789,9 +2800,6 @@
     cus_site_site_contact_con_nationality_id = $("#id_cus_site_site_contact_nation_list").val();
     cus_site_site_contact_con_mobile = $("#id_cus_site_site_contact_con_mobile").val();
     cus_site_site_contact_con_email = $("#id_cus_site_site_contact_con_email").val();
-
-    customer_group_id = $('#id_customer_group_id').val();
-
 
 
     // CUS_BILL
@@ -2872,8 +2880,7 @@
         cus_main_cus_fax: cus_main_cus_fax,
         cus_main_cus_email: cus_main_cus_email,
         cus_main_cus_taxid: cus_main_cus_taxid,
-        cus_main_cus_zone: cus_main_cus_zone,
-        customer_group_id: customer_group_id,
+        cus_main_cus_zone: cus_main_cus_zone,        
         cus_main_business_type: customer_option_btype,
         cus_main_customer_option_op1: customer_option_op1,
         cus_main_customer_option_op2: customer_option_op2,
@@ -2928,8 +2935,8 @@
         cus_site_site_contact_con_position_en: cus_site_site_contact_con_position_en,
         cus_site_site_contact_con_nationality_id: cus_site_site_contact_con_nationality_id,
         cus_site_site_contact_con_mobile: cus_site_site_contact_con_mobile,
-        cus_site_site_contact_con_email: cus_site_site_contact_con_email,
-
+        cus_site_site_contact_con_email: cus_site_site_contact_con_email,        
+        cus_site_cus_taxid: cus_site_cus_taxid,
 
 
         // CUS_BILL
