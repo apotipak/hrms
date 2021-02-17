@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, re_path, include
 from . import views
 from django.conf.urls import url
 
@@ -45,3 +45,9 @@ urlpatterns += [
     # path('daily-monitoring-reports/', views.DailyMonitoringReports, name='daily-monitoring-reports'),
     # url(r'^export/xls/$', views.export_dgp_500_xls, name='export_dgp_500_xls'),    
 ]
+
+# Post Daily Attend
+urlpatterns += [
+    re_path(r'^celery-progress/', include('celery_progress.urls')),  # the endpoint is configurable
+]
+

@@ -18,7 +18,7 @@
     	<!-- Main content -->
     	<section class="content col-6 offset-3">
 
-			<div class="card card-outline card-success" id="generate_date_card">
+			<div class="card card-outline card-secondary" id="generate_date_card">
 			  <div class="card-header">
 			    <h3 class="card-title lead"><i class="fas fa-cogs"></i>&nbsp;&nbsp;โพสรายการแจ้งเวร (Post Daily Attend)</h3>
 			    <div class="card-tools">
@@ -29,7 +29,7 @@
 			  </div>
 			  <!-- /.card-header -->
 			  <div class="card-body">
-
+			  	<br><br>
 				<form name="post_daily_attend_form">
 				{% csrf_token %}
 				  <div class="form-row justify-content-center">
@@ -38,15 +38,22 @@
 				      <input type="text" class="form-control mb-2" id="id_post_date" placeholder="dd/mm/yyyy">
 				    </div>
 				    <div class="col-auto">
-				      <button type="button" id="post_button" class="btn btn-primary mb-2">&nbsp;&nbsp;Post&nbsp;&nbsp;</button>&nbsp;
+				      <button type="button" id="post_button" class="btn btn-danger mb-2">&nbsp;&nbsp;Post&nbsp;&nbsp;</button>&nbsp;
 				    </div>
 				  </div>
 				</form>
-
+				<br><br>
 			  </div>
 			  <!-- /.card-body -->
+
 			  <div class="card-footer">
-			  	
+
+				<div id="progress-wrapper">
+				  <!--<button class="btn btn-primary" id="progress-bar-trigger">Run</button>-->
+				  <div id="progress-bar-message">Click the Post button when ready</div>
+				  <div id="progress-bar" class="bg-success" style="width: 0%;">&nbsp;</div>				  
+				</div>			  	
+
 			  </div>
 			  <!-- /.card-footer -->
 
@@ -81,6 +88,53 @@ $(document).ready(function(){
 	$('#id_post_date').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true}).datepicker("setDate", yesterday);
 	//$('#id_post_date').focus();
 });
+
+function get_generate_daily_attend_status(generated_date) {
+    $.ajax({
+        type: 'get',
+        url: '/monitoring/ajax/sp_generate_daily_attend_status/',
+        data: {'generated_date': generated_date},
+        success: function (data) {
+            frm.html('');
+            if (data.state == 'PENDING') {
+                frm.html('Please wait ...');
+            }
+            else if (data.state == 'PROGRESS') {
+                pgrbar.css('display', 'inline');
+                pgrbar.val(data.result.percent);
+                frm.html('lines processed ' + data.result.current + ' out of ' + data.result.total);
+            }
+            else if(data.state == 'SUCCESS'){
+                pgrbar.css('display', 'none');
+                frm.html('Successfully Completed!');
+
+            }
+            if (data.state != 'SUCCESS') {
+                setTimeout(function () {
+                    get_task_info(task_id)
+                }, 500);
+            }
+        },
+        error: function (data) {
+            frm.html("error!");
+        }
+    });
+}
+
+function showLoading() {
+	$.LoadingOverlaySetup({
+	    background      : "rgba(0, 0, 0, 0.5)",
+	    image           : "/static/img/logo-small.png",
+	    imageAnimation  : "1.5s fadein",
+	    imageColor      : "#ffcc00"
+	});
+	$.LoadingOverlay("show");
+}
+
+function updateProgress(progressBarElement, progressBarMessageElement, progress) {
+  progressBarElement.style.width = progress.percent + "%";
+  progressBarMessageElement.innerHTML = progress.current + ' of ' + progress.total + ' processed.';
+}
 
 $("#post_button").click( function() {
 	event.preventDefault();    	
@@ -187,52 +241,33 @@ $("#post_button").click( function() {
 	});
 });
 
+/*
+$(document).ready(function(){
+	
+	//var trigger = document.getElementById('progress-bar-trigger');
+	var trigger = document.getElementById('post_button');
 
-function demo() {
+	trigger.addEventListener('click', function(e) {
+	
+		var post_button = document.getElementById("post_button");
+		this.disabled = true;
+		//this.val = "Posting...";
+	
+		var bar = document.getElementById("progress-bar");
+		var barMessage = document.getElementById("progress-bar-message");
+		for (var i = 0; i < 11; i++) {
+			setTimeout(updateProgress, 500 * i, bar, barMessage, {
+	    		percent: 10 * i,
+	    		current: 10 * i,
+	    		total: 100
+			})
+		}
 
-}
-
-function get_generate_daily_attend_status(generated_date) {
-    $.ajax({
-        type: 'get',
-        url: '/monitoring/ajax/sp_generate_daily_attend_status/',
-        data: {'generated_date': generated_date},
-        success: function (data) {
-            frm.html('');
-            if (data.state == 'PENDING') {
-                frm.html('Please wait ...');
-            }
-            else if (data.state == 'PROGRESS') {
-                pgrbar.css('display', 'inline');
-                pgrbar.val(data.result.percent);
-                frm.html('lines processed ' + data.result.current + ' out of ' + data.result.total);
-            }
-            else if(data.state == 'SUCCESS'){
-                pgrbar.css('display', 'none');
-                frm.html('Successfully Completed!');
-
-            }
-            if (data.state != 'SUCCESS') {
-                setTimeout(function () {
-                    get_task_info(task_id)
-                }, 500);
-            }
-        },
-        error: function (data) {
-            frm.html("error!");
-        }
-    });
-}
-
-function showLoading() {
-	$.LoadingOverlaySetup({
-	    background      : "rgba(0, 0, 0, 0.5)",
-	    image           : "/static/img/logo-small.png",
-	    imageAnimation  : "1.5s fadein",
-	    imageColor      : "#ffcc00"
-	});
-	$.LoadingOverlay("show");
-}
+		this.disabled = false;
+		//this.value = "Posting";
+	})
+});
+*/
 
 </script>
 {% endblock %}

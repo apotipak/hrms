@@ -294,7 +294,7 @@
                             <label for="id_customer_group_id">{% trans 'Group ID' %}</label>                          
                             <div class="container">
                               {% render_field customer_code_create_form.customer_group_id class="selectGroupID" %}
-                              <input class="groupIDTextBox" id="id_customer_group_id_text" name="customer_group_id_text" />
+                              <input type="text" class="groupIDTextBox" id="id_customer_group_id_text" name="customer_group_id_text" />
                             </div>                        
                           </div>
 
@@ -2770,7 +2770,9 @@
     else
       cus_site_cus_active = 0;
 
-    cus_site_cus_taxid = $('#id_customer_group_id').val();
+    //cus_site_cus_taxid = $('#id_customer_group_id').val();
+    cus_site_cus_taxid = $('#id_customer_group_id_text').val();
+
     cus_site_cus_name_th = $('#id_cus_site_cus_name_th').val();
     cus_site_cus_add1_th = $('#id_cus_site_cus_add1_th').val();
     cus_site_cus_add2_th = $('#id_cus_site_cus_add2_th').val();    

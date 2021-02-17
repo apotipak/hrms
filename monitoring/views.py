@@ -7163,3 +7163,24 @@ def DailyMonitoringReports(request):
 	return render(request, template_name, {'page_title': page_title, 'project_name': project_name, 'project_version': project_version, 'db_server': db_server, 'today_date': today_date, 'form': form, 'employee_photo': employee_photo,'database': settings.DATABASES['default']['NAME'],'host': settings.DATABASES['default']['HOST']})
 
 
+
+# TEST
+from celery import shared_task
+from celery_progress.backend import ProgressRecorder
+import time
+
+@shared_task(bind=True)
+def my_task(self, seconds):
+    progress_recorder = ProgressRecorder(self)
+    # progress_recorder.set_progress(i + 1, seconds, description='my progress description')
+    result = 0
+    for i in range(seconds):
+        time.sleep(1)
+        result += i
+        progress_recorder.set_progress(i + 1, seconds)
+    return result
+
+
+def progress_view(request):
+    result = my_task.delay(10)
+    return render(request, 'post_daily_attend.html', context={'task_id': result.task_id})

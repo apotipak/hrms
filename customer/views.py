@@ -3073,11 +3073,15 @@ def save_all_cus_tabs(request):
                     '''
 
                     # Group ID - cus_taxid                    
-                    cus_site_cus_taxid = request.POST.get('cus_site_cus_taxid')            
+                    cus_site_cus_taxid = request.POST.get('cus_site_cus_taxid')
+                    print("cus_site_cus_taxid1:" + str(cus_site_cus_taxid) + "|")
+                    print("cus_site_cus_taxid2:" + str(cus_site_cus_taxid.strip()) + "|")
+                    
+
                     if (cus_site_cus_taxid is not None):
                         field_is_modified, record = check_modified_field("CUSTOMER", cus_no, "CUS_TAXID", customer.cus_taxid, cus_site_cus_taxid, "E", request)
                         if field_is_modified:
-                            customer.cus_taxid = cus_site_cus_taxid
+                            customer.cus_taxid = cus_site_cus_taxid.strip()
                             modified_records.append(record)
                             count_modified_field = count_modified_field + 1
 
@@ -3097,9 +3101,9 @@ def save_all_cus_tabs(request):
 
                     # CUS_CONTACT
                     if len(cus_site_site_contact_con_fname_th) > 0 or len(cus_site_site_contact_con_lname_th) > 0:                        
-                        print("site - cus_id = " + str(cus_id))                        
-                        print("site - con_id = " + str(cus_site_site_contact_id))
-                        print("main - con_id = " + str(cus_main_cus_contact_id))
+                        # print("site - cus_id = " + str(cus_id))                        
+                        # print("site - con_id = " + str(cus_site_site_contact_id))
+                        # print("main - con_id = " + str(cus_main_cus_contact_id))
 
                         try:
                             contact_list = CusContact.objects.filter(cus_id=cus_id, con_fname_th=cus_site_site_contact_con_fname_th, con_lname_th=cus_site_site_contact_con_lname_th)[:1].get()
@@ -3672,9 +3676,9 @@ def save_all_cus_tabs(request):
 
                     # BILL CUS_CONTACT
                     if len(cus_bill_cus_contact_con_fname_th) > 0 or len(cus_bill_cus_contact_con_lname_th) > 0:                        
-                        print("bill - cus_id = " + str(cus_id))                        
-                        print("bill - con_id = " + str(cus_bill_cus_contact_id))
-                        print("main - con_id = " + str(cus_main_cus_contact_id))
+                        # print("bill - cus_id = " + str(cus_id))                        
+                        # print("bill - con_id = " + str(cus_bill_cus_contact_id))
+                        # print("main - con_id = " + str(cus_main_cus_contact_id))
 
                         try:
                             contact_list = CusContact.objects.filter(cus_id=cus_id, con_fname_th=cus_bill_cus_contact_con_fname_th, con_lname_th=cus_bill_cus_contact_con_lname_th)[:1].get()
