@@ -47,7 +47,8 @@ urlpatterns += [
 ]
 
 # Post Daily Attend
+'''
 urlpatterns += [
     re_path(r'^celery-progress/', include('celery_progress.urls')),  # the endpoint is configurable
 ]
-
+'''
