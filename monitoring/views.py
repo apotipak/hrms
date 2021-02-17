@@ -7165,6 +7165,7 @@ def DailyMonitoringReports(request):
 
 
 # TEST
+'''
 from celery import shared_task
 from celery_progress.backend import ProgressRecorder
 import time
@@ -7184,3 +7185,4 @@ def my_task(self, seconds):
 def progress_view(request):
     result = my_task.delay(10)
     return render(request, 'post_daily_attend.html', context={'task_id': result.task_id})
+'''
