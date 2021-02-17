@@ -3206,12 +3206,17 @@ def download_contract(request, *args, **kwargs):
     is_amendment = kwargs['is_amendment']
     is_customer_address = kwargs['is_customer_address']
 
+    '''
     print("-----------------------")
     print("language_option = " + str(language_option)) 
     print("is_new_report = " + str(is_new_report))
     print("is_amendment = " + str(is_amendment))
     # print("is_customer_address = " + str(is_customer_address))
     print("-----------------------")
+    '''
+
+    if len(cnt_id)>=13:
+        cnt_id = cnt_id[3:13]
 
     template_name = None
     if language_option=='T':
@@ -3374,6 +3379,8 @@ def download_contract(request, *args, **kwargs):
                 customer_id = customer.cus_id
             else:
                 customer_id = str(customer.cus_id) + "-" + str(customer.cus_brn)
+
+            print("file_name:", file_name)
 
             context = {
                 'customer': customer,
