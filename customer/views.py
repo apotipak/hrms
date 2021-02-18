@@ -4295,7 +4295,7 @@ def get_customer_list(request):
 
     if request.method == "POST":
         
-        sql = "select cus_no,cus_id,cus_brn,cus_name_th,cus_name_en from customer where not (cus_id is null) order by cus_id"
+        sql = "select cus_no,cus_id,cus_brn,cus_name_th,cus_name_en,cus_add1_th from customer where not (cus_id is null) order by cus_id"
         data = Customer.objects.raw(sql)
 
         page = 1
@@ -4307,8 +4307,8 @@ def get_customer_list(request):
         except InvalidPage as e:
             raise Http404(str(e))
     else:
-        print("method get")
-        sql = "select cus_no,cus_id,cus_brn,cus_name_th,cus_name_en from customer where not (cus_id is null) order by cus_id"
+        print("method gettttt")
+        sql = "select cus_no,cus_id,cus_brn,cus_name_th,cus_name_en,cus_add1_th from customer where not (cus_id is null) order by cus_id"
         data = Customer.objects.raw(sql)
 
         paginator = Paginator(data, item_per_page)
@@ -4332,6 +4332,7 @@ def get_customer_list(request):
                 "cus_brn": d.cus_brn,
                 "cus_name_th": d.cus_name_th,
                 "cus_name_en": d.cus_name_en,
+                "cus_add1_th": d.cus_add1_th[0:40],
             }            
             pickup_records.append(record)
 
@@ -4373,15 +4374,15 @@ def get_customer_list_modal(request):
  
     if search_option == '1':    # Search by cus_id
         search_text = search_text
-        data = Customer.objects.raw('select cus_no,cus_id,cus_brn,cus_name_th,cus_name_en from customer where not (cus_id is null) and cus_id=%s order by cus_id', tuple([search_text]))
+        data = Customer.objects.raw('select cus_no,cus_id,cus_brn,cus_name_th,cus_name_en,cus_add1_th from customer where not (cus_id is null) and cus_id=%s order by cus_id', tuple([search_text]))
 
     if search_option == '2':    # Search by cus_name_th
         search_text = "%" + search_text + "%"        
-        data = Customer.objects.raw('select cus_no,cus_id,cus_brn,cus_name_th,cus_name_en from customer where not (cus_id is null) and cus_name_th like %s order by cus_id', tuple([search_text]))
+        data = Customer.objects.raw('select cus_no,cus_id,cus_brn,cus_name_th,cus_name_en,cus_add1_th from customer where not (cus_id is null) and cus_name_th like %s order by cus_id', tuple([search_text]))
 
     if search_option == '3':    # Search by cus_name_en
         search_text = "%" + search_text + "%"
-        data = Customer.objects.raw('select cus_no,cus_id,cus_brn,cus_name_th,cus_name_en from customer where not (cus_id is null) and cus_name_en like %s order by cus_id', tuple([search_text]))
+        data = Customer.objects.raw('select cus_no,cus_id,cus_brn,cus_name_th,cus_name_en,cus_add1_th from customer where not (cus_id is null) and cus_name_en like %s order by cus_id', tuple([search_text]))
 
 
     if data is not None:
@@ -4413,12 +4414,14 @@ def get_customer_list_modal(request):
                 cus_name_th = d.cus_name_th.replace("\'", "")
                 cus_name_en = d.cus_name_en.replace("\"", "")
                 cus_name_en = d.cus_name_en.replace("\'", "")
+                cus_add1_th = d.cus_add1_th.replace("\'", "")
                 print(cus_name_th)
                 record = {
                     "cus_id": d.cus_id,
                     "cus_brn": d.cus_brn,
                     "cus_name_th": cus_name_th,
                     "cus_name_en": cus_name_en,
+                    "cus_add1_th": cus_add1_th[0:40],
                 }
                 pickup_records.append(record)
 
