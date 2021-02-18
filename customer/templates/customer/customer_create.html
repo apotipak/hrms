@@ -780,7 +780,7 @@
 
 
                         <div class="form-group col-md-2">
-                          <label for="id_cus_site_site_contact_id" class="col-sm-12 col-form-label">{% trans 'Contact ID' %}</label>
+                          <label for="id_cus_site_site_contact_id">{% trans 'Contact ID' %}</label>
 
                           <div class="row">                              
                             <div class="col-12 input-group">
@@ -790,6 +790,11 @@
                             </div>
                           </div>                          
                         </div>
+
+
+
+
+
 
                         <div class="form-group col-md-2">
                           <label for="id_cus_site_selected_contact_title">{% trans 'Title (TH)' %}</label>                          
@@ -1201,7 +1206,7 @@
                       <div class="form-row">
                         
                         <div class="form-group col-md-2">
-                          <label for="id_cus_bill_cus_contact_id" class="col-sm-12 col-form-label form-control-sm">{% trans 'Contact ID' %}</label>
+                          <label for="id_cus_bill_cus_contact_id">{% trans 'Contact ID' %}</label>
 
                           <div class="row">                              
                             <div class="col-12 input-group">
@@ -1252,7 +1257,7 @@
 
                       <div class="form-row">                        
                         <div class="form-group col-md-2">
-                          <label for="cus_bill_sex_options" class="col-sm-12 col-form-label form-control-sm">{% trans 'Sex' %}</label>
+                          <label for="cus_bill_sex_options" class="col-sm-12 col-form-label">{% trans 'Sex' %}</label>
 
                           <div class="row">                              
                             <div class="col-12 input-group">
@@ -1542,7 +1547,7 @@
     result += "     <th scope='col' class='text-left' nowrap>{% trans 'Customer Name (TH)' %}</th>";
     result += "     <th scope='col' class='text-left' nowrap>{% trans 'Customer Name (EN)' %}</th>";
     result += "     <th scope='col' class='text-center' nowrap>{% trans 'Branch' %}</th>";
-    result += "     <th scope='col' class='text-left'>{% trans 'Address' %}</th>";
+    result += "     <th scope='col' class='text-left'>{% trans 'Site Address' %}</th>";
     result += "     <th scope='col'>&nbsp;</th>";
     result += "   </tr>";
     result += " </thead>";
