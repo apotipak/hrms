@@ -136,7 +136,7 @@ function updateProgress(progressBarElement, progressBarMessageElement, progress)
   progressBarMessageElement.innerHTML = progress.current + ' of ' + progress.total + ' processed.';
 }
 
-$("#post_button").click( function() {
+$("#post_button_bk").click( function() {
 	event.preventDefault();    	
 
 	var frm = $('#process-raw-data');
@@ -241,18 +241,13 @@ $("#post_button").click( function() {
 	});
 });
 
-/*
 $(document).ready(function(){
 	
-	//var trigger = document.getElementById('progress-bar-trigger');
-	var trigger = document.getElementById('post_button');
-
+	/*
+	var trigger = document.getElementById('post_button');	
 	trigger.addEventListener('click', function(e) {
-	
 		var post_button = document.getElementById("post_button");
 		this.disabled = true;
-		//this.val = "Posting...";
-	
 		var bar = document.getElementById("progress-bar");
 		var barMessage = document.getElementById("progress-bar-message");
 		for (var i = 0; i < 11; i++) {
@@ -261,13 +256,12 @@ $(document).ready(function(){
 	    		current: 10 * i,
 	    		total: 100
 			})
-		}
-
-		this.disabled = false;
-		//this.value = "Posting";
+		}		
 	})
+	*/
+
 });
-*/
+
 
 </script>
 {% endblock %}

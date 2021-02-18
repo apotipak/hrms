@@ -46,9 +46,12 @@ urlpatterns += [
     # url(r'^export/xls/$', views.export_dgp_500_xls, name='export_dgp_500_xls'),    
 ]
 
+
 # Post Daily Attend
 '''
 urlpatterns += [
+    url(r'^(?P<task_id>[\w-]+)/$', views.get_progress, name='task_status')
     re_path(r'^celery-progress/', include('celery_progress.urls')),  # the endpoint is configurable
 ]
 '''
+

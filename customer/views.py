@@ -3919,7 +3919,7 @@ def save_all_cus_tabs(request):
             print("****************************")
 
             if insert_status:
-                response_data['result'] = "Added complete."
+                response_data['result'] = "บันทึกรายการสำเร็จ"
                 response_data['form_is_valid'] = True
                 response_data['class'] = 'bg-success'
                 
