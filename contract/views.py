@@ -1565,7 +1565,7 @@ def get_contract_list(request):
 
     if request.method == "POST":
         # data = TDistrict.objects.filter('wage_id=current_wagerate_id')        
-        sql = "SELECT cnt_id,cus_name_th,cus_name_en FROM cus_contract  as a left join customer  as b on a.cus_id=b.cus_id  and a.cus_brn=b.cus_brn WHERE not(cnt_id is null)  Order by cnt_id;"
+        sql = "SELECT cnt_id,cus_name_th,cus_name_en,b.cus_brn as cus_brn,b.cus_add1_th as cus_add1_th FROM cus_contract  as a left join customer  as b on a.cus_id=b.cus_id  and a.cus_brn=b.cus_brn WHERE not(cnt_id is null)  Order by cnt_id;"
         data = CusContract.objects.raw(sql)
 
         page = 1
@@ -1578,10 +1578,8 @@ def get_contract_list(request):
             raise Http404(str(e))
     else:
         print("method get")
-        # data = TWagezone.objects.all().filter(w2004=1)
-        # data = CusContract.objects.all()
 
-        sql = "SELECT cnt_id,cus_name_th,cus_name_en FROM cus_contract  as a left join customer  as b on a.cus_id=b.cus_id  and a.cus_brn=b.cus_brn WHERE not(cnt_id is null)  Order by cnt_id;"
+        sql = "SELECT cnt_id,cus_name_th,cus_name_en,b.cus_brn as cus_brn,b.cus_add1_th as cus_add1_th FROM cus_contract  as a left join customer  as b on a.cus_id=b.cus_id  and a.cus_brn=b.cus_brn WHERE not(cnt_id is null)  Order by cnt_id;"
         data = CusContract.objects.raw(sql)
 
         paginator = Paginator(data, item_per_page)
@@ -1604,6 +1602,8 @@ def get_contract_list(request):
                 "cnt_id": d.cnt_id,
                 "cus_name_th": d.cus_name_th,
                 "cus_name_en": d.cus_name_en,
+                "cus_brn": d.cus_brn,
+                "cus_add1_th": d.cus_add1_th[0:40],
             }            
             pickup_records.append(record)
 
@@ -1689,11 +1689,15 @@ def get_contract_list_modal(request):
                 cus_name_th = d.cus_name_th.replace("\'", "")
                 cus_name_en = d.cus_name_en.replace("\"", "")
                 cus_name_en = d.cus_name_en.replace("\'", "")
+                cus_brn = d.cus_brn
+                cus_add1_th = d.cus_add1_th.replace("\'", "")
 
                 record = {
                     "cnt_id": d.cnt_id,
                     "cus_name_th": cus_name_th,
                     "cus_name_en": cus_name_en,
+                    "cus_brn": cus_brn,
+                    "cus_add1_th": cus_add1_th[0:40],
                 }
                 pickup_records.append(record)
 
