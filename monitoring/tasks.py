@@ -1,15 +1,14 @@
-from .celery import app
-
-@app.task
-def add(x, y):
-    return x + y
+from celery import shared_task
+from celery_progress.backend import ProgressRecorder
+import time
 
 
-@app.task
-def mul(x, y):
-    return x * y
-
-
-@app.task
-def xsum(numbers):
-    return sum(numbers)
+@shared_task(bind=True)
+def my_task(self, seconds):
+    progress_recorder = ProgressRecorder(self)
+    result = 0
+    for i in range(seconds):
+        time.sleep(1)
+        result += i
+        progress_recorder.set_progress(i + 1, seconds)
+    return result

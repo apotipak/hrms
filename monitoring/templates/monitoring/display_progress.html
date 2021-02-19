@@ -1,0 +1,44 @@
+{% extends "page_generic.html" %}
+{% load i18n %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %}{{ page_title}} - Post Daily Attend{% endblock %}
+{% load static %}
+
+{% block content %}
+
+<div class='progress-wrapper'>
+  <div id='progress-bar' class='progress-bar' style="background-color: #68a9ef; width: 0%;">&nbsp;</div>
+</div>
+<div id="progress-bar-message">Waiting for progress to start...</div>
+
+<div id="celery-result"></div>
+
+{% endblock %}
+
+
+{% block javascript %}
+<script src="{% static 'dist/js/celery_progress/celery_progress.js' %}"></script>
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+  		var progressUrl = "{% url 'celery_progress:task_status' task_id %}";
+  		CeleryProgressBar.initProgressBar(progressUrl);
+	});
+
+	var progressUrl = "{% url 'celery_progress:task_status' task_id %}";
+
+	function customResult(resultElement, result) {
+	  $( resultElement ).append(
+	    $('<p>').text('Sum of all seconds is ' + result)
+	  );
+	}
+
+	$(function () {
+	  CeleryProgressBar.initProgressBar(progressUrl, {
+	    onResult: customResult,
+	  })
+	});
+
+</script>
+{% endblock %}

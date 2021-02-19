@@ -48,11 +48,20 @@
 
 			  <div class="card-footer">
 
+			  	<!--
 				<div id="progress-wrapper">
-				  <!--<button class="btn btn-primary" id="progress-bar-trigger">Run</button>-->
 				  <div id="progress-bar-message">Click the Post button when ready</div>
 				  <div id="progress-bar" class="bg-success" style="width: 0%;">&nbsp;</div>				  
 				</div>			  	
+				-->
+
+
+				<div class='progress-wrapper'>
+				  <div id='progress-bar' class='progress-bar' style="background-color: #68a9ef; width: 0%;">&nbsp;</div>
+				</div>
+				<div id="progress-bar-message">Waiting for progress to start...</div>
+
+				<div id="celery-result"></div>
 
 			  </div>
 			  <!-- /.card-footer -->
@@ -243,6 +252,7 @@ $("#post_button_bk").click( function() {
 
 $(document).ready(function(){
 	
+	/*
 	var trigger = document.getElementById('post_button');	
 	trigger.addEventListener('click', function(e) {
 		var post_button = document.getElementById("post_button");
@@ -257,6 +267,8 @@ $(document).ready(function(){
 			})
 		}		
 	})
+	*/
+
 
 });
 

@@ -48,10 +48,8 @@ urlpatterns += [
 
 
 # Post Daily Attend
-'''
 urlpatterns += [
-    url(r'^(?P<task_id>[\w-]+)/$', views.get_progress, name='task_status')
+    # url(r'^(?P<task_id>[\w-]+)/$', views.get_progress, name='task_status')
     re_path(r'^celery-progress/', include('celery_progress.urls')),  # the endpoint is configurable
 ]
-'''
 

@@ -7186,3 +7186,7 @@ def progress_view(request):
     result = my_task.delay(10)
     return render(request, 'post_daily_attend.html', context={'task_id': result.task_id})
 '''
+
+def progress_view(request):
+    result = my_task.delay(10)
+    return render(request, 'monitoring/display_progress.html', context={'task_id': result.task_id})
