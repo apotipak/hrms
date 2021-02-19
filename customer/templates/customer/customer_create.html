@@ -1586,29 +1586,48 @@
 
   $('#customer_lookup').on('click', function (e) {
     $("#id_search_number_of_found_record").html("");
-
-    var obj = $(this);  
-    $.ajax({
-        url: obj.attr("data-url"),
-        type: 'get',          
-        dataType: 'json',
-        beforeSend: function () {
-          $("#search_customer_modal").modal("show");
-          $('#search_customer_modal').on('shown.bs.modal', function () {
-            $("#id_search_text").focus();
-          });            
-        },
-        success: function (data) {
-
-          result = render_service_list_table_html(data);
-          $("#search_customer_modal .modal-body").html(result);
-          
-        },
-        error: function(data){
-          $("#search_customer_modal .modal-body").html("{% trans 'There is no data.' %}");
-        }          
-    });  
-
+    $("#search_customer_modal").modal("show");
+    $('#search_customer_modal').on('shown.bs.modal', function () {
+      $("#id_search_text").focus();
+    });            
+    result = "";
+    result += "<div class='row col-12' stye='padding:0;'>";
+    result += "<div class='col-8 offset-3 pb-2'>";
+    result += "<form id='search_customer_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
+    result += "  <div class='form-group mx-sm-3 mb-2'>";
+    result += "  <select name='search_option' class='form-control form-control-sm' required id='id_search_option'>";
+    result += "    <option value='1'>Customer Code</option>";
+    result += "    <option value='2' selected>Customer Name (TH)</option>";
+    result += "    <option value='3'>Customer Name (EN)</option>";
+    result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";
+    result += "    <label for='id_cus_main_search_district' class='sr-only'>Search</label>";            
+    result += "    <input type='text' class='form-control form-control-sm' id='id_search_text' name='search_text' autocomplete='off' value=''>";
+    result += "  </div>";
+    result += "<a href='javascript:customer_search_modal()' type='button' class='btn btn-success btn-sm mb-2'>Search</a>";            
+    result += "</form>";
+    result += "</div>"; 
+    result += "<div class='table-responsive' stye='padding:0; width:100%'>";
+    result += "<table class='table table-hover table-striped table-wrapper-scroll-y my-custom-scrollbar w-100'>";
+    result += " <thead>";
+    result += "   <tr class='text-left'>";
+    result += "     <th scope='col' class='text-left' nowrap>{% trans 'Cus Code' %}.</th>";
+    result += "     <th scope='col' class='text-left' nowrap>{% trans 'Customer Name (TH)' %}</th>";
+    result += "     <th scope='col' class='text-left' nowrap>{% trans 'Customer Name (EN)' %}</th>";
+    result += "     <th scope='col' class='text-center' nowrap>{% trans 'Branch' %}</th>";
+    result += "     <th scope='col' class='text-left w-100'>{% trans 'Site Address' %}</th>";
+    result += "     <th scope='col'>&nbsp;</th>";
+    result += "   </tr>";
+    result += " </thead>";
+    result += "<tbody style='font-size:13px;'>";
+    result += "</div>";
+    result += "<div>";
+    result += "<tr>";
+    result += "<td class='align-middle text-center' colspan='6'><br><br><br><br>Hi there! What are you looking for?<br><br><br><br><br><br></td>";
+    result += "</tr>";              
+    result += " </tbody>";
+    result += "</table>";            
+    result += "</div>";          
+    $("#search_customer_modal .modal-body").html(result);
   });
 
 
