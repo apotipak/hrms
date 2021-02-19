@@ -3645,7 +3645,8 @@
             result += "        </div>";
 
             result += "      </div>";
-            result += "      <div class='form-row'>";
+
+            result += "      <div class='form-row col-12'>";
 
             // SRV_REM
             result += "        <div class='form-group col-md-6'>";
@@ -3660,11 +3661,41 @@
             result += "          <input id='id_srv_cost_rate' type='text' class='form-control form-control-sm' value='" + num + "'>";
             result += "        </div>";
 
-            result += "      </div>";   
+            result += "      </div>";
+
+
+            // amnaj
+            // Special - update
+            result += "<div class='clearfix pt-1'></div>";
+            result += "<div class='row col-12 bg-dark'><b>SPECIAL BENEFITS</b></div>"; 
+            result += "<div class='row col-12 bg-secondary'>"; 
+            result += " <div class='form-group col-3'>";
+            result += "   <label for='id_srv_special_position'>{% trans 'Position' %}</label>";
+            result += "   <input id='id_srv_special_position' type='number' min='0' class='form-control form-control-sm' value='" + data.spay1 + "'>";
+            result += " </div>";
+
+            result += " <div class='form-group col-3'>";
+            result += "   <label for='id_srv_special_incentive'>{% trans 'Incentive' %}</label>";
+            result += "   <input id='id_srv_special_incentive' type='number' min='0' class='form-control form-control-sm' value='" + data.spay2 + "'>";
+            result += " </div>";
+
+            result += " <div class='form-group col-3'>";
+            result += "   <label for='id_srv_special_cctv'>{% trans 'CCTV' %}</label>";
+            result += "   <input id='id_srv_special_cctv' type='number' min='0' class='form-control form-control-sm' value='" + data.spay3 + "'>";
+            result += " </div>";
+
+            result += " <div class='form-group col-3'>";
+            result += "   <label for='id_srv_special_traffic'>{% trans 'Traffic' %}</label>";
+            result += "   <input id='id_srv_special_traffic' type='number' min='0' class='form-control form-control-sm' value='" + data.spay4 + "'>";
+            result += " </div>";
+            result += "</div>";
+
+
             result += "    </div>";
             result += "  </div>";
             result += "</div>";          
             result += "</div>";
+        
 
             $("#update_service_modal .modal-body").html(result);            
             //$("#update_service_modal .modal-body").html(result);
@@ -4280,6 +4311,10 @@
       srv_cost = $('#id_srv_cost').val();
       srv_cost_rate = $('#id_srv_cost_rate').val();
       srv_rem = $('#id_srv_rem').val();
+      spay1 = $('#id_srv_special_position').val();
+      spay2 = $('#id_srv_special_incentive').val();
+      spay3 = $('#id_srv_special_cctv').val();
+      spay4 = $('#id_srv_special_traffic').val();
 
       $.ajax({
         url : "/contract/ajax/save_customer_service_item",
@@ -4306,6 +4341,10 @@
           srv_cost: srv_cost,
           srv_cost_rate: srv_cost_rate,
           srv_rem: srv_rem,
+          spay1: spay1,
+          spay2: spay2,
+          spay3: spay3,
+          spay4: spay4,
         },
         beforeSend: function () {
           
@@ -4841,7 +4880,7 @@
             result += "</div>";
             result += "</div>";
 
-            result += "<div class='form-row'>";
+            result += "<div class='form-row col-12'>";
             result += " <div class='form-group col-md-6'>";
             result += "   <label for='id_srv_rem_new'>{% trans 'Remark' %}</label>";
             result += "   <input id='id_srv_rem_new' type='text' class='form-control form-control-sm' value=''>";
@@ -4854,7 +4893,7 @@
 
 
             // amnaj
-            // Special
+            // Special - add new
             result += "<div class='clearfix pt-1'></div>";
             result += "<div class='row col-12 bg-dark'><b>SPECIAL BENEFITS</b></div>"; 
             result += "<div class='row col-12 bg-secondary'>"; 
@@ -5757,7 +5796,38 @@
           return false;        
         }
       });
-      
+
+
+      // amnaj
+      $('#id_srv_special_position').on('focus', function (e) {
+        $(this).select();
+      }); 
+      $('#id_srv_special_position').on('keypress', function (e) {        
+        if(e.which === 13)
+          $('#id_srv_special_incentive').focus();      
+      });
+      $('#id_srv_special_incentive').on('focus', function (e) {
+        $(this).select();
+      });       
+      $('#id_srv_special_incentive').on('keypress', function (e) {        
+        if(e.which === 13)
+          $('#id_srv_special_cctv').focus();      
+      });
+      $('#id_srv_special_cctv').on('focus', function (e) {
+        $(this).select();
+      });       
+      $('#id_srv_special_cctv').on('keypress', function (e) {        
+        if(e.which === 13)
+          $('#id_srv_special_traffic').focus();      
+      });
+      $('#id_srv_special_traffic').on('focus', function (e) {
+        $(this).select();
+      });       
+      $('#id_srv_special_traffic').on('keypress', function (e) {        
+        if(e.which === 13)
+          $('#id_srv_special_traffic').focus();
+      });
+
     });
 
   });

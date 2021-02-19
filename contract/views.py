@@ -1768,6 +1768,10 @@ def update_customer_service(request):
             op1 = data.op1
             op2 = data.op2
             op3 = data.op3
+            spay1 = data.spay1
+            spay2 = data.spay2
+            spay3 = data.spay3
+            spay4 = data.spay4
 
             # Get com_rank
             # comrank = ComRank.objects.all().exclude(upd_flag='D')
@@ -1821,6 +1825,10 @@ def update_customer_service(request):
                 "op1": data.op1,
                 "op2": data.op2,
                 "op3": data.op3,
+                "spay1": data.spay1,
+                "spay2": data.spay2,
+                "spay3": data.spay3,
+                "spay4": data.spay4,
                 "com_rank_list": list(pickup_comrank_record),
                 "t_shift_list": list(pickup_tshift_record),
             })
@@ -2125,7 +2133,13 @@ def save_customer_service_item(request):
     srv_cost_rate = request.GET["srv_cost_rate"]
     srv_rem = request.GET["srv_rem"]
 
+    spay1 = float(request.GET["spay1"])
+    spay2 = float(request.GET["spay2"])
+    spay3 = float(request.GET["spay3"])
+    spay4 = float(request.GET["spay4"])
+
     #TODO - all print below will be comment
+    '''
     print("START")
     print("srv_id = " + str(srv_id))
     print("srv_eff_frm = " + str(srv_eff_from))
@@ -2147,6 +2161,7 @@ def save_customer_service_item(request):
     print("srv_cost_rate = " + str(srv_cost_rate))
     print("srv_rem = " + str(srv_rem))
     print("END")
+    '''
 
     if srv_id is not None:
         try:                
@@ -2288,6 +2303,39 @@ def save_customer_service_item(request):
                 field_is_modified, record = check_modified_field("CUS_SERVICE", srv_id, "Remark", data.srv_rem, srv_rem, "E", request)
                 if field_is_modified:
                     data.srv_rem = srv_rem
+                    modified_records.append(record)
+                    field_is_modified_count = field_is_modified_count + 1
+
+
+            # SRV_SPECIAL_POSITION
+            if (spay1 is not None):
+                field_is_modified, record = check_modified_field("CUS_SERVICE", srv_id, "SPECIAL_POSITION", data.spay1, spay1, "E", request)
+                if field_is_modified:
+                    data.spay1 = spay1
+                    modified_records.append(record)
+                    field_is_modified_count = field_is_modified_count + 1
+
+            # SRV_SPECIAL_INCENTIVE
+            if (spay2 is not None):
+                field_is_modified, record = check_modified_field("CUS_SERVICE", srv_id, "SPECIAL_INCENTIVE", data.spay2, spay2, "E", request)
+                if field_is_modified:
+                    data.spay2 = spay2
+                    modified_records.append(record)
+                    field_is_modified_count = field_is_modified_count + 1
+
+            # SRV_SPECIAL_CCTV
+            if (spay3 is not None):
+                field_is_modified, record = check_modified_field("CUS_SERVICE", srv_id, "SPECIAL_CCTV", data.spay3, spay3, "E", request)
+                if field_is_modified:
+                    data.spay3 = spay3
+                    modified_records.append(record)
+                    field_is_modified_count = field_is_modified_count + 1
+
+            # SRV_SPECIAL_TRAFFIC
+            if (spay4 is not None):
+                field_is_modified, record = check_modified_field("CUS_SERVICE", srv_id, "SPECIAL_TRAFFIC", data.spay4, spay4, "E", request)
+                if field_is_modified:
+                    data.spay4 = spay4
                     modified_records.append(record)
                     field_is_modified_count = field_is_modified_count + 1
 
