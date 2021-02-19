@@ -1896,7 +1896,12 @@ def add_new_service(request):
     srv_cost_rate = request.GET["srv_cost_rate_new"]
     srv_rem = request.GET["srv_rem_new"]
 
+    srv_Spay1 = 0 if float(request.GET["srv_Spay1"]) <= 0 else float(request.GET["srv_Spay1"])
+    srv_Spay2 = 0 if float(request.GET["srv_Spay2"]) <= 0 else float(request.GET["srv_Spay2"])
+    srv_Spay3 = 0 if float(request.GET["srv_Spay3"]) <= 0 else float(request.GET["srv_Spay3"])
+    srv_Spay4 = 0 if float(request.GET["srv_Spay4"]) <= 0 else float(request.GET["srv_Spay4"])
 
+    print("%s %s %s %s", srv_Spay1, srv_Spay2, srv_Spay3, srv_Spay4)
     # print("----------------------------")
     # print("cnt_id = " + str(cnt_id))
     # print("----------------------------")
@@ -1934,10 +1939,19 @@ def add_new_service(request):
         upd_date = datetime.datetime.now(),
         upd_by = request.user.first_name,
         upd_flag = 'A',
-        srv_cost_change = 0,
+        srv_cost_change = 0,    
         op1 = 0,
         op2 = 0,
         op3 = 0,
+        spay1 = srv_Spay1,
+        spay2 = srv_Spay2,
+        spay3 = srv_Spay3,
+        spay4 = srv_Spay4,
+        spay5 = 0,
+        spay6 = 0,
+        spay7 = 0,
+        spay8 = 0,
+        spay9 = 0,
     )
     s.save()
 

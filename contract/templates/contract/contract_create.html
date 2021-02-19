@@ -3399,67 +3399,8 @@
         },
         success: function (data) {
 
-          //amnaj
           var count = data.results.length;
           result = render_service_list_table_html(data);          
-          /*
-          var result = ""
-          var count = data.results.length;
-          var cnt_id = data.results[0]["cnt_id"];
-          var cus_name_th = data.results[0]["cus_name_th"];
-          var cus_name_en = data.results[0]["cus_name_en"];
-
-          result += "<div class='row col-12' stye='padding:0;'>";
-
-          result += "<div class='col-8 offset-3 pb-2'>";
-          result += "<form id='search_contract_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
-          result += "  <div class='form-group mx-sm-3 mb-2'>";
-          result += "  <select name='cus_contract_search_option' class='form-control form-control-sm' required id='id_cus_contract_search_option'>";
-          result += "    <option value='1'>Contract ID</option>";
-          result += "    <option value='2' selected>Customer Name (TH)</option>";
-          result += "    <option value='3'>Customer Name (EN)</option>";
-          result += "  </select>&nbsp;&nbsp;&nbsp;&nbsp;";
-          result += "    <label for='id_cus_main_search_district' class='sr-only'>Search</label>";            
-          result += "    <input type='text' class='form-control form-control-sm' id='id_cus_contract_search_text' name='cus_contract_search_text' autocomplete='off' value=''>";
-          result += "  </div>";
-          result += "<a href='javascript:cus_contract_search_modal()' type='button' class='btn btn-primary btn-sm mb-2'>Search</a>";            
-          result += "</form>";
-          result += "</div>";
-
-          
-          result += "<div class='table-responsive' stye='padding:0;'>";
-          
-          //<table class='table table-responsive table-sm table-striped table-condensed table-wrapper-scroll-y my-custom-scrollbar' id="
-          result += "<table class='table table-hover table-striped table-wrapper-scroll-y my-custom-scrollbar w-100'>";
-          result += " <thead>";
-          result += "   <tr class='text-left'>";
-          result += "     <th scope='col' class='text-left' nowrap>{% trans 'Contract ID' %}.</th>";
-          result += "     <th scope='col' class='text-left'>{% trans 'Customer Name (TH)' %}</th>";
-          result += "     <th scope='col' class='text-left'>{% trans 'Customer Name (EN)' %}</th>";
-          result += "     <th scope='col'>&nbsp;</th>";
-          result += "   </tr>";
-          result += " </thead>";
-
-          result += "<tbody style='font-size:13px;'>";
-          result += "</div>";
-          result += "<div>";
-
-          for(var i=0; i<count; i++) {              
-            var cnt_id = data.results[i]["cnt_id"];
-            var cus_name_th = data.results[i]["cus_name_th"];
-            var cus_name_en = data.results[i]["cus_name_en"];
-
-            result += "<tr>";
-            result += "<td class='align-middle'>" + cnt_id + "</td>";        
-            result += "<td class='align-middle'>" + cus_name_th + "</td>";
-            result += "<td class='align-middle'>" + cus_name_en + "</td>";
-            result += "<td class='text-right'><a href='javascript:cus_contract_select_item(" + cnt_id + ",\"" + cus_name_th + "\",\"" + cus_name_en + "\");' type='button' class='btn btn-outline-primary btn-sm'>&nbsp;&nbsp;Select&nbsp;&nbsp;</a></td>";
-            result += "</tr>";          
-          }
-          result += " </tbody>";
-          result += "</table>";            
-          result += "</div>";
-          */
 
           $("#id_search_number_of_found_record").html("ค้นหา&nbsp;&nbsp;&nbsp;<span class='text-success'><b>" + search_text + "</b></span>&nbsp;&nbsp;&nbsp;พบทั้งหมด&nbsp;&nbsp;<b>" + count + "</b>&nbsp;&nbsp;รายการ");
           
@@ -3758,6 +3699,12 @@
     srv_sun_new = $('#id_srv_sun_new').val();
     srv_pub_new = $('#id_srv_pub_new').val();
 
+    //amnaj
+    srv_Spay1 = $("#id_srv_special_position").val();
+    srv_Spay2 = $("#id_srv_special_incentive").val();
+    srv_Spay3 = $("#id_srv_special_cctv").val();
+    srv_Spay4 = $("#id_srv_special_traffic").val();
+
     if ($('#chkCNTEffToNew').is(":checked"))
       srv_eff_to_new_status = 1;
     else
@@ -3864,6 +3811,11 @@
         srv_cost_new: srv_cost_new,
         srv_cost_rate_new: srv_cost_rate_new,
         srv_rem_new: srv_rem_new,
+
+        srv_Spay1: srv_Spay1,
+        srv_Spay2: srv_Spay2,
+        srv_Spay3: srv_Spay3,
+        srv_Spay4: srv_Spay4,        
       },
       beforeSend: function () {
         //
@@ -4863,9 +4815,9 @@
             result += "</div>";
 
             result += "<div class='form-row'>";
-            result += "<div class='form-group col-md-3'>";
-            result += "<label for='id_srv_qty_new'>{% trans 'QTY' %}</label>";
-            result += "<input id='id_srv_qty_new' type='number' class='form-control form-control-sm' value='0'>";
+            result += " <div class='form-group col-md-3'>";
+            result += " <label for='id_srv_qty_new'>{% trans 'QTY' %}</label>";
+            result += " <input id='id_srv_qty_new' type='number' class='form-control form-control-sm' value='0'>";
             result += "</div>";
 
             result += "<div class='form-group col-md-3'>";
@@ -4890,16 +4842,44 @@
             result += "</div>";
 
             result += "<div class='form-row'>";
-            result += "<div class='form-group col-md-6'>";
-            result += "<label for='id_srv_rem_new'>{% trans 'Remark' %}</label>";
-            result += "<input id='id_srv_rem_new' type='text' class='form-control form-control-sm' value=''>";
+            result += " <div class='form-group col-md-6'>";
+            result += "   <label for='id_srv_rem_new'>{% trans 'Remark' %}</label>";
+            result += "   <input id='id_srv_rem_new' type='text' class='form-control form-control-sm' value=''>";
+            result += " </div>";
+            result += " <div class='form-group col-md-6'>";
+            result += " <label for='id_srv_cost_rate_new'>{% trans 'Cost Rate' %}</label>";
+            result += " <input id='id_srv_cost_rate_new' type='number' class='form-control form-control-sm' value='0'>";
+            result += " </div>";
             result += "</div>";
 
-            result += "<div class='form-group col-md-6'>";
-            result += "<label for='id_srv_cost_rate_new'>{% trans 'Cost Rate' %}</label>";
-            result += "<input id='id_srv_cost_rate_new' type='number' class='form-control form-control-sm' value='0'>";
+
+            // amnaj
+            // Special
+            result += "<div class='clearfix pt-1'></div>";
+            result += "<div class='row col-12 bg-dark'><b>SPECIAL BENEFITS</b></div>"; 
+            result += "<div class='row col-12 bg-secondary'>"; 
+            result += " <div class='form-group col-3'>";
+            result += "   <label for='id_srv_special_position'>{% trans 'Position' %}</label>";
+            result += "   <input id='id_srv_special_position' type='number' min='0' class='form-control form-control-sm' value='0'>";
+            result += " </div>";
+
+            result += " <div class='form-group col-3'>";
+            result += "   <label for='id_srv_special_incentive'>{% trans 'Incentive' %}</label>";
+            result += "   <input id='id_srv_special_incentive' type='number' min='0' class='form-control form-control-sm' value='0'>";
+            result += " </div>";
+
+            result += " <div class='form-group col-3'>";
+            result += "   <label for='id_srv_special_cctv'>{% trans 'CCTV' %}</label>";
+            result += "   <input id='id_srv_special_cctv' type='number' min='0' class='form-control form-control-sm' value='0'>";
+            result += " </div>";
+
+            result += " <div class='form-group col-3'>";
+            result += "   <label for='id_srv_special_traffic'>{% trans 'Traffic' %}</label>";
+            result += "   <input id='id_srv_special_traffic' type='number' min='0' class='form-control form-control-sm' value='0'>";
+            result += " </div>";
             result += "</div>";
-            result += "</div>";
+
+
             result += "</div>";
             result += "</div>";
             result += "</div>";          
@@ -5188,128 +5168,6 @@
         }, 0);
       });
 
-      /*
-      $("#id_dtp_cnt_eff_to_new").inputmask("99/99/9999");
-      $(document).on('keypress', '#id_dtp_cnt_eff_to_new', function(e) {
-        if(e.which == 13) {      
-          e.preventDefault();
-
-          var keyup_value;
-          keyup_value = this.value;
-
-          if(isValidDate(keyup_value)) {
-            $('#id_srv_qty_new').focus();
-          } else {
-            $('#id_dtp_cnt_eff_to_new').focus();
-            $(document).Toasts('create', {
-              class: "bg-danger", 
-              title: "{% trans 'Error' %}",
-              subtitle: '',
-              autohide: true,
-              delay: 2000,
-              body: "ข้อมูลวันที่ไม่ถูกต้อง",
-              autoDismiss: true,
-              close: true,
-              autoremove: true,
-            });        
-          }
-        }
-      });
-      $("#id_dtp_cnt_eff_to_new").bind("focus",function(e){
-        console.log("id_cnt_eff_to_focus" + " | " + e.keyCode);
-        if(e.keyCode!=undefined) {
-          this.setSelectionRange(0,2);
-        } else {
-          const input = document.getElementById('id_dtp_cnt_eff_to_new');
-          window.setTimeout(function() {
-            input.setSelectionRange(0,2);
-          }, 0);
-        }
-      });
-
-      $("#id_dtp_cnt_eff_to_new").bind("keyup",function(e){
-        var keyup_point;
-        var keyup_value;
-
-        keyup_point = this.selectionStart;
-        keyup_value = this.value;
-
-        // NUMERIC PAD
-        if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105)) {
-          console.log("numpad: " + keyup_point + " | value: " + keyup_value);
-
-          if(keyup_point==3) {
-            // isValidDate()
-            if(isValidDate(keyup_value)) {
-              console.log("TRUE");
-            } else {
-              console.log("FALSE");
-            }
-
-            if(keyup_value.substring(0,2)>31) {
-              this.setSelectionRange(0, 2);
-            } else {
-              this.setSelectionRange(3, 5);
-            }
-            return false;
-          }
-
-          if(keyup_point==6) {
-            if(keyup_value.substring(3, 5)>12) {
-              this.setSelectionRange(3, 5);
-            } else {
-              this.setSelectionRange(6, 10);
-            }
-            return false;
-          }
-        }
-
-        // LEFT
-        if(e.keyCode == 37) {
-          console.log("left arrow keyup_point:" + keyup_point);
-          if(keyup_point==2) {
-            this.setSelectionRange(2, 5);
-          }   
-          if(keyup_point==3) {
-            this.setSelectionRange(0, 2);
-          }           
-          if(keyup_point==6) {
-            this.setSelectionRange(3, 5);
-          }
-          if(keyup_point==9) {
-            this.setSelectionRange(6, 10);
-          }        
-        }
-
-        // RIGHT
-        if(e.keyCode == 39) {
-          console.log("right arrow keyup_point:" + keyup_point);
-
-          if(keyup_point==2) {
-            console.log("value:" + keyup_value);
-                  
-            // isValidDate()
-            if(isValidDate(keyup_value)) {
-              console.log("TRUE");
-              this.setSelectionRange(3, 5);
-            } else {
-              console.log("FALSE");
-              this.setSelectionRange(0, 2);
-            }
-          } 
-          if(keyup_point==5) {
-            if(isValidDate(keyup_value)) {
-              console.log("TRUE");
-              this.setSelectionRange(6, 10);
-            } else {
-              console.log("FALSE");
-              this.setSelectionRange(3, 5);
-            }                  
-          }
-        }
-      });
-      */
-
       // SRV_QTY_NEW
       $('#id_srv_qty_new').on('focus', function (e) {
         $(this).select();
@@ -5358,6 +5216,7 @@
           return false;        
         }
       });
+
       //
       $('#id_srv_qty_new').on('keyup', function (e) {
         var qty = $(this);
@@ -5505,6 +5364,38 @@
           return false;        
         }
       });   
+
+
+      // amnaj
+      $('#id_srv_special_position').on('focus', function (e) {
+        $(this).select();
+      }); 
+      $('#id_srv_special_position').on('keypress', function (e) {        
+        if(e.which === 13)
+          $('#id_srv_special_incentive').focus();      
+      });
+      $('#id_srv_special_incentive').on('focus', function (e) {
+        $(this).select();
+      });       
+      $('#id_srv_special_incentive').on('keypress', function (e) {        
+        if(e.which === 13)
+          $('#id_srv_special_cctv').focus();      
+      });
+      $('#id_srv_special_cctv').on('focus', function (e) {
+        $(this).select();
+      });       
+      $('#id_srv_special_cctv').on('keypress', function (e) {        
+        if(e.which === 13)
+          $('#id_srv_special_traffic').focus();      
+      });
+      $('#id_srv_special_traffic').on('focus', function (e) {
+        $(this).select();
+      });       
+      $('#id_srv_special_traffic').on('keypress', function (e) {        
+        if(e.which === 13)
+          $('#id_srv_special_traffic').focus();
+      });
+
                   
     });
 

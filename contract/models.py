@@ -74,6 +74,15 @@ class CusService(models.Model):
     op1 = models.CharField(max_length=10, blank=True, null=True)
     op2 = models.CharField(max_length=10, blank=True, null=True)
     op3 = models.CharField(max_length=10, blank=True, null=True)
+    spay1 = models.DecimalField(max_digits=4, decimal_places=0, blank=False, null=True)
+    spay2 = models.DecimalField(max_digits=4, decimal_places=0, blank=False, null=True)
+    spay3 = models.DecimalField(max_digits=4, decimal_places=0, blank=False, null=True)
+    spay4 = models.DecimalField(max_digits=4, decimal_places=0, blank=False, null=True)
+    spay5 = models.DecimalField(max_digits=4, decimal_places=0, blank=False, null=True)
+    spay6 = models.DecimalField(max_digits=4, decimal_places=0, blank=False, null=True)
+    spay7 = models.DecimalField(max_digits=4, decimal_places=0, blank=False, null=True)
+    spay8 = models.DecimalField(max_digits=4, decimal_places=0, blank=False, null=True)
+    spay9 = models.DecimalField(max_digits=4, decimal_places=0, blank=False, null=True)
 
     class Meta:
         managed = False
