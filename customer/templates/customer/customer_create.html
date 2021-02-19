@@ -1515,13 +1515,6 @@
     var result = ""
     var count = data.results.length;
 
-    /*
-    var cus_id = data.results[0]["cus_id"];
-    var cus_name_th = data.results[0]["cus_name_th"];
-    var cus_name_en = data.results[0]["cus_name_en"];
-    var cus_add1_th = data.results[0]["cus_add1_th"];
-    */
-
     result = "";
     result += "<div class='row col-12' stye='padding:0;'>";
 
@@ -1629,11 +1622,6 @@
     result += "</div>";          
     $("#search_customer_modal .modal-body").html(result);
   });
-
-
-
-
-
 
   $("#id_cus_id").bind("focus",function(e){
     window.setTimeout(function() {
