@@ -2105,6 +2105,7 @@
       } else if(cus_brn=='' || cus_brn==null) {
         alert("Customer Branch is required");
         $('#id_cus_brn').focus();
+        return false;
       } else if(cus_vol_text=='' || cus_vol_text==null) {    
         $("#id_cus_vol").val('000');   
         cus_vol = 0;
