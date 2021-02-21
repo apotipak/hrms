@@ -3663,12 +3663,11 @@
 
             result += "      </div>";
 
-
             // amnaj
             // Special - update
             result += "<div class='clearfix pt-1'></div>";
-            result += "<div class='row col-12 bg-dark'><b>SPECIAL BENEFITS</b></div>"; 
-            result += "<div class='row col-12 bg-secondary'>"; 
+            result += "<div class='row col-12 bg-dark' style='display:none;'><b>SPECIAL BENEFITS.</b></div>"; 
+            result += "<div class='row col-12 bg-secondary' style='display:none;'>"; 
             result += " <div class='form-group col-3'>";
             result += "   <label for='id_srv_special_position'>{% trans 'Position' %}</label>";
             result += "   <input id='id_srv_special_position' type='number' min='0' class='form-control form-control-sm' value='" + data.spay1 + "'>";
@@ -3689,6 +3688,8 @@
             result += "   <input id='id_srv_special_traffic' type='number' min='0' class='form-control form-control-sm' value='" + data.spay4 + "'>";
             result += " </div>";
             result += "</div>";
+
+
 
 
             result += "    </div>";
@@ -4895,8 +4896,8 @@
             // amnaj
             // Special - add new
             result += "<div class='clearfix pt-1'></div>";
-            result += "<div class='row col-12 bg-dark'><b>SPECIAL BENEFITS</b></div>"; 
-            result += "<div class='row col-12 bg-secondary'>"; 
+            result += "<div class='row col-12 bg-dark' style='display:none'><b>SPECIAL BENEFITS</b></div>"; 
+            result += "<div class='row col-12 bg-secondary' style='display:none'>"; 
             result += " <div class='form-group col-3'>";
             result += "   <label for='id_srv_special_position'>{% trans 'Position' %}</label>";
             result += "   <input id='id_srv_special_position' type='number' min='0' class='form-control form-control-sm' value='0'>";
@@ -4917,6 +4918,8 @@
             result += "   <input id='id_srv_special_traffic' type='number' min='0' class='form-control form-control-sm' value='0'>";
             result += " </div>";
             result += "</div>";
+
+
 
 
             result += "</div>";
