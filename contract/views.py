@@ -1909,7 +1909,13 @@ def add_new_service(request):
     srv_Spay3 = 0 if float(request.GET["srv_Spay3"]) <= 0 else float(request.GET["srv_Spay3"])
     srv_Spay4 = 0 if float(request.GET["srv_Spay4"]) <= 0 else float(request.GET["srv_Spay4"])
 
-    print("%s %s %s %s", srv_Spay1, srv_Spay2, srv_Spay3, srv_Spay4)
+    # Change op1 status
+    if (srv_Spay1<=0 and srv_Spay2<=0 and srv_Spay3<=0 and srv_Spay4<=0):
+        op1_value = 0
+    else:
+        op1_value = 1
+
+    # print("%s %s %s %s", srv_Spay1, srv_Spay2, srv_Spay3, srv_Spay4)
     # print("----------------------------")
     # print("cnt_id = " + str(cnt_id))
     # print("----------------------------")
@@ -1921,7 +1927,6 @@ def add_new_service(request):
         new_service_number = latest_service_number + 1
     else:
         new_service_number = str(cnt_id) + "00001"
-
 
     s = CusService(
         srv_id = new_service_number,
@@ -1948,7 +1953,7 @@ def add_new_service(request):
         upd_by = request.user.first_name,
         upd_flag = 'A',
         srv_cost_change = 0,    
-        op1 = 0,
+        op1 = op1_value,
         op2 = 0,
         op3 = 0,
         spay1 = srv_Spay1,
@@ -2102,12 +2107,11 @@ def save_new_service(request):
 # Save existed service
 def save_customer_service_item(request):
 
-    print("debug")
+    print("debug...")
 
     srv_id = request.GET["srv_id"]
     srv_eff_from = request.GET["srv_eff_frm"]
-    
-    
+        
     srv_eff_to_status = request.GET["srv_eff_to_status"]
     print("srv_eff_to_status:", srv_eff_to_status)
 
@@ -2313,7 +2317,7 @@ def save_customer_service_item(request):
                 if field_is_modified:
                     data.spay1 = spay1
                     modified_records.append(record)
-                    field_is_modified_count = field_is_modified_count + 1
+                    field_is_modified_count = field_is_modified_count + 1                    
 
             # SRV_SPECIAL_INCENTIVE
             if (spay2 is not None):
@@ -2339,6 +2343,11 @@ def save_customer_service_item(request):
                     modified_records.append(record)
                     field_is_modified_count = field_is_modified_count + 1
 
+            # Change op1 status
+            if (spay1<=0 and spay2<=0 and spay3<=0 and spay4<=0):
+                data.op1 = 0
+            else:
+                data.op1 = 1
 
             # Modified user
             if field_is_modified_count > 0:
@@ -2509,9 +2518,11 @@ def reload_service_list(request):
     cus_service_list = []
     sql = "Select a.srv_id,a.srv_shif_id,b.shf_desc,b.shf_type,a.srv_rank, c.rank_en,a.srv_eff_frm,a.srv_eff_to,a.srv_qty,"
     sql += "a.srv_mon,a.srv_tue,a.srv_wed,a.srv_thu,a.srv_fri,a.srv_sat,a.srv_sun,a.srv_pub,a.srv_rate,a.srv_cost,a.srv_cost_rate,"
-    sql += "a.srv_rem,a.srv_active, a.upd_date,a.upd_by,a.upd_flag From cus_service as a left join t_shift as b on a.srv_shif_id=b.shf_id "
+    sql += "a.srv_rem,a.srv_active, a.upd_date,a.upd_by,a.upd_flag,a.op1 From cus_service as a left join t_shift as b on a.srv_shif_id=b.shf_id "
     sql += "left join com_rank as c on a.srv_rank=c.rank_id Where  a.upd_flag<>'D' and a.cnt_id = " + str(cnt_id) + " "        
     sql += "order by a.srv_active desc,b.shf_type,a.srv_rank desc;"
+    print("SQL:", sql)
+
     try:
         with connection.cursor() as cursor:     
             cursor.execute(sql)
@@ -2547,6 +2558,7 @@ def reload_service_list(request):
             "srv_active": item[21],
             "upd_date": item[22].strftime("%d/%m/%Y %H:%M:%S"),
             "upd_by": item[23],
+            "op1": item[25],
         }
         cus_service_list.append(record)
 

@@ -2413,13 +2413,22 @@
                   
                     result += "          <td class='text-right' nowrap>";
                     result += "            <div class='btn-group btn-group-sm nowrap'>";
+
                     result += "              <small>";
+
+
+                    // amnaj
+                    if(data.cus_service_list[i]["op1"]==1) {
+                      result += "              <button type='button' onclick='update_customer_service(" + data.cus_service_list[i]["srv_id"] + ")' class='btn btn-warning btn-xs js-update-contract-service' data-toggle='modal'>&nbsp;<i class='fas fa-dollar-sign'></i>&nbsp;</button>";
+                    }
+                                      
                     result += "              <button type='button' onclick='update_customer_service(" + data.cus_service_list[i]["srv_id"] + ")' class='btn btn-info btn-xs js-update-contract-service' data-toggle='modal'>&nbsp;<i class='fas fa-pen fa-xs'></i>&nbsp;</button>";
 
                     result += "              <button type='button' onclick='delete_customer_service(" + data.cus_service_list[i]["srv_id"] + ")' class='btn btn-danger btn-xs js-delete-contract-service'>";
                     result += "                &nbsp;<i class='fas fa-trash fa-xs'></i>&nbsp;";
                     result += "              </button>";
                     result += "              </small>";
+
                     result += "            </div>";
                     result += "          </td>";
                   }
@@ -3668,7 +3677,7 @@
             result += "<div class='clearfix pt-1'></div>";
             
             //result += "<div class='row col-12 bg-dark' style='display:none;'><b>SPECIAL BENEFITS.</b></div>"; 
-            result += "<div class='row col-12 bg-dark'><b>SPECIAL BENEFITS.</b></div>";             
+            result += "<div class='row col-12 bg-dark'><b>SPECIAL BENEFITS</b></div>";             
 
             //result += "<div class='row col-12 bg-secondary' style='display:none;'>"; 
             result += "<div class='row col-12 bg-secondary'>"; 
@@ -3896,7 +3905,7 @@
             result += "      <thead>";
             result += "      <tr>";
             result += "        <th class='text-left' nowrap>{% trans 'Eff Frm' %}</th>";
-            result += "        <th class='text-left' nowrap scope='col'>{% trans 'Eff To' %}</th>";
+            result += "        <th class='text-left' nowrap scope='col'>{% trans 'Eff To' %}*</th>";
             result += "        <th class='text-left' scope='col' nowrap>{% trans 'Shift Time' %}</th>";
             result += "        <th scope='col' class='text-center'>{% trans 'QTY' %}</th>";
             result += "        <th scope='col' class='text-center'>{% trans 'Rank' %}</th>";
@@ -3965,6 +3974,12 @@
               result += "          <td class='text-right' nowrap>";
               result += "            <div class='btn-group btn-group-sm nowrap'>";
               result += "              <small>";
+
+              // amnaj
+              if(data.cus_service_list[i]["op1"]==1) {
+                result += "              <button type='button' onclick='update_customer_service(" + data.cus_service_list[i]["srv_id"] + ")' class='btn btn-warning btn-xs js-update-contract-service' data-toggle='modal'>&nbsp;<i class='fas fa-dollar-sign fa-md'></i>&nbsp;</button>";
+              }
+
               result += "              <button type='button' onclick='update_customer_service(" + data.cus_service_list[i]["srv_id"] + ")' class='btn btn-info btn-xs js-update-contract-service' data-toggle='modal'>&nbsp;<i class='fas fa-pen fa-xs'></i>&nbsp;</button>";
 
               result += "              <button type='button' onclick='delete_customer_service(" + data.cus_service_list[i]["srv_id"] + ")' class='btn btn-danger btn-xs js-delete-contract-service'>";
@@ -4462,6 +4477,12 @@
                 result += "          <td class='text-right' nowrap>";
                 result += "            <div class='btn-group btn-group-sm nowrap'>";
                 result += "              <small>";
+
+                // amnaj
+                if(data.cus_service_list[i]["op1"]==1) {
+                  result += "              <button type='button' onclick='update_customer_service(" + data.cus_service_list[i]["srv_id"] + ")' class='btn btn-warning btn-xs js-update-contract-service' data-toggle='modal'>&nbsp;<i class='fas fa-dollar-sign'></i>&nbsp;</button>";
+                }
+
                 result += "              <button type='button' onclick='update_customer_service(" + data.cus_service_list[i]["srv_id"] + ")' class='btn btn-info btn-xs js-update-contract-service' data-toggle='modal'>&nbsp;<i class='fas fa-pen fa-xs'></i>&nbsp;</button>";
 
                 result += "              <button type='button' onclick='delete_customer_service(" + data.cus_service_list[i]["srv_id"] + ")' class='btn btn-danger btn-xs js-delete-contract-service'>";
@@ -4620,6 +4641,12 @@
               result += "          <td class='text-right' nowrap>";
               result += "            <div class='btn-group btn-group-sm nowrap'>";
               result += "              <small>";
+
+              // amnaj
+              if(data.cus_service_list[i]["op1"]==1) {
+                result += "              <button type='button' onclick='update_customer_service(" + data.cus_service_list[i]["srv_id"] + ")' class='btn btn-warning btn-xs js-update-contract-service' data-toggle='modal'>&nbsp;<i class='fas fa-dollar-sign'></i>&nbsp;</button>";
+              }
+
               result += "              <button type='button' onclick='update_customer_service(" + data.cus_service_list[i]["srv_id"] + ")' class='btn btn-info btn-xs js-update-contract-service' data-toggle='modal'>&nbsp;<i class='fas fa-pen fa-xs'></i>&nbsp;</button>";
 
               result += "              <button type='button' onclick='delete_customer_service(" + data.cus_service_list[i]["srv_id"] + ")' class='btn btn-danger btn-xs js-delete-contract-service'>";
