@@ -7207,7 +7207,8 @@ def ajax_get_job_type_list(request):
     # print("shift_id:", shift_id)
 
     job_type_list = []
-    sql = "select spay1,spay2,spay3,spay4 from cus_service where cnt_id=" + str(cnt_id) + " and op1=1 and srv_shif_id=" + str(shift_id) + ";"
+    # sql = "select spay1,spay2,spay3,spay4 from cus_service where cnt_id=" + str(cnt_id) + " and op1=1 and srv_shif_id=" + str(shift_id) + ";"
+    sql = "select spay1,spay2,spay3,spay4,spay5,spay6,spay7,spay8,spay9 from spaydate where cnt_id=" + str(cnt_id) + " and srv_shif_id=" + str(shift_id) + ";"
     print("SQL:", sql)
 
     try:
@@ -7226,11 +7227,10 @@ def ajax_get_job_type_list(request):
     if job_type_object is not None:
 	    for item in job_type_object:
 	        record = {
-	            "srv_shif_id": item[1],
-	            "spay1": item[2],
-	            "spay2": item[3],
-	            "spay3": item[4],
-	            "spay4": item[5],
+	            "spay1": item[0],
+	            "spay2": item[1],
+	            "spay3": item[2],
+	            "spay4": item[3],
 	        }
 	        
 

@@ -554,7 +554,7 @@
 
   <div class="col-2">
   	<div class="input-group">
-  	<span style="font-size:0.9rem;padding:3px 0 0 0;"><b>Reason</b>&nbsp;</span>
+  	<span style="font-size:0.9rem;padding:3px 0 0 0;"><b>Reason</b>&nbsp;&nbsp;&nbsp;&nbsp;</span>
     <select id="id_late_reason_option" class="form-control form-control-xs">
     </select>
 	</div>
@@ -589,9 +589,10 @@
 
 <div class="row">
 
-  <div class="col-2">   
+  <div class="col-6 float-left">   
   	<div class="input-group">
-		<span style="font-size:0.9rem;padding:0 0 0 0;"><b>Job Type</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+		<!--<span style="font-size:0.9rem;padding:0 0 0 0;"><b>Job Type</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>-->
+		<span style="font-size:0.9rem;padding:0 0 0 0;"><b>Special Benefits</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
         <select id="id_job_type_option" class="form-control form-control-xs" readonly>
 		  <option value="00" selected>00 :No</option>
         </select>								
@@ -599,14 +600,14 @@
   	</div>
   </div>
 
-  <div class="col-4">
+  <div class="col-6 float-right">
 	<div class="input-group">
-  		<span style="font-size:0.9rem;padding:3px 0 0 0;"><b>Remark</b>&nbsp;</span>
-  		<input type="number" id="id_remark" name="remark" class="form-control form-control-xs" />&nbsp;&nbsp;
+  		<span style="font-size:0.9rem;padding:3px 0 0 0;"><b>Remark</b>&nbsp;&nbsp;</span>
+  		<input type="text" id="id_remark" name="remark" class="form-control form-control-xs" />&nbsp;&nbsp;
   	</div>
   </div>
 
-  <div class="col-6">&nbsp;</div>
+  <!--<div class="col-6">&nbsp;</div>-->
 
 </div>
 
@@ -931,11 +932,65 @@
 
 <script>
 
+// 111
+function checkSpecialBenefitList() {
+
+	$("#id_job_type_option").attr("disabled", false);
+	$("#id_job_type_option").attr("readonly", false);
+
+  	var cus_id = $('#id_cus_id').val();
+  	var cus_brn = $('#id_cus_brn').val();
+  	var cus_vol = $('#id_cus_vol').val();
+	var shift_id = $("#id_shift_option").val();
+
+	//alert(shift_id);
+
+	$.ajax({
+    	url : "/monitoring/ajax/get_job_type_list/",
+    	type : "POST",
+    	data : {          
+      		csrfmiddlewaretoken: '{{ csrf_token }}',
+      		cus_id: cus_id,
+      		cus_brn: cus_brn,
+      		cus_vol: cus_vol,
+      		shift_id: shift_id,
+    	},
+    	success: function(data) {
+    		// amnaj
+
+    		for(var i=0; i<data.job_type_list.length; i++) {
+          		spay1 = data.job_type_list[i]["spay1"];
+          		spay2 = data.job_type_list[i]["spay2"];
+          		spay3 = data.job_type_list[i]["spay3"];
+          		spay4 = data.job_type_list[i]["spay4"];
+          		console.log(spay1 + ":" + spay2 + ":" + spay3 + ":" + spay4);
+          	}
+
+          	// id_job_type_option
+			var $el = $("#id_job_type_option");
+			$el.empty();				
+			result += "<option value='00' selected>00 :No</option>";
+			$el.append(result);
+			if(data.job_type_list.length>0) {				
+				for(var i=0; i<data.job_type_list.length; i++) {
+					console.log(i);
+					// $el.append($("<option></option>").attr("value", shf_id).text(shf_desc));
+				}
+			}
+
+    	}
+    });
+}
+
 $(document).ready(function(){
 
 	$(":input").inputmask();
 
-	$("#id_shift_option").change(function () {
+	// 111
+	$("#id_shift_option").change(function () {		
+		checkSpecialBenefitList();
+
+		/*
     	$("#id_job_type_option").attr("disabled", false);
     	$("#id_job_type_option").attr("readonly", false);
 
@@ -978,7 +1033,7 @@ $(document).ready(function(){
 
 	    	}
 	    });
-
+		*/
 
 	});
 
@@ -3141,42 +3196,6 @@ $("#id_late_hour").click( function() {
 		var yyyy = today.getFullYear();
 		today = dd + '/' + mm + '/' + yyyy + " 00:00";
 
-/*
-		result += "    <tr>";
-		result += "      <th scope='col' class='d-none' nowrap>Absent Status</th>";
-		result += "      <th scope='col'>&nbsp;</th>";
-		result += "      <th scope='col' nowrap>Emp ID</th>";
-		result += "      <th scope='col' nowrap>Name</th>";
-		result += "      <th scope='col'>Rank</th>";
-		result += "      <th scope='col'>Shift</th>";
-		result += "      <th scope='col'>Late</th>";
-		result += "      <th scope='col'>Full</th>";
-		result += "      <th scope='col'>Relief</th>";
-		result += "      <th scope='col' nowrap>Rel. ID</th>";
-		result += "      <th scope='col'>Name</th>";
-		result += "      <th scope='col' class='d-none'>Tel Status</th>";
-		result += "      <th scope='col'>Tel</th>";
-		result += "      <th scope='col' nowrap>Call Time</th>";
-		result += "      <th scope='col' nowrap>Call Amt</th>";
-		result += "      <th scope='col' nowrap>Call Paid</th>";
-		result += "      <th scope='col'>Spare</th>";
-		result += "      <th scope='col'>Wage</th>";
-		result += "      <th scope='col' nowrap>Upd Date</th>";
-		result += "      <th scope='col' nowrap>Upd By</th>";
-		result += "      <th scope='col' nowrap>Upd Flag</th>";
-		result += "      <th scope='col' class='d-none' nowrap>Upd Gen</th>";
-		result += "      <th scope='col' class='d-none'>Remark</th>";
-		result += "      <th scope='col' class='d-none'>Relief Status</th>";
-		result += "      <th scope='col' class='d-none'>Late Status</th>";
-	 25 result += "      <th scope='col' class='d-none'>Late Full Status</th>";
-		result += "	     <td class='d-none'>OT</td>";
-		result += "	     <td class='d-none'>OT Reason</td>";
-		result += "	     <td class='d-none'>OT Time From</td>";
-		result += "	     <td class='d-none'>OT Time To</td>";
-		result += "	     <td class='d-none'>OT Hour Amount</td>";
-	 30 result += "    </tr>";
-*/		
-
 		if(shift_id==999 || shift_id==99) {			
 			$("#save_button").attr("disabled", true);
 
@@ -3384,7 +3403,7 @@ $("#id_late_hour").click( function() {
 		
 		$('#id_shift_option').val(shift_id);
 
-		if(shift_id==999 || shift_id==99) {			
+		if(shift_id==999 || shift_id==99) {	
 			$("#save_button").attr("disabled", true);
 
 			if(upd_gen=='G') {
@@ -3409,12 +3428,16 @@ $("#id_late_hour").click( function() {
 			if(upd_gen=='G')
 				$("#delete_button").attr("disabled", true);
 			else
-				$("#delete_button").attr("disabled", false);
-
-			$("#id_shift_option").attr("disabled", false);
+				$("#delete_button").attr("disabled", false);			
 			
 			$("#id_remark").attr("disabled", false);
 			$("#id_remark").attr("readonly", false);
+
+			$("#id_shift_option").attr("disabled", false);
+
+			// amnaj
+			// 111
+			checkSpecialBenefitList();
 		}
 		
 		//console.log(ot_time_from + "," + ot_time_to);
