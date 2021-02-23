@@ -7196,7 +7196,7 @@ def progress_view(request):
 @permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
 def ajax_get_job_type_list(request):
     print("*************************************")
-    print("FUNCTION: ajax_get_job_type_list_list()")
+    print("FUNCTION: ajax_get_job_type_list()")
     print("*************************************")
     cus_id = request.POST.get('cus_id')
     cus_brn = request.POST.get('cus_brn')
@@ -7206,9 +7206,10 @@ def ajax_get_job_type_list(request):
     shift_id = request.POST.get('shift_id')
     # print("shift_id:", shift_id)
 
+    job_type_object = None
     job_type_list = []
-    # sql = "select spay1,spay2,spay3,spay4 from cus_service where cnt_id=" + str(cnt_id) + " and op1=1 and srv_shif_id=" + str(shift_id) + ";"
-    sql = "select spay1,spay2,spay3,spay4,spay5,spay6,spay7,spay8,spay9 from spaydate where cnt_id=" + str(cnt_id) + " and srv_shif_id=" + str(shift_id) + ";"
+   
+    sql = "select spay1,spay2,spay3,spay4,spay5,spay6,spay7,spay8,spay9,Position,Spay_detail from spaydate where cnt_id=" + str(cnt_id) + " and srv_shif_id=" + str(shift_id) + ";"    
     print("SQL:", sql)
 
     try:
@@ -7225,16 +7226,21 @@ def ajax_get_job_type_list(request):
         cursor.close()
     
     if job_type_object is not None:
-	    for item in job_type_object:
+    	print("1")
+    	for item in job_type_object:
 	        record = {
 	            "spay1": item[0],
 	            "spay2": item[1],
 	            "spay3": item[2],
 	            "spay4": item[3],
-	        }
-	        
+	            "spay9": item[8],
+	            "position": item[9],
+	            "spay_detail": item[10],
+	        }	        
 
 	        job_type_list.append(record)
+    else:
+    	print("2")
 
     response = JsonResponse(data={"success": True, "is_error": False, "message": "", "job_type_list": job_type_list})
     response.status_code = 200

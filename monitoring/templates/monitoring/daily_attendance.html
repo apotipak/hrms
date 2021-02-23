@@ -594,7 +594,7 @@
 		<!--<span style="font-size:0.9rem;padding:0 0 0 0;"><b>Job Type</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>-->
 		<span style="font-size:0.9rem;padding:0 0 0 0;"><b>Special Benefits</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
         <select id="id_job_type_option" class="form-control form-control-xs" readonly>
-		  <option value="00" selected>00 :No</option>
+		  <option value="00" selected>No special benefit</option>
         </select>								
   		
   	</div>
@@ -943,7 +943,7 @@ function checkSpecialBenefitList() {
   	var cus_vol = $('#id_cus_vol').val();
 	var shift_id = $("#id_shift_option").val();
 
-	//alert(shift_id);
+	// alert(cus_id + "|" + cus_brn + "|" + cus_vol + "|" + shift_id);
 
 	$.ajax({
     	url : "/monitoring/ajax/get_job_type_list/",
@@ -956,25 +956,35 @@ function checkSpecialBenefitList() {
       		shift_id: shift_id,
     	},
     	success: function(data) {
-    		// amnaj
-
-    		for(var i=0; i<data.job_type_list.length; i++) {
-          		spay1 = data.job_type_list[i]["spay1"];
-          		spay2 = data.job_type_list[i]["spay2"];
-          		spay3 = data.job_type_list[i]["spay3"];
-          		spay4 = data.job_type_list[i]["spay4"];
-          		console.log(spay1 + ":" + spay2 + ":" + spay3 + ":" + spay4);
-          	}
-
-          	// id_job_type_option
+    		// amnaj          	
 			var $el = $("#id_job_type_option");
-			$el.empty();				
-			result += "<option value='00' selected>00 :No</option>";
+			$el.empty();			
+			result = "<option value='00' selected>No special benefit</option>";
 			$el.append(result);
 			if(data.job_type_list.length>0) {				
-				for(var i=0; i<data.job_type_list.length; i++) {
-					console.log(i);
-					// $el.append($("<option></option>").attr("value", shf_id).text(shf_desc));
+				for(var i=0; i<data.job_type_list.length; i++) {					
+
+					spay1 = data.job_type_list[i]["spay1"];
+					spay2 = data.job_type_list[i]["spay2"];
+					spay3 = data.job_type_list[i]["spay3"];
+					spay4 = data.job_type_list[i]["spay4"];					
+					spay_total = data.job_type_list[i]["spay9"];					
+					position = data.job_type_list[i]["position"];
+					spay_detail = data.job_type_list[i]["spay_detail"];
+
+
+					spay_total_display_text = position + " (";
+					if(spay1>0)
+						spay_total_display_text += "Position=" + spay1;
+					if(spay2>0)
+						spay_total_display_text += ", Incentive=" + spay2;
+					if(spay3>0)
+						spay_total_display_text += ", CCTV=" + spay3;
+					if(spay4>0)
+						spay_total_display_text += ", Traffic=" + spay4;
+					spay_total_display_text += ") | TOTAL " + spay_total + " บาท";
+					
+					$el.append($("<option></option>").attr("value", position).text(spay_total_display_text));
 				}
 			}
 
