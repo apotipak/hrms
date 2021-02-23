@@ -358,3 +358,13 @@ th     { background:#a8a8a9; }
 .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
   background-color: #bfd6c4;
 }
+
+.btn-circle {
+  width: 23px;
+  height: 23px;
+  text-align: center;
+  padding: 3px 0;
+  font-size: 12px;
+  line-height: 1.428571429;
+  border-radius: 15px;
+}

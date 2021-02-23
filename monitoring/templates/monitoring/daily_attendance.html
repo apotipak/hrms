@@ -935,6 +935,53 @@ $(document).ready(function(){
 
 	$(":input").inputmask();
 
+	$("#id_shift_option").change(function () {
+    	$("#id_job_type_option").attr("disabled", false);
+    	$("#id_job_type_option").attr("readonly", false);
+
+      	var cus_id = $('#id_cus_id').val();
+      	var cus_brn = $('#id_cus_brn').val();
+      	var cus_vol = $('#id_cus_vol').val();
+    	var shift_id = $("#id_shift_option").val();
+
+		$.ajax({
+	    	url : "/monitoring/ajax/get_job_type_list/",
+	    	type : "POST",
+	    	data : {          
+	      		csrfmiddlewaretoken: '{{ csrf_token }}',
+	      		cus_id: cus_id,
+	      		cus_brn: cus_brn,
+	      		cus_vol: cus_vol,
+	      		shift_id: shift_id,
+	    	},
+	    	success: function(data) {
+	    		// amnaj
+
+	    		for(var i=0; i<data.job_type_list.length; i++) {
+              		spay1 = data.job_type_list[i]["spay1"];
+              		spay2 = data.job_type_list[i]["spay2"];
+              		spay3 = data.job_type_list[i]["spay3"];
+              		spay4 = data.job_type_list[i]["spay4"];
+              		console.log(spay1 + ":" + spay2 + ":" + spay3 + ":" + spay4);
+              	}
+
+              	// id_job_type_option
+				var $el = $("#id_job_type_option");
+				$el.empty();				
+				result += "<option value='00' selected>00 :No</option>";
+				$el.append(result);
+				if(data.job_type_list.length>0) {
+					for(var i=0; i<data.job_type_list.length; i++) {
+						// $el.append($("<option></option>").attr("value", shf_id).text(shf_desc));
+					}
+				}
+
+	    	}
+	    });
+
+
+	});
+
 
 	/*
 	$("#id_late_from").inputmask({
@@ -2060,6 +2107,7 @@ $("#id_late_hour").click( function() {
 
 					$('#id_employee_list').html(result);
 
+					
 					// Show available Shift option
 					var $el = $("#id_shift_option");
 					$el.empty();				
@@ -2072,6 +2120,9 @@ $("#id_late_hour").click( function() {
 							$el.append($("<option></option>").attr("value", shf_id).text(shf_desc));
 						}
 					}
+
+					// amnaj
+					// TODO
 
 
 					// Show ot reason option
@@ -4492,10 +4543,7 @@ $("#id_late_hour").click( function() {
         $("#id_customer_zone_id").val(0);
 
         $("#tab2-tab").text("Contract / Schedule Information");
-
-
-
-        // amnaj                
+        
         $('#cusomer_information_form').trigger("reset");
         $("#id_customer_contract_service tbody").html("<tr><td colspan='19' class='text-center'><br><br><br>There is no data.<br><br><br><br></td></tr>");
         $("#id_customer_schedule_list tbody").html("<tr><td colspan='16' class='text-center'><br><br><br>There is no data.<br><br><br><br></td></tr>");        

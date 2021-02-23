@@ -7190,3 +7190,53 @@ def progress_view(request):
 def progress_view(request):
     result = my_task.delay(10)
     return render(request, 'monitoring/display_progress.html', context={'task_id': result.task_id})
+
+
+@login_required(login_url='/accounts/login/')
+@permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
+def ajax_get_job_type_list(request):
+    print("*************************************")
+    print("FUNCTION: ajax_get_job_type_list_list()")
+    print("*************************************")
+    cus_id = request.POST.get('cus_id')
+    cus_brn = request.POST.get('cus_brn')
+    cus_vol = request.POST.get('cus_vol')
+    cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
+    # print("cnt_id:", cnt_id)
+    shift_id = request.POST.get('shift_id')
+    # print("shift_id:", shift_id)
+
+    job_type_list = []
+    sql = "select spay1,spay2,spay3,spay4 from cus_service where cnt_id=" + str(cnt_id) + " and op1=1 and srv_shif_id=" + str(shift_id) + ";"
+    print("SQL:", sql)
+
+    try:
+        with connection.cursor() as cursor:     
+            cursor.execute(sql)
+            job_type_object = cursor.fetchall()
+    except db.OperationalError as e:
+        is_found = False
+        message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+    except db.Error as e:
+        is_found = False
+        message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+    finally:
+        cursor.close()
+    
+    if job_type_object is not None:
+	    for item in job_type_object:
+	        record = {
+	            "srv_shif_id": item[1],
+	            "spay1": item[2],
+	            "spay2": item[3],
+	            "spay3": item[4],
+	            "spay4": item[5],
+	        }
+	        
+
+	        job_type_list.append(record)
+
+    response = JsonResponse(data={"success": True, "is_error": False, "message": "", "job_type_list": job_type_list})
+    response.status_code = 200
+    return response
+    
