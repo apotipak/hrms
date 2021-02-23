@@ -3425,7 +3425,9 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 	if dly_date < today_date.date():
 		sql = "select count(*) from v_dlyplan_shift "
 
-	sql += "where cnt_id=" + str(cnt_id) + " and left(remark, 2)=" + str(job_type) + " and shf_type='" + shift_type + "'" + " and absent=0 and dly_date='" + str(dly_date) + "'"
+	# sql += "where cnt_id=" + str(cnt_id) + " and left(remark, 2)=" + str(job_type) + " and shf_type='" + shift_type + "'" + " and absent=0 and dly_date='" + str(dly_date) + "'"
+	sql += "where cnt_id=" + str(cnt_id) + " and shf_type='" + shift_type + "'" + " and absent=0 and dly_date='" + str(dly_date) + "'"
+
 	cursor = connection.cursor()	
 	cursor.execute(sql)	
 	record_count = cursor.fetchone()
@@ -7209,7 +7211,7 @@ def ajax_get_job_type_list(request):
     job_type_object = None
     job_type_list = []
    
-    sql = "select spay1,spay2,spay3,spay4,spay5,spay6,spay7,spay8,spay9,Position,Spay_detail from spaydate where cnt_id=" + str(cnt_id) + " and srv_shif_id=" + str(shift_id) + ";"    
+    sql = "select srv_id,spay1,spay2,spay3,spay4,spay5,spay6,spay7,spay8,spay9,Position,Spay_detail from spaydate where cnt_id=" + str(cnt_id) + " and srv_shif_id=" + str(shift_id) + ";"    
     print("SQL:", sql)
 
     try:
@@ -7229,13 +7231,14 @@ def ajax_get_job_type_list(request):
     	print("1")
     	for item in job_type_object:
 	        record = {
-	            "spay1": item[0],
-	            "spay2": item[1],
-	            "spay3": item[2],
-	            "spay4": item[3],
-	            "spay9": item[8],
-	            "position": item[9],
-	            "spay_detail": item[10],
+	        	"srv_id": item[0],
+	            "spay1": item[1],
+	            "spay2": item[2],
+	            "spay3": item[3],
+	            "spay4": item[4],
+	            "spay9": item[9],
+	            "position": item[10],
+	            "spay_detail": item[11],
 	        }	        
 
 	        job_type_list.append(record)
