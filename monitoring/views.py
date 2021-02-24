@@ -2431,7 +2431,7 @@ def ajax_get_attendance_information(request):
 		sql += "from v_contract as a where cnt_id=" + str(cnt_id) + " and srv_active=1 "
 		sql += "and cus_service_flag <> 'D' "
 		sql += "and srv_eff_frm<='" + str(curDate) + "' group by cnt_id,shf_type"
-		print("SQL debug:", sql)
+		# print("SQL debug:", sql)
 
 		cursor = connection.cursor()
 		# cursor.execute("select cnt_id,shf_type,sum(srv_wed) as srv_num, sum(srv_pub) as srv_pub from v_contract as a where cnt_id=%s and srv_active=1 and cus_service_flag <> 'D' group by cnt_id,shf_type", [cnt_id])
@@ -2620,7 +2620,7 @@ def ajax_get_attendance_information(request):
 			sql += "and shf_type='N' "
 
 		sql += " order by sch_shift, emp_id"
-		print("______sql 3_____ = " + str(sql))
+		# print("______sql 3_____ = " + str(sql))
 
 		cursor = connection.cursor()
 		# cursor.execute(sql, [cnt_id, attendance_date])
@@ -3393,7 +3393,8 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 	allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id,Tday7,
 	Tdof,customer_wage_rate_id,customer_zone_id):
 	
-	print("tel_time BBBB:", tel_time)
+	# amnaj
+	# print("tel_time BBBB:", tel_time)
 
 	# message = str(late_from) + " | " + str(late_to) + " | " + str(late_hour) + " | " + str(job_type)
 	# return False, message
@@ -3735,7 +3736,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		sql += "and emp_id=" + str(emp_id) + " "
 		sql += "and sch_shift=" + str(shift_id)
 
-		print("sql check:", sql)
+		# print("sql check:", sql)
 		# return False, "TEST"
 
 		try:
@@ -3743,19 +3744,44 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 				cursor.execute(sql)
 			is_pass = True
 			message = "รับแจ้งเวรสำเร็จ"
+
+			# amnaj
+			# กรณีรับแจ้งเวรสำเร็จ
+			if is_pass:
+				print('Update spaydate table')
+				# Update spaydate table		
+
+				job_type_split = job_type.split("|")
+				
+				if len(job_type_split) == 2:
+					srv_id_temp = job_type_split[0]
+					position_temp = job_type_split[1]
+					sql = "update spaydate set Upd_by='" + str(username) + "', Upd_flag='A' where cnt_id=" + str(cnt_id) + " and srv_id=" + str(srv_id_temp) + " and position='" + str(position_temp) + "';"
+					print("SQL:", sql)
+					try:
+						with connection.cursor() as cursor:
+							cursor.execute(sql)					
+					except db.OperationalError as e:
+						is_pass = False
+						message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+					except db.Error as e:
+						is_pass = False
+						message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+					finally:
+						cursor.close()	
+
 		except db.OperationalError as e:
 			is_pass = False
 			message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
 		except db.Error as e:
 			is_pass = False
 			message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+		finally:
+			cursor.close()
 
 
 		# print("sql test: ", sql)
 		# return False, "A2"
-
-
-
 
 		# message = "%s,%s,%s,%s" %(Temp_id,Tabsent,Trelief,Trelief_id)
 		# return False, message		
@@ -3833,6 +3859,8 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 			except db.Error as e:
 				is_pass = False
 				message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+			finally:
+				cursor.close()			
 
 	return is_pass, message
 	
@@ -4614,7 +4642,7 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 				sql += " where a.dly_date='" + str(dly_date) + "'"
 				sql += " and a.emp_id=" + str(emp_id)
 				sql += " and a.absent=0"
-				print("SQL:", sql)
+				# print("SQL:", sql)
 				cursor = connection.cursor()
 				cursor.execute(sql)
 				record = cursor.fetchone()
@@ -4768,7 +4796,7 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 			# เช็คห้ามพนักงานที่เข้าเวรแทนทำงานในวัน Day Off จากตาราง SYS_GPMDOF
 			if (relief_emp_id!="") and (ui_absent_status==1):
 				sql = "select * from sys_gpmdof where emp_id=" + str(relief_emp_id) + " and dly_date='" + str(dly_date) + "'"
-				print("sql 1:", sql)
+				# print("sql 1:", sql)
 				cursor = connection.cursor()
 				cursor.execute(sql)
 				record = cursor.fetchone()
@@ -5423,7 +5451,8 @@ def ajax_save_daily_attendance(request):
 
 	ot_status = 0
 
-	job_type = request.GET.get('job_type_option')
+	job_type = request.GET.get('job_type_option')	
+
 	remark = request.GET.get('remark')
 	totalNDP = int(request.GET.get('totalNDP'))
 	totalNDA = int(request.GET.get('totalNDA'))
@@ -5456,11 +5485,14 @@ def ajax_save_daily_attendance(request):
 	
 	# print("remark : " + str(remark))
 	# print(str(tel_man) + "," + str(tel_time) + "," + str(tel_amount))
+	
 
 	if AEdly == 0: # EDIT MODE
-		# print("Edit Mode")
-
+		print("Edit Mode")
+		
 		# amnaj
+		print("DEBUG job_type:", job_type)
+
 		is_edit_record_success, message = editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id,Tday7,Tdof,customer_wage_rate_id,customer_zone_id)
 		if is_edit_record_success:
 			success_status = True
@@ -5472,7 +5504,7 @@ def ajax_save_daily_attendance(request):
 			type_status = "red"
 
 	elif AEdly == 1: # ADD MODE
-		# print("Add Mode")
+		print("Add Mode")
 		# is_add_record_success, message = addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id,Tday7,Tdof)
 		is_add_record_success, message = addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id,Tday7,Tdof,customer_wage_rate_id,customer_zone_id)
 
@@ -7200,6 +7232,15 @@ def ajax_get_job_type_list(request):
     print("*************************************")
     print("FUNCTION: ajax_get_job_type_list()")
     print("*************************************")
+
+
+    '''
+    job_type_list = []
+    response = JsonResponse(data={"success": True, "is_error": False, "message": "", "job_type_list": job_type_list})
+    response.status_code = 200
+    return response
+	'''
+
     cus_id = request.POST.get('cus_id')
     cus_brn = request.POST.get('cus_brn')
     cus_vol = request.POST.get('cus_vol')
@@ -7211,7 +7252,7 @@ def ajax_get_job_type_list(request):
     job_type_object = None
     job_type_list = []
    
-    sql = "select srv_id,spay1,spay2,spay3,spay4,spay5,spay6,spay7,spay8,spay9,Position,Spay_detail from spaydate where cnt_id=" + str(cnt_id) + " and srv_shif_id=" + str(shift_id) + ";"    
+    sql = "select srv_id,spay1,spay2,spay3,spay4,spay5,spay6,spay7,spay8,spay9,Position,Spay_detail from spaydate where cnt_id=" + str(cnt_id) + " and srv_shif_id=" + str(shift_id) + " and upd_flag='';"
     print("SQL:", sql)
 
     try:
@@ -7247,5 +7288,4 @@ def ajax_get_job_type_list(request):
 
     response = JsonResponse(data={"success": True, "is_error": False, "message": "", "job_type_list": job_type_list})
     response.status_code = 200
-    return response
-    
+    return response    
