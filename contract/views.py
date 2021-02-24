@@ -1111,6 +1111,7 @@ def CreateContract(request):
             upd_by = request.user.first_name
             upd_flag = 'E'
 
+            '''
             print("")
             print("")
             print("----------- START ------------")
@@ -1137,6 +1138,7 @@ def CreateContract(request):
             print("--------- END  ------------")
             print("")
             print("")
+            '''
 
             # TODO
             try:
@@ -1292,6 +1294,7 @@ def CreateContract(request):
                             log_type = data['log_type'],
                             log_by = data['log_by'],
                             log_date = data['log_date'],
+                            log_description = cnt_id,
                             )
                         new_log.save()    
                         modified_records = []
@@ -2367,6 +2370,7 @@ def save_customer_service_item(request):
                         log_type = data['log_type'],
                         log_by = data['log_by'],
                         log_date = data['log_date'],
+                        log_description = cnt_id,
                         )
                     new_log.save()                
                 # ./History Log                     
