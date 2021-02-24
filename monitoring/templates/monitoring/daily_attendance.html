@@ -553,8 +553,8 @@
 
 
   <div class="col-2">
-  	<div class="input-group">
-  	<span style="font-size:0.9rem;padding:3px 0 0 0;"><b>Reason</b>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+  	<div class="input-group text-left">
+  	<span style="font-size:0.9rem;padding:3px 0 0 0;"><b>Reason</b>&nbsp;&nbsp;&nbsp;</span>&nbsp;
     <select id="id_late_reason_option" class="form-control form-control-xs">
     </select>
 	</div>
@@ -562,7 +562,7 @@
 
   <div class="col-2">
 	<div class="input-group">
-  		<span style="font-size:0.9rem;padding:3px 0 0 0;"><b>Total Time (hrs)</b>&nbsp;</span>
+  		<span style="font-size:0.9rem;padding:3px 0 0 0;"><b>Total Time (hrs)</b>&nbsp;&nbsp;</span>
   		<input type="number" id="id_late_hour" name="late_hour" class="form-control form-control-xs" />&nbsp;&nbsp;
   	</div>
   </div>
@@ -589,21 +589,31 @@
 
 <div class="row">
 
-  <div class="col-6 float-left">   
+  <div class="col-6 float-left">
+
   	<div class="input-group">
-		<!--<span style="font-size:0.9rem;padding:0 0 0 0;"><b>Job Type</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>-->
-		<span style="font-size:0.9rem;padding:0 0 0 0;"><b>Special Benefits</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+		<span style="font-size:0.9rem;padding:0 0 0 0;"><b>Job Type</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
         <select id="id_job_type_option" class="form-control form-control-xs" readonly>
-		  <option value="00" selected>No special benefit</option>
+		  <option value="00" selected>00 :No</option>
         </select>								
   		
   	</div>
+
+  	<!--  	
+  	<div class="input-group">		
+		<span style="font-size:0.9rem;padding:0 0 0 0;"><b>Special Benefits</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        <select id="id_job_type_option" class="form-control form-control-xs" readonly>
+		  <option value="00" selected>No special benefit</option>
+        </select>								  		
+  	</div>
+	-->
+
   </div>
 
   <div class="col-6 float-right">
 	<div class="input-group">
-  		<span style="font-size:0.9rem;padding:3px 0 0 0;"><b>Remark</b>&nbsp;&nbsp;</span>
-  		<input type="text" id="id_remark" name="remark" class="form-control form-control-xs" />&nbsp;&nbsp;
+  		<span style="font-size:0.9rem;padding:3px 0 0 0;"><b>Remark</b>&nbsp;&nbsp;&nbsp;</span>
+  		<input type="text" id="id_remark" name="remark" class="form-control form-control-xs text-right float-right" />
   	</div>
   </div>
 
@@ -955,11 +965,15 @@ function checkSpecialBenefitList() {
       		cus_vol: cus_vol,
       		shift_id: shift_id,
     	},
-    	success: function(data) {
-    		// amnaj          	
+    	success: function(data) {       		 	
 			var $el = $("#id_job_type_option");
 			$el.empty();			
+
+			// amnaj 
+			// DEMO
 			result = "<option value='00' selected>No special benefit</option>";
+			//result = "<option value='00' selected>00 :No</option>";
+
 			$el.append(result);
 			if(data.job_type_list.length>0) {				
 				for(var i=0; i<data.job_type_list.length; i++) {					
@@ -997,8 +1011,11 @@ $(document).ready(function(){
 	$(":input").inputmask();
 
 	// 111
-	$("#id_shift_option").change(function () {		
-		checkSpecialBenefitList();
+	$("#id_shift_option").change(function () {
+
+		// amnaj
+		// DEMO	
+		// checkSpecialBenefitList();
 
 		/*
     	$("#id_job_type_option").attr("disabled", false);
@@ -3446,8 +3463,8 @@ $("#id_late_hour").click( function() {
 			$("#id_shift_option").attr("disabled", false);
 
 			// amnaj
-			// 111
-			checkSpecialBenefitList();
+			// DEMO
+			// checkSpecialBenefitList();
 		}
 		
 		//console.log(ot_time_from + "," + ot_time_to);
