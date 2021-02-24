@@ -2179,7 +2179,9 @@ def save_customer_service_item(request):
 
             # SRV_RANK
             if (srv_rank is not None):
-                field_is_modified, record = check_modified_field("CUS_SERVICE", srv_id, "Rank", str(data.srv_rank), srv_rank, "E", request)
+                # print("RANK")
+                # print("%s,%s", data.srv_rank_id, srv_rank)
+                field_is_modified, record = check_modified_field("CUS_SERVICE", srv_id, "Rank", str(data.srv_rank_id), srv_rank, "E", request)
                 if field_is_modified:
                     data.srv_rank_id = srv_rank
                     modified_records.append(record)
