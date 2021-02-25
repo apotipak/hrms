@@ -55,15 +55,16 @@
 				</div>			  	
 				-->
 
-
+				<!--
 				<div class='progress-wrapper'>
 				  <div id='progress-bar' class='progress-bar' style="background-color: #68a9ef; width: 0%;">&nbsp;</div>
 				</div>
 				<div id="progress-bar-message">Waiting for progress to start...</div>
 
 				<div id="celery-result"></div>
+				-->
 
-			  </div>
+			  </div>			  
 			  <!-- /.card-footer -->
 
 			    <!--
@@ -145,7 +146,7 @@ function updateProgress(progressBarElement, progressBarMessageElement, progress)
   progressBarMessageElement.innerHTML = progress.current + ' of ' + progress.total + ' processed.';
 }
 
-$("#post_button_bk").click( function() {
+$("#post_button").click( function() {
 	event.preventDefault();    	
 
 	var frm = $('#process-raw-data');
@@ -179,15 +180,13 @@ $("#post_button_bk").click( function() {
 	        	text: 'ยืนยัน',
 	            btnClass: 'btn-red any-other-class',
 	            action: function() {
-
-	            	/*
 					$("#post_button").attr("disabled", true);
 					$("#post_button").text("Posting..");					
 					$.ajax({
 				    	url : "/monitoring/ajax/sp_post_daily_attend/",
 				    	type : "POST",
 				    	async: true,
-				    	data : {          
+				    	data : {
 				      		csrfmiddlewaretoken: '{{ csrf_token }}',
 				      		post_date: post_date,
 				    	},
@@ -223,8 +222,8 @@ $("#post_button_bk").click( function() {
 							$.LoadingOverlay("hide");
 				    	},
 				    });
-				    */
 
+					/*
 				  	$(document).Toasts('create', {
 				    	class: "bg-info", 
 				    	title: "{% trans 'Message' %}",
@@ -236,7 +235,7 @@ $("#post_button_bk").click( function() {
 				    	close: true,
 				    	autoremove: true,
 				  	});   
-
+					*/
 	            }
 	        },
 	        default: {
@@ -266,9 +265,8 @@ $(document).ready(function(){
 	    		total: 100
 			})
 		}		
-	})
+	})	
 	*/
-
 
 });
 

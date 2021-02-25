@@ -1616,6 +1616,8 @@ def ajax_sp_generate_daily_attend(request):
 	response.status_code = 200
 	return response
 
+
+
 @permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
 @login_required(login_url='/accounts/login/')
 def ajax_sp_post_daily_attend(request):
@@ -1662,6 +1664,10 @@ def ajax_sp_post_daily_attend(request):
 		
 	# TODO: Call PostDayEndN
 	is_error, error_message = PostDayEndN(post_date, period, request.user.username)
+	
+	# is_error = True
+	# error_message = "TEST"
+
 	if is_error:
 		response = JsonResponse(data={"success": True, "is_error": is_error, "class": "bg-danger", "error_message": error_message})
 	else:
@@ -1671,7 +1677,82 @@ def ajax_sp_post_daily_attend(request):
 	return response
 
 
+
 def PostDayEndN(post_date, period, username):
+	try:
+		cursor = connection.cursor()
+		cursor.execute("exec dbo.CALCULATEDAYEND %s, %s", [post_date, username])					
+		is_error = True
+		message = "Post completed"
+	except db.OperationalError as e:
+		is_error = False
+		message = "exec CALCULATEDAYEND is error - " + str(e)
+		return is_error, message
+	except db.Error as e:
+		is_error = True
+		message = "exec CALCULATEDAYEND is error - " + str(e)
+		return is_error, message
+
+	return is_error, message
+
+
+
+@permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
+@login_required(login_url='/accounts/login/')
+def ajax_sp_post_daily_attend_OLD_SP(request):
+
+	print("******************************************")
+	print("FUNCTION: ajax_sp_post_daily_attend()")
+	print("******************************************")
+
+	# Get TcurDate
+	post_date = request.POST.get('post_date')
+	post_date = datetime.datetime.strptime(post_date, '%d/%m/%Y')	
+	post_date = str(post_date)[0:10]
+
+	# Get Tperiod	
+	period = getPeriod(request.POST.get('post_date'))
+	# print("period = " + str(period))
+
+	# ChkValidInput() - Check date is not empty
+	if len(post_date)<=0:		
+		response = JsonResponse(data={"success": True, "is_error": True, "class": "bg-danger", "error_message": "เลือกวันที่ไม่ถูกต้อง"})
+		response.status_code = 200
+		return response
+
+	# ChkValidInput() - Check Post Day End
+	sql = "select date_chk,gen_chk,end_chk,pro_chk,im_brn1,im_brn2,im_brn3,prd_id,upd_date,upd_by,upd_flag from t_date where date_chk='" + str(post_date) + "'"	
+	# print("sql", sql)
+	cursor = connection.cursor()	
+	cursor.execute(sql)
+	record = cursor.fetchall()
+	cursor.close()
+	if len(record) <= 0:
+		response = JsonResponse(data={"success": True, "is_error": True, "class": "bg-danger", "error_message": "วันที่ <b>" + str(request.POST.get('post_date')) + "</b> ไม่มีรายการแจ้งเวร"})
+		response.status_code = 200
+		return response
+	else:
+		# end_chk = record[]
+		end_chk = record[0][2]
+		# print("end_chk", end_chk)
+		if end_chk:
+			response = JsonResponse(data={"success": True, "is_error": True, "class": "bg-danger", "error_message": "รายการแจ้งเวรของวันที่ <b>" + str(request.POST.get('post_date')) + "</b> มีการ <b>Post Day End</b> ไปแล้ว"})
+			response.status_code = 200
+			return response
+		
+	# TODO: Call PostDayEndN
+	is_error, error_message = PostDayEndN(post_date, period, request.user.username)
+
+	if is_error:
+		response = JsonResponse(data={"success": True, "is_error": is_error, "class": "bg-danger", "error_message": error_message})
+	else:
+		response = JsonResponse(data={"success": True, "is_error": False, "class": "bg-success", "error_message": error_message})
+
+	response.status_code = 200	
+	return response
+
+
+def PostDayEndN_OLD_SP(post_date, period, username):
 	Esub = False
 	RowsCount = 0
 	RowsResult = 0
