@@ -180,6 +180,8 @@ $("#post_button").click( function() {
 	        	text: 'ยืนยัน',
 	            btnClass: 'btn-red any-other-class',
 	            action: function() {
+
+	            	/*
 					$("#post_button").attr("disabled", true);
 					$("#post_button").text("Posting..");					
 					$.ajax({
@@ -222,8 +224,9 @@ $("#post_button").click( function() {
 							$.LoadingOverlay("hide");
 				    	},
 				    });
+				    */
 
-					/*
+					
 				  	$(document).Toasts('create', {
 				    	class: "bg-info", 
 				    	title: "{% trans 'Message' %}",
@@ -235,7 +238,7 @@ $("#post_button").click( function() {
 				    	close: true,
 				    	autoremove: true,
 				  	});   
-					*/
+					
 	            }
 	        },
 	        default: {
