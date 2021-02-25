@@ -21,6 +21,7 @@ urlpatterns = [
 
     path('post-daily-attend/', views.PostDailyAttend, name='post-daily-attend'),
     url(r'^ajax/sp_post_daily_attend/$', views.ajax_sp_post_daily_attend, name='ajax_sp_post_daily_attend'),
+    url(r'^ajax/sp_post_daily_attend_progress/$', views.ajax_sp_post_daily_attend_progress, name='ajax_sp_post_daily_attend_progress'),
     
 	url(r'^ajax/get_attendance_information/$', views.ajax_get_attendance_information, name='ajax_get_attendance_information'),
 	url(r'^ajax/delete_employee/$', views.ajax_delete_employee, name='ajax_delete_employee'),

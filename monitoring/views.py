@@ -1617,11 +1617,41 @@ def ajax_sp_generate_daily_attend(request):
 	return response
 
 
+@permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
+@login_required(login_url='/accounts/login/')
+def ajax_sp_post_daily_attend_progress(request):
+	print("******************************************")
+	print("FUNCTION: ajax_sp_post_daily_attend()")
+	print("******************************************")
+	post_date = request.POST.get('post_date')
+	post_date = datetime.datetime.strptime(post_date, '%d/%m/%Y')	
+	post_date = str(post_date)[0:10]
+
+	progress_message = "Posting, please wait."
+	
+	sql = "select top 1 log_desc from hisdlyplan_log where log_date='" + str(post_date) + "' order by upd_date desc;"
+	try:				
+		cursor = connection.cursor()
+		cursor.execute(sql)
+		result = cursor.fetchone()
+		progress_message = result[0]
+	except db.OperationalError as e:
+		progress_message = "<b>Error: please send this error to IT team</b><br>" + str(e)
+	except db.Error as e:
+		progress_message = "<b>Error: please send this error to IT team</b><br>" + str(e)
+	finally:
+		cursor.close()
+	
+
+	# ironman
+	response = JsonResponse(data={"success": True, "progress_message": progress_message})
+	response.status_code = 200
+	return response
+
 
 @permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
 @login_required(login_url='/accounts/login/')
 def ajax_sp_post_daily_attend(request):
-
 	print("******************************************")
 	print("FUNCTION: ajax_sp_post_daily_attend()")
 	print("******************************************")
@@ -1683,7 +1713,7 @@ def PostDayEndN(post_date, period, username):
 		cursor = connection.cursor()
 		cursor.execute("exec dbo.CALCULATEDAYEND %s, %s", [post_date, username])					
 		is_error = False
-		message = "Post completed"
+		message = "โพสรายการแจ้งเวรสำเร็จ"
 	except db.OperationalError as e:
 		is_error = False
 		message = "exec CALCULATEDAYEND is error - " + str(e)
@@ -4855,7 +4885,7 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 				cursor.execute(sql)
 				record = cursor.fetchone()
 				cursor.close()
-				# ironman
+				
 				if record is not None:
 					# ถ้าเป็นการมาสายให้บันทึกได้
 					if ui_late_status!=1:

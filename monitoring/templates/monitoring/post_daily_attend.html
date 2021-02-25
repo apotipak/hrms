@@ -64,6 +64,8 @@
 				<div id="celery-result"></div>
 				-->
 
+				<div id="post_result">&nbsp;</div>
+
 			  </div>			  
 			  <!-- /.card-footer -->
 
@@ -181,9 +183,30 @@ $("#post_button").click( function() {
 	            btnClass: 'btn-red any-other-class',
 	            action: function() {
 
-	            	/*
 					$("#post_button").attr("disabled", true);
-					$("#post_button").text("Posting..");					
+					$("#post_button").text("Posting..");
+					
+
+					var id = setInterval(function() {
+
+					    //call $.ajax here
+					    //$("#post_result").html("text");
+
+						$.ajax({
+					    	url : "/monitoring/ajax/sp_post_daily_attend_progress/",
+					    	type : "POST",
+					    	async: true,
+					    	data : {
+					      		csrfmiddlewaretoken: '{{ csrf_token }}',
+					      		post_date: post_date,
+					    	},
+					    	success: function(data) {
+					    		$("#post_result").html(data.progress_message);
+					    	}
+					    });
+
+					}, 1000); //5 seconds
+
 					$.ajax({
 				    	url : "/monitoring/ajax/sp_post_daily_attend/",
 				    	type : "POST",
@@ -193,7 +216,7 @@ $("#post_button").click( function() {
 				      		post_date: post_date,
 				    	},
 						beforeSend: function () {
-							showLoading();
+							showLoading();							
 						},
 				    	success: function(data) {
 				    		if(data.is_error) {
@@ -207,7 +230,8 @@ $("#post_button").click( function() {
 								    boxWidth: '45%',
 								    useBootstrap: false,
 								});
-				    		} else {    		
+				    		} else {
+				    			$("#post_result").html("Post completed");		
 								$.alert({
 								    title: 'Success',
 								    type: 'green',
@@ -217,16 +241,20 @@ $("#post_button").click( function() {
 								    closeIcon: false,
 								    boxWidth: '45%',
 								    useBootstrap: false,
-								});    			
+								});			
 				    		}
+
 							$("#post_button").attr("disabled", false);
 							$("#post_button").text("Post");
+							
+							clearInterval(id);
 							$.LoadingOverlay("hide");
 				    	},
 				    });
-				    */
 
-					
+
+
+					/*
 				  	$(document).Toasts('create', {
 				    	class: "bg-info", 
 				    	title: "{% trans 'Message' %}",
@@ -238,7 +266,7 @@ $("#post_button").click( function() {
 				    	close: true,
 				    	autoremove: true,
 				  	});   
-					
+					*/
 	            }
 	        },
 	        default: {
