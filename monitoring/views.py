@@ -1682,7 +1682,7 @@ def PostDayEndN(post_date, period, username):
 	try:
 		cursor = connection.cursor()
 		cursor.execute("exec dbo.CALCULATEDAYEND %s, %s", [post_date, username])					
-		is_error = True
+		is_error = False
 		message = "Post completed"
 	except db.OperationalError as e:
 		is_error = False
