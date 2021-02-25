@@ -1619,6 +1619,33 @@ def ajax_sp_generate_daily_attend(request):
 
 @permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
 @login_required(login_url='/accounts/login/')
+def check_post_daily_attend_status(request):
+	print("******************************************")
+	print("FUNCTION: check_post_daily_attend_status()")
+	print("******************************************")
+	post_date = request.POST.get('post_date')
+	post_date = datetime.datetime.strptime(post_date, '%d/%m/%Y')	
+	post_date = str(post_date)[0:10]
+	sql = "select end_chk from t_date where date_chk='" + str(post_date) + "';"
+	try:				
+		cursor = connection.cursor()
+		cursor.execute(sql)
+		result = cursor.fetchone()
+		end_chk = result[0]
+	except db.OperationalError as e:
+		progress_message = "<b>Error: please send this error to IT team</b><br>" + str(e)
+	except db.Error as e:
+		progress_message = "<b>Error: please send this error to IT team</b><br>" + str(e)
+	finally:
+		cursor.close()
+	
+	response = JsonResponse(data={"success": True, "end_chk": end_chk})
+	response.status_code = 200
+	return response
+
+
+@permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
+@login_required(login_url='/accounts/login/')
 def ajax_sp_post_daily_attend_progress(request):
 	print("******************************************")
 	print("FUNCTION: ajax_sp_post_daily_attend()")
@@ -1642,8 +1669,6 @@ def ajax_sp_post_daily_attend_progress(request):
 	finally:
 		cursor.close()
 	
-
-	# ironman
 	response = JsonResponse(data={"success": True, "progress_message": progress_message})
 	response.status_code = 200
 	return response

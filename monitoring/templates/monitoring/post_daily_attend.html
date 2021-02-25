@@ -183,27 +183,42 @@ $("#post_button").click( function() {
 	            btnClass: 'btn-red any-other-class',
 	            action: function() {
 
-	            	/*
 					$("#post_button").attr("disabled", true);
 					$("#post_button").text("Posting..");
-					
+					var id;
 
-					var id = setInterval(function() {
+					$.ajax({
+				    	url : "/monitoring/ajax/check_post_daily_attend_status/",
+				    	type : "POST",
+				    	async: true,
+				    	data : {
+				      		csrfmiddlewaretoken: '{{ csrf_token }}',
+				      		post_date: post_date,
+				    	},
+				    	success: function(data) {
+				    		if(data.end_chk=="1") {				    			
+				    			$("#post_result").html("");
+				    		} else {
+				    			//alert("Not posted");
+								id = setInterval(function() {
+									$.ajax({
+								    	url : "/monitoring/ajax/sp_post_daily_attend_progress/",
+								    	type : "POST",
+								    	async: true,
+								    	data : {
+								      		csrfmiddlewaretoken: '{{ csrf_token }}',
+								      		post_date: post_date,
+								    	},
+								    	success: function(data) {
+								    		$("#post_result").html(data.progress_message);
+								    	}
+								    });
 
-						$.ajax({
-					    	url : "/monitoring/ajax/sp_post_daily_attend_progress/",
-					    	type : "POST",
-					    	async: true,
-					    	data : {
-					      		csrfmiddlewaretoken: '{{ csrf_token }}',
-					      		post_date: post_date,
-					    	},
-					    	success: function(data) {
-					    		$("#post_result").html(data.progress_message);
-					    	}
-					    });
+								}, 100); //1000 = 1 seconds
 
-					}, 1000); //5 seconds
+				    		}				    		
+				    	}
+				    });					
 
 					$.ajax({
 				    	url : "/monitoring/ajax/sp_post_daily_attend/",
@@ -229,7 +244,19 @@ $("#post_button").click( function() {
 								    useBootstrap: false,
 								});
 				    		} else {
-				    			$("#post_result").html("Post completed");		
+								$.ajax({
+							    	url : "/monitoring/ajax/sp_post_daily_attend_progress/",
+							    	type : "POST",
+							    	async: true,
+							    	data : {
+							      		csrfmiddlewaretoken: '{{ csrf_token }}',
+							      		post_date: post_date,
+							    	},
+							    	success: function(data) {
+							    		$("#post_result").html(data.progress_message);
+							    	}
+							    });
+
 								$.alert({
 								    title: 'Success',
 								    type: 'green',
@@ -245,13 +272,20 @@ $("#post_button").click( function() {
 							$("#post_button").attr("disabled", false);
 							$("#post_button").text("Post");
 							
-							clearInterval(id);
+							
+							if (isNaN(id)) {
+								//clearInterval(id);
+							}
+							else {
+								clearInterval(id);
+							}
+
 							$.LoadingOverlay("hide");
 				    	},
 				    });
-					*/
 					
 
+					/*
 				  	$(document).Toasts('create', {
 				    	class: "bg-info", 
 				    	title: "{% trans 'Message' %}",
@@ -263,7 +297,7 @@ $("#post_button").click( function() {
 				    	close: true,
 				    	autoremove: true,
 				  	});   
-
+					*/
 	            }
 	        },
 	        default: {
