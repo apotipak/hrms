@@ -154,58 +154,118 @@
 							  	</div>
 							</form>
 
+			            	
+							<!-- ironman -->
+							<div class="row form-inline float-right p-0">
 
-			            	<!--<div id="id_employee_list" class="bg-light table-responsive">-->
+								<div class="input-group col-12">
+								  <input type="text" class="form-control form-control-xs border-success" placeholder="ค้นหา" id="employee_search_text" autocomplete="off">
+								  <div class="input-group-append">
+								    <button class="btn btn-success btn-xs" type="button"  id="employee_search_clear_button">CLEAR</button>
+								  </div>
+								</div>
+
+							</div>
+
+
 			            	<div id="id_employee_list" class="table-responsive table-striped">
 
 								<font size='2em;'>
-
-								<!--<table id='employee_list_table' class='table table-responsive table-sm table-condensed table-wrapper-scroll-y my-custom-scrollbar'>-->
-
-								<!--<table id='employee_list_table' class='table table-sm'>-->
-								
 								<!--<table id='employee_list_table' class='table table-sm table-condensed table-wrapper-scroll-y my-custom-scrollbar'>-->
-								<table id='employee_list_table' class='table table-sm my-custom-scrollbar'>
+								<!--<table id='employee_list_table' class='table table-sm my-custom-scrollbar'>-->
+																
+								<table id='employee_list_table' class='table table-sm'>
 								  <thead>
 								    <tr>
 								      <th scope='col' class='d-none' nowrap>Absent Status</th>
-								      <th scope="col">&nbsp;</th>
-								      <th scope="col" nowrap>Emp ID.</th>
-								      <th scope="col">Name</th>
+								      <th scope="col">&nbsp;</th>								      
+								      <th scope='col' class='text-center'>No</th>								  	  								  		
+								      <th scope='col' nowrap>Emp ID.</th>
+								      <th scope='col'>Name</th>
+
 								      <th scope="col">Rank</th>
 								      <th scope="col">Shift</th>
 								      <th scope="col">Late</th>
 								      <th scope="col">Full</th>
 								      <th scope="col">Relief</th>
+
 								      <th scope="col" nowrap>Rel. ID</th>
 								      <th scope="col">Name</th>
 								      <th scope='col' class='d-none'>Tel Status</th>
 								      <th scope="col">TEL</th>
 								      <th scope="col" nowrap>Call Time</th>
+								      
 								      <th scope="col" nowrap>Call Amt</th>
 								      <th scope="col" nowrap>Call Paid</th>
 								      <th scope="col">Spare</th>
 								      <th scope="col">Wage</th>
 								      <th scope="col" nowrap>Upd Date</th>
+
 								      <th scope="col" nowrap>Upd By</th>
-								      <th scope="col" nowrap>Upd Flag</th>
+								      <th scope="col" nowrap>Upd Flag</th>								      
+
 								      <th scope="col" class='d-none' nowrap>Upd Gen</th>
 								      <th scope="col" class='d-none' nowrap>Remark</th>
 								      <th scope='col' class='d-none'>Relief Status</th>
 								      <th scope='col' class='d-none'>Late Status</th>
 								      <th scope='col' class='d-none'>Late Full Status</th>
 
+
 								      <th scope='col' class='d-none'>OT</th>
 								      <th scope='col' class='d-none'>OT Reason</th>
 								      <th scope='col' class='d-none'>OT Time From</th>
 								      <th scope='col' class='d-none'>OT Time To</th>
 								      <th scope='col' class='d-none'>OT Hour Amount</th>
+								      <th scope='col' class='d-none'>Shift Type</th>
+
 								    </tr>
 
 								  </thead>
+
+
+							  
 								  <tbody>
 								    <tr>
-								      <td colspan="31" class="text-center"><br><br>There is no data.<br><br><br></td>
+								      <td class='d-none'>&nbsp;</td>
+								      <td>&nbsp;</td>
+								      <td>&nbsp;</td>
+								      <td>&nbsp;</td>
+								      <td>&nbsp;</td>
+
+								      <td>&nbsp;</td>
+								      <td>&nbsp;</td>
+								      <td>&nbsp;</td>
+								      <td>&nbsp;</td>
+								      <td>&nbsp;</td>
+								      
+								      <td>&nbsp;</td>
+								      <td>&nbsp;</td>
+								      <td>&nbsp;</td>
+								      <td>&nbsp;</td>
+								      <td>&nbsp;</td>
+
+								      <td>&nbsp;</td>
+								      <td>&nbsp;</td>
+								      <td>&nbsp;</td>
+								      <td>&nbsp;</td>
+								      <td>&nbsp;</td>
+
+								      <td>&nbsp;</td>
+								      <td>&nbsp;</td>
+
+								      <td class='d-none'>&nbsp;</td>
+								      <td class='d-none'>&nbsp;</td>
+								      <td class='d-none'>&nbsp;</td>
+								      <td class='d-none'>&nbsp;</td>
+								      <td class='d-none'>&nbsp;</td>
+
+								      <td class='d-none'>&nbsp;</td>
+								      <td class='d-none'>&nbsp;</td>
+								      <td class='d-none'>&nbsp;</td>
+								      <td class='d-none'>&nbsp;</td>
+								      <td class='d-none'>&nbsp;</td>
+								      <td class='d-none'>&nbsp;</td>
+
 								    </tr>
 								  </tbody>
 								</table>
@@ -941,6 +1001,43 @@
 {% block javascript %}
 
 <script>
+
+$(document).ready( function () {
+	// ironman
+	$(function () {
+
+	    var table = $('#employee_list_table').DataTable({
+	      "paging": false,
+	      "scrollY": "200px",
+	      "scrollCollapse": true,
+	      "lengthChange": false,
+	      "searching": true,
+	      "ordering": true,
+	      "info": false,
+	      "autoWidth": false,
+	      //"language": { search: ""},
+	      "dom": '<"top"i>rt<"bottom"><"clear">',
+	      "search": "_INPUT_",
+	      "searchPlaceholder": "Search",
+	    });
+    
+ 		$('#employee_search_button').on( 'keyup click', function () {
+    		table.search($('#employee_search_text').val()).draw();
+  		});
+
+ 		$('#employee_search_text').on( 'keyup click', function () {
+    		table.search($('#employee_search_text').val()).draw();
+  		});  		
+
+ 		$('#employee_search_clear_button').on( 'click', function () {
+ 			$('#employee_search_text').val("");
+ 			//$('#employee_search_text').draw();
+ 			table.search($('#employee_search_text').val()).draw();
+ 		});
+  		
+	});
+
+});
 
 // 111
 function checkSpecialBenefitList() {
@@ -1850,16 +1947,16 @@ $("#id_late_hour").click( function() {
 
 
     function create_attandance_table(employee_list, employee_leave_list) {
-
-    	result = "";
-		result = "";
-		result += "<font size='2em;'>";
+    	
+		//result = "<div id='demo' class='display'>";
+		//result += "<font size='2em;'>";
 		
 		//result += "<table id='employee_list_table' class='table table-sm'>";
 		//result += "<table id='employee_list_table' class='table table-sm table-fixed table-condensed table-wrapper-scroll-y my-custom-scrollbar'>";
 
 
 		//result += "<table id='employee_list_table' class='table table-responsive table-sm table-condensed table-wrapper-scroll-y my-custom-scrollbar'>";
+		/*
 		result += "<table id='employee_list_table' class='table table-sm table-condensed table-wrapper-scroll-y my-custom-scrollbar'>";
 
 		result += "  <thead>";
@@ -1911,14 +2008,24 @@ $("#id_late_hour").click( function() {
 
 		result += "    </tr>";
 		result += "  </thead>";
-		result += "  <tbody class='sortable'>";    	
+		*/
+
+
+		// ironman
+		result = "";
+		//result += "  <tbody class='sortable'>";    	
+
+		var datatable = $('#employee_list_table').dataTable().api();
+		datatable.clear();
 
 		if(employee_list.length>0) {
 			day_count = 0;
 			night_count = 0;
 			dof_count = 0;
 
-			for(i=0; i<employee_list.length; i++) {
+			result1 = "";
+
+			for(i=0; i<employee_list.length; i++) {				
 				emp_id = employee_list[i]["emp_id"];
 				emp_fname_th = employee_list[i]["emp_fname_th"];
 				emp_lname_th = employee_list[i]["emp_lname_th"];
@@ -1959,6 +2066,9 @@ $("#id_late_hour").click( function() {
 				update_by_user_first_name = employee_list[i]["update_by_user_first_name"];
 				emp_leave_status = employee_list[i]["emp_leave_status"];
 
+
+
+
 		    	if(emp_leave_status==1)
 					result += "    <tr class='text-danger'>";
 				else
@@ -1966,7 +2076,8 @@ $("#id_late_hour").click( function() {
 
 				// 0. Absent status
 				result += "	     <td class='d-none'>" + absent + "</td>";
-
+				//result += "	     <td>" + absent + "</td>";
+				
 				// 1. Absent sign
 				if(absent==1) {
 					result += "	     <td text-align='center' vertical-align='middle'><font size='1.8em;' class='text-danger'><i class='fas fa-times fa-xs'></i></font></td>";
@@ -1990,10 +2101,11 @@ $("#id_late_hour").click( function() {
 
 				// 3. Employee ID
 				result += "	     <td>" + emp_id + "</td>";
-
-
+			
 				// 4. emp_fname_th
 				result += "	     <td nowrap>" + emp_fname_th + "&nbsp;&nbsp;" + emp_lname_th + "</td>";
+
+
 
 				// 5. sch_rank
 				result += "	     <td>" + sch_rank + "</td>";
@@ -2019,6 +2131,10 @@ $("#id_late_hour").click( function() {
 				else
 					result += "	     <td>&nbsp;</td>";
 
+
+
+
+
 				// 10. relief_id
 				result += "	     <td>" + relief_id + "</td>";
 
@@ -2033,6 +2149,10 @@ $("#id_late_hour").click( function() {
 
 				// 14. tel_time
 				result += "	     <td nowrap>" + tel_time + "</td>";
+
+				
+
+
 
 				// 15. tel_amt
 				result += "	     <td class='text-center'>" + tel_amt + "</td>";
@@ -2054,6 +2174,9 @@ $("#id_late_hour").click( function() {
 				// 19. upd_date
 				result += "	     <td nowrap>" + upd_date + "</td>";
 				
+
+
+				
 				// 20. upd_by
 				//<a href='#'' data-toggle='tooltip' title='Some tooltip text!'>
 				//result += "	     <td><a href='#'' data-toggle='tooltip' title='" + update_by_user_first_name + "'>" + upd_by + "</a></td>";
@@ -2061,6 +2184,10 @@ $("#id_late_hour").click( function() {
 
 				// 21. upd_flag
 				result += "	     <td class='text-center'>" + upd_flag + "</td>";
+				
+
+
+
 
 				// 22 . upd_gen
 				result += "	     <td class='d-none'>" + upd_gen + "</td>";
@@ -2076,6 +2203,10 @@ $("#id_late_hour").click( function() {
 
 				// 26. late_full_status
 				result += "	     <td class='d-none'>" + late_full_status + "</td>";
+
+
+
+
 
 				// 27. ot
 				result += "	     <td class='d-none'>" + ot + "</td>";
@@ -2096,18 +2227,37 @@ $("#id_late_hour").click( function() {
 				result += "	     <td class='d-none'>" + shf_type + "</td>";
 
 				result += "    </tr>";
+				
+			
 			}
 		}
 		else {
 				result += "    <tr class='text-center'>";
-				result += "	     <td colspan='31'><br><br>There is no data.<br><br><br></td>";
+				result += "	     <td colspan='31'><br><br>There is no data.1<br><br><br></td>";
 				result += "	   </tr>"
 		}
-		result += "  </tbody>";
-		result += "</table>";					
-		result += "</font>";
+		
+		//result += "  </tbody>";
 
-    	return result;
+		/*
+		result += "</table>";				
+		//result += "</font>";
+		result += "</div>";
+		*/
+
+		//result = create_attandance_table(data.employee_list, data.employee_leave_list);
+		//$('#id_employee_list').html(result);
+			
+		var datatable = $('#employee_list_table').dataTable().api();
+		datatable.clear();		
+		html = $(result.trim().replace(/\s+/g, " ").replace(/\<\/tr\> \<tr/g, '</tr><tr'));
+		datatable.rows.add(html).draw();
+
+		//$("#employee_list_table tbody").html(result1);			
+		//$("#employee_list_table").draw();
+
+				
+    	//return result;
     }
 
     
@@ -2185,9 +2335,13 @@ $("#id_late_hour").click( function() {
 
 					
 					// Get Attandance Employee List
-					result = create_attandance_table(data.employee_list, data.employee_leave_list);
+					create_attandance_table(data.employee_list, data.employee_leave_list);
+					//result = create_attandance_table(data.employee_list, data.employee_leave_list);
+					//$('#id_employee_list').html(result);
+					//$('#id_employee_list').DataTable().draw();
 
-					$('#id_employee_list').html(result);
+					
+
 
 					
 					// Show available Shift option
@@ -2306,7 +2460,7 @@ $("#id_late_hour").click( function() {
 						result = "<table id='id_customer_contract_service'>";
 						result += "  <thead class=thead-light>";
 						result += "    <tr>";
-						result += "      <th scope='col'>No</th>";
+						result += "      <th scope='col'>No..</th>";
 						result += "      <th scope='col'>Rank</th>";
 						result += "      <th scope='col'>Shift</th>";
 						result += "      <th scope='col'>QTY</th>";
@@ -3083,18 +3237,17 @@ $("#id_late_hour").click( function() {
     });
 
     function clearEmployeeListTable() {
+    	
+    	/*
     	var result = "";
 		result += "<font size='2em;'>";
 		//result += "<table id='employee_list_table' class='table table-sm table-fixed table-condensed table-wrapper-scroll-y my-custom-scrollbar'>";
 		result += "<table id='employee_list_table' class='table table-responsive table-sm table-condensed table-wrapper-scroll-y my-custom-scrollbar'>";
-		//result += "<table id='employee_list_table' class='table table-sm table-condensed my-custom-scrollbar'>";
-		
-		//result += "<table id='employee_list_table' class='table table-sm'>";
-
+		//result += "<table id='employee_list_table' class='table table-sm table-condensed my-custom-scrollbar'>";	
+		//result += "<table id='employee_list_table' class='table table-sm'>";		
 		result += "  <thead>";
 		result += "    <tr>";
 		result += "      <th scope='col'>&nbsp;</th>";	// absent_statas
-
 		result += "      <th scope='col' nowrap>Emp ID</th>";
 		result += "      <th scope='col'>Name</th>";
 		result += "      <th scope='col'>Rank</th>";
@@ -3132,7 +3285,40 @@ $("#id_late_hour").click( function() {
 		result += "  </tbody>";
 		result += "</table>";
 		result += "</font>";
-		$("#id_employee_list").html(result);
+		*/
+	
+
+		// ironman
+		result = "";
+		result += "    <tr>";
+		result += "      <td class='d-none'>&nbsp;</td>";
+		result += "      <td>&nbsp;</td>";
+		result += "      <td>&nbsp;</td>";
+		result += "      <td>&nbsp;</td>";
+		result += "      <td>&nbsp;</td>";
+		result += "      <td>&nbsp;</td>";
+		result += "      <td>&nbsp;</td>";
+		result += "      <td>&nbsp;</td>";
+		result += "      <td>&nbsp;</td>";
+		result += "      <td>&nbsp;</td>";    
+		result += "      <td>&nbsp;</td>";
+		result += "      <td>&nbsp;</td>";
+		result += "      <td>&nbsp;</td>";
+		result += "      <td>&nbsp;</td>";
+		result += "      <td>&nbsp;</td>";
+		result += "      <td>&nbsp;</td>";
+		result += "      <td>&nbsp;</td>";
+		result += "      <td>&nbsp;</td>";
+		result += "      <td>&nbsp;</td>";
+		result += "      <td>&nbsp;</td>";
+		result += "    </tr>";
+
+		$("#id_employee_list tbody").html(result);
+		
+		$('#employee_search_text').val("");
+		var table = $('#employee_list_table').DataTable();
+		//table.clear();
+		table.search($('#employee_search_text').val()).clear().draw();
     }
 
 

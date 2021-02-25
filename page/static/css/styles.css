@@ -368,3 +368,10 @@ th     { background:#a8a8a9; }
   line-height: 1.428571429;
   border-radius: 15px;
 }
+
+.dataTables_filter {
+   width: 50%;
+   margin-top: 0;
+   float: right;
+   text-align: right;   
+}
