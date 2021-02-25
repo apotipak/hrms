@@ -183,14 +183,12 @@ $("#post_button").click( function() {
 	            btnClass: 'btn-red any-other-class',
 	            action: function() {
 
+	            	/*
 					$("#post_button").attr("disabled", true);
 					$("#post_button").text("Posting..");
 					
 
 					var id = setInterval(function() {
-
-					    //call $.ajax here
-					    //$("#post_result").html("text");
 
 						$.ajax({
 					    	url : "/monitoring/ajax/sp_post_daily_attend_progress/",
@@ -251,10 +249,9 @@ $("#post_button").click( function() {
 							$.LoadingOverlay("hide");
 				    	},
 				    });
+					*/
+					
 
-
-
-					/*
 				  	$(document).Toasts('create', {
 				    	class: "bg-info", 
 				    	title: "{% trans 'Message' %}",
@@ -266,7 +263,7 @@ $("#post_button").click( function() {
 				    	close: true,
 				    	autoremove: true,
 				  	});   
-					*/
+
 	            }
 	        },
 	        default: {
