@@ -20,9 +20,9 @@
 
 			<div class="card card-outline card-secondary" id="generate_date_card">
 			  <div class="card-header">
-			    <h3 class="card-title lead"><i class="fas fa-cogs"></i>&nbsp;&nbsp;โพสรายการแจ้งเวร (Post Daily Attend)</h3>
+			    <h3 class="card-title lead"><i class="fas fa-cogs"></i>&nbsp;&nbsp;โพสรายการแจ้งเวร</h3>
 			    <div class="card-tools">
-			      	<!--<button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>-->
+			      	<button type="button" class="btn btn-tool" id="post_daily_attend_history_button"><i class="fas fa-history"></i></button>
 			    </div>
 			    <!-- /.card-tools -->
 
@@ -79,11 +79,114 @@
 
     	</section>
 	</div>
+
+<!-- Search Contract Modal -->
+<div class="modal fade col-8 offset-2" id="post_daily_attend_history_modal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content p-0">
+
+      <div class="modal-header bg-secondary text-white" style="padding:7px;">
+        <h6 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-history fa-sm"></i>&nbsp;{% trans 'History' %}&nbsp;&nbsp;<small>ประวัติการโพส</small></h6>
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+
+      <div class="modal-body" style="padding:15px 0 0 12px; font-size:14px;">
+        <span class="text-center">{% trans 'Loading, please wait...' %}</span>
+      </div>
+
+      <div class="modal-footer" style="padding:5px 5px 5px 0;">
+
+        <div class='float-left text-left col-10 pl-4'><span id="id_search_number_of_found_record"></span></div>
+        <div class="float-right text-right col-2">
+          <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">{% trans 'Close' %}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endblock %}
 
 
 {% block javascript %}
 <script>
+
+
+$('#post_daily_attend_history_button').on('click', function (e) {
+	$("#post_daily_attend_history_modal").modal("show");
+
+	var post_date = $("#id_post_date").val();
+
+	$.ajax({
+    	url : "/monitoring/ajax/check_post_daily_attend_status_history/",
+    	type : "POST",
+    	async: false,
+    	data : {
+      		csrfmiddlewaretoken: '{{ csrf_token }}',
+      		post_date: post_date,
+    	},
+    	success: function(data) {
+    		var result = "";
+    		var log_emptype = "";
+    		var log_desc = "";
+    		var log_type = "";
+    		var upd_by = "";
+    		var row_count = 1;
+			result += "<div class='row col-12'>";
+			result += "<table class='table table-hover table-sm'>";
+			result += " <thead>";
+			result += "   <tr>";
+			result += "     <th scope='col'>{% trans 'NO' %}</th>";
+			result += "     <th scope='col'>{% trans 'EMP TYPE' %}</th>";
+			result += "     <th scope='col'>{% trans 'DESCRIPTION' %}</th>";
+			result += "     <th scope='col' class='text-left'>{% trans 'STATUS' %}</th>";
+			result += "     <th scope='col'>UPD BY</th>";
+			result += "   </tr>";
+			result += " </thead>";
+			result += "<tbody>";
+
+    		if(data.history_list.length>0) {
+    			
+    			for(var i=0; i<data.history_list.length; i++) {
+    				log_emptype = data.history_list[i]['log_emptype'];
+    				log_desc = data.history_list[i]['log_desc'];
+    				log_type = data.history_list[i]['log_type'];
+    				upd_by = data.history_list[i]['upd_by'];
+
+    				if(log_type=='C') {
+	    				result += "<tr class='text-success'>";
+	    				result += "<td>" + row_count + "</td>";
+	    				result += "<td>" + log_emptype + "</td>";
+	    				result += "<td>" + log_desc + "</td>";
+	    				result += "<td class='text-left'>Success</td>";
+	    				result += "<td>" + upd_by + "</td>";
+	    				result += "</tr>";
+    				} else {
+	    				result += "<tr class='text-danger'>";	
+	    				result += "<td>" + row_count + "</td>";
+	    				result += "<td>" + log_emptype + "</td>";
+	    				result += "<td>" + log_desc + "</td>";
+	    				result += "<td class='text-left'>Failed</td>";
+	    				result += "<td>" + upd_by + "</td>";
+	    				result += "</tr>";    					
+    				}
+    				row_count++;
+    			}
+    			
+    		} else {
+    			result += "<tr><td colspan='5' class='text-center pt-3'>ไม่พบรายการแจ้งเวร</td></tr>";
+    		}
+    		result += "</tbody>";
+    		result += "</table>";
+
+    		$("#post_daily_attend_history_modal .modal-body").html(result);
+    	}
+    });
+});
+
 
 $(document).on('keypress', '#id_post_date', function(e) {
   if(e.which == 13) {      
@@ -183,7 +286,6 @@ $("#post_button").click( function() {
 	            btnClass: 'btn-red any-other-class',
 	            action: function() {
 
-	            	/*
 					$("#post_button").attr("disabled", true);
 					$("#post_button").text("Posting..");
 					var id;
@@ -284,8 +386,9 @@ $("#post_button").click( function() {
 							$.LoadingOverlay("hide");
 				    	},
 				    });
-					*/
 
+
+					/*
 				  	$(document).Toasts('create', {
 				    	class: "bg-info", 
 				    	title: "{% trans 'Message' %}",
@@ -296,7 +399,8 @@ $("#post_button").click( function() {
 				    	autoDismiss: true,
 				    	close: true,
 				    	autoremove: true,
-				  	});   
+				  	});
+				  	*/
 	            }
 	        },
 	        default: {

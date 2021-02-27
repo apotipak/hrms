@@ -1646,6 +1646,49 @@ def check_post_daily_attend_status(request):
 
 @permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
 @login_required(login_url='/accounts/login/')
+def check_post_daily_attend_status_history(request):
+	print("***************************************************")
+	print("FUNCTION: check_post_daily_attend_status_history()")
+	print("***************************************************")
+	post_date = request.POST.get('post_date')
+	post_date = datetime.datetime.strptime(post_date, '%d/%m/%Y')	
+	post_date = str(post_date)[0:10]
+	sql = "select log_emptype,log_desc,log_type,upd_by from hisdlyplan_log where log_date='" + str(post_date) + "' order by log_desc;"
+	print(sql)
+	hisdlyplan_log_obj = None
+	try:				
+		cursor = connection.cursor()
+		cursor.execute(sql)
+		hisdlyplan_log_obj = cursor.fetchall()
+		print(len(hisdlyplan_log_obj))
+	except db.OperationalError as e:
+		progress_message = "<b>Error: please send this error to IT team</b><br>" + str(e)
+	except db.Error as e:
+		progress_message = "<b>Error: please send this error to IT team</b><br>" + str(e)
+	finally:
+		cursor.close()
+
+	# spiderman	
+	record = {}
+	history_list = []
+	if hisdlyplan_log_obj is not None:
+		if len(hisdlyplan_log_obj)>0:			
+			for item in hisdlyplan_log_obj:				
+				record = {
+					"log_emptype": item[0],
+					"log_desc": item[1],
+					"log_type": item[2],
+					"upd_by": item[3],
+				}
+				history_list.append(record)
+
+	response = JsonResponse(data={"success": True, "history_list": list(history_list)})
+	response.status_code = 200
+	return response
+
+
+@permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
+@login_required(login_url='/accounts/login/')
 def ajax_sp_post_daily_attend_progress(request):
 	print("******************************************")
 	print("FUNCTION: ajax_sp_post_daily_attend()")
