@@ -2509,13 +2509,18 @@ def ajax_get_attendance_information(request):
 	# ตรวจสอบวันที่ Daily Attendance มากกว่าวันที่ปัจจุบัน	
 	today_date = convertStringToDate(settings.TODAY_DATE.strftime("%d/%m/%Y"))
 	daily_attendance_date = convertStringToDate(attendance_date)
+
+	# ironman
+	print("today_date", today_date)
+	print("daily_attendance_date", daily_attendance_date)
+
 	if daily_attendance_date > today_date:
 		is_pass = False
 		message = "วันที่"
 		response = JsonResponse(data={
 		    "success": True,
 		    "is_found": False,
-		    "message": "วันที่ <b>Daily Attendance</b> มากกว่าวันที่ปัจจุบัน",
+		    "message": "วันที่ <b>Daily Attendance</b> มากกว่าวันที่ปัจจุบัน...",
 		})		
 		response.status_code = 200
 		return response
@@ -3707,11 +3712,43 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 					else:
 						is_pass = True # แจ้งเวรยังไม่เกินจำนวนที่อยู่ในสัญญา
 						message = "Check #6 is passed."
+	else:
+		if ui_absent_status==0:
+			if shift_id != 99:				
+				if dly_date == today_date.date():
+					sql = "select count(*) from dly_plan "
 
+				if dly_date < today_date.date():
+					sql = "select count(*) from his_dly_plan "
 
+				sql += "where cnt_id=" + str(cnt_id) + " and sch_shift=" + str(shift_id) + " and absent=0 and dly_date='" + str(dly_date) + "'"
+
+				cursor = connection.cursor()
+				cursor.execute(sql)
+				rows = cursor.fetchone()
+				cursor.close	
+				informNo = rows[0] if rows[0]>0 else 0
+
+				# get srv_qty
+				sql = "select cnt_id, srv_shif_id, sum(srv_qty) as qty from cus_service where srv_active=1 and cnt_id=" + str(cnt_id) + " and srv_shif_id=" + str(shift_id) + " group by cnt_id, srv_shif_id"
+				cursor = connection.cursor()
+				cursor.execute(sql)
+				rows = cursor.fetchone()
+				cursor.close
+				srv_qty = rows[2]
+
+				if informNo >= srv_qty:
+					is_pass = False					
+					message = "พนักงานที่แจ้งเวรมากกว่าที่มีอยู่ในสัญญา: <b>" + str(cnt_id) + "</b>"
+					return is_pass, message
+				else:
+					is_pass = True # แจ้งเวรยังไม่เกินจำนวนที่อยู่ในสัญญา
+					message = "Check #6 is passed."
+
+	# debug
 	# Check #7
 	is_pass, message = chkValidInput(2,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,ui_ot_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id)
-		
+	
 	if is_pass:
 		if (cnt_id=="") and (emp_id==""):
 			return False, "ข้อมูลไม่ถูกต้อง"
@@ -3915,7 +3952,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		sql += "and emp_id=" + str(emp_id) + " "
 		sql += "and sch_shift=" + str(shift_id)
 
-		# print("sql check:", sql)
+		print("DEBUG sql check:", sql)
 		# return False, "TEST"
 
 		try:

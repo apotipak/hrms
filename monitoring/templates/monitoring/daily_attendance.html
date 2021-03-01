@@ -1812,6 +1812,9 @@ $("#id_late_hour").click( function() {
 
 			$("#id_absent_check").prop("checked", false);
 
+			$("#id_call_amount_option").attr("readonly", false);
+			$("#id_call_amount_option").attr("disabled", false);
+
 	    } else {
 	    	$("#id_call_time").val("");
 	    	$("#id_call_amount_option").val(0);
@@ -2061,7 +2064,7 @@ $("#id_late_hour").click( function() {
 
 
 
-
+				// aquaman
 
 				// 10. relief_id
 				result += "	     <td>" + relief_id + "</td>";
@@ -3343,8 +3346,8 @@ $("#id_late_hour").click( function() {
 		//var late_status = $(this).find('td:eq(25)').text();
 		//var tel_status = $(this).find('td:eq(12)').text();			
 		var late_status = $(this).find('td:eq(26)').text();
-		var tel_status = $(this).find('td:eq(13)').text();			
-
+		var tel_status = $(this).find('td:eq(12)').text();		
+		// aquaman
 		
 		if($("#id_absent_check").is(":checked"))
 			var ui_absent_status = 1;
@@ -3435,7 +3438,7 @@ $("#id_late_hour").click( function() {
 			$("#id_late_check").attr("disabled", false);
 			$("#id_late_check").prop("checked", false);
 			$("#id_phone_check").attr("disabled", false);
-			$("#id_phone_check").prop("checked", false);			
+			$("#id_phone_check").prop("checked", false);		
 		}
 
 		$("#emp_id_lookup_button").attr("disabled", true);
@@ -3553,7 +3556,12 @@ $("#id_late_hour").click( function() {
    			//$("#id_call_time").val("");
    			//$("#id_call_amount_option").val(0);	   		
 
+			$("#id_call_amount_option").attr("disabled", true);
+			$("#id_call_amount_option").attr("readonly", true);
+			$("#id_call_amount_option").val(0);
+
 		} else {
+			
 			$("#id_absent_check").prop("checked", false);
 			//$("#relief_employee_section").hide();
 
@@ -3567,7 +3575,7 @@ $("#id_late_hour").click( function() {
 			//var tel_time = $(this).find('td:eq(13)').text();
 			//var tel_amount = $(this).find('td:eq(14)').text();	
 			//var tel_paid = $(this).find('td:eq(15)').text();	
-	    	
+			
 	   		if(tel_status==1) {
 	   			//console.log(tel_status);
 
@@ -3584,7 +3592,7 @@ $("#id_late_hour").click( function() {
 	   			$("#id_call_time").attr("disabled", true);
 	   			$("#id_call_amount_option").attr("disabled", true);
 	   			$("#id_call_time").val("");
-	   			$("#id_call_amount_option").val(0);
+	   			$("#id_call_amount_option").val("0");
 	   		}
 	   		
 		}
@@ -3794,7 +3802,9 @@ $("#id_late_hour").click( function() {
 		  	$('#id_emp_id').focus();
 			return false;
 		}
-				
+		
+		// console.log(shift_id)
+
 		if(shift_id=="0"){
 			/*
 		  	$(document).Toasts('create', {
@@ -3993,7 +4003,13 @@ $("#id_late_hour").click( function() {
 												else
 													$("#totalPNM").html("<span class='text-danger'>" + data.totalPNM + "</span>");
 
+												
+
+												// aquaman
 												$("#id_absent_check").prop("checked", false);
+												$("#id_phone_check").prop("checked", false);
+												$("#id_call_amount_option").attr("readonly", true);
+												$("#id_call_amount_option").attr("disabled", true);
 											}
 										}
 									});
@@ -4030,6 +4046,7 @@ $("#id_late_hour").click( function() {
 					    			alert("error");
 					    		}
 
+					    		/*
 								$.alert({
 								    title: data.title,
 								    type: data.type,
@@ -4040,7 +4057,20 @@ $("#id_late_hour").click( function() {
 								    boxWidth: '38%',
 								    useBootstrap: false,
 								});
+								*/
 
+							  	$(document).Toasts('create', {
+							    	class: "bg-success", 
+							    	title: "{% trans 'Success' %}",
+							    	subtitle: '',
+							    	autohide: true,
+							    	delay: 2000,		    	
+							    	//body: data.message,
+							    	body: "ทำรายการสำเร็จ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+							    	autoDismiss: true,
+							    	close: true,
+							    	autoremove: true,
+							  	});								
 									
 								$("#dailyAttendanceDataEntryForm").trigger("reset");
 
@@ -4101,8 +4131,11 @@ $("#id_late_hour").click( function() {
     	var emp_id = $("#id_emp_id").val();
     	var emp_rank = $("#id_emp_rank").val();
     	var emp_dept = $("#id_emp_dept").val();
-    	var shift_id = $("#id_shift_option").val();
+
+    	var shift_id = $("#id_shift_option").val();    	
     	var shift_name = $("#id_shift_option option:selected").text();    	
+    	//console.log(shift_id + " | " + shift_name);
+
     	var relief_emp_id = $("#id_relief_emp_id").val();
 
         var customer_wage_rate_id = $("#id_customer_wage_rate_id").val();
@@ -4310,6 +4343,8 @@ $("#id_late_hour").click( function() {
 	    	} else {
 	    		//alert("test");
 	    		//return false;
+
+	    		//alert(shift_id + "|" + shift_name)
 	    		saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);	
 	    	}    		
     	}
