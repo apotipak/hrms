@@ -2645,7 +2645,19 @@ def ajax_get_attendance_information(request):
 		# DLY_PLAN TOTAL
 		# select distinct * from v_dlyplan where cnt_id=2526000001 and dly_date=convert(datetime,'2020-12-02',20) and customer_flag<>'D' order by sch_shift, emp_id
 		cursor = connection.cursor()
-		cursor.execute("select distinct * from v_dlyplan where cnt_id=%s and dly_date=convert(datetime,%s,20) and customer_flag<>'D' order by sch_shift, emp_id", [cnt_id, curDate])
+		
+
+		# TOTORO
+		today_date = convertStringToDate(settings.TODAY_DATE.strftime("%d/%m/%Y"))		
+		selected_attendance_date = datetime.datetime.strptime(request.POST.get('attendance_date'), '%d/%m/%Y')
+		# print("today_date=", today_date)
+		# print("daily_attendance_date=", selected_attendance_date)
+
+		if selected_attendance_date == today_date:
+			cursor.execute("select distinct * from v_dlyplan where cnt_id=%s and dly_date=convert(datetime,%s,20) and customer_flag<>'D' order by sch_shift, emp_id", [cnt_id, curDate])
+		else:
+			cursor.execute("select distinct * from v_hdlyplan where cnt_id=%s and dly_date=convert(datetime,%s,20) order by sch_shift, emp_id", [cnt_id, curDate])
+
 		rows = cursor.fetchall()
 		cursor.close
 		if len(rows)>0:
@@ -2830,7 +2842,7 @@ def ajax_get_attendance_information(request):
 			# emp_leave_list = []
 			# print("where_in:", where_in)
 			sql_where_in = "select emp_id from emp_leave_act where getdate() between lve_date_frm and lve_date_to and emp_id in (" + where_in + ")"
-			print("sql_where_in:", sql_where_in)
+			# print("sql_where_in:", sql_where_in)
 			cursor = connection.cursor()
 			cursor.execute(sql_where_in)
 			records = cursor.fetchall()
@@ -3636,51 +3648,81 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 
 
 	# Check #4
-	'''
 	if dly_date == today_date.date():
 		sql = "select cnt_id,emp_id,absent,late,tel_man,relieft from dly_plan "
 
 	if dly_date < today_date.date():
-		sql = "select cnt_id,emp_id,absent,late,tel_man,relieft from his_dly_plan "
-	'''
-
-	sql = "select cnt_id,emp_id,absent,late,tel_man,relieft from dly_plan "
-
+		sql = "select cnt_id,emp_id,absent,late,tel_man,relieft from his_dly_plan "	
+	# sql = "select cnt_id,emp_id,absent,late,tel_man,relieft from dly_plan "
 	sql += " where cnt_id=" + str(cnt_id) + " and dly_date='" + str(dly_date) + "' and emp_id=" + str(emp_id)
-	# print("SQL debug1:", sql)
+	print("SQL debug1:", sql)
 
 	cursor = connection.cursor()	
 	cursor.execute(sql)	
 	record_count = cursor.fetchone()
 	cursor.close()
 
-	if len(record_count)>0:
-		db_cnt_id = record_count[0]
-		db_emp_id = record_count[1]
-		db_absent_status = 1 if record_count[2] else 0
-		db_late_status = 1 if record_count[3] else 0
-		db_phone_status = 1 if record_count[4] else 0
-		db_relief_status = 1 if record_count[5] else 0
-		# return False, str(db_absent_status) + "," + str(db_late_status) + "," + str(db_phone_status) + "," + str(db_relief_status)
-	else:
-		return False, "Employee not found"	
 
-	if ui_phone_status==db_phone_status:
-		if ui_late_status==db_late_status:
-			if (db_absent_status==1) and (db_relief_status==1):
-				# TODO
-				return True, "Implement Check #4"	
+	if(record_count is not None):
+		if len(record_count)>0:
+			db_cnt_id = record_count[0]
+			db_emp_id = record_count[1]
+			db_absent_status = 1 if record_count[2] else 0
+			db_late_status = 1 if record_count[3] else 0
+			db_phone_status = 1 if record_count[4] else 0
+			db_relief_status = 1 if record_count[5] else 0
+			# return False, str(db_absent_status) + "," + str(db_late_status) + "," + str(db_phone_status) + "," + str(db_relief_status)
+		else:
+			return False, "Employee not found"	
 
-	# Check #5 - ค่าโทรต้องมีค่ามากกว่า 0 บาท
-	if (ui_phone_status==1) and (tel_amount<=0):
-		if allowZeroBathForPhoneAmount==0:
-			is_pass = False
-			message = "ค่าโทรมีค่าเป็น 0 กรุณาตรวจสอบ"
-			return is_pass, message
+		if ui_phone_status==db_phone_status:
+			if ui_late_status==db_late_status:
+				if (db_absent_status==1) and (db_relief_status==1):
+					# TODO
+					return True, "Implement Check #4"	
 
-	# Check #6
-	if ui_phone_status==db_phone_status:
-		if ui_late_status==db_late_status:
+		# Check #5 - ค่าโทรต้องมีค่ามากกว่า 0 บาท
+		if (ui_phone_status==1) and (tel_amount<=0):
+			if allowZeroBathForPhoneAmount==0:
+				is_pass = False
+				message = "ค่าโทรมีค่าเป็น 0 กรุณาตรวจสอบ"
+				return is_pass, message
+
+		# Check #6
+		if ui_phone_status==db_phone_status:
+			if ui_late_status==db_late_status:
+				if ui_absent_status==0:
+					if shift_id != 99:				
+						if dly_date == today_date.date():
+							sql = "select count(*) from dly_plan "
+
+						if dly_date < today_date.date():
+							sql = "select count(*) from his_dly_plan "
+
+						sql += "where cnt_id=" + str(cnt_id) + " and sch_shift=" + str(shift_id) + " and absent=0 and dly_date='" + str(dly_date) + "'"
+
+						cursor = connection.cursor()
+						cursor.execute(sql)
+						rows = cursor.fetchone()
+						cursor.close	
+						informNo = rows[0] if rows[0]>0 else 0
+
+						# get srv_qty
+						sql = "select cnt_id, srv_shif_id, sum(srv_qty) as qty from cus_service where srv_active=1 and cnt_id=" + str(cnt_id) + " and srv_shif_id=" + str(shift_id) + " group by cnt_id, srv_shif_id"
+						cursor = connection.cursor()
+						cursor.execute(sql)
+						rows = cursor.fetchone()
+						cursor.close
+						srv_qty = rows[2]
+
+						if informNo >= srv_qty:
+							is_pass = False					
+							message = "พนักงานที่แจ้งเวรมากกว่าที่มีอยู่ในสัญญา: <b>" + str(cnt_id) + "</b>"
+							return is_pass, message
+						else:
+							is_pass = True # แจ้งเวรยังไม่เกินจำนวนที่อยู่ในสัญญา
+							message = "Check #6 is passed."
+		else:
 			if ui_absent_status==0:
 				if shift_id != 99:				
 					if dly_date == today_date.date():
@@ -3712,38 +3754,6 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 					else:
 						is_pass = True # แจ้งเวรยังไม่เกินจำนวนที่อยู่ในสัญญา
 						message = "Check #6 is passed."
-	else:
-		if ui_absent_status==0:
-			if shift_id != 99:				
-				if dly_date == today_date.date():
-					sql = "select count(*) from dly_plan "
-
-				if dly_date < today_date.date():
-					sql = "select count(*) from his_dly_plan "
-
-				sql += "where cnt_id=" + str(cnt_id) + " and sch_shift=" + str(shift_id) + " and absent=0 and dly_date='" + str(dly_date) + "'"
-
-				cursor = connection.cursor()
-				cursor.execute(sql)
-				rows = cursor.fetchone()
-				cursor.close	
-				informNo = rows[0] if rows[0]>0 else 0
-
-				# get srv_qty
-				sql = "select cnt_id, srv_shif_id, sum(srv_qty) as qty from cus_service where srv_active=1 and cnt_id=" + str(cnt_id) + " and srv_shif_id=" + str(shift_id) + " group by cnt_id, srv_shif_id"
-				cursor = connection.cursor()
-				cursor.execute(sql)
-				rows = cursor.fetchone()
-				cursor.close
-				srv_qty = rows[2]
-
-				if informNo >= srv_qty:
-					is_pass = False					
-					message = "พนักงานที่แจ้งเวรมากกว่าที่มีอยู่ในสัญญา: <b>" + str(cnt_id) + "</b>"
-					return is_pass, message
-				else:
-					is_pass = True # แจ้งเวรยังไม่เกินจำนวนที่อยู่ในสัญญา
-					message = "Check #6 is passed."
 
 	# debug
 	# Check #7
@@ -6077,25 +6087,32 @@ def ajax_bulk_update_absent_status(request):
 			TDailyShift = 0
 			
 			Tpub = 1 if getDayPub(attendance_date)==1 else 0
-			DateOfWeek = attendance_date.strftime('%w')
-			if DateOfWeek=="1":
-				DayCurDate = "SRV_MON"
-			elif DateOfWeek=="2":
-				DayCurDate = "SRV_TUE"
-			elif DateOfWeek=="3":
-				DayCurDate = "SRV_WED"
-			elif DateOfWeek=="4":
-				DayCurDate = "SRV_THU"
-			elif DateOfWeek=="5":
-				DayCurDate = "SRV_FRI"
-			elif DateOfWeek=="6":
-				DayCurDate = "SRV_SAT"
-			elif DateOfWeek=="7":
-				DayCurDate = "SRV_SUN"
-			else:
-				DayCurDate = ""
+			DateOfWeek = int(attendance_date.strftime('%w'))
+			# Weekday as a decimal number, where 0 is Sunday and 6 is Saturday.
 
-			if DayCurDate=="":
+			print("Attendance Date:", attendance_date)
+			print("DateOfWeek:", DateOfWeek)
+
+			if DateOfWeek==0:
+				DayCurDate = "SRV_SUN"
+			elif DateOfWeek==1:
+				DayCurDate = "SRV_MON"
+			elif DateOfWeek==2:
+				DayCurDate = "SRV_TUE"
+			elif DateOfWeek==3:
+				DayCurDate = "SRV_WED"
+			elif DateOfWeek==4:
+				DayCurDate = "SRV_THU"
+			elif DateOfWeek==5:
+				DayCurDate = "SRV_FRI"
+			elif DateOfWeek==6:
+				DayCurDate = "SRV_SAT"
+			else:
+				DayCurDate = 99
+
+			print("DayCurDate:", DayCurDate)
+
+			if DayCurDate==99:
 				response = JsonResponse(data={"success": True,"is_error": True,"message": "วันที่ทำงานไม่ถูกต้อง กรุณาตรวจสอบ"})
 				response.status_code = 200
 				return response
@@ -6109,6 +6126,8 @@ def ajax_bulk_update_absent_status(request):
 			sql += " and srv_shif_id=" + str(shift_id)
 			sql += " and srv_active=1 and upd_flag<>'D' "
 			sql += " group by cnt_id, srv_shif_id"
+			print("SQL TContractShift:", sql)
+
 			try:
 				with connection.cursor() as cursor:		
 					cursor.execute(sql)
@@ -6129,6 +6148,7 @@ def ajax_bulk_update_absent_status(request):
 			sql += " where cnt_id=" + str(cnt_id)
 			sql += " and sch_shift=" + str(shift_id)
 			sql += " group by cnt_id, sch_shift"
+			print("SQL TContractShift:", sql)
 			try:
 				with connection.cursor() as cursor:		
 					cursor.execute(sql)
@@ -6144,6 +6164,10 @@ def ajax_bulk_update_absent_status(request):
 				response = JsonResponse(data={"success": True,"is_error": True,"message": "<b>Please send this error to IT team or try again.</b><br>" + str(e)})
 				response.status_code = 200
 				return response
+
+
+			print("TContractShift=", TContractShift)
+			print("TDailyShift=", TDailyShift)
 
 			if int(TContractShift) >= int(TDailyShift):				
 				sql = "select cnt_id,emp_id,sch_shift,shf_type from v_dlyplan "
@@ -6188,11 +6212,13 @@ def ajax_bulk_update_absent_status(request):
 								sql += " and sch_shift=" + str(shift_id)
 								sql += " and emp_id=" + str(tmp_emp_id)
 								sql += " and cnt_id=" + str(tmp_cnt_id)
+
+								print("DEBUG SQL:", sql)
 								cursor = connection.cursor()
 								cursor.execute(sql)
 								cursor.close()
 
-						message = "ปรับสถานะการเข้างานเป็น <b>Not Absent</b> สำเร็จ"
+						message = "ปรับสถานะการเข้างานเป็น <b>Not Absent</b> สำเร็จ..."
 				except db.OperationalError as e:
 					response = JsonResponse(data={"success": True,"is_error": True,"message": "<b>Please send this error to IT team or try again.</b><br>" + str(e)})
 					response.status_code = 200
