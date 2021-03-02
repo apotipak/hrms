@@ -3655,7 +3655,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		sql = "select cnt_id,emp_id,absent,late,tel_man,relieft from his_dly_plan "	
 	# sql = "select cnt_id,emp_id,absent,late,tel_man,relieft from dly_plan "
 	sql += " where cnt_id=" + str(cnt_id) + " and dly_date='" + str(dly_date) + "' and emp_id=" + str(emp_id)
-	print("SQL debug1:", sql)
+	# print("SQL debug1:", sql)
 
 	cursor = connection.cursor()	
 	cursor.execute(sql)	
@@ -3687,6 +3687,10 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 				is_pass = False
 				message = "ค่าโทรมีค่าเป็น 0 กรุณาตรวจสอบ"
 				return is_pass, message
+
+
+		print("ui_phone_status = ", ui_phone_status)
+		print("db_phone_status = ", db_phone_status)
 
 		# Check #6
 		if ui_phone_status==db_phone_status:
@@ -3722,6 +3726,8 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 						else:
 							is_pass = True # แจ้งเวรยังไม่เกินจำนวนที่อยู่ในสัญญา
 							message = "Check #6 is passed."
+		
+		'''
 		else:
 			if ui_absent_status==0:
 				if shift_id != 99:				
@@ -3754,6 +3760,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 					else:
 						is_pass = True # แจ้งเวรยังไม่เกินจำนวนที่อยู่ในสัญญา
 						message = "Check #6 is passed."
+		'''
 
 	# debug
 	# Check #7
@@ -5625,7 +5632,6 @@ def ajax_save_daily_attendance(request):
 	print("***************************************")
 	print("FUNCTION: ajax_save_daily_attendance()")
 	print("***************************************")
-	# print("___STATRT___")
 
 	username = request.user.username
 
