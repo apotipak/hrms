@@ -180,7 +180,11 @@ def ajax_check_exist_cus_main(request):
                         cus_main_cus_contact_con_mobile = cus_main.cus_contact.con_mobile
                         cus_main_cus_contact_con_email = cus_main.cus_contact.con_email
 
-                        cus_main_cus_taxid = cus_main.cus_taxid
+                        if cus_main.cus_taxid is not None:
+                            cus_main_cus_taxid = cus_main.cus_taxid
+                        else:
+                            cus_main_cus_taxid = ""
+                            
                         # print("cus_main_cus_taxid:", cus_main_cus_taxid)
                         # amnaj
 
