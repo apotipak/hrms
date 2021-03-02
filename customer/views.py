@@ -2402,12 +2402,14 @@ def save_all_cus_tabs(request):
 
                     # Group ID - cus_taxid                    
                     cus_main_cus_taxid = request.POST.get('cus_main_cus_taxid')            
+                    print("cus_main_cus_taxid:", cus_main_cus_taxid)
                     if (cus_main_cus_taxid is not None):
                         field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Group ID", cus_main.cus_taxid, cus_main_cus_taxid, "E", request)
                         if field_is_modified:
                             cus_main.cus_taxid = cus_main_cus_taxid
                             modified_records.append(record)
                             count_modified_field = count_modified_field + 1
+
 
                     # CUS_ZONE
                     if cus_main_cus_zone is not None:
@@ -2691,7 +2693,6 @@ def save_all_cus_tabs(request):
                             modified_records = []
                     # ./ Save History Log 
 
-            #cat
             except CusMain.DoesNotExist:
                 insert_status = True
                 cus_main_cus_taxid = request.POST.get('cus_main_cus_taxid')
@@ -3062,22 +3063,7 @@ def save_all_cus_tabs(request):
                             count_modified_field = count_modified_field + 1
 
                     # CUS_TAXID
-                    '''
-                    cus_main_cus_taxid = request.POST.get('cus_main_cus_taxid')            
-                    if (cus_main_cus_taxid is not None):
-                        field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Group ID11", customer.cus_taxid, cus_main_cus_taxid, "E", request)
-                        if field_is_modified:
-                            customer.cus_taxid = cus_main_cus_taxid
-                            modified_records.append(record)
-                            count_modified_field = count_modified_field + 1
-                    '''
-
-                    # Group ID - cus_taxid                    
-                    cus_site_cus_taxid = request.POST.get('cus_site_cus_taxid')
-                    print("cus_site_cus_taxid1:" + str(cus_site_cus_taxid) + "|")
-                    print("cus_site_cus_taxid2:" + str(cus_site_cus_taxid.strip()) + "|")
-                    
-
+                    cus_site_cus_taxid = request.POST.get('cus_site_cus_taxid')                
                     if (cus_site_cus_taxid is not None):
                         field_is_modified, record = check_modified_field("CUSTOMER", cus_no, "CUS_TAXID", customer.cus_taxid, cus_site_cus_taxid, "E", request)
                         if field_is_modified:
@@ -3650,15 +3636,13 @@ def save_all_cus_tabs(request):
                             count_modified_field = count_modified_field + 1
 
                     # CUS_TAXID
-                    '''
-                    cus_main_cus_taxid = request.POST.get('cus_main_cus_taxid')            
-                    if (cus_main_cus_taxid is not None):
-                        field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Group ID", cusbill.cus_taxid, cus_main_cus_taxid, "E", request)
+                    cus_bill_cus_taxid = request.POST.get('cus_bill_cus_taxid')            
+                    if (cus_bill_cus_taxid is not None):
+                        field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Group ID", cusbill.cus_taxid, cus_bill_cus_taxid, "E", request)
                         if field_is_modified:
-                            cusbill.cus_taxid = cus_main_cus_taxid
+                            cusbill.cus_taxid = cus_bill_cus_taxid
                             modified_records.append(record)
                             count_modified_field = count_modified_field + 1
-                    '''
 
                     # CUS_ZONE
                     # cusbill.cus_zone_id = cus_bill_cus_zone
@@ -3904,7 +3888,7 @@ def save_all_cus_tabs(request):
                     cus_tel = cus_bill_cus_tel,
                     cus_fax = cus_bill_cus_fax,
                     cus_email = cus_bill_cus_email,
-                    cus_taxid = cus_main_cus_taxid,
+                    cus_taxid = cus_bill_cus_taxid,
                     cus_zone_id = cus_bill_cus_zone,
                     cus_contact_id = cus_bill_cus_contact_id,
                     site_contact_id = cus_bill_cus_contact_id,

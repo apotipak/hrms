@@ -2740,7 +2740,11 @@
     cus_main_cus_tel = $('#id_cus_main_cus_tel').val();
     cus_main_cus_fax = $('#id_cus_main_cus_fax').val();
     cus_main_cus_email = $('#id_cus_main_cus_email').val();    
-    cus_main_cus_taxid = $('#id_customer_group_id').val();
+    
+    // cus_main_cus_taxid = $('#id_customer_group_id').val();
+    cus_main_cus_taxid = $('#id_customer_group_id_text').val();
+    //alert(cus_main_cus_taxid);
+
     cus_main_cus_zone = $('#id_cus_main_cus_zone').val();    
     customer_option_btype = $('#id_cus_main_business_type').val();
     customer_option_op1 = $('#id_cus_main_customer_option_op1').val();
@@ -2807,7 +2811,8 @@
     cus_site_cus_zip = $('#id_cus_site_cus_zip').val();
     cus_site_cus_tel = $('#id_cus_site_cus_tel').val();
     cus_site_cus_fax = $('#id_cus_site_cus_fax').val();
-    cus_site_cus_email = $('#id_cus_site_cus_email').val();    
+    cus_site_cus_email = $('#id_cus_site_cus_email').val();
+    cus_site_cus_taxid = $('#id_customer_group_id_text').val();    
     cus_site_cus_zone = $('#id_cus_site_cus_zone').val();    
   
     // CUS_SITE_CUS_CONTACT    
@@ -2846,6 +2851,7 @@
     cus_bill_cus_tel = $('#id_cus_bill_cus_tel').val();
     cus_bill_cus_fax = $('#id_cus_bill_cus_fax').val();
     cus_bill_cus_email = $('#id_cus_bill_cus_email').val();
+    cus_bill_cus_taxid = $('#id_customer_group_id_text').val();
     cus_bill_cus_zone = $('#id_cus_bill_cus_zone').val();    
 
     cus_bill_cus_contact_id = $('#id_cus_bill_cus_contact_id').val();        
@@ -2945,6 +2951,7 @@
         cus_site_cus_tel: cus_site_cus_tel,
         cus_site_cus_fax: cus_site_cus_fax,
         cus_site_cus_email: cus_site_cus_email,
+        cus_site_cus_taxid: cus_site_cus_taxid,
         cus_site_cus_zone: cus_site_cus_zone,
 
         cus_site_site_contact_id: cus_site_site_contact_id,
@@ -2978,6 +2985,7 @@
         cus_bill_cus_tel: cus_bill_cus_tel,
         cus_bill_cus_fax: cus_bill_cus_fax,
         cus_bill_cus_email: cus_bill_cus_email,
+        cus_bill_cus_taxid: cus_bill_cus_taxid,
         cus_bill_cus_zone: cus_bill_cus_zone,
         
         cus_bill_cus_contact_id: cus_bill_cus_contact_id,
