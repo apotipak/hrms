@@ -23,6 +23,8 @@ from django.core import serializers
 from decimal import Decimal
 import json
 import sys, locale
+from django.db import connection
+import django.db as db
 from django.db.models import Count, Case, When
 from django.db.models import Max
 
@@ -2139,7 +2141,7 @@ def save_all_cus_tabs(request):
 
             cus_id = request.POST.get('cus_id')
             cus_brn = request.POST.get('cus_brn').zfill(3)
-            cus_no = str(cus_id) + str(cus_brn)
+            cus_no = str(cus_id) + str(cus_brn)            
 
             # ******************************************
             # **************  CUS_MAIN  ****************
@@ -3087,6 +3089,22 @@ def save_all_cus_tabs(request):
                                 customer.cus_zone_id = cus_site_cus_zone
                                 modified_records.append(record)
                                 count_modified_field = count_modified_field + 1
+
+                                # tanos
+                                # Update CUS_CONTRACT                                
+                                sql = "update cus_contract set cnt_zone=" + str(cus_site_cus_zone) + ", upd_date=getdate(), upd_by='" + str(request.user.first_name) + "' , upd_flag='E' where cus_id=" + str(cus_id) + " and cus_brn=" + str(cus_brn) + ";"                                
+                                try:
+                                    with connection.cursor() as cursor:     
+                                        cursor.execute(sql)
+                                except db.OperationalError as e:
+                                    is_found = False
+                                    message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+                                except db.Error as e:
+                                    is_found = False
+                                    message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+                                finally:
+                                    cursor.close()                           
+
 
                     # CUS_CONTACT
                     if len(cus_site_site_contact_con_fname_th) > 0 or len(cus_site_site_contact_con_lname_th) > 0:                        

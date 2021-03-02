@@ -2307,7 +2307,7 @@ def showContract(cnt_id):
 	sql += " left join t_wagezone as k on a.cnt_wage_id=k.wage_id"
 	sql += " where a.cnt_id=" + str(cnt_id)
 	sql += " and a.cnt_active=1"
-	# print("sql 11:", sql)
+	print("sql 11:", sql)
 
 	try:				
 		cursor = connection.cursor()
@@ -3088,6 +3088,7 @@ def ajax_get_attendance_information(request):
 	
 	response.status_code = 200
 	return response	
+
 
 @permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
 @login_required(login_url='/accounts/login/')
