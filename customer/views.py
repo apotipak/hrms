@@ -123,7 +123,8 @@ def ajax_check_exist_cus_main(request):
         if form.is_valid():
             try:                
                 cus_main = CusMain.objects.get(pk=cus_id)
-                
+                cus_main_cus_taxid = ""
+
                 if cus_main:
 
                     if not cus_main.cus_district:
@@ -182,9 +183,7 @@ def ajax_check_exist_cus_main(request):
 
                         if cus_main.cus_taxid is not None:
                             cus_main_cus_taxid = cus_main.cus_taxid
-                        else:
-                            cus_main_cus_taxid = ""
-                            
+
                         # print("cus_main_cus_taxid:", cus_main_cus_taxid)
                         # amnaj
 
