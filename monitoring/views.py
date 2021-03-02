@@ -1315,9 +1315,12 @@ def ajax_get_employee(request):
 			else:
 				emp_term_date = ""
 			'''
-
-			employee_info = EmpPhoto.objects.filter(emp_id=emp_id).get()
-			employee_photo = b64encode(employee_info.image).decode("utf-8")
+			
+			employee_info = EmpPhoto.objects.filter(emp_id=emp_id).first()
+			if not employee_info:
+				employee_photo = None
+			else:
+				employee_photo = b64encode(employee_info.image).decode("utf-8")					
 
 			response = JsonResponse(data={
 				"success": True,
