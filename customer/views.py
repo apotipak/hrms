@@ -3493,11 +3493,13 @@ def save_all_cus_tabs(request):
             print("cus_bill_cus_zone = " + str(cus_bill_cus_zone))
             print("cus_bill_cus_contact_id = " + str(cus_bill_cus_contact_id))
             '''
+            
+            cus_bill_cus_taxid = request.POST.get('cus_bill_cus_taxid')
 
             try:
                 cusbill = CusBill.objects.get(pk=cus_no)
                 cus_bill_new_contact_id = cus_bill_cus_contact_id
-
+                
                 if cusbill is not None:
                     # CUS_ACTIVE
                     # cusbill.cus_active = cus_bill_cus_active
@@ -3639,7 +3641,7 @@ def save_all_cus_tabs(request):
                             count_modified_field = count_modified_field + 1
 
                     # CUS_TAXID
-                    cus_bill_cus_taxid = request.POST.get('cus_bill_cus_taxid')            
+                    cus_bill_cus_taxid = request.POST.get('cus_bill_cus_taxid')      
                     if (cus_bill_cus_taxid is not None):
                         field_is_modified, record = check_modified_field("CUS_BILL", cus_no, "Group ID", cusbill.cus_taxid, cus_bill_cus_taxid, "E", request)
                         if field_is_modified:
@@ -3876,6 +3878,7 @@ def save_all_cus_tabs(request):
                     cus_no = cus_no,
                     cus_id = cus_id,
                     cus_brn = cus_brn,
+                    cus_taxid = cus_bill_cus_taxid,
                     cus_name_th = cus_bill_cus_name_th,
                     cus_add1_th = cus_bill_cus_add1_th,
                     cus_add2_th = cus_bill_cus_add2_th,
@@ -3891,7 +3894,6 @@ def save_all_cus_tabs(request):
                     cus_tel = cus_bill_cus_tel,
                     cus_fax = cus_bill_cus_fax,
                     cus_email = cus_bill_cus_email,
-                    cus_taxid = cus_bill_cus_taxid,
                     cus_zone_id = cus_bill_cus_zone,
                     cus_contact_id = cus_bill_cus_contact_id,
                     site_contact_id = cus_bill_cus_contact_id,
