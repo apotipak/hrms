@@ -1656,7 +1656,7 @@ def check_post_daily_attend_status_history(request):
 	post_date = request.POST.get('post_date')
 	post_date = datetime.datetime.strptime(post_date, '%d/%m/%Y')	
 	post_date = str(post_date)[0:10]
-	sql = "select log_emptype,log_desc,log_type,upd_by from hisdlyplan_log where log_date='" + str(post_date) + "' order by log_desc;"
+	sql = "select log_emptype,log_desc,log_type,upd_by from hisdlyplan_log where log_date='" + str(post_date) + "' and log_id=1 order by log_desc;"
 	print(sql)
 	hisdlyplan_log_obj = None
 	try:				
@@ -1702,7 +1702,7 @@ def ajax_sp_post_daily_attend_progress(request):
 
 	progress_message = "Posting, please wait."
 	
-	sql = "select top 1 log_desc from hisdlyplan_log where log_date='" + str(post_date) + "' order by upd_date desc;"
+	sql = "select top 1 log_desc from hisdlyplan_log where log_date='" + str(post_date) + "' and log_id=1  order by upd_date desc;"
 	try:				
 		cursor = connection.cursor()
 		cursor.execute(sql)
