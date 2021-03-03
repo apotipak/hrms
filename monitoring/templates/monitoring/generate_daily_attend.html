@@ -23,7 +23,8 @@
 			    <h3 class="card-title lead"><i class="fas fa-user-cog"></i>&nbsp;&nbsp;สร้างตารางรับแจ้งเวร</h3>
 			    <div class="card-tools">
 			 		<!--<button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i></button>-->
-			      	<button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+			      	<!--<button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>-->
+			      	<button type="button" class="btn btn-tool" id="generate_daily_attend_history_button"><i class="fas fa-history"></i></button>
 			      	<!--<span class="badge badge-primary">Label</span>-->
 			    </div>
 			    <!-- /.card-tools -->
@@ -37,7 +38,7 @@
 				  <div class="form-row justify-content-center">
 				    <div class="col-auto form-inline">
 				      <label for="inlineFormInput">Date</label>&nbsp;&nbsp;
-				      <input type="text" class="form-control mb-2" id="id_generated_date" placeholder="dd/mm/yyyy">
+				      <input type="text" class="form-control mb-2" id="id_generated_date" placeholder="dd/mm/yyyy" readonly>
 				    </div>
 				    <div class="col-auto">
 				      <button type="button" id="generated_date_ok_button" class="btn btn-danger mb-2">&nbsp;&nbsp;Generate&nbsp;&nbsp;</button>&nbsp;
