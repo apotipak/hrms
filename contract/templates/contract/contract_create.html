@@ -2421,14 +2421,10 @@
                     result += "              <small>";
 
 
-                    // amnaj
                     // DEMO
-                    /*
                     if(data.cus_service_list[i]["op1"]==1) {
                       result += "              <button type='button' onclick='update_customer_service(" + data.cus_service_list[i]["srv_id"] + ")' class='btn btn-warning btn-xs btn-circle js-update-contract-service' data-toggle='modal'>&nbsp;<i class='fas fa-dollar-sign'></i>&nbsp;</button>&nbsp;&nbsp;&nbsp;";
                     }
-                    */
-                    //
 
 
                     result += "              <button type='button' onclick='update_customer_service(" + data.cus_service_list[i]["srv_id"] + ")' class='btn btn-info btn-xs js-update-contract-service' data-toggle='modal'>&nbsp;<i class='fas fa-pen fa-xs'></i>&nbsp;</button>";
@@ -3683,39 +3679,32 @@
 
             result += "      </div>";
 
-            // amnaj
             // DEMO
-            // Special - Update
-            result += "<div style='display:none;'>";
-            result += "<div class='clearfix pt-1'></div>";
-            
-            //result += "<div class='row col-12 bg-dark' style='display:none;'><b>SPECIAL BENEFITS.</b></div>"; 
+            //result += "<div style='display:none;'>"; // DEMO
+            result += "<div class='clearfix pt-1'></div>";                        
             result += "<div class='row col-12 bg-dark'><b>SPECIAL BENEFITS</b></div>";             
-
-            //result += "<div class='row col-12 bg-secondary' style='display:none;'>"; 
             result += "<div class='row col-12 bg-secondary'>"; 
-
             result += " <div class='form-group col-3'>";
             result += "   <label for='id_srv_special_position'>{% trans 'Position' %}</label>";
             result += "   <input id='id_srv_special_position' type='number' min='0' class='form-control form-control-sm' value='" + data.spay1 + "'>";
             result += " </div>";
-
             result += " <div class='form-group col-3'>";
             result += "   <label for='id_srv_special_incentive'>{% trans 'Incentive' %}</label>";
             result += "   <input id='id_srv_special_incentive' type='number' min='0' class='form-control form-control-sm' value='" + data.spay2 + "'>";
             result += " </div>";
-
             result += " <div class='form-group col-3'>";
             result += "   <label for='id_srv_special_cctv'>{% trans 'CCTV' %}</label>";
             result += "   <input id='id_srv_special_cctv' type='number' min='0' class='form-control form-control-sm' value='" + data.spay3 + "'>";
             result += " </div>";
-
             result += " <div class='form-group col-3'>";
             result += "   <label for='id_srv_special_traffic'>{% trans 'Traffic' %}</label>";
             result += "   <input id='id_srv_special_traffic' type='number' min='0' class='form-control form-control-sm' value='" + data.spay4 + "'>";
             result += " </div>";
             result += "</div>";
-            result += "</div>";
+            //result += "</div>"; // DEMO
+
+
+
 
 
 
@@ -3988,14 +3977,10 @@
               result += "            <div class='btn-group btn-group-sm nowrap'>";
               result += "              <small>";
 
-              // amnaj
               // DEMO
-              /*
               if(data.cus_service_list[i]["op1"]==1) {
                 result += "              <button type='button' onclick='update_customer_service(" + data.cus_service_list[i]["srv_id"] + ")' class='btn btn-warning btn-xs btn-circle js-update-contract-service' data-toggle='modal'>&nbsp;<i class='fas fa-dollar-sign fa-md'></i>&nbsp;</button>&nbsp;&nbsp;&nbsp;";
               }
-              */
-              //
 
               result += "              <button type='button' onclick='update_customer_service(" + data.cus_service_list[i]["srv_id"] + ")' class='btn btn-info btn-xs js-update-contract-service' data-toggle='modal'>&nbsp;<i class='fas fa-pen fa-xs'></i>&nbsp;</button>";
 
@@ -4495,13 +4480,10 @@
                 result += "            <div class='btn-group btn-group-sm nowrap'>";
                 result += "              <small>";
 
-                // amnaj
                 // DEMO
-                /*
                 if(data.cus_service_list[i]["op1"]==1) {
                   result += "              <button type='button' onclick='update_customer_service(" + data.cus_service_list[i]["srv_id"] + ")' class='btn btn-warning btn-xs btn-circle js-update-contract-service' data-toggle='modal'>&nbsp;<i class='fas fa-dollar-sign'></i>&nbsp;</button>&nbsp;&nbsp;&nbsp;";
                 }
-                */
 
                 result += "              <button type='button' onclick='update_customer_service(" + data.cus_service_list[i]["srv_id"] + ")' class='btn btn-info btn-xs js-update-contract-service' data-toggle='modal'>&nbsp;<i class='fas fa-pen fa-xs'></i>&nbsp;</button>";
 
@@ -4662,13 +4644,10 @@
               result += "            <div class='btn-group btn-group-sm nowrap'>";
               result += "              <small>";
 
-              // amnaj
               // DEMO
-              /*
               if(data.cus_service_list[i]["op1"]==1) {
                 result += "              <button type='button' onclick='update_customer_service(" + data.cus_service_list[i]["srv_id"] + ")' class='btn btn-warning btn-xs btn-circle js-update-contract-service' data-toggle='modal'>&nbsp;<i class='fas fa-dollar-sign'></i>&nbsp;</button>&nbsp;&nbsp;&nbsp;";
               }
-              */
 
               result += "              <button type='button' onclick='update_customer_service(" + data.cus_service_list[i]["srv_id"] + ")' class='btn btn-info btn-xs js-update-contract-service' data-toggle='modal'>&nbsp;<i class='fas fa-pen fa-xs'></i>&nbsp;</button>";
 
@@ -4947,40 +4926,29 @@
             result += "</div>";
 
 
-            // amnaj
             // DEMO
-            // Special - Add
-            result += "<div style='display:none;'>";
-
-            result += "<div class='clearfix pt-1'></div>";
-            
-            //result += "<div class='row col-12 bg-dark' style='display:none'><b>SPECIAL BENEFITS</b></div>"; 
+            //result += "<div style='display:none;'>"; // DMEO
+            result += "<div class='clearfix pt-1'></div>";            
             result += "<div class='row col-12 bg-dark'><b>SPECIAL BENEFITS</b></div>"; 
-
-            //result += "<div class='row col-12 bg-secondary' style='display:none'>";
             result += "<div class='row col-12 bg-secondary'>";
-
             result += " <div class='form-group col-3'>";
             result += "   <label for='id_srv_special_position'>{% trans 'Position' %}</label>";
             result += "   <input id='id_srv_special_position' type='number' min='0' class='form-control form-control-sm' value='0'>";
             result += " </div>";
-
             result += " <div class='form-group col-3'>";
             result += "   <label for='id_srv_special_incentive'>{% trans 'Incentive' %}</label>";
             result += "   <input id='id_srv_special_incentive' type='number' min='0' class='form-control form-control-sm' value='0'>";
             result += " </div>";
-
             result += " <div class='form-group col-3'>";
             result += "   <label for='id_srv_special_cctv'>{% trans 'CCTV' %}</label>";
             result += "   <input id='id_srv_special_cctv' type='number' min='0' class='form-control form-control-sm' value='0'>";
             result += " </div>";
-
             result += " <div class='form-group col-3'>";
             result += "   <label for='id_srv_special_traffic'>{% trans 'Traffic' %}</label>";
             result += "   <input id='id_srv_special_traffic' type='number' min='0' class='form-control form-control-sm' value='0'>";
             result += " </div>";
             result += "</div>";
-            result += "</div>";
+            //result += "</div>"; // DEMO
 
 
 

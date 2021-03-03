@@ -1059,9 +1059,8 @@ function checkSpecialBenefitList() {
 			var $el = $("#id_job_type_option");
 			$el.empty();			
 
-			// amnaj 
 			// DEMO
-			result = "<option value='00' selected>No special benefit</option>";
+			result = "<option value='00' selected>No special benefit</option>"; // DEMO
 			//result = "<option value='00' selected>00 :No</option>";
 
 			$el.append(result);
@@ -1103,9 +1102,8 @@ $(document).ready(function(){
 	// 111
 	$("#id_shift_option").change(function () {
 
-		// amnaj
 		// DEMO	
-		// checkSpecialBenefitList();
+		checkSpecialBenefitList(); // DEMO
 
 		/*
     	$("#id_job_type_option").attr("disabled", false);
@@ -3632,10 +3630,9 @@ $("#id_late_hour").click( function() {
 			$("#id_remark").attr("readonly", false);
 
 			$("#id_shift_option").attr("disabled", false);
-
-			// amnaj
+			
 			// DEMO
-			// checkSpecialBenefitList();
+			checkSpecialBenefitList(); // DEMO
 		}
 		
 		//console.log(ot_time_from + "," + ot_time_to);
