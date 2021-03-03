@@ -1060,8 +1060,8 @@ function checkSpecialBenefitList() {
 			$el.empty();			
 
 			// DEMO
-			result = "<option value='00' selected>No special benefit</option>"; // DEMO
-			//result = "<option value='00' selected>00 :No</option>";
+			//result = "<option value='00' selected>No special benefit</option>"; // DEMO
+			result = "<option value='00' selected>00 :No</option>";
 
 			$el.append(result);
 			if(data.job_type_list.length>0) {				
@@ -1099,98 +1099,11 @@ $(document).ready(function(){
 
 	$(":input").inputmask();
 
-	// 111
 	$("#id_shift_option").change(function () {
-
 		// DEMO	
-		checkSpecialBenefitList(); // DEMO
-
-		/*
-    	$("#id_job_type_option").attr("disabled", false);
-    	$("#id_job_type_option").attr("readonly", false);
-
-      	var cus_id = $('#id_cus_id').val();
-      	var cus_brn = $('#id_cus_brn').val();
-      	var cus_vol = $('#id_cus_vol').val();
-    	var shift_id = $("#id_shift_option").val();
-
-		$.ajax({
-	    	url : "/monitoring/ajax/get_job_type_list/",
-	    	type : "POST",
-	    	data : {          
-	      		csrfmiddlewaretoken: '{{ csrf_token }}',
-	      		cus_id: cus_id,
-	      		cus_brn: cus_brn,
-	      		cus_vol: cus_vol,
-	      		shift_id: shift_id,
-	    	},
-	    	success: function(data) {
-	    		// amnaj
-
-	    		for(var i=0; i<data.job_type_list.length; i++) {
-              		spay1 = data.job_type_list[i]["spay1"];
-              		spay2 = data.job_type_list[i]["spay2"];
-              		spay3 = data.job_type_list[i]["spay3"];
-              		spay4 = data.job_type_list[i]["spay4"];
-              		console.log(spay1 + ":" + spay2 + ":" + spay3 + ":" + spay4);
-              	}
-
-              	// id_job_type_option
-				var $el = $("#id_job_type_option");
-				$el.empty();				
-				result += "<option value='00' selected>00 :No</option>";
-				$el.append(result);
-				if(data.job_type_list.length>0) {
-					for(var i=0; i<data.job_type_list.length; i++) {
-						// $el.append($("<option></option>").attr("value", shf_id).text(shf_desc));
-					}
-				}
-
-	    	}
-	    });
-		*/
-
+		//checkSpecialBenefitList(); // DEMO
 	});
 
-
-	/*
-	$("#id_late_from").inputmask({
-		mask: '99/99/9999 99:99',
-		placeholder: ' ',
-		showMaskOnHover: false,
-		showMaskOnFocus: false,
-		onBeforePaste: function (pastedValue, opts) {
-			var processedValue = pastedValue;			
-			return processedValue;
-		}
-	});
-	*/
-
-
-	/*
-	$(":input").inputmask();
-	$("#phonemask").inputmask({
-		mask: '999 999 9999',
-		placeholder: ' ',
-		showMaskOnHover: false,
-		showMaskOnFocus: false,
-		onBeforePaste: function (pastedValue, opts) {
-			var processedValue = pastedValue;			
-			return processedValue;
-		}
-	});
-
-	$("#datetimemask").inputmask({
-		mask: '99/99/9999 99:99',
-		placeholder: ' ',
-		showMaskOnHover: false,
-		showMaskOnFocus: false,
-		onBeforePaste: function (pastedValue, opts) {
-			var processedValue = pastedValue;			
-			return processedValue;
-		}
-	});
-	*/
 });
 
 	$("#bulk_shift_status_form").submit(function(e) {
@@ -3632,7 +3545,7 @@ $("#id_late_hour").click( function() {
 			$("#id_shift_option").attr("disabled", false);
 			
 			// DEMO
-			checkSpecialBenefitList(); // DEMO
+			//checkSpecialBenefitList(); // DEMO
 		}
 		
 		//console.log(ot_time_from + "," + ot_time_to);
