@@ -2010,9 +2010,17 @@ def add_new_service(request):
             cus_service_obj = cursor.fetchone()
 
         if cus_service_obj is not None:
-            latest_service_number = cus_service_obj[0]
+            
+            if cus_service_obj[0] is None:
+                latest_service_number = 0
+            else:
+                latest_service_number = cus_service_obj[0]
+
             is_error = False
             message = "SUCCESS"
+            print("latest_service_number = ", latest_service_number)
+        else:
+            latest_service_number = 0
 
     except db.OperationalError as e:
         is_error = True
@@ -2023,14 +2031,17 @@ def add_new_service(request):
     finally:
         cursor.close()
 
+    print("DEBUG: message = ", message)
+    print("DEBUG: latest_service_number = ", latest_service_number)
+    
     if not is_error:
         latest_service_number = int(latest_service_number) + 1
         new_service_number = str(cnt_id) + str(latest_service_number)
     else:
         new_service_number = str(cnt_id) + "00001"
 
-    print("DEBUG: message = ", message)
-    print("DEBUG: latest_service_number = ", latest_service_number)
+    
+    
     print("DEBUG: new_service_number = ", new_service_number)
 
     # Generate new sch_no
