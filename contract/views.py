@@ -241,16 +241,8 @@ def get_customer(request):
             sql += "join t_citywage ct on cu.cus_city=ct.city_id ";
             sql += "join t_wagezone wz on ct.wage_id=wz.wage_id ";
             sql += "where cu.cus_id=" + str(cus_id) + " and cu.cus_brn=" + str(cus_brn) + ";"
-            print("DEBUG sql:", sql)
 
             if customer.cus_city_id is not None:
-                '''
-                sql = "select cus.cus_city,wz.wage_id,wz.wage_en from customer cus "
-                sql += "join t_city c on cus.cus_city=c.city_id "
-                sql += "join t_citywage cw on cus.cus_city=cw.city_id "
-                sql += "join t_wagezone wz on cus.cus_city=wz.wage_city "
-                sql += "where cus.cus_id=" + str(cus_id) + " and cus.cus_brn=" + str(cus_brn) + ";"
-                '''
                 try:
                     with connection.cursor() as cursor:     
                         cursor.execute(sql)
@@ -276,8 +268,34 @@ def get_customer(request):
                 is_error = True
                 message = "Default wage_id is no found."
 
-            print("DEBUG message:", message)
+            # Get default Effective To
+            default_sign_to = None
+            default_effective_to = None
+            message = ""                                  
+            sql = "select cnt_sign_to, cnt_eff_to from cus_contract where cus_id=" + str(cus_id) + " and cus_brn=" + str(cus_brn) + " and cus_vol=1;"
+            try:
+                with connection.cursor() as cursor:     
+                    cursor.execute(sql)
+                    cus_contract_obj = cursor.fetchone()
 
+                if cus_contract_obj is not None:
+                    default_sign_to = cus_contract_obj[0].strftime("%d/%m/%Y")
+                    default_effective_to = cus_contract_obj[1].strftime("%d/%m/%Y")
+                
+                message = "OK"
+                is_error = False
+            except db.OperationalError as e:
+                is_error = True
+                message = "Please send this error to IT team or try again | " + str(e)                    
+            except db.Error as e:
+                is_error = True
+                message = "Please send this error to IT team or try again | " + str(e)
+            finally:
+                cursor.close()
+            
+            print("default_effective_to:", default_effective_to)                        
+            print("default_sign_to:", default_sign_to)
+                
             response = JsonResponse(data={
                 # TH
                 "success": True,
@@ -322,6 +340,9 @@ def get_customer(request):
                 "default_wage_en": default_wage_en,
                 "default_wage_th": default_wage_th,
                 "default_wage_8hr": default_wage_8hr,
+
+                "default_sign_to": default_sign_to,
+                "default_effective_to": default_effective_to,
             })
 
             response.status_code = 200
