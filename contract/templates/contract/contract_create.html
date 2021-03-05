@@ -543,9 +543,11 @@
               <div class="form-inline col-12">
                 <label for="id_cnt_wage_id"><span class='text-danger'>*</span>&nbsp;{% trans 'Wage Rate' %}&nbsp;&nbsp;</label>
                 <div class="input-group-append col-12" style="padding:0 0 0 3px;">
-                  <input type="text" id="id_wage_id_text" value="{{contract.cnt_wage_id_id}} " class="form-control form-control-sm text-center text-light col-1" style="border-style: none none none none; border-top-right-radius:0px;border-bottom-right-radius:0px; font-weight: bold; font-size: 16px; background-color: #509861;" readonly="">
-                  <input type="text" id="id_cnt_wage_id_text" name="cnt_wage_id" class="form-control form-control-sm col-10" value="{{contract.cnt_wage_id.wage_en}}{{contract.cnt_wage_id.wage_8hr}}" style="border-style: 1px none 1px none; border-top-left-radius:0px;border-bottom-left-radius:0px;  border-top-right-radius:0px; border-bottom-right-radius:0px;" readonly>                  
-                  <button id="wage_rate_lookup" type="button" class="btn btn-outline-primary btn-sm col-1" style="border-top-left-radius:0px;border-bottom-left-radius:0px;"data-toggle="modal" data-url="{% url 'get_wagerate_list' %}"><i class="fas fa-search fa-sm"></i></button>
+                  <input type="text" id="id_wage_id_text" value="{{contract.cnt_wage_id_id}} " class="form-control form-control-sm text-center text-dark col-1" style="border-style: none none none none; border-top-right-radius:0px;border-bottom-right-radius:0px; font-weight: bold; font-size: 16px; background-color: #deba4f;" readonly="">
+                  <input type="text" id="id_cnt_wage_id_text" name="cnt_wage_id" class="form-control form-control-sm col-10 bg-light" value="{{contract.cnt_wage_id.wage_en}}{{contract.cnt_wage_id.wage_8hr}}" style="border-style: 1px none 1px none; border-top-left-radius:0px;border-bottom-left-radius:0px;  border-top-right-radius:0px; border-bottom-right-radius:0px;" readonly>                  
+                  
+                  <button id="wage_rate_lookup" type="button" class="btn btn-sm col-1" style="border-top-left-radius:0px;border-bottom-left-radius:0px;background-color: #deba4f;" data-toggle="modal" data-url="{% url 'get_wagerate_list' %}"><i class="fas fa-search fa-md"></i></button>
+
                   <input type="hidden" id="id_cnt_wage_id" name="cnt_wage_id" value="{{ contract.cnt_wage_id_id|default_if_none:'' }}">
                 </div>                
               </div>
@@ -2061,6 +2063,7 @@
             $('#id_cus_zone_en').val(json.cus_zone_id + " | " + json.cus_zone_en);
 
             $('#id_wage_id_text').val(json.default_wage_id);
+            $('#id_cnt_wage_id').val(json.default_wage_id);
             $('#id_cnt_wage_id_text').val(json.default_wage_en + " | " + json.default_wage_8hr);
 
             $('#id_cus_vol').focus();
@@ -2078,6 +2081,7 @@
             });
 
             $('#id_wage_id_text').val("");
+            $('#id_cnt_wage_id').val("");
             $('#id_cnt_wage_id_text').val("");
 
             $('#id_cus_brn').focus();
