@@ -2019,7 +2019,7 @@
 
 
             $('#customer_name_title').html("<button type='button' class='btn text-light' style='background-color: #018349;'><span style='font-size:18px;font-weight:bold;'>" + cus_name_th_new + "</span>&nbsp;&nbsp;&nbsp;<span class='badge badge-light'>" + json.cus_zone_id + " | " + json.cus_zone_th + "</span></button><small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-light'></i></button></small>");
-
+        
             $('#id_cus_name_th').val(json.cus_name_th);
             $('#id_cus_sht_th').val(json.cus_sht_th);
             $('#id_cus_add_th').val(json.cus_add_th);
@@ -2060,10 +2060,26 @@
             $('#id_cus_zone_th').val(json.cus_zone_id + " | " + json.cus_zone_th);
             $('#id_cus_zone_en').val(json.cus_zone_id + " | " + json.cus_zone_en);
 
+            $('#id_wage_id_text').val(json.default_wage_id);
+            $('#id_cnt_wage_id_text').val(json.default_wage_en + " | " + json.default_wage_8hr);
+
             $('#id_cus_vol').focus();
           }
-          else {
-            alert("Customer " + cus_id + " Branch " + cus_brn + " does not existed. Please create a new customer.");
+          else {            
+            $.alert({
+                title: 'Error',
+                type: 'red',
+                content: "ลูกค้ารหัส <b>" + cus_id + cus_brn + "</b> ยังไม่มีในระบบ กรุณาตรวจสอบ",
+                animation: 'zoom',
+                animationBounce: 1.5,
+                closeIcon: false,
+                boxWidth: '38%',
+                useBootstrap: false,
+            });
+
+            $('#id_wage_id_text').val("");
+            $('#id_cnt_wage_id_text').val("");
+
             $('#id_cus_brn').focus();
           }
         },

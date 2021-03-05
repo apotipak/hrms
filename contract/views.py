@@ -31,6 +31,7 @@ from wsgiref.util import FileWrapper
 from django.http import HttpResponse, Http404
 from django.http import FileResponse
 from django.db import connection
+import django.db as db
 import docx
 import win32com.client
 from num2words import num2words
@@ -169,6 +170,7 @@ def get_customer(request):
 
             if customer.cus_district_id is not None:
                 cus_district_id = customer.cus_district_id
+
                 cus_district_th = customer.cus_district.dist_th
                 cus_district_en = customer.cus_district.dist_en
             else:
@@ -227,6 +229,55 @@ def get_customer(request):
                 site_contact_cus_zone_th = ""
                 site_contact_cus_zone_en = ""
 
+
+            # Get default wage rate
+            default_customer_city_id = None
+            default_wage_id = None
+            default_wage_en = ""
+            default_wage_th = ""
+            default_wage_8hr = 0 
+            message = ""                      
+            sql = "select cu.cus_city,ct.wage_id,wz.wage_en,wz.wage_th,wz.wage_8hr from customer cu ";
+            sql += "join t_citywage ct on cu.cus_city=ct.city_id ";
+            sql += "join t_wagezone wz on ct.wage_id=wz.wage_id ";
+            sql += "where cu.cus_id=" + str(cus_id) + " and cu.cus_brn=" + str(cus_brn) + ";"
+            print("DEBUG sql:", sql)
+
+            if customer.cus_city_id is not None:
+                '''
+                sql = "select cus.cus_city,wz.wage_id,wz.wage_en from customer cus "
+                sql += "join t_city c on cus.cus_city=c.city_id "
+                sql += "join t_citywage cw on cus.cus_city=cw.city_id "
+                sql += "join t_wagezone wz on cus.cus_city=wz.wage_city "
+                sql += "where cus.cus_id=" + str(cus_id) + " and cus.cus_brn=" + str(cus_brn) + ";"
+                '''
+                try:
+                    with connection.cursor() as cursor:     
+                        cursor.execute(sql)
+                        wage_rate_obj = cursor.fetchone()
+
+                    if wage_rate_obj is not None:
+                        default_customer_city_id = wage_rate_obj[0]
+                        default_wage_id = wage_rate_obj[1]
+                        default_wage_en = wage_rate_obj[2]
+                        default_wage_th = wage_rate_obj[3]
+                        default_wage_8hr = wage_rate_obj[4]                        
+                    message = "OK"
+                    is_error = False
+                except db.OperationalError as e:
+                    is_error = True
+                    message = "Please send this error to IT team or try again | " + str(e)                    
+                except db.Error as e:
+                    is_error = True
+                    message = "Please send this error to IT team or try again | " + str(e)
+                finally:
+                    cursor.close()
+            else:                
+                is_error = True
+                message = "Default wage_id is no found."
+
+            print("DEBUG message:", message)
+
             response = JsonResponse(data={
                 # TH
                 "success": True,
@@ -265,8 +316,14 @@ def get_customer(request):
                 "cus_email": cus_email,
                 "cus_zone_id": site_contact_cus_zone_id,
                 "cus_zone_th": site_contact_cus_zone_th,
-                "cus_zone_en": site_contact_cus_zone_en,
+                "cus_zone_en": site_contact_cus_zone_en,                
+                
+                "default_wage_id": default_wage_id,
+                "default_wage_en": default_wage_en,
+                "default_wage_th": default_wage_th,
+                "default_wage_8hr": default_wage_8hr,
             })
+
             response.status_code = 200
             return response
         except Customer.DoesNotExist:            
