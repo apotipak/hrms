@@ -2002,7 +2002,7 @@ def add_new_service(request):
     # Generate new sch_no NEW
     latest_service_number = 0
     is_error = True
-    sql = "select max(right(srv_id,5)) from cus_service where cnt_id=" + str(cnt_id) + ";"
+    sql = "select max(right(srv_id,4)) from cus_service where cnt_id=" + str(cnt_id) + ";"
     message = ""
     try:
         with connection.cursor() as cursor:     
@@ -2033,12 +2033,12 @@ def add_new_service(request):
 
     print("DEBUG: message = ", message)
     print("DEBUG: latest_service_number = ", latest_service_number)
-    
+
     if not is_error:
         latest_service_number = int(latest_service_number) + 1
-        new_service_number = str(cnt_id) + str(latest_service_number)
-    else:
-        new_service_number = str(cnt_id) + "00001"
+        new_service_number = str(cnt_id) + str(latest_service_number).zfill(5)        
+    # else:
+    #    new_service_number = str(cnt_id) + "00001"
 
     
     
