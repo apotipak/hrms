@@ -1955,12 +1955,7 @@ def add_new_service(request):
         response.status_code = 200
         return response
 
-    # srv_eff_from = request.GET["srv_eff_frm_new"]
-    print("srv_eff_frm = " + str(request.GET["srv_eff_frm_new"]))
     srv_eff_from = datetime.datetime.strptime(request.GET["srv_eff_frm_new"], "%d/%m/%Y").date()
-
-    # srv_eff_to = request.GET["srv_eff_to_new"].strftime("%d/%m/%Y")
-    # srv_eff_to = datetime.datetime.strptime(request.GET["srv_eff_to_new"], "%d/%m/%Y").date()
 
     srv_eff_to_new_status = request.GET["srv_eff_to_new_status"]    
     if srv_eff_to_new_status=="1":
@@ -2001,13 +1996,55 @@ def add_new_service(request):
     # print("cnt_id = " + str(cnt_id))
     # print("----------------------------")
 
+
+
+
+    # Generate new sch_no NEW
+    latest_service_number = 0
+    is_error = True
+    sql = "select max(right(srv_id,5)) from cus_service where cnt_id=" + str(cnt_id) + ";"
+    message = ""
+    try:
+        with connection.cursor() as cursor:     
+            cursor.execute(sql)
+            cus_service_obj = cursor.fetchone()
+
+        if cus_service_obj is not None:
+            latest_service_number = cus_service_obj[0]
+            is_error = False
+            message = "SUCCESS"
+
+    except db.OperationalError as e:
+        is_error = True
+        message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+    except db.Error as e:
+        is_error = True
+        message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+    finally:
+        cursor.close()
+
+    if not is_error:
+        latest_service_number = int(latest_service_number) + 1
+        new_service_number = str(cnt_id) + str(latest_service_number)
+    else:
+        new_service_number = str(cnt_id) + "00001"
+
+    print("DEBUG: message = ", message)
+    print("DEBUG: latest_service_number = ", latest_service_number)
+    print("DEBUG: new_service_number = ", new_service_number)
+
+    # Generate new sch_no
+    '''
     latest_service_number = CusService.objects.filter(cnt_id=cnt_id).aggregate(Max('srv_id'))
     latest_service_number = latest_service_number['srv_id__max']
-
     if latest_service_number is not None:
         new_service_number = latest_service_number + 1
     else:
         new_service_number = str(cnt_id) + "00001"
+    '''
+
+    # print("DEBUG : latest_service_number = ", latest_service_number)
+    # print("DEBUG : cnt_id = ", cnt_id)
 
     s = CusService(
         srv_id = new_service_number,
