@@ -541,7 +541,7 @@
 
             <div class="form-row">              
               <div class="form-inline col-12">
-                <label for="id_cnt_wage_id"><span class='text-danger'>*</span>&nbsp;{% trans 'Wage Rate' %}&nbsp;&nbsp;</label>
+                <label for="id_cnt_wage_id"><span class='text-danger'>*</span>&nbsp;{% trans 'Wage Rate' %}&nbsp;&nbsp;<small class="text-dark">กรุณาตรวจสอบค่า Wage Rate ให้แน่ใจก่อนบันทึกข้อมูล</small></label>
                 <div class="input-group-append col-12" style="padding:0 0 0 3px;">
                   <input type="text" id="id_wage_id_text" value="{{contract.cnt_wage_id_id}} " class="form-control form-control-sm text-center text-dark col-1" style="border-style: none none none none; border-top-right-radius:0px;border-bottom-right-radius:0px; font-weight: bold; font-size: 16px; background-color: #deba4f;" readonly="">
                   <input type="text" id="id_cnt_wage_id_text" name="cnt_wage_id" class="form-control form-control-sm col-10 bg-light" value="{{contract.cnt_wage_id.wage_en}}{{contract.cnt_wage_id.wage_8hr}}" style="border-style: 1px none 1px none; border-top-left-radius:0px;border-bottom-left-radius:0px;  border-top-right-radius:0px; border-bottom-right-radius:0px;" readonly>                  
@@ -1174,6 +1174,28 @@
       $('#id_cnt_sign_to').attr('readonly', true);
     }    
   }
+
+
+
+  $(document).ready(function(){
+
+    $("#id_cus_id").on('click', function(){
+      $("#id_cus_id").select();
+    });
+    $("#id_cus_brn").on('click', function(){
+      $("#id_cus_brn").select();
+    });
+    $("#id_cus_vol").on('click', function(){
+      $("#id_cus_vol").select();
+    });
+
+    $('#id_cus_id').focus();
+    window.setTimeout(function() {
+      $('#id_cus_id').select();
+    }, 10);
+    
+  });
+
 
 
   $(document).ready(function(){
@@ -1957,6 +1979,7 @@
               $('#customer_name_title').html("<button type='button' class='btn text-light' style='background-color: #018349;'><span style='font-size:18px;font-weight:bold;'>" + cus_name_th_new + "</span>&nbsp;&nbsp;&nbsp;<span class='badge badge-light'>Zone" + "</span></button><small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-light'></i></button></small>");
 
               $('#id_cus_brn').focus();
+              $('#id_cus_brn').select();
 
             } else {              
               $('#id_cus_id').focus();
@@ -2067,6 +2090,7 @@
             $('#id_cnt_wage_id_text').val(json.default_wage_en + " | " + json.default_wage_8hr);
 
             $('#id_cus_vol').focus();
+            $('#id_cus_vol').select();
           }
           else {            
             $.alert({
@@ -2584,7 +2608,8 @@
     event.preventDefault();
 
     //$('#contract_number_form')[0].reset();
-    $('#contract_number_form').trigger("reset");
+    //$('#contract_number_form').trigger("reset");
+    //$('#id_cus_vol').val("");
     
     //$('#contractupdateform')[0].reset();
     $('#contractupdateform').trigger("reset");
@@ -2606,6 +2631,7 @@
     $("#id_cus_zone_id").val("");
 
     $("#id_cus_id").focus();
+    $('#id_cus_id').select();
   });
 
 
