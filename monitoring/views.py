@@ -6937,11 +6937,10 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 		sql += "and dly_date>='" + str(search_date_from) + "' "
 		sql += "and dly_date<='" + str(search_date_to) + "' "
 		sql += "order by dly_date,sch_shift"
-		# print("SQL:", sql)
+		# print("DEBUG SQL:", sql)
 		try:
 			with connection.cursor() as cursor:		
 				cursor.execute(sql)
-
 
 		except db.OperationalError as e:
 			is_error = True
@@ -6954,18 +6953,43 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 		finally:
 			cursor.close()
 
+		print("DEBUG message = ", message)
+
 		if DlyPerRs is not None:
 			if len(DlyPerRs) > 0:
 				for i in range(0, len(DlyPerRs)):
 					absent = DlyPerRs[i][21]
 					shf_amt_hr = DlyPerRs[i][6]
 					
-					bas_amt = DlyPerRs[i][38] if DlyPerRs[i][38]>0 else 0
-					otm_amt = DlyPerRs[i][52] if DlyPerRs[i][52]>0 else 0
-					bon_amt = DlyPerRs[i][39] if DlyPerRs[i][39]>0 else 0
-					pub_amt = DlyPerRs[i][40] if DlyPerRs[i][40]>0 else 0
-					dof_amt = DlyPerRs[i][53] if DlyPerRs[i][53]>0 else 0
-					ex_dof_amt = DlyPerRs[i][62] if DlyPerRs[i][62]>0 else 0
+					if  DlyPerRs[i][38] is not None:
+						bas_amt = DlyPerRs[i][38] if DlyPerRs[i][38]>0 else 0
+					else:
+						bas_amt = 0
+					
+					if  DlyPerRs[i][52] is not None:
+						otm_amt = DlyPerRs[i][52] if DlyPerRs[i][52]>0 else 0
+					else:
+						otm_amt = 0
+
+					if  DlyPerRs[i][39] is not None:
+						bon_amt = DlyPerRs[i][39] if DlyPerRs[i][39]>0 else 0
+					else:
+						bon_amt = 0
+
+					if  DlyPerRs[i][40] is not None:
+						pub_amt = DlyPerRs[i][40] if DlyPerRs[i][40]>0 else 0
+					else:
+						pub_amt = 0
+
+					if  DlyPerRs[i][53] is not None:
+						dof_amt = DlyPerRs[i][53] if DlyPerRs[i][53]>0 else 0
+					else:
+						dof_amt = 0
+
+					if  DlyPerRs[i][62] is not None:
+						ex_dof_amt = DlyPerRs[i][62] if DlyPerRs[i][62]>0 else 0
+					else:
+						ex_dof_amt = 0
 
 					if absent==int(1):
 						print("absent = true")

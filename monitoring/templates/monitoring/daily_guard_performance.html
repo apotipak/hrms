@@ -117,37 +117,37 @@
 				<form id="id_income_information_form">
 				  <div class="form-row">
 				    <div class="col text-center">
-				      <label>Hours&nbsp;&nbsp;<small><small>รวมชั่วโมงทำงาน</small></small></label>
+				      <label>Hours&nbsp;&nbsp;<small>รวมชั่วโมงทำงาน</small></label>
 				      <input type="text" class="form-control form-control-md bg-success text-light" style="text-align:center;font-weight:bold;" placeholder="" id="id_hours" readonly="">
 				    </div>
 
 				    <div class="col text-center">
-				      <label>Day&nbsp;&nbsp;<small><small>รวมวันทำงาน</small></small></label>
+				      <label>Day&nbsp;&nbsp;<small>รวมวันทำงาน</small></label>
 				      <input type="text" class="form-control form-control-md bg-success text-light" style="text-align:center;font-weight:bold;" placeholder="" id="id_day" readonly="">
 				    </div>
 
 				    <div class="col text-center">
-				      <label>BAS&nbsp;&nbsp;<small><small>เงินเดือน</small></small></label>
+				      <label>BAS&nbsp;&nbsp;<small>เงินเดือน</small></label>
 				      <input type="text" class="form-control form-control-md bg-success text-light" style="text-align:center;font-weight:bold;" placeholder="" id="id_bas" readonly="">
 				    </div>
 
 				    <div class="col text-center">
-				      <label>GOT&nbsp;&nbsp;<small><small>ค่าล่วงเวลา</small></small></label>
+				      <label>GOT&nbsp;&nbsp;<small>ค่าล่วงเวลา</small></label>
 				      <input type="text" class="form-control form-control-md bg-success text-light" style="text-align:center;font-weight:bold;" placeholder="" id="id_got" readonly="">
 				    </div>
 
 				    <div class="col text-center">
-				      <label>BON&nbsp;&nbsp;<small><small>โบนัส</small></small></label>
+				      <label>BON&nbsp;&nbsp;<small>โบนัส</small></label>
 				      <input type="text" class="form-control form-control-md bg-success text-light" style="text-align:center;font-weight:bold;" placeholder="" id="id_bon" readonly="">
 				    </div>
 
 				    <div class="col text-center">
-				      <label>PUB&nbsp;&nbsp;<small><small>ทำตรงวันหยุดบริษัท</small></small></label>
+				      <label>PUB&nbsp;&nbsp;<small>ทำตรงวันหยุดบริษัท</small></label>
 				      <input type="text" class="form-control form-control-md bg-success text-light" style="text-align:center;font-weight:bold;" placeholder="" id="id_pub" readonly="">
 				    </div>
 
 				    <div class="col text-center">
-				      <label>DOF&nbsp;&nbsp;<small><small>ทำตรงวันหยุด</small></small></label>
+				      <label>DOF&nbsp;&nbsp;<small>ทำตรงวันหยุด</small></label>
 				      <input type="text" class="form-control form-control-md bg-success border-success text-light" style="text-align:center;font-weight:bold;" placeholder="" id="id_dof" readonly="">
 				    </div>
 				  </div>
@@ -726,7 +726,7 @@ function displayList(emp_id, search_date_from, search_date_to) {
 					result += "      <th scope='col' nowrap>Call Time</th>";
 					result += "      <th scope='col' nowrap>Call Amt</th>";
 					result += "      <th scope='col' class='text-center' nowrap>Call Paid</th>";
-					result += "      <th scope='col'>OT</th>";				
+					result += "      <th scope='col'>OT.</th>";				
 					result += "      <th scope='col'>Reason</th>";
 
 					result += "      <th scope='col'>From</th>";
@@ -782,7 +782,7 @@ function displayList(emp_id, search_date_from, search_date_to) {
 						result += "<td>" + count + "</td>";
 						result += "<td>" + cnt_id + "</td>";
 						result += "<td>" + dly_date + "</td>";
-						result += "<td>" + rank + "</td>";
+						result += "<td align='center'>" + rank + "</td>";
 						result += "<td nowrap>" + shift + "</td>";
 						result += "<td>" + bas_amt + "</td>";
 						result += "<td>" + got_amt + "</td>";
@@ -803,7 +803,7 @@ function displayList(emp_id, search_date_from, search_date_to) {
 							//
 							result += "<td class='text-center'><i class='fas fa-phone-alt fa-xs text-success'></i></td>";
 							result += "<td nowrap>" + tel_time + "</td>";
-							result += "<td>" + tel_amt + "</td>";
+							result += "<td align='center'>" + tel_amt + "</td>";
 							result += "<td class='text-center'><i class='fas fa-check fa-xs text-success'></i></td>";
 						} else {
 							result += "<td class='text-center'>&nbsp;</td>";
@@ -814,19 +814,19 @@ function displayList(emp_id, search_date_from, search_date_to) {
 						
 						
 						if(ot_status)
-							result += "<td>" + ot_status + "</td>";
+							result += "<td align='center'>" + ot_status + "</td>";
 						else
 							result += "<td>&nbsp;</td>";
 
-						result += "<td>" + ot_reason + "</td>";
+						result += "<td align='center'>" + ot_reason + "</td>";
 						result += "<td>" + ot_time_frm + "</td>";
 						result += "<td>" + ot_time_to + "</td>";
-						result += "<td>" + ot_hr_amt + "</td>";
-						result += "<td>" + ot_pay_amt + "</td>";
+						result += "<td align='center'>" + ot_hr_amt + "</td>";
+						result += "<td align='center'>" + ot_pay_amt + "</td>";
 
-						result += "<td>" + spare + "</td>";
-						result += "<td>" + wage_id + "</td>";
-						result += "<td>" + pay_type + "</td>";
+						result += "<td align='center'>" + spare + "</td>";
+						result += "<td align='center'>" + wage_id + "</td>";
+						result += "<td align='center'>" + pay_type + "</td>";
 
 						if(soc_status) {
 							result += "<td class='text-center'><i class='fas fa-check fa-xs text-success'></i></td>";
@@ -908,7 +908,7 @@ function displayList(emp_id, search_date_from, search_date_to) {
 				result += "      <th scope='col'>HR</th>";
 				result += "      <th scope='col'>Paid(OT)</th>";
 				result += "      <th scope='col'>Spare</th>";
-				result += "      <th scope='col'>Wage</th>";
+				result += "      <th scope='col' class='text-center'>Wage</th>";
 				result += "      <th scope='col'>Pay Type</th>";
 				result += "      <th scope='col' class='text-center'>SOC</th>";
 				result += "      <th scope='col' class='text-center'>PUB</th>";
@@ -952,7 +952,7 @@ function displayList(emp_id, search_date_from, search_date_to) {
 					result += "<td>" + ot_hr_amt + "</td>";
 					result += "<td>" + ot_pay_amt + "</td>";
 					result += "<td>" + spare + "</td>";
-					result += "<td>" + wage_id + "</td>";
+					result += "<td align='center'>" + wage_id + "</td>";
 					result += "<td>" + pay_type + "</td>";
 
 					if(soc_status) {
@@ -1003,9 +1003,9 @@ function displayList(emp_id, search_date_from, search_date_to) {
 				result += "      <th scope='col'>Rank</th>";
 				result += "      <th scope='col'>Shift</th>";
 				result += "      <th scope='col' class='text-center'>Relief</th>";
-				result += "      <th scope='col'>Rel.ID</th>";
-				result += "      <th scope='col'>Wage</th>";
-				result += "      <th scope='col'>Pay Type</th>";
+				result += "      <th scope='col' class='text-center'>Rel.ID</th>";
+				result += "      <th scope='col' class='text-center'>Wage</th>";
+				result += "      <th scope='col' class='text-center'>Pay Type</th>";
 				result += "    </tr>";
 				result += "  </thead>";
 				result += "  <tbody>";
@@ -1037,9 +1037,9 @@ function displayList(emp_id, search_date_from, search_date_to) {
 						result += "<td class='text-center'>" + relief_status + "</td>";
 					}
 					
-					result += "<td>" + rel_id + "</td>";
-					result += "<td>" + wage_id + "</td>";
-					result += "<td>" + pay_type + "</td>";
+					result += "<td align='center'>" + rel_id + "</td>";
+					result += "<td align='center'>" + wage_id + "</td>";
+					result += "<td align='center'>" + pay_type + "</td>";
 					result += "</tr>";
 					count++;
 				}
