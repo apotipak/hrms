@@ -7130,7 +7130,11 @@ def generate_dgp_500(request, *args, **kwargs):
 					shf_desc = row[4]
 					sch_rank = row[5]
 					pay_type = row[6]
-					otm_amt = row[10]
+					
+					if row[10] is not None:
+						otm_amt = row[10]
+					else:
+						otm_amt = 0						
 
 					if pay_type!="LWO":
 						sum_otm_amt += otm_amt
@@ -7139,22 +7143,43 @@ def generate_dgp_500(request, *args, **kwargs):
 					if pay_type!="LWO":
 						sum_shf_amt_hr += shf_amt_hr
 
-					bas_amt = row[7]
+					if row[7] is not None:
+						bas_amt = row[7]
+					else:
+						bas_amt =0
+
 					sum_bas_amt += bas_amt
 
-					ot_hr_amt = row[16]
+					if row[16] is not None:
+						ot_hr_amt = row[16]
+					else:
+						ot_hr_amt = 0
+
 					sum_ot_hr_amt += ot_hr_amt
 
-					bon_amt = row[8]
+					if row[8] is not None:
+						bon_amt = row[8]
+					else:
+						bon_amt = 0
 					sum_bon_amt += bon_amt
 
-					pub_amt = row[9]
+					if row[9] is not None:
+						pub_amt = row[9]
+					else:
+						pub_amt = 0
 					sum_pub_amt += pub_amt
 					
-					tel_amt = row[13]
+					if row[13] is not None:
+						tel_amt = row[13]
+					else:
+						tel_amt = 0
 					sum_tel_amt += tel_amt
 
-					dof = row[11]
+					if row[11] is not None:
+						dof = row[11]
+					else:
+						dof = 0
+
 					sum_dof += dof
 
 					spare = row[12]
@@ -7356,31 +7381,53 @@ def export_dgp_500_xls(request):
 		shf_desc = row[4]
 		sch_rank = row[18]
 		pay_type = row[15]
-		otm_amt = row[5]
 
-		if pay_type!="LWO":
+		if row[5] is not None:
+			otm_amt = row[5]
+		else:
+			otm_amt = 0
+
+		if pay_type!="LWO":			
 			sum_otm_amt += otm_amt
 			
 		shf_amt_hr = row[6]
 		if pay_type!="LWO":
 			sum_shf_amt_hr += shf_amt_hr
 
-		bas_amt = row[7]
+		if row[7] is not None:
+			bas_amt = row[7]
+		else:
+			bas_amt = 0
 		sum_bas_amt += bas_amt
 
-		ot_hr_amt = row[8]
+		if row[8] is not None:
+			ot_hr_amt = row[8]
+		else:
+			ot_hr_amt = 0
 		sum_ot_hr_amt += ot_hr_amt
 
-		bon_amt = row[9]
+		if row[9] is not None:
+			bon_amt = row[9]
+		else:
+			bon_amt = 0
 		sum_bon_amt += bon_amt
 
-		pub_amt = row[10]
+		if row[10] is not None:
+			pub_amt = row[10]
+		else:
+			pub_amt = 0
 		sum_pub_amt += pub_amt
 		
-		tel_amt = row[11]
+		if row[11] is not None:
+			tel_amt = row[11]
+		else:
+			tel_amt = 0
 		sum_tel_amt += tel_amt
 
-		dof = row[12]
+		if row[12] is not None:
+			dof = row[12]
+		else:
+			dof = 0
 		sum_dof += dof
 
 		spare = row[13]
