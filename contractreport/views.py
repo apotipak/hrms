@@ -12,6 +12,7 @@ import django.db as db
 from django.db import connection
 from page.rules import *
 from django.utils import timezone
+from system.models import ComZone
 
 
 @permission_required('contractreport.can_access_contract_list_report', login_url='/accounts/login/')
@@ -22,18 +23,9 @@ def ContractListReport(request):
     project_name = settings.PROJECT_NAME
     project_version = settings.PROJECT_VERSION  
     today_date = settings.TODAY_DATE
-    response_data = dict()
+    
+    zone_list = ComZone.objects.all().order_by('zone_id')
 
-    if request.method == "POST":
-        if form.is_valid():          
-            response_data['form_is_valid'] = True            
-        else:            
-            response_data['form_is_valid'] = False
-
-        return JsonResponse(response_data)     
-    else:
-        print("GET: contract_create()")
-        
     return render(request, 'contractreport/contract_list_report.html', 
         {
         'page_title': page_title, 
@@ -43,4 +35,5 @@ def ContractListReport(request):
         'today_date': today_date,
         'database': settings.DATABASES['default']['NAME'],
         'host': settings.DATABASES['default']['HOST'],
+        "zone_list": zone_list,
         })

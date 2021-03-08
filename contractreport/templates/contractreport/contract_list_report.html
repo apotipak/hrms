@@ -15,15 +15,36 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">{% trans 'Report - Contract List' %}</h1>
+            <h4 class="m-0 text-dark">{% trans 'Report - Contract List' %}</h4>
           </div>
           <div class="col-sm-6">
-            <!--
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="/">Home</a></li>
-              <li class="breadcrumb-item active">Contract</li>
+            <ol class="breadcrumb float-sm-right">              
+              <!--<li class="breadcrumb-item active">Print</li>-->
+
+
+		<!--        
+        <div class="card-tools pt-1 pr-1">
+
+
+          <button class="btn btn-outline-primary btn-sm dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-print fa-sm"></i>&nbsp;&nbsp;Print
+          </button>
+
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+            
+            <font size='2.8em;'>
+            <a class="dropdown-item" href="#" onclick="print_report()"><i class="fa fa-eye text-secondary" aria-hidden="true"></i>&nbsp;&nbsp;Display on screen</a>
+            
+            <input type="hidden" id="id_cnt_id_temp" name="cnt_id_temp" value="">
+
+            <a class="dropdown-item" href="#" onclick="download_report('{{contract.cnt_id}}')"><i class="fas fa-download text-secondary"></i>&nbsp;&nbsp;Download file</a>            
+        	</font>
+          </div>
+
+        </div>
+		-->
+
             </ol>
-            -->
           </div>
         </div>
       </div>
@@ -32,6 +53,42 @@
 
     <!-- Main content -->
     <section class="content">
+
+	  	<div class="col-12">
+	      <form method="post" autocomplete="off" id="search_form">
+	        {% csrf_token %}
+	        <div class="card-body" style="padding: 0;">   
+	          <div class="form-group">                                    
+	            <div class="input-group col-12">
+
+	            	<div class="input-group-prepend pr-2 pt-1"><label>Contract No</label></div>
+	              	<div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:60px;">From</span></div>
+	              	<input type="number" name="start_date" class="form-control border-bottom-1 border-left-0 rounded-0 bg-white" style="width:95px;" value="0" id="id_contract_number_from">
+	              	<div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:42px;">To</span></div>
+	              	<input type="number" name="end_date" class="form-control datepicker border-bottom-1 border-left-0 rounded-0 bg-white" style="width:95px;" required="" id="id_contract_number_to" value="9999999999">
+		           
+		            <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:68px;">Status</span></div>
+		            <select id="id_contract_status_option" name="contract_status_option" class="form-control form-control-md" style="width:80px;">
+		            	<option value="0" selected>ALL</option>
+		            	<option value="1">ACTIVE</option>
+		            	<option value="2">PENDING</option>
+		            </select>
+	              	
+		            <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:60px;">Zone</span></div>
+		            <select id="id_contract_status_option" name="contract_status_option" class="form-control form-control-md" style="width:80px;">
+		            	<option value="0" selected>ALL</option>
+                  {% for item in zone_list %}
+		            	<option value="">{{item.zone_id}} | {{ item.zone_en}}</option>
+                  {% endfor %}
+		            </select>
+
+	              	<div class="input-group-prepend"><button type="button" class="btn btn-success" id="search_button"><i class="fas fa-search fa-md"></i>&nbsp;&nbsp;SEARCH</button></div>
+	            </div>
+	          </div>
+	        </div>
+
+	      </form>                 
+		</div>
 
       <!-- Default box -->
       <div id="contract_list" class="card">
@@ -109,6 +166,56 @@
 
 {% block javascript %}
 <script>
+
+$(document).ready(function(){
+
+	$('#id_contract_number_from').focus();
+	$('#id_contract_number_from').select();
+
+	$("#search_button").click( function() {
+		event.preventDefault();
+
+		var cus_id = $('#id_cus_id').val();
+		var cus_brn = $('#id_cus_brn').val();
+		var cus_vol = $('#id_cus_vol').val();
+
+		alert("todo");
+
+	});
+
+});
+
+
+$(document).on('keyup keypress', '#id_contract_number_from', function(e) {
+  if(e.which == 13) {
+    
+    e.preventDefault();
+    if(this.value=="") {
+      return false;  
+    } else {
+    	$('#id_contract_number_to').focus();
+    	$('#id_contract_number_to').select();
+    }
+    
+  }
+});
+$("#id_contract_number_from").on('click', function(){
+	$("#id_contract_number_from").select();
+});
+
+$(document).on('keyup keypress', '#id_contract_number_to', function(e) {
+  if(e.which == 13) {
+    
+    e.preventDefault();
+    if(this.value=="") {
+      return false;
+    }
+    
+  }
+});
+$("#id_contract_number_to").on('click', function(){
+	$("#id_contract_number_to").select();
+});
 
 </script>
 
