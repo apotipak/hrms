@@ -34,6 +34,8 @@
                 </div>
               </div>
               <!-- /.card-header -->
+
+
               <div class="card-body">
                 <div class="row">
 
@@ -79,7 +81,6 @@
 
                     </form>  
 
-
                   </div>
                   <!-- /.col -->
 
@@ -88,6 +89,9 @@
                 <!-- /.row -->
               </div>
               <!-- ./card-body -->
+
+
+              <!--
               <div class="card-footer">
                 <div class="row">
 
@@ -115,10 +119,10 @@
                   </div>  
 
 
-                </div>
-                <!-- /.row -->
+                </div>                                
               </div>
-              <!-- /.card-footer -->
+              -->
+              
             </div>
             <!-- /.card -->
           </div>
@@ -189,8 +193,6 @@ function SearchFormSubmit() {
   var contract_status = $('#id_contract_status_option').val();
   var contract_zone = $('#id_contract_zone_option').val();
 
-  //alert(contract_number_from + "," + contract_number_to + "," + contract_status + "," + contract_zone);
-
   showLoading();
 
   $.ajax({      
@@ -230,7 +232,7 @@ function SearchFormSubmit() {
         }          
       }
     
-      $("#contract_list_table tbody").html(result);
+      //$("#contract_list_table tbody").html(result);
       
     },
   });
