@@ -5,15 +5,16 @@ from django.utils import timezone
 
 
 def getDefaultLanguage(username):
-    default_language = 'th'
+    # default_language = 'th'
+    default_language = 'en'
 
     if UserProfile.objects.filter(employee_id=username).exists():
         try:
             default_language = UserProfile.objects.filter(employee_id=username).values_list('language_code', flat=True).get()
         except UserProfile.DoesNotExists:
-            default_language = 'th'
+            default_language = 'en'
     else:
-        default_language = 'th'
+        default_language = 'en'
 
     return default_language    
 

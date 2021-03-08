@@ -82,8 +82,12 @@ def userpassword(request):
     if request.user.is_superuser:
         employee_photo = ""
     else:
-        employee_info = EmpPhoto.objects.filter(emp_id=request.user.username).get()    
-        employee_photo = b64encode(employee_info.image).decode("utf-8")        
+        if request.user.username=='CMS_SUP' or request.user.username=='superadmin':
+            employee_info = ""
+            employee_photo = ""
+        else:
+            employee_info = EmpPhoto.objects.filter(emp_id=request.user.username).get()    
+            employee_photo = b64encode(employee_info.image).decode("utf-8")        
 
     form = ChangePasswordForm(request.POST, user=request.user)
     
