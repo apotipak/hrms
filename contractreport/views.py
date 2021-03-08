@@ -37,3 +37,5 @@ def ContractListReport(request):
         'host': settings.DATABASES['default']['HOST'],
         "zone_list": zone_list,
         })
+
+
