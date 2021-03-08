@@ -125,45 +125,45 @@
 
 		            	<div class="col-10 float-left">
 
-							<form class="form-inline mt-1 mb-2" id="bulk_shift_status_form">
-								{% csrf_token %}
+							
+							<div class="col-12 p-0">
+								<div class="col-8 float-left">
+									<form class="form-inline mt-1 mb-2" id="bulk_shift_status_form">
+										{% csrf_token %}
 
-								<div id="id_bulk_schedule_option">
-									<div class="form-group">
-										<label for="id_bulk_shift_list_option">Shift</label>&nbsp;&nbsp;
-									    <select id="id_bulk_shift_list_option" class="form-control form-control-xs">
-										  <option value="0" selected></option>
-									    </select>								    
-									</div>
+										<div id="id_bulk_schedule_option">
+											<div class="form-group">
+												<label for="id_bulk_shift_list_option">Shift</label>&nbsp;&nbsp;
+											    <select id="id_bulk_shift_list_option" class="form-control form-control-xs">
+												  <option value="0" selected></option>
+											    </select>								    
+											</div>
+										</div>
+
+										<div class="form-group">
+											&nbsp;&nbsp;
+										    <select id="id_shift_status" class="form-control form-control-xs">
+											  <option value="0" selected>Not Absent</option>
+											  <option value="1">Absent</option>
+										    </select>
+										    &nbsp;
+										</div>
+
+										<div class="form-group">
+									  		&nbsp;<button type="submit" class="btn btn-primary btn-xs">Change</button>
+									  	</div>
+									</form>
 								</div>
 
-								<div class="form-group">
-									&nbsp;&nbsp;
-								    <select id="id_shift_status" class="form-control form-control-xs">
-									  <option value="0" selected>Not Absent</option>
-									  <option value="1">Absent</option>
-								    </select>
-								    &nbsp;
-								</div>
-
-								<div class="form-group">
-							  		&nbsp;<button type="submit" class="btn btn-primary btn-xs">Change</button>
-							  	</div>
-							</form>
-
-			            	
-							<!-- ironman -->
-							<div class="row form-inline float-right p-0">
-
-								<div class="input-group col-12">
-								  <input type="text" class="form-control form-control-xs border-success" placeholder="ค้นหา" id="employee_search_text" autocomplete="off">
-								  <div class="input-group-append">
-								    <button class="btn btn-success btn-xs" type="button"  id="employee_search_clear_button">CLEAR</button>
+								<div class="col-4 float-right p-0 pt-2">
+			            		  
+								  <div class="input-group-append float-right">
+								  	<input type="text" class="form-control form-control-xs w-200 border-success" placeholder="Filter Data" id="employee_search_text" style="border-top-right-radius:0px;border-bottom-right-radius:0px;" autocomplete="off">
+								    <button class="btn btn-success btn-xs" type="button"  id="employee_search_clear_button" style="border-style: none none none none; border-top-left-radius:0px;border-bottom-left-radius:0px;">CLEAR FILTER</button>
 								  </div>
+									
 								</div>
-
 							</div>
-
 
 			            	<div id="id_employee_list" class="table-responsive table-striped" >
 
