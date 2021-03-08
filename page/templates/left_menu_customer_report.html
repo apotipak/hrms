@@ -1,0 +1,72 @@
+{% load i18n %}
+{% load static %}
+
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="/" class="brand-link">      
+      <!--<span class="brand-text font-weight-light">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>-->
+      <img src="{% static 'img/logo-small.png' %}" alt="Logo" class="brand-image img-circle elevation-3" style="opacity:.8;">
+      &nbsp;
+      <span class="brand-text font-weight-light"><img src="{% static 'img/logo-big.png' %}" width="150px;"></span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar p-0">
+
+      <!-- Sidebar Menu -->
+      <nav class="mt-2 p-0">
+
+        <!-- Customer -->
+        <ul class="nav nav-pills nav-sidebar flex-column p-0" data-widget="treeview" role="menu" data-accordion="true">
+          <li class="nav-item has-treeview p-0">
+            
+            {% if perms.contractreport.can_access_contract_list_report %}
+            <a href="#" class="nav-link">
+              <p><b>CUSTOMER & CONTRACT</b><i class="right fas fa-angle-left"></i></p>
+            </a>
+
+            <ul class="nav nav-treeview p-0">
+
+              {% if perms.contractreport.can_access_contract_list_report %}
+              <li class="nav-item p-0">
+                <a href="/contract-report/" class="nav-link"><p>{% trans 'Contract List' %}</p></a>
+              </li>
+              {% endif %}
+
+              {% if perms.customerreport.can_access_export_customer_address_main_report %}
+              <li class="nav-item p-0">
+                <a href="/customer-report/" class="nav-link text-wrap"><p>{% trans 'Export Customer Address (Main)' %}</p></a>
+              </li>
+              {% endif %}
+
+            </ul>
+            {% endif %}
+
+          </li> 
+        </ul>
+        <!-- /.Customer -->
+
+      </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>
+
+{% block scripts %}
+<script type='text/javascript'>
+  function underconstruction() {
+    alert("This area is underconstruction.");
+  }
+
+  $(document).ready(function() {
+    var pathname = window.location.pathname;
+    
+    $('.nav-treeview > li > a[href="'+pathname+'"]').addClass('active');
+    $('.nav-treeview > li > a[href="'+pathname+'"]').closest('.has-treeview').addClass('has-treeview menu-open');
+    $('.nav-treeview > li > a[href="'+pathname+'"]').parents('li.has-treeview').children().addClass('active');
+    
+  });
+
+</script>
+
+{% endblock %}
