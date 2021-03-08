@@ -26,7 +26,7 @@
                     </button>
                     <div class="dropdown-menu dropdown-menu-right" role="menu">
                       <font size="2.8em;">
-                        <a href="#" class="dropdown-item">Print Preview</a>
+                        <a href="javascript:SearchFormSubmit();" class="dropdown-item">Print Preview</a>                        
                         <a href="#" class="dropdown-item">Download File</a>
                       </font>
                     </div>
@@ -39,7 +39,7 @@
 
                   <div class="col-md-12">
 
-                    <form method="post" autocomplete="off" id="search_form">
+                    <form method="post" autocomplete="off" name="search_form">
                       {% csrf_token %}
                       
                       <div class="card-body">
@@ -58,7 +58,7 @@
                           <div class="input-group col-8 offset-2">
                             <div class="input-group-prepend pr-2 pt-1" style="width:100px;"><label>Status</label></div>
                             <select id="id_contract_status_option" name="contract_status_option" class="form-control form-control-md" style="width:20px;border-top-right-radius:0px;border-bottom-right-radius:0px;">
-                              <option value="0" selected>ALL</option>
+                              <option value="" selected>ALL</option>
                               <option value="1">ACTIVE</option>
                               <option value="2">PENDING</option>
                             </select>
@@ -67,7 +67,7 @@
                           <div class="input-group col-8 offset-2">
                             <div class="input-group-prepend pr-2 pt-1" style="width:100px;"><label>Zone</label></div>
                             <select id="id_contract_zone_option" name="contract_zone_option" class="form-control form-control-md" style="width:120px;border-top-right-radius:0px;border-bottom-right-radius:0px;">
-                              <option value="0" selected>ALL</option>
+                              <option value="" selected>ALL</option>
                               {% for item in zone_list %}
                               <option value="{{item.zone_id}}">{{item.zone_id}} | {{ item.zone_en}}</option>
                               {% endfor %}
@@ -90,7 +90,31 @@
               <!-- ./card-body -->
               <div class="card-footer">
                 <div class="row">
-                  &nbsp;
+
+                  <div class="card-body">
+                    <div class="table-responsive table-striped">
+                      <font size='2em;'>
+                      <table class="table table-sm" id="contract_list_table">
+                        <thead>
+                          <tr>
+                            <th scope="col">No.</th>
+                            <th scope="col">Contract ID</th>
+                            <th scope="col">Site Name (TH)</th>
+                            <th scope="col">Site Name (EN)</th>               
+                            <th scope="col">Zone</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <th scope="row" class="text-center" colspan="5">There is no data.</th>
+                          </tr>
+                        </tbody>
+                      </table>
+                      </font>
+                    </div>
+                  </div>  
+
+
                 </div>
                 <!-- /.row -->
               </div>
@@ -101,68 +125,6 @@
           <!-- /.col -->
         </div>
         <!-- /.row -->
-
-
-
-
-
-
-      <!-- Default box -->
-      {% comment %}
-      <div id="contract_list" class="card">
-
-        <!--
-        <div class="card-header" style="vertical-align: middle;">
-          <div class="card-tools">
-            
-            <button class="btn btn-outline-primary btn-sm dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <i class="fas fa-print fa-sm"></i>&nbsp;&nbsp;Print
-            </button>
-
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-            
-              <font size='2.8em;'>
-                <a class="dropdown-item" href="#" onclick="print_report()"><i class="fa fa-eye text-secondary" aria-hidden="true"></i>&nbsp;&nbsp;Display on screen</a>            
-                <input type="hidden" id="id_cnt_id_temp" name="cnt_id_temp" value="">
-                <a class="dropdown-item" href="#" onclick="download_report('{{contract.cnt_id}}')"><i class="fas fa-download text-secondary"></i>&nbsp;&nbsp;Download file</a>            
-              </font>
-            </div>
-
-          </div>
-        </div>
-        -->        
-
-        <div class="card-body">
-
-          <div class="table-responsive table-striped">
-            <font size='2em;'>
-            <table class="table table-sm" id="contract_list_table">
-              <thead>
-                <tr>
-                  <th scope="col">No.</th>
-                  <th scope="col">Contract ID</th>
-                  <th scope="col">Site Name</th>
-                  <th scope="col">Zone</th>               
-                  <th scope="col">Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th scope="row" class="text-center" colspan="5">There is no data.</th>
-                </tr>
-              </tbody>
-            </table>
-            </font>
-          </div>
-
-        </div>
-        <!-- /.card-body -->
-
-      </div>
-      <!-- /.card -->
-      {% endcomment %}
-
-
     </section>
     <!-- /.content -->
   </div>
@@ -220,68 +182,66 @@ $("#id_contract_number_to").on('click', function(){
 });
 
 
+
+function SearchFormSubmit() {
+  var contract_number_from = $('#id_contract_number_from').val();
+  var contract_number_to = $('#id_contract_number_to').val();
+  var contract_status = $('#id_contract_status_option').val();
+  var contract_zone = $('#id_contract_zone_option').val();
+
+  //alert(contract_number_from + "," + contract_number_to + "," + contract_status + "," + contract_zone);
+
+  showLoading();
+
+  $.ajax({      
+    url : "/contract-report/ajax/report_search_contract/",        
+    type : "POST",
+    data : {
+      csrfmiddlewaretoken: '{{ csrf_token }}',
+      contract_number_from: contract_number_from,
+      contract_number_to: contract_number_to,
+      contract_status: contract_status,
+      contract_zone: contract_zone,
+    },
+    success : function(data) {
+
+      number_of_rows = data.contract_list.length;
+
+      if(data.is_error) {
+        alert("ERROR: " + data.error_message);
+      } else {          
+        result = "";
+        row_count = 1;
+        for(i=0; i<number_of_rows; i++) {
+          cnt_id = data.contract_list[i]["cnt_id"];
+          cus_name_th = data.contract_list[i]["cus_name_th"];
+          cus_name_en = data.contract_list[i]["cus_name_en"];
+          cnt_zone = data.contract_list[i]["cnt_zone"];
+
+          result += "<tr>";
+          result += "<th scope='row' class='text-left'>" + row_count + "</th>";
+          result += "<th class='text-left'>" + cnt_id + "</th>";
+          result += "<th class='text-left'>" + cus_name_th + "</th>";
+          result += "<th class='text-left'>" + cus_name_en + "</th>";
+          result += "<th class='text-left'>" + cnt_zone + "</th>";
+          result += "</tr>";
+
+          row_count = row_count + 1;
+        }          
+      }
+    
+      $("#contract_list_table tbody").html(result);
+      
+    },
+  });
+
+  $.LoadingOverlay("hide");
+}
+
 $(document).ready(function(){
 
   //$('#id_contract_number_from').focus();
   //$('#id_contract_number_from').select();
-
-  $("#search_button").click( function() {
-    event.preventDefault();
-
-    var contract_number_from = $('#id_contract_number_from').val();
-    var contract_number_to = $('#id_contract_number_to').val();
-    var contract_status = $('#id_contract_status_option').val();
-    var contract_zone = $('#id_contract_zone_option').val();
-
-    //alert(contract_number_from + "," + contract_number_to + "," + contract_status + "," + contract_zone);
-
-    showLoading();
-
-    $.ajax({      
-      url : "/contract-report/ajax/report_search_contract/",        
-      type : "POST",
-      data : {
-        csrfmiddlewaretoken: '{{ csrf_token }}',
-        contract_number_from: contract_number_from,
-        contract_number_to: contract_number_to,
-        contract_status: contract_status,
-        contract_zone: contract_zone,
-      },
-      success : function(data) {
-
-        number_of_rows = data.contract_list.length;
-
-        if(data.is_error) {
-          alert("ERROR: " + data.error_message);
-        } else {          
-          result = "";
-          row_count = 1;
-          for(i=0; i<number_of_rows; i++) {
-            cnt_id = data.contract_list[i]["cnt_id"];
-            cus_name_th = data.contract_list[i]["cus_name_th"];
-            cus_name_en = data.contract_list[i]["cus_name_en"];
-            cnt_zone = data.contract_list[i]["cnt_zone"];
-
-            result += "<tr>";
-            result += "<th scope='row' class='text-left'>" + row_count + "</th>";
-            result += "<th class='text-left'>" + cnt_id + "</th>";
-            result += "<th class='text-left'>" + cus_name_th + "</th>";
-            result += "<th class='text-left'>" + cus_name_en + "</th>";
-            result += "<th class='text-left'>" + cnt_zone + "</th>";
-            result += "</tr>";
-
-            row_count = row_count + 1;
-          }          
-        }
-      
-        $("#contract_list_table tbody").html(result);
-        
-      },
-    });
-
-    $.LoadingOverlay("hide");
-
-  });
 
 });
 

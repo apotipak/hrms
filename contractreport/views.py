@@ -50,7 +50,13 @@ def AJAXReportSearchContract(request):
 	contract_list = []
 
 	sql = "select cnt_id, cus_name_th, cus_name_en, cnt_zone from v_cuscontract where cnt_id>=" + str(contract_number_from) + " " 
-	sql += "and cnt_id<=" + str(contract_number_to) + " and cnt_active=" + str(contract_status) + " and cnt_zone=" + contract_zone + ";"
+	sql += "and cnt_id<=" + str(contract_number_to)
+
+	if contract_status != "":
+		sql += " and cnt_active=" + str(contract_status) + " "
+
+	if contract_zone != "":
+		sql += " and cnt_zone=" + contract_zone + ";"
 
 	print("DEBUG sql = ", sql)
 
