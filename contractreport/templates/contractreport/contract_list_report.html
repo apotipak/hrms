@@ -8,91 +8,110 @@
 {% block content %}
 
   <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h4 class="m-0 text-dark">{% trans 'Report - Contract List' %}</h4>
-          </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">              
-              <!--<li class="breadcrumb-item active">Print</li>-->
-
-
-		<!--        
-        <div class="card-tools pt-1 pr-1">
-
-
-          <button class="btn btn-outline-primary btn-sm dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-print fa-sm"></i>&nbsp;&nbsp;Print
-          </button>
-
-          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-            
-            <font size='2.8em;'>
-            <a class="dropdown-item" href="#" onclick="print_report()"><i class="fa fa-eye text-secondary" aria-hidden="true"></i>&nbsp;&nbsp;Display on screen</a>
-            
-            <input type="hidden" id="id_cnt_id_temp" name="cnt_id_temp" value="">
-
-            <a class="dropdown-item" href="#" onclick="download_report('{{contract.cnt_id}}')"><i class="fas fa-download text-secondary"></i>&nbsp;&nbsp;Download file</a>            
-        	</font>
-          </div>
-
-        </div>
-		-->
-
-            </ol>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- /.content-header -->
+  <div class="content-wrapper pt-2">
 
     <!-- Main content -->
     <section class="content">
 
-	  	<div class="col-12">
-	      <form method="post" autocomplete="off" id="search_form">
-	        {% csrf_token %}
-	        <div class="card-body" style="padding: 0;">   
-	          <div class="form-group">                                    
-	            <div class="input-group col-12">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header">
+                <h5 class="card-title">Report - Contract List</h5>
 
-	            	<div class="input-group-prepend pr-2 pt-1"><label>Contract No</label></div>
-	              	<div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:60px;">From</span></div>
-	              	<input type="number" name="start_date" class="form-control border-bottom-1 border-left-0 rounded-0 bg-white" style="width:50px;" value="0" id="id_contract_number_from">
-	              	<div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:42px;">To</span></div>
-	              	<input type="number" name="end_date" class="form-control datepicker border-bottom-1 border-left-0 rounded-0 bg-white" style="width:50px;" required="" id="id_contract_number_to" value="9999999999">
-		           
-		            <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:68px;">Status</span></div>
-		            <select id="id_contract_status_option" name="contract_status_option" class="form-control form-control-md" style="width:20px;">
-		            	<option value="0" selected>ALL</option>
-		            	<option value="1">ACTIVE</option>
-		            	<option value="2">PENDING</option>
-		            </select>
-	              	
-		            <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:60px;">Zone</span></div>
-		            <select id="id_contract_zone_option" name="contract_zone_option" class="form-control form-control-md" style="width:120px;">
-		            	<option value="0" selected>ALL</option>
-                  {% for item in zone_list %}
-		            	<option value="{{item.zone_id}}">{{item.zone_id}} | {{ item.zone_en}}</option>
-                  {% endfor %}
-		            </select>
+                <div class="card-tools">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-tool dropdown-toggle" data-toggle="dropdown">
+                      <i class="fas fa-print fa-md"></i>&nbsp;Print
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right" role="menu">
+                      <font size="2.8em;">
+                        <a href="#" class="dropdown-item">Print Preview</a>
+                        <a href="#" class="dropdown-item">Download File</a>
+                      </font>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <div class="row">
 
-	              	<div class="input-group-prepend"><button type="button" class="btn btn-success" id="search_button"><i class="fas fa-search fa-md"></i>&nbsp;&nbsp;SEARCH</button></div>
-	            </div>
-	          </div>
-	        </div>
+                  <div class="col-md-12">
 
-	      </form>                 
-		</div>
+                    <form method="post" autocomplete="off" id="search_form">
+                      {% csrf_token %}
+                      
+                      <div class="card-body">
+                        <div class="form-group">
+
+                          <div class="input-group col-8 offset-2">
+
+                            <div class="input-group-prepend pr-2 pt-1" style="width:100px;"><label>Contract No</label></div>
+                            <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:60px;">From</span></div>
+                            <input type="number" name="start_date" class="form-control border-bottom-1 border-left-0 rounded-0 bg-white" style="width:50px;" value="0" id="id_contract_number_from">
+                            <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:42px;">To</span></div>
+                            <input type="number" name="end_date" class="form-control datepicker border-bottom-1 border-left-0 rounded-0 bg-white" style="width:50px;" required="" id="id_contract_number_to" value="9999999999">
+                           
+                          </div>
+
+                          <div class="input-group col-8 offset-2">
+                            <div class="input-group-prepend pr-2 pt-1" style="width:100px;"><label>Status</label></div>
+                            <select id="id_contract_status_option" name="contract_status_option" class="form-control form-control-md" style="width:20px;border-top-right-radius:0px;border-bottom-right-radius:0px;">
+                              <option value="0" selected>ALL</option>
+                              <option value="1">ACTIVE</option>
+                              <option value="2">PENDING</option>
+                            </select>
+                          </div>
+
+                          <div class="input-group col-8 offset-2">
+                            <div class="input-group-prepend pr-2 pt-1" style="width:100px;"><label>Zone</label></div>
+                            <select id="id_contract_zone_option" name="contract_zone_option" class="form-control form-control-md" style="width:120px;border-top-right-radius:0px;border-bottom-right-radius:0px;">
+                              <option value="0" selected>ALL</option>
+                              {% for item in zone_list %}
+                              <option value="{{item.zone_id}}">{{item.zone_id}} | {{ item.zone_en}}</option>
+                              {% endfor %}
+                            </select>
+                          </div>
+
+                        </div>
+                      </div>
+
+                    </form>  
+
+
+                  </div>
+                  <!-- /.col -->
+
+
+                </div>
+                <!-- /.row -->
+              </div>
+              <!-- ./card-body -->
+              <div class="card-footer">
+                <div class="row">
+                  &nbsp;
+                </div>
+                <!-- /.row -->
+              </div>
+              <!-- /.card-footer -->
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+
+
+
+
+
 
       <!-- Default box -->
+      {% comment %}
       <div id="contract_list" class="card">
 
+        <!--
         <div class="card-header" style="vertical-align: middle;">
           <div class="card-tools">
             
@@ -111,7 +130,7 @@
 
           </div>
         </div>
-        
+        -->        
 
         <div class="card-body">
 
@@ -138,8 +157,11 @@
 
         </div>
         <!-- /.card-body -->
-    </div>
-    <!-- /.card -->
+
+      </div>
+      <!-- /.card -->
+      {% endcomment %}
+
 
     </section>
     <!-- /.content -->
@@ -200,8 +222,8 @@ $("#id_contract_number_to").on('click', function(){
 
 $(document).ready(function(){
 
-  $('#id_contract_number_from').focus();
-  $('#id_contract_number_from').select();
+  //$('#id_contract_number_from').focus();
+  //$('#id_contract_number_from').select();
 
   $("#search_button").click( function() {
     event.preventDefault();
@@ -242,10 +264,10 @@ $(document).ready(function(){
 
             result += "<tr>";
             result += "<th scope='row' class='text-left'>" + row_count + "</th>";
-            result += "<th scope='row' class='text-left'>" + cnt_id + "</th>";
-            result += "<th scope='row' class='text-left'>" + cus_name_th + "</th>";
-            result += "<th scope='row' class='text-left'>" + cus_name_en + "</th>";
-            result += "<th scope='row' class='text-left'>" + cnt_zone + "</th>";
+            result += "<th class='text-left'>" + cnt_id + "</th>";
+            result += "<th class='text-left'>" + cus_name_th + "</th>";
+            result += "<th class='text-left'>" + cus_name_en + "</th>";
+            result += "<th class='text-left'>" + cnt_zone + "</th>";
             result += "</tr>";
 
             row_count = row_count + 1;
