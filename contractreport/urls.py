@@ -6,5 +6,6 @@ from . import views
 
 
 urlpatterns = [
-    path('', views.ContractListReport, name='contract_list_report'),
+    path('', views.ContractListReport, name='contract_list_report'),    
+    url(r'^ajax/report_search_contract/$', views.AJAXReportSearchContract, name='report_search_contract'),
 ]
