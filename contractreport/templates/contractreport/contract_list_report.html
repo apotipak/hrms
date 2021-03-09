@@ -47,32 +47,6 @@
                 <div class="row float-right"><a href="javascript:SearchFormSubmit();" class="btn btn-primary" role="button">&nbsp;&nbsp;<i class="fas fa-search fa-md"></i>&nbsp;Search</a></div>
               </div>
 
-              
-
-              <!--
-              <div class="input-group col-8 offset-2">
-                <div class="input-group-prepend pr-2 pt-1" style="width:100px;"><label>Status</label></div>
-                <select id="id_contract_status_option" name="contract_status_option" class="form-control form-control-md" style="width:20px;border-top-right-radius:0px;border-bottom-right-radius:0px;">
-                  <option value="" selected>ALL</option>
-                  <option value="1">ACTIVE</option>
-                  <option value="2">PENDING</option>
-                </select>
-              </div>
-
-              <div class="input-group col-8 offset-2">
-                <div class="input-group-prepend pr-2 pt-1" style="width:100px;"><label>Zone</label></div>
-                <select id="id_contract_zone_option" name="contract_zone_option" class="form-control form-control-md" style="width:120px;border-top-right-radius:0px;border-bottom-right-radius:0px;">
-                  <option value="" selected>ALL</option>
-                  {% for item in zone_list %}
-                  <option value="{{item.zone_id}}">{{item.zone_id}} | {{ item.zone_en}}</option>
-                  {% endfor %}
-                </select>
-              </div>
-              
-              <div class="input-group col-8 offset-2">
-                <div class="row float-right"><a href="javascript:SearchFormSubmit();" class="btn btn-warning" role="button"><i class="fas fa-search fa-md"></i>&nbsp;Search</a></div>
-              </div>
-              -->
             </div>
           </div>
 
@@ -81,140 +55,103 @@
       </div>
       <!-- /.col -->
 
+      <div class="card-header bg-primary">
+        <h5 class="card-title"><b>Contract List</b></h5>
 
-        <div class="row">
-          <div class="col-md-12">
-            <div class="card">
-              <div class="card-header bg-primary">
-                <h5 class="card-title"><b>Contract List</b></h5>
-
-                <div class="card-tools">
-                  <div class="btn-group">
-                    <button type="button" class="btn btn-tool dropdown-toggle" data-toggle="dropdown">
-                      <i class="fas fa-print fa-md"></i>&nbsp;Print
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-right" role="menu">
-                      <font size="2.8em;">
-                        <a href="javascript:ToDo();" class="dropdown-item">Print Preview</a>                        
-                        <a href="#" class="dropdown-item">Download File</a>
-                      </font>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- /.card-header -->
-
-
-              <div class="card-body p-0">
-
-                <div class="row" style="padding: 2px 10px 0 9px;">
-
-                  <div class="card-body p-0">
-                    <div class="table-responsive table-striped">
-                      <font size='2em;'>
-                      <table class="table table-sm table-bordered" id="contract_list_table">
-                        <thead class="bg-secondary">
-                          <tr>
-                            <th class="align-middle text-center" scope="col" rowspan="2">NO.</th>
-                            <th class="align-middle text-center" scope="col" rowspan="2">CONTRACT ID</th>
-                            <th class="align-middle text-center" scope="col" rowspan="2">SITE NAME</th>
-                            <th class="align-middle text-center" scope="col" rowspan="2">ZONE</th>
-
-                            <th class="align-middle text-center" scope="col" colspan="8">DAY</th>
-                            
-                            <th class="align-middle text-center" scope="col" colspan="3">SO</th>
-                            <th class="align-middle text-center" scope="col" colspan="3">SUP</th>
-
-                            <th class="align-middle text-center" scope="col" rowspan="2">TT</th>
-
-                            <th class="align-middle text-center" scope="col" colspan="2">Contract Terminate</th>
-                            <th class="align-middle text-center" scope="col" colspan="2">Effective Terminate</th>
-
-                          </tr>
-
-                          <tr>
-                            <th class="align-middle text-center" scope="col">MO</th>
-                            <th class="align-middle text-center" scope="col">TU</th>
-                            <th class="align-middle text-center" scope="col">WE</th>
-                            <th class="align-middle text-center" scope="col">TH</th>
-                            <th class="align-middle text-center" scope="col">FR</th>
-                            <th class="align-middle text-center" scope="col">SA</th>
-                            <th class="align-middle text-center" scope="col">SU</th>
-                            <th class="align-middle text-center" scope="col">PU</th>
-
-                            <th class="align-middle text-center" scope="col">D</th>
-                            <th class="align-middle text-center" scope="col">N</th>
-                            <th class="align-middle text-center" scope="col">T</th>
-
-                            <th class="align-middle text-center" scope="col">D</th>
-                            <th class="align-middle text-center" scope="col">N</th>
-                            <th class="align-middle text-center" scope="col">T</th>
-
-                            <th class="align-middle text-center" scope="col">From</th>
-                            <th class="align-middle text-center" scope="col">To</th>
-
-                            <th class="align-middle text-center" scope="col">From</th>
-                            <th class="align-middle text-center" scope="col">To</th>
-
-                          </tr>
-
-                        </thead>
-                        
-                        <tbody>
-                          <tr>
-                            <th scope="row" class="text-center" colspan="26"><br>There is no data.<br><br></th>
-                          </tr>
-                        </tbody>
-
-                        <tfoot class="bg-secondary">
-                            <th class="align-middle text-center" scope="col" colspan="4">TOTAL</th>
-                            
-                            <th class="align-middle text-center" scope="col"></th>
-                            <th class="align-middle text-center" scope="col"></th>
-                            <th class="align-middle text-center" scope="col"></th>
-                            <th class="align-middle text-center" scope="col"></th>
-                            <th class="align-middle text-center" scope="col"></th>
-
-                            <th class="align-middle text-center" scope="col"></th>
-                            <th class="align-middle text-center" scope="col"></th>
-                            <th class="align-middle text-center" scope="col"></th>
-                            <th class="align-middle text-center" scope="col"></th>
-                            <th class="align-middle text-center" scope="col"></th>
-
-                            <th class="align-middle text-center" scope="col"></th>
-                            <th class="align-middle text-center" scope="col"></th>
-                            <th class="align-middle text-center" scope="col"></th>
-                            <th class="align-middle text-center" scope="col"></th>
-                            <th class="align-middle text-center" scope="col"></th>
-                                                                                    
-                            <th class="align-middle text-center" scope="col" colspan="4">&nbsp;</th>
-                        </tfoot>
-
-                      </table>
-                      </font>
-                    </div>
-                  </div>  
-
-
-                </div>
-                <!-- /.row -->
-              </div>
-              <!-- ./card-body -->
-
-
-              <div class="card-footer">
-                <div class="row">
-                  &nbsp;
-                </div>                                
-              </div>
-              
-              
+        <div class="card-tools">
+          <div class="btn-group">
+            <button type="button" class="btn btn-tool dropdown-toggle" data-toggle="dropdown">
+              <i class="fas fa-print fa-md"></i>&nbsp;Print
+            </button>
+            <div class="dropdown-menu dropdown-menu-right" role="menu">
+              <font size="2.8em;">
+                <a href="javascript:ToDo();" class="dropdown-item">Print Preview</a>                        
+                <a href="#" class="dropdown-item">Download File</a>
+              </font>
             </div>
-            <!-- /.card -->
           </div>
-          <!-- /.col -->
         </div>
-        <!-- /.row -->
+      </div>
+      <!-- /.card-header -->
+
+
+      <font size="2em;">
+      <table class="table table-sm table-bordered" id="contract_list_table">
+        <thead class="bg-secondary">
+          <tr>
+            <th class="align-middle text-center" scope="col" rowspan="2">NO.</th>
+            <th class="align-middle text-center" scope="col" rowspan="2">CONTRACT ID</th>
+            <th class="align-middle text-center" scope="col" rowspan="2">SITE NAME</th>
+            <th class="align-middle text-center" scope="col" rowspan="2">ZONE</th>
+            <th class="align-middle text-center" scope="col" colspan="8">DAY</th>                            
+            <th class="align-middle text-center" scope="col" colspan="3">SO</th>
+            <th class="align-middle text-center" scope="col" colspan="3">SUP</th>
+            <th class="align-middle text-center" scope="col" rowspan="2">TT</th>
+            <th class="align-middle text-center" scope="col" colspan="2">Contract Terminate</th>
+            <th class="align-middle text-center" scope="col" colspan="2">Effective Terminate</th>
+          </tr>
+
+          <tr>                                                        
+            <th class="align-middle text-center" scope="col">MO</th>
+            <th class="align-middle text-center" scope="col">TU</th>
+            <th class="align-middle text-center" scope="col">WE</th>
+            <th class="align-middle text-center" scope="col">TH</th>
+            <th class="align-middle text-center" scope="col">FR</th>
+            <th class="align-middle text-center" scope="col">SA</th>
+            <th class="align-middle text-center" scope="col">SU</th>
+            <th class="align-middle text-center" scope="col">PU</th>
+
+            <th class="align-middle text-center" scope="col">D</th>
+            <th class="align-middle text-center" scope="col">N</th>
+            <th class="align-middle text-center" scope="col">T</th>
+
+            <th class="align-middle text-center" scope="col">D</th>
+            <th class="align-middle text-center" scope="col">N</th>
+            <th class="align-middle text-center" scope="col">T</th>
+
+            <th class="align-middle text-center" scope="col">From</th>
+            <th class="align-middle text-center" scope="col">To</th>
+
+            <th class="align-middle text-center" scope="col">From</th>
+            <th class="align-middle text-center" scope="col">To</th>
+
+          </tr>
+
+        </thead>
+        
+        <tbody>
+          <tr>
+            <th scope="row" class="text-center" colspan='23'>&nbsp;</th>
+          </tr>
+        </tbody>
+
+        <tfoot class="bg-secondary">
+            <th class="align-middle text-center" scope="col" colspan="4">TOTAL</th>
+            
+            <th class="align-middle text-center" scope="col"></th>
+            <th class="align-middle text-center" scope="col"></th>
+            <th class="align-middle text-center" scope="col"></th>
+            <th class="align-middle text-center" scope="col"></th>
+            <th class="align-middle text-center" scope="col"></th>
+
+            <th class="align-middle text-center" scope="col"></th>
+            <th class="align-middle text-center" scope="col"></th>
+            <th class="align-middle text-center" scope="col"></th>
+            <th class="align-middle text-center" scope="col"></th>
+            <th class="align-middle text-center" scope="col"></th>
+
+            <th class="align-middle text-center" scope="col"></th>
+            <th class="align-middle text-center" scope="col"></th>
+            <th class="align-middle text-center" scope="col"></th>
+            <th class="align-middle text-center" scope="col"></th>
+            <th class="align-middle text-center" scope="col"></th>
+                                                                    
+            <th class="align-middle text-center" scope="col" colspan="4">&nbsp;</th>
+        </tfoot>
+
+      </table>
+      </font>
+
     </section>
     <!-- /.content -->
   </div>
@@ -330,12 +267,13 @@ function SearchFormSubmit() {
           grand_total = data.contract_list[i]["grand_total"];
                     
           result += "<tr>";
-          result += "<th scope='row' class='text-left'>" + row_count + "</th>";
+          result += "<th class='text-center'>" + row_count + "</th>";
           result += "<th class='text-left'>" + cnt_id + "</th>";
           result += "<th class='text-left'>" + cus_name_th + "<br><small>" + cus_name_en + "</small></th>";          
           result += "<th class='text-left'>" + dept_sht + "</th>";
           
-          result += "<th class='text-center'>" + mon + "</th>";
+          //result += "<th class='text-center bg-danger'>" + mon + "</th>";
+          result += "<th class='text-center'>" + tue + "</th>";
           result += "<th class='text-center'>" + tue + "</th>";
           result += "<th class='text-center'>" + wed + "</th>";
           result += "<th class='text-center'>" + thu + "</th>";
@@ -361,6 +299,7 @@ function SearchFormSubmit() {
           result += "<th class='text-left'>" + cnt_eff_to + "</th>";
 
           result += "</tr>";
+
 
           row_count = row_count + 1;
         }          
