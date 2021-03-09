@@ -86,10 +86,26 @@ def AJAXReportSearchContract(request):
 	
 	for row in contract_obj:		
 		record = {
-			"cnt_id": row[0],
+			"cnt_id": row[0],					
 			"cus_name_en": row[1],
 			"cus_name_th": row[2],
-			"cnt_zone": row[7]
+			"cnt_sign_frm": row[3],
+			"cnt_sign_to": row[4],
+			"cnt_eff_frm": row[5],
+			"cnt_eff_to": row[6],			
+			"cnt_zone": row[7],
+			"nosupD": row[8],
+			"supD": row[9],
+			"nosupN": row[10],
+			"supN": row[11],
+			"sun": row[12],
+			"mon": row[13],
+			"tue": row[14],
+			"wed": row[15],
+			"thu": row[16],
+			"fri": row[17],
+			"sat": row[18],
+			"pub": row[19],
 			}
 		contract_list.append(record)		
 
