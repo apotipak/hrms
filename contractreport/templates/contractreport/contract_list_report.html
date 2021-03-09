@@ -50,6 +50,9 @@
                             </select>
                           </div>
 
+                          <div class="input-group col-8 offset-2">
+                            <div class="row float-right"><a href="javascript:SearchFormSubmit();" class="btn btn-warning" role="button"><i class="fas fa-search fa-md"></i>&nbsp;Search</a></div>
+                          </div>
                         </div>
                       </div>
 
@@ -72,7 +75,7 @@
                     </button>
                     <div class="dropdown-menu dropdown-menu-right" role="menu">
                       <font size="2.8em;">
-                        <a href="javascript:SearchFormSubmit();" class="dropdown-item">Print Preview</a>                        
+                        <a href="javascript:ToDo();" class="dropdown-item">Print Preview</a>                        
                         <a href="#" class="dropdown-item">Download File</a>
                       </font>
                     </div>
@@ -191,7 +194,9 @@ $("#id_contract_number_to").on('click', function(){
 	$("#id_contract_number_to").select();
 });
 
-
+function ToDo() {
+  alert("todo");
+}
 
 function SearchFormSubmit() {
   var contract_number_from = $('#id_contract_number_from').val();
