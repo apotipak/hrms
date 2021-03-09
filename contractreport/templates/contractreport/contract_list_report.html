@@ -37,14 +37,14 @@
                 </select>
                 
                 <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:60px;">Zone</span></div>
-                <select id="id_contract_zone_option" name="contract_zone_option" class="form-control form-control-md" style="width:120px;border-top-right-radius:0px;border-bottom-right-radius:0px;">
+                <select id="id_contract_zone_option" name="contract_zone_option" class="form-control form-control-md" style="width:120px;border-top-right-radius:0px;border-bottom-right-radius:0px;border-right:none;">
                   <option value="" selected>ALL</option>
                   {% for item in zone_list %}
                   <option value="{{item.zone_id}}">{{item.zone_id}} | {{ item.zone_en}}</option>
                   {% endfor %}
                 </select>                               
 
-                <div class="row float-right"><a href="javascript:SearchFormSubmit();" class="btn btn-warning" role="button"><i class="fas fa-search fa-md"></i>&nbsp;Search</a></div>
+                <div class="row float-right"><a href="javascript:SearchFormSubmit();" class="btn btn-warning" role="button">&nbsp;&nbsp;<i class="fas fa-search fa-md"></i>&nbsp;Search</a></div>
               </div>
 
               
@@ -86,7 +86,7 @@
           <div class="col-md-12">
             <div class="card">
               <div class="card-header">
-                <h5 class="card-title">Report - Contract List</h5>
+                <h5 class="card-title"><b>Report - Contract List</b></h5>
 
                 <div class="card-tools">
                   <div class="btn-group">
@@ -115,11 +115,11 @@
                       <table class="table table-sm table-bordered" id="contract_list_table">
                         <thead>
                           <tr>
-                            <th class="align-middle text-center" scope="col" rowspan="2">No.</th>
-                            <th class="align-middle text-center" scope="col" rowspan="2">Contract ID</th>
-                            <th class="align-middle text-center" scope="col" rowspan="2">Site Name</th>
-                            <th class="align-middle text-center" scope="col" rowspan="2">Zone</th>
-                            <th class="align-middle text-center" scope="col" colspan="2">Date</th>
+                            <th class="align-middle text-center" scope="col" rowspan="2">NO.</th>
+                            <th class="align-middle text-center" scope="col" rowspan="2">CONTRACT ID</th>
+                            <th class="align-middle text-center" scope="col" rowspan="2">SITE NAME</th>
+                            <th class="align-middle text-center" scope="col" rowspan="2">ZONE</th>
+                            <th class="align-middle text-center" scope="col" colspan="2">DATE</th>
                           </tr>
 
                           <tr>
@@ -130,7 +130,7 @@
                         </thead>
                         <tbody>
                           <tr>
-                            <th scope="row" class="text-center" colspan="6">There is no data.</th>
+                            <th scope="row" class="text-center" colspan="6"><br>There is no data.<br><br></th>
                           </tr>
                         </tbody>
                       </table>
