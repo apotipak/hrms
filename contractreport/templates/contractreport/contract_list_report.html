@@ -85,7 +85,7 @@
         <div class="row">
           <div class="col-md-12">
             <div class="card">
-              <div class="card-header">
+              <div class="card-header bg-success">
                 <h5 class="card-title"><b>Report - Contract List</b></h5>
 
                 <div class="card-tools">
@@ -282,38 +282,58 @@ function SearchFormSubmit() {
           cnt_id = data.contract_list[i]["cnt_id"];
           cus_name_th = data.contract_list[i]["cus_name_th"];
           cus_name_en = data.contract_list[i]["cus_name_en"];
+          cnt_sign_frm = data.contract_list[i]["cnt_sign_frm"];
+          cnt_sign_to = data.contract_list[i]["cnt_sign_to"];
+          cnt_eff_frm = data.contract_list[i]["cnt_eff_frm"];
+          cnt_eff_to = data.contract_list[i]["cnt_eff_to"];          
           cnt_zone = data.contract_list[i]["cnt_zone"];
-
+          nosupD = data.contract_list[i]["nosupD"];
+          supD = data.contract_list[i]["supD"];
+          nosupd = data.contract_list[i]["nosupN"];
+          supN = data.contract_list[i]["supN"];
+          nosupN = data.contract_list[i]["nosupN"];
+          sun = data.contract_list[i]["sun"];
+          mon = data.contract_list[i]["mon"];
+          tue = data.contract_list[i]["tue"];
+          wed = data.contract_list[i]["wed"];
+          thu = data.contract_list[i]["thu"];
+          fri = data.contract_list[i]["fri"];
+          sat = data.contract_list[i]["sat"];          
+          pub = data.contract_list[i]["pub"];
+          total_sup_DN = data.contract_list[i]["total_sup_DN"];
+          total_nosup_DN = data.contract_list[i]["total_nosup_DN"];
+          grand_total = data.contract_list[i]["grand_total"];
+        
           result += "<tr>";
           result += "<th scope='row' class='text-left'>" + row_count + "</th>";
           result += "<th class='text-left'>" + cnt_id + "</th>";
           result += "<th class='text-left'>" + cus_name_th + "<br><small>" + cus_name_en + "</small></th>";          
           result += "<th class='text-left'>" + cnt_zone + "</th>";
           
-          result += "<th class='text-left'>&nbsp;</th>";
-          result += "<th class='text-left'>&nbsp;</th>";
-          result += "<th class='text-left'>&nbsp;</th>";
-          result += "<th class='text-left'>&nbsp;</th>";
-          result += "<th class='text-left'>&nbsp;</th>";
-          result += "<th class='text-left'>&nbsp;</th>";
-          result += "<th class='text-left'>&nbsp;</th>";
-          result += "<th class='text-left'>&nbsp;</th>";
+          result += "<th class='text-center'>" + mon + "</th>";
+          result += "<th class='text-center'>" + tue + "</th>";
+          result += "<th class='text-center'>" + wed + "</th>";
+          result += "<th class='text-center'>" + thu + "</th>";
+          result += "<th class='text-center'>" + fri + "</th>";
+          result += "<th class='text-center'>" + sat + "</th>";
+          result += "<th class='text-center'>" + sun + "</th>";
+          result += "<th class='text-center'>" + pub + "</th>";
 
-          result += "<th class='text-left'>&nbsp;</th>";
-          result += "<th class='text-left'>&nbsp;</th>";
-          result += "<th class='text-left'>&nbsp;</th>";
+          result += "<th class='text-center'>" + nosupD + "</th>";
+          result += "<th class='text-center'>" + nosupN + "</th>";
+          result += "<th class='text-center'>" + total_nosup_DN + "</th>";
 
-          result += "<th class='text-left'>&nbsp;</th>";
-          result += "<th class='text-left'>&nbsp;</th>";
-          result += "<th class='text-left'>&nbsp;</th>";
+          result += "<th class='text-center'>" + supD + "</th>";
+          result += "<th class='text-center'>" + supN + "</th>";
+          result += "<th class='text-center'>" + total_sup_DN + "</th>";
 
-          result += "<th class='text-left'>&nbsp;</th>";
+          result += "<th class='text-center'>" + grand_total + "</th>";
 
-          result += "<th class='text-left'>&nbsp;</th>";
-          result += "<th class='text-left'>&nbsp;</th>";
+          result += "<th class='text-left'>" + cnt_sign_frm + "</th>";          
+          result += "<th class='text-left'>" + cnt_sign_to + "</th>";
 
-          result += "<th class='text-left'>&nbsp;</th>";
-          result += "<th class='text-left'>&nbsp;</th>";
+          result += "<th class='text-left'>" + cnt_eff_frm + "</th>";
+          result += "<th class='text-left'>" + cnt_eff_to + "</th>";
 
           result += "</tr>";
 

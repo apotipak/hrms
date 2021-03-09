@@ -84,15 +84,39 @@ def AJAXReportSearchContract(request):
 	finally:
 	    cursor.close()
 	
-	for row in contract_obj:		
+	for row in contract_obj:
+		if row[3] is not None:
+			cnt_sign_frm = row[3].strftime("%d/%b/%Y")
+		else:
+			cnt_sign_frm = ""
+
+		if row[4] is not None:
+			cnt_sign_to = row[4].strftime("%d/%b/%Y")
+		else:
+			cnt_sign_to = ""
+
+		if row[5] is not None:
+			cnt_eff_frm = row[5].strftime("%d/%b/%Y")
+		else:
+			cnt_eff_frm = ""
+
+		if row[6] is not None:
+			cnt_eff_to = row[6].strftime("%d/%b/%Y")
+		else:
+			cnt_eff_to = ""
+
+		total_sup_DN = row[9] + row[11]
+		total_nosup_DN = row[8] + row[10]
+		grand_total = total_sup_DN + total_nosup_DN
+
 		record = {
 			"cnt_id": row[0],					
 			"cus_name_en": row[1],
 			"cus_name_th": row[2],
-			"cnt_sign_frm": row[3],
-			"cnt_sign_to": row[4],
-			"cnt_eff_frm": row[5],
-			"cnt_eff_to": row[6],			
+			"cnt_sign_frm": cnt_sign_frm,
+			"cnt_sign_to": cnt_sign_to,
+			"cnt_eff_frm": cnt_eff_frm,
+			"cnt_eff_to": cnt_eff_to,
 			"cnt_zone": row[7],
 			"nosupD": row[8],
 			"supD": row[9],
@@ -106,6 +130,9 @@ def AJAXReportSearchContract(request):
 			"fri": row[17],
 			"sat": row[18],
 			"pub": row[19],
+			"total_sup_DN": total_sup_DN,
+			"total_nosup_DN": total_nosup_DN,
+			"grand_total": grand_total,
 			}
 		contract_list.append(record)		
 
