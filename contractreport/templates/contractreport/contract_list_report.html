@@ -119,20 +119,53 @@
                             <th class="align-middle text-center" scope="col" rowspan="2">CONTRACT ID</th>
                             <th class="align-middle text-center" scope="col" rowspan="2">SITE NAME</th>
                             <th class="align-middle text-center" scope="col" rowspan="2">ZONE</th>
-                            <th class="align-middle text-center" scope="col" colspan="2">DATE</th>
+
+                            <th class="align-middle text-center" scope="col" colspan="8">DAY</th>
+                            
+                            <th class="align-middle text-center" scope="col" colspan="3">SO</th>
+                            <th class="align-middle text-center" scope="col" colspan="3">SUP</th>
+
+                            <th class="align-middle text-center" scope="col" rowspan="2">TT</th>
+
+                            <th class="align-middle text-center" scope="col" colspan="2">Contract Terminate</th>
+                            <th class="align-middle text-center" scope="col" colspan="2">Effective Terminate</th>
+
                           </tr>
 
                           <tr>
                             <th class="align-middle text-center" scope="col">MO</th>
                             <th class="align-middle text-center" scope="col">TU</th>
+                            <th class="align-middle text-center" scope="col">WE</th>
+                            <th class="align-middle text-center" scope="col">TH</th>
+                            <th class="align-middle text-center" scope="col">FR</th>
+                            <th class="align-middle text-center" scope="col">SA</th>
+                            <th class="align-middle text-center" scope="col">SU</th>
+                            <th class="align-middle text-center" scope="col">PU</th>
+
+                            <th class="align-middle text-center" scope="col">D</th>
+                            <th class="align-middle text-center" scope="col">N</th>
+                            <th class="align-middle text-center" scope="col">T</th>
+
+                            <th class="align-middle text-center" scope="col">D</th>
+                            <th class="align-middle text-center" scope="col">N</th>
+                            <th class="align-middle text-center" scope="col">T</th>
+
+                            <th class="align-middle text-center" scope="col">From</th>
+                            <th class="align-middle text-center" scope="col">To</th>
+
+                            <th class="align-middle text-center" scope="col">From</th>
+                            <th class="align-middle text-center" scope="col">To</th>
+
                           </tr>
 
                         </thead>
+                        
                         <tbody>
                           <tr>
-                            <th scope="row" class="text-center" colspan="6"><br>There is no data.<br><br></th>
+                            <th scope="row" class="text-center" colspan="26"><br>There is no data.<br><br></th>
                           </tr>
                         </tbody>
+
                       </table>
                       </font>
                     </div>
@@ -256,8 +289,32 @@ function SearchFormSubmit() {
           result += "<th class='text-left'>" + cnt_id + "</th>";
           result += "<th class='text-left'>" + cus_name_th + "<br><small>" + cus_name_en + "</small></th>";          
           result += "<th class='text-left'>" + cnt_zone + "</th>";
+          
           result += "<th class='text-left'>&nbsp;</th>";
           result += "<th class='text-left'>&nbsp;</th>";
+          result += "<th class='text-left'>&nbsp;</th>";
+          result += "<th class='text-left'>&nbsp;</th>";
+          result += "<th class='text-left'>&nbsp;</th>";
+          result += "<th class='text-left'>&nbsp;</th>";
+          result += "<th class='text-left'>&nbsp;</th>";
+          result += "<th class='text-left'>&nbsp;</th>";
+
+          result += "<th class='text-left'>&nbsp;</th>";
+          result += "<th class='text-left'>&nbsp;</th>";
+          result += "<th class='text-left'>&nbsp;</th>";
+
+          result += "<th class='text-left'>&nbsp;</th>";
+          result += "<th class='text-left'>&nbsp;</th>";
+          result += "<th class='text-left'>&nbsp;</th>";
+
+          result += "<th class='text-left'>&nbsp;</th>";
+
+          result += "<th class='text-left'>&nbsp;</th>";
+          result += "<th class='text-left'>&nbsp;</th>";
+
+          result += "<th class='text-left'>&nbsp;</th>";
+          result += "<th class='text-left'>&nbsp;</th>";
+
           result += "</tr>";
 
           row_count = row_count + 1;
