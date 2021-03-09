@@ -44,7 +44,7 @@
                   {% endfor %}
                 </select>                               
 
-                <div class="row float-right"><a href="javascript:SearchFormSubmit();" class="btn btn-primary" role="button">&nbsp;&nbsp;<i class="fas fa-search fa-md"></i>&nbsp;Search</a></div>
+                <a href="javascript:SearchFormSubmit();" class="btn btn-outline-primary" role="button"><i class="fas fa-search fa-md"></i></a>
               </div>
 
             </div>
@@ -239,70 +239,76 @@ function SearchFormSubmit() {
       } else {          
         result = "";
         row_count = 1;
-        for(i=0; i<number_of_rows; i++) {
-          cnt_id = data.contract_list[i]["cnt_id"];
-          cus_name_th = data.contract_list[i]["cus_name_th"];
-          cus_name_en = data.contract_list[i]["cus_name_en"];
-          cnt_sign_frm = data.contract_list[i]["cnt_sign_frm"];
-          cnt_sign_to = data.contract_list[i]["cnt_sign_to"];
-          cnt_eff_frm = data.contract_list[i]["cnt_eff_frm"];
-          cnt_eff_to = data.contract_list[i]["cnt_eff_to"];          
-          cnt_zone = data.contract_list[i]["cnt_zone"];
-          dept_sht = data.contract_list[i]["dept_sht"];
-          nosupD = data.contract_list[i]["nosupD"];
-          supD = data.contract_list[i]["supD"];
-          nosupd = data.contract_list[i]["nosupN"];
-          supN = data.contract_list[i]["supN"];
-          nosupN = data.contract_list[i]["nosupN"];
-          sun = data.contract_list[i]["sun"];
-          mon = data.contract_list[i]["mon"];
-          tue = data.contract_list[i]["tue"];
-          wed = data.contract_list[i]["wed"];
-          thu = data.contract_list[i]["thu"];
-          fri = data.contract_list[i]["fri"];
-          sat = data.contract_list[i]["sat"];          
-          pub = data.contract_list[i]["pub"];
-          total_sup_DN = data.contract_list[i]["total_sup_DN"];
-          total_nosup_DN = data.contract_list[i]["total_nosup_DN"];
-          grand_total = data.contract_list[i]["grand_total"];
-                    
-          result += "<tr>";
-          result += "<th class='text-center'>" + row_count + "</th>";
-          result += "<th class='text-left'>" + cnt_id + "</th>";
-          result += "<th class='text-left'>" + cus_name_th + "<br><small>" + cus_name_en + "</small></th>";          
-          result += "<th class='text-left'>" + dept_sht + "</th>";
-          
-          //result += "<th class='text-center bg-danger'>" + mon + "</th>";
-          result += "<th class='text-center'>" + tue + "</th>";
-          result += "<th class='text-center'>" + tue + "</th>";
-          result += "<th class='text-center'>" + wed + "</th>";
-          result += "<th class='text-center'>" + thu + "</th>";
-          result += "<th class='text-center'>" + fri + "</th>";
-          result += "<th class='text-center'>" + sat + "</th>";
-          result += "<th class='text-center'>" + sun + "</th>";
-          result += "<th class='text-center'>" + pub + "</th>";
 
-          result += "<th class='text-center'>" + nosupD + "</th>";
-          result += "<th class='text-center'>" + nosupN + "</th>";
-          result += "<th class='text-center'>" + total_nosup_DN + "</th>";
+        if(number_of_rows>0) {
+          for(i=0; i<number_of_rows; i++) {
+            cnt_id = data.contract_list[i]["cnt_id"];
+            cus_name_th = data.contract_list[i]["cus_name_th"];
+            cus_name_en = data.contract_list[i]["cus_name_en"];
+            cnt_sign_frm = data.contract_list[i]["cnt_sign_frm"];
+            cnt_sign_to = data.contract_list[i]["cnt_sign_to"];
+            cnt_eff_frm = data.contract_list[i]["cnt_eff_frm"];
+            cnt_eff_to = data.contract_list[i]["cnt_eff_to"];          
+            cnt_zone = data.contract_list[i]["cnt_zone"];
+            dept_sht = data.contract_list[i]["dept_sht"];
+            nosupD = data.contract_list[i]["nosupD"];
+            supD = data.contract_list[i]["supD"];
+            nosupd = data.contract_list[i]["nosupN"];
+            supN = data.contract_list[i]["supN"];
+            nosupN = data.contract_list[i]["nosupN"];
+            sun = data.contract_list[i]["sun"];
+            mon = data.contract_list[i]["mon"];
+            tue = data.contract_list[i]["tue"];
+            wed = data.contract_list[i]["wed"];
+            thu = data.contract_list[i]["thu"];
+            fri = data.contract_list[i]["fri"];
+            sat = data.contract_list[i]["sat"];          
+            pub = data.contract_list[i]["pub"];
+            total_sup_DN = data.contract_list[i]["total_sup_DN"];
+            total_nosup_DN = data.contract_list[i]["total_nosup_DN"];
+            grand_total = data.contract_list[i]["grand_total"];
+                      
+            result += "<tr>";
+            result += "<th class='text-center'>" + row_count + "</th>";
+            result += "<th class='text-left'>" + cnt_id + "</th>";
+            result += "<th class='text-left'>" + cus_name_th + "<br><small>" + cus_name_en + "</small></th>";          
+            result += "<th class='text-left'>" + dept_sht + "</th>";
+            
+            //result += "<th class='text-center bg-danger'>" + mon + "</th>";
+            result += "<th class='text-center'>" + tue + "</th>";
+            result += "<th class='text-center'>" + tue + "</th>";
+            result += "<th class='text-center'>" + wed + "</th>";
+            result += "<th class='text-center'>" + thu + "</th>";
+            result += "<th class='text-center'>" + fri + "</th>";
+            result += "<th class='text-center'>" + sat + "</th>";
+            result += "<th class='text-center'>" + sun + "</th>";
+            result += "<th class='text-center'>" + pub + "</th>";
 
-          result += "<th class='text-center'>" + supD + "</th>";
-          result += "<th class='text-center'>" + supN + "</th>";
-          result += "<th class='text-center'>" + total_sup_DN + "</th>";
+            result += "<th class='text-center'>" + nosupD + "</th>";
+            result += "<th class='text-center'>" + nosupN + "</th>";
+            result += "<th class='text-center'>" + total_nosup_DN + "</th>";
 
-          result += "<th class='text-center'>" + grand_total + "</th>";
+            result += "<th class='text-center'>" + supD + "</th>";
+            result += "<th class='text-center'>" + supN + "</th>";
+            result += "<th class='text-center'>" + total_sup_DN + "</th>";
 
-          result += "<th class='text-left'>" + cnt_sign_frm + "</th>";          
-          result += "<th class='text-left'>" + cnt_sign_to + "</th>";
+            result += "<th class='text-center'>" + grand_total + "</th>";
 
-          result += "<th class='text-left'>" + cnt_eff_frm + "</th>";
-          result += "<th class='text-left'>" + cnt_eff_to + "</th>";
+            result += "<th class='text-left'>" + cnt_sign_frm + "</th>";          
+            result += "<th class='text-left'>" + cnt_sign_to + "</th>";
 
-          result += "</tr>";
+            result += "<th class='text-left'>" + cnt_eff_frm + "</th>";
+            result += "<th class='text-left'>" + cnt_eff_to + "</th>";
+
+            result += "</tr>";
 
 
-          row_count = row_count + 1;
-        }          
+            row_count = row_count + 1;
+          }           
+        } else {
+            result = "<tr class='bg-warning'><th scope='row' class='text-center' colspan='23'><br>There is no data.<br><br></th></tr>";
+        }
+         
       }
     
       $("#contract_list_table tbody").html(result);
