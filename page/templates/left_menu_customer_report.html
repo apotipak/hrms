@@ -16,35 +16,7 @@
       <!-- Sidebar Menu -->
       <nav class="mt-2 p-0">
 
-        <!-- Customer -->
-        <ul class="nav nav-pills nav-sidebar flex-column p-0" data-widget="treeview" role="menu" data-accordion="true">
-          <li class="nav-item has-treeview p-0">
-            
-            {% if perms.contractreport.can_access_contract_list_report %}
-            <a href="#" class="nav-link">
-              <p><b>CUSTOMER & CONTRACT</b><i class="right fas fa-angle-left"></i></p>
-            </a>
-
-            <ul class="nav nav-treeview p-0">
-
-              {% if perms.contractreport.can_access_contract_list_report %}
-              <li class="nav-item p-0">
-                <a href="/contract-report/" class="nav-link"><p>{% trans 'Contract List' %}</p></a>
-              </li>
-              {% endif %}
-
-              {% if perms.customerreport.can_access_export_customer_address_main_report %}
-              <li class="nav-item p-0">
-                <a href="/customer-report/" class="nav-link text-wrap"><p>{% trans 'Export Customer Address (Main)' %}</p></a>
-              </li>
-              {% endif %}
-
-            </ul>
-            {% endif %}
-
-          </li> 
-        </ul>
-        <!-- /.Customer -->
+        {% include "left_menu_customer_and_contract_report.html" %}
 
       </nav>
       <!-- /.sidebar-menu -->

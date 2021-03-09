@@ -13,32 +13,6 @@
     <!-- Main content -->
     <section class="content">
 
-        <div class="row">
-          <div class="col-md-12">
-            <div class="card">
-              <div class="card-header">
-                <h5 class="card-title">Report - Contract List</h5>
-
-                <div class="card-tools">
-                  <div class="btn-group">
-                    <button type="button" class="btn btn-tool dropdown-toggle" data-toggle="dropdown">
-                      <i class="fas fa-print fa-md"></i>&nbsp;Print
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-right" role="menu">
-                      <font size="2.8em;">
-                        <a href="javascript:SearchFormSubmit();" class="dropdown-item">Print Preview</a>                        
-                        <a href="#" class="dropdown-item">Download File</a>
-                      </font>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- /.card-header -->
-
-
-              <div class="card-body">
-                <div class="row">
-
                   <div class="col-md-12">
 
                     <form method="post" autocomplete="off" name="search_form">
@@ -85,32 +59,55 @@
                   <!-- /.col -->
 
 
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header">
+                <h5 class="card-title">Report - Contract List</h5>
+
+                <div class="card-tools">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-tool dropdown-toggle" data-toggle="dropdown">
+                      <i class="fas fa-print fa-md"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right" role="menu">
+                      <font size="2.8em;">
+                        <a href="javascript:SearchFormSubmit();" class="dropdown-item">Print Preview</a>                        
+                        <a href="#" class="dropdown-item">Download File</a>
+                      </font>
+                    </div>
+                  </div>
                 </div>
-                <!-- /.row -->
               </div>
-              <!-- ./card-body -->
+              <!-- /.card-header -->
 
 
-              <!--
-              <div class="card-footer">
+              <div class="card-body">
                 <div class="row">
+
 
                   <div class="card-body">
                     <div class="table-responsive table-striped">
                       <font size='2em;'>
-                      <table class="table table-sm" id="contract_list_table">
+                      <table class="table table-sm table-bordered" id="contract_list_table">
                         <thead>
                           <tr>
-                            <th scope="col">No.</th>
-                            <th scope="col">Contract ID</th>
-                            <th scope="col">Site Name (TH)</th>
-                            <th scope="col">Site Name (EN)</th>               
-                            <th scope="col">Zone</th>
+                            <th class="align-middle text-center" scope="col" rowspan="2">No.</th>
+                            <th class="align-middle text-center" scope="col" rowspan="2">Contract ID</th>
+                            <th class="align-middle text-center" scope="col" rowspan="2">Site Name</th>
+                            <th class="align-middle text-center" scope="col" rowspan="2">Zone</th>
+                            <th class="align-middle text-center" scope="col" colspan="2">Date</th>
                           </tr>
+
+                          <tr>
+                            <th class="align-middle text-center" scope="col">MO</th>
+                            <th class="align-middle text-center" scope="col">TU</th>
+                          </tr>
+
                         </thead>
                         <tbody>
                           <tr>
-                            <th scope="row" class="text-center" colspan="5">There is no data.</th>
+                            <th scope="row" class="text-center" colspan="6">There is no data.</th>
                           </tr>
                         </tbody>
                       </table>
@@ -119,9 +116,18 @@
                   </div>  
 
 
+                </div>
+                <!-- /.row -->
+              </div>
+              <!-- ./card-body -->
+
+
+              <div class="card-footer">
+                <div class="row">
+                  &nbsp;
                 </div>                                
               </div>
-              -->
+              
               
             </div>
             <!-- /.card -->
@@ -223,16 +229,17 @@ function SearchFormSubmit() {
           result += "<tr>";
           result += "<th scope='row' class='text-left'>" + row_count + "</th>";
           result += "<th class='text-left'>" + cnt_id + "</th>";
-          result += "<th class='text-left'>" + cus_name_th + "</th>";
-          result += "<th class='text-left'>" + cus_name_en + "</th>";
+          result += "<th class='text-left'>" + cus_name_th + "<br><small>" + cus_name_en + "</small></th>";          
           result += "<th class='text-left'>" + cnt_zone + "</th>";
+          result += "<th class='text-left'>&nbsp;</th>";
+          result += "<th class='text-left'>&nbsp;</th>";
           result += "</tr>";
 
           row_count = row_count + 1;
         }          
       }
     
-      //$("#contract_list_table tbody").html(result);
+      $("#contract_list_table tbody").html(result);
       
     },
   });

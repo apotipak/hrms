@@ -49,14 +49,24 @@ def AJAXReportSearchContract(request):
 	contract_zone = request.POST.get('contract_zone')
 	contract_list = []
 
-	sql = "select cnt_id, cus_name_th, cus_name_en, cnt_zone from v_cuscontract where cnt_id>=" + str(contract_number_from) + " " 
-	sql += "and cnt_id<=" + str(contract_number_to)
+	# sql = "select cnt_id, cus_name_th, cus_name_en, cnt_zone from v_cuscontract "
+	# sql + = "where cnt_id>=" + str(contract_number_from) + " " 
+	# sql += "and cnt_id<=" + str(contract_number_to)
+
+	sql = "select cnt_id, cus_name_en, cus_name_th, "
+	sql += "cnt_sign_frm, cnt_sign_to, cnt_eff_frm, "
+	sql += "cnt_eff_to, cnt_zone, nosupD, supD, nosupN, supN, Sun, Mon, Tue, Wed, Thu, Fri, Sat, Pub "
+	sql += "from V_Contract_Summary "
+	sql += "where cnt_id>=" + str(contract_number_from) + " " 
+	sql += "and cnt_id<=" + str(contract_number_to) + " "
 
 	if contract_status != "":
 		sql += " and cnt_active=" + str(contract_status) + " "
 
 	if contract_zone != "":
-		sql += " and cnt_zone=" + contract_zone + ";"
+		sql += " and cnt_zone=" + contract_zone + " "
+
+	sql += "ORDER BY cnt_id;"
 
 	print("DEBUG sql = ", sql)
 
@@ -77,9 +87,9 @@ def AJAXReportSearchContract(request):
 	for row in contract_obj:		
 		record = {
 			"cnt_id": row[0],
-			"cus_name_th": row[1],
-			"cus_name_en": row[2],
-			"cnt_zone": row[3]
+			"cus_name_en": row[1],
+			"cus_name_th": row[2],
+			"cnt_zone": row[7]
 			}
 		contract_list.append(record)		
 
