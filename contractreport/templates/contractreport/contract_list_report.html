@@ -29,7 +29,7 @@
                 <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:42px;">To</span></div>
                 <input type="number" name="end_date" class="form-control datepicker border-bottom-1 border-left-0 rounded-0 bg-white" style="width:50px;" required="" id="id_contract_number_to" value="9999999999">
 
-                <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:65px;">Status</span></div>
+                <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:67px;">Status</span></div>
                 <select id="id_contract_status_option" name="contract_status_option" class="form-control form-control-md" style="width:20px;border-top-right-radius:0px;border-bottom-right-radius:0px;">
                   <option value="" selected>ALL</option>
                   <option value="1">ACTIVE</option>
@@ -44,7 +44,7 @@
                   {% endfor %}
                 </select>                               
 
-                <div class="row float-right"><a href="javascript:SearchFormSubmit();" class="btn btn-warning" role="button">&nbsp;&nbsp;<i class="fas fa-search fa-md"></i>&nbsp;Search</a></div>
+                <div class="row float-right"><a href="javascript:SearchFormSubmit();" class="btn btn-primary" role="button">&nbsp;&nbsp;<i class="fas fa-search fa-md"></i>&nbsp;Search</a></div>
               </div>
 
               
@@ -85,13 +85,13 @@
         <div class="row">
           <div class="col-md-12">
             <div class="card">
-              <div class="card-header bg-success">
-                <h5 class="card-title"><b>Report - Contract List</b></h5>
+              <div class="card-header bg-primary">
+                <h5 class="card-title"><b>Contract List</b></h5>
 
                 <div class="card-tools">
                   <div class="btn-group">
                     <button type="button" class="btn btn-tool dropdown-toggle" data-toggle="dropdown">
-                      <i class="fas fa-print fa-md"></i>
+                      <i class="fas fa-print fa-md"></i>&nbsp;Print
                     </button>
                     <div class="dropdown-menu dropdown-menu-right" role="menu">
                       <font size="2.8em;">
@@ -113,7 +113,7 @@
                     <div class="table-responsive table-striped">
                       <font size='2em;'>
                       <table class="table table-sm table-bordered" id="contract_list_table">
-                        <thead>
+                        <thead class="bg-secondary">
                           <tr>
                             <th class="align-middle text-center" scope="col" rowspan="2">NO.</th>
                             <th class="align-middle text-center" scope="col" rowspan="2">CONTRACT ID</th>
@@ -165,6 +165,30 @@
                             <th scope="row" class="text-center" colspan="26"><br>There is no data.<br><br></th>
                           </tr>
                         </tbody>
+
+                        <tfoot class="bg-secondary">
+                            <th class="align-middle text-center" scope="col" colspan="4">TOTAL</th>
+                            
+                            <th class="align-middle text-center" scope="col"></th>
+                            <th class="align-middle text-center" scope="col"></th>
+                            <th class="align-middle text-center" scope="col"></th>
+                            <th class="align-middle text-center" scope="col"></th>
+                            <th class="align-middle text-center" scope="col"></th>
+
+                            <th class="align-middle text-center" scope="col"></th>
+                            <th class="align-middle text-center" scope="col"></th>
+                            <th class="align-middle text-center" scope="col"></th>
+                            <th class="align-middle text-center" scope="col"></th>
+                            <th class="align-middle text-center" scope="col"></th>
+
+                            <th class="align-middle text-center" scope="col"></th>
+                            <th class="align-middle text-center" scope="col"></th>
+                            <th class="align-middle text-center" scope="col"></th>
+                            <th class="align-middle text-center" scope="col"></th>
+                            <th class="align-middle text-center" scope="col"></th>
+                                                                                    
+                            <th class="align-middle text-center" scope="col" colspan="4">&nbsp;</th>
+                        </tfoot>
 
                       </table>
                       </font>
@@ -287,6 +311,7 @@ function SearchFormSubmit() {
           cnt_eff_frm = data.contract_list[i]["cnt_eff_frm"];
           cnt_eff_to = data.contract_list[i]["cnt_eff_to"];          
           cnt_zone = data.contract_list[i]["cnt_zone"];
+          dept_sht = data.contract_list[i]["dept_sht"];
           nosupD = data.contract_list[i]["nosupD"];
           supD = data.contract_list[i]["supD"];
           nosupd = data.contract_list[i]["nosupN"];
@@ -303,12 +328,12 @@ function SearchFormSubmit() {
           total_sup_DN = data.contract_list[i]["total_sup_DN"];
           total_nosup_DN = data.contract_list[i]["total_nosup_DN"];
           grand_total = data.contract_list[i]["grand_total"];
-        
+                    
           result += "<tr>";
           result += "<th scope='row' class='text-left'>" + row_count + "</th>";
           result += "<th class='text-left'>" + cnt_id + "</th>";
           result += "<th class='text-left'>" + cus_name_th + "<br><small>" + cus_name_en + "</small></th>";          
-          result += "<th class='text-left'>" + cnt_zone + "</th>";
+          result += "<th class='text-left'>" + dept_sht + "</th>";
           
           result += "<th class='text-center'>" + mon + "</th>";
           result += "<th class='text-center'>" + tue + "</th>";
@@ -342,6 +367,26 @@ function SearchFormSubmit() {
       }
     
       $("#contract_list_table tbody").html(result);
+
+      result = "<th class='align-middle text-center' scope='col' colspan='4'>TOTAL</th>"        
+      result += "<th class='align-middle text-center' scope='col'>" + data.total_mon + "</th>";
+      result += "<th class='align-middle text-center' scope='col'>" + data.total_tue + "</th>";
+      result += "<th class='align-middle text-center' scope='col'>" + data.total_wed + "</th>";
+      result += "<th class='align-middle text-center' scope='col'>" + data.total_thu + "</th>";
+      result += "<th class='align-middle text-center' scope='col'>" + data.total_fri + "</th>";
+      result += "<th class='align-middle text-center' scope='col'>" + data.total_sat + "</th>";
+      result += "<th class='align-middle text-center' scope='col'>" + data.total_sun + "</th>";
+      result += "<th class='align-middle text-center' scope='col'>" + data.total_pub + "</th>";
+      result += "<th class='align-middle text-center' scope='col'>" + data.total_nosupD + "</th>";
+      result += "<th class='align-middle text-center' scope='col'>" + data.total_nosupN + "</th>";
+      result += "<th class='align-middle text-center' scope='col'>" + data.grand_total_nosup_DN + "</th>";
+      result += "<th class='align-middle text-center' scope='col'>" + data.total_supD + "</th>";
+      result += "<th class='align-middle text-center' scope='col'>" + data.total_supN + "</th>";
+      result += "<th class='align-middle text-center' scope='col'>" + data.grand_total_sup_DN + "</th>";
+      result += "<th class='align-middle text-center' scope='col'>" + data.grand_grand_total + "</th>";
+      result += "<th class='align-middle text-center' scope='col' colspan='4'>&nbsp;</th>";
+      
+      $("#contract_list_table tfoot").html(result);
       
     },
   });
