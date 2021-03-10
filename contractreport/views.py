@@ -280,29 +280,109 @@ def export_contract_list_report(request, *args, **kwargs):
 	finally:
 		cursor.close()
 
-	# Header
+	# TITLE
 	font_style = xlwt.XFStyle()
 	font_style.font.bold = True
 	font_style = xlwt.easyxf('font: bold 1,height 280;')
-	ws.write(1, 5, "Contract List", font_style)
+	# ws.write(0, 0, "Contract List", font_style)
+	ws.write_merge(0, 0, 0, 3, "Contract List", font_style)
 
+	# COLUMN WIDTH
+	ws.col(0).width = int(5*260)
+	ws.col(1).width = int(15*260)
+	ws.col(2).width = int(50*260)
+	ws.col(3).width = int(10*260)
+	ws.col(19).width = int(12*260)
+	ws.col(20).width = int(12*260)
+	ws.col(21).width = int(12*260)
+	ws.col(22).width = int(12*260)
+
+	# COLUMN NAME
+	font_style = xlwt.XFStyle()
+	font_style = xlwt.easyxf('font: bold 1, height 180;')	
+	font_style = xlwt.easyxf('font: bold off, color black; borders: top_color black, bottom_color black, right_color black, left_color black, left thin, right thin, top thin, bottom thin; pattern: pattern solid, fore_color white;')
+	font_style = xlwt.easyxf("align: vert centre, horiz centre")
+
+	columns = ['NO.', 'CONTRACT ID', 'SITE NAME', 'ZONE', 'DAY', 'SO', 'SUP', 'TT', 'CONTRACT TERMINATE', 'EFFECTIVE TERMINATE']
+	for col_num in range(len(columns)):		
+		
+		if(col_num==0):
+			ws.write(2, col_num, columns[col_num], font_style)
+		elif(col_num==1):
+			ws.write(2, col_num, columns[col_num], font_style)
+		elif(col_num==2):
+			ws.write(2, col_num, columns[col_num], font_style)
+		elif(col_num==3):
+			ws.write(2, col_num, columns[col_num], font_style)
+
+		elif(col_num==4):
+			ws.write_merge(2, 2, 4, 11, columns[col_num], font_style)
+
+		elif(col_num==5):
+			ws.write_merge(2, 2, 12, 14, columns[col_num], font_style)
+
+		elif(col_num==6):
+			ws.write_merge(2, 2, 15, 17, columns[col_num], font_style)
+
+		elif(col_num==7):
+			ws.write(2, 18, columns[col_num], font_style)
+
+		elif(col_num==8):						
+			ws.write_merge(2, 2, 19, 20, columns[col_num], font_style)
+
+		elif(col_num==9):
+			ws.write_merge(2, 2, 21, 22, columns[col_num], font_style)
+		else:
+			print("")
+
+		# ws.write_merge(2, 4, 2, 12, 'DAY', font_style)
+	
+	'''	
 	if customer_list_obj is not None:
 		if len(customer_list_obj) > 0:
-			row_num = 8
+			font_style = xlwt.XFStyle()
+			font_style = xlwt.easyxf('font: height 180;')
+			row_num = 3
 			counter = 1
+
 			for row in customer_list_obj:
-				number = counter
+				row_count = counter
 				cnt_id = row[0]
 				cus_name_en = row[1]
 				cus_name_th = row[2]
 				cnt_sign_frm = str(row[3].strftime("%d/%m/%Y"))
 				cnt_sign_to = str(row[4].strftime("%d/%m/%Y"))		
+				cnt_zone = row[7]
+
+				for col_num in range(len(row)):					
+					if(col_num==0):
+						ws.write(row_num, 0, row_count, font_style)
+					elif(col_num==1):
+						ws.write(row_num, 1, cnt_id, font_style)			
+					elif(col_num==2):
+						ws.write(row_num, 2, cus_name_en, font_style)
+					elif(col_num==3):
+						ws.write(row_num, 3, cnt_zone, font_style)
+					elif(col_num==4):
+						ws.write(row_num, 4, cnt_sign_frm, font_style)
+					elif(col_num==5):
+						ws.write(row_num, 5, cnt_sign_to, font_style)
+					elif(col_num==6):
+						ws.write(row_num, 6, "", font_style)
+					elif(col_num==7):
+						ws.write(row_num, 7, "", font_style)
+					elif(col_num==8):
+						ws.write(row_num, 8, "", font_style)			
+					elif(col_num==9):
+						ws.write(row_num, 9, "", font_style)
 				row_num += 1
-				counter += 1			
+				counter += 1
+
 		else:
 			message = ""
 	else:
 		message = ""
+	'''
 
 	wb.save(response)
 	return response	
