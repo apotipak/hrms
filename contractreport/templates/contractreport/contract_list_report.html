@@ -64,9 +64,9 @@
               <i class="fas fa-print fa-md"></i>&nbsp;Print
             </button>
             <div class="dropdown-menu dropdown-menu-right" role="menu">
-              <font size="2.8em;">
-                <a href="javascript:ToDo();" class="dropdown-item">Print Preview</a>                        
-                <a href="#" class="dropdown-item">Download File</a>
+              <font size="2.8em;">                
+                <a class="dropdown-item" href="#" onclick="print_contract()"><i class="fa fa-eye text-secondary" aria-hidden="true"></i>&nbsp;&nbsp;Display on screen</a>                
+                <a class="dropdown-item" href="#" onclick="download_contract()"><i class="fas fa-download text-secondary"></i>&nbsp;&nbsp;Download file</a>
               </font>
             </div>
           </div>
@@ -76,7 +76,7 @@
 
 
       <font size="2em;">
-      <table class="table table-sm table-bordered" id="contract_list_table">
+      <table class="table table-sm table-bordered table-striped" id="contract_list_table">
         <thead class="bg-secondary">
           <tr>
             <th class="align-middle text-center" scope="col" rowspan="2">NO.</th>
@@ -165,7 +165,15 @@
 
 
 {% block javascript %}
+
 <script>
+$(document).ready(function(){
+
+  //$('#id_contract_number_from').focus();
+  //$('#id_contract_number_from').select();
+
+});
+
 function showLoading() {
   $.LoadingOverlaySetup({
       background      : "rgba(0, 0, 0, 0.5)",
@@ -208,9 +216,6 @@ $("#id_contract_number_to").on('click', function(){
 	$("#id_contract_number_to").select();
 });
 
-function ToDo() {
-  alert("todo");
-}
 
 function SearchFormSubmit() {
   var contract_number_from = $('#id_contract_number_from').val();
@@ -306,7 +311,7 @@ function SearchFormSubmit() {
             row_count = row_count + 1;
           }           
         } else {
-            result = "<tr class='bg-warning'><th scope='row' class='text-center' colspan='23'><br><br>There is no data.<br><br><br></th></tr>";
+            result = "<tr style='background-color: #d2d4d6;'><th scope='row' class='text-center' colspan='23'><br><br>There is no data.<br><br><br></th></tr>";
         }
          
       }
@@ -339,12 +344,37 @@ function SearchFormSubmit() {
   $.LoadingOverlay("hide");
 }
 
-$(document).ready(function(){
 
-  //$('#id_contract_number_from').focus();
-  //$('#id_contract_number_from').select();
+function print_contract() {
+  var contract_number_from = $('#id_contract_number_from').val();
+  var contract_number_to = $('#id_contract_number_to').val();
+  var contract_status = $('#id_contract_status_option').val();
+  var contract_zone = $('#id_contract_zone_option').val();
 
-});
+  if(contract_status=="") {
+    contract_status = "all_status"
+  }
+
+  if(contract_zone=="") {
+    contract_zone = "all_zone"
+  }
+
+  //alert(contract_number_from + "," + contract_number_to + "," + contract_status + "," + contract_zone);
+  //alert("test");
+  //return false;
+
+  var href = "/contract-report/generate-contract-list/" + contract_number_from + "/" + contract_number_to + "/" + contract_status + "/" + contract_zone + "/";
+
+  //alert("a");
+  //return false;
+
+  window.open(
+    href,
+    '_blank'
+  );
+}
+
+
 
 </script>
 
