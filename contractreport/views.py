@@ -284,8 +284,8 @@ def export_contract_list_report(request, *args, **kwargs):
 	font_style = xlwt.XFStyle()
 	font_style.font.bold = True
 	font_style = xlwt.easyxf('font: bold 1,height 280;')
-	# ws.write(0, 0, "Contract List", font_style)
-	ws.write_merge(0, 0, 0, 3, "Contract List", font_style)
+	ws.write(0, 0, "Contract List", font_style)
+	# ws.write_merge(0, 0, 0, 3, "Contract List", font_style)
 
 	# COLUMN WIDTH
 	ws.col(0).width = int(5*260)
@@ -300,49 +300,62 @@ def export_contract_list_report(request, *args, **kwargs):
 	# COLUMN NAME
 	font_style = xlwt.XFStyle()
 	font_style = xlwt.easyxf('font: bold 1, height 180;')	
-	font_style = xlwt.easyxf('font: bold off, color black; borders: top_color black, bottom_color black, right_color black, left_color black, left thin, right thin, top thin, bottom thin; pattern: pattern solid, fore_color white;')
-	font_style = xlwt.easyxf("align: vert centre, horiz centre")
+	font_style = xlwt.easyxf('font: bold off, color black; borders: top_color black, bottom_color black, right_color black, left_color black, left thin, right thin, top thin, bottom thin; pattern: pattern solid, fore_color white; align: vert centre, horiz centre;')
+	# font_style = xlwt.easyxf("align: vert centre, horiz centre")
 
 	columns = ['NO.', 'CONTRACT ID', 'SITE NAME', 'ZONE', 'DAY', 'SO', 'SUP', 'TT', 'CONTRACT TERMINATE', 'EFFECTIVE TERMINATE']
-	for col_num in range(len(columns)):		
-		
+	for col_num in range(len(columns)):				
 		if(col_num==0):
-			ws.write(2, col_num, columns[col_num], font_style)
-		elif(col_num==1):
-			ws.write(2, col_num, columns[col_num], font_style)
-		elif(col_num==2):
-			ws.write(2, col_num, columns[col_num], font_style)
-		elif(col_num==3):
-			ws.write(2, col_num, columns[col_num], font_style)
-
+			ws.write_merge(2, 3, 0, 0, columns[col_num], font_style)
+		elif(col_num==1):			
+			ws.write_merge(2, 3, 1, 1, columns[col_num], font_style)
+		elif(col_num==2):			
+			ws.write_merge(2, 3, 2, 2, columns[col_num], font_style)
+		elif(col_num==3):			
+			ws.write_merge(2, 3, 3, 3, columns[col_num], font_style)
 		elif(col_num==4):
 			ws.write_merge(2, 2, 4, 11, columns[col_num], font_style)
-
 		elif(col_num==5):
 			ws.write_merge(2, 2, 12, 14, columns[col_num], font_style)
-
 		elif(col_num==6):
 			ws.write_merge(2, 2, 15, 17, columns[col_num], font_style)
-
 		elif(col_num==7):
-			ws.write(2, 18, columns[col_num], font_style)
-
+			# ws.write(2, 18, columns[col_num], font_style)
+			ws.write_merge(2, 3, 18, 18, columns[col_num], font_style)
 		elif(col_num==8):						
 			ws.write_merge(2, 2, 19, 20, columns[col_num], font_style)
-
 		elif(col_num==9):
 			ws.write_merge(2, 2, 21, 22, columns[col_num], font_style)
 		else:
 			print("")
 
-		# ws.write_merge(2, 4, 2, 12, 'DAY', font_style)
+	ws.write(3, 4, "MO", font_style)
+	ws.write(3, 5, "TU", font_style)
+	ws.write(3, 6, "WE", font_style)
+	ws.write(3, 7, "TH", font_style)
+	ws.write(3, 8, "FR", font_style)
+	ws.write(3, 9, "SA", font_style)
+	ws.write(3, 10, "SU", font_style)
+	ws.write(3, 11, "PU", font_style)
+
+	ws.write(3, 12, "D", font_style)
+	ws.write(3, 13, "N", font_style)
+	ws.write(3, 14, "T", font_style)
 	
-	'''	
+	ws.write(3, 15, "D", font_style)
+	ws.write(3, 16, "N", font_style)
+	ws.write(3, 17, "T", font_style)
+
+	ws.write(3, 19, "FROM", font_style)
+	ws.write(3, 20, "TO", font_style)
+	ws.write(3, 21, "FROM", font_style)
+	ws.write(3, 22, "TO", font_style)
+
 	if customer_list_obj is not None:
 		if len(customer_list_obj) > 0:
 			font_style = xlwt.XFStyle()
 			font_style = xlwt.easyxf('font: height 180;')
-			row_num = 3
+			row_num = 4
 			counter = 1
 
 			for row in customer_list_obj:
@@ -350,11 +363,31 @@ def export_contract_list_report(request, *args, **kwargs):
 				cnt_id = row[0]
 				cus_name_en = row[1]
 				cus_name_th = row[2]
-				cnt_sign_frm = str(row[3].strftime("%d/%m/%Y"))
-				cnt_sign_to = str(row[4].strftime("%d/%m/%Y"))		
+				
 				cnt_zone = row[7]
+				
+				cnt_sign_frm = "" if row[3] is None else str(row[3].strftime("%d/%m/%Y"))
+				cnt_sign_to = "" if row[4] is None else str(row[4].strftime("%d/%m/%Y"))
+				cnt_eff_frm = "" if row[5] is None else str(row[5].strftime("%d/%m/%Y"))
+				cnt_eff_to = "" if row[6] is None else str(row[6].strftime("%d/%m/%Y"))
+				
+				mon = row[12]
+				tue = row[13]
+				wed = row[14]
+				thu = row[15]
+				fri = row[16]
+				sat = row[17]
+				sun = row[18]
+				pub = row[19]
 
-				for col_num in range(len(row)):					
+				nosupD = row[8]
+				supD = row[9]
+				nosupN = row[10]
+				supN = row[11]
+
+				nosupD, supD, nosupN,
+
+				for col_num in range(23):
 					if(col_num==0):
 						ws.write(row_num, 0, row_count, font_style)
 					elif(col_num==1):
@@ -364,17 +397,45 @@ def export_contract_list_report(request, *args, **kwargs):
 					elif(col_num==3):
 						ws.write(row_num, 3, cnt_zone, font_style)
 					elif(col_num==4):
-						ws.write(row_num, 4, cnt_sign_frm, font_style)
+						ws.write(row_num, 4, mon, font_style)
 					elif(col_num==5):
-						ws.write(row_num, 5, cnt_sign_to, font_style)
+						ws.write(row_num, 5, tue, font_style)
 					elif(col_num==6):
-						ws.write(row_num, 6, "", font_style)
+						ws.write(row_num, 6, wed, font_style)
 					elif(col_num==7):
-						ws.write(row_num, 7, "", font_style)
+						ws.write(row_num, 7, thu, font_style)						
 					elif(col_num==8):
-						ws.write(row_num, 8, "", font_style)			
+						ws.write(row_num, 8, fri, font_style)			
 					elif(col_num==9):
-						ws.write(row_num, 9, "", font_style)
+						ws.write(row_num, 9, sat, font_style)
+					elif(col_num==10):
+						ws.write(row_num, 10, sun, font_style)
+					elif(col_num==11):
+						ws.write(row_num, 11, pub, font_style)
+
+					elif(col_num==12):
+						ws.write(row_num, 12, nosupD, font_style)
+					elif(col_num==13):
+						ws.write(row_num, 13, nosupN, font_style)
+
+					elif(col_num==15):
+						ws.write(row_num, 15, supD, font_style)
+					elif(col_num==16):
+						ws.write(row_num, 16, supN, font_style)
+
+					elif(col_num==17):
+						ws.write(row_num, 17, "", font_style)
+
+					elif(col_num==19):
+						ws.write(row_num, 19, cnt_sign_frm, font_style)
+
+					elif(col_num==20):
+						ws.write(row_num, 20, cnt_sign_to, font_style)
+					elif(col_num==21):
+						ws.write(row_num, 21, cnt_eff_frm, font_style)
+					elif(col_num==22):
+						ws.write(row_num, 22, cnt_eff_to, font_style)
+
 				row_num += 1
 				counter += 1
 
@@ -382,7 +443,6 @@ def export_contract_list_report(request, *args, **kwargs):
 			message = ""
 	else:
 		message = ""
-	'''
 
 	wb.save(response)
 	return response	
