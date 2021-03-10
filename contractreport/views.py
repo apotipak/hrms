@@ -59,10 +59,6 @@ def AJAXReportSearchContract(request):
 	contract_zone = request.POST.get('contract_zone')
 	contract_list = []
 
-	# sql = "select cnt_id, cus_name_th, cus_name_en, cnt_zone from v_cuscontract "
-	# sql + = "where cnt_id>=" + str(contract_number_from) + " " 
-	# sql += "and cnt_id<=" + str(contract_number_to)
-
 	sql = "select cnt_id, cus_name_en, cus_name_th, "
 	sql += "cnt_sign_frm, cnt_sign_to, cnt_eff_frm, "
 	sql += "cnt_eff_to, cnt_zone, nosupD, supD, nosupN, supN, Sun, Mon, Tue, Wed, Thu, Fri, Sat, Pub, dept_sht "
@@ -271,7 +267,16 @@ def export_contract_list_report(request, *args, **kwargs):
 	sql += "from V_Contract_Summary "
 	sql += "where cnt_id>=" + str(contract_number_from) + " " 
 	sql += "and cnt_id<=" + str(contract_number_to) + " "
-	print("SQL : " + sql);
+
+	if contract_status == "1":
+		sql += " and cnt_active=1 "
+	elif contract_status == "2":
+		sql += " and cnt_active=0 "
+
+	if contract_zone != "":
+		sql += " and cnt_zone=" + contract_zone + " "
+
+	sql += "ORDER BY cnt_id;"
 
 	try:
 		cursor = connection.cursor()
@@ -280,12 +285,30 @@ def export_contract_list_report(request, *args, **kwargs):
 	finally:
 		cursor.close()
 
+	total_sun = 0
+	total_mon = 0
+	total_tue = 0
+	total_wed = 0
+	total_thu = 0
+	total_fri = 0
+	total_sat = 0	
+	total_pub = 0
+
+	total_supD = 0
+	total_supN = 0
+
+	total_nosupD = 0
+	total_nosupN = 0
+
+	grand_total_sup_DN = 0
+	grand_total_nosup_DN = 0
+	grand_grand_total = 0
+
 	# TITLE
 	font_style = xlwt.XFStyle()
 	font_style.font.bold = True
 	font_style = xlwt.easyxf('font: bold 1,height 280;')
 	ws.write(0, 0, "Contract List", font_style)
-	# ws.write_merge(0, 0, 0, 3, "Contract List", font_style)
 
 	# COLUMN WIDTH
 	ws.col(0).width = int(5*260)
@@ -327,7 +350,7 @@ def export_contract_list_report(request, *args, **kwargs):
 		elif(col_num==9):
 			ws.write_merge(2, 2, 21, 22, columns[col_num], font_style)
 		else:
-			print("")
+			message = ""
 
 	ws.write(3, 4, "MO", font_style)
 	ws.write(3, 5, "TU", font_style)
@@ -385,7 +408,29 @@ def export_contract_list_report(request, *args, **kwargs):
 				nosupN = row[10]
 				supN = row[11]
 
-				nosupD, supD, nosupN,
+
+				total_sup_DN = row[9] + row[11]
+				total_nosup_DN = row[8] + row[10]
+				grand_total = total_sup_DN + total_nosup_DN
+
+				total_supD += row[9]
+				total_supN += row[11]
+				total_nosupD += row[8]
+				total_nosupN += row[10]
+
+				total_sun += row[12]
+				total_mon += row[13]
+				total_tue += row[14]
+				total_wed += row[15]
+				total_thu += row[16]
+				total_fri += row[17]
+				total_sat += row[18]
+				total_pub += row[19]
+
+				grand_total_sup_DN += total_sup_DN
+				grand_total_nosup_DN += total_nosup_DN
+				grand_grand_total += grand_total
+
 
 				for col_num in range(23):
 					if(col_num==0):
@@ -418,13 +463,19 @@ def export_contract_list_report(request, *args, **kwargs):
 					elif(col_num==13):
 						ws.write(row_num, 13, nosupN, font_style)
 
+					elif(col_num==14):
+						ws.write(row_num, 14, total_nosup_DN, font_style)
+
 					elif(col_num==15):
 						ws.write(row_num, 15, supD, font_style)
 					elif(col_num==16):
 						ws.write(row_num, 16, supN, font_style)
 
 					elif(col_num==17):
-						ws.write(row_num, 17, "", font_style)
+						ws.write(row_num, 17, total_sup_DN, font_style)
+
+					elif(col_num==18):
+						ws.write(row_num, 18, grand_total, font_style)
 
 					elif(col_num==19):
 						ws.write(row_num, 19, cnt_sign_frm, font_style)
