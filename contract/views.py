@@ -279,8 +279,11 @@ def get_customer(request):
                     cus_contract_obj = cursor.fetchone()
 
                 if cus_contract_obj is not None:
-                    default_sign_to = cus_contract_obj[0].strftime("%d/%m/%Y")
-                    default_effective_to = cus_contract_obj[1].strftime("%d/%m/%Y")
+                    if cus_contract_obj[0] is not None:
+                        default_sign_to = cus_contract_obj[0].strftime("%d/%m/%Y")
+
+                    if cus_contract_obj[1]:
+                        default_effective_to = cus_contract_obj[1].strftime("%d/%m/%Y")
                 
                 message = "OK"
                 is_error = False
