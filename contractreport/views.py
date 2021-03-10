@@ -74,6 +74,8 @@ def AJAXReportSearchContract(request):
 
 	if contract_zone != "":
 		sql += " and cnt_zone=" + contract_zone + " "
+	else:
+		sql += " "
 
 	sql += "ORDER BY cnt_id;"
 
@@ -272,11 +274,18 @@ def export_contract_list_report(request, *args, **kwargs):
 		sql += " and cnt_active=1 "
 	elif contract_status == "2":
 		sql += " and cnt_active=0 "
+	else:
+		sql += " "		
 
 	if contract_zone != "":
-		sql += " and cnt_zone=" + contract_zone + " "
+		if contract_zone == "all_zone":
+			sql += " "
+		else: 
+			sql += " and cnt_zone=" + contract_zone + " "
 
 	sql += "ORDER BY cnt_id;"
+
+	print("SQL:", sql)
 
 	try:
 		cursor = connection.cursor()
