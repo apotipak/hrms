@@ -66,9 +66,9 @@
             </button>
             <div class="dropdown-menu dropdown-menu-right" role="menu">
               <font size="2.8em;">                
-                <a class="dropdown-item" href="#" onclick="print_contract()"><i class="fas fa-desktop text-secondary"></i>&nbsp;&nbsp;Display on screen</a>                
-                <a class="dropdown-item" href="#" onclick="download_contract()"><i class="fas fa-download text-secondary"></i>&nbsp;&nbsp;Download file</a>
-                <a class="dropdown-item" href="#"><i class="far fa-file-excel text-secondary"></i>&nbsp;&nbsp;&nbsp;Export Excel file</a>
+                <a class="dropdown-item" href="#" onclick="display_on_screen()"><i class="fas fa-desktop text-secondary"></i>&nbsp;&nbsp;Display on screen</a>                
+                <!--<a class="dropdown-item" href="#" onclick="download_contract()"><i class="fas fa-download text-secondary"></i>&nbsp;&nbsp;Download file</a>-->
+                <a class="dropdown-item" href="#">&nbsp;<i class="far fa-file-excel text-secondary"></i>&nbsp;&nbsp;&nbsp;Export to Excel</a>
               </font>
             </div>
           </div>
@@ -347,7 +347,7 @@ function SearchFormSubmit() {
 }
 
 
-function print_contract() {
+function display_on_screen() {
   var contract_number_from = $('#id_contract_number_from').val();
   var contract_number_to = $('#id_contract_number_to').val();
   var contract_status = $('#id_contract_status_option').val();
