@@ -131,9 +131,13 @@ def AJAXReportSearchContract(request):
 			cnt_eff_frm = ""
 
 		if row[6] is not None:
-			cnt_eff_to = row[6].strftime("%d-%b-%Y")
+			# cnt_eff_to = row[6].strftime("%d-%b-%Y")
+			if row[6].strftime("%Y-%m-%d") == "2999-12-31":
+				cnt_eff_to = "<div class='text-center'>&nbsp;Infinite</small></div>"
+			else:
+				cnt_eff_to = row[6].strftime("%d-%b-%Y")
 		else:
-			cnt_eff_to = ""
+			cnt_eff_to = "<div class='text-center'>&nbsp;Infinite</small></div>"
 
 		total_sup_DN = row[9] + row[11]
 		total_nosup_DN = row[8] + row[10]
@@ -335,7 +339,7 @@ def export_contract_list_report(request, *args, **kwargs):
 	font_style = xlwt.easyxf('font: bold off, color black; borders: top_color black, bottom_color black, right_color black, left_color black, left thin, right thin, top thin, bottom thin; pattern: pattern solid, fore_color white; align: vert centre, horiz centre;')
 	# font_style = xlwt.easyxf("align: vert centre, horiz centre")
 
-	columns = ['NO.', 'CONTRACT ID', 'SITE NAME', 'ZONE', 'DAY', 'SO', 'SUP', 'TT', 'CONTRACT TERMINATE', 'EFFECTIVE TERMINATE']
+	columns = ['NO.', 'CONTRACT ID', 'SITE NAME', 'ZONE', 'DAY', 'SO', 'SUP', 'TOTAL', 'CONTRACT TERMINATE', 'EFFECTIVE TERMINATE']
 	for col_num in range(len(columns)):				
 		if(col_num==0):
 			ws.write_merge(2, 3, 0, 0, columns[col_num], font_style)
