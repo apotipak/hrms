@@ -64,13 +64,13 @@
           <button class="btn btn-outline-light btn-sm dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fas fa-print fa-sm"></i>&nbsp;&nbsp;Print
           </button>
-          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-            
-            <a class="dropdown-item" href="#" onclick="print_contract()"><i class="fa fa-eye text-secondary" aria-hidden="true"></i>&nbsp;&nbsp;Display on screen</a>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">            
+            <a class="dropdown-item" href="#" onclick="print_contract()"><i class="fas fa-desktop text-secondary"></i>&nbsp;&nbsp;Display on screen</a>
             
             <input type="hidden" id="id_cnt_id_temp" name="cnt_id_temp" value="">
 
-            <a class="dropdown-item" href="#" onclick="download_contract('{{contract.cnt_id}}')"><i class="fas fa-download text-secondary"></i>&nbsp;&nbsp;Download file</a>            
+            <a class="dropdown-item" href="#" onclick="download_contract('{{contract.cnt_id}}')"><i class="fas fa-download text-secondary"></i>&nbsp;&nbsp;&nbsp;Download file</a>
+            
           </div>
 
           &nbsp;&nbsp;

@@ -65,8 +65,9 @@
             </button>
             <div class="dropdown-menu dropdown-menu-right" role="menu">
               <font size="2.8em;">                
-                <a class="dropdown-item" href="#" onclick="print_contract()"><i class="fa fa-eye text-secondary" aria-hidden="true"></i>&nbsp;&nbsp;Display on screen</a>                
+                <a class="dropdown-item" href="#" onclick="print_contract()"><i class="fas fa-desktop text-secondary"></i>&nbsp;&nbsp;Display on screen</a>                
                 <a class="dropdown-item" href="#" onclick="download_contract()"><i class="fas fa-download text-secondary"></i>&nbsp;&nbsp;Download file</a>
+                <a class="dropdown-item" href="#"><i class="far fa-file-excel text-secondary"></i>&nbsp;&nbsp;&nbsp;Export Excel file</a>
               </font>
             </div>
           </div>
@@ -360,7 +361,7 @@ function print_contract() {
   }
 
   var href = "/contract-report/generate-contract-list/" + contract_number_from + "/" + contract_number_to + "/" + contract_status + "/" + contract_zone + "/";
-  
+
   window.open(
     href,
     '_blank'
