@@ -13,12 +13,12 @@
     <!-- Main content -->
     <section class="content">
 
-      <div class="col-md-12">
+      <div class="col-md-12 bg-info pt-2 pb-1">
 
         <form method="post" autocomplete="off" name="search_form">
           {% csrf_token %}
           
-          <div class="card-body">
+          <div class="card-body p-0 pt-2">
             <div class="form-group">
 
               <div class="input-group col-12">
@@ -44,7 +44,8 @@
                   {% endfor %}
                 </select>                               
 
-                &nbsp;<a href="javascript:SearchFormSubmit();" class="btn btn-outline-primary" role="button"><i class="fas fa-search fa-md"></i></a>
+                <!--&nbsp;<a href="javascript:SearchFormSubmit();" class="btn btn-outline-primary" role="button"><i class="fas fa-search fa-md"></i></a>-->
+                &nbsp;<a href="javascript:SearchFormSubmit();" class="btn btn-outline-light" role="button">SEARCH</a>
               </div>
 
             </div>
@@ -57,7 +58,7 @@
 
       <div class="card-header" style="padding: 0 2px 10px 0;">
         <hr>
-        <h5 class="card-title"><b>Contract List</b></h5>
+        <h5 class="card-title"><b>Contract List Report</b></h5>
 
         <div class="float-right pb-1">
           <div class="d-flex flex-row-reverse">
@@ -129,7 +130,7 @@
         
         <tbody>
           <tr>
-            <th scope="row" class="text-center" colspan='23'><br><br><br><br><br></th>
+            <th class="text-center" colspan='23'><br><br><br><br><br></th>
           </tr>
         </tbody>
 
