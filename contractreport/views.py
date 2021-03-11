@@ -177,15 +177,15 @@ def AJAXReportSearchContract(request):
 
 		if row[6] is not None:
 			if row[6].strftime("%Y-%m-%d") == "2999-12-31":
-				cnt_eff_to = "<div class='text-center text-info'><i>Open ended</i></div>"
+				cnt_eff_to = "<div class='text-left text-info'><i>Open ended</i></div>"
 			else:				
 				cnt_eff_to = row[6].strftime("%d-%b-%Y")
 				if datetime.datetime.now() > row[6]:
-					cnt_eff_to = "<div class='text-center text-danger'>" + str(cnt_eff_to) + "</div>"
+					cnt_eff_to = "<div class='text-left text-danger'>" + str(cnt_eff_to) + "</div>"
 				else:
 					cnt_eff_to = "<div class='text-left'>" + str(cnt_eff_to) + "</div>"
 		else:
-			cnt_eff_to = "<div class='text-center text-info'><i>Open ended</i></div>"
+			cnt_eff_to = "<div class='text-left text-info'><i>Open ended</i></div>"
 
 
 		total_sup_DN = row[9] + row[11]
