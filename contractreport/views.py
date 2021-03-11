@@ -50,6 +50,38 @@ def ContractListReport(request):
         })
 
 
+@permission_required('contractreport.can_access_contract_list_report', login_url='/accounts/login/')
+def generate_contract_list(request, *args, **kwargs):    
+
+	base_url = MEDIA_ROOT + '/contract/template/'
+	contract_number_from = kwargs['contract_number_from']
+	contract_number_to = kwargs['contract_number_to']
+	contract_status = kwargs['contract_status']
+	contract_zone = kwargs['contract_zone']
+
+	# now = datetime.datetime.now()
+	# html = "<html><body>It is now %s.</body></html>" % now
+	# return HttpResponse(html)
+	
+	template_name = base_url + 'CNT_ContractStatus.docx'
+	file_name = "contract_list_report"
+
+	context = {
+	    'customer': "TEST",
+	}
+
+	tpl = DocxTemplate(template_name)
+	tpl.render(context)
+	tpl.save(MEDIA_ROOT + '/contract/download/' + file_name + ".docx")
+
+	# docx2pdf
+	docx_file = path.abspath("media\\contract\\download\\" + file_name + ".docx")
+	pdf_file = path.abspath("media\\contract\\download\\" + file_name + ".pdf")    
+	convert(docx_file, pdf_file)
+
+	return FileResponse(open(pdf_file, 'rb'), content_type='application/pdf')	
+
+
 def AJAXReportSearchContract(request):
 	is_error = False
 	error_message = "No error"
@@ -130,7 +162,9 @@ def AJAXReportSearchContract(request):
 			else:
 				cnt_sign_to = row[4].strftime("%d-%b-%Y")
 				if datetime.datetime.now() > row[4]:
-					cnt_sign_to = "<div class='text-center text-danger'>" + str(cnt_sign_to) + "</div>"				
+					cnt_sign_to = "<div class='text-left text-danger'>" + str(cnt_sign_to) + "</div>"
+				else:
+					cnt_sign_to = "<div class='text-left'>" + str(cnt_sign_to) + "</div>"
 		else:
 			cnt_sign_to = "<div class='text-center text-info'><i>Open ended</i></div>"
 
@@ -148,6 +182,8 @@ def AJAXReportSearchContract(request):
 				cnt_eff_to = row[6].strftime("%d-%b-%Y")
 				if datetime.datetime.now() > row[6]:
 					cnt_eff_to = "<div class='text-center text-danger'>" + str(cnt_eff_to) + "</div>"
+				else:
+					cnt_eff_to = "<div class='text-left'>" + str(cnt_eff_to) + "</div>"
 		else:
 			cnt_eff_to = "<div class='text-center text-info'><i>Open ended</i></div>"
 
@@ -227,38 +263,6 @@ def AJAXReportSearchContract(request):
 
 	response.status_code = 200
 	return response
-
-
-@permission_required('contractreport.can_access_contract_list_report', login_url='/accounts/login/')
-def generate_contract_list(request, *args, **kwargs):    
-
-	base_url = MEDIA_ROOT + '/contract/template/'
-	contract_number_from = kwargs['contract_number_from']
-	contract_number_to = kwargs['contract_number_to']
-	contract_status = kwargs['contract_status']
-	contract_zone = kwargs['contract_zone']
-
-	# now = datetime.datetime.now()
-	# html = "<html><body>It is now %s.</body></html>" % now
-	# return HttpResponse(html)
-	
-	template_name = base_url + 'CNT_ContractStatus.docx'
-	file_name = "contract_list_report"
-
-	context = {
-	    'customer': "TEST",
-	}
-
-	tpl = DocxTemplate(template_name)
-	tpl.render(context)
-	tpl.save(MEDIA_ROOT + '/contract/download/' + file_name + ".docx")
-
-	# docx2pdf
-	docx_file = path.abspath("media\\contract\\download\\" + file_name + ".docx")
-	pdf_file = path.abspath("media\\contract\\download\\" + file_name + ".pdf")    
-	convert(docx_file, pdf_file)
-
-	return FileResponse(open(pdf_file, 'rb'), content_type='application/pdf')	
 
 
 @login_required(login_url='/accounts/login/')
