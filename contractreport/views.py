@@ -114,6 +114,10 @@ def AJAXReportSearchContract(request):
 	grand_total_nosup_DN = 0
 	grand_grand_total = 0
 
+
+	today_date = datetime.datetime.now().strftime("%Y-%m-%d")
+	print("DEBUG: today date = ", today_date)
+
 	for row in contract_obj:
 		if row[3] is not None:
 			cnt_sign_frm = row[3].strftime("%d-%b-%Y")
@@ -125,6 +129,8 @@ def AJAXReportSearchContract(request):
 				cnt_sign_to = "<div class='text-center text-info'><i>Open ended</i></div>"
 			else:
 				cnt_sign_to = row[4].strftime("%d-%b-%Y")
+				if datetime.datetime.now() > row[4]:
+					cnt_sign_to = "<div class='text-center text-danger'>" + str(cnt_sign_to) + "</div>"				
 		else:
 			cnt_sign_to = "<div class='text-center text-info'><i>Open ended</i></div>"
 
@@ -138,10 +144,13 @@ def AJAXReportSearchContract(request):
 		if row[6] is not None:
 			if row[6].strftime("%Y-%m-%d") == "2999-12-31":
 				cnt_eff_to = "<div class='text-center text-info'><i>Open ended</i></div>"
-			else:
+			else:				
 				cnt_eff_to = row[6].strftime("%d-%b-%Y")
+				if datetime.datetime.now() > row[6]:
+					cnt_eff_to = "<div class='text-center text-danger'>" + str(cnt_eff_to) + "</div>"
 		else:
 			cnt_eff_to = "<div class='text-center text-info'><i>Open ended</i></div>"
+
 
 		total_sup_DN = row[9] + row[11]
 		total_nosup_DN = row[8] + row[10]
