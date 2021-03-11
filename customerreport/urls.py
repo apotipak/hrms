@@ -5,6 +5,7 @@ from django.conf.urls.static import static
 from . import views
 
 
-urlpatterns = [
-    path('', views.ExportCustomerAddressMainReport, name='export_customer_address_main_report'),
+urlpatterns = [    
+    # path('export-customer-address-main/', views.ExportCustomerAddressMainReport, name='export-customer-address-main-report'),
+    path('', views.ExportCustomerAddressMainReport, name='export-customer-address-main-report'),    
 ]
