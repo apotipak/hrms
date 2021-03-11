@@ -81,6 +81,16 @@ def generate_contract_list(request, *args, **kwargs):
 
 	return FileResponse(open(pdf_file, 'rb'), content_type='application/pdf')	
 
+def dept_sht_text_display(dept_sht):
+	dept_sht_text = str(dept_sht)
+
+	dept_sht_text = dept_sht_text.replace("Zone", "")
+	dept_sht_text = dept_sht_text.replace("ZONE ", "")
+	dept_sht_text = dept_sht_text.replace("SGD.", "")
+	dept_sht_text = dept_sht_text.replace("SP-", "")
+
+	return dept_sht_text
+
 
 def AJAXReportSearchContract(request):
 	is_error = False
@@ -97,6 +107,7 @@ def AJAXReportSearchContract(request):
 	sql += "from V_Contract_Summary "
 	sql += "where cnt_id>=" + str(contract_number_from) + " " 
 	sql += "and cnt_id<=" + str(contract_number_to) + " "
+	print(sql)
 
 	print("contract_status:", contract_status)
 	if contract_status == "1":
@@ -169,7 +180,6 @@ def AJAXReportSearchContract(request):
 			cnt_sign_to = "<div class='text-left text-info'><i>Open ended</i></div>"
 
 
-
 		if row[5] is not None:
 			cnt_eff_frm = row[5].strftime("%d-%b-%Y")
 		else:
@@ -187,6 +197,9 @@ def AJAXReportSearchContract(request):
 		else:
 			cnt_eff_to = "<div class='text-left text-info'><i>Open ended</i></div>"
 
+
+		dept_sht_text = dept_sht_text_display(row[20])
+		# zone_text = row[7]
 
 		total_sup_DN = row[9] + row[11]
 		total_nosup_DN = row[8] + row[10]
@@ -219,7 +232,7 @@ def AJAXReportSearchContract(request):
 			"cnt_eff_frm": cnt_eff_frm,
 			"cnt_eff_to": cnt_eff_to,
 			"cnt_zone": row[7],
-			"dept_sht": row[20],
+			"dept_sht": dept_sht_text,
 			"nosupD": row[8],
 			"supD": row[9],
 			"nosupN": row[10],
