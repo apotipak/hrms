@@ -4393,10 +4393,18 @@
       srv_cost = $('#id_srv_cost').val();
       srv_cost_rate = $('#id_srv_cost_rate').val();
       srv_rem = $('#id_srv_rem').val();
+
+
+      /*
       spay1 = $('#id_srv_special_position').val();
       spay2 = $('#id_srv_special_incentive').val();
       spay3 = $('#id_srv_special_cctv').val();
       spay4 = $('#id_srv_special_traffic').val();
+      */
+      spay1 = 0
+      spay2 = 0
+      spay3 = 0
+      spay4 = 0
 
       $.ajax({
         url : "/contract/ajax/save_customer_service_item",
