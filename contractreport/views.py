@@ -461,7 +461,7 @@ def export_contract_list_report(request, *args, **kwargs):
 				grand_total_nosup_DN += total_nosup_DN
 				grand_grand_total += grand_total
 
-
+				font_style = xlwt.easyxf('font: bold off, color black; borders: top_color black, bottom_color black, right_color black, left_color black, left thin, right thin, top thin, bottom thin; pattern: pattern solid, fore_color white; align: vert centre, horiz centre;')
 				for col_num in range(23):
 					if(col_num==0):
 						ws.write(row_num, 0, row_count, font_style)
@@ -524,11 +524,7 @@ def export_contract_list_report(request, *args, **kwargs):
 			message = ""
 
 		# Add TOTAL row
-		# font_style = xlwt.XFStyle()
-		# font_style = xlwt.easyxf('font: bold 1, height 180;')	
-		# font_style = xlwt.easyxf('font: bold off, color black; borders: top_color black, bottom_color black, right_color black, left_color black, left thin, right thin, top thin, bottom thin; pattern: pattern solid, fore_color white; align: vert centre, horiz centre;')
-		# font_style = xlwt.easyxf("align: vert centre, horiz centre")
-		ws.write_merge(row_num, row_num, 0, 3, "TOTAL", font_style)
+		font_style = xlwt.easyxf('font: bold off, color black; borders: top_color black, bottom_color black, right_color black, left_color black, left thin, right thin, top thin, bottom thin; pattern: pattern solid, fore_color white; align: vert centre, horiz centre;')
 		ws.write(row_num, 4, total_mon, font_style)
 		ws.write(row_num, 5, total_tue, font_style)
 		ws.write(row_num, 6, total_wed, font_style)
@@ -548,6 +544,9 @@ def export_contract_list_report(request, *args, **kwargs):
 		ws.write(row_num, 17, grand_total_sup_DN, font_style)
 
 		ws.write(row_num, 18, grand_grand_total, font_style)
+
+		font_style = xlwt.easyxf('font: bold off, color black; borders: top_color black, bottom_color black, right_color black, left_color black, left thin, right thin, top thin, bottom thin; pattern: pattern solid, fore_color white; align: vert centre, horiz centre;')
+		ws.write_merge(row_num, row_num, 0, 3, "TOTAL", font_style)		
 	else:
 		message = ""
 
