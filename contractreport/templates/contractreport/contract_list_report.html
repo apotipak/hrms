@@ -324,6 +324,7 @@ function SearchFormSubmit() {
             row_count = row_count + 1;
           }           
         } else {
+            result = "";
             result = "<tr style='background-color: #d2d4d6;'><th scope='row' class='text-center' colspan='23'><br><br>There is no data.<br><br><br></th></tr>";
         }
          
@@ -381,7 +382,7 @@ function export_to_excel() {
 
   // todo
   var tbody = $('#contract_list_table tbody');
-  if(tbody.children().length == 0) {
+  if(tbody.children().length <= 1) {
     $.alert({
         title: 'Error',
         type: 'red',
@@ -395,6 +396,8 @@ function export_to_excel() {
     return false;
   } else {
     //alert(tbody.children().length);
+    //return false;
+
     var contract_number_from = $('#id_contract_number_from').val();
     var contract_number_to = $('#id_contract_number_to').val();
     var contract_status = $('#id_contract_status_option').val();
