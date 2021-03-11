@@ -202,8 +202,16 @@ $(document).ready(function() {
       $(this).css("color", "#28a745");
       $(this).css("font-size", "1em");
       $(this).css("font-weight", "bold");
-    } else {
-      //
+    } else {      
+      // Active Reports menu
+      var is_reports = url.search("/reports/sp-admin/");
+      if(is_reports > 0) {        
+        $('#reports-sp-admin').addClass("active");
+        $('#reports-sp-admin').css("color", "#28a745");
+        $('#reports-sp-admin').css("font-size", "1em");
+        $('#reports-sp-admin').css("font-weight", "bold");
+        //console.log(is_reports);
+      }      
     }
   });
 

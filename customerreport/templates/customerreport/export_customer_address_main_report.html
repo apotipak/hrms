@@ -15,7 +15,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h4 class="m-0 text-dark">{% trans 'Report - Export Customer Address (Main)' %}</h4>
+            <h4 class="m-0 text-dark"><small><i class="fas fa-wrench"></i></small>&nbsp;&nbsp;Under construction</h4>
           </div>
           <div class="col-sm-6">
             <!--
@@ -33,67 +33,6 @@
     <!-- Main content -->
     <section class="content">
 
-      <!-- Default box -->
-      <div id="contract_list" class="card">
-
-        <div class="col-8 offset-3 pt-4"> 
-
-
-
-        </div>
-
-        {% if form.errors %}
-        <div class="col-md-6 offset-md-3 pt-2 pl-15">
-          <div class="container-fluid" id="show-error">       
-            <!--
-            {% for field in form %}
-                {% for error in field.errors %}
-                    <div class="alert alert-danger">
-                        <strong><i class="fas fa-exclamation"></i>&nbsp;&nbsp;{{ error|escape }}</strong>
-                    </div>
-                {% endfor %}
-            {% endfor %}
-            -->
-
-            <!--
-            {% for error in form.non_field_errors %}
-                <div class="alert alert-danger">
-                    <i class="fas fa-exclamation"></i>&nbsp;&nbsp;{{ error|escape }}
-                </div>
-            {% endfor %}
-            -->
-          </div>        
-        </div>
-        {% endif %}
-
-        <div class="card-header" style="vertical-align: middle;">
-          <div class="card-tools">
-            <!--
-            <button type="button" class="btn btn-success btn-sm js-create-customer" data-url="{% url 'customer-create' %}"><i class="fas fa-plus"></i>&nbsp;&nbsp;{% trans 'Add' %}</button>
-            -->          
-            <!--
-            <div class="float-right"><a href="{% url 'customer-create' %}" type="button" class="btn btn-success btn-sm float-right"><i class="fas fa-plus fa-xs"></i>&nbsp;&nbsp;{% trans 'Add' %}</a></div>-->          
-          </div>
-        </div>
-        
-
-        <div class="card-body">
-          
-          
-       
-        </div>
-        <!-- /.card-body -->
-
-        <!--
-        <div class="card-footer">
-          &nbsp;
-        </div>
-        -->
-
-        <!-- /.card-footer-->
-
-    </div>
-    <!-- /.card -->
 
     </section>
     <!-- /.content -->
