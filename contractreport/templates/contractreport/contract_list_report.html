@@ -133,7 +133,7 @@
         </tbody>
 
         <tfoot class="bg-secondary">
-            <th class="align-middle text-center" scope="col" colspan="4">TOTAL</th>          
+            <th class="align-middle text-center" scope="col" colspan="4">TOTAL</th>    
             <th class="align-middle text-center" scope="col" colspan="19">&nbsp;</th>
 
             <!--
@@ -235,7 +235,7 @@ function SearchFormSubmit() {
   showLoading();
 
   $.ajax({      
-    url : "/contract-report/ajax/report_search_contract/",        
+    url : "/reports/sp-admin/contract-list/ajax/report_search_contract/",        
     type : "POST",
     data : {
       csrfmiddlewaretoken: '{{ csrf_token }}',
@@ -370,7 +370,7 @@ function display_on_screen() {
     contract_zone = "all_zone"
   }
 
-  var href = "/contract-report/generate-contract-list/" + contract_number_from + "/" + contract_number_to + "/" + contract_status + "/" + contract_zone + "/";
+  var href = "/reports/sp-admin/contract-list/generate-contract-list/" + contract_number_from + "/" + contract_number_to + "/" + contract_status + "/" + contract_zone + "/";
 
   window.open(href, '_blank');
 }
@@ -389,7 +389,7 @@ function export_to_excel() {
     contract_zone = "all_zone"
   }
 
-  var href = "/contract-report/export-contract-list/" + contract_number_from + "/" + contract_number_to + "/" + contract_status + "/" + contract_zone + "/";
+  var href = "/reports/sp-admin/contract-list/export-contract-list/" + contract_number_from + "/" + contract_number_to + "/" + contract_status + "/" + contract_zone + "/";
   window.open(href, '_blank');
 
 }

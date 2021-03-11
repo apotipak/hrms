@@ -11,17 +11,9 @@
 
       {% if perms.contractreport.can_access_contract_list_report %}
       <li class="nav-item p-0">
-        <a href="/contract-report/" class="nav-link"><p>Contract List</p></a>
+        <a href="/reports/sp-admin/contract-list/" class="nav-link"><p>Contract List</p></a>
       </li>
       {% endif %}
-
-      {% comment %}
-      {% if perms.customerreport.can_access_export_customer_address_main_report %}
-      <li class="nav-item p-0">
-        <a href="/customer-report/" class="nav-link text-wrap"><p>Export Customer Address (Main)</p></a>
-      </li>
-      {% endif %}
-      {% endcomment %}
 
     </ul>
     {% endif %}

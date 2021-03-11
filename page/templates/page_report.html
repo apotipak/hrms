@@ -90,10 +90,10 @@
   {% include "menu_bar_generic.html" %}
 
   <!-- Main Sidebar Container -->  
-  {% if request.path|slice:":16" == '/contract-report' %}
-    {% include "left_menu_contract_report.html" %}
-  {% elif request.path|slice:":16" == '/customer-report' %}
+  {% if request.path|slice:":17" == '/reports/sp-admin' %}
     {% include "left_menu_customer_report.html" %}
+  {% elif request.path|slice:":17" == '/reports/sp-admin' %}
+    {% include "left_menu_contract_report.html" %}
   {% endif %}
 
   {% block content %}{% endblock %}
