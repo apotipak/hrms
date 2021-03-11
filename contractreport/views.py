@@ -431,6 +431,7 @@ def export_contract_list_report(request, *args, **kwargs):
 				cus_name_th = row[2]
 				
 				cnt_zone = row[7]
+				dept_sht_text = dept_sht_text_display(row[20])
 				
 				cnt_sign_frm = "" if row[3] is None else str(row[3].strftime("%d/%m/%Y"))
 				cnt_sign_to = "" if row[4] is None else str(row[4].strftime("%d/%m/%Y"))
@@ -474,7 +475,7 @@ def export_contract_list_report(request, *args, **kwargs):
 				grand_total_nosup_DN += total_nosup_DN
 				grand_grand_total += grand_total
 
-				font_style = xlwt.easyxf('font: bold off, color black; borders: top_color black, bottom_color black, right_color black, left_color black, left thin, right thin, top thin, bottom thin; pattern: pattern solid, fore_color white; align: vert centre, horiz centre;')
+				# font_style = xlwt.easyxf('font: bold off, color black; borders: top_color black, bottom_color black, right_color black, left_color black, left thin, right thin, top thin, bottom thin; pattern: pattern solid, fore_color white; align: vert centre, horiz centre;')
 				for col_num in range(23):
 					if(col_num==0):
 						ws.write(row_num, 0, row_count, font_style)
@@ -483,7 +484,7 @@ def export_contract_list_report(request, *args, **kwargs):
 					elif(col_num==2):
 						ws.write(row_num, 2, cus_name_th, font_style)
 					elif(col_num==3):
-						ws.write(row_num, 3, cnt_zone, font_style)
+						ws.write(row_num, 3, dept_sht_text, font_style)
 					elif(col_num==4):
 						ws.write(row_num, 4, mon, font_style)
 					elif(col_num==5):
@@ -533,6 +534,7 @@ def export_contract_list_report(request, *args, **kwargs):
 				row_num += 1
 				counter += 1
 
+			# font_style = xlwt.easyxf("align: vert centre, horiz centre")
 		else:
 			message = ""
 
@@ -559,7 +561,7 @@ def export_contract_list_report(request, *args, **kwargs):
 		ws.write(row_num, 18, grand_grand_total, font_style)
 
 		font_style = xlwt.easyxf('font: bold off, color black; borders: top_color black, bottom_color black, right_color black, left_color black, left thin, right thin, top thin, bottom thin; pattern: pattern solid, fore_color white; align: vert centre, horiz centre;')
-		ws.write_merge(row_num, row_num, 0, 3, "TOTAL", font_style)		
+		ws.write_merge(row_num, row_num, 0, 3, "TOTAL", font_style)	
 	else:
 		message = ""
 
