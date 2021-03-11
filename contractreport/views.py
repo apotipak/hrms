@@ -420,13 +420,13 @@ def export_contract_list_report(request, *args, **kwargs):
 				cnt_eff_frm = "" if row[5] is None else str(row[5].strftime("%d/%m/%Y"))
 				cnt_eff_to = "" if row[6] is None else str(row[6].strftime("%d/%m/%Y"))
 				
-				mon = row[12]
-				tue = row[13]
-				wed = row[14]
-				thu = row[15]
-				fri = row[16]
-				sat = row[17]
-				sun = row[18]
+				sun = row[12]
+				mon = row[13]
+				tue = row[14]
+				wed = row[15]
+				thu = row[16]
+				fri = row[17]
+				sat = row[18]
 				pub = row[19]
 
 				nosupD = row[8]
@@ -518,6 +518,32 @@ def export_contract_list_report(request, *args, **kwargs):
 
 		else:
 			message = ""
+
+		# Add TOTAL row
+		# font_style = xlwt.XFStyle()
+		# font_style = xlwt.easyxf('font: bold 1, height 180;')	
+		# font_style = xlwt.easyxf('font: bold off, color black; borders: top_color black, bottom_color black, right_color black, left_color black, left thin, right thin, top thin, bottom thin; pattern: pattern solid, fore_color white; align: vert centre, horiz centre;')
+		# font_style = xlwt.easyxf("align: vert centre, horiz centre")
+		ws.write_merge(row_num, row_num, 0, 3, "TOTAL", font_style)
+		ws.write(row_num, 4, total_mon, font_style)
+		ws.write(row_num, 5, total_tue, font_style)
+		ws.write(row_num, 6, total_wed, font_style)
+		ws.write(row_num, 7, total_thu, font_style)
+		ws.write(row_num, 8, total_fri, font_style)
+		ws.write(row_num, 9, total_sat, font_style)
+		ws.write(row_num, 10, total_sun, font_style)
+		ws.write(row_num, 11, total_pub, font_style)
+
+
+		ws.write(row_num, 12, total_nosupD, font_style)
+		ws.write(row_num, 13, total_nosupN, font_style)
+		ws.write(row_num, 14, grand_total_nosup_DN, font_style)
+
+		ws.write(row_num, 15, total_supD, font_style)
+		ws.write(row_num, 16, total_supN, font_style)
+		ws.write(row_num, 17, grand_total_sup_DN, font_style)
+
+		ws.write(row_num, 18, grand_grand_total, font_style)
 	else:
 		message = ""
 
