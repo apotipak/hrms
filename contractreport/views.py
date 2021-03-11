@@ -121,9 +121,14 @@ def AJAXReportSearchContract(request):
 			cnt_sign_frm = ""
 
 		if row[4] is not None:
-			cnt_sign_to = row[4].strftime("%d-%b-%Y")
+			if row[4].strftime("%Y-%m-%d") == "2999-12-31":
+				cnt_sign_to = "<div class='text-center text-info'><i>Open ended</i></div>"
+			else:
+				cnt_sign_to = row[4].strftime("%d-%b-%Y")
 		else:
-			cnt_sign_to = ""
+			cnt_sign_to = "<div class='text-center text-info'><i>Open ended</i></div>"
+
+
 
 		if row[5] is not None:
 			cnt_eff_frm = row[5].strftime("%d-%b-%Y")
@@ -131,13 +136,12 @@ def AJAXReportSearchContract(request):
 			cnt_eff_frm = ""
 
 		if row[6] is not None:
-			# cnt_eff_to = row[6].strftime("%d-%b-%Y")
 			if row[6].strftime("%Y-%m-%d") == "2999-12-31":
-				cnt_eff_to = "<div class='text-center'>&nbsp;Open ended</small></div>"
+				cnt_eff_to = "<div class='text-center text-info'><i>Open ended</i></div>"
 			else:
 				cnt_eff_to = row[6].strftime("%d-%b-%Y")
 		else:
-			cnt_eff_to = "<div class='text-center'>&nbsp;Open ended</small></div>"
+			cnt_eff_to = "<div class='text-center text-info'><i>Open ended</i></div>"
 
 		total_sup_DN = row[9] + row[11]
 		total_nosup_DN = row[8] + row[10]
@@ -376,11 +380,11 @@ def export_contract_list_report(request, *args, **kwargs):
 
 	ws.write(3, 12, "D", font_style)
 	ws.write(3, 13, "N", font_style)
-	ws.write(3, 14, "T", font_style)
+	ws.write(3, 14, "TOTAL", font_style)
 	
 	ws.write(3, 15, "D", font_style)
 	ws.write(3, 16, "N", font_style)
-	ws.write(3, 17, "T", font_style)
+	ws.write(3, 17, "TOTAL", font_style)
 
 	ws.write(3, 19, "FROM", font_style)
 	ws.write(3, 20, "TO", font_style)

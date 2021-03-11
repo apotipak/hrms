@@ -13,7 +13,7 @@
     <!-- Main content -->
     <section class="content">
 
-      <div class="col-md-12 bg-info p-0 pt-2 pb-1">
+      <div class="col-md-12 p-0 pt-2">
 
         <form method="post" autocomplete="off" name="search_form">
           {% csrf_token %}
@@ -43,7 +43,7 @@
                   <option value="{{item.zone_id}}">{{item.zone_id}} | {{ item.zone_en}}</option>
                   {% endfor %}
                 </select>                                               
-                &nbsp;&nbsp;<a href="javascript:SearchFormSubmit();" class="btn btn-outline-light" role="button">SEARCH</a>
+                &nbsp;&nbsp;<a href="javascript:SearchFormSubmit();" class="btn btn-outline-info" role="button">SEARCH</a>
               </div>
 
             </div>
@@ -285,11 +285,13 @@ function SearchFormSubmit() {
             result += "<tr>";
             result += "<th class='text-center'>" + row_count + "</th>";
             result += "<th class='text-left'>" + cnt_id + "</th>";
-            result += "<th class='text-left'>" + cus_name_th + "<br>" + cus_name_en + "</th>";
-            result += "<th class='text-left'>" + dept_sht + "</th>";
             
-            //result += "<th class='text-center bg-danger'>" + mon + "</th>";
-            result += "<th class='text-center'>" + tue + "</th>";
+            //result += "<th class='text-left'>" + cus_name_th + "<br>" + cus_name_en + "</th>";
+            result += "<th class='text-left'>" + cus_name_th + "</th>";
+
+            result += "<th class='text-left'>" + dept_sht + "</th>";
+                        
+            result += "<th class='text-center'>" + mon + "</th>";
             result += "<th class='text-center'>" + tue + "</th>";
             result += "<th class='text-center'>" + wed + "</th>";
             result += "<th class='text-center'>" + thu + "</th>";
