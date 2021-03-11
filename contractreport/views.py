@@ -455,7 +455,7 @@ def export_contract_list_report(request, *args, **kwargs):
 					elif(col_num==1):
 						ws.write(row_num, 1, cnt_id, font_style)			
 					elif(col_num==2):
-						ws.write(row_num, 2, cus_name_en, font_style)
+						ws.write(row_num, 2, cus_name_th, font_style)
 					elif(col_num==3):
 						ws.write(row_num, 3, cnt_zone, font_style)
 					elif(col_num==4):
