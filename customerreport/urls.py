@@ -6,6 +6,7 @@ from . import views
 
 
 urlpatterns = [    
-    # path('export-customer-address-main/', views.ExportCustomerAddressMainReport, name='export-customer-address-main-report'),
-    path('', views.ExportCustomerAddressMainReport, name='export-customer-address-main-report'),    
+    path('export-customer-main-address/', views.ExportCustomerAddressMainReport, name='export-customer-main-address'),
+    url(r'^ajax-search-customer-main-address/$', views.AjaxSearchCustomerMainAddress, name='ajax-search-customer-main-address'),
+    url(r'^ajax-export-customer-main-address/(?P<customer_zone>\w+)/$', views.export_customer_main_addres, name='ajax-export-customer-main-address'),
 ]

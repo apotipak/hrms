@@ -23,7 +23,7 @@
 
               <div class="input-group col-12">
 
-                <div class="input-group-prepend pr-2 pt-1" style="width:100px;"><label>Select</label></div>                
+                <!--<div class="input-group-prepend pr-2 pt-1" style="width:60px;"><label>Select</label></div>-->
                 <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:60px;">Zone</span></div>
                 <select id="id_contract_zone_option" name="contract_zone_option" class="form-control form-control-md" style="width:120px;">
                   <option value="" selected>ALL</option>
@@ -70,82 +70,48 @@
       <!-- /.card-header -->
 
       <font size="2em;">
-      <table class="table table-sm table-bordered table-striped table-hover" id="contract_list_table">
+      <table class="table table-sm table-bordered table-striped table-hover" id="customer_main_address_table">
         <thead class="bg-secondary">
           <tr>
-            <th class="align-middle text-center" scope="col" rowspan="2">NO.</th>
-            <th class="align-middle text-center" scope="col" rowspan="2">CONTRACT ID</th>
-            <th class="align-middle text-center" scope="col" rowspan="2">SITE NAME</th>
-            <th class="align-middle text-center" scope="col" rowspan="2">ZONE</th>
-            <th class="align-middle text-center" scope="col" colspan="8">DAY</th>                            
-            <th class="align-middle text-center" scope="col" colspan="3">SO</th>
-            <th class="align-middle text-center" scope="col" colspan="3">SUP</th>
-            <th class="align-middle text-center" scope="col" rowspan="2">TOTAL</th>
-            <th class="align-middle text-center" scope="col" colspan="2">CONTRACT DATE</th>
-            <th class="align-middle text-center" scope="col" colspan="2">EFFECTIVE DATE</th>
+
+            <th class="align-middle text-center" scope="col">NO.</th>
+            <th class="align-middle text-center" scope="col" nowrap>CUS ID</th>
+            <th class="align-middle text-center" scope="col" nowrap>NAME (TH)</th>
+            <th class="align-middle text-center" scope="col" nowrap>ADD1 (TH)</th>
+            <th class="align-middle text-center" scope="col" nowrap>ADD2 (TH)</th>                            
+            <th class="align-middle text-center" scope="col" nowrap>SUB DIST (TH)</th>
+            <th class="align-middle text-center" scope="col" nowrap>DIST (TH)</th>
+            <th class="align-middle text-center" scope="col" nowrap>CITY (TH)</th>
+
+            <th class="align-middle text-center" scope="col" nowrap>NAME (EN)</th>
+            <th class="align-middle text-center" scope="col" nowrap>ADD1 (EN)</th>
+            <th class="align-middle text-center" scope="col" nowrap>ADD2 (EN)</th>                            
+            <th class="align-middle text-center" scope="col" nowrap>SUB DIST (EN)</th>
+            <th class="align-middle text-center" scope="col" nowrap>DIST (EN)</th>
+            <th class="align-middle text-center" scope="col" nowrap>CITY (EN)</th>
+
+            <th class="align-middle text-center" scope="col">ZIP</th>
+            <th class="align-middle text-center" scope="col">TEL</th>
+            <th class="align-middle text-center" scope="col">FAX</th>
+            <th class="align-middle text-center" scope="col">ZONE</th>
+
+            <th class="align-middle text-center" scope="col" nowrap>FNAME (TH)</th>
+            <th class="align-middle text-center" scope="col" nowrap>LNAME (TH)</th>
+            <th class="align-middle text-center" scope="col" nowrap>POS (TH)</th>
+
+            <th class="align-middle text-center" scope="col" nowrap>FNAME (EN)</th>
+            <th class="align-middle text-center" scope="col" nowrap>LNAME (EN)</th>
+            <th class="align-middle text-center" scope="col" nowrap>POS (EN)</th>
+
+            <th class="align-middle text-center" scope="col">EMAIL</th>
           </tr>
-
-          <tr>                                                        
-            <th class="align-middle text-center" scope="col">MO</th>
-            <th class="align-middle text-center" scope="col">TU</th>
-            <th class="align-middle text-center" scope="col">WE</th>
-            <th class="align-middle text-center" scope="col">TH</th>
-            <th class="align-middle text-center" scope="col">FR</th>
-            <th class="align-middle text-center" scope="col">SA</th>
-            <th class="align-middle text-center" scope="col">SU</th>
-            <th class="align-middle text-center" scope="col">PU</th>
-
-            <th class="align-middle text-center" scope="col">D</th>
-            <th class="align-middle text-center" scope="col">N</th>
-            <th class="align-middle text-center" scope="col">T</th>
-
-            <th class="align-middle text-center" scope="col">D</th>
-            <th class="align-middle text-center" scope="col">N</th>
-            <th class="align-middle text-center" scope="col">T</th>
-
-            <th class="align-middle text-center" scope="col">FROM</th>
-            <th class="align-middle text-center" scope="col">TO</th>
-
-            <th class="align-middle text-center" scope="col">FROM</th>
-            <th class="align-middle text-center" scope="col">TO</th>
-
-          </tr>
-
         </thead>
         
         <tbody>
-          <!--
           <tr>
-            <th class="text-center" colspan='23'><br><br><br><br><br></th>
+            <th class="text-center" colspan='25'><br><br><br><br><br></th>
           </tr>
-          -->
         </tbody>
-
-        <tfoot class="bg-secondary">
-            <th class="align-middle text-center" scope="col" colspan="4">TOTAL</th>    
-            <th class="align-middle text-center" scope="col" colspan="19">&nbsp;</th>
-
-            <!--
-            <th class="align-middle text-center" scope="col"></th>
-            <th class="align-middle text-center" scope="col"></th>
-            <th class="align-middle text-center" scope="col"></th>
-            <th class="align-middle text-center" scope="col"></th>
-            <th class="align-middle text-center" scope="col"></th>
-
-            <th class="align-middle text-center" scope="col"></th>
-            <th class="align-middle text-center" scope="col"></th>
-            <th class="align-middle text-center" scope="col"></th>
-            <th class="align-middle text-center" scope="col"></th>
-            <th class="align-middle text-center" scope="col"></th>
-
-            <th class="align-middle text-center" scope="col"></th>
-            <th class="align-middle text-center" scope="col"></th>
-            <th class="align-middle text-center" scope="col"></th>
-            <th class="align-middle text-center" scope="col"></th>
-            <th class="align-middle text-center" scope="col"></th>
-            <th class="align-middle text-center" scope="col" colspan="4">&nbsp;</th>
-            -->
-        </tfoot>
 
       </table>
       </font>
@@ -216,129 +182,75 @@ $("#id_contract_number_to").on('click', function(){
 
 
 function SearchFormSubmit() {
-  var contract_number_from = $('#id_contract_number_from').val();
-  var contract_number_to = $('#id_contract_number_to').val();
-  var contract_status = $('#id_contract_status_option').val();
-  var contract_zone = $('#id_contract_zone_option').val();
+  var customer_zone = $('#id_contract_zone_option').val();
 
   showLoading();
 
   $.ajax({      
-    url : "/reports/sp-admin/contract-list/ajax/report_search_contract/",        
+    url : "/reports/sp-admin/customer/ajax-search-customer-main-address/",
     type : "POST",
     data : {
       csrfmiddlewaretoken: '{{ csrf_token }}',
-      contract_number_from: contract_number_from,
-      contract_number_to: contract_number_to,
-      contract_status: contract_status,
-      contract_zone: contract_zone,
+      customer_zone: customer_zone,
     },
     success : function(data) {
 
-      number_of_rows = data.contract_list.length;
+      number_of_rows = data.customer_main_address_list.length;
 
       if(data.is_error) {
         alert("ERROR: " + data.error_message);
       } else {          
         result = "";
         row_count = 1;
-
         if(number_of_rows>0) {
-          for(i=0; i<number_of_rows; i++) {
-            cnt_id = data.contract_list[i]["cnt_id"];
-            cus_name_th = data.contract_list[i]["cus_name_th"];
-            cus_name_en = data.contract_list[i]["cus_name_en"];
-            cnt_sign_frm = data.contract_list[i]["cnt_sign_frm"];
-            cnt_sign_to = data.contract_list[i]["cnt_sign_to"];
-            cnt_eff_frm = data.contract_list[i]["cnt_eff_frm"];
-            cnt_eff_to = data.contract_list[i]["cnt_eff_to"];          
-            cnt_zone = data.contract_list[i]["cnt_zone"];
-            dept_sht = data.contract_list[i]["dept_sht"];
-            nosupD = data.contract_list[i]["nosupD"];
-            supD = data.contract_list[i]["supD"];
-            nosupd = data.contract_list[i]["nosupN"];
-            supN = data.contract_list[i]["supN"];
-            nosupN = data.contract_list[i]["nosupN"];
-            sun = data.contract_list[i]["sun"];
-            mon = data.contract_list[i]["mon"];
-            tue = data.contract_list[i]["tue"];
-            wed = data.contract_list[i]["wed"];
-            thu = data.contract_list[i]["thu"];
-            fri = data.contract_list[i]["fri"];
-            sat = data.contract_list[i]["sat"];          
-            pub = data.contract_list[i]["pub"];
-            total_sup_DN = data.contract_list[i]["total_sup_DN"];
-            total_nosup_DN = data.contract_list[i]["total_nosup_DN"];
-            grand_total = data.contract_list[i]["grand_total"];
-                      
+          for(i=0; i<number_of_rows; i++) {            
             result += "<tr>";
             result += "<td class='text-center'>" + row_count + "</td>";
-            result += "<td class='text-left'>" + cnt_id + "</td>";
+            result += "<td class='text-left'>" + data.customer_main_address_list[i]["cus_id"] + "</td>";
+            result += "<td class='text-left'>" + data.customer_main_address_list[i]["cus_name_th"] + "</td>";
+            result += "<td class='text-left'>" + data.customer_main_address_list[i]["cus_add1_th"] + "</td>";
+            result += "<td class='text-left'>" + data.customer_main_address_list[i]["cus_add2_th"] + "</td>";
+            result += "<td class='text-left'>" + data.customer_main_address_list[i]["cus_subdist_th"] + "</td>";
+            result += "<td class='text-left'>" + data.customer_main_address_list[i]["dist_th"] + "</td>";
+            result += "<td class='text-left'>" + data.customer_main_address_list[i]["city_th"] + "</td>";
+
+            result += "<td class='text-left'>" + data.customer_main_address_list[i]["cus_name_en"] + "</td>";
+            result += "<td class='text-left'>" + data.customer_main_address_list[i]["cus_add1_en"] + "</td>";
+            result += "<td class='text-left'>" + data.customer_main_address_list[i]["cus_add2_en"] + "</td>";
+            result += "<td class='text-left'>" + data.customer_main_address_list[i]["cus_subdist_en"] + "</td>";
+            result += "<td class='text-left'>" + data.customer_main_address_list[i]["dist_en"] + "</td>";
+            result += "<td class='text-left'>" + data.customer_main_address_list[i]["city_en"] + "</td>";
+
+            result += "<td class='text-left'>" + data.customer_main_address_list[i]["cus_zip"] + "</td>";
+            result += "<td class='text-left' nowrap>" + data.customer_main_address_list[i]["cus_tel"] + "</td>";
+            result += "<td class='text-left' nowrap>" + data.customer_main_address_list[i]["cus_fax"] + "</td>";
             
-            //result += "<td class='text-left'>" + cus_name_th + "<br>" + cus_name_en + "</td>";
-            result += "<td class='text-left'>" + cus_name_th + "</td>";
+            result += "<td class='text-left'>ZONE ?</td>";
+            result += "<td class='text-left'>" + data.customer_main_address_list[i]["con_fname_th"] + "</td>";
+            result += "<td class='text-left'>" + data.customer_main_address_list[i]["con_lname_th"] + "</td>";
+            result += "<td class='text-left'>" + data.customer_main_address_list[i]["con_position_th"] + "</td>";
 
-            result += "<td class='text-center' nowrap>" + dept_sht + "</td>";
-                        
-            result += "<td class='text-center'>" + mon + "</td>";
-            result += "<td class='text-center'>" + tue + "</td>";
-            result += "<td class='text-center'>" + wed + "</td>";
-            result += "<td class='text-center'>" + thu + "</td>";
-            result += "<td class='text-center'>" + fri + "</td>";
-            result += "<td class='text-center'>" + sat + "</td>";
-            result += "<td class='text-center'>" + sun + "</td>";
-            result += "<td class='text-center'>" + pub + "</td>";
+            result += "<td class='text-left'>" + data.customer_main_address_list[i]["con_fname_en"] + "</td>";
+            result += "<td class='text-left'>" + data.customer_main_address_list[i]["con_lname_en"] + "</td>";
+            result += "<td class='text-left'>" + data.customer_main_address_list[i]["con_position_en"] + "</td>";
 
-            result += "<td class='text-center'>" + nosupD + "</td>";
-            result += "<td class='text-center'>" + nosupN + "</td>";
-            result += "<td class='text-center'>" + total_nosup_DN + "</td>";
+            result += "<td class='text-left'>" + data.customer_main_address_list[i]["cus_email"] + "</td>";
 
-            result += "<td class='text-center'>" + supD + "</td>";
-            result += "<td class='text-center'>" + supN + "</td>";
-            result += "<td class='text-center'>" + total_sup_DN + "</td>";
+            //sql = "select cus_id, cus_name_th, cus_add1_th, cus_add2_th, cus_subdist_th, cus_name_en, cus_add1_en, cus_add2_en, cus_subdist_en, cus_zip, cus_tel, "
+            //sql += "cus_fax, cus_email, cus_active, con_fname_th, con_lname_th, con_position_th, con_fname_en, con_lname_en, con_position_en, dist_th, dist_en, city_en, city_th, dept_en "
 
-            result += "<td class='text-center'>" + grand_total + "</td>";
-
-            result += "<td class='text-left' nowrap>" + cnt_sign_frm + "</td>";          
-            result += "<td class='text-left' nowrap>" + cnt_sign_to + "</td>";
-
-            result += "<td class='text-left' nowrap>" + cnt_eff_frm + "</td>";
-            result += "<td class='text-left' nowrap>" + cnt_eff_to + "</td>";
-
+            result += "<td class='text-left' colspan='20'>&nbsp;</td>";
             result += "</tr>";
-
 
             row_count = row_count + 1;
           }           
         } else {
             result = "";
-            result = "<tr style='background-color: #d2d4d6;'><td scope='row' class='text-center' colspan='23'><br><br>There is no data.<br><br><br></td></tr>";
+            result = "<tr style='background-color: #d2d4d6;'><td scope='row' class='text-center' colspan='25'><br><br>There is no data.<br><br><br></td></tr>";
         }
-         
       }
     
-      $("#contract_list_table tbody").html(result);
-
-      result = "<td class='align-middle text-center' scope='col' colspan='4'>TOTAL</td>"        
-      result += "<td class='align-middle text-center' scope='col'>" + data.total_mon + "</td>";
-      result += "<td class='align-middle text-center' scope='col'>" + data.total_tue + "</td>";
-      result += "<td class='align-middle text-center' scope='col'>" + data.total_wed + "</td>";
-      result += "<td class='align-middle text-center' scope='col'>" + data.total_thu + "</td>";
-      result += "<td class='align-middle text-center' scope='col'>" + data.total_fri + "</td>";
-      result += "<td class='align-middle text-center' scope='col'>" + data.total_sat + "</td>";
-      result += "<td class='align-middle text-center' scope='col'>" + data.total_sun + "</td>";
-      result += "<td class='align-middle text-center' scope='col'>" + data.total_pub + "</td>";
-      result += "<td class='align-middle text-center' scope='col'>" + data.total_nosupD + "</td>";
-      result += "<td class='align-middle text-center' scope='col'>" + data.total_nosupN + "</td>";
-      result += "<td class='align-middle text-center' scope='col'>" + data.grand_total_nosup_DN + "</td>";
-      result += "<td class='align-middle text-center' scope='col'>" + data.total_supD + "</td>";
-      result += "<td class='align-middle text-center' scope='col'>" + data.total_supN + "</td>";
-      result += "<td class='align-middle text-center' scope='col'>" + data.grand_total_sup_DN + "</td>";
-      result += "<td class='align-middle text-center' scope='col'>" + data.grand_grand_total + "</td>";
-      result += "<td class='align-middle text-center' scope='col' colspan='4'>&nbsp;</td>";
-      
-      $("#contract_list_table tfoot").html(result);
-      
+      $("#customer_main_address_table tbody").html(result);      
     },
   });
 
@@ -346,29 +258,8 @@ function SearchFormSubmit() {
 }
 
 
-function display_on_screen() {
-  var contract_number_from = $('#id_contract_number_from').val();
-  var contract_number_to = $('#id_contract_number_to').val();
-  var contract_status = $('#id_contract_status_option').val();
-  var contract_zone = $('#id_contract_zone_option').val();
-
-  if(contract_status=="") {
-    contract_status = "all_status"
-  }
-
-  if(contract_zone=="") {
-    contract_zone = "all_zone"
-  }
-
-  var href = "/reports/sp-admin/contract-list/generate-contract-list/" + contract_number_from + "/" + contract_number_to + "/" + contract_status + "/" + contract_zone + "/";
-
-  window.open(href, '_blank');
-}
-
 function export_to_excel() {
-
-  // todo
-  var tbody = $('#contract_list_table tbody');
+  var tbody = $('#customer_main_address_table tbody');
   if(tbody.children().length <= 1) {
     $.alert({
         title: 'Error',
@@ -382,25 +273,14 @@ function export_to_excel() {
     });    
     return false;
   } else {
-    //alert(tbody.children().length);
-    //return false;
+    var customer_zone = $('#id_contract_zone_option').val();
 
-    var contract_number_from = $('#id_contract_number_from').val();
-    var contract_number_to = $('#id_contract_number_to').val();
-    var contract_status = $('#id_contract_status_option').val();
-    var contract_zone = $('#id_contract_zone_option').val();
-
-    if(contract_status=="") {
-      contract_status = "all_status"
+    if(customer_zone=="") {
+      customer_zone = "all_zone"
     }
-
-    if(contract_zone=="") {
-      contract_zone = "all_zone"
-    }
-
-    var href = "/reports/sp-admin/contract-list/export-contract-list/" + contract_number_from + "/" + contract_number_to + "/" + contract_status + "/" + contract_zone + "/";
+      
+    var href = "/reports/sp-admin/customer/ajax-export-customer-main-address/" + customer_zone + "/";
     window.open(href, '_blank');
-
   }
 
 }

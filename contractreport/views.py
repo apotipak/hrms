@@ -107,9 +107,7 @@ def AJAXReportSearchContract(request):
 	sql += "from V_Contract_Summary "
 	sql += "where cnt_id>=" + str(contract_number_from) + " " 
 	sql += "and cnt_id<=" + str(contract_number_to) + " "
-	print(sql)
 
-	print("contract_status:", contract_status)
 	if contract_status == "1":
 		sql += " and cnt_active=1 "
 	elif contract_status == "2":
@@ -121,8 +119,6 @@ def AJAXReportSearchContract(request):
 		sql += " "
 
 	sql += "ORDER BY cnt_id;"
-
-	print("DEBUG sql = ", sql)
 
 	try:
 	    with connection.cursor() as cursor:     
