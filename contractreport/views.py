@@ -158,7 +158,7 @@ def AJAXReportSearchContract(request):
 
 		if row[4] is not None:
 			if row[4].strftime("%Y-%m-%d") == "2999-12-31":
-				cnt_sign_to = "<div class='text-center text-info'><i>Open ended</i></div>"
+				cnt_sign_to = "<div class='text-left text-info'><i>Open ended</i></div>"
 			else:
 				cnt_sign_to = row[4].strftime("%d-%b-%Y")
 				if datetime.datetime.now() > row[4]:
@@ -166,7 +166,7 @@ def AJAXReportSearchContract(request):
 				else:
 					cnt_sign_to = "<div class='text-left'>" + str(cnt_sign_to) + "</div>"
 		else:
-			cnt_sign_to = "<div class='text-center text-info'><i>Open ended</i></div>"
+			cnt_sign_to = "<div class='text-left text-info'><i>Open ended</i></div>"
 
 
 
