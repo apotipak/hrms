@@ -127,9 +127,11 @@
         </thead>
         
         <tbody>
+          <!--
           <tr>
             <th class="text-center" colspan='23'><br><br><br><br><br></th>
           </tr>
+          -->
         </tbody>
 
         <tfoot class="bg-secondary">
@@ -376,21 +378,40 @@ function display_on_screen() {
 }
 
 function export_to_excel() {
-  var contract_number_from = $('#id_contract_number_from').val();
-  var contract_number_to = $('#id_contract_number_to').val();
-  var contract_status = $('#id_contract_status_option').val();
-  var contract_zone = $('#id_contract_zone_option').val();
 
-  if(contract_status=="") {
-    contract_status = "all_status"
+  // todo
+  var tbody = $('#contract_list_table tbody');
+  if(tbody.children().length == 0) {
+    $.alert({
+        title: 'Error',
+        type: 'red',
+        content: "ยังไม่มีข้อมูลสำหรับทำรายการ",
+        animation: 'zoom',
+        animationBounce: 1.5,
+        closeIcon: false,
+        boxWidth: '38%',
+        useBootstrap: false,
+    });    
+    return false;
+  } else {
+    //alert(tbody.children().length);
+    var contract_number_from = $('#id_contract_number_from').val();
+    var contract_number_to = $('#id_contract_number_to').val();
+    var contract_status = $('#id_contract_status_option').val();
+    var contract_zone = $('#id_contract_zone_option').val();
+
+    if(contract_status=="") {
+      contract_status = "all_status"
+    }
+
+    if(contract_zone=="") {
+      contract_zone = "all_zone"
+    }
+
+    var href = "/reports/sp-admin/contract-list/export-contract-list/" + contract_number_from + "/" + contract_number_to + "/" + contract_status + "/" + contract_zone + "/";
+    window.open(href, '_blank');
+
   }
-
-  if(contract_zone=="") {
-    contract_zone = "all_zone"
-  }
-
-  var href = "/reports/sp-admin/contract-list/export-contract-list/" + contract_number_from + "/" + contract_number_to + "/" + contract_status + "/" + contract_zone + "/";
-  window.open(href, '_blank');
 
 }
 
