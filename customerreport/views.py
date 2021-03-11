@@ -44,3 +44,10 @@ def ExportCustomerAddressMainReport(request):
         'database': settings.DATABASES['default']['NAME'],
         'host': settings.DATABASES['default']['HOST'],
         })
+
+
+def todo():
+    sql = "SELECT cus_id, cus_name_th, cus_add1_th, cus_add2_th, cus_subdist_th, cus_name_en, cus_add1_en, cus_add2_en, cus_subdist_en, cus_zip, cus_tel, "
+    sql += "cus_fax, cus_email, cus_active, con_fname_th, con_lname_th, con_position_th, con_fname_en, con_lname_en, con_position_en, dist_th, dist_en, city_en, city_th, dept_en "
+    sql += "FROM EX_MAIN EX_MAIN WHERE cus_active = 1;"
+

@@ -1,38 +1,154 @@
 {% extends "page_report.html" %}
 
 {% load i18n %}
-{% block title %} {{ page_title}} - {% trans 'Report - Export Customer Address (Main)' %} {% endblock %}
+{% block title %} {{ page_title}} - {% trans 'Report - Customer Address (Main)' %} {% endblock %}
 {% load static %}
 {% load widget_tweaks %}
 
 {% block content %}
 
   <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h4 class="m-0 text-dark"><small><i class="fas fa-wrench"></i></small>&nbsp;&nbsp;Under construction</h4>
-          </div>
-          <div class="col-sm-6">
-            <!--
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="/">Home</a></li>
-              <li class="breadcrumb-item active">Contract</li>
-            </ol>
-            -->
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- /.content-header -->
+  <div class="content-wrapper pt-2">
 
     <!-- Main content -->
     <section class="content">
 
+      <div class="col-md-6 offset-md-3 p-0 pt-2">
+
+        <form method="post" autocomplete="off" name="search_form">
+          {% csrf_token %}
+          
+          <div class="card-body p-0 pt-2">
+            <div class="form-group">
+
+              <div class="input-group col-12">
+
+                <div class="input-group-prepend pr-2 pt-1" style="width:100px;"><label>Select</label></div>                
+                <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:60px;">Zone</span></div>
+                <select id="id_contract_zone_option" name="contract_zone_option" class="form-control form-control-md" style="width:120px;">
+                  <option value="" selected>ALL</option>
+                  {% for item in zone_list %}
+                  <option value="{{item.zone_id}}">{{item.zone_id}} | {{ item.zone_en}}</option>
+                  {% endfor %}
+                </select>                                               
+                &nbsp;&nbsp;<a href="javascript:SearchFormSubmit();" class="btn btn-outline-info" role="button">SEARCH</a>
+              </div>
+
+            </div>
+          </div>
+
+        </form>        
+
+      </div>
+      <!-- /.col -->
+
+      <div class="card-header" style="padding: 0 2px 10px 0;">
+        <hr>
+        <h5 class="card-title"><i class="far fa-list-alt"></i>&nbsp;<b>Customer Address (Main)</b></h5>
+
+        <div class="float-right pb-1">
+          <div class="d-flex flex-row-reverse">
+
+            <button class="btn btn-success btn-sm" onclick="export_to_excel()">&nbsp;<i class="far fa-file-excel"></i>&nbsp;&nbsp;Export to Excel</button>
+
+            {% comment %}
+            <button class="btn btn-info btn-sm dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="fas fa-print fa-sm"></i>&nbsp;&nbsp;Print
+            </button>
+
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink"> 
+              <font size="2em;">
+              <a class="dropdown-item" href="#" onclick="display_on_screen()"><i class="fas fa-desktop text-secondary"></i>&nbsp;&nbsp;Display on screen</a>                
+              <a class="dropdown-item" href="#" onclick="export_to_excel()">&nbsp;<i class="far fa-file-excel text-secondary"></i>&nbsp;&nbsp;&nbsp;Export to Excel</a>
+              </font>
+            </div>
+            {% endcomment %}
+
+          </div>
+        </div>
+
+      <!-- /.card-header -->
+
+      <font size="2em;">
+      <table class="table table-sm table-bordered table-striped table-hover" id="contract_list_table">
+        <thead class="bg-secondary">
+          <tr>
+            <th class="align-middle text-center" scope="col" rowspan="2">NO.</th>
+            <th class="align-middle text-center" scope="col" rowspan="2">CONTRACT ID</th>
+            <th class="align-middle text-center" scope="col" rowspan="2">SITE NAME</th>
+            <th class="align-middle text-center" scope="col" rowspan="2">ZONE</th>
+            <th class="align-middle text-center" scope="col" colspan="8">DAY</th>                            
+            <th class="align-middle text-center" scope="col" colspan="3">SO</th>
+            <th class="align-middle text-center" scope="col" colspan="3">SUP</th>
+            <th class="align-middle text-center" scope="col" rowspan="2">TOTAL</th>
+            <th class="align-middle text-center" scope="col" colspan="2">CONTRACT DATE</th>
+            <th class="align-middle text-center" scope="col" colspan="2">EFFECTIVE DATE</th>
+          </tr>
+
+          <tr>                                                        
+            <th class="align-middle text-center" scope="col">MO</th>
+            <th class="align-middle text-center" scope="col">TU</th>
+            <th class="align-middle text-center" scope="col">WE</th>
+            <th class="align-middle text-center" scope="col">TH</th>
+            <th class="align-middle text-center" scope="col">FR</th>
+            <th class="align-middle text-center" scope="col">SA</th>
+            <th class="align-middle text-center" scope="col">SU</th>
+            <th class="align-middle text-center" scope="col">PU</th>
+
+            <th class="align-middle text-center" scope="col">D</th>
+            <th class="align-middle text-center" scope="col">N</th>
+            <th class="align-middle text-center" scope="col">T</th>
+
+            <th class="align-middle text-center" scope="col">D</th>
+            <th class="align-middle text-center" scope="col">N</th>
+            <th class="align-middle text-center" scope="col">T</th>
+
+            <th class="align-middle text-center" scope="col">FROM</th>
+            <th class="align-middle text-center" scope="col">TO</th>
+
+            <th class="align-middle text-center" scope="col">FROM</th>
+            <th class="align-middle text-center" scope="col">TO</th>
+
+          </tr>
+
+        </thead>
+        
+        <tbody>
+          <!--
+          <tr>
+            <th class="text-center" colspan='23'><br><br><br><br><br></th>
+          </tr>
+          -->
+        </tbody>
+
+        <tfoot class="bg-secondary">
+            <th class="align-middle text-center" scope="col" colspan="4">TOTAL</th>    
+            <th class="align-middle text-center" scope="col" colspan="19">&nbsp;</th>
+
+            <!--
+            <th class="align-middle text-center" scope="col"></th>
+            <th class="align-middle text-center" scope="col"></th>
+            <th class="align-middle text-center" scope="col"></th>
+            <th class="align-middle text-center" scope="col"></th>
+            <th class="align-middle text-center" scope="col"></th>
+
+            <th class="align-middle text-center" scope="col"></th>
+            <th class="align-middle text-center" scope="col"></th>
+            <th class="align-middle text-center" scope="col"></th>
+            <th class="align-middle text-center" scope="col"></th>
+            <th class="align-middle text-center" scope="col"></th>
+
+            <th class="align-middle text-center" scope="col"></th>
+            <th class="align-middle text-center" scope="col"></th>
+            <th class="align-middle text-center" scope="col"></th>
+            <th class="align-middle text-center" scope="col"></th>
+            <th class="align-middle text-center" scope="col"></th>
+            <th class="align-middle text-center" scope="col" colspan="4">&nbsp;</th>
+            -->
+        </tfoot>
+
+      </table>
+      </font>
 
     </section>
     <!-- /.content -->
@@ -47,7 +163,247 @@
 
 
 {% block javascript %}
+
 <script>
+$(document).ready(function(){
+
+  //$('#id_contract_number_from').focus();
+  //$('#id_contract_number_from').select();
+
+});
+
+function showLoading() {
+  $.LoadingOverlaySetup({
+      background      : "rgba(0, 0, 0, 0.5)",
+      image           : "/static/img/logo-small.png",        
+      imageAnimation  : "1.5s fadein",
+      imageColor      : "#ffcc00"
+  });
+  $.LoadingOverlay("show"); 
+}
+
+
+$(document).on('keyup keypress', '#id_contract_number_from', function(e) {
+  if(e.which == 13) {
+    
+    e.preventDefault();
+    if(this.value=="") {
+      return false;  
+    } else {
+      $('#id_contract_number_to').focus();
+      $('#id_contract_number_to').select();
+    }
+    
+  }
+});
+$("#id_contract_number_from").on('click', function(){
+  $("#id_contract_number_from").select();
+});
+
+$(document).on('keyup keypress', '#id_contract_number_to', function(e) {
+  if(e.which == 13) {
+    
+    e.preventDefault();
+    if(this.value=="") {
+      return false;
+    }
+    
+  }
+});
+$("#id_contract_number_to").on('click', function(){
+  $("#id_contract_number_to").select();
+});
+
+
+function SearchFormSubmit() {
+  var contract_number_from = $('#id_contract_number_from').val();
+  var contract_number_to = $('#id_contract_number_to').val();
+  var contract_status = $('#id_contract_status_option').val();
+  var contract_zone = $('#id_contract_zone_option').val();
+
+  showLoading();
+
+  $.ajax({      
+    url : "/reports/sp-admin/contract-list/ajax/report_search_contract/",        
+    type : "POST",
+    data : {
+      csrfmiddlewaretoken: '{{ csrf_token }}',
+      contract_number_from: contract_number_from,
+      contract_number_to: contract_number_to,
+      contract_status: contract_status,
+      contract_zone: contract_zone,
+    },
+    success : function(data) {
+
+      number_of_rows = data.contract_list.length;
+
+      if(data.is_error) {
+        alert("ERROR: " + data.error_message);
+      } else {          
+        result = "";
+        row_count = 1;
+
+        if(number_of_rows>0) {
+          for(i=0; i<number_of_rows; i++) {
+            cnt_id = data.contract_list[i]["cnt_id"];
+            cus_name_th = data.contract_list[i]["cus_name_th"];
+            cus_name_en = data.contract_list[i]["cus_name_en"];
+            cnt_sign_frm = data.contract_list[i]["cnt_sign_frm"];
+            cnt_sign_to = data.contract_list[i]["cnt_sign_to"];
+            cnt_eff_frm = data.contract_list[i]["cnt_eff_frm"];
+            cnt_eff_to = data.contract_list[i]["cnt_eff_to"];          
+            cnt_zone = data.contract_list[i]["cnt_zone"];
+            dept_sht = data.contract_list[i]["dept_sht"];
+            nosupD = data.contract_list[i]["nosupD"];
+            supD = data.contract_list[i]["supD"];
+            nosupd = data.contract_list[i]["nosupN"];
+            supN = data.contract_list[i]["supN"];
+            nosupN = data.contract_list[i]["nosupN"];
+            sun = data.contract_list[i]["sun"];
+            mon = data.contract_list[i]["mon"];
+            tue = data.contract_list[i]["tue"];
+            wed = data.contract_list[i]["wed"];
+            thu = data.contract_list[i]["thu"];
+            fri = data.contract_list[i]["fri"];
+            sat = data.contract_list[i]["sat"];          
+            pub = data.contract_list[i]["pub"];
+            total_sup_DN = data.contract_list[i]["total_sup_DN"];
+            total_nosup_DN = data.contract_list[i]["total_nosup_DN"];
+            grand_total = data.contract_list[i]["grand_total"];
+                      
+            result += "<tr>";
+            result += "<td class='text-center'>" + row_count + "</td>";
+            result += "<td class='text-left'>" + cnt_id + "</td>";
+            
+            //result += "<td class='text-left'>" + cus_name_th + "<br>" + cus_name_en + "</td>";
+            result += "<td class='text-left'>" + cus_name_th + "</td>";
+
+            result += "<td class='text-center' nowrap>" + dept_sht + "</td>";
+                        
+            result += "<td class='text-center'>" + mon + "</td>";
+            result += "<td class='text-center'>" + tue + "</td>";
+            result += "<td class='text-center'>" + wed + "</td>";
+            result += "<td class='text-center'>" + thu + "</td>";
+            result += "<td class='text-center'>" + fri + "</td>";
+            result += "<td class='text-center'>" + sat + "</td>";
+            result += "<td class='text-center'>" + sun + "</td>";
+            result += "<td class='text-center'>" + pub + "</td>";
+
+            result += "<td class='text-center'>" + nosupD + "</td>";
+            result += "<td class='text-center'>" + nosupN + "</td>";
+            result += "<td class='text-center'>" + total_nosup_DN + "</td>";
+
+            result += "<td class='text-center'>" + supD + "</td>";
+            result += "<td class='text-center'>" + supN + "</td>";
+            result += "<td class='text-center'>" + total_sup_DN + "</td>";
+
+            result += "<td class='text-center'>" + grand_total + "</td>";
+
+            result += "<td class='text-left' nowrap>" + cnt_sign_frm + "</td>";          
+            result += "<td class='text-left' nowrap>" + cnt_sign_to + "</td>";
+
+            result += "<td class='text-left' nowrap>" + cnt_eff_frm + "</td>";
+            result += "<td class='text-left' nowrap>" + cnt_eff_to + "</td>";
+
+            result += "</tr>";
+
+
+            row_count = row_count + 1;
+          }           
+        } else {
+            result = "";
+            result = "<tr style='background-color: #d2d4d6;'><td scope='row' class='text-center' colspan='23'><br><br>There is no data.<br><br><br></td></tr>";
+        }
+         
+      }
+    
+      $("#contract_list_table tbody").html(result);
+
+      result = "<td class='align-middle text-center' scope='col' colspan='4'>TOTAL</td>"        
+      result += "<td class='align-middle text-center' scope='col'>" + data.total_mon + "</td>";
+      result += "<td class='align-middle text-center' scope='col'>" + data.total_tue + "</td>";
+      result += "<td class='align-middle text-center' scope='col'>" + data.total_wed + "</td>";
+      result += "<td class='align-middle text-center' scope='col'>" + data.total_thu + "</td>";
+      result += "<td class='align-middle text-center' scope='col'>" + data.total_fri + "</td>";
+      result += "<td class='align-middle text-center' scope='col'>" + data.total_sat + "</td>";
+      result += "<td class='align-middle text-center' scope='col'>" + data.total_sun + "</td>";
+      result += "<td class='align-middle text-center' scope='col'>" + data.total_pub + "</td>";
+      result += "<td class='align-middle text-center' scope='col'>" + data.total_nosupD + "</td>";
+      result += "<td class='align-middle text-center' scope='col'>" + data.total_nosupN + "</td>";
+      result += "<td class='align-middle text-center' scope='col'>" + data.grand_total_nosup_DN + "</td>";
+      result += "<td class='align-middle text-center' scope='col'>" + data.total_supD + "</td>";
+      result += "<td class='align-middle text-center' scope='col'>" + data.total_supN + "</td>";
+      result += "<td class='align-middle text-center' scope='col'>" + data.grand_total_sup_DN + "</td>";
+      result += "<td class='align-middle text-center' scope='col'>" + data.grand_grand_total + "</td>";
+      result += "<td class='align-middle text-center' scope='col' colspan='4'>&nbsp;</td>";
+      
+      $("#contract_list_table tfoot").html(result);
+      
+    },
+  });
+
+  $.LoadingOverlay("hide");
+}
+
+
+function display_on_screen() {
+  var contract_number_from = $('#id_contract_number_from').val();
+  var contract_number_to = $('#id_contract_number_to').val();
+  var contract_status = $('#id_contract_status_option').val();
+  var contract_zone = $('#id_contract_zone_option').val();
+
+  if(contract_status=="") {
+    contract_status = "all_status"
+  }
+
+  if(contract_zone=="") {
+    contract_zone = "all_zone"
+  }
+
+  var href = "/reports/sp-admin/contract-list/generate-contract-list/" + contract_number_from + "/" + contract_number_to + "/" + contract_status + "/" + contract_zone + "/";
+
+  window.open(href, '_blank');
+}
+
+function export_to_excel() {
+
+  // todo
+  var tbody = $('#contract_list_table tbody');
+  if(tbody.children().length <= 1) {
+    $.alert({
+        title: 'Error',
+        type: 'red',
+        content: "ยังไม่มีข้อมูลสำหรับทำรายการ",
+        animation: 'zoom',
+        animationBounce: 1.5,
+        closeIcon: false,
+        boxWidth: '38%',
+        useBootstrap: false,
+    });    
+    return false;
+  } else {
+    //alert(tbody.children().length);
+    //return false;
+
+    var contract_number_from = $('#id_contract_number_from').val();
+    var contract_number_to = $('#id_contract_number_to').val();
+    var contract_status = $('#id_contract_status_option').val();
+    var contract_zone = $('#id_contract_zone_option').val();
+
+    if(contract_status=="") {
+      contract_status = "all_status"
+    }
+
+    if(contract_zone=="") {
+      contract_zone = "all_zone"
+    }
+
+    var href = "/reports/sp-admin/contract-list/export-contract-list/" + contract_number_from + "/" + contract_number_to + "/" + contract_status + "/" + contract_zone + "/";
+    window.open(href, '_blank');
+
+  }
+
+}
 
 </script>
 
