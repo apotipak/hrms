@@ -81,6 +81,36 @@
 
       <!-- /.card-header -->
 
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">First</th>
+      <th scope="col">Last</th>
+      <th scope="col">Handle</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td>Mark</td>
+      <td>Otto</td>
+      <td>@mdo</td>
+    </tr>
+    <tr>
+      <th scope="row">2</th>
+      <td>Jacob</td>
+      <td>Thornton</td>
+      <td>@fat</td>
+    </tr>
+    <tr>
+      <th scope="row">3</th>
+      <td>Larry</td>
+      <td>the Bird</td>
+      <td>@twitter</td>
+    </tr>
+  </tbody>
+</table>
 
       <font size="2em;">
       <table class="table table-sm table-bordered table-striped table-hover" id="contract_list_table">
@@ -285,38 +315,38 @@ function SearchFormSubmit() {
             grand_total = data.contract_list[i]["grand_total"];
                       
             result += "<tr>";
-            result += "<th class='text-center'>" + row_count + "</th>";
-            result += "<th class='text-left'>" + cnt_id + "</th>";
+            result += "<td class='text-center'>" + row_count + "</td>";
+            result += "<td class='text-left'>" + cnt_id + "</td>";
             
-            //result += "<th class='text-left'>" + cus_name_th + "<br>" + cus_name_en + "</th>";
-            result += "<th class='text-left'>" + cus_name_th + "</th>";
+            //result += "<td class='text-left'>" + cus_name_th + "<br>" + cus_name_en + "</td>";
+            result += "<td class='text-left'>" + cus_name_th + "</td>";
 
-            result += "<th class='text-left'>" + dept_sht + "</th>";
+            result += "<td class='text-left'>" + dept_sht + "</td>";
                         
-            result += "<th class='text-center'>" + mon + "</th>";
-            result += "<th class='text-center'>" + tue + "</th>";
-            result += "<th class='text-center'>" + wed + "</th>";
-            result += "<th class='text-center'>" + thu + "</th>";
-            result += "<th class='text-center'>" + fri + "</th>";
-            result += "<th class='text-center'>" + sat + "</th>";
-            result += "<th class='text-center'>" + sun + "</th>";
-            result += "<th class='text-center'>" + pub + "</th>";
+            result += "<td class='text-center'>" + mon + "</td>";
+            result += "<td class='text-center'>" + tue + "</td>";
+            result += "<td class='text-center'>" + wed + "</td>";
+            result += "<td class='text-center'>" + thu + "</td>";
+            result += "<td class='text-center'>" + fri + "</td>";
+            result += "<td class='text-center'>" + sat + "</td>";
+            result += "<td class='text-center'>" + sun + "</td>";
+            result += "<td class='text-center'>" + pub + "</td>";
 
-            result += "<th class='text-center'>" + nosupD + "</th>";
-            result += "<th class='text-center'>" + nosupN + "</th>";
-            result += "<th class='text-center'>" + total_nosup_DN + "</th>";
+            result += "<td class='text-center'>" + nosupD + "</td>";
+            result += "<td class='text-center'>" + nosupN + "</td>";
+            result += "<td class='text-center'>" + total_nosup_DN + "</td>";
 
-            result += "<th class='text-center'>" + supD + "</th>";
-            result += "<th class='text-center'>" + supN + "</th>";
-            result += "<th class='text-center'>" + total_sup_DN + "</th>";
+            result += "<td class='text-center'>" + supD + "</td>";
+            result += "<td class='text-center'>" + supN + "</td>";
+            result += "<td class='text-center'>" + total_sup_DN + "</td>";
 
-            result += "<th class='text-center'>" + grand_total + "</th>";
+            result += "<td class='text-center'>" + grand_total + "</td>";
 
-            result += "<th class='text-left' nowrap>" + cnt_sign_frm + "</th>";          
-            result += "<th class='text-left' nowrap>" + cnt_sign_to + "</th>";
+            result += "<td class='text-left' nowrap>" + cnt_sign_frm + "</td>";          
+            result += "<td class='text-left' nowrap>" + cnt_sign_to + "</td>";
 
-            result += "<th class='text-left' nowrap>" + cnt_eff_frm + "</th>";
-            result += "<th class='text-left' nowrap>" + cnt_eff_to + "</th>";
+            result += "<td class='text-left' nowrap>" + cnt_eff_frm + "</td>";
+            result += "<td class='text-left' nowrap>" + cnt_eff_to + "</td>";
 
             result += "</tr>";
 
@@ -325,30 +355,30 @@ function SearchFormSubmit() {
           }           
         } else {
             result = "";
-            result = "<tr style='background-color: #d2d4d6;'><th scope='row' class='text-center' colspan='23'><br><br>There is no data.<br><br><br></th></tr>";
+            result = "<tr style='background-color: #d2d4d6;'><td scope='row' class='text-center' colspan='23'><br><br>tdere is no data.<br><br><br></td></tr>";
         }
          
       }
     
       $("#contract_list_table tbody").html(result);
 
-      result = "<th class='align-middle text-center' scope='col' colspan='4'>TOTAL</th>"        
-      result += "<th class='align-middle text-center' scope='col'>" + data.total_mon + "</th>";
-      result += "<th class='align-middle text-center' scope='col'>" + data.total_tue + "</th>";
-      result += "<th class='align-middle text-center' scope='col'>" + data.total_wed + "</th>";
-      result += "<th class='align-middle text-center' scope='col'>" + data.total_thu + "</th>";
-      result += "<th class='align-middle text-center' scope='col'>" + data.total_fri + "</th>";
-      result += "<th class='align-middle text-center' scope='col'>" + data.total_sat + "</th>";
-      result += "<th class='align-middle text-center' scope='col'>" + data.total_sun + "</th>";
-      result += "<th class='align-middle text-center' scope='col'>" + data.total_pub + "</th>";
-      result += "<th class='align-middle text-center' scope='col'>" + data.total_nosupD + "</th>";
-      result += "<th class='align-middle text-center' scope='col'>" + data.total_nosupN + "</th>";
-      result += "<th class='align-middle text-center' scope='col'>" + data.grand_total_nosup_DN + "</th>";
-      result += "<th class='align-middle text-center' scope='col'>" + data.total_supD + "</th>";
-      result += "<th class='align-middle text-center' scope='col'>" + data.total_supN + "</th>";
-      result += "<th class='align-middle text-center' scope='col'>" + data.grand_total_sup_DN + "</th>";
-      result += "<th class='align-middle text-center' scope='col'>" + data.grand_grand_total + "</th>";
-      result += "<th class='align-middle text-center' scope='col' colspan='4'>&nbsp;</th>";
+      result = "<td class='align-middle text-center' scope='col' colspan='4'>TOTAL</td>"        
+      result += "<td class='align-middle text-center' scope='col'>" + data.total_mon + "</td>";
+      result += "<td class='align-middle text-center' scope='col'>" + data.total_tue + "</td>";
+      result += "<td class='align-middle text-center' scope='col'>" + data.total_wed + "</td>";
+      result += "<td class='align-middle text-center' scope='col'>" + data.total_thu + "</td>";
+      result += "<td class='align-middle text-center' scope='col'>" + data.total_fri + "</td>";
+      result += "<td class='align-middle text-center' scope='col'>" + data.total_sat + "</td>";
+      result += "<td class='align-middle text-center' scope='col'>" + data.total_sun + "</td>";
+      result += "<td class='align-middle text-center' scope='col'>" + data.total_pub + "</td>";
+      result += "<td class='align-middle text-center' scope='col'>" + data.total_nosupD + "</td>";
+      result += "<td class='align-middle text-center' scope='col'>" + data.total_nosupN + "</td>";
+      result += "<td class='align-middle text-center' scope='col'>" + data.grand_total_nosup_DN + "</td>";
+      result += "<td class='align-middle text-center' scope='col'>" + data.total_supD + "</td>";
+      result += "<td class='align-middle text-center' scope='col'>" + data.total_supN + "</td>";
+      result += "<td class='align-middle text-center' scope='col'>" + data.grand_total_sup_DN + "</td>";
+      result += "<td class='align-middle text-center' scope='col'>" + data.grand_grand_total + "</td>";
+      result += "<td class='align-middle text-center' scope='col' colspan='4'>&nbsp;</td>";
       
       $("#contract_list_table tfoot").html(result);
       
