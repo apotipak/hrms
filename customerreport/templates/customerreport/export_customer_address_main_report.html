@@ -68,15 +68,15 @@
         </div>
 
       <!-- /.card-header -->
-
-      <font size="2em;">
+      <div class="table-responsive">
+      <font size="2em;">      
       <table class="table table-sm table-bordered table-striped table-hover" id="customer_main_address_table">
         <thead class="bg-secondary">
           <tr>
 
             <th class="align-middle text-center" scope="col">NO.</th>
             <th class="align-middle text-center" scope="col" nowrap>CUS ID</th>
-            <th class="align-middle text-center" scope="col" nowrap>NAME (TH)</th>
+            <th class="align-middle text-center" scope="col">NAME (TH).</th>
             <th class="align-middle text-center" scope="col" nowrap>ADD1 (TH)</th>
             <th class="align-middle text-center" scope="col" nowrap>ADD2 (TH)</th>                            
             <th class="align-middle text-center" scope="col" nowrap>SUB DIST (TH)</th>
@@ -115,6 +115,7 @@
 
       </table>
       </font>
+      </div>
 
     </section>
     <!-- /.content -->
@@ -225,7 +226,7 @@ function SearchFormSubmit() {
             result += "<td class='text-left' nowrap>" + data.customer_main_address_list[i]["cus_tel"] + "</td>";
             result += "<td class='text-left' nowrap>" + data.customer_main_address_list[i]["cus_fax"] + "</td>";
             
-            result += "<td class='text-left'>ZONE ?</td>";
+            result += "<td class='text-left'>" + data.customer_main_address_list[i]["cus_zone"] + "</td>";
             result += "<td class='text-left'>" + data.customer_main_address_list[i]["con_fname_th"] + "</td>";
             result += "<td class='text-left'>" + data.customer_main_address_list[i]["con_lname_th"] + "</td>";
             result += "<td class='text-left'>" + data.customer_main_address_list[i]["con_position_th"] + "</td>";
@@ -250,11 +251,12 @@ function SearchFormSubmit() {
         }
       }
     
+      $.LoadingOverlay("hide");
       $("#customer_main_address_table tbody").html(result);      
     },
   });
 
-  $.LoadingOverlay("hide");
+  //$.LoadingOverlay("hide");
 }
 
 

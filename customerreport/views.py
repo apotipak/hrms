@@ -129,7 +129,7 @@ def AjaxSearchCustomerMainAddress(request):
 
 
 @login_required(login_url='/accounts/login/')
-def export_customer_main_addres(request, *args, **kwargs):
+def export_customer_main_address(request, *args, **kwargs):
     base_url = MEDIA_ROOT + '/contract/template/'
     customer_zone = kwargs['customer_zone']
 
