@@ -141,7 +141,7 @@ def export_customer_main_address(request, *args, **kwargs):
     context = {}
 
     wb = xlwt.Workbook(encoding='utf-8')
-    ws = wb.add_sheet('Contract List')
+    ws = wb.add_sheet('Customer Main Address')
 
     # TITLE
     font_style = xlwt.XFStyle()
@@ -447,7 +447,7 @@ def export_customer_site_address(request, *args, **kwargs):
     context = {}
 
     wb = xlwt.Workbook(encoding='utf-8')
-    ws = wb.add_sheet('Contract List')
+    ws = wb.add_sheet('Customer Site Address')
 
     # TITLE
     font_style = xlwt.XFStyle()
