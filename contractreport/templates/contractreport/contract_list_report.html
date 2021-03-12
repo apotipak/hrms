@@ -78,9 +78,10 @@
 
           </div>
         </div>
-
       <!-- /.card-header -->
 
+
+      
       <font size="2em;">
       <table class="table table-sm table-bordered table-striped table-hover" id="contract_list_table">
         <thead class="bg-secondary">
@@ -136,31 +137,12 @@
         <tfoot class="bg-secondary">
             <th class="align-middle text-center" scope="col" colspan="4">TOTAL</th>    
             <th class="align-middle text-center" scope="col" colspan="19">&nbsp;</th>
-
-            <!--
-            <th class="align-middle text-center" scope="col"></th>
-            <th class="align-middle text-center" scope="col"></th>
-            <th class="align-middle text-center" scope="col"></th>
-            <th class="align-middle text-center" scope="col"></th>
-            <th class="align-middle text-center" scope="col"></th>
-
-            <th class="align-middle text-center" scope="col"></th>
-            <th class="align-middle text-center" scope="col"></th>
-            <th class="align-middle text-center" scope="col"></th>
-            <th class="align-middle text-center" scope="col"></th>
-            <th class="align-middle text-center" scope="col"></th>
-
-            <th class="align-middle text-center" scope="col"></th>
-            <th class="align-middle text-center" scope="col"></th>
-            <th class="align-middle text-center" scope="col"></th>
-            <th class="align-middle text-center" scope="col"></th>
-            <th class="align-middle text-center" scope="col"></th>
-            <th class="align-middle text-center" scope="col" colspan="4">&nbsp;</th>
-            -->
         </tfoot>
 
       </table>
       </font>
+    
+
 
     </section>
     <!-- /.content -->
@@ -178,6 +160,11 @@
 
 <script>
 $(document).ready(function(){
+
+  var $th = $('.tableFixHead').find('thead th')
+  $('.tableFixHead').on('scroll', function() {
+    $th.css('transform', 'translateY('+ this.scrollTop +'px)');
+  });
 
   //$('#id_contract_number_from').focus();
   //$('#id_contract_number_from').select();
