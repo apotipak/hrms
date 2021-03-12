@@ -134,7 +134,7 @@ def export_customer_main_address(request, *args, **kwargs):
     customer_zone = kwargs['customer_zone']
 
     response = HttpResponse(content_type='application/ms-excel')
-    response['Content-Disposition'] = 'attachment; filename="Custoemr_Main_Address_List.xls"'
+    response['Content-Disposition'] = 'attachment; filename="Customer_Main_Address_List.xls"'
 
     customer_list_obj = []
     pickup_record = []
@@ -440,7 +440,7 @@ def export_customer_site_address(request, *args, **kwargs):
     customer_zone = kwargs['customer_zone']
 
     response = HttpResponse(content_type='application/ms-excel')
-    response['Content-Disposition'] = 'attachment; filename="Custoemr_Site_Address_List.xls"'
+    response['Content-Disposition'] = 'attachment; filename="Customer_Site_Address_List.xls"'
 
     customer_list_obj = []
     pickup_record = []
