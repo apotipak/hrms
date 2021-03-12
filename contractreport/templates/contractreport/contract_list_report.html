@@ -87,15 +87,15 @@
         <thead class="bg-secondary">
           <tr>
             <th class="align-middle text-center" scope="col" rowspan="2">NO.</th>
-            <th class="align-middle text-center" scope="col" rowspan="2">CONTRACT ID</th>
-            <th class="align-middle text-center" scope="col" rowspan="2">SITE NAME</th>
+            <th class="align-middle text-center" scope="col" rowspan="2" nowrap>CONTRACT ID</th>
+            <th class="align-middle text-center" scope="col" rowspan="2" nowrap>SITE NAME</th>
             <th class="align-middle text-center" scope="col" rowspan="2">ZONE</th>
             <th class="align-middle text-center" scope="col" colspan="8">DAY</th>                            
             <th class="align-middle text-center" scope="col" colspan="3">SO</th>
             <th class="align-middle text-center" scope="col" colspan="3">SUP</th>
             <th class="align-middle text-center" scope="col" rowspan="2">TOTAL</th>
-            <th class="align-middle text-center" scope="col" colspan="2">CONTRACT DATE</th>
-            <th class="align-middle text-center" scope="col" colspan="2">EFFECTIVE DATE</th>
+            <th class="align-middle text-center" scope="col" colspan="2" nowrap>CONTRACT DATE</th>
+            <th class="align-middle text-center" scope="col" colspan="2" nowrap>EFFECTIVE DATE</th>
           </tr>
 
           <tr>                                                        
@@ -274,8 +274,8 @@ function SearchFormSubmit() {
             result += "<td class='text-center'>" + row_count + "</td>";
             result += "<td class='text-left'>" + cnt_id + "</td>";
             
-            //result += "<td class='text-left'>" + cus_name_th + "<br>" + cus_name_en + "</td>";
-            result += "<td class='text-left'>" + cus_name_th + "</td>";
+            //result += "<td class='text-left' nowrap>" + cus_name_th + "<br><small>" + cus_name_en + "</small></td>";
+            result += "<td class='text-left' nowrap>" + cus_name_th + "</td>";
 
             result += "<td class='text-center' nowrap>" + dept_sht + "</td>";
                         

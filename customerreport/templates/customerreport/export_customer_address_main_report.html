@@ -46,7 +46,7 @@
 
       <div class="card-header" style="padding: 0 2px 10px 0;">
         <hr>
-        <h5 class="card-title"><i class="far fa-list-alt"></i>&nbsp;<b>Customer Address (Main)</b></h5>
+        <h5 class="card-title"><i class="far fa-list-alt"></i>&nbsp;<b>Customer Main Address</b></h5>
 
         <div class="float-right pb-1">
           <div class="d-flex flex-row-reverse">
@@ -78,18 +78,18 @@
 
             <th class="align-middle text-center" scope="col">NO.</th>
             <th class="align-middle text-center" scope="col" nowrap>CUS ID</th>
-            <th class="align-middle text-center" scope="col">NAME (TH).</th>
-            <th class="align-middle text-center" scope="col" nowrap>ADD1 (TH)</th>
-            <th class="align-middle text-center" scope="col" nowrap>ADD2 (TH)</th>                            
-            <th class="align-middle text-center" scope="col" nowrap>SUB DIST (TH)</th>
-            <th class="align-middle text-center" scope="col" nowrap>DIST (TH)</th>
+            <th class="align-middle text-center" scope="col" nowrap>NAME (TH)</th>
+            <th class="align-middle text-center" scope="col" nowrap>ADDRESS 1 (TH)</th>
+            <th class="align-middle text-center" scope="col" nowrap>ADDRESS 2 (TH)</th>                            
+            <th class="align-middle text-center" scope="col" nowrap>SUB DISTRICT (TH)</th>
+            <th class="align-middle text-center" scope="col" nowrap>DISTRICT (TH)</th>
             <th class="align-middle text-center" scope="col" nowrap>CITY (TH)</th>
 
             <th class="align-middle text-center" scope="col" nowrap>NAME (EN)</th>
-            <th class="align-middle text-center" scope="col" nowrap>ADD1 (EN)</th>
-            <th class="align-middle text-center" scope="col" nowrap>ADD2 (EN)</th>                            
-            <th class="align-middle text-center" scope="col" nowrap>SUB DIST (EN)</th>
-            <th class="align-middle text-center" scope="col" nowrap>DIST (EN)</th>
+            <th class="align-middle text-center" scope="col" nowrap>ADDRESS 1 (EN)</th>
+            <th class="align-middle text-center" scope="col" nowrap>ADDRESS 2 (EN)</th>                            
+            <th class="align-middle text-center" scope="col" nowrap>SUB DISTRICT (EN)</th>
+            <th class="align-middle text-center" scope="col" nowrap>DISTRICT (EN)</th>
             <th class="align-middle text-center" scope="col" nowrap>CITY (EN)</th>
 
             <th class="align-middle text-center" scope="col">ZIP</th>
@@ -209,36 +209,31 @@ function SearchFormSubmit() {
         if(number_of_rows>0) {
           for(i=0; i<number_of_rows; i++) {            
             result += "<tr>";
-            result += "<td class='text-center'>" + row_count + "</td>";
-            result += "<td class='text-left'>" + data.customer_main_address_list[i]["cus_id"] + "</td>";
-            result += "<td class='text-left'>" + data.customer_main_address_list[i]["cus_name_th"] + "</td>";
-            result += "<td class='text-left'>" + data.customer_main_address_list[i]["cus_add1_th"] + "</td>";
-            result += "<td class='text-left'>" + data.customer_main_address_list[i]["cus_add2_th"] + "</td>";
-            result += "<td class='text-left'>" + data.customer_main_address_list[i]["cus_subdist_th"] + "</td>";
-            result += "<td class='text-left'>" + data.customer_main_address_list[i]["dist_th"] + "</td>";
-            result += "<td class='text-left'>" + data.customer_main_address_list[i]["city_th"] + "</td>";
-
-            result += "<td class='text-left'>" + data.customer_main_address_list[i]["cus_name_en"] + "</td>";
-            result += "<td class='text-left'>" + data.customer_main_address_list[i]["cus_add1_en"] + "</td>";
-            result += "<td class='text-left'>" + data.customer_main_address_list[i]["cus_add2_en"] + "</td>";
-            result += "<td class='text-left'>" + data.customer_main_address_list[i]["cus_subdist_en"] + "</td>";
-            result += "<td class='text-left'>" + data.customer_main_address_list[i]["dist_en"] + "</td>";
-            result += "<td class='text-left'>" + data.customer_main_address_list[i]["city_en"] + "</td>";
-
-            result += "<td class='text-left'>" + data.customer_main_address_list[i]["cus_zip"] + "</td>";
+            result += "<td class='text-center' nowrap>" + row_count + "</td>";
+            result += "<td class='text-left' nowrap>" + data.customer_main_address_list[i]["cus_id"] + "</td>";
+            result += "<td class='text-left' nowrap>" + data.customer_main_address_list[i]["cus_name_th"] + "</td>";
+            result += "<td class='text-left' nowrap>" + data.customer_main_address_list[i]["cus_add1_th"] + "</td>";
+            result += "<td class='text-left' nowrap>" + data.customer_main_address_list[i]["cus_add2_th"] + "</td>";
+            result += "<td class='text-left' nowrap>" + data.customer_main_address_list[i]["cus_subdist_th"] + "</td>";
+            result += "<td class='text-left' nowrap>" + data.customer_main_address_list[i]["dist_th"] + "</td>";
+            result += "<td class='text-left' nowrap>" + data.customer_main_address_list[i]["city_th"] + "</td>";
+            result += "<td class='text-left' nowrap>" + data.customer_main_address_list[i]["cus_name_en"] + "</td>";
+            result += "<td class='text-left' nowrap>" + data.customer_main_address_list[i]["cus_add1_en"] + "</td>";
+            result += "<td class='text-left' nowrap>" + data.customer_main_address_list[i]["cus_add2_en"] + "</td>";
+            result += "<td class='text-left' nowrap>" + data.customer_main_address_list[i]["cus_subdist_en"] + "</td>";
+            result += "<td class='text-left' nowrap>" + data.customer_main_address_list[i]["dist_en"] + "</td>";
+            result += "<td class='text-left' nowrap>" + data.customer_main_address_list[i]["city_en"] + "</td>";
+            result += "<td class='text-left' nowrap>" + data.customer_main_address_list[i]["cus_zip"] + "</td>";
             result += "<td class='text-left' nowrap>" + data.customer_main_address_list[i]["cus_tel"] + "</td>";
-            result += "<td class='text-left' nowrap>" + data.customer_main_address_list[i]["cus_fax"] + "</td>";
-            
-            result += "<td class='text-left'>" + data.customer_main_address_list[i]["cus_zone"] + "</td>";
-            result += "<td class='text-left'>" + data.customer_main_address_list[i]["con_fname_th"] + "</td>";
-            result += "<td class='text-left'>" + data.customer_main_address_list[i]["con_lname_th"] + "</td>";
-            result += "<td class='text-left'>" + data.customer_main_address_list[i]["con_position_th"] + "</td>";
-
-            result += "<td class='text-left'>" + data.customer_main_address_list[i]["con_fname_en"] + "</td>";
-            result += "<td class='text-left'>" + data.customer_main_address_list[i]["con_lname_en"] + "</td>";
-            result += "<td class='text-left'>" + data.customer_main_address_list[i]["con_position_en"] + "</td>";
-
-            result += "<td class='text-left'>" + data.customer_main_address_list[i]["cus_email"] + "</td>";
+            result += "<td class='text-left' nowrap>" + data.customer_main_address_list[i]["cus_fax"] + "</td>";            
+            result += "<td class='text-left' nowrap>" + data.customer_main_address_list[i]["cus_zone"] + "</td>";
+            result += "<td class='text-left' nowrap>" + data.customer_main_address_list[i]["con_fname_th"] + "</td>";
+            result += "<td class='text-left' nowrap>" + data.customer_main_address_list[i]["con_lname_th"] + "</td>";
+            result += "<td class='text-left' nowrap>" + data.customer_main_address_list[i]["con_position_th"] + "</td>";
+            result += "<td class='text-left' nowrap>" + data.customer_main_address_list[i]["con_fname_en"] + "</td>";
+            result += "<td class='text-left' nowrap>" + data.customer_main_address_list[i]["con_lname_en"] + "</td>";
+            result += "<td class='text-left' nowrap" + data.customer_main_address_list[i]["con_position_en"] + "</td>";
+            result += "<td class='text-left' nowrap>" + data.customer_main_address_list[i]["cus_email"] + "</td>";
 
             result += "</tr>";
 
