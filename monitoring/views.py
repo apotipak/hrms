@@ -6265,7 +6265,7 @@ def ajax_bulk_update_absent_status(request):
 					response.status_code = 200
 					return response
 			else:
-				response = JsonResponse(data={"success": True,"is_error": is_error,"message": "จำนวนพนักงานทำงานมากกว่าสัญญาการให้บริการ"})
+				response = JsonResponse(data={"success": True,"is_error": True,"message": "จำนวนพนักงานทำงานมากกว่าสัญญาการให้บริการ"})
 				response.status_code = 200
 				return response
 				
