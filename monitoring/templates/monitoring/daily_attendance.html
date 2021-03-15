@@ -439,7 +439,7 @@
   <div class="col-2">   
 	<div class="input-group">
 		<span style="font-size:0.9rem;padding:3px 0 0 0; width:75px;"><b>Employee</b>&nbsp;&nbsp;&nbsp;</span>
-  		<input type="number" id="id_emp_id" name="id_emp_id" class="form-control form-control-xs input-xs" placeholder="ID" />
+  		<input type="number" id="id_emp_id" name="id_emp_id" class="form-control form-control-xs input-xs" placeholder="Emp ID" />
   		<button id="emp_id_lookup_button" type="button" class="btn btn-outline-primary btn-xs" data-toggle="modal" data-url=""><i class="fas fa-search fa-sm"></i></button>
 	</div>	
   </div>
@@ -488,7 +488,7 @@
 		-->
 		<label class="text-primary" style="font-size:0.9rem;padding:0 0 0 0;cursor: pointer;width:75px;">
 		<input class="" id="id_relief_check" name="relief_check" type="checkbox" />&nbsp;Relief by&nbsp;</label>
-		<input type="number" id="id_relief_emp_id" name="id_relief_emp_id" class="form-control form-control-xs" placeholder="ID" readonly="" />
+		<input type="number" id="id_relief_emp_id" name="id_relief_emp_id" class="form-control form-control-xs" placeholder="Relief ID" readonly="" />
 		<button id="relief_emp_id_lookup_button" type="button" class="btn btn-outline-primary btn-xs" data-toggle="modal" data-url="" disabled=""><i class="fas fa-search fa-sm"></i></button>
 	</div>
   </div>
@@ -1639,7 +1639,8 @@ $("#id_late_hour").click( function() {
 	    	
 	   		//$("#relief_employee_section").show();
 
-	   		$("#id_late_reason_option").val(56);
+	   		//$("#id_late_reason_option").val(56);
+	   		$("#id_late_reason_option").val(1);
 
 	   		//$("#id_late_reason_option").text("56 | มาสาย");
 	   		//$("#id_shift_option").text("aa");
