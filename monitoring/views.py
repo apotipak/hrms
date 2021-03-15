@@ -3670,6 +3670,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		sql = "select cnt_id,emp_id,absent,late,tel_man,relieft from his_dly_plan "	
 	# sql = "select cnt_id,emp_id,absent,late,tel_man,relieft from dly_plan "
 	sql += " where cnt_id=" + str(cnt_id) + " and sch_shift=" + shift_id + " and dly_date='" + str(dly_date) + "' and emp_id=" + str(emp_id)
+
 	print("SQL debug1:", sql)
 	print("DEBUG shift_id : ", shift_id)
 	
@@ -3743,7 +3744,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 						print("srv_qty = ", srv_qty)
 
 						# ironman
-						return False, "TODO"
+						# return False, "TODO"
 
 						if informNo >= srv_qty:
 							is_pass = False					
