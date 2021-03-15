@@ -2512,10 +2512,9 @@ def ajax_get_attendance_information(request):
 	# ตรวจสอบวันที่ Daily Attendance มากกว่าวันที่ปัจจุบัน	
 	today_date = convertStringToDate(settings.TODAY_DATE.strftime("%d/%m/%Y"))
 	daily_attendance_date = convertStringToDate(attendance_date)
-
-	# ironman
-	print("today_date", today_date)
-	print("daily_attendance_date", daily_attendance_date)
+	
+	# print("today_date", today_date)
+	# print("daily_attendance_date", daily_attendance_date)
 
 	if daily_attendance_date > today_date:
 		is_pass = False
@@ -3290,7 +3289,7 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 	Tlate_full = late_full_paid_status
 	Trelief = ui_relief_status
 	Trelief_id = '0' if relief_emp_id=="" else relief_emp_id
-
+	
 	# return False, Trelief_id
 
 	# TELEPHONE
@@ -3307,13 +3306,21 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 		Ttel_paid = 0
 
 	
+	# ironman
 	# OVERTIME
-	ot_reason = late_reason_option
-	ot_time_frm = late_from
-	ot_time_to = late_to
-
 	Tot = 0 if ui_ot_status==0 else 1
 	if (Tot==1) or (Tlate==1):
+
+		ot_reason = late_reason_option
+		ot_time_frm = late_from
+		ot_time_to = late_to
+		print("DEBUG")
+		print("late_reason_option: ", late_reason_option)
+		print("late_from: ", late_from)
+		print("late_to: ", late_to)
+		print("tot_hr_amt: ", late_hour)
+		print("DEUBG")
+
 		Tot_reason = ot_reason
 		Tot_time_frm = ot_time_frm
 		Tot_time_to = ot_time_to
@@ -3380,8 +3387,9 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 			return False, "You don't have a permission to Add/Edit passed date."
 	'''
 
-	# return False, "debug"
 
+	# ironman
+	# return False, "debug"	
 	is_error_status, error_message, table_name = get_DLY_PLAN_OR_HIS_DLY_PLAN(dly_date)
 	if is_error_status:
 		return False, error_message
@@ -3418,19 +3426,22 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 	if Tot_time_frm is None:
 		sql += "null,"
 	else:
-		sql += str(Tot_time_frm) + "',"
+		sql += " '" + str(Tot_time_frm) + "',"
 
 	if Tot_time_to is None:
 		sql += "null,"
 	else:
-		sql += str(Tot_time_to) + "',"
+		sql += " '" + str(Tot_time_to) + "',"
 
 	sql += str(Tot_hr_amt) + "," + str(Tot_pay_amt) + ","
 
 	sql += str(Tspare) + "," + str(Twage_id) + ",'" + str(Twage_no) + "','" + str(Tpay_type) + "'," + str(Tsoc) + "," + str(Tpub) + "," + str(Tdof) + "," + str(Tday7) + ",'"
 	sql += str(str(datetime.datetime.now())[:-3]) + "','" + str(username) + "'," + "'A'" + ",'" + remark + "')"	
 
-	# print("sql: ", sql)
+	
+	print("DEBUG sql: ", sql)
+	# return False, "debug3"
+
 	# return True, "TEST"
 
 	try:
@@ -5681,6 +5692,11 @@ def ajax_save_daily_attendance(request):
 	late_hour = request.GET.get('late_hour')
 	late_full_paid_status = request.GET.get('late_full_paid_status')
 
+	if ui_late_status==1:
+		late_from = datetime.datetime.strptime(late_from, '%d/%m/%Y %H:%M')
+		late_to = datetime.datetime.strptime(late_to, '%d/%m/%Y %H:%M')
+
+
 	tel_man = request.GET.get('tel_man')
 	# print("tel_man:", tel_man)
 	# print("ui_phone_status:", ui_phone_status)
@@ -5713,20 +5729,19 @@ def ajax_save_daily_attendance(request):
 	customer_zone_id = request.GET.get('customer_zone_id')
 
 
+	# ironman
+	# late_from = datetime.datetime.strptime(late_from, '%d/%m/%Y %H:%M')
+	# late_to = datetime.datetime.strptime(late_to, '%d/%m/%Y %H:%M')
+
 	'''
-	print("debug 1")
-	print("------------------")
-	print(str(absent_status) + "," + str(late_status) + "," + str(phone_status) + "," + str(relief_status))
-	print("------------------")
-	print("debug 2")
-	print("------------------")
-	print(str(job_type) + "," + str(job_type) + "," + str(totalNDP) + "," + str(totalNDA) + "," + str(totalNDM) + "," + str(totalNNP) + "," + str(totalNNA) + "," + str(totalNNM))
-	print("------------------")	
+	print("DEBUG3")
+	print("ui_late_status: ", ui_late_status)
+	print("late_reason_option: ", late_reason_option)	
+	print("late_from: ", late_from)
+	print("late_to: ", late_to)
+	print("tot_hr_amt: ", late_hour)
+	print("DEUBG3")
 	'''
-	
-	# print("remark : " + str(remark))
-	# print(str(tel_man) + "," + str(tel_time) + "," + str(tel_amount))
-	
 
 	if AEdly == 0: # EDIT MODE
 		print("Edit Mode")
@@ -5746,8 +5761,15 @@ def ajax_save_daily_attendance(request):
 
 	elif AEdly == 1: # ADD MODE
 		print("Add Mode")
+
 		# is_add_record_success, message = addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id,Tday7,Tdof)
 		is_add_record_success, message = addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id,Tday7,Tdof,customer_wage_rate_id,customer_zone_id)
+
+		# DEBUG ironman
+		# print("DEBUG")
+		# response = JsonResponse(data={"success": "success", "title": "title", "type": "type", "message": "message"})
+		# response.status_code = 200
+		# return response
 
 		if is_add_record_success:
 			success_status = True
@@ -5779,7 +5801,7 @@ def ajax_save_daily_attendance(request):
 
 	response.status_code = 200
 
-	# print("___END___")
+	print("___END___")
 
 	return response
 
