@@ -579,8 +579,9 @@ def ajax_get_customer_schedule_plan(request):
     	print("sch_active = " + str(sch_plan.sch_active))
     	'''
 
-    	employee_info = EmpPhoto.objects.filter(emp_id=sch_plan.emp_id_id).get()
-    	employee_photo = b64encode(employee_info.image).decode("utf-8")
+    	# employee_info = EmpPhoto.objects.filter(emp_id=sch_plan.emp_id_id).get()
+    	# employee_photo = b64encode(employee_info.image).decode("utf-8")
+    	employee_photo = None
 
     	if sch_plan.relief:
     		relief = 1
@@ -1316,11 +1317,14 @@ def ajax_get_employee(request):
 				emp_term_date = ""
 			'''
 			
+			'''
 			employee_info = EmpPhoto.objects.filter(emp_id=emp_id).first()
 			if not employee_info:
 				employee_photo = None
 			else:
 				employee_photo = b64encode(employee_info.image).decode("utf-8")					
+			'''
+			employee_photo = None
 
 			response = JsonResponse(data={
 				"success": True,
@@ -3306,7 +3310,6 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 		Ttel_paid = 0
 
 	
-	# ironman
 	# OVERTIME
 	Tot = 0 if ui_ot_status==0 else 1
 	if (Tot==1) or (Tlate==1):
@@ -3314,12 +3317,6 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 		ot_reason = late_reason_option
 		ot_time_frm = late_from
 		ot_time_to = late_to
-		print("DEBUG")
-		print("late_reason_option: ", late_reason_option)
-		print("late_from: ", late_from)
-		print("late_to: ", late_to)
-		print("tot_hr_amt: ", late_hour)
-		print("DEUBG")
 
 		Tot_reason = ot_reason
 		Tot_time_frm = ot_time_frm
@@ -3388,7 +3385,6 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 	'''
 
 
-	# ironman
 	# return False, "debug"	
 	is_error_status, error_message, table_name = get_DLY_PLAN_OR_HIS_DLY_PLAN(dly_date)
 	if is_error_status:
@@ -3609,6 +3605,8 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 	allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id,Tday7,
 	Tdof,customer_wage_rate_id,customer_zone_id):
 	
+	# return False, "TODO"
+
 	# amnaj
 	# print("tel_time BBBB:", tel_time)
 
@@ -3651,7 +3649,6 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 	cursor.close()
 	AmanPower = 0 if record_count[0] == 0 else record_count[0]
 
-
 	# Check #4 - To check No person not more than contract
 	'''
 	if dly_date == today_date.date():
@@ -3675,7 +3672,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 	sql += " where cnt_id=" + str(cnt_id) + " and sch_shift=" + shift_id + " and dly_date='" + str(dly_date) + "' and emp_id=" + str(emp_id)
 	print("SQL debug1:", sql)
 	print("DEBUG shift_id : ", shift_id)
-
+	
 
 	cursor = connection.cursor()	
 	cursor.execute(sql)	
@@ -3724,8 +3721,9 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 						if dly_date < today_date.date():
 							sql = "select count(*) from his_dly_plan "
 
-						sql += "where cnt_id=" + str(cnt_id) + " and sch_shift=" + str(shift_id) + " and absent=0 and dly_date='" + str(dly_date) + "'"
-
+						# sql += "where cnt_id=" + str(cnt_id) + " and sch_shift=" + str(shift_id) + " and absent=0 and dly_date='" + str(dly_date) + "'"
+						sql += "where cnt_id=" + str(cnt_id) + " and absent=0 and dly_date='" + str(dly_date) + "'"
+						print("DEBUG 09 sql: ", sql)
 						cursor = connection.cursor()
 						cursor.execute(sql)
 						rows = cursor.fetchone()
@@ -3734,11 +3732,18 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 
 						# get srv_qty
 						sql = "select cnt_id, srv_shif_id, sum(srv_qty) as qty from cus_service where srv_active=1 and cnt_id=" + str(cnt_id) + " and srv_shif_id=" + str(shift_id) + " group by cnt_id, srv_shif_id"
+						print("DEBUG 10 sql: ", sql)
 						cursor = connection.cursor()
 						cursor.execute(sql)
 						rows = cursor.fetchone()
 						cursor.close
 						srv_qty = rows[2]
+
+						print("informNo = ", informNo)
+						print("srv_qty = ", srv_qty)
+
+						# ironman
+						return False, "TODO"
 
 						if informNo >= srv_qty:
 							is_pass = False					
@@ -3748,7 +3753,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 							is_pass = True # แจ้งเวรยังไม่เกินจำนวนที่อยู่ในสัญญา
 							message = "Check #6 is passed."
 		
-		'''
+		'''				
 		else:
 			if ui_absent_status==0:
 				if shift_id != 99:				
@@ -5729,26 +5734,11 @@ def ajax_save_daily_attendance(request):
 	customer_wage_rate_id = request.GET.get('customer_wage_rate_id')
 	customer_zone_id = request.GET.get('customer_zone_id')
 
-
-	# ironman
-	# late_from = datetime.datetime.strptime(late_from, '%d/%m/%Y %H:%M')
-	# late_to = datetime.datetime.strptime(late_to, '%d/%m/%Y %H:%M')
-
-	'''
-	print("DEBUG3")
-	print("ui_late_status: ", ui_late_status)
-	print("late_reason_option: ", late_reason_option)	
-	print("late_from: ", late_from)
-	print("late_to: ", late_to)
-	print("tot_hr_amt: ", late_hour)
-	print("DEUBG3")
-	'''
-
 	if AEdly == 0: # EDIT MODE
 		print("Edit Mode")
 		
 		# amnaj
-		print("DEBUG job_type:", job_type)
+		# print("DEBUG job_type:", job_type)
 
 		is_edit_record_success, message = editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id,Tday7,Tdof,customer_wage_rate_id,customer_zone_id)
 		if is_edit_record_success:
@@ -5765,12 +5755,6 @@ def ajax_save_daily_attendance(request):
 
 		# is_add_record_success, message = addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id,Tday7,Tdof)
 		is_add_record_success, message = addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id,Tday7,Tdof,customer_wage_rate_id,customer_zone_id)
-
-		# DEBUG ironman
-		# print("DEBUG")
-		# response = JsonResponse(data={"success": "success", "title": "title", "type": "type", "message": "message"})
-		# response.status_code = 200
-		# return response
 
 		if is_add_record_success:
 			success_status = True

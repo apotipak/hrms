@@ -3605,13 +3605,15 @@ $("#id_late_hour").click( function() {
 
     	disableAllElements();
     	$("#id_late_check").prop("checked", false);
-    	
+
     	//$('#id_emp_id').focus();
     });
 
 
     function saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_status,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id) {
     	
+    	//alert("test");
+
     	/*
 		var late_status = 0;
 		if($("#id_late_check").is(":checked"))
@@ -3758,6 +3760,9 @@ $("#id_late_hour").click( function() {
 
 
 		showLoading();
+
+		//alert("Test");
+		//return false;
 
 		$.ajax({
 	    	url : "/monitoring/ajax/get_employee",
