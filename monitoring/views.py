@@ -3306,7 +3306,12 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 		Ttel_amt = 0
 		Ttel_paid = 0
 
+	
 	# OVERTIME
+	ot_reason = late_reason_option
+	ot_time_frm = late_from
+	ot_time_to = late_to
+
 	Tot = 0 if ui_ot_status==0 else 1
 	if (Tot==1) or (Tlate==1):
 		Tot_reason = ot_reason
