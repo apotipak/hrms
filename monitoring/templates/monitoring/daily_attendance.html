@@ -4019,7 +4019,7 @@ $("#id_late_hour").click( function() {
 	    		}
 
 	    		$.LoadingOverlay("hide");
-	    		$("#id_emp_id").select();
+	    		$("#id_emp_id").select();	    		
 	    	},
 	    });
     }
@@ -4621,7 +4621,12 @@ $("#id_late_hour").click( function() {
 									$("#totalNDM").html("");
 									$("#totalNNM").html("");
 									$("#totalPDM").html("");
-									$("#totalPNM").html("");									
+									$("#totalPNM").html("");
+
+									$("#id_absent_check").prop("checked", false);
+									$("#id_late_check").prop("checked", false);
+									$("#id_phone_check").prop("checked", false);
+
 					    		} else {
 					    			alert("error");
 					    		}
