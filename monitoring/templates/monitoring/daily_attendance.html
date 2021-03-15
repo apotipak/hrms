@@ -1461,8 +1461,9 @@ $("#id_late_to").bind("focusout",function(e){
 	var moment_late_from = moment(moment_late_from_day_time);
 	var moment_late_to = moment(moment_late_to_day_time);	
 	var duration = moment.duration(moment_late_to.diff(moment_late_from));
-	var hours = duration.asHours();	
-	$("#id_late_hour").val(hours);	
+	var hours = duration.asHours().toFixed(2);
+	
+	$("#id_late_hour").val(hours);
 });
 
 $("#id_late_to").bind("keyup",function(e){
@@ -1567,7 +1568,8 @@ $("#id_late_hour").bind("focus",function(e){
 	var moment_late_from = moment(moment_late_from_day_time);
 	var moment_late_to = moment(moment_late_to_day_time);	
 	var duration = moment.duration(moment_late_to.diff(moment_late_from));
-	var hours = duration.asHours();	
+	//var hours = duration.asHours();	
+	var hours = duration.asHours().toFixed(2);
 	$("#id_late_hour").val(hours);
 });
 
@@ -1767,11 +1769,10 @@ $("#id_late_hour").click( function() {
  		$("#delete_button").attr("disabled", true);
 
  		// ironman
- 		$("#id_absent_check").attr("disabled", true);
- 		$("#id_absent_check").prop("checked", false);
- 		
-		$("#id_late_check").attr("disabled", true);
- 		$("#id_phone_check").attr("disabled", true);
+ 		//$("#id_absent_check").attr("disabled", true);
+ 		//$("#id_absent_check").prop("checked", false); 		 		
+		//$("#id_late_check").attr("disabled", true);
+ 		//$("#id_phone_check").attr("disabled", true);
 
  		$("#id_emp_id").attr("disabled", true);
  		$("#emp_id_lookup_button").attr("disabled", true);
