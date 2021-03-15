@@ -3325,7 +3325,7 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 		Tot_time_frm = ot_time_frm
 		Tot_time_to = ot_time_to
 		# TODO: Tot_hr_amt
-		Tot_hr_amt = 0
+		Tot_hr_amt = float(late_hour)
 		Tot_pay_amt = 0
 		if Tot==1:
 			Tpay_type = "BAS"
