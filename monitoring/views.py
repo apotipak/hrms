@@ -3604,7 +3604,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 	totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,
 	allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id,Tday7,
 	Tdof,customer_wage_rate_id,customer_zone_id):
-	
+
 	# return False, "TODO"
 
 	# amnaj
@@ -3673,12 +3673,13 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 
 	print("SQL debug1:", sql)
 	print("DEBUG shift_id : ", shift_id)
-	
 
 	cursor = connection.cursor()	
 	cursor.execute(sql)	
 	record_count = cursor.fetchone()
 	cursor.close()
+
+	# return False, "TODO2"
 
 	if(record_count is not None):
 		if len(record_count)>0:
@@ -3690,13 +3691,18 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 			db_relief_status = 1 if record_count[5] else 0
 			# return False, str(db_absent_status) + "," + str(db_late_status) + "," + str(db_phone_status) + "," + str(db_relief_status)
 		else:
-			return False, "Employee not found"	
+			return False, "Employee not found"
 
+
+		'''
 		if ui_phone_status==db_phone_status:
 			if ui_late_status==db_late_status:
 				if (db_absent_status==1) and (db_relief_status==1):
 					# TODO
+					# return False, "TODO11"
 					return True, "Implement Check #4"	
+		'''
+
 
 		# Check #5 - ค่าโทรต้องมีค่ามากกว่า 0 บาท
 		if (ui_phone_status==1) and (tel_amount<=0):
@@ -3709,7 +3715,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		print("ui_phone_status = ", ui_phone_status)
 		print("db_phone_status = ", db_phone_status)
 
-		# return False, "TODO"
+		# return False, "TODO3"
 
 		# Check #6
 		if ui_phone_status==db_phone_status:
@@ -3789,11 +3795,17 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 						message = "Check #6 is passed."
 		'''
 
+	# return False, "TODO3"
+
 	# debug
 	# Check #7
 	is_pass, message = chkValidInput(2,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,ui_ot_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id)
 	
+
 	if is_pass:
+		
+		# return False, "PASS"
+
 		if (cnt_id=="") and (emp_id==""):
 			return False, "ข้อมูลไม่ถูกต้อง"
 
@@ -3835,7 +3847,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 			Ttel_paid = 0		
 
 
-		print("AAAA")
+		# print("AAAA")
 
 		# OVERTIME
 		# late_from, late_to,late_reason_option, late_hour, late_full_paid_status
@@ -3950,8 +3962,17 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		sql += "absent=" + str(Tabsent) + ","
 		sql += "late=" + str(Tlate) + ","
 		sql += "late_full=" + str(Tlate_full) + ","		
-		sql += "relieft=" + str(Trelief) + ","
-		sql += "relieft_id=" + str(Trelief_id) + ","
+
+		
+		#sql += "relieft=" + str(Trelief) + ","
+		# TODO
+		# if (ui_absent_status==0) and (ui_late_status==0) and (ui_phone_status==1):
+		if ui_relief_status==1:
+			sql += "relieft=1" + ","
+		else:
+			sql += "relieft=0" + ","
+
+		sql += "relieft_id=" + str(Trelief_id) + ","		
 		sql += "tel_man=" + str(tel_man) + ","
 
 		'''
@@ -3997,7 +4018,10 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		sql += "and sch_shift=" + str(shift_id)
 
 		print("DEBUG sql check:", sql)
-		# return False, "TEST"
+
+		
+		# return False, "DEBUG1"
+
 
 		try:
 			with connection.cursor() as cursor:
@@ -4081,9 +4105,14 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 			sql += " values ("			
 			sql += str(Tcnt_id) + "," + str(Temp_id) + ",'" + str(Tdly_date) + "'," + str(Tsch_shift) + ","
 			sql += str(Tsch_no) + "," + str(Tdept_id) + ",'" + str(Tsch_rank) + "','" + str(Tprd_id) + "',"
-			sql += str(Tabsent) + "," + str(Tlate) + "," + str(Tlate_full) + "," + str(Trelief) + "," + str(Trelief_id) + ","
+			# sql += str(Tabsent) + "," + str(Tlate) + "," + str(Tlate_full) + "," + str(Trelief) + "," + str(Trelief_id) + ","
+			# sql += str("0") + "," + str(Tlate) + "," + str(Tlate_full) + "," + str(Trelief) + "," + str(Trelief_id) + ","
+			sql += str("0") + "," + str(Tlate) + "," + str(Tlate_full) + "," + str(Trelief) + "," + str("0") + ","
 			sql += str(ui_phone_status) + "," 
 			
+			print("SQL : ", sql)
+			# return False, sql
+
 			if (Ttel_time is None) or (Ttel_time==""):
 				sql += "null" + "," 
 			else:
@@ -4124,490 +4153,6 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 
 	return is_pass, message
 	
-
-
-	# TODO: update emp_leave_plan
-	'''
-	emp_list = [[90066222,13],[501601,19]]
-	empid = 0
-	vacplan = 0
-	cursor = connection.cursor()
-	for i in range(len(emp_list)):
-		for j in range(len(emp_list[i])):
-			if j==0:
-				empid=emp_list[i][j]
-			else:
-				vacplan=emp_list[i][j]
-		
-		# print("empid", empid)
-		# print("vacplan", vacplan)	
-		cursor.execute("exec dbo.UPDATE_EMP_LEAVE_PLAN_VAC_2021 %s, %s, %s, %s", [empid,vacplan,2020,5])
-		result = cursor.fetchone()[0]
-		if not result:
-			print("Success:", empid)
-		else:
-			print("Error:", empid)
-	cursor.close()
-	'''
-
-	
-
-
-
-
-
-
-
-
-
-
-
-	# print("________allowZeroBathForPhoneAmount=" + str(allowZeroBathForPhoneAmount))
-
-	is_pass = False
-	message = ""
-
-	string_today_date = str(settings.TODAY_DATE.strftime("%d/%m/%Y"))
-	today_date = datetime.datetime.strptime(string_today_date, "%d/%m/%Y")
-		
-	# Flow 1 - Absent, Late, Phone status are not check	
-	shift_type = shift_name.partition("#")[2][0:2].strip() # shift_type will be D or N or O
-
-
-
-	# ******* Rule 1 - Check Manpower *****
-	# ********** START ***********
-	sql = "select count(*) from v_dlyplan_shift where cnt_id='" + str(cnt_id) + "' and left(remark,2)='" + str(remark) + "' and shf_type='" + str(shift_type) + "' and absent=0 and dly_date='" + str(dly_date) + "'"
-	# print("____sql1____ = " + str(sql))
-
-	cursor = connection.cursor()
-	cursor.execute(sql)
-	row = cursor.fetchone()
-	cursor.close		
-	if row is not None:
-		aManPower = row[0] if row[0] >= 0 else 0
-	else:
-		aManPower = 0
-	# ********** END ***********	
-
-	
-
-	# Check #4
-	# Not sure at this point, to be checked again
-	# ********** START ***********
-	if tel_man == 0:
-		if late_status == 0: 
-			if absent_status == 1 and relief_status == 1:
-				if shift_id != 99:
-
-					# Get informNo
-					if dly_date == today_date.date():
-						sql = "select cnt_id, sch_shift from dly_plan "
-
-					if dly_date < today_date.date():
-						sql = "select cnt_id, sch_shift from his_dly_plan "
-
-					sql += "where cnt_id=" + str(cnt_id) + " and sch_shift=" + str(shift_id) + " and absent=0 and dly_date='" + str(dly_date) + "'"
-					
-					cursor = connection.cursor()
-					cursor.execute(sql)					
-					record = cursor.fetchall()
-					cursor.close()
-
-					if record is not None:
-						informNo = len(record)
-					else:
-						informNo = 0
-				
-					# get srv_qty
-					sql = "select cnt_id, srv_shif_id, sum(srv_qty) as qty from cus_service where srv_active=1 and cnt_id=" + str(cnt_id) + " and srv_shif_id=" + str(shift_id) + " group by cnt_id, srv_shif_id"
-					cursor = connection.cursor()
-					cursor.execute(sql)
-					record = cursor.fetchone()
-					cursor.close
-
-					if record is not None:
-						contractNo = record[2]
-					else:
-						contractNo = 0
-
-					# print("contractNo = " + str(contractNo))
-
-					if informNo >= contractNo:
-						is_pass = False
-						message += "พนักงานที่แจ้งเวรมากกว่าที่มีอยู่ในสัญญา: <b>" + str(cnt_id) + "</b>"
-						return is_pass, message
-					else:
-						is_pass = True
-						message = "Good to go."
-
-					# return is_pass, message
-				else:
-					is_pass = False
-					message = "Shift ID = 99"
-					return is_pass, message
-
-				# return is_pass, message
-	# ********** END ***********	
-	# print("informNo=" + str(informNo))
-	# print("contractNo=" + str(contractNo))
-	# return False, "Test"
-
-
-
-	# Check #5 - ค่าโทรต้องมีค่ามากกว่า 0 บาท
-	# ********** START ***********
-	if allowZeroBathForPhoneAmount==1:
-		if tel_man == 1 and tel_amount <= 0:
-			is_pass = False
-			message = "ค่าโทรมีค่าเป็น 0 กรุณาตรวจสอบ"
-			return is_pass, message
-	# ********** END ***********
-	# print("............tel_time = " + str(tel_time))
-
-
-
-	# Check #6 - กรณีไม่ได้ลาหยุดให้ตรวจสอบ No person not more than contract
-	# print("shift_id = " + str(shift_id))
-	# print("absent_status = " + str(absent_status))
-	
-	message = "1"
-	if phone_status == 0:
-		message = "2"
-		if late_status == 0:
-			message = "3"
-			if absent_status == 0:
-				message = "4"
-				if shift_id != 99:				
-					if dly_date == today_date.date():
-						sql = "select count(*) from dly_plan "
-
-					if dly_date < today_date.date():
-						sql = "select count(*) from his_dly_plan "
-
-					sql += "where cnt_id=" + str(cnt_id) + " and sch_shift=" + str(shift_id) + " and absent=0 and dly_date='" + str(dly_date) + "'"
-					# print("____sql2____ = " + str(sql))
-
-					cursor = connection.cursor()
-					cursor.execute(sql)
-					rows = cursor.fetchone()
-					cursor.close	
-					informNo = rows[0] if rows[0]>0 else 0
-
-					# get srv_qty
-					sql = "select cnt_id, srv_shif_id, sum(srv_qty) as qty from cus_service where srv_active=1 and cnt_id=" + str(cnt_id) + " and srv_shif_id=" + str(shift_id) + " group by cnt_id, srv_shif_id"
-					cursor = connection.cursor()
-					cursor.execute(sql)
-					rows = cursor.fetchone()
-					cursor.close
-					srv_qty = rows[2]
-
-					# print("inform_no =", informNo)
-					# print("srv_qty =", srv_qty)
-
-					
-
-					if informNo >= srv_qty:
-						is_pass = False					
-						message = "Check #6 is failed - พนักงานที่แจ้งเวรมากกว่าที่มีอยู่ในสัญญา"
-						message = "พนักงานที่แจ้งเวรมากกว่าที่มีอยู่ในสัญญา: <b>" + str(cnt_id) + "</b>"
-						return is_pass, message
-					else:
-						is_pass = True # แจ้งเวรยังไม่เกินจำนวนที่อยู่ในสัญญา
-						message = "Check #6 is passed."
-
-	
-	# return False, message
-
-	# กรณีพนักงานยังแจ้งเวรไม่เกินจำนวนที่อยู่ในสัญญา
-	# Check #7 - checkValidInput()
-	# is_pass, message = chkValidInput(2,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM)
-	is_pass, message = chkValidInput(2,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,tel_man,tel_time,tel_amount,relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount)
-	
-	if is_pass:
-		# TODO: Call SetVariable("DLY_PLAN")
-		# ------------- START ----------------
-		
-		# TODO: ตรวจสอบการใช้งานค่านี้อีกครั้ง
-		tsch_no = 0 
-
-		# TODO: เลือกว่าจะใช้รหัสโซนไหนระหว่าง รหัสโซนของหน่วยงาน หรือ รหัสโซนของพนักงาน
-		if emp_id is not None:
-			tdept_id = 0
-		else:
-			tdpet_id = 0
-
-
-		# TODO: กำหนดค่า tel_paid
-		tel_paid = 0
-		if tel_man == 1:
-			if tel_amount > 0:
-				tel_paid = 1
-			else:
-				tel_paid = 0
-		else:
-			tel_paid = 0
-
-		# TODO: Check Time cross
-		# if rea_timecross==57:
-
-		# ------------- END ----------------
-
-
-		# ถ้าหากขาดงานและมีคนมาแทน คนที่ขาดจะตั้ง Tday7=0 แต่คนมาแทนต้องตั้ง Tday7=1
-		
-		# TODO: หาว่าค่านี้ถูกเซ็ทตั้งต้นมาจากไหนใน HRMS
-		tday7 = 0
-
-		if absent_status==1 and relief_status==1 and relief_emp_id is not None:
-			message = relief_emp_id
-			tday7tmp = tday7
-			tday7 = 0
-
-		# print("relief_status = " + str(relief_status))
-		# print("relief_emp_id = " + str(relief_emp_id))
-		if relief_status==0:
-			relief_emp_id = 0
-
-		# ทำการบันทึกข้อมูลกรณีแก้ไขข้อมูลเก่า
-		# TODO: UpdListName("DLY_PLAN")
-		if dly_date==today_date.date():
-			sql = "update dly_plan set "
-		elif dly_date < today_date.date():
-			# เช็คล็อคอินยูสเซอร์เป็น CMS_SUP หรือไม่
-			if username=='CMS_SUP':
-				sql = "update his_dly_plan set "
-			else:
-				is_pass = False
-				message = "ไม่มีสิทธิ์ทำรายการ"
-				return is_pass, message
-		else:
-			is_pass = False
-			message = "เลือกวันที่ทำรายการไม่ถูกต้อง"
-			return is_pass, message
-
-		upd_date = str(datetime.datetime.now())[:-3]
-
-
-		# Late Check
-		# print("late status", late_status)
-		if late_status==0:
-			late_reason_option = 0
-			late_hour = 0
-			late_from = None
-			late_to = None
-		else:
-			if late_from is not None or late_from != "":
-				late_from = datetime.datetime.strptime(late_from, "%d/%m/%Y %H:%M")
-				# late_from = None
-			else:
-				late_from = None
-
-			if late_to is not None or late_to != "":
-				late_to = datetime.datetime.strptime(late_to, "%d/%m/%Y %H:%M")
-				# late_to = None
-			else:
-				late_to = None
-
-		sql += "sch_no=" + str(tsch_no) + ","
-		sql += "dept_id=" + str(tdept_id) + ","
-		sql += "sch_rank='" + str(emp_rank) + "',"
-		sql += "prd_id='" + "D120122" + "',"
-		sql += "absent=" + str(absent_status) + ","
-		sql += "late=" + str(late_status) + ","
-		sql += "late_full=" + str(0) + ","
-		sql += "relieft=" + str(relief_status) + ","
-		sql += "relieft_id=" + str(relief_emp_id) + ","
-		sql += "tel_man=" + str(tel_man) + ","
-		sql += "tel_time='" + str(upd_date) + "',"
-		sql += "tel_amt=" + str(tel_amount) + ","
-		sql += "tel_paid=" + str(tel_paid) + ","
-		sql += "ot=" + str(0) + ","
-		sql += "ot_reason='" + str(late_reason_option) + "',"
-
-		if late_from is None:
-			sql += "ot_time_frm=null,"
-		else:
-			sql += "ot_time_frm='" + str(late_from) + "',"
-
-		if late_to is None:
-			sql += "ot_time_to=null,"
-		else:
-			sql += "ot_time_to='" + str(late_to) + "',"
-
-		sql += "ot_hr_amt=" + str(late_hour) + ","
-		sql += "ot_pay_amt=" + str(0) + ","
-		sql += "spare=" + str(0) + ","
-		sql += "wage_id=32" + ","
-		sql += "wage_no='" + str("32SOY") + "',"
-		sql += "pay_type='" + str("") + "',"
-		sql += "soc=" + str(0) + ","
-		sql += "pub=" + str(0) + ","
-		sql += "dof=" + str(0) + ","
-		sql += "day7=" + str(0) + ","
-		sql += "upd_date='" + str(upd_date) + "',"
-		sql += "upd_by='" + str(username) + "',"
-		sql += "upd_flag='E'" + ","
-		sql += "remark='" + str(remark) + "' "
-		sql += "where cnt_id=" + str(cnt_id) + " "
-		sql += "and dly_date='" + str(dly_date) + "' "
-		sql += "and emp_id=" + str(emp_id) + " "
-		sql += "and sch_shift=" + str(shift_id)
-
-		try:
-			with connection.cursor() as cursor:
-				cursor.execute(sql)
-			is_pass = True
-			# message = "บันทึกรายการสำเร็จ"
-			message = "รับแจ้งเวรสำเร็จ"
-		except db.OperationalError as e:
-			is_pass = False
-			message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
-		except db.Error as e:
-			is_pass = False
-			message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
-
-
-		# ถ้าหากขาดงานและมีคนมาแทนจะต้อเพิ่มรายการคนที่แทนอีก 1 รายการ
-		if emp_id is not None and absent_status==1 and relief_status==1 and relief_emp_id is not None:
-			# TODO: get relief employee id rank
-			# TODO: กำหนดค่า Tday7 | คนลาให้ Tday7=0 คนมาแทนให้ Tday7=1
-
-			if dly_date==today_date.date():
-				sql = "insert into dly_plan "
-			elif dly_date < today_date.date():
-				if username=="CMS_SUP":
-					sql = "insert into his_dly_plan "
-				else:
-					is_pass = False
-					message = "ไม่มีสิทธิ์ทำรายการ"
-					return is_pass, message
-			else:
-				is_pass = False
-				message = "เลือกวันที่ทำรายการไม่ถูกต้อง"
-				return is_pass, message
-			
-			sql += "(cnt_id,emp_id,dly_date,sch_shift"
-			sql += ",sch_no,dept_id,sch_rank,prd_id"
-			sql += ",absent,late,late_full,relieft,relieft_id"
-			sql += ",tel_man,tel_time,tel_amt,tel_paid"
-			sql += ",ot,ot_reason,ot_time_frm,ot_time_to,ot_hr_amt,ot_pay_amt"
-			sql += ",spare,wage_id,wage_no,pay_type,soc,pub,dof,day7"
-			sql += ",upd_date,upd_by,upd_flag,remark)"
-			sql += " values ("			
-			sql += str(cnt_id) + "," + str(relief_emp_id) + ",'" + str(dly_date) + "'," + str(shift_id) + ","
-			sql += "0" + "," + str(emp_dept) + ",'" + str(emp_rank) + "'," + "'D120121'" + ","
-			sql += "0" + "," + "0" + "," + "0" + "," + "0" + "," + "0" + ","
-			sql += "0" + "," + "NULL" + "," + "0" + "," + "0" + ","
-			sql += "0" + "," + "0" + "," + "NULL" + "," + "NULL" + "," + "0" + "," + "0" + ","
-			sql += "0" + "," + "32" + "," + "'32SOY'" + "," + "NULL" + "," + "0" + "," + "0" + "," + str(0) + "," + str(1) + ",'"
-			sql += str(upd_date) + "','" + str(username) + "'," + "'A'" + ",'" + str(remark) + "')"
-			# print("sql 2 " + str(sql))
-
-			try:
-				with connection.cursor() as cursor:
-					cursor.execute(sql)
-				is_pass = True
-				message = "บันทึกรายการสำเร็จ"
-			except db.OperationalError as e:
-				is_pass = False
-				message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
-			except db.Error as e:
-				is_pass = False
-				message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
-
-	return is_pass, message
-
-	'''
-	if is_pass:		
-		if tel_man == 1:
-			if tel_time is not None:			
-				tel_time_obj = datetime.datetime.strptime(tel_time, "%d/%m/%Y %H:%M")
-				# print("______tel_time_obj = " + str(tel_time_obj)[:-3])
-				tel_time = str(tel_time_obj)[:-3]
-			else:
-				tel_time = None
-
-			if tel_amount > 0:
-				tel_paid = 1
-			else:
-				tel_paid = 0
-		else:
-			tel_time = None
-			tel_amount = 0
-			tel_paid = 0
-
-
-		upd_date = str(datetime.datetime.now())[:-3]
-
-		sql = "update dly_plan set cnt_id=" + str(cnt_id) + ","		
-		sql += "sch_no=0,"
-		sql += "dept_id=" + str(emp_dept) + ","
-		sql += "sch_rank='" + str(emp_rank) + "',"
-		sql += "prd_id='D120121',"
-		sql += "absent=" + str(absent_status) + ","
-		sql += "late=" + str(late_status) + ","
-		sql += "late_full=0,"
-		sql += "relieft=" + str(relief_status) + ","
-		sql += "relieft_id=0,"
-		sql += "tel_man=" + str(tel_man) + ","
-
-		if tel_man==1:
-			sql += "tel_time='" + str(tel_time) + "',"			
-		else:
-			sql += "tel_time=null,"
-
-		sql += "tel_amt=" + str(tel_amount) + ","
-
-		if tel_amount > 0:
-			sql += "tel_paid=1,"
-		else:
-			sql += "tel_paid=0,"
-		
-		sql += "ot=0,"
-		sql += "ot_reason=0,"
-		sql += "ot_time_frm=NULL,"
-		sql += "ot_time_to=NULL,"
-		sql += "ot_hr_amt=0,"
-		sql += "ot_pay_amt=0,"
-		sql += "spare=0,"
-		sql += "wage_id=32,"
-		sql += "wage_no='32SOY',"
-		sql += "pay_type='',"
-		sql += "soc=0,"
-		sql += "pub=0,"
-		sql += "dof=0,"
-		sql += "day7=0,"
-		sql += "upd_date='" + str(upd_date) + "',"
-		sql += "upd_by='" + str(username) + "',"
-		sql += "upd_flag='E',"
-		sql += "remark='" + str(job_type) + " " + str(remark) + "' "
-		sql += "where cnt_id=" + str(cnt_id)
-		sql += " and dly_date='" + str(dly_date) + "'"
-		sql += " and emp_id=" + str(emp_id)
-		sql += " and sch_shift=" + str(shift_id)
-
-		# print(sql)
-	
-		try:
-			with connection.cursor() as cursor:
-				cursor.execute(sql)
-
-			is_pass = True
-			message = "บันทึกรายการสำเร็จ"
-		except db.OperationalError as e:
-			is_pass = False
-			message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
-		except db.Error as e:
-			is_pass = False
-			message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
-
-	else:
-		is_pass = False
-		message = "Error"
-
-	return is_pass, message
-	'''
 	
 
 def editRecord_temp(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM):

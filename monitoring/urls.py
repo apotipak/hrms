@@ -28,12 +28,11 @@ urlpatterns = [
 	url(r'^ajax/get_attendance_information/$', views.ajax_get_attendance_information, name='ajax_get_attendance_information'),
 	url(r'^ajax/delete_employee/$', views.ajax_delete_employee, name='ajax_delete_employee'),
 
-
-    url(r'^ajax/save_daily_attendance/$', views.ajax_save_daily_attendance, name='ajax_save_daily_attendance'),
-    
-
     url(r'^ajax/bulk_update_absent_status/$', views.ajax_bulk_update_absent_status, name='ajax_bulk_update_absent_status'),
     url(r'^ajax/get_job_type_list/$', views.ajax_get_job_type_list, name='ajax_get_job_type_list'),
+
+
+    url(r'^ajax/save_daily_attendance/$', views.ajax_save_daily_attendance, name='ajax_save_daily_attendance'),
 ]
 
 
