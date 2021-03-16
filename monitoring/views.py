@@ -3804,6 +3804,8 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 	# Check #7
 	is_pass, message = chkValidInput(2,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,ui_ot_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id)
 	
+	# YODA
+	# return False, message
 
 	if is_pass:
 		
@@ -4532,6 +4534,7 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 			# return False, "ABC"
 
 			# ป้องกันการกลับมาแก้ไข Absent หากรปภ.เข้าเวรอื่นอยู่และเวลาคร่อมกับหน่วยงานอื่น
+			'''
 			if ui_relief_status==1:
 				sql = "select a.*,b.shf_type,b.shf_time_frm,b.shf_time_to"
 				sql += " from dly_plan a left join t_shift b on a.sch_shift=b.shf_id"
@@ -4546,6 +4549,7 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 				if record is not None:
 					# TODO: ตรวจสอบกรณียอมให้พนักงานเข้าเวรคร่อมกับหน่วยงานที่เข้าเวรอยู่ล้ว
 					return False, "พนักงานเข้าเวรคร่อมกับหน่วยงาน..."			
+			'''
 
 
 			# ห้ามลงรายการซ้ำ ถ้าเพิ่มรายการใหม่ สำหรับคนที่มาแทน แทนหลายคนในหน่วยเดียวกันไม่ได้
@@ -4573,8 +4577,8 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 				cursor.execute(sql)
 				record = cursor.fetchone()
 				cursor.close()
-				if record is not None:
-					return False, "พนักงานรหัส <b>" + str(relief_emp_id) + "</b> เข้าเวรที่หน่วยงานอื่น"
+				# if record is not None:
+				#	return False, "พนักงานรหัส <b>" + str(relief_emp_id) + "</b> เข้าเวรที่หน่วยงานอื่น1"
 
 				# สำหรับ Relief Employee ID ห้ามลงรายการซ้ำ ในสัญญาเดียวกัน วันเดียวกัน กะเดียวกัน
 				sql = "select * from dly_plan where cnt_id=" + str(cnt_id) + " and dly_date='" + str(dly_date) + "' and emp_id=" + str(relief_emp_id) + " and sch_shift=" + str(shift_id)
@@ -4583,11 +4587,12 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 				record = cursor.fetchone()
 				cursor.close()
 				
+				'''
 				if record is not None:
 					# ถ้าเป็นการมาสายให้บันทึกได้
 					if ui_late_status!=1:
-						return False, "พนักงานรหัส <b>" + str(relief_emp_id) + "</b> เข้าเวรที่หน่วยงานอื่น"		
-
+						return False, "พนักงานรหัส <b>" + str(relief_emp_id) + "</b> เข้าเวรที่หน่วยงานอื่น2"		
+				'''
 
 			# เช็คห้ามพนักงานทำงานในวัน Day Off จากตาราง SYS_GPMDOF
 			# พนักงานปกติ
