@@ -1202,11 +1202,24 @@ $(document).ready(function(){
 									//$('#id_schedule_option').text(result);
 									//$('#id_bulk_schedule_option').text("");
 
+
+									// SUDO bulk
 									// Get Attandance Employee List
 									employee_leave_list = null
 									result = create_attandance_table(data.employee_list, employee_leave_list);
 
 									$('#id_employee_list').html(result);
+
+									// TOTAL
+									$("#totalNDP").html(data.totalNDP);
+									$("#totalNNP").html(data.totalNNP);
+									$("#totalPDP").html(data.totalPDP);
+									$("#totalPNP").html(data.totalPNP);
+
+									$("#totalNDA").html(data.totalNDA);
+									$("#totalNNA").html(data.totalNNA);
+									$("#totalPDA").html(data.totalPDA);
+									$("#totalPNA").html(data.totalPNA);
 
 									if(data.totalNDM>=0)
 										$("#totalNDM").html("<span class='text-danger'>" + data.totalNDM + "</span>");
@@ -1219,12 +1232,12 @@ $(document).ready(function(){
 										$("#totalNNM").html("<span class='text-danger'>" + data.totalNNM + "</span>");
 									
 									if(data.totalPDM>=0)
-										$("#totalPDM").html("<span class='text-danger'>" + data.totalPDM + "</span>");						
+										$("#totalPDM").html("<span class='text-danger'>" + data.totalPDM + "</span>");
 									else
 										$("#totalPDM").html("<span class='text-danger'>" + data.totalPDM + "</span>");
 
 									if(data.totalPNM>=0)
-										$("#totalPNM").html("<span class='text-danger'>" + data.totalPNM + "</span>");						
+										$("#totalPNM").html("<span class='text-danger'>" + data.totalPNM + "</span>");
 									else
 										$("#totalPNM").html("<span class='text-danger'>" + data.totalPNM + "</span>");
 
@@ -3886,6 +3899,7 @@ $("#id_late_hour").click( function() {
 												// Get Attandance Employee List
 												//result = create_attandance_table(data.employee_list);												
 
+												// SUDO
 												// Get Attandance Employee List
 												employee_leave_list = null
 												result = create_attandance_table(data.employee_list, employee_leave_list);
