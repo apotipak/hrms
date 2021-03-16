@@ -5775,8 +5775,25 @@ def ajax_bulk_update_absent_status(request):
 								response.status_code = 200
 								return response
 							else:
-								sql = "update dly_plan set absent=0"
-								sql += ",upd_by='" + str(username) + "'"
+								sql = "update dly_plan set "
+								sql += "absent=0, "
+
+								sql += "late=0, "
+								sql += "late_full=0, "
+								sql += "relieft=0, "
+								sql += "relieft_id=0, "
+								sql += "tel_man=0, "
+								sql += "tel_time=null, "
+								sql += "tel_amt=0, "
+								sql += "tel_paid=0, "
+								sql += "ot=0, "
+								sql += "ot_reason=0, "
+								sql += "ot_time_frm=null, "
+								sql += "ot_time_to=null, "
+								sql += "ot_hr_amt=0, "
+								sql += "ot_pay_amt=0, "
+
+								sql += "upd_by='" + str(username) + "'"
 								sql += ",upd_date='" + str(upd_date)[:-10] + "'"
 								sql += ",upd_flag='E'"
 								sql += " where dly_date='" + str(CurDate) + "'"
@@ -5805,8 +5822,24 @@ def ajax_bulk_update_absent_status(request):
 				
 			
 		else: # Absent
-			sql = "update dly_plan set absent=1"
-			sql += ",upd_by='" + str(username) + "'"
+			sql = "update dly_plan set "
+			sql += "absent=1, "
+			sql += "late=0, "
+			sql += "late_full=0, "
+			sql += "relieft=0, "
+			sql += "relieft_id=0, "
+			sql += "tel_man=0, "
+			sql += "tel_time=null, "
+			sql += "tel_amt=0, "
+			sql += "tel_paid=0, "
+			sql += "ot=0, "
+			sql += "ot_reason=0, "
+			sql += "ot_time_frm=null, "
+			sql += "ot_time_to=null, "
+			sql += "ot_hr_amt=0, "
+			sql += "ot_pay_amt=0, "
+
+			sql += "upd_by='" + str(username) + "'"
 			sql += ",upd_date='" + str(upd_date)[:-10] + "'"
 			sql += ",upd_flag='E'"
 			sql += " where dly_date='" + str(CurDate) + "'"
