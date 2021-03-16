@@ -3717,6 +3717,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 
 		# return False, "TODO3"
 
+
 		# Check #6
 		if ui_phone_status==db_phone_status:
 			if ui_late_status==db_late_status:
@@ -3728,8 +3729,10 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 						if dly_date < today_date.date():
 							sql = "select count(*) from his_dly_plan "
 
-						# sql += "where cnt_id=" + str(cnt_id) + " and sch_shift=" + str(shift_id) + " and absent=0 and dly_date='" + str(dly_date) + "'"
-						sql += "where cnt_id=" + str(cnt_id) + " and absent=0 and dly_date='" + str(dly_date) + "'"
+						
+						sql += "where cnt_id=" + str(cnt_id) + " and sch_shift=" + str(shift_id) + " and absent=0 and dly_date='" + str(dly_date) + "'"
+						# sql += "where cnt_id=" + str(cnt_id) + " and absent=0 and dly_date='" + str(dly_date) + "'"
+
 						print("DEBUG 09 sql: ", sql)
 						cursor = connection.cursor()
 						cursor.execute(sql)
