@@ -3405,7 +3405,6 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 	totalPNM = int(request.GET.get('totalPNM'))	
 	'''
 
-	'''
 	is_public_holiday, message = isPublicHoliday(dly_date)
 	if is_public_holiday:
 		Tpub = 1
@@ -3454,7 +3453,6 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 
 		if lblPNM > 0:
 			return False, "จำนวน รปภ.ในกะกลางคืนเกินกว่าที่ระบุในสัญญา"
-	'''
 
 	'''
 	print(totalNDA)
