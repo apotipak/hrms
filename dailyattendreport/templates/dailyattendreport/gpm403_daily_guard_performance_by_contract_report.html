@@ -1,0 +1,115 @@
+{% extends "page_report.html" %}
+
+{% load i18n %}
+{% block title %} {{ page_title}} - {% trans 'Report' %} {% endblock %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper pt-2">
+
+    <!-- Main content -->
+    <section class="content">
+
+      <div class="col-md-12 p-0 pt-2">
+
+        <form method="post" autocomplete="off" name="search_form">
+          {% csrf_token %}
+          
+          <div class="card-body p-0 pt-2">
+            <div class="form-group">
+
+              <div class="input-group col-12">
+
+                {% comment %}
+                <div class="input-group-prepend pr-2 pt-1" style="width:100px;"><label>Contract No</label></div>
+                <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:60px;">From</span></div>
+                <input type="number" name="contract_number_from" class="form-control border-bottom-1 border-left-0 rounded-0 bg-white" style="width:50px;" value="0" id="id_contract_number_from">
+                <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:42px;">To</span></div>
+                <input type="number" name="contract_number_to" class="form-control datepicker border-bottom-1 border-left-0 rounded-0 bg-white" style="width:50px;" required="" id="id_contract_number_to" value="9999999999">
+
+                &nbsp;&nbsp;
+                {% endcomment %}
+
+
+
+                <div class="input-group-prepend pr-2 pt-1" style="width:85px;"><label>Work Date</label></div>
+
+                <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:67px;">From</span></div>
+                <input type="text" name="start_date" class="form-control datepicker border-bottom-1 border-left-0 rounded-0 bg-white" placeholder="dd-mm-yyyy" id="id_start_date" readonly="readonly">
+                
+                <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:42px;">To</span></div>
+                <input type="text" name="end_date" class="form-control datepicker border-bottom-1 border-left-0 rounded-0 bg-white" placeholder="dd-mm-yyyy" required="" id="id_end_date" value="{{end_date}}" readonly="readonly">
+
+                &nbsp;&nbsp;<a href="javascript:SearchFormSubmit();" class="btn btn-outline-info" role="button">SEARCH</a>
+              </div>
+
+            </div>
+          </div>
+
+        </form>        
+
+      </div>
+      <!-- /.col -->
+
+      <div class="card-header" style="padding: 0 2px 10px 0;">
+        <hr>
+        <h5 class="card-title"><i class="far fa-list-alt"></i>&nbsp;<b>GPM403 Daily Guard Performance Report</b></h5>
+
+        <div class="float-right pb-1">
+          <div class="d-flex flex-row-reverse">
+            <button class="btn btn-success btn-sm" onclick="export_to_excel()">&nbsp;<i class="far fa-file-excel"></i>&nbsp;&nbsp;Export to Excel</button>
+          </div>
+        </div>
+      <!-- /.card-header -->
+
+
+      
+
+    
+
+
+    </section>
+    <!-- /.content -->
+  </div>
+
+
+
+
+{% endblock %}
+
+
+
+{% block javascript %}
+  <script>
+  $(document).ready(function () {
+
+    var today = new Date();
+    var lastDate = new Date(today.getFullYear() + 0, 11, 31);
+
+    $("#id_start_date").datepicker({
+      //dateFormat: "yy-mm-dd",
+      dateFormat: "dd-mm-yy",
+      //minDate: -45,
+      //maxDate: lastDate,
+      onSelect: function () {
+          var dt2 = $('#id_end_date');
+          var startDate = $(this).datepicker('getDate');      
+          startDate.setDate(startDate.getDate() + 120);
+      }
+    }).attr('readonly', 'readonly');
+
+    $('#id_end_date').datepicker({
+      //dateFormat: "yy-mm-dd",
+      dateFormat: "dd-mm-yy",
+      //minDate: 0,
+      //maxDate: lastDate
+    }).attr('readonly', 'readonly');
+
+
+  });
+
+  </script>
+{% endblock %}      
