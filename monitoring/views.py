@@ -3405,6 +3405,7 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 	totalPNM = int(request.GET.get('totalPNM'))	
 	'''
 
+	'''
 	is_public_holiday, message = isPublicHoliday(dly_date)
 	if is_public_holiday:
 		Tpub = 1
@@ -3453,6 +3454,7 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 
 		if lblPNM > 0:
 			return False, "จำนวน รปภ.ในกะกลางคืนเกินกว่าที่ระบุในสัญญา"
+	'''
 
 	'''
 	print(totalNDA)
@@ -3892,6 +3894,8 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 
 	if is_pass:
 		
+
+
 		# ****************************
 		# Call TotalMissGuard
 		# ****************************
@@ -3909,6 +3913,8 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		totalPNP = int(request.GET.get('totalPNP'))
 		totalPNA = int(request.GET.get('totalPNA'))
 		totalPNM = int(request.GET.get('totalPNM'))	
+		'''
+
 		'''
 
 		is_public_holiday, message = isPublicHoliday(dly_date)
@@ -3959,6 +3965,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 
 			if lblPNM > 0:
 				return False, "จำนวน รปภ.ในกะกลางคืนเกินกว่าที่ระบุในสัญญา"
+		'''
 
 		'''
 		print(totalNDA)
