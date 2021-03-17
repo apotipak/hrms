@@ -192,14 +192,14 @@ def export_customer_main_address(request, *args, **kwargs):
     ws.write(2, 4, "ADDRESS 2 (TH)", font_style)
     ws.write(2, 5, "SUB DISTRICT (TH)", font_style)
     ws.write(2, 6, "DISTRICT (TH)", font_style)
-    ws.write(2, 7, "CITY (TH)", font_style)
+    ws.write(2, 7, "PROVINCE (TH)", font_style)
 
     ws.write(2, 8, "NAME (EN)", font_style)
     ws.write(2, 9, "ADDRESS 1 (EN)", font_style)
     ws.write(2, 10, "ADDRESS 2 (EN)", font_style)
     ws.write(2, 11, "SUB DISTRICT (EN)", font_style)
     ws.write(2, 12, "DISTRICT (EN)", font_style)
-    ws.write(2, 13, "CITY (EN)", font_style)
+    ws.write(2, 13, "PROVINCE (EN)", font_style)
 
     ws.write(2, 14, "ZIP", font_style)
     ws.write(2, 15, "TEL", font_style)
@@ -498,14 +498,14 @@ def export_customer_site_address(request, *args, **kwargs):
     ws.write(2, 4, "ADDRESS 2 (TH)", font_style)
     ws.write(2, 5, "SUB DISTRICT (TH)", font_style)
     ws.write(2, 6, "DISTRICT (TH)", font_style)
-    ws.write(2, 7, "CITY (TH)", font_style)
+    ws.write(2, 7, "PROVINCE (TH)", font_style)
 
     ws.write(2, 8, "NAME (EN)", font_style)
     ws.write(2, 9, "ADDRESS 1 (EN)", font_style)
     ws.write(2, 10, "ADDRESS 2 (EN)", font_style)
     ws.write(2, 11, "SUB DISTRICT (EN)", font_style)
     ws.write(2, 12, "DISTRICT (EN)", font_style)
-    ws.write(2, 13, "CITY (EN)", font_style)
+    ws.write(2, 13, "PROVINCE (EN)", font_style)
 
     ws.write(2, 14, "ZIP", font_style)
     ws.write(2, 15, "TEL", font_style)
