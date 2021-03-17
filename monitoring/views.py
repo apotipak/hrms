@@ -3385,6 +3385,88 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 	'''
 
 
+
+	# ****************************
+	# Call TotalMissGuard
+	# ****************************
+	# START
+	'''
+	totalNDP = int(request.GET.get('totalNDP'))
+	totalNDA = int(request.GET.get('totalNDA'))
+	totalNDM = int(request.GET.get('totalNDM'))
+	totalNNP = int(request.GET.get('totalNNP'))
+	totalNNA = int(request.GET.get('totalNNA'))
+	totalNNM = int(request.GET.get('totalNNM'))
+	totalPDP = int(request.GET.get('totalPDP'))
+	totalPDA = int(request.GET.get('totalPDA'))
+	totalPDM = int(request.GET.get('totalPDM'))
+	totalPNP = int(request.GET.get('totalPNP'))
+	totalPNA = int(request.GET.get('totalPNA'))
+	totalPNM = int(request.GET.get('totalPNM'))	
+	'''
+
+	is_public_holiday, message = isPublicHoliday(dly_date)
+	if is_public_holiday:
+		Tpub = 1
+	else:
+		Tpub = 0
+
+	DN = None
+	print(shift_id)
+	if (shift_id == "99" or shift_id == "999"):
+		print("DN=DAY OFF/ANOTHER SITE")		
+	else:
+		DN = shift_name.split("#")[1].strip()[0:1]
+		print("DN=", DN.strip())
+
+	if DN is not None:
+		if DN=="D":
+			print("DAY")			
+			if Tpub == 0:
+				totalNDA = totalNDA + 1
+			else:
+				totalPDA = totalPDA + 1
+		else:
+			print("NIGHT")
+			if Tpub == 0:
+				totalNNA = totalNNA + 1
+			else:
+				totalPNA = totalPNA + 1
+	else:
+		print("DN is None")
+
+	lblNDM = totalNDA - totalNDP
+	lblNNM = totalNNA - totalNNP
+	lblPDM = totalPDA - totalPDP
+	lblPNM = totalPNA - totalPNP
+
+	print(str(lblNDM) + " | " + str(lblNNM) + " | " + str(lblPDM) + " | " + str(lblPNM))
+	if Tpub == 0:
+		if lblNDM > 0:
+			return False, "จำนวน รปภ.ในกะกลางวันเกินกว่าที่ระบุในสัญญา"
+
+		if lblNNM > 0:
+			return False, "จำนวน รปภ.ในกะกลางคืนเกินกว่าที่ระบุในสัญญา"
+	else:
+		if lblPDM > 0:
+			return False, "จำนวน รปภ.ในกะกลางวันเกินกว่าที่ระบุในสัญญา"
+
+		if lblPNM > 0:
+			return False, "จำนวน รปภ.ในกะกลางคืนเกินกว่าที่ระบุในสัญญา"
+
+	'''
+	print(totalNDA)
+	print(totalNDP)
+	print(totalNNA)
+	print(totalNNP)
+	print(totalPDA)
+	print(totalPDP)
+	print(totalPNA)
+	print(totalPNP)
+	'''
+	# END
+
+
 	# return False, "debug"	
 	is_error_status, error_message, table_name = get_DLY_PLAN_OR_HIS_DLY_PLAN(dly_date)
 	if is_error_status:
@@ -3804,11 +3886,95 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 	# Check #7
 	is_pass, message = chkValidInput(2,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,ui_ot_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id)
 	
+
 	# YODA
 	# return False, message
 
 	if is_pass:
 		
+		# ****************************
+		# Call TotalMissGuard
+		# ****************************
+		# START
+		'''
+		totalNDP = int(request.GET.get('totalNDP'))
+		totalNDA = int(request.GET.get('totalNDA'))
+		totalNDM = int(request.GET.get('totalNDM'))
+		totalNNP = int(request.GET.get('totalNNP'))
+		totalNNA = int(request.GET.get('totalNNA'))
+		totalNNM = int(request.GET.get('totalNNM'))
+		totalPDP = int(request.GET.get('totalPDP'))
+		totalPDA = int(request.GET.get('totalPDA'))
+		totalPDM = int(request.GET.get('totalPDM'))
+		totalPNP = int(request.GET.get('totalPNP'))
+		totalPNA = int(request.GET.get('totalPNA'))
+		totalPNM = int(request.GET.get('totalPNM'))	
+		'''
+
+		is_public_holiday, message = isPublicHoliday(dly_date)
+		if is_public_holiday:
+			Tpub = 1
+		else:
+			Tpub = 0
+
+		DN = None
+		print(shift_id)
+		if (shift_id == "99" or shift_id == "999"):
+			print("DN=DAY OFF/ANOTHER SITE")		
+		else:
+			DN = shift_name.split("#")[1].strip()[0:1]
+			print("DN=", DN.strip())
+
+		if DN is not None:
+			if DN=="D":
+				print("DAY")			
+				if Tpub == 0:
+					totalNDA = totalNDA + 1
+				else:
+					totalPDA = totalPDA + 1
+			else:
+				print("NIGHT")
+				if Tpub == 0:
+					totalNNA = totalNNA + 1
+				else:
+					totalPNA = totalPNA + 1
+		else:
+			print("DN is None")
+
+		lblNDM = totalNDA - totalNDP
+		lblNNM = totalNNA - totalNNP
+		lblPDM = totalPDA - totalPDP
+		lblPNM = totalPNA - totalPNP
+
+		print(str(lblNDM) + " | " + str(lblNNM) + " | " + str(lblPDM) + " | " + str(lblPNM))
+		if Tpub == 0:
+			if lblNDM > 0:
+				return False, "จำนวน รปภ.ในกะกลางวันเกินกว่าที่ระบุในสัญญา"
+
+			if lblNNM > 0:
+				return False, "จำนวน รปภ.ในกะกลางคืนเกินกว่าที่ระบุในสัญญา"
+		else:
+			if lblPDM > 0:
+				return False, "จำนวน รปภ.ในกะกลางวันเกินกว่าที่ระบุในสัญญา"
+
+			if lblPNM > 0:
+				return False, "จำนวน รปภ.ในกะกลางคืนเกินกว่าที่ระบุในสัญญา"
+
+		'''
+		print(totalNDA)
+		print(totalNDP)
+		print(totalNNA)
+		print(totalNNP)
+		print(totalPDA)
+		print(totalPDP)
+		print(totalPNA)
+		print(totalPNP)
+		'''
+		# END
+
+
+
+
 		# return False, "PASS"
 
 		if (cnt_id=="") and (emp_id==""):
@@ -4340,6 +4506,8 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 	totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,
 	ui_ot_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id):
 
+	# return False, "DEBUG"
+
 	# Case 2
 	if check_type==2:
 
@@ -4549,7 +4717,7 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 				if record is not None:
 					# TODO: ตรวจสอบกรณียอมให้พนักงานเข้าเวรคร่อมกับหน่วยงานที่เข้าเวรอยู่ล้ว
 					return False, "พนักงานเข้าเวรคร่อมกับหน่วยงาน..."			
-			'''
+			'''			
 
 
 			# ห้ามลงรายการซ้ำ ถ้าเพิ่มรายการใหม่ สำหรับคนที่มาแทน แทนหลายคนในหน่วยเดียวกันไม่ได้
@@ -4616,6 +4784,13 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 				cursor.close()
 				if record is not None:
 					return False, "พนักงานที่จะลงเวรแทนทำงานในวัน Day Off จากตาราง SYS_GPMDOF"
+
+
+			# ***********************************************************
+			# เช็คจำนวนคนห้ามคีย์เกินในรายการสัญญา กรณีนี้ให้เช็คจาก Missing Record		
+			# ***********************************************************
+			# spidy
+
 
 			is_pass = True
 			message = "ChkValidInput is true"
