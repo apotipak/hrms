@@ -2471,10 +2471,12 @@
 
 
                     // DEMO
-                    // START                    
+                    // START
+                    /*      
                     if(data.cus_service_list[i]["op1"]==1) {
                       result += "              <button type='button' onclick='update_customer_service(" + data.cus_service_list[i]["srv_id"] + ")' class='btn btn-warning btn-xs btn-circle js-update-contract-service' data-toggle='modal'>&nbsp;<i class='fas fa-dollar-sign'></i>&nbsp;</button>&nbsp;&nbsp;&nbsp;";
-                    }                    
+                    }
+                    */                   
                     // END
 
 
@@ -3733,7 +3735,8 @@
 
 
             // DEMO
-            // START              
+            // START
+            /*
             result += "<div class='clearfix pt-1'></div>";                        
             result += "<div class='row col-12 bg-dark'><b>SPECIAL BENEFITS</b></div>";             
             result += "<div class='row col-12 bg-secondary'>"; 
@@ -3754,11 +3757,11 @@
             result += "   <input id='id_srv_special_traffic' type='number' min='0' class='form-control form-control-sm' value='" + data.spay4 + "'>";
             result += " </div>";
             result += "</div>";
+            */
             // STOP
 
             // ACTUAL
             // START
-            /*
             result += "<div style='display:none;'>";
             result += "<div class='clearfix pt-1'></div>";                        
             result += "<div class='row col-12 bg-dark'><b>SPECIAL BENEFITS</b></div>";             
@@ -3781,7 +3784,6 @@
             result += " </div>";
             result += "</div>";
             result += "</div>";
-            */
             // END
 
 
@@ -4059,11 +4061,15 @@
               result += "            <div class='btn-group btn-group-sm nowrap'>";
               result += "              <small>";
 
+
+
               // DEMO - new button
               // START
+              /*
               if(data.cus_service_list[i]["op1"]==1) {
                 result += "              <button type='button' onclick='update_customer_service(" + data.cus_service_list[i]["srv_id"] + ")' class='btn btn-warning btn-xs btn-circle js-update-contract-service' data-toggle='modal'>&nbsp;<i class='fas fa-dollar-sign fa-md'></i>&nbsp;</button>&nbsp;&nbsp;&nbsp;";
-              }              
+              }
+              */             
               // STOP
 
 
@@ -4423,20 +4429,20 @@
 
       // DEMO
       // START
+      /*
       spay1 = $('#id_srv_special_position').val();
       spay2 = $('#id_srv_special_incentive').val();
       spay3 = $('#id_srv_special_cctv').val();
       spay4 = $('#id_srv_special_traffic').val();
+      */
       // STOP
 
       // ACTUAL
       // START
-      /*
       spay1 = 0
       spay2 = 0
       spay3 = 0
       spay4 = 0
-      */
       // STOP
 
       $.ajax({
@@ -4587,10 +4593,12 @@
                 result += "              <small>";
 
                 // DEMO
-                // START                
+                // START
+                /*              
                 if(data.cus_service_list[i]["op1"]==1) {
                   result += "              <button type='button' onclick='update_customer_service(" + data.cus_service_list[i]["srv_id"] + ")' class='btn btn-warning btn-xs btn-circle js-update-contract-service' data-toggle='modal'>&nbsp;<i class='fas fa-dollar-sign'></i>&nbsp;</button>&nbsp;&nbsp;&nbsp;";
-                }                
+                }
+                */               
                 // STOP
 
 
@@ -4762,9 +4770,11 @@
 
               // DEMO
               // START
+              /*
               if(data.cus_service_list[i]["op1"]==1) {
                 result += "              <button type='button' onclick='update_customer_service(" + data.cus_service_list[i]["srv_id"] + ")' class='btn btn-warning btn-xs btn-circle js-update-contract-service' data-toggle='modal'>&nbsp;<i class='fas fa-dollar-sign'></i>&nbsp;</button>&nbsp;&nbsp;&nbsp;";
               }
+              */
               // STOP
 
 
@@ -5048,6 +5058,7 @@
 
             // DEMO
             // START
+            /*
             result += "<div class='clearfix pt-1'></div>";            
             result += "<div class='row col-12 bg-dark'><b>SPECIAL BENEFITS</b></div>"; 
             result += "<div class='row col-12 bg-secondary'>";
@@ -5068,11 +5079,11 @@
             result += "   <input id='id_srv_special_traffic' type='number' min='0' class='form-control form-control-sm' value='0'>";
             result += " </div>";
             result += "</div>";
+            */
             // STOP
 
             // ACTUAL
             // START
-            /*
             result += "<div style='display:none;'>";
             result += "<div class='clearfix pt-1'></div>";            
             result += "<div class='row col-12 bg-dark'><b>SPECIAL BENEFITS</b></div>"; 
@@ -5095,7 +5106,6 @@
             result += " </div>";
             result += "</div>";
             result += "</div>";
-            */            
             // STOP
 
 
