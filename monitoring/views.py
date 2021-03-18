@@ -3179,6 +3179,527 @@ def get_DLY_PLAN_OR_HIS_DLY_PLAN(dly_date):
 	return is_error_status, error_message, table_name
 
 
+
+# LUFY
+def addRecord_cross_site(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,
+	ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,
+	remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,
+	allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id,Tday7,Tdof,customer_wage_rate_id,customer_zone_id,Timecross):
+	
+	# print("Tot_hr_amt = ", Timecross)	
+	# return False, Timecross
+
+	is_pass = True
+	message = ""	
+
+	Tday7tmp = 0
+	Tdoftmp = 0
+	ui_ot_status = 0
+	shift_type = shift_name.partition("#")[2][0:2].strip() # shift_type will be D or N or O
+	string_today_date = str(settings.TODAY_DATE.strftime("%d/%m/%Y"))
+	today_date = datetime.datetime.strptime(string_today_date, "%d/%m/%Y")
+
+
+	# Rule 1 No person not more than contract
+	# **************** START ******************
+	is_error_status, error_message, table_name = get_DLY_PLAN_OR_HIS_DLY_PLAN(dly_date)	
+	if is_error_status:
+		return False, error_message
+	else:
+		sql = "select cnt_id,sch_shift from " + str(table_name)
+
+	'''
+	if dly_date > today_date.date():
+		return False, "เลือกวันที่ไม่ถูกต้อง"
+	if dly_date == today_date.date():
+		sql = "select cnt_id,sch_shift from DLY_PLAN "
+	if dly_date < today_date.date():
+		sql = "select cnt_id,sch_shift from HIS_DLY_PLAN "
+	'''
+	
+	sql += " where cnt_id=" + str(cnt_id)
+	sql += " and sch_shift=" + str(shift_id)
+	sql += " and absent=0 and dly_date='" + str(dly_date) + "'"
+	cursor = connection.cursor()	
+	cursor.execute(sql)	
+	record_count = cursor.fetchall()
+	cursor.close()
+	informno = len(record_count) if len(record_count)>0 else 0
+
+	sql = "select cnt_id, srv_shif_id, sum(srv_qty) as qty from cus_service where srv_active=1 and cnt_id=" + str(cnt_id) + " and srv_shif_id=" + str(shift_id) + " group by cnt_id, srv_shif_id"
+	cursor = connection.cursor()
+	cursor.execute(sql)
+	rows = cursor.fetchone()
+	cursor.close
+	srv_qty = rows[2]
+
+	if informno >= srv_qty:
+		return False, "พนักงานที่แจ้งเวรมากกว่าที่มีอยู่ในสัญญา: <b>" + str(cnt_id) + "</b>"
+	# **************** END ******************
+
+	# Rule 2 Check Manpower
+	# ****** START *********
+	shift = shift_name.partition("#")[2][0:2].strip()
+	job = job_type
+
+	if dly_date > today_date.date():
+		return False, "เลือกวันที่ไม่ถูกต้อง"
+
+	if dly_date == today_date.date():
+		sql = "select cnt_id,sch_shift from v_dlyplan_shift "
+	else:
+		sql = "select cnt_id,sch_shift from v_dlyplan_shift "
+	sql += " where cnt_id=" + str(cnt_id)
+	sql += " and left(remark,2)=" + str(job)
+	sql += " and shf_type='" + str(shift) + "'"
+	sql += " and absent=0 and dly_date='" + str(dly_date) + "'"
+	cursor = connection.cursor()	
+	cursor.execute(sql)	
+	record_count = cursor.fetchall()
+	cursor.close()
+	amanpower = len(record_count) if len(record_count)>0 else 0	
+
+	# return False, "Check Manpower is passed"
+
+	# Rule 3 ChkValidInput(2)
+	# ****** START **********
+
+
+	# LUFY
+	is_pass, message = chkValidInput(2,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,
+		shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,
+		relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,
+		totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,ui_ot_status,late_from,
+		late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id)
+
+	if is_pass:
+		message = "PASS"
+	else:
+		return False, message
+	# ******* END ***********	
+	
+	# return False, "debug111"
+
+	# Call SetVariable("DLY_PLAN")
+	Tsch_no = 0
+	Temp_id = 0 if emp_id=="" else emp_id
+	Tdly_date = None if dly_date=="" else dly_date
+	Tsch_shift = 0 if shift_id=="" else shift_id
+	Tcnt_id = 0 if cnt_id=="" else cnt_id
+	
+	if search_emp_id=="":
+		print("Tdept_id = ใช้โซนของหน่วยงาน")
+		# TODO: เลือกว่าจะใช้ค่าโซนของพนักงานหรือหน่วยงาน
+		Tdept_id = emp_dept
+	else:
+		print("Tdept_id = ใช้โซนของพนักงาน")
+		Tdept_id = emp_dept
+
+	Tsch_rank = emp_rank
+	Tabsent = ui_absent_status
+	Tlate = ui_late_status
+	Tlate_full = late_full_paid_status
+	Trelief = ui_relief_status
+	Trelief_id = '0' if relief_emp_id=="" else relief_emp_id
+	
+	# return False, Trelief_id
+
+	# TELEPHONE
+	if ui_phone_status==1:
+		if tel_time=="":
+			Ttel_time = None
+		else:
+			Ttel_time = datetime.datetime.strptime(tel_time, '%d/%m/%Y %H:%M')
+		Ttel_amt = 0 if tel_amount=="" else tel_amount
+		Ttel_paid = 5 if Ttel_amt > 5 else Ttel_amt
+	else:
+		Ttel_time = None
+		Ttel_amt = 0
+		Ttel_paid = 0
+
+	
+	# OVERTIME
+	Tot = 0 if ui_ot_status==0 else 1
+	if (Tot==1) or (Tlate==1):
+
+		ot_reason = late_reason_option
+		ot_time_frm = late_from
+		ot_time_to = late_to
+
+		Tot_reason = ot_reason
+		Tot_time_frm = ot_time_frm
+		Tot_time_to = ot_time_to
+		# TODO: Tot_hr_amt
+		Tot_hr_amt = float(late_hour)
+		Tot_pay_amt = 0
+		if Tot==1:
+			Tpay_type = "BAS"
+		elif Tlate==1:
+			Tpay_type = "TPB"
+	else:
+		Tot_reason = 0
+		Tot_time_frm = None
+		Tot_time_to = None
+		Tot_hr_amt = 0
+		Tot_pay_amt = 0
+		Tpay_type = ""			
+	
+
+	# Add by Somkiat 2016/02/24
+	#TODO: หาค่า Rea_timecross เซ็ทเริ่มต้นมาจากที่ไหน
+	'''
+	Rea_timecross = 0
+	if Rea_timecross==57:
+		Tot_reason = 57
+		Tot_time_frm = None
+		Tot_time_to = None
+		Tot_hr_amt = Rea_timecross
+		Tot_pay_amt = 0
+		Tpay_type = "TPB"			
+	'''
+	
+	# return False, "debug"
+	Rea_timecross = 57
+	Tot_time_frm = None
+	Tot_time_to = None
+	Tot_hr_amt = int(Timecross)
+	Tot_pay_amt = 0
+	Tpay_type = "TPB"
+	Tsoc = 1 if int(Tot_hr_amt) >= 8 else 0
+
+
+
+	#TODO: หาค่า txtSpare มีการเซ็ทค่าเริ่มต้นมาจากที่ไหน
+	txtSpare = 0
+	Tspare = txtSpare
+	#TODO: ส่งค่า wage_id จาก Customer Tab
+	wage_id = 32
+	Twage_id = wage_id
+	Twage_no = str(Twage_id) + str(emp_rank)
+	Tpay_type = 1 if ui_ot_status==1 else ""
+	Tsoc = 1 if Tot_hr_amt>=8 else 0
+	TRemark = job_type + " " + remark
+
+	# Get Period
+	try:
+		Tprd_id = TPeriod.objects.filter(prd_date_frm__lte=dly_date).filter(prd_date_to__gte=dly_date).filter(emp_type='D1').get()
+		Tprd_id = Tprd_id.prd_id
+	except TPeriod.DoesNotExist:
+		Tprd_id = ""
+	
+	# Check Tpub
+	if getDayPub(dly_date)==1:
+		Tpub = 1
+	else:
+		Tpub = 0
+
+
+	# Call AddListName("DLY_PLAN")
+	'''
+	if dly_date == today_date.date():
+		sql = "insert into DLY_PLAN "
+	else:
+		if username == "CMS_SUP":
+			sql = "insert into HIS_DLY_PLAN "
+		else:
+			return False, "You don't have a permission to Add/Edit passed date."
+	'''
+
+
+
+	# ****************************
+	# Call TotalMissGuard
+	# ****************************
+	# START
+	'''
+	totalNDP = int(request.GET.get('totalNDP'))
+	totalNDA = int(request.GET.get('totalNDA'))
+	totalNDM = int(request.GET.get('totalNDM'))
+	totalNNP = int(request.GET.get('totalNNP'))
+	totalNNA = int(request.GET.get('totalNNA'))
+	totalNNM = int(request.GET.get('totalNNM'))
+	totalPDP = int(request.GET.get('totalPDP'))
+	totalPDA = int(request.GET.get('totalPDA'))
+	totalPDM = int(request.GET.get('totalPDM'))
+	totalPNP = int(request.GET.get('totalPNP'))
+	totalPNA = int(request.GET.get('totalPNA'))
+	totalPNM = int(request.GET.get('totalPNM'))	
+	'''
+
+	is_public_holiday, message = isPublicHoliday(dly_date)
+	if is_public_holiday:
+		Tpub = 1
+	else:
+		Tpub = 0
+
+	DN = None
+	print(shift_id)
+	if (shift_id == "99" or shift_id == "999"):
+		print("DN=DAY OFF/ANOTHER SITE")		
+	else:
+		DN = shift_name.split("#")[1].strip()[0:1]
+		print("DN=", DN.strip())
+
+	if DN is not None:
+		if DN=="D":
+			print("DAY")			
+			if Tpub == 0:
+				totalNDA = totalNDA + 1
+			else:
+				totalPDA = totalPDA + 1
+		else:
+			print("NIGHT")
+			if Tpub == 0:
+				totalNNA = totalNNA + 1
+			else:
+				totalPNA = totalPNA + 1
+	else:
+		print("DN is None")
+
+	lblNDM = totalNDA - totalNDP
+	lblNNM = totalNNA - totalNNP
+	lblPDM = totalPDA - totalPDP
+	lblPNM = totalPNA - totalPNP
+
+	print(str(lblNDM) + " | " + str(lblNNM) + " | " + str(lblPDM) + " | " + str(lblPNM))
+	if Tpub == 0:
+		if lblNDM > 0:
+			return False, "จำนวน รปภ.ในกะกลางวันเกินกว่าที่ระบุในสัญญา"
+
+		if lblNNM > 0:
+			return False, "จำนวน รปภ.ในกะกลางคืนเกินกว่าที่ระบุในสัญญา"
+	else:
+		if lblPDM > 0:
+			return False, "จำนวน รปภ.ในกะกลางวันเกินกว่าที่ระบุในสัญญา"
+
+		if lblPNM > 0:
+			return False, "จำนวน รปภ.ในกะกลางคืนเกินกว่าที่ระบุในสัญญา"
+
+	'''
+	print(totalNDA)
+	print(totalNDP)
+	print(totalNNA)
+	print(totalNNP)
+	print(totalPDA)
+	print(totalPDP)
+	print(totalPNA)
+	print(totalPNP)
+	'''
+	# END
+
+
+	# return False, "debug"	
+	is_error_status, error_message, table_name = get_DLY_PLAN_OR_HIS_DLY_PLAN(dly_date)
+	if is_error_status:
+		return False, error_message
+	else:
+		if table_name=="DLY_PLAN":
+			sql = "insert into DLY_PLAN "
+		else:			
+			if username == "CMS_SUP":
+				sql = "insert into HIS_DLY_PLAN "
+			else:
+				return False, "You don't have a permission to Add/Edit passed date."
+
+	sql += "(cnt_id,emp_id,dly_date,sch_shift"
+	sql += ",sch_no,dept_id,sch_rank,prd_id"
+	sql += ",absent,late,late_full,relieft,relieft_id"
+	sql += ",tel_man,tel_time,tel_amt,tel_paid"
+	sql += ",ot,ot_reason,ot_time_frm,ot_time_to,ot_hr_amt,ot_pay_amt"
+	sql += ",spare,wage_id,wage_no,pay_type,soc,pub,dof,day7"
+	sql += ",upd_date,upd_by,upd_flag,remark)"
+	sql += " values ("			
+	sql += str(cnt_id) + "," + str(emp_id) + ",'" + str(dly_date) + "'," + str(Tsch_shift) + ","
+	sql += str(Tsch_no) + "," + str(Tdept_id) + ",'" + str(Tsch_rank) + "','" + str(Tprd_id) + "',"
+	sql += str(Tabsent) + "," + str(Tlate) + "," + str(Tlate_full) + "," + str(Trelief) + "," + str(Trelief_id) + ","
+	sql += str(ui_phone_status) + "," 
+
+	if (Ttel_time is None) or (Ttel_time==""):
+		sql += "null,"			
+	else:
+		sql += "'" + str(Ttel_time) + "',"
+
+	sql += str(Ttel_amt) + "," + str(Ttel_paid) + ","
+	sql += str(Tot) + "," + str(Rea_timecross) + "," 
+
+	if Tot_time_frm is None:
+		sql += "null,"
+	else:
+		sql += " '" + str(Tot_time_frm) + "',"
+
+	if Tot_time_to is None:
+		sql += "null,"
+	else:
+		sql += " '" + str(Tot_time_to) + "',"
+
+	sql += str(Tot_hr_amt) + "," + str(Tot_pay_amt) + ","
+
+	sql += str(Tspare) + "," + str(Twage_id) + ",'" + str(Twage_no) + "','" + str(Tpay_type) + "'," + str(Tsoc) + "," + str(Tpub) + "," + str(Tdof) + "," + str(Tday7) + ",'"
+	sql += str(str(datetime.datetime.now())[:-3]) + "','" + str(username) + "'," + "'A'" + ",'" + remark + "')"	
+	
+	# print("DEBUG sql: ", sql)
+	# return False, "debug3"
+	# return True, "TEST"
+
+	try:
+		with connection.cursor() as cursor:
+			cursor.execute(sql)
+		is_pass = True
+		message = "รับแจ้งเวรสำเร็จ"
+	except db.OperationalError as e:
+		is_pass = False
+		message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+	except db.Error as e:
+		is_pass = False
+		message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+
+	return is_pass, message
+
+
+	# return False, "debug"
+
+
+
+
+
+	is_error, message = checkManPower(cnt_id, job_type, shift_type, dly_date)
+	if is_error:
+		is_pass = False
+		message = "Rule 3 is failed."
+		print(message)
+		return False, 
+	else:
+		is_pass = True
+		message = "Rule 3 is passed."
+		print(message)
+
+		is_pass = True	
+	# ****** END *********
+
+
+	# return True, "PASS"
+	# return False, "debug"
+
+	if shift_id!="99":
+		# ************************************************
+		# RULE 1 - ดักจับในกรณีที่ cnt_id มากกว่า 10 หลัก
+		# ************************************************		
+		if len(cnt_id) > 10:
+			is_pass = False		
+			message = "Rule 1 is failed."
+			print(message)
+		else:			
+			is_pass = True
+			message = "Rule 1 is passed."
+			print(message)
+
+
+		# ************************************************
+		# RULE 2 - เช็คพนักงานที่แจ้งเวรต้องไม่เกินจำนวนที่ว่าจ้างในสัญญา
+		# ************************************************		
+		if is_pass:
+			is_not_error, message = checkNotOverCapacity(cnt_id, shift_id, dly_date)
+			if is_not_error:				
+				is_pass = True
+				message = "Rule 2 is passed."
+				print(message)
+			else:
+				is_pass = False
+				# message = "Rule 2 is failed."
+				# print(message)
+
+
+		# *****************************************
+		# RULE 3 - Check Manpower
+		# *****************************************
+		if is_pass:
+			shift_type = shift_name.partition("#")[2][0:2].strip()
+			is_error, message = checkManPower(cnt_id, job_type, shift_type, dly_date)
+			if is_error:
+				is_pass = False
+				message = "Rule 3 is failed."
+				print(message)					
+			else:
+				is_pass = True
+				message = "Rule 3 is passed."
+				print(message)
+
+			is_pass = True
+
+
+		# *****************************************
+		# RULE 4 - Validate all input
+		# *****************************************				
+		# return False, "debug"
+		if is_pass:
+			is_not_error, message = validateInput(dly_date, cnt_id, emp_id, shift_id, shift_type, shift_name, job_type, totalNDP, totalNDA, totalNDM, totalNNP, totalNNA, totalNNM, totalPDP, totalPDA, totalPDM, totalPNP, totalPNA, totalPNM, absent_status, late_status, phone_status, relief_status)
+			if is_not_error:
+				is_pass = True
+				# message = "Rule 4 is passed."
+				message = "รับแจ้งเวรสำเร็จ"
+				print(message)							
+			else:
+				is_pass = False
+				# message = "Rule 4 is failed."
+				print(message)
+
+
+		# *****************************************
+		# RULE ? - New rule
+		# *****************************************		
+		# New rule will be added here.
+
+
+		# Note: If all rules are passed, then it's ready to add.
+		if is_pass:
+			'''
+			dly_date, cnt_id, emp_id, shift_id, shift_type, job_type, totalNDP, 
+			totalNDA, totalNDM, totalNNP, totalNNA, totalNNM, totalPDP, totalPDA, 
+			totalPDM, totalPNP, totalPNA, totalPNM, absent_status, late_status, 
+			phone_status, relief_status
+			'''
+
+			# upd_date = str(datetime.datetime.now())
+			upd_date = str(datetime.datetime.now())[:-3]
+			remark = str(job_type) + " " + str(remark)
+
+			sql = "insert into dly_plan (cnt_id,emp_id,dly_date,sch_shift"
+			sql += ",sch_no,dept_id,sch_rank,prd_id"
+			sql += ",absent,late,late_full,relieft,relieft_id"
+			sql += ",tel_man,tel_time,tel_amt,tel_paid"
+			sql += ",ot,ot_reason,ot_time_frm,ot_time_to,ot_hr_amt,ot_pay_amt"
+			sql += ",spare,wage_id,wage_no,pay_type,soc,pub,dof,day7"
+			sql += ",upd_date,upd_by,upd_flag,remark)"
+			sql += " values ("			
+			sql += str(cnt_id) + "," + str(emp_id) + ",'" + str(dly_date) + "'," + str(shift_id) + ","
+			sql += "0" + "," + emp_dept + ",'" + str(emp_rank) + "'," + "'D120121'" + ","
+			sql += "0" + "," + "0" + "," + "0" + "," + "0" + "," + "0" + ","
+			sql += "0" + "," + "NULL" + "," + "0" + "," + "0" + ","
+			sql += "0" + "," + "0" + "," + "NULL" + "," + "NULL" + "," + "0" + "," + "0" + ","
+			sql += "0" + "," + "32" + "," + "'32SOY'" + "," + "NULL" + "," + "0" + "," + "0" + "," + "1" + "," + "NULL" + ",'"
+			sql += str(upd_date) + "'," + str(username) + "," + "'A'" + ",'" + remark + "')"
+			# print(sql)
+
+			try:
+				with connection.cursor() as cursor:
+					cursor.execute(sql)
+
+				is_pass = True
+				# message = "บันทึกข้อมูลสำเร็จ"
+				# message = "บันทึกรายการแจ้งเวรสำเร็จ"
+			except db.OperationalError as e:
+				is_pass = False
+				message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+			except db.Error as e:
+				is_pass = False
+				message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+	else:
+		is_pass = False
+		message = "Shift ID is 99 - Day Off"
+
+	return is_pass, message
+
+
 def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,
 	ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,
 	remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,
@@ -4516,7 +5037,11 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 	totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,
 	ui_ot_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id):
 
-	
+	# Initial value for booking cross site
+	# START
+	Timecross = 0
+	# END
+
 	#print(cus_id + cus_brn + cus_vol)
 	#return False, "DEBUG"
 
@@ -4609,160 +5134,14 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 
 
 
-
+			# LUFY
 			# ห้ามลงงานที่อื่นในเวลาที่คร่อมกัน วันเดียวกัน
-			# TODO - CheckBetweenShift()
-
-
-
-
 			# ตรวจสอบห้ามลงงานที่อื่นในกะเดียวกัน วันเดียวกัน
-			if ui_phone_status==1:				
-				print("ui_phone_status=1")
-			elif ui_ot_status==1:
-				print("ui_ot_status=1")
-			elif ui_late_status==1:
-				print("ui_late_status=1")
-			elif ui_absent_status==0:
-				table_name = "dly_plan"
-				sql = "select * from " + table_name + " where dly_date='" + str(dly_date) + "' and emp_id=" + str(emp_id) + " and absent=0" + " and sch_shift=" + str(shift_id) + " and cnt_id<>" + str(cnt_id)
-				cursor = connection.cursor()
-				cursor.execute(sql)
-				record = cursor.fetchone()
-				cursor.close()
-				if record is not None:
-					return False, "พนักงานเข้างานที่หน่วยงานอื่น"
+			# TODO - CheckBetweenShift()
+			# START			
 
-				# CheckBetweenShift()
-				CheckBetweenShift = False
-				
-				# return False, "TODO: CheckBetweenShift()"
+			# END
 
-				sql = "select a.*,b.shf_type,b.shf_time_frm,b.shf_time_to"
-				sql += " from dly_plan a left join t_shift b on a.sch_shift=b.shf_id"
-				sql += " where a.dly_date='" + str(dly_date) + "'"
-				sql += " and a.emp_id=" + str(emp_id)
-				sql += " and a.absent=0"
-				print("SQL:", sql)
-				cursor = connection.cursor()
-				cursor.execute(sql)
-				record = cursor.fetchone()
-				cursor.close()			
-				if record is not None:					
-					# TODO: ตรวจสอบกรณียอมให้พนักงานเข้าเวรคร่อมกับหน่วยงานที่เข้าเวรอยู่ล้ว
-					messcross = str(record[0]) + " Shift No =" + str(record[3])
-					print(messcross)
-
-					dup_cnt_id = record[0]
-					dup_shift_number = record[3]
-
-					Shp = shift_id
-					# print(Shp)
-					Gtype = record[47]
-					# print(Gtype)
-					Gfrom = record[48]
-					# print(Gfrom)
-					Gto = record[49]
-					# print(Gto)
-					if Shp != 0:
-						sql = "Select SHF_TYPE, SHF_TIME_FRM, SHF_TIME_TO from t_shift where shf_id=" + str(Shp)
-						print("SQL: ", sql)
-						cursor = connection.cursor()
-						cursor.execute(sql)
-						check_dup_record = cursor.fetchone()
-						cursor.close()			
-						if check_dup_record is not None:
-							Stype = check_dup_record[0]
-							Sfrom = check_dup_record[1]
-							Sto = check_dup_record[2]
-
-						if Sfrom != 0 and Gfrom != 0:
-							print("???")
-						else:
-							print("Exit Function")
-
-					
-					Gto = str(Gto).zfill(4)
-					Sfrom = str(Sfrom).zfill(4)
-					Hst = str(Gto)[:2] + ":" + str(Gto)[2:]
-					Hen = str(Sfrom)[:2] + ":" + str(Sfrom)[2:]
-					HDiff = datetime.datetime.strptime(Hst, '%H:%M') - datetime.datetime.strptime(Hen, '%H:%M')					
-					mdiff = int(HDiff.total_seconds() % 60)					
-					mmdiff = 0.5 if mdiff >= 30 else 0
-					HDiff = abs(int(str(HDiff)[:2]))
-					Timecross = HDiff + mmdiff
-					
-					print("Hst:", Hst)					
-					print("Hen:", Hen)					
-					print("HDiff:", HDiff)
-					print("mdiff:", mdiff)
-					print("Timecross:", Timecross)
-
-					# return False, "TEST"
-				
-
-					# เปลี่ยนการคร่อมเวลากะ
-					print("Gfrom: ", Gfrom)
-					print("Sfrom: ", Sfrom)
-					# return False, "TEST"
-
-
-					if int(Gfrom) < int(Sfrom):
-						sql = "SELECT TIME_VALUE FROM "
-						sql += "( "
-						sql += "SELECT TIME_VALUE FROM T_TIME "
-						sql += " WHERE TIME_VALUE BETWEEN " + str(Gfrom) + " AND " + str(Gto)
-						if int(Sto) > int(Sfrom):
-							sql += ") a WHERE TIME_VALUE BETWEEN " + str(Sfrom) + " AND " + str(Sto)
-						else:
-							sql += ") a WHERE TIME_VALUE BETWEEN " + str(Sfrom) + " AND  2400"
-					elif int(Gfrom) > int(Sfrom):
-						sql = "SELECT TIME_VALUE FROM "
-						sql += "( "
-						sql += "SELECT TIME_VALUE FROM T_TIME "
-						sql += " WHERE TIME_VALUE BETWEEN " + str(Sfrom) + " AND " + str(Sto)
-						if int(Gto) > int(Gfrom):
-							sql += ") a WHERE TIME_VALUE BETWEEN " + str(Gfrom) + " AND " + str(Gto)
-						else:
-							sql += ") a WHERE TIME_VALUE BETWEEN " + str(Gfrom) + " AND  2400"
-					else:
-						print("Exit Function")
-
-					
-					# print("SQLL:", sql)
-					# return False, sql
-					
-					cursor = connection.cursor()
-					cursor.execute(sql)
-					check_dup_record = cursor.fetchone()
-					cursor.close()
-
-
-					print("DEBUG Gto: ", Gto)
-					print("DEUBG Sfrom: ", Sfrom)
-
-					if check_dup_record is None:
-						CheckBetweenShift = False
-						message = "TEST"
-					else:
-						if Gto == Sfrom:
-							CheckBetweenShift = False
-							print("Exit Function")
-							message = "ไม่คร่อมหน่วยงาน"
-						else:
-							CheckBetweenShift = True
-							# message = "<b>กำลังเลือกทำรายการคร่อมหน่วยงาน</b><br>"
-							message = "รหัสหนักงาน  <b>" + str(emp_id) + "</b> "
-							message += "เข้าเวรกะ  <b>" + str(dup_shift_number) + "</b> "
-							message += "ที่หน่วยงาน  <b>" + str(dup_cnt_id) + "</b> ไปแล้ว<br>"							
-							message += "จำนวนชั่วโมงที่โดนหัก  <b>" + str(Timecross) + "</b>"
-							return False, message
-
-							# LUFY
-
-				# return False, message
-
-			# return False, "ABC"
 
 			# ป้องกันการกลับมาแก้ไข Absent หากรปภ.เข้าเวรอื่นอยู่และเวลาคร่อมกับหน่วยงานอื่น
 			'''
@@ -5444,6 +5823,142 @@ def editRecord_old(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_de
 	return is_pass, message
 
 
+
+@permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
+@login_required(login_url='/accounts/login/')
+def ajax_save_daily_attendance_cross_site(request):
+	print("***************************************************")
+	print("FUNCTION: ajax_save_daily_attendance_cross_site()")
+	print("***************************************************")
+
+	username = request.user.username
+
+	# Initial values
+	AEdly = int(request.GET.get("AEdly"))
+	Tday7 = 0
+	Tdof = 0
+
+	message = ""
+	allowZeroBathForPhoneAmount = int(request.GET.get("allowZeroBathForPhoneAmount"))	
+	dly_date = datetime.datetime.strptime(request.GET.get('dly_date'), '%d/%m/%Y').date()
+
+	cus_id = request.GET.get('cus_id')
+	cus_brn = request.GET.get('cus_brn')
+	cus_vol = request.GET.get('cus_vol')
+	cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
+	cnt_id = cnt_id.lstrip("0")
+	emp_id = request.GET.get('emp_id')
+	emp_rank = request.GET.get('emp_rank')
+	emp_dept = request.GET.get('emp_dept')
+	shift_id = request.GET.get('shift_id')
+	shift_name = request.GET.get('shift_name')
+	
+	ui_absent_status = int(request.GET.get('ui_absent_status'))	
+	ui_late_status = int(request.GET.get('ui_late_status'))
+	ui_phone_status = int(request.GET.get('ui_phone_status'))
+	ui_relief_status = int(request.GET.get('ui_relief_status'))
+
+	late_from = request.GET.get('late_from')
+	late_to = request.GET.get('late_to')
+	late_reason_option = request.GET.get('late_reason_option')
+	late_hour = request.GET.get('late_hour')
+	late_full_paid_status = request.GET.get('late_full_paid_status')
+
+	if ui_late_status==1:
+		late_from = datetime.datetime.strptime(late_from, '%d/%m/%Y %H:%M')
+		late_to = datetime.datetime.strptime(late_to, '%d/%m/%Y %H:%M')
+
+
+	tel_man = request.GET.get('tel_man')
+	# print("tel_man:", tel_man)
+	# print("ui_phone_status:", ui_phone_status)
+
+	tel_time = request.GET.get('tel_time')
+	tel_amount = int(request.GET.get('tel_amount'))	
+	
+	relief_emp_id = request.GET.get('relief_emp_id')
+
+	ot_status = 0
+
+	job_type = request.GET.get('job_type_option')	
+
+	remark = request.GET.get('remark')
+	totalNDP = int(request.GET.get('totalNDP'))
+	totalNDA = int(request.GET.get('totalNDA'))
+	totalNDM = int(request.GET.get('totalNDM'))
+	totalNNP = int(request.GET.get('totalNNP'))
+	totalNNA = int(request.GET.get('totalNNA'))
+	totalNNM = int(request.GET.get('totalNNM'))
+	totalPDP = int(request.GET.get('totalPDP'))
+	totalPDA = int(request.GET.get('totalPDA'))
+	totalPDM = int(request.GET.get('totalPDM'))
+	totalPNP = int(request.GET.get('totalPNP'))
+	totalPNA = int(request.GET.get('totalPNA'))
+	totalPNM = int(request.GET.get('totalPNM'))	
+	search_emp_id = request.GET.get('search_emp_id')
+
+	customer_wage_rate_id = request.GET.get('customer_wage_rate_id')
+	customer_zone_id = request.GET.get('customer_zone_id')
+	Timecross = request.GET.get('Timecross')	
+
+	if AEdly == 0: # EDIT MODE
+		print("Edit Mode")
+		
+		# amnaj
+		# print("DEBUG job_type:", job_type)
+
+		is_edit_record_success, message = editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id,Tday7,Tdof,customer_wage_rate_id,customer_zone_id)
+		if is_edit_record_success:
+			success_status = True
+			title = "Success"
+			type_status = "green"
+		else:
+			success_status = False
+			title = "Error"
+			type_status = "red"
+
+	elif AEdly == 1: # ADD MODE
+		print("Add Mode")
+		# LUFY
+		is_add_record_success, message = addRecord_cross_site(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id,Tday7,Tdof,customer_wage_rate_id,customer_zone_id, Timecross)
+
+		if is_add_record_success:
+			success_status = True
+			title = "Success"
+			type_status = "green"
+		else:
+			success_status = False
+			title = "Error"
+			type_status = "red"	
+	elif AEdly == 2: # DELETE MODE
+		# print("Delete Mode")
+		success_status = True
+		title = "Success"
+		type_status = "green"
+		message = "TODO: Delete record"
+	else: # UNKNOWN MODE
+		# print("Error! unknown mode")
+		success_status = False
+		title = "Error"
+		type_status = "red"
+		message = "Unknown request! Please contact IT team."
+
+	response = JsonResponse(data={		
+	    "success": success_status,
+	    "title": title,
+	    "type": type_status,
+	    "message": message,
+	})
+
+	response.status_code = 200
+
+	print("LUFY")
+
+	return response
+
+
+
+
 @permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
 @login_required(login_url='/accounts/login/')
 def ajax_save_daily_attendance(request):
@@ -5545,7 +6060,6 @@ def ajax_save_daily_attendance(request):
 	elif AEdly == 1: # ADD MODE
 		print("Add Mode")
 
-		# is_add_record_success, message = addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id,Tday7,Tdof)
 		is_add_record_success, message = addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id,Tday7,Tdof,customer_wage_rate_id,customer_zone_id)
 
 		if is_add_record_success:
@@ -7393,14 +7907,6 @@ def ajax_get_job_type_list(request):
     print("FUNCTION: ajax_get_job_type_list()")
     print("*************************************")
 
-
-    '''
-    job_type_list = []
-    response = JsonResponse(data={"success": True, "is_error": False, "message": "", "job_type_list": job_type_list})
-    response.status_code = 200
-    return response
-	'''
-
     cus_id = request.POST.get('cus_id')
     cus_brn = request.POST.get('cus_brn')
     cus_vol = request.POST.get('cus_vol')
@@ -7449,3 +7955,267 @@ def ajax_get_job_type_list(request):
     response = JsonResponse(data={"success": True, "is_error": False, "message": "", "job_type_list": job_type_list})
     response.status_code = 200
     return response    
+
+
+# LUFY
+@permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
+@login_required(login_url='/accounts/login/')
+def ajax_save_daily_attendance_check_rule_1(request):
+	print("*****************************************************")
+	print("FUNCTION: ajax_save_daily_attendance_check_rule_1()")
+	print("*****************************************************")
+	username = request.user.username	
+	dly_date = datetime.datetime.strptime(request.POST.get('dly_date'), '%d/%m/%Y').date()
+	cus_id = request.POST.get('cus_id')
+	cus_brn = request.POST.get('cus_brn')
+	cus_vol = request.POST.get('cus_vol')
+	cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
+	emp_id = request.POST.get('emp_id')
+	shift_id = request.POST.get('shift_id')
+	
+	is_cross_site = True
+	message = ""
+
+	sql = "select a.*,b.shf_type,b.shf_time_frm,b.shf_time_to"
+	sql += " from dly_plan a left join t_shift b on a.sch_shift=b.shf_id"
+	sql += " where a.dly_date='" + str(dly_date) + "'"
+	sql += " and a.emp_id=" + str(emp_id)
+	sql += " and a.absent=0"
+	cursor = connection.cursor()
+	cursor.execute(sql)
+	record = cursor.fetchone()
+	cursor.close()			
+
+	if record is not None:					
+		messcross = str(record[0]) + " Shift No =" + str(record[3])
+		dup_cnt_id = record[0]
+		dup_shift_number = record[3]
+		Shp = shift_id
+		Gtype = record[47]
+		Gfrom = record[48]
+		Gto = record[49]
+
+		if Shp != 0:
+			sql = "Select SHF_TYPE, SHF_TIME_FRM, SHF_TIME_TO from t_shift where shf_id=" + str(Shp)
+			cursor = connection.cursor()
+			cursor.execute(sql)
+			check_dup_record = cursor.fetchone()
+			cursor.close()			
+			if check_dup_record is not None:
+				Stype = check_dup_record[0]
+				Sfrom = check_dup_record[1]
+				Sto = check_dup_record[2]
+
+			'''
+			if Sfrom != 0 and Gfrom != 0:
+				print("???")
+			else:
+				print("Exit Function")
+			'''
+
+		Gto = str(Gto).zfill(4)
+		Sfrom = str(Sfrom).zfill(4)
+		Hst = str(Gto)[:2] + ":" + str(Gto)[2:]
+		Hen = str(Sfrom)[:2] + ":" + str(Sfrom)[2:]
+		HDiff = datetime.datetime.strptime(Hst, '%H:%M') - datetime.datetime.strptime(Hen, '%H:%M')					
+		mdiff = int(HDiff.total_seconds() % 60)					
+		mmdiff = 0.5 if mdiff >= 30 else 0
+		HDiff = abs(int(str(HDiff)[:2]))
+		Timecross = HDiff + mmdiff
+		
+		if int(Gfrom) < int(Sfrom):
+			sql = "SELECT TIME_VALUE FROM "
+			sql += "( "
+			sql += "SELECT TIME_VALUE FROM T_TIME "
+			sql += " WHERE TIME_VALUE BETWEEN " + str(Gfrom) + " AND " + str(Gto)
+			if int(Sto) > int(Sfrom):
+				sql += ") a WHERE TIME_VALUE BETWEEN " + str(Sfrom) + " AND " + str(Sto)
+			else:
+				sql += ") a WHERE TIME_VALUE BETWEEN " + str(Sfrom) + " AND  2400"
+		elif int(Gfrom) > int(Sfrom):
+			sql = "SELECT TIME_VALUE FROM "
+			sql += "( "
+			sql += "SELECT TIME_VALUE FROM T_TIME "
+			sql += " WHERE TIME_VALUE BETWEEN " + str(Sfrom) + " AND " + str(Sto)
+			if int(Gto) > int(Gfrom):
+				sql += ") a WHERE TIME_VALUE BETWEEN " + str(Gfrom) + " AND " + str(Gto)
+			else:
+				sql += ") a WHERE TIME_VALUE BETWEEN " + str(Gfrom) + " AND  2400"
+		else:
+			print("Exit Function")
+		
+		cursor = connection.cursor()
+		cursor.execute(sql)
+		check_dup_record = cursor.fetchone()
+		cursor.close()
+
+		if check_dup_record is None:
+			is_cross_site = False
+			message = "ไม่คร่อมหน่วยงาน"
+		else:
+			if Gto == Sfrom:
+				is_cross_site = False
+				message = "ไม่คร่อมหน่วยงาน"
+			else:
+				is_cross_site = True
+				message = "รหัสหนักงาน  <b>" + str(emp_id) + "</b> "
+				message += "เข้าเวรกะ  <b>" + str(dup_shift_number) + "</b> "
+				message += "ที่หน่วยงาน  <b>" + str(dup_cnt_id) + "</b> ไปแล้ว<br>"							
+				message += "จำนวนชั่วโมงที่โดนหัก  <b>" + str(Timecross) + "</b> "
+				message += "ถ้าต้องการบันทึกกดปุ่ม ยืนยัน"
+	else:
+		is_cross_site = False
+		message = "ไม่คร่อมหน่วยงาน"
+
+
+	response = JsonResponse(data={"success": True, "is_cross_site": is_cross_site, "Timecross": Timecross, "message": message})
+	response.status_code = 200
+	return response    
+
+
+
+# LUFY
+def checkBetweenShiftNew(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id,Tday7,Tdof,customer_wage_rate_id,customer_zone_id):
+	is_cross_site = True
+	message = ""
+
+	table_name = "dly_plan"
+	sql = "select * from " + table_name + " where dly_date='" + str(dly_date) + "' and emp_id=" + str(emp_id) + " and absent=0" + " and sch_shift=" + str(shift_id) + " and cnt_id<>" + str(cnt_id)
+	cursor = connection.cursor()
+	cursor.execute(sql)
+	record = cursor.fetchone()
+	cursor.close()
+	if record is not None:
+		is_cross_site = True
+		return is_cross_site, "พนักงานเข้างานที่หน่วยงานอื่น"
+
+	# CheckBetweenShift()
+	CheckBetweenShift = False
+	
+	# return False, "TODO: CheckBetweenShift()"
+
+	sql = "select a.*,b.shf_type,b.shf_time_frm,b.shf_time_to"
+	sql += " from dly_plan a left join t_shift b on a.sch_shift=b.shf_id"
+	sql += " where a.dly_date='" + str(dly_date) + "'"
+	sql += " and a.emp_id=" + str(emp_id)
+	sql += " and a.absent=0"
+	print("SQL:", sql)
+	cursor = connection.cursor()
+	cursor.execute(sql)
+	record = cursor.fetchone()
+	cursor.close()			
+	if record is not None:					
+		# TODO: ตรวจสอบกรณียอมให้พนักงานเข้าเวรคร่อมกับหน่วยงานที่เข้าเวรอยู่ล้ว
+		messcross = str(record[0]) + " Shift No =" + str(record[3])
+		print(messcross)
+
+		dup_cnt_id = record[0]
+		dup_shift_number = record[3]
+
+		Shp = shift_id
+		# print(Shp)
+		Gtype = record[47]
+		# print(Gtype)
+		Gfrom = record[48]
+		# print(Gfrom)
+		Gto = record[49]
+		# print(Gto)
+		if Shp != 0:
+			sql = "Select SHF_TYPE, SHF_TIME_FRM, SHF_TIME_TO from t_shift where shf_id=" + str(Shp)
+			print("SQL: ", sql)
+			cursor = connection.cursor()
+			cursor.execute(sql)
+			check_dup_record = cursor.fetchone()
+			cursor.close()			
+			if check_dup_record is not None:
+				Stype = check_dup_record[0]
+				Sfrom = check_dup_record[1]
+				Sto = check_dup_record[2]
+
+			if Sfrom != 0 and Gfrom != 0:
+				print("???")
+			else:
+				print("Exit Function")
+
+		
+		Gto = str(Gto).zfill(4)
+		Sfrom = str(Sfrom).zfill(4)
+		Hst = str(Gto)[:2] + ":" + str(Gto)[2:]
+		Hen = str(Sfrom)[:2] + ":" + str(Sfrom)[2:]
+		HDiff = datetime.datetime.strptime(Hst, '%H:%M') - datetime.datetime.strptime(Hen, '%H:%M')					
+		mdiff = int(HDiff.total_seconds() % 60)					
+		mmdiff = 0.5 if mdiff >= 30 else 0
+		HDiff = abs(int(str(HDiff)[:2]))
+		Timecross = HDiff + mmdiff
+		
+		print("Hst:", Hst)					
+		print("Hen:", Hen)					
+		print("HDiff:", HDiff)
+		print("mdiff:", mdiff)
+		print("Timecross:", Timecross)
+
+		# return False, "TEST"
+	
+
+		# เปลี่ยนการคร่อมเวลากะ
+		print("Gfrom: ", Gfrom)
+		print("Sfrom: ", Sfrom)
+		# return False, "TEST"
+
+
+		if int(Gfrom) < int(Sfrom):
+			sql = "SELECT TIME_VALUE FROM "
+			sql += "( "
+			sql += "SELECT TIME_VALUE FROM T_TIME "
+			sql += " WHERE TIME_VALUE BETWEEN " + str(Gfrom) + " AND " + str(Gto)
+			if int(Sto) > int(Sfrom):
+				sql += ") a WHERE TIME_VALUE BETWEEN " + str(Sfrom) + " AND " + str(Sto)
+			else:
+				sql += ") a WHERE TIME_VALUE BETWEEN " + str(Sfrom) + " AND  2400"
+		elif int(Gfrom) > int(Sfrom):
+			sql = "SELECT TIME_VALUE FROM "
+			sql += "( "
+			sql += "SELECT TIME_VALUE FROM T_TIME "
+			sql += " WHERE TIME_VALUE BETWEEN " + str(Sfrom) + " AND " + str(Sto)
+			if int(Gto) > int(Gfrom):
+				sql += ") a WHERE TIME_VALUE BETWEEN " + str(Gfrom) + " AND " + str(Gto)
+			else:
+				sql += ") a WHERE TIME_VALUE BETWEEN " + str(Gfrom) + " AND  2400"
+		else:
+			print("Exit Function")
+
+		
+		# print("SQLL:", sql)
+		# return False, sql
+		
+		cursor = connection.cursor()
+		cursor.execute(sql)
+		check_dup_record = cursor.fetchone()
+		cursor.close()
+
+
+		print("DEBUG Gto: ", Gto)
+		print("DEUBG Sfrom: ", Sfrom)
+
+		if check_dup_record is None:
+			CheckBetweenShift = False
+			is_cross_site = False
+			message = "TEST"
+		else:
+			if Gto == Sfrom:
+				CheckBetweenShift = False
+				is_cross_site = False
+				message = "ไม่คร่อมหน่วยงาน"
+			else:
+				CheckBetweenShift = True
+				is_cross_site = True
+				message = "รหัสหนักงาน  <b>" + str(emp_id) + "</b> "
+				message += "เข้าเวรกะ  <b>" + str(dup_shift_number) + "</b> "
+				message += "ที่หน่วยงาน  <b>" + str(dup_cnt_id) + "</b> ไปแล้ว<br>"							
+				message += "จำนวนชั่วโมงที่โดนหัก  <b>" + str(Timecross) + "</b>"				
+	else:
+		is_cross_site = False
+		message = ""
+
+	return is_cross_site, message
+

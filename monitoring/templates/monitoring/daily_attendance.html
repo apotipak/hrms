@@ -3634,6 +3634,375 @@ $("#id_late_hour").click( function() {
     });
 
 
+    // LUFY
+    function saveRecord_cross_site(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_status,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id,Timecross) {
+
+		if(ui_phone_status==0) {    		
+			phone_status = 0;
+			tel_man = 0;
+			tel_time = "";
+			tel_amount = 0;
+			tel_paid = 0;
+		}
+
+		var relief_status = 0;		
+		if(ui_relief_status==1) {		
+			relief_status = 1;
+			if (emp_id == relief_emp_id) {
+			  	$(document).Toasts('create', {
+			    	class: "bg-danger",
+			    	title: "{% trans 'Error' %}",
+			    	subtitle: '',
+			    	autohide: true,
+			    	delay: 2000,
+			    	body: "เลือกรหัสพนักงานที่จะลงเวรแทนไม่ถูกต้อง &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+			    	autoDismiss: true,
+			    	close: true,
+			    	autoremove: true,
+			  	});
+
+			  	$('#id_relief_emp_id').focus();
+	    		return false;    			
+			}
+		}
+
+		var job_type_option = $("#id_job_type_option").val();
+		var remark = $("#id_remark").val();    	
+
+		var totalNDP = $("#totalNDP").text();
+		var totalNDA = $("#totalNDA").text();
+		var totalNDM = $("#totalNDM").text();
+
+		var totalNNP = $("#totalNNP").text();
+		var totalNNA = $("#totalNNA").text();
+		var totalNNM = $("#totalNNM").text();
+
+		var totalPDP = $("#totalPDP").text();
+		var totalPDA = $("#totalPDA").text();
+		var totalPDM = $("#totalPDM").text();
+
+		var totalPNP = $("#totalPNP").text();
+		var totalPNA = $("#totalPNA").text();
+		var totalPNM = $("#totalPNM").text();
+
+		var search_shift_option = $("#id_search_shift_option").val();
+
+		if(emp_id=="") {
+			$.alert({
+			    title: 'Error',
+			    type: 'red',
+			    content: "กรุณาเลือกพนักงานที่ต้องการลางาน &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+			    animation: 'zoom',
+			    animationBounce: 1.5,
+			    closeIcon: false,
+			    boxWidth: '38%',
+			    useBootstrap: false,
+			});
+		  	$('#id_emp_id').focus();
+			return false;
+		}
+		
+		if(shift_id=="0"){
+			$.alert({
+			    title: 'Error',
+			    type: 'red',
+			    content: "Please select Shift.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+			    animation: 'zoom',
+			    animationBounce: 1.5,
+			    closeIcon: false,
+			    boxWidth: '38%',
+			    useBootstrap: false,
+			});
+
+			$("#id_shift_option").css('border-color','red');
+			$("#id_shift_option").css('border-style','solid');
+
+		  	$('#id_shift_option').focus();
+			return false;
+		} else {
+			$("#id_shift_option").css('border-color','');
+			$("#id_shift_option").css('border-style','');
+		}
+
+		showLoading();
+
+		$.ajax({
+	    	url : "/monitoring/ajax/get_employee",
+	    	type : "GET",
+	    	data : {
+	      		csrfmiddlewaretoken: '{{ csrf_token }}',
+	      		cus_id: cus_id,
+	      		cus_brn: cus_brn,
+	      		cus_vol: cus_vol,
+	      		emp_id: emp_id,
+	      		shift_id: shift_id,
+	      		relief_status: relief_status,
+	      		relief_emp_id: relief_emp_id     		
+	    	},
+	    	success: function(data) {
+				$("#id_emp_name_th").val("");
+				$("#id_emp_rank").val("");
+				$("#id_emp_dept").val("");
+				$("#id_emp_status").val("");
+				$("#id_emp_join_date").val("");
+				$("#id_emp_term_date").val("");
+
+	    		if(data.is_found) {
+	    			$("#id_emp_fullname_th").val(data.emp_fname_th.trim() + "  " + data.emp_lname_th.trim());
+					$("#id_emp_rank").val(data.emp_rank);
+	    			$("#id_emp_dept").val(data.emp_dept);
+	    			$("#id_emp_status").val(data.emp_status);
+	    			
+	    			if(data.emp_status_id=='9') {		    				
+		    			$("#id_emp_status").animate({color:'red'}, 1000);
+	    			} else {
+	    				$("#id_emp_status").animate({color:'#495057'}, 1000);
+	    			}
+	    			$("#id_emp_join_date").val(data.emp_join_date);
+	    			$("#id_emp_term_date").val(data.emp_term_date);
+
+	    			$("#save_button").attr("disabled", false);
+	    			$("#delete_button").attr("disabled", true);	    			    		
+
+					$.ajax({
+				    	url : "/monitoring/ajax/save_daily_attendance_cross_site",
+				    	type : "GET",
+				    	data : {          
+				      		csrfmiddlewaretoken: '{{ csrf_token }}',
+				      		AEdly: AEdly,
+				      		dly_date: dly_date,
+				      		allowZeroBathForPhoneAmount: allowZeroBathForPhoneAmount,	      		
+				      		cus_id: cus_id,
+				      		cus_brn: cus_brn,
+				      		cus_vol: cus_vol,
+				      		emp_id: emp_id,
+				      		emp_rank: emp_rank,
+				      		emp_dept: emp_dept,
+				      		shift_id: shift_id,
+				      		shift_name: shift_name,
+
+				      		ui_absent_status: ui_absent_status,
+				      		ui_late_status: ui_late_status,
+							ui_phone_status: ui_phone_status,
+							ui_relief_status: ui_relief_status,
+
+							late_from: late_from,
+							late_to: late_to,
+							late_reason_option: late_reason_option,
+							late_hour: late_hour,
+							late_full_paid_status: late_full_paid_status,				      		
+				      		tel_man: ui_phone_status,
+				      		tel_time: tel_time,
+				      		tel_amount: tel_amount,				      		
+				      		relief_emp_id: relief_emp_id,
+				      		job_type_option: job_type_option,
+				      		remark: remark,
+				      		totalNDP: totalNDP,
+				      		totalNDA: totalNDA,
+				      		totalNDM: totalNDM,
+				      		totalNNP: totalNNP,
+				      		totalNNA: totalNNA,
+				      		totalNNM: totalNNM,
+				      		totalPDP: totalPDP,
+				      		totalPDA: totalPDA,
+				      		totalPDM: totalPDM,
+				      		totalPNP: totalPNP,
+				      		totalPNA: totalPNA,
+				      		totalPNM: totalPNM,
+				      		search_emp_id: id_search_emp_id,
+							customer_wage_rate_id: customer_wage_rate_id,
+							customer_zone_id: customer_zone_id,
+							Timecross: Timecross,
+				    	},
+				    	success: function(data) {
+				    		if(data.success) {
+					    		if(data.success) {
+									$.ajax({
+										url : "/monitoring/ajax/get_attendance_information/",
+										type : "POST",
+										data : {          
+									  		csrfmiddlewaretoken: '{{ csrf_token }}',
+									  		attendance_date: dly_date,
+									  		search_shift_option: search_shift_option,
+									  		cus_id: cus_id,
+									  		cus_brn: cus_brn,
+									  		cus_vol: cus_vol,
+										},
+										success : function(data) {
+											if(data.is_found) {
+
+												// Get Schedule list info
+												result = "";
+												schedule_list_length = data.schedule_list.length;
+												for(i=0; i<schedule_list_length; i++) {
+													result += data.schedule_list[i];
+												}
+
+												// TODO
+												//$('#id_schedule_option').text(result);
+												//$('#id_bulk_schedule_option').text("");
+
+												
+
+												// Get Employee info
+												// Get Attandance Employee List
+												//result = create_attandance_table(data.employee_list);												
+
+												// SUDO
+												// Get Attandance Employee List
+												employee_leave_list = null
+												result = create_attandance_table(data.employee_list, employee_leave_list);
+												
+
+												$('#id_employee_list').html(result);
+
+												// TOTAL
+												$("#totalNDP").html(data.totalNDP);
+												$("#totalNNP").html(data.totalNNP);
+												$("#totalPDP").html(data.totalPDP);
+												$("#totalPNP").html(data.totalPNP);
+
+												$("#totalNDA").html(data.totalNDA);
+												$("#totalNNA").html(data.totalNNA);
+												$("#totalPDA").html(data.totalPDA);
+												$("#totalPNA").html(data.totalPNA);
+
+												if(data.totalNDM>=0)
+													$("#totalNDM").html("<span class='text-danger'>" + data.totalNDM + "</span>");
+												else
+													$("#totalNDM").html("<span class='text-danger'>" + data.totalNDM + "</span>");
+
+												if(data.totalNNM>=0)
+													$("#totalNNM").html("<span class='text-danger'>" + data.totalNNM + "</span>");						
+												else
+													$("#totalNNM").html("<span class='text-danger'>" + data.totalNNM + "</span>");
+												
+												if(data.totalPDM>=0)
+													$("#totalPDM").html("<span class='text-danger'>" + data.totalPDM + "</span>");						
+												else
+													$("#totalPDM").html("<span class='text-danger'>" + data.totalPDM + "</span>");
+
+												if(data.totalPNM>=0)
+													$("#totalPNM").html("<span class='text-danger'>" + data.totalPNM + "</span>");						
+												else
+													$("#totalPNM").html("<span class='text-danger'>" + data.totalPNM + "</span>");
+
+												
+
+												// aquaman
+												$("#id_absent_check").prop("checked", false);
+												$("#id_phone_check").prop("checked", false);
+												$("#id_call_amount_option").attr("readonly", true);
+												$("#id_call_amount_option").attr("disabled", true);
+											}
+										}
+									});
+					    			
+							 		$("#dailyAttendanceDataEntryForm:input").attr("disabled", true);
+							 		$("#dailyAttendanceDataEntryForm").trigger("reset");
+
+									$("#totalNDP").html("");
+									$("#totalNNP").html("");
+									$("#totalPDP").html("");
+									$("#totalPNP").html("");
+
+									$("#totalNDA").html("");
+									$("#totalNNA").html("");
+									$("#totalPDA").html("");
+									$("#totalPNA").html("");
+
+									$("#totalNDM").html("");
+									$("#totalNNM").html("");
+									$("#totalPDM").html("");
+									$("#totalPNM").html("");
+
+									// Clear call amount highlight
+									$("#id_call_amount_option").css('border-color','');
+									$("#id_call_amount_option").css('border-style','');
+									$("#id_shift_option").css('border-color','');
+									$("#id_shift_option").css('border-style','');
+									$("#id_relief_emp_id").css('border-color','');
+									$("#id_relief_emp_id").css('border-style','');
+									$("#id_late_hour").css('border-color','');
+									$("#id_late_hour").css('border-style','');									
+
+					    		} else {
+					    			alert("error");
+					    		}
+
+					    		/*
+								$.alert({
+								    title: data.title,
+								    type: data.type,
+								    content: data.message,
+								    animation: 'zoom',
+								    animationBounce: 1.5,
+								    closeIcon: false,
+								    boxWidth: '38%',
+								    useBootstrap: false,
+								});
+								*/
+
+							  	$(document).Toasts('create', {
+							    	class: "bg-success", 
+							    	title: "{% trans 'Success' %}",
+							    	subtitle: '',
+							    	autohide: true,
+							    	delay: 2000,		    	
+							    	//body: data.message,
+							    	body: "ทำรายการสำเร็จ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+							    	autoDismiss: true,
+							    	close: true,
+							    	autoremove: true,
+							  	});								
+									
+								$("#dailyAttendanceDataEntryForm").trigger("reset");
+
+								//TODO1: refresh table
+
+								$("#id_emp_id").focus();
+				    		} else {
+								$.alert({
+								    title: data.title,
+								    type: data.type,
+								    content: data.message,
+								    animation: 'zoom',
+								    animationBounce: 1.5,
+								    closeIcon: false,
+								    boxWidth: '38%',
+								    useBootstrap: false,
+								});
+
+								$("#id_emp_id").focus();
+				    		}				    		
+				    	},
+				    });
+	    		} else {
+
+				  	$(document).Toasts('create', {
+				    	class: "bg-danger", 
+				    	title: "{% trans 'Error' %}",
+				    	subtitle: '',
+				    	autohide: true,
+				    	delay: 2000,
+				    	body: "รหัสพนักงาน <b>" + relief_emp_id + "</b> ไม่มีในระบบ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+				    	autoDismiss: true,
+				    	close: true,
+				    	autoremove: true,
+				  	});
+
+				  	$.LoadingOverlay("hide");
+				  	$("#id_relief_emp_id").select();
+				  	return false;
+	    		}
+
+	    		$.LoadingOverlay("hide");
+	    		$("#id_emp_id").select();	    		
+	    	},
+	    });
+    }
+
+
     function saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_status,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id) {
     	
     	//alert("test");
@@ -4224,26 +4593,13 @@ $("#id_late_hour").click( function() {
 				    	autoremove: true,
 				  	});
 
-				  	/*
-					$.alert({
-					    title: 'Error',
-					    type: 'red',
-					    content: "กรุณาเลือกพนักงานที่มาเข้าเวรแทน &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
-					    animation: 'zoom',
-					    animationBounce: 1.5,
-					    closeIcon: false,
-					    boxWidth: '38%',
-					    useBootstrap: false,
-					});
-					*/
-
 					$("#id_relief_emp_id").css('border-color','red');
 					$("#id_relief_emp_id").css('border-style','solid');
 
 					$('#id_relief_emp_id').focus();
 
 					return false;    			
-	    		} else {	    	
+	    		} else {    	
 	    			saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);
 
 	    			$("#id_late_check").prop("checked", false);
@@ -4289,11 +4645,54 @@ $("#id_late_hour").click( function() {
 	    			saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);
 	    		}
 	    	} else {
-	    		//alert("test");
-	    		//return false;
-
-	    		//alert(shift_id + "|" + shift_name)
-	    		saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);	
+	    		// LUFY
+				$.ajax({
+					url : "/monitoring/ajax/save_daily_attendance_check_rule_1/",
+					type : "POST",
+					data : {          
+				  		csrfmiddlewaretoken: '{{ csrf_token }}',
+				  		dly_date: dly_date,
+				  		shift_id: shift_id,
+				  		cus_id: cus_id,
+				  		cus_brn: cus_brn,
+				  		cus_vol: cus_vol,
+				  		emp_id: emp_id,
+					},
+					success : function(data) {
+						if (data.is_cross_site) {
+							
+							Timecross = data.Timecross;
+							
+							$.confirm({
+							    title: 'Confirmation',
+							    type: 'red',
+							    content: data.message,
+								animation: 'zoom',
+							    animationBounce: 1.5,
+							    closeIcon: true,
+							    boxWidth: '38%',
+							    useBootstrap: false,		    
+							    buttons: {
+							        confirm: {
+							        	text: 'ยืนยัน',
+							        	btnClass: 'btn-danger',
+							        	action: function () {
+							        		// LUFY							        		
+							        		saveRecord_cross_site(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id, Timecross);
+										}
+							        },
+							        cancel: {					        	
+							        	action: function () {											
+											$("#id_emp_id").focus();
+							        	}
+							        }
+							    }
+							});							
+						} else {
+							saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);
+						}
+					},
+				});
 	    	}    		
     	}
 
