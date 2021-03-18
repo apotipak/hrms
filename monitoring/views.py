@@ -21,6 +21,7 @@ import datetime
 import django.db as db
 import json
 from datetime import timedelta
+import time
 from system.helper import *
 from django.contrib.humanize.templatetags.humanize import naturalday
 from hrms.settings import MEDIA_ROOT
@@ -3255,9 +3256,13 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 	cursor.close()
 	amanpower = len(record_count) if len(record_count)>0 else 0	
 
+	# return False, "Check Manpower is passed"
+
 	# Rule 3 ChkValidInput(2)
 	# ****** START **********
 
+
+	# LUFY
 	is_pass, message = chkValidInput(2,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,
 		shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,
 		relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,
@@ -4511,7 +4516,9 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 	totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,
 	ui_ot_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id):
 
-	# return False, "DEBUG"
+	
+	#print(cus_id + cus_brn + cus_vol)
+	#return False, "DEBUG"
 
 	# Case 2
 	if check_type==2:
@@ -4600,6 +4607,15 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 					return False, "จำนวนชั่วโมงควงรอเกิน 2 ชั่วโมง"
 
 
+
+
+
+			# ห้ามลงงานที่อื่นในเวลาที่คร่อมกัน วันเดียวกัน
+			# TODO - CheckBetweenShift()
+
+
+
+
 			# ตรวจสอบห้ามลงงานที่อื่นในกะเดียวกัน วันเดียวกัน
 			if ui_phone_status==1:				
 				print("ui_phone_status=1")
@@ -4619,13 +4635,15 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 
 				# CheckBetweenShift()
 				CheckBetweenShift = False
+				
+				# return False, "TODO: CheckBetweenShift()"
 
 				sql = "select a.*,b.shf_type,b.shf_time_frm,b.shf_time_to"
 				sql += " from dly_plan a left join t_shift b on a.sch_shift=b.shf_id"
 				sql += " where a.dly_date='" + str(dly_date) + "'"
 				sql += " and a.emp_id=" + str(emp_id)
 				sql += " and a.absent=0"
-				# print("SQL:", sql)
+				print("SQL:", sql)
 				cursor = connection.cursor()
 				cursor.execute(sql)
 				record = cursor.fetchone()
@@ -4634,6 +4652,9 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 					# TODO: ตรวจสอบกรณียอมให้พนักงานเข้าเวรคร่อมกับหน่วยงานที่เข้าเวรอยู่ล้ว
 					messcross = str(record[0]) + " Shift No =" + str(record[3])
 					print(messcross)
+
+					dup_cnt_id = record[0]
+					dup_shift_number = record[3]
 
 					Shp = shift_id
 					# print(Shp)
@@ -4645,6 +4666,7 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 					# print(Gto)
 					if Shp != 0:
 						sql = "Select SHF_TYPE, SHF_TIME_FRM, SHF_TIME_TO from t_shift where shf_id=" + str(Shp)
+						print("SQL: ", sql)
 						cursor = connection.cursor()
 						cursor.execute(sql)
 						check_dup_record = cursor.fetchone()
@@ -4659,50 +4681,86 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 						else:
 							print("Exit Function")
 
-					'''
-					Hst = 0
-					Hen = 0
-					HDiff = 0
-					mdiff = 0
-					Timecross = 0
-					'''
+					
+					Gto = str(Gto).zfill(4)
+					Sfrom = str(Sfrom).zfill(4)
+					Hst = str(Gto)[:2] + ":" + str(Gto)[2:]
+					Hen = str(Sfrom)[:2] + ":" + str(Sfrom)[2:]
+					HDiff = datetime.datetime.strptime(Hst, '%H:%M') - datetime.datetime.strptime(Hen, '%H:%M')					
+					mdiff = int(HDiff.total_seconds() % 60)					
+					mmdiff = 0.5 if mdiff >= 30 else 0
+					HDiff = abs(int(str(HDiff)[:2]))
+					Timecross = HDiff + mmdiff
+					
+					print("Hst:", Hst)					
+					print("Hen:", Hen)					
+					print("HDiff:", HDiff)
+					print("mdiff:", mdiff)
+					print("Timecross:", Timecross)
 
-					if Gfrom < Sfrom:
+					# return False, "TEST"
+				
+
+					# เปลี่ยนการคร่อมเวลากะ
+					print("Gfrom: ", Gfrom)
+					print("Sfrom: ", Sfrom)
+					# return False, "TEST"
+
+
+					if int(Gfrom) < int(Sfrom):
 						sql = "SELECT TIME_VALUE FROM "
 						sql += "( "
 						sql += "SELECT TIME_VALUE FROM T_TIME "
 						sql += " WHERE TIME_VALUE BETWEEN " + str(Gfrom) + " AND " + str(Gto)
-						if Sto > Sfrom:
+						if int(Sto) > int(Sfrom):
 							sql += ") a WHERE TIME_VALUE BETWEEN " + str(Sfrom) + " AND " + str(Sto)
 						else:
 							sql += ") a WHERE TIME_VALUE BETWEEN " + str(Sfrom) + " AND  2400"
-					elif Gfrom > Sfrom:
+					elif int(Gfrom) > int(Sfrom):
 						sql = "SELECT TIME_VALUE FROM "
 						sql += "( "
 						sql += "SELECT TIME_VALUE FROM T_TIME "
 						sql += " WHERE TIME_VALUE BETWEEN " + str(Sfrom) + " AND " + str(Sto)
-						if Gto > Gfrom:
+						if int(Gto) > int(Gfrom):
 							sql += ") a WHERE TIME_VALUE BETWEEN " + str(Gfrom) + " AND " + str(Gto)
 						else:
 							sql += ") a WHERE TIME_VALUE BETWEEN " + str(Gfrom) + " AND  2400"
 					else:
 						print("Exit Function")
 
-					# print("SQLL:", sql)					
+					
+					# print("SQLL:", sql)
+					# return False, sql
+					
 					cursor = connection.cursor()
 					cursor.execute(sql)
 					check_dup_record = cursor.fetchone()
 					cursor.close()
 
-					if check_dup_record is not None:
+
+					print("DEBUG Gto: ", Gto)
+					print("DEUBG Sfrom: ", Sfrom)
+
+					if check_dup_record is None:
 						CheckBetweenShift = False
+						message = "TEST"
 					else:
 						if Gto == Sfrom:
 							CheckBetweenShift = False
-							print("Exit Function")	
+							print("Exit Function")
+							message = "ไม่คร่อมหน่วยงาน"
 						else:
 							CheckBetweenShift = True
-							return False, "พนักงานเข้าเวรคร่อมกับหน่วยงาน"
+							# message = "<b>กำลังเลือกทำรายการคร่อมหน่วยงาน</b><br>"
+							message = "รหัสหนักงาน  <b>" + str(emp_id) + "</b> "
+							message += "เข้าเวรกะ  <b>" + str(dup_shift_number) + "</b> "
+							message += "ที่หน่วยงาน  <b>" + str(dup_cnt_id) + "</b> ไปแล้ว<br>"							
+							message += "จำนวนชั่วโมงที่โดนหัก  <b>" + str(Timecross) + "</b>"
+							return False, message
+
+							# LUFY
+
+				# return False, message
 
 			# return False, "ABC"
 
