@@ -7973,6 +7973,7 @@ def ajax_save_daily_attendance_check_rule_1(request):
 	emp_id = request.POST.get('emp_id')
 	shift_id = request.POST.get('shift_id')
 	
+	Timecross = 0	
 	is_cross_site = True
 	message = ""
 
