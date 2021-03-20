@@ -6,10 +6,49 @@
 {% load static %}
 {% load humanize %}
 
+
+{% block style %} 
+<style>
+
+.nav-tabs{
+  background-color: #ccc;
+  color: #5f5d5d;
+  padding: 0 0 0 0;
+  -webkit-border-radius: 5px 5px 0 0;
+  -moz-border-radius: 5px 5px 0 0;
+  border-radius: 15px 5px 0 0;
+  padding: 0px !important;
+  border-bottom: 5px solid #257638 !important;
+}
+
+
+.nav-tabs .nav-item .nav-link.active {
+  background-color: #257638;
+  color: #fff;
+  font-weight: bold;
+  border-color: #257638;  
+}
+
+.nav-tabs>.active>a, .nav-tabs>.active>a:hover, .nav-tabs>.active>a:focus {
+  background-color: #257638;
+  border-color: #257638;
+  border-bottom-color: transparent;  
+}
+
+.nav-tabs > li > a{
+  border: none;
+  border-radius: 0;
+  color: #5f5d5d;
+}
+
+</style>
+{% endblock %}
+
 {% block content %}
  	<!-- Content Wrapper. Contains page content -->
-	<div class="content-wrapper" style="margin:0px; padding:2px;">
+	<div class="content-wrapper" style="margin:0px; padding:0 0 0 0; background-color: #353538;">
 	
+
 		<!--
 		<div class="content-header">
 			<div class="col-6 offset-3">
@@ -19,11 +58,11 @@
 		-->
 
     	<!-- Main content -->
-    	<section class="content pt-1">
+    	<section class="content pt-1" style="padding:0 3px 0 3px;">
 
     		<!-- SEARCH FORM START -->
 			<!--<div class="card card-outline card-default" id="daily_attendance_search_card" style="position: fixed; top:50; width: 100%; z-index: 1;">-->
-			<div class="card card-outline card-default" id="daily_attendance_search_card">
+			<div class="card card-outline card-default text-dark" id="daily_attendance_search_card">
 
 			  <div class="card-body" style="margin:0; padding:3px 0 2px 0;">
 				<form class="form-inline" name="daily_attendance_search_form" id="daily_attendance_search_form">
@@ -64,67 +103,54 @@
 				</form>
 
 			  </div>
-			  <!-- /.card-body -->
 
-			  <!--
-			  <div class="card-footer">
-			  	&nbsp;
-			  </div>
-			  -->
-			  <!-- /.card-footer -->
 			</div>
 			<!-- SEARCH FORM END -->
 
 
 
-			<!-- DATA ENTRY FORM -->
-			<div class="card" id="daily_attendance_data_entry_card" style="padding:0; margin:0;">
-
-			  <!--
-			  <div class="card-header">
-			    <div class="card-tools">
-			    	<button id="save_button" type="button" class="btn btn-success btn-sm"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;{% trans 'Add' %}</button>&nbsp;&nbsp;|&nbsp;&nbsp;
-		        	<button id="save_button" type="button" class="btn btn-primary btn-sm"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</button>
-		        	<button id="delete_button" type="button" class="btn btn-danger btn-sm"><i class="fas fa-trash fa-sm"></i>&nbsp;&nbsp;{% trans 'Delete' %}</button>
-			    </div>	
-			  </div>
-			  -->
-
-			  <div class="card-body" style="padding:0px;">
-				<form class="form-inline" name="daily_attendance_form">
-					{% csrf_token %}
-				</form>
-
-				<!-- Tab Header -->
-		        <div class="clearfix">
-		          <div class="float-left col-12" style="padding:0;">
-		          	<b>
-		            <ul class="daily-attendance nav nav-tabs navbar-expand nav-fill p-0" id="customer" role="tablist">
-
-		              <li class="nav-item active">
-		                <a class="nav-link active" id="tab1-tab" data-toggle="tab" href="#tab1" role="tab" aria-controls="tab1"><i class="fas fa-clipboard-list fa-sm"></i>&nbsp;&nbsp;{% trans 'Attendance Information' %}</a>
-		              </li>
-
-		              <li class="nav-item">
-		                <a class="nav-link" id="tab2-tab" data-toggle="tab" href="#tab2" role="tab" aria-controls="tab2">{% trans 'Contract / Schedule Information' %}</a>
-		              </li>
-
-		            </ul>
-		        	</b>
-		          </div>
-		        </div>
-
-
-		        <!-- Tab Body -->
-		        <div class="daily-attendance tab-content" id="dailyAttendanceBodyTab">
-
-		        	<!-- Attendance Information -->
-		            <div class="tab-pane fade show active col-12" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
 
 
 
-		            	<div class="col-10 float-left">
 
+
+
+
+
+        <!-- ./row -->
+        <div class="row">
+          <!--<div class="col-12 col-sm-6 col-lg-4">-->
+          <div class="col-12">
+
+            <div class="card card-tabs">
+
+              
+              <div class="card-header1" style="padding:0px 0px 0px 0px !important; margin:0 0 0 0px !important;">
+
+                <ul class="nav nav-tabs navbar-expand nav-fill" id="custom-tabs-one-tab" role="tablist" style="padding:0 !important; margin: 0 0 0 0 !important;">
+                  
+                  <li class="nav-item" style="padding:0 !important; margin:0 0 0 0px !important; font-size: 20px;">
+                    <a class="nav-link active" id="custom-tabs-one-home-tab" data-toggle="pill" href="#custom-tabs-one-home" role="tab" aria-controls="custom-tabs-one-home" aria-selected="true">Attendance Information</a>
+                  </li>
+
+
+                  <li class="nav-item" style="padding:0 0 0 0px !important;font-size: 20px;">
+                    <a class="nav-link" id="tab2-tab" data-toggle="pill" href="#custom-tabs-one-profile" role="tab" aria-controls="custom-tabs-one-profile" aria-selected="false">Contract / Schedule Information</a>
+                    
+                  </li>
+                </ul>
+
+              </div>
+
+
+              <div class="card-body text-dark" style="padding:10px !important; border-right: 5px solid #257638; border-color: #257638; border-left: 5px solid #257638;  border-bottom: 5px solid #257638;">
+                <div class="tab-content" id="custom-tabs-one-tabContent">                  
+					<div class="tab-pane fade show active" id="custom-tabs-one-home" role="tabpanel" aria-labelledby="custom-tabs-one-home-tab">
+
+
+						<!-- LEFT COLUMN -  CUSTOMER LIST TABLE -->
+						<!-- START -->
+						<div class="col-10 float-left">
 							
 							<div class="col-12 p-0">
 								<div class="col-8 float-left">
@@ -156,7 +182,7 @@
 								</div>
 
 								<div class="col-4 float-right p-0 pt-2">
-			            		  
+								  
 								  <div class="input-group-append float-right">
 								  	<input type="text" class="form-control form-control-xs w-200 border-success" placeholder="Filter Data" id="employee_search_text" style="border-top-right-radius:0px;border-bottom-right-radius:0px;" autocomplete="off">
 								    <button class="btn btn-success btn-xs" type="button"  id="employee_search_clear_button" style="border-style: none none none none; border-top-left-radius:0px;border-bottom-left-radius:0px;">CLEAR FILTER</button>
@@ -168,8 +194,6 @@
 			            	<div id="id_employee_list" class="table-responsive table-striped" >
 
 								<font size='2em;'>
-								<!--<table id='employee_list_table' class='table table-sm table-condensed table-wrapper-scroll-y my-custom-scrollbar'>-->
-								<!--<table id='employee_list_table' class='table table-sm my-custom-scrollbar'>-->
 																
 								<table id='employee_list_table' class='table table-sm' style="margin:0;">
 								  <thead>
@@ -263,23 +287,16 @@
 								  </tbody>
 								</table>
 								</font>
-							</div>
-							<!--<font size='2em'><span class="text-danger">x</span> is absent.</font>-->							
+							</div>							
 						</div>
+						<!-- END -->
 
 
 
+						<!-- RIGHT COLUMN - NORMAL / PUBLIC TABLE -->
+						<!-- START -->
 						<div class="col-2 float-right" style="padding:0 0 0 0;">
 							<div class="card right-col">
-								<!--
-							    <div class="card-tools text-right pb-2">
-									<button id="add_button" type="button" class="btn btn-success btn-xs"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;{% trans 'New' %}</button>
-									<button id="reset_button" type="button" class="btn btn-secondary btn-xs">&nbsp;{% trans 'Cancel' %}</button>&nbsp;&nbsp;
-						        	<button id="save_button" type="button" class="btn btn-primary btn-xs"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</button>
-						        	<button id="delete_button" type="button" class="btn btn-danger btn-xs"><i class="fas fa-trash fa-sm"></i>&nbsp;&nbsp;{% trans 'Delete' %}</button>
-							    </div>
-								-->
-
 								<div class="col-12" style="padding:0;">
 									<font size='2.8em;'>
 									<div class="col-12 float-left" style="padding:0 1px 0 0;">
@@ -333,42 +350,20 @@
 								</div>
 
 
-
-
-							    <!--
-			  					<div class="card-header">
-						            <div class="form-check d-inline">
-						              <label><input class="form-check-input" id="id_absent_check" name="absent_check" type="checkbox" /><span class="text-primary" style="cursor: pointer">Absent</span></label>&nbsp;&nbsp;&nbsp;&nbsp;
-						            </div>
-
-						            <div class="form-check d-inline">
-						              <label><input class="form-check-input" id="id_late_check" name="late_check" type="checkbox" /><span class="text-primary" style="cursor: pointer">Late</span></label>&nbsp;&nbsp;&nbsp;&nbsp;
-						            </div>
-
-						              <label><input class="form-check-input" id="id_phone_check" name="phone_check" type="checkbox" /><span class="text-primary" style="cursor: pointer">Phone</span></label>&nbsp;&nbsp;&nbsp;&nbsp;
-						        </div>
-								-->
-
-						        <!--
-							    <div class="card-tools">
-									<button id="add_button" type="button" class="btn btn-success btn-sm"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;{% trans 'New' %}</button>
-									<button id="reset_button" type="button" class="btn btn-secondary btn-sm">&nbsp;{% trans 'Cancel' %}</button>&nbsp;&nbsp;|&nbsp;&nbsp;
-						        	<button id="save_button" type="button" class="btn btn-primary btn-sm"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</button>
-						        	<button id="delete_button" type="button" class="btn btn-danger btn-sm"><i class="fas fa-trash fa-sm"></i>&nbsp;&nbsp;{% trans 'Delete' %}</button>	
-							    </div>
-								-->
 							</div>
 			  			</div>
+			  			<!-- END -->
 
 
-			  			<!--
-			  			<div class="col-12" style="padding:0;">
+			  			<!-- START -->
+						<div class="card daily-attendance col-12">
 
-			  				<font size='2.8em;'>
-			  				<div class="col-6 float-left">
+						  <div class="card-header" style="padding:0;">
+						    
+						    <div class="col-12 float-left">
 					            <div class="form-check d-inline">
-					              <label><input class="form-check-input" id="id_absent_check" name="absent_check" type="checkbox" /><span class="text-primary" style="cursor: pointer">Absent.</span></label>&nbsp;&nbsp;&nbsp;&nbsp;
-					             </div>
+					              <label><input class="form-check-input" id="id_absent_check" name="absent_check" type="checkbox" /><span class="text-primary" style="cursor: pointer">Absent</span></label>&nbsp;&nbsp;&nbsp;&nbsp;
+					            </div>
 
 					            <div class="form-check d-inline">
 					              <label><input class="form-check-input" id="id_late_check" name="late_check" type="checkbox" /><span class="text-primary" style="cursor: pointer">Late</span></label>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -377,366 +372,292 @@
 					            <div class="form-check d-inline">
 					              <label><input class="form-check-input" id="id_phone_check" name="phone_check" type="checkbox" /><span class="text-primary" style="cursor: pointer">Phone</span></label>&nbsp;&nbsp;&nbsp;&nbsp;
 					            </div>
-				        	</div>
 
-				            <div class="col-6 float-right text-right">						    
-								<button id="add_button" type="button" class="btn btn-success btn-xs"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;{% trans 'New' %}</button>
-								<button id="reset_button" type="button" class="btn btn-secondary btn-xs">&nbsp;{% trans 'Cancel' %}</button>&nbsp;&nbsp;|&nbsp;&nbsp;
-					        	<button id="save_button" type="button" class="btn btn-primary btn-xs"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</button>
-					        	<button id="delete_button" type="button" class="btn btn-danger btn-xs"><i class="fas fa-trash fa-sm"></i>&nbsp;&nbsp;{% trans 'Delete' %}</button>		        			      
-						    </div>
-							</font>
-		
-			  			</div>
-						-->
-	
+							    <div class="form-check d-inline float-right">
+									<button id="add_button" type="button" class="btn btn-success btn-xs"><i class="fas fa-plus fa-xs"></i>&nbsp;&nbsp;{% trans 'New' %}</button>
+									<button id="reset_button" type="button" class="btn btn-secondary btn-xs">&nbsp;{% trans 'Cancel' %}</button>&nbsp;&nbsp;|&nbsp;&nbsp;
+						        	<button id="save_button" type="button" class="btn btn-primary btn-xs"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</button>
+						        	<button id="delete_button" type="button" class="btn btn-danger btn-xs"><i class="fas fa-trash fa-sm"></i>&nbsp;&nbsp;{% trans 'Delete' %}</button>		        	
+							    </div>
+							</div>
+						  </div>
 
 
 
+						  <div class="card-body" style="padding:10px 0 0 0;">
 
+								<form class="form-row" id="dailyAttendanceDataEntryForm">
+								{% csrf_token %}
 
+						  	<div class="col-md-12 float-left">
 
 
-			<div class="card daily-attendance col-12">
+								<div class="row">
 
-			  <div class="card-header" style="padding:0;">
-			    
-			    <div class="col-12 float-left">
-		            <div class="form-check d-inline">
-		              <label><input class="form-check-input" id="id_absent_check" name="absent_check" type="checkbox" /><span class="text-primary" style="cursor: pointer">Absent</span></label>&nbsp;&nbsp;&nbsp;&nbsp;
-		            </div>
+								  <div class="col-2">   
+									<div class="input-group">
+										<span style="font-size:0.9rem;padding:3px 0 0 0; width:75px;"><b>Employee</b>&nbsp;&nbsp;&nbsp;</span>
+								  		<input type="number" id="id_emp_id" name="id_emp_id" class="form-control form-control-xs input-xs" placeholder="Emp ID" />
+								  		<button id="emp_id_lookup_button" type="button" class="btn btn-outline-primary btn-xs" data-toggle="modal" data-url=""><i class="fas fa-search fa-sm"></i></button>
+									</div>	
+								  </div>
 
-		            <div class="form-check d-inline">
-		              <label><input class="form-check-input" id="id_late_check" name="late_check" type="checkbox" /><span class="text-primary" style="cursor: pointer">Late</span></label>&nbsp;&nbsp;&nbsp;&nbsp;
-		            </div>
+								  <div class="col-2">
+								    <input type="text" class="form-control form-control-xs" id="id_emp_fullname_th" placeholder="Employee Name" readonly>
+								  </div>
 
-		            <div class="form-check d-inline">
-		              <label><input class="form-check-input" id="id_phone_check" name="phone_check" type="checkbox" /><span class="text-primary" style="cursor: pointer">Phone</span></label>&nbsp;&nbsp;&nbsp;&nbsp;
-		            </div>
+								  <div class="col-1">
+								    <input type="text" class="form-control form-control-xs" id="id_emp_rank" placeholder="Rank" readonly>
+								  </div>
 
-				    <div class="form-check d-inline float-right">
-						<button id="add_button" type="button" class="btn btn-success btn-xs"><i class="fas fa-plus fa-xs"></i>&nbsp;&nbsp;{% trans 'New' %}</button>
-						<button id="reset_button" type="button" class="btn btn-secondary btn-xs">&nbsp;{% trans 'Cancel' %}</button>&nbsp;&nbsp;|&nbsp;&nbsp;
-			        	<button id="save_button" type="button" class="btn btn-primary btn-xs"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</button>
-			        	<button id="delete_button" type="button" class="btn btn-danger btn-xs"><i class="fas fa-trash fa-sm"></i>&nbsp;&nbsp;{% trans 'Delete' %}</button>		        	
-				    </div>
-				</div>
-			  </div>
+								  <div class="col-1">
+								    <input type="text" class="form-control form-control-xs" id="id_emp_dept" placeholder="Dept" readonly>
+								  </div>
 
+								  <div class="col-2">
+								    <input type="text" id="id_emp_join_date" class="form-control form-control-xs" placeholder="Join Date" readonly>
+								  </div>    
 
+								  <div class="col-2">
+								    <input type="text" id="id_emp_term_date" class="form-control form-control-xs" placeholder="Terminate Date" readonly>
+								  </div>
 
-			  <div class="card-body" style="padding:10px 0 0 0;">
+								  <div class="col-2">
+								    <input type="text" id="id_emp_status" class="form-control form-control-xs" placeholder="Status" readonly >
+								  </div>
 
-					<form class="form-row" id="dailyAttendanceDataEntryForm">
-					{% csrf_token %}
+								</div>
 
-			  	<div class="col-md-12 float-left">
 
 
+								<div class="row" style="padding:0 0 2px 0;">
+								  <div class="col-12"></div>
+								</div>
 
 
-<div class="row">
 
-  <div class="col-2">   
-	<div class="input-group">
-		<span style="font-size:0.9rem;padding:3px 0 0 0; width:75px;"><b>Employee</b>&nbsp;&nbsp;&nbsp;</span>
-  		<input type="number" id="id_emp_id" name="id_emp_id" class="form-control form-control-xs input-xs" placeholder="Emp ID" />
-  		<button id="emp_id_lookup_button" type="button" class="btn btn-outline-primary btn-xs" data-toggle="modal" data-url=""><i class="fas fa-search fa-sm"></i></button>
-	</div>	
-  </div>
+								<div class="row">
 
-  <div class="col-2">
-    <input type="text" class="form-control form-control-xs" id="id_emp_fullname_th" placeholder="Employee Name" readonly>
-  </div>
+								  <div class="col-2">   
+									<div class="input-group">
+										<!--
+										<label class="text-primary" style="font-size:0.9rem;padding:0 0 0 0;cursor: pointer">
+										<input class="" id="id_relief_check" name="relief_check" type="checkbox" />&nbsp;&nbsp;Relief by&nbsp;</label>
+										-->
+										<label class="text-primary" style="font-size:0.9rem;padding:0 0 0 0;cursor: pointer;width:75px;">
+										<input class="" id="id_relief_check" name="relief_check" type="checkbox" />&nbsp;Relief by&nbsp;</label>
+										<input type="number" id="id_relief_emp_id" name="id_relief_emp_id" class="form-control form-control-xs" placeholder="Relief ID" readonly="" />
+										<button id="relief_emp_id_lookup_button" type="button" class="btn btn-outline-primary btn-xs" data-toggle="modal" data-url="" disabled=""><i class="fas fa-search fa-sm"></i></button>
+									</div>
+								  </div>
 
-  <div class="col-1">
-    <input type="text" class="form-control form-control-xs" id="id_emp_rank" placeholder="Rank" readonly>
-  </div>
+								  <div class="col-2">
+								    <input type="text" class="form-control form-control-xs" id="id_relief_emp_fullname_th" placeholder="Relief Name" readonly>
+								  </div>
 
-  <div class="col-1">
-    <input type="text" class="form-control form-control-xs" id="id_emp_dept" placeholder="Dept" readonly>
-  </div>
+								  <div class="col-1">    
+								    <input type="text" class="form-control form-control-xs" id="id_relief_emp_rank" placeholder="Rank" readonly>
+								  </div>
 
-  <div class="col-2">
-    <input type="text" id="id_emp_join_date" class="form-control form-control-xs" placeholder="Join Date" readonly>
-  </div>    
+								  <div class="col-1">
+								  	<input type="text" class="form-control form-control-xs" id="id_relief_emp_dept" placeholder="Dept" readonly>
+								  </div>
 
-  <div class="col-2">
-    <input type="text" id="id_emp_term_date" class="form-control form-control-xs" placeholder="Terminate Date" readonly>
-  </div>
+								  <div class="col-2">
+								    <input type="text" id="id_relief_emp_join_date" class="form-control form-control-xs" placeholder="Join Date" readonly>
+								  </div>    
 
-  <div class="col-2">
-    <input type="text" id="id_emp_status" class="form-control form-control-xs" placeholder="Status" readonly >
-  </div>
+								  <div class="col-2">
+								    <input type="text" id="id_relief_emp_term_date" class="form-control form-control-xs" placeholder="Terminate Date" readonly>
+								  </div>
 
-</div>
+								  <div class="col-2">
+								    <input type="text" id="id_relief_emp_status" class="form-control form-control-xs" placeholder="Status" readonly >
+								  </div>
+								 
+								</div>
 
 
 
-<div class="row" style="padding:0 0 2px 0;">
-  <div class="col-12"></div>
-</div>
 
 
+								<div class="row" style="padding:0 0 2px 0;">
+								  <div class="col-12"></div>
+								</div>
 
-<div class="row">
 
-  <div class="col-2">   
-	<div class="input-group">
-		<!--
-		<label class="text-primary" style="font-size:0.9rem;padding:0 0 0 0;cursor: pointer">
-		<input class="" id="id_relief_check" name="relief_check" type="checkbox" />&nbsp;&nbsp;Relief by&nbsp;</label>
-		-->
-		<label class="text-primary" style="font-size:0.9rem;padding:0 0 0 0;cursor: pointer;width:75px;">
-		<input class="" id="id_relief_check" name="relief_check" type="checkbox" />&nbsp;Relief by&nbsp;</label>
-		<input type="number" id="id_relief_emp_id" name="id_relief_emp_id" class="form-control form-control-xs" placeholder="Relief ID" readonly="" />
-		<button id="relief_emp_id_lookup_button" type="button" class="btn btn-outline-primary btn-xs" data-toggle="modal" data-url="" disabled=""><i class="fas fa-search fa-sm"></i></button>
-	</div>
-  </div>
 
-  <div class="col-2">
-    <input type="text" class="form-control form-control-xs" id="id_relief_emp_fullname_th" placeholder="Relief Name" readonly>
-  </div>
 
-  <div class="col-1">    
-    <input type="text" class="form-control form-control-xs" id="id_relief_emp_rank" placeholder="Rank" readonly>
-  </div>
 
-  <div class="col-1">
-  	<input type="text" class="form-control form-control-xs" id="id_relief_emp_dept" placeholder="Dept" readonly>
-  </div>
+								<div class="row">
 
-  <div class="col-2">
-    <input type="text" id="id_relief_emp_join_date" class="form-control form-control-xs" placeholder="Join Date" readonly>
-  </div>    
+								  <div class="col-2">   
+									<div class="input-group">
+										<span style="font-size:0.9rem;padding:3px 0 0 0;"><b>Sent spare</b>&nbsp;&nbsp;&nbsp;</span>
+								  		<input type="number" id="id_sent_spare" name="sent_spare" class="form-control form-control-xs" />
+									</div>	
+								  </div>
 
-  <div class="col-2">
-    <input type="text" id="id_relief_emp_term_date" class="form-control form-control-xs" placeholder="Terminate Date" readonly>
-  </div>
 
-  <div class="col-2">
-    <input type="text" id="id_relief_emp_status" class="form-control form-control-xs" placeholder="Status" readonly >
-  </div>
- 
-</div>
+								  <div class="col-2">
+								  	<div class="input-group">
+								  	<span style="font-size:0.9rem;padding:3px 0 0 0;"><b>Shift</b>&nbsp;</span>
+								    <select id="id_shift_option" class="form-control form-control-xs">
+									  <option value="99" selected>99   # DAY OFF ########</option>
+									  <option value="999">999   # ANOTHER SITE #</option>
+								    </select>
+									</div>
+								  </div>
 
+								  <div class="col-2">
+								  	<input type="text" id="id_call_time" name="call_time" class="form-control form-control-xs" placeholder="Call Time" readonly />	
+								  </div>
 
 
+								  <div class="col-2">
+								  	<div class="input-group">
+								  	<span style="font-size:0.9rem;padding:3px 0 0 0;"><b>Call Amount</b>&nbsp;</span>
+								    <select id="id_call_amount_option" class="form-control form-control-xs">
+									  <option value="0" selected>0 บาท</option>
+									  <option value="1">1 บาท</option>
+									  <option value="2">2 บาท</option>
+									  <option value="3">3 บาท</option>
+									  <option value="4">4 บาท</option>
+									  <option value="5">5 บาท</option>	  
+								    </select>
+									</div>
+								  </div>
 
+								  <div class="col-4">&nbsp;</div>
 
-<div class="row" style="padding:0 0 2px 0;">
-  <div class="col-12"></div>
-</div>
+								</div>
 
 
 
 
 
-<div class="row">
 
-  <div class="col-2">   
-	<div class="input-group">
-		<span style="font-size:0.9rem;padding:3px 0 0 0;"><b>Sent spare</b>&nbsp;&nbsp;&nbsp;</span>
-  		<input type="number" id="id_sent_spare" name="sent_spare" class="form-control form-control-xs" />
-	</div>	
-  </div>
 
+								<div class="row" style="padding:0 0 2px 0;">
+								  <div class="col-12"></div>
+								</div>
 
-  <div class="col-2">
-  	<div class="input-group">
-  	<span style="font-size:0.9rem;padding:3px 0 0 0;"><b>Shift</b>&nbsp;</span>
-    <select id="id_shift_option" class="form-control form-control-xs">
-	  <option value="99" selected>99   # DAY OFF ########</option>
-	  <option value="999">999   # ANOTHER SITE #</option>
-    </select>
-	</div>
-  </div>
 
-  <div class="col-2">
-  	<input type="text" id="id_call_time" name="call_time" class="form-control form-control-xs" placeholder="Call Time" readonly />	
-  </div>
 
 
-  <div class="col-2">
-  	<div class="input-group">
-  	<span style="font-size:0.9rem;padding:3px 0 0 0;"><b>Call Amount</b>&nbsp;</span>
-    <select id="id_call_amount_option" class="form-control form-control-xs">
-	  <option value="0" selected>0 บาท</option>
-	  <option value="1">1 บาท</option>
-	  <option value="2">2 บาท</option>
-	  <option value="3">3 บาท</option>
-	  <option value="4">4 บาท</option>
-	  <option value="5">5 บาท</option>	  
-    </select>
-	</div>
-  </div>
 
-  <div class="col-4">&nbsp;</div>
+								<div class="row">
 
-</div>
+								  <div class="col-3">   
+								  	<div class="input-group">
+										<span style="font-size:0.9rem;padding:3px 0 0 0;"><b>Late From</b>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+								  		<!--<input type="datetime" id="id_late_from" name="late_from" class="form-control form-control-xs" placeholder="dd-mm-yyyy" value="" min="1997-01-01" max="2030-12-31" />-->
+								  		<input type="text" id="id_late_from" name="late_from" class="form-control form-control-xs" data-inputmask="'mask': '99/99/9999 99:99'" />
+								  	</div>
+								  </div>
 
+								  <div class="col-3">   
+								  	<div class="input-group">
+										<span style="font-size:0.9rem;padding:3px 0 0 0;"><b>Late To</b>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+								  		<input type="text" id="id_late_to" name="late_to" class="form-control form-control-xs" data-inputmask="'mask': '99/99/9999 99:99'" />
+								  		<!--<input type="datetime-local" id="id_late_to" name="late_to" class="form-control form-control-xs" />-->
+								  	</div>
+								  </div>
 
 
+								  <div class="col-2">
+								  	<div class="input-group text-left">
+								  	<span style="font-size:0.9rem;padding:3px 0 0 0;"><b>Reason</b>&nbsp;&nbsp;&nbsp;</span>&nbsp;
+								    <select id="id_late_reason_option" class="form-control form-control-xs">
+								    </select>
+									</div>
+								  </div>
 
+								  <div class="col-2">
+									<div class="input-group">
+								  		<span style="font-size:0.9rem;padding:3px 0 0 0;"><b>Total Time (hrs)</b>&nbsp;&nbsp;</span>
+								  		<input type="number" id="id_late_hour" name="late_hour" class="form-control form-control-xs" />&nbsp;&nbsp;
+								  	</div>
+								  </div>
 
+								  <div class="col-2">
+									<div class="input-group">  				
+										<label class="text-primary" style="font-size:0.9rem;padding:0 0 0 0;cursor: pointer">
+										<input class="" id="id_late_full_paid_check" name="late_full_paid_check" type="checkbox" />&nbsp;Full Paid</label>
 
+								  	</div>
+								  </div>
 
-<div class="row" style="padding:0 0 2px 0;">
-  <div class="col-12"></div>
-</div>
 
+								</div>
 
 
 
 
-<div class="row">
+								<div class="row" style="padding:0 0 2px 0;">
+								  <div class="col-12"></div>
+								</div>
 
-  <div class="col-3">   
-  	<div class="input-group">
-		<span style="font-size:0.9rem;padding:3px 0 0 0;"><b>Late From</b>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-  		<!--<input type="datetime" id="id_late_from" name="late_from" class="form-control form-control-xs" placeholder="dd-mm-yyyy" value="" min="1997-01-01" max="2030-12-31" />-->
-  		<input type="text" id="id_late_from" name="late_from" class="form-control form-control-xs" data-inputmask="'mask': '99/99/9999 99:99'" />
-  	</div>
-  </div>
 
-  <div class="col-3">   
-  	<div class="input-group">
-		<span style="font-size:0.9rem;padding:3px 0 0 0;"><b>Late To</b>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-  		<input type="text" id="id_late_to" name="late_to" class="form-control form-control-xs" data-inputmask="'mask': '99/99/9999 99:99'" />
-  		<!--<input type="datetime-local" id="id_late_to" name="late_to" class="form-control form-control-xs" />-->
-  	</div>
-  </div>
 
+								<div class="row">
 
-  <div class="col-2">
-  	<div class="input-group text-left">
-  	<span style="font-size:0.9rem;padding:3px 0 0 0;"><b>Reason</b>&nbsp;&nbsp;&nbsp;</span>&nbsp;
-    <select id="id_late_reason_option" class="form-control form-control-xs">
-    </select>
-	</div>
-  </div>
+								  <div class="col-6 float-left">
 
-  <div class="col-2">
-	<div class="input-group">
-  		<span style="font-size:0.9rem;padding:3px 0 0 0;"><b>Total Time (hrs)</b>&nbsp;&nbsp;</span>
-  		<input type="number" id="id_late_hour" name="late_hour" class="form-control form-control-xs" />&nbsp;&nbsp;
-  	</div>
-  </div>
+								  	<div class="input-group">
+										<span style="font-size:0.9rem;padding:0 0 0 0;width:75px;"><b>Job Type</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+								        <select id="id_job_type_option" class="form-control form-control-xs" readonly>
+										  <option value="00" selected>00 :No</option>
+								        </select>								
+								  		
+								  	</div>
 
-  <div class="col-2">
-	<div class="input-group">  				
-		<label class="text-primary" style="font-size:0.9rem;padding:0 0 0 0;cursor: pointer">
-		<input class="" id="id_late_full_paid_check" name="late_full_paid_check" type="checkbox" />&nbsp;Full Paid</label>
+								  	<!--  	
+								  	<div class="input-group">		
+										<span style="font-size:0.9rem;padding:0 0 0 0;"><b>Special Benefits</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+								        <select id="id_job_type_option" class="form-control form-control-xs" readonly>
+										  <option value="00" selected>No special benefit</option>
+								        </select>								  		
+								  	</div>
+									-->
 
-  	</div>
-  </div>
+								  </div>
 
+								  <div class="col-6 float-right">
+									<div class="input-group">
+								  		<span style="font-size:0.9rem;padding:3px 0 0 0;"><b>Remark</b>&nbsp;&nbsp;&nbsp;</span>
+								  		<input type="text" id="id_remark" name="remark" class="form-control form-control-xs text-right float-right" />
+								  	</div>
+								  </div>
 
-</div>
+								  <!--<div class="col-6">&nbsp;</div>-->
 
+								</div>
 
 
 
-<div class="row" style="padding:0 0 2px 0;">
-  <div class="col-12"></div>
-</div>
+								  <input type="hidden" id="id_add_new_record_status" name="add_new_record_status" value=0 />
 
+								</form>
 
 
-<div class="row">
 
-  <div class="col-6 float-left">
+							</div>
+						
+						  </div>
 
-  	<div class="input-group">
-		<span style="font-size:0.9rem;padding:0 0 0 0;width:75px;"><b>Job Type</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-        <select id="id_job_type_option" class="form-control form-control-xs" readonly>
-		  <option value="00" selected>00 :No</option>
-        </select>								
-  		
-  	</div>
+						</div>
 
-  	<!--  	
-  	<div class="input-group">		
-		<span style="font-size:0.9rem;padding:0 0 0 0;"><b>Special Benefits</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-        <select id="id_job_type_option" class="form-control form-control-xs" readonly>
-		  <option value="00" selected>No special benefit</option>
-        </select>								  		
-  	</div>
-	-->
+			  			<!-- END -->
 
-  </div>
+                  </div>
 
-  <div class="col-6 float-right">
-	<div class="input-group">
-  		<span style="font-size:0.9rem;padding:3px 0 0 0;"><b>Remark</b>&nbsp;&nbsp;&nbsp;</span>
-  		<input type="text" id="id_remark" name="remark" class="form-control form-control-xs text-right float-right" />
-  	</div>
-  </div>
 
-  <!--<div class="col-6">&nbsp;</div>-->
 
-</div>
 
+                  <!-- Contract / Schedule Tab -->
+                  <div class="tab-pane fade" id="custom-tabs-one-profile" role="tabpanel" aria-labelledby="custom-tabs-one-profile-tab">
 
-
-					  <input type="hidden" id="id_add_new_record_status" name="add_new_record_status" value=0 />
-
-					</form>
-
-
-
-				</div>
-			
-				<!--
-				<div class="col-md-2 float-left">
-					<font size='2em;'> 
-					<table class="table table-sm table-bordered">
-					  <thead>
-					    <tr>
-					      <td colspan="4" class="text-center bg-info"><b>Normal</b></td>
-					    </tr>
-					  </thead>
-					  <tbody>
-					    <tr>
-					      <td class="text-center"><b>D</b>&nbsp;&nbsp;<i class="fas fa-sun"></i></td>
-					      <td class="text-center"><div id="totalNDP">0</div></td>
-					      <td class="text-center"><div id="totalNDA">0</div></td>
-					      <td class="text-center text-success"><div id="totalNDM">0</div></td>
-					    </tr>
-					    <tr>
-					      <td class="text-center"><b>N</b>&nbsp;&nbsp;<i class="fas fa-moon"></i></td>
-					      <td class="text-center"><div id="totalNNP">0</div></td>
-					      <td class="text-center"><div id="totalNNA">0</div></td>
-					      <td class="text-center text-success"><div id="totalNNM">0</div></td>
-					    </tr>
-
-					  </tbody>
-					</table>
-
-				</div>
-				-->
-
-			  </div>
-
-			</div>
-			
-
-
-
-		        	</div>
-
-
-
-
-
-
-
-
-
-
-		        	<!-- TAB 2 -->
-		        	<!-- Contract / Schedule Information -->
-		            <div class="tab-pane fade show" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
 
 						<div class="container pt-3 col-12">
 
@@ -973,21 +894,29 @@
 
 						</div>
 
-		        	</div>
-
-		        </div>
 
 
-
-			  </div>
-			  <!-- /.card-body -->
-
-			</div>
-			<!-- /.card -->
+                  </div>
 
 
-			<!-- TEST -->					
-    		<!-- EMPLOYEE DETAIL -->
+
+
+                </div>
+              </div>
+              <!-- /.card -->
+
+            </div>
+
+          </div>
+
+
+
+
+
+          <!--<div style="height:1000px;"></div>-->
+
+
+
     		
 
 			<!-- END -->
