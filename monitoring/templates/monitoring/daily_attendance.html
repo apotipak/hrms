@@ -45,6 +45,7 @@
 {% endblock %}
 
 {% block content %}
+
  	<!-- Content Wrapper. Contains page content -->
 	<div class="content-wrapper" style="margin:0px; padding:0 0 0 0; background-color: #353538;">
 	
@@ -61,6 +62,7 @@
     	<section class="content pt-1" style="padding:0 3px 0 3px;">
 
 
+    		
     		<!-- SEARCH FORM START -->
 			<!--<div class="card card-outline card-default" id="daily_attendance_search_card" style="position: fixed; top:50; width: 100%; z-index: 1;">-->
 			<div class="card card-outline card-default text-light" id="daily_attendance_search_card" style="background-color: #353538;">
@@ -142,8 +144,7 @@
                 </ul>
 
               </div>
-
-
+              
               <div class="card-body text-dark" style="padding:5px !important; border-right: 5px solid #257638; border-color: #257638; border-left: 5px solid #257638; border-bottom: 5px solid #257638; background-color: #dae2dc;">
                 <div class="tab-content" id="custom-tabs-one-tabContent">                  
 					<div class="tab-pane fade show active" id="custom-tabs-one-home" role="tabpanel" aria-labelledby="custom-tabs-one-home-tab">
@@ -194,18 +195,18 @@
 							</div>
 
 
-							{% comment %}
+
 			            	<div id="id_employee_list" class="table-responsive table-striped" >
 
 								<font size='2em;'>
 																
 								<table id='employee_list_table' class='table table-sm' style="margin:0;">
-								  <thead>
+								  <thead class="bg-secondary">
 								    <tr>
-								      <th scope='col' class='d-none' nowrap>Absent Status</th>
+								      <th scope='col' class='d-none text-center' nowrap>Absent Status</th>
 								      <th scope="col">&nbsp;</th>								      
 								      <th scope='col' class='text-center'>No</th>								  	  								  		
-								      <th scope='col' nowrap>Emp ID.</th>
+								      <th scope='col' nowrap>Emp ID</th>
 								      <th scope='col'>Name</th>
 
 								      <th scope="col">Rank</th>
@@ -217,17 +218,17 @@
 								      <th scope="col" nowrap>Rel. ID</th>
 								      <th scope="col">Name</th>
 								      <th scope='col' class='d-none'>Tel Status</th>
-								      <th scope="col">TEL</th>
-								      <th scope="col" nowrap>Call Time</th>
+								      <th scope="col">Tel</th>
+								      <th scope="col" nowrap>Tel Time</th>
 								      
-								      <th scope="col" nowrap>Call Amt</th>
-								      <th scope="col" nowrap>Call Paid</th>
+								      <th scope="col" nowrap>Tel Amt</th>
+								      <th scope="col" nowrap>Tel Paid</th>
 								      <th scope="col">Spare</th>
 								      <th scope="col">Wage</th>
 								      <th scope="col" nowrap>Upd Date</th>
 
 								      <th scope="col" nowrap>Upd By</th>
-								      <th scope="col" nowrap>Upd Flag.</th>								      
+								      <th scope="col" nowrap>Upd Flag</th>								      
 
 								      <th scope="col" class='d-none' nowrap>Upd Gen</th>
 								      <th scope="col" class='d-none' nowrap>Remark</th>
@@ -292,7 +293,12 @@
 								</table>
 								</font>
 							</div>
-							{% endcomment %}
+
+
+
+
+
+
 
 						</div>
 						<!-- END -->
@@ -359,9 +365,10 @@
 			  			<!-- END -->
 
 
-			  			<!-- START -->
-			  			{% comment %}
-						<div class="card daily-attendance col-12">
+			  			
+			  			<!-- EMPLOYEE FORM -->
+			  			<!-- START -->			  			
+						<div class="card daily-attendance col-12" style="background-color: #dae2dc;">
 
 						  <div class="card-header" style="padding:0;">
 						    
@@ -652,7 +659,7 @@
 						  </div>
 
 						</div>
-						{% endcomment %}
+						
 			  			<!-- END -->
 
                   </div>
@@ -1714,16 +1721,6 @@ $("#id_late_hour").click( function() {
  		$("#id_emp_id").attr("disabled", true);
  		$("#id_sent_spare").attr("disabled", true);
 
- 		/*
-		result = "";
-		result += "<option value='0' selected></option>";
-		result += "<option value='099'>99   # DAY OFF ########</option>";
-		result += "<option value='0999'>999   # ANOTHER SITE #</option>";
-		var $el = $("#id_shift_option");
-		$el.empty();
-		$el.append(result);
-		*/
-
  		$("#id_shift_option").attr("disabled", true);
 
  		$("#emp_id_lookup_button").attr("disabled", true);
@@ -1731,12 +1728,6 @@ $("#id_late_hour").click( function() {
  		$("#reset_button").attr("disabled", true);
  		$("#save_button").attr("disabled", true);
  		$("#delete_button").attr("disabled", true);
-
- 		// ironman
- 		//$("#id_absent_check").attr("disabled", true);
- 		//$("#id_absent_check").prop("checked", false); 		 		
-		//$("#id_late_check").attr("disabled", true);
- 		//$("#id_phone_check").attr("disabled", true);
 
  		$("#id_emp_id").attr("disabled", true);
  		$("#emp_id_lookup_button").attr("disabled", true);
