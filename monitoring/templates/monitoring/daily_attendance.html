@@ -145,14 +145,14 @@
 
               </div>
               
-              <div class="card-body text-dark" style="padding:5px !important; border-right: 5px solid #257638; border-color: #257638; border-left: 5px solid #257638; border-bottom: 5px solid #257638; background-color: #dae2dc;">
+              <div class="card-body text-dark" style="padding:5px !important; border-right: 5px solid #257638; border-color: #257638; border-left: 5px solid #257638; border-bottom: 5px solid #257638; background-color: #e9ecef;">
                 <div class="tab-content" id="custom-tabs-one-tabContent">                  
 					<div class="tab-pane fade show active" id="custom-tabs-one-home" role="tabpanel" aria-labelledby="custom-tabs-one-home-tab">
 
 
 						<!-- LEFT COLUMN -  CUSTOMER LIST TABLE -->
 						<!-- START -->
-						<div class="col-10 float-left p-10">
+						<div class="col-10 float-left" style="padding: 0 5px 0 0 !important;">
 							
 
 							<div class="col-12 p-0">
@@ -370,9 +370,9 @@
 			  			<!-- START -->			  			
 						<div class="card daily-attendance col-12" style="background-color: #dae2dc;">
 
-						  <div class="card-header" style="padding:0;">
+						  <div class="card-header" style="padding: 5px 0 0 0 !important;">
 						    
-						    <div class="col-12 float-left">
+						    <div class="col-12 float-left"> 
 					            <div class="form-check d-inline">
 					              <label><input class="form-check-input" id="id_absent_check" name="absent_check" type="checkbox" /><span class="text-primary" style="cursor: pointer">Absent</span></label>&nbsp;&nbsp;&nbsp;&nbsp;
 					            </div>
@@ -396,7 +396,7 @@
 
 
 
-						  <div class="card-body" style="padding:10px 0 0 0;">
+						  <div class="card-body" style="padding: 10px 0 0 0;">
 
 								<form class="form-row" id="dailyAttendanceDataEntryForm">
 								{% csrf_token %}
@@ -404,11 +404,11 @@
 						  	<div class="col-md-12 float-left">
 
 
-								<div class="row">
+								<div class="row" style="padding: 0 5px 0 5px;">
 
 								  <div class="col-2">   
 									<div class="input-group">
-										<span style="font-size:0.9rem;padding:3px 0 0 0; width:75px;"><b>Employee</b>&nbsp;&nbsp;&nbsp;</span>
+										<span style="font-size:0.9rem;padding:3px 0 0 0; width:78px;"><b>Employee</b>&nbsp;&nbsp;&nbsp;</span>
 								  		<input type="number" id="id_emp_id" name="id_emp_id" class="form-control form-control-xs input-xs" placeholder="Emp ID" />
 								  		<button id="emp_id_lookup_button" type="button" class="btn btn-outline-primary btn-xs" data-toggle="modal" data-url=""><i class="fas fa-search fa-sm"></i></button>
 									</div>	
@@ -441,14 +441,7 @@
 								</div>
 
 
-
-								<div class="row" style="padding:0 0 2px 0;">
-								  <div class="col-12"></div>
-								</div>
-
-
-
-								<div class="row">
+								<div class="row" style="padding: 0 5px 0 5px;">
 
 								  <div class="col-2">   
 									<div class="input-group">
@@ -456,7 +449,7 @@
 										<label class="text-primary" style="font-size:0.9rem;padding:0 0 0 0;cursor: pointer">
 										<input class="" id="id_relief_check" name="relief_check" type="checkbox" />&nbsp;&nbsp;Relief by&nbsp;</label>
 										-->
-										<label class="text-primary" style="font-size:0.9rem;padding:0 0 0 0;cursor: pointer;width:75px;">
+										<label class="text-primary" style="font-size:0.9rem;padding:0 0 0 0;cursor: pointer;width:78px;">
 										<input class="" id="id_relief_check" name="relief_check" type="checkbox" />&nbsp;Relief by&nbsp;</label>
 										<input type="number" id="id_relief_emp_id" name="id_relief_emp_id" class="form-control form-control-xs" placeholder="Relief ID" readonly="" />
 										<button id="relief_emp_id_lookup_button" type="button" class="btn btn-outline-primary btn-xs" data-toggle="modal" data-url="" disabled=""><i class="fas fa-search fa-sm"></i></button>
@@ -491,21 +484,11 @@
 
 
 
-
-
-								<div class="row" style="padding:0 0 2px 0;">
-								  <div class="col-12"></div>
-								</div>
-
-
-
-
-
-								<div class="row">
+								<div class="row" style="padding: 0 5px 0 5px;">
 
 								  <div class="col-2">   
 									<div class="input-group">
-										<span style="font-size:0.9rem;padding:3px 0 0 0;"><b>Sent spare</b>&nbsp;&nbsp;&nbsp;</span>
+										<span style="font-size:0.9rem;padding:3px 0 0 0; width: 78px;"><b>Sent spare</b>&nbsp;&nbsp;&nbsp;</span>
 								  		<input type="number" id="id_sent_spare" name="sent_spare" class="form-control form-control-xs" />
 									</div>	
 								  </div>
@@ -558,11 +541,11 @@
 
 
 
-								<div class="row">
+								<div class="row" style="padding: 0 5px 0 5px;">
 
 								  <div class="col-3">   
 								  	<div class="input-group">
-										<span style="font-size:0.9rem;padding:3px 0 0 0;"><b>Late From</b>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+										<span style="font-size:0.9rem;padding:3px 0 0 0; width: 78px;"><b>Late From</b>&nbsp;&nbsp;&nbsp;&nbsp;</span>
 								  		<!--<input type="datetime" id="id_late_from" name="late_from" class="form-control form-control-xs" placeholder="dd-mm-yyyy" value="" min="1997-01-01" max="2030-12-31" />-->
 								  		<input type="text" id="id_late_from" name="late_from" class="form-control form-control-xs" data-inputmask="'mask': '99/99/9999 99:99'" />
 								  	</div>
@@ -604,20 +587,12 @@
 								</div>
 
 
-
-
-								<div class="row" style="padding:0 0 2px 0;">
-								  <div class="col-12"></div>
-								</div>
-
-
-
-								<div class="row">
+								<div class="row" style="padding: 0 5px 5px 5px;">
 
 								  <div class="col-6 float-left">
 
 								  	<div class="input-group">
-										<span style="font-size:0.9rem;padding:0 0 0 0;width:75px;"><b>Job Type</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+										<span style="font-size:0.9rem;padding:0 0 0 0;width:78px;"><b>Job Type</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 								        <select id="id_job_type_option" class="form-control form-control-xs" readonly>
 										  <option value="00" selected>00 :No</option>
 								        </select>								
@@ -641,8 +616,6 @@
 								  		<input type="text" id="id_remark" name="remark" class="form-control form-control-xs text-right float-right" />
 								  	</div>
 								  </div>
-
-								  <!--<div class="col-6">&nbsp;</div>-->
 
 								</div>
 
