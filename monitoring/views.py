@@ -8016,12 +8016,28 @@ def ajax_save_daily_attendance_check_rule_1(request):
 
 		Gto = str(Gto).zfill(4)
 		Sfrom = str(Sfrom).zfill(4)
+		
 		Hst = str(Gto)[:2] + ":" + str(Gto)[2:]
+		# print("Hst = ", Hst)
+
 		Hen = str(Sfrom)[:2] + ":" + str(Sfrom)[2:]
-		HDiff = datetime.datetime.strptime(Hst, '%H:%M') - datetime.datetime.strptime(Hen, '%H:%M')					
+		# print("Hen = ", Hen)
+
+		HDiff = datetime.datetime.strptime(Hst, '%H:%M') - datetime.datetime.strptime(Hen, '%H:%M')
+		# print("HDiff 1 = ", HDiff)
+
 		mdiff = int(HDiff.total_seconds() % 60)					
 		mmdiff = 0.5 if mdiff >= 30 else 0
+
+		HDiff = str(HDiff)[:2]
+		if HDiff.isdigit():
+			print("HDiff 2 = ", HDiff)
+		else:
+			HDiff = str(HDiff)[:1]
+			# print("HDiff 3 = ", HDiff)	
+
 		HDiff = abs(int(str(HDiff)[:2]))
+
 		Timecross = HDiff + mmdiff
 		
 		if int(Gfrom) < int(Sfrom):
