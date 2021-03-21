@@ -5076,7 +5076,7 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 			# batman
 			# ตรวจสอบว่าพนักงานลาออกหรือไม่
 			if employeeobj[2] is not None: #and employeeobj[3] != 1:
-				return False, "พนักงานคนนี้ไม่สามารถนำมาจัดตารางเวรได้เนื่องจากลาออกตั้งแต่วันที่<br><b>" + str(employeeobj[2].strftime("%d/%m/%Y")) + "</b>"
+				return False, "พนักงานคนนี้ไม่สามารถนำมาจัดตารางเวรได้เนื่องจากลาออกตั้งแต่วันที่ <b>" + str(employeeobj[2].strftime("%d/%m/%Y")) + "</b>"
 
 			# return False, "TEST1"
 
