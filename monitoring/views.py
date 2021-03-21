@@ -2663,11 +2663,28 @@ def ajax_get_attendance_information(request):
 		if selected_attendance_date == today_date:
 			cursor.execute("select distinct * from v_dlyplan where cnt_id=%s and dly_date=convert(datetime,%s,20) and customer_flag<>'D' order by sch_shift, emp_id", [cnt_id, curDate])
 		else:
-			cursor.execute("select distinct * from v_dlyplan where cnt_id=%s and dly_date=convert(datetime,%s,20) and customer_flag<>'D' order by sch_shift, emp_id", [cnt_id, curDate])
-			# cursor.execute("select distinct * from v_hdlyplan where cnt_id=%s and dly_date=convert(datetime,%s,20) order by sch_shift, emp_id", [cnt_id, curDate])
+			# batman
+			gen_chk = 0	
+			end_chk = 0
+			pro_chk = 0		
+			sql = "select date_chk,gen_chk,end_chk,pro_chk from t_date where date_chk='" + str(daily_attendance_date) + "'"
+			cursor1 = connection.cursor()
+			cursor1.execute(sql)	
+			t_date_obj = cursor1.fetchall()			
+			# ตรวจสอบค่า gen_chk, end_chk, prp_chk ของวันที่ต้องการดึงข้อมูล
+			if (t_date_obj is not None):
+				if len(t_date_obj)>0:
+					gen_chk = t_date_obj[0][1]
+					end_chk = t_date_obj[0][2]
+					pro_chk = t_date_obj[0][3]
 
+			if end_chk==1:
+				cursor.execute("select distinct * from v_hdlyplan where cnt_id=%s and dly_date=convert(datetime,%s,20) order by sch_shift, emp_id", [cnt_id, curDate])				
+			else:
+				cursor.execute("select distinct * from v_dlyplan where cnt_id=%s and dly_date=convert(datetime,%s,20) and customer_flag<>'D' order by sch_shift, emp_id", [cnt_id, curDate])
+			
 		rows = cursor.fetchall()
-		cursor.close
+		cursor.close()
 		if len(rows)>0:
 			for index in range(len(rows)):				
 				shf_type = rows[index][2]
