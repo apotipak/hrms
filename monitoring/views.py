@@ -2663,7 +2663,8 @@ def ajax_get_attendance_information(request):
 		if selected_attendance_date == today_date:
 			cursor.execute("select distinct * from v_dlyplan where cnt_id=%s and dly_date=convert(datetime,%s,20) and customer_flag<>'D' order by sch_shift, emp_id", [cnt_id, curDate])
 		else:
-			cursor.execute("select distinct * from v_hdlyplan where cnt_id=%s and dly_date=convert(datetime,%s,20) order by sch_shift, emp_id", [cnt_id, curDate])
+			cursor.execute("select distinct * from v_dlyplan where cnt_id=%s and dly_date=convert(datetime,%s,20) and customer_flag<>'D' order by sch_shift, emp_id", [cnt_id, curDate])
+			# cursor.execute("select distinct * from v_hdlyplan where cnt_id=%s and dly_date=convert(datetime,%s,20) order by sch_shift, emp_id", [cnt_id, curDate])
 
 		rows = cursor.fetchall()
 		cursor.close
