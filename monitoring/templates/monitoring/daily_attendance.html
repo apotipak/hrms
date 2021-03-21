@@ -1796,7 +1796,7 @@ $("#id_late_hour").click( function() {
 
 			result1 = "";
 
-			for(i=0; i<employee_list.length; i++) {				
+			for(i=0; i<employee_list.length; i++) {					
 				emp_id = employee_list[i]["emp_id"];
 				emp_fname_th = employee_list[i]["emp_fname_th"];
 				emp_lname_th = employee_list[i]["emp_lname_th"];
@@ -1837,8 +1837,7 @@ $("#id_late_hour").click( function() {
 				update_by_user_first_name = employee_list[i]["update_by_user_first_name"];
 				emp_leave_status = employee_list[i]["emp_leave_status"];
 
-
-
+				sch_shift = employee_list[i]["sch_shift"];
 
 		    	if(emp_leave_status==1)
 					result += "    <tr class='text-danger'>";
@@ -1851,7 +1850,11 @@ $("#id_late_hour").click( function() {
 				
 				// 1. Absent sign
 				if(absent==1) {
-					result += "	     <td text-align='center' vertical-align='middle'><font size='1.8em;' class='text-danger'><i class='fas fa-times fa-xs'></i></font></td>";
+					if (sch_shift=="99" || sch_shift=="999")
+						result += "	     <td text-align='center' vertical-align='middle'><font size='1.8em;' style='color: #c39e2e;'><i class='fas fa-xs fa-lock'></i></font></td>";
+					else
+						result += "	     <td text-align='center' vertical-align='middle'><font size='1.8em;' class='text-danger'><i class='fas fa-times fa-xs'></i></font></td>";
+					
 				} else {
 					result += "	     <td vertical-align='middle'><font size='1.8em;' class='text-success'><i class='fas fa-check fa-xs'></i></font></td>";
 				}
