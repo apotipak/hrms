@@ -4412,6 +4412,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 	# Check #7
 	is_pass, message = chkValidInput(2,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,ui_ot_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id)
 	
+	# return False, message
 
 	# YODA
 	# return False, message
@@ -5058,19 +5059,26 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 
 		# เช็คห้ามคีย์รหัสที่ไม่มีสิทธ์ลงเวร
 		sql = "select emp_id,upd_flag,emp_term_date,sch_active from v_employee where emp_id=" + str(emp_id)
+		print("SQL: ", sql)
+
 		cursor = connection.cursor()
 		cursor.execute(sql)
 		employeeobj = cursor.fetchone()
 		cursor.close()
+
+
 		if employeeobj is not None:
 
 			# ตรวจสอบว่าพนักงานถูกลบออกจากระบบไปแล้วหรือไม่
 			if employeeobj[1] == 'D' and employeeobj[3] != 1:
 				return False, "พนักงานคนนี้ไม่สามารถนำมาจัดตารางเวรได้เนื่องจากพนักงานโดนลบจากระบบ"
 
+			# batman
 			# ตรวจสอบว่าพนักงานลาออกหรือไม่
-			if employeeobj[2] is not None and employeeobj[3] != 1:
-				return False, "พนักงานคนนี้ไม่สามารถนำมาจัดตารางเวรได้เนื่องจากลาออกตั้งแต่วันที่ <b>" + str(employeeobj[2]) + "</b>"
+			if employeeobj[2] is not None: #and employeeobj[3] != 1:
+				return False, "พนักงานคนนี้ไม่สามารถนำมาจัดตารางเวรได้เนื่องจากลาออกตั้งแต่วันที่<br><b>" + str(employeeobj[2].strftime("%d/%m/%Y")) + "</b>"
+
+			# return False, "TEST1"
 
 			# กรณีไม่มีคนเข้าเวรแทนให้ดูจากไม่มีการเลือกทั้ง Absent และ Relief หรือไม่ ถ้าใช่ให้ตรวจสอบว่าพนักงานลาออกหรือยัง
 			if (ui_absent_status==0) and (ui_relief_status==0):
