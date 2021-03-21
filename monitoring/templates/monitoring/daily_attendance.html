@@ -3522,6 +3522,8 @@ $("#id_late_hour").click( function() {
 		$("#id_phone_check").show();
 		$("#id_phone_check").next("label").show();
 
+		$('#id_emp_status').css('border-color', '');		    			
+		$('#id_emp_status').css('background-color', '');		
 
 		current_shift_option = $("#id_shift_option").val();
 		$("#dailyAttendanceDataEntryForm").trigger("reset");
@@ -4275,7 +4277,10 @@ $("#id_late_hour").click( function() {
 									$("#id_relief_emp_id").css('border-color','');
 									$("#id_relief_emp_id").css('border-style','');
 									$("#id_late_hour").css('border-color','');
-									$("#id_late_hour").css('border-style','');									
+									$("#id_late_hour").css('border-style','');
+
+									$('#id_emp_status').css('border-color', '');		    			
+									$('#id_emp_status').css('background-color', '');																
 
 					    		} else {
 					    			alert("error");
@@ -4614,6 +4619,7 @@ $("#id_late_hour").click( function() {
 						}
 					},
 				});
+
 	    	}    		
     	}
 
@@ -5076,7 +5082,7 @@ $("#id_late_hour").click( function() {
 
 		$('#id_emp_status').css('border-color', '');		    			
 		$('#id_emp_status').css('background-color', '');
-		    			
+
     	$("#id_cus_id").focus();
     	$("#id_cus_id").select();
     });

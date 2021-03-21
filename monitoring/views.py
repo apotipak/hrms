@@ -5100,7 +5100,10 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 				emp_term_date = employeeobj[2].strftime("%Y-%m-%d")
 				daily_attendance_date = dly_date.strftime("%Y-%m-%d")
 
-				if daily_attendance_date == emp_term_date:
+				print("emp_term_date : ", emp_term_date)
+				print("daily_attendance_date : ", daily_attendance_date)
+
+				if datetime.datetime.strptime(emp_term_date, '%Y-%m-%d') <= datetime.datetime.strptime(daily_attendance_date, '%Y-%m-%d'):				
 					return False, "พนักงานคนนี้ไม่สามารถนำมาจัดตารางเวรได้เนื่องจากลาออกตั้งแต่วันที่ <b>" + str(employeeobj[2].strftime("%d/%m/%Y")) + "</b>"
 
 
