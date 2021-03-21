@@ -5093,8 +5093,16 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 
 			# batman
 			# ตรวจสอบว่าพนักงานลาออกหรือไม่
-			if employeeobj[2] is not None: #and employeeobj[3] != 1:
-				return False, "พนักงานคนนี้ไม่สามารถนำมาจัดตารางเวรได้เนื่องจากลาออกตั้งแต่วันที่ <b>" + str(employeeobj[2].strftime("%d/%m/%Y")) + "</b>"
+			# if employeeobj[2] is not None: #and employeeobj[3] != 1:
+			#	return False, "พนักงานคนนี้ไม่สามารถนำมาจัดตารางเวรได้เนื่องจากลาออกตั้งแต่วันที่ <b>" + str(employeeobj[2].strftime("%d/%m/%Y")) + "</b>"
+
+			if employeeobj[2] is not None:
+				emp_term_date = employeeobj[2].strftime("%Y-%m-%d")
+				daily_attendance_date = dly_date.strftime("%Y-%m-%d")
+
+				if daily_attendance_date == emp_term_date:
+					return False, "พนักงานคนนี้ไม่สามารถนำมาจัดตารางเวรได้เนื่องจากลาออกตั้งแต่วันที่ <b>" + str(employeeobj[2].strftime("%d/%m/%Y")) + "</b>"
+
 
 			# return False, "TEST1"
 
@@ -5568,8 +5576,8 @@ def editRecord_old(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_de
 	# กรณีพนักงานลาและมีการส่งคนใหม่เข้าเวรแทน
 	if absent_status==1 and relief_status==1:
 				
-		today_date = settings.TODAY_DATE.strftime("%Y-%m-%y")
-		daily_attendance_date = dly_date.strftime("%Y-%m-%y")
+		today_date = settings.TODAY_DATE.strftime("%Y-%m-%d")
+		daily_attendance_date = dly_date.strftime("%Y-%m-%d")
 
 		# print("today_date = " + str(today_date))
 		# print("daily_attendance_date = " + str(daily_attendance_date))
