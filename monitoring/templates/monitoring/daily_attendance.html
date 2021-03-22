@@ -2713,13 +2713,35 @@ $("#id_late_hour").click( function() {
 							$("#id_emp_rank").val(data.emp_rank);
 			    			$("#id_emp_dept").val(data.emp_dept);
 			    			$("#id_emp_status").val(data.emp_status);
+			    			$("#id_emp_join_date").val(data.emp_join_date);
+
+			    			/*
+			    			$("#id_emp_term_date").val(data.emp_term_date);
 			    			if(data.emp_status_id=='9') {		    				
 				    			$("#id_emp_status").animate({color:'red'}, 1000);
 			    			} else {
 			    				$("#id_emp_status").animate({color:'#495057'}, 1000);
 			    			}
-			    			$("#id_emp_join_date").val(data.emp_join_date);
-			    			$("#id_emp_term_date").val(data.emp_term_date);
+			    			*/
+			    			
+			    			// batman
+			    			if (data.emp_term_date!="") {
+				    			$("#id_emp_term_date").val(data.emp_term_date);
+				    			$("#id_emp_status").val(data.emp_status);
+
+				    			$('#id_emp_status').css('border-color', 'red');
+				    			$('#id_emp_status').css('background-color', '#e4cdcf');
+
+			    			} else {
+				    			$("#id_emp_term_date").val(data.emp_term_date);
+				    			$("#id_emp_status").val(data.emp_status);
+
+				    			$('#id_emp_status').css('border-color', '');		    			
+				    			$('#id_emp_status').css('background-color', '');
+			    			}
+
+
+
 
 			    			$("#save_button").attr("disabled", false);
 			    			$("#delete_button").attr("disabled", true);
@@ -2748,6 +2770,10 @@ $("#id_late_hour").click( function() {
 						    	autoremove: true,
 						  	});
 						  	*/
+
+							$('#id_emp_status').css('border-color', '');
+				    		$('#id_emp_status').css('background-color', '');
+
 							$.alert({
 							    title: 'Error',
 							    type: 'red',
@@ -2758,6 +2784,8 @@ $("#id_late_hour").click( function() {
 							    boxWidth: '38%',
 							    useBootstrap: false,
 							});
+
+
 
 			    		}
 
