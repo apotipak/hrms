@@ -83,12 +83,12 @@
 
 				  	<div class="row col-12">
 
-				  		<div class="float-left text-left col-5">
+				  		<div class="float-left text-left col-4">
 						    <div class="form-inline float-left">
 						        <label class="control-label">Date</label>&nbsp;&nbsp;				        
-						        <input type="text" class="form-control form-control-sm" style="border-radius: 0;" id="id_dly_date" placeholder="dd/mm/yyyy">&nbsp;&nbsp;
+						        <input type="text" class="form-control form-control-sm" style="border-radius: 0; width:85px;" id="id_dly_date" placeholder="dd/mm/yyyy">&nbsp;&nbsp;
 						    	<label class="control-label">Shift</label>&nbsp;&nbsp;
-						        <select id="id_search_shift_option" class="form-control form-control-sm" style="border-radius: 0;">
+						        <select id="id_search_shift_option" class="form-control form-control-sm" style="border-radius: 0; width: 100px;">
 								  <option value="0">---------</option>
 								  <option value="1" selected="">A | All</option>
 								  <option value="2">D | Day shift</option>
@@ -97,16 +97,16 @@
 						    </div>
 						</div>
 
-						<div class="float-right text-right col-7">
+						<div class="float-right text-right col-8">
 						    <div class="form-group float-right">
 			                      <input class="form-check-input" type="radio" name="searchOptions" id="id_search_by_cnt_id" value="1" checked>
 			                      <label class="control-label" for="id_search_by_cnt_id">Contract No</label>&nbsp;
-			                      <input type="number" min=0 maxlength="4" id="id_cus_id" class="form-control form-control-sm col-2" style="border-radius: 0;" value="" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">&nbsp;
+			                      <input type="number" min=0 maxlength="4" id="id_cus_id" class="form-control form-control-sm" style="border-radius: 0; width:80px;" value="" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">&nbsp;
 			                      <input type="number" min=0 maxlength="3" id="id_cus_brn" class="form-control form-control-sm col-1" style="border-radius: 0;" value="" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">&nbsp;
 			                      <input type="number" min=0 maxlength="3" id="id_cus_vol" class="form-control form-control-sm col-1" style="border-radius: 0;" value="" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">&nbsp;&nbsp;&nbsp;
 			                      <input class="form-check-input" type="radio" name="searchOptions" id="id_search_by_empid" style="border-radius: 0;" value="2" readonly>
 			                      <label class="control-label" for="id_search_by_empid">Employee ID</label>&nbsp;
-			                      <input type="text" id="id_search_emp_id" class="form-control form-control-sm col-2" style="border-radius: 0;" readonly>&nbsp;&nbsp;
+			                      <input type="text" id="id_search_emp_id" class="form-control form-control-sm col-2" style="border-radius: 0; width:80px;" readonly>&nbsp;&nbsp;
 
 			                      <button id="cancelDailyAttendanceButton" name="cancelDailyAttendanceButton" type="button" class="btn btn-sm btn-warning pull-right">Cancel</button>
 		                    </div>

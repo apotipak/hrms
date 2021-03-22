@@ -23,25 +23,22 @@
 
               <div class="input-group col-12">
 
-                {% comment %}
-                <div class="input-group-prepend pr-2 pt-1" style="width:100px;"><label>Contract No</label></div>
+               <div class="input-group-prepend pr-2 pt-1" style="width:100px;"><label>Contract No</label></div>
                 <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:60px;">From</span></div>
                 <input type="number" name="contract_number_from" class="form-control border-bottom-1 border-left-0 rounded-0 bg-white" style="width:50px;" value="0" id="id_contract_number_from">
                 <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:42px;">To</span></div>
                 <input type="number" name="contract_number_to" class="form-control datepicker border-bottom-1 border-left-0 rounded-0 bg-white" style="width:50px;" required="" id="id_contract_number_to" value="9999999999">
 
                 &nbsp;&nbsp;
-                {% endcomment %}
-
-
 
                 <div class="input-group-prepend pr-2 pt-1" style="width:85px;"><label>Work Date</label></div>
 
                 <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:67px;">From</span></div>
-                <input type="text" name="start_date" class="form-control datepicker border-bottom-1 border-left-0 rounded-0 bg-white" placeholder="dd-mm-yyyy" id="id_start_date" readonly="readonly">
+
+                <input type="text" name="start_date" class="form-control datepicker border-bottom-1 border-left-0 rounded-0 bg-white" placeholder="dd-mm-yyyy" required="" value="{{today_date}}" id="id_start_date" readonly="readonly">
                 
                 <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:42px;">To</span></div>
-                <input type="text" name="end_date" class="form-control datepicker border-bottom-1 border-left-0 rounded-0 bg-white" placeholder="dd-mm-yyyy" required="" id="id_end_date" value="{{end_date}}" readonly="readonly">
+                <input type="text" name="end_date" class="form-control datepicker border-bottom-1 border-left-0 rounded-0 bg-white" placeholder="dd-mm-yyyy" required="" id="id_end_date" value="{{today_date}}" readonly="readonly">
 
                 &nbsp;&nbsp;<a href="javascript:SearchFormSubmit();" class="btn btn-outline-info" role="button">SEARCH</a>
               </div>
@@ -56,11 +53,11 @@
 
       <div class="card-header" style="padding: 0 2px 10px 0;">
         <hr>
-        <h5 class="card-title"><i class="far fa-list-alt"></i>&nbsp;<b>GPM403 Daily Guard Performance Report</b></h5>
+        <h5 class="card-title"><i class="far fa-list-alt"></i>&nbsp;<b>GPM403 Daily Guard Performance by Contract</b> | <small>รายงานจำนวน รปภ.เรียงตามสัญญา</small></h5>
 
         <div class="float-right pb-1">
           <div class="d-flex flex-row-reverse">
-            <button class="btn btn-success btn-sm" onclick="export_to_excel()">&nbsp;<i class="far fa-file-excel"></i>&nbsp;&nbsp;Export to Excel</button>
+            <!--<button class="btn btn-success btn-sm" onclick="export_to_excel()">&nbsp;<i class="far fa-file-excel"></i>&nbsp;&nbsp;Export to Excel</button>-->
           </div>
         </div>
       <!-- /.card-header -->
@@ -84,32 +81,60 @@
 
 {% block javascript %}
   <script>
+
+  function showLoading() {
+    $.LoadingOverlaySetup({
+        background      : "rgba(0, 0, 0, 0.5)",
+        image           : "/static/img/logo-small.png",        
+        imageAnimation  : "1.5s fadein",
+        imageColor      : "#ffcc00"
+    });
+    $.LoadingOverlay("show"); 
+  }
+
+  function SearchFormSubmit() {    
+    var contract_number_from = $('#id_contract_number_from').val();
+    var contract_number_to = $('#id_contract_number_to').val();
+    var start_date = $('#id_start_date').val();
+    var end_date = $('#id_end_date').val(); 
+    
+    showLoading();
+
+    $.ajax({
+      url: "reports/control-room/daily-attend/gpm403-daily-guard-performance-by-contract/",
+      type: "POST",
+      data: {
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        contract_number_from: contract_number_from,
+        contract_number_to: contract_number_to,
+        start_date: start_date,
+        end_date: end_date,
+      },
+      success : function(data) {
+        alert("TODO");
+      }
+    });
+
+
+    $.LoadingOverlay("hide");
+  }  
+
   $(document).ready(function () {
 
-    var today = new Date();
-    var lastDate = new Date(today.getFullYear() + 0, 11, 31);
-
     $("#id_start_date").datepicker({
-      //dateFormat: "yy-mm-dd",
-      dateFormat: "dd-mm-yy",
-      //minDate: -45,
-      //maxDate: lastDate,
+      dateFormat: "dd/mm/yy",
       onSelect: function () {
-          var dt2 = $('#id_end_date');
-          var startDate = $(this).datepicker('getDate');      
-          startDate.setDate(startDate.getDate() + 120);
+          var startDate = $("#id_start_date").datepicker('getDate');      
+          startDate.setDate(getDate());
       }
     }).attr('readonly', 'readonly');
 
     $('#id_end_date').datepicker({
-      //dateFormat: "yy-mm-dd",
       dateFormat: "dd-mm-yy",
-      //minDate: 0,
-      //maxDate: lastDate
     }).attr('readonly', 'readonly');
 
-
   });
+
 
   </script>
 {% endblock %}      

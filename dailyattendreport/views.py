@@ -31,8 +31,18 @@ def GPM403DailyGuardPerformanceReport(request):
     db_server = settings.DATABASES['default']['HOST']
     project_name = settings.PROJECT_NAME
     project_version = settings.PROJECT_VERSION  
-    today_date = settings.TODAY_DATE
     
+    today_date = settings.TODAY_DATE.strftime("%d/%m/%Y")
+    contract_number_from = request.POST.get('contract_number_from')
+    contract_number_to = request.POST.get('contract_number_to')
+    start_date = request.POST.get('start_date')
+    end_date = request.POST.get('end_date')
+    print("contract_number_from = ", contract_number_from)
+    print("contract_number_to = ", contract_number_to)
+    print("start_date = ", start_date)
+    print("end_date = ", end_date)
+
+
     sql = "select emp_fname_th, emp_lname_th, shf_desc, dept_en, cnt_id, "
     sql += "emp_id, dly_date, sch_shift, dept_id, sch_rank, "
     sql += "absent, relieft_id, tel_man, tel_paid, ot, "
@@ -42,6 +52,7 @@ def GPM403DailyGuardPerformanceReport(request):
     sql += "and (cnt_id>=1486000001 and cnt_id<=1486000001) "
     sql += "and (dly_date>='2021-02-01' and dly_date<='2021-02-28') "
     sql += "ORDER BY cnt_id ASC, dly_date ASC, shf_desc ASC, emp_id ASC"
+    print("SQL : ", sql)
 
     return render(request, 'dailyattendreport/gpm403_daily_guard_performance_by_contract_report.html',
         {
@@ -51,5 +62,5 @@ def GPM403DailyGuardPerformanceReport(request):
         'db_server': db_server, 
         'today_date': today_date,
         'database': settings.DATABASES['default']['NAME'],
-        'host': settings.DATABASES['default']['HOST'],    
+        'host': settings.DATABASES['default']['HOST'],
         })
