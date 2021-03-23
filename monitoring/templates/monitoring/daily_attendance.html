@@ -1040,9 +1040,19 @@ $(document).ready(function(){
 
 });
 
+	$("#id_bulk_shift_list_option").change(function() {		
+		$("#id_bulk_shift_list_option").css('border-color', '');
+		$("#id_bulk_shift_list_option").css('background-color', '');
+		$("#id_bulk_shift_list_option").css('border-style', '');		
+	});
+
 	$("#bulk_shift_status_form").submit(function(e) {
 	    e.preventDefault();
-	    
+	    	   
+		$("#id_bulk_shift_list_option").css('border-color', '');
+		$("#id_bulk_shift_list_option").css('background-color', '');
+		$("#id_bulk_shift_list_option").css('border-style', '');
+
 	    var bulk_shift_id = $("#id_bulk_shift_list_option").val();
 	    var bulk_shift_status = $("#id_shift_status").val();
         var attendance_date = $('#id_dly_date').val();
@@ -1052,6 +1062,7 @@ $(document).ready(function(){
       	var search_shift_option = $("#id_search_shift_option").val();
       	      	      	
 	    if(bulk_shift_id=="0" || bulk_shift_id=="" || bulk_shift_status=="") {
+	    	/*
 			$.alert({
 			    title: 'Error',
 			    type: 'red',
@@ -1062,7 +1073,24 @@ $(document).ready(function(){
 			    boxWidth: '38%',
 			    useBootstrap: false,
 			});
-			
+			*/
+
+		  	$(document).Toasts('create', {
+		    	class: "bg-danger", 
+		    	title: "{% trans 'Error' %}",
+		    	subtitle: '',
+		    	autohide: true,
+		    	delay: 2000,
+		    	body: "กรุณาเลือกกะที่ต้องการใช้งาน",
+		    	autoDismiss: true,
+		    	close: true,
+		    	autoremove: true,
+		  	});  
+
+		  	$("#id_bulk_shift_list_option").css('border-color','red');
+		  	$("#id_bulk_shift_list_option").css('background-color', '#e4cdcf');
+			$("#id_bulk_shift_list_option").css('border-style','solid');
+
 	    	return false;  		
 	    } else {
 			$.ajax({
@@ -4618,7 +4646,7 @@ $("#id_late_hour").click( function() {
     	if(add_new_record_status==1) {
 
     		//alert("ADD NEW");
-    		
+
 	    	if(ui_absent_status==1) {
 	    		if(ui_relief_status==1) {
 		    		if(relief_emp_id=="") {
