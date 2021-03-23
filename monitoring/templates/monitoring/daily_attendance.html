@@ -2735,6 +2735,7 @@ $("#id_late_hour").click( function() {
 
 				    			$('#id_emp_status').css('border-color', 'red');
 				    			$('#id_emp_status').css('background-color', '#e4cdcf');
+								
 
 			    			} else {
 				    			$("#id_emp_term_date").val(data.emp_term_date);
@@ -2742,9 +2743,9 @@ $("#id_late_hour").click( function() {
 
 				    			$('#id_emp_status').css('border-color', '');		    			
 				    			$('#id_emp_status').css('background-color', '');
+				    			$('#id_relief_emp_status').css('border-color', '');
+								$('#id_relief_emp_status').css('background-color', '');
 			    			}
-
-
 
 
 			    			$("#save_button").attr("disabled", false);
@@ -2777,6 +2778,8 @@ $("#id_late_hour").click( function() {
 
 							$('#id_emp_status').css('border-color', '');
 				    		$('#id_emp_status').css('background-color', '');
+				    		$('#id_relief_emp_status').css('border-color', '');
+							$('#id_relief_emp_status').css('background-color', '');
 
 							$.alert({
 							    title: 'Error',
@@ -2870,7 +2873,7 @@ $("#id_late_hour").click( function() {
 				    useBootstrap: false,
 				});
 
-	    		$("#id_relief_emp_id").focus();``
+	    		$("#id_relief_emp_id").focus();
 	    		return false;
 
 			} else {
@@ -2919,7 +2922,7 @@ $("#id_late_hour").click( function() {
 			    			$("#id_relief_emp_fullname_th").val(data.emp_fname_th.trim() + "  " + data.emp_lname_th.trim());
 							$("#id_relief_emp_rank").val(data.emp_rank);
 			    			$("#id_relief_emp_dept").val(data.emp_dept);
-			    			$("#id_relief_emp_status").val(data.emp_status);
+			    			$("#id_relief_emp_status").val(data.emp_status_id + " | " + data.emp_status);
 
 			    			if(data.emp_status_id=='9') {		    				
 				    			$("#id_relief_emp_status").animate({color:'red'}, 1000);
@@ -2935,9 +2938,13 @@ $("#id_late_hour").click( function() {
 			    		
 			    			$("#id_relief_check").prop("checked", true);
 
+			    			$('#id_relief_emp_status').css('border-color', 'red');
+			    			$('#id_relief_emp_status').css('background-color', '#e4cdcf');
+			    			//$('#id_relief_emp_status').css('border-color', '');
+							//$('#id_relief_emp_status').css('background-color', '');			    			
 
-							$("#id_relief_emp_id").css('border-color','');
-							$("#id_relief_emp_id").css('border-style','');
+							//$("#id_relief_emp_id").css('border-color','');
+							//$("#id_relief_emp_id").css('border-style','');
 
 			    		} else {
 			    			/*
@@ -3207,8 +3214,10 @@ $("#id_late_hour").click( function() {
 		$("#id_shift_option").css('border-style','');
 
 		$('#id_emp_status').css('border-color', '');
-		$('#id_emp_status').css('color', '');
 		$('#id_emp_status').css('background-color', '');
+
+		$('#id_relief_emp_status').css('border-color', '');
+		$('#id_relief_emp_status').css('background-color', '');
 
 		var cus_id = $("#id_cus_id").val();
 		var cus_brn = $("#id_cus_brn").val();
@@ -3337,11 +3346,50 @@ $("#id_late_hour").click( function() {
 
 			// DEBUG
 			// TODO
-			$("#id_relief_emp_rank").val("debug");
-			$("#id_relief_emp_dept").val("debug");
-			$("#id_relief_emp_join_date").val("debug");
-			$("#id_relief_emp_term_date").val("debug");
-			$("#id_relief_emp_status").val("debug");
+			// Get Employee information
+			$.ajax({
+		    	url : "/monitoring/ajax/get_employee",
+		    	type : "GET",
+		    	data : {          
+		      		csrfmiddlewaretoken: '{{ csrf_token }}',
+		      		emp_id: relief_emp_id,
+		      		shf_desc: shf_desc,
+		      		cus_id: cus_id,
+		      		cus_vol: cus_vol,
+		      		cus_brn: cus_brn,
+		    	},
+		    	success: function(data) {
+		    		if(data.is_found) {
+
+						$("#id_relief_emp_rank").val(data.emp_rank);
+		    			$("#id_relief_emp_dept").val(data.emp_dept);	    			
+		    			$("#id_relief_emp_join_date").val(data.emp_join_date);
+
+
+TODO
+		    			if (data.emp_term_date!="") {
+			    			$("#id_relief_emp_term_date").val(data.emp_term_date);
+			    			$("#id_relief_emp_status").val(data.emp_status);
+
+			    			$('#id_relief_emp_status').css('border-color', 'red');
+			    			$('#id_relief_emp_status').css('background-color', '#e4cdcf');
+
+		    			} else {
+			    			$("#id_relief_emp_term_date").val(data.emp_term_date);
+			    			$("#id_relief_emp_status").val(data.emp_status);
+
+			    			$('#id_relief_emp_status').css('border-color', '');		    			
+			    			$('#id_relief_emp_status').css('background-color', '');
+		    			}
+
+		    			var emp_join_date = data.emp_join_date;
+		    			var emp_term_date = data.emp_term_date;
+		    		} else {
+		    			var emp_join_date = "";
+		    			var emp_term_date = "";
+		    		}		    		
+		    	},
+		    });			
 
 		} else {
 			$("#id_relief_check").prop("checked", false);
@@ -3407,8 +3455,7 @@ $("#id_late_hour").click( function() {
 	    	},
 	    	success: function(data) {
 	    		if(data.is_found) {
-	    			id_relief_emp_fullname_th
-
+	    			
 					$("#id_emp_rank").val(data.emp_rank);
 	    			$("#id_emp_dept").val(data.emp_dept);	    			
 	    			$("#id_emp_join_date").val(data.emp_join_date);
@@ -3422,12 +3469,18 @@ $("#id_late_hour").click( function() {
 		    			$('#id_emp_status').css('border-color', 'red');
 		    			$('#id_emp_status').css('background-color', '#e4cdcf');
 
+		    			$('#id_relief_emp_status').css('border-color', 'red');
+						$('#id_relief_emp_status').css('background-color', '#e4cdcf');
+
 	    			} else {
 		    			$("#id_emp_term_date").val(data.emp_term_date);
 		    			$("#id_emp_status").val(data.emp_status);
 
 		    			$('#id_emp_status').css('border-color', '');		    			
 		    			$('#id_emp_status').css('background-color', '');
+
+						$('#id_relief_emp_status').css('border-color', '');
+						$('#id_relief_emp_status').css('background-color', '');		    			
 	    			}
 
 	    			var emp_join_date = data.emp_join_date;
@@ -3570,6 +3623,8 @@ $("#id_late_hour").click( function() {
 
 		$('#id_emp_status').css('border-color', '');		    			
 		$('#id_emp_status').css('background-color', '');		
+		$('#id_relief_emp_status').css('border-color', '');
+		$('#id_relief_emp_status').css('background-color', '');
 
 		current_shift_option = $("#id_shift_option").val();
 		$("#dailyAttendanceDataEntryForm").trigger("reset");
@@ -3588,6 +3643,9 @@ $("#id_late_hour").click( function() {
 
 		$('#id_emp_status').css('border-color', '');		    			
 		$('#id_emp_status').css('background-color', '');
+
+		$('#id_relief_emp_status').css('border-color', '');
+		$('#id_relief_emp_status').css('background-color', '');
 
     	if($("#id_absent_check").is(":checked")) {
     		$("#id_absent_check").prop("checked", false);    		
@@ -4326,7 +4384,10 @@ $("#id_late_hour").click( function() {
 									$("#id_late_hour").css('border-style','');
 
 									$('#id_emp_status').css('border-color', '');		    			
-									$('#id_emp_status').css('background-color', '');																
+									$('#id_emp_status').css('background-color', '');
+
+									$('#id_relief_emp_status').css('border-color', '');
+									$('#id_relief_emp_status').css('background-color', '');
 
 					    		} else {
 					    			alert("error");
@@ -5470,6 +5531,9 @@ $("#id_late_hour").click( function() {
 
 		$('#id_emp_status').css('border-color', '');		    			
 		$('#id_emp_status').css('background-color', '');
+
+		$('#id_relief_emp_status').css('border-color', '');
+		$('#id_relief_emp_status').css('background-color', '');
 
     	$("#id_cus_id").focus();
     	$("#id_cus_id").select();
