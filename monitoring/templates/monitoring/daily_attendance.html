@@ -3366,6 +3366,8 @@ $("#id_late_hour").click( function() {
 		    			$("#id_relief_emp_join_date").val(data.emp_join_date);
 
 
+		    			alert("debug");
+
 		    			if (data.emp_term_date!="") {
 			    			$("#id_relief_emp_term_date").val(data.emp_term_date);
 			    			$("#id_relief_emp_status").val(data.emp_status);
@@ -3394,6 +3396,9 @@ $("#id_late_hour").click( function() {
 			$("#id_relief_check").prop("checked", false);
 			$("#id_relief_emp_id").val("");
 			$("#id_relief_emp_fullname_th").val("");
+
+			$('#id_relief_emp_status').css('border-color', '');		    			
+			$('#id_relief_emp_status').css('background-color', '');			
 		}
 
 
@@ -3468,8 +3473,8 @@ $("#id_late_hour").click( function() {
 		    			$('#id_emp_status').css('border-color', 'red');
 		    			$('#id_emp_status').css('background-color', '#e4cdcf');
 
-		    			$('#id_relief_emp_status').css('border-color', 'red');
-						$('#id_relief_emp_status').css('background-color', '#e4cdcf');
+		    			//$('#id_relief_emp_status').css('border-color', 'red');
+						//$('#id_relief_emp_status').css('background-color', '#e4cdcf');
 
 	    			} else {
 		    			$("#id_emp_term_date").val(data.emp_term_date);
