@@ -16,7 +16,7 @@ django-windows-tools==0.2.1
 docopt==0.6.2
 docx2pdf==0.1.7
 docxtpl==0.10.0
-Jinja2==2.11.2
+Jinja2==2.11.3
 jsonfield==3.1.0
 kombu==5.0.2
 lxml==4.5.2
