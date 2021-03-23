@@ -49,6 +49,12 @@
   color: #5f5d5d;
 }
 
+label {
+    display: inline-block;
+    margin-bottom: 0rem;
+}
+/*.form-control {height:16px;}*/
+
 </style>
 {% endblock %}
 
@@ -648,45 +654,54 @@
 
 
 
+
+                  <!--aeiou-->
                   <!-- Contract / Schedule Tab -->
-                  <div class="tab-pane fade" id="custom-tabs-one-profile" role="tabpanel" aria-labelledby="custom-tabs-one-profile-tab" style="padding: 0 0 0 0 !important;">
+                  <div class="tab-pane fade" id="custom-tabs-one-profile" role="tabpanel" aria-labelledby="custom-tabs-one-profile-tab" style="padding: 0;">
 
 
-						<div style="margin: 0 !important;">
+						<div>
 
-						    <!-- Customer Information Section -->
-					      	<div class="card card-outline card-secondary" style="padding: 0 0px 0 0px !important;">
 
-						    	<div class="card-header">
-							        <h1 class="card-title">
-							          <span id="customer_name_title">
-							            <h4 class="m-0">Customer Information</h4>
-							          </span>
-							        </h1>
 
-								    <div class="card-tools">
+
+
+					      	<div class="card card-secondary" style="padding: 0 0 0 0;">
+
+						    	<div class="card-header" style="padding: 4px;">
+
+						    		<div>
+							        <h4 class="card-title">
+							          <div id="customer_name_title" class="pt-2">
+							            <b>Customer Information</b>
+							          </div>
+							        </h4>
+							        </div>
+
+								    <div class="card-tools pr-1">
 								    	<div class="col-1 text-right align-self-center" id="id_cnt_active"></div>
 								    </div>
 							    </div>
-						       
 
-						        <div class="card-body col-12">
+
+						        <div class="card-body col-12" style="padding: 0 0 5px 0;" >
 									
+									<font size="2em;">
 									<form id="cusomer_information_form" name="cusomer_information_form" style="padding:0 !important; margin:0 !important;">
 
-							                <div class="form-group row" style="padding: 0 0 0 0 !important; margin: 0 !important;">
+							                <div class="form-group row" style="padding: 5px 0 0 0 !important; margin: 0 !important;">
 							                    <div class="col-6">
 							                        <label for="id_customer_name_th">Customer Name</label>
-							                        <input type="text" class="form-control form-control-sm" id="id_customer_name_th" readonly>
+							                        <input type="text" class="form-control form-control-xs" id="id_customer_name_th" readonly>
 							                        <!--<small class="form-text text-muted" id="id_customer_name_en"></small>-->
 							                    </div>
 							                    <div class="col-2">
 							                        <label for="id_customer_phone">Phone</label>
-							                        <input type="text" class="form-control form-control-sm" id="id_customer_phone" readonly>
+							                        <input type="text" class="form-control form-control-xs" id="id_customer_phone" readonly>
 							                    </div>
 							                    <div class="col-4">
 							                        <label for="id_customer_wage_rate">Wage Rate</label>
-							                        <input type="text" class="form-control form-control-sm" id="id_customer_wage_rate" readonly>
+							                        <input type="text" class="form-control form-control-xs" id="id_customer_wage_rate" readonly>
 							                        <input type="hidden" id="id_customer_wage_rate_id">
 							                    </div>
 							                    
@@ -697,36 +712,37 @@
 							                <div class="form-group row" style="padding: 0 0 0 0 !important; margin: 0 !important;">
 							                    <div class="col-6">
 							                        <label for="id_site_customer_name_th">Site Name</label>
-							                        <input type="text" class="form-control form-control-sm" id="id_site_customer_name_th" readonly>
+							                        <input type="text" class="form-control form-control-xs" id="id_site_customer_name_th" readonly>
 							                        <!--<small class="form-text text-muted" id="id_site_customer_name_en"></small>-->
 							                    </div>
 							                    <div class="col-2">
 							                        <label for="id_site_customer_phone">Phone</label>
-							                        <input type="text" class="form-control form-control-sm" id="id_site_customer_phone" readonly>
+							                        <input type="text" class="form-control form-control-xs" id="id_site_customer_phone" readonly>
 							                    </div>
 							                    <div class="col-2">
 							                        <label for="id_authorized_by">Authorized by</label>
-							                        <input type="text" class="form-control form-control-sm" id="id_authorized_by" readonly>
+							                        <input type="text" class="form-control form-control-xs" id="id_authorized_by" readonly>
 							                    </div>
 							                    <div class="col-2">
 							                        <label for="id_customer_zone">Zone</label>
-							                        <input type="text" class="form-control form-control-sm" id="id_customer_zone" readonly>
+							                        <input type="text" class="form-control form-control-xs bg-success" id="id_customer_zone" readonly>
 							                        <input type="hidden" id="id_customer_zone_id">
 							                    </div>                                        
 							                </div>
 
+
 							                <div class="form-group row" style="padding: 0 0 0 0 !important; margin: 0 !important;">
 							                    <div class="col-8">
 							                        <label for="id_cus_add1_th">Address</label>
-							                        <input type="text" class="form-control form-control-sm" id="id_cus_add1_th" readonly>
+							                        <input type="text" class="form-control form-control-xs" id="id_cus_add1_th" readonly>
 							                    </div>
 							                    <div class="col-2">
 							                        <label>Contract Term From</label>
-							                        <input type="text" class="form-control form-control-sm" id="id_cnt_sign_frm" readonly>&nbsp;
+							                        <input type="text" class="form-control form-control-xs" id="id_cnt_sign_frm" readonly>
 							                    </div>
 							                    <div class="col-2">
 							                        <label>Contract Term To</label>
-							                        <input type="text" class="form-control form-control-sm" id="id_cnt_sign_to" readonly>
+							                        <input type="text" class="form-control form-control-xs" id="id_cnt_sign_to" readonly>
 							                    </div>                    
 							                </div>                
 
@@ -734,53 +750,77 @@
 							                <div class="form-group row" style="padding: 0 0 0 0 !important; margin: 0 !important;">
 							                    <div class="col-2">
 							                        <label for="id_cnt_doc_no">Cnt.Ref.</label>
-							                        <input type="text" class="form-control form-control-sm" id="id_cnt_doc_no" readonly>                        
+							                        <input type="text" class="form-control form-control-xs" id="id_cnt_doc_no" readonly>                        
 							                    </div>
 							                    <div class="col-3">
 							                        <label>Contact</label>
-							                        <input type="text" class="form-control form-control-sm" id="con_fname_th" readonly>&nbsp;
+							                        <input type="text" class="form-control form-control-xs" id="con_fname_th" readonly>
 							                    </div>
 							                    <div class="col-3">
 							                        <label>Position</label>
-							                        <input type="text" class="form-control form-control-sm" id="con_pos_th" readonly>
+							                        <input type="text" class="form-control form-control-xs" id="con_pos_th" readonly>
 							                    </div>
 							                    <div class="col-2">
 							                        <label>Effective Term From</label>
-							                        <input type="text" class="form-control form-control-sm" id="id_cnt_eff_frm" readonly>&nbsp;
+							                        <input type="text" class="form-control form-control-xs" id="id_cnt_eff_frm" readonly>
 							                    </div>
 							                    <div class="col-2">
 							                        <label>Effective Term To</label>
-							                        <input type="text" class="form-control form-control-sm" id="id_cnt_eff_to" readonly>
+							                        <input type="text" class="form-control form-control-xs" id="id_cnt_eff_to" readonly>
 							                    </div>                                              
 							                </div> 
 
-							       
-									</form>
-								</div>
 
-					      	</div>
-						   	<!-- End Customer Information Section -->
+							        </form>
+							    	</font>
+							    </div>
+
+							</div>
+
+						    <!-- Customer Information Section -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 						    <!-- Contract Service Section -->
-					      	<div class="card card-outline card-secondary">
+						    
+					      	<div class="card card-secondary">
+							    
+						    	<div class="card-header" style="padding: 4px;">
+						    		<div>
+							        <h4 class="card-title">
+							          <div class="pt-2">
+							            <b>Contract Service</b>
+							          </div>
+							        </h4>
+							        </div>
 
-						    	<div class="card-header">
-							        <h1 class="card-title">
-							          <span id="customer_name_title">
-							            <h4 class="m-0">Contract Service</h4>
-							          </span>
-							        </h1>
-
-								    <div class="card-tools">			 		
-								      	<button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+								    <div class="card-tools pr-1">
+								    	&nbsp;
 								    </div>
 							    </div>
-						       
 
-						        <div class="card-body col-12">
-									<div class="row" style="white-space:nowrap;">
-										<div class="col-12">
+
+						        <div class="card-body" style="padding: 0 0 0 0;">
+									<div class="row p-0" style="white-space:nowrap;">
+
+										<div class="col-12" style="padding: 2px 10px 0 10px;">
 										  <div class="form-group">
 										  	<font size='2em;'>
 												<div class="table-resonsive">							  		
@@ -818,26 +858,29 @@
 										</div>
 									</div>
 								</div>
-
+								
 					      	</div>
+					      	
 						   	<!-- End Contract Service Section -->
 
 
 						    <!-- Schedule List Section -->
-					      	<div class="card card-outline card-secondary">
+						    
+					      	<div class="card card-secondary">
+						       
+						    	<div class="card-header" style="padding: 4px;">
+						    		<div>
+							        <h4 class="card-title">
+							          <div class="pt-2">
+							            <b>Schedule List</b>
+							          </div>
+							        </h4>
+							        </div>
 
-						    	<div class="card-header">
-							        <h1 class="card-title">
-							          <span id="customer_name_title">
-							            <h4 class="m-0">Schedule List</h4>
-							          </span>
-							        </h1>
-
-								    <div class="card-tools">			 		
-								      	<button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+								    <div class="card-tools pr-1">
+								    	&nbsp;
 								    </div>
 							    </div>
-						       
 
 						        <div class="card-body col-12">
 									<div class="row" style="white-space:nowrap;">
@@ -878,6 +921,7 @@
 								</div>
 
 					      	</div>
+					      	
 						   	<!-- End Schedule List Section -->
 
 						</div>
@@ -3693,7 +3737,7 @@ $("#id_late_hour").click( function() {
 		$("#id_bulk_shift_list_option").css('border-color', '');
 		$("#id_bulk_shift_list_option").css('background-color', '');
 		$("#id_bulk_shift_list_option").css('border-style', '');
-		
+
 		current_shift_option = $("#id_shift_option").val();
 		$("#dailyAttendanceDataEntryForm").trigger("reset");
 		$("#id_shift_option").val(current_shift_option);

@@ -243,7 +243,7 @@ input:checked + .slider:after {
 
 .my-custom-scrollbar {
   position: relative;
-  height: 250px;
+  height: 150px;
   width: 100%;
   overflow: auto;
 }
