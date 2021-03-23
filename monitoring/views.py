@@ -7994,6 +7994,72 @@ def ajax_get_job_type_list(request):
     return response    
 
 
+
+# LUFY
+@permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
+@login_required(login_url='/accounts/login/')
+def is_scheduled(request):
+	print("*****************************************************")
+	print("FUNCTION: is_scheduled()")
+	print("*****************************************************")
+	username = request.user.username	
+	dly_date = datetime.datetime.strptime(request.POST.get('dly_date'), '%d/%m/%Y').date()
+	cus_id = request.POST.get('cus_id')
+	cus_brn = request.POST.get('cus_brn')
+	cus_vol = request.POST.get('cus_vol')
+	cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
+	emp_id = request.POST.get('emp_id')
+	shift_id = request.POST.get('shift_id')
+	
+	is_scheduled = True
+	message = ""
+
+	sql = "select a.*,b.shf_type,b.shf_time_frm,b.shf_time_to"
+	sql += " from dly_plan a left join t_shift b on a.sch_shift=b.shf_id"
+	sql += " where a.dly_date='" + str(dly_date) + "'"
+	sql += " and a.emp_id=" + str(emp_id)
+	sql += " and a.absent=0 "
+	sql += " and a.sch_shift=" + str(shift_id)
+	# print("DEBUG SQL: ", sql)
+
+	cursor = connection.cursor()
+	cursor.execute(sql)
+	record = cursor.fetchone()
+	cursor.close()			
+
+	if record is not None:					
+		messcross = str(record[0]) + " Shift No =" + str(record[3])
+		dup_cnt_id = record[0]
+		dup_shift_number = record[3]
+		Shp = shift_id
+		Gtype = record[47]
+		Gfrom = record[48]
+		Gto = record[49]
+
+		if Shp != 0:
+			sql = "Select SHF_TYPE, SHF_TIME_FRM, SHF_TIME_TO, shf_desc from t_shift where shf_id=" + str(Shp)
+			cursor = connection.cursor()
+			cursor.execute(sql)
+			check_dup_record = cursor.fetchone()
+			cursor.close()	
+			if check_dup_record is not None:
+				Stype = check_dup_record[0]
+				Sfrom = check_dup_record[1]
+				Sto = check_dup_record[2]
+				shf_desc = check_dup_record[3]
+		
+		message = "รหัสพนักงาน  <b>" + str(emp_id) + "</b> "
+		message += "เข้าเวรกะ  <b>" + str(shf_desc) + "</b> "
+		message += "ที่หน่วยงาน  <b>" + str(dup_cnt_id) + "</b> ไปแล้ว"
+	else:
+		is_scheduled = False
+		message = "ไม่คร่อมหน่วยงาน"
+
+	response = JsonResponse(data={"success": True, "is_scheduled": is_scheduled, "message": message})
+	response.status_code = 200
+	return response    
+
+
 # LUFY
 @permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
 @login_required(login_url='/accounts/login/')
@@ -8034,7 +8100,7 @@ def ajax_save_daily_attendance_check_rule_1(request):
 		Gto = record[49]
 
 		if Shp != 0:
-			sql = "Select SHF_TYPE, SHF_TIME_FRM, SHF_TIME_TO from t_shift where shf_id=" + str(Shp)
+			sql = "Select SHF_TYPE, SHF_TIME_FRM, SHF_TIME_TO, shf_desc from t_shift where shf_id=" + str(Shp)
 			cursor = connection.cursor()
 			cursor.execute(sql)
 			check_dup_record = cursor.fetchone()
@@ -8043,6 +8109,7 @@ def ajax_save_daily_attendance_check_rule_1(request):
 				Stype = check_dup_record[0]
 				Sfrom = check_dup_record[1]
 				Sto = check_dup_record[2]
+				shf_desc = check_dup_record[3]
 
 			'''
 			if Sfrom != 0 and Gfrom != 0:
@@ -8112,11 +8179,11 @@ def ajax_save_daily_attendance_check_rule_1(request):
 				message = "ไม่คร่อมหน่วยงาน"
 			else:
 				is_cross_site = True
-				message = "รหัสหนักงาน  <b>" + str(emp_id) + "</b> "
-				message += "เข้าเวรกะ  <b>" + str(dup_shift_number) + "</b> "
-				message += "ที่หน่วยงาน  <b>" + str(dup_cnt_id) + "</b> ไปแล้ว<br>"							
-				message += "จำนวนชั่วโมงที่โดนหัก  <b>" + str(Timecross) + "</b> "
-				message += "ถ้าต้องการบันทึกกดปุ่ม ยืนยัน"
+				message = "รหัสพนักงาน  <b>" + str(emp_id) + "</b> "
+				message += "เข้าเวรกะ  <b>" + str(shf_desc) + "</b> "
+				message += "ที่หน่วยงาน  <b>" + str(dup_cnt_id) + "</b> ไปแล้ว "							
+				message += "จำนวนชั่วโมงที่โดนหัก <b>" + str(Timecross) + "</b> ชั่วโมง"
+				message += " | ถ้าต้องการบันทึกกดปุ่มยืนยัน"
 	else:
 		is_cross_site = False
 		message = "ไม่คร่อมหน่วยงาน"

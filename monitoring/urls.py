@@ -35,6 +35,9 @@ urlpatterns = [
     url(r'^ajax/save_daily_attendance_check_rule_1/$', views.ajax_save_daily_attendance_check_rule_1, name='ajax_save_daily_attendance_check_rule_1'),
     url(r'^ajax/save_daily_attendance/$', views.ajax_save_daily_attendance, name='ajax_save_daily_attendance'),
     url(r'^ajax/save_daily_attendance_cross_site/$', views.ajax_save_daily_attendance_cross_site, name='ajax_save_daily_attendance_cross_site'),
+
+    # Rules
+    url(r'^ajax/is_scheduled/$', views.is_scheduled, name='is_scheduled'),
 ]
 
 
