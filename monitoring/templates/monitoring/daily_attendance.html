@@ -2809,6 +2809,10 @@ $("#id_late_hour").click( function() {
 	$(document).on('keypress', '#id_relief_emp_id', function(e) {
 
 		$("#id_relief_check").prop("checked", true);
+		$('#id_relief_emp_status').css('border-color', '');
+		$('#id_relief_emp_status').css('background-color', '');
+		$("#id_relief_emp_id").css('border-color','');
+		$("#id_relief_emp_id").css('border-style','');
 
 		if(e.which == 13) {
 			e.preventDefault();
@@ -2938,13 +2942,10 @@ $("#id_late_hour").click( function() {
 			    		
 			    			$("#id_relief_check").prop("checked", true);
 
-			    			$('#id_relief_emp_status').css('border-color', 'red');
-			    			$('#id_relief_emp_status').css('background-color', '#e4cdcf');
-			    			//$('#id_relief_emp_status').css('border-color', '');
-							//$('#id_relief_emp_status').css('background-color', '');			    			
-
-							//$("#id_relief_emp_id").css('border-color','');
-							//$("#id_relief_emp_id").css('border-style','');
+			    			if(data.emp_status_id!='2') {
+			    				$('#id_relief_emp_status').css('border-color', 'red');
+			    				$('#id_relief_emp_status').css('background-color', '#e4cdcf');
+			    			}
 
 			    		} else {
 			    			/*
@@ -4208,6 +4209,8 @@ $("#id_late_hour").click( function() {
 				$("#id_emp_term_date").val("");
 
 	    		if(data.is_found) {
+
+	    			/*
 	    			$("#id_emp_fullname_th").val(data.emp_fname_th.trim() + "  " + data.emp_lname_th.trim());
 					$("#id_emp_rank").val(data.emp_rank);
 	    			$("#id_emp_dept").val(data.emp_dept);
@@ -4220,6 +4223,7 @@ $("#id_late_hour").click( function() {
 	    			}
 	    			$("#id_emp_join_date").val(data.emp_join_date);
 	    			$("#id_emp_term_date").val(data.emp_term_date);
+					*/
 
 	    			$("#save_button").attr("disabled", false);
 	    			$("#delete_button").attr("disabled", true);	    			    		
@@ -4568,8 +4572,8 @@ $("#id_late_hour").click( function() {
 
 			$("#id_late_hour").css('border-color','red');
 			$("#id_late_hour").css('border-style','solid');
-		  	$("#id_late_hour").focus();
-		  	$("#id_late_hour").select();
+		  	$("#id_late_from").focus();
+		  	$("#id_late_from").select();
 
 		  	return false;
     	}
@@ -4613,6 +4617,7 @@ $("#id_late_hour").click( function() {
 
     	if(add_new_record_status==1) {
 
+    		alert("ADD NEW");
 	    	if(ui_absent_status==1) {
 	    		if(ui_relief_status==1) {
 		    		if(relief_emp_id=="") {
@@ -4838,6 +4843,7 @@ $("#id_late_hour").click( function() {
 
     	} else {
 
+    		//alert("EDIT RECORD");
     		// EDIT MODE
 	    	if(ui_absent_status==1) {
 	    		if(ui_relief_status==1) {
@@ -5050,6 +5056,8 @@ $("#id_late_hour").click( function() {
 											    }
 											});							
 										} else {
+
+											//alert("debug 1");
 											saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);
 
 											return false;
