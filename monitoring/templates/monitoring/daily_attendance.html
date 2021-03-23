@@ -824,7 +824,7 @@ label {
 										  <div class="form-group">
 										  	<font size='2em;'>
 												<div class="table-resonsive">							  		
-													<table class='table table-responsive table-sm table-striped table-condensed table-wrapper-scroll-y my-custom-scrollbar' id="id_customer_contract_service">														
+													<table class='table table-responsive table-sm table-striped table-condensed table-wrapper-scroll-y daily-attendance-scrollbar' id="id_customer_contract_service">														
 														<thead class=thead-light>
 															<tr>
 																<th scope='col'>No</th>
@@ -841,11 +841,11 @@ label {
 																<th scope='col'>SAT</th>
 																<th scope='col'>SUN</th>
 																<th scope='col'>PUB</th>
-																<th scope='col'>Active</th>
+																<th scope='col'>Status</th>
 																<th scope='col'>Remark</th>
-																<th scope='col'>Upd.Date</th>
-																<th scope='col'>Upd.By</th>
-																<th scope='col'>Upd.Flag</th>
+																<th scope='col'>Upd Date</th>
+																<th scope='col'>Upd By</th>
+																<th scope='col'>Upd Flag</th>
 															</tr>
 														</thead>
 														<tbody>
@@ -882,14 +882,14 @@ label {
 								    </div>
 							    </div>
 
-						        <div class="card-body col-12">
+						        <div class="card-body col-12" style="padding: 2px 0 0 10px;">
 									<div class="row" style="white-space:nowrap;">
 										<div class="col-12">
 										  <div class="form-group row table-responsive">
 										  	<font size='2em;'>
 										  		<!--<table class='table table-responsive table-sm table-striped w-100' style="max-height: 400px; max-width: 100%; overflow: auto; display: inline-block;" id="id_customer_schedule_list">-->
 
-									  			<table class='table table-sm table-striped table-condensed table-wrapper-scroll-y my-custom-scrollbar' id="id_customer_schedule_list">
+									  			<table class='table table-sm table-striped table-condensed' id="id_customer_schedule_list">
 													<thead class=thead-light>
 														<tr>
 															<th scope='col'>No</th>
@@ -905,9 +905,9 @@ label {
 															<th scope='col'>FRI</th>
 															<th scope='col'>SAT</th>
 															<th scope='col'>SUN</th>
-															<th scope='col'>Active</th>
-															<th scope='col'>Upd.Date</th>
-															<th scope='col'>Upd.By</th>															
+															<th scope='col'>Status</th>
+															<th scope='col'>Upd Date</th>
+															<th scope='col'>Upd By</th>															
 														</tr>
 													</thead>
 													<tbody>
@@ -2362,7 +2362,7 @@ $("#id_late_hour").click( function() {
 						result += "      <th scope='col'>SAT</th>";
 						result += "      <th scope='col'>SUN</th>";
 						result += "      <th scope='col'>PUB</th>";
-						result += "      <th scope='col'>Active</th>";
+						result += "      <th scope='col'>Status</th>";
 						result += "      <th scope='col'>Remark</th>";
 						result += "      <th scope='col'>Upd.Date</th>";
 						result += "      <th scope='col'>Upd.By</th>";
@@ -2392,20 +2392,20 @@ $("#id_late_hour").click( function() {
 							upd_flag = data.customer_contract_service_list[i][72];
 
 							result += "<tr>";
-							result += "<td>" + count + "</td>";
-							result += "<td>" + srv_rank + "</td>";
+							result += "<td class='text-center'>" + count + "</td>";
+							result += "<td class='text-center'>" + srv_rank + "</td>";
 							result += "<td><b>" + shift + "</b></td>";
-							result += "<td>" + srv_qty + "</td>";
+							result += "<td class='text-center'>" + srv_qty + "</td>";
 							result += "<td>" + srv_eff_frm + "</td>";
 							result += "<td>" + srv_eff_to + "</td>";
-							result += "<td>" + srv_mon + "</td>";
-							result += "<td>" + srv_tue + "</td>";
-							result += "<td>" + srv_wed + "</td>";
-							result += "<td>" + srv_thu + "</td>";
-							result += "<td>" + srv_fri + "</td>";
-							result += "<td>" + srv_sat + "</td>";
-							result += "<td>" + srv_sun + "</td>";
-							result += "<td>" + srv_pub + "</td>";
+							result += "<td class='text-center'>" + srv_mon + "</td>";
+							result += "<td class='text-center'>" + srv_tue + "</td>";
+							result += "<td class='text-center'>" + srv_wed + "</td>";
+							result += "<td class='text-center'>" + srv_thu + "</td>";
+							result += "<td class='text-center'>" + srv_fri + "</td>";
+							result += "<td class='text-center'>" + srv_sat + "</td>";
+							result += "<td class='text-center'>" + srv_sun + "</td>";
+							result += "<td class='text-center'>" + srv_pub + "</td>";
 
 							//result += "<td>" + srv_active + "</td>";
 							if(srv_active)
@@ -2472,7 +2472,7 @@ $("#id_late_hour").click( function() {
 
 
 							result += "<tr>";
-							result += "<td>" + count + "</td>";
+							result += "<td class='text-center'>" + count + "</td>";
 
 							//result += "<td>" + emp_id + "</td>";
 							if(status=="true")
@@ -2486,7 +2486,7 @@ $("#id_late_hour").click( function() {
 							else
 								result += "<td>" + emp_fullname_th + "</td>";
 
-							result += "<td>" + emp_rank + "</td>";						
+							result += "<td class='text-center'>" + emp_rank + "</td>";						
 							result += "<td>" + emp_eff_frm + "</td>";
 							result += "<td>" + emp_eff_to + "</td>";							
 
@@ -2499,7 +2499,7 @@ $("#id_late_hour").click( function() {
 									result += "<td>DOF</td>";
 							}
 							else
-								result += "<td>" + emp_mon + "</td>";
+								result += "<td class='text-center'>" + emp_mon + "</td>";
 
 
 							//result += "<td>" + emp_tue + "</td>";
@@ -2510,7 +2510,7 @@ $("#id_late_hour").click( function() {
 									result += "<td>DOF</td>";
 							}
 							else
-								result += "<td>" + emp_tue + "</td>";
+								result += "<td class='text-center'>" + emp_tue + "</td>";
 
 
 							//result += "<td>" + emp_wed + "</td>";
@@ -2521,7 +2521,7 @@ $("#id_late_hour").click( function() {
 									result += "<td>DOF</td>";
 							}
 							else
-								result += "<td>" + emp_wed + "</td>";
+								result += "<td class='text-center'>" + emp_wed + "</td>";
 
 
 							//result += "<td>" + emp_thu + "</td>";
@@ -2532,7 +2532,7 @@ $("#id_late_hour").click( function() {
 									result += "<td>DOF</td>";
 							}
 							else
-								result += "<td>" + emp_thu + "</td>";
+								result += "<td class='text-center'>" + emp_thu + "</td>";
 
 
 							//result += "<td>" + emp_fri + "</td>";
@@ -2543,7 +2543,7 @@ $("#id_late_hour").click( function() {
 									result += "<td>DOF</td>";
 							}
 							else
-								result += "<td>" + emp_fri + "</td>";
+								result += "<td class='text-center'>" + emp_fri + "</td>";
 
 
 							//result += "<td>" + emp_sat + "</td>";
@@ -2554,7 +2554,7 @@ $("#id_late_hour").click( function() {
 									result += "<td>DOF</td>";
 							}
 							else
-								result += "<td>" + emp_sat + "</td>";
+								result += "<td class='text-center'>" + emp_sat + "</td>";
 
 
 							//result += "<td>" + emp_sun + "</td>";
@@ -2565,7 +2565,7 @@ $("#id_late_hour").click( function() {
 									result += "<td>DOF</td>";
 							}
 							else
-								result += "<td>" + emp_sun + "</td>";							
+								result += "<td class='text-center'>" + emp_sun + "</td>";							
 
 
 

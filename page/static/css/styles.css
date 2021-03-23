@@ -240,13 +240,20 @@ input:checked + .slider:after {
     border: none;
 }
 
-
 .my-custom-scrollbar {
   position: relative;
-  height: 150px;
+  height: 200px;
   width: 100%;
   overflow: auto;
 }
+
+.daily-attendance-scrollbar {
+  position: relative;
+  height: 130px;
+  width: 100%;
+  overflow: auto;
+}
+
 .table-wrapper-scroll-y {
   display: block;
 }
