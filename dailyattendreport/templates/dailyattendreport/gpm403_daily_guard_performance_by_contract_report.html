@@ -68,16 +68,23 @@
           <tr>
             <th class="align-middle text-center" scope="col">NO.</th>
             <th class="align-middle text-center" scope="col" nowrap>Date</th>
-            <th class="align-middle text-center" scope="col" nowrap>First Name</th>
-            <th class="align-middle text-center" scope="col" nowrap>Last Name</th>
-            <th class="align-middle text-center" scope="col" nowrap>Shift</th>
-            <th class="align-middle text-center" scope="col" nowrap>DEPT</th>
+            <th class="align-middle text-center" scope="col" nowrap>EMP ID</th>
+            <th class="align-middle text-center" scope="col" nowrap>Full Name</th>
+            <th class="align-middle text-center" scope="col" nowrap>Rank</th>
+            <th class="align-middle text-center" scope="col" nowrap>Shift</th>            
+            <th class="align-middle text-center" scope="col" nowrap>Relieft ID</th>
+            <th class="align-middle text-center" scope="col" nowrap>OT</th>
+            <th class="align-middle text-center" scope="col" nowrap>Late</th>
+            <th class="align-middle text-center" scope="col" nowrap>Full</th>
+            <th class="align-middle text-center" scope="col" nowrap>Amt HR</th>
+            <th class="align-middle text-center" scope="col" nowrap>Call</th>
+            <th class="align-middle text-center" scope="col" nowrap>Tel Paid</th>
           </tr>
         </thead>
         
         <tbody>
           <tr>
-            <th class="text-center" colspan='6'><br><br><br><br><br></th>
+            <th class="text-center" colspan='13'><br><br><br><br><br></th>
           </tr>
         </tbody>
 
@@ -163,10 +170,19 @@
               result += "<tr>";
               result += "<td class='text-center' nowrap>" + row_count + "</td>";
               result += "<td class='text-left' nowrap>" + dly_date + "</td>";
+              result += "<td class='text-left' nowrap>" + emp_id + "</td>";
               result += "<td class='text-left' nowrap>" + emp_fullname + "</td>";
-              result += "<td class='text-left' nowrap>" + data.dly_plan_list[i]["emp_lname_th"] + "</td>";
-              result += "<td class='text-left' nowrap>" + data.dly_plan_list[i]["shf_desc"] + "</td>";
-              result += "<td class='text-left' nowrap>" + data.dly_plan_list[i]["dept_en"] + "</td>";
+              result += "<td class='text-left' nowrap>" + sch_rank + "</td>";
+              result += "<td class='text-left' nowrap>" + sch_shift + "</td>";
+              
+              result += "<td class='text-left' nowrap>" + relieft_id + "</td>";
+              result += "<td class='text-left' nowrap>" + ot + "</td>";
+              result += "<td class='text-left' nowrap>" + late + "</td>";
+              result += "<td class='text-left' nowrap>" + late_full + "</td>";
+              result += "<td class='text-left' nowrap>" + ot_hr_amt + "</td>";
+              result += "<td class='text-left' nowrap>" + tel_man + "</td>";
+              result += "<td class='text-left' nowrap>" + tel_paid + "</td>";
+
               result += "</tr>";
               row_count = row_count + 1;
             }
