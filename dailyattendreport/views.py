@@ -121,7 +121,7 @@ def AjaxGPM403DailyGuardPerformanceReport(request):
                     "dept_en": item[3],
                     "cnt_id": item[4],
                     "emp_id": item[5],
-                    "dly_date": item[6],
+                    "dly_date": item[6].strftime("%d/%m/%Y"),
                     "sch_shift": item[7],
                     "dept_id": item[8],
                     "sch_rank": item[9],
