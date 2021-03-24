@@ -21,6 +21,13 @@
   border-bottom: 5px solid #257638 !important;
 }
 
+.nav-tabs > li > a{
+  border: none;
+  -webkit-border-radius: 2px 2px 0 0;
+  -moz-border-radius: 2px 2px 0 0;
+  border-radius: 5px 5px 0 0;
+  color: #5f5d5d;
+}
 
 .nav-tabs .nav-item .nav-link.active {
   background-color: #257638;
@@ -41,13 +48,7 @@
   border-radius: 5px 5px 0 0;  
 }
 
-.nav-tabs > li > a{
-  border: none;
-  -webkit-border-radius: 2px 2px 0 0;
-  -moz-border-radius: 2px 2px 0 0;
-  border-radius: 5px 5px 0 0;
-  color: #5f5d5d;
-}
+
 
 label {
     display: inline-block;
@@ -140,7 +141,7 @@ label {
             <div class="card card-tabs">
 
               
-              <div class="card-header1" style="padding:0px 0px 0px 0px !important; margin:0 0 0 0px !important;">
+              <div style="padding:0px 0px 0px 0px !important; margin:0 0 0 0px !important;">
 
                 <ul class="nav nav-tabs navbar-expand nav-fill" id="custom-tabs-one-tab" role="tablist" style="padding:0 !important; margin: 0 0 0 0 !important;">
                   
@@ -149,14 +150,18 @@ label {
                   </li>
 
 
-                  <li class="nav-item" style="padding:0 0 0 0px !important;font-size: 20px;">
+                  <li class="nav-item" style="padding:0 0 0 0px !important; font-size: 20px;">
                     
-                    <a class="nav-link" id="tab2-tab" data-toggle="pill" href="#custom-tabs-one-profile" role="tab" aria-controls="custom-tabs-one-profile" aria-selected="false">Contract / Schedule Information</a>
+
+                    <a class="nav-link" id="tab2-tab" data-toggle="pill" href="#custom-tabs-one-profile" role="tab" aria-controls="custom-tabs-one-profile" aria-selected="false">
+                    	Schedule Information
+                    </a>
                     
                   </li>
                 </ul>
 
               </div>
+
               
               <div class="card-body text-dark" style="padding:5px !important; border-right: 5px solid #257638; border-color: #257638; border-left: 5px solid #257638; border-bottom: 5px solid #257638; background-color: #e9ecef;">
                 <div class="tab-content" id="custom-tabs-one-tabContent">                  
@@ -3204,57 +3209,7 @@ $("#id_late_hour").click( function() {
 
     });
 
-    function clearEmployeeListTable() {
-    	
-    	/*
-    	var result = "";
-		result += "<font size='2em;'>";
-		//result += "<table id='employee_list_table' class='table table-sm table-fixed table-condensed table-wrapper-scroll-y my-custom-scrollbar'>";
-		result += "<table id='employee_list_table' class='table table-responsive table-sm table-condensed table-wrapper-scroll-y my-custom-scrollbar'>";
-		//result += "<table id='employee_list_table' class='table table-sm table-condensed my-custom-scrollbar'>";	
-		//result += "<table id='employee_list_table' class='table table-sm'>";		
-		result += "  <thead>";
-		result += "    <tr>";
-		result += "      <th scope='col'>&nbsp;</th>";	// absent_statas
-		result += "      <th scope='col' nowrap>Emp ID</th>";
-		result += "      <th scope='col'>Name</th>";
-		result += "      <th scope='col'>Rank</th>";
-		result += "      <th scope='col'>Shift</th>";
-		result += "      <th scope='col'>Late</th>";
-		result += "      <th scope='col'>Full</th>";
-		result += "      <th scope='col'>Relief</th>";
-		result += "      <th scope='col' nowrap>Rel. ID</th>";
-		result += "      <th scope='col'>Name</th>";
-		result += "      <th scope='col'>TEL</th>";
-		result += "      <th scope='col' nowrap>Call Time</th>";
-		result += "      <th scope='col' nowrap>Call Amt</th>";
-		result += "      <th scope='col' norwrap>Call Paid</th>";
-		result += "      <th scope='col'>Spare</th>";
-		result += "      <th scope='col'>Wage</th>";
-		result += "      <th scope='col' nowrap>Upd Date</th>";
-		result += "      <th scope='col' nowrap>Upd By</th>";
-		result += "      <th scope='col' nowrap>Upd Flag</th>";
-		result += "      <th scope='col' class='d-none' nowrap>Upd Gen</th>";
-		result += "      <th scope='col' class='d-none' nowrap>Remark</th>";
-		result += " 	 <th scope='col' class='d-none' nowrap>Relief Status</th>";
-		result += " 	 <th scope='col' class='d-none' nowrap>Late Status</th>";
-		result += " 	 <th scope='col' class='d-none' nowrap>Late Full Status</th>";
-		result += "	     <td class='d-none'>OT</td>";
-		result += "	     <td class='d-none'>OT Reason</td>";
-		result += "	     <td class='d-none'>OT Time From</td>";
-		result += "	     <td class='d-none'>OT Time To</td>";
-		result += "	     <td class='d-none'>OT Hour Amount</td>";
-		result += "    </tr>";
-		result += "  </thead>";
-		result += "  <tbody>";
-		result += "    <tr>";
-		result += "      <td colspan='29' class='text-center'><br><br>There is no data.<br><br><br></td>";
-		result += "    </tr>";
-		result += "  </tbody>";
-		result += "</table>";
-		result += "</font>";
-		*/
-	
+    function clearEmployeeListTable() {    	
 		result = "";
 		result += "    <tr>";
 		result += "      <td class='d-none'>&nbsp;</td>";
@@ -3282,9 +3237,9 @@ $("#id_late_hour").click( function() {
 		$("#id_employee_list tbody").html(result);
 		
 		$('#employee_search_text').val("");
-		var table = $('#employee_list_table').DataTable();
-		//table.clear();
-		table.search($('#employee_search_text').val()).clear().draw();
+		var table = $('#employee_list_table').DataTable();		
+		//table.search($('#employee_search_text').val()).clear().draw();
+		table.clear();		
     }
 
 
