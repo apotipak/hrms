@@ -139,10 +139,29 @@
           result = "";
           row_count = 1;
           if(row_count>0) {
-            for(i=0; i<number_of_rows; i++) {            
+            for(i=0; i<number_of_rows; i++) {
+              emp_fullname = data.dly_plan_list[i]["emp_fname_th"] + " " + data.dly_plan_list[i]["emp_lname_th"];
+              shf_desc = data.dly_plan_list[i][""];
+              dept_en = data.dly_plan_list[i][""];
+              cnt_id = data.dly_plan_list[i][""];
+              emp_id = data.dly_plan_list[i][""];
+              dly_date = data.dly_plan_list[i][""];
+              sch_shift = data.dly_plan_list[i][""];
+              dept_id = data.dly_plan_list[i][""];
+              sch_rank = data.dly_plan_list[i][""];
+              absent = data.dly_plan_list[i][""];
+              relieft_id = data.dly_plan_list[i][""];
+              tel_man = data.dly_plan_list[i][""];
+              tel_paid = data.dly_plan_list[i][""];
+              ot = data.dly_plan_list[i][""];
+              ot_hr_amt = data.dly_plan_list[i][""];
+              cus_name_th = data.dly_plan_list[i][""];
+              late = data.dly_plan_list[i][""];
+              late_full = data.dly_plan_list[i][""];
+              
               result += "<tr>";
               result += "<td class='text-center' nowrap>" + row_count + "</td>";
-              result += "<td class='text-left' nowrap>" + data.dly_plan_list[i]["emp_fname_th"] + "</td>";
+              result += "<td class='text-left' nowrap>" + emp_fullname + "</td>";
               result += "<td class='text-left' nowrap>" + data.dly_plan_list[i]["emp_lname_th"] + "</td>";
               result += "<td class='text-left' nowrap>" + data.dly_plan_list[i]["shf_desc"] + "</td>";
               result += "<td class='text-left' nowrap>" + data.dly_plan_list[i]["dept_en"] + "</td>";

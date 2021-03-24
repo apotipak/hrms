@@ -99,7 +99,7 @@ def AjaxGPM403DailyGuardPerformanceReport(request):
     record = {}
     dly_plan_list = []
     error_message = ""
-    
+
     try:                
         cursor = connection.cursor()
         cursor.execute(sql)
@@ -119,6 +119,21 @@ def AjaxGPM403DailyGuardPerformanceReport(request):
                     "emp_lname_th": item[1],
                     "shf_desc": item[2],
                     "dept_en": item[3],
+                    "cnt_id": item[4],
+                    "emp_id": item[5],
+                    "dly_date": item[6],
+                    "sch_shift": item[7],
+                    "dept_id": item[8],
+                    "sch_rank": item[9],
+                    "absent": item[10],
+                    "relieft_id": item[11],
+                    "tel_man": item[12],
+                    "tel_paid": item[13],
+                    "ot": item[14],
+                    "ot_hr_amt": item[15],
+                    "cus_name_th": item[16],
+                    "late": item[17],
+                    "late_full": item[18],
                 }
                 dly_plan_list.append(record)
 
