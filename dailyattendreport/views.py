@@ -43,16 +43,47 @@ def GPM403DailyGuardPerformanceReport(request):
     start_date = today_date if start_date is None else datetime.datetime.strptime(start_date, "%d/%m/%Y").date()
     end_date = today_date if end_date is None else datetime.datetime.strptime(end_date, "%d/%m/%Y").date()
 
-    
-
+    '''
     print("today_date = ", today_date)
     print("contract_number_from = ", contract_number_from)
     print("contract_number_to = ", contract_number_to)
     print("start_date = ", start_date)
     print("end_date = ", end_date)
+    '''
 
-    # print(datetime.datetime.strptime(request.POST.get('start_date'), "%d/%m/%Y").date())
-    # datetime.datetime.strptime(duration_from, "%d/%m/%Y").date(),
+    return render(request, 'dailyattendreport/gpm403_daily_guard_performance_by_contract_report.html',
+        {
+        'page_title': page_title, 
+        'project_name': project_name, 
+        'project_version': project_version,
+        'db_server': db_server, 
+        'today_date': today_date,
+        'start_date': start_date,
+        'end_date': end_date,
+        'database': settings.DATABASES['default']['NAME'],
+        'host': settings.DATABASES['default']['HOST'],
+        'is_error': False,
+        'dly_plan_list': None,
+        })
+
+
+@permission_required('dailyattendreport.can_access_gpm403_daily_guard_performance_by_contract_report', login_url='/accounts/login/')
+def AjaxGPM403DailyGuardPerformanceReport(request):
+    page_title = settings.PROJECT_NAME
+    db_server = settings.DATABASES['default']['HOST']
+    project_name = settings.PROJECT_NAME
+    project_version = settings.PROJECT_VERSION  
+    
+    today_date = settings.TODAY_DATE.strftime("%d/%m/%Y")
+    contract_number_from = request.POST.get('contract_number_from')
+    contract_number_to = request.POST.get('contract_number_to')
+    start_date = request.POST.get('start_date')
+    end_date = request.POST.get('end_date')
+
+    contract_number_from = 0 if contract_number_from is None else contract_number_from
+    contract_number_to = 9999999999 if contract_number_to is None else contract_number_to
+    start_date = today_date if start_date is None else datetime.datetime.strptime(start_date, "%d/%m/%Y").date()
+    end_date = today_date if end_date is None else datetime.datetime.strptime(end_date, "%d/%m/%Y").date()
 
     sql = "select emp_fname_th, emp_lname_th, shf_desc, dept_en, cnt_id, "
     sql += "emp_id, dly_date, sch_shift, dept_id, sch_rank, "
@@ -63,17 +94,39 @@ def GPM403DailyGuardPerformanceReport(request):
     sql += "and (cnt_id>=" + str(contract_number_from) + " and cnt_id<=" + str(contract_number_to) + ") "
     sql += "and (dly_date>='" + str(start_date) + "' and dly_date<='" + str(end_date) + "') "
     sql += "ORDER BY cnt_id ASC, dly_date ASC, shf_desc ASC, emp_id ASC"
-    print("SQL : ", sql)
+    
+    dly_plan_obj = None
+    record = {}
+    dly_plan_list = []
+    error_message = ""
+    
+    try:                
+        cursor = connection.cursor()
+        cursor.execute(sql)
+        dly_plan_obj = cursor.fetchall()        
+    except db.OperationalError as e:
+        error_message = "<b>Error: please send this error to IT team</b><br>" + str(e)
+    except db.Error as e:
+        error_message = "<b>Error: please send this error to IT team</b><br>" + str(e)
+    finally:
+        cursor.close()
 
-    return render(request, 'dailyattendreport/gpm403_daily_guard_performance_by_contract_report.html',
-        {
-        'page_title': page_title, 
-        'project_name': project_name, 
-        'project_version': project_version, 
-        'db_server': db_server, 
-        'today_date': today_date,
-        'start_date': start_date,
-        'end_date': end_date,
-        'database': settings.DATABASES['default']['NAME'],
-        'host': settings.DATABASES['default']['HOST'],
-        })
+    if dly_plan_obj is not None:
+        if len(dly_plan_obj)>0:           
+            for item in dly_plan_obj:             
+                record = {
+                    "emp_fname_th": item[0],
+                    "emp_lname_th": item[1],
+                    "shf_desc": item[2],
+                    "dept_en": item[3],
+                }
+                dly_plan_list.append(record)
+
+    response = JsonResponse(data={        
+        "is_error": False,
+        "error_message": error_message,
+        "dly_plan_list": list(dly_plan_list),
+    })
+
+    response.status_code = 200
+    return response

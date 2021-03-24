@@ -25,9 +25,9 @@
 
                <div class="input-group-prepend pr-2 pt-1" style="width:100px;"><label>Contract No</label></div>
                 <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:60px;">From</span></div>
-                <input type="number" name="contract_number_from" class="form-control border-bottom-1 border-left-0 rounded-0 bg-white" style="width:50px;" value="0" id="id_contract_number_from">
+                <input type="number" name="contract_number_from" class="form-control border-bottom-1 border-left-0 rounded-0 bg-white" style="width:50px;" value="1661000001" id="id_contract_number_from">
                 <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:42px;">To</span></div>
-                <input type="number" name="contract_number_to" class="form-control datepicker border-bottom-1 border-left-0 rounded-0 bg-white" style="width:50px;" required="" id="id_contract_number_to" value="9999999999">
+                <input type="number" name="contract_number_to" class="form-control datepicker border-bottom-1 border-left-0 rounded-0 bg-white" style="width:50px;" required="" id="id_contract_number_to" value="1661000001">
 
                 &nbsp;&nbsp;
 
@@ -62,11 +62,29 @@
         </div>
       <!-- /.card-header -->
 
+      <font size="2em;">      
+      <table class="table table-sm table-bordered table-striped table-hover" id="report_table">
+        <thead class="bg-secondary">
+          <tr>
+            <th class="align-middle text-center" scope="col">NO.</th>
+            <th class="align-middle text-center" scope="col" nowrap>First Name</th>
+            <th class="align-middle text-center" scope="col" nowrap>Last Name</th>
+            <th class="align-middle text-center" scope="col" nowrap>Shift</th>
+            <th class="align-middle text-center" scope="col" nowrap>DEPT</th>
+          </tr>
+        </thead>
+        
+        <tbody>
+          <tr>
+            <th class="text-center" colspan='5'><br><br><br><br><br></th>
+          </tr>
+        </tbody>
 
-      
+      </table>
+      </font>
 
+      </div>
     
-
 
     </section>
     <!-- /.content -->
@@ -101,7 +119,7 @@
     showLoading();
 
     $.ajax({
-      url: "/reports/control-room/daily-attend/gpm403-daily-guard-performance-by-contract/",
+      url: "/reports/control-room/daily-attend/ajax-gpm403-daily-guard-performance-by-contract/",
       type: "POST",
       data: {
         csrfmiddlewaretoken: '{{ csrf_token }}',
@@ -111,35 +129,43 @@
         end_date: end_date,
       },
       success : function(data) {
-        alert("TODO");
+              
+        number_of_rows = data.dly_plan_list.length;
+        row_count = 0
+        
+        if(data.is_error) {
+          alert("ERROR: " + data.error_message);
+        } else {          
+          result = "";
+          row_count = 1;
+          if(row_count>0) {
+            for(i=0; i<number_of_rows; i++) {            
+              result += "<tr>";
+              result += "<td class='text-center' nowrap>" + row_count + "</td>";
+              result += "<td class='text-left' nowrap>" + data.dly_plan_list[i]["emp_fname_th"] + "</td>";
+              result += "<td class='text-left' nowrap>" + data.dly_plan_list[i]["emp_lname_th"] + "</td>";
+              result += "<td class='text-left' nowrap>" + data.dly_plan_list[i]["shf_desc"] + "</td>";
+              result += "<td class='text-left' nowrap>" + data.dly_plan_list[i]["dept_en"] + "</td>";
+              result += "</tr>";
+              row_count = row_count + 1;
+            }
+          } else {
+              result = "";
+              result = "<tr style='background-color: #d2d4d6;'><td scope='row' class='text-center' colspan='25'><br><br>There is no data.<br><br><br></td></tr>";
+          }
+        }        
+
+        $.LoadingOverlay("hide");
+        $("#report_table tbody").html(result);      
+
       }
     });
-
-
-    $.LoadingOverlay("hide");
   }  
 
-  $(document).ready(function () {
-    
+  $(document).ready(function () {    
     $('#id_start_date').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", new Date());
     $('#id_end_date').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", new Date());
-
-    /*
-    $("#id_start_date").datepicker({
-      dateFormat: "dd-mm-yy",
-      onSelect: function () {
-          var startDate = $("#id_start_date").datepicker('getDate');      
-          startDate.setDate(getDate());
-      }
-    }).attr('readonly', 'readonly');
-
-    $('#id_end_date').datepicker({
-      dateFormat: "dd-mm-yy",
-    }).attr('readonly', 'readonly');
-    */
-
   });
 
-
   </script>
-{% endblock %}      
+{% endblock %}  
