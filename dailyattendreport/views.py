@@ -37,10 +37,20 @@ def GPM403DailyGuardPerformanceReport(request):
     contract_number_to = request.POST.get('contract_number_to')
     start_date = request.POST.get('start_date')
     end_date = request.POST.get('end_date')
+
+    contract_number_from = 0 if contract_number_from is None else contract_number_from
+    contract_number_to = 9999999999 if contract_number_to is None else contract_number_to
+    start_date = today_date if start_date is None else start_date
+    end_date = today_date if end_date is None else end_date
+
+    print("today_date = ", today_date)
     print("contract_number_from = ", contract_number_from)
     print("contract_number_to = ", contract_number_to)
     print("start_date = ", start_date)
     print("end_date = ", end_date)
+
+    # print(datetime.datetime.strptime(request.POST.get('start_date'), "%d/%m/%Y").date())
+    # datetime.datetime.strptime(duration_from, "%d/%m/%Y").date(),
 
 
     sql = "select emp_fname_th, emp_lname_th, shf_desc, dept_en, cnt_id, "
@@ -49,8 +59,8 @@ def GPM403DailyGuardPerformanceReport(request):
     sql += "ot_hr_amt, cus_name_th, late, late_full "
     sql += "FROM V_HDLYPLAN "
     sql += "WHERE absent = 0 AND (sch_shift <> 99 OR sch_shift <> 999) "
-    sql += "and (cnt_id>=1486000001 and cnt_id<=1486000001) "
-    sql += "and (dly_date>='2021-02-01' and dly_date<='2021-02-28') "
+    sql += "and (cnt_id>=" + str(contract_number_from) + " and cnt_id<=" + str(contract_number_to) + ") "
+    sql += "and (dly_date>='" + str(start_date) + "' and dly_date<='" + str(end_date) + "') "
     sql += "ORDER BY cnt_id ASC, dly_date ASC, shf_desc ASC, emp_id ASC"
     print("SQL : ", sql)
 
@@ -61,6 +71,8 @@ def GPM403DailyGuardPerformanceReport(request):
         'project_version': project_version, 
         'db_server': db_server, 
         'today_date': today_date,
+        'start_date': start_date,
+        'end_date': end_date,
         'database': settings.DATABASES['default']['NAME'],
         'host': settings.DATABASES['default']['HOST'],
         })

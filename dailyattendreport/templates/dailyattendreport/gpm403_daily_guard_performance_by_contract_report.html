@@ -35,10 +35,10 @@
 
                 <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:67px;">From</span></div>
 
-                <input type="text" name="start_date" class="form-control datepicker border-bottom-1 border-left-0 rounded-0 bg-white" placeholder="dd-mm-yyyy" required="" value="{{today_date}}" id="id_start_date" readonly="readonly">
+                <input type="text" name="start_date" class="form-control datepicker border-bottom-1 border-left-0 rounded-0 bg-white" placeholder="dd/mm/yyyy" required="" value="{{start_date}}" id="id_start_date" readonly="readonly">
                 
                 <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:42px;">To</span></div>
-                <input type="text" name="end_date" class="form-control datepicker border-bottom-1 border-left-0 rounded-0 bg-white" placeholder="dd-mm-yyyy" required="" id="id_end_date" value="{{today_date}}" readonly="readonly">
+                <input type="text" name="end_date" class="form-control datepicker border-bottom-1 border-left-0 rounded-0 bg-white" placeholder="dd/mm/yyyy" required="" id="id_end_date" value="{{end_date}}" readonly="readonly">
 
                 &nbsp;&nbsp;<a href="javascript:SearchFormSubmit();" class="btn btn-outline-info" role="button">SEARCH</a>
               </div>
@@ -101,7 +101,7 @@
     showLoading();
 
     $.ajax({
-      url: "reports/control-room/daily-attend/gpm403-daily-guard-performance-by-contract/",
+      url: "/reports/control-room/daily-attend/gpm403-daily-guard-performance-by-contract/",
       type: "POST",
       data: {
         csrfmiddlewaretoken: '{{ csrf_token }}',
@@ -120,9 +120,13 @@
   }  
 
   $(document).ready(function () {
+    
+    $('#id_start_date').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", new Date());
+    $('#id_end_date').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", new Date());
 
+    /*
     $("#id_start_date").datepicker({
-      dateFormat: "dd/mm/yy",
+      dateFormat: "dd-mm-yy",
       onSelect: function () {
           var startDate = $("#id_start_date").datepicker('getDate');      
           startDate.setDate(getDate());
@@ -132,6 +136,7 @@
     $('#id_end_date').datepicker({
       dateFormat: "dd-mm-yy",
     }).attr('readonly', 'readonly');
+    */
 
   });
 
