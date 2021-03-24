@@ -40,8 +40,10 @@ def GPM403DailyGuardPerformanceReport(request):
 
     contract_number_from = 0 if contract_number_from is None else contract_number_from
     contract_number_to = 9999999999 if contract_number_to is None else contract_number_to
-    start_date = today_date if start_date is None else start_date
-    end_date = today_date if end_date is None else end_date
+    start_date = today_date if start_date is None else datetime.datetime.strptime(start_date, "%d/%m/%Y").date()
+    end_date = today_date if end_date is None else datetime.datetime.strptime(end_date, "%d/%m/%Y").date()
+
+    
 
     print("today_date = ", today_date)
     print("contract_number_from = ", contract_number_from)
@@ -51,7 +53,6 @@ def GPM403DailyGuardPerformanceReport(request):
 
     # print(datetime.datetime.strptime(request.POST.get('start_date'), "%d/%m/%Y").date())
     # datetime.datetime.strptime(duration_from, "%d/%m/%Y").date(),
-
 
     sql = "select emp_fname_th, emp_lname_th, shf_desc, dept_en, cnt_id, "
     sql += "emp_id, dly_date, sch_shift, dept_id, sch_rank, "
