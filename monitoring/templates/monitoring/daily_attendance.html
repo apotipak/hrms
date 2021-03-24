@@ -48,13 +48,12 @@
   border-radius: 5px 5px 0 0;  
 }
 
-
-
 label {
     display: inline-block;
     margin-bottom: 0rem;
 }
-/*.form-control {height:16px;}*/
+
+thead th { white-space: nowrap; }
 
 </style>
 {% endblock %}
@@ -214,11 +213,11 @@ label {
 
 
 
-			            	<div id="id_employee_list" class="table-responsive table-striped" >
+			            	<div id="id_employee_list" class="table-responsive table-striped">
 
 								<font size='2em;'>
 																
-								<table id='employee_list_table' class='table table-sm' style="margin:0;">
+								<table id='employee_list_table' class='table table-sm' style="margin:0; white-space: nowrap; width: 100%;">
 								  <thead class="bg-secondary">
 								    <tr>
 								      <th scope='col' class='d-none text-center' nowrap>Absent Status</th>
@@ -834,38 +833,38 @@ label {
 									<div class="row p-0" style="white-space:nowrap;">
 
 										<div class="col-12" style="padding: 2px 10px 0 10px;">
-										  <div class="form-group">
+										  <div class="form-group row table-responsive">
 										  	<font size='2em;'>
-												<div class="table-resonsive">							  		
-													<table class='table table-responsive table-sm table-striped table-condensed table-wrapper-scroll-y daily-attendance-scrollbar' id="id_customer_contract_service">														
-														<thead class=thead-light>
-															<tr>
-																<th scope='col'>No</th>
-																<th scope='col'>Rank</th>
-																<th scope='col'>Shift</th>
-																<th scope='col'>QTY</th>
-																<th scope='col'>Eff.Frm</th>
-																<th scope='col'>Eff.To</th>
-																<th scope='col'>MON</th>
-																<th scope='col'>TUE</th>
-																<th scope='col'>WED</th>
-																<th scope='col'>THU</th>
-																<th scope='col'>FRI</th>
-																<th scope='col'>SAT</th>
-																<th scope='col'>SUN</th>
-																<th scope='col'>PUB</th>
-																<th scope='col'>Status</th>
-																<th scope='col'>Remark</th>
-																<th scope='col'>Upd Date</th>
-																<th scope='col'>Upd By</th>
-																<th scope='col'>Upd Flag</th>
-															</tr>
-														</thead>
-														<tbody>
-															<tr><td colspan='19'>&nbsp;</td></tr>
-														</tbody>
-													</table>
-												</div>
+												
+												<table class='table table-sm table-striped table-condensed table-wrapper-scroll-y daily-attendance-scrollbar' id="id_customer_contract_service">														
+													<thead class=thead-light>
+														<tr>
+															<th scope='col'>No</th>
+															<th scope='col'>Rank</th>
+															<th scope='col'>Shift</th>
+															<th scope='col'>QTY</th>
+															<th scope='col'>Eff.Frm</th>
+															<th scope='col'>Eff.To</th>
+															<th scope='col'>MON</th>
+															<th scope='col'>TUE</th>
+															<th scope='col'>WED</th>
+															<th scope='col'>THU</th>
+															<th scope='col'>FRI</th>
+															<th scope='col'>SAT</th>
+															<th scope='col'>SUN</th>
+															<th scope='col'>PUB</th>
+															<th scope='col'>Status</th>
+															<th scope='col'>Remark</th>
+															<th scope='col'>Upd Date</th>
+															<th scope='col'>Upd By</th>
+															<th scope='col'>Upd Flag</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr><td colspan='19'>&nbsp;</td></tr>
+													</tbody>
+												</table>
+
 										  	</font>
 										  </div>
 										</div>
@@ -905,12 +904,12 @@ label {
 									  			<table class='table table-sm table-striped table-condensed' id="id_customer_schedule_list">
 													<thead class=thead-light>
 														<tr>
-															<th scope='col'>No</th>
-															<th scope='col'>Emp ID</th>
+															<th scope='col' class='text-center'>No</th>
+															<th scope='col' nowrap>Emp ID</th>
 															<th scope='col'>Name</th>
-															<th scope='col'>Rank</th>
-															<th scope='col'>Eff.Frm</th>
-															<th scope='col'>Eff.To</th>
+															<th scope='col' class='text-center'>Rank</th>
+															<th scope='col' nowrap>Eff.Frm</th>
+															<th scope='col' nowrap>Eff.To</th>
 															<th scope='col'>MON</th>
 															<th scope='col'>TUE</th>
 															<th scope='col'>WED</th>
@@ -919,8 +918,8 @@ label {
 															<th scope='col'>SAT</th>
 															<th scope='col'>SUN</th>
 															<th scope='col'>Status</th>
-															<th scope='col'>Upd Date</th>
-															<th scope='col'>Upd By</th>															
+															<th scope='col' nowrap>Upd Date</th>
+															<th scope='col' nowrap>Upd By</th>															
 														</tr>
 													</thead>
 													<tbody>
@@ -990,7 +989,7 @@ $(document).ready( function () {
 	      "searching": true,
 	      "ordering": true,
 	      "info": false,
-	      "autoWidth": false,
+	      "autoWidth": true,
 	      //"language": { search: ""},
 	      "dom": '<"top"i>rt<"bottom"><"clear">',
 	      "search": "_INPUT_",
@@ -2446,11 +2445,11 @@ $("#id_late_hour").click( function() {
 						result = "<table id='id_customer_schedule_list'>";
 						result += "  <thead class=thead-light>";
 						result += "    <tr>";
-						result += "      <th scope='col'>No</th>";
-						result += "      <th scope='col'>Emp ID</th>";
+						result += "      <th scope='col' class='text-center'>No</th>";
+						result += "      <th scope='col' nowrap>Emp ID</th>";
 						result += "      <th scope='col'>Name</th>";
-						result += "      <th scope='col'>Rank</th>";
-						result += "      <th scope='col'>Eff.Frm</th>";
+						result += "      <th scope='col' class='text-center'>Rank</th>";
+						result += "      <th scope='col' nowrap>Eff.Frm</th>";
 						result += "      <th scope='col'>Eff.To</th>";
 						result += "      <th scope='col'>MON</th>";
 						result += "      <th scope='col'>TUE</th>";
@@ -2459,9 +2458,9 @@ $("#id_late_hour").click( function() {
 						result += "      <th scope='col'>FRI</th>";
 						result += "      <th scope='col'>SAT</th>";
 						result += "      <th scope='col'>SUN</th>";
-						result += "      <th scope='col'>Status</th>";
-						result += "      <th scope='col'>Upd.Date</th>";
-						result += "      <th scope='col'>Upd.By</th>";
+						result += "      <th scope='col' nowrap>Status</th>";
+						result += "      <th scope='col' nowrap>Upd.Date</th>";
+						result += "      <th scope='col' nowrap>Upd.By</th>";
 						result += "    </tr>";
 						result += "  </thead>";
 						result += "  <tbody>";
@@ -2489,13 +2488,13 @@ $("#id_late_hour").click( function() {
 
 							//result += "<td>" + emp_id + "</td>";
 							if(status=="true")
-								result += "<td><b>" + emp_id + "</b></td>";
+								result += "<td>" + emp_id + "</td>";
 							else
 								result += "<td>" + emp_id + "</td>";
 
 							//result += "<td>" + emp_fullname_th + "</td>";
 							if(status=="true")
-								result += "<td><b>" + emp_fullname_th + "</b></td>";
+								result += "<td>" + emp_fullname_th + "</td>";
 							else
 								result += "<td>" + emp_fullname_th + "</td>";
 
@@ -3210,6 +3209,7 @@ $("#id_late_hour").click( function() {
     });
 
     function clearEmployeeListTable() {    	
+    	/*
 		result = "";
 		result += "    <tr>";
 		result += "      <td class='d-none'>&nbsp;</td>";
@@ -3235,11 +3235,17 @@ $("#id_late_hour").click( function() {
 		result += "    </tr>";
 
 		$("#id_employee_list tbody").html(result);
-		
-		$('#employee_search_text').val("");
-		var table = $('#employee_list_table').DataTable();		
+		*/
+
+		//$('#employee_search_text').val("");
+		//var table = $('#employee_list_table').DataTable();		
 		//table.search($('#employee_search_text').val()).clear().draw();
-		table.clear();		
+		//table.clear();
+		//table.draw();
+		
+
+		//$('#employee_list_table').dataTable().fnClearTable();
+		$('#employee_list_table').DataTable().clear().draw();
     }
 
 
