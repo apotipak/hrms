@@ -915,13 +915,13 @@ thead th { white-space: nowrap; }
 															<th scope='col' class='text-center'>Rank</th>
 															<th scope='col' nowrap>Eff.Frm</th>
 															<th scope='col' nowrap>Eff.To</th>
-															<th scope='col'>MON</th>
-															<th scope='col'>TUE</th>
-															<th scope='col'>WED</th>
-															<th scope='col'>THU</th>
-															<th scope='col'>FRI</th>
-															<th scope='col'>SAT</th>
-															<th scope='col'>SUN</th>
+															<th scope='col' class='text-center'>MON</th>
+															<th scope='col' class='text-center'>TUE</th>
+															<th scope='col' class='text-center'>WED</th>
+															<th scope='col' class='text-center'>THU</th>
+															<th scope='col' class='text-center'>FRI</th>
+															<th scope='col' class='text-center'>SAT</th>
+															<th scope='col' class='text-center'>SUN</th>
 															<th scope='col'>Status</th>
 															<th scope='col' nowrap>Upd Date</th>
 															<th scope='col' nowrap>Upd By</th>															
@@ -2456,13 +2456,13 @@ $("#id_late_hour").click( function() {
 						result += "      <th scope='col' class='text-center'>Rank</th>";
 						result += "      <th scope='col' nowrap>Eff.Frm</th>";
 						result += "      <th scope='col'>Eff.To</th>";
-						result += "      <th scope='col'>MON</th>";
-						result += "      <th scope='col'>TUE</th>";
-						result += "      <th scope='col'>WED</th>";
-						result += "      <th scope='col'>THU</th>";
-						result += "      <th scope='col'>FRI</th>";
-						result += "      <th scope='col'>SAT</th>";
-						result += "      <th scope='col'>SUN</th>";
+						result += "      <th scope='col' class='text-center'>MON</th>";
+						result += "      <th scope='col' class='text-center'>TUE</th>";
+						result += "      <th scope='col' class='text-center'>WED</th>";
+						result += "      <th scope='col' class='text-center'>THU</th>";
+						result += "      <th scope='col' class='text-center'>FRI</th>";
+						result += "      <th scope='col' class='text-center'>SAT</th>";
+						result += "      <th scope='col' class='text-center'>SUN</th>";
 						result += "      <th scope='col' nowrap>Status</th>";
 						result += "      <th scope='col' nowrap>Upd.Date</th>";
 						result += "      <th scope='col' nowrap>Upd.By</th>";
@@ -2511,9 +2511,9 @@ $("#id_late_hour").click( function() {
 							//result += "<td>" + emp_mon + "</td>";
 							if (emp_mon==99) {
 								if(status=="true")
-									result += "<td class='text-danger'><b>DOF</b></td>";
+									result += "<td class='text-danger text-center'><b>DOF</b></td>";
 								else
-									result += "<td>DOF</td>";
+									result += "<td class='text-center'>DOF</td>";
 							}
 							else
 								result += "<td class='text-center'>" + emp_mon + "</td>";
@@ -2522,9 +2522,9 @@ $("#id_late_hour").click( function() {
 							//result += "<td>" + emp_tue + "</td>";
 							if (emp_tue==99) {
 								if(status=="true")
-									result += "<td class='text-danger'><b>DOF</b></td>";
+									result += "<td class='text-danger text-center'><b>DOF</b></td>";
 								else
-									result += "<td>DOF</td>";
+									result += "<td class='text-center'>DOF</td>";
 							}
 							else
 								result += "<td class='text-center'>" + emp_tue + "</td>";
@@ -2533,9 +2533,9 @@ $("#id_late_hour").click( function() {
 							//result += "<td>" + emp_wed + "</td>";
 							if (emp_wed==99) {
 								if(status=="true")
-									result += "<td class='text-danger'><b>DOF</b></td>";
+									result += "<td class='text-danger text-center'><b>DOF</b></td>";
 								else
-									result += "<td>DOF</td>";
+									result += "<td class='text-center'>DOF</td>";
 							}
 							else
 								result += "<td class='text-center'>" + emp_wed + "</td>";
@@ -2544,9 +2544,9 @@ $("#id_late_hour").click( function() {
 							//result += "<td>" + emp_thu + "</td>";
 							if (emp_thu==99) {
 								if(status=="true")
-									result += "<td class='text-danger'><b>DOF</b></td>";
+									result += "<td class='text-danger text-center'><b>DOF</b></td>";
 								else
-									result += "<td>DOF</td>";
+									result += "<td class='text-center'>DOF</td>";
 							}
 							else
 								result += "<td class='text-center'>" + emp_thu + "</td>";
@@ -2555,9 +2555,9 @@ $("#id_late_hour").click( function() {
 							//result += "<td>" + emp_fri + "</td>";
 							if (emp_fri==99) {
 								if(status=="true")
-									result += "<td class='text-danger'><b>DOF</b></td>";
+									result += "<td class='text-danger text-center'><b>DOF</b></td>";
 								else
-									result += "<td>DOF</td>";
+									result += "<td class='text-center'>DOF</td>";
 							}
 							else
 								result += "<td class='text-center'>" + emp_fri + "</td>";
@@ -2566,9 +2566,9 @@ $("#id_late_hour").click( function() {
 							//result += "<td>" + emp_sat + "</td>";
 							if (emp_sat==99) {
 								if(status=="true")
-									result += "<td class='text-danger'><b>DOF</b></td>";
+									result += "<td class='text-danger text-center'><b>DOF</b></td>";
 								else
-									result += "<td>DOF</td>";
+									result += "<td class='text-center'>DOF</td>";
 							}
 							else
 								result += "<td class='text-center'>" + emp_sat + "</td>";
@@ -2577,15 +2577,12 @@ $("#id_late_hour").click( function() {
 							//result += "<td>" + emp_sun + "</td>";
 							if (emp_sun==99) {
 								if(status=="true")
-									result += "<td class='text-danger'><b>DOF</b></td>";
+									result += "<td class='text-danger text-center'><b>DOF</b></td>";
 								else
-									result += "<td>DOF</td>";
+									result += "<td class='text-center'>DOF</td>";
 							}
 							else
 								result += "<td class='text-center'>" + emp_sun + "</td>";							
-
-
-
 
 
 							if(status=="true" && status=="true")
