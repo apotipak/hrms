@@ -6415,9 +6415,17 @@ def checkDayOff(emp_id, dly_date):
 	return is_day_off, message
 
 
-@login_required(login_url='/accounts/login/')
-def ajax_bulk_update_absent_status(request):
 
+@login_required(login_url='/accounts/login/')
+def ajax_is_scheduled_between_site(request):
+
+	'''
+	response = JsonResponse(data={"success": True,"is_error": True,"message": "TODO"})
+	response.status_code = 200
+	return response
+	'''
+
+	is_scheduled = True
 	message = ""
 	Tpub = 0
 	DayCurDate = ""
@@ -6436,6 +6444,232 @@ def ajax_bulk_update_absent_status(request):
 	username = request.user.username
 	upd_date = datetime.datetime.now()
 	
+	# message = "%s,%s,%s,%s,%s" %(attendance_date,shift_id,cus_id,cus_brn,cus_vol)
+	# print("message:", message)
+	# print("shift_status:", shift_status)
+	# print("attendance_date:", attendance_date)
+
+	# Field validation
+	if shift_status not in shift_status_list:
+		response = JsonResponse(data={"success": True, "is_error": True, "is_scheduled:": is_scheduled , "message": "เลือกสถานะการลาไม่ถูกต้อง"})
+		response.status_code = 200
+		return response
+	else:
+		if shift_status=="0": # Not Absent
+			TContractShift = 0
+			TDailyShift = 0
+			
+			Tpub = 1 if getDayPub(attendance_date)==1 else 0
+			DateOfWeek = int(attendance_date.strftime('%w'))
+			# Weekday as a decimal number, where 0 is Sunday and 6 is Saturday.
+
+			if DateOfWeek==0:
+				DayCurDate = "SRV_SUN"
+			elif DateOfWeek==1:
+				DayCurDate = "SRV_MON"
+			elif DateOfWeek==2:
+				DayCurDate = "SRV_TUE"
+			elif DateOfWeek==3:
+				DayCurDate = "SRV_WED"
+			elif DateOfWeek==4:
+				DayCurDate = "SRV_THU"
+			elif DateOfWeek==5:
+				DayCurDate = "SRV_FRI"
+			elif DateOfWeek==6:
+				DayCurDate = "SRV_SAT"
+			else:
+				DayCurDate = 99
+
+			print("DayCurDate:", DayCurDate)
+
+			if DayCurDate==99:
+				response = JsonResponse(data={"success": True, "is_error": True,  "is_scheduled:": True, "message": "วันที่ทำงานไม่ถูกต้อง กรุณาตรวจสอบ"})
+				response.status_code = 200
+				return response
+			
+			sql = "select cnt_id,srv_shif_id, sum(" + str(DayCurDate) + ") as srv_num"
+			sql += " from cus_service where cnt_id=" + str(cnt_id)
+			sql += " and srv_shif_id=" + str(shift_id)
+			sql += " and srv_active=1 and upd_flag<>'D' "
+			sql += " group by cnt_id, srv_shif_id"
+			print("SQL TContractShift:", sql)
+
+			try:
+				with connection.cursor() as cursor:		
+					cursor.execute(sql)
+					cus_service_obj = cursor.fetchone()
+
+				if cus_service_obj is not None:					
+					TContractShift = cus_service_obj[2] # get srv_num value								
+			except db.OperationalError as e:
+				response = JsonResponse(data={"success": True, "is_error": True, "is_scheduled:": True, "message": "<b>Please send this error to IT team or try again.</b><br>" + str(e)})
+				response.status_code = 200
+				return response
+			except db.Error as e:
+				response = JsonResponse(data={"success": True,"is_error": True,  "is_scheduled:": True, "message": "<b>Please send this error to IT team or try again.</b><br>" + str(e)})
+				response.status_code = 200
+				return response
+
+			sql = "select cnt_id,sch_shift,count(emp_id) as srv_num from dly_plan"
+			sql += " where cnt_id=" + str(cnt_id)
+			sql += " and sch_shift=" + str(shift_id)
+			sql += " group by cnt_id, sch_shift"
+			print("SQL TContractShift:", sql)
+			try:
+				with connection.cursor() as cursor:		
+					cursor.execute(sql)
+					dly_plan_obj = cursor.fetchone()
+
+				if dly_plan_obj is not None:					
+					TDailyShift = dly_plan_obj[2] # get srv_num value
+			except db.OperationalError as e:
+				response = JsonResponse(data={"success": True, "is_error": True, "is_scheduled:": True, "message": "<b>Please send this error to IT team or try again.</b><br>" + str(e)})
+				response.status_code = 200
+				return response
+			except db.Error as e:
+				response = JsonResponse(data={"success": True, "is_error": True, "is_scheduled:": True, "message": "<b>Please send this error to IT team or try again.</b><br>" + str(e)})
+				response.status_code = 200
+				return response
+
+
+			print("TContractShift=", TContractShift)
+			print("TDailyShift=", TDailyShift)
+
+			if int(TContractShift) >= int(TDailyShift):				
+				sql = "select cnt_id,emp_id,sch_shift,shf_type from v_dlyplan "
+				sql += " where cnt_id=" + str(cnt_id)
+				sql += " and sch_shift=" + str(shift_id)
+				print("sql11:", sql)
+
+				try:
+					with connection.cursor() as cursor:		
+						cursor.execute(sql)
+						v_dlyplan_obj = cursor.fetchall()
+						cursor.close()
+
+					if v_dlyplan_obj is not None:					
+						number_of_record = len(v_dlyplan_obj)						
+
+						# Begin tran
+						for i in range(0,number_of_record):
+							tmp_cnt_id = v_dlyplan_obj[i][0]
+							tmp_emp_id = v_dlyplan_obj[i][1]
+							tmp_shf_type = v_dlyplan_obj[i][3]
+
+							message = "%s,%s,%s" %(tmp_cnt_id, tmp_emp_id, tmp_shf_type)
+
+							sql = "select * from v_dlyplan where emp_id=" + str(tmp_emp_id) + " and absent=0 and shf_type='" + str(tmp_shf_type) + "'"
+							print("DEBUG sql : ", sql)
+							cursor = connection.cursor()
+							cursor.execute(sql)
+							v_dlyplan_obj = cursor.fetchone()
+							cursor.close()
+
+							if v_dlyplan_obj is not None:
+
+								# DlyPerRs[i][38]
+								message = "พนักงานรหัส <b>" + str(tmp_emp_id) + "</b> ลงเข้าเวรที่หน่วยงาน <b>" + str(v_dlyplan_obj[13]) + "</b> ในกะ <b>" + str(v_dlyplan_obj[3]) + "</b> แล้ว "
+								message += "หากต้องการทำงานต่อกรุณากดปุ่มยืนยัน"
+								response = JsonResponse(data={"success": True, "is_error": True, "is_scheduled:": True, "message": message})
+								response.status_code = 200
+								return response
+							else:
+								response = JsonResponse(data={"success": True,"is_error": False, "is_scheduled:": False, "message": "Good to go"})
+								response.status_code = 200
+								return response								
+				except db.OperationalError as e:
+					response = JsonResponse(data={"success": True,"is_error": True, "is_scheduled:": True, "message": "<b>Please send this error to IT team or try again.</b><br>" + str(e)})
+					response.status_code = 200
+					return response
+				except db.Error as e:
+					response = JsonResponse(data={"success": True,"is_error": True, "is_scheduled:": True, "message": "<b>Please send this error to IT team or try again.</b><br>" + str(e)})
+					response.status_code = 200
+					return response
+			else:
+				response = JsonResponse(data={"success": True, "is_error": True, "is_scheduled:": True, "message": "จำนวนพนักงานทำงานมากกว่าสัญญาการให้บริการ"})
+				response.status_code = 200
+				return response
+
+			
+		else: # Absent
+
+			sql = "update dly_plan set "
+			sql += "absent=1, "
+			sql += "late=0, "
+			sql += "late_full=0, "
+			sql += "relieft=0, "
+			sql += "relieft_id=0, "
+			sql += "tel_man=0, "
+			sql += "tel_time=null, "
+			sql += "tel_amt=0, "
+			sql += "tel_paid=0, "
+			sql += "ot=0, "
+			sql += "ot_reason=0, "
+			sql += "ot_time_frm=null, "
+			sql += "ot_time_to=null, "
+			sql += "ot_hr_amt=0, "
+			sql += "ot_pay_amt=0, "
+
+			sql += "upd_by='" + str(username) + "'"
+			sql += ",upd_date='" + str(upd_date)[:-10] + "'"
+			sql += ",upd_flag='E'"
+			sql += " where dly_date='" + str(CurDate) + "'"
+			sql += " and sch_shift=" + str(shift_id)
+			sql += " and cnt_id=" + str(cnt_id)
+			# print("sql:", sql)
+
+			try:
+				with connection.cursor() as cursor:		
+					cursor.execute(sql)					
+				message = "ปรับสถานะการเข้างานเป็น <b>Absent</b> สำเร็จ"
+
+			except db.OperationalError as e:
+				response = JsonResponse(data={"success": True,"is_error": True,"message": "<b>Please send this error to IT team or try again.</b><br>" + str(e)})
+				response.status_code = 200
+				return response
+			except db.Error as e:
+				response = JsonResponse(data={"success": True,"is_error": True,"message": "<b>Please send this error to IT team or try again.</b><br>" + str(e)})
+				response.status_code = 200
+				return response		
+			finally:
+				cursor.close()
+
+	response = JsonResponse(data={"success": True,"is_error": is_error,"message": message})
+	response.status_code = 200
+	return response
+
+
+
+@login_required(login_url='/accounts/login/')
+def ajax_bulk_update_absent_status(request):
+
+	'''
+	response = JsonResponse(data={"success": True,"is_error": True,"message": "TODO"})
+	response.status_code = 200
+	return response
+	'''
+
+	message = ""
+	Tpub = 0
+	DayCurDate = ""
+	is_error = False
+	shift_status_list = ["0","1"]
+	TContractShift = 0
+	TDailyShift = 0
+	attendance_date = datetime.datetime.strptime(request.POST.get('attendance_date'), '%d/%m/%Y').date()
+	CurDate = attendance_date
+	shift_id = request.POST.get('shift_id')
+	shift_status = request.POST.get('shift_status')
+	cus_id = request.POST.get('cus_id')
+	cus_brn = request.POST.get('cus_brn')
+	cus_vol = request.POST.get('cus_vol')
+	skip_is_scheduled_record = request.POST.get('skip_is_scheduled_record')
+	cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
+	username = request.user.username
+	upd_date = datetime.datetime.now()
+	
+	print("skip_is_scheduled_record : ", skip_is_scheduled_record)
+
 	# message = "%s,%s,%s,%s,%s" %(attendance_date,shift_id,cus_id,cus_brn,cus_vol)
 	# print("message:", message)
 	# print("shift_status:", shift_status)
@@ -6548,6 +6782,7 @@ def ajax_bulk_update_absent_status(request):
 
 					if v_dlyplan_obj is not None:					
 						number_of_record = len(v_dlyplan_obj)						
+						skip_emp_id = None
 
 						# Begin tran
 						for i in range(0,number_of_record):
@@ -6557,18 +6792,74 @@ def ajax_bulk_update_absent_status(request):
 
 							message = "%s,%s,%s" %(tmp_cnt_id, tmp_emp_id, tmp_shf_type)
 
-							sql = "select count(*) from v_dlyplan where emp_id=" + str(tmp_emp_id) + " and absent=0 and shf_type='" + str(tmp_shf_type) + "'"
+							# sql = "select emp_id from v_dlyplan where emp_id=" + str(tmp_emp_id) + " and absent=1 and shf_type='" + str(tmp_shf_type) + "'"
+							sql = "select emp_id from v_dlyplan where emp_id=" + str(tmp_emp_id) + " and absent=0 and shf_type='" + str(tmp_shf_type) + "'"
+							print("SQL : ", sql)
 							cursor = connection.cursor()
 							cursor.execute(sql)
-							count = cursor.fetchone()[0]
+							emp_obj = cursor.fetchone()
 							cursor.close()
 
+							
+							'''
 							if count>0:
 								message = "พนักงานรหัส <b>" + str(tmp_emp_id) + "</b> ทำงานที่หน่วยงาน <b>" + str(tmp_cnt_id) + "</b> ในกะ <b>" + str(tmp_shf_type) + "</b> เรียบร้อยแล้ว กรุณาตรวจสอบอีกครั้ง"
 								response = JsonResponse(data={"success": True,"is_error": True,"message": message})
 								response.status_code = 200
 								return response
+							'''
+
+							# print("tmp_emp_id = ", tmp_emp_id)
+							# print("skip_emp_id = ", emp_obj[0])
+							
+							# skip_is_scheduled_record
+							if emp_obj is not None:
+								skip_emp_id = emp_obj[0]
+
+							# print("skip_emp_id = ", emp_obj[0])
+
+							if skip_is_scheduled_record=="1":
+
+								print("tmp_emp_id = " + str(tmp_emp_id) + " | skip_emp_id = " + str(skip_emp_id))
+
+								if skip_emp_id==tmp_emp_id:
+									print("Skip emp id : ", tmp_emp_id)
+								else:
+									print("Not skip emp id : ", tmp_emp_id)
+									sql = "update dly_plan set "
+									sql += "absent=0, "
+
+									sql += "late=0, "
+									sql += "late_full=0, "
+									sql += "relieft=0, "
+									sql += "relieft_id=0, "
+									sql += "tel_man=0, "
+									sql += "tel_time=null, "
+									sql += "tel_amt=0, "
+									sql += "tel_paid=0, "
+									sql += "ot=0, "
+									sql += "ot_reason=0, "
+									sql += "ot_time_frm=null, "
+									sql += "ot_time_to=null, "
+									sql += "ot_hr_amt=0, "
+									sql += "ot_pay_amt=0, "
+
+									sql += "upd_by='" + str(username) + "'"
+									sql += ",upd_date='" + str(upd_date)[:-10] + "'"
+									sql += ",upd_flag='E'"
+									sql += " where dly_date='" + str(CurDate) + "'"
+									sql += " and sch_shift=" + str(shift_id)
+									sql += " and emp_id=" + str(tmp_emp_id)
+									sql += " and cnt_id=" + str(tmp_cnt_id)
+
+									print("DEBUG SQL:", sql)
+									cursor = connection.cursor()
+									cursor.execute(sql)
+									cursor.close()
+
 							else:
+								print("UPDATE ALL")
+								'''
 								sql = "update dly_plan set "
 								sql += "absent=0, "
 
@@ -6599,6 +6890,7 @@ def ajax_bulk_update_absent_status(request):
 								cursor = connection.cursor()
 								cursor.execute(sql)
 								cursor.close()
+								'''
 
 						message = "ปรับสถานะการเข้างานเป็น <b>Not Absent</b> สำเร็จ"
 				except db.OperationalError as e:
@@ -6616,6 +6908,7 @@ def ajax_bulk_update_absent_status(request):
 				
 			
 		else: # Absent
+
 			sql = "update dly_plan set "
 			sql += "absent=1, "
 			sql += "late=0, "
@@ -6640,6 +6933,7 @@ def ajax_bulk_update_absent_status(request):
 			sql += " and sch_shift=" + str(shift_id)
 			sql += " and cnt_id=" + str(cnt_id)
 			# print("sql:", sql)
+
 			try:
 				with connection.cursor() as cursor:		
 					cursor.execute(sql)					
@@ -8321,7 +8615,7 @@ def checkBetweenShiftNew(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,
 		if check_dup_record is None:
 			CheckBetweenShift = False
 			is_cross_site = False
-			message = "TEST"
+			message = "TEST11"
 		else:
 			if Gto == Sfrom:
 				CheckBetweenShift = False

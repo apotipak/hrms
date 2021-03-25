@@ -658,9 +658,6 @@ thead th { white-space: nowrap; }
 
 
 
-
-
-                  <!--aeiou-->
                   <!-- Contract / Schedule Tab -->
                   <div class="tab-pane fade" id="custom-tabs-one-profile" role="tabpanel" aria-labelledby="custom-tabs-one-profile-tab" style="padding: 0;">
 
@@ -1117,24 +1114,28 @@ function checkSpecialBenefitList() {
     });
 }
 
-$(document).ready(function(){
+	$(document).ready(function(){
 
-	$(":input").inputmask();
+		$(":input").inputmask();
 
-	$("#id_shift_option").change(function () {
-		// DEMO
-		// START
-		//checkSpecialBenefitList();
-		// END
+		$("#id_shift_option").change(function () {
+			// DEMO
+			// START
+			//checkSpecialBenefitList();
+			// END
+		});
+
 	});
-
-});
 
 	$("#id_bulk_shift_list_option").change(function() {		
 		$("#id_bulk_shift_list_option").css('border-color', '');
 		$("#id_bulk_shift_list_option").css('background-color', '');
 		$("#id_bulk_shift_list_option").css('border-style', '');		
 	});
+
+
+
+
 
 	$("#bulk_shift_status_form").submit(function(e) {
 	    e.preventDefault();
@@ -1183,145 +1184,332 @@ $(document).ready(function(){
 
 	    	return false;  		
 	    } else {
-			$.ajax({
-		    	url : "/monitoring/ajax/bulk_update_absent_status/",
-		    	type : "POST",
-		    	data : {          
-		      		csrfmiddlewaretoken: '{{ csrf_token }}',
-		      		attendance_date: attendance_date,
-		      		shift_id: bulk_shift_id,
-		      		shift_status: bulk_shift_status,
-		      		cus_id: cus_id,
-		      		cus_brn: cus_brn,
-		      		cus_vol: cus_vol,
-		    	},
-		    	success: function(data) {
 
-		    		if(data.is_error) {
-		    			/*
-						$.alert({
-						    title: 'Error',
-						    type: 'red',
-						    content: data.message,
-						    animation: 'zoom',
-						    animationBounce: 1.5,
-						    closeIcon: false,
-						    boxWidth: '38%',
-						    useBootstrap: false,
-						});
-						*/
+	    	if(bulk_shift_status==1) {
+	    		//alert("Absent");
+	    		//return false;
+				$.ajax({
+			    	url : "/monitoring/ajax/bulk_update_absent_status/",
+			    	type : "POST",
+			    	data : {          
+			      		csrfmiddlewaretoken: '{{ csrf_token }}',
+			      		attendance_date: attendance_date,
+			      		shift_id: bulk_shift_id,
+			      		shift_status: bulk_shift_status,
+			      		cus_id: cus_id,
+			      		cus_brn: cus_brn,
+			      		cus_vol: cus_vol,
+			    	},
+			    	success: function(data) {
+			    		if(data.is_error) {																	
+							$.alert({
+							    title: 'Error',
+							    type: 'red',
+							    content: data.message,
+							    animation: 'zoom',
+							    animationBounce: 1.5,
+							    closeIcon: false,
+							    boxWidth: '38%',
+							    useBootstrap: false,
+							});
 
-					  	$(document).Toasts('create', {
-					    	class: "bg-danger", 
-					    	title: "{% trans 'Error' %}",
-					    	subtitle: '',
-					    	autohide: true,
-					    	delay: 2000,
-					    	body: data.message,
-					    	autoDismiss: true,
-					    	close: true,
-					    	autoremove: true,
-					  	});
+			    		} else {
 
-		    		} else {
-		    			/*
-						$.alert({
-						    title: 'Success',
-						    type: 'green',
-						    content: data.message,
-						    animation: 'zoom',
-						    animationBounce: 1.5,
-						    closeIcon: false,
-						    boxWidth: '38%',
-						    useBootstrap: false,
-						});
-						*/
+						  	$(document).Toasts('create', {
+						    	class: "bg-success", 
+						    	title: "{% trans 'Success' %}",
+						    	subtitle: '',
+						    	autohide: true,
+						    	delay: 2000,
+						    	body: data.message,
+						    	autoDismiss: true,
+						    	close: true,
+						    	autoremove: true,
+						  	});
 
-					  	$(document).Toasts('create', {
-					    	class: "bg-success", 
-					    	title: "{% trans 'Success' %}",
-					    	subtitle: '',
-					    	autohide: true,
-					    	delay: 2000,
-					    	body: data.message,
-					    	autoDismiss: true,
-					    	close: true,
-					    	autoremove: true,
-					  	});
+							$.ajax({
+								url : "/monitoring/ajax/get_attendance_information/",
+								type : "POST",
+								data : {          
+							  		csrfmiddlewaretoken: '{{ csrf_token }}',
+							  		attendance_date: attendance_date,
+							  		cus_id: cus_id,
+							  		cus_brn: cus_brn,
+							  		cus_vol: cus_vol,
+							  		search_shift_option: search_shift_option,
+								},
+								success : function(data) {
+									if(data.is_found) {
 
-						$.ajax({
-							url : "/monitoring/ajax/get_attendance_information/",
-							type : "POST",
-							data : {          
-						  		csrfmiddlewaretoken: '{{ csrf_token }}',
-						  		attendance_date: attendance_date,
-						  		cus_id: cus_id,
-						  		cus_brn: cus_brn,
-						  		cus_vol: cus_vol,
-						  		search_shift_option: search_shift_option,
-							},
-							success : function(data) {
-								if(data.is_found) {
+										// Get Schedule list info
+										result = "";
+										schedule_list_length = data.schedule_list.length;
+										for(i=0; i<schedule_list_length; i++) {
+											result += data.schedule_list[i];
+										}
 
-									// Get Schedule list info
-									result = "";
-									schedule_list_length = data.schedule_list.length;
-									for(i=0; i<schedule_list_length; i++) {
-										result += data.schedule_list[i];
+										employee_leave_list = null
+										result = create_attandance_table(data.employee_list, employee_leave_list);
+
+										$('#id_employee_list').html(result);
+
+										// TOTAL
+										$("#totalNDP").html(data.totalNDP);
+										$("#totalNNP").html(data.totalNNP);
+										$("#totalPDP").html(data.totalPDP);
+										$("#totalPNP").html(data.totalPNP);
+
+										$("#totalNDA").html(data.totalNDA);
+										$("#totalNNA").html(data.totalNNA);
+										$("#totalPDA").html(data.totalPDA);
+										$("#totalPNA").html(data.totalPNA);
+
+										if(data.totalNDM>=0)
+											$("#totalNDM").html("<span class='text-danger'>" + data.totalNDM + "</span>");
+										else
+											$("#totalNDM").html("<span class='text-danger'>" + data.totalNDM + "</span>");
+
+										if(data.totalNNM>=0)
+											$("#totalNNM").html("<span class='text-danger'>" + data.totalNNM + "</span>");						
+										else
+											$("#totalNNM").html("<span class='text-danger'>" + data.totalNNM + "</span>");
+										
+										if(data.totalPDM>=0)
+											$("#totalPDM").html("<span class='text-danger'>" + data.totalPDM + "</span>");
+										else
+											$("#totalPDM").html("<span class='text-danger'>" + data.totalPDM + "</span>");
+
+										if(data.totalPNM>=0)
+											$("#totalPNM").html("<span class='text-danger'>" + data.totalPNM + "</span>");
+										else
+											$("#totalPNM").html("<span class='text-danger'>" + data.totalPNM + "</span>");
 									}
-
-									// TODO
-									//$('#id_schedule_option').text(result);
-									//$('#id_bulk_schedule_option').text("");
-
-
-									// SUDO bulk
-									// Get Attandance Employee List
-									employee_leave_list = null
-									result = create_attandance_table(data.employee_list, employee_leave_list);
-
-									$('#id_employee_list').html(result);
-
-									// TOTAL
-									$("#totalNDP").html(data.totalNDP);
-									$("#totalNNP").html(data.totalNNP);
-									$("#totalPDP").html(data.totalPDP);
-									$("#totalPNP").html(data.totalPNP);
-
-									$("#totalNDA").html(data.totalNDA);
-									$("#totalNNA").html(data.totalNNA);
-									$("#totalPDA").html(data.totalPDA);
-									$("#totalPNA").html(data.totalPNA);
-
-									if(data.totalNDM>=0)
-										$("#totalNDM").html("<span class='text-danger'>" + data.totalNDM + "</span>");
-									else
-										$("#totalNDM").html("<span class='text-danger'>" + data.totalNDM + "</span>");
-
-									if(data.totalNNM>=0)
-										$("#totalNNM").html("<span class='text-danger'>" + data.totalNNM + "</span>");						
-									else
-										$("#totalNNM").html("<span class='text-danger'>" + data.totalNNM + "</span>");
-									
-									if(data.totalPDM>=0)
-										$("#totalPDM").html("<span class='text-danger'>" + data.totalPDM + "</span>");
-									else
-										$("#totalPDM").html("<span class='text-danger'>" + data.totalPDM + "</span>");
-
-									if(data.totalPNM>=0)
-										$("#totalPNM").html("<span class='text-danger'>" + data.totalPNM + "</span>");
-									else
-										$("#totalPNM").html("<span class='text-danger'>" + data.totalPNM + "</span>");
-
-
 								}
-							}
-						});
+							});
 
-		    		}		    		
-		    	},
+			    		}		    		
+			    	},
 
-		    });
+			    });					        					        		
+
+
+	    	} else {
+	    		//alert("Not absent")
+	    		//return false;
+				$.ajax({
+			    	url : "/monitoring/ajax/ajax_is_scheduled_between_site/",
+			    	type : "POST",
+			    	data : {          
+			      		csrfmiddlewaretoken: '{{ csrf_token }}',
+			      		attendance_date: attendance_date,
+			      		shift_id: bulk_shift_id,
+			      		shift_status: bulk_shift_status,
+			      		cus_id: cus_id,
+			      		cus_brn: cus_brn,
+			      		cus_vol: cus_vol,
+			    	},
+			    	success: function(data) {
+						
+						if(data.is_error) {
+							$.confirm({
+							    title: 'Confirmation',
+							    type: 'red',
+							    content: data.message,
+								animation: 'zoom',
+							    animationBounce: 1.5,
+							    closeIcon: true,
+							    boxWidth: '38%',
+							    useBootstrap: false,		    
+							    buttons: {
+							        confirm: {
+							        	text: 'ยืนยัน',
+							        	btnClass: 'btn-danger',
+							        	action: function () {
+							        		
+							        		skip_is_scheduled_record = 1
+
+											$.ajax({
+										    	url : "/monitoring/ajax/bulk_update_absent_status/",
+										    	type : "POST",
+										    	data : {          
+										      		csrfmiddlewaretoken: '{{ csrf_token }}',
+										      		attendance_date: attendance_date,
+										      		shift_id: bulk_shift_id,
+										      		shift_status: bulk_shift_status,
+										      		cus_id: cus_id,
+										      		cus_brn: cus_brn,
+										      		cus_vol: cus_vol,
+										      		skip_is_scheduled_record,
+										    	},
+										    	success: function(data) {
+										    		if(data.is_error) {
+										    			
+										    		} else {
+														$.ajax({
+															url : "/monitoring/ajax/get_attendance_information/",
+															type : "POST",
+															data : {          
+														  		csrfmiddlewaretoken: '{{ csrf_token }}',
+														  		attendance_date: attendance_date,
+														  		cus_id: cus_id,
+														  		cus_brn: cus_brn,
+														  		cus_vol: cus_vol,
+														  		search_shift_option: search_shift_option,
+															},
+															success : function(data) {
+																if(data.is_found) {
+
+																	// Get Schedule list info
+																	result = "";
+																	schedule_list_length = data.schedule_list.length;
+																	for(i=0; i<schedule_list_length; i++) {
+																		result += data.schedule_list[i];
+																	}
+
+																	employee_leave_list = null
+																	result = create_attandance_table(data.employee_list, employee_leave_list);
+
+																	$('#id_employee_list').html(result);
+
+																	// TOTAL
+																	$("#totalNDP").html(data.totalNDP);
+																	$("#totalNNP").html(data.totalNNP);
+																	$("#totalPDP").html(data.totalPDP);
+																	$("#totalPNP").html(data.totalPNP);
+
+																	$("#totalNDA").html(data.totalNDA);
+																	$("#totalNNA").html(data.totalNNA);
+																	$("#totalPDA").html(data.totalPDA);
+																	$("#totalPNA").html(data.totalPNA);
+
+																	if(data.totalNDM>=0)
+																		$("#totalNDM").html("<span class='text-danger'>" + data.totalNDM + "</span>");
+																	else
+																		$("#totalNDM").html("<span class='text-danger'>" + data.totalNDM + "</span>");
+
+																	if(data.totalNNM>=0)
+																		$("#totalNNM").html("<span class='text-danger'>" + data.totalNNM + "</span>");						
+																	else
+																		$("#totalNNM").html("<span class='text-danger'>" + data.totalNNM + "</span>");
+																	
+																	if(data.totalPDM>=0)
+																		$("#totalPDM").html("<span class='text-danger'>" + data.totalPDM + "</span>");
+																	else
+																		$("#totalPDM").html("<span class='text-danger'>" + data.totalPDM + "</span>");
+
+																	if(data.totalPNM>=0)
+																		$("#totalPNM").html("<span class='text-danger'>" + data.totalPNM + "</span>");
+																	else
+																		$("#totalPNM").html("<span class='text-danger'>" + data.totalPNM + "</span>");
+																}
+															}
+														});
+
+										    		}		    		
+										    	},
+
+										    });					        					        		
+										}
+							        },
+							        cancel: {					        	
+							        	action: function () {											
+											//alert("Cancel");
+							        	}
+							        }
+							    }
+							});
+						} else {
+
+							$.ajax({
+						    	url : "/monitoring/ajax/bulk_update_absent_status/",
+						    	type : "POST",
+						    	data : {          
+						      		csrfmiddlewaretoken: '{{ csrf_token }}',
+						      		attendance_date: attendance_date,
+						      		shift_id: bulk_shift_id,
+						      		shift_status: bulk_shift_status,
+						      		cus_id: cus_id,
+						      		cus_brn: cus_brn,
+						      		cus_vol: cus_vol,
+						      		skip_is_scheduled_record,
+						    	},
+						    	success: function(data) {
+						    		if(data.is_error) {
+						    			
+						    		} else {
+										$.ajax({
+											url : "/monitoring/ajax/get_attendance_information/",
+											type : "POST",
+											data : {          
+										  		csrfmiddlewaretoken: '{{ csrf_token }}',
+										  		attendance_date: attendance_date,
+										  		cus_id: cus_id,
+										  		cus_brn: cus_brn,
+										  		cus_vol: cus_vol,
+										  		search_shift_option: search_shift_option,
+											},
+											success : function(data) {
+												if(data.is_found) {
+
+													// Get Schedule list info
+													result = "";
+													schedule_list_length = data.schedule_list.length;
+													for(i=0; i<schedule_list_length; i++) {
+														result += data.schedule_list[i];
+													}
+
+													employee_leave_list = null
+													result = create_attandance_table(data.employee_list, employee_leave_list);
+
+													$('#id_employee_list').html(result);
+
+													// TOTAL
+													$("#totalNDP").html(data.totalNDP);
+													$("#totalNNP").html(data.totalNNP);
+													$("#totalPDP").html(data.totalPDP);
+													$("#totalPNP").html(data.totalPNP);
+
+													$("#totalNDA").html(data.totalNDA);
+													$("#totalNNA").html(data.totalNNA);
+													$("#totalPDA").html(data.totalPDA);
+													$("#totalPNA").html(data.totalPNA);
+
+													if(data.totalNDM>=0)
+														$("#totalNDM").html("<span class='text-danger'>" + data.totalNDM + "</span>");
+													else
+														$("#totalNDM").html("<span class='text-danger'>" + data.totalNDM + "</span>");
+
+													if(data.totalNNM>=0)
+														$("#totalNNM").html("<span class='text-danger'>" + data.totalNNM + "</span>");						
+													else
+														$("#totalNNM").html("<span class='text-danger'>" + data.totalNNM + "</span>");
+													
+													if(data.totalPDM>=0)
+														$("#totalPDM").html("<span class='text-danger'>" + data.totalPDM + "</span>");
+													else
+														$("#totalPDM").html("<span class='text-danger'>" + data.totalPDM + "</span>");
+
+													if(data.totalPNM>=0)
+														$("#totalPNM").html("<span class='text-danger'>" + data.totalPNM + "</span>");
+													else
+														$("#totalPNM").html("<span class='text-danger'>" + data.totalPNM + "</span>");
+												}
+											}
+										});
+
+						    		}		    		
+						    	},
+
+						    });	
+						}
+
+
+			    	}
+			    });
+
+				return false;
+
+	    	}
 
 	    }
 	});
