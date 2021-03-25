@@ -1309,7 +1309,7 @@ function checkSpecialBenefitList() {
 			      		cus_vol: cus_vol,
 			    	},
 			    	success: function(data) {
-						
+						// alert("success");
 						if(data.is_error) {
 							//alert("is_error");
 							$.confirm({
@@ -1346,6 +1346,9 @@ function checkSpecialBenefitList() {
 										    		if(data.is_error) {
 										    			
 										    		} else {
+
+
+
 														$.ajax({
 															url : "/monitoring/ajax/get_attendance_information/",
 															type : "POST",
@@ -1436,10 +1439,21 @@ function checkSpecialBenefitList() {
 						    	},
 						    	success: function(data) {
 
+								  	$(document).Toasts('create', {
+								    	class: "bg-success", 
+								    	title: "{% trans 'Success' %}",
+								    	subtitle: '',
+								    	autohide: true,
+								    	delay: 2000,
+								    	body: data.message,
+								    	autoDismiss: true,
+								    	close: true,
+								    	autoremove: true,
+								  	});
 						    		
 						    		if(data.is_error) {
 						    			//alert("aa");
-						    		} else {
+						    		} else {						    			
 										$.ajax({
 											url : "/monitoring/ajax/get_attendance_information/",
 											type : "POST",

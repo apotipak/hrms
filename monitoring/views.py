@@ -6891,6 +6891,10 @@ def ajax_bulk_update_absent_status(request):
 								cursor.close()
 
 						message = "ปรับสถานะการเข้างานเป็น <b>Not Absent</b> สำเร็จ"
+						response = JsonResponse(data={"success": True, "is_error": False, "message": message})
+						response.status_code = 200
+						return response
+
 				except db.OperationalError as e:
 					response = JsonResponse(data={"success": True,"is_error": True,"message": "<b>Please send this error to IT team or try again.</b><br>" + str(e)})
 					response.status_code = 200
