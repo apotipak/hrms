@@ -6559,7 +6559,7 @@ def ajax_is_scheduled_between_site(request):
 							message = "%s,%s,%s" %(tmp_cnt_id, tmp_emp_id, tmp_shf_type)
 
 							sql = "select * from v_dlyplan where emp_id=" + str(tmp_emp_id) + " and absent=0 and shf_type='" + str(tmp_shf_type) + "'"
-							print("DEBUG sql : ", sql)
+							print("DEBUG sql 11: ", sql)
 							cursor = connection.cursor()
 							cursor.execute(sql)
 							v_dlyplan_obj = cursor.fetchone()
@@ -6859,7 +6859,6 @@ def ajax_bulk_update_absent_status(request):
 
 							else:
 								print("UPDATE ALL")
-								'''
 								sql = "update dly_plan set "
 								sql += "absent=0, "
 
@@ -6890,7 +6889,6 @@ def ajax_bulk_update_absent_status(request):
 								cursor = connection.cursor()
 								cursor.execute(sql)
 								cursor.close()
-								'''
 
 						message = "ปรับสถานะการเข้างานเป็น <b>Not Absent</b> สำเร็จ"
 				except db.OperationalError as e:

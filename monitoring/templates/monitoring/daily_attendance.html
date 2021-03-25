@@ -1311,6 +1311,7 @@ function checkSpecialBenefitList() {
 			    	success: function(data) {
 						
 						if(data.is_error) {
+							//alert("is_error");
 							$.confirm({
 							    title: 'Confirmation',
 							    type: 'red',
@@ -1420,6 +1421,7 @@ function checkSpecialBenefitList() {
 							});
 						} else {
 
+							//alert("is_not_error");
 							$.ajax({
 						    	url : "/monitoring/ajax/bulk_update_absent_status/",
 						    	type : "POST",
@@ -1430,12 +1432,13 @@ function checkSpecialBenefitList() {
 						      		shift_status: bulk_shift_status,
 						      		cus_id: cus_id,
 						      		cus_brn: cus_brn,
-						      		cus_vol: cus_vol,
-						      		skip_is_scheduled_record,
+						      		cus_vol: cus_vol,						      		
 						    	},
 						    	success: function(data) {
+
+						    		
 						    		if(data.is_error) {
-						    			
+						    			//alert("aa");
 						    		} else {
 										$.ajax({
 											url : "/monitoring/ajax/get_attendance_information/",
