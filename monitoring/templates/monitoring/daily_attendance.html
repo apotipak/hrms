@@ -3897,6 +3897,7 @@ $("#id_late_hour").click( function() {
 
 	// ADD
     $(document).on('click', '#add_button', function(e) {
+    	//alert("Check");
     	$("#id_add_new_record_status").val(1);
 
     	$("#reset_button").attr("disabled", false);
@@ -4395,6 +4396,7 @@ $("#id_late_hour").click( function() {
 			}
 		}
 
+
 		var job_type_option = $("#id_job_type_option").val();
 		var remark = $("#id_remark").val();    	
 
@@ -4481,7 +4483,6 @@ $("#id_late_hour").click( function() {
 			$("#id_shift_option").css('border-color','');
 			$("#id_shift_option").css('border-style','');
 		}
-
 
 		showLoading();
 
@@ -4579,8 +4580,13 @@ $("#id_late_hour").click( function() {
 							customer_zone_id
 				    	},
 				    	success: function(data) {
+
+				    		current_shift_option = $("#id_shift_option").val();
+
 				    		if(data.success) {
 					    		if(data.success) {
+    	
+
 									$.ajax({
 										url : "/monitoring/ajax/get_attendance_information/",
 										type : "POST",
@@ -4593,6 +4599,8 @@ $("#id_late_hour").click( function() {
 									  		cus_vol: cus_vol,
 										},
 										success : function(data) {
+
+
 											if(data.is_found) {
 
 												// Get Schedule list info
@@ -4658,6 +4666,12 @@ $("#id_late_hour").click( function() {
 												$("#id_phone_check").prop("checked", false);
 												$("#id_call_amount_option").attr("readonly", true);
 												$("#id_call_amount_option").attr("disabled", true);
+
+
+												
+												$("#id_shift_option").val(current_shift_option);
+    											//return false;
+
 											}
 										}
 									});
@@ -4915,7 +4929,6 @@ $("#id_late_hour").click( function() {
 
 
 
-
     	if(add_new_record_status==1) {
 
     		//alert("ADD NEW");
@@ -4954,6 +4967,7 @@ $("#id_late_hour").click( function() {
 	    			return false;
 	    		}
 	    	} else {
+
 		    	// Not absent / Call
 		    	if(ui_phone_check==1) {
 		    		if(tel_amount=="0") {
@@ -5176,7 +5190,9 @@ $("#id_late_hour").click( function() {
 		    		}
 
 	    		} else {
+
 	    			saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);
+	    			
 	    			$("#id_late_check").prop("checked", false);
 	    			return false;
 	    		}
