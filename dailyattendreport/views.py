@@ -146,3 +146,39 @@ def AjaxGPM403DailyGuardPerformanceReport(request):
 
     response.status_code = 200
     return response
+
+
+@permission_required('dailyattendreport.can_access_gpm_work_on_day_off_report', login_url='/accounts/login/')
+def GPMWorkOnDayOffReport(request):
+    page_title = settings.PROJECT_NAME
+    db_server = settings.DATABASES['default']['HOST']
+    project_name = settings.PROJECT_NAME
+    project_version = settings.PROJECT_VERSION  
+    
+    today_date = settings.TODAY_DATE.strftime("%d/%m/%Y")
+    contract_number_from = request.POST.get('contract_number_from')
+    contract_number_to = request.POST.get('contract_number_to')
+    start_date = request.POST.get('start_date')
+    end_date = request.POST.get('end_date')
+
+    contract_number_from = 0 if contract_number_from is None else contract_number_from
+    contract_number_to = 9999999999 if contract_number_to is None else contract_number_to
+    start_date = today_date if start_date is None else datetime.datetime.strptime(start_date, "%d/%m/%Y").date()
+    end_date = today_date if end_date is None else datetime.datetime.strptime(end_date, "%d/%m/%Y").date()
+
+    return render(request, 'dailyattendreport/gpm_work_on_day_off_report.html',
+        {
+        'page_title': page_title, 
+        'project_name': project_name, 
+        'project_version': project_version,
+        'db_server': db_server, 
+        'today_date': today_date,
+        'start_date': start_date,
+        'end_date': end_date,
+        'database': settings.DATABASES['default']['NAME'],
+        'host': settings.DATABASES['default']['HOST'],
+        'is_error': False,
+        'dly_plan_list': None,
+        })
+
+
