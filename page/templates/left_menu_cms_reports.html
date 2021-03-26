@@ -35,6 +35,30 @@
             </ul>
             {% endif %}
 
+
+
+
+            {% if perms.contractreport.can_access_contract_list_report %}
+            <a href="#" class="nav-link">
+              <i class="fas fa-chart-pie"></i>&nbsp;&nbsp;&nbsp;<p><b>SP-Admin Reports</b><i class="right fas fa-angle-left"></i></p>
+            </a>
+            <ul class="nav nav-treeview p-0">
+              <li class="nav-item p-0">
+                <a href="/reports/sp-admin/contract-list/" class="nav-link"><p>Contract List</p></a>
+              </li>
+              <li class="nav-item p-0">
+                <a href="/reports/sp-admin/customer/export-customer-main-address/" class="nav-link"><p>Customer Address (Main)</p></a>
+              </li>
+              <li class="nav-item p-0">
+                <a href="/reports/sp-admin/customer/export-customer-site-address/" class="nav-link"><p>Customer Address (Site)</p></a>
+              </li>
+              <li class="nav-item p-0">
+                <a href="/reports/control-room/daily-attend/gpm403-daily-guard-performance-by-contract/" class="nav-link"><p>GPM 403 Daily Guard Performance by Contract</p></a>
+              </li>
+            </ul>
+            {% endif %}
+
+
           </li> 
 
         </ul>
