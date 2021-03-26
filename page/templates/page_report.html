@@ -268,9 +268,17 @@ $(document).ready(function() {
         $('#reports-sp-admin').addClass("active");
         $('#reports-sp-admin').css("color", "#28a745");
         $('#reports-sp-admin').css("font-size", "1em");
-        $('#reports-sp-admin').css("font-weight", "bold");
-        //console.log(is_reports);
-      }      
+        $('#reports-sp-admin').css("font-weight", "bold");        
+      } else {
+        var is_reports = url.search("/reports/control-room/");
+        if(is_reports > 0) {        
+          $('#reports-sp-admin').addClass("active");
+          $('#reports-sp-admin').css("color", "#28a745");
+          $('#reports-sp-admin').css("font-size", "1em");
+          $('#reports-sp-admin').css("font-weight", "bold");
+        }
+      }
+
     }
   });
 
