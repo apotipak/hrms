@@ -54,7 +54,7 @@
       <div class="card-header" style="padding: 0 2px 10px 0;">
         <hr>
         <h5 class="card-title"><i class="far fa-list-alt"></i>&nbsp;<b>GPM403 Daily Guard Performance by Contract</b> | <small>รายงานจำนวน รปภ.เรียงตามสัญญา</small></h5>
-
+        <br>
         <div class="float-right pb-1">
           <div class="d-flex flex-row-reverse">
             <!--<button class="btn btn-success btn-sm" onclick="export_to_excel()">&nbsp;<i class="far fa-file-excel"></i>&nbsp;&nbsp;Export to Excel</button>-->
@@ -66,7 +66,7 @@
       <table class="table table-sm table-bordered table-striped table-hover" id="report_table">
         <thead class="bg-secondary">
           <tr>
-            <th class="align-middle text-center" scope="col">NO.</th>
+            <th class="align-middle text-center" scope="col">NO.</th>            
             <th class="align-middle text-center" scope="col" nowrap>Date</th>
             <th class="align-middle text-center" scope="col" nowrap>EMP ID</th>
             <th class="align-middle text-center" scope="col" nowrap>Full Name</th>
@@ -84,7 +84,7 @@
         
         <tbody>
           <tr>
-            <th class="text-center" colspan='13'><br><br><br><br><br></th>
+            <td class="text-center" colspan='13'>&nbsp;</td>
           </tr>
         </tbody>
 
@@ -107,6 +107,34 @@
 
 {% block javascript %}
   <script>
+
+$(document).ready( function () {
+    /*
+    var groupColumn = 1;  
+    var table = $('#report_table').DataTable({
+        "columnDefs": [
+            { "visible": false, "targets": groupColumn }
+        ],
+        "order": [[ groupColumn, 'asc' ]],
+        "displayLength": 25,
+        "drawCallback": function ( settings ) {
+            var api = this.api();
+            var rows = api.rows( {page:'current'} ).nodes();
+            var last=null;
+
+            api.column(groupColumn, {page:'current'} ).data().each( function ( group, i ) {
+                if ( last !== group ) {
+                    $(rows).eq( i ).before(
+                        '<tr class="group"><td colspan="5">'+group+'</td></tr>'
+                    );
+
+                    last = group;
+                }
+            } );
+        }
+    });
+    */
+});
 
   function showLoading() {
     $.LoadingOverlaySetup({
@@ -145,9 +173,11 @@
           alert("ERROR: " + data.error_message);
         } else {          
           result = "";
+          row_group_count = 1
           row_count = 1;
           if(row_count>0) {
             for(i=0; i<number_of_rows; i++) {
+
               emp_fullname = data.dly_plan_list[i]["emp_fname_th"] + " " + data.dly_plan_list[i]["emp_lname_th"];
               shf_desc = data.dly_plan_list[i]["shf_desc"];
               dept_en = data.dly_plan_list[i]["dept_en"];
@@ -166,25 +196,73 @@
               cus_name_th = data.dly_plan_list[i]["cus_name_th"];
               late = data.dly_plan_list[i]["late"];
               late_full = data.dly_plan_list[i]["late_full"];
-              
+
+              if(row_group_count!=cnt_id) {
+                result += "<tr style='background-color: #257638;color: #fff;font-size: 14px;'><td colspan='13'>" + cnt_id + " - "  + cus_name_th;
+                row_group_count = cnt_id;
+                row_count = 1;
+              }
+
               result += "<tr>";
-              result += "<td class='text-center' nowrap>" + row_count + "</td>";
+              result += "<td class='text-center' nowrap>" + row_count + "</td>";              
               result += "<td class='text-left' nowrap>" + dly_date + "</td>";
               result += "<td class='text-left' nowrap>" + emp_id + "</td>";
               result += "<td class='text-left' nowrap>" + emp_fullname + "</td>";
-              result += "<td class='text-left' nowrap>" + sch_rank + "</td>";
-              result += "<td class='text-left' nowrap>" + sch_shift + "</td>";
+
+
+
+              result += "<td class='text-center' nowrap>" + sch_rank + "</td>";
+              result += "<td class='text-center' nowrap>" + sch_shift + "</td>";
               
-              result += "<td class='text-left' nowrap>" + relieft_id + "</td>";
-              result += "<td class='text-left' nowrap>" + ot + "</td>";
-              result += "<td class='text-left' nowrap>" + late + "</td>";
-              result += "<td class='text-left' nowrap>" + late_full + "</td>";
-              result += "<td class='text-left' nowrap>" + ot_hr_amt + "</td>";
-              result += "<td class='text-left' nowrap>" + tel_man + "</td>";
-              result += "<td class='text-left' nowrap>" + tel_paid + "</td>";
+              if(relieft_id>0)
+                  result += "<td class='text-left' nowrap>" + relieft_id + "</td>";
+              else
+                  result += "<td class='text-left' nowrap>&nbsp;</td>";
+              
+              // OT
+              if(ot=="")
+                result += "<td class='text-left' nowrap>&nbsp;</td>";
+              else
+                result += "<td class='text-center' nowrap><i class='fas fa-check fa-xs text-success'></i></td>";
+
+              // LATE
+              if(late=="")
+                result += "<td class='text-left' nowrap>&nbsp;</td>";
+              else
+                result += "<td class='text-center' nowrap><i class='fas fa-check fa-xs text-success'></i></td>";
+
+
+              // LATE FULL
+              if(late_full=="")
+                result += "<td class='text-left' nowrap>&nbsp;</td>";
+              else
+                result += "<td class='text-center' nowrap><i class='fas fa-check fa-xs text-success'></i></td>";
+
+              if(ot_hr_amt>0)
+                  result += "<td class='text-left' nowrap>" + ot_hr_amt + "</td>";
+              else
+                  result += "<td class='text-left' nowrap>&nbsp;</td>";
+
+              // TEL MAN
+              if(tel_man=="")
+                result += "<td class='text-left' nowrap>&nbsp;</td>";
+              else              
+                result += "<td class='text-center' nowrap><i class='fas fa-check fa-xs text-success'></i></td>";
+
+              // TEL PAID
+              if(tel_paid=="")
+                result += "<td class='text-left' nowrap>&nbsp;</td>";
+              else
+                if(tel_paid>0)
+                    result += "<td class='text-center' nowrap>" + tel_paid + "</td>";
+                else
+                    result += "<td class='text-center' nowrap>&nbsp;</td>";
 
               result += "</tr>";
+
               row_count = row_count + 1;
+
+
             }
           } else {
               result = "";
