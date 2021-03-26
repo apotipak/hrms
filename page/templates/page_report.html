@@ -152,7 +152,7 @@
   {% elif request.path|slice:":17" == '/reports/sp-admin' %}
     {% include "left_menu_contract_report.html" %}
   {% elif request.path|slice:":21" == '/reports/control-room' %}
-    {% include "left_menu_daily_attend_report.html" %}    
+    {% include "left_menu_cms_reports.html" %}
   {% endif %}
 
   {% block content %}{% endblock %}

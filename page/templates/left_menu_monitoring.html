@@ -28,6 +28,8 @@
               </li>
               {% endcomment %}
 
+
+              {% comment %}
               <li class="nav-item">
                 <a href="{% url 'schedule-maintenance' %}" class="nav-link"><i class="far fa-calendar-alt"></i>&nbsp;&nbsp;<p>Schedule Maintenance</p></a>
               </li>
@@ -40,6 +42,10 @@
                 <a href="{% url 'daily-guard-performance' %}" class="nav-link"><i class="fas fa-chart-line"></i>&nbsp;&nbsp;<p>Daily Guard Performance</p></a>
               </li>
               <li class="nav-item"><hr></li>
+              {% endcomment %}
+
+
+
               <li class="nav-item">
                 <a href="{% url 'generate-daily-attend' %}" class="nav-link"><i class="fas fa-user-cog"></i>&nbsp;&nbsp;<p>Generate Daily Attend</p></a>
               </li>
@@ -48,24 +54,32 @@
                 <a href="{% url 'post-daily-attend' %}" class="nav-link"><i class="fas fa-cogs"></i>&nbsp;&nbsp;<p>Post Daily Attend</p></a>
               </li>
               <li class="nav-item"><hr></li>
-
-              {% comment %}              
-              <li class="nav-item">
-                <a href="#" class="nav-link"><i class="fas fa-caret-right nav-icon"></i><p>Export Guard Master File</p></a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link"><i class="fas fa-caret-right nav-icon"></i><p>Import Guard Attend</p></a>
-              </li>
-              <li class="nav-item"><hr></li>
-              <li class="nav-item">
-                <a href="#" class="nav-link"><i class="fas fa-caret-right nav-icon"></i><p>Inquiry & Report</p></a>
-              </li>
-              {% endcomment %}
-
             </ul>
-          </li> 
+          </li>               
+
         </ul>
         <!-- /.Daily Monitoring -->
+
+
+
+        <!-- Daily Monitoring -->
+        {% if perms.dailyattendreport.can_access_daily_attend_report %}
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="true">
+          <li class="nav-item has-tree">
+            <a href="#" class="nav-link">
+              <i class="fas fa-chart-pie"></i>&nbsp;&nbsp;<p>Reports<i class="right fas fa-angle-left"></i></p>
+            </a>
+            <ul class="nav nav-treeview">
+              {% if perms.dailyattendreport.can_access_gpm403_daily_guard_performance_by_contract_report %}
+              <li class="nav-item p-0">
+                <a href="/reports/control-room/daily-attend/gpm403-daily-guard-performance-by-contract/" class="nav-link"><p>GPM403 Daily Guard Performance by Contract</p></a>
+              </li>
+              {% endif %}
+            </ul>
+          </li>
+        </ul>
+        {% endif %}
+
 
       </nav>
       <!-- /.sidebar-menu -->

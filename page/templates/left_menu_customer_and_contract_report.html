@@ -23,39 +23,7 @@
       <li class="nav-item p-0">
         <a href="/reports/sp-admin/customer/export-customer-site-address/" class="nav-link"><p>Customer Address (Site)</p></a>
       </li>
-
-
-
-      <!--
-      <li class="nav-item p-0">
-        <a href="#" class="nav-link"><p>GPM407 Work Performance</p></a>
-      </li>
-
-      <li class="nav-item p-0">
-        <a href="#" class="nav-link"><p>Sales Report</p></a>
-      </li>
-
-      <li class="nav-item p-0">
-        <a href="#" class="nav-link"><p>Visit Report by Criteria</p></a>
-      </li>
-
-      <li class="nav-item p-0">
-        <a href="#" class="nav-link"><p>Visit Report by Overdue</p></a>
-      </li>
-      -->
       {% endif %}
-
-    </ul>
-    {% endif %}
-
-
-
-    {% if perms.dailyattendreport.can_access_daily_attend_report %}
-    <a href="#" class="nav-link">
-      <i class="fas fa-chart-pie"></i>&nbsp;&nbsp;&nbsp;<p><b>CMS Reports</b><i class="right fas fa-angle-left"></i></p>
-    </a>
-
-    <ul class="nav nav-treeview p-0">
 
       {% if perms.dailyattendreport.can_access_gpm403_daily_guard_performance_by_contract_report %}
       <li class="nav-item p-0">
@@ -64,6 +32,9 @@
       {% endif %}
     </ul>
     {% endif %}
+
+
+
 
   </li> 
 
