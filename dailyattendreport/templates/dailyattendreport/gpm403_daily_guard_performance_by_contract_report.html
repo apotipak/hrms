@@ -13,7 +13,17 @@
     <!-- Main content -->
     <section class="content">
 
-      <div class="col-md-12 p-0 pt-2">
+      <div class="card-header" style="padding: 0 2px 10px 0;">        
+        <h5 class="card-title"><i class="far fa-list-alt"></i>&nbsp;<b>GPM 403 Daily Guard Performance by Contract</b>&nbsp;&nbsp;<small>รายงานจำนวน รปภ.เรียงตามสัญญา</small></h5>
+        <br>
+        <div class="float-right pb-1">
+          <div class="d-flex flex-row-reverse">
+            <!--<button class="btn btn-success btn-sm" onclick="export_to_excel()">&nbsp;<i class="far fa-file-excel"></i>&nbsp;&nbsp;Export to Excel</button>-->
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 p-0 pt-2">
 
         <form method="post" autocomplete="off" name="search_form">
           {% csrf_token %}
@@ -40,8 +50,28 @@
                 <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:42px;">To</span></div>
                 <input type="text" name="end_date" class="form-control datepicker border-bottom-1 border-left-0 rounded-0 bg-white" placeholder="dd/mm/yyyy" required="" id="id_end_date" value="{{end_date}}" readonly="readonly">
 
-                &nbsp;&nbsp;<a href="javascript:SearchFormSubmit();" class="btn btn-outline-info" role="button">SEARCH</a>
+                &nbsp;&nbsp;
+                <!--<a href="javascript:SearchFormSubmit();" class="btn btn-outline-info" role="button">SEARCH</a>-->
+
+                <button class="btn btn-outline-info btn-sm dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="fas fa-print fa-sm"></i>&nbsp;&nbsp;Print
+                </button>
+
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink"> 
+                  <span style="font-size: 14px;">
+                  <a class="dropdown-item" href="#" onclick="print_document()"><i class="fas fa-desktop text-secondary"></i>&nbsp;&nbsp;Display on screen</a>              
+                  <a class="dropdown-item" href="{% url 'export-gpm-403-daily-guard-performance-by-contract-to-excel' %}">&nbsp;<i class="far fa-file-excel text-secondary"></i>&nbsp;&nbsp;&nbsp;Export to Excel</a>
+                  </span>
+                </div>
+
+
               </div>
+
+
+
+
+
+
 
             </div>
           </div>
@@ -51,17 +81,8 @@
       </div>
       <!-- /.col -->
 
-      <div class="card-header" style="padding: 0 2px 10px 0;">
-        <hr>
-        <h5 class="card-title"><i class="far fa-list-alt"></i>&nbsp;<b>GPM403 Daily Guard Performance by Contract</b> | <small>รายงานจำนวน รปภ.เรียงตามสัญญา</small></h5>
-        <br>
-        <div class="float-right pb-1">
-          <div class="d-flex flex-row-reverse">
-            <!--<button class="btn btn-success btn-sm" onclick="export_to_excel()">&nbsp;<i class="far fa-file-excel"></i>&nbsp;&nbsp;Export to Excel</button>-->
-          </div>
-        </div>
-      <!-- /.card-header -->
 
+      <!--
       <font size="2em;">      
       <table class="table table-sm table-bordered table-striped table-hover" id="report_table">
         <thead class="bg-secondary">
@@ -90,13 +111,12 @@
 
       </table>
       </font>
-
+      -->
       </div>
     
 
     </section>
     <!-- /.content -->
-  </div>
 
 
 
@@ -106,50 +126,71 @@
 
 
 {% block javascript %}
-  <script>
+<script>
 
 $(document).ready( function () {
-    /*
-    var groupColumn = 1;  
-    var table = $('#report_table').DataTable({
-        "columnDefs": [
-            { "visible": false, "targets": groupColumn }
-        ],
-        "order": [[ groupColumn, 'asc' ]],
-        "displayLength": 25,
-        "drawCallback": function ( settings ) {
-            var api = this.api();
-            var rows = api.rows( {page:'current'} ).nodes();
-            var last=null;
-
-            api.column(groupColumn, {page:'current'} ).data().each( function ( group, i ) {
-                if ( last !== group ) {
-                    $(rows).eq( i ).before(
-                        '<tr class="group"><td colspan="5">'+group+'</td></tr>'
-                    );
-
-                    last = group;
-                }
-            } );
-        }
-    });
-    */
+  //
 });
 
-  function showLoading() {
-    $.LoadingOverlaySetup({
-        background      : "rgba(0, 0, 0, 0.5)",
-        image           : "/static/img/logo-small.png",        
-        imageAnimation  : "1.5s fadein",
-        imageColor      : "#ffcc00"
-    });
-    $.LoadingOverlay("show"); 
+
+function print_document() {
+  var contract_number_from = $("#id_contract_number_from").val();
+  var contract_number_to = $("#id_contract_number_from").val();
+  var start_date = $("#id_start_date").val();
+  var end_date = $("#id_end_date").val();
+
+  console.log(contract_number_from + "," + contract_number_to + "," + start_date + "," + end_date);
+  if(contract_number_from=="") {
+    $.alert({
+        title: 'Error',
+        type: 'red',
+        content: "กรุณาป้อนรหัสสัญญา",
+        animation: 'zoom',
+        animationBounce: 1.5,
+        closeIcon: false,
+        boxWidth: '38%',
+        useBootstrap: false,
+    });    
+    return false;
   }
+
+  if(contract_number_to=="") {
+    $.alert({
+        title: 'Error',
+        type: 'red',
+        content: "กรุณาป้อนรหัสสัญญา",
+        animation: 'zoom',
+        animationBounce: 1.5,
+        closeIcon: false,
+        boxWidth: '38%',
+        useBootstrap: false,
+    });    
+    return false;
+  }
+
+  //alert("todo");
+  //return false;  
+
+  //var href = "/reports/cms/gpm-403-daily-guard-performance-by-contract/" + contract_number_from + "/" + contract_number_to + "/" + start_date.replaceAll("/", "-") + "/" + end_date.replaceAll("/", "-") + "/";
+  var href = "/reports/cms/gpm-403-daily-guard-performance-by-contract/" + contract_number_from + "/" + contract_number_to + "/" + start_date + "/" + end_date + "/";
+  window.open(href,'_blank');
+}
+ 
+
+function showLoading() {
+  $.LoadingOverlaySetup({
+      background      : "rgba(0, 0, 0, 0.5)",
+      image           : "/static/img/logo-small.png",        
+      imageAnimation  : "1.5s fadein",
+      imageColor      : "#ffcc00"
+  });
+  $.LoadingOverlay("show"); 
+}
 
   function SearchFormSubmit() {
 
     //alert("Test");
-    //return false;
+    return false;
 
     var contract_number_from = $('#id_contract_number_from').val();
     var contract_number_to = $('#id_contract_number_to').val();

@@ -55,30 +55,22 @@
               </li>
               <li class="nav-item"><hr></li>
             </ul>
+
+
           </li>               
+
+
+
+
+
+
 
         </ul>
         <!-- /.Daily Monitoring -->
 
 
 
-        <!-- Daily Monitoring -->
-        {% if perms.dailyattendreport.can_access_daily_attend_report %}
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="true">
-          <li class="nav-item has-tree">
-            <a href="#" class="nav-link">
-              <i class="fas fa-chart-pie"></i>&nbsp;&nbsp;<p>Reports<i class="right fas fa-angle-left"></i></p>
-            </a>
-            <ul class="nav nav-treeview">
-              {% if perms.dailyattendreport.can_access_gpm403_daily_guard_performance_by_contract_report %}
-              <li class="nav-item p-0">
-                <a href="/reports/control-room/daily-attend/gpm403-daily-guard-performance-by-contract/" class="nav-link"><p>GPM403 Daily Guard Performance by Contract</p></a>
-              </li>
-              {% endif %}
-            </ul>
-          </li>
-        </ul>
-        {% endif %}
+
 
 
       </nav>

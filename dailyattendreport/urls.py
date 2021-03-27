@@ -13,6 +13,10 @@ urlpatterns = [
     path('', views.GPM403DailyGuardPerformanceReport, name='gpm403-daily-guard-performance-by-contract'),
     path('gpm403-daily-guard-performance-by-contract/', views.GPM403DailyGuardPerformanceReport, name='gpm403-daily-guard-performance-by-contract'),
     path('ajax-gpm403-daily-guard-performance-by-contract/', views.AjaxGPM403DailyGuardPerformanceReport, name='ajax-gpm403-daily-guard-performance-by-contract'),
+    url(r'^export-gpm-403-to-excel/$', views.export_gpm_403_daily_guard_performance_by_contract_to_excel, name='export-gpm-403-daily-guard-performance-by-contract-to-excel'),
+  	url(r'^gpm-403-daily-guard-performance-by-contract/(?P<contract_number_from>\d+)/(?P<contract_number_to>\d+)/(?P<start_date>\d{2}/\d{2}/\d{4})/(?P<end_date>\d{2}/\d{2}/\d{4})/$', views.GenerateGPM403DailyGuardPerformanceReport, name='gpm-403-daily-guard-performance-by-contract'),
+
+
 
     path('gpm-work-on-day-off-day-off/', views.GPMWorkOnDayOffReport, name='gpm-work-on-day-off-day-off'),
     # path('ajax-gpm-work-on-day-off-day-off/', views.AjaxGPMWorkOnDayOffReport, name='ajax-gpm-work-on-day-off-day-off'),

@@ -151,7 +151,7 @@
     {% include "left_menu_customer_report.html" %}
   {% elif request.path|slice:":17" == '/reports/sp-admin' %}
     {% include "left_menu_contract_report.html" %}
-  {% elif request.path|slice:":21" == '/reports/control-room' %}
+  {% elif request.path|slice:":12" == '/reports/cms' %}
     {% include "left_menu_cms_reports.html" %}
   {% endif %}
 
