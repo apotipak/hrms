@@ -23,6 +23,8 @@ from docxtpl import DocxTemplate
 from docx2pdf import convert
 import xlwt
 from os import path
+from docx import Document
+from docx.shared import Cm, Pt, Inches
 
 
 @permission_required('dailyattendreport.can_access_gpm403_daily_guard_performance_by_contract_report', login_url='/accounts/login/')
@@ -34,14 +36,15 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
     end_date = kwargs['end_date']
 
     template_name = base_url + 'GPM_403.docx'
-    file_name = "GPM_403"
+    file_name = request.user.username + "_GPM_403"
 
     start_date = datetime.datetime.strptime(start_date, "%d/%m/%Y").date()
     end_date = datetime.datetime.strptime(end_date, "%d/%m/%Y").date()
 
     contract_number_from = 0 if contract_number_from is None else contract_number_from
     contract_number_to = 9999999999 if contract_number_to is None else contract_number_to
-    # today_date = settings.TODAY_DATE.strftime("%d/%m/%Y")
+    today_date = settings.TODAY_DATE.strftime("%d/%m/%Y %H:%M:%S")
+
     # start_date = today_date if start_date is None else datetime.datetime.strptime(start_date, "%d/%m/%Y").date()
     # end_date = today_date if end_date is None else datetime.datetime.strptime(end_date, "%d/%m/%Y").date()
 
@@ -73,11 +76,22 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
         cursor.close()
 
     if dly_plan_obj is not None:
-        if len(dly_plan_obj)>0:           
-            for item in dly_plan_obj:             
+        if len(dly_plan_obj)>0:
+            group_count = 1
+            row_count = 1
+            temp_cnt_id = None
+
+            for item in dly_plan_obj:
+                
+                if temp_cnt_id != item[4]:
+                    temp_cnt_id = item[4]
+                    row_count = 1                    
+                else:
+                    row_count = row_count + 1
+
                 record = {
-                    "emp_fname_th": item[0],
-                    "emp_lname_th": item[1],
+                    "row_count": row_count,
+                    "emp_full_name": item[0].strip() + " " + item[1].strip(),
                     "shf_desc": item[2],
                     "dept_en": item[3],
                     "cnt_id": item[4],
@@ -96,31 +110,120 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
                     "late": item[17],
                     "late_full": item[18],
                 }
+                # row_count = row_count + 1
                 dly_plan_list.append(record)
 
             context = {
                 'file_name': file_name,
                 'docx_file_name': file_name+".docx",
                 'template_name': template_name,
-                'dly_plan_list': dly_plan_list,
+                'dly_plan_list': list(dly_plan_list),
+                'today_date': today_date,
+                'start_date': start_date.strftime("%d/%m/%Y"),
+                'end_date': end_date.strftime("%d/%m/%Y"),
             }          
         else:
             context = {
                 'file_name': file_name,
                 'docx_file_name': file_name + ".docx",
                 'template_name': template_name,
-                'dly_plan_list': dly_plan_list,
+                'dly_plan_list': list(dly_plan_list),
+                'today_date': today_date,
+                'start_date': start_date.strftime("%d/%m/%Y"),
+                'end_date': end_date.strftime("%d/%m/%Y"),
             }
-
-
-    # print("DEBUG")
-    # print(sql)
-    # print(contract_number_from, contract_number_to, start_date, end_date)
-    # return True
+        
     
+    # tpl = DocxTemplate(template_name)
+    # tpl.render(context)
+    # tpl.save(MEDIA_ROOT + '/monitoring/download/' + file_name + ".docx")
+
+
+    '''
+    context = {
+    'col_labels' : ['No', 'Date', 'Emp ID', 'Name'],
+    'tbl_contents': [
+        {'cols': ['1', '24/03/2021', '631303', 'ภาณุ']},
+        {'cols': ['2', '24/03/2021', '635465', 'ศักดิ์ดา']},
+        ]
+    }
+    template_name = base_url + 'TEST.docx'
     tpl = DocxTemplate(template_name)
     tpl.render(context)
     tpl.save(MEDIA_ROOT + '/monitoring/download/' + file_name + ".docx")
+    '''
+
+    document = Document()
+    file_name = 'DEMO'
+
+    if dly_plan_obj is not None:
+        
+        temp_cnt_id = None
+        row_count = 0
+        total_line = False
+
+        for item in dly_plan_obj:
+
+            cnt_id = item[4]
+            emp_id = item[5]
+            emp_full_name = item[0].strip() + " " + item[1].strip()
+            dly_date = item[6].strftime("%d/%m/%Y")
+            cus_name_th = item[16]
+
+            if cnt_id != temp_cnt_id:
+                document.add_paragraph('Contract : %s %s' % (cnt_id, cus_name_th))
+
+                '''
+                table = document.add_table(1, 3)
+                heading_cells = table.rows[0].cells
+                heading_cells[0].text = 'No.'
+                heading_cells[1].text = 'Date'
+                heading_cells[2].text = 'Emp ID'
+                '''
+        
+                table = document.add_table(1, 3)
+                table.style = 'TableGrid'                                
+
+                row = table.rows[0].cells                         
+                row[0].text = 'No.'
+                row[1].text = 'Date'
+                row[2].text = 'Emp ID'
+
+                row = table.add_row().cells
+                row[0].text = "1"
+                row[1].text = str(dly_date)
+                row[2].text = str(emp_id)
+
+
+                '''
+                row = table.add_row().cells
+                row[0].text = row_count
+                row[1].text = emp_id
+                row[2].text = emp_id
+                '''
+
+                # document.add_paragraph('%s %s' % (1, emp_id))
+                
+                temp_cnt_id = cnt_id
+                row_count = 1
+            else:
+                # document.add_paragraph('%s %s' % (row_count, emp_id))
+                row = table.add_row().cells
+                row[0].text = str(row_count)
+                row[1].text = str(dly_date)
+                row[2].text = str(emp_id)
+                
+            row_count += 1
+
+        # document.add_page_break()
+
+
+
+
+
+        document.save(MEDIA_ROOT + '/monitoring/download/' + file_name + ".docx")        
+
+    # return False
 
     # docx2pdf
     docx_file = path.abspath("media\\monitoring\\download\\" + file_name + ".docx")
@@ -128,6 +231,7 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
     convert(docx_file, pdf_file)
 
     return FileResponse(open(pdf_file, 'rb'), content_type='application/pdf')
+    # return FileResponse(open(docx_file, 'rb'), content_type='application/word')
 
 
 
