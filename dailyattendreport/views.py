@@ -24,7 +24,8 @@ from docx2pdf import convert
 import xlwt
 from os import path
 from docx import Document
-from docx.shared import Cm, Pt, Inches
+from docx.shared import Cm, Mm, Pt, Inches
+from docx.enum.section import WD_ORIENT
 
 
 @permission_required('dailyattendreport.can_access_gpm403_daily_guard_performance_by_contract_report', login_url='/accounts/login/')
@@ -154,7 +155,18 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
     '''
 
     document = Document()
+    for section in document.sections:
+        section.orientation = WD_ORIENT.LANDSCAPE
+        section.page_width = Mm(297)  # for A4 paper
+        section.page_height = Mm(210)
+
+    section = document.sections[0]
+    header = section.header
+    paragraph = header.paragraphs[0]
+    paragraph.text = "\t\tDaily Guard Performance by Contract\t\t"
+    paragraph.style = document.styles["Header"]
     file_name = 'DEMO'
+
 
     if dly_plan_obj is not None:
         
