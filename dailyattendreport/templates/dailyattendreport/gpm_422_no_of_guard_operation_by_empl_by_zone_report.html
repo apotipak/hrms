@@ -39,14 +39,30 @@
           <div class="card-body p-0 pt-2">
             <div class="form-group">
 
-              <div class="input-group col-6 offset-3">
+              <div class="input-group col-7 offset-2">
 
                
                 <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:98px;">Work Date</span></div>
-                <input type="text" style="width: 128px;" name="start_date" class="form-control datepicker border-bottom-1 rounded-0 bg-white" placeholder="dd/mm/yyyy" required="" value="{{start_date}}" id="id_start_date" readonly="readonly">                                
+                <input type="text" style="width: 80px;" name="start_date" class="form-control datepicker border-bottom-1 rounded-0 bg-white" placeholder="dd/mm/yyyy" required="" value="{{start_date}}" id="id_start_date" readonly="readonly">                                
                 <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:98px;">Dept/Zone</span></div>
-                <input type="text" style="width: 100px;" name="end_date" class="form-control datepicker border-bottom-1 border-left-0 rounded-0 bg-white" placeholder="dd/mm/yyyy" required="" id="id_end_date" value="{{end_date}}" readonly="readonly">
 
+                <select id="id_search_shift_option" class="form-control form-control-md" style="border-radius: 0; width: 100px;">
+                  <option value="0">---------</option>
+                  <option value="1" selected="">All Departments</option>
+                  {% for item in dept_zone_obj %}
+                  <option value="{{item.0}}">{{ item.1 }}</option>
+                  {% endfor %}
+                  
+
+                  <!--
+                  <option value="2">D | Day shift</option>
+                  <option value="3">N | Night shift</option>
+                  -->
+                </select>                
+
+                <!--
+                <input type="text" style="width: 100px;" name="end_date" class="form-control datepicker border-bottom-1 border-left-0 rounded-0 bg-white" placeholder="dd/mm/yyyy" required="" id="id_end_date" value="{{end_date}}" readonly="readonly">
+                -->
 
                 <button class="btn btn-outline-info btn-sm dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="fas fa-print fa-sm"></i>&nbsp;&nbsp;Print
@@ -295,6 +311,9 @@ $(document).ready( function () {
 
 
   function print_document() {
+    alert("todo");
+    return false;
+
     var start_date = $("#id_start_date").val();
     var href = "/reports/cms/ajax-gpm-work-on-day-off/" + start_date + "/";
     window.open(href,'_blank');

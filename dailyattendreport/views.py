@@ -946,6 +946,10 @@ def GPMWorkOnDayOffReport(request):
 
 
 
+# SELECT emp_fname_th, emp_lname_th, dept_en, cnt_id, emp_id, dept_id, sch_rank, absent, cus_name_th
+# FROM R_GPM422 
+# ORDER BY dept_id ASC, emp_id ASC
+
 @permission_required('dailyattendreport.can_access_gpm_422_no_of_guard_operation_by_empl_by_zone_report', login_url='/accounts/login/')
 def GPM422NoOfGuardOperationByEmplByZoneReport(request):
     page_title = settings.PROJECT_NAME
@@ -959,6 +963,20 @@ def GPM422NoOfGuardOperationByEmplByZoneReport(request):
 
     work_date = today_date if work_date is None else datetime.datetime.strptime(work_date, "%d/%m/%Y").date()
 
+    sql = "select dept_id, dept_en from COM_DEPARTMENT where dept_zone=1;"
+    try:
+        cursor = connection.cursor()
+        cursor.execute(sql)
+        dept_zone_obj = cursor.fetchall()
+    finally:
+        cursor.close()
+
+    if dept_zone_obj is not None:
+        if len(dept_zone_obj)>0:
+            for item in dept_zone_obj:
+                print(item[0])
+
+
     return render(request, 'dailyattendreport/gpm_422_no_of_guard_operation_by_empl_by_zone_report.html',
         {
         'page_title': page_title, 
@@ -971,6 +989,8 @@ def GPM422NoOfGuardOperationByEmplByZoneReport(request):
         'database': settings.DATABASES['default']['NAME'],
         'host': settings.DATABASES['default']['HOST'],
         'is_error': False,
-        'dly_plan_list': None,
+        'dept_zone_obj': dept_zone_obj,
         })
+
+    return render_to_response('test.html', {'persons':persons}, context_instance=RequestContext(request))
 
