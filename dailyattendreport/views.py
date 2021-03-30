@@ -86,7 +86,7 @@ def AjaxGPM422NoOfGuardOperationByEmplByZoneReport(request, *args, **kwargs):
             dept_en = item[7].replace("('", "")
 
             if temp_dept_id is None:
-                table = document.add_table(rows=1, cols=6, style='TableGridLight')                                                
+                table = document.add_table(rows=1, cols=6, style='TableGridLight')
                 a = table.cell(0, 0)
                 b = table.cell(0, 5)
                 c = a.merge(b)
@@ -108,6 +108,7 @@ def AjaxGPM422NoOfGuardOperationByEmplByZoneReport(request, *args, **kwargs):
                 row[3].width = Cm(1)
                 row[4].width = Cm(2)
                 
+                '''
                 table.rows[1].cells[0].paragraphs[0].runs[0].font.bold = True
                 table.rows[1].cells[0].paragraphs[0].runs[0].font.size = Pt(15)
                 table.rows[1].cells[1].paragraphs[0].runs[0].font.bold = True
@@ -120,6 +121,7 @@ def AjaxGPM422NoOfGuardOperationByEmplByZoneReport(request, *args, **kwargs):
                 table.rows[1].cells[4].paragraphs[0].runs[0].font.size = Pt(15)
                 table.rows[1].cells[5].paragraphs[0].runs[0].font.bold = True
                 table.rows[1].cells[5].paragraphs[0].runs[0].font.size = Pt(15)
+                '''
 
                 if dept_id is not None:
                     row = table.add_row().cells
@@ -136,6 +138,7 @@ def AjaxGPM422NoOfGuardOperationByEmplByZoneReport(request, *args, **kwargs):
                     row[3].width = Cm(1)
                     row[4].width = Cm(2)
 
+                    '''
                     table.rows[1].cells[0].paragraphs[0].runs[0].font.bold = True
                     table.rows[1].cells[0].paragraphs[0].runs[0].font.size = Pt(15)
                     table.rows[1].cells[1].paragraphs[0].runs[0].font.bold = True
@@ -148,6 +151,7 @@ def AjaxGPM422NoOfGuardOperationByEmplByZoneReport(request, *args, **kwargs):
                     table.rows[1].cells[4].paragraphs[0].runs[0].font.size = Pt(15)
                     table.rows[1].cells[5].paragraphs[0].runs[0].font.bold = True
                     table.rows[1].cells[5].paragraphs[0].runs[0].font.size = Pt(15)
+                    '''
 
                     zone_name = "     " + str(dept_en)
                     row = table.rows[0]
@@ -188,6 +192,7 @@ def AjaxGPM422NoOfGuardOperationByEmplByZoneReport(request, *args, **kwargs):
                     row[3].width = Cm(1)
                     row[4].width = Cm(2)
 
+                    '''
                     table.rows[1].cells[0].paragraphs[0].runs[0].font.bold = True
                     table.rows[1].cells[0].paragraphs[0].runs[0].font.size = Pt(15)
                     table.rows[1].cells[1].paragraphs[0].runs[0].font.bold = True
@@ -200,7 +205,8 @@ def AjaxGPM422NoOfGuardOperationByEmplByZoneReport(request, *args, **kwargs):
                     table.rows[1].cells[4].paragraphs[0].runs[0].font.size = Pt(15)
                     table.rows[1].cells[5].paragraphs[0].runs[0].font.bold = True
                     table.rows[1].cells[5].paragraphs[0].runs[0].font.size = Pt(15)
-                                        
+                    '''
+
                     zone_name = "     " + str(dept_en)
                     row = table.rows[0]
                     zone_name = row.cells[0].paragraphs[0].add_run(zone_name)
@@ -222,6 +228,7 @@ def AjaxGPM422NoOfGuardOperationByEmplByZoneReport(request, *args, **kwargs):
                     row[3].width = Cm(1)
                     row[4].width = Cm(2)
 
+                    '''
                     table.rows[1].cells[0].paragraphs[0].runs[0].font.bold = True
                     table.rows[1].cells[0].paragraphs[0].runs[0].font.size = Pt(15)
                     table.rows[1].cells[1].paragraphs[0].runs[0].font.bold = True
@@ -234,6 +241,7 @@ def AjaxGPM422NoOfGuardOperationByEmplByZoneReport(request, *args, **kwargs):
                     table.rows[1].cells[4].paragraphs[0].runs[0].font.size = Pt(15)
                     table.rows[1].cells[5].paragraphs[0].runs[0].font.bold = True
                     table.rows[1].cells[5].paragraphs[0].runs[0].font.size = Pt(15)
+                    '''
 
             temp_dept_id = dept_id
             row_count += 1
