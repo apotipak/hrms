@@ -275,7 +275,8 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
                     company_name = "  " + str(cus_name_th) + "    |    " + str(dept_id) + "   " + str(dept_en)
                     row = table.rows[0]
                     company_name = row.cells[0].paragraphs[0].add_run(company_name)
-                    company_name.font.name = 'Cordia New (Body CS)'
+                    # company_name.font.name = 'Cordia New (Body CS)'
+                    company_name.font.name = 'AngsanaUPC'
                     company_name.font.size = Pt(16)
                     company_name.bold = True
                 else:
