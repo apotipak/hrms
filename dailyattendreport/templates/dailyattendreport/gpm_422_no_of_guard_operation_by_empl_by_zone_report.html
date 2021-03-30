@@ -48,11 +48,12 @@
 
                 <select id="id_dept_zone_option" class="form-control form-control-md" style="border-radius: 0; width: 100px;">
                   <!--<option value="">---------</option>-->
-                  <option value="" selected="">All Departments</option>
+                  <option value="0" selected="">All Departments</option>
                   {% for item in dept_zone_obj %}
                   <option value="{{item.0}}">{{ item.1 }}</option>
                   {% endfor %}
-                </select>                
+                </select>
+                &nbsp;&nbsp;           
                 <button class="btn btn-outline-info btn-sm dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="fas fa-print fa-sm"></i>&nbsp;&nbsp;Print
                 </button>

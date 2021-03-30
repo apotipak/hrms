@@ -40,20 +40,189 @@ def AjaxGPM422NoOfGuardOperationByEmplByZoneReport(request, *args, **kwargs):
     work_date = datetime.datetime.strptime(work_date, "%d/%m/%Y").date()
     dept_zone = kwargs['dept_zone']
 
-    print("work_date : ", work_date)
-    print("dept_zone : ", dept_zone)
-
-    # TODO
-    sql = "SELECT emp_fname_th, emp_lname_th, dept_en, cnt_id, emp_id, dept_id, sch_rank, absent, cus_name_th "
-    sql += "FROM R_GPM422 "
-    sql += ""
-    sql += "ORDER BY dept_id ASC, emp_id ASC"
-    print(sql)
-
     dly_plan_obj = None
     record = {}
     dly_plan_list = []
     error_message = ""
+
+    # TODO
+    sql = "SELECT emp_id,emp_fname_th,emp_lname_th,sch_rank,cnt_id,cus_name_th,dept_id,dept_en "
+    sql += "FROM V_DLYPLAN "
+    sql += "WHERE DLY_DATE='" + str(work_date) + "' and absent=0 "
+    if (int(dept_zone) > 0):
+        sql += "and dept_id=" + str(dept_zone) + ";"
+
+    print("SQL: ", sql)
+    try:                
+        cursor = connection.cursor()
+        cursor.execute(sql)
+        dly_plan_obj = cursor.fetchall()        
+    except db.OperationalError as e:
+        error_message = "<b>Error: please send this error to IT team</b><br>" + str(e)
+    except db.Error as e:
+        error_message = "<b>Error: please send this error to IT team</b><br>" + str(e)
+    finally:
+        cursor.close()
+
+    # TODO
+    document = DocxTemplate(template_name)
+    style = document.styles['Normal']
+    font = style.font
+    font.name = 'AngsanaUPC'
+    font.size = Pt(14)
+
+    if dly_plan_obj is not None:
+        
+        temp_dept_id = None
+        row_count = 1
+
+        for item in dly_plan_obj:
+            emp_id = item[0]
+            emp_full_name = item[1].strip() + " " + item[2].strip()
+            sch_rank = item[3]
+            cnt_id = item[4]
+            cus_name_th = item[5]
+            dept_id = item[6]            
+            dept_en = item[7].replace("('", "")
+
+            if temp_dept_id is None:
+                table = document.add_table(rows=1, cols=6, style='TableGridLight')                                                
+                a = table.cell(0, 0)
+                b = table.cell(0, 5)
+                c = a.merge(b)
+                c.text = '%s' % (dept_id)
+                c.paragraphs[0].runs[0].font.bold = True
+                c.paragraphs[0].runs[0].font.size = Pt(15)
+
+                row = table.add_row().cells
+                row[0].text = "No."
+                row[1].text = "EMP ID"
+                row[2].text = "Name"
+                row[3].text = "Rank"
+                row[4].text = "Cnt.ID"
+                row[5].text = "Site Name"
+
+                row[0].width = Cm(0.5)
+                row[1].width = Cm(1.5)
+                row[2].width = Cm(4)
+                row[3].width = Cm(1)
+                row[4].width = Cm(2)
+                
+                if dept_id is not None:
+                    row = table.add_row().cells
+                    row[0].text = str(row_count)
+                    row[1].text = str(emp_id)
+                    row[2].text = str(emp_full_name)
+                    row[3].text = str(sch_rank)
+                    row[4].text = str(cnt_id)
+                    row[5].text = str(cus_name_th)
+
+                    row[0].width = Cm(0.5)
+                    row[1].width = Cm(1)
+                    row[2].width = Cm(4)
+                    row[3].width = Cm(1)
+                    row[4].width = Cm(2)
+
+                    zone_name = "     " + str(dept_en)
+                    row = table.rows[0]
+                    zone_name = row.cells[0].paragraphs[0].add_run(zone_name)
+                    zone_name.font.name = 'AngsanaUPC'
+                    zone_name.font.size = Pt(16)
+                    zone_name.bold = True
+            else:
+                if dept_id != temp_dept_id:
+                    p = document.add_paragraph()
+                    runner = p.add_run('TOTAL  %s' % str(row_count - 1))
+                    runner.bold = True
+                    zone_name.font.name = 'AngsanaUPC'
+                    runner.font.size = Pt(15)
+
+                    table = document.add_table(rows=1, cols=6, style='TableGridLight')                    
+
+                    a = table.cell(0, 0)
+                    b = table.cell(0, 1)
+                    c = table.cell(0, 5)
+                    d = a.merge(c)
+                    d.text = '%s' % (dept_id)
+                    d.paragraphs[0].runs[0].font.bold = True
+                    d.paragraphs[0].runs[0].font.size = Pt(15)
+
+                    row_count = 1                                
+                    row = table.add_row().cells
+                    row[0].text = str(row_count)
+                    row[1].text = str(emp_id)
+                    row[2].text = str(emp_full_name)
+                    row[3].text = str(sch_rank)
+                    row[4].text = str(cnt_id)
+                    row[5].text = str(cus_name_th)
+
+                    row[0].width = Cm(0.5)
+                    row[1].width = Cm(1)
+                    row[2].width = Cm(4)
+                    row[3].width = Cm(1)
+                    row[4].width = Cm(2)
+                                        
+                    zone_name = "     " + str(dept_en)
+                    row = table.rows[0]
+                    zone_name = row.cells[0].paragraphs[0].add_run(zone_name)
+                    zone_name.font.name = 'AngsanaUPC'
+                    zone_name.font.size = Pt(16)
+                    zone_name.bold = True
+                else:
+                    row = table.add_row().cells
+                    row[0].text = str(row_count)
+                    row[1].text = str(emp_id)
+                    row[2].text = str(emp_full_name)
+                    row[3].text = str(sch_rank)
+                    row[4].text = str(cnt_id)
+                    row[5].text = str(cus_name_th)
+
+                    row[0].width = Cm(0.5)
+                    row[1].width = Cm(1)
+                    row[2].width = Cm(4)
+                    row[3].width = Cm(1)
+                    row[4].width = Cm(2)
+
+            temp_dept_id = dept_id
+            row_count += 1
+        
+        if len(dly_plan_obj) > 0:
+            p = document.add_paragraph()
+            runner = p.add_run('TOTAL  %s' % str(row_count - 1))
+            runner.bold = True            
+            runner.font.size = Pt(15)
+
+        context = {
+            'work_date': work_date.strftime("%d/%m/%Y"),
+            'dept_zone': dept_zone,
+        }
+        
+        document.render(context)
+        document.save(MEDIA_ROOT + '/monitoring/download/' + file_name + ".docx")        
+
+    else:
+        context = {
+            'work_date': work_date.strftime("%d/%m/%Y"),
+            'dept_zone': dept_zone,
+        }
+        
+        document.render(context)
+        document.save(MEDIA_ROOT + '/monitoring/download/' + file_name + ".docx")
+
+    context = {
+        'work_date': work_date.strftime("%d/%m/%Y"),
+        'dept_zone': dept_zone,
+    }
+
+    document.render(context)
+    document.save(MEDIA_ROOT + '/monitoring/download/' + file_name + ".docx")    
+
+    # TODO
+    docx_file = path.abspath("media\\monitoring\\download\\" + file_name + ".docx")
+    pdf_file = path.abspath("media\\monitoring\\download\\" + file_name + ".pdf")    
+    convert(docx_file, pdf_file)
+
+    return FileResponse(open(pdf_file, 'rb'), content_type='application/pdf')
 
 
 @permission_required('dailyattendreport.can_access_gpm403_daily_guard_performance_by_contract_report', login_url='/accounts/login/')
@@ -1013,5 +1182,4 @@ def GPM422NoOfGuardOperationByEmplByZoneReport(request):
         'dept_zone_obj': dept_zone_obj,
         })
 
-    return render_to_response('test.html', {'persons':persons}, context_instance=RequestContext(request))
 
