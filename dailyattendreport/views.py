@@ -945,3 +945,32 @@ def GPMWorkOnDayOffReport(request):
 
 
 
+
+@permission_required('dailyattendreport.can_access_gpm_422_no_of_guard_operation_by_empl_by_zone_report', login_url='/accounts/login/')
+def GPM422NoOfGuardOperationByEmplByZoneReport(request):
+    page_title = settings.PROJECT_NAME
+    db_server = settings.DATABASES['default']['HOST']
+    project_name = settings.PROJECT_NAME
+    project_version = settings.PROJECT_VERSION  
+    
+    today_date = settings.TODAY_DATE.strftime("%d/%m/%Y")
+    work_date = request.POST.get('work_date')
+    dept_zone = request.POST.get('dept_zone')
+
+    work_date = today_date if work_date is None else datetime.datetime.strptime(work_date, "%d/%m/%Y").date()
+
+    return render(request, 'dailyattendreport/gpm_422_no_of_guard_operation_by_empl_by_zone_report.html',
+        {
+        'page_title': page_title, 
+        'project_name': project_name, 
+        'project_version': project_version,
+        'db_server': db_server, 
+        'today_date': today_date,
+        'work_date': work_date,
+        'dept_zone': dept_zone,
+        'database': settings.DATABASES['default']['NAME'],
+        'host': settings.DATABASES['default']['HOST'],
+        'is_error': False,
+        'dly_plan_list': None,
+        })
+

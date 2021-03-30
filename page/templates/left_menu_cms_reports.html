@@ -27,15 +27,22 @@
 
             <ul class="nav nav-treeview p-0">
 
+              {% if perms.dailyattendreport.can_access_gpm403_daily_guard_performance_by_contract_report %}
+              <li class="nav-item p-0">
+                <a href="/reports/cms/gpm403-daily-guard-performance-by-contract/" class="nav-link"><p>Daily Guard Performance by Contract</p></a>
+              </li>
+              {% endif %}
+
               {% if perms.dailyattendreport.can_access_gpm_work_on_day_off_report %}
               <li class="nav-item p-0">
                 <a href="/reports/cms/gpm-work-on-day-off-day-off/" class="nav-link"><p>GPM Work on Day Off</p></a>
               </li>
               {% endif %}
 
-              {% if perms.dailyattendreport.can_access_gpm403_daily_guard_performance_by_contract_report %}
+
+              {% if perms.dailyattendreport.can_access_gpm_422_no_of_guard_operation_by_empl_by_zone_report %}
               <li class="nav-item p-0">
-                <a href="/reports/cms/gpm403-daily-guard-performance-by-contract/" class="nav-link"><p>Daily Guard Performance by Contract</p></a>
+                <a href="/reports/cms/gpm-422-no-of-guard-operation-by-empl-by-zone/" class="nav-link"><p>GPM No. of Guard Operation by Employee / Zone</p></a>
               </li>
               {% endif %}
 

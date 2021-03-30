@@ -18,7 +18,7 @@
 
 
       <div class="card-header" style="padding: 0 2px 10px 0;">
-        <h5 class="card-title"><i class="far fa-list-alt"></i>&nbsp;<b>GPM Work on Day Off</b>&nbsp;&nbsp;<small>รายงานจำนวน รปภ.ทำงานวันหยุด</small></h5>
+        <h5 class="card-title"><i class="far fa-list-alt"></i>&nbsp;<b>No. of Guard Operation by Empl by Zone</b>&nbsp;&nbsp;<small>รายงานจำนวน รปภ.เรียงตามรหัสและโซน</small></h5>
         <br>
         <div class="float-right pb-1">
           <div class="d-flex flex-row-reverse">
@@ -26,6 +26,9 @@
           </div>
         </div>
       </div>
+
+
+
 
 
       <div class="col-12 p-0 pt-2">
@@ -37,9 +40,14 @@
             <div class="form-group">
 
               <div class="input-group col-6 offset-3">
+
                
                 <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:98px;">Work Date</span></div>
-                <input type="text" style="width: 100px;" name="start_date" class="form-control datepicker border-bottom-1 rounded-0 bg-white" placeholder="dd/mm/yyyy" required="" value="{{start_date}}" id="id_start_date" readonly="readonly">                
+                <input type="text" style="width: 128px;" name="start_date" class="form-control datepicker border-bottom-1 rounded-0 bg-white" placeholder="dd/mm/yyyy" required="" value="{{start_date}}" id="id_start_date" readonly="readonly">                                
+                <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:98px;">Dept/Zone</span></div>
+                <input type="text" style="width: 100px;" name="end_date" class="form-control datepicker border-bottom-1 border-left-0 rounded-0 bg-white" placeholder="dd/mm/yyyy" required="" id="id_end_date" value="{{end_date}}" readonly="readonly">
+
+
                 <button class="btn btn-outline-info btn-sm dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="fas fa-print fa-sm"></i>&nbsp;&nbsp;Print
                 </button>
