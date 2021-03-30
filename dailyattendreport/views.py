@@ -299,12 +299,12 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
 
             temp_cnt_id = cnt_id
             row_count += 1
-                
-        p = document.add_paragraph()
-        runner = p.add_run('TOTAL  %s' % str(row_count - 1))
-        runner.bold = True
-        company_name.font.name = 'Cordia New (Body CS)'
-        runner.font.size = Pt(15)
+    
+        if len(dly_plan_obj) > 0:
+            p = document.add_paragraph()
+            runner = p.add_run('TOTAL  %s' % str(row_count - 1))
+            runner.bold = True            
+            runner.font.size = Pt(15)
 
         context = {
             'start_date': start_date.strftime("%d/%m/%Y"),
@@ -314,6 +314,15 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
         document.render(context)
         document.save(MEDIA_ROOT + '/monitoring/download/' + file_name + ".docx")        
 
+    else:
+        context = {
+            'start_date': start_date.strftime("%d/%m/%Y"),
+            'end_date': end_date.strftime("%d/%m/%Y"),
+        }
+        
+        document.render(context)
+        document.save(MEDIA_ROOT + '/monitoring/download/' + file_name + ".docx")
+                
     # return False
 
     # docx2pdf

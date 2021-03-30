@@ -35,9 +35,11 @@
 
                <div class="input-group-prepend pr-2 pt-1" style="width:100px;"><label>Contract No</label></div>
                 <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:60px;">From</span></div>
-                <input type="number" name="contract_number_from" class="form-control border-bottom-1 border-left-0 rounded-0 bg-white" style="width:50px;" value="1661000001" id="id_contract_number_from">
+                <input type="number" min=0 maxlength="10" name="contract_number_from" class="form-control border-bottom-1 border-left-0 rounded-0 bg-white" style="width:50px;" value="0" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" id="id_contract_number_from">
+
+
                 <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:42px;">To</span></div>
-                <input type="number" name="contract_number_to" class="form-control datepicker border-bottom-1 border-left-0 rounded-0 bg-white" style="width:50px;" required="" id="id_contract_number_to" value="1661000001">
+                <input type="number" min=0 maxlength="10" name="contract_number_to" class="form-control datepicker border-bottom-1 border-left-0 rounded-0 bg-white" style="width:50px;" required="" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" id="id_contract_number_to" value="0">
 
                 &nbsp;&nbsp;
 
@@ -326,6 +328,37 @@ function showLoading() {
     $('#id_start_date').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", new Date());
     $('#id_end_date').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", new Date());
   });
+
+
+  $(document).on('click', '#id_contract_number_from', function(e) {
+    $("#id_contract_number_from").select();
+  });
+
+  $(document).on('click', '#id_contract_number_to', function(e) {
+    temp = $("#id_contract_number_to").val();
+    
+    if(temp==0 || temp=="") {
+      $("#id_contract_number_to").val($("#id_contract_number_from").val());
+    }
+    
+    $("#id_contract_number_to").select();
+
+  });
+
+  $(document).on('click', '#id_contract_number_to', function(e) {
+      $("#id_contract_number_to").select();   
+  });
+
+  $(document).on('keypress', '#id_contract_number_from', function(e) {
+    if(e.which == 13) {      
+      e.preventDefault();
+
+      $("#id_contract_number_to").val($("#id_contract_number_from").val()); 
+      $("#id_contract_number_to").focus();
+
+    }
+  });
+
 
   </script>
 {% endblock %}  
