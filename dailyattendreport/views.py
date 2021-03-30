@@ -48,9 +48,6 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
     contract_number_to = 9999999999 if contract_number_to is None else contract_number_to
     today_date = settings.TODAY_DATE.strftime("%d/%m/%Y %H:%M:%S")
 
-    # start_date = today_date if start_date is None else datetime.datetime.strptime(start_date, "%d/%m/%Y").date()
-    # end_date = today_date if end_date is None else datetime.datetime.strptime(end_date, "%d/%m/%Y").date()
-
     sql = "select emp_fname_th, emp_lname_th, shf_desc, dept_en, cnt_id, "
     sql += "emp_id, dly_date, sch_shift, dept_id, sch_rank, "
     sql += "absent, relieft_id, tel_man, tel_paid, ot, "
@@ -136,50 +133,6 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
                 'end_date': end_date.strftime("%d/%m/%Y"),
             }
         
-    
-    # tpl = DocxTemplate(template_name)
-    # tpl.render(context)
-    # tpl.save(MEDIA_ROOT + '/monitoring/download/' + file_name + ".docx")
-
-
-    '''
-    context = {
-    'col_labels' : ['No', 'Date', 'Emp ID', 'Name'],
-    'tbl_contents': [
-        {'cols': ['1', '24/03/2021', '631303', 'ภาณุ']},
-        {'cols': ['2', '24/03/2021', '635465', 'ศักดิ์ดา']},
-        ]
-    }
-    template_name = base_url + 'TEST.docx'
-    tpl = DocxTemplate(template_name)
-    tpl.render(context)
-    tpl.save(MEDIA_ROOT + '/monitoring/download/' + file_name + ".docx")
-    '''
-
-
-    '''
-    document = Document()
-    for section in document.sections:
-        section.orientation = WD_ORIENT.LANDSCAPE
-        section.page_width = Mm(297)  # for A4 paper
-        section.page_height = Mm(210)
-
-    section = document.sections[0]
-    header = section.header
-    paragraph = header.paragraphs[0]
-    paragraph.text = "Daily Guard Performance by Contract"
-    paragraph.style = document.styles["Header"]
-    file_name = 'DEMO'
-    table = document.add_table(rows = 1, cols = 3, style='TableGrid')
-    table.cell(0, 0).text = "No."
-    table.cell(0, 0).width = Cm(1)
-    table.cell(0, 1).text = "Date"
-    table.cell(0, 1).width = Cm(2)
-    table.cell(0, 2).text = "Emp Id"
-    table.cell(0, 2).width = Cm(3)
-    document.save(MEDIA_ROOT + '/monitoring/download/' + file_name + ".docx")        
-    '''
-    
     template_name = base_url + 'GPM_403.docx'
     file_name = 'DEMO'
     document = DocxTemplate(template_name)
@@ -188,18 +141,11 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
     font.name = 'Cordia New (Body CS)'
     font.size = Pt(13)
 
-    # document = Document()
+    '''
     for section in document.sections:
         section.orientation = WD_ORIENT.LANDSCAPE
-        section.page_width = Mm(297)  # for A4 paper
+        section.page_width = Mm(297)
         section.page_height = Mm(210)
-
-    '''
-    section = document.sections[0]
-    header = section.header
-    paragraph = header.paragraphs[0]
-    paragraph.text = "Daily Guard Performance by Contract"
-    paragraph.style = document.styles["Header"]
     '''
 
     if dly_plan_obj is not None:
@@ -218,14 +164,17 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
             dept_id = item[8]
             sch_rank = item[9]
             absent = item[10]
-            relieft_id = item[11]
-            tel_man = item[12]
-            tel_paid = item[13]
-            ot = item[14]
-            ot_hr_amt = item[15]
+
+            relieft_id = item[11] if item[11] != 0 else ""
+            tel_man = "x" if item[12] else ""            
+            tel_paid = "{:.2f}".format(item[13]) if item[13] > 0 else ""
+            
+            ot = "" if item[14] else ""
+            ot_hr_amt = item[15] if item[15] else ""
             cus_name_th = item[16]
             late = item[17]
-            late_full = item[18]
+            late = item[17] if item[17] else ""
+            late_full = item[18] if item[18] else ""            
 
             if temp_cnt_id is None:
                 table = document.add_table(rows=1, cols=13, style='TableGridLight')                                                
