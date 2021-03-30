@@ -26,6 +26,8 @@ from os import path
 from docx import Document
 from docx.shared import Cm, Mm, Pt, Inches
 from docx.enum.section import WD_ORIENT
+from docx.enum.text import WD_LINE_SPACING
+from docx.enum.style import WD_STYLE_TYPE
 
 
 @permission_required('dailyattendreport.can_access_gpm403_daily_guard_performance_by_contract_report', login_url='/accounts/login/')
@@ -154,6 +156,8 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
     tpl.save(MEDIA_ROOT + '/monitoring/download/' + file_name + ".docx")
     '''
 
+
+    '''
     document = Document()
     for section in document.sections:
         section.orientation = WD_ORIENT.LANDSCAPE
@@ -163,16 +167,40 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
     section = document.sections[0]
     header = section.header
     paragraph = header.paragraphs[0]
-    paragraph.text = "\t\tDaily Guard Performance by Contract\t\t"
+    paragraph.text = "Daily Guard Performance by Contract"
     paragraph.style = document.styles["Header"]
     file_name = 'DEMO'
+    table = document.add_table(rows = 1, cols = 3, style='TableGrid')
+    table.cell(0, 0).text = "No."
+    table.cell(0, 0).width = Cm(1)
+    table.cell(0, 1).text = "Date"
+    table.cell(0, 1).width = Cm(2)
+    table.cell(0, 2).text = "Emp Id"
+    table.cell(0, 2).width = Cm(3)
+    document.save(MEDIA_ROOT + '/monitoring/download/' + file_name + ".docx")        
+    '''
+    
+    template_name = base_url + 'GPM403.docx'
+    file_name = 'DEMO'
+    document = DocxTemplate(template_name)
+    # document = Document()
+    for section in document.sections:
+        section.orientation = WD_ORIENT.LANDSCAPE
+        section.page_width = Mm(297)  # for A4 paper
+        section.page_height = Mm(210)
 
+    '''
+    section = document.sections[0]
+    header = section.header
+    paragraph = header.paragraphs[0]
+    paragraph.text = "Daily Guard Performance by Contract"
+    paragraph.style = document.styles["Header"]
+    '''
 
     if dly_plan_obj is not None:
         
         temp_cnt_id = None
-        row_count = 0
-        total_line = False
+        row_count = 1
 
         for item in dly_plan_obj:
 
@@ -182,56 +210,49 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
             dly_date = item[6].strftime("%d/%m/%Y")
             cus_name_th = item[16]
 
-            if cnt_id != temp_cnt_id:
-                document.add_paragraph('Contract : %s %s' % (cnt_id, cus_name_th))
-
-                '''
-                table = document.add_table(1, 3)
-                heading_cells = table.rows[0].cells
-                heading_cells[0].text = 'No.'
-                heading_cells[1].text = 'Date'
-                heading_cells[2].text = 'Emp ID'
-                '''
-        
-                table = document.add_table(1, 3)
-                table.style = 'TableGrid'                                
-
-                row = table.rows[0].cells                         
-                row[0].text = 'No.'
-                row[1].text = 'Date'
-                row[2].text = 'Emp ID'
-
-                row = table.add_row().cells
-                row[0].text = "1"
-                row[1].text = str(dly_date)
-                row[2].text = str(emp_id)
-
-
-                '''
-                row = table.add_row().cells
-                row[0].text = row_count
-                row[1].text = emp_id
-                row[2].text = emp_id
-                '''
-
-                # document.add_paragraph('%s %s' % (1, emp_id))
+            if temp_cnt_id is None:
+                # document.add_paragraph('Contract : %s %s' % (cnt_id, cus_name_th)) 
+                table = document.add_table(rows=1, cols=3, style='TableGrid')                                
                 
-                temp_cnt_id = cnt_id
-                row_count = 1
+                a = table.cell(0, 0)
+                b = table.cell(0, 1)
+                c = table.cell(0, 2)
+                d = a.merge(b).merge(c)
+                d.text = 'Contract : %s %s' % (cnt_id, cus_name_th)
+
+
+                if cnt_id is not None:
+                    row = table.add_row().cells
+                    row[0].text = str(row_count)
+                    row[1].text = str(dly_date)
+                    row[2].text = str(emp_id)
+
             else:
-                # document.add_paragraph('%s %s' % (row_count, emp_id))
-                row = table.add_row().cells
-                row[0].text = str(row_count)
-                row[1].text = str(dly_date)
-                row[2].text = str(emp_id)
-                
+                if cnt_id != temp_cnt_id:
+
+                    document.add_paragraph('TOTAL      %s' % str(row_count - 1)) 
+
+                    table = document.add_table(rows=1, cols=3, style='TableGrid')                    
+
+                    a = table.cell(0, 0)
+                    b = table.cell(0, 1)
+                    c = table.cell(0, 2)
+                    d = a.merge(b).merge(c)
+                    d.text = 'Contract : %s %s' % (cnt_id, cus_name_th)
+
+                    row_count = 1                                
+                    row = table.add_row().cells
+                    row[0].text = str(row_count)
+                    row[1].text = str(dly_date)
+                    row[2].text = str(emp_id)                    
+                else:
+                    row = table.add_row().cells
+                    row[0].text = str(row_count)
+                    row[1].text = str(dly_date)
+                    row[2].text = str(emp_id)
+
+            temp_cnt_id = cnt_id
             row_count += 1
-
-        # document.add_page_break()
-
-
-
-
 
         document.save(MEDIA_ROOT + '/monitoring/download/' + file_name + ".docx")        
 
@@ -614,5 +635,6 @@ def GPMWorkOnDayOffReport(request):
         'is_error': False,
         'dly_plan_list': None,
         })
+
 
 
