@@ -183,6 +183,11 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
     template_name = base_url + 'GPM_403.docx'
     file_name = 'DEMO'
     document = DocxTemplate(template_name)
+    style = document.styles['Normal']
+    font = style.font
+    font.name = 'Cordia New (Body CS)'
+    font.size = Pt(13)
+
     # document = Document()
     for section in document.sections:
         section.orientation = WD_ORIENT.LANDSCAPE
@@ -203,57 +208,161 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
         row_count = 1
 
         for item in dly_plan_obj:
-
+            shf_desc = item[2].replace("('", "")
+            dept_en = item[3],
             cnt_id = item[4]
             emp_id = item[5]
             emp_full_name = item[0].strip() + " " + item[1].strip()
             dly_date = item[6].strftime("%d/%m/%Y")
+            sch_shift = item[7]
+            dept_id = item[8]
+            sch_rank = item[9]
+            absent = item[10]
+            relieft_id = item[11]
+            tel_man = item[12]
+            tel_paid = item[13]
+            ot = item[14]
+            ot_hr_amt = item[15]
             cus_name_th = item[16]
+            late = item[17]
+            late_full = item[18]
 
             if temp_cnt_id is None:
-                # document.add_paragraph('Contract : %s %s' % (cnt_id, cus_name_th)) 
-                table = document.add_table(rows=1, cols=3, style='TableGridLight')                                
-                
-                a = table.cell(0, 0)
-                b = table.cell(0, 1)
-                c = table.cell(0, 2)
-                d = a.merge(b).merge(c)
-                d.text = 'Contract : %s %s' % (cnt_id, cus_name_th)
+                table = document.add_table(rows=1, cols=13, style='TableGridLight')                                                
 
+                a = table.cell(0, 0)
+                b = table.cell(0, 12)
+                c = a.merge(b)
+                c.text = 'CONTRACT : %s' % (cnt_id)
+                c.paragraphs[0].runs[0].font.bold = True
+                c.paragraphs[0].runs[0].font.size = Pt(15)
+
+                row = table.add_row().cells
+                row[0].text = "No."
+                row[1].text = "Date"
+                row[2].text = "EMP ID"
+                row[3].text = "Name"
+                row[4].text = "Rank"
+                row[5].text = "Shift"
+                row[6].text = "Relief ID"
+                row[7].text = "OT"
+                row[8].text = "Late"
+                row[9].text = "Full"
+                row[10].text = "Amt.HR"
+                row[11].text = "Call"
+                row[12].text = "Tel Paid"
+                
+                row[0].width = Cm(0.5)
+                row[3].width = Cm(5)
+                row[5].width = Cm(8)
 
                 if cnt_id is not None:
                     row = table.add_row().cells
                     row[0].text = str(row_count)
                     row[1].text = str(dly_date)
                     row[2].text = str(emp_id)
+                    row[3].text = str(emp_full_name)
+                    row[4].text = str(sch_rank)
+                    row[5].text = str(shf_desc)
+                    row[6].text = str(relieft_id)
+                    row[7].text = str(ot)
+                    row[8].text = str(late)                    
+                    row[9].text = str(late_full)
+                    row[10].text = str(ot_hr_amt)
+                    row[11].text = str(tel_man)
+                    row[12].text = str(tel_paid)
 
+                    row[0].width = Cm(0.5)
+                    row[3].width = Cm(5)
+                    row[5].width = Cm(8)
+
+
+                    company_name = "  " + str(cus_name_th)
+                    row = table.rows[0]
+                    company_name = row.cells[0].paragraphs[0].add_run(company_name)
+                    company_name.font.name = 'Cordia New (Body CS)'
+                    company_name.font.size = Pt(16)
+                    company_name.bold = True
             else:
                 if cnt_id != temp_cnt_id:
+                    # document.add_paragraph('TOTAL      %s' % str(row_count - 1)) 
+                    p = document.add_paragraph()
+                    runner = p.add_run('TOTAL  %s' % str(row_count - 1))
+                    runner.bold = True
+                    company_name.font.name = 'Cordia New (Body CS)'
+                    runner.font.size = Pt(15)
 
-                    document.add_paragraph('TOTAL      %s' % str(row_count - 1)) 
-
-                    table = document.add_table(rows=1, cols=3, style='TableGridLight')                    
+                    table = document.add_table(rows=1, cols=13, style='TableGridLight')                    
 
                     a = table.cell(0, 0)
                     b = table.cell(0, 1)
-                    c = table.cell(0, 2)
-                    d = a.merge(b).merge(c)
-                    d.text = 'Contract : %s %s' % (cnt_id, cus_name_th)
+                    c = table.cell(0, 12)
+                    d = a.merge(c)
+                    d.text = 'CONTRACT : %s' % (cnt_id)
+                    d.paragraphs[0].runs[0].font.bold = True
+                    d.paragraphs[0].runs[0].font.size = Pt(15)
 
                     row_count = 1                                
                     row = table.add_row().cells
                     row[0].text = str(row_count)
                     row[1].text = str(dly_date)
-                    row[2].text = str(emp_id)                    
+                    row[2].text = str(emp_id)
+                    row[3].text = str(emp_full_name)
+                    row[4].text = str(sch_rank)
+                    row[5].text = str(shf_desc)
+                    row[6].text = str(relieft_id)
+                    row[7].text = str(ot)
+                    row[8].text = str(late)                    
+                    row[9].text = str(late_full)
+                    row[10].text = str(ot_hr_amt)
+                    row[11].text = str(tel_man)
+                    row[12].text = str(tel_paid)
+
+                    row[0].width = Cm(0.5)
+                    row[3].width = Cm(5)
+                    row[5].width = Cm(8)
+
+                    company_name = "  " + str(cus_name_th)
+                    row = table.rows[0]
+                    company_name = row.cells[0].paragraphs[0].add_run(company_name)
+                    company_name.font.name = 'Cordia New (Body CS)'
+                    company_name.font.size = Pt(16)
+                    company_name.bold = True
                 else:
                     row = table.add_row().cells
                     row[0].text = str(row_count)
                     row[1].text = str(dly_date)
                     row[2].text = str(emp_id)
+                    row[3].text = str(emp_full_name)
+                    row[4].text = str(sch_rank)
+                    row[5].text = str(shf_desc)
+                    row[6].text = str(relieft_id)
+                    row[7].text = str(ot)
+                    row[8].text = str(late)                    
+                    row[9].text = str(late_full)
+                    row[10].text = str(ot_hr_amt)
+                    row[11].text = str(tel_man)
+                    row[12].text = str(tel_paid)                    
+
+                    row[0].width = Cm(0.5)
+                    row[3].width = Cm(5)
+                    row[5].width = Cm(8)
 
             temp_cnt_id = cnt_id
             row_count += 1
+                
+        p = document.add_paragraph()
+        runner = p.add_run('TOTAL  %s' % str(row_count - 1))
+        runner.bold = True
+        company_name.font.name = 'Cordia New (Body CS)'
+        runner.font.size = Pt(15)
 
+        context = {
+            'start_date': start_date.strftime("%d/%m/%Y"),
+            'end_date': end_date.strftime("%d/%m/%Y"),
+        }
+        
+        document.render(context)
         document.save(MEDIA_ROOT + '/monitoring/download/' + file_name + ".docx")        
 
     # return False
