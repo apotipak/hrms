@@ -29,6 +29,38 @@ from docx.enum.section import WD_ORIENT
 from docx.enum.text import WD_LINE_SPACING
 from docx.enum.style import WD_STYLE_TYPE
 
+@permission_required('dailyattendreport.can_access_gpm403_daily_guard_performance_by_contract_report', login_url='/accounts/login/')
+def AjaxGPMWorkOnDayOffReport(request, *args, **kwargs):    
+    base_url = MEDIA_ROOT + '/monitoring/template/'    
+    template_name = base_url + 'GPM_HDOF.docx'
+    file_name = request.user.username + "_GPM_HDOF"
+
+    start_date = kwargs['start_date']
+    start_date = datetime.datetime.strptime(start_date, "%d/%m/%Y").date()
+
+    # TODO
+    sql = ""
+
+    # TODO
+    document = DocxTemplate(template_name)
+    style = document.styles['Normal']
+    font = style.font
+    font.name = 'AngsanaUPC'
+    font.size = Pt(14)
+
+    context = {
+        'start_date': start_date.strftime("%d/%m/%Y"),
+    }
+    document.render(context)
+    document.save(MEDIA_ROOT + '/monitoring/download/' + file_name + ".docx")    
+
+    # TODO
+    docx_file = path.abspath("media\\monitoring\\download\\" + file_name + ".docx")
+    pdf_file = path.abspath("media\\monitoring\\download\\" + file_name + ".pdf")    
+    convert(docx_file, pdf_file)
+
+    return FileResponse(open(pdf_file, 'rb'), content_type='application/pdf')
+
 
 @permission_required('dailyattendreport.can_access_gpm403_daily_guard_performance_by_contract_report', login_url='/accounts/login/')
 def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):    
