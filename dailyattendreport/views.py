@@ -29,6 +29,7 @@ from docx.enum.section import WD_ORIENT
 from docx.enum.text import WD_LINE_SPACING
 from docx.enum.style import WD_STYLE_TYPE
 
+
 @permission_required('dailyattendreport.can_access_gpm403_daily_guard_performance_by_contract_report', login_url='/accounts/login/')
 def AjaxGPMWorkOnDayOffReport(request, *args, **kwargs):    
     base_url = MEDIA_ROOT + '/monitoring/template/'    
@@ -38,8 +39,28 @@ def AjaxGPMWorkOnDayOffReport(request, *args, **kwargs):
     start_date = kwargs['start_date']
     start_date = datetime.datetime.strptime(start_date, "%d/%m/%Y").date()
 
-    # TODO
-    sql = ""
+    # TODO    
+    sql = "SELECT emp_fname_th, emp_lname_th, shf_desc, dept_en, cnt_id, emp_id, dly_date, dept_id, sch_rank, absent, upd_by, upd_gen, cus_name_th, dof from V_HDLYPLAN "
+    sql += "Where V_HDLYPLAN.dof = 1 AND V_HDLYPLAN.absent = 0 "
+    sql += "AND V_HDLYPLAN.DLY_DATE = '" + str(start_date) + "' "
+    sql += "order By V_HDLYPLAN.dept_id Asc"
+    print(sql)
+
+    dly_plan_obj = None
+    record = {}
+    dly_plan_list = []
+    error_message = ""
+
+    try:                
+        cursor = connection.cursor()
+        cursor.execute(sql)
+        dly_plan_obj = cursor.fetchall()        
+    except db.OperationalError as e:
+        error_message = "<b>Error: please send this error to IT team</b><br>" + str(e)
+    except db.Error as e:
+        error_message = "<b>Error: please send this error to IT team</b><br>" + str(e)
+    finally:
+        cursor.close()
 
     # TODO
     document = DocxTemplate(template_name)
@@ -47,6 +68,198 @@ def AjaxGPMWorkOnDayOffReport(request, *args, **kwargs):
     font = style.font
     font.name = 'AngsanaUPC'
     font.size = Pt(14)
+
+    if dly_plan_obj is not None:
+        
+        temp_dept_id = None
+        row_count = 1
+
+        for item in dly_plan_obj:
+            emp_full_name = item[0].strip() + " " + item[1].strip()            
+            shf_desc = item[2].replace("('", "")            
+            dept_en = item[3].replace("('", "")        
+
+            if (dept_en.find('SP-Zone') != -1):
+                dept_en_short = dept_en.replace("SP-Zone", "").lstrip()[0]
+            elif (dept_en.find('ZONE H BPI') != -1):
+                dept_en_short = "H"
+            elif (dept_en.find('ZONE Control') != -1):
+                dept_en_short = "CR"
+            elif (dept_en.find('SP-Samui') != -1):
+                dept_en_short = "SM"
+            elif (dept_en.find('ZONE PHUKET') != -1):
+                dept_en_short = "P"
+            elif (dept_en.find('Zone Khon kean') != -1):
+                dept_en_short = "K"
+            elif (dept_en.find('BEM') != -1):
+                dept_en_short = "BEM"
+            elif (dept_en.find('ZONE I') != -1):
+                dept_en_short = "I"
+            elif (dept_en.find('ZONE R') != -1):
+                dept_en_short = "R"
+            elif (dept_en.find('Zone Songkhla') != -1):
+                dept_en_short = "SK"
+            else:
+                dept_en_short = "?"
+
+            cnt_id = item[4]
+            emp_id = item[5]            
+            dly_date = item[6].strftime("%d/%m/%Y")
+            dept_id = item[7]
+            sch_rank = item[8]
+            absent = item[9]
+            upd_by = item[10]
+            upd_gen = item[11]
+            cus_name_th = item[12]
+            dof = item[13]
+
+            if temp_dept_id is None:
+                table = document.add_table(rows=1, cols=9, style='TableGridLight')                                                
+                a = table.cell(0, 0)
+                b = table.cell(0, 8)
+                c = a.merge(b)
+                c.text = '%s' % (dept_id)
+                c.paragraphs[0].runs[0].font.bold = True
+                c.paragraphs[0].runs[0].font.size = Pt(15)
+
+                row = table.add_row().cells
+                row[0].text = "No."
+                row[1].text = "Date"
+                row[2].text = "EMP ID"
+                row[3].text = "Name"
+                row[4].text = "Rank"
+                row[5].text = "Zone"
+                row[6].text = "Shift"
+                row[7].text = "POST ID"
+                row[8].text = "Site Name"
+
+                row[0].width = Cm(0.5)
+                row[1].width = Cm(2)
+                row[2].width = Cm(2)
+                row[3].width = Cm(4)
+                row[4].width = Cm(1)
+                row[5].width = Cm(1)
+                row[6].width = Cm(5)
+                row[7].width = Cm(2)
+                
+                if dept_id is not None:
+                    row = table.add_row().cells
+                    row[0].text = str(row_count)
+                    row[1].text = str(dly_date)
+                    row[2].text = str(emp_id)
+                    row[3].text = str(emp_full_name)
+                    row[4].text = str(sch_rank)
+                    row[5].text = str(dept_en_short)
+                    row[6].text = str(shf_desc)
+                    row[7].text = str(cnt_id)
+                    row[8].text = str(cus_name_th)  
+
+                    row[0].width = Cm(0.5)
+                    row[1].width = Cm(2)
+                    row[2].width = Cm(2)
+                    row[3].width = Cm(4)
+                    row[4].width = Cm(1)
+                    row[5].width = Cm(1)
+                    row[6].width = Cm(5)
+                    row[7].width = Cm(2)
+
+                    company_name = "   " + str(item[3].replace("('", ""))
+                    row = table.rows[0]
+                    company_name = row.cells[0].paragraphs[0].add_run(company_name)
+                    company_name.font.name = 'AngsanaUPC'
+                    company_name.font.size = Pt(16)
+                    company_name.bold = True
+            else:
+                if dept_id != temp_dept_id:
+                    p = document.add_paragraph()
+                    runner = p.add_run('TOTAL  %s' % str(row_count - 1))
+                    runner.bold = True
+                    company_name.font.name = 'AngsanaUPC'
+                    runner.font.size = Pt(15)
+
+                    table = document.add_table(rows=1, cols=9, style='TableGridLight')                    
+
+                    a = table.cell(0, 0)
+                    b = table.cell(0, 1)
+                    c = table.cell(0, 8)
+                    d = a.merge(c)
+                    d.text = '%s' % (cnt_id)
+                    d.paragraphs[0].runs[0].font.bold = True
+                    d.paragraphs[0].runs[0].font.size = Pt(15)
+
+                    row_count = 1                                
+                    row = table.add_row().cells
+                    row[0].text = str(row_count)
+                    row[1].text = str(dly_date)
+                    row[2].text = str(emp_id)
+                    row[3].text = str(emp_full_name)
+                    row[4].text = str(sch_rank)
+                    row[5].text = str(dept_en_short)
+                    row[6].text = str(shf_desc)
+                    row[7].text = str(cnt_id)
+                    row[8].text = str(cus_name_th)  
+
+                    row[0].width = Cm(0.5)
+                    row[1].width = Cm(2)
+                    row[2].width = Cm(2)
+                    row[3].width = Cm(4)
+                    row[4].width = Cm(1)
+                    row[5].width = Cm(1)
+                    row[6].width = Cm(5)
+                    row[7].width = Cm(2)
+                    
+                    company_name = "   " + str(item[3].replace("('", ""))
+                    row = table.rows[0]
+                    company_name = row.cells[0].paragraphs[0].add_run(company_name)
+                    company_name.font.name = 'AngsanaUPC'
+                    company_name.font.size = Pt(16)
+                    company_name.bold = True
+                else:
+                    row = table.add_row().cells
+                    row[0].text = str(row_count)
+                    row[1].text = str(dly_date)
+                    row[2].text = str(emp_id)
+                    row[3].text = str(emp_full_name)
+                    row[4].text = str(sch_rank)
+                    row[5].text = str(dept_en_short)
+                    row[6].text = str(shf_desc)
+                    row[7].text = str(cnt_id)
+                    row[8].text = str(cus_name_th)  
+
+                    row[0].width = Cm(0.5)
+                    row[1].width = Cm(2)
+                    row[2].width = Cm(2)
+                    row[3].width = Cm(4)
+                    row[4].width = Cm(1)
+                    row[5].width = Cm(1)
+                    row[6].width = Cm(5)
+                    row[7].width = Cm(2)
+
+            temp_dept_id = dept_id
+            row_count += 1
+    
+        if len(dly_plan_obj) > 0:
+            p = document.add_paragraph()
+            runner = p.add_run('TOTAL  %s' % str(row_count - 1))
+            runner.bold = True            
+            runner.font.size = Pt(15)
+
+        context = {
+            'start_date': start_date.strftime("%d/%m/%Y"),
+        }
+        
+        document.render(context)
+        document.save(MEDIA_ROOT + '/monitoring/download/' + file_name + ".docx")        
+
+    else:
+        context = {
+            'start_date': start_date.strftime("%d/%m/%Y"),
+            'end_date': end_date.strftime("%d/%m/%Y"),
+        }
+        
+        document.render(context)
+        document.save(MEDIA_ROOT + '/monitoring/download/' + file_name + ".docx")
+
 
     context = {
         'start_date': start_date.strftime("%d/%m/%Y"),
@@ -173,13 +386,6 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
     # font.name = 'Cordia New (Body CS)'
     font.name = 'AngsanaUPC'
     font.size = Pt(14)
-
-    '''
-    for section in document.sections:
-        section.orientation = WD_ORIENT.LANDSCAPE
-        section.page_width = Mm(297)
-        section.page_height = Mm(210)
-    '''
 
     if dly_plan_obj is not None:
         
