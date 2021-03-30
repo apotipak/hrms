@@ -180,7 +180,7 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
     document.save(MEDIA_ROOT + '/monitoring/download/' + file_name + ".docx")        
     '''
     
-    template_name = base_url + 'GPM403.docx'
+    template_name = base_url + 'GPM_403.docx'
     file_name = 'DEMO'
     document = DocxTemplate(template_name)
     # document = Document()
@@ -212,7 +212,7 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
 
             if temp_cnt_id is None:
                 # document.add_paragraph('Contract : %s %s' % (cnt_id, cus_name_th)) 
-                table = document.add_table(rows=1, cols=3, style='TableGrid')                                
+                table = document.add_table(rows=1, cols=3, style='TableGridLight')                                
                 
                 a = table.cell(0, 0)
                 b = table.cell(0, 1)
@@ -232,7 +232,7 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
 
                     document.add_paragraph('TOTAL      %s' % str(row_count - 1)) 
 
-                    table = document.add_table(rows=1, cols=3, style='TableGrid')                    
+                    table = document.add_table(rows=1, cols=3, style='TableGridLight')                    
 
                     a = table.cell(0, 0)
                     b = table.cell(0, 1)
