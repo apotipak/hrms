@@ -134,7 +134,7 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
             }
         
     template_name = base_url + 'GPM_403.docx'
-    file_name = 'DEMO'
+    file_name = 'GPM_403'
     document = DocxTemplate(template_name)
     style = document.styles['Normal']
     font = style.font
