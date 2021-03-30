@@ -19,5 +19,5 @@ urlpatterns = [
 
     # GPM 422 No. of Guard Operation by Empl by Zone    
     path('gpm-422-no-of-guard-operation-by-empl-by-zone/', views.GPM422NoOfGuardOperationByEmplByZoneReport, name='gpm-422-no-of-guard-operation-by-empl-by-zone-report'),    
-
+    url(r'^ajax-gpm-422-no-of-guard-operation-by-empl-by-zone/(?P<work_date>\d{2}/\d{2}/\d{4})/(?P<dept_zone>\d+)/$', views.AjaxGPM422NoOfGuardOperationByEmplByZoneReport, name='ajax-gpm-422-no-of-guard-operation-by-empl-by-zone'),
 ]

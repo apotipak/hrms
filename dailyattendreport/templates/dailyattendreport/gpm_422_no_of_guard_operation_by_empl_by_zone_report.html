@@ -43,27 +43,16 @@
 
                
                 <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:98px;">Work Date</span></div>
-                <input type="text" style="width: 80px;" name="start_date" class="form-control datepicker border-bottom-1 rounded-0 bg-white" placeholder="dd/mm/yyyy" required="" value="{{start_date}}" id="id_start_date" readonly="readonly">                                
+                <input type="text" style="width: 80px;" name="work_date" class="form-control datepicker border-bottom-1 rounded-0 bg-white" placeholder="dd/mm/yyyy" required="" value="{{work_date}}" id="id_work_date" readonly="readonly">                                
                 <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:98px;">Dept/Zone</span></div>
 
-                <select id="id_search_shift_option" class="form-control form-control-md" style="border-radius: 0; width: 100px;">
-                  <option value="0">---------</option>
-                  <option value="1" selected="">All Departments</option>
+                <select id="id_dept_zone_option" class="form-control form-control-md" style="border-radius: 0; width: 100px;">
+                  <!--<option value="">---------</option>-->
+                  <option value="" selected="">All Departments</option>
                   {% for item in dept_zone_obj %}
                   <option value="{{item.0}}">{{ item.1 }}</option>
                   {% endfor %}
-                  
-
-                  <!--
-                  <option value="2">D | Day shift</option>
-                  <option value="3">N | Night shift</option>
-                  -->
                 </select>                
-
-                <!--
-                <input type="text" style="width: 100px;" name="end_date" class="form-control datepicker border-bottom-1 border-left-0 rounded-0 bg-white" placeholder="dd/mm/yyyy" required="" id="id_end_date" value="{{end_date}}" readonly="readonly">
-                -->
-
                 <button class="btn btn-outline-info btn-sm dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="fas fa-print fa-sm"></i>&nbsp;&nbsp;Print
                 </button>
@@ -84,38 +73,6 @@
 
       </div>
       <!-- /.col -->
-
-
-      <!--
-      <font size="2em;">      
-      <table class="table table-sm table-bordered table-striped table-hover" id="report_table">
-        <thead class="bg-secondary">
-          <tr>
-            <th class="align-middle text-center" scope="col">NO.</th>            
-            <th class="align-middle text-center" scope="col" nowrap>Date</th>
-            <th class="align-middle text-center" scope="col" nowrap>EMP ID</th>
-            <th class="align-middle text-center" scope="col" nowrap>Full Name</th>
-            <th class="align-middle text-center" scope="col" nowrap>Rank</th>
-            <th class="align-middle text-center" scope="col" nowrap>Shift</th>            
-            <th class="align-middle text-center" scope="col" nowrap>Relieft ID</th>
-            <th class="align-middle text-center" scope="col" nowrap>OT</th>
-            <th class="align-middle text-center" scope="col" nowrap>Late</th>
-            <th class="align-middle text-center" scope="col" nowrap>Full</th>
-            <th class="align-middle text-center" scope="col" nowrap>Amt HR</th>
-            <th class="align-middle text-center" scope="col" nowrap>Call</th>
-            <th class="align-middle text-center" scope="col" nowrap>Tel Paid</th>
-          </tr>
-        </thead>
-        
-        <tbody>
-          <tr>
-            <td class="text-center" colspan='13'>&nbsp;</td>
-          </tr>
-        </tbody>
-
-      </table>
-      </font>
-      -->
 
     </section>
     <!-- /.content -->
@@ -305,17 +262,19 @@ $(document).ready( function () {
   }  
 
   $(document).ready(function () {    
-    $('#id_start_date').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", new Date());
-    $('#id_end_date').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", new Date());
+    $('#id_work_date').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", new Date());    
   });
 
 
   function print_document() {
-    alert("todo");
-    return false;
+    
+    //alert("todo");
+    //return false;
 
-    var start_date = $("#id_start_date").val();
-    var href = "/reports/cms/ajax-gpm-work-on-day-off/" + start_date + "/";
+    var work_date = $("#id_work_date").val();
+    var dept_zone = $("#id_dept_zone_option").val();
+
+    var href = "/reports/cms/ajax-gpm-422-no-of-guard-operation-by-empl-by-zone/" + work_date + "/" + dept_zone + "/";
     window.open(href,'_blank');
   }
    

@@ -30,6 +30,32 @@ from docx.enum.text import WD_LINE_SPACING
 from docx.enum.style import WD_STYLE_TYPE
 
 
+@permission_required('dailyattendreport.can_access_gpm_422_no_of_guard_operation_by_empl_by_zone_report', login_url='/accounts/login/')
+def AjaxGPM422NoOfGuardOperationByEmplByZoneReport(request, *args, **kwargs):    
+    base_url = MEDIA_ROOT + '/monitoring/template/'    
+    template_name = base_url + 'GPM_422.docx'
+    file_name = request.user.username + "_GPM_422"
+
+    work_date = kwargs['work_date']
+    work_date = datetime.datetime.strptime(work_date, "%d/%m/%Y").date()
+    dept_zone = kwargs['dept_zone']
+
+    print("work_date : ", work_date)
+    print("dept_zone : ", dept_zone)
+
+    # TODO
+    sql = "SELECT emp_fname_th, emp_lname_th, dept_en, cnt_id, emp_id, dept_id, sch_rank, absent, cus_name_th "
+    sql += "FROM R_GPM422 "
+    sql += ""
+    sql += "ORDER BY dept_id ASC, emp_id ASC"
+    print(sql)
+
+    dly_plan_obj = None
+    record = {}
+    dly_plan_list = []
+    error_message = ""
+
+
 @permission_required('dailyattendreport.can_access_gpm403_daily_guard_performance_by_contract_report', login_url='/accounts/login/')
 def AjaxGPMWorkOnDayOffReport(request, *args, **kwargs):    
     base_url = MEDIA_ROOT + '/monitoring/template/'    
@@ -962,6 +988,7 @@ def GPM422NoOfGuardOperationByEmplByZoneReport(request):
     dept_zone = request.POST.get('dept_zone')
 
     work_date = today_date if work_date is None else datetime.datetime.strptime(work_date, "%d/%m/%Y").date()
+    dept_zone_obj = None
 
     sql = "select dept_id, dept_en from COM_DEPARTMENT where dept_zone=1;"
     try:
@@ -970,12 +997,6 @@ def GPM422NoOfGuardOperationByEmplByZoneReport(request):
         dept_zone_obj = cursor.fetchall()
     finally:
         cursor.close()
-
-    if dept_zone_obj is not None:
-        if len(dept_zone_obj)>0:
-            for item in dept_zone_obj:
-                print(item[0])
-
 
     return render(request, 'dailyattendreport/gpm_422_no_of_guard_operation_by_empl_by_zone_report.html',
         {
