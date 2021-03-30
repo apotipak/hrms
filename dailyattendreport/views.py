@@ -183,7 +183,7 @@ def AjaxGPMWorkOnDayOffReport(request, *args, **kwargs):
                     b = table.cell(0, 1)
                     c = table.cell(0, 8)
                     d = a.merge(c)
-                    d.text = '%s' % (cnt_id)
+                    d.text = '%s' % (dept_id)
                     d.paragraphs[0].runs[0].font.bold = True
                     d.paragraphs[0].runs[0].font.size = Pt(15)
 
