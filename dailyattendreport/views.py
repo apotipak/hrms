@@ -138,7 +138,8 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
     document = DocxTemplate(template_name)
     style = document.styles['Normal']
     font = style.font
-    font.name = 'Cordia New (Body CS)'
+    # font.name = 'Cordia New (Body CS)'
+    font.name = 'AngsanaUPC'
     font.size = Pt(13)
 
     '''
@@ -229,7 +230,8 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
                     company_name = "  " + str(cus_name_th)
                     row = table.rows[0]
                     company_name = row.cells[0].paragraphs[0].add_run(company_name)
-                    company_name.font.name = 'Cordia New (Body CS)'
+                    # company_name.font.name = 'Cordia New (Body CS)'
+                    company_name.font.name = 'AngsanaUPC'
                     company_name.font.size = Pt(16)
                     company_name.bold = True
             else:
@@ -238,7 +240,8 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
                     p = document.add_paragraph()
                     runner = p.add_run('TOTAL  %s' % str(row_count - 1))
                     runner.bold = True
-                    company_name.font.name = 'Cordia New (Body CS)'
+                    # company_name.font.name = 'Cordia New (Body CS)'
+                    company_name.font.name = 'AngsanaUPC'
                     runner.font.size = Pt(15)
 
                     table = document.add_table(rows=1, cols=13, style='TableGridLight')                    
@@ -322,7 +325,7 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
         
         document.render(context)
         document.save(MEDIA_ROOT + '/monitoring/download/' + file_name + ".docx")
-                
+
     # return False
 
     # docx2pdf
