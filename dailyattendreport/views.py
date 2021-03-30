@@ -140,7 +140,7 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
     font = style.font
     # font.name = 'Cordia New (Body CS)'
     font.name = 'AngsanaUPC'
-    font.size = Pt(13)
+    font.size = Pt(14)
 
     '''
     for section in document.sections:
@@ -156,7 +156,7 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
 
         for item in dly_plan_obj:
             shf_desc = item[2].replace("('", "")
-            dept_en = item[3],
+            dept_en = item[3].replace("('", "")
             cnt_id = item[4]
             emp_id = item[5]
             emp_full_name = item[0].strip() + " " + item[1].strip()
@@ -173,9 +173,8 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
             ot = "" if item[14] else ""
             ot_hr_amt = item[15] if item[15] else ""
             cus_name_th = item[16]
-            late = item[17]
-            late = item[17] if item[17] else ""
-            late_full = item[18] if item[18] else ""            
+            late = "x" if item[17] else ""
+            late_full = "x" if item[18] else ""
 
             if temp_cnt_id is None:
                 table = document.add_table(rows=1, cols=13, style='TableGridLight')                                                
@@ -183,7 +182,7 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
                 a = table.cell(0, 0)
                 b = table.cell(0, 12)
                 c = a.merge(b)
-                c.text = 'CONTRACT : %s' % (cnt_id)
+                c.text = '%s' % (cnt_id)
                 c.paragraphs[0].runs[0].font.bold = True
                 c.paragraphs[0].runs[0].font.size = Pt(15)
 
@@ -226,8 +225,7 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
                     row[3].width = Cm(5)
                     row[5].width = Cm(8)
 
-
-                    company_name = "  " + str(cus_name_th)
+                    company_name = "  " + str(cus_name_th) + "    |    " + str(dept_id) + "   " + str(dept_en)
                     row = table.rows[0]
                     company_name = row.cells[0].paragraphs[0].add_run(company_name)
                     # company_name.font.name = 'Cordia New (Body CS)'
@@ -250,7 +248,7 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
                     b = table.cell(0, 1)
                     c = table.cell(0, 12)
                     d = a.merge(c)
-                    d.text = 'CONTRACT : %s' % (cnt_id)
+                    d.text = '%s' % (cnt_id)
                     d.paragraphs[0].runs[0].font.bold = True
                     d.paragraphs[0].runs[0].font.size = Pt(15)
 
@@ -273,8 +271,8 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
                     row[0].width = Cm(0.5)
                     row[3].width = Cm(5)
                     row[5].width = Cm(8)
-
-                    company_name = "  " + str(cus_name_th)
+                    
+                    company_name = "  " + str(cus_name_th) + "    |    " + str(dept_id) + "   " + str(dept_en)
                     row = table.rows[0]
                     company_name = row.cells[0].paragraphs[0].add_run(company_name)
                     company_name.font.name = 'Cordia New (Body CS)'
