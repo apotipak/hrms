@@ -19,7 +19,7 @@ docxtpl==0.10.0
 Jinja2==2.11.2
 jsonfield==3.1.0
 kombu==5.0.2
-lxml==4.5.2
+lxml==4.6.3
 MarkupSafe==1.1.1
 num2words==0.5.10
 prompt-toolkit==3.0.16
