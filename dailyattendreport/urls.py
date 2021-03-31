@@ -18,6 +18,11 @@ urlpatterns = [
     url(r'^ajax-gpm-work-on-day-off/(?P<start_date>\d{2}/\d{2}/\d{4})/$', views.AjaxGPMWorkOnDayOffReport, name='ajax-gpm-work-on-day-off-report'),
 
     # GPM 422 No. of Guard Operation by Empl by Zone    
-    path('gpm-422-no-of-guard-operation-by-empl-by-zone/', views.GPM422NoOfGuardOperationByEmplByZoneReport, name='gpm-422-no-of-guard-operation-by-empl-by-zone-report'),    
+    path('gpm-422-no-of-guard-operation-by-empl-by-zone/', views.GPM422NoOfGuardOperationByEmplByZoneReport, name='gpm-422-no-of-guard-operation-by-empl-by-zone-report'),
     url(r'^ajax-gpm-422-no-of-guard-operation-by-empl-by-zone/(?P<work_date>\d{2}/\d{2}/\d{4})/(?P<dept_zone>\d+)/$', views.AjaxGPM422NoOfGuardOperationByEmplByZoneReport, name='ajax-gpm-422-no-of-guard-operation-by-empl-by-zone'),
+
+
+    # PSN Slip - D1
+    path('psn-slip-d1/', views.PSNSlipD1Report, name='psn-slip-d1-report'),
+
 ]

@@ -1143,10 +1143,34 @@ def GPMWorkOnDayOffReport(request):
 
 
 
+@permission_required('dailyattendreport.can_access_psn_slip_d1_report', login_url='/accounts/login/')
+def PSNSlipD1Report(request):
+    page_title = settings.PROJECT_NAME
+    db_server = settings.DATABASES['default']['HOST']
+    project_name = settings.PROJECT_NAME
+    project_version = settings.PROJECT_VERSION  
+    
+    today_date = settings.TODAY_DATE.strftime("%d/%m/%Y")
+    work_date = request.POST.get('work_date')
+    dept_zone = request.POST.get('dept_zone')
 
-# SELECT emp_fname_th, emp_lname_th, dept_en, cnt_id, emp_id, dept_id, sch_rank, absent, cus_name_th
-# FROM R_GPM422 
-# ORDER BY dept_id ASC, emp_id ASC
+    work_date = today_date if work_date is None else datetime.datetime.strptime(work_date, "%d/%m/%Y").date()    
+
+    return render(request, 'dailyattendreport/psn_slip_d1_report.html',
+        {
+        'page_title': page_title, 
+        'project_name': project_name, 
+        'project_version': project_version,
+        'db_server': db_server, 
+        'today_date': today_date,
+        'work_date': work_date,
+        'dept_zone': dept_zone,
+        'database': settings.DATABASES['default']['NAME'],
+        'host': settings.DATABASES['default']['HOST'],
+        'is_error': False,
+        })
+
+
 
 @permission_required('dailyattendreport.can_access_gpm_422_no_of_guard_operation_by_empl_by_zone_report', login_url='/accounts/login/')
 def GPM422NoOfGuardOperationByEmplByZoneReport(request):
