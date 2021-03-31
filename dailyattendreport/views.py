@@ -1350,12 +1350,14 @@ def AjaxValidatePSNSlipD1Period(request):
         elif (dept_en.find('Zone Songkhla') != -1):
             dept_en_short = "SK"
         else:
-            dept_en_short = "?"
+            dept_en_short = dept_en
 
         emp_join_date = employee_info[39].strftime("%d/%m/%Y")
-        emp_term_date = employee_info[40]
+        emp_term_date = employee_info[40].strftime("%d/%m/%Y")
+
         if emp_term_date is not None:
-            emp_term_date.strftime("%d/%m/%Y")
+            # emp_term_date.strftime("%d/%m/%Y")
+            print("")
         else:
             emp_term_date = ""
 
