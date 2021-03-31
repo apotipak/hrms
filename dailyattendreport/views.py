@@ -1279,6 +1279,32 @@ def AjaxValidatePSNSlipD1Period(request):
 
     employee_info = None
     employee_paysum_list = []
+    eps_paid_stat_text = '?'
+    emp_id = ""
+    emp_full_name = ""
+    emp_rank = ""
+    emp_status = ""
+    emp_dept = ""
+    dept_en = ""
+    dept_en_short = ""
+    emp_join_date = ""
+    emp_term_date = ""
+    eps_paid_stat_text = '?'
+    eps_prd_in = ""
+    # Net Income
+    eps_prd_net = ""
+    # YTD Income
+    eps_ysm_in = ""
+    # YTD Prov.Func
+    eps_ysm_prv = ""
+    # Total Deduct
+    eps_prd_de = ""
+    # Tax
+    eps_prd_tax = ""
+    # YTD Tax
+    eps_ysm_tax = ""
+    # YTD Social Security
+    eps_ysm_soc = ""    
 
     try:                
         cursor = connection.cursor()
@@ -1355,6 +1381,7 @@ def AjaxValidatePSNSlipD1Period(request):
             error_message = "<b>Error: please send this error to IT team</b><br>" + str(e)
         finally:
             cursor.close()
+
         if employee_paysum_obj is not None:
             if len(employee_paysum_obj) > 0:
                 
@@ -1481,9 +1508,6 @@ def AjaxValidatePSNSlipD1Period(request):
 
         # YTD Social Security
         eps_ysm_soc = ""
-
-
-    print("eps_prd_in : ", eps_prd_in)
 
     response = JsonResponse(data={   
         "is_error": is_error,
