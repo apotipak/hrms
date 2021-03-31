@@ -1324,7 +1324,7 @@ def AjaxValidatePSNSlipD1Period(request):
         error_message = ""
 
         emp_id = employee_info[0]
-        emp_full_name = str(employee_info[4]) + " " + str(employee_info[5])
+        emp_full_name = str(employee_info[4]) + "  " + str(employee_info[5])
         emp_rank = employee_info[31]
         emp_status = employee_info[69]
         emp_dept = employee_info[28]
@@ -1386,13 +1386,13 @@ def AjaxValidatePSNSlipD1Period(request):
                         row_count = row_count + 1                        
                         eps_paid_stat = item[31]
                         if eps_paid_stat=='P':
-                            eps_paid_stat_text = 'P:PAID'
+                            eps_paid_stat_text = 'P : PAID'
                         elif eps_paid_stat=='H':
-                            eps_paid_stat_text = 'H:HOLDING'
+                            eps_paid_stat_text = 'H : HOLDING'
                         elif eps_paid_stat=='C':
-                            eps_paid_stat_text = 'C:CHEQUE'
+                            eps_paid_stat_text = 'C : CHEQUE'
                         else:
-                            eps_paid_stat_text = '?'
+                            eps_paid_stat_text = eps_paid_stat
 
                         # Gross Income
                         eps_prd_in = item[27]
