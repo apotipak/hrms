@@ -545,7 +545,7 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
     end_date = datetime.datetime.strptime(end_date, "%d/%m/%Y").date()
 
     contract_number_from = 0 if contract_number_from is None else contract_number_from
-    contract_number_to = 9999999999 if contract_number_to is None else contract_number_to
+    contract_number_to = 0 if contract_number_to is None else contract_number_to
     today_date = settings.TODAY_DATE.strftime("%d/%m/%Y %H:%M:%S")
 
     sql = "select emp_fname_th, emp_lname_th, shf_desc, dept_en, cnt_id, "
@@ -557,7 +557,7 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
     sql += "and (cnt_id>=" + str(contract_number_from) + " and cnt_id<=" + str(contract_number_to) + ") "
     sql += "and (dly_date>='" + str(start_date) + "' and dly_date<='" + str(end_date) + "') "
     sql += "ORDER BY cnt_id ASC, dly_date ASC, shf_desc ASC, emp_id ASC"
-    print(sql)
+    # print(sql)
     
     dly_plan_obj = None
     record = {}
@@ -575,70 +575,9 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
     finally:
         cursor.close()
 
-    if dly_plan_obj is not None:
-        if len(dly_plan_obj)>0:
-            group_count = 1
-            row_count = 1
-            temp_cnt_id = None
-
-            for item in dly_plan_obj:
-                
-                if temp_cnt_id != item[4]:
-                    temp_cnt_id = item[4]
-                    row_count = 1                    
-                else:
-                    row_count = row_count + 1
-
-                record = {
-                    "row_count": row_count,
-                    "emp_full_name": item[0].strip() + " " + item[1].strip(),
-                    "shf_desc": item[2],
-                    "dept_en": item[3],
-                    "cnt_id": item[4],
-                    "emp_id": item[5],
-                    "dly_date": item[6].strftime("%d/%m/%Y"),
-                    "sch_shift": item[7],
-                    "dept_id": item[8],
-                    "sch_rank": item[9],
-                    "absent": item[10],
-                    "relieft_id": item[11],
-                    "tel_man": item[12],
-                    "tel_paid": item[13],
-                    "ot": item[14],
-                    "ot_hr_amt": item[15],
-                    "cus_name_th": item[16],
-                    "late": item[17],
-                    "late_full": item[18],
-                }
-                # row_count = row_count + 1
-                dly_plan_list.append(record)
-
-            context = {
-                'file_name': file_name,
-                'docx_file_name': file_name+".docx",
-                'template_name': template_name,
-                'dly_plan_list': list(dly_plan_list),
-                'today_date': today_date,
-                'start_date': start_date.strftime("%d/%m/%Y"),
-                'end_date': end_date.strftime("%d/%m/%Y"),
-            }          
-        else:
-            context = {
-                'file_name': file_name,
-                'docx_file_name': file_name + ".docx",
-                'template_name': template_name,
-                'dly_plan_list': list(dly_plan_list),
-                'today_date': today_date,
-                'start_date': start_date.strftime("%d/%m/%Y"),
-                'end_date': end_date.strftime("%d/%m/%Y"),
-            }
-        
-    template_name = base_url + 'GPM_403.docx'
-    file_name = 'GPM_403'
     document = DocxTemplate(template_name)
     style = document.styles['Normal']
     font = style.font
-    # font.name = 'Cordia New (Body CS)'
     font.name = 'AngsanaUPC'
     font.size = Pt(14)
 
