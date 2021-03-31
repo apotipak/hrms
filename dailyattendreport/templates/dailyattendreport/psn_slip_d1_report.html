@@ -148,7 +148,7 @@ thead th { white-space: nowrap; }
 									</thead>
 									<tbody>
 										<tr>
-											<td colspan="8" class="text-center">Employee Information</td>
+											<td colspan="8" class="text-center">ข้อมูลพนักงาน</td>
 										</tr>
 									</tbody>
 								</table>
@@ -294,10 +294,31 @@ function checkpaysum() {
 				$("#employee_info_table tbody").html(result);
 
 				// PAYSUM
+				if(data.employee_paysum_list.length>0) {
+					result = "";
+					row_count = 1;
+					for(i=0; i<data.employee_paysum_list.length; i++) {
+						result += "<tr>";
+						payment_type = data.employee_paysum_list[i]["payment_type"]
+						result += "<td>" + row_count + "</td>";
+						result += "<td>" + payment_type + "<td>";
+						result += "<td>&nbsp;</td>";
+						result += "<td>&nbsp;</td>";
+						result += "<td>&nbsp;</td>";
+						result += "<td>&nbsp;</td>";
+						result += "<td>&nbsp;</td>";
+						result += "<td>&nbsp;</td>";
+						result += "<td>&nbsp;</td>";
+						result += "<td>&nbsp;</td>";
+						result += "</tr>";
+						row_count++;
+					}
+					
+				} else {
+					result = "<tr><td colspan='10' class='text-center'>ข้อมูลค่าแรง</td></tr>";
+				}
 				
-				result = "<tr><td colspan='10' class='text-center'>ข้อมูลค่าแรง</td></tr>";
 				$("#employee_paysum_table tbody").html(result);
-
 
 			}
 			$.LoadingOverlay("hide");
@@ -327,8 +348,10 @@ $("#cancelPSNSlipD1Button").click( function() {
 	event.preventDefault();
 
 	$("#id_emp_id").val("");
-	$("#employee_info_table tbody").html("<tr><td colspan='8' class='text-center'>Employee Information</td></tr>");
 	$("#id_period_option").val("");
+
+	$("#employee_info_table tbody").html("<tr><td colspan='8' class='text-center'>ข้อมูลพนักงาน</td></tr>");
+	$("#employee_paysum_table tbody").html("<tr><td colspan='10' class='text-center'>ข้อมูลค่าแรง</td></tr>");	
 
 });
 

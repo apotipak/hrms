@@ -1335,10 +1335,12 @@ def AjaxValidatePSNSlipD1Period(request):
 
 
         # Get PAYSUM
-        sql = "SELECT  a.*,b.pay_th FROM PAY_SUM as A left join t_paytype as B on a.eps_pay_type=b.pay_type "
-        sql += "where eps_prd_id='" + str(period_option) + "' and eps_emp_id=" + str(emp_id) + " ORDER BY eps_pay_type"
-        # print("SQL : ", sql)
-        
+        sql = "SELECT  a.*,b.pay_th FROM HIS_PAY_SUM as A left join t_paytype as B on a.eps_pay_type=b.pay_type "
+        sql += "where eps_prd_id='" + str(period_option) + "' and eps_emp_id=" + str(emp_id) + " "
+        sql += "and eps_inde in ('I','D') "
+        sql += "ORDER BY eps_pay_type"
+        print("SQL : ", sql)
+
         employee_paysum_obj = None        
         record = {}
         try:                
@@ -1364,7 +1366,7 @@ def AjaxValidatePSNSlipD1Period(request):
 
                     record = {
                         "eps_emp_id": eps_emp_id,
-                        "payment_type": eps_pay_type,
+                        "payment_type": payment_type,
                     }
 
                     employee_paysum_list.append(record)        
@@ -1397,7 +1399,7 @@ def AjaxValidatePSNSlipD1Period(request):
         "dept_en_short": dept_en_short,
         "emp_join_date": emp_join_date,
         "emp_term_date": emp_term_date,
-        "employee_paysum_list": employee_paysum_list,       
+        "employee_paysum_list": list(employee_paysum_list),
     })
 
     response.status_code = 200
