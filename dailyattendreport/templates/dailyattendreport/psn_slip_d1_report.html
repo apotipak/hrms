@@ -90,8 +90,7 @@ thead th { white-space: nowrap; }
               <div class="input-group col-8 offset-2">
 
                
-                <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:130px;"><b>Employee Type</b></span></div>
-                
+                <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:95px;"><b>Emp Type</b></span></div>                
                 <select id="id_employee_type_option" name="employee_type_option" class="form-control form-control-md" style="border-radius: 0; width: 100px;" disabled="">
                   {% for item in employee_type_list %}
                   <option value="{{item.0}}">{{item.0}} | {{ item.1 }}</option>
@@ -105,9 +104,14 @@ thead th { white-space: nowrap; }
                   	<option value="{{item.0}}"><b>{{item.0}} | {{item.1}}/{{item.2}} || Period: {{item.6|date:"j"}} - {{item.7|date:"j"}} Paid : {{item.8|date:"j"}}</option>
                   	{% endfor %}
                 </select>
-                &nbsp;&nbsp;
-                <button id="searchPSNSlipD1Button" name="searchPSNSlipD1Button" type="button" class="btn btn-sm btn-info pull-right"><!--<i class="fas fa-search fa-sm"></i>-->&nbsp;&nbsp;Search&nbsp;&nbsp;</button>
 
+                <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:75px;"><b>Emp ID</b></span></div>
+				<input type="number" min=3 maxlength=6 id="id_emp_id" name="emp_id" class="form-control" style="width:50px;" required="" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" value="">
+
+                <!--
+                &nbsp;&nbsp;
+                <button id="searchPSNSlipD1Button" name="searchPSNSlipD1Button" type="button" class="btn btn-sm btn-info pull-right"><i class="fas fa-search fa-sm"></i>&nbsp;&nbsp;Search&nbsp;&nbsp;</button>
+				-->
               </div>
 
             </div>
