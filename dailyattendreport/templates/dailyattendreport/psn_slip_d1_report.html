@@ -87,18 +87,21 @@ thead th { white-space: nowrap; }
 			      <div class="input-group col-12 p-0">
 
 			       
-			        <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:95px;"><b>Emp Type</b></span></div>                
+			        <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:95px;"><b>Emp Type</b></span></div>
+			        <input type="text" id="id_employee_type_option" name="employee_type_option" class="form-control" style="width:5px;" value="D1 | GFTH : Daily" readonly="" disabled="">
+			        {% comment %}
 			        <select id="id_employee_type_option" name="employee_type_option" class="form-control form-control-md" style="border-radius: 0; width: 100px;" disabled="">
 			          {% for item in employee_type_list %}
 			          <option value="{{item.0}}">{{item.0}} | {{ item.1 }}</option>
 			          {% endfor %}
 			        </select>
+			        {% endcomment %}
 
 			        <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:70px;"><b>Period</b></span></div>
 			        <select id="id_period_option" name="period_option" class="form-control form-control-md" style="border-radius: 0; width: 100px;">
 			        	<option value="">---------</option>
 			          	{% for item in period_list %}
-			          	<option value="{{item.0}}"><b>{{item.0}} | {{item.1}}/{{item.2}} || Period: {{item.6|date:"j"}} - {{item.7|date:"j"}} Paid : {{item.8|date:"j"}}</option>
+			          	<option value="{{item.0}}"><b>{{item.0}} | {{item.1}}/{{item.2}} [Period: {{item.6|date:"j"}} - {{item.7|date:"j"}} Paid : {{item.8|date:"j"}}]</option>
 			          	{% endfor %}
 			        </select>
 
@@ -152,8 +155,141 @@ thead th { white-space: nowrap; }
 <script>
 
 $(document).ready( function () {
-	//
+  $(document).on('click', '#id_emp_id', function(e) {
+    $("#id_emp_id").select();
+  });
 });
+
+function checkpaysum() {
+	//emp_type = $("#id_employee_type_option").val();
+	emp_type = 'D1';
+	period_option = $("#id_period_option").val();
+	emp_id = $("#id_emp_id").val();
+
+	/*
+	if (emp_type=="") {
+		$.alert({
+		    title: 'Error',
+		    type: 'red',
+		    content: "กรุณาเลือกประเภทพนักงาน (Employee Type)",
+		    animation: 'zoom',
+		    animationBounce: 1.5,
+		    closeIcon: false,
+		    boxWidth: '38%',
+		    useBootstrap: false,
+		});
+		return false;
+	}
+	*/
+
+	if (period_option=="") {
+		$.alert({
+		    title: 'Error',
+		    type: 'red',
+		    content: "กรุณาเลือกงวด (Period)",
+		    animation: 'zoom',
+		    animationBounce: 1.5,
+		    closeIcon: false,
+		    boxWidth: '38%',
+		    useBootstrap: false,
+		});
+		return false;
+	}
+
+
+	if (emp_id=="") {
+		$.alert({
+		    title: 'Error',
+		    type: 'red',
+		    content: "กรุณาเลือกรหัสพนักงาน (Employee ID)",
+		    animation: 'zoom',
+		    animationBounce: 1.5,
+		    closeIcon: false,
+		    boxWidth: '38%',
+		    useBootstrap: false,
+		});
+		return false;
+	}
+
+
+	// TODO				
+	showLoading();
+
+	$.ajax({    	
+		url: "/reports/cms/ajax-validate-psn-slip-d1-period/",
+		type : "POST",
+		data : {          
+	  		csrfmiddlewaretoken: '{{ csrf_token }}',
+	  		emp_type: emp_type,
+	  		period_option: period_option,
+	  		emp_id: emp_id
+		},
+		success: function(data) {
+			if(data.is_error) {
+				$.alert({
+				    title: 'Error',
+				    type: 'red',
+				    content: data.error_message,
+				    animation: 'zoom',
+				    animationBounce: 1.5,
+				    closeIcon: false,
+				    boxWidth: '38%',
+				    useBootstrap: false,
+				});	    			
+			} else {
+				emp_id = data.emp_id;
+				emp_full_name = data.emp_full_name;
+				emp_rank = data.emp_rank;
+				emp_status = data.emp_status;
+				emp_dept = data.emp_dept;
+				dept_en = data.dept_en;
+				dept_en_short = data.dept_en_short;
+				emp_join_date = data.emp_join_date;
+				emp_term_date = data.emp_term_date;
+
+				result = "<div class='table-responsive'>";
+				result += "<table class='table table-sm'>";
+				result += "  <thead>";
+				result += "    <tr>";
+				result += "      <th scope='col'>ID</th>";
+				result += "      <th scope='col'>FULL NAME</th>";
+				result += "      <th scope='col'>RANK</th>";
+				result += "      <th scope='col'>DEPT</th>";
+				result += "      <th scope='col'>TYPE</th>";
+				result += "      <th scope='col'>JOINED DATE</th>";
+				result += "      <th scope='col'>TERMINATED DATE</th>";
+				result += "      <th scope='col'>STATUS</th>";
+				result += "    </tr>";
+				result += "  </thead>";
+				result += "  <tbody>";
+				
+				result += "    <tr>";
+				result += "      <td>" + emp_id + "</td>";
+				result += "      <td>" + emp_full_name + "</td>";
+				result += "      <td>" + emp_rank + "</td>";
+				result += "      <td>" + emp_dept + " | Zone " + dept_en_short + "</td>";
+				result += "      <td>D1</td>";
+				result += "      <td>" + emp_join_date + "</td>";
+				if(emp_term_date==null)
+					result += "      <td>&nbsp;</td>";
+				else
+					result += "      <td>" + emp_term_date + "</td>";
+
+				result += "      <td>" + emp_status + "</td>";
+				result += "    </tr>";
+
+				result += "  </tbody>";
+				result += "</table>";
+				result += "</div>";
+				
+
+				$("#employee_info").html(result);
+
+			}
+			$.LoadingOverlay("hide");
+		}
+	});
+}
 
 function showLoading() {
 	$.LoadingOverlaySetup({
@@ -170,132 +306,7 @@ function showLoading() {
 $(document).on('keypress', '#id_emp_id', function(e) {
 	if(e.which == 13) {              
     	e.preventDefault();
-
-		emp_type = $("#id_employee_type_option").val();
-		period_option = $("#id_period_option").val();
-		emp_id = $("#id_emp_id").val();
-
-    	if (emp_type=="") {
-			$.alert({
-			    title: 'Error',
-			    type: 'red',
-			    content: "กรุณาเลือกประเภทพนักงาน (Employee Type)",
-			    animation: 'zoom',
-			    animationBounce: 1.5,
-			    closeIcon: false,
-			    boxWidth: '38%',
-			    useBootstrap: false,
-			});
-			return false;
-    	}
-
-    	if (period_option=="") {
-			$.alert({
-			    title: 'Error',
-			    type: 'red',
-			    content: "กรุณาเลือกงวด (Period)",
-			    animation: 'zoom',
-			    animationBounce: 1.5,
-			    closeIcon: false,
-			    boxWidth: '38%',
-			    useBootstrap: false,
-			});
-			return false;
-    	}
-
-
-    	if (emp_id=="") {
-			$.alert({
-			    title: 'Error',
-			    type: 'red',
-			    content: "กรุณาเลือกรหัสพนักงาน (Employee ID)",
-			    animation: 'zoom',
-			    animationBounce: 1.5,
-			    closeIcon: false,
-			    boxWidth: '38%',
-			    useBootstrap: false,
-			});
-			return false;
-    	}
-
-    	
-    	// TODO				
-		showLoading();
-
-		$.ajax({    	
-	    	url: "/reports/cms/ajax-validate-psn-slip-d1-period/",
-	    	type : "POST",
-	    	data : {          
-	      		csrfmiddlewaretoken: '{{ csrf_token }}',
-	      		emp_type: emp_type,
-	      		period_option: period_option,
-	      		emp_id: emp_id
-	    	},
-	    	success: function(data) {
-	    		if(data.is_error) {
-					$.alert({
-					    title: 'Error',
-					    type: 'red',
-					    content: data.error_message,
-					    animation: 'zoom',
-					    animationBounce: 1.5,
-					    closeIcon: false,
-					    boxWidth: '38%',
-					    useBootstrap: false,
-					});	    			
-	    		} else {
-    				emp_id = data.emp_id;
-    				emp_full_name = data.emp_full_name;
-    				emp_rank = data.emp_rank;
-    				emp_status = data.emp_status;
-    				emp_dept = data.emp_dept;
-    				dept_en = data.dept_en;
-    				dept_en_short = data.dept_en_short;
-    				emp_join_date = data.emp_join_date;
-    				emp_term_date = data.emp_term_date;
-
-					result = "<div class='table-responsive'>";
-					result += "<table class='table table-sm'>";
-					result += "  <thead>";
-					result += "    <tr>";
-					result += "      <th scope='col'>ID</th>";
-					result += "      <th scope='col'>FULL NAME</th>";
-					result += "      <th scope='col'>RANK</th>";
-					result += "      <th scope='col'>DEPT</th>";
-					result += "      <th scope='col'>TYPE</th>";
-					result += "      <th scope='col'>JOINED DATE</th>";
-					result += "      <th scope='col'>TERMINATED DATE</th>";
-					result += "      <th scope='col'>STATUS</th>";
-					result += "    </tr>";
-					result += "  </thead>";
-					result += "  <tbody>";
-					
-					result += "    <tr>";
-					result += "      <td>" + emp_id + "</td>";
-					result += "      <td>" + emp_full_name + "</td>";
-					result += "      <td>" + emp_rank + "</td>";
-					result += "      <td>" + emp_dept + " | Zone " + dept_en_short + "</td>";
-					result += "      <td>D1</td>";
-					result += "      <td>" + emp_join_date + "</td>";
-					if(emp_term_date==null)
-						result += "      <td>&nbsp;</td>";
-					else
-						result += "      <td>" + emp_term_date + "</td>";
-
-					result += "      <td>" + emp_status + "</td>";
-					result += "    </tr>";
-
-					result += "  </tbody>";
-					result += "</table>";
-					result += "</div>";
-					result += "<hr>";
-
-    				$("#employee_info").html(result);
-
-	    		}
-    			$.LoadingOverlay("hide");
-    		}
-    	});
+    	checkpaysum();
     } 
 });
 
@@ -310,8 +321,10 @@ $("#cancelPSNSlipD1Button").click( function() {
 });
 
 function print_document() {
-	alert("TODO");
-	return false;
+	//alert("TODO");
+	//return false;
+
+	checkpaysum();
 
 	/*
 	var work_date = $("#id_work_date").val();

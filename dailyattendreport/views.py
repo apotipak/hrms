@@ -1249,6 +1249,9 @@ def GPM422NoOfGuardOperationByEmplByZoneReport(request):
 def AjaxValidatePSNSlipD1Period(request):
 
     emp_type = request.POST.get('emp_type')
+    if emp_type != 'D1':
+        emp_type = 'D1'
+        
     period_option = request.POST.get('period_option')
     emp_id = request.POST.get('emp_id')    
     
@@ -1328,10 +1331,18 @@ def AjaxValidatePSNSlipD1Period(request):
             emp_term_date.strftime("%d/%m/%Y")
         else:
             emp_term_date = ""
-
     else:
         is_error = True
         error_message = "ไม่พบข้อมูล"
+        emp_id = ""
+        emp_full_name = ""
+        emp_rank = ""
+        emp_status = ""
+        emp_dept = ""
+        dept_en = ""
+        dept_en_short = ""
+        emp_join_date = ""
+        emp_term_date = ""
 
     response = JsonResponse(data={   
         "is_error": is_error,
