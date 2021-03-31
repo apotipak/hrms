@@ -131,8 +131,60 @@ thead th { white-space: nowrap; }
 		      <div class="text-dark" style="padding:5px !important; border-top: 5px solid #257638; border-right: 5px solid #257638; border-color: #257638; border-left: 5px solid #257638; border-bottom: 5px solid #257638; background-color: #e9ecef;">
 		        <div class="tab-content" id="custom-tabs-one-tabContent">                  
 					<div class="tab-pane fade show active" id="custom-tabs-one-home" role="tabpanel" aria-labelledby="custom-tabs-one-home-tab">
-						<div class="col-12 float-left" style="padding: 0 5px 0 0 !important;">
-							<div id="employee_info"><b>Employee Information</b></div>
+						<div class="col-12 float-left" style="padding: 0 0 0 0 !important;">
+							<div id="employee_info" class="table-responsive">								
+								<table id="employee_info_table" name="employee_info_table" class='table table-sm table-primary'>		
+									<thead>
+									<tr>
+									<th scope='col'>ID</th>
+									<th scope='col'>FULL NAME</th>
+									<th scope='col'>RANK</th>
+									<th scope='col'>DEPT</th>
+									<th scope='col'>TYPE</th>
+									<th scope='col'>JOINED DATE</th>
+									<th scope='col'>TERMINATED DATE</th>
+									<th scope='col'>STATUS</th>
+									</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td colspan="8" class="text-center">Employee Information</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div id="employee_paysum" class="table-responsive">
+								<table id="employee_paysum_table" class='table table-striped table-hover table-sm'>
+								  <thead class="thead-dark">
+								    <tr>
+								      <th scope='col'>No</th>
+								      <th scope='col'>Payment Type</th>
+								      <th scope='col'>Income</th>
+								      <th scope='col'>Deduct</th>
+								      <th scope='col'>Comp.Pay</th>
+								      <th scope='col'>%</th>
+								      <th scope='col'>Days</th>
+								      <th scope='col'>Hours</th>
+								      <th scope='col'>Paid Date</th>
+								      <th scope='col'>Paid Status</th>
+								    </tr>
+								  </thead>
+								  <tbody>
+								    <tr>
+								      <td>&nbsp;</td>
+								      <td>&nbsp;</td>
+								      <td>&nbsp;</td>
+								      <td>&nbsp;</td>
+								      <td>&nbsp;</td>
+								      <td>&nbsp;</td>
+								      <td>&nbsp;</td>
+								      <td>&nbsp;</td>
+								      <td>&nbsp;</td>
+								      <td>&nbsp;</td>
+								    </tr>
+								  </tbody>
+								</table>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -161,26 +213,10 @@ $(document).ready( function () {
 });
 
 function checkpaysum() {
-	//emp_type = $("#id_employee_type_option").val();
+
 	emp_type = 'D1';
 	period_option = $("#id_period_option").val();
 	emp_id = $("#id_emp_id").val();
-
-	/*
-	if (emp_type=="") {
-		$.alert({
-		    title: 'Error',
-		    type: 'red',
-		    content: "กรุณาเลือกประเภทพนักงาน (Employee Type)",
-		    animation: 'zoom',
-		    animationBounce: 1.5,
-		    closeIcon: false,
-		    boxWidth: '38%',
-		    useBootstrap: false,
-		});
-		return false;
-	}
-	*/
 
 	if (period_option=="") {
 		$.alert({
@@ -196,7 +232,6 @@ function checkpaysum() {
 		return false;
 	}
 
-
 	if (emp_id=="") {
 		$.alert({
 		    title: 'Error',
@@ -210,7 +245,6 @@ function checkpaysum() {
 		});
 		return false;
 	}
-
 
 	// TODO				
 	showLoading();
@@ -237,6 +271,8 @@ function checkpaysum() {
 				    useBootstrap: false,
 				});	    			
 			} else {
+
+				// EMPLOYEE
 				emp_id = data.emp_id;
 				emp_full_name = data.emp_full_name;
 				emp_rank = data.emp_rank;
@@ -248,7 +284,8 @@ function checkpaysum() {
 				emp_term_date = data.emp_term_date;
 
 				result = "<div class='table-responsive'>";
-				result += "<table class='table table-sm'>";
+				result += "<table id='employee_info_table' class='table table-sm table-primary'>";
+				
 				result += "  <thead>";
 				result += "    <tr>";
 				result += "      <th scope='col'>ID</th>";
@@ -261,8 +298,8 @@ function checkpaysum() {
 				result += "      <th scope='col'>STATUS</th>";
 				result += "    </tr>";
 				result += "  </thead>";
-				result += "  <tbody>";
 				
+				result += "  <tbody>";				
 				result += "    <tr>";
 				result += "      <td>" + emp_id + "</td>";
 				result += "      <td>" + emp_full_name + "</td>";
@@ -277,13 +314,15 @@ function checkpaysum() {
 
 				result += "      <td>" + emp_status + "</td>";
 				result += "    </tr>";
-
 				result += "  </tbody>";
 				result += "</table>";
-				result += "</div>";
-				
+				result += "</div>";				
 
 				$("#employee_info").html(result);
+
+				// PAYSUM
+				$("#employee_paysum").html("");
+
 
 			}
 			$.LoadingOverlay("hide");
@@ -315,8 +354,11 @@ $("#cancelPSNSlipD1Button").click( function() {
 	event.preventDefault();
 
 	$("#id_emp_id").val("");
-	$("#employee_info").html("<b>Employee Information</b>");
+	//$("#employee_info").html("<b>Employee Information</b>");
+	//$("#employee_info_table tbody").html("Employee Information");
+	$("#employee_info_table tbody").html("<tr><td colspan='8' class='text-center'>Employee Information</td></tr>");
 	$("#id_period_option").val("");
+
 
 });
 

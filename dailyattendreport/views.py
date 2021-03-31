@@ -1251,7 +1251,7 @@ def AjaxValidatePSNSlipD1Period(request):
     emp_type = request.POST.get('emp_type')
     if emp_type != 'D1':
         emp_type = 'D1'
-        
+
     period_option = request.POST.get('period_option')
     emp_id = request.POST.get('emp_id')    
     
@@ -1278,6 +1278,7 @@ def AjaxValidatePSNSlipD1Period(request):
     print(sql)
 
     employee_info = None
+    employee_paysum_list = []
 
     try:                
         cursor = connection.cursor()
@@ -1331,6 +1332,46 @@ def AjaxValidatePSNSlipD1Period(request):
             emp_term_date.strftime("%d/%m/%Y")
         else:
             emp_term_date = ""
+
+
+        # Get PAYSUM
+        sql = "SELECT  a.*,b.pay_th FROM PAY_SUM as A left join t_paytype as B on a.eps_pay_type=b.pay_type "
+        sql += "where eps_prd_id='" + str(period_option) + "' and eps_emp_id=" + str(emp_id) + " ORDER BY eps_pay_type"
+        # print("SQL : ", sql)
+        
+        employee_paysum_obj = None        
+        record = {}
+        try:                
+            cursor = connection.cursor()
+            cursor.execute(sql)
+            employee_paysum_obj = cursor.fetchall()
+        except db.OperationalError as e:
+            is_error = True
+            error_message = "<b>Error: please send this error to IT team</b><br>" + str(e)
+        except db.Error as e:
+            is_error = True
+            error_message = "<b>Error: please send this error to IT team</b><br>" + str(e)
+        finally:
+            cursor.close()
+        if employee_paysum_obj is not None:
+            if len(employee_paysum_obj) > 0:
+                
+                for item in employee_paysum_obj:
+                    eps_emp_id = item[0]
+                    eps_pay_type = item[2]
+                    pay_th = item[37]
+                    payment_type = str(eps_pay_type) + " " + str(pay_th)
+
+                    record = {
+                        "eps_emp_id": eps_emp_id,
+                        "payment_type": eps_pay_type,
+                    }
+
+                    employee_paysum_list.append(record)        
+            else:
+                print("No record.")
+        else:
+            print("No record.")
     else:
         is_error = True
         error_message = "ไม่พบข้อมูล"
@@ -1355,7 +1396,8 @@ def AjaxValidatePSNSlipD1Period(request):
         "dept_en": dept_en,
         "dept_en_short": dept_en_short,
         "emp_join_date": emp_join_date,
-        "emp_term_date": emp_term_date        
+        "emp_term_date": emp_term_date,
+        "employee_paysum_list": employee_paysum_list,       
     })
 
     response.status_code = 200
