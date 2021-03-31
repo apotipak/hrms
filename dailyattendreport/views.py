@@ -1337,7 +1337,7 @@ def AjaxValidatePSNSlipD1Period(request):
         # Get PAYSUM
         sql = "SELECT  a.*,b.pay_th FROM HIS_PAY_SUM as A left join t_paytype as B on a.eps_pay_type=b.pay_type "
         sql += "where eps_prd_id='" + str(period_option) + "' and eps_emp_id=" + str(emp_id) + " "
-        sql += "and eps_inde in ('I','D') "
+        # sql += "and eps_inde in ('I','D') "
         sql += "ORDER BY eps_pay_type"
         print("SQL : ", sql)
 
@@ -1358,7 +1358,46 @@ def AjaxValidatePSNSlipD1Period(request):
         if employee_paysum_obj is not None:
             if len(employee_paysum_obj) > 0:
                 
+                row_count = 1
                 for item in employee_paysum_obj:
+                    if (row_count == 1):
+                        row_count = row_count + 1                        
+                        eps_paid_stat = item[31]
+                        if eps_paid_stat=='P':
+                            eps_paid_stat_text = 'P:PAID'
+                        elif eps_paid_stat=='H':
+                            eps_paid_stat_text = 'H:HOLDING'
+                        elif eps_paid_stat=='C':
+                            eps_paid_stat_text = 'C:CHEQUE'
+                        else:
+                            eps_paid_stat_text = '?'
+
+                        # Gross Income
+                        eps_prd_in = item[27]
+                        print("eps_prd_in : ", eps_prd_in)
+
+                        # Net Income
+                        eps_prd_net = item[29]
+
+                        # YTD Income
+                        eps_ysm_in = item[14]
+
+                        # YTD Prov.Func
+                        eps_ysm_prv = item[19]
+
+                        # Total Deduct
+                        eps_prd_de = item[28]
+
+                        # Tax
+                        eps_prd_tax = item[30]
+
+                        # YTD Tax
+                        eps_ysm_tax = item[21]
+
+                        # YTD Social Security
+                        eps_ysm_soc = item[20]
+
+
                     eps_emp_id = item[0]
                     eps_pay_type = item[2]
                     pay_th = item[37]
@@ -1388,8 +1427,6 @@ def AjaxValidatePSNSlipD1Period(request):
                     else:
                         eps_wrk_hr = ""
 
-                    eps_paid_stat = item[31]
-
                     record = {
                         "eps_emp_id": eps_emp_id,
                         "payment_type": payment_type,
@@ -1402,7 +1439,8 @@ def AjaxValidatePSNSlipD1Period(request):
                         "eps_paid_stat": eps_paid_stat,
                     }
 
-                    employee_paysum_list.append(record)        
+                    if (eps_inde!='S'):
+                        employee_paysum_list.append(record)        
             else:
                 print("No record.")
         else:
@@ -1419,6 +1457,33 @@ def AjaxValidatePSNSlipD1Period(request):
         dept_en_short = ""
         emp_join_date = ""
         emp_term_date = ""
+        eps_paid_stat_text = '?'
+        # Gross Income
+        eps_prd_in = ""
+
+        # Net Income
+        eps_prd_net = ""
+
+        # YTD Income
+        eps_ysm_in = ""
+
+        # YTD Prov.Func
+        eps_ysm_prv = ""
+
+        # Total Deduct
+        eps_prd_de = ""
+
+        # Tax
+        eps_prd_tax = ""
+
+        # YTD Tax
+        eps_ysm_tax = ""
+
+        # YTD Social Security
+        eps_ysm_soc = ""
+
+
+    print("eps_prd_in : ", eps_prd_in)
 
     response = JsonResponse(data={   
         "is_error": is_error,
@@ -1433,6 +1498,16 @@ def AjaxValidatePSNSlipD1Period(request):
         "emp_join_date": emp_join_date,
         "emp_term_date": emp_term_date,
         "employee_paysum_list": list(employee_paysum_list),
+
+        "eps_paid_stat_text": eps_paid_stat_text,
+        "eps_prd_in": eps_prd_in,
+        "eps_prd_net": eps_prd_net,
+        "eps_ysm_in": eps_ysm_in,
+        "eps_ysm_prv": eps_ysm_prv,
+        "eps_prd_de": eps_prd_de,
+        "eps_prd_tax": eps_prd_tax,
+        "eps_ysm_tax": eps_ysm_tax,
+        "eps_ysm_soc": eps_ysm_soc,        
     })
 
     response.status_code = 200

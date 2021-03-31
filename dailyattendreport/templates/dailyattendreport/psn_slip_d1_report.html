@@ -126,15 +126,105 @@ thead th { white-space: nowrap; }
 		<!-- ./row -->
 		<div class="row">
 		  <div class="col-12">
+
+
+
+
 		    <div class="card card-tabs">
 
 		      <div class="text-dark" style="padding:5px !important; border-top: 5px solid #257638; border-right: 5px solid #257638; border-color: #257638; border-left: 5px solid #257638; border-bottom: 5px solid #257638; background-color: #e9ecef;">
+
+
+
+
+
+          <div class="col-3 p-0 float-left">
+            <!-- Widget: user widget style 2 -->
+            <div class="card card-widget widget-user-2">
+              <!-- Add the bg color to the header using any of the bg-* classes -->
+              <div class="widget-user-header" style="background-color: #b0ccbf; color: #000;">
+                <!-- /.widget-user-image -->                
+                <!--
+                <h6><b><span id="id_emp_full_name">Employee</span></b></h6>
+                <h6><b>ID</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="id_emp_id_display"></span></h6>
+                <h6><b>Rank</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="id_type_rank"></span></h6>
+                <h6><b>Zone</b>&nbsp;&nbsp;&nbsp;&nbsp;<span id="id_zone"></span></h6>
+				-->
+                <ul class="nav flex-column">
+                  <li class="nav-item p-2">  
+                  	<h5><b><span id="id_emp_full_name" class="float-left">Employee</span></b></h5>
+                  </li>
+                  <li class="nav-item p-2">  
+                  	<b>รหัส</b><span id="id_emp_id_display" class="float-right"></span>
+                  </li>                  
+                  <li class="nav-item p-2">
+                  	<b>ตำแหน่ง</b><span id="id_type_rank" class="float-right"></span>
+                  </li>
+                  <li class="nav-item p-2">
+                  	<b>โซน</b><span id="id_zone" class="float-right"></span>
+                  </li>
+                  <li class="nav-item p-2">  
+                  	<b>สถานะ</b><span id="id_emp_status" class="float-right"></span>
+                  </li>
+                  <li class="nav-item p-2">
+                  	<b>วันเริ่มงาน</b><span id="id_join_date" class="float-right"></span>
+                  </li>
+                  <li class="nav-item p-2">
+                  	<b>วันสิ้นสุด</b><span id="id_terminate_date" class="float-right"></span>
+                  </li>                  
+                </ul>
+
+              </div>
+
+            </div>
+            <!-- /.widget-user -->
+          </div>
+
+
+
+
+          <div class="col-9 p-0 pl-2 float-right">
+
+			<div id="employee_paysum" class="table-responsive">
+				<table id="employee_paysum_table" class='table table-striped table-hover table-sm table-bordered'>
+				  <thead class="thead-dark">
+				    <tr>
+				      <th scope='col' class='text-center'>No</th>
+				      <th scope='col'>Payment Type</th>
+				      <th scope='col' class='text-right'>Income</th>
+				      <th scope='col' class='text-right'>Deduct</th>
+				      <th scope='col' class='text-right'>Comp.Pay</th>
+				      <th scope='col' class='text-right'>%</th>
+				      <th scope='col' class='text-center'>Days</th>
+				      <th scope='col' class='text-center'>Hours</th>
+				      <th scope='col' class='text-center'>Paid Date</th>
+				      <th scope='col' class='text-center'>Paid Status</th>
+				    </tr>
+				  </thead>
+				  <tbody>
+				    <tr>
+				      <td colspan="10" class="text-center">ข้อมูลค่าแรง</td>
+				    </tr>
+				  </tbody>
+				</table>
+			</div>
+
+
+
+          </div>
+
+
+
+
 		        <div class="tab-content" id="custom-tabs-one-tabContent">                  
 					<div class="tab-pane fade show active" id="custom-tabs-one-home" role="tabpanel" aria-labelledby="custom-tabs-one-home-tab">
+						
 						<div class="col-12 float-left" style="padding: 0 0 0 0 !important;">
 
-							<div id="employee_info" class="table-responsive">						
-								<table id="employee_info_table" name="employee_info_table" class='table table-sm'>		
+							
+							<!--
+							<div id="employee_info" class="table-responsive p-0">						
+								<table id="employee_info_table" name="employee_info_table" class='table table-striped table-hover table-sm p-0'>
 									<thead class="thead-dark">
 										<tr>
 											<th scope='col'>ID</th>
@@ -147,15 +237,16 @@ thead th { white-space: nowrap; }
 											<th scope='col'>STATUS</th>
 										</tr>
 									</thead>
-									<tbody>
+									<tbody style="background-color: #b0ccbf; color: #000;">
 										<tr>
 											<td colspan="8" class="text-center">ข้อมูลพนักงาน</td>
 										</tr>
 									</tbody>
 								</table>
 							</div>
+							-->
 
-
+							<!--
 							<div id="employee_paysum" class="table-responsive">
 								<table id="employee_paysum_table" class='table table-striped table-hover table-sm table-bordered'>
 								  <thead class="thead-dark">
@@ -179,8 +270,40 @@ thead th { white-space: nowrap; }
 								  </tbody>
 								</table>
 							</div>
+							-->
+						</div>
+
+						<div class="col-12 float-left" style="padding: 0; margin: 0;">
+
+							# Summary       
+					        <div id="eps_paid_stat_text"></div>
+					        
+					        # Gross Income
+					        <div id="eps_prd_in"></div>
+
+					        # Net Income
+					        <div id="eps_prd_net"></div>
+
+					        # YTD Income
+					        <div id="eps_ysm_in"></div>
+
+					        # YTD Prov.Func
+					        <div id="eps_ysm_prv"></div>
+
+					        # Total Deduct
+					        <div id="eps_prd_de"></div>
+
+					        # Tax
+					      	<div id="eps_prd_tax"></div>
+
+					        # YTD Tax
+					        <div id="eps_ysm_tax"></div>
+
+					        # YTD Social Security
+					        <div id="eps_ysm_soc"></div>
 
 						</div>
+
 					</div>
 				</div>
 			  </div>
@@ -278,6 +401,14 @@ function checkpaysum() {
 				emp_join_date = data.emp_join_date;
 				emp_term_date = data.emp_term_date;
 
+				$("#id_emp_id_display").text(emp_id);
+                $("#id_emp_full_name").text(emp_full_name);
+                $("#id_type_rank").text(emp_rank);
+                $("#id_zone").text(emp_dept + " - " + dept_en_short);
+                $("#id_emp_status").text(emp_status);
+                $("#id_join_date").text(emp_join_date);
+                $("#id_terminate_date").text(emp_term_date);
+
 				result = "";
 				result += "    <tr>";
 				result += "      <td>" + emp_id + "</td>";
@@ -294,7 +425,7 @@ function checkpaysum() {
 				result += "      <td>" + emp_status + "</td>";
 				result += "    </tr>";
 
-				$("#employee_info_table tbody").html(result);
+				//$("#employee_info_table tbody").html(result);
 
 				// PAYSUM
 				if(data.employee_paysum_list.length>0) {
@@ -302,6 +433,7 @@ function checkpaysum() {
 					row_count = 1;
 					for(i=0; i<data.employee_paysum_list.length; i++) {
 						
+						// TABLE
 						payment_type = data.employee_paysum_list[i]["payment_type"];
 						eps_inde = data.employee_paysum_list[i]["eps_inde"];
 						income_or_deduct = data.employee_paysum_list[i]["income_or_deduct"];
@@ -310,6 +442,17 @@ function checkpaysum() {
 						eps_wrk_day = data.employee_paysum_list[i]["eps_wrk_day"];
 						eps_wrk_hr = data.employee_paysum_list[i]["eps_wrk_hr"];
 						eps_paid_stat = data.employee_paysum_list[i]["eps_paid_stat"];
+
+						// SUMMARY
+                        eps_paid_stat_text = data.employee_paysum_list[i]["eps_paid_stat_text"];                        
+                        eps_prd_in = data.employee_paysum_list[i]["eps_prd_in"];
+                        eps_prd_net = data.employee_paysum_list[i]["eps_prd_net"];
+                        eps_ysm_in = data.employee_paysum_list[i]["eps_ysm_in"];
+                        eps_ysm_prv = data.employee_paysum_list[i]["eps_ysm_prv"];
+                        eps_prd_de = data.employee_paysum_list[i]["eps_prd_de"];
+                        eps_prd_tax = data.employee_paysum_list[i]["eps_prd_tax"];
+                        eps_ysm_tax = data.employee_paysum_list[i]["eps_ysm_tax"];
+                        eps_ysm_soc = data.employee_paysum_list[i]["eps_ysm_soc"];
 
 						result += "<tr>";						
 						result += "<td class='text-center'>" + row_count + "</td>";
@@ -339,6 +482,33 @@ function checkpaysum() {
 						result += "</tr>";
 						row_count++;
 					}
+
+					// Paid Status
+			        $("#eps_paid_stat_text").text(data.eps_paid_stat_text);
+			        
+			        // Gross Income
+			        $("#eps_prd_in").text(data.eps_prd_in);
+
+			        // Net Income
+			        $("#eps_prd_net").text(data.eps_prd_net);
+
+			        // YTD Income
+			        $("#eps_ysm_in").text(data.eps_ysm_in);
+
+			        // YTD Prov.Func
+			        $("#eps_ysm_prv").text(data.eps_ysm_prv);
+
+			        // Total Deduct
+			        $("#eps_prd_de").text(data.eps_prd_de);
+
+			        //Tax
+			      	$("#eps_prd_tax").text(data.eps_prd_tax);
+
+			        //YTD Tax
+			        $("#eps_ysm_tax").text(data.eps_ysm_tax);
+
+			        // YTD Social Security
+			        $("#eps_ysm_soc").text(data.eps_ysm_soc);
 					
 				} else {
 					result = "<tr><td colspan='10' class='text-center'>ยังไม่มีข้อมูลค่าแรงในระบบ</td></tr>";
