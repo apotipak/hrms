@@ -1275,7 +1275,7 @@ def AjaxValidatePSNSlipD1Period(request):
 
     sql = "select a.*,b.dept_en,c.sts_en from employee as a left join com_department as b on a.emp_dept=b.dept_id "
     sql += "left join t_empsts as c on a.emp_status=c.sts_id where a.emp_id=" + str(emp_id) + " and a.emp_type='D1';"
-    print(sql)
+    print("--SQL-- ", sql)
 
     employee_info = None
     employee_paysum_list = []
@@ -1352,15 +1352,8 @@ def AjaxValidatePSNSlipD1Period(request):
         else:
             dept_en_short = dept_en
 
-        emp_join_date = employee_info[39].strftime("%d/%m/%Y")
-        emp_term_date = employee_info[40].strftime("%d/%m/%Y")
-
-        if emp_term_date is not None:
-            # emp_term_date.strftime("%d/%m/%Y")
-            print("")
-        else:
-            emp_term_date = ""
-
+        emp_join_date = "" if employee_info[39] is None else employee_info[39].strftime("%d/%m/%Y")
+        emp_term_date = "" if employee_info[40] is None else employee_info[40].strftime("%d/%m/%Y")
 
         # Get PAYSUM
         sql = "SELECT  a.*,b.pay_th FROM HIS_PAY_SUM as A left join t_paytype as B on a.eps_pay_type=b.pay_type "
