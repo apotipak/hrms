@@ -136,8 +136,8 @@ thead th { white-space: nowrap; }
 		              <div class="widget-user-header" style="background-color: #b0ccbf; color: #000; padding: 0;">
 		              	<span style="font-size: 14px;">
 		                <ul class="nav flex-column p-0">
-		                  <li class="nav-item p-2">
-		                  	<h6><b><span id="id_emp_full_name" class="float-left">Employee</span></b></h6>
+		                  <li class="nav-item p-1">
+		                  	<h6><b><span id="id_emp_full_name" class="float-left">ข้อมูลพนักงาน</span></b></h6>
 		                  </li>
 		                  <li class="nav-item p-1">  
 		                  	<b>รหัส</b><span id="id_emp_id_display" class="float-right"></span>
@@ -192,48 +192,117 @@ thead th { white-space: nowrap; }
 						</table>
 						</span>
 					</div>
-
-
-
-          </div>
-
-
+				</div>
 
 
 		        <div class="tab-content" id="custom-tabs-one-tabContent">                  
 					<div class="tab-pane fade show active" id="custom-tabs-one-home" role="tabpanel" aria-labelledby="custom-tabs-one-home-tab">
-						<!--
-						<div class="col-12 float-left" style="padding: 0; margin: 0;">
 
-							# Summary       
-					        <div id="eps_paid_stat_text"></div>
-					        
-					        # Gross Income
-					        <div id="eps_prd_in"></div>
 
-					        # Net Income
-					        <div id="eps_prd_net"></div>
 
-					        # YTD Income
-					        <div id="eps_ysm_in"></div>
+						<div class="card daily-attendance border border-secondary col-12" style="background-color: #dde0e2;">														
+						  <div class="card-header" style="padding: 0 0 0 0 !important;">						    
+						    <div class="col-12 float-left">
 
-					        # YTD Prov.Func
-					        <div id="eps_ysm_prv"></div>
 
-					        # Total Deduct
-					        <div id="eps_prd_de"></div>
+						    	<span style="font-size: 13px;">
 
-					        # Tax
-					      	<div id="eps_prd_tax"></div>
+									<div class="col-12 float-left" style="padding: 0; margin: 0;">
 
-					        # YTD Tax
-					        <div id="eps_ysm_tax"></div>
+										<!--# Summary       
+								        <div id="eps_paid_stat_text"></div>
+										-->
 
-					        # YTD Social Security
-					        <div id="eps_ysm_soc"></div>
+									  	<div class="col-6 float-left">   
+											<div class="input-group">
+												<span style="padding:3px 0 0 0; width: 200px;"><b>Gross Income (เงินได้ก่อนหักภาษี)</b></span>
+									  			<input type="text" id="id_eps_paid_stat_text" name="eps_paid_stat_text" class="form-control form-control-xs text-right" readonly />
+											</div>	
+									  	</div>
 
+									  	<div class="col-6 float-right">   
+											<div class="input-group">
+												<span style="padding:3px 0 0 0; width: 200px;"><b>Total Deduct (เงินหักรวม)</b></span>
+									  			<input type="text" id="id_eps_prd_de" name="eps_prd_de" class="form-control form-control-xs text-right" readonly />
+											</div>	
+									  	</div>
+
+									  	<div class="col-6 float-left">   
+											<div class="input-group">
+												<span style="padding:3px 0 0 0; width: 200px;"><b>Net Income (เงินได้สุทธิ)</b></span>
+									  			<input type="text" id="id_eps_prd_net" name="eps_prd_net" class="form-control form-control-xs text-right" readonly />
+											</div>	
+									  	</div>
+
+									  	<div class="col-6 float-right">   
+											<div class="input-group">
+												<span style="padding:3px 0 0 0; width: 200px;"><b>Tax (ภาษี)</b></span>
+									  			<input type="text" id="id_eps_prd_tax" name="eps_prd_tax" class="form-control form-control-xs text-right" readonly />
+											</div>	
+									  	</div>
+
+										<div class="row">--</div>
+
+
+									  	<div class="col-6 float-left">   
+											<div class="input-group">
+												<span style="padding:3px 0 0 0; width: 200px;"><b>YTD Income (เงินได้นสะสม)</b></span>
+									  			<input type="text" id="id_eps_ysm_in" name="eps_ysm_in" class="form-control form-control-xs text-right" readonly />
+											</div>	
+									  	</div>
+
+									  	<div class="col-6 float-right">   
+											<div class="input-group">
+												<span style="padding:3px 0 0 0; width: 200px;"><b>YTD Tax (ภาษีสะสม)</b></span>
+									  			<input type="text" id="id_eps_ysm_tax" name="eps_ysm_tax" class="form-control form-control-xs text-right" readonly />
+											</div>	
+									  	</div>
+
+									  	<div class="col-6 float-left">   
+											<div class="input-group">
+												<span style="padding:3px 0 0 0; width: 200px;"><b>YTD Prov.Fund (เงินสะสม)</b></span>
+									  			<input type="text" id="id_eps_ysm_prv" name="eps_ysm_prv" class="form-control form-control-xs text-right" readonly />
+											</div>	
+									  	</div>
+
+									  	<div class="col-6 float-right">   
+											<div class="input-group">
+												<span style="padding:3px 0 0 0; width: 200px;"><b>YTD Social Security (ประกันสังคม)</b></span>
+									  			<input type="text" id="id_eps_ysm_soc" name="eps_ysm_soc" class="form-control form-control-xs text-right" readonly />
+											</div>	
+									  	</div>
+
+
+								        <!-- ironman -->
+								        <!--
+								        # Net Income
+								        <div id="eps_prd_net"></div>
+
+								        # YTD Income
+								        <div id="eps_ysm_in"></div>
+
+								        # YTD Prov.Func
+								        <div id="eps_ysm_prv"></div>
+
+								        # Total Deduct
+								        <div id="eps_prd_de"></div>
+
+								        # Tax
+								      	<div id="eps_prd_tax"></div>
+
+								        # YTD Tax
+								        <div id="eps_ysm_tax"></div>
+
+								        # YTD Social Security
+								        <div id="eps_ysm_soc"></div>
+										-->
+									</div>
+								</span>
+
+
+						    </div>
+						  </div>
 						</div>
-						-->
 
 
 						<!--
@@ -472,28 +541,36 @@ function checkpaysum() {
 			        $("#eps_paid_stat_text").text(data.eps_paid_stat_text);
 			        
 			        // Gross Income
-			        $("#eps_prd_in").text(data.eps_prd_in);
+			        // $("#eps_prd_in").text(data.eps_prd_in);
+			        $("#id_eps_paid_stat_text").val(data.eps_prd_in);
 
 			        // Net Income
-			        $("#eps_prd_net").text(data.eps_prd_net);
+			        //$("#eps_prd_net").text(data.eps_prd_net);
+			        $("#id_eps_prd_net").val(data.eps_prd_net);
 
 			        // YTD Income
-			        $("#eps_ysm_in").text(data.eps_ysm_in);
+			        //$("#eps_ysm_in").text(data.eps_ysm_in);
+			        $("#id_eps_ysm_in").val(data.eps_ysm_in);
 
 			        // YTD Prov.Func
-			        $("#eps_ysm_prv").text(data.eps_ysm_prv);
+			        //$("#eps_ysm_prv").text(data.eps_ysm_prv);
+			        $("#id_eps_ysm_prv").val(data.eps_ysm_prv);
 
 			        // Total Deduct
-			        $("#eps_prd_de").text(data.eps_prd_de);
+			        //$("#eps_prd_de").text(data.eps_prd_de);
+			        $("#id_eps_prd_de").val(data.eps_prd_de);
 
 			        //Tax
-			      	$("#eps_prd_tax").text(data.eps_prd_tax);
+			      	//$("#eps_prd_tax").text(data.eps_prd_tax);
+			      	$("#id_eps_prd_tax").val(data.eps_prd_tax);
 
 			        //YTD Tax
-			        $("#eps_ysm_tax").text(data.eps_ysm_tax);
+			        //$("#eps_ysm_tax").text(data.eps_ysm_tax);
+			        $("#id_eps_ysm_tax").val(data.eps_ysm_tax);
 
 			        // YTD Social Security
-			        $("#eps_ysm_soc").text(data.eps_ysm_soc);
+			        //$("#eps_ysm_soc").text(data.eps_ysm_soc);
+			        $("#id_eps_ysm_soc").val(data.eps_ysm_soc);
 					
 				} else {
 					result = "<tr><td colspan='10' class='text-center'>ยังไม่มีข้อมูลค่าแรงในระบบ</td></tr>";
@@ -531,13 +608,39 @@ $("#cancelPSNSlipD1Button").click( function() {
 	$("#id_emp_id").val("");
 	$("#id_period_option").val("");
 
-	$("#id_emp_full_name").text("Employee");
+	$("#id_emp_full_name").text("ข้อมูลพนักงาน");
 	$("#id_emp_id_display").text("");
     $("#id_type_rank").text("");
     $("#id_zone").text("");
     $("#id_emp_status").text("");
     $("#id_join_date").text("");
     $("#id_terminate_date").text("");
+
+    $("#eps_paid_stat_text").text("");
+    
+    // Gross Income
+    $("#id_eps_paid_stat_text").val("");
+
+    // Net Income
+    $("#id_eps_prd_net").val("");
+
+    // YTD Income
+    $("#id_eps_ysm_in").val("");
+
+    // YTD Prov.Func
+    $("#id_eps_ysm_prv").val("");
+
+    // Total Deduct
+    $("#id_eps_prd_de").val("");
+
+    //Tax
+  	$("#io_eps_prd_tax").val("");
+
+    //YTD Tax
+    $("#id_eps_ysm_tax").val("");
+
+    // YTD Social Security
+    $("#id_eps_ysm_soc").val("");
 
 	$("#employee_info_table tbody").html("<tr><td colspan='8' class='text-center'>ข้อมูลพนักงาน</td></tr>");
 	$("#employee_paysum_table tbody").html("<tr><td colspan='10' class='text-center'>ข้อมูลค่าแรง</td></tr>");	
