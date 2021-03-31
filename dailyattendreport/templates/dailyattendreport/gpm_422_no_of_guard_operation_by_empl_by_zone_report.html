@@ -18,7 +18,7 @@
 
 
       <div class="card-header" style="padding: 0 2px 10px 0;">
-        <h5 class="card-title"><i class="far fa-list-alt"></i>&nbsp;<b>No. of Guard Operation by Empl by Zone</b>&nbsp;&nbsp;<small>รายงานจำนวน รปภ.เรียงตามรหัสและโซน</small></h5>
+        <h5 class="card-title"><i class="far fa-list-alt"></i>&nbsp;<b>GPM 422 No. of Guard Operation by Empl by Zone</b>&nbsp;&nbsp;<small>รายงานจำนวน รปภ.เรียงตามรหัสและโซน</small></h5>
         <br>
         <div class="float-right pb-1">
           <div class="d-flex flex-row-reverse">
@@ -48,9 +48,9 @@
 
                 <select id="id_dept_zone_option" class="form-control form-control-md" style="border-radius: 0; width: 100px;">
                   <!--<option value="">---------</option>-->
-                  <option value="0" selected="">All Departments</option>
+                  <!-- <option value="0" selected="">All Departments</option>-->
                   {% for item in dept_zone_obj %}
-                  <option value="{{item.0}}">{{ item.1 }}</option>
+                  <option value="{{item.0}}">{{item.0}} | {{ item.1 }}</option>
                   {% endfor %}
                 </select>
                 &nbsp;&nbsp;           

@@ -47,12 +47,16 @@ def AjaxGPM422NoOfGuardOperationByEmplByZoneReport(request, *args, **kwargs):
 
     # TODO
     sql = "SELECT emp_id,emp_fname_th,emp_lname_th,sch_rank,cnt_id,cus_name_th,dept_id,dept_en "
-    sql += "FROM V_DLYPLAN "
+    sql += "FROM V_HDLYPLAN "
     sql += "WHERE DLY_DATE='" + str(work_date) + "' and absent=0 "
     if (int(dept_zone) > 0):
-        sql += "and dept_id=" + str(dept_zone) + ";"
+        sql += "and dept_id=" + str(dept_zone) + " "
+    else:
+        sql += "and dept_id=9999 "
 
-    print("SQL: ", sql)
+    sql += "order by emp_id;"
+    #print("SQL: ", sql)
+    
     try:                
         cursor = connection.cursor()
         cursor.execute(sql)
@@ -97,10 +101,10 @@ def AjaxGPM422NoOfGuardOperationByEmplByZoneReport(request, *args, **kwargs):
                 row = table.add_row().cells
                 row[0].text = "No."                
                 row[1].text = "EMP ID"
-                row[2].text = "Name"
-                row[3].text = "Rank"
-                row[4].text = "Cnt.ID"
-                row[5].text = "Site Name"
+                row[2].text = "NAME"
+                row[3].text = "RANK"
+                row[4].text = "CNT ID"
+                row[5].text = "SITE NAME"
 
                 row[0].width = Cm(0.5)
                 row[1].width = Cm(2)
