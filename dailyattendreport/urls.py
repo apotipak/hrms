@@ -24,5 +24,4 @@ urlpatterns = [
 
     # PSN Slip - D1
     path('psn-slip-d1/', views.PSNSlipD1Report, name='psn-slip-d1-report'),
-
 ]

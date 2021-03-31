@@ -49,16 +49,18 @@
             </ul>
             {% endif %}
 
+
+
+            <!-- PAYROLL -->
             {% if perms.dailyattendreport.can_access_psn_slip_d1_report %}
             <a href="#" class="nav-link">
               <i class="fas fa-chart-pie"></i>&nbsp;&nbsp;&nbsp;<p><b>Payroll Reports</b><i class="right fas fa-angle-left"></i></p>
-            </a>
-            <!-- PAYROLL -->
+            </a>            
             <ul class="nav nav-treeview p-0">
 
               {% if perms.dailyattendreport.can_access_psn_slip_d1_report %}
               <li class="nav-item p-0">
-                <a href="/reports/cms/gpm403-daily-guard-performance-by-contract/" class="nav-link"><p>PSN Slip - D1</p></a>
+                <a href="/reports/cms/psn-slip-d1/" class="nav-link"><p>PSN Slip for D1</p></a>
               </li>
               {% endif %}
 

@@ -1151,23 +1151,57 @@ def PSNSlipD1Report(request):
     project_version = settings.PROJECT_VERSION  
     
     today_date = settings.TODAY_DATE.strftime("%d/%m/%Y")
-    work_date = request.POST.get('work_date')
-    dept_zone = request.POST.get('dept_zone')
+    
+    employee_type_option = request.POST.get('employee_type_option')
+    period_option = request.POST.get('period_option')
 
-    work_date = today_date if work_date is None else datetime.datetime.strptime(work_date, "%d/%m/%Y").date()    
+    employee_type_list = None
+    period_list = None
 
+
+    # Load Employee Type
+    sql = "select com_type, type_des from com_type where com_type='D1';"
+    try:
+        cursor = connection.cursor()
+        cursor.execute(sql)
+        employee_type_list = cursor.fetchall()
+    finally:
+        cursor.close()
+
+    # Load Period
+    sql = "select * from t_period where emp_type='D1' and (prd_process=1) order by prd_id desc;"
+    try:
+        cursor = connection.cursor()
+        cursor.execute(sql)
+        period_list = cursor.fetchall()
+    finally:
+        cursor.close()
+
+    '''
+    if period_list is not None:
+        if len(period_list)>0:
+            prd_id = period_list[0][0]
+            prd_year = period_list[0][1]
+            prd_month = period_list[0][2]
+            prd_date_frm = period_list[0][6]
+            prd_date_to = period_list[0][7]
+            prd_date_paid = period_list[0][8]
+    '''
+    
     return render(request, 'dailyattendreport/psn_slip_d1_report.html',
         {
         'page_title': page_title, 
-        'project_name': project_name, 
+        'project_name': project_name,
         'project_version': project_version,
         'db_server': db_server, 
         'today_date': today_date,
-        'work_date': work_date,
-        'dept_zone': dept_zone,
         'database': settings.DATABASES['default']['NAME'],
         'host': settings.DATABASES['default']['HOST'],
         'is_error': False,
+        'employee_type_option': employee_type_option,
+        'period_option': period_option,
+        'employee_type_list': employee_type_list,
+        'period_list': period_list,
         })
 
 
