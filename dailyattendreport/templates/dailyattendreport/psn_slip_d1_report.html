@@ -90,7 +90,7 @@ thead th { white-space: nowrap; }
               <div class="input-group col-8 offset-2">
 
                
-                <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:130px;">Employee Type</span></div>
+                <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:130px;"><b>Employee Type</b></span></div>
                 
                 <select id="id_employee_type_option" name="employee_type_option" class="form-control form-control-md" style="border-radius: 0; width: 100px;" disabled="">
                   {% for item in employee_type_list %}
@@ -98,7 +98,7 @@ thead th { white-space: nowrap; }
                   {% endfor %}
                 </select>
 
-                <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:70px;">Period</span></div>
+                <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:70px;"><b>Period</b></span></div>
                 <select id="id_period_option" name="period_option" class="form-control form-control-md" style="border-radius: 0; width: 100px;">
                 	<option value="">---------</option>
                   	{% for item in period_list %}
@@ -106,7 +106,7 @@ thead th { white-space: nowrap; }
                   	{% endfor %}
                 </select>
                 &nbsp;&nbsp;
-                <button id="searhPSNSlipD1Button" name="searhPSNSlipD1Button" type="button" class="btn btn-sm btn-info pull-right"><!--<i class="fas fa-search fa-sm"></i>-->&nbsp;&nbsp;Search&nbsp;&nbsp;</button>
+                <button id="searchPSNSlipD1Button" name="searchPSNSlipD1Button" type="button" class="btn btn-sm btn-info pull-right"><!--<i class="fas fa-search fa-sm"></i>-->&nbsp;&nbsp;Search&nbsp;&nbsp;</button>
 
               </div>
 
@@ -143,15 +143,17 @@ function showLoading() {
 }
 
 
-$("#searhPSNSlipD1Button").click( function() {
+$("#searchPSNSlipD1Button").click( function() {
 	event.preventDefault();
 
 	emp_type = $("#id_employee_type_option").val();
-	alert(emp_type);
+	period_option = $("#id_period_option").val();
+
+	alert(emp_type + " | " + period_option);
 });
 
-$(document).ready(function () {    
-	$('#id_work_date').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", new Date());
+$(document).ready(function () {  
+	//$('#id_work_date').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", new Date());
 });
 
 
