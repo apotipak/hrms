@@ -153,6 +153,7 @@ thead th { white-space: nowrap; }
 									</tbody>
 								</table>
 							</div>
+
 							<div id="employee_paysum" class="table-responsive">
 								<table id="employee_paysum_table" class='table table-striped table-hover table-sm'>
 								  <thead class="thead-dark">
@@ -171,16 +172,7 @@ thead th { white-space: nowrap; }
 								  </thead>
 								  <tbody>
 								    <tr>
-								      <td>&nbsp;</td>
-								      <td>&nbsp;</td>
-								      <td>&nbsp;</td>
-								      <td>&nbsp;</td>
-								      <td>&nbsp;</td>
-								      <td>&nbsp;</td>
-								      <td>&nbsp;</td>
-								      <td>&nbsp;</td>
-								      <td>&nbsp;</td>
-								      <td>&nbsp;</td>
+								      <td colspan="10" class="text-center">ข้อมูลค่าแรง</td>
 								    </tr>
 								  </tbody>
 								</table>
@@ -283,23 +275,7 @@ function checkpaysum() {
 				emp_join_date = data.emp_join_date;
 				emp_term_date = data.emp_term_date;
 
-				result = "<div class='table-responsive'>";
-				result += "<table id='employee_info_table' class='table table-sm table-primary'>";
-				
-				result += "  <thead>";
-				result += "    <tr>";
-				result += "      <th scope='col'>ID</th>";
-				result += "      <th scope='col'>FULL NAME</th>";
-				result += "      <th scope='col'>RANK</th>";
-				result += "      <th scope='col'>DEPT</th>";
-				result += "      <th scope='col'>TYPE</th>";
-				result += "      <th scope='col'>JOINED DATE</th>";
-				result += "      <th scope='col'>TERMINATED DATE</th>";
-				result += "      <th scope='col'>STATUS</th>";
-				result += "    </tr>";
-				result += "  </thead>";
-				
-				result += "  <tbody>";				
+				result = "";
 				result += "    <tr>";
 				result += "      <td>" + emp_id + "</td>";
 				result += "      <td>" + emp_full_name + "</td>";
@@ -314,14 +290,13 @@ function checkpaysum() {
 
 				result += "      <td>" + emp_status + "</td>";
 				result += "    </tr>";
-				result += "  </tbody>";
-				result += "</table>";
-				result += "</div>";				
 
-				$("#employee_info").html(result);
+				$("#employee_info_table tbody").html(result);
 
 				// PAYSUM
-				$("#employee_paysum").html("");
+				
+				result = "<tr><td colspan='10' class='text-center'>ข้อมูลค่าแรง</td></tr>";
+				$("#employee_paysum_table tbody").html(result);
 
 
 			}
@@ -340,7 +315,6 @@ function showLoading() {
 	$.LoadingOverlay("show"); 
 }
 
-
 // ID_EMP_ID
 $(document).on('keypress', '#id_emp_id', function(e) {
 	if(e.which == 13) {              
@@ -349,32 +323,17 @@ $(document).on('keypress', '#id_emp_id', function(e) {
     } 
 });
 
-
 $("#cancelPSNSlipD1Button").click( function() {
 	event.preventDefault();
 
 	$("#id_emp_id").val("");
-	//$("#employee_info").html("<b>Employee Information</b>");
-	//$("#employee_info_table tbody").html("Employee Information");
 	$("#employee_info_table tbody").html("<tr><td colspan='8' class='text-center'>Employee Information</td></tr>");
 	$("#id_period_option").val("");
-
 
 });
 
 function print_document() {
-	//alert("TODO");
-	//return false;
-
 	checkpaysum();
-
-	/*
-	var work_date = $("#id_work_date").val();
-	var dept_zone = $("#id_dept_zone_option").val();
-
-	var href = "/reports/cms/ajax-gpm-422-no-of-guard-operation-by-empl-by-zone/" + work_date + "/" + dept_zone + "/";
-	window.open(href,'_blank');
-	*/
 }
    
 </script>
