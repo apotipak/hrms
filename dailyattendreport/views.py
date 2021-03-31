@@ -1363,10 +1363,43 @@ def AjaxValidatePSNSlipD1Period(request):
                     eps_pay_type = item[2]
                     pay_th = item[37]
                     payment_type = str(eps_pay_type) + " " + str(pay_th)
+                    income_or_deduct = item[7]
+                    eps_inde = item[4]                    
+                    
+                    if (item[9] is not None):
+                        eps_comp = item[9]
+                    else:
+                        eps_comp = ""
+
+                    if (item[10] is not None):
+                        eps_percent = item[10]
+                    else:
+                        eps_percent = ""
+
+                    eps_wrk_day = item[12]
+                    if (item[12] is not None):
+                        eps_wrk_day = item[12]
+                    else:
+                        eps_wrk_day = ""
+
+                    eps_wrk_hr = item[13]
+                    if (item[13] is not None):
+                        eps_wrk_hr = item[13]
+                    else:
+                        eps_wrk_hr = ""
+
+                    eps_paid_stat = item[31]
 
                     record = {
                         "eps_emp_id": eps_emp_id,
                         "payment_type": payment_type,
+                        "eps_inde": eps_inde,
+                        "income_or_deduct": income_or_deduct,
+                        "eps_comp": eps_comp,
+                        "eps_percent": eps_percent,
+                        "eps_wrk_day": eps_wrk_day,
+                        "eps_wrk_hr": eps_wrk_hr,
+                        "eps_paid_stat": eps_paid_stat,
                     }
 
                     employee_paysum_list.append(record)        
