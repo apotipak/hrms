@@ -1247,79 +1247,104 @@ def GPM422NoOfGuardOperationByEmplByZoneReport(request):
 
 @permission_required('dailyattendreport.can_access_psn_slip_d1_report', login_url='/accounts/login/')
 def AjaxValidatePSNSlipD1Period(request):
-    page_title = settings.PROJECT_NAME
-    db_server = settings.DATABASES['default']['HOST']
-    project_name = settings.PROJECT_NAME
-    project_version = settings.PROJECT_VERSION  
+
+    emp_type = request.POST.get('emp_type')
+    period_option = request.POST.get('period_option')
+    emp_id = request.POST.get('emp_id')    
     
-    today_date = settings.TODAY_DATE.strftime("%d/%m/%Y")
-    contract_number_from = request.POST.get('contract_number_from')
-    contract_number_to = request.POST.get('contract_number_to')
-    start_date = request.POST.get('start_date')
-    end_date = request.POST.get('end_date')
+    print(emp_type, period_option, emp_id)
 
-    contract_number_from = 0 if contract_number_from is None else contract_number_from
-    contract_number_to = 9999999999 if contract_number_to is None else contract_number_to
-    start_date = today_date if start_date is None else datetime.datetime.strptime(start_date, "%d/%m/%Y").date()
-    end_date = today_date if end_date is None else datetime.datetime.strptime(end_date, "%d/%m/%Y").date()
+    if (emp_type=='' or emp_id=='' or period_option==''):
+        response = JsonResponse(data={        
+            "is_error": True,
+            "error_message": "Please check your input data.",
+        })
+        response.status_code = 200
+        return response
 
-    sql = "select emp_fname_th, emp_lname_th, shf_desc, dept_en, cnt_id, "
-    sql += "emp_id, dly_date, sch_shift, dept_id, sch_rank, "
-    sql += "absent, relieft_id, tel_man, tel_paid, ot, "
-    sql += "ot_hr_amt, cus_name_th, late, late_full "
-    sql += "FROM V_HDLYPLAN "
-    sql += "WHERE absent = 0 AND (sch_shift <> 99 OR sch_shift <> 999) "
-    sql += "and (cnt_id>=" + str(contract_number_from) + " and cnt_id<=" + str(contract_number_to) + ") "
-    sql += "and (dly_date>='" + str(start_date) + "' and dly_date<='" + str(end_date) + "') "
-    sql += "ORDER BY cnt_id ASC, dly_date ASC, shf_desc ASC, emp_id ASC"
+    if (emp_type != 'D1'):
+        response = JsonResponse(data={        
+            "is_error": True,
+            "error_message": "You have not authorized to do this. This will be reported to IT.",
+        })
+        response.status_code = 200
+        return response
+
+    sql = "select a.*,b.dept_en,c.sts_en from employee as a left join com_department as b on a.emp_dept=b.dept_id "
+    sql += "left join t_empsts as c on a.emp_status=c.sts_id where a.emp_id=" + str(emp_id) + " and a.emp_type='D1';"
     print(sql)
-    
-    dly_plan_obj = None
-    record = {}
-    dly_plan_list = []
-    error_message = ""
+
+    employee_info = None
 
     try:                
         cursor = connection.cursor()
         cursor.execute(sql)
-        dly_plan_obj = cursor.fetchall()        
+        employee_info = cursor.fetchone()
     except db.OperationalError as e:
+        is_error = True
         error_message = "<b>Error: please send this error to IT team</b><br>" + str(e)
     except db.Error as e:
+        is_error = True
         error_message = "<b>Error: please send this error to IT team</b><br>" + str(e)
     finally:
         cursor.close()
 
-    if dly_plan_obj is not None:
-        if len(dly_plan_obj)>0:           
-            for item in dly_plan_obj:             
-                record = {
-                    "emp_fname_th": item[0],
-                    "emp_lname_th": item[1],
-                    "shf_desc": item[2],
-                    "dept_en": item[3],
-                    "cnt_id": item[4],
-                    "emp_id": item[5],
-                    "dly_date": item[6].strftime("%d/%m/%Y"),
-                    "sch_shift": item[7],
-                    "dept_id": item[8],
-                    "sch_rank": item[9],
-                    "absent": item[10],
-                    "relieft_id": item[11],
-                    "tel_man": item[12],
-                    "tel_paid": item[13],
-                    "ot": item[14],
-                    "ot_hr_amt": item[15],
-                    "cus_name_th": item[16],
-                    "late": item[17],
-                    "late_full": item[18],
-                }
-                dly_plan_list.append(record)
+    if employee_info is not None:
+        is_error = False
+        error_message = ""
 
-    response = JsonResponse(data={        
-        "is_error": False,
+        emp_id = employee_info[0]
+        emp_full_name = str(employee_info[4]) + " " + str(employee_info[5])
+        emp_rank = employee_info[31]
+        emp_status = employee_info[69]
+        emp_dept = employee_info[28]
+        dept_en = employee_info[68]
+        if (dept_en.find('SP-Zone') != -1):
+            dept_en_short = dept_en.replace("SP-Zone", "").lstrip()[0]
+        elif (dept_en.find('ZONE H BPI') != -1):
+            dept_en_short = "H"
+        elif (dept_en.find('ZONE Control') != -1):
+            dept_en_short = "CR"
+        elif (dept_en.find('SP-Samui') != -1):
+            dept_en_short = "SM"
+        elif (dept_en.find('ZONE PHUKET') != -1):
+            dept_en_short = "P"
+        elif (dept_en.find('Zone Khon kean') != -1):
+            dept_en_short = "K"
+        elif (dept_en.find('BEM') != -1):
+            dept_en_short = "BEM"
+        elif (dept_en.find('ZONE I') != -1):
+            dept_en_short = "I"
+        elif (dept_en.find('ZONE R') != -1):
+            dept_en_short = "R"
+        elif (dept_en.find('Zone Songkhla') != -1):
+            dept_en_short = "SK"
+        else:
+            dept_en_short = "?"
+
+        emp_join_date = employee_info[39].strftime("%d/%m/%Y")
+        emp_term_date = employee_info[40]
+        if emp_term_date is not None:
+            emp_term_date.strftime("%d/%m/%Y")
+        else:
+            emp_term_date = ""
+
+    else:
+        is_error = True
+        error_message = "ไม่พบข้อมูล"
+
+    response = JsonResponse(data={   
+        "is_error": is_error,
         "error_message": error_message,
-        "dly_plan_list": list(dly_plan_list),
+        "emp_id": emp_id,
+        "emp_full_name": emp_full_name,
+        "emp_rank": emp_rank,
+        "emp_status": emp_status,
+        "emp_dept": emp_dept,
+        "dept_en": dept_en,
+        "dept_en_short": dept_en_short,
+        "emp_join_date": emp_join_date,
+        "emp_term_date": emp_term_date        
     })
 
     response.status_code = 200

@@ -65,125 +65,79 @@ thead th { white-space: nowrap; }
     <section class="content">
 
 
-      <div class="card-header text-light" style="padding: 0 2px 10px 0;">
-        <h5 class="card-title"><i class="far fa-list-alt"></i>&nbsp;<b>PSN Slip for D1</b>&nbsp;&nbsp;<small>สลิปค่าแรง D1</small></h5>
-       
-        <div class="float-right pb-1">
-          <div class="d-flex flex-row-reverse">
-            <button class="btn btn-outline-info btn-sm" onclick="print_document()">&nbsp;<i class="fas fa-print"></i>&nbsp;&nbsp;Print</button>
-          </div>
-        </div>
-      </div>
+		<div class="card-header text-light" style="padding: 0 2px 10px 0;">
+			<h5 class="card-title"><i class="far fa-list-alt"></i>&nbsp;<b>PSN Slip for D1</b>&nbsp;&nbsp;<small>สลิปค่าแรง D1</small></h5>
+
+			<div class="float-right pb-1">
+			  <div class="d-flex flex-row-reverse">
+			    <button class="btn btn-outline-info btn-md" onclick="print_document()">&nbsp;<i class="fas fa-print"></i>&nbsp;&nbsp;Print</button>
+			  </div>
+			</div>
+		</div>
+
+
+		<div class="col-12 p-0 pt-2">
+
+			<form method="post" autocomplete="off" name="search_form">
+			  {% csrf_token %}
+			  
+			  <div class="card-body p-0">
+			    <div class="form-group">
+
+			      <div class="input-group col-12 p-0">
+
+			       
+			        <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:95px;"><b>Emp Type</b></span></div>                
+			        <select id="id_employee_type_option" name="employee_type_option" class="form-control form-control-md" style="border-radius: 0; width: 100px;" disabled="">
+			          {% for item in employee_type_list %}
+			          <option value="{{item.0}}">{{item.0}} | {{ item.1 }}</option>
+			          {% endfor %}
+			        </select>
+
+			        <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:70px;"><b>Period</b></span></div>
+			        <select id="id_period_option" name="period_option" class="form-control form-control-md" style="border-radius: 0; width: 100px;">
+			        	<option value="">---------</option>
+			          	{% for item in period_list %}
+			          	<option value="{{item.0}}"><b>{{item.0}} | {{item.1}}/{{item.2}} || Period: {{item.6|date:"j"}} - {{item.7|date:"j"}} Paid : {{item.8|date:"j"}}</option>
+			          	{% endfor %}
+			        </select>
+
+			        <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:75px;"><b>Emp ID</b></span></div>
+					<input type="number" min=3 maxlength=6 id="id_emp_id" name="emp_id" class="form-control" style="width:50px;" required="" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" value="">
+
+			        &nbsp;&nbsp;
+			        <!--<button id="searchPSNSlipD1Button" name="searchPSNSlipD1Button" type="button" class="btn btn-sm btn-info pull-right"><i class="fas fa-search fa-sm"></i>&nbsp;&nbsp;Search&nbsp;&nbsp;</button>-->
+			        <button id="cancelPSNSlipD1Button" name="cancelPSNSlipD1Button" type="button" class="btn btn-sm btn-warning pull-right">&nbsp;Cancel&nbsp;</button>
+			      </div>
+
+			    </div>
+			  </div>
+
+			</form>        
+
+		</div>
+		<!-- /.col -->
 
 
 
+		<!-- ./row -->
+		<div class="row">
+		  <div class="col-12">
+		    <div class="card card-tabs">
 
-
-      <div class="col-12 p-0 pt-2">
-
-        <form method="post" autocomplete="off" name="search_form">
-          {% csrf_token %}
-          
-          <div class="card-body p-0">
-            <div class="form-group">
-
-              <div class="input-group col-12 p-0">
-
-               
-                <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:95px;"><b>Emp Type</b></span></div>                
-                <select id="id_employee_type_option" name="employee_type_option" class="form-control form-control-md" style="border-radius: 0; width: 100px;" disabled="">
-                  {% for item in employee_type_list %}
-                  <option value="{{item.0}}">{{item.0}} | {{ item.1 }}</option>
-                  {% endfor %}
-                </select>
-
-                <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:70px;"><b>Period</b></span></div>
-                <select id="id_period_option" name="period_option" class="form-control form-control-md" style="border-radius: 0; width: 100px;">
-                	<option value="">---------</option>
-                  	{% for item in period_list %}
-                  	<option value="{{item.0}}"><b>{{item.0}} | {{item.1}}/{{item.2}} || Period: {{item.6|date:"j"}} - {{item.7|date:"j"}} Paid : {{item.8|date:"j"}}</option>
-                  	{% endfor %}
-                </select>
-
-                <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:75px;"><b>Emp ID</b></span></div>
-				<input type="number" min=3 maxlength=6 id="id_emp_id" name="emp_id" class="form-control" style="width:50px;" required="" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" value="">
-
-                &nbsp;&nbsp;
-                <!--<button id="searchPSNSlipD1Button" name="searchPSNSlipD1Button" type="button" class="btn btn-sm btn-info pull-right"><i class="fas fa-search fa-sm"></i>&nbsp;&nbsp;Search&nbsp;&nbsp;</button>-->
-                <button id="cancelPSNSlipD1Button" name="cancelPSNSlipD1Button" type="button" class="btn btn-sm btn-warning pull-right">&nbsp;Cancel&nbsp;</button>
-              </div>
-
-            </div>
-          </div>
-
-        </form>        
-
-      </div>
-      <!-- /.col -->
-
-
-
-    <!-- ./row -->
-    <div class="row">
-      <div class="col-12">
-        <div class="card card-tabs">
-
-          <div class="card-body text-dark" style="padding:5px !important; border-top: 5px solid #257638; border-right: 5px solid #257638; border-color: #257638; border-left: 5px solid #257638; border-bottom: 5px solid #257638; background-color: #e9ecef;">
-            <div class="tab-content" id="custom-tabs-one-tabContent">                  
-				<div class="tab-pane fade show active" id="custom-tabs-one-home" role="tabpanel" aria-labelledby="custom-tabs-one-home-tab">
-					<div class="col-10 float-left" style="padding: 0 5px 0 0 !important;">
-						&nbsp;
+		      <div class="text-dark" style="padding:5px !important; border-top: 5px solid #257638; border-right: 5px solid #257638; border-color: #257638; border-left: 5px solid #257638; border-bottom: 5px solid #257638; background-color: #e9ecef;">
+		        <div class="tab-content" id="custom-tabs-one-tabContent">                  
+					<div class="tab-pane fade show active" id="custom-tabs-one-home" role="tabpanel" aria-labelledby="custom-tabs-one-home-tab">
+						<div class="col-12 float-left" style="padding: 0 5px 0 0 !important;">
+							<div id="employee_info"><b>Employee Information</b></div>
+						</div>
 					</div>
 				</div>
-			</div>
+			  </div>
+						
+		    </div>
 		  </div>
-					
-
-
-		  <!--
-          <div style="padding:0px 0px 0px 0px !important; margin:0 0 0 0px !important;">
-
-            <ul class="nav nav-tabs navbar-expand nav-fill" id="custom-tabs-one-tab" role="tablist" style="padding:0 !important; margin: 0 0 0 0 !important;">
-              
-              <li class="nav-item" style="padding:0 !important; margin:0 0 0 0px !important; font-size: 20px;">
-                <a class="nav-link active" id="custom-tabs-one-home-tab" data-toggle="pill" href="#custom-tabs-one-home" role="tab" aria-controls="custom-tabs-one-home" aria-selected="true">Attendance Information</a>
-              </li>
-
-
-              <li class="nav-item" style="padding:0 0 0 0px !important; font-size: 20px;">
-                
-
-                <a class="nav-link" id="tab2-tab" data-toggle="pill" href="#custom-tabs-one-profile" role="tab" aria-controls="custom-tabs-one-profile" aria-selected="false">
-                	Schedule Information
-                </a>
-                
-              </li>
-            </ul>
-
-          </div>
-
-
-          <div class="card-body text-dark" style="padding:5px !important; border-right: 5px solid #257638; border-color: #257638; border-left: 5px solid #257638; border-bottom: 5px solid #257638; background-color: #e9ecef;">
-            <div class="tab-content" id="custom-tabs-one-tabContent">                  
-				<div class="tab-pane fade show active" id="custom-tabs-one-home" role="tabpanel" aria-labelledby="custom-tabs-one-home-tab">
-					<div class="col-10 float-left" style="padding: 0 5px 0 0 !important;">
-						&nbsp;
-					</div>
-				</div>
-			</div>
-		  </div>				
-		  -->
-
-
-        </div>
-      </div>
-    </div>
-
-
-
-
-
-
+		</div>
 
 
 
@@ -265,23 +219,95 @@ $(document).on('keypress', '#id_emp_id', function(e) {
     	}
 
     	
-    	//alert("TODO");
+    	// TODO				
+		showLoading();
+
+		$.ajax({    	
+	    	url: "/reports/cms/ajax-validate-psn-slip-d1-period/",
+	    	type : "POST",
+	    	data : {          
+	      		csrfmiddlewaretoken: '{{ csrf_token }}',
+	      		emp_type: emp_type,
+	      		period_option: period_option,
+	      		emp_id: emp_id
+	    	},
+	    	success: function(data) {
+	    		if(data.is_error) {
+					$.alert({
+					    title: 'Error',
+					    type: 'red',
+					    content: data.error_message,
+					    animation: 'zoom',
+					    animationBounce: 1.5,
+					    closeIcon: false,
+					    boxWidth: '38%',
+					    useBootstrap: false,
+					});	    			
+	    		} else {
+    				emp_id = data.emp_id;
+    				emp_full_name = data.emp_full_name;
+    				emp_rank = data.emp_rank;
+    				emp_status = data.emp_status;
+    				emp_dept = data.emp_dept;
+    				dept_en = data.dept_en;
+    				dept_en_short = data.dept_en_short;
+    				emp_join_date = data.emp_join_date;
+    				emp_term_date = data.emp_term_date;
+
+					result = "<div class='table-responsive'>";
+					result += "<table class='table table-sm'>";
+					result += "  <thead>";
+					result += "    <tr>";
+					result += "      <th scope='col'>ID</th>";
+					result += "      <th scope='col'>FULL NAME</th>";
+					result += "      <th scope='col'>RANK</th>";
+					result += "      <th scope='col'>DEPT</th>";
+					result += "      <th scope='col'>TYPE</th>";
+					result += "      <th scope='col'>JOINED DATE</th>";
+					result += "      <th scope='col'>TERMINATED DATE</th>";
+					result += "      <th scope='col'>STATUS</th>";
+					result += "    </tr>";
+					result += "  </thead>";
+					result += "  <tbody>";
+					
+					result += "    <tr>";
+					result += "      <td>" + emp_id + "</td>";
+					result += "      <td>" + emp_full_name + "</td>";
+					result += "      <td>" + emp_rank + "</td>";
+					result += "      <td>" + emp_dept + " | Zone " + dept_en_short + "</td>";
+					result += "      <td>D1</td>";
+					result += "      <td>" + emp_join_date + "</td>";
+					if(emp_term_date==null)
+						result += "      <td>&nbsp;</td>";
+					else
+						result += "      <td>" + emp_term_date + "</td>";
+
+					result += "      <td>" + emp_status + "</td>";
+					result += "    </tr>";
+
+					result += "  </tbody>";
+					result += "</table>";
+					result += "</div>";
+					result += "<hr>";
+
+    				$("#employee_info").html(result);
+
+	    		}
+    			$.LoadingOverlay("hide");
+    		}
+    	});
     } 
 });
 
-$("#searchPSNSlipD1Button").click( function() {
+
+$("#cancelPSNSlipD1Button").click( function() {
 	event.preventDefault();
 
-	emp_type = $("#id_employee_type_option").val();
-	period_option = $("#id_period_option").val();
+	$("#id_emp_id").val("");
+	$("#employee_info").html("<b>Employee Information</b>");
+	$("#id_period_option").val("");
 
-	alert(emp_type + " | " + period_option);
 });
-
-$(document).ready(function () {  
-	//$('#id_work_date').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", new Date());
-});
-
 
 function print_document() {
 	alert("TODO");
