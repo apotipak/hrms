@@ -1275,8 +1275,8 @@ def AjaxValidatePSNSlipD1Period(request):
         return response
 
     sql = "select a.*,b.dept_en,c.sts_en from employee as a left join com_department as b on a.emp_dept=b.dept_id "
-    sql += "left join t_empsts as c on a.emp_status=c.sts_id where a.emp_id=" + str(emp_id) + " and a.emp_type='D1';"
-    # print("--SQL-- ", sql)
+    sql += "left join t_empsts as c on a.emp_status=c.sts_id where a.emp_id=" + str(emp_id) + " and a.emp_type='D1';"    
+    print("SQL 1: ", sql)
 
     employee_info = None
     employee_paysum_list = []
@@ -1386,11 +1386,11 @@ def AjaxValidatePSNSlipD1Period(request):
         # Get PAYSUM
         # sql = "SELECT  a.*,b.pay_th FROM HIS_PAY_SUM as A left join t_paytype as B on a.eps_pay_type=b.pay_type "
         # sql = "SELECT  a.*,b.pay_th FROM PAY_SUM as A left join t_paytype as B on a.eps_pay_type=b.pay_type "
-        sql = "SELECT  a.*,b.pay_th FROM " + str(table) + " as A left join t_paytype as B on a.eps_pay_type=b.pay_type "
+        sql = "SELECT a.*,b.pay_th FROM " + str(table) + " as A left join t_paytype as B on a.eps_pay_type=b.pay_type "
         sql += "where eps_prd_id='" + str(period_option) + "' and eps_emp_id=" + str(emp_id) + " "
         # sql += "and eps_inde in ('I','D') "
         sql += "ORDER BY eps_pay_type"
-        # print("SQL : ", sql)
+        print("SQL 2: ", sql)
 
         employee_paysum_obj = None        
         record = {}
