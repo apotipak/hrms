@@ -1355,8 +1355,37 @@ def AjaxValidatePSNSlipD1Period(request):
         emp_join_date = "" if employee_info[39] is None else employee_info[39].strftime("%d/%m/%Y")
         emp_term_date = "" if employee_info[40] is None else employee_info[40].strftime("%d/%m/%Y")
 
+
+        # TODO
+        sql = "select distinct eps_prd_id from pay_sum where eps_prd_id='" + str(period_option) + "';"
+        try:
+            cursor = connection.cursor()
+            cursor.execute(sql)
+            period_obj = cursor.fetchall()
+        except db.OperationalError as e:
+            is_error = True
+            error_message = "<b>Error: please send this error to IT team</b><br>" + str(e)
+        except db.Error as e:
+            is_error = True
+            error_message = "<b>Error: please send this error to IT team</b><br>" + str(e)
+        finally:
+            cursor.close()
+        table = "PAY_SUM"
+        if period_obj is not None:
+            if len(period_obj) > 0:
+                # แสดงว่าเป็นงวดปัจจุบัน
+                table = "PAY_SUM"
+            else:
+                # แสดงว่าเป็นงวดย้อนหลัง
+                table = "HIS_PAY_SUM"
+
+        print("TABLE = ", table)
+
         # Get PAYSUM
-        sql = "SELECT  a.*,b.pay_th FROM HIS_PAY_SUM as A left join t_paytype as B on a.eps_pay_type=b.pay_type "
+        # sql = "SELECT  a.*,b.pay_th FROM HIS_PAY_SUM as A left join t_paytype as B on a.eps_pay_type=b.pay_type "
+        # sql = "SELECT  a.*,b.pay_th FROM PAY_SUM as A left join t_paytype as B on a.eps_pay_type=b.pay_type "
+
+        sql = "SELECT  a.*,b.pay_th FROM " + str(table) + " as A left join t_paytype as B on a.eps_pay_type=b.pay_type "
         sql += "where eps_prd_id='" + str(period_option) + "' and eps_emp_id=" + str(emp_id) + " "
         # sql += "and eps_inde in ('I','D') "
         sql += "ORDER BY eps_pay_type"
@@ -1364,7 +1393,7 @@ def AjaxValidatePSNSlipD1Period(request):
 
         employee_paysum_obj = None        
         record = {}
-        try:                
+        try:
             cursor = connection.cursor()
             cursor.execute(sql)
             employee_paysum_obj = cursor.fetchall()
