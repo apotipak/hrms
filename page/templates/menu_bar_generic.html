@@ -32,9 +32,6 @@
       {% endif %}
 
 
-
-
-
       {% if perms.monitoring.view_dlyplan %}
       <li class="nav-item d-none d-sm-inline-block">
         <a href="{% url 'schedule-maintenance' %}" class="nav-link">Schedule Maintenance</a>
@@ -113,6 +110,15 @@
         </div>
 
       </li>
+
+      <li class="nav-item">
+        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#">
+          <!--<i class="fas fa-tools"></i>-->
+          <!--<i class="fas fa-expand"></i>-->
+          <i class="fas fa-search"></i>
+        </a>
+      </li>
+
     </ul>
 
   </nav>
