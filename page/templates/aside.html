@@ -14,18 +14,18 @@
 
 	          <div class="input-group col-12">               
 	              <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:100px; height: 31px;"><b>รหัส</b></span></div>
-	              <input type="number" min="3" maxlength="6" name="search_id" class="form-control form-control-sm border-bottom-1 border-left-0 rounded-0 bg-white" id="id_search_id" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" >
+	              <input type="number" min="3" maxlength="6" name="search_emp_id" class="form-control form-control-sm border-bottom-1 border-left-0 rounded-0 bg-white" id="id_search_emp_id" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" >
 	          </div>
 
 
 	          <div class="input-group col-12">               
 	              <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:100px; height: 31px;"><b>ชื่อ</b></span></div>
-	              <input type="text" name="search_firstname" class="form-control form-control-sm border-bottom-1 border-left-0 rounded-0 bg-white" id="id_search_firstname">
+	              <input type="text" name="search_emp_firstname" class="form-control form-control-sm border-bottom-1 border-left-0 rounded-0 bg-white" id="id_search_emp_firstname">
 	          </div>
 
 	          <div class="input-group col-12">                  
 	              <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:100px; height: 31px;"><b>นามสกุล</b></span></div>
-	              <input type="text" name="id_search_lastname" class="form-control form-control-sm datepicker border-bottom-1 border-left-0 rounded-0 bg-white" id="id_search_lastname">
+	              <input type="text" name="search_emp_lastname" class="form-control form-control-sm datepicker border-bottom-1 border-left-0 rounded-0 bg-white" id="id_search_emp_lastname">
 	          </div>
 
 			  <div class="col-12 pt-2 text-right">			  				  	
@@ -54,22 +54,48 @@
   function employee_search_button() {
     event.preventDefault();
 
-    search_id = $("#id_search_id").val();
-    search_firstname = $("#id_search_firstname").val();
-    search_lastname = $("#id_search_lastname").val();
+    search_emp_id = $("#id_search_emp_id").val();
+    search_emp_firstname = $("#id_search_emp_firstname").val();
+    search_emp_lastname = $("#id_search_emp_lastname").val();
 	
-	console.log(search_id + " " + search_firstname + " " + search_lastname);
+	console.log(search_emp_id + " " + search_emp_firstname + " " + search_emp_lastname);
 
-	if(search_id=="" || search_firstname=="" || search_lastname=="") {
+	if(search_emp_id == "") {
+		id_search_emp_id = 0;
+	} 
+
+	if(search_emp_firstname == "") {
+		search_emp_firstname = "0";
+	}
+
+	if(search_emp_lastname == "") {
+		search_emp_lastname = "0";
+	}
+
+	if (search_emp_id==0 && search_emp_firstname=="0" && search_emp_lastname=="0") {		
+		$("#id_search_emp_id").focus();
 		return false;
 	} else {
-		alert("TODO");
-	}    
+		$.ajax({    	
+			url: "/ajax-search-employee-d1",
+			type : "POST",
+			data : {          
+		  		csrfmiddlewaretoken: '{{ csrf_token }}',
+		  		search_emp_id: search_emp_id,
+		  		search_emp_firstname: search_emp_firstname,
+		  		search_emp_lastname: search_emp_lastname
+			},
+			success: function(data) {
+				alert(data.error_message);
+			}
+		});
+
+	}
   }
 
   function employee_clear_button() {        
     $('#search_employee_form').trigger("reset");
     $('#employee_search_result').html("สามารถค้นหาได้จาก รหัสพนักงาน / ชื่อ / นามสกุล")
-    $("#id_search_id").focus();
+    $("#id_search_emp_id").focus();
   }  
 </script>

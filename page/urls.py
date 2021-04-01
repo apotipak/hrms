@@ -15,4 +15,8 @@ urlpatterns = [
 
     path('open-car-form-page', views.openCarFormPage, name='open-car-form-page'),    
     path('open-car-form', helper.openCarForm, name='open-car-form'),
+
+    # Search Employee - D1
+    # url(r'^ajax-search-employee-d1/(?P<emp_id>\d)/(?P<emp_fname>\w+)/(?P<emp_lname>\w+)/$', views.AjaxSearchEmployeeD1, name='ajax-search-employee-d1'),
+    url(r'^ajax-search-employee-d1/$', views.AjaxSearchEmployeeD1, name='ajax-search-employee-d1'),
 ]

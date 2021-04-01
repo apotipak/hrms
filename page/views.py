@@ -1,3 +1,4 @@
+import os
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
@@ -10,9 +11,11 @@ from .forms import ChangePasswordForm, LanguageForm
 from django.utils import translation
 from django.contrib import messages
 from django.utils.translation import ugettext as _
+from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.decorators import permission_required
 from page.rules import *
 from base64 import b64encode
-import os
+from django.http import JsonResponse
 
 
 @login_required(login_url='/accounts/login/')
@@ -164,3 +167,39 @@ def userlanguage(request):
 
 def openCarFormPage(request):    
     return render(request, 'page/open_car_form_page.html') 
+
+
+@permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
+def AjaxSearchEmployeeD1(request):
+
+    emp_id = request.GET.get('search_emp_id')
+    emp_fname = request.POST.get('search_emp_firstname')
+    emp_lname = request.POST.get('search_emp_lastname')
+
+    print(emp_id, emp_fname, emp_lname)
+
+    response = JsonResponse(data={        
+        "is_error": True,
+        "error_message": "Please check your input data.",
+    })
+    response.status_code = 200
+    return response
+
+
+    # Force to use D1
+    emp_type = request.POST.get('emp_type')
+    if emp_type != 'D1':
+        emp_type = 'D1'
+
+    period_option = request.POST.get('period_option')
+    emp_id = request.POST.get('emp_id')    
+    
+    # print(emp_type, period_option, emp_id)
+
+    if (emp_type=='' or emp_id=='' or period_option==''):
+        response = JsonResponse(data={        
+            "is_error": True,
+            "error_message": "Please check your input data.",
+        })
+        response.status_code = 200
+        return response
