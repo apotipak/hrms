@@ -183,11 +183,12 @@
       </div>
   </div>
 
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
+{% if perms.monitoring.view_dlyplan %}
+<!-- Control Sidebar -->
+  {% include "aside.html" %}
   <!-- /.control-sidebar -->
+{% endif %}
+
 </div>
 <!-- ./wrapper -->
 

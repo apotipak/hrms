@@ -135,65 +135,8 @@
 
   {% block content %}{% endblock %}
 
-
-
-
-
-
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-
-    <div style="padding: 5px 12px 0 15px;">
-
-      <span>ค้นหาข้อมูลพนักงาน</span>
-        <form method="post" autocomplete="off" name="search_employee_form">
-          {% csrf_token %}
-          
-          <div class="p-0 pt-2">
-
-            <div class="form-group row">
-
-              <div class="input-group col-12">               
-                  <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:100px; height: 31px;"><b>ID</b></span></div>
-                  <input type="text" name="contract_number_from" class="form-control form-control-sm border-bottom-1 border-left-0 rounded-0 bg-white" id="id_contract_number_from">
-              </div>
-
-
-              <div class="input-group col-12">               
-                  <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:100px; height: 31px;"><b>First Name</b></span></div>
-                  <input type="text" name="contract_number_from" class="form-control form-control-sm border-bottom-1 border-left-0 rounded-0 bg-white" id="id_contract_number_from">
-              </div>
-
-              <div class="input-group col-12">                  
-                  <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:100px; height: 31px;"><b>Last Name</b></span></div>
-                  <input type="number" min=0 maxlength="10" name="contract_number_to" class="form-control form-control-sm datepicker border-bottom-1 border-left-0 rounded-0 bg-white" id="id_contract_number_to">
-              </div>
-
-            </div>
-
-            <div class="col-12 float-right">
-              <button class="btn btn-info btn-sm float-right" onclick="employee_search_button()">&nbsp;<i class="fas fa-search"></i>&nbsp;&nbsp;SEARCH</button>
-            </div>
-
-          </div>
-
-
-        </form>   
-
-
-    </div>
-
-  </aside>
-  <!-- /.control-sidebar -->
-
-
-
-
-
-
   {% include "footer_generic.html" %}
   
-
 
   <div class="modal hide" id="waitingDialog" data-backdrop="static" data-keyboard="false">
       <div class="modal-body">
@@ -203,19 +146,11 @@
       </div>
   </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+{% if perms.monitoring.view_dlyplan %}
+<!-- Control Sidebar -->
+  {% include "aside.html" %}
+  <!-- /.control-sidebar -->
+{% endif %}
 
 </div>
 <!-- ./wrapper -->
@@ -309,12 +244,6 @@ $(document).ready(function() {
       $(this).css("font-weight", "bold");
     }
   });
-
-  function employee_search_button() {
-    event.preventDefault();
-    alert("todo");
-    return false;
-  }
 
 </script>
 
