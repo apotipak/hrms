@@ -73,6 +73,7 @@ def GeneratePSNSlipD1(request, *args, **kwargs):
     emp_term_date = ""
     emp_acc_bank = ""
     emp_acc_no = ""
+    pay_tax = ""
 
     eps_paid_stat_text = '?'
     # Gross Income
@@ -181,7 +182,7 @@ def GeneratePSNSlipD1(request, *args, **kwargs):
 
         # print("TABLE = ", table)
         # Get PAYSUM
-        sql = "SELECT a.*,b.pay_th FROM " + str(table) + " as A left join t_paytype as B on a.eps_pay_type=b.pay_type "
+        sql = "SELECT a.*,b.pay_th,b.pay_tax FROM " + str(table) + " as A left join t_paytype as B on a.eps_pay_type=b.pay_type "
         sql += "where eps_prd_id='" + str(period_option) + "' and eps_emp_id=" + str(emp_id) + " "
         sql += "ORDER BY eps_pay_type"
         print("SQL 2: ", sql)
@@ -274,6 +275,15 @@ def GeneratePSNSlipD1(request, *args, **kwargs):
                     else:
                         eps_wrk_hr = ""
 
+                    # PAY TAX
+                    # pay_tax = item[38]
+                    if (item[38] == 1):
+                        pay_tax = 1
+                    else:
+                        pay_tax = 0
+                    print("pay_tax : ", pay_tax)
+
+
                     record = {
                         "eps_emp_id": eps_emp_id,
                         "payment_type": payment_type,
@@ -284,6 +294,7 @@ def GeneratePSNSlipD1(request, *args, **kwargs):
                         "eps_wrk_day": eps_wrk_day,
                         "eps_wrk_hr": eps_wrk_hr,
                         "eps_paid_stat": eps_paid_stat,
+                        "pay_tax": pay_tax,
                     }
 
                     if (eps_inde!='S'):
@@ -1775,7 +1786,7 @@ def AjaxValidatePSNSlipD1Period(request):
         # Get PAYSUM
         # sql = "SELECT  a.*,b.pay_th FROM HIS_PAY_SUM as A left join t_paytype as B on a.eps_pay_type=b.pay_type "
         # sql = "SELECT  a.*,b.pay_th FROM PAY_SUM as A left join t_paytype as B on a.eps_pay_type=b.pay_type "
-        sql = "SELECT a.*,b.pay_th FROM " + str(table) + " as A left join t_paytype as B on a.eps_pay_type=b.pay_type "
+        sql = "SELECT a.*,b.pay_th,b.pay_tax FROM " + str(table) + " as A left join t_paytype as B on a.eps_pay_type=b.pay_type "
         sql += "where eps_prd_id='" + str(period_option) + "' and eps_emp_id=" + str(emp_id) + " "
         # sql += "and eps_inde in ('I','D') "
         sql += "ORDER BY eps_pay_type"
@@ -1799,6 +1810,7 @@ def AjaxValidatePSNSlipD1Period(request):
         if employee_paysum_obj is not None:
             if len(employee_paysum_obj) > 0:
                 
+                print("AAA")
                 row_count = 1
                 for item in employee_paysum_obj:
                     if (row_count == 1):
@@ -1842,6 +1854,14 @@ def AjaxValidatePSNSlipD1Period(request):
                     pay_th = item[37]
                     payment_type = str(eps_pay_type) + " " + str(pay_th)
 
+                    # PAY TAX
+                    # pay_tax = item[38]
+                    if (item[38] == 1):
+                        pay_tax = 1
+                    else:
+                        pay_tax = 0
+                    print("pay_tax : ", pay_tax)
+
                     # income_or_deduct = item[7]
                     income_or_deduct = '{:,}'.format(item[7])
 
@@ -1879,6 +1899,7 @@ def AjaxValidatePSNSlipD1Period(request):
                         "eps_wrk_day": eps_wrk_day,
                         "eps_wrk_hr": eps_wrk_hr,
                         "eps_paid_stat": eps_paid_stat,
+                        "pay_tax": pay_tax,
                     }
 
                     if (eps_inde!='S'):
@@ -1888,6 +1909,7 @@ def AjaxValidatePSNSlipD1Period(request):
         else:
             print("No record.")
     else:
+        print("BBB")
         is_error = True
         error_message = "ไม่พบข้อมูล"
         emp_id = ""
