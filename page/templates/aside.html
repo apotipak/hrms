@@ -2,7 +2,7 @@
 
 	<!--<div style="padding: 5px 12px 0 15px;">-->
 	
-	<div style="padding:5px 12px 0 15px; border-top: 5px solid #257638; border-right: 5px solid #257638; border-color: #257638; border-left: 5px solid #257638; border-bottom: 5px solid #257638; background-color: #e9ecef; color: #000;">
+	<div style="padding:5px 12px 0 15px; border-top: 5px solid #08798c; border-right: 5px solid #08798c; border-color: #08798c; border-left: 5px solid #08798c; border-bottom: 5px solid #08798c; background-color: #e9ecef; color: #000;">
 
 	  <span><b>ค้นหาข้อมูลพนักงาน</b></span>
 	    <form method="post" autocomplete="off" name="search_employee_form">
@@ -14,22 +14,23 @@
 
 	          <div class="input-group col-12">               
 	              <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:100px; height: 31px;"><b>รหัส</b></span></div>
-	              <input type="number" min="3" maxlength="6" name="contract_number_from" class="form-control form-control-sm border-bottom-1 border-left-0 rounded-0 bg-white" id="id_contract_number_from" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" >
+	              <input type="number" min="3" maxlength="6" name="search_id" class="form-control form-control-sm border-bottom-1 border-left-0 rounded-0 bg-white" id="id_search_id" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" >
 	          </div>
 
 
 	          <div class="input-group col-12">               
 	              <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:100px; height: 31px;"><b>ชื่อ</b></span></div>
-	              <input type="text" name="contract_number_from" class="form-control form-control-sm border-bottom-1 border-left-0 rounded-0 bg-white" id="id_contract_number_from">
+	              <input type="text" name="search_firstname" class="form-control form-control-sm border-bottom-1 border-left-0 rounded-0 bg-white" id="id_search_firstname">
 	          </div>
 
 	          <div class="input-group col-12">                  
 	              <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:100px; height: 31px;"><b>นามสกุล</b></span></div>
-	              <input type="text" name="contract_number_to" class="form-control form-control-sm datepicker border-bottom-1 border-left-0 rounded-0 bg-white" id="id_contract_number_to">
+	              <input type="text" name="id_search_lastname" class="form-control form-control-sm datepicker border-bottom-1 border-left-0 rounded-0 bg-white" id="id_search_lastname">
 	          </div>
 
-			  <div class="col-12 pt-2">
-			  	<button class="btn btn-info btn-sm float-right" onclick="employee_search_button()">&nbsp;<i class="fas fa-search"></i>&nbsp;&nbsp;SEARCH</button>
+			  <div class="col-12 pt-2 text-right">			  				  	
+			  	<button type="reset" class="btn btn-secondary btn-sm" onclick="employee_clear_button()">CLEAR</button>&nbsp;&nbsp;
+			  	<button class="btn btn-info btn-sm" onclick="employee_search_button()">&nbsp;<i class="fas fa-search"></i>&nbsp;&nbsp;SEARCH</button>
 			  </div>
 
 			  <div class="col-12 pt-2" id="employee_search_result" style="font-size: 14px;">
@@ -52,7 +53,23 @@
 <script>
   function employee_search_button() {
     event.preventDefault();
-    alert("todo");
-    return false;
+
+    search_id = $("#id_search_id").val();
+    search_firstname = $("#id_search_firstname").val();
+    search_lastname = $("#id_search_lastname").val();
+	
+	console.log(search_id + " " + search_firstname + " " + search_lastname);
+
+	if(search_id=="" || search_firstname=="" || search_lastname=="") {
+		return false;
+	} else {
+		alert("TODO");
+	}    
   }
+
+  function employee_clear_button() {        
+    $('#search_employee_form').trigger("reset");
+    $('#employee_search_result').html("สามารถค้นหาได้จาก รหัสพนักงาน / ชื่อ / นามสกุล")
+    $("#id_search_id").focus();
+  }  
 </script>
