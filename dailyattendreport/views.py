@@ -1248,6 +1248,7 @@ def GPM422NoOfGuardOperationByEmplByZoneReport(request):
 @permission_required('dailyattendreport.can_access_psn_slip_d1_report', login_url='/accounts/login/')
 def AjaxValidatePSNSlipD1Period(request):
 
+    # Force to use D1
     emp_type = request.POST.get('emp_type')
     if emp_type != 'D1':
         emp_type = 'D1'
@@ -1255,7 +1256,7 @@ def AjaxValidatePSNSlipD1Period(request):
     period_option = request.POST.get('period_option')
     emp_id = request.POST.get('emp_id')    
     
-    print(emp_type, period_option, emp_id)
+    # print(emp_type, period_option, emp_id)
 
     if (emp_type=='' or emp_id=='' or period_option==''):
         response = JsonResponse(data={        
@@ -1275,7 +1276,7 @@ def AjaxValidatePSNSlipD1Period(request):
 
     sql = "select a.*,b.dept_en,c.sts_en from employee as a left join com_department as b on a.emp_dept=b.dept_id "
     sql += "left join t_empsts as c on a.emp_status=c.sts_id where a.emp_id=" + str(emp_id) + " and a.emp_type='D1';"
-    print("--SQL-- ", sql)
+    # print("--SQL-- ", sql)
 
     employee_info = None
     employee_paysum_list = []
@@ -1289,7 +1290,9 @@ def AjaxValidatePSNSlipD1Period(request):
     dept_en_short = ""
     emp_join_date = ""
     emp_term_date = ""
+
     eps_paid_stat_text = '?'
+    # Gross Income
     eps_prd_in = ""
     # Net Income
     eps_prd_net = ""
@@ -1379,17 +1382,15 @@ def AjaxValidatePSNSlipD1Period(request):
                 # แสดงว่าเป็นงวดย้อนหลัง
                 table = "HIS_PAY_SUM"
 
-        print("TABLE = ", table)
-
+        # print("TABLE = ", table)
         # Get PAYSUM
         # sql = "SELECT  a.*,b.pay_th FROM HIS_PAY_SUM as A left join t_paytype as B on a.eps_pay_type=b.pay_type "
         # sql = "SELECT  a.*,b.pay_th FROM PAY_SUM as A left join t_paytype as B on a.eps_pay_type=b.pay_type "
-
         sql = "SELECT  a.*,b.pay_th FROM " + str(table) + " as A left join t_paytype as B on a.eps_pay_type=b.pay_type "
         sql += "where eps_prd_id='" + str(period_option) + "' and eps_emp_id=" + str(emp_id) + " "
         # sql += "and eps_inde in ('I','D') "
         sql += "ORDER BY eps_pay_type"
-        print("SQL : ", sql)
+        # print("SQL : ", sql)
 
         employee_paysum_obj = None        
         record = {}
@@ -1424,36 +1425,37 @@ def AjaxValidatePSNSlipD1Period(request):
                             eps_paid_stat_text = eps_paid_stat
 
                         # Gross Income
-                        eps_prd_in = item[27]
-                        print("eps_prd_in : ", eps_prd_in)
+                        eps_prd_in = '{:,}'.format(item[27])                        
 
                         # Net Income
-                        eps_prd_net = item[29]
+                        eps_prd_net = '{:,}'.format(item[29])
 
                         # YTD Income
-                        eps_ysm_in = item[14]
+                        eps_ysm_in = '{:,}'.format(item[14])
 
                         # YTD Prov.Func
-                        eps_ysm_prv = item[19]
+                        eps_ysm_prv = '{:,}'.format(item[19])
 
                         # Total Deduct
-                        eps_prd_de = item[28]
+                        eps_prd_de = '{:,}'.format(item[28])
 
                         # Tax
-                        eps_prd_tax = item[30]
+                        eps_prd_tax = '{:,}'.format(item[30])
 
                         # YTD Tax
-                        eps_ysm_tax = item[21]
+                        eps_ysm_tax = '{:,}'.format(item[21])
 
                         # YTD Social Security
-                        eps_ysm_soc = item[20]
-
+                        eps_ysm_soc = '{:,}'.format(item[20])
 
                     eps_emp_id = item[0]
                     eps_pay_type = item[2]
                     pay_th = item[37]
                     payment_type = str(eps_pay_type) + " " + str(pay_th)
-                    income_or_deduct = item[7]
+
+                    # income_or_deduct = item[7]
+                    income_or_deduct = '{:,}'.format(item[7])
+
                     eps_inde = item[4]                    
                     
                     if (item[9] is not None):

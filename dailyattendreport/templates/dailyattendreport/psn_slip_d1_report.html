@@ -223,7 +223,7 @@ thead th { white-space: nowrap; }
 									  	<div class="col-6 float-left">   
 											<div class="input-group">
 												<span style="padding:3px 0 0 0; width: 200px;"><b>Gross Income (เงินได้ก่อนหักภาษี)</b></span>
-									  			<input type="text" id="id_eps_paid_stat_text" name="eps_paid_stat_text" class="form-control form-control-xs text-right" style="font-size: 13px !important;" readonly />
+									  			<input type="text" id="id_eps_prd_in" name="eps_prd_in" class="form-control form-control-xs text-right" style="font-size: 13px !important;" readonly />
 											</div>	
 									  	</div>
 
@@ -454,7 +454,7 @@ function checkpaysum() {
 			        
 			        // Gross Income
 			        // $("#eps_prd_in").text(data.eps_prd_in);
-			        $("#id_eps_paid_stat_text").val(data.eps_prd_in);
+			        $("#id_eps_prd_in").val(data.eps_prd_in);
 
 			        // Net Income
 			        //$("#eps_prd_net").text(data.eps_prd_net);
@@ -486,6 +486,32 @@ function checkpaysum() {
 					
 				} else {
 					result = "<tr><td colspan='10' class='text-center'>ยังไม่มีข้อมูลค่าแรงในระบบ</td></tr>";
+				    // Paid Status
+				    $("#eps_paid_stat_text").text("");
+				    
+				    // Gross Income
+				    $("#id_eps_prd_in").val("");
+
+				    // Net Income
+				    $("#id_eps_prd_net").val("");
+
+				    // YTD Income
+				    $("#id_eps_ysm_in").val("");
+
+				    // YTD Prov.Func
+				    $("#id_eps_ysm_prv").val("");
+
+				    // Total Deduct
+				    $("#id_eps_prd_de").val("");
+
+				    //Tax
+				  	$("#io_eps_prd_tax").val("");
+
+				    //YTD Tax
+				    $("#id_eps_ysm_tax").val("");
+
+				    // YTD Social Security
+				    $("#id_eps_ysm_soc").val("");					
 				}
 				
 				$("#employee_paysum_table tbody").html(result);
@@ -528,10 +554,11 @@ $("#cancelPSNSlipD1Button").click( function() {
     $("#id_join_date").text("");
     $("#id_terminate_date").text("");
 
+    // Paid Status
     $("#eps_paid_stat_text").text("");
     
     // Gross Income
-    $("#id_eps_paid_stat_text").val("");
+    $("#id_eps_prd_in").val("");
 
     // Net Income
     $("#id_eps_prd_net").val("");
