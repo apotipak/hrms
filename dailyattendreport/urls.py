@@ -25,5 +25,5 @@ urlpatterns = [
     # PSN Slip - D1
     path('psn-slip-d1/', views.PSNSlipD1Report, name='psn-slip-d1-report'),
     url(r'^ajax-validate-psn-slip-d1-period/', views.AjaxValidatePSNSlipD1Period, name='ajax-validate-psn-slip-d1-period'),
-    
+    url(r'^generate-psn-slip-d1/(?P<emp_id>\d+)/(?P<period>\w+)/$', views.GeneratePSNSlipD1, name='generate-psn-slip-d1'),
 ]

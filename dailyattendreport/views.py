@@ -30,6 +30,341 @@ from docx.enum.text import WD_LINE_SPACING
 from docx.enum.style import WD_STYLE_TYPE
 
 
+@permission_required('dailyattendreport.can_access_psn_slip_d1_report', login_url='/accounts/login/')
+def GeneratePSNSlipD1(request, *args, **kwargs):    
+    base_url = MEDIA_ROOT + '/monitoring/template/'
+    template_name = base_url + 'PSN_SLIP.docx'
+    file_name = request.user.username + "_PSN_SLIP"
+
+    emp_type = 'D1'
+    emp_id = kwargs['emp_id']
+    period_option = kwargs['period']
+
+    pay_sum_obj = None
+    record = {}
+    pay_sum_list = []
+    employee_paysum_income_list = []
+    employee_paysum_deduct_list = []
+
+    error_message = ""
+
+    print(emp_id, period_option)
+
+    sql = "select a.*,b.dept_en,c.sts_en from employee as a left join com_department as b on a.emp_dept=b.dept_id "
+    sql += "left join t_empsts as c on a.emp_status=c.sts_id where a.emp_id=" + str(emp_id) + " and a.emp_type='D1';"    
+    # print("SQL 1: ", sql)
+
+    employee_info = None
+    employee_paysum_list = []
+    eps_paid_stat_text = '?'
+    emp_id = ""
+    emp_full_name = ""
+    emp_rank = ""
+    emp_status = ""
+    emp_dept = ""
+    dept_en = ""
+    dept_en_short = ""
+    emp_join_date = ""
+    emp_term_date = ""
+
+    eps_paid_stat_text = '?'
+    # Gross Income
+    eps_prd_in = ""
+    # Net Income
+    eps_prd_net = ""
+    # YTD Income
+    eps_ysm_in = ""
+    # YTD Prov.Func
+    eps_ysm_prv = ""
+    # Total Deduct
+    eps_prd_de = ""
+    # Tax
+    eps_prd_tax = ""
+    # YTD Tax
+    eps_ysm_tax = ""
+    # YTD Social Security
+    eps_ysm_soc = ""    
+
+    try:                
+        cursor = connection.cursor()
+        cursor.execute(sql)
+        employee_info = cursor.fetchone()
+    except db.OperationalError as e:
+        is_error = True
+        error_message = "<b>Error: please send this error to IT team</b><br>" + str(e)
+    except db.Error as e:
+        is_error = True
+        error_message = "<b>Error: please send this error to IT team</b><br>" + str(e)
+    finally:
+        cursor.close()
+
+    if employee_info is not None:
+        is_error = False
+        error_message = ""
+
+        emp_id = employee_info[0]
+        emp_full_name = str(employee_info[4]) + "  " + str(employee_info[5])
+        emp_rank = employee_info[31]
+        emp_status = employee_info[69]
+        emp_dept = employee_info[28]
+        dept_en = employee_info[68]
+        if (dept_en.find('SP-Zone') != -1):
+            dept_en_short = dept_en.replace("SP-Zone", "").lstrip()[0]
+        elif (dept_en.find('ZONE H BPI') != -1):
+            dept_en_short = "H"
+        elif (dept_en.find('ZONE Control') != -1):
+            dept_en_short = "CR"
+        elif (dept_en.find('SP-Samui') != -1):
+            dept_en_short = "SM"
+        elif (dept_en.find('ZONE PHUKET') != -1):
+            dept_en_short = "P"
+        elif (dept_en.find('Zone Khon kean') != -1):
+            dept_en_short = "K"
+        elif (dept_en.find('BEM') != -1):
+            dept_en_short = "BEM"
+        elif (dept_en.find('ZONE I') != -1):
+            dept_en_short = "I"
+        elif (dept_en.find('ZONE R') != -1):
+            dept_en_short = "R"
+        elif (dept_en.find('Zone Songkhla') != -1):
+            dept_en_short = "SK"
+        else:
+            dept_en_short = dept_en
+
+        emp_join_date = "" if employee_info[39] is None else employee_info[39].strftime("%d/%m/%Y")
+        emp_term_date = "" if employee_info[40] is None else employee_info[40].strftime("%d/%m/%Y")
+
+        # TODO
+        sql = "select distinct eps_prd_id from pay_sum where eps_prd_id='" + str(period_option) + "';"
+        try:
+            cursor = connection.cursor()
+            cursor.execute(sql)
+            period_obj = cursor.fetchall()
+        except db.OperationalError as e:
+            is_error = True
+            error_message = "<b>Error: please send this error to IT team</b><br>" + str(e)
+        except db.Error as e:
+            is_error = True
+            error_message = "<b>Error: please send this error to IT team</b><br>" + str(e)
+        finally:
+            cursor.close()
+        table = "PAY_SUM"
+        if period_obj is not None:
+            if len(period_obj) > 0:
+                # แสดงว่าเป็นงวดปัจจุบัน
+                table = "PAY_SUM"
+            else:
+                # แสดงว่าเป็นงวดย้อนหลัง
+                table = "HIS_PAY_SUM"
+
+        # print("TABLE = ", table)
+        # Get PAYSUM
+        sql = "SELECT a.*,b.pay_th FROM " + str(table) + " as A left join t_paytype as B on a.eps_pay_type=b.pay_type "
+        sql += "where eps_prd_id='" + str(period_option) + "' and eps_emp_id=" + str(emp_id) + " "
+        sql += "ORDER BY eps_pay_type"
+        print("SQL 2: ", sql)
+
+        employee_paysum_obj = None        
+        record = {}
+        try:
+            cursor = connection.cursor()
+            cursor.execute(sql)
+            employee_paysum_obj = cursor.fetchall()
+        except db.OperationalError as e:
+            is_error = True
+            error_message = "<b>Error: please send this error to IT team</b><br>" + str(e)
+        except db.Error as e:
+            is_error = True
+            error_message = "<b>Error: please send this error to IT team</b><br>" + str(e)
+        finally:
+            cursor.close()
+
+        if employee_paysum_obj is not None:
+            if len(employee_paysum_obj) > 0:
+                
+                row_count = 1
+                for item in employee_paysum_obj:
+                    if (row_count == 1):
+                        row_count = row_count + 1                        
+                        eps_paid_stat = item[31]
+                        if eps_paid_stat=='P':
+                            eps_paid_stat_text = 'P : PAID'
+                        elif eps_paid_stat=='H':
+                            eps_paid_stat_text = 'H : HOLDING'
+                        elif eps_paid_stat=='C':
+                            eps_paid_stat_text = 'C : CHEQUE'
+                        else:
+                            eps_paid_stat_text = eps_paid_stat
+
+                        # Gross Income
+                        eps_prd_in = '{:,}'.format(item[27])                        
+
+                        # Net Income
+                        eps_prd_net = '{:,}'.format(item[29])
+
+                        # YTD Income
+                        eps_ysm_in = '{:,}'.format(item[14])
+
+                        # YTD Prov.Func
+                        eps_ysm_prv = '{:,}'.format(item[19])
+
+                        # Total Deduct
+                        eps_prd_de = '{:,}'.format(item[28])
+
+                        # Tax
+                        eps_prd_tax = '{:,}'.format(item[30])
+
+                        # YTD Tax
+                        eps_ysm_tax = '{:,}'.format(item[21])
+
+                        # YTD Social Security
+                        eps_ysm_soc = '{:,}'.format(item[20])
+
+                    eps_emp_id = item[0]
+                    eps_pay_type = item[2]
+                    pay_th = item[37]
+                    payment_type = str(eps_pay_type) + " " + str(pay_th)
+
+                    # income_or_deduct = item[7]
+                    income_or_deduct = '{:,}'.format(item[7])
+
+                    eps_inde = item[4]                    
+                    
+                    if (item[9] is not None):
+                        eps_comp = item[9]
+                    else:
+                        eps_comp = ""
+
+                    if (item[10] is not None):
+                        eps_percent = item[10]
+                    else:
+                        eps_percent = ""
+
+                    eps_wrk_day = item[12]
+                    if (item[12] is not None):
+                        eps_wrk_day = item[12]
+                    else:
+                        eps_wrk_day = ""
+
+                    eps_wrk_hr = item[13]
+                    if (item[13] is not None):
+                        eps_wrk_hr = item[13]
+                    else:
+                        eps_wrk_hr = ""
+
+                    record = {
+                        "eps_emp_id": eps_emp_id,
+                        "payment_type": payment_type,
+                        "eps_inde": eps_inde,
+                        "income_or_deduct": income_or_deduct,
+                        "eps_comp": eps_comp,
+                        "eps_percent": eps_percent,
+                        "eps_wrk_day": eps_wrk_day,
+                        "eps_wrk_hr": eps_wrk_hr,
+                        "eps_paid_stat": eps_paid_stat,
+                    }
+
+                    if (eps_inde!='S'):
+                        employee_paysum_list.append(record)
+                        if eps_inde=='I':
+                            employee_paysum_income_list.append(record)
+
+                        if eps_inde=='D':
+                            employee_paysum_deduct_list.append(record)
+
+            else:
+                print("No record.")
+        else:
+            print("No record.")
+    else:
+        is_error = True
+        error_message = "ไม่พบข้อมูล"
+        emp_id = ""
+        emp_full_name = ""
+        emp_rank = ""
+        emp_status = ""
+        emp_dept = ""
+        dept_en = ""
+        dept_en_short = ""
+        emp_join_date = ""
+        emp_term_date = ""
+        eps_paid_stat_text = '?'
+        # Gross Income
+        eps_prd_in = ""
+
+        # Net Income
+        eps_prd_net = ""
+
+        # YTD Income
+        eps_ysm_in = ""
+
+        # YTD Prov.Func
+        eps_ysm_prv = ""
+
+        # Total Deduct
+        eps_prd_de = ""
+
+        # Tax
+        eps_prd_tax = ""
+
+        # YTD Tax
+        eps_ysm_tax = ""
+
+        # YTD Social Security
+        eps_ysm_soc = ""
+
+    document = DocxTemplate(template_name)
+    style = document.styles['Normal']
+    font = style.font
+    font.name = 'AngsanaUPC'
+    font.size = Pt(14)
+
+    context = {
+        "emp_id": emp_id,
+        "emp_full_name": emp_full_name,
+        "emp_rank": emp_rank,
+        "emp_status": emp_status,
+        "emp_dept": emp_dept,
+        "dept_en": dept_en,
+        "dept_en_short": dept_en_short,
+        "emp_join_date": emp_join_date,
+        "emp_term_date": emp_term_date,
+
+        "eps_emp_id": eps_emp_id,
+        "payment_type": payment_type,
+        "eps_inde": eps_inde,
+        "income_or_deduct": income_or_deduct,
+        "eps_comp": eps_comp,
+        "eps_percent": eps_percent,
+        "eps_wrk_day": eps_wrk_day,
+        "eps_wrk_hr": eps_wrk_hr,
+        "eps_paid_stat": eps_paid_stat,
+
+        "employee_paysum_list": list(employee_paysum_list),
+        "employee_paysum_income_list": list(employee_paysum_income_list),
+        "employee_paysum_deduct_list": list(employee_paysum_deduct_list),
+        "eps_paid_stat_text": eps_paid_stat_text,
+        "eps_prd_in": eps_prd_in,
+        "eps_prd_net": eps_prd_net,
+        "eps_ysm_in": eps_ysm_in,
+        "eps_ysm_prv": eps_ysm_prv,
+        "eps_prd_de": eps_prd_de,
+        "eps_prd_tax": eps_prd_tax,
+        "eps_ysm_tax": eps_ysm_tax,
+        "eps_ysm_soc": eps_ysm_soc,         
+    }
+
+    document.render(context)
+    document.save(MEDIA_ROOT + '/monitoring/download/' + file_name + ".docx")    
+
+    # TODO
+    docx_file = path.abspath("media\\monitoring\\download\\" + file_name + ".docx")
+    pdf_file = path.abspath("media\\monitoring\\download\\" + file_name + ".pdf")    
+    convert(docx_file, pdf_file)
+
+    return FileResponse(open(pdf_file, 'rb'), content_type='application/pdf')
+
+
 @permission_required('dailyattendreport.can_access_gpm_422_no_of_guard_operation_by_empl_by_zone_report', login_url='/accounts/login/')
 def AjaxGPM422NoOfGuardOperationByEmplByZoneReport(request, *args, **kwargs):    
     base_url = MEDIA_ROOT + '/monitoring/template/'    

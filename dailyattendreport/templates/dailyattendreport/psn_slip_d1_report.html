@@ -594,10 +594,19 @@ $("#cancelPSNSlipD1Button").click( function() {
 
 function print_document() {
 	is_ready_to_print = $("#id_ready_to_print").val();
+	
+	emp_type = 'D1';
+	period = $("#id_period_option").val();
+	emp_id = $("#id_emp_id").val();
 
 	if(is_ready_to_print == 1) {
 		//checkpaysum();	
-		alert("todo");
+		//alert("todo");
+		//return false;
+
+		var href = "/reports/cms/generate-psn-slip-d1/" + emp_id + "/" + period;
+	    window.open(href, '_blank');
+
 	} else {
 	  	$(document).Toasts('create', {
 	    	class: "bg-danger", 
