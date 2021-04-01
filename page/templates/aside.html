@@ -1,8 +1,10 @@
 <aside class="control-sidebar control-sidebar-dark">
 
-	<div style="padding: 5px 12px 0 15px;">
+	<!--<div style="padding: 5px 12px 0 15px;">-->
+	
+	<div style="padding:5px 12px 0 15px; border-top: 5px solid #257638; border-right: 5px solid #257638; border-color: #257638; border-left: 5px solid #257638; border-bottom: 5px solid #257638; background-color: #e9ecef; color: #000;">
 
-	  <span>ค้นหาข้อมูลพนักงาน</span>
+	  <span><b>ค้นหาข้อมูลพนักงาน</b></span>
 	    <form method="post" autocomplete="off" name="search_employee_form">
 	      {% csrf_token %}
 	      
@@ -11,26 +13,31 @@
 	        <div class="form-group row">
 
 	          <div class="input-group col-12">               
-	              <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:100px; height: 31px;"><b>ID</b></span></div>
-	              <input type="text" name="contract_number_from" class="form-control form-control-sm border-bottom-1 border-left-0 rounded-0 bg-white" id="id_contract_number_from">
+	              <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:100px; height: 31px;"><b>รหัส</b></span></div>
+	              <input type="number" min="3" maxlength="6" name="contract_number_from" class="form-control form-control-sm border-bottom-1 border-left-0 rounded-0 bg-white" id="id_contract_number_from" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" >
 	          </div>
 
 
 	          <div class="input-group col-12">               
-	              <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:100px; height: 31px;"><b>First Name</b></span></div>
+	              <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:100px; height: 31px;"><b>ชื่อ</b></span></div>
 	              <input type="text" name="contract_number_from" class="form-control form-control-sm border-bottom-1 border-left-0 rounded-0 bg-white" id="id_contract_number_from">
 	          </div>
 
 	          <div class="input-group col-12">                  
-	              <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:100px; height: 31px;"><b>Last Name</b></span></div>
-	              <input type="number" min=0 maxlength="10" name="contract_number_to" class="form-control form-control-sm datepicker border-bottom-1 border-left-0 rounded-0 bg-white" id="id_contract_number_to">
+	              <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:100px; height: 31px;"><b>นามสกุล</b></span></div>
+	              <input type="text" name="contract_number_to" class="form-control form-control-sm datepicker border-bottom-1 border-left-0 rounded-0 bg-white" id="id_contract_number_to">
 	          </div>
 
+			  <div class="col-12 pt-2">
+			  	<button class="btn btn-info btn-sm float-right" onclick="employee_search_button()">&nbsp;<i class="fas fa-search"></i>&nbsp;&nbsp;SEARCH</button>
+			  </div>
+
+			  <div class="col-12 pt-2" id="employee_search_result" style="font-size: 14px;">
+			  	สามารถค้นหาได้จาก รหัสพนักงาน / ชื่อ / นามสกุล
+			  </div>
+
 	        </div>
 
-	        <div class="col-12 float-right">
-	          <button class="btn btn-info btn-sm float-right" onclick="employee_search_button()">&nbsp;<i class="fas fa-search"></i>&nbsp;&nbsp;SEARCH</button>
-	        </div>
 
 	      </div>
 
