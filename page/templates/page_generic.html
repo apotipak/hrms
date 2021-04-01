@@ -81,14 +81,18 @@
   <![endif]-->
 
   <style>
-  .control-sidebar, .control-sidebar::before {
-      bottom: calc(3.5rem + 1px);
-      display: none;
-      right: -250px;
-      width: 400px;
-      height: 200px;
-      transition: right .3s ease-in-out,display .3s ease-in-out;
-  }
+    html {
+      overflow: -moz-scrollbars-vertical; 
+      overflow-y: scroll;
+    }
+    .control-sidebar, .control-sidebar::before {
+        bottom: calc(3.5rem + 1px);
+        display: none;
+        right: -250px;
+        width: 400px;
+        height: 195px;
+        transition: right .3s ease-in-out,display .3s ease-in-out;
+    }
   </style>
   {% block style %}{% endblock %}
 
@@ -96,7 +100,9 @@
 <!--<body class="hold-transition sidebar-mini layout-fixed" oncontextmenu="return false">-->
 <!--<body class="hold-transition sidebar-mini layout-fixed">-->
 <!--<body class="hold-transition sidebar-collapse sidebar-mini">-->
-<body class="hold-transition sidebar-collapse" style="overflow-y: scroll !important">
+<!--<body class="hold-transition sidebar-collapse" style="overflow-y: scroll !important; overflow-x: scroll !important;">-->
+<body class="hold-transition sidebar-collapse">
+
 
 <div class="wrapper">
 
@@ -129,22 +135,6 @@
 
   {% block content %}{% endblock %}
 
-  {% include "footer_generic.html" %}
-  
-  <div class="modal hide" id="waitingDialog" data-backdrop="static" data-keyboard="false">
-      <div class="modal-body">
-          <div id="ajax_loader">
-              <img src="{% static 'img/ajax_loader.gif' %}" width="60px;" style="display: block; margin-left: auto; margin-right: auto;">
-          </div>
-      </div>
-  </div>
-
-
-
-
-
-
-
 
 
 
@@ -153,43 +143,40 @@
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
 
-    <div class="row" style="padding: 5px 12px 0 15px;">
+    <div style="padding: 5px 12px 0 15px;">
 
-
+      <span>ค้นหาข้อมูลพนักงาน</span>
         <form method="post" autocomplete="off" name="search_employee_form">
           {% csrf_token %}
           
           <div class="p-0 pt-2">
-            <div class="form-group">
 
-              <div class="input-group col-12">                  
-                  <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:100px;">First Name</span></div>
-                  <input type="text" name="contract_number_from" class="form-control border-bottom-1 border-left-0 rounded-0 bg-white" id="id_contract_number_from">
+            <div class="form-group row">
+
+              <div class="input-group col-12">               
+                  <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:100px; height: 31px;"><b>ID</b></span></div>
+                  <input type="text" name="contract_number_from" class="form-control form-control-sm border-bottom-1 border-left-0 rounded-0 bg-white" id="id_contract_number_from">
+              </div>
+
+
+              <div class="input-group col-12">               
+                  <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:100px; height: 31px;"><b>First Name</b></span></div>
+                  <input type="text" name="contract_number_from" class="form-control form-control-sm border-bottom-1 border-left-0 rounded-0 bg-white" id="id_contract_number_from">
               </div>
 
               <div class="input-group col-12">                  
-                  <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:100px;">Last Name</span></div>
-                  <input type="number" min=0 maxlength="10" name="contract_number_to" class="form-control datepicker border-bottom-1 border-left-0 rounded-0 bg-white" id="id_contract_number_to">
-              </div>
-
-
-              <div class="input-group col-12">
-                  <!--<div class="input-group-prepend pr-2 pt-1" style="width:85px;"><label>Work Date</label></div>-->
-                  <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:67px;">From</span></div>
-                  <input type="text" name="start_date" class="form-control datepicker border-bottom-1 border-left-0 rounded-0 bg-white" placeholder="dd/mm/yyyy" required="" value="{{start_date}}" id="id_start_date" readonly="readonly">
-                  
-                  <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:42px;">To</span></div>
-                  <input type="text" name="end_date" class="form-control datepicker border-bottom-1 border-left-0 rounded-0 bg-white" placeholder="dd/mm/yyyy" required="" id="id_end_date" value="{{end_date}}" readonly="readonly">
-                </div>
-              
-              </div>
-
-              <div class="input-group col-12 float-right">
-                <button class="btn btn-info btn-sm" onclick="employee_search_button()">&nbsp;<i class="fas fa-search"></i>&nbsp;&nbsp;SEARCH</button>
+                  <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:100px; height: 31px;"><b>Last Name</b></span></div>
+                  <input type="number" min=0 maxlength="10" name="contract_number_to" class="form-control form-control-sm datepicker border-bottom-1 border-left-0 rounded-0 bg-white" id="id_contract_number_to">
               </div>
 
             </div>
+
+            <div class="col-12 float-right">
+              <button class="btn btn-info btn-sm float-right" onclick="employee_search_button()">&nbsp;<i class="fas fa-search"></i>&nbsp;&nbsp;SEARCH</button>
+            </div>
+
           </div>
+
 
         </form>   
 
@@ -204,6 +191,17 @@
 
 
 
+  {% include "footer_generic.html" %}
+  
+
+
+  <div class="modal hide" id="waitingDialog" data-backdrop="static" data-keyboard="false">
+      <div class="modal-body">
+          <div id="ajax_loader">
+              <img src="{% static 'img/ajax_loader.gif' %}" width="60px;" style="display: block; margin-left: auto; margin-right: auto;">
+          </div>
+      </div>
+  </div>
 
 
 

@@ -134,6 +134,19 @@
       overflow-x: auto;
   }
 
+  html {
+    overflow: -moz-scrollbars-vertical; 
+    overflow-y: scroll;
+  }
+  .control-sidebar, .control-sidebar::before {
+      bottom: calc(3.5rem + 1px);
+      display: none;
+      right: -250px;
+      width: 400px;
+      height: 195px;
+      transition: right .3s ease-in-out,display .3s ease-in-out;
+  }
+
 </style>
 
 {% block style %}{% endblock %}
@@ -142,7 +155,8 @@
 <!--<body class="hold-transition sidebar-mini layout-fixed" oncontextmenu="return false">-->
 <!--<body class="hold-transition sidebar-mini layout-fixed">-->
 <!--<body class="hold-transition sidebar-collapse sidebar-mini">-->
-<body class="hold-transition">
+<!--<body class="hold-transition">-->
+<body class="hold-transition sidebar-collapse">
 
 <div class="wrapper">
 
