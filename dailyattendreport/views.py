@@ -54,10 +54,15 @@ def GeneratePSNSlipD1(request, *args, **kwargs):
     sql += "left join t_empsts as c on a.emp_status=c.sts_id where a.emp_id=" + str(emp_id) + " and a.emp_type='D1';"    
     # print("SQL 1: ", sql)
 
+    period_last_3_digits = ""
+    year_period_in_thai = ""
+    paid_period = ""
+
     employee_info = None
     employee_paysum_list = []
     eps_paid_stat_text = '?'
     emp_id = ""
+    emp_title_text = ""
     emp_full_name = ""
     emp_rank = ""
     emp_status = ""
@@ -66,6 +71,8 @@ def GeneratePSNSlipD1(request, *args, **kwargs):
     dept_en_short = ""
     emp_join_date = ""
     emp_term_date = ""
+    emp_acc_bank = ""
+    emp_acc_no = ""
 
     eps_paid_stat_text = '?'
     # Gross Income
@@ -103,7 +110,20 @@ def GeneratePSNSlipD1(request, *args, **kwargs):
         error_message = ""
 
         emp_id = employee_info[0]
-        emp_full_name = str(employee_info[4]) + "  " + str(employee_info[5])
+
+        emp_title = employee_info[1]
+        if (emp_title==3):
+            emp_title_text = 'นาย'
+        elif (emp_title==4):
+            emp_title_text = 'นางสาว'
+        elif (emp_title==5):
+            emp_title_text = 'นาง'
+        elif (emp_title==129):
+            emp_title_text = 'คุณ'
+        else:
+            emp_title_text = 'คุณ'
+
+        emp_full_name = str(employee_info[4]).strip() + "  " + str(employee_info[5]).strip()
         emp_rank = employee_info[31]
         emp_status = employee_info[69]
         emp_dept = employee_info[28]
@@ -133,6 +153,8 @@ def GeneratePSNSlipD1(request, *args, **kwargs):
 
         emp_join_date = "" if employee_info[39] is None else employee_info[39].strftime("%d/%m/%Y")
         emp_term_date = "" if employee_info[40] is None else employee_info[40].strftime("%d/%m/%Y")
+        emp_acc_bank = employee_info[45]
+        emp_acc_no = employee_info[43]        
 
         # TODO
         sql = "select distinct eps_prd_id from pay_sum where eps_prd_id='" + str(period_option) + "';"
@@ -272,6 +294,29 @@ def GeneratePSNSlipD1(request, *args, **kwargs):
                         if eps_inde=='D':
                             employee_paysum_deduct_list.append(record)
 
+
+
+            sql = "select prd_date_paid from t_period where prd_id='" + str(period_option) + "';"            
+            paid_period_obj = None
+            try:
+                cursor = connection.cursor()
+                cursor.execute(sql)
+                paid_period_obj = cursor.fetchone()
+            except db.OperationalError as e:
+                is_error = True
+                error_message = "<b>Error: please send this error to IT team</b><br>" + str(e)
+            except db.Error as e:
+                is_error = True
+                error_message = "<b>Error: please send this error to IT team</b><br>" + str(e)
+            finally:
+                cursor.close()
+
+            if paid_period_obj is not None:
+                if len(paid_period_obj) > 0:
+                    period_last_3_digits = period_option[-3:]                    
+                    paid_period = paid_period_obj[0].strftime("%d/%m/%Y")
+                    year_period_in_thai = str(int(paid_period[-4:]) + 543)[-2:]
+                    print(period_option, period_last_3_digits, year_period_in_thai, paid_period)
             else:
                 print("No record.")
         else:
@@ -280,6 +325,7 @@ def GeneratePSNSlipD1(request, *args, **kwargs):
         is_error = True
         error_message = "ไม่พบข้อมูล"
         emp_id = ""
+        emp_title_text = ""
         emp_full_name = ""
         emp_rank = ""
         emp_status = ""
@@ -289,6 +335,9 @@ def GeneratePSNSlipD1(request, *args, **kwargs):
         emp_join_date = ""
         emp_term_date = ""
         eps_paid_stat_text = '?'
+        emp_acc_no = ""
+        emp_acc_bank = ""
+
         # Gross Income
         eps_prd_in = ""
 
@@ -320,7 +369,11 @@ def GeneratePSNSlipD1(request, *args, **kwargs):
     font.size = Pt(14)
 
     context = {
+        "paid_period": paid_period,
+        "period_last_3_digits":  period_last_3_digits,
+        "year_period_in_thai": year_period_in_thai,    
         "emp_id": emp_id,
+        "emp_title_text": emp_title_text,
         "emp_full_name": emp_full_name,
         "emp_rank": emp_rank,
         "emp_status": emp_status,
@@ -328,8 +381,9 @@ def GeneratePSNSlipD1(request, *args, **kwargs):
         "dept_en": dept_en,
         "dept_en_short": dept_en_short,
         "emp_join_date": emp_join_date,
-        "emp_term_date": emp_term_date,
-
+        "emp_term_date": emp_term_date,        
+        "emp_acc_no": emp_acc_no,
+        "emp_acc_bank": emp_acc_bank,
         "eps_emp_id": eps_emp_id,
         "payment_type": payment_type,
         "eps_inde": eps_inde,
@@ -338,7 +392,7 @@ def GeneratePSNSlipD1(request, *args, **kwargs):
         "eps_percent": eps_percent,
         "eps_wrk_day": eps_wrk_day,
         "eps_wrk_hr": eps_wrk_hr,
-        "eps_paid_stat": eps_paid_stat,
+        "eps_paid_stat": eps_paid_stat,        
 
         "employee_paysum_list": list(employee_paysum_list),
         "employee_paysum_income_list": list(employee_paysum_income_list),
