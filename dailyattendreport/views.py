@@ -179,13 +179,22 @@ def GeneratePSNSlipD1(request, *args, **kwargs):
             else:
                 # แสดงว่าเป็นงวดย้อนหลัง
                 table = "HIS_PAY_SUM"
-
-        # print("TABLE = ", table)
-        # Get PAYSUM
+        
+        # PAYSUM / HIS_PAY_SUM
         sql = "SELECT a.*,b.pay_th,b.pay_tax FROM " + str(table) + " as A left join t_paytype as B on a.eps_pay_type=b.pay_type "
         sql += "where eps_prd_id='" + str(period_option) + "' and eps_emp_id=" + str(emp_id) + " "
         sql += "ORDER BY eps_pay_type"
         print("SQL 2: ", sql)
+
+        '''
+        # R_PAYSLIP / R_HPAYSLIP
+        sql = "select eps_emp_id,eps_prd_id,eps_pay_type paytype,eps_prd_order,eps_inde,eps_emp_type,eps_emp_dept,eps_amt,eps_paid,eps_comp,"
+        sql += "eps_percent,eps_pay_seq,eps_wrk_day,eps_wrk_hr,eps_ysm_in,eps_ysm_de,eps_ysm_bas,eps_ysm_otm,"
+        sql += "eps_ysm_bon,eps_ysm_prv,eps_ysm_soc,eps_ysm_tax,eps_prd_stax,eps_prd_sntax,eps_prd_1soc,eps_prd_2soc,eps_prd_psoc,"
+        sql += "eps_prd_in,eps_prd_de,eps_prd_net,eps_prd_tax,eps_paid_stat,eps_doc_no,eps_doc_date,upd_date,upd_by,upd_flag,pay_th,"
+        sql += "pay_tax "
+        sql += "from R_HPAYSLIP where eps_prd_id='D121031' and eps_emp_id=916 ORDER BY eps_pay_type;"
+        '''
 
         employee_paysum_obj = None        
         record = {}
