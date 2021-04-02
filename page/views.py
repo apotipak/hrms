@@ -18,6 +18,7 @@ from base64 import b64encode
 from django.http import JsonResponse
 import django.db as db
 from django.db import connection
+from datetime import datetime
 
 
 @login_required(login_url='/accounts/login/')
@@ -192,14 +193,14 @@ def AjaxSearchEmployeeD1(request):
 
     if len(emp_id) > 0:
         # sql = "select emp_id,emp_fname_th, emp_lname_th,emp_rank,emp_status,sts_th from v_employee where emp_type='D1' and emp_id=" + str(emp_id) + ";"
-        sql = "select emp_id,emp_fname_th, emp_lname_th,emp_rank,emp_status,sts_th from v_employee where emp_type='D1' and emp_id like '" + str(emp_id) + "%';"
+        sql = "select emp_id,emp_fname_th, emp_lname_th,emp_rank,emp_status,sts_th,dept_sht,emp_join_date,emp_term_date from v_employee where emp_type='D1' and emp_id like '" + str(emp_id) + "%';"
     elif emp_fname != "0":
         if emp_lname != "0":
-            sql = "select emp_id,emp_fname_th, emp_lname_th,emp_rank,emp_status,sts_th from v_employee where emp_type='D1' and emp_fname_th like '" + str(emp_fname)+ "%' and emp_lname_th like '" + str(emp_lname) + "%';"
+            sql = "select emp_id,emp_fname_th, emp_lname_th,emp_rank,emp_status,sts_th,dept_sht,emp_join_date,emp_term_date from v_employee where emp_type='D1' and emp_fname_th like '" + str(emp_fname)+ "%' and emp_lname_th like '" + str(emp_lname) + "%';"
         else:
-            sql = "select emp_id,emp_fname_th, emp_lname_th,emp_rank,emp_status,sts_th from v_employee where emp_type='D1' and emp_fname_th like '" + str(emp_fname)+ "%';"
+            sql = "select emp_id,emp_fname_th, emp_lname_th,emp_rank,emp_status,sts_th,dept_sht,emp_join_date,emp_term_date from v_employee where emp_type='D1' and emp_fname_th like '" + str(emp_fname)+ "%';"
     elif emp_lname != "0":
-        sql = "select emp_id,emp_fname_th, emp_lname_th,emp_rank,emp_status,sts_th from v_employee where emp_type='D1' and emp_lname_th like '" + str(emp_lname)+ "%';"
+        sql = "select emp_id,emp_fname_th, emp_lname_th,emp_rank,emp_status,sts_th,dept_sht,emp_join_date,emp_term_date from v_employee where emp_type='D1' and emp_lname_th like '" + str(emp_lname)+ "%';"
 
 
     print("SQL : ", sql)
@@ -216,10 +217,57 @@ def AjaxSearchEmployeeD1(request):
     finally:
         cursor.close()
 
+    result_list = []
+    record = {}
+    if employee_search_list is not None:
+        if len(employee_search_list) > 0:        
+            for item in employee_search_list:
+                emp_id = item[0]
+                emp_fname_th = item[1]
+                emp_lname_th = item[2]
+                emp_fullname_th = str(item[1]) + " " + str(item[2])
+                emp_rank = item[3]
+                emp_status = item[4]
+                
+                if len(item[5])>=20:
+                    sts_th = item[5][0:20]                    
+                else:
+                    sts_th = item[5]
+
+                dept_sht = item[6]
+
+                if item[7] is not None:
+                    emp_join_date = datetime.strptime(str(item[7]), '%Y-%m-%d %H:%M:%S')
+                    emp_join_date = emp_join_date.strftime("%d/%m/%Y")
+                else:
+                    emp_join_date = ""
+                
+
+                if item[8] is not None:
+                    emp_term_date = datetime.strptime(str(item[8]), '%Y-%m-%d %H:%M:%S')
+                    emp_term_date = emp_term_date.strftime("%d/%m/%Y")
+                else:
+                    emp_term_date = ""
+
+                record = {
+                    "emp_id": emp_id,
+                    "emp_fname_th": emp_fname_th,
+                    "emp_lname_th": emp_lname_th,
+                    "emp_fullname_th": emp_fullname_th,
+                    "emp_rank": emp_rank,
+                    "emp_status": emp_status,
+                    "sts_th": sts_th,
+                    "dept_sht": dept_sht,
+                    "emp_join_date": emp_join_date,
+                    "emp_term_date": emp_term_date,
+                }
+                result_list.append(record)
+
     response = JsonResponse(data={        
         "is_error": is_error,
         "error_message": error_message,
         "employee_search_list": list(employee_search_list),
+        "result_list": result_list,
     })
 
     response.status_code = 200
