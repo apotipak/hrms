@@ -409,7 +409,12 @@ def ajax_check_exist_cus_site(request):
                     cus_site_site_contact_lname_th = customer_site.site_contact.con_lname_th,
                     cus_site_site_contact_position_th = customer_site.site_contact.con_position_th
                     cus_site_site_contact_title_id = customer_site.site_contact.con_title_id
-                    cus_site_site_contact_title_en = customer_site.site_contact.con_title.title_en
+
+                    if customer_site.site_contact.con_title.title_en is not None:
+                        cus_site_site_contact_title_en = customer_site.site_contact.con_title.title_en
+                    else:
+                        cus_site_site_contact_title_en = ""
+
                     cus_site_site_contact_fname_en = customer_site.site_contact.con_fname_en
                     cus_site_site_contact_lname_en = customer_site.site_contact.con_lname_en
                     cus_site_site_contact_position_en = customer_site.site_contact.con_position_en
