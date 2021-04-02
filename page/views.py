@@ -175,7 +175,7 @@ def openCarFormPage(request):
 @permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
 def AjaxSearchEmployeeD1(request):
     # Constant 
-    # Force to find D1 only
+    # Force to find D1,M1 only
     emp_type = 'D1'
     
     # Parameter
@@ -193,14 +193,14 @@ def AjaxSearchEmployeeD1(request):
 
     if len(emp_id) > 0:
         # sql = "select emp_id,emp_fname_th, emp_lname_th,emp_rank,emp_status,sts_th from v_employee where emp_type='D1' and emp_id=" + str(emp_id) + ";"
-        sql = "select emp_id,emp_fname_th, emp_lname_th,emp_rank,emp_status,sts_th,dept_sht,emp_join_date,emp_term_date from v_employee where emp_type='D1' and emp_id like '" + str(emp_id) + "%';"
+        sql = "select emp_id,emp_fname_th, emp_lname_th,emp_rank,emp_status,sts_th,dept_sht,emp_join_date,emp_term_date from v_employee where emp_type in ('D1','M1') and emp_id like '" + str(emp_id) + "%';"
     elif emp_fname != "0":
         if emp_lname != "0":
-            sql = "select emp_id,emp_fname_th, emp_lname_th,emp_rank,emp_status,sts_th,dept_sht,emp_join_date,emp_term_date from v_employee where emp_type='D1' and emp_fname_th like '" + str(emp_fname)+ "%' and emp_lname_th like '" + str(emp_lname) + "%';"
+            sql = "select emp_id,emp_fname_th, emp_lname_th,emp_rank,emp_status,sts_th,dept_sht,emp_join_date,emp_term_date from v_employee where emp_type in ('D1','M1') and emp_fname_th like '" + str(emp_fname)+ "%' and emp_lname_th like '" + str(emp_lname) + "%';"
         else:
-            sql = "select emp_id,emp_fname_th, emp_lname_th,emp_rank,emp_status,sts_th,dept_sht,emp_join_date,emp_term_date from v_employee where emp_type='D1' and emp_fname_th like '" + str(emp_fname)+ "%';"
+            sql = "select emp_id,emp_fname_th, emp_lname_th,emp_rank,emp_status,sts_th,dept_sht,emp_join_date,emp_term_date from v_employee where emp_type in ('D1','M1') and emp_fname_th like '" + str(emp_fname)+ "%';"
     elif emp_lname != "0":
-        sql = "select emp_id,emp_fname_th, emp_lname_th,emp_rank,emp_status,sts_th,dept_sht,emp_join_date,emp_term_date from v_employee where emp_type='D1' and emp_lname_th like '" + str(emp_lname)+ "%';"
+        sql = "select emp_id,emp_fname_th, emp_lname_th,emp_rank,emp_status,sts_th,dept_sht,emp_join_date,emp_term_date from v_employee where emp_type in ('D1','M1') and emp_lname_th like '" + str(emp_lname)+ "%';"
 
 
     print("SQL : ", sql)
