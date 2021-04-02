@@ -1685,10 +1685,11 @@ def AjaxValidatePSNSlipD1Period(request):
 
     sql = "select a.*,b.dept_en,c.sts_en from employee as a left join com_department as b on a.emp_dept=b.dept_id "
     sql += "left join t_empsts as c on a.emp_status=c.sts_id where a.emp_id=" + str(emp_id) + " and a.emp_type='D1';"    
-    print("SQL 1: ", sql)
+    print("SQL 111: ", sql)
 
     employee_info = None
     employee_paysum_list = []
+    employee_expend_list = []
     eps_paid_stat_text = '?'
     emp_id = ""
     emp_full_name = ""
@@ -1770,6 +1771,7 @@ def AjaxValidatePSNSlipD1Period(request):
 
         # TODO
         sql = "select distinct eps_prd_id from pay_sum where eps_prd_id='" + str(period_option) + "';"
+        print("SQL 0: ", sql)
         try:
             cursor = connection.cursor()
             cursor.execute(sql)
@@ -1912,7 +1914,48 @@ def AjaxValidatePSNSlipD1Period(request):
                     }
 
                     if (eps_inde!='S'):
-                        employee_paysum_list.append(record)        
+                        employee_paysum_list.append(record)
+
+
+                # Check emp_expend list
+                sql = "select * from emp_expend where exp_emp_id=" + str(emp_id) + " and exp_prd_id='" + str(period_option) + "'";
+                employee_expend_obj = None        
+                record = {}
+                try:
+                    cursor = connection.cursor()
+                    cursor.execute(sql)
+                    employee_expend_obj = cursor.fetchall()
+                except db.OperationalError as e:
+                    is_error = True
+                    error_message = "<b>Error: please send this error to IT team</b><br>" + str(e)
+                except db.Error as e:
+                    is_error = True
+                    error_message = "<b>Error: please send this error to IT team</b><br>" + str(e)
+                finally:
+                    cursor.close()
+
+                
+                record = {}
+                if employee_expend_obj is not None:
+                    if len(employee_expend_obj) > 0:                        
+                        for item in employee_expend_obj:
+                            eps_paid_stat = item[31]
+                            eps_prd_in = '{:,}'.format(item[27])                        
+
+                            record = {
+                                "eps_emp_id": eps_emp_id,
+                                "payment_type": payment_type,
+                                "eps_inde": eps_inde,
+                                "income_or_deduct": income_or_deduct,
+                                "eps_comp": eps_comp,
+                                "eps_percent": eps_percent,
+                                "eps_wrk_day": eps_wrk_day,
+                                "eps_wrk_hr": eps_wrk_hr,
+                                "eps_paid_stat": eps_paid_stat,
+                                "pay_tax": pay_tax,
+                            }
+                            employee_expend_list.appedn(record)
+
             else:
                 print("No record.")
         else:
@@ -1968,7 +2011,7 @@ def AjaxValidatePSNSlipD1Period(request):
         "emp_join_date": emp_join_date,
         "emp_term_date": emp_term_date,
         "employee_paysum_list": list(employee_paysum_list),
-
+        "employee_expend_list": List(employee_expend_list),
         "eps_paid_stat_text": eps_paid_stat_text,
         "eps_prd_in": eps_prd_in,
         "eps_prd_net": eps_prd_net,
