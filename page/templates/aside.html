@@ -97,14 +97,16 @@
 					result += "พบทั้งหมด  <span class='text-success'><b>" + result_length + "</b></span> รายการ"
 					result += "</div>";
 					*/
-					
+
 					result += "<div class='table-responsive'>"
-					result += "<table class='table table-sm'>";
-					result += "  <thead class='thead-dark'>";
+					result += "<table class='table table-striped table-bordered table-sm'>";
+					result += "  <thead style='background-color: #257638; color: #fff;'>";
 					result += "    <tr>";
 					result += "      <th scope='col'>รหัส</th>";
 					result += "      <th scope='col'>ชื่อ</th>";
 					result += "      <th scope='col'>นามสกุล</th>";
+					result += "      <th scope='col'>ตำแหน่ง</th>";
+					result += "      <th scope='col'>สถานะ</th>";
 					result += "    </tr>";
 					result += "  </thead>";
 					result += "  <tbody>";
@@ -114,6 +116,8 @@
 						result += "      <td>" + data.employee_search_list[i][0] + "</td>";
 						result += "      <td>" + data.employee_search_list[i][1] + "</td>";
 						result += "      <td>" + data.employee_search_list[i][2] + "</td>";
+						result += "      <td>" + data.employee_search_list[i][3] + "</td>";
+						result += "      <td>" + data.employee_search_list[i][4] + " - " + data.employee_search_list[i][5] + "</td>";
 						result += "    </tr>";
 					}
 
@@ -133,7 +137,8 @@
 
   function employee_clear_button() {        
     $('#search_employee_form').trigger("reset");
-    $('#employee_search_result').html("สามารถค้นหาได้จาก รหัสพนักงาน / ชื่อ / นามสกุล")
+    //$('#employee_search_result').html("สามารถค้นหาได้จาก รหัสพนักงาน / ชื่อ / นามสกุล")
+    $('#employee_search_result').html("")
     $("#id_quick_search_emp_id").focus();
   }  
 </script>

@@ -190,7 +190,8 @@ def AjaxSearchEmployeeD1(request):
     # TODO
     print(emp_id, emp_fname, emp_lname)
 
-    sql = "select emp_id,emp_fname_th, emp_lname_th from v_employee where emp_type='" + str(emp_type) + "' and emp_id=916;"
+    sql = "select emp_id,emp_fname_th, emp_lname_th,emp_rank,emp_status,sts_th from v_employee where emp_type='" + str(emp_type) + "' and emp_id=" + str(emp_id) + ";"
+
     try:
         cursor = connection.cursor()
         cursor.execute(sql)
