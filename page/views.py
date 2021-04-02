@@ -16,6 +16,8 @@ from django.contrib.auth.decorators import permission_required
 from page.rules import *
 from base64 import b64encode
 from django.http import JsonResponse
+import django.db as db
+from django.db import connection
 
 
 @login_required(login_url='/accounts/login/')
@@ -171,35 +173,42 @@ def openCarFormPage(request):
 
 @permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
 def AjaxSearchEmployeeD1(request):
-
-    emp_id = request.GET.get('search_emp_id')
+    # Constant 
+    # Force to find D1 only
+    emp_type = 'D1'
+    
+    # Parameter
+    emp_id = request.POST.get('search_emp_id')
     emp_fname = request.POST.get('search_emp_firstname')
     emp_lname = request.POST.get('search_emp_lastname')
 
+    # Initial value
+    is_error = True
+    error_message = ""
+    employee_search_list = []
+
+    # TODO
     print(emp_id, emp_fname, emp_lname)
 
+    sql = "select emp_id,emp_fname_th, emp_lname_th from v_employee where emp_type='" + str(emp_type) + "' and emp_id=916;"
+    try:
+        cursor = connection.cursor()
+        cursor.execute(sql)
+        employee_search_list = cursor.fetchall()
+        is_error = False;
+    except db.OperationalError as e:
+        error_message = "<b>Error: please send this error to IT team</b><br>" + str(e)
+    except db.Error as e:
+        error_message = "<b>Error: please send this error to IT team</b><br>" + str(e)
+    finally:
+        cursor.close()
+
     response = JsonResponse(data={        
-        "is_error": True,
-        "error_message": "Please check your input data.",
+        "is_error": is_error,
+        "error_message": error_message,
+        "employee_search_list": list(employee_search_list),
     })
+
     response.status_code = 200
     return response
 
-
-    # Force to use D1
-    emp_type = request.POST.get('emp_type')
-    if emp_type != 'D1':
-        emp_type = 'D1'
-
-    period_option = request.POST.get('period_option')
-    emp_id = request.POST.get('emp_id')    
-    
-    # print(emp_type, period_option, emp_id)
-
-    if (emp_type=='' or emp_id=='' or period_option==''):
-        response = JsonResponse(data={        
-            "is_error": True,
-            "error_message": "Please check your input data.",
-        })
-        response.status_code = 200
-        return response
