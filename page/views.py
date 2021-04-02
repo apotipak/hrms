@@ -188,9 +188,17 @@ def AjaxSearchEmployeeD1(request):
     employee_search_list = []
 
     # TODO
-    print(emp_id, emp_fname, emp_lname)
+    print(emp_id, " | ", emp_fname, " | ", emp_lname)
 
-    sql = "select emp_id,emp_fname_th, emp_lname_th,emp_rank,emp_status,sts_th from v_employee where emp_type='" + str(emp_type) + "' and emp_id=" + str(emp_id) + ";"
+    if len(emp_id) > 0:
+        sql = "select emp_id,emp_fname_th, emp_lname_th,emp_rank,emp_status,sts_th from v_employee where emp_type='" + str(emp_type) + "' and emp_id=" + str(emp_id) + ";"
+    elif emp_fname != "0":        
+        sql = "select emp_id,emp_fname_th, emp_lname_th,emp_rank,emp_status,sts_th from v_employee where emp_type='" + str(emp_type) + "' and emp_fname_th like '" + str(emp_fname)+ "%';"
+    elif emp_lname != "0":
+        sql = "select emp_id,emp_fname_th, emp_lname_th,emp_rank,emp_status,sts_th from v_employee where emp_type='" + str(emp_type) + "' and emp_lname_th like '" + str(emp_lname)+ "%';"
+
+
+    print("SQL : ", sql)
 
     try:
         cursor = connection.cursor()
