@@ -1918,7 +1918,7 @@ def AjaxValidatePSNSlipD1Period(request):
 
 
                 # Check emp_expend list
-                sql = "select * from emp_expend where exp_emp_id=" + str(emp_id) + " and exp_prd_id='" + str(period_option) + "'";
+                sql = "select * from emp_expend where exp_emp_id=" + str(emp_id) + " and exp_prd_id='" + str(period_option) + "' order by exp_order";
                 employee_expend_obj = None        
                 record = {}
                 try:
@@ -1939,22 +1939,48 @@ def AjaxValidatePSNSlipD1Period(request):
                 if employee_expend_obj is not None:
                     if len(employee_expend_obj) > 0:                        
                         for item in employee_expend_obj:
-                            eps_paid_stat = item[31]
-                            eps_prd_in = '{:,}'.format(item[27])                        
+                            exp_no = item[0]
+                            exp_emp_id = item[1]
+                            exp_date = item[2].strftime("%d/%m/%Y")
+                            exp_pay_type = item[3]
+                            exp_dcp_id = item[4]
+                            exp_order = item[5]
+                            exp_inde = item[6]
+                            exp_amt_all = '{:,}'.format(item[7])
+                            exp_amt_prd = '{:,}'.format(item[8])
+                            exp_amt_paid = '{:,}'.format(item[9])
+                            exp_amt_debt = '{:,}'.format(item[10])
+                            exp_amt_bal = '{:,}'.format(item[11])
+                            exp_type = item[12]
+                            exp_eff_fdate = item[13]
+                            exp_eff_tdate = item[14]
+                            exp_prd_frm = item[15]
+                            exp_prd_to = item[16]
+                            exp_prd_id = item[17]
 
                             record = {
-                                "eps_emp_id": eps_emp_id,
-                                "payment_type": payment_type,
-                                "eps_inde": eps_inde,
-                                "income_or_deduct": income_or_deduct,
-                                "eps_comp": eps_comp,
-                                "eps_percent": eps_percent,
-                                "eps_wrk_day": eps_wrk_day,
-                                "eps_wrk_hr": eps_wrk_hr,
-                                "eps_paid_stat": eps_paid_stat,
-                                "pay_tax": pay_tax,
+                                "exp_no": exp_no,
+                                "exp_emp_id": exp_emp_id,
+                                "exp_no": exp_no,
+                                "exp_emp_id": exp_emp_id,
+                                "exp_date": exp_date,
+                                "exp_pay_type": exp_pay_type,
+                                "exp_dcp_id": exp_dcp_id,
+                                "exp_order": exp_order,
+                                "exp_inde": exp_inde,
+                                "exp_amt_all": exp_amt_all,
+                                "exp_amt_prd": exp_amt_prd,
+                                "exp_amt_paid": exp_amt_paid,
+                                "exp_amt_debt": exp_amt_debt,
+                                "exp_amt_bal": exp_amt_bal,
+                                "exp_type": exp_type,
+                                "exp_eff_fdate": exp_eff_fdate,
+                                "exp_eff_tdate": exp_eff_tdate,
+                                "exp_prd_frm": exp_prd_frm,
+                                "exp_prd_to": exp_prd_to,
+                                "exp_prd_id": exp_prd_id,
                             }
-                            employee_expend_list.appedn(record)
+                            employee_expend_list.append(record)
 
             else:
                 print("No record.")
@@ -2011,7 +2037,7 @@ def AjaxValidatePSNSlipD1Period(request):
         "emp_join_date": emp_join_date,
         "emp_term_date": emp_term_date,
         "employee_paysum_list": list(employee_paysum_list),
-        "employee_expend_list": List(employee_expend_list),
+        "employee_expend_list": list(employee_expend_list),
         "eps_paid_stat_text": eps_paid_stat_text,
         "eps_prd_in": eps_prd_in,
         "eps_prd_net": eps_prd_net,

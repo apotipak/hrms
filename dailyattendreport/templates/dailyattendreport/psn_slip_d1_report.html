@@ -201,18 +201,13 @@ thead th { white-space: nowrap; }
 		        <div class="tab-content" id="custom-tabs-one-tabContent">                  
 					<div class="tab-pane fade show active" id="custom-tabs-one-home" role="tabpanel" aria-labelledby="custom-tabs-one-home-tab">
 
-
+						
 						<span style="font-size: 13px;">
 						<div class="card daily-attendance border border-secondary col-12" style="background-color: #dde0e2;">														
 						  <div class="card-header" style="padding: 0 0 0 0 !important;">						    
-						    <div class="col-12 float-left">
+						    <div class="col-12 float-left">						    	
 
-
-						    	
-
-										<!--# Summary -->
-
-
+									<!--# Summary -->
 								    <div class="col-12">
 								    	<div class="pl-10"><b>PAID STATUS</b> : <b><span id="eps_paid_stat_text" class="text-primary"></span></b></div>
 								    </div>
@@ -246,11 +241,7 @@ thead th { white-space: nowrap; }
 												<span style="padding:3px 0 0 0; width: 200px;"><b>Tax (ภาษี)</b></span>
 									  			<input type="text" id="id_eps_prd_tax" name="eps_prd_tax" class="form-control form-control-xs text-right" style="font-size: 13px !important;" readonly />
 											</div>	
-									  	</div>
-
-										
-										
-
+									  	</div>																
 
 									  	<div class="col-6 float-left">   
 											<div class="input-group">
@@ -278,7 +269,8 @@ thead th { white-space: nowrap; }
 												<span style="padding:3px 0 0 0; width: 200px;"><b>YTD Social Security (ประกันสังคม)</b></span>
 									  			<input type="text" id="id_eps_ysm_soc" name="eps_ysm_soc" class="form-control form-control-xs text-right" style="font-size: 13px !important;" readonly />
 											</div>	
-									  	</div>									  	
+									  	</div>
+
 
 									</div>
 
@@ -287,6 +279,31 @@ thead th { white-space: nowrap; }
 						  </div>
 						</div>
 						</span>
+						
+						
+
+						{% comment %}
+						<span style="font-size: 13px;">
+						<div class="table-responsive">
+							<table id="employee_expend_table" class="table table-sm">
+							  <thead>
+							    <tr>
+							      <th scope="col">No.</th>
+							      <th scope="col">EXP NO</th>
+							      <th scope="col">EXP DATE</th>
+							      <th scope="col">TYPE</th>
+							    </tr>
+							  </thead>
+							  <tbody>
+							    <tr>
+							      <td colspan="4">&nbsp;</td>
+							    </tr>
+							  </tbody>
+
+							</table>
+						</div>
+						</span>
+						{% endcomment %}
 
 					</div>
 				</div>
@@ -449,6 +466,9 @@ function checkpaysum() {
 						row_count++;
 					}
 
+
+					// PAID SUMMARY
+					
 					// Paid Status
 			        $("#eps_paid_stat_text").text(data.eps_paid_stat_text);
 			        
@@ -484,8 +504,42 @@ function checkpaysum() {
 			        //$("#eps_ysm_soc").text(data.eps_ysm_soc);
 			        $("#id_eps_ysm_soc").val(data.eps_ysm_soc);
 
+
 			        $("#id_ready_to_print").val(1);
 					
+
+			        emp_expend_result = "";
+			        if(data.employee_expend_list.length>0) {			        	
+			        	row_count = 1
+			        	for(i=0; i<data.employee_expend_list.length; i++) {
+			        		emp_expend_result += "";							
+							emp_expend_result += "    <tr>";						
+							emp_expend_result += "      <td nowrap>" + row_count + "</td>";
+							emp_expend_result += "      <td nowrap>" + data.employee_expend_list[i]['exp_no'] + "</td>";						
+							emp_expend_result += "      <td nowrap>" + data.employee_expend_list[i]['exp_date'] + "</td>";
+							emp_expend_result += "      <td nowrap>" + data.employee_expend_list[i]['exp_pay_type'] + "</td>";
+							emp_expend_result += "    </tr>";
+			        	}
+			        } else {
+						emp_expend_result += "    <tr>";						
+						emp_expend_result += "      <td colspan='4'>There is no data.</td>";
+						emp_expend_result += "    </tr>";			        	
+			        }
+
+			        /*
+					if(data.employee_expend_list.length>0) {
+						result = "";
+						row_count = 1;
+						for(i=0; i<data.employee_expend_list.length; i++) {
+							alert("todo");
+						}
+					} else {
+						//
+					}
+					*/
+
+
+
 				} else {
 					result = "<tr><td colspan='10' class='text-center'>ยังไม่มีข้อมูลค่าแรงในระบบ</td></tr>";
 				    // Paid Status
@@ -519,6 +573,7 @@ function checkpaysum() {
 				}
 				
 				$("#employee_paysum_table tbody").html(result);
+				//$("#employee_expend_table tbody").html(emp_expend_result);
 
 			}
 			$.LoadingOverlay("hide");
