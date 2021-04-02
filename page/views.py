@@ -192,7 +192,6 @@ def AjaxSearchEmployeeD1(request):
     print(emp_id, " | ", emp_fname, " | ", emp_lname)
 
     if len(emp_id) > 0:
-        # sql = "select emp_id,emp_fname_th, emp_lname_th,emp_rank,emp_status,sts_th from v_employee where emp_type='D1' and emp_id=" + str(emp_id) + ";"
         sql = "select emp_id,emp_fname_th, emp_lname_th,emp_rank,emp_status,sts_th,dept_sht,emp_join_date,emp_term_date from v_employee where emp_type in ('D1','M1') and emp_id like '" + str(emp_id) + "%';"
     elif emp_fname != "0":
         if emp_lname != "0":
@@ -225,7 +224,7 @@ def AjaxSearchEmployeeD1(request):
                 emp_id = item[0]
                 emp_fname_th = item[1]
                 emp_lname_th = item[2]
-                emp_fullname_th = str(item[1]) + " " + str(item[2])
+                emp_fullname_th = str(item[1]) + "&nbsp;&nbsp;&nbsp;" + str(item[2])
                 emp_rank = item[3]
                 emp_status = item[4]
                 
