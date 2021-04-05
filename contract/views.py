@@ -4110,20 +4110,25 @@ def ajax_sp_adjust_new_price(request):
     print("******************************************")
     print("FUNCTION: ajax_sp_adjust_new_price()")
     print("******************************************")
-    
-    cnt_id = request.POST.get('prm1')
-    change_rate = request.POST.get('prm2')
-    update_by = request.POST.get('prm3')
-    effective_from = request.POST.get('prm4')
-    output = request.POST.get('prm5')
+            
+    cnt_id = request.POST.get('cnt_id').strip("0")    
+    adjust_price = request.POST.get('adjust_price')
+    adjust_price_option = request.POST.get('adjust_price_option')
+    update_by = request.user.first_name                
+    effective_from = datetime.datetime.strptime(request.POST.get('effective_from'), '%d/%m/%Y').date()
+    output = request.POST.get('output')
     error_message = ""
 
-    print(cnt_id, change_rate, update_by, effective_from, output)
+
+    if adjust_price_option=="1":
+        adjust_price = -abs(float(adjust_price))
+
+    print(cnt_id, adjust_price, update_by, effective_from, output)
     # exec UPDATE_HRMS_PRICE '1486000001', 10, 'Test', '2021-05-03', 1;
 
     try:
         cursor = connection.cursor()
-        cursor.execute("exec dbo.UPDATE_HRMS_PRICE %s, %s, %s, %s, %s", [cnt_id, change_rate, update_by, effective_from, output])
+        cursor.execute("exec dbo.UPDATE_HRMS_PRICE %s, %s, %s, %s, %s", [cnt_id, adjust_price, update_by, effective_from, output])
         is_error = False
         error_message = "ปรับรายการเป็นราคาใหม่สำเร็จ"
     except db.OperationalError as e:

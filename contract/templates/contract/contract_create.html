@@ -1047,30 +1047,19 @@
     <div class="modal-content">
       
       <div class="modal-header bg-primary text-white" style="padding:7px;">
-        <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-dollar-sign fa-sm text-white"></i>&nbsp;&nbsp;<strong>{% trans 'Adjust Price (%)' %}</strong></h5>
+        <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-dollar-sign fa-sm text-white"></i>&nbsp;&nbsp;<strong>{% trans 'Adjust Price' %}</strong></h5>
         <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
 
 
-
-
-
-
-
-
-
-
-
-
             
-      <div class="modal-body" style="padding:5px 5px 2px 5px;">
-        
+      <div class="modal-body" style="padding:5px 5px 2px 5px;">        
 
         <div class="col-12 p-0 pt-2">
 
-          <form method="post" autocomplete="off" name="search_form">
+          <form method="post" autocomplete="off" name="adjust_price_form">
             {% csrf_token %}
             
             <div class="card-body p-0 pt-2">
@@ -1080,13 +1069,13 @@
 
                   <div class="form-check col-6">
                     <label class="form-check-label">
-                      <input type="radio" class="form-check-input" id="id_increase_price" name="adjustPriceOptions" value="0">Increase
+                      <input type="radio" class="form-check-input" id="id_increase_price" name="adjustPriceOptions" value="0"><b>Increase</b>
                     </label>
                   </div>
 
                   <div class="form-check col-6">
                     <label class="form-check-label">
-                      <input type="radio" class="form-check-input" id="id_decrease_price" name="adjustPriceOptions" value="1">Decrease
+                      <input type="radio" class="form-check-input" id="id_decrease_price" name="adjustPriceOptions" value="1"><b>Decrease</b>
                     </label>
                   </div>
                 </div>
@@ -1149,7 +1138,7 @@
         subtitle: '',
         autohide: true,
         delay: 2000,
-        body: "กรุณาเลือกออพชันการปรับราคา",
+        body: "กรุณาเลือกออพชันการปรับราคาใหม่",
         autoDismiss: true,
         close: true,
         autoremove: true,
@@ -1165,30 +1154,44 @@
           subtitle: '',
           autohide: true,
           delay: 2000,
-          body: "กรุณาตรวจสอบค่าที่ใช้ปรับราคา",
+          body: "กรุณาตรวจสอบค่าที่ต้องการใช้ปรับราคาใหม่",
           autoDismiss: true,
           close: true,
           autoremove: true,
         });
+
         return false;
-      } else {                
-        prm1 = "1486000001";
+
+      } else {
+
+        var cus_id = $('#id_cus_id').val();
+        var cus_brn = $('#id_cus_brn').val();
+        var cus_vol = $('#id_cus_vol').val();
+        var cnt_id = cus_id + cus_brn + cus_vol;
+
+        var adjust_price_option = $("input[name=adjustPriceOptions]:checked").val();
+        var adjust_price = $("#id_adjust_price").val();
+        var effective_from = $('#id_adjust_price_effective_date').val();
+        var output = 0;
+
+        //alert(effective_from);
+
+        prm1 = cnt_id;
         prm2 = "50";
         prm3 = "Test";
         prm4 = "2021-05-09";
         prm5 = "0";
-
 
         $.ajax({
             url : "/contract/ajax/sp_adjust_new_price/",
             type : "POST",            
             data : {
                 csrfmiddlewaretoken: '{{ csrf_token }}',
-                prm1: prm1,
-                prm2: prm2,
-                prm3: prm3,
-                prm4: prm4,
-                prm5: prm5,
+                cnt_id: cnt_id,
+                adjust_price_option: adjust_price_option,
+                adjust_price: adjust_price,
+                effective_from: effective_from,
+                output: output,
             },
             success: function(data) {
               if(data.is_error) {
