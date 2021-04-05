@@ -40,4 +40,6 @@ urlpatterns = [
     #url(r'^download-contract/(?P<file_name>[-\w_\\-\\.]+)$', views.download_contract, name='download-contract'),
     url(r'^print-contract/(?P<file_name>[-\w_\\-\\.]+)$', views.print_contract, name='print-contract'),
     url(r'^ajax/ajax_undelete_contract/$', views.ajax_undelete_contract, name='ajax_undelete_contract'),
+
+    url(r'^ajax/sp_adjust_new_price/$', views.ajax_sp_adjust_new_price, name='ajax_sp_adjust_new_price'),
 ]

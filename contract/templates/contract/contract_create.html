@@ -615,9 +615,9 @@
         <h1 class="card-title pt-1"><i class="far fa-address-card"></i>&nbsp;&nbsp;<strong>{% trans 'Service List' %}</strong></h1>
         <div class="card-tools">                  
           <!-- ironman -->
-          <button id="adjust_newprice_button" type="button" class="btn btn-primary btn-sm" data-toggle="modal"><i class="fas fa-dollar-sign"></i>&nbsp;&nbsp;Adjust new price</button>
+          <button id="adjust_newprice_button" type="button" class="btn btn-primary btn-sm" data-toggle="modal"><i class="fas fa-dollar-sign"></i>&nbsp;&nbsp;Adjust Price</button>
           &nbsp;&nbsp;|&nbsp;&nbsp;
-          <button id="add_service_button" type="button" class="btn btn-success btn-sm" data-toggle="modal"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;{% trans 'Add new service' %}</button>
+          <button id="add_service_button" type="button" class="btn btn-success btn-sm" data-toggle="modal"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;{% trans 'Add Service' %}</button>
         </div>     
       </div>
 
@@ -737,6 +737,14 @@
 </div>
 
 
+
+
+
+
+
+
+
+
 <!-- Service List Modal -->
 <div class="modal fade" id="service_list_modal" tabindex="-1" role="dialog">
 
@@ -744,7 +752,7 @@
     <div class="modal-content">
       
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;<strong>{% trans 'Add a new service' %}</strong></h5>
+        <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;<strong>{% trans 'Add Service' %}</strong></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -884,7 +892,7 @@
     <div class="modal-content">
       
       <div class="modal-header bg-success text-white" style="padding:7px;">
-        <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-plus fa-sm text-white"></i>&nbsp;&nbsp;<strong>{% trans 'Add new service' %}</strong></h5>
+        <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-plus fa-sm text-white"></i>&nbsp;&nbsp;<strong>{% trans 'Add Service' %}</strong></h5>
         <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -913,7 +921,7 @@
       
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLongTitle">
-          <i class="fas fa-pen fa-sm"></i>&nbsp;&nbsp;<strong>{% trans 'Edit service' %}</strong>
+          <i class="fas fa-pen fa-sm"></i>&nbsp;&nbsp;<strong>{% trans 'Edit Service' %}</strong>
           <input id="id_select_customer_service_id" type="hidden" readonly>
         </h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -951,7 +959,7 @@
       
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLongTitle">
-          <i class="fas fa-trash fa-sm text-secondary"></i>&nbsp;&nbsp;<strong>{% trans 'Delete service' %}</strong>
+          <i class="fas fa-trash fa-sm text-secondary"></i>&nbsp;&nbsp;<strong>{% trans 'Delete Service' %}</strong>
           <input id="id_select_customer_service_id" type="hidden" readonly>
         </h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -1039,33 +1047,82 @@
     <div class="modal-content">
       
       <div class="modal-header bg-primary text-white" style="padding:7px;">
-        <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-plus fa-sm text-white"></i>&nbsp;&nbsp;<strong>{% trans 'Adjust new price' %}</strong></h5>
+        <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-dollar-sign fa-sm text-white"></i>&nbsp;&nbsp;<strong>{% trans 'Adjust Price (%)' %}</strong></h5>
         <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+
+
+
+
+
+
+
+
+
+
+
+
             
       <div class="modal-body" style="padding:5px 5px 2px 5px;">
         
-        <div class="form-check form-check-inline col-6">
-          <input class="form-check-input" type="radio" name="adjustPriceOptions" id="id_increase_price" value="0" checked>
-          <label class="form-check-label" for="id_increase_price">Increase (เพิ่ม)</label>
+
+        <div class="col-12 p-0 pt-2">
+
+          <form method="post" autocomplete="off" name="search_form">
+            {% csrf_token %}
+            
+            <div class="card-body p-0 pt-2">
+              <div class="form-group">
+
+                <div class="input-group col-12">
+
+                  <div class="form-check col-6">
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input" id="id_increase_price" name="adjustPriceOptions" value="0">Increase
+                    </label>
+                  </div>
+
+                  <div class="form-check col-6">
+                    <label class="form-check-label">
+                      <input type="radio" class="form-check-input" id="id_decrease_price" name="adjustPriceOptions" value="1">Decrease
+                    </label>
+                  </div>
+                </div>
+
+                <div class="input-group col-12">&nbsp;</div>
+
+
+                <div class="input-group col-12">
+                  <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:60px;">&nbsp;&nbsp;&nbsp;<b>%</b></span></div>
+                  <input type="number" min=0 maxlength="10" name="adjust_price" class="form-control border-bottom-1 border-left-0 rounded-0 bg-white" style="width:50px;" value="0" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" id="id_adjust_price">
+                </div>
+
+
+                <div class="input-group col-12">                
+                  <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:60px;">&nbsp;&nbsp;&nbsp;<i class="far fa-calendar-alt"></i></span></div>
+                  <input type="text" name="a0djust_price_effective_date" class="form-control border-bottom-1 border-left-0 rounded-0 bg-white" style="width:50px;" id="id_adjust_price_effective_date">
+                </div>
+
+
+              </div>
+            </div>
+
+          </form>        
+
         </div>
 
-        <div class="form-check form-check-inline col-8">
-          <input class="form-check-input" type="radio" name="adjustPriceOptions" id="id_decrease_price" value="1">
-          <label class="form-check-label" for="id_decrease_price">Decrease (ลด)</label>
-
-          <input type="number" class="form-control form-control-sm" id="id_adjust_price" name="adjust_price" value="0">      
-
-        </div>          
 
       </div>
+
+
 
       <div class="modal-footer" style="padding:5px 5px 5px 0;">
-        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">&nbsp;&nbsp;{% trans 'Close' %}&nbsp;&nbsp;</button>
-        <button onclick="adjust_new_price_update()" type="button" class="btn btn-primary btn-sm"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}&nbsp;&nbsp;</button>
+        <button type="button" class="btn btn-secondary btn-md" data-dismiss="modal">&nbsp;&nbsp;{% trans 'Cancel' %}&nbsp;&nbsp;</button>
+        <button onclick="adjust_new_price_save()" type="button" class="btn btn-primary btn-md">&nbsp;&nbsp;&nbsp;&nbsp;{% trans 'OK' %}&nbsp;&nbsp;&nbsp;&nbsp;</button>
       </div>
+
     </div>
   </div>
 
@@ -1077,6 +1134,237 @@
 
 {% block javascript %}
 <script>
+
+  $(document).ready(function () {    
+    $('#id_adjust_price_effective_date').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", new Date());    
+  });
+
+  function adjust_new_price_save() {
+    
+    adjust_price_option = $("input[name=adjustPriceOptions]:checked").val();
+    if(adjust_price_option == null) {
+      $(document).Toasts('create', {
+        class: "bg-danger", 
+        title: "{% trans 'Error' %}",
+        subtitle: '',
+        autohide: true,
+        delay: 2000,
+        body: "กรุณาเลือกออพชันการปรับราคา",
+        autoDismiss: true,
+        close: true,
+        autoremove: true,
+      });
+      return false;
+    } else {
+
+      adjust_price = $("#id_adjust_price").val();
+      if(adjust_price <= 0) {
+        $(document).Toasts('create', {
+          class: "bg-danger", 
+          title: "{% trans 'Error' %}",
+          subtitle: '',
+          autohide: true,
+          delay: 2000,
+          body: "กรุณาตรวจสอบค่าที่ใช้ปรับราคา",
+          autoDismiss: true,
+          close: true,
+          autoremove: true,
+        });
+        return false;
+      } else {                
+        prm1 = "1486000001";
+        prm2 = "50";
+        prm3 = "Test";
+        prm4 = "2021-05-09";
+        prm5 = "0";
+
+
+        $.ajax({
+            url : "/contract/ajax/sp_adjust_new_price/",
+            type : "POST",            
+            data : {
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                prm1: prm1,
+                prm2: prm2,
+                prm3: prm3,
+                prm4: prm4,
+                prm5: prm5,
+            },
+            success: function(data) {
+              if(data.is_error) {
+                $(document).Toasts('create', {
+                  class: "bg-danger", 
+                  title: "{% trans 'Error' %}",
+                  subtitle: '',
+                  autohide: true,
+                  delay: 2000,
+                  body: data.error_message,
+                  autoDismiss: true,
+                  close: true,
+                  autoremove: true,
+                });                
+              } else {
+
+
+                // ironman
+
+
+                $.ajax({
+                  url : "/contract/ajax/reload_service_list",
+                  type: 'get',          
+                  dataType: 'json',
+                  data: {
+                    cnt_id: prm1,
+                  },
+                  beforeSend: function () {
+                    
+                  },    
+                  success: function (data) {
+                    result = "";
+                    result += "<div class='row'>";
+                    result += "  <div class='col-md-12 table-responsive tableFixHead'>";                                    
+                    if(data.cus_service_list.length>5)                  
+                      result += "    <table id='customer-list-table' class='table table-striped table-sm table-hover table-bordered table-bordered'>";
+                    else
+                      result += "    <table id='customer-list-table' class='table table-striped table-sm table-hover table-bordered table-bordered'>";
+                    result += "      <thead>";
+                    result += "      <tr>";
+                    result += "        <th class='text-left' nowrap>{% trans 'No' %}</th>";
+                    result += "        <th class='text-left' nowrap>{% trans 'Eff Frm' %}</th>";
+                    result += "        <th class='text-left' nowrap scope='col'>{% trans 'Eff To' %}*</th>";
+                    result += "        <th class='text-left' scope='col' nowrap>{% trans 'Shift Time' %}</th>";
+                    result += "        <th scope='col' class='text-center'>{% trans 'QTY' %}</th>";
+                    result += "        <th scope='col' class='text-center'>{% trans 'Rank' %}</th>";
+                    result += "        <th class='text-left' scope='col'>{% trans 'Rate' %}</th>";
+                    result += "        <th class='text-left' scope='col'>{% trans 'Ext.Cost' %}</th>";
+                    result += "        <th scope='col' class='text-center'>{% trans 'MON' %}</th>";
+                    result += "        <th scope='col' class='text-center'>{% trans 'TUE' %}</th>";
+                    result += "        <th scope='col' class='text-center'>{% trans 'WED' %}</th>";
+                    result += "        <th scope='col' class='text-center'>{% trans 'THU' %}</th>";
+                    result += "        <th scope='col' class='text-center'>{% trans 'FRI' %}</th>";
+                    result += "        <th scope='col' class='text-center'>{% trans 'SAT' %}</th>";
+                    result += "        <th scope='col' class='text-center'>{% trans 'SUN' %}</th>";
+                    result += "        <th scope='col' class='text-center'>{% trans 'PUB' %}</th>";
+                    result += "        <th scope='col'>{% trans 'Remark' %}</th>";
+                    result += "        <th scope='col'>{% trans 'Status' %}</th>";
+                    result += "        <th scope='col'>&nbsp;</th>";
+                    result += "      </tr>";
+                    result += "     </thead>";
+                    result += "     <tbody class='p-0'>";                                    
+                    row_count = 1;
+                    for(var i=0; i<data.cus_service_list.length; i++) {
+                      srv_cost_text = data.cus_service_list[i]["srv_cost"].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                      srv_rate_text = data.cus_service_list[i]["srv_rate"].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                      result += "          <tr>";
+                      if(data.cus_service_list[i]["srv_active"]==1) {
+                        result += "          <td align='center'><small>" + row_count + "</small></td>";
+                        result += "          <td><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_eff_frm"] + "</small></a></td>";
+                        result += "          <td><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_eff_to"] + "</small></a></td>";
+                        result += "          <td class='text-left' nowrap><a href='#' onclick='update_customer_service(" + data.cus_service_list[i]["srv_id"] + ")'><small><b>" + data.cus_service_list[i]["shf_desc"] + "</small></b></a></td>";
+                        result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_qty"] + "</small></a></td>";
+                        result += "          <td class='text-center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_rank"] + "</small></td>";
+                        result += "          <td align='right'><a href='javascript:void(0);'><small>" + srv_rate_text + "</small></a></td>";                      
+                        result += "          <td align='right'><a href='javascript:void(0);'><small>" + srv_cost_text + "</small></a></td>";                      
+                        result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_mon"] + "</small></a></td>";
+                        result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_tue"] + "</small></a></td>";
+                        result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_wed"] + "</small></a></td>";
+                        result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_thu"] + "</small></a></td>";
+                        result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_fri"] + "</small></a></td>";
+                        result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_sat"] + "</small></a></td>";
+                        result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_sun"] + "</small></a></td>";
+                        result += "          <td align='center'><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_pub"] + "</small></a></td>";
+                        result += "          <td><a href='javascript:void(0);'><small>" + data.cus_service_list[i]["srv_rem"] + "</small></a></td>";
+                        }
+                      else {
+                        result += "          <td align='center'><small>" + row_count + "</small></td>";
+                        result += "          <td><small>" + data.cus_service_list[i]["srv_eff_frm"] + "</small></td>";
+                        result += "          <td><small>" + data.cus_service_list[i]["srv_eff_to"] + "</small></td>";
+                        result += "          <td><a href='#' class='text-dark' onclick='update_customer_service(" + data.cus_service_list[i]["srv_id"] + ")'><small><b>" + data.cus_service_list[i]["shf_desc"] + "</small></b></a></td>";
+                        result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_qty"] + "</small></td>";
+                        result += "          <td class='text-center'><small>" + data.cus_service_list[i]["srv_rank"] + "</small></td>";
+                        result += "          <td align='right'><small>" + srv_rate_text + "</small></td>";                      
+                        result += "          <td align='right'><small>" + srv_cost_text + "</small></td>";  
+                        result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_mon"] + "</small></td>";
+                        result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_tue"] + "</small></td>";
+                        result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_wed"] + "</small></td>";
+                        result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_thu"] + "</small></td>";
+                        result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_fri"] + "</small></td>";
+                        result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_sat"] + "</small></td>";
+                        result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_sun"] + "</small></td>";
+                        result += "          <td align='center'><small>" + data.cus_service_list[i]["srv_pub"] + "</small></td>";
+                        result += "          <td><small>" + data.cus_service_list[i]["srv_rem"] + "</small></td>";
+                      }
+
+                      if(data.cus_service_list[i]["srv_active"]==1)
+                        result += "          <td class='text-left'><span class='badge badge-success'>{% trans 'Active' %}</span></td>";
+                      else
+                        result += "          <td class='text-left'><span class='badge badge-secondary'>{% trans 'Pending' %}</span></td>";
+                    
+                      result += "          <td class='text-right' nowrap>";
+                      result += "            <div class='btn-group btn-group-sm nowrap'>";
+                      result += "              <small>";
+
+
+
+                      // DEMO - new button
+                      // START
+                      /*
+                      if(data.cus_service_list[i]["op1"]==1) {
+                        result += "              <button type='button' onclick='update_customer_service(" + data.cus_service_list[i]["srv_id"] + ")' class='btn btn-warning btn-xs btn-circle js-update-contract-service' data-toggle='modal'>&nbsp;<i class='fas fa-dollar-sign fa-md'></i>&nbsp;</button>&nbsp;&nbsp;&nbsp;";
+                      }
+                      */             
+                      // STOP
+
+
+
+                      result += "              <button type='button' onclick='update_customer_service(" + data.cus_service_list[i]["srv_id"] + ")' class='btn btn-info btn-xs js-update-contract-service' data-toggle='modal'>&nbsp;<i class='fas fa-pen fa-xs'></i>&nbsp;</button>";
+
+                      result += "              <button type='button' onclick='delete_customer_service(" + data.cus_service_list[i]["srv_id"] + ")' class='btn btn-danger btn-xs js-delete-contract-service'>";
+                      result += "                &nbsp;<i class='fas fa-trash fa-xs'></i>&nbsp;";
+                      result += "              </button>";
+                      result += "              </small>";
+                      result += "            </div>";
+                      result += "          </td>";
+                      row_count = row_count + 1;
+                    }
+                      result += "          </tr>";
+                    
+                    result += "      </tbody>";
+                    result += "    </table>";
+                    result += "  </div>";
+                    result += "</div>";
+
+                    $("#service_list_table .card-body").html(result);
+                    $("#adjust_new_price_modal").modal("hide");      
+
+                  },
+                  error: function(data){
+                    // do nothing        
+                  }
+                });  
+
+
+
+
+
+
+
+                
+
+
+
+
+
+              }
+            }
+          });
+        }      
+      }        
+    }
+
+
+
+
 
   function showLoading() {
     $.LoadingOverlaySetup({

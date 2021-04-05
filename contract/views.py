@@ -3752,6 +3752,10 @@ def print_contract(request, *args, **kwargs):
     raise Http404
 
 
+
+
+
+
 @login_required(login_url='/accounts/login/')
 def ajax_undelete_contract(request):
     cnt_id = request.POST.get('cnt_id')
@@ -4098,4 +4102,41 @@ def generate_contract(request, *args, **kwargs):
     convert(docx_file, pdf_file)
 
     return FileResponse(open(pdf_file, 'rb'), content_type='application/pdf')
+
+
+
+@permission_required('contract.view_cuscontract', login_url='/accounts/login/')
+def ajax_sp_adjust_new_price(request):
+    print("******************************************")
+    print("FUNCTION: ajax_sp_adjust_new_price()")
+    print("******************************************")
+    
+    cnt_id = request.POST.get('prm1')
+    change_rate = request.POST.get('prm2')
+    update_by = request.POST.get('prm3')
+    effective_from = request.POST.get('prm4')
+    output = request.POST.get('prm5')
+    error_message = ""
+
+    print(cnt_id, change_rate, update_by, effective_from, output)
+    # exec UPDATE_HRMS_PRICE '1486000001', 10, 'Test', '2021-05-03', 1;
+
+    try:
+        cursor = connection.cursor()
+        cursor.execute("exec dbo.UPDATE_HRMS_PRICE %s, %s, %s, %s, %s", [cnt_id, change_rate, update_by, effective_from, output])
+        is_error = False
+        error_message = "ปรับรายการเป็นราคาใหม่สำเร็จ"
+    except db.OperationalError as e:
+        is_error = False
+        error_message = "exec UPDATE_HRMS_PRICE is error - " + str(e)
+        return is_error, error_message
+    except db.Error as e:
+        is_error = True
+        error_message = "exec UPDATE_HRMS_PRICE is error - " + str(e)
+        return is_error, error_message
+
+    response = JsonResponse(data={"success": True, "is_error": False, "class": "bg-success", "error_message": error_message})
+    response.status_code = 200  
+    return response
+
 
