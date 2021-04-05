@@ -201,7 +201,7 @@ thead th { white-space: nowrap; }
 		        <div class="tab-content" id="custom-tabs-one-tabContent">                  
 					<div class="tab-pane fade show active" id="custom-tabs-one-home" role="tabpanel" aria-labelledby="custom-tabs-one-home-tab">
 
-						
+						{% comment %}
 						<span style="font-size: 13px;">
 						<div class="card daily-attendance border border-secondary col-12" style="background-color: #dde0e2;">														
 						  <div class="card-header" style="padding: 0 0 0 0 !important;">						    
@@ -279,10 +279,9 @@ thead th { white-space: nowrap; }
 						  </div>
 						</div>
 						</span>
-						
+						{% endcomment %}
 						
 
-						{% comment %}
 						<span style="font-size: 13px;">
 						<div class="table-responsive">
 							<table id="employee_expend_table" class="table table-sm">
@@ -303,8 +302,7 @@ thead th { white-space: nowrap; }
 							</table>
 						</div>
 						</span>
-						{% endcomment %}
-
+	
 					</div>
 				</div>
 			  </div>
@@ -573,7 +571,7 @@ function checkpaysum() {
 				}
 				
 				$("#employee_paysum_table tbody").html(result);
-				//$("#employee_expend_table tbody").html(emp_expend_result);
+				$("#employee_expend_table tbody").html(emp_expend_result);
 
 			}
 			$.LoadingOverlay("hide");

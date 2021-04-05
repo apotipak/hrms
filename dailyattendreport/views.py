@@ -1918,7 +1918,16 @@ def AjaxValidatePSNSlipD1Period(request):
 
 
                 # Check emp_expend list
-                sql = "select * from emp_expend where exp_emp_id=" + str(emp_id) + " and exp_prd_id='" + str(period_option) + "' order by exp_order";
+                # sql = "select * from emp_expend where exp_emp_id=" + str(emp_id) + " and exp_prd_id='" + str(period_option) + "' order by exp_order";
+                sql = "select a.*,b.emp_fname_th,b.emp_lname_th,b.emp_rank,c.rank_en "
+                sql += ",b.emp_type,d.pay_th,e.dcp_th  from emp_expend as A "
+                sql += "left join  employee as B on a.exp_emp_id=b.emp_id "
+                sql += "left join  com_rank as C on b.emp_rank=c.rank_id "
+                sql += "left join  t_paytype as D on a.exp_pay_type=d.pay_type "
+                sql += "left join  t_discipline as E on a.exp_dcp_id=e.dcp_id "
+                sql += "where (a.exp_no<>'') and (a.exp_prd_frm='" + str(period_option) + "' or a.exp_prd_id='" + str(period_option) + "') and a.exp_emp_id=" + str(emp_id) + " "
+                sql += "order by a.exp_pay_type, a.exp_date, a.exp_emp_id;"
+
                 employee_expend_obj = None        
                 record = {}
                 try:
@@ -1934,7 +1943,6 @@ def AjaxValidatePSNSlipD1Period(request):
                 finally:
                     cursor.close()
 
-                
                 record = {}
                 if employee_expend_obj is not None:
                     if len(employee_expend_obj) > 0:                        
