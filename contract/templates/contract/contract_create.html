@@ -613,7 +613,10 @@
 
       <div class="card-header" style="background-color: #DCDCDC; padding:5px 15px 5px 5px;">
         <h1 class="card-title pt-1"><i class="far fa-address-card"></i>&nbsp;&nbsp;<strong>{% trans 'Service List' %}</strong></h1>
-        <div class="card-tools">        
+        <div class="card-tools">                  
+          <!-- ironman -->
+          <button id="adjust_newprice_button" type="button" class="btn btn-primary btn-sm" data-toggle="modal"><i class="fas fa-dollar-sign"></i>&nbsp;&nbsp;Adjust new price</button>
+          &nbsp;&nbsp;|&nbsp;&nbsp;
           <button id="add_service_button" type="button" class="btn btn-success btn-sm" data-toggle="modal"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;{% trans 'Add new service' %}</button>
         </div>     
       </div>
@@ -877,7 +880,7 @@
 <!-- Add new service modal -->
 <div class="modal fade" id="add_new_service_list_modal" tabindex="-1" role="dialog">
 
-  <div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
       
       <div class="modal-header bg-success text-white" style="padding:7px;">
@@ -905,7 +908,7 @@
 
 <!-- Update Service Modal -->
 <div class="modal fade" id="update_service_modal" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
       
       <div class="modal-header">
@@ -981,7 +984,7 @@
 
 <!-- Wage Rate Modal -->
 <div class="modal fade" id="wageratemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title"><i class="fas fa-search"></i>&nbsp;{% trans 'Select a Wage Rate' %}</h5>
@@ -1001,7 +1004,7 @@
 
 <!-- Search Contract Modal -->
 <div class="modal fade" id="search_contract_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
 
       <div class="modal-header bg-success text-white" style="padding:7px;">
@@ -1026,7 +1029,48 @@
   </div>
 </div>
 
-<!-- /.content-wrapper -->
+
+
+<!-- ironman -->
+<!-- Adjust new price modal -->
+<div class="modal fade" id="adjust_new_price_modal" tabindex="-1" role="dialog">
+
+  <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+    <div class="modal-content">
+      
+      <div class="modal-header bg-primary text-white" style="padding:7px;">
+        <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-plus fa-sm text-white"></i>&nbsp;&nbsp;<strong>{% trans 'Adjust new price' %}</strong></h5>
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+            
+      <div class="modal-body" style="padding:5px 5px 2px 5px;">
+        
+        <div class="form-check form-check-inline col-6">
+          <input class="form-check-input" type="radio" name="adjustPriceOptions" id="id_increase_price" value="0" checked>
+          <label class="form-check-label" for="id_increase_price">Increase (เพิ่ม)</label>
+        </div>
+
+        <div class="form-check form-check-inline col-8">
+          <input class="form-check-input" type="radio" name="adjustPriceOptions" id="id_decrease_price" value="1">
+          <label class="form-check-label" for="id_decrease_price">Decrease (ลด)</label>
+
+          <input type="number" class="form-control form-control-sm" id="id_adjust_price" name="adjust_price" value="0">      
+
+        </div>          
+
+      </div>
+
+      <div class="modal-footer" style="padding:5px 5px 5px 0;">
+        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">&nbsp;&nbsp;{% trans 'Close' %}&nbsp;&nbsp;</button>
+        <button onclick="adjust_new_price_update()" type="button" class="btn btn-primary btn-sm"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}&nbsp;&nbsp;</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
 {% endblock %}
 
 
@@ -4888,6 +4932,67 @@
 
   $(document).ready(function(){    
 
+    // ironman
+    $('#adjust_newprice_button').on('click', function (e) {
+            
+      var cnt_id = $('#id_cus_id').val();
+      var cus_brn = $('#id_cus_brn').val();
+      var cus_vol = $('#id_cus_vol').val();
+
+      if(cnt_id=='' || cnt_id==null) {
+        $.alert({
+            title: 'Error',
+            type: 'red',
+            content: "Contract ID is required!",
+            animation: 'zoom',
+            animationBounce: 1.5,
+            closeIcon: false,
+            boxWidth: '38%',
+            useBootstrap: false,
+        });
+
+        $('#id_cus_id').focus();
+        return false;
+      } else {
+
+        $("#adjust_new_price_modal").modal("show");
+        $("#adjust_new_price_modal").draggable(); 
+
+
+        /*
+        var obj = $(this);
+        cnt_eff_frm = $('#id_cnt_eff_frm').val();
+        cnt_eff_to = $('#id_cnt_eff_to').val();
+
+        $.ajax({
+            url: "/contract/ajax/get_rank_shift_list/",
+            type: 'get',          
+            dataType: 'json',
+            data: {
+              cnt_eff_frm: cnt_eff_frm,
+              cnt_eff_to: cnt_eff_to,
+            },          
+            beforeSend: function () {
+              
+            },
+            success: function (data) {
+              var com_rank_count = data.com_rank_list.length;
+              var t_shift_count = data.t_shift_list.length;
+
+              var result = "";
+            }
+        });
+        */
+
+      }
+
+    });
+
+
+
+
+
+
     $('#add_service_button').on('click', function (e) {      
       var obj = $(this);
       cnt_eff_frm = $('#id_cnt_eff_frm').val();
@@ -5226,7 +5331,9 @@
     result += "</form>";
     result += "</div>";
     
-    result += "<div class='table-responsive' stye='padding:0;  width:100%;'>";        
+    //result += "<div class='table-responsive' stye='padding:0;  width:100%;'>";        
+    
+    //result += "<div stye='padding:0;  width:100%;'>";        
     result += "<table class='table table-hover table-striped table-wrapper-scroll-y my-custom-scrollbar w-100'>";
     result += " <thead>";
     result += "   <tr class='text-left'>";
@@ -5246,7 +5353,7 @@
     result += "</tr>";              
     result += " </tbody>";
     result += "</table>";            
-    result += "</div>";              
+    //result += "</div>";              
     $("#search_contract_modal .modal-body").html(result);
   });    
 

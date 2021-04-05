@@ -51,10 +51,13 @@ input.no-icon{
     padding-top: 18px;
 }
 
+
+/*
 .modal-dialog {
     max-width: 70%;
     margin: 1.75rem auto;
 }
+*/
 
 #waitingDialog {
     position: absolute;
