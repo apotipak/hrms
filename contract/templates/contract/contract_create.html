@@ -1211,6 +1211,7 @@
 
                 // ironman
 
+                refresh_sale_amount = data.active_cnt_sale_amt;
 
                 $.ajax({
                   url : "/contract/ajax/reload_service_list",
@@ -1337,6 +1338,7 @@
                     result += "  </div>";
                     result += "</div>";
 
+                    $("#id_cnt_sale_amt").val(refresh_sale_amount);
                     $("#service_list_table .card-body").html(result);
                     $("#adjust_new_price_modal").modal("hide");      
 

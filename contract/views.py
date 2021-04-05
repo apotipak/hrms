@@ -4118,7 +4118,8 @@ def ajax_sp_adjust_new_price(request):
     effective_from = datetime.datetime.strptime(request.POST.get('effective_from'), '%d/%m/%Y').date()
     output = request.POST.get('output')
     error_message = ""
-
+    active_cnt_guard_amt = 0
+    active_cnt_sale_amt = 0
 
     if adjust_price_option=="1":
         adjust_price = -abs(float(adjust_price))
@@ -4131,6 +4132,15 @@ def ajax_sp_adjust_new_price(request):
         cursor.execute("exec dbo.UPDATE_HRMS_PRICE %s, %s, %s, %s, %s", [cnt_id, adjust_price, update_by, effective_from, output])
         is_error = False
         error_message = "ปรับรายการเป็นราคาใหม่สำเร็จ"
+
+
+        cus_service_list = CusService.objects.all().exclude(upd_flag='D').filter(cnt_id=cnt_id)
+        active_cnt_guard_amt = 0
+        active_cnt_sale_amt = 0
+        for item in cus_service_list:
+            if item.srv_active:                        
+                active_cnt_guard_amt += item.srv_qty
+                active_cnt_sale_amt += item.srv_rate * item.srv_qty
     except db.OperationalError as e:
         is_error = False
         error_message = "exec UPDATE_HRMS_PRICE is error - " + str(e)
@@ -4140,7 +4150,8 @@ def ajax_sp_adjust_new_price(request):
         error_message = "exec UPDATE_HRMS_PRICE is error - " + str(e)
         return is_error, error_message
 
-    response = JsonResponse(data={"success": True, "is_error": False, "class": "bg-success", "error_message": error_message})
+    print("AA : ", active_cnt_sale_amt)
+    response = JsonResponse(data={"success": True, "is_error": False, "class": "bg-success", "error_message": error_message, "active_cnt_guard_amt": active_cnt_guard_amt, "active_cnt_sale_amt": active_cnt_sale_amt})
     response.status_code = 200  
     return response
 
