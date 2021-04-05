@@ -175,10 +175,12 @@ def GeneratePSNSlipD1(request, *args, **kwargs):
         if period_obj is not None:
             if len(period_obj) > 0:
                 # แสดงว่าเป็นงวดปัจจุบัน
-                table = "PAY_SUM"
+                # table = "PAY_SUM"
+                table = "R_PAYSLIP"
             else:
                 # แสดงว่าเป็นงวดย้อนหลัง
-                table = "HIS_PAY_SUM"
+                # table = "HIS_PAY_SUM"
+                table = "R_HPAYSLIP"
         
         # PAYSUM / HIS_PAY_SUM
         '''
@@ -193,7 +195,7 @@ def GeneratePSNSlipD1(request, *args, **kwargs):
         # sql += ", pay_th, pay_inde, eps_comp, eps_percent, eps_wrk_day, eps_wrk_hr, pay_tax, eps_paid_stat "
 
         sql = "select * "
-        sql += "FROM R_HPAYSLIP "
+        sql += "FROM " + str(table) + " "
         sql += "where eps_prd_id='" + str(period_option) + "' and eps_emp_id=" + str(emp_id) + " "
         sql += "ORDER BY eps_prd_de, eps_prd_net, eps_prd_tax;"
         print("SQL 2: ", sql)
@@ -375,6 +377,91 @@ def GeneratePSNSlipD1(request, *args, **kwargs):
 
 
 
+            # EMP_EXEPND_LIST
+            employee_expend_list = []
+            employee_expend_obj = None        
+            record = {}
+
+            sql = "select a.*,b.emp_fname_th,b.emp_lname_th,b.emp_rank,c.rank_en "
+            sql += ",b.emp_type,d.pay_th,e.dcp_th  from emp_expend as A "
+            sql += "left join  employee as B on a.exp_emp_id=b.emp_id "
+            sql += "left join  com_rank as C on b.emp_rank=c.rank_id "
+            sql += "left join  t_paytype as D on a.exp_pay_type=d.pay_type "
+            sql += "left join  t_discipline as E on a.exp_dcp_id=e.dcp_id "
+            sql += "where (a.exp_no<>'') and (a.exp_prd_frm='" + str(period_option) + "' or a.exp_prd_id='" + str(period_option) + "') and a.exp_emp_id=" + str(emp_id) + " "
+            sql += "order by a.exp_pay_type, a.exp_date, a.exp_emp_id;"
+
+            try:
+                cursor = connection.cursor()
+                cursor.execute(sql)
+                employee_expend_obj = cursor.fetchall()
+            except db.OperationalError as e:
+                is_error = True
+                error_message = "<b>Error: please send this error to IT team</b><br>" + str(e)
+            except db.Error as e:
+                is_error = True
+                error_message = "<b>Error: please send this error to IT team</b><br>" + str(e)
+            finally:
+                cursor.close()
+
+            record = {}
+            row_count = 1
+            if employee_expend_obj is not None:
+                if len(employee_expend_obj) > 0:                        
+                    for item in employee_expend_obj:
+                        exp_no = item[0]
+                        exp_emp_id = item[1]
+                        exp_date = item[2].strftime("%d/%m/%Y")
+                        exp_pay_type = item[3]
+                        exp_dcp_id = item[4]
+                        exp_order = item[5]
+                        exp_inde = item[6]
+                        exp_amt_all = '{:,}'.format(item[7])
+                        exp_amt_prd = '{:,}'.format(item[8])
+                        exp_amt_paid = '{:,}'.format(item[9])
+                        exp_amt_debt = '{:,}'.format(item[10])
+                        exp_amt_bal = '{:,}'.format(item[11])
+                        exp_type = item[12]
+                        exp_eff_fdate = item[13]
+                        exp_eff_tdate = item[14]
+                        exp_prd_frm = item[15]
+                        exp_prd_to = item[16]
+                        exp_prd_id = item[17]
+                        pay_th = item[37]
+
+                        record = {
+                            "row_count": row_count,
+                            "exp_no": exp_no,
+                            "exp_emp_id": exp_emp_id,
+                            "exp_no": exp_no,
+                            "exp_emp_id": exp_emp_id,
+                            "exp_date": exp_date,
+                            "exp_pay_type": exp_pay_type,
+                            "pay_th": pay_th,
+                            "exp_dcp_id": exp_dcp_id,
+                            "exp_order": exp_order,
+                            "exp_inde": exp_inde,
+                            "exp_amt_all": exp_amt_all,
+                            "exp_amt_prd": exp_amt_prd,
+                            "exp_amt_paid": exp_amt_paid,
+                            "exp_amt_debt": exp_amt_debt,
+                            "exp_amt_bal": exp_amt_bal,
+                            "exp_type": exp_type,
+                            "exp_eff_fdate": exp_eff_fdate.strftime("%d/%m/%Y"),
+                            "exp_eff_tdate": exp_eff_tdate.strftime("%d/%m/%Y"),
+                            "exp_prd_frm": exp_prd_frm,
+                            "exp_prd_to": exp_prd_to,
+                            "exp_prd_id": exp_prd_id,
+                        }
+                        employee_expend_list.append(record)
+                        row_count = row_count + 1
+
+
+
+
+
+
+
             sql = "select prd_date_paid from t_period where prd_id='" + str(period_option) + "';"            
             paid_period_obj = None
             try:
@@ -484,7 +571,8 @@ def GeneratePSNSlipD1(request, *args, **kwargs):
         "eps_prd_de": eps_prd_de,
         "eps_prd_tax": eps_prd_tax,
         "eps_ysm_tax": eps_ysm_tax,
-        "eps_ysm_soc": eps_ysm_soc,         
+        "eps_ysm_soc": eps_ysm_soc,
+        "employee_expend_list": list(employee_expend_list),
     }
 
     document.render(context)
@@ -1976,7 +2064,7 @@ def AjaxValidatePSNSlipD1Period(request):
                         employee_paysum_list.append(record)
 
 
-                # Check emp_expend list
+                # EMP_EXPEND_LIST
                 # sql = "select * from emp_expend where exp_emp_id=" + str(emp_id) + " and exp_prd_id='" + str(period_option) + "' order by exp_order";
                 sql = "select a.*,b.emp_fname_th,b.emp_lname_th,b.emp_rank,c.rank_en "
                 sql += ",b.emp_type,d.pay_th,e.dcp_th  from emp_expend as A "
