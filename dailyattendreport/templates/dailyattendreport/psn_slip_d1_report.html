@@ -291,12 +291,12 @@ thead th { white-space: nowrap; }
 							      <th scope="col">Emp ID</th>
 							      <th scope="col">Date</th>
 							      <th scope="col">Pay Type</th>
-							      <th scope="col">IN/DE</th>
+							      <th class='text-center' scope="col">IN/DE</th>
 							      <th scope="col">Amt. All</th>
 							      <th scope="col">Amt./Period</th>
 							      <th scope="col">Amt. Paid</th>
 							      <th scope="col">Amt. Balance</th>
-							      <th scope="col">Expend Type</th>
+							      <th class='text-center' scope="col">Expend Type</th>
 							      <th scope="col">Eff from Date</th>
 							      <th scope="col">Eff to Date</th>
 
@@ -546,12 +546,12 @@ function checkpaysum() {
 							emp_expend_result += "      <td nowrap>" + data.employee_expend_list[i]['exp_emp_id'] + "</td>";	
 							emp_expend_result += "      <td nowrap>" + data.employee_expend_list[i]['exp_date'] + "</td>";
 							emp_expend_result += "      <td nowrap>" + data.employee_expend_list[i]['exp_pay_type'] + "  " + data.employee_expend_list[i]['pay_th'] + "</td>";							
-							emp_expend_result += "      <td nowrap>" + data.employee_expend_list[i]['exp_inde'] + "</td>";
+							emp_expend_result += "      <td class='text-center' nowrap>" + data.employee_expend_list[i]['exp_inde'] + "</td>";
 							emp_expend_result += "      <td nowrap>" + data.employee_expend_list[i]['exp_amt_all'] + "</td>";
 							emp_expend_result += "      <td nowrap>" + data.employee_expend_list[i]['exp_amt_prd'] + "</td>";
 							emp_expend_result += "      <td nowrap>" + data.employee_expend_list[i]['exp_amt_paid'] + "</td>";							
 							emp_expend_result += "      <td nowrap>" + data.employee_expend_list[i]['exp_amt_bal'] + "</td>";
-							emp_expend_result += "      <td nowrap>" + data.employee_expend_list[i]['exp_type'] + "</td>";							
+							emp_expend_result += "      <td class='text-center' nowrap>" + data.employee_expend_list[i]['exp_type'] + "</td>";							
 							emp_expend_result += "      <td nowrap>" + data.employee_expend_list[i]['exp_eff_fdate'] + "</td>";
 							emp_expend_result += "      <td nowrap>" + data.employee_expend_list[i]['exp_eff_tdate'] + "</td>";
 
