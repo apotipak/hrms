@@ -181,11 +181,24 @@ def GeneratePSNSlipD1(request, *args, **kwargs):
                 table = "HIS_PAY_SUM"
         
         # PAYSUM / HIS_PAY_SUM
+        '''
         sql = "SELECT a.*,b.pay_th,b.pay_tax FROM " + str(table) + " as A left join t_paytype as B on a.eps_pay_type=b.pay_type "
         sql += "where eps_prd_id='" + str(period_option) + "' and eps_emp_id=" + str(emp_id) + " "
-        sql += "ORDER BY eps_pay_type"
+        sql += "ORDER BY eps_pay_type, eps_pay_seq;"
+        print("SQL 2: ", sql)
+        '''
+
+        # sql = "select prd_date_paid, emp_fname_th, emp_lname_th, dept_en, title_th, emp_acc_bank, emp_acc_no, emp_dept, emp_rank, emp_term_date "
+        # sql += "eps_emp_id, eps_prd_id, eps_pay_type, eps_ysm_in, eps_ysm_prv, eps_ysm_soc, eps_ysm_tax, eps_prd_in, eps_prd_de, eps_prd_net, eps_prd_tax "
+        # sql += ", pay_th, pay_inde, eps_comp, eps_percent, eps_wrk_day, eps_wrk_hr, pay_tax, eps_paid_stat "
+
+        sql = "select * "
+        sql += "FROM R_HPAYSLIP "
+        sql += "where eps_prd_id='" + str(period_option) + "' and eps_emp_id=" + str(emp_id) + " "
+        sql += "ORDER BY eps_prd_de, eps_prd_net, eps_prd_tax;"
         print("SQL 2: ", sql)
 
+        
         '''
         # R_PAYSLIP / R_HPAYSLIP
         sql = "select eps_emp_id,eps_prd_id,eps_pay_type paytype,eps_prd_order,eps_inde,eps_emp_type,eps_emp_dept,eps_amt,eps_paid,eps_comp,"
@@ -218,7 +231,10 @@ def GeneratePSNSlipD1(request, *args, **kwargs):
                 for item in employee_paysum_obj:
                     if (row_count == 1):
                         row_count = row_count + 1                        
-                        eps_paid_stat = item[31]
+                        
+                        # eps_paid_stat = item[31]
+                        eps_paid_stat = item[67]
+                        
                         if eps_paid_stat=='P':
                             eps_paid_stat_text = 'P : PAID'
                         elif eps_paid_stat=='H':
@@ -229,68 +245,111 @@ def GeneratePSNSlipD1(request, *args, **kwargs):
                             eps_paid_stat_text = eps_paid_stat
 
                         # Gross Income
-                        eps_prd_in = '{:,}'.format(item[27])                        
+                        # eps_prd_in = '{:,}'.format(item[27])
+                        eps_prd_in = "" if item[63] is None else '{:,}'.format(item[63])
 
                         # Net Income
-                        eps_prd_net = '{:,}'.format(item[29])
+                        # eps_prd_net = '{:,}'.format(item[29])
+                        eps_prd_net = "" if item[65] is None else '{:,}'.format(item[65])
 
                         # YTD Income
-                        eps_ysm_in = '{:,}'.format(item[14])
+                        # eps_ysm_in = '{:,}'.format(item[14])
+                        eps_ysm_in = "" if item[50] is None else '{:,}'.format(item[50])
 
                         # YTD Prov.Func
-                        eps_ysm_prv = '{:,}'.format(item[19])
+                        # eps_ysm_prv = '{:,}'.format(item[19])                        
+                        eps_ysm_prv = "" if item[55] is None else '{:,}'.format(item[55])
 
                         # Total Deduct
-                        eps_prd_de = '{:,}'.format(item[28])
+                        # eps_prd_de = '{:,}'.format(item[28])
+                        eps_prd_de = "" if item[64] is None else '{:,}'.format(item[64])
 
                         # Tax
-                        eps_prd_tax = '{:,}'.format(item[30])
+                        # eps_prd_tax = '{:,}'.format(item[30])
+                        eps_prd_tax = "" if item[58] is None else '{:,}'.format(item[58])
 
                         # YTD Tax
-                        eps_ysm_tax = '{:,}'.format(item[21])
+                        # eps_ysm_tax = '{:,}'.format(item[21])
+                        eps_ysm_tax = "" if item[57] is None else '{:,}'.format(item[57])
 
                         # YTD Social Security
-                        eps_ysm_soc = '{:,}'.format(item[20])
+                        # eps_ysm_soc = '{:,}'.format(item[20])
+                        eps_ysm_soc = "" if item[56] is None else '{:,}'.format(item[56])
 
-                    eps_emp_id = item[0]
-                    eps_pay_type = item[2]
-                    pay_th = item[37]
+                    # eps_emp_id = item[0]
+                    eps_emp_id = item[36]
+                    
+                    # eps_pay_type = item[2]
+                    eps_pay_type = item[38]
+                    
+                    # pay_th = item[37]
+                    pay_th = item[0]
+                    
                     payment_type = str(eps_pay_type) + " " + str(pay_th)
 
-                    # income_or_deduct = item[7]
-                    income_or_deduct = '{:,}'.format(item[7])
+                    # income_or_deduct = '{:,}'.format(item[26])
+                    income_or_deduct = item[43]
 
-                    eps_inde = item[4]                    
+                    # eps_inde = item[4]
+                    eps_inde = item[4]
                     
+                    '''
                     if (item[9] is not None):
                         eps_comp = item[9]
                     else:
                         eps_comp = ""
+                    '''
+                    if (item[45] is not None):
+                        eps_comp = item[45]
+                    else:
+                        eps_comp = ""
 
+                    '''
                     if (item[10] is not None):
                         eps_percent = item[10]
                     else:
                         eps_percent = ""
+                    '''
+                    if (item[46] is not None):
+                        eps_percent = item[46]
+                    else:
+                        eps_percent = ""
 
-                    eps_wrk_day = item[12]
+                    '''                    
                     if (item[12] is not None):
                         eps_wrk_day = item[12]
                     else:
                         eps_wrk_day = ""
+                    '''
+                    if (item[48] is not None):
+                        eps_wrk_day = item[48]
+                    else:
+                        eps_wrk_day = ""
 
-                    eps_wrk_hr = item[13]
+                    
+                    '''
                     if (item[13] is not None):
                         eps_wrk_hr = item[13]
                     else:
                         eps_wrk_hr = ""
+                    '''                    
+                    if (item[49] is not None):
+                        eps_wrk_hr = item[49]
+                    else:
+                        eps_wrk_hr = ""
+
 
                     # PAY TAX
-                    # pay_tax = item[38]
+                    '''
                     if (item[38] == 1):
                         pay_tax = 1
                     else:
                         pay_tax = 0
-                    print("pay_tax : ", pay_tax)
+                    '''
+                    if (item[5] == 1):
+                        pay_tax = 1
+                    else:
+                        pay_tax = 0
 
 
                     record = {
@@ -1965,6 +2024,7 @@ def AjaxValidatePSNSlipD1Period(request):
                             exp_prd_frm = item[15]
                             exp_prd_to = item[16]
                             exp_prd_id = item[17]
+                            pay_th = item[37]
 
                             record = {
                                 "exp_no": exp_no,
@@ -1973,6 +2033,7 @@ def AjaxValidatePSNSlipD1Period(request):
                                 "exp_emp_id": exp_emp_id,
                                 "exp_date": exp_date,
                                 "exp_pay_type": exp_pay_type,
+                                "pay_th": pay_th,
                                 "exp_dcp_id": exp_dcp_id,
                                 "exp_order": exp_order,
                                 "exp_inde": exp_inde,
@@ -1982,8 +2043,8 @@ def AjaxValidatePSNSlipD1Period(request):
                                 "exp_amt_debt": exp_amt_debt,
                                 "exp_amt_bal": exp_amt_bal,
                                 "exp_type": exp_type,
-                                "exp_eff_fdate": exp_eff_fdate,
-                                "exp_eff_tdate": exp_eff_tdate,
+                                "exp_eff_fdate": exp_eff_fdate.strftime("%d/%m/%Y"),
+                                "exp_eff_tdate": exp_eff_tdate.strftime("%d/%m/%Y"),
                                 "exp_prd_frm": exp_prd_frm,
                                 "exp_prd_to": exp_prd_to,
                                 "exp_prd_id": exp_prd_id,

@@ -288,9 +288,35 @@ thead th { white-space: nowrap; }
 							  <thead>
 							    <tr>
 							      <th scope="col">No.</th>
-							      <th scope="col">EXP NO</th>
-							      <th scope="col">EXP DATE</th>
-							      <th scope="col">TYPE</th>
+							      <th scope="col">Emp ID</th>
+							      <th scope="col">Date</th>
+							      <th scope="col">Pay Type</th>
+							      <th scope="col">IN/DE</th>
+							      <th scope="col">Amt. All</th>
+							      <th scope="col">Amt./Period</th>
+							      <th scope="col">Amt. Paid</th>
+							      <th scope="col">Amt. Balance</th>
+							      <th scope="col">Expend Type</th>
+							      <th scope="col">Eff from Date</th>
+							      <th scope="col">Eff to Date</th>
+
+							      <!--
+							      <th scope="col">Period From</th>
+							      <th scope="col">Period To</th>
+							  	  -->
+							      <th scope="col">Current Period</th>
+
+							      <!--
+							      <th scope="col">Cur. Prd.</th>
+							      <th scope="col">Doc. Ref</th>
+							      <th scope="col">Doc. Date</th>
+							      <th scope="col">Active</th>
+							      <th scope="col">Paid. Trm</th>
+							      <th scope="col">Amt. Debt</th>
+							      <th scope="col">Debt</th>
+							      <th scope="col">Upd. Date</th>
+							      <th scope="col">Upd. By</th>
+							  	  -->
 							    </tr>
 							  </thead>
 							  <tbody>
@@ -506,17 +532,35 @@ function checkpaysum() {
 			        $("#id_ready_to_print").val(1);
 					
 
+
+
+			        // EMP_EXPEND
 			        emp_expend_result = "";
 			        if(data.employee_expend_list.length>0) {			        	
 			        	row_count = 1
 			        	for(i=0; i<data.employee_expend_list.length; i++) {
 			        		emp_expend_result += "";							
-							emp_expend_result += "    <tr>";						
+							emp_expend_result += "    <tr>";
+
 							emp_expend_result += "      <td nowrap>" + row_count + "</td>";
-							emp_expend_result += "      <td nowrap>" + data.employee_expend_list[i]['exp_no'] + "</td>";						
+							emp_expend_result += "      <td nowrap>" + data.employee_expend_list[i]['exp_emp_id'] + "</td>";	
 							emp_expend_result += "      <td nowrap>" + data.employee_expend_list[i]['exp_date'] + "</td>";
-							emp_expend_result += "      <td nowrap>" + data.employee_expend_list[i]['exp_pay_type'] + "</td>";
+							emp_expend_result += "      <td nowrap>" + data.employee_expend_list[i]['exp_pay_type'] + "  " + data.employee_expend_list[i]['pay_th'] + "</td>";							
+							emp_expend_result += "      <td nowrap>" + data.employee_expend_list[i]['exp_inde'] + "</td>";
+							emp_expend_result += "      <td nowrap>" + data.employee_expend_list[i]['exp_amt_all'] + "</td>";
+							emp_expend_result += "      <td nowrap>" + data.employee_expend_list[i]['exp_amt_prd'] + "</td>";
+							emp_expend_result += "      <td nowrap>" + data.employee_expend_list[i]['exp_amt_paid'] + "</td>";							
+							emp_expend_result += "      <td nowrap>" + data.employee_expend_list[i]['exp_amt_bal'] + "</td>";
+							emp_expend_result += "      <td nowrap>" + data.employee_expend_list[i]['exp_type'] + "</td>";							
+							emp_expend_result += "      <td nowrap>" + data.employee_expend_list[i]['exp_eff_fdate'] + "</td>";
+							emp_expend_result += "      <td nowrap>" + data.employee_expend_list[i]['exp_eff_tdate'] + "</td>";
+
+							//emp_expend_result += "      <td nowrap>" + data.employee_expend_list[i]['exp_prd_frm'] + "</td>";
+							//emp_expend_result += "      <td nowrap>" + data.employee_expend_list[i]['exp_prd_to'] + "</td>";
+							emp_expend_result += "      <td nowrap>" + data.employee_expend_list[i]['exp_prd_id'] + "</td>";
+
 							emp_expend_result += "    </tr>";
+							row_count += 1;
 			        	}
 			        } else {
 						emp_expend_result += "    <tr>";						
@@ -653,13 +697,8 @@ function print_document() {
 	emp_id = $("#id_emp_id").val();
 
 	if(is_ready_to_print == 1) {
-		//checkpaysum();	
-		//alert("todo");
-		//return false;
-
 		var href = "/reports/cms/generate-psn-slip-d1/" + emp_id + "/" + period;
 	    window.open(href, '_blank');
-
 	} else {
 	  	$(document).Toasts('create', {
 	    	class: "bg-danger", 
