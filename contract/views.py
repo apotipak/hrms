@@ -3879,13 +3879,13 @@ def generate_contract(request, *args, **kwargs):
                     cus_service_list_day = cursor.fetchall()
                     count_shift_day = len(cus_service_list_day)
                     for row in cus_service_list_day:                        
-                        srv_rate_day = srv_rate_day + (int(row[5]) * int(row[8])) # row[8] = srv_rate
+                        srv_rate_day = srv_rate_day + (float(row[5]) * float(row[8])) # row[8] = srv_rate
 
                     cursor.execute("select cus_name_th, cus_name_en, shf_type, shf_time_frm, shf_time_to, srv_qty, rank_th, srv_rem, srv_rate, shf_desc, rank_en from V_CONTRACT where cnt_id=" + cnt_id + " and srv_active=1 and shf_type='N' order by cnt_id, shf_type, rank_grd")
                     cus_service_list_night = cursor.fetchall()
                     count_shift_night = len(cus_service_list_night)
                     for row in cus_service_list_night:
-                        srv_rate_night = srv_rate_night + (int(row[5]) * int(row[8])) # row[8] = srv_rate
+                        srv_rate_night = srv_rate_night + (float(row[5]) * float(row[8])) # row[8] = srv_rate
 
                 finally:
                     cursor.close()
@@ -3957,8 +3957,9 @@ def generate_contract(request, *args, **kwargs):
 
             sign_to_en_format = cus_contract.cnt_sign_to.strftime("%d %B %Y")
             sign_to_th_format = convert_date_english_to_thai_format(cus_contract.cnt_sign_to.strftime("%d %m %Y"))
-
+            
             srv_rate_total = '{:20,.2f}'.format(float(srv_rate_day + srv_rate_night))
+            
             #srv_rate_total_th_word = "("+num2words(srv_rate_day + srv_rate_night, lang='th')+"บาทถ้วน)"
             srv_rate_total_th_word = num2words(srv_rate_day + srv_rate_night, lang='th')+"บาทถ้วน"
             srv_rate_total_en_word = num2words(srv_rate_day + srv_rate_night, lang='en').upper()
