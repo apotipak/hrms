@@ -1158,7 +1158,17 @@
   });
 
   $(document).ready(function () {    
-    $('#id_adjust_price_effective_date').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", new Date());
+    $('#id_adjust_price_effective_date').datepicker({
+      format: 'dd/mm/yyyy', 
+      altField: '#thealtdate', 
+      altFormat: 'dd/mm/yyyy', 
+      autoclose: true, 
+      todayHighlight: true
+    }).datepicker("setDate", new Date())
+    .on("change", function() {
+      //console.log("Got change event from field");
+      show_confirmation_message();
+    });    
   });
 
   $(document).on('keypress', '#id_adjust_price', function(e) {
