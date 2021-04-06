@@ -615,7 +615,7 @@
         <h1 class="card-title pt-1"><i class="far fa-address-card"></i>&nbsp;&nbsp;<strong>{% trans 'Service List' %}</strong></h1>
         <div class="card-tools">                  
           <!-- ironman -->
-          <button id="adjust_newprice_button" type="button" class="btn btn-primary btn-sm" data-toggle="modal"><i class="fas fa-dollar-sign"></i>&nbsp;&nbsp;Adjust Price</button>
+          <button id="adjust_newprice_button" type="button" class="btn btn-primary btn-sm" data-toggle="modal"><i class="fas fa-dollar-sign"></i>&nbsp;&nbsp;Adjust Rate</button>
           &nbsp;&nbsp;|&nbsp;&nbsp;
           <button id="add_service_button" type="button" class="btn btn-success btn-sm" data-toggle="modal"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;{% trans 'Add Service' %}</button>
         </div>     
@@ -1040,14 +1040,14 @@
 
 
 <!-- ironman -->
-<!-- Adjust new price modal -->
+<!-- Adjust Rate modal -->
 <div class="modal fade" id="adjust_new_price_modal" tabindex="-1" role="dialog">
 
   <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
     <div class="modal-content">
       
       <div class="modal-header bg-primary text-white" style="padding:7px;">
-        <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-dollar-sign fa-sm text-white"></i>&nbsp;&nbsp;<strong>{% trans 'Adjust Price' %}</strong></h5>
+        <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-dollar-sign fa-sm text-white"></i>&nbsp;&nbsp;<strong>{% trans 'Adjust Rate' %}</strong></h5>
         <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -1067,34 +1067,34 @@
 
                 <div class="input-group col-12">
 
-                  <div class="form-check col-6">
+                  <div class="form-check col-4">
                     <label class="form-check-label">
-                      <input type="radio" class="form-check-input" id="id_increase_price" name="adjustPriceOptions" value="0"><b>Increase</b>
+                      <input type="radio" class="form-check-input" id="id_increase_price" name="adjustPriceOptions" value="0" checked><b>Increase</b>
                     </label>
                   </div>
 
-                  <div class="form-check col-6">
+                  <div class="form-check col-4">
                     <label class="form-check-label">
                       <input type="radio" class="form-check-input" id="id_decrease_price" name="adjustPriceOptions" value="1"><b>Decrease</b>
                     </label>
                   </div>
-                </div>
 
-                <div class="input-group col-12">&nbsp;</div>
+                  <div class="input-group col-4 p-0 pl-2">
+                    <!--<div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:40px;"><b>%</b></span></div>-->
+                    <input type="number" min=0 maxlength="2" name="adjust_price" class="form-control border-bottom-1 rounded-0 bg-white text-center" value="" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" id="id_adjust_price">
+                    <div class="input-group-prepend text-center"><span class="input-group-text border-bottom-0 rounded-0 p-0 text-dark text-center" style="background-color: #d2d4d6; width:25px;">&nbsp;<b>%</b>&nbsp;</span></div>
 
+                  </div>
 
-                <div class="input-group col-12">
-                  <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:60px;">&nbsp;&nbsp;&nbsp;<b>%</b></span></div>
-                  <input type="number" min=0 maxlength="10" name="adjust_price" class="form-control border-bottom-1 border-left-0 rounded-0 bg-white" style="width:50px;" value="0" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" id="id_adjust_price">
-                </div>
+                </div>              
 
-
-                <div class="input-group col-12">                
+                <div class='col-12 p-0 pl-2'><b>Effective From</b></div>
+                <div class="input-group col-12 p-0 pl-2">                  
                   <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:60px;">&nbsp;&nbsp;&nbsp;<i class="far fa-calendar-alt"></i></span></div>
                   <input type="text" name="a0djust_price_effective_date" class="form-control border-bottom-1 border-left-0 rounded-0 bg-white" style="width:50px;" id="id_adjust_price_effective_date">
                 </div>
 
-
+                <div class='col-12 pt-2 text-dark' id="confirmation_message"></div>
               </div>
             </div>
 
@@ -1124,8 +1124,81 @@
 {% block javascript %}
 <script>
 
+  function show_confirmation_message() {
+    adjust_price_option = $("input[name=adjustPriceOptions]:checked").val();
+    adjust_price = $("#id_adjust_price").val();
+
+    if(adjust_price_option=="0") {
+      confirmation_message = "ระบบจะ <b>ปรับราคาเพิ่ม <span class='text-danger'> " + adjust_price + " % </span></b>จากราคาเดิม<br>";  
+    } else {
+      confirmation_message = "ระบบจะ <b>ปรับราคาลง <span class='text-danger'>" + adjust_price + " % </span></b>จากราคาเดิม<br>";  
+    }
+    
+    confirmation_message += "มีผลตั้งแต่ <b>วันที่</b> <span class='text-danger'><b>" + $('#id_adjust_price_effective_date').val() + "</b></span><br>";
+    confirmation_message += "<div class='text-dark'><input type='checkbox' id='id_confirm_new_rate'><label for='id_confirm_new_rate' class='form-check-label' style='cursor: pointer;'>&nbsp;&nbsp;<b>ยืนยัน</b></label></div>";
+            
+    $("#confirmation_message").html(confirmation_message);    
+  }
+
+  $("form input:radio").change(function () {
+    $("#id_confirm_new_rate").prop("checked", false);
+
+    show_confirmation_message();
+
+  });
+
+  $('#adjust_new_price_modal').on('hidden.bs.modal', function (e) {
+    $("#id_adjust_price").val(null);
+    $("#confirmation_message").html("");
+    $("#id_adjust_price").css('border-color','');
+    $("#id_adjust_price").css('border-style','');    
+  });
+
   $(document).ready(function () {    
-    $('#id_adjust_price_effective_date').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", new Date());    
+    $('#id_adjust_price_effective_date').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", new Date());
+  });
+
+  $(document).on('keypress', '#id_adjust_price', function(e) {
+    
+    $("#id_adjust_price").css('border-color','');
+    $("#id_adjust_price").css('border-style','');
+    
+  });
+
+  $("#id_adjust_price").bind("keyup",function(e){
+    var keyup_point;
+    keyup_point = this.selectionStart;
+    
+    if(e.keyCode==13) {
+      adjust_price_option = $("input[name=adjustPriceOptions]:checked").val();
+      adjust_price = $("#id_adjust_price").val();
+
+      if(adjust_price <= 0) {
+        $(document).Toasts('create', {
+          class: "bg-danger", 
+          title: "{% trans 'Error' %}",
+          subtitle: '',
+          autohide: true,
+          delay: 2000,
+          body: "กรุณาป้อนค่าที่ต้องการใช้คำนวณราคาใหม่",
+          autoDismiss: true,
+          close: true,
+          autoremove: true,
+        });
+
+        $("#id_adjust_price").css('background-color', '#ffff00');
+        $("#id_adjust_price").css('border-color','red');        
+        $("#id_adjust_price").css('border-style','solid');
+
+        $("#id_adjust_price").focus();
+        return false;
+      } else {
+        show_confirmation_message();
+      }
+    }
+    else {
+      $("#id_confirm_new_rate").prop("checked", false);
+    }    
   });
 
   function adjust_new_price_save() {
@@ -1138,7 +1211,7 @@
         subtitle: '',
         autohide: true,
         delay: 2000,
-        body: "กรุณาเลือกออพชันการปรับราคาใหม่",
+        body: "กรุณาเลือกการปรับราคาขึ้นหรือลง",
         autoDismiss: true,
         close: true,
         autoremove: true,
@@ -1154,12 +1227,17 @@
           subtitle: '',
           autohide: true,
           delay: 2000,
-          body: "กรุณาตรวจสอบค่าที่ต้องการใช้ปรับราคาใหม่",
+          body: "กรุณาป้อนค่าที่ต้องการใช้คำนวณราคาใหม่",
           autoDismiss: true,
           close: true,
           autoremove: true,
         });
 
+        $("#id_adjust_price").css('background-color', '#ffff00');
+        $("#id_adjust_price").css('border-color','red');        
+        $("#id_adjust_price").css('border-style','solid');
+
+        $("#id_adjust_price").focus();
         return false;
 
       } else {
@@ -1176,11 +1254,34 @@
 
         //alert(effective_from);
 
-        prm1 = cnt_id;
-        prm2 = "50";
-        prm3 = "Test";
-        prm4 = "2021-05-09";
-        prm5 = "0";
+        confirm_new_rate = $("#id_confirm_new_rate").val();
+        if(confirm_new_rate!=null) {
+          if ($('#id_confirm_new_rate').is(":checked"))
+            confirm_new_rate = 1;
+          else
+            confirm_new_rate = 0;
+
+          //alert(confirm_new_rate);
+          if(adjust_price_option=="0") {
+            confirmation_message = "ระบบจะปรับราคา <b><span class='text-danger'>เพิ่ม " + adjust_price + " % </span></b>จากราคาเดิม<br>";  
+          } else {
+            confirmation_message = "ระบบจะปรับราคา <b><span class='text-danger'>ลง " + adjust_price + " % </span></b>จากราคาเดิม<br>";  
+          }
+          
+          confirmation_message += "มีผลตั้งแต่วันที่ " + $('#id_adjust_price_effective_date').val() + "<br>";        
+          confirmation_message += "<div class='text-dark'><input type='checkbox' id='id_confirm_new_rate'><label for='id_confirm_new_rate' class='form-check-label' style='cursor: pointer;'>&nbsp;&nbsp;<b>ยืนยัน</b></label></div>";
+          
+          $("#confirmation_message").html(confirmation_message);
+
+        } else {
+
+
+          alert("no confirm button");
+        }
+
+        
+
+        return false;
 
         $.ajax({
             url : "/contract/ajax/sp_adjust_new_price/",
