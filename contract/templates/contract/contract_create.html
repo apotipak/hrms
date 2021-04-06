@@ -4859,6 +4859,8 @@
       srv_cost_rate = $('#id_srv_cost_rate').val();
       srv_rem = $('#id_srv_rem').val();
 
+      //alert(srv_cost_rate);
+
       // DEMO
       // START
       /*
@@ -4928,6 +4930,8 @@
           $('#id_cnt_sale_amt').val(data.active_cnt_sale_amt);
           
           // Reloade service list table
+          //alert(data.cnt_id);
+
           $.ajax({
             url : "/contract/ajax/reload_service_list",
             type: 'get',          

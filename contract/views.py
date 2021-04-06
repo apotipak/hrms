@@ -1847,7 +1847,18 @@ def update_customer_service(request):
             srv_rem = data.srv_rem
             upd_date = data.upd_date
             upd_flag = data.upd_flag
-            srv_cost_rate = data.srv_cost_rate
+            
+
+            print("TTTTTT11 : ", data.srv_cost_rate)
+
+            if data.srv_cost_rate is None:
+                srv_cost_rate = 0
+            else:
+                srv_cost_rate = data.srv_cost_rate
+
+            print("TTTTTT22 : ", srv_cost_rate)
+
+
             srv_cost_change = data.srv_cost_change
             op1 = data.op1
             op2 = data.op2
@@ -1904,7 +1915,7 @@ def update_customer_service(request):
                 "srv_rem": data.srv_rem,
                 "upd_date": data.upd_date,
                 "upd_flag": data.upd_flag,
-                "srv_cost_rate": data.srv_cost_rate,
+                "srv_cost_rate": srv_cost_rate,
                 "srv_cost_change": data.srv_cost_change,
                 "op1": data.op1,
                 "op2": data.op2,
@@ -2269,6 +2280,8 @@ def save_customer_service_item(request):
     srv_cost_rate = request.GET["srv_cost_rate"]
     srv_rem = request.GET["srv_rem"]
 
+    print("SRV_COST_RATE = ", srv_cost_rate)
+
     # DEMO
     # START
     '''
@@ -2450,6 +2463,23 @@ def save_customer_service_item(request):
                     modified_records.append(record)
                     field_is_modified_count = field_is_modified_count + 1
 
+
+            # SRV_COST_RATE
+            if (srv_cost_rate is not None):
+                if data.srv_cost_rate is None:
+                    field_is_modified, record = check_modified_field("CUS_SERVICE", srv_id, "SRV_COST_RATE", 0, int(srv_cost_rate), "E", request)
+                    if field_is_modified:
+                        data.srv_cost_rate = srv_cost_rate
+                        modified_records.append(record)
+                        field_is_modified_count = field_is_modified_count + 1
+                else:                
+                    field_is_modified, record = check_modified_field("CUS_SERVICE", srv_id, "SRV_COST_RATE", int(data.srv_cost_rate), int(srv_cost_rate), "E", request)
+                    if field_is_modified:
+                        data.srv_cost_rate = srv_cost_rate
+                        modified_records.append(record)
+                        field_is_modified_count = field_is_modified_count + 1
+
+
             # SRV_REM
             if (srv_rem is not None):
                 field_is_modified, record = check_modified_field("CUS_SERVICE", srv_id, "Remark", data.srv_rem, srv_rem, "E", request)
@@ -2550,6 +2580,7 @@ def save_customer_service_item(request):
             else:
                 response = JsonResponse(data={
                     "success": True,
+                    "cnt_id": cnt_id,
                     "message": "Sorry, nothing to update.",
                     "class": "bg-warning",
                 })            
@@ -2559,6 +2590,7 @@ def save_customer_service_item(request):
         except CusService.DoesNotExist:
             response = JsonResponse(data={
                 "success": False,
+                "cnt_id": cnt_id,
                 "message": "Service ID not found.",
                 "results": [],
             })
@@ -2567,6 +2599,7 @@ def save_customer_service_item(request):
     else:
         response = JsonResponse(data={
             "success": False,
+            "cnt_id": cnt_id,
             "message": "Service ID not found.",
             "results": [],
         })
@@ -2670,7 +2703,7 @@ def reload_service_list(request):
     sql += "a.srv_rem,a.srv_active, a.upd_date,a.upd_by,a.upd_flag,a.op1 From cus_service as a left join t_shift as b on a.srv_shif_id=b.shf_id "
     sql += "left join com_rank as c on a.srv_rank=c.rank_id Where  a.upd_flag<>'D' and a.cnt_id = " + str(cnt_id) + " "        
     sql += "order by a.srv_active desc,b.shf_type,a.srv_rank desc;"
-    print("SQL:", sql)
+    print("SQL11:", sql)
 
     try:
         with connection.cursor() as cursor:     
@@ -2695,6 +2728,7 @@ def reload_service_list(request):
             "srv_rank": item[4],
             "srv_rate": item[17],
             "srv_cost": item[18],
+            "srv_cost_rate": item[19],
             "srv_mon": item[9],
             "srv_tue": item[10],
             "srv_wed": item[11],
