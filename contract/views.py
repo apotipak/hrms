@@ -1848,16 +1848,10 @@ def update_customer_service(request):
             upd_date = data.upd_date
             upd_flag = data.upd_flag
             
-
-            print("TTTTTT11 : ", data.srv_cost_rate)
-
             if data.srv_cost_rate is None:
                 srv_cost_rate = 0
             else:
-                srv_cost_rate = data.srv_cost_rate
-
-            print("TTTTTT22 : ", srv_cost_rate)
-
+                srv_cost_rate = data.srv_cost_rate        
 
             srv_cost_change = data.srv_cost_change
             op1 = data.op1
