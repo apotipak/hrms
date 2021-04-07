@@ -28,6 +28,7 @@ def index(request):
     project_version = settings.PROJECT_VERSION
     today_date = settings.TODAY_DATE
 
+    '''
     if request.user.is_superuser:
         employee_photo = ""
     else:
@@ -37,6 +38,10 @@ def index(request):
         else:
             employee_info = None
             employee_photo = None
+    '''
+    
+    employee_info = None
+    employee_photo = None
 
     return render(request, 'index.html', {
     	'project_name': project_name, 
