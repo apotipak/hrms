@@ -624,11 +624,14 @@
       <div class="card-body" style="background-color: #FOFOFO; padding:0px 2px 2px 2px;">
         <div class="row">
           
+          
           <div class="col-md-12 table-responsive">
+          <!--<div class="panel-body scroll" style="overflow:auto; height: calc(100vh - 200px);">-->
 
           <table id='customer-list-table' class='table table-striped table-sm'>
             <thead class='thead-light'>
               <tr class="table-secondary">
+                <th>No</th>
                 <th>{% trans 'Eff Frm' %}</th>
                 <th scope="col">{% trans 'Eff To' %}</th>            
                 <th scope="col" nowrap>{% trans 'Shift Time' %}</th>
@@ -656,6 +659,7 @@
                 {% for item in cus_service %}
                   <tr>
                   {% if item.srv_active %}
+                  <td>No</td>
                   <td><small><a href="javascript:void(0);">{{item.srv_eff_frm|date:'d/m/Y'}}</a></small></td>
                   <td><small><a href="javascript:void(0);">{{item.srv_eff_to|date:'d/m/Y'}}</a></small></td>
                   <td><small><a href="javascript:void(0);">{{item.srv_shif_id.shf_desc}}</a></small></td>
@@ -674,6 +678,7 @@
                   <td><small><a href="javascript:void(0);">{{item.srv_rem}}</a></small></td>
                   <td><span class="badge badge-success">{% trans 'Active' %}</span></td>
                   {% else %}
+                  <td>No</td>
                   <td><small>{{item.srv_eff_frm|date:'d/m/Y'}}</small></td>
                   <td><small>{{item.srv_eff_to|date:'d/m/Y'}}</small></td>
                   <td><small>{{item.srv_shif_id.shf_desc}}</small></td>
@@ -716,7 +721,7 @@
 
                 {% endfor %}                  
                 {% else %}
-                  <tr><td colspan='18' class='text-center'><br><br><br>There is no data.<br><br><br><br><br></tr>
+                  <tr><td colspan='19' class='text-center'><br><br><br>There is no data.<br><br><br><br><br></tr>
               {% endif %}                
               </tbody>
             </table>
