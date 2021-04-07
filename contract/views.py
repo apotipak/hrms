@@ -2278,23 +2278,23 @@ def save_customer_service_item(request):
 
     # DEMO
     # START
-    
+    '''
     spay1 = float(request.GET["spay1"])
     spay2 = float(request.GET["spay2"])
     spay3 = float(request.GET["spay3"])
     spay4 = float(request.GET["spay4"])
-    
+    '''
     # STOP
 
 
     # ACTUAL
     # START
-    '''
+    
     spay1 = 0
     spay2 = 0
     spay3 = 0
     spay4 = 0
-    '''
+    
     # STOP
 
     #TODO - all print below will be comment
