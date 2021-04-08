@@ -564,7 +564,7 @@ function checkpaysum() {
 			        	}
 			        } else {
 						emp_expend_result += "    <tr>";						
-						emp_expend_result += "      <td colspan='4'>There is no data.</td>";
+						emp_expend_result += "      <td colspan='4'>ยังไม่มีข้อมูลในระบบ</td>";
 						emp_expend_result += "    </tr>";			        	
 			        }
 
@@ -583,7 +583,12 @@ function checkpaysum() {
 
 
 				} else {
-					result = "<tr><td colspan='10' class='text-center'>ยังไม่มีข้อมูลค่าแรงในระบบ</td></tr>";
+					emp_expend_result = "";
+					emp_expend_result += "    <tr>";						
+					emp_expend_result += "      <td colspan='4'>ยังไม่มีข้อมูลในระบบ</td>";
+					emp_expend_result += "    </tr>";					
+
+					result = "<tr><td colspan='10' class='text-center'>ยังไม่มีข้อมูลในระบบ</td></tr>";
 				    // Paid Status
 				    $("#eps_paid_stat_text").text("");
 				    
