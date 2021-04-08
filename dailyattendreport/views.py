@@ -229,151 +229,260 @@ def GeneratePSNSlipD1(request, *args, **kwargs):
         if employee_paysum_obj is not None:
             if len(employee_paysum_obj) > 0:
                 
-                row_count = 1
-                for item in employee_paysum_obj:
-                    if (row_count == 1):
-                        row_count = row_count + 1                        
+                if table == "R_PAYSLIP":
+
+                    row_count = 1
+                    for item in employee_paysum_obj:
+                        if (row_count == 1):
+                            row_count = row_count + 1                        
+                            
+                            eps_paid_stat = item[31]
+                            
+                            if eps_paid_stat=='P':
+                                eps_paid_stat_text = 'P : PAID'
+                            elif eps_paid_stat=='H':
+                                eps_paid_stat_text = 'H : HOLDING'
+                            elif eps_paid_stat=='C':
+                                eps_paid_stat_text = 'C : CHEQUE'
+                            else:
+                                eps_paid_stat_text = eps_paid_stat
+
+                            # Gross Income
+                            eps_prd_in = 0 if item[27] is None else '{:,}'.format(item[27])
+
+                            # Net Income
+                            eps_prd_net = 0 if item[29] is None else '{:,}'.format(item[29])
+
+                            # YTD Income
+                            eps_ysm_in = 0 if item[14] is None else '{:,}'.format(item[14])
+
+                            # YTD Prov.Func
+                            eps_ysm_prv = 0 if item[19] is None else '{:,}'.format(item[19])
+
+                            # Total Deduct
+                            eps_prd_de = 0 if item[28] is None else '{:,}'.format(item[28])
+
+                            # Tax
+                            eps_prd_tax = 0 if item[30] is None else '{:,}'.format(item[30])
+
+                            # YTD Tax
+                            eps_ysm_tax = 0 if item[21] is None else '{:,}'.format(item[21])
+
+                            # YTD Social Security
+                            eps_ysm_soc = 0 if item[20] is None else '{:,}'.format(item[20])
+
+                        eps_emp_id = item[0]
                         
-                        # eps_paid_stat = item[31]
-                        eps_paid_stat = item[67]
+                        eps_pay_type = item[2]
                         
-                        if eps_paid_stat=='P':
-                            eps_paid_stat_text = 'P : PAID'
-                        elif eps_paid_stat=='H':
-                            eps_paid_stat_text = 'H : HOLDING'
-                        elif eps_paid_stat=='C':
-                            eps_paid_stat_text = 'C : CHEQUE'
+                        pay_th = item[37]
+                        
+                        payment_type = str(eps_pay_type) + " " + str(pay_th)
+
+                        income_or_deduct = item[26]
+
+                        eps_inde = item[4]
+                        
+                        if (item[9] is not None):
+                            eps_comp = item[9]
                         else:
-                            eps_paid_stat_text = eps_paid_stat
+                            eps_comp = ""
 
-                        # Gross Income
-                        # eps_prd_in = '{:,}'.format(item[27])
-                        eps_prd_in = "" if item[63] is None else '{:,}'.format(item[63])
+                        if (item[10] is not None):
+                            eps_percent = item[10]
+                        else:
+                            eps_percent = ""
 
-                        # Net Income
-                        # eps_prd_net = '{:,}'.format(item[29])
-                        eps_prd_net = "" if item[65] is None else '{:,}'.format(item[65])
+                        if (item[12] is not None):
+                            eps_wrk_day = item[12]
+                        else:
+                            eps_wrk_day = ""
 
-                        # YTD Income
-                        # eps_ysm_in = '{:,}'.format(item[14])
-                        eps_ysm_in = "" if item[50] is None else '{:,}'.format(item[50])
+                        if (item[13] is not None):
+                            eps_wrk_hr = item[13]
+                        else:
+                            eps_wrk_hr = ""
 
-                        # YTD Prov.Func
-                        # eps_ysm_prv = '{:,}'.format(item[19])                        
-                        eps_ysm_prv = "" if item[55] is None else '{:,}'.format(item[55])
+                        # PAY TAX
+                        if (item[38] == 1):
+                            pay_tax = 1
+                        else:
+                            pay_tax = 0
 
-                        # Total Deduct
-                        # eps_prd_de = '{:,}'.format(item[28])
-                        eps_prd_de = "" if item[64] is None else '{:,}'.format(item[64])
+                        record = {
+                            "eps_emp_id": eps_emp_id,
+                            "payment_type": payment_type,
+                            "eps_inde": eps_inde,
+                            "income_or_deduct": income_or_deduct,
+                            "eps_comp": eps_comp,
+                            "eps_percent": eps_percent,
+                            "eps_wrk_day": eps_wrk_day,
+                            "eps_wrk_hr": eps_wrk_hr,
+                            "eps_paid_stat": eps_paid_stat,
+                            "pay_tax": pay_tax,
+                        }
 
-                        # Tax
-                        # eps_prd_tax = '{:,}'.format(item[30])
-                        eps_prd_tax = "" if item[58] is None else '{:,}'.format(item[58])
+                        if (eps_inde!='S'):
+                            employee_paysum_list.append(record)
+                            if eps_inde=='I':
+                                employee_paysum_income_list.append(record)
 
-                        # YTD Tax
-                        # eps_ysm_tax = '{:,}'.format(item[21])
-                        eps_ysm_tax = "" if item[57] is None else '{:,}'.format(item[57])
-
-                        # YTD Social Security
-                        # eps_ysm_soc = '{:,}'.format(item[20])
-                        eps_ysm_soc = "" if item[56] is None else '{:,}'.format(item[56])
-
-                    # eps_emp_id = item[0]
-                    eps_emp_id = item[36]
-                    
-                    # eps_pay_type = item[2]
-                    eps_pay_type = item[38]
-                    
-                    # pay_th = item[37]
-                    pay_th = item[0]
-                    
-                    payment_type = str(eps_pay_type) + " " + str(pay_th)
-
-                    # income_or_deduct = '{:,}'.format(item[26])
-                    income_or_deduct = item[43]
-
-                    # eps_inde = item[4]
-                    eps_inde = item[4]
-                    
-                    '''
-                    if (item[9] is not None):
-                        eps_comp = item[9]
-                    else:
-                        eps_comp = ""
-                    '''
-                    if (item[45] is not None):
-                        eps_comp = item[45]
-                    else:
-                        eps_comp = ""
-
-                    '''
-                    if (item[10] is not None):
-                        eps_percent = item[10]
-                    else:
-                        eps_percent = ""
-                    '''
-                    if (item[46] is not None):
-                        eps_percent = item[46]
-                    else:
-                        eps_percent = ""
-
-                    '''                    
-                    if (item[12] is not None):
-                        eps_wrk_day = item[12]
-                    else:
-                        eps_wrk_day = ""
-                    '''
-                    if (item[48] is not None):
-                        eps_wrk_day = item[48]
-                    else:
-                        eps_wrk_day = ""
-
-                    
-                    '''
-                    if (item[13] is not None):
-                        eps_wrk_hr = item[13]
-                    else:
-                        eps_wrk_hr = ""
-                    '''                    
-                    if (item[49] is not None):
-                        eps_wrk_hr = item[49]
-                    else:
-                        eps_wrk_hr = ""
+                            if eps_inde=='D':
+                                employee_paysum_deduct_list.append(record)
 
 
-                    # PAY TAX
-                    '''
-                    if (item[38] == 1):
-                        pay_tax = 1
-                    else:
-                        pay_tax = 0
-                    '''
-                    if (item[5] == 1):
-                        pay_tax = 1
-                    else:
-                        pay_tax = 0
+                elif table == "R_HPAYSLIP":
+                    row_count = 1
+                    for item in employee_paysum_obj:
+                        if (row_count == 1):
+                            row_count = row_count + 1                        
+                            
+                            # eps_paid_stat = item[31]
+                            eps_paid_stat = item[67]
+                            
+                            if eps_paid_stat=='P':
+                                eps_paid_stat_text = 'P : PAID'
+                            elif eps_paid_stat=='H':
+                                eps_paid_stat_text = 'H : HOLDING'
+                            elif eps_paid_stat=='C':
+                                eps_paid_stat_text = 'C : CHEQUE'
+                            else:
+                                eps_paid_stat_text = eps_paid_stat
+
+                            # Gross Income
+                            print("GROSS INCOME : ", item[63])
+                            # eps_prd_in = '{:,}'.format(item[27])
+                            eps_prd_in = 0 if item[63] is None else '{:,}'.format(item[63])
 
 
-                    record = {
-                        "eps_emp_id": eps_emp_id,
-                        "payment_type": payment_type,
-                        "eps_inde": eps_inde,
-                        "income_or_deduct": income_or_deduct,
-                        "eps_comp": eps_comp,
-                        "eps_percent": eps_percent,
-                        "eps_wrk_day": eps_wrk_day,
-                        "eps_wrk_hr": eps_wrk_hr,
-                        "eps_paid_stat": eps_paid_stat,
-                        "pay_tax": pay_tax,
-                    }
+                            # Net Income
+                            # eps_prd_net = '{:,}'.format(item[29])
+                            eps_prd_net = 0 if item[65] is None else '{:,}'.format(item[65])
 
-                    if (eps_inde!='S'):
-                        employee_paysum_list.append(record)
-                        if eps_inde=='I':
-                            employee_paysum_income_list.append(record)
+                            # YTD Income
+                            # eps_ysm_in = '{:,}'.format(item[14])
+                            eps_ysm_in = 0 if item[50] is None else '{:,}'.format(item[50])
 
-                        if eps_inde=='D':
-                            employee_paysum_deduct_list.append(record)
+                            # YTD Prov.Func
+                            # eps_ysm_prv = '{:,}'.format(item[19])                        
+                            eps_ysm_prv = 0 if item[55] is None else '{:,}'.format(item[55])
+
+                            # Total Deduct
+                            # eps_prd_de = '{:,}'.format(item[28])
+                            eps_prd_de = 0 if item[64] is None else '{:,}'.format(item[64])
+
+                            # Tax
+                            # eps_prd_tax = '{:,}'.format(item[30])
+                            eps_prd_tax = 0 if item[58] is None else '{:,}'.format(item[58])
+
+                            # YTD Tax
+                            # eps_ysm_tax = '{:,}'.format(item[21])
+                            eps_ysm_tax = 0 if item[57] is None else '{:,}'.format(item[57])
+
+                            # YTD Social Security
+                            # eps_ysm_soc = '{:,}'.format(item[20])
+                            eps_ysm_soc = 0 if item[56] is None else '{:,}'.format(item[56])
+
+                        # eps_emp_id = item[0]
+                        eps_emp_id = item[36]
+                        
+                        # eps_pay_type = item[2]
+                        eps_pay_type = item[38]
+                        
+                        # pay_th = item[37]
+                        pay_th = item[0]
+                        
+                        payment_type = str(eps_pay_type) + " " + str(pay_th)
+
+                        # income_or_deduct = '{:,}'.format(item[26])
+                        income_or_deduct = item[43]
+
+                        # eps_inde = item[4]
+                        eps_inde = item[4]
+                        
+                        '''
+                        if (item[9] is not None):
+                            eps_comp = item[9]
+                        else:
+                            eps_comp = ""
+                        '''
+                        if (item[45] is not None):
+                            eps_comp = item[45]
+                        else:
+                            eps_comp = ""
+
+                        '''
+                        if (item[10] is not None):
+                            eps_percent = item[10]
+                        else:
+                            eps_percent = ""
+                        '''
+                        if (item[46] is not None):
+                            eps_percent = item[46]
+                        else:
+                            eps_percent = ""
+
+                        '''                    
+                        if (item[12] is not None):
+                            eps_wrk_day = item[12]
+                        else:
+                            eps_wrk_day = ""
+                        '''
+                        if (item[48] is not None):
+                            eps_wrk_day = item[48]
+                        else:
+                            eps_wrk_day = ""
+
+                        
+                        '''
+                        if (item[13] is not None):
+                            eps_wrk_hr = item[13]
+                        else:
+                            eps_wrk_hr = ""
+                        '''                    
+                        if (item[49] is not None):
+                            eps_wrk_hr = item[49]
+                        else:
+                            eps_wrk_hr = ""
+
+
+                        # PAY TAX
+                        '''
+                        if (item[38] == 1):
+                            pay_tax = 1
+                        else:
+                            pay_tax = 0
+                        '''
+                        if (item[5] == 1):
+                            pay_tax = 1
+                        else:
+                            pay_tax = 0
+
+
+                        record = {
+                            "eps_emp_id": eps_emp_id,
+                            "payment_type": payment_type,
+                            "eps_inde": eps_inde,
+                            "income_or_deduct": income_or_deduct,
+                            "eps_comp": eps_comp,
+                            "eps_percent": eps_percent,
+                            "eps_wrk_day": eps_wrk_day,
+                            "eps_wrk_hr": eps_wrk_hr,
+                            "eps_paid_stat": eps_paid_stat,
+                            "pay_tax": pay_tax,
+                        }
+
+                        if (eps_inde!='S'):
+                            employee_paysum_list.append(record)
+                            if eps_inde=='I':
+                                employee_paysum_income_list.append(record)
+
+                            if eps_inde=='D':
+                                employee_paysum_deduct_list.append(record)
+
+
+                else:
+                    print("Error")
 
 
 
@@ -390,7 +499,7 @@ def GeneratePSNSlipD1(request, *args, **kwargs):
             sql += "left join  t_discipline as E on a.exp_dcp_id=e.dcp_id "
             sql += "where (a.exp_no<>'') and (a.exp_prd_frm='" + str(period_option) + "' or a.exp_prd_id='" + str(period_option) + "') and a.exp_emp_id=" + str(emp_id) + " "
             sql += "order by a.exp_pay_type, a.exp_date, a.exp_emp_id;"
-
+            print("DEBUG SQL : ", sql)
             try:
                 cursor = connection.cursor()
                 cursor.execute(sql)
@@ -416,11 +525,13 @@ def GeneratePSNSlipD1(request, *args, **kwargs):
                         exp_dcp_id = item[4]
                         exp_order = item[5]
                         exp_inde = item[6]
-                        exp_amt_all = '{:,}'.format(item[7])
-                        exp_amt_prd = '{:,}'.format(item[8])
-                        exp_amt_paid = '{:,}'.format(item[9])
-                        exp_amt_debt = '{:,}'.format(item[10])
-                        exp_amt_bal = '{:,}'.format(item[11])
+
+                        exp_amt_all = 0 if item[7] is None else '{:,}'.format(item[7])
+                        exp_amt_prd = 0 if item[8] is None else '{:,}'.format(item[8])
+                        exp_amt_paid = 0 if item[9] is None else '{:,}'.format(item[9])
+                        exp_amt_debt = 0 if item[10] is None else '{:,}'.format(item[10])
+                        exp_amt_bal = 0 if item[11] is None else '{:,}'.format(item[11])
+
                         exp_type = item[12]
                         exp_eff_fdate = item[13]
                         exp_eff_tdate = item[14]
@@ -2094,6 +2205,7 @@ def AjaxValidatePSNSlipD1Period(request):
                 if employee_expend_obj is not None:
                     if len(employee_expend_obj) > 0:                        
                         for item in employee_expend_obj:
+
                             exp_no = item[0]
                             exp_emp_id = item[1]
                             exp_date = item[2].strftime("%d/%m/%Y")
@@ -2101,11 +2213,22 @@ def AjaxValidatePSNSlipD1Period(request):
                             exp_dcp_id = item[4]
                             exp_order = item[5]
                             exp_inde = item[6]
-                            exp_amt_all = '{:,}'.format(item[7])
-                            exp_amt_prd = '{:,}'.format(item[8])
-                            exp_amt_paid = '{:,}'.format(item[9])
-                            exp_amt_debt = '{:,}'.format(item[10])
-                            exp_amt_bal = '{:,}'.format(item[11])
+                            
+                            # exp_amt_all = '{:,}'.format(item[7])
+                            exp_amt_all = 0 if item[7] is None else '{:,}'.format(item[7])
+
+                            # exp_amt_prd = '{:,}'.format(item[8])
+                            exp_amt_prd = 0 if item[8] is None else '{:,}'.format(item[8])
+
+                            # exp_amt_paid = '{:,}'.format(item[9])
+                            exp_amt_paid = 0 if item[9] is None else '{:,}'.format(item[9])
+
+                            # exp_amt_debt = '{:,}'.format(item[10])
+                            exp_amt_debt = 0 if item[10] is None else '{:,}'.format(item[10])
+
+                            # exp_amt_bal = '{:,}'.format(item[11])
+                            exp_amt_bal = 0 if item[11] is None else '{:,}'.format(item[11])
+
                             exp_type = item[12]
                             exp_eff_fdate = item[13]
                             exp_eff_tdate = item[14]
