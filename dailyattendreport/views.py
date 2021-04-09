@@ -2067,7 +2067,10 @@ def AjaxSearchIncomeDeductD1(request):
     error_message = "Error"
     result_list = []
     record = {}
-
+    emp_fname_th = ""
+    emp_lname_th = ""    
+    emp_full_name = ""
+    emp_rank = ""
     pay_type_list = []
     sql = "select * from t_paytype where pay_active=1;"
     try:
@@ -2105,7 +2108,12 @@ def AjaxSearchIncomeDeductD1(request):
     if obj is not None:
         for item in obj:
             exp_prd_id = item[17]
+            
             exp_emp_id = item[1]
+            emp_fname_th = item[32].strip()
+            emp_lname_th = item[33].strip()
+            emp_rank = item[34]
+
             exp_date = item[2].strftime("%d/%m/%Y")
             exp_pay_type = item[3]
             exp_inde = item[6]
@@ -2134,9 +2142,7 @@ def AjaxSearchIncomeDeductD1(request):
                 "exp_date": exp_date,
                 "exp_pay_type": exp_pay_type,
                 "exp_inde": exp_inde,
-                "exp_amt_all": exp_amt_all,
-                
-
+                "exp_amt_all": exp_amt_all,            
                 "exp_amt_period": exp_amt_period,
                 "exp_amt_bal": exp_amt_bal,
                 "exp_eff_fdate": exp_eff_fdate,
@@ -2149,6 +2155,8 @@ def AjaxSearchIncomeDeductD1(request):
         "is_error": is_error,
         "error_message": error_message,
         "emp_id": emp_id,
+        "emp_full_name": emp_fname_th + " " + emp_lname_th,
+        "emp_rank": emp_rank,
         "pay_type_option": pay_type_option,
         "pay_type_list": list(pay_type_list),
         "result_list": list(result_list),

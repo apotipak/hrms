@@ -25,9 +25,6 @@
       </div>
 
 
-
-
-
       <div class="col-12 p-0 pt-2">
 
         <form method="post" autocomplete="off" id="search_form" name="search_form">
@@ -72,7 +69,7 @@
 
 
       <div class="col-12">
-
+        <div id="employee_profile">&nbsp;</div>
         <table class="table table-striped table-sm" id="income_deduct_history_list">
           
           <thead>
@@ -176,7 +173,8 @@ $(document).ready( function () {
             result = "";
             row_group_count = 1
             row_count = 1;
-            if(row_count>0) {
+
+            if(data.result_list.length>0) {
 
               for(i=0; i<data.result_list.length; i++) {
                 exp_prd_id = data.result_list[i]["exp_prd_id"];
@@ -208,22 +206,26 @@ $(document).ready( function () {
                 row_count = row_count + 1;
               }
     
-            } else {
-                result = "";
-                result = "<tr class='text-center' colspan='11'><br><br>There is no data.<br><br><br></td></tr>";
+              $("#employee_profile").html("<h4><b>" + data.emp_full_name + "</b> &nbsp;&nbsp;<small>" + data.emp_rank + "</small></h4>");
+              $("#income_deduct_history_list tbody").html(result);      
+            } else {              
+              result = "";
+              result = "<tr class='text-center' colspan='11'><br><br>There is no data.<br><br><br></td></tr>";                
+              $("#income_deduct_history_list tbody").html(result);      
+              $("#employee_profile").html("<h4>Not found</h4>");
+
             }
             
           }
 
-          $.LoadingOverlay("hide");
-          $("#income_deduct_history_list tbody").html(result);      
+          $.LoadingOverlay("hide");          
 
         }
       });
 
     }
     else {
-      alert("Error");
+      //alert("Error");
     }
 
   }  
