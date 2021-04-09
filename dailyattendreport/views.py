@@ -2114,6 +2114,9 @@ def AjaxSearchIncomeDeductD1(request):
             emp_lname_th = item[33].strip()
             emp_rank = item[34]
 
+            exp_doc_no = item[21]
+            exp_doc_date = "" if item[22] is None else item[22].strftime("%d/%m/%Y")
+
             exp_date = item[2].strftime("%d/%m/%Y")
             exp_pay_type = item[3]
             exp_inde = item[6]
@@ -2148,6 +2151,8 @@ def AjaxSearchIncomeDeductD1(request):
                 "exp_eff_fdate": exp_eff_fdate,
                 "exp_eff_tdate": exp_eff_tdate,
                 "pay_th": pay_th,
+                "exp_doc_no": exp_doc_no,
+                "exp_doc_date": exp_doc_date
             }
             result_list.append(record)
 

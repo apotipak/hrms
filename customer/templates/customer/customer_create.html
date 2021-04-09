@@ -1379,7 +1379,7 @@
 
 <!-- Customer District Modal -->
 <div class="modal fade" id="districtmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-search"></i>&nbsp;&nbsp;{% trans 'Select a Location' %}</h5>
@@ -1427,7 +1427,7 @@
 
 <!-- Search Customer Modal -->
 <div class="modal fade" id="search_customer_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
 
       <div class="modal-header bg-success text-white" style="padding:7px;">
@@ -1451,7 +1451,6 @@
     </div>
   </div>
 </div>
-
 
 
 <!-- /.content-wrapper -->
@@ -1516,7 +1515,9 @@
     var count = data.results.length;
 
     result = "";
-    result += "<div class='row col-12' stye='padding:0;'>";
+
+    result += "<div class='table-responsive row col-12' style='padding:0;'>";
+    //result += "<div class='row col-12' style='padding:0;'>";
 
     result += "<div class='col-8 offset-3 pb-2'>";
     result += "<form id='search_customer_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
@@ -1531,9 +1532,15 @@
     result += "  </div>";
     result += "<a href='javascript:customer_search_modal()' type='button' class='btn btn-success btn-sm mb-2'>Search</a>";            
     result += "</form>";
-    result += "</div>";        
-    result += "<div class='table-responsive' stye='padding:0;'>";        
-    result += "<table class='table table-hover table-striped table-wrapper-scroll-y my-custom-scrollbar'>";
+    result += "</div>";
+
+    // tanos
+    //result += "<div class='table-responsive' stye='padding:0;'>";
+    result += "<div stye='padding:0;'>";
+
+    //result += "<table class='table table-hover table-striped table-wrapper-scroll-y my-custom-scrollbar'>";
+    result += "<table class='table table-hover table-striped'>";
+
     result += " <thead>";
     result += "   <tr class='text-left'>";
     result += "     <th scope='col' class='text-left' nowrap>{% trans 'Cus Code' %}</th>";
@@ -1599,7 +1606,13 @@
     result += "<a href='javascript:customer_search_modal()' type='button' class='btn btn-success btn-sm mb-2'>Search</a>";            
     result += "</form>";
     result += "</div>"; 
+    
+    // tanos
     result += "<div class='table-responsive' stye='padding:0; width:100%'>";
+    //result += "<div stye='padding:0; width:100%'>";
+    
+    //result += "<table class='table table-hover table-striped table-wrapper-scroll-y my-custom-scrollbar w-100'>";
+    //result += "<table class='table table-hover table-striped'>";
     result += "<table class='table table-hover table-striped table-wrapper-scroll-y my-custom-scrollbar w-100'>";
     result += " <thead>";
     result += "   <tr class='text-left'>";

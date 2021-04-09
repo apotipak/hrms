@@ -85,10 +85,14 @@
               <th scope="col" nowrap>Amt Balance</th>
               <th scope="col" nowrap>Eff From</th>
               <th scope="col" nowrap>Eff To</th>
+              <th scope="col" nowrap>Doc No</th>
+              <th scope="col" nowrap>Doc Date</th>
             </tr>
           </thead>
           <tbody>  
             <tr>                  
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
               <td>&nbsp;</td>
               <td>&nbsp;</td>
               <td>&nbsp;</td>
@@ -188,6 +192,8 @@ $(document).ready( function () {
                 exp_eff_fdate = data.result_list[i]["exp_eff_fdate"];
                 exp_eff_tdate = data.result_list[i]["exp_eff_tdate"];
                 pay_th = data.result_list[i]["pay_th"];
+                exp_doc_no = data.result_list[i]["exp_doc_no"];
+                exp_doc_date = data.result_list[i]["exp_doc_date"];
 
                 result += "<tr>";                
                 result += "<td class='text-center' nowrap>" + row_count + "</td>";
@@ -201,6 +207,8 @@ $(document).ready( function () {
                 result += "<td nowrap>" + exp_amt_bal + "</td>";
                 result += "<td nowrap>" + exp_eff_fdate + "</td>";
                 result += "<td nowrap>" + exp_eff_tdate + "</td>";
+                result += "<td nowrap>" + exp_doc_no + "</td>";
+                result += "<td nowrap>" + exp_doc_date + "</td>";
 
                 result += "</tr>";
                 row_count = row_count + 1;
@@ -210,7 +218,7 @@ $(document).ready( function () {
               $("#income_deduct_history_list tbody").html(result);      
             } else {              
               result = "";
-              result = "<tr class='text-center' colspan='11'><br><br>There is no data.<br><br><br></td></tr>";                
+              result = "<tr class='text-center' colspan='13'><br><br>There is no data.<br><br><br></td></tr>";                
               $("#income_deduct_history_list tbody").html(result);      
               $("#employee_profile").html("<h4>Not found</h4>");
 
