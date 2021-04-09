@@ -1377,6 +1377,39 @@
 
 </div>
 
+
+
+
+<!-- Search Customer Modal -->
+<div class="modal fade" id="search_customer_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    
+    <div class="modal-content">
+
+      <div class="modal-header bg-success text-white" style="padding:7px;">
+        <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-search"></i>&nbsp;{% trans 'Select a Customer' %}</h5>
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body" style="padding:15px 0 0 12px;">
+        <span class="text-center">{% trans 'Loading, please wait...' %}</span>
+      </div>
+
+      <div class="modal-footer" style="padding:5px 5px 5px 0;">
+
+        <div class='float-left text-left col-10 pl-4'><span id="id_search_number_of_found_record"></span></div>
+        <div class="float-right text-right col-2">
+          <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">{% trans 'Close' %}</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
 <!-- Customer District Modal -->
 <div class="modal fade" id="districtmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -1425,32 +1458,6 @@
 </div>
 
 
-<!-- Search Customer Modal -->
-<div class="modal fade" id="search_customer_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-    <div class="modal-content">
-
-      <div class="modal-header bg-success text-white" style="padding:7px;">
-        <h5 class="modal-title" id="exampleModalLongTitle"><i class="fas fa-search"></i>&nbsp;{% trans 'Select a Customer' %}</h5>
-        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-
-      <div class="modal-body" style="padding:15px 0 0 12px;">
-        <span class="text-center">{% trans 'Loading, please wait...' %}</span>
-      </div>
-
-      <div class="modal-footer" style="padding:5px 5px 5px 0;">
-
-        <div class='float-left text-left col-10 pl-4'><span id="id_search_number_of_found_record"></span></div>
-        <div class="float-right text-right col-2">
-          <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">{% trans 'Close' %}</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 
 
 <!-- /.content-wrapper -->
@@ -1585,13 +1592,19 @@
   }
 
   $('#customer_lookup').on('click', function (e) {
+    
     $("#id_search_number_of_found_record").html("");
     $("#search_customer_modal").modal("show");
     $('#search_customer_modal').on('shown.bs.modal', function () {
       $("#id_search_text").focus();
-    });            
+    });
+
+
     result = "";
     result += "<div class='row col-12' stye='padding:0;'>";
+
+
+
     result += "<div class='col-8 offset-3 pb-2'>";
     result += "<form id='search_customer_modal_form' class='form-inline col-12' accept-charset='UTF-8'>";
     result += "  <div class='form-group mx-sm-3 mb-2'>";
@@ -1608,9 +1621,10 @@
     result += "</div>"; 
     
     // tanos
-    result += "<div class='table-responsive' stye='padding:0; width:100%'>";
+    //result += "<div class='table-responsive' stye='padding:0; width:100%'>";
     //result += "<div stye='padding:0; width:100%'>";
-    
+  
+
     //result += "<table class='table table-hover table-striped table-wrapper-scroll-y my-custom-scrollbar w-100'>";
     //result += "<table class='table table-hover table-striped'>";
     result += "<table class='table table-hover table-striped table-wrapper-scroll-y my-custom-scrollbar w-100'>";
@@ -1626,13 +1640,17 @@
     result += " </thead>";
     result += "<tbody style='font-size:13px;'>";
     result += "</div>";
+
+
+
     result += "<div>";
     result += "<tr>";
     result += "<td class='align-middle text-center' colspan='6'><br><br><br><br>Hi there! What are you looking for?<br><br><br><br><br><br></td>";
     result += "</tr>";              
     result += " </tbody>";
-    result += "</table>";            
-    result += "</div>";          
+    result += "</table>"; 
+
+    //result += "</div>";          
     $("#search_customer_modal .modal-body").html(result);
   });
 
