@@ -232,7 +232,58 @@ def GeneratePSNSlipD1(request, *args, **kwargs):
                 if table == "R_PAYSLIP":
 
                     row_count = 1
+                    eps_paid_stat = ""
+                    eps_paid_stat_text = ""                    
+
                     for item in employee_paysum_obj:
+
+                        # print("AAA : ", item[2])
+
+                        if item[2] == '001':
+                            eps_paid_stat = item[67]
+                            
+                            if eps_paid_stat=='P':
+                                eps_paid_stat_text = 'P : PAID'
+                            elif eps_paid_stat=='H':
+                                eps_paid_stat_text = 'H : HOLDING'
+                            elif eps_paid_stat=='C':
+                                eps_paid_stat_text = 'C : CHEQUE'
+                            else:
+                                eps_paid_stat_text = eps_paid_stat
+
+                            # eps_prd_in = '{:,}'.format(item[27])
+                            eps_prd_in = 0 if item[27] is None else '{:,}'.format(item[27])
+                            # print("DEBUG : ", eps_prd_in)
+
+                            # Net Income
+                            # eps_prd_net = '{:,}'.format(item[29])
+                            eps_prd_net = 0 if item[29] is None else '{:,}'.format(item[29])
+
+                            # YTD Income
+                            # eps_ysm_in = '{:,}'.format(item[14])
+                            eps_ysm_in = 0 if item[14] is None else '{:,}'.format(item[14])
+
+                            # YTD Prov.Func
+                            # eps_ysm_prv = '{:,}'.format(item[19])                        
+                            eps_ysm_prv = 0 if item[19] is None else '{:,}'.format(item[19])
+
+                            # Total Deduct
+                            # eps_prd_de = '{:,}'.format(item[28])
+                            eps_prd_de = 0 if item[28] is None else '{:,}'.format(item[28])
+
+                            # Tax
+                            # eps_prd_tax = '{:,}'.format(item[30])
+                            eps_prd_tax = 0 if item[30] is None else '{:,}'.format(item[30])
+
+                            # YTD Tax
+                            # eps_ysm_tax = '{:,}'.format(item[21])
+                            eps_ysm_tax = 0 if item[21] is None else '{:,}'.format(item[21])
+
+                            # YTD Social Security
+                            # eps_ysm_soc = '{:,}'.format(item[20])
+                            eps_ysm_soc = 0 if item[20] is None else '{:,}'.format(item[20])
+
+                        '''
                         if (row_count == 1):
                             row_count = row_count + 1                        
                             
@@ -271,6 +322,7 @@ def GeneratePSNSlipD1(request, *args, **kwargs):
 
                             # YTD Social Security
                             eps_ysm_soc = 0 if item[20] is None else '{:,}'.format(item[20])
+                        '''
 
                         eps_emp_id = item[0]
                         
@@ -335,9 +387,58 @@ def GeneratePSNSlipD1(request, *args, **kwargs):
 
                 elif table == "R_HPAYSLIP":
                     row_count = 1
+                    eps_paid_stat = ""
+                    eps_paid_stat_text = ""
+
                     for item in employee_paysum_obj:
+
+                        if item[38] == '001':
+                            eps_paid_stat = item[67]
+                            
+                            if eps_paid_stat=='P':
+                                eps_paid_stat_text = 'P : PAID'
+                            elif eps_paid_stat=='H':
+                                eps_paid_stat_text = 'H : HOLDING'
+                            elif eps_paid_stat=='C':
+                                eps_paid_stat_text = 'C : CHEQUE'
+                            else:
+                                eps_paid_stat_text = eps_paid_stat
+
+                            # eps_prd_in = '{:,}'.format(item[27])
+                            eps_prd_in = 0 if item[63] is None else '{:,}'.format(item[63])
+
+                            # Net Income
+                            # eps_prd_net = '{:,}'.format(item[29])
+                            eps_prd_net = 0 if item[65] is None else '{:,}'.format(item[65])
+
+                            # YTD Income
+                            # eps_ysm_in = '{:,}'.format(item[14])
+                            eps_ysm_in = 0 if item[50] is None else '{:,}'.format(item[50])
+
+                            # YTD Prov.Func
+                            # eps_ysm_prv = '{:,}'.format(item[19])                        
+                            eps_ysm_prv = 0 if item[55] is None else '{:,}'.format(item[55])
+
+                            # Total Deduct
+                            # eps_prd_de = '{:,}'.format(item[28])
+                            eps_prd_de = 0 if item[64] is None else '{:,}'.format(item[64])
+
+                            # Tax
+                            # eps_prd_tax = '{:,}'.format(item[30])
+                            eps_prd_tax = 0 if item[66] is None else '{:,}'.format(item[66])
+
+                            # YTD Tax
+                            # eps_ysm_tax = '{:,}'.format(item[21])
+                            eps_ysm_tax = 0 if item[57] is None else '{:,}'.format(item[57])
+
+                            # YTD Social Security
+                            # eps_ysm_soc = '{:,}'.format(item[20])
+                            eps_ysm_soc = 0 if item[56] is None else '{:,}'.format(item[56])
+
+
+                        '''
                         if (row_count == 1):
-                            row_count = row_count + 1                        
+                            row_count = row_count + 1
                             
                             # eps_paid_stat = item[31]
                             eps_paid_stat = item[67]
@@ -384,6 +485,7 @@ def GeneratePSNSlipD1(request, *args, **kwargs):
                             # YTD Social Security
                             # eps_ysm_soc = '{:,}'.format(item[20])
                             eps_ysm_soc = 0 if item[56] is None else '{:,}'.format(item[56])
+                        '''
 
                         # eps_emp_id = item[0]
                         eps_emp_id = item[36]
@@ -678,6 +780,8 @@ def GeneratePSNSlipD1(request, *args, **kwargs):
         "employee_paysum_deduct_list": list(employee_paysum_deduct_list),
         "eps_paid_stat_text": eps_paid_stat_text,
         "eps_prd_in": eps_prd_in,
+        # "eps_prd_in": 1000,
+
         "eps_prd_net": eps_prd_net,
         "eps_ysm_in": eps_ysm_in,
         "eps_ysm_prv": eps_ysm_prv,
