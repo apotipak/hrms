@@ -198,7 +198,7 @@ def GeneratePSNSlipD1(request, *args, **kwargs):
         sql += "FROM " + str(table) + " "
         sql += "where eps_prd_id='" + str(period_option) + "' and eps_emp_id=" + str(emp_id) + " "
         sql += "ORDER BY eps_prd_de, eps_prd_net, eps_prd_tax;"
-        print("SQL 2: ", sql)
+        print("SQL 212: ", sql)
 
         
         '''
@@ -247,6 +247,7 @@ def GeneratePSNSlipD1(request, *args, **kwargs):
                             else:
                                 eps_paid_stat_text = eps_paid_stat
 
+                            # tanos
                             # Gross Income
                             eps_prd_in = 0 if item[27] is None else '{:,}'.format(item[27])
 
@@ -279,7 +280,7 @@ def GeneratePSNSlipD1(request, *args, **kwargs):
                         
                         payment_type = str(eps_pay_type) + " " + str(pay_th)
 
-                        income_or_deduct = item[26]
+                        income_or_deduct = item[7]
 
                         eps_inde = item[4]
                         
@@ -304,7 +305,8 @@ def GeneratePSNSlipD1(request, *args, **kwargs):
                             eps_wrk_hr = ""
 
                         # PAY TAX
-                        if (item[38] == 1):
+                        # if (item[38] == 1):
+                        if (item[44] == 1):
                             pay_tax = 1
                         else:
                             pay_tax = 0
@@ -2058,8 +2060,8 @@ def AjaxValidatePSNSlipD1Period(request):
         sql = "SELECT a.*,b.pay_th,b.pay_tax FROM " + str(table) + " as A left join t_paytype as B on a.eps_pay_type=b.pay_type "
         sql += "where eps_prd_id='" + str(period_option) + "' and eps_emp_id=" + str(emp_id) + " "
         # sql += "and eps_inde in ('I','D') "
-        sql += "ORDER BY eps_pay_type"
-        print("SQL 2: ", sql)
+        sql += "ORDER BY eps_pay_type;"
+        print("SQL 222: ", sql)
 
         employee_paysum_obj = None        
         record = {}
