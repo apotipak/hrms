@@ -1979,6 +1979,14 @@ def PSNSlipD1Report(request):
 
 
 
+@permission_required('dailyattendreport.can_access_income_deduct_d1_report', login_url='/accounts/login/')
+def IncomeDeductD1Report(request):
+    page_title = settings.PROJECT_NAME
+    db_server = settings.DATABASES['default']['HOST']
+    project_name = settings.PROJECT_NAME
+    project_version = settings.PROJECT_VERSION  
+
+
 @permission_required('dailyattendreport.can_access_gpm_422_no_of_guard_operation_by_empl_by_zone_report', login_url='/accounts/login/')
 def GPM422NoOfGuardOperationByEmplByZoneReport(request):
     page_title = settings.PROJECT_NAME

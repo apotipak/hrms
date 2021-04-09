@@ -64,6 +64,12 @@
               </li>
               {% endif %}
 
+              {% if perms.dailyattendreport.can_access_income_deduct_d1_report %}
+              <li class="nav-item p-0">
+                <a href="/reports/cms/income-deduct-d1/" class="nav-link"><p>Income / Deduct History</p></a>
+              </li>
+              {% endif %}
+
             </ul>
             {% endif %}
 
