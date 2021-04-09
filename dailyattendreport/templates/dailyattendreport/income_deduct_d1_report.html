@@ -1,0 +1,232 @@
+{% extends "page_report.html" %}
+
+{% load i18n %}
+{% block title %} {{ page_title}} - {% trans 'Report' %} {% endblock %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper pt-2">
+
+    <!-- Main content -->
+    <section class="content">
+
+
+      <div class="card-header" style="padding: 0 2px 10px 0;">
+        <h5 class="card-title"><i class="far fa-list-alt"></i>&nbsp;<b>Income / Deduct History</b>&nbsp;&nbsp;<small>รายงาน Income/Deduct ย้อนหลัง</small></h5>
+        <br>
+        <div class="float-right pb-1">
+          <div class="d-flex flex-row-reverse">
+            <!--<button class="btn btn-success btn-sm" onclick="export_to_excel()">&nbsp;<i class="far fa-file-excel"></i>&nbsp;&nbsp;Export to Excel</button>-->
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+      <div class="col-12 p-0 pt-2">
+
+        <form method="post" autocomplete="off" id="search_form" name="search_form">
+          {% csrf_token %}
+          
+          <div class="card-body p-0 pt-2">
+            <div class="form-group">
+
+              <div class="input-group col-12">
+
+               
+                <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:98px;"><b>Emp ID</b></span></div>
+                <input type="number" style="width: 80px;" name="emp_id" class="form-control border-bottom-1 rounded-0 bg-white" required="" id="id_emp_id" value={{emp_id}}>
+                <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:98px;"><b>Pay Type</b></span></div>
+
+                <select id="id_pay_type_option" name="pay_type_option" class="form-control form-control-md" style="border-radius: 0; width: 100px;">
+
+                  {% if pay_type_option == "" %}
+                  <option value="" selected="">Select all types</option>
+                  {% else %}
+                  <option value="">Select all types</option>
+                  {% for item in pay_type_list %}
+                  {% if item.0 == pay_type_option %}
+                  <option value="{{item.0}}" selected>{{item.0}}&emsp;|&#9;{{ item.1 }}</option>
+                  {% else %}
+                  <option value="{{item.0}}">{{item.0}}&emsp;|&#9;{{ item.1 }}</option>
+                  {% endif %}
+                  {% endfor %}
+                  {% endif %}
+                </select>
+                &nbsp;&nbsp;
+                <button class="btn btn-outline-info btn-md" role="button" onclick="SearchFormSubmit()"><i class="fas fa-search fa-sm"></i>&nbsp;&nbsp;Search</button>
+              </div>
+
+            </div>
+          </div>
+
+        </form>        
+
+      </div>
+      <!-- /.col -->
+
+
+      <div class="col-12">
+
+        <table class="table table-striped table-sm" id="income_deduct_history_list">
+          
+          <thead>
+            <tr>
+              <th scope="col" class='text-center'>No.</th>
+              <th scope="col">Period</th>
+              <th scope="col">Emp ID</th>
+              <th scope="col">Date</th>
+              <th scope="col">Pay Type</th>
+              <th scope="col" class='text-center'>IN/DE</th>
+              <th scope="col">Amt All</th>
+              <th scope="col">Amt Period</th>
+              <th scope="col">Amt Balance</th>
+              <th scope="col">Eff From</th>
+              <th scope="col">Eff To</th>
+            </tr>
+          </thead>
+          <tbody>  
+            <tr>                  
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+            </tr>
+          </tbody>
+
+        </table>
+      </div>
+
+    </section>
+
+
+  </div>
+
+
+
+
+{% endblock %}
+
+
+
+{% block javascript %}
+  <script>
+
+$(document).ready( function () {
+  //
+});
+
+  function showLoading() {
+    $.LoadingOverlaySetup({
+        background      : "rgba(0, 0, 0, 0.5)",
+        image           : "/static/img/logo-small.png",        
+        imageAnimation  : "1.5s fadein",
+        imageColor      : "#ffcc00"
+    });
+    $.LoadingOverlay("show"); 
+  }
+
+  $("#search_form").submit(function(e) {
+    e.preventDefault();
+    //SearchFormSubmit();
+  });
+
+  function SearchFormSubmit() {    
+    var emp_id = $('#id_emp_id').val();
+    var pay_type_option = $('#id_pay_type_option').val();
+
+    //alert(emp_id + " | " + pay_type_option);
+
+
+    //alert("test");
+    //return false;
+
+    if(emp_id!="") {
+      
+      showLoading();
+
+      $.ajax({
+        url: "/reports/cms/ajax-search-income-deduct-d1/",
+        type: "POST",
+        data: {
+          csrfmiddlewaretoken: '{{ csrf_token }}',
+          emp_id: emp_id,
+          pay_type_option: pay_type_option,
+        },
+        success : function(data) {                      
+          if(data.is_error) {
+            //alert("ERROR: " + data.error_message);
+          } else {
+            //alert(data.emp_id);
+            $("#id_emp_id").val(data.emp_id);
+            $("id_pay_type_option").val('BAS');
+
+            result = "";
+            row_group_count = 1
+            row_count = 1;
+            if(row_count>0) {
+
+              for(i=0; i<data.result_list.length; i++) {
+                exp_prd_id = data.result_list[i]["exp_prd_id"];
+                emp_id = data.result_list[i]["exp_emp_id"];
+                exp_date = data.result_list[i]["exp_date"];
+                exp_pay_type = data.result_list[i]["exp_pay_type"];
+                exp_inde = data.result_list[i]["exp_inde"];
+                exp_amt_all = data.result_list[i]["exp_amt_all"];
+                exp_amt_period = data.result_list[i]["exp_amt_period"];
+                exp_amt_bal = data.result_list[i]["exp_amt_bal"];
+                exp_eff_fdate = data.result_list[i]["exp_eff_fdate"];
+                exp_eff_tdate = data.result_list[i]["exp_eff_tdate"];
+                pay_th = data.result_list[i]["pay_th"];
+
+                result += "<tr>";                
+                result += "<td class='text-center' nowrap>" + row_count + "</td>";
+                result += "<td nowrap>" + exp_prd_id + "</td>";
+                result += "<td nowrap>" + emp_id + "</td>";                
+                result += "<td nowrap>" + exp_date + "</td>";
+                result += "<td nowrap>" + exp_pay_type + " | " + pay_th + "</td>";
+                result += "<td class='text-center' nowrap>" + exp_inde + "</td>";
+                result += "<td nowrap>" + exp_amt_all + "</td>";
+                result += "<td nowrap>" + exp_amt_period + "</td>";
+                result += "<td nowrap>" + exp_amt_bal + "</td>";
+                result += "<td nowrap>" + exp_eff_fdate + "</td>";
+                result += "<td nowrap>" + exp_eff_tdate + "</td>";
+
+                result += "</tr>";
+                row_count = row_count + 1;
+              }
+    
+            } else {
+                result = "";
+                result = "<tr class='text-center' colspan='11'><br><br>There is no data.<br><br><br></td></tr>";
+            }
+            
+          }
+
+          $.LoadingOverlay("hide");
+          $("#income_deduct_history_list tbody").html(result);      
+
+        }
+      });
+
+    }
+    else {
+      alert("Error");
+    }
+
+  }  
+   
+  </script>
+{% endblock %}  

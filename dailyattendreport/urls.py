@@ -29,5 +29,6 @@ urlpatterns = [
 
     # Income / Dedcut D1 Report
     path('income-deduct-d1/', views.IncomeDeductD1Report, name='income-deduct-d1-report'),
+    path('ajax-search-income-deduct-d1/', views.AjaxSearchIncomeDeductD1, name='ajax-search-income-deduct-d1'),
 
 ]

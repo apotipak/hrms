@@ -298,7 +298,6 @@ def GeneratePSNSlipD1(request, *args, **kwargs):
                             else:
                                 eps_paid_stat_text = eps_paid_stat
 
-                            # tanos
                             # Gross Income
                             eps_prd_in = 0 if item[27] is None else '{:,}'.format(item[27])
 
@@ -1984,7 +1983,39 @@ def IncomeDeductD1Report(request):
     page_title = settings.PROJECT_NAME
     db_server = settings.DATABASES['default']['HOST']
     project_name = settings.PROJECT_NAME
-    project_version = settings.PROJECT_VERSION  
+    project_version = settings.PROJECT_VERSION      
+    today_date = settings.TODAY_DATE.strftime("%d/%m/%Y")
+    page_title = settings.PROJECT_NAME
+    db_server = settings.DATABASES['default']['HOST']
+    project_name = settings.PROJECT_NAME
+    project_version = settings.PROJECT_VERSION
+
+    emp_id = request.POST.get("emp_id")
+    pay_type_option = request.POST.get("pay_type_option")
+
+    pay_type_list = []
+    sql = "select * from t_paytype where pay_active=1;"
+    try:
+        cursor = connection.cursor()
+        cursor.execute(sql)
+        pay_type_list = cursor.fetchall()
+    finally:
+        cursor.close()
+
+    return render(request, 'dailyattendreport/income_deduct_d1_report.html',
+        {
+        'page_title': page_title, 
+        'project_name': project_name,
+        'project_version': project_version,
+        'db_server': db_server, 
+        'today_date': today_date,
+        'database': settings.DATABASES['default']['NAME'],
+        'host': settings.DATABASES['default']['HOST'],
+        'is_error': False,
+        "pay_type_list": pay_type_list,
+        "emp_id": emp_id,
+        "pay_type_option": pay_type_option,
+        })
 
 
 @permission_required('dailyattendreport.can_access_gpm_422_no_of_guard_operation_by_empl_by_zone_report', login_url='/accounts/login/')
@@ -2024,6 +2055,107 @@ def GPM422NoOfGuardOperationByEmplByZoneReport(request):
         'dept_zone_obj': dept_zone_obj,
         })
 
+
+@permission_required('dailyattendreport.can_access_income_deduct_d1_report', login_url='/accounts/login/')
+def AjaxSearchIncomeDeductD1(request):    
+    emp_id = request.POST.get('emp_id')        
+    pay_type_option = request.POST.get('pay_type_option')
+    period_option = 'D121011'
+    # print(emp_id, pay_type_option)
+
+    is_error = False
+    error_message = "Error"
+    result_list = []
+    record = {}
+
+    pay_type_list = []
+    sql = "select * from t_paytype where pay_active=1;"
+    try:
+        cursor = connection.cursor()
+        cursor.execute(sql)
+        pay_type_list = cursor.fetchall()
+    finally:
+        cursor.close()
+
+    sql = "select a.*,b.emp_fname_th,b.emp_lname_th,b.emp_rank,c.rank_en "
+    sql += ",b.emp_type,d.pay_th,e.dcp_th  from emp_expend as A "
+    sql += "left join  employee as B on a.exp_emp_id=b.emp_id "
+    sql += "left join  com_rank as C on b.emp_rank=c.rank_id "
+    sql += "left join  t_paytype as D on a.exp_pay_type=d.pay_type "
+    sql += "left join  t_discipline as E on a.exp_dcp_id=e.dcp_id "
+    sql += "where (a.exp_no <> '') " 
+    #sql += "and (a.exp_prd_frm='" + str(period_option) + "' or a.exp_prd_id='" + str(period_option) + "') " 
+    sql += "and a.exp_emp_id=" + str(emp_id) + " "
+    sql += "and b.emp_type='D1' "
+    if pay_type_option != "":
+        sql += "and a.exp_pay_type='" + str(pay_type_option) + "' "
+    sql += "order by a.exp_prd_id desc, a.exp_pay_type, a.exp_date, a.exp_emp_id;"
+    print("SQLLLL : ", sql)
+
+
+
+
+    try:
+        cursor = connection.cursor()
+        cursor.execute(sql)
+        obj = cursor.fetchall()
+    finally:
+        cursor.close()
+
+    if obj is not None:
+        for item in obj:
+            exp_prd_id = item[17]
+            exp_emp_id = item[1]
+            exp_date = item[2].strftime("%d/%m/%Y")
+            exp_pay_type = item[3]
+            exp_inde = item[6]
+            
+            # exp_amt_all = item[7]
+            exp_amt_all = 0 if item[7] is None else '{:,}'.format(item[7])
+
+            # exp_amt_period = item[8]
+            exp_amt_period = 0 if item[8] is None else '{:,}'.format(item[8])
+
+            # exp_amt_bal = item[11]
+            exp_amt_bal = 0 if item[11] is None else '{:,}'.format(item[11])
+
+            # exp_eff_fdate = item[13]
+            exp_eff_fdate = "" if item[13] is None else item[13].strftime("%d/%m/%Y")
+
+            # exp_eff_tdate = item[14]
+            exp_eff_tdate = "" if item[14] is None else item[14].strftime("%d/%m/%Y")
+
+            pay_th = item[37]
+
+            # tanos
+            record = {
+                "exp_prd_id": exp_prd_id,
+                "exp_emp_id": exp_emp_id,
+                "exp_date": exp_date,
+                "exp_pay_type": exp_pay_type,
+                "exp_inde": exp_inde,
+                "exp_amt_all": exp_amt_all,
+                
+
+                "exp_amt_period": exp_amt_period,
+                "exp_amt_bal": exp_amt_bal,
+                "exp_eff_fdate": exp_eff_fdate,
+                "exp_eff_tdate": exp_eff_tdate,
+                "pay_th": pay_th,
+            }
+            result_list.append(record)
+
+    response = JsonResponse(data={   
+        "is_error": is_error,
+        "error_message": error_message,
+        "emp_id": emp_id,
+        "pay_type_option": pay_type_option,
+        "pay_type_list": list(pay_type_list),
+        "result_list": list(result_list),
+    })
+
+    response.status_code = 200
+    return response    
 
 
 @permission_required('dailyattendreport.can_access_psn_slip_d1_report', login_url='/accounts/login/')
@@ -2299,6 +2431,7 @@ def AjaxValidatePSNSlipD1Period(request):
                 sql += "left join  t_discipline as E on a.exp_dcp_id=e.dcp_id "
                 sql += "where (a.exp_no<>'') and (a.exp_prd_frm='" + str(period_option) + "' or a.exp_prd_id='" + str(period_option) + "') and a.exp_emp_id=" + str(emp_id) + " "
                 sql += "order by a.exp_pay_type, a.exp_date, a.exp_emp_id;"
+                print("AAABBB : ", sql)
 
                 employee_expend_obj = None        
                 record = {}
