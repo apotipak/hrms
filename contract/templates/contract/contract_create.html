@@ -3175,8 +3175,9 @@
       return false;      
     }
 
+
     // cnt_sale_amt
-    cnt_sale_amt = $('#id_cnt_sale_amt').val().replace(",","");    
+    cnt_sale_amt = $('#id_cnt_sale_amt').val().replaceAll(",","");    
 
     // cnt_guard_amt
     cnt_guard_amt = $('#id_cnt_guard_amt').val();
