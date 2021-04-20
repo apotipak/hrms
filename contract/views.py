@@ -3545,7 +3545,7 @@ def download_contract(request, *args, **kwargs):
                     cus_service_list_day = cursor.fetchall()
                     count_shift_day = len(cus_service_list_day)
                     for row in cus_service_list_day:                        
-                        srv_rate_day = srv_rate_day + (int(row[5]) * int(row[8])) # row[8] = srv_rate
+                        srv_rate_day = srv_rate_day + (float(row[5]) * float(row[8])) # row[8] = srv_rate
 
 
 
@@ -3553,7 +3553,7 @@ def download_contract(request, *args, **kwargs):
                     cus_service_list_night = cursor.fetchall()
                     count_shift_night = len(cus_service_list_night)
                     for row in cus_service_list_night:
-                        srv_rate_night = srv_rate_night + (int(row[5]) * int(row[8])) # row[8] = srv_rate
+                        srv_rate_night = srv_rate_night + (float(row[5]) * float(row[8])) # row[8] = srv_rate
 
                 finally:
                     cursor.close()
