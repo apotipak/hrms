@@ -2463,13 +2463,13 @@ def save_customer_service_item(request):
             # SRV_COST_RATE
             if (srv_cost_rate is not None):
                 if data.srv_cost_rate is None:
-                    field_is_modified, record = check_modified_field("CUS_SERVICE", srv_id, "SRV_COST_RATE", 0, int(srv_cost_rate), "E", request)
+                    field_is_modified, record = check_modified_field("CUS_SERVICE", srv_id, "SRV_COST_RATE", 0, float(srv_cost_rate), "E", request)
                     if field_is_modified:
                         data.srv_cost_rate = srv_cost_rate
                         modified_records.append(record)
                         field_is_modified_count = field_is_modified_count + 1
                 else:                
-                    field_is_modified, record = check_modified_field("CUS_SERVICE", srv_id, "SRV_COST_RATE", int(data.srv_cost_rate), int(srv_cost_rate), "E", request)
+                    field_is_modified, record = check_modified_field("CUS_SERVICE", srv_id, "SRV_COST_RATE", float(data.srv_cost_rate), float(srv_cost_rate), "E", request)
                     if field_is_modified:
                         data.srv_cost_rate = srv_cost_rate
                         modified_records.append(record)
