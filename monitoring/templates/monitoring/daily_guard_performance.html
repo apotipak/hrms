@@ -762,16 +762,19 @@ function displayList(emp_id, search_date_from, search_date_to) {
 					result += "      <th scope='col'>Shift</th>";
 					result += "      <th scope='col' nowrap>Pay Type</th>";
 
-					result += "      <th scope='col'>BAS</th>";
-					result += "      <th scope='col'>GOT</th>";					
-					result += "      <th scope='col'>BON</th>";
+					result += "      <th scope='col' class='bg-success'>BAS</th>";
+					result += "      <th scope='col' class='bg-success'>GOT</th>";					
+					result += "      <th scope='col' class='bg-success'>BON</th>";
+					result += "      <th scope='col' class='bg-success'>PUB</th>";
+					result += "      <th scope='col' class='bg-success'>DOF</th>";
 
-					result += "      <th scope='col'>BAS_NS</th>";
-					result += "      <th scope='col'>GOT_NS</th>";					
-					result += "      <th scope='col'>BON_NS</th>";
+					result += "      <th scope='col' class='bg-info'>BAS_NS</th>";
+					result += "      <th scope='col' class='bg-info'>GOT_NS</th>";					
+					result += "      <th scope='col' class='bg-info'>BON_NS</th>";
+					result += "      <th scope='col' class='bg-info'>PUB_NS</th>";
+					result += "      <th scope='col' class='bg-info'>DOF_NS</th>";
 
-					result += "      <th scope='col'>PUB</th>";
-					result += "      <th scope='col'>DOF</th>";
+
 					result += "      <th scope='col' class='text-center'>DF</th>";
 					result += "      <th scope='col'>Relief</th>";
 					result += "      <th scope='col'>Rel.ID</th>";
@@ -837,6 +840,9 @@ function displayList(emp_id, search_date_from, search_date_to) {
 						//dof_amt = data.performance_list[i][53];
 						dof_amt = data.performance_list[i][15];
 						
+						pub_amt_ns = data.performance_list[i][14];
+						dof_amt_ns = data.performance_list[i][16];
+
 						//dof_status = data.performance_list[i][54];
 						dof_status = data.performance_list[i][17];
 
@@ -904,15 +910,18 @@ function displayList(emp_id, search_date_from, search_date_to) {
 						result += "<td class='bg-success'>" + bas_amt + "</td>";
 						result += "<td class='bg-success'>" + got_amt + "</td>";
 						result += "<td class='bg-success'>" + bon_amt + "</td>";
+						result += "<td class='bg-success'>" + pub_amt + "</td>";
+						result += "<td class='bg-success'>" + dof_amt + "</td>";
 
 
 						result += "<td class='bg-info'>" + bas_amt_ns + "</td>";
 						result += "<td class='bg-info'>" + got_amt_ns + "</td>";
 						result += "<td class='bg-info'>" + bon_amt_ns + "</td>";
 
+						// ironman
+						result += "<td class='bg-info'>" + pub_amt_ns + "</td>";
+						result += "<td class='bg-info'>" + dof_amt_ns + "</td>";
 
-						result += "<td>" + pub_amt + "</td>";
-						result += "<td>" + dof_amt + "</td>";
 						
 						if(dof_status)
 							result += "<td class='text-center'><i class='fas fa-check fa-xs text-success'></i></td>";
