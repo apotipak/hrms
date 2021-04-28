@@ -297,6 +297,7 @@ def ajax_check_exist_cus_site(request):
     print("FUNCTION: ajax_check_exist_cus_site")
     print("************************************************")
 
+
     response_data = {}
     pickup_records=[]
     group_id = []
@@ -317,7 +318,10 @@ def ajax_check_exist_cus_site(request):
         print("**************************")
         '''
 
+        print("TODO 1")
+
         if form.is_valid():
+            print("TODO 2")
             # print("form is valid")
 
             # Get customer site information
@@ -382,6 +386,7 @@ def ajax_check_exist_cus_site(request):
                     cus_site_cus_country_en = customer_site.cus_country.country_en
 
                 if customer_site.site_contact_id is None or customer_site.site_contact_id == "":
+
                     cus_site_site_contact_id = 0
                     cus_site_site_contact_title_id = 129
                     cus_site_site_contact_title_th = "คุณ"
@@ -425,7 +430,7 @@ def ajax_check_exist_cus_site(request):
 
                     customer_cus_taxid = customer_site.cus_taxid
 
-                print("cus_taxid:", customer_cus_taxid)
+                # print("cus_taxid:", customer_cus_taxid)
 
 
                 '''
@@ -443,10 +448,15 @@ def ajax_check_exist_cus_site(request):
                 print("")
                 '''
 
+                print("TODO 3 ", customer_site.cus_no)
+                print("TODO 4 ", customer_site.cus_name_th)
+
                 record = {
                     "cus_no": customer_site.cus_no,
                     "cus_active": customer_site.cus_active,
+                    
                     "cus_name_th": customer_site.cus_name_th,
+
                     "cus_add1_th": customer_site.cus_add1_th,
                     "cus_add2_th": customer_site.cus_add2_th,
                     "cus_subdist_th": customer_site.cus_subdist_th,

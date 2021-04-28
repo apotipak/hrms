@@ -1,4 +1,4 @@
-{% extends "page_monitoring.html" %}
+{% extends "page_generic.html" %}
 {% load i18n %}
 {% load static %}
 {% load widget_tweaks %}
@@ -12,7 +12,6 @@
 		<!--
 		<div class="content-header">
 			<div class="col-6 offset-3">
-
 			</div>
 		</div>
 		-->
@@ -115,16 +114,15 @@
 			<div class="card card-outline card-secondary" id="id_income_information">
 			  <div class="card-body">
 				<form id="id_income_information_form">
-
 				  <div class="form-row">
 				    <div class="col text-center">
-				      <label>Hour&nbsp;&nbsp;<small>รวมชั่วโมงทำงาน</small></label>
-				      <input type="text" class="form-control form-control-md bg-secondary text-light" style="text-align:center;font-weight:bold;" placeholder="" id="id_hours" readonly="">
+				      <label>Hours&nbsp;&nbsp;<small>รวมชั่วโมงทำงาน</small></label>
+				      <input type="text" class="form-control form-control-md bg-success text-light" style="text-align:center;font-weight:bold;" placeholder="" id="id_hours" readonly="">
 				    </div>
 
 				    <div class="col text-center">
 				      <label>Day&nbsp;&nbsp;<small>รวมวันทำงาน</small></label>
-				      <input type="text" class="form-control form-control-md bg-secondary text-light" style="text-align:center;font-weight:bold;" placeholder="" id="id_day" readonly="">
+				      <input type="text" class="form-control form-control-md bg-success text-light" style="text-align:center;font-weight:bold;" placeholder="" id="id_day" readonly="">
 				    </div>
 
 				    <div class="col text-center">
@@ -149,54 +147,9 @@
 
 				    <div class="col text-center">
 				      <label>DOF&nbsp;&nbsp;<small>ทำตรงวันหยุด</small></label>
-				      <input type="text" class="form-control form-control-md bg-success text-light" style="text-align:center;font-weight:bold;" placeholder="" id="id_dof" readonly="">
+				      <input type="text" class="form-control form-control-md bg-success border-success text-light" style="text-align:center;font-weight:bold;" placeholder="" id="id_dof" readonly="">
 				    </div>
-
 				  </div>
-
-
-				  <div class="form-row">
-				    <div class="col text-center">
-				    	<!--
-				      	<label>Hours&nbsp;&nbsp;<small>รวมชั่วโมงทำงาน</small></label>
-				      	<input type="text" class="form-control form-control-md bg-success text-light" style="text-align:center;font-weight:bold;" placeholder="" id="id_hours" readonly="">
-				  		-->
-				    </div>
-
-				    <div class="col text-center">
-				    	<!--
-				      	<label>Day&nbsp;&nbsp;<small>รวมวันทำงาน</small></label>
-				      	<input type="text" class="form-control form-control-md bg-success text-light" style="text-align:center;font-weight:bold;" placeholder="" id="id_day" readonly="">
-				  		-->
-				    </div>
-
-				    <div class="col text-center">
-				      <!--<label>BAS&nbsp;&nbsp;<small>เงินเดือน</small></label>-->
-				      <input type="text" class="form-control form-control-md bg-info text-light" style="text-align:center;font-weight:bold;" placeholder="" id="id_bas_ns" readonly="">
-				    </div>
-
-				    <div class="col text-center">
-				      <!--<label>GOT&nbsp;&nbsp;<small>ค่าล่วงเวลา</small></label>-->
-				      <input type="text" class="form-control form-control-md bg-info text-light" style="text-align:center;font-weight:bold;" placeholder="" id="id_otm_ns" readonly="">
-				    </div>
-
-				    <div class="col text-center">
-				      <!--<label>BON&nbsp;&nbsp;<small>โบนัส</small></label>-->
-				      <input type="text" class="form-control form-control-md bg-info text-light" style="text-align:center;font-weight:bold;" placeholder="" id="id_bon_ns" readonly="">
-				    </div>
-
-				    <div class="col text-center">
-				      <!--<label>PUB&nbsp;&nbsp;<small>ทำตรงวันหยุดบริษัท</small></label>-->
-				      <input type="text" class="form-control form-control-md bg-info text-light" style="text-align:center;font-weight:bold;" placeholder="" id="id_pub_amt_12" readonly="">
-				    </div>
-
-				    <div class="col text-center">
-				      <!--<label>DOF&nbsp;&nbsp;<small>ทำตรงวันหยุด</small></label>-->
-				      <input type="text" class="form-control form-control-md bg-info text-light" style="text-align:center;font-weight:bold;" placeholder="" id="id_dof_amt_ns" readonly="">
-				    </div>
-				    
-				  </div>
-
 
 				</form>			  	
 			  </div>
@@ -248,10 +201,9 @@
 		        <!-- Tab Body -->
 		        <div class="tab-content pt-2 container col-12" id="table_list_body">
 
-		        	
 		        	<!-- Performance Tab -->
 		            <div class="tab-pane fade show active pt-2 row" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
-		            	<div id="id_performance_list" class="table-responsive table-bordered bg-light" style='height:100% !important; overflow: scroll;'>
+		            	<div id="id_performance_list" class="table-responsive bg-light">
 							<font size='2em;'>
 							<table id='performance_list_table' class='table table-sm table-hover'>
 							  <tbody>
@@ -752,7 +704,7 @@ function displayList(emp_id, search_date_from, search_date_to) {
     		} else {
 				performance_list_count = data.performance_list.length
 				if(performance_list_count>0) {
-					result = "<table id='performance_list_table' class='table-bordered'>";
+					result = "<table id='performance_list_table'>";
 					result += "  <thead class=thead-light>";
 					result += "    <tr>";
 					result += "      <th scope='col'>No</th>";
@@ -760,21 +712,11 @@ function displayList(emp_id, search_date_from, search_date_to) {
 					result += "		 <th scope='col'>Date</th>";
 					result += "      <th scope='col'>Rank</th>";
 					result += "      <th scope='col'>Shift</th>";
-					result += "      <th scope='col' nowrap>Pay Type</th>";
-
-					result += "      <th scope='col' class='bg-success'>BAS</th>";
-					result += "      <th scope='col' class='bg-success'>GOT</th>";					
-					result += "      <th scope='col' class='bg-success'>BON</th>";
-					result += "      <th scope='col' class='bg-success'>PUB</th>";
-					result += "      <th scope='col' class='bg-success'>DOF</th>";
-
-					result += "      <th scope='col' class='bg-info'>BAS_NS</th>";
-					result += "      <th scope='col' class='bg-info'>GOT_NS</th>";					
-					result += "      <th scope='col' class='bg-info'>BON_NS</th>";
-					result += "      <th scope='col' class='bg-info'>PUB_NS</th>";
-					result += "      <th scope='col' class='bg-info'>DOF_NS</th>";
-
-
+					result += "      <th scope='col'>BAS</th>";
+					result += "      <th scope='col'>GOT</th>";
+					result += "      <th scope='col'>BON</th>";
+					result += "      <th scope='col'>PUB</th>";
+					result += "      <th scope='col'>DOF</th>";
 					result += "      <th scope='col' class='text-center'>DF</th>";
 					result += "      <th scope='col'>Relief</th>";
 					result += "      <th scope='col'>Rel.ID</th>";
@@ -786,15 +728,14 @@ function displayList(emp_id, search_date_from, search_date_to) {
 					result += "      <th scope='col'>OT.</th>";				
 					result += "      <th scope='col'>Reason</th>";
 
-					//result += "      <th scope='col'>From</th>";
-					//result += "      <th scope='col'>To</th>";
-
+					result += "      <th scope='col'>From</th>";
+					result += "      <th scope='col'>To</th>";
 					result += "      <th scope='col'>HR</th>";
 					result += "      <th scope='col'>Paid(OT)</th>";
 
 					result += "      <th scope='col'>Spare</th>";
 					result += "      <th scope='col'>Wage</th>";
-					
+					result += "      <th scope='col' nowrap>Pay Type</th>";
 					result += "      <th scope='col' class='txt-center'>SOC</th>";
 					result += "      <th scope='col' class='txt-center'>PUB</th>";
 					result += "      <th scope='col' class='txt-center'>Paid</th>";
@@ -805,98 +746,36 @@ function displayList(emp_id, search_date_from, search_date_to) {
 					result += "  <tbody>";
 					count = 1;
 					for(i=0; i<performance_list_count; i++) {
-						
-						//cnt_id = data.performance_list[i][13];
-						cnt_id = data.performance_list[i][0];
-
-						//dly_date = convertStringToDDMMYYYY(data.performance_list[i][15]);
-						dly_date = convertStringToDDMMYYYY(data.performance_list[i][2]);
-
-						//shift = data.performance_list[i][3];
+						cnt_id = data.performance_list[i][13];
+						dly_date = convertStringToDDMMYYYY(data.performance_list[i][15]);						
 						shift = data.performance_list[i][3];
+						rank = data.performance_list[i][19];
+						bas_amt = data.performance_list[i][38];
+						got_amt = data.performance_list[i][52];
+						bon_amt = data.performance_list[i][39];
+						pub_amt = data.performance_list[i][40];
+						dof_amt = data.performance_list[i][53];
+						dof_status = data.performance_list[i][54];
 
-						//rank = data.performance_list[i][19];
-						rank = data.performance_list[i][25];
+						tel_man = data.performance_list[i][24];
+						tel_time = convertStringToDDMMYYYYHHSS(data.performance_list[i][25]);
+						tel_amt = parseFloat(data.performance_list[i][26]).toFixed(2);
+						tel_paid = data.performance_list[i][27];
+						ot_status = data.performance_list[i][28];
 
-						//bas_amt = data.performance_list[i][38];
-						bas_amt = data.performance_list[i][7];
+						ot_reason = data.performance_list[i][29];
+						ot_time_frm = convertStringToDDMMYYYY(data.performance_list[i][30]);
+						ot_time_to = convertStringToDDMMYYYY(data.performance_list[i][31]);
+						ot_hr_amt = data.performance_list[i][32];
+						ot_pay_amt = data.performance_list[i][33];
 
-						//got_amt = data.performance_list[i][52];
-						got_amt = data.performance_list[i][9];
-
-						//bon_amt = data.performance_list[i][39];
-						bon_amt = data.performance_list[i][8];
-
-
-
-						bas_amt_ns = data.performance_list[i][10];
-						got_amt_ns = data.performance_list[i][11];
-						bon_amt_ns = data.performance_list[i][12];
-
-
-						//pub_amt = data.performance_list[i][40];
-						pub_amt = data.performance_list[i][13];
-						
-						//dof_amt = data.performance_list[i][53];
-						dof_amt = data.performance_list[i][15];
-						
-						pub_amt_ns = data.performance_list[i][14];
-						dof_amt_ns = data.performance_list[i][16];
-
-						//dof_status = data.performance_list[i][54];
-						dof_status = data.performance_list[i][17];
-
-						//tel_man = data.performance_list[i][24];
-						tel_man = data.performance_list[i][33];
-
-						//tel_time = convertStringToDDMMYYYYHHSS(data.performance_list[i][25]);
-						tel_time = convertStringToDDMMYYYYHHSS(data.performance_list[i][34]);
-
-						//tel_amt = parseFloat(data.performance_list[i][26]).toFixed(2);
-						tel_amt = parseFloat(data.performance_list[i][35]).toFixed(2);
-
-						//tel_paid = data.performance_list[i][27];
-						tel_paid = data.performance_list[i][36];
-
-						//ot_status = data.performance_list[i][28];
-						ot_status = data.performance_list[i][37];
-
-						//ot_reason = data.performance_list[i][29];
-						ot_reason = data.performance_list[i][38];
-
-						//ot_time_frm = convertStringToDDMMYYYY(data.performance_list[i][30]);
-						//ot_time_frm = convertStringToDDMMYYYY(data.performance_list[i][39]);
-
-						//ot_time_to = convertStringToDDMMYYYY(data.performance_list[i][31]);
-						//ot_time_to = convertStringToDDMMYYYY(data.performance_list[i][40]);
-
-						//ot_hr_amt = data.performance_list[i][32];
-						ot_hr_amt = data.performance_list[i][41];
-
-						//ot_pay_amt = data.performance_list[i][33];
-						ot_pay_amt = data.performance_list[i][42];
-
-						//spare = data.performance_list[i][34];
-						spare = data.performance_list[i][43];
-
-						//wage_id = data.performance_list[i][35];
-						wage_id = data.performance_list[i][44];
-
-						//pay_type = data.performance_list[i][37];
-						pay_type = data.performance_list[i][46];
-						
-						//soc_status = data.performance_list[i][42];
-						soc_status = data.performance_list[i][54];
-
-						//pub_status = data.performance_list[i][43];
-						pub_status = data.performance_list[i][55];
-
-						//paid_status = data.performance_list[i][44];
-						paid_status = data.performance_list[i][57];
-
-						//remark = data.performance_list[i][61];
-						remark = data.performance_list[i][65];
-
+						spare = data.performance_list[i][34];
+						wage_id = data.performance_list[i][35];
+						pay_type = data.performance_list[i][37];
+						soc_status = data.performance_list[i][42];
+						pub_status = data.performance_list[i][43];
+						paid_status = data.performance_list[i][44];
+						remark = data.performance_list[i][61];
 
 						result += "<tr>";
 						result += "<td>" + count + "</td>";
@@ -904,24 +783,11 @@ function displayList(emp_id, search_date_from, search_date_to) {
 						result += "<td>" + dly_date + "</td>";
 						result += "<td align='center'>" + rank + "</td>";
 						result += "<td nowrap>" + shift + "</td>";
-						result += "<td align='center'>" + pay_type + "</td>";
-						
-						
-						result += "<td class='bg-success'>" + bas_amt + "</td>";
-						result += "<td class='bg-success'>" + got_amt + "</td>";
-						result += "<td class='bg-success'>" + bon_amt + "</td>";
-						result += "<td class='bg-success'>" + pub_amt + "</td>";
-						result += "<td class='bg-success'>" + dof_amt + "</td>";
-
-
-						result += "<td class='bg-info'>" + bas_amt_ns + "</td>";
-						result += "<td class='bg-info'>" + got_amt_ns + "</td>";
-						result += "<td class='bg-info'>" + bon_amt_ns + "</td>";
-
-						// ironman
-						result += "<td class='bg-info'>" + pub_amt_ns + "</td>";
-						result += "<td class='bg-info'>" + dof_amt_ns + "</td>";
-
+						result += "<td>" + bas_amt + "</td>";
+						result += "<td>" + got_amt + "</td>";
+						result += "<td>" + bon_amt + "</td>";
+						result += "<td>" + pub_amt + "</td>";
+						result += "<td>" + dof_amt + "</td>";
 						
 						if(dof_status)
 							result += "<td class='text-center'><i class='fas fa-check fa-xs text-success'></i></td>";
@@ -952,14 +818,14 @@ function displayList(emp_id, search_date_from, search_date_to) {
 							result += "<td>&nbsp;</td>";
 
 						result += "<td align='center'>" + ot_reason + "</td>";
-						//result += "<td>" + ot_time_frm + "</td>";
-						//result += "<td>" + ot_time_to + "</td>";
+						result += "<td>" + ot_time_frm + "</td>";
+						result += "<td>" + ot_time_to + "</td>";
 						result += "<td align='center'>" + ot_hr_amt + "</td>";
 						result += "<td align='center'>" + ot_pay_amt + "</td>";
 
 						result += "<td align='center'>" + spare + "</td>";
 						result += "<td align='center'>" + wage_id + "</td>";
-						
+						result += "<td align='center'>" + pay_type + "</td>";
 
 						if(soc_status) {
 							result += "<td class='text-center'><i class='fas fa-check fa-xs text-success'></i></td>";
@@ -1001,37 +867,11 @@ function displayList(emp_id, search_date_from, search_date_to) {
 
 
 					var hours = Number(data.income_list[0]).toFixed(2).replace(/\.00$/, '');
-					
-					//var bas = Number(data.income_list[2]).toFixed(2).replace(/\.00$/, '');
-					var bas = data.income_list[12];
-
-					//var got = Number(data.income_list[3]).toFixed(2).replace(/\.00$/, '');
-					var got = data.income_list[13];
-
-					//var bon = Number(data.income_list[4]).toFixed(2).replace(/\.00$/, '');
-					var bon = data.income_list[14];
-
-					//var pub = Number(data.income_list[5]).toFixed(2).replace(/\.00$/, '');
-					var pub = data.income_list[15];
-
-					//var dof = Number(data.income_list[6]).toFixed(2).replace(/\.00$/, '');
-					var dof = data.income_list[16];
-
-					//var bas_ns = Number(data.income_list[7]).toFixed(2).replace(/\.00$/, '');
-					var bas_ns = data.income_list[7];
-
-					//var otm_ns = Number(data.income_list[8]).toFixed(2).replace(/\.00$/, '');
-					var otm_ns = data.income_list[8];
-
-					//var bon_ns = Number(data.income_list[9]).toFixed(2).replace(/\.00$/, '');
-					var bon_ns = data.income_list[9];
-
-					//var pub_amt_12 = Number(data.income_list[10]).toFixed(2).replace(/\.00$/, '');
-					var pub_amt_12 = data.income_list[10];
-
-					//var dof_amt_ns = Number(data.income_list[11]).toFixed(2).replace(/\.00$/, '');
-					var dof_amt_ns = data.income_list[11];
-
+					var bas = Number(data.income_list[2]).toFixed(2).replace(/\.00$/, '');
+					var got = Number(data.income_list[3]).toFixed(2).replace(/\.00$/, '');
+					var bon = Number(data.income_list[4]).toFixed(2).replace(/\.00$/, '');
+					var pub = Number(data.income_list[5]).toFixed(2).replace(/\.00$/, '');
+					var dof = Number(data.income_list[6]).toFixed(2).replace(/\.00$/, '');
 
 					// Fillin income list
 					$("#id_hours").val(hours);
@@ -1039,17 +879,8 @@ function displayList(emp_id, search_date_from, search_date_to) {
 					$("#id_bas").val(bas);
 					$("#id_got").val(got);
 					$("#id_bon").val(bon);
-
 					$("#id_pub").val(pub);
 					$("#id_dof").val(dof);
-
-					$("#id_bas_ns").val(bas_ns);
-					$("#id_otm_ns").val(otm_ns);
-					$("#id_bon_ns").val(bon_ns);
-					
-					$("#id_pub_amt_12").val(pub_amt_12);
-					$("#id_dof_amt_ns").val(dof_amt_ns);
-
 				} else {
 					result = "<tbody>";
 					result += "<tr>";
@@ -1590,22 +1421,18 @@ function displayList(emp_id, search_date_from, search_date_to) {
 function download_document() {
 	/*
 	language_option = $("input[name=printOptions]:checked").val();
-
 	if($("input[name=cnt_new]:checked").val())
 	  is_new_report = 1;
 	else
 	  is_new_report = 0;
-
 	if($("input[name=amendment]:checked").val())
 	  is_amendment = 1;
 	else
 	  is_amendment = 0;
-
 	if($("input[name=cnt_print]:checked").val())
 	  is_customer_address = 'C';
 	else
 	  is_customer_address = 'S';  
-
 	var href = "/contract/download-contract/" + cnt_id + "/" + language_option + "/" + is_new_report + "/" + is_amendment + "/" + is_customer_address;
 	window.open(href,'_blank');
 	*/
