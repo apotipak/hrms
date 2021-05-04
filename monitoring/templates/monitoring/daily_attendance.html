@@ -3986,6 +3986,9 @@ $("#id_late_hour").click( function() {
     // LUFY
     function saveRecord_cross_site(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_status,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id,Timecross) {
 
+    	alert("saveRecord_cross_site");
+    	return false;
+
 		if(ui_phone_status==0) {    		
 			phone_status = 0;
 			tel_man = 0;
@@ -4354,6 +4357,8 @@ $("#id_late_hour").click( function() {
 
     function saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_status,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id) {
     	
+    	//return false;
+
     	//alert("test");
 
     	/*
@@ -5112,6 +5117,7 @@ $("#id_late_hour").click( function() {
 
 								return false;			
 							} else {
+
 								$.ajax({
 									url : "/monitoring/ajax/save_daily_attendance_check_rule_1/",
 									type : "POST",
@@ -5143,6 +5149,7 @@ $("#id_late_hour").click( function() {
 											        	text: 'ยืนยัน',
 											        	btnClass: 'btn-danger',
 											        	action: function () {
+
 											        		saveRecord_cross_site(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id, Timecross);
 														}
 											        },
@@ -5154,6 +5161,7 @@ $("#id_late_hour").click( function() {
 											    }
 											});							
 										} else {
+
 											saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);
 
 											return false;

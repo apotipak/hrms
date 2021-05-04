@@ -3200,7 +3200,10 @@ def addRecord_cross_site(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,
 	ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,
 	remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,
 	allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id,Tday7,Tdof,customer_wage_rate_id,customer_zone_id,Timecross):
-	
+
+	# print("customer_wage_rate_id : ", customer_wage_rate_id)
+	# return False
+
 	# print("Tot_hr_amt = ", Timecross)	
 	# return False, Timecross
 
@@ -3387,8 +3390,11 @@ def addRecord_cross_site(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,
 	#TODO: หาค่า txtSpare มีการเซ็ทค่าเริ่มต้นมาจากที่ไหน
 	txtSpare = 0
 	Tspare = txtSpare
+	
 	#TODO: ส่งค่า wage_id จาก Customer Tab
-	wage_id = 32
+	# wage_id = 32
+	wage_id = customer_wage_rate_id
+
 	Twage_id = wage_id
 	Twage_no = str(Twage_id) + str(emp_rank)
 	Tpay_type = 1 if ui_ot_status==1 else ""
@@ -3691,7 +3697,11 @@ def addRecord_cross_site(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,
 			sql += "0" + "," + "0" + "," + "0" + "," + "0" + "," + "0" + ","
 			sql += "0" + "," + "NULL" + "," + "0" + "," + "0" + ","
 			sql += "0" + "," + "0" + "," + "NULL" + "," + "NULL" + "," + "0" + "," + "0" + ","
-			sql += "0" + "," + "32" + "," + "'32SOY'" + "," + "NULL" + "," + "0" + "," + "0" + "," + "1" + "," + "NULL" + ",'"
+			
+			# sql += "0" + "," + "32" + "," + "'32SOY'" + "," + "NULL" + "," + "0" + "," + "0" + "," + "1" + "," + "NULL" + ",'"
+			sql += "0" + "," + str(customer_wage_rate_id) + "," + "'32SOY'" + "," + "NULL" + "," + "0" + "," + "0" + "," + "1" + "," + "NULL" + ",'"
+			
+
 			sql += str(upd_date) + "'," + str(username) + "," + "'A'" + ",'" + remark + "')"
 			# print(sql)
 
@@ -3892,8 +3902,11 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 	#TODO: หาค่า txtSpare มีการเซ็ทค่าเริ่มต้นมาจากที่ไหน
 	txtSpare = 0
 	Tspare = txtSpare
+	
 	#TODO: ส่งค่า wage_id จาก Customer Tab
-	wage_id = 32
+	# wage_id = 32
+	wage_id = customer_wage_rate_id
+
 	Twage_id = wage_id
 	Twage_no = str(Twage_id) + str(emp_rank)
 	Tpay_type = 1 if ui_ot_status==1 else ""
@@ -4198,7 +4211,11 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 			sql += "0" + "," + "0" + "," + "0" + "," + "0" + "," + "0" + ","
 			sql += "0" + "," + "NULL" + "," + "0" + "," + "0" + ","
 			sql += "0" + "," + "0" + "," + "NULL" + "," + "NULL" + "," + "0" + "," + "0" + ","
-			sql += "0" + "," + "32" + "," + "'32SOY'" + "," + "NULL" + "," + "0" + "," + "0" + "," + "1" + "," + "NULL" + ",'"
+			
+			# sql += "0" + "," + "32" + "," + "'32SOY'" + "," + "NULL" + "," + "0" + "," + "0" + "," + "1" + "," + "NULL" + ",'"
+			sql += "0" + "," + str(customer_wage_rate_id) + "," + "'32SOY'" + "," + "NULL" + "," + "0" + "," + "0" + "," + "1" + "," + "NULL" + ",'"
+			
+
 			sql += str(upd_date) + "'," + str(username) + "," + "'A'" + ",'" + remark + "')"
 			# print(sql)
 
@@ -4373,9 +4390,6 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 
 						print("informNo = ", informNo)
 						print("srv_qty = ", srv_qty)
-
-						# ironman
-						# return False, "TODO"
 
 						if informNo >= srv_qty:
 							is_pass = False					
@@ -5526,6 +5540,9 @@ def chkValidInput_bk(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,em
 	
 	return False, "Validation is failed! Please contact admin"
 
+
+
+'''
 def editRecord_old(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM):
 	is_pass = True
 	message = ""	
@@ -5839,7 +5856,7 @@ def editRecord_old(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_de
 			message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
 
 	return is_pass, message
-
+'''
 
 
 @permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
@@ -5936,8 +5953,8 @@ def ajax_save_daily_attendance_cross_site(request):
 			type_status = "red"
 
 	elif AEdly == 1: # ADD MODE
-		print("Add Mode")
-		# LUFY
+		# print("Add Mode")
+		
 		is_add_record_success, message = addRecord_cross_site(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id,Tday7,Tdof,customer_wage_rate_id,customer_zone_id, Timecross)
 
 		if is_add_record_success:
