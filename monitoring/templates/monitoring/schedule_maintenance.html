@@ -1,4 +1,4 @@
-{% extends "page_monitoring.html" %}
+{% extends "page_schedule_maintenance.html" %}
 {% load i18n %}
 {% load static %}
 {% load widget_tweaks %}
@@ -196,7 +196,7 @@
       	<!-- Contract Service List -->      	
 	    <div class="card card-contract-service-list card-outline card-secondary">
 	      	<div class="card-header">                
-	        	<div class="float-left"><h4 class="m-0 text-dark">Contract Service List&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;<small><small><span id="contract_service_list_amount">Total <b>0</b></span></small></small></h4></div>
+	        	<div class="float-left"><h4 class="m-0 text-dark"><b>Contract Service List</b>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;<small><small><span id="contract_service_list_amount">Total <b>0</b></span></small></small></h4></div>
 	        	<div class="float-left"><h4 class="m-0 text-light"><span id="id_contract_number"></span></h4></div>	        	
 			    <div class="card-tools">
 			 		<!--<button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i></button>-->
@@ -223,8 +223,12 @@
 	      	<div class="card-header">
 
 	        	<div class="float-left">
-	        		<h4 class="m-0 text-dark" id="security_guard_list_title"><i class="fas fa-shield-alt fa-sm"></i>&nbsp;&nbsp;<b>Security Guard List</b>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;
-		        		<button id="add_security_guard_button" type="button" class="btn btn-success btn-sm"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;{% trans 'New' %}&nbsp;</button>&nbsp;	        			
+	        		<h4 class="m-0 text-dark" id="security_guard_list_title"><i class="fas fa-shield-alt fa-sm"></i>&nbsp;&nbsp;<b>Security Guard List</b>
+
+	        			<!--&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;
+		        		<button id="add_security_guard_button" type="button" class="btn btn-success btn-sm"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;{% trans 'New' %}&nbsp;</button>&nbsp;-->
+
+
 	        		<!--
 	        		<small><small>
 					<div class="form-check form-check-inline">
@@ -251,11 +255,14 @@
 		        	<div class="card-tools float-right">
 		        		<button id="cancel_security_guard_button" type="button" class="btn btn-secondary btn-sm">{% trans 'Cancel' %}</button>
 		        		<button id="save_security_guard_button" type="button" class="btn btn-primary btn-sm"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</button>
+		        		&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+		        		<button id="add_security_guard_button" type="button" class="btn btn-success btn-sm"><i class="fas fa-plus fa-sm"></i>&nbsp;&nbsp;{% trans 'New' %}&nbsp;</button>&nbsp;&nbsp;
+		        		
+		        		<!--<button type="button" class="btn btn-tool text-dark" data-card-widget="maximize"><i class="fas fa-expand"></i></button>-->
 		        		<!--<button id="expand_security_guard_window_button" type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i></button>-->
 		        	</div>
-	        	</div>
+	        	</div>	        
 
-	        	
 	      	</div>
 
 	      	<div class="card-body">
@@ -267,13 +274,16 @@
 
 					  <div class="form-group row">
 
+					  	<!--
 					  	<div class="row col-2">
+
 						  	<div class="col-12">
 						  		<div id="employeePhoto"><img src="/static/img/profile-128x128.png" width="90px;" /></div>
 						  	</div>
 					  	</div>
+						-->
 
-					  	<div class="row col-10 d-flex justify-content-end">
+					  	<div class="row col-12 d-flex justify-content-end">
 
 
 						    <div class="col-3">
@@ -533,21 +543,21 @@
 
 	      		<hr>
 	      		<!-- Filter -->
-	      		<div class="row">
+	      		<div class="row p-0">
 	      			
-	      			<div class="col-8 float-left pt-2">	      				
+	      			<div class="col-8 float-left pb-3">	      				
 
 						<div class="form-check form-check-inline">
 			              <input class="form-check-input" type="radio" name="security_guard_list_status_option" id="id_security_guard_list_option_active" value="1" checked>
-			              <label class="form-check-label" for="id_security_guard_list_option_active">Active</label>
+			              <label class="form-check-label text-primary" for="id_security_guard_list_option_active" style="font-size:1rem;padding:0 0 0 0;cursor: pointer">Active&nbsp;&nbsp;</label>
 			            </div>
 			            <div class="form-check form-check-inline">
 			              <input class="form-check-input" type="radio" name="security_guard_list_status_option" id="id_security_guard_list_option_pending" value="2">
-			              <label class="form-check-label" for="id_security_guard_list_option_pending">Pending</label>
+			              <label class="form-check-label text-primary" for="id_security_guard_list_option_pending" style="font-size:1rem;padding:0 0 0 0;cursor: pointer">Pending&nbsp;&nbsp;</label>
 			            </div>
 			            <div class="form-check form-check-inline">
 			              <input class="form-check-input" type="radio" name="security_guard_list_status_option" id="id_security_guard_list_option_all" value="3">
-			              <label class="form-check-label" for="id_security_guard_list_option_all">All</label>
+			              <label class="form-check-label text-primary" for="id_security_guard_list_option_all" style="font-size:1rem;padding:0 0 0 0;cursor: pointer">All&nbsp;&nbsp;</label>
 
 			              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<span id="security_guard_list_amount">TOTAL <b>0</b></span>
 			            </div>			            
@@ -555,16 +565,72 @@
 		        	</div>
 
 		        	<div class="col-4 card-tools text-right pb-3">
+		        		<!--
 		        		<button id="print_scuedule_button" type="button" class="btn btn-outline-primary btn-sm"><i class="fas fa-print fa-sm"></i>&nbsp;&nbsp;{% trans 'Print' %}</button>
+		        		-->
+
+						<div class="input-group-append float-right">
+						<input type="text" class="form-control form-control-xs w-200 border-success" placeholder="Filter Data" id="employee_search_text" style="border-top-right-radius:0px;border-bottom-right-radius:0px;" autocomplete="off">
+						<button class="btn btn-success btn-xs" type="button"  id="employee_search_clear_button" style="border-style: none none none none; border-top-left-radius:0px;border-bottom-left-radius:0px;">CLEAR</button>
+						</div>		        		
 		        	</div>
 
 	      		</div>
 
 
-	      		</font>
 
-				<div id="id_security_guard_list"></div>
-
+	      		<div class="col-12 table-responsive table-striped p-0">
+	      			<font size="2">
+					<table class='table table-sm dataTable' id="id_security_guard_list" style="white-space: nowrap;">
+					<thead>
+					<tr>
+					<th scope='col'>No</th>
+					<th scope='col'>EMP ID</th>
+					<th scope='col'>Name</th>
+					<th scope='col'>Rank</th>
+					<th scope='col'>Eff From</th>
+					<th scope='col'>Eff To</th>
+					<th scope='col' class='text-center'>MON</th>
+					<th scope='col' class='text-center'>TUE</th>
+					<th scope='col' class='text-center'>WED</th>
+					<th scope='col' class='text-center'>THU</th>
+					<th scope='col' class='text-center'>FRI</th>
+					<th scope='col' class='text-center'>SAT</th>
+					<th scope='col' class='text-center'>SUN</th>
+					<th scope='col' class='text-center'>Active</th>
+					<th scope='col'>Relief</th>
+					<th scope='col'>Update Date</th>
+					<th scope='col'>Update By</th>
+					<th scope='col'>Update Flag</th>
+					<th scope='col'>&nbsp;</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+						</tr>
+					</tbody>
+					</table>
+					</font>
+				</div>
 			<!--
               <div class="overlay">
                 <i class="fas fa-2x fa-sync-alt"></i>
@@ -650,6 +716,48 @@ document.addEventListener('contextmenu', function(e) {
   e.preventDefault();
 });
 */
+
+
+//$(document).ready( function () {
+
+	var table = $('#id_security_guard_list').DataTable({
+	  "paging": false,
+	  "pageLength": 15,
+	  "scrollCollapse": true,
+	  "lengthChange": false,
+	  "searching": true,
+	  "ordering": true,
+	  "info": false,
+	  "autoWidth": true,
+	  "dom": '<"top"i>rt<"bottom"><"clear">',
+	  "search": "_INPUT_",
+	  "searchPlaceholder": "Search",  
+	  "language": {
+	    search: '<i class="fa fa-filter" aria-hidden="true"></i>',
+	    searchPlaceholder: 'Filter data'
+	  }
+	});
+
+	//table.buttons('.buttons-print').nodes().css("display", "none");
+	//table.buttons('.buttons-excel').nodes().css("display", "none");
+
+
+	/*
+	$('#employee_search_button').on( 'keyup click', function () {
+	table.search($('#employee_search_text').val()).draw();
+	});
+
+	$('#employee_search_text').on( 'keyup click', function () {
+	table.search($('#employee_search_text').val()).draw();
+	});  		
+
+	$('#employee_search_clear_button').on( 'click', function () {
+		$('#employee_search_text').val("");
+		table.search($('#employee_search_text').val()).draw();
+	});
+	*/
+//});
+
 
 $('#select_employee_modal').on('shown.bs.modal', function () {
     $('#id_employee_search_text').focus();
@@ -1157,12 +1265,13 @@ $(document).ready(function(){
 	    	success: function(data) {
 			  	if(data.is_saved) {
 					// Security Guard List
+					/*
 					result = "";
 					result += "<font size='2'>";
 					result += "<table class='table table-striped table-sm'>";
 					result += "  <thead>";
 					result += "    <tr>";
-					result += "      <th scope='col'>No.</th>";
+					result += "      <th scope='col'>No..</th>";
 					result += "      <th scope='col'>Name</th>";
 					result += "      <th scope='col'>Rank</th>";
 					result += "      <th scope='col'>Eff From</th>";
@@ -1183,17 +1292,21 @@ $(document).ready(function(){
 					result += "    </tr>";
 					result += "  </thead>";					
 					result += "  <tbody>";
+					*/
 
+					result = "";
 					if(data.sch_plan_list.length>0) {
 						count = 1;
 						for(i=0; i<data.sch_plan_list.length; i++) {
 							result += "    <tr>";
-							result += "      <th scope='row'>" + count + "</th>";							
-							result += "      <td><b>" + data.sch_plan_list[i]["emp_id"] + "</b> | <b><a href=javascript:update_sch_plan('" + data.sch_plan_list[i]["sch_no"] + "','" + data.sch_plan_list[i]["srv_id"] + "'); type='button'>" + data.sch_plan_list[i]["emp_fname_th"] + " " + data.sch_plan_list[i]["emp_lname_th"] + "</a></b></td>";
+							result += "      <th scope='row'>" + count + "</th>";
+							
+							result += "      <td><b>" + data.sch_plan_list[i]["emp_id"] + "</b></a></b></td>";
+							result += "      <td><b><a href=javascript:update_sch_plan('" + data.sch_plan_list[i]["sch_no"] + "','" + data.sch_plan_list[i]["srv_id"] + "'); type='button'>" + data.sch_plan_list[i]["emp_fname_th"] + " " + data.sch_plan_list[i]["emp_lname_th"] + "</a></b></td>";
+
 							result += "      <td>" + data.sch_plan_list[i]["sch_rank"] + "</td>";
 							result += "      <td>" + data.sch_plan_list[i]["sch_date_frm"] + "</td>";
 							result += "      <td>" + data.sch_plan_list[i]["sch_date_to"] + "</td>";
-
 
 							if(data.sch_plan_list[i]["sch_shf_mon"] == "99")
 								result += "      <td class='text-center text-danger'>" + data.sch_plan_list[i]["sch_shf_mon"] + "</td>";
@@ -1243,7 +1356,9 @@ $(document).ready(function(){
 
 							result += "      <td>" + data.sch_plan_list[i]["upd_date"] + "</td>";
 							result += "      <td>" + data.sch_plan_list[i]["upd_by"] + "</td>";
-							result += "      <td>" + data.sch_plan_list[i]["upd_flag"] + "</td>";
+							
+							//result += "      <td class='text-center align-center'>" + data.sch_plan_list[i]["upd_flag"] + ".</td>";
+							result += "      <td class='text-center align-center'>...</td>";
 							
 					        result += "		 <td class='text-left align-center'>";
 					        result += "		   <div class='btn-group btn-group-xs' mt-2>";
@@ -1256,15 +1371,19 @@ $(document).ready(function(){
 							count++;
 						}						
 					} else {
-						result += "<tr><td colspan='17' align='center'>There is no data available.</td></tr>";
+						result += "<tr><td colspan='19' align='center'>There is no data available.</td></tr>";
 					}
 
-					result += "  </tbody>";
-					result += "</table>";
-					result += "</font>";
+					//result += "  </tbody>";
+
+
+					//result += "</table>";
+					//result += "</font>";
 						
 					reset_security_guard_list_form();		
-					$("#id_security_guard_list").html(result);				  		
+
+					//$("#id_security_guard_list tbody").html(result);
+					refresh_table(result);
 
 				  	$(document).Toasts('create', {
 				    	class: data.class,
@@ -1330,7 +1449,7 @@ $(document).ready(function(){
 		$(".card-contract-service-list .card-body").html("");
 		
 		//$(".card-security-guard-list .card-body").html("");
-		$("#id_security_guard_list").html("");
+		$("#id_security_guard_list tbody").html("");
 
 		$("#contract_service_list_amount").html("Total <b>0</b>");
 		$("#security_guard_list_amount").html("Total <b>0</b>");
@@ -1360,36 +1479,8 @@ $(document).ready(function(){
 	$('input[type=radio][name=security_guard_list_status_option]').change(function() {
 		
 		// Security Guard List
-		result = "";
-		result += "<font size='2'>";
-		//result += "<table class='table table-striped table-sm'>";
-		result += "<table class='table table-striped table-sm table-wrapper-scroll-y my-custom-scrollbar'>";
-
-		result += "  <thead>";
-		result += "    <tr>";
-		result += "      <th scope='col'>No.</th>";
-		result += "      <th scope='col'>Name</th>";
-		result += "      <th scope='col'>Rank</th>";
-		result += "      <th scope='col'>Eff From</th>";
-		result += "      <th scope='col'>Eff To</th>";
-		result += "      <th scope='col' class='text-center'>MON</th>";
-		result += "      <th scope='col' class='text-center'>TUE</th>";
-		result += "      <th scope='col' class='text-center'>WED</th>";
-		result += "      <th scope='col' class='text-center'>THU</th>";
-		result += "      <th scope='col' class='text-center'>FRI</th>";
-		result += "      <th scope='col' class='text-center'>SAT</th>";
-		result += "      <th scope='col' class='text-center'>SUN</th>";
-		result += "      <th scope='col' class='text-center'>Active</th>";
-		result += "      <th scope='col'>Relief</th>";
-		result += "      <th scope='col'>Update Date</th>";
-		result += "      <th scope='col'>Update By</th>";
-		result += "      <th scope='col'>Update Flag</th>";
-		result += "      <th scope='col'>&nbsp;</th>";
-		result += "    </tr>";
-		result += "  </thead>";					
-		result += "  <tbody>";
-
 	    if (this.value == '1') {
+
 			$.ajax({
 	        	url : "/monitoring/ajax/get_customer_schdule_plan_list/",
 	        	type : "POST",
@@ -1406,10 +1497,16 @@ $(document).ready(function(){
 
 					if(total>0) {
 						count = 1;
+						result = "";
 						for(i=0; i<total; i++) {								
 							result += "    <tr>";
 							result += "      <th scope='row'>" + count + "</th>";
-							result += "      <td><b>" + data.sch_plan_list[i]["emp_id"] + "</b> | <b><a href=javascript:update_sch_plan('" + data.sch_plan_list[i]["sch_no"] + "','" + data.sch_plan_list[i]["srv_id"] + "'); type='button'>" + data.sch_plan_list[i]["emp_fname_th"] + " " + data.sch_plan_list[i]["emp_lname_th"] + "</a></b></td>";
+							
+
+							//result += "      <td><b>" + data.sch_plan_list[i]["emp_id"] + "</b> | <b><a href=javascript:update_sch_plan('" + data.sch_plan_list[i]["sch_no"] + "','" + data.sch_plan_list[i]["srv_id"] + "'); type='button'>" + data.sch_plan_list[i]["emp_fname_th"] + " " + data.sch_plan_list[i]["emp_lname_th"] + "</a></b></td>";
+							result += "      <td><b>" + data.sch_plan_list[i]["emp_id"] + "</b></a></b></td>";
+							result += "      <td><b><a href=javascript:update_sch_plan('" + data.sch_plan_list[i]["sch_no"] + "','" + data.sch_plan_list[i]["srv_id"] + "'); type='button'>" + data.sch_plan_list[i]["emp_fname_th"] + " " + data.sch_plan_list[i]["emp_lname_th"] + "</a></b></td>";
+
 							result += "      <td>" + data.sch_plan_list[i]["sch_rank"] + "</td>";
 							result += "      <td>" + data.sch_plan_list[i]["sch_date_frm"] + "</td>";
 							result += "      <td>" + data.sch_plan_list[i]["sch_date_to"] + "</td>";
@@ -1465,7 +1562,7 @@ $(document).ready(function(){
 
 							result += "      <td>" + data.sch_plan_list[i]["upd_date"] + "</td>";
 							result += "      <td>" + data.sch_plan_list[i]["upd_by"] + "</td>";
-							result += "      <td>" + data.sch_plan_list[i]["upd_flag"] + "</td>";
+							result += "      <td class='text-center'>" + data.sch_plan_list[i]["upd_flag"] + "</td>";
 
 							//result += "		 <td>&nbsp</td>";
 					        result += "		 <td class='text-left align-center'>";
@@ -1479,42 +1576,35 @@ $(document).ready(function(){
 							result += "    </tr>";			
 							count++;
 						}
-						result += "  </tbody>";
-						result += "</table>";
-						result += "</font>";
 						
-						//$(".card-security-guard-list .card-body").html(result);
-						$("#id_security_guard_list").html(result);
+						//$("#id_security_guard_list tbody").html(result);
+						refresh_table(result);
 
 						$("#security_guard_list_amount").html("Total <b>" + total + "</b>");
 
 					} else {
-						result += "<tr><td colspan='17' align='center'>There is no data available.</td></tr>";
-						result += "  </tbody>";
-						result += "</table>";
-						result += "</font>";
-						
-						//$(".card-security-guard-list .card-body").html(result);
-						$("#id_security_guard_list").html(result);
+						result = "<tr><td colspan='18' align='center'>There is no data available.</td></tr>";
+						//$("#id_security_guard_list tbody").html(result);
+						refresh_table(result);
+
 						$("#security_guard_list_amount").html("Total <b>0</b>");
 					}
 	        	},
 	        	error: function(data) {	        		
-	          		result += "<tr><td colspan='17' align='center'>There is no data available.</td></tr>";			
-					result += "  </tbody>";
-					result += "</table>";
-					result += "</font>";
+	          		result = "<tr><td colspan='19' align='center'>There is no data available.</td></tr>";
+
 					if(count > 0)
 						count = count - 1;
 
-					//$(".card-security-guard-list .card-body").html(result);
-					$("#id_security_guard_list").html(result);
+					$("#id_security_guard_list tbody").html(result);
+					refresh_table(result);
+
 					$("#security_guard_list_amount").html("Total <b>0</b>");		          		
 	        	}	        	
 	        });			
 	    }
 	    else if (this.value == '2') {
-			$("#id_security_guard_list").html("Loading...");
+			$("#id_security_guard_list tobdy").html("Loading...");
 			$("#security_guard_list_amount").html("Total <b>0</b>");
 			$.ajax({
 
@@ -1532,23 +1622,20 @@ $(document).ready(function(){
 	        		total = data.sch_plan_list.length;
 					if(total>0) {
 						count = 1;
+						result = "";
 						for(i=0; i<total; i++) {								
 							result += "    <tr>";
 							result += "      <th scope='row'>" + count + "</th>";
-							result += "      <td><b>" + data.sch_plan_list[i]["emp_id"] + "</b> | <b><a href=javascript:update_sch_plan('" + data.sch_plan_list[i]["sch_no"] + "','" + data.sch_plan_list[i]["srv_id"] +"'); type='button'>" + data.sch_plan_list[i]["emp_fname_th"] + " " + data.sch_plan_list[i]["emp_lname_th"] + "</a></b></td>";
+							
+							//result += "      <td><b>" + data.sch_plan_list[i]["emp_id"] + "</b> | <b><a href=javascript:update_sch_plan('" + data.sch_plan_list[i]["sch_no"] + "','" + data.sch_plan_list[i]["srv_id"] +"'); type='button'>" + data.sch_plan_list[i]["emp_fname_th"] + " " + data.sch_plan_list[i]["emp_lname_th"] + "</a></b></td>";
+							result += "      <td><b>" + data.sch_plan_list[i]["emp_id"] + "</b></a></b></td>";
+							result += "      <td><b><a href=javascript:update_sch_plan('" + data.sch_plan_list[i]["sch_no"] + "','" + data.sch_plan_list[i]["srv_id"] + "'); type='button'>" + data.sch_plan_list[i]["emp_fname_th"] + " " + data.sch_plan_list[i]["emp_lname_th"] + "</a></b></td>";
+
+
 							result += "      <td>" + data.sch_plan_list[i]["sch_rank"] + "</td>";
 							result += "      <td>" + data.sch_plan_list[i]["sch_date_frm"] + "</td>";
 							result += "      <td>" + data.sch_plan_list[i]["sch_date_to"] + "</td>";
 
-							/*
-							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_mon"] + "</td>";
-							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_tue"] + "</td>";
-							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_wed"] + "</td>";
-							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_thu"] + "</td>";
-							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_fri"] + "</td>";
-							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_sat"] + "</td>";
-							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_sun"] + "</td>";
-							*/
 
 							if(data.sch_plan_list[i]["sch_shf_mon"]==99)
 								result += "      <td class='text-center text-danger'>OFF</td>";
@@ -1600,7 +1687,7 @@ $(document).ready(function(){
 
 							result += "      <td>" + data.sch_plan_list[i]["upd_date"] + "</td>";
 							result += "      <td>" + data.sch_plan_list[i]["upd_by"] + "</td>";
-							result += "      <td>" + data.sch_plan_list[i]["upd_flag"] + "</td>";
+							result += "      <td class='text-center'>" + data.sch_plan_list[i]["upd_flag"] + "</td>";
 														//result += "		 <td>&nbsp</td>";
 					        result += "		 <td class='text-left align-center'>";
 					        result += "		   <div class='btn-group btn-group-xs' mt-2>";
@@ -1613,35 +1700,32 @@ $(document).ready(function(){
 							result += "    </tr>";						
 							count++;
 						}
-						result += "  </tbody>";
-						result += "</table>";
-						result += "</font>";
-						
-						//$(".card-security-guard-list .card-body").html(result);
-						$("#id_security_guard_list").html(result);
+
+						$("#id_security_guard_list tbody").html(result);
+						refresh_table(result);
 
 						$("#security_guard_list_amount").html("Total <b>" + total + "</b>");							
 					} else {
-						result += "<tr><td colspan='17' align='center'>There is no data available.</td></tr>";
-						result += "  </tbody>";
-						result += "</table>";
-						result += "</font>";
-
-						//$(".card-security-guard-list .card-body").html(result);
-						$("#id_security_guard_list").html(result);
+						result = "<tr><td colspan='18' align='center'>There is no data available.</td></tr>";
+						//$("#id_security_guard_list tbody").html(result);
+						refresh_table(result);
 
 						$("#security_guard_list_amount").html("Total <b>0</b>");
 					}
 	        	},
 	        	error: function(data) {	        		
-	          		result += "<tr><td colspan='17' align='center'>There is no data available.</td></tr>";
+	          		result += "<tr><td colspan='19' align='center'>There is no data available.</td></tr>";
+
+	          		/*
 					result += "  </tbody>";
 					result += "</table>";
 					result += "</font>";
-					
+					*/
+
 					//$(".card-security-guard-list .card-body").html(result);
-					$("#id_security_guard_list").html(result);
-					
+					$("#id_security_guard_list tbody").html(result);
+					refresh_table(result);
+
 					$("#security_guard_list_amount").html("Total <b>0</b>");
 	        	}   	
 	        });
@@ -1660,24 +1744,19 @@ $(document).ready(function(){
 	        	success: function(data) {	        		
 	        		total = data.sch_plan_list.length;
 					if(total>0) {
-						count = 1;						
+						count = 1;
+						result = "";
 						for(i=0; i<total; i++) {
 							result += "    <tr>";
 							result += "      <th scope='row'>" + count + "</th>";
-							result += "      <td><b>" + data.sch_plan_list[i]["emp_id"] + "</b> | <b><a href=javascript:update_sch_plan('" + data.sch_plan_list[i]["sch_no"] + "','" + data.sch_plan_list[i]["srv_id"] + "'); type='button'>" + data.sch_plan_list[i]["emp_fname_th"] + " " + data.sch_plan_list[i]["emp_lname_th"] + "</a></b></td>";
+							
+							//result += "      <td><b>" + data.sch_plan_list[i]["emp_id"] + "</b> | <b><a href=javascript:update_sch_plan('" + data.sch_plan_list[i]["sch_no"] + "','" + data.sch_plan_list[i]["srv_id"] + "'); type='button'>" + data.sch_plan_list[i]["emp_fname_th"] + " " + data.sch_plan_list[i]["emp_lname_th"] + "</a></b></td>";
+							result += "      <td><b>" + data.sch_plan_list[i]["emp_id"] + "</b></a></b></td>";
+							result += "      <td><b><a href=javascript:update_sch_plan('" + data.sch_plan_list[i]["sch_no"] + "','" + data.sch_plan_list[i]["srv_id"] + "'); type='button'>" + data.sch_plan_list[i]["emp_fname_th"] + " " + data.sch_plan_list[i]["emp_lname_th"] + "</a></b></td>";
+
 							result += "      <td>" + data.sch_plan_list[i]["sch_rank"] + "</td>";
 							result += "      <td>" + data.sch_plan_list[i]["sch_date_frm"] + "</td>";
 							result += "      <td>" + data.sch_plan_list[i]["sch_date_to"] + "</td>";
-
-							/*
-							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_mon"] + "</td>";
-							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_tue"] + "</td>";
-							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_wed"] + "</td>";
-							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_thu"] + "</td>";
-							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_fri"] + "</td>";
-							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_sat"] + "</td>";
-							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_sun"] + "</td>";
-							*/
 
 							if(data.sch_plan_list[i]["sch_shf_mon"]==99)
 								result += "      <td class='text-center text-danger'>OFF</td>";
@@ -1730,7 +1809,7 @@ $(document).ready(function(){
 
 							result += "      <td>" + data.sch_plan_list[i]["upd_date"] + "</td>";
 							result += "      <td>" + data.sch_plan_list[i]["upd_by"] + "</td>";
-							result += "      <td>" + data.sch_plan_list[i]["upd_flag"] + "</td>";
+							result += "      <td class='text-center'>" + data.sch_plan_list[i]["upd_flag"] + "</td>";
 														//result += "		 <td>&nbsp</td>";
 					        result += "		 <td class='text-left align-center'>";
 					        result += "		   <div class='btn-group btn-group-xs' mt-2>";
@@ -1743,43 +1822,30 @@ $(document).ready(function(){
 							result += "    </tr>";						
 							count++;
 						}
-						result += "  </tbody>";
-						result += "</table>";
-						result += "</font>";
-						
-						//$(".card-security-guard-list .card-body").html(result);
-						$("#id_security_guard_list").html(result);
+
+						//$("#id_security_guard_list tbody").html(result);
+						refresh_table(result);
 
 						$("#security_guard_list_amount").html("Total <b>" + total + "</b>");							
 					} else {
-						result += "<tr><td colspan='17' align='center'>There is no data available.</td></tr>";
-						result += "  </tbody>";
-						result += "</table>";
-						result += "</font>";
+						result = "<tr><td colspan='19' align='center'>There is no data available.</td></tr>";
+						//$("#id_security_guard_list tbody").html(result);
+						refresh_table(result);
+
 						$("#security_guard_list_amount").html("Total <b>0</b>");
 					}
 	        	},
 	        	error: function(data) {	        		
-	          		result += "<tr><td colspan='17' align='center'>There is no data available.</td></tr>";
-					result += "  </tbody>";
-					result += "</table>";
-					result += "</font>";
-					
-					//$(".card-security-guard-list .card-body").html(result);
-					$("#id_security_guard_list").html(result);
+	          		result = "<tr><td colspan='19' align='center'>There is no data available.</td></tr>";
+					//$("#id_security_guard_list tbody").html(result);
+					refresh_table(result);
 
 					$("#security_guard_list_amount").html("Total <b>0</b>");		          		
 	        	},	        
 	        });	       	
 	    } else {
-	    	result += "<tr><td colspan='17' align='center'>There is no data available.</td></tr>";
-			result += "  </tbody>";
-			result += "</table>";
-			result += "</font>";
-			
-			//$(".card-security-guard-list .card-body").html(result);
-			$("#id_security_guard_list").html(result);
-
+	    	result += "<tr><td colspan='18' align='center'>There is no data available.</td></tr>";
+			$("#id_security_guard_list tbody").html(result);
 			$("#security_guard_list_amount").html("Total <b>0</b>");		    	
 	    }
 		
@@ -1927,8 +1993,8 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 					result += "<table id='contractServiceListTable' class='table table-fixed table-sm table-condensed'>";
 					result += "  <thead>";
 					result += "    <tr>";
-					result += "      <th scope='col' name='service_id' class='d-none'>Service ID1</th>";	
-					result += "      <th scope='col'>No.</th>";
+					result += "      <th scope='col' name='service_id' class='d-none'>Service ID</th>";	
+					result += "      <th scope='col'>No</th>";
 					result += "      <th scope='col'>Rank</th>";
 					result += "      <th scope='col'>Shift</th>";
 					result += "      <th scope='col' class='text-center'>QTY</th>";
@@ -1992,48 +2058,28 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 					result += "</table>";
 					result += "</font>";
 
-
 					$(".card-contract-service-list .card-body").html(result);
 					$("#contract_service_list_amount").html("Total <b>" + data.cus_service_list.length + "</b>");
 
+
+
+
 					// Security Guard List
 					result = "";
-					result += "<font size='2'>";
-					result += "<table class='table table-striped table-sm table-wrapper-scroll-y my-custom-scrollbar'>";
-					result += "  <thead>";
-					result += "    <tr>";
-					result += "      <th scope='col'>No.</th>";
-					result += "      <th scope='col'>Name</th>";
-					result += "      <th scope='col'>Rank</th>";
-					result += "      <th scope='col'>Eff From</th>";
-					result += "      <th scope='col'>Eff To</th>";
-					result += "      <th scope='col' class='text-center'>MON</th>";
-					result += "      <th scope='col' class='text-center'>TUE</th>";
-					result += "      <th scope='col' class='text-center'>WED</th>";
-					result += "      <th scope='col' class='text-center'>THU</th>";
-					result += "      <th scope='col' class='text-center'>FRI</th>";
-					result += "      <th scope='col' class='text-center'>SAT</th>";
-					result += "      <th scope='col' class='text-center'>SUN</th>";
-					result += "      <th scope='col' class='text-center'>Status</th>";
-					result += "      <th scope='col'>Relief</th>";
-					result += "      <th scope='col'>Update Date</th>";
-					result += "      <th scope='col'>Update By</th>";
-					result += "      <th scope='col'>Update Flag</th>";
-					result += "		 <th scope='col'>&nbsp;</th>";
-					result += "    </tr>";
-					result += "  </thead>";					
-					result += "  <tbody>";
 
 					if(data.sch_plan_list.length>0) {
 						count = 1;
 						for(i=0; i<data.sch_plan_list.length; i++) {
 							result += "    <tr>";
 							result += "      <th scope='row'>" + count + "</th>";							
-							result += "      <td><b>" + data.sch_plan_list[i]["emp_id"] + "</b> | <b><a href=javascript:update_sch_plan('" + data.sch_plan_list[i]["sch_no"] + "','" + data.sch_plan_list[i]["srv_id"] + "'); type='button'>" + data.sch_plan_list[i]["emp_fname_th"] + " " + data.sch_plan_list[i]["emp_lname_th"] + "</a></b></td>";
+							
+							//result += "      <td><b>" + data.sch_plan_list[i]["emp_id"] + "</b> | <b><a href=javascript:update_sch_plan('" + data.sch_plan_list[i]["sch_no"] + "','" + data.sch_plan_list[i]["srv_id"] + "'); type='button'>" + data.sch_plan_list[i]["emp_fname_th"] + " " + data.sch_plan_list[i]["emp_lname_th"] + "</a></b></td>";
+							result += "      <td><b>" + data.sch_plan_list[i]["emp_id"] + "</b></a></b></td>";
+							result += "      <td><b><a href=javascript:update_sch_plan('" + data.sch_plan_list[i]["sch_no"] + "','" + data.sch_plan_list[i]["srv_id"] + "'); type='button'>" + data.sch_plan_list[i]["emp_fname_th"] + " " + data.sch_plan_list[i]["emp_lname_th"] + "</a></b></td>";
+  
 							result += "      <td>" + data.sch_plan_list[i]["sch_rank"] + "</td>";
 							result += "      <td>" + data.sch_plan_list[i]["sch_date_frm"] + "</td>";
 							result += "      <td>" + data.sch_plan_list[i]["sch_date_to"] + "</td>";
-
 
 							if(data.sch_plan_list[i]["sch_shf_mon"] == "99") {
 								//result += "      <td class='text-center text-danger'>" + data.sch_plan_list[i]["sch_shf_mon"] + "</td>";
@@ -2097,7 +2143,7 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 
 							result += "      <td>" + data.sch_plan_list[i]["upd_date"] + "</td>";
 							result += "      <td>" + data.sch_plan_list[i]["upd_by"] + "</td>";
-							result += "      <td>" + data.sch_plan_list[i]["upd_flag"] + "</td>";
+							result += "      <td class='text-center'>" + data.sch_plan_list[i]["upd_flag"] + "</td>";
 							
 							//result += "		 <td>&nbsp</td>";
 					        result += "		 <td class='text-left align-center'>";
@@ -2119,14 +2165,10 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 						result += "<tr><td colspan='18' align='center' class='text-danger'><br><font size='3'>There is no data available.</font><br><br></td></tr>";
 					}
 
-					result += "  </tbody>";
-					result += "</table>";
-					result += "</font>";
-					
-					//$(".card-security-guard-list .card-body").html(result);
-					$("#id_security_guard_list").html(result);
-					
 					$("#security_guard_list_amount").html("Total <b>" + data.sch_plan_list.length + "</b>");
+
+					refresh_table(result);
+
 				} else {					
 					$("#contract_service_list_form :input").attr("disabled", true);
 					$("#security_guard_list_form :input").attr("disabled", true);
@@ -2154,8 +2196,46 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 	}
 });
 
+function refresh_table(result) {
+	table.destroy();
+	$('#id_security_guard_list tbody').empty().append(result);        
+	
+	table = $('#id_security_guard_list').DataTable({
+	  "paging": false,
+	  "pageLength": 15,
+	  "scrollCollapse": true,
+	  "lengthChange": false,
+	  "searching": true,
+	  "ordering": true,
+	  "info": false,
+	  "autoWidth": true,
+	  "dom": '<"top"i>rt<"bottom"><"clear">',
+	  "search": "_INPUT_",
+	  "searchPlaceholder": "Search",  
+	  "language": {
+	    search: '<i class="fa fa-filter" aria-hidden="true"></i>',
+	    searchPlaceholder: 'Filter data'
+	  }
+	});
 
-// amnaj
+	//table.buttons('.buttons-print').nodes().css("display", "none");
+	//table.buttons('.buttons-excel').nodes().css("display", "none");
+
+
+	$('#employee_search_button').on( 'keyup click', function () {
+	table.search($('#employee_search_text').val()).draw();
+	});
+
+	$('#employee_search_text').on( 'keyup click', function () {
+	table.search($('#employee_search_text').val()).draw();
+	});  		
+
+	$('#employee_search_clear_button').on( 'click', function () {
+		$('#employee_search_text').val("");
+		table.search($('#employee_search_text').val()).draw();
+	});
+}
+
 function update_sch_plan(sch_no, srv_id) {
 	cus_id = $('#id_cus_id').val();
 	cus_brn = $('#id_cus_brn').val();
