@@ -866,9 +866,7 @@ $(document).on('keypress', '#id_emp_id', function(e) {
 		  	});    		
     		$("#id_emp_id").focus();
 		} else {
-			
-			showLoading();
-
+					
 			$.ajax({
 		    	url : "/monitoring/ajax/get_employee",
 		    	type : "GET",
@@ -1490,7 +1488,7 @@ $(document).ready(function(){
 		$("#contract_service_list_amount").html("Total <b>0</b>");
 		$("#security_guard_list_amount").html("Total <b>0</b>");
 
-		$("#customer_name_title").html("<h4 class='m-0'>Customer Information</h4>");		
+		$("#customer_name_title").html("<h4 class='m-0'><b>Customer Information</b></h4>");		
 		$("#employeePhoto").html("<img src='/static/img/profile-128x128.png' width='90px;'' />");
 
 		//$("#id_cus_main_cus_name_th").css("background-color", '');
@@ -1512,7 +1510,10 @@ $(document).ready(function(){
     });
  	*/
  	
+
 	$('input[type=radio][name=security_guard_list_status_option]').change(function() {
+			
+		showLoading();
 		
 		// Security Guard List
 	    if (this.value == '1') {
@@ -1520,7 +1521,7 @@ $(document).ready(function(){
 			$.ajax({
 	        	url : "/monitoring/ajax/get_customer_schdule_plan_list/",
 	        	type : "POST",
-	        	async: false,
+	        	async: true,
 	        	data : {          
 	          		csrfmiddlewaretoken: '{{ csrf_token }}',
 	          		cus_id: $("#id_cus_id").val(),
@@ -1612,11 +1613,12 @@ $(document).ready(function(){
 							result += "    </tr>";			
 							count++;
 						}
-						
+
 						//$("#id_security_guard_list tbody").html(result);
 						refresh_table(result);
 
 						$("#security_guard_list_amount").html("Total <b>" + total + "</b>");
+						$.LoadingOverlay("hide");
 
 					} else {
 						result = "<tr><td colspan='18' align='center'>There is no data available.</td></tr>";
@@ -1624,7 +1626,9 @@ $(document).ready(function(){
 						refresh_table(result);
 
 						$("#security_guard_list_amount").html("Total <b>0</b>");
+						$.LoadingOverlay("hide");
 					}
+										
 	        	},
 	        	error: function(data) {	        		
 	          		result = "<tr><td colspan='19' align='center'>There is no data available.</td></tr>";
@@ -1635,18 +1639,20 @@ $(document).ready(function(){
 					$("#id_security_guard_list tbody").html(result);
 					refresh_table(result);
 
-					$("#security_guard_list_amount").html("Total <b>0</b>");		          		
+					$("#security_guard_list_amount").html("Total <b>0</b>");
+					$.LoadingOverlay("hide");
 	        	}	        	
 	        });			
 	    }
 	    else if (this.value == '2') {
+			
 			$("#id_security_guard_list tobdy").html("Loading...");
 			$("#security_guard_list_amount").html("Total <b>0</b>");
 			$.ajax({
 
 	        	url : "/monitoring/ajax/get_customer_schdule_plan_list/",
 	        	type : "POST",
-	        	async: false,
+	        	async: true,
 	        	data : {          
 	          		csrfmiddlewaretoken: '{{ csrf_token }}',
 	          		cus_id: $("#id_cus_id").val(),
@@ -1740,36 +1746,34 @@ $(document).ready(function(){
 						$("#id_security_guard_list tbody").html(result);
 						refresh_table(result);
 
-						$("#security_guard_list_amount").html("Total <b>" + total + "</b>");							
+						$("#security_guard_list_amount").html("Total <b>" + total + "</b>");
+						$.LoadingOverlay("hide");
+
 					} else {
 						result = "<tr><td colspan='18' align='center'>There is no data available.</td></tr>";
 						//$("#id_security_guard_list tbody").html(result);
 						refresh_table(result);
 
 						$("#security_guard_list_amount").html("Total <b>0</b>");
+						$.LoadingOverlay("hide");
 					}
+					
 	        	},
 	        	error: function(data) {	        		
 	          		result += "<tr><td colspan='19' align='center'>There is no data available.</td></tr>";
-
-	          		/*
-					result += "  </tbody>";
-					result += "</table>";
-					result += "</font>";
-					*/
-
-					//$(".card-security-guard-list .card-body").html(result);
 					$("#id_security_guard_list tbody").html(result);
 					refresh_table(result);
-
 					$("#security_guard_list_amount").html("Total <b>0</b>");
+					
+					$.LoadingOverlay("hide");					
 	        	}   	
 	        });
 	    } else if (this.value == '3') {			
+			
 			$.ajax({
 	        	url : "/monitoring/ajax/get_customer_schdule_plan_list/",
 	        	type : "POST",
-	        	async: false,
+	        	async: true,
 	        	data : {          
 	          		csrfmiddlewaretoken: '{{ csrf_token }}',
 	          		cus_id: $("#id_cus_id").val(),
@@ -1863,28 +1867,30 @@ $(document).ready(function(){
 						refresh_table(result);
 
 						$("#security_guard_list_amount").html("Total <b>" + total + "</b>");							
+						$.LoadingOverlay("hide");
 					} else {
 						result = "<tr><td colspan='19' align='center'>There is no data available.</td></tr>";
-						//$("#id_security_guard_list tbody").html(result);
 						refresh_table(result);
 
 						$("#security_guard_list_amount").html("Total <b>0</b>");
+						$.LoadingOverlay("hide");
 					}
+					
 	        	},
 	        	error: function(data) {	        		
 	          		result = "<tr><td colspan='19' align='center'>There is no data available.</td></tr>";
-					//$("#id_security_guard_list tbody").html(result);
 					refresh_table(result);
-
 					$("#security_guard_list_amount").html("Total <b>0</b>");		          		
+					$.LoadingOverlay("hide");					
 	        	},	        
 	        });	       	
 	    } else {
 	    	result += "<tr><td colspan='18' align='center'>There is no data available.</td></tr>";
 			$("#id_security_guard_list tbody").html(result);
 			$("#security_guard_list_amount").html("Total <b>0</b>");		    	
+			$.LoadingOverlay("hide");
 	    }
-		
+
 	});
 	
 	
@@ -1988,7 +1994,8 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 					$("#cancelCustomerServicePersonButton").attr("disabled", false);
 
 					result_title = "";
-					result_title = "<h4 class='m-0 text-dark'>" + data.cus_site_name_th + "<small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-dark'></i></button></small></h4>";
+					//result_title = "<h4 class='m-0 text-dark'>" + data.cus_site_name_th + "<small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'><i class='fas fa-angle-down text-dark'></i></button></small></h4>";
+					result_title = "<h4 class='m-0 text-dark'><b>" + data.cus_site_name_th + "<small>&nbsp;&nbsp;<button type='button' class='btn btn-tool' data-card-widget='collapse'></button></small></b></h4>";
 
 					
 					$("#customer_name_title").html(result_title);
@@ -3017,6 +3024,7 @@ function showLoading() {
 	});
 	$.LoadingOverlay("show");	
 }
+
 </script>
 {% endblock %}
 
