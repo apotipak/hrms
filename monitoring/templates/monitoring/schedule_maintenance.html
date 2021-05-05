@@ -39,7 +39,8 @@
 
 
       	<!-- 1st Block -->
-      	<div class="card card-outline card-secondary">
+      	<!--<div class="card card-outline card-secondary">-->
+      	<div class="card card-outline card-secondary collapsed-card">
 
 	    	<div class="card-header">
 
@@ -50,7 +51,7 @@
 		        </h1>
 
 			    <div class="card-tools">			 		
-			      	<button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+			      	<button type="button" class="btn btn-tool" data-card-widget="collapse">ดูเพิ่มเติม<!--<i class="fas fa-minus"></i>--></button>
 			    </div>
 
 				<form id="contract_service_list_form" method="POST">
@@ -194,13 +195,13 @@
 
 
       	<!-- Contract Service List -->      	
-	    <div class="card card-contract-service-list card-outline card-secondary">
+	    <div class="card card-contract-service-list card-outline card-secondary collapsed-card">
 	      	<div class="card-header">                
 	        	<div class="float-left"><h4 class="m-0 text-dark"><b>Contract Service List</b>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;<small><small><span id="contract_service_list_amount">Total <b>0</b></span></small></small></h4></div>
 	        	<div class="float-left"><h4 class="m-0 text-light"><span id="id_contract_number"></span></h4></div>	        	
 			    <div class="card-tools">
 			 		<!--<button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i></button>-->
-			      	<button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+			      	<button type="button" class="btn btn-tool" data-card-widget="collapse">ดูเพิ่มเติม<!--<i class="fas fa-minus"></i>--></button>
 			    </div>
 
 	      	</div>
@@ -567,11 +568,28 @@
 		        	<div class="col-6 card-tools text-right pb-2">
 
 						<div class="input-group-append float-right">
-						<input type="text" class="form-control form-control-xs w-200 border-success" placeholder="Filter Data" id="employee_search_text" style="border-top-right-radius:0px;border-bottom-right-radius:0px;" autocomplete="off">
-						<button class="btn btn-success btn-xs" type="button"  id="employee_search_clear_button" style="border-style: none none none none; border-top-left-radius:0px;border-bottom-left-radius:0px;">CLEAR</button>
+							<input type="text" class="form-control form-control-xs w-200 border-success" placeholder="Filter Data" id="employee_search_text" style="border-top-right-radius:0px;border-bottom-right-radius:0px;" autocomplete="off">
+							<button class="btn btn-success btn-xs" type="button"  id="employee_search_clear_button" style="border-style: none none none none; border-top-left-radius:0px;border-bottom-left-radius:0px;">CLEAR</button>
 
-		        		<span class='pl-2 pt-1 pr-2'>&nbsp;&nbsp;|&nbsp;&nbsp;</span><button id="print_scuedule_button" type="button" class="btn btn-primary btn-xs float-right">&nbsp;&nbsp;<i class="fas fa-print fa-sm"></i>&nbsp;&nbsp;{% trans 'Print' %}&nbsp;&nbsp;</button>
+							<!--
+			        		<span class='pl-2 pt-1 pr-2'>&nbsp;&nbsp;|&nbsp;&nbsp;</span><button id="print_scuedule_button" type="button" class="btn btn-primary btn-xs float-right">&nbsp;&nbsp;<i class="fas fa-print fa-sm"></i>&nbsp;&nbsp;{% trans 'Print' %}&nbsp;&nbsp;</button>
+							-->
 
+							<span class='pl-2 pt-1 pr-2'>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+				            <ol class="breadcrumb float-sm-right p-0">
+				              <li>
+				                <button class="btn btn-outline-info btn-xs dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				                  &nbsp;&nbsp;<i class="fas fa-print fa-sm"></i>&nbsp;&nbsp;Print
+				                </button>
+				                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink"> 
+				                  <span style="font-size: 14px;">
+				                  <a class="dropdown-item" href="#" onclick="print_document();"><i class="fas fa-desktop text-secondary"></i>&nbsp;&nbsp;Display on screen</a>                  
+				                  <a class="dropdown-item" href="#" onclick="export_to_excel();"><i class="far fa-file-excel text-secondary"></i>&nbsp;&nbsp;Export to Excel</a>
+				                  </span>
+				                </div>
+				              </li>
+
+				            </ol>
 						</div>
 						
 		        		
@@ -756,19 +774,26 @@ var table = $('#id_security_guard_list').DataTable({
         extend: 'print',
         title: '',
         exportOptions: {
-          columns: [ 0, 1, 2]
+          columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
         }
     },
     {
         extend: 'excelHtml5',        
         title: '',
         exportOptions: {
-          columns: [ 0, 1, 2]
+          columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
         }
     },
   ]
 });
 
+function print_document() {  
+  $(".buttons-print").trigger("click");
+}
+
+function export_to_excel() {
+  $(".buttons-excel").trigger("click");  
+}
 
 $('#select_employee_modal').on('shown.bs.modal', function () {
     $('#id_employee_search_text').focus();
@@ -2254,14 +2279,14 @@ function refresh_table(result) {
 	        extend: 'print',
 	        title: '',
 	        exportOptions: {
-	          columns: [ 0, 1, 2]
+	          columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
 	        }
 	    },
 	    {
 	        extend: 'excelHtml5',        
 	        title: '',
 	        exportOptions: {
-	          columns: [ 0, 1, 2]
+	          columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
 	        }
 	    },
 	  ]	  
