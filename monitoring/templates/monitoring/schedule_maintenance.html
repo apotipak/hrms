@@ -545,7 +545,7 @@
 	      		<!-- Filter -->
 	      		<div class="row p-0">
 	      			
-	      			<div class="col-8 float-left pb-3">	      				
+	      			<div class="col-6 float-left pb-3">	      				
 
 						<div class="form-check form-check-inline">
 			              <input class="form-check-input" type="radio" name="security_guard_list_status_option" id="id_security_guard_list_option_active" value="1" checked>
@@ -564,15 +564,17 @@
 
 		        	</div>
 
-		        	<div class="col-4 card-tools text-right pb-3">
-		        		<!--
-		        		<button id="print_scuedule_button" type="button" class="btn btn-outline-primary btn-sm"><i class="fas fa-print fa-sm"></i>&nbsp;&nbsp;{% trans 'Print' %}</button>
-		        		-->
+		        	<div class="col-6 card-tools text-right pb-2">
 
 						<div class="input-group-append float-right">
 						<input type="text" class="form-control form-control-xs w-200 border-success" placeholder="Filter Data" id="employee_search_text" style="border-top-right-radius:0px;border-bottom-right-radius:0px;" autocomplete="off">
 						<button class="btn btn-success btn-xs" type="button"  id="employee_search_clear_button" style="border-style: none none none none; border-top-left-radius:0px;border-bottom-left-radius:0px;">CLEAR</button>
-						</div>		        		
+
+		        		<span class='pl-2 pt-1 pr-2'>&nbsp;&nbsp;|&nbsp;&nbsp;</span><button id="print_scuedule_button" type="button" class="btn btn-primary btn-xs float-right">&nbsp;&nbsp;<i class="fas fa-print fa-sm"></i>&nbsp;&nbsp;{% trans 'Print' %}&nbsp;&nbsp;</button>
+
+						</div>
+						
+		        		
 		        	</div>
 
 	      		</div>
@@ -711,52 +713,61 @@
 
 {% block javascript %}
 <script>	
-/*
-document.addEventListener('contextmenu', function(e) {
-  e.preventDefault();
+
+var table = $('#id_security_guard_list').DataTable({
+  "paging": false,
+  "pageLength": 15,
+  "scrollCollapse": true,
+  "lengthChange": false,
+  "searching": true,
+  "ordering": true,
+  "info": false,
+  "autoWidth": true,
+  "dom": '<"top"i>rt<"bottom"><"clear">',
+  "search": "_INPUT_",
+  "searchPlaceholder": "Search",  
+  "language": {
+    search: '<i class="fa fa-filter" aria-hidden="true"></i>',
+    searchPlaceholder: 'Filter data'
+  },
+  "columnDefs": [
+  	{"targets": 0, "orderable": true},
+  	{"targets": 1, "orderable": true},
+  	{"targets": 2, "orderable": true},
+  	{"targets": 3, "orderable": false},
+  	{"targets": 4, "orderable": false},
+  	{"targets": 5, "orderable": false},
+  	{"targets": 6, "orderable": false},
+  	{"targets": 7, "orderable": false},
+  	{"targets": 8, "orderable": false},
+  	{"targets": 9, "orderable": false},
+  	{"targets": 10, "orderable": false},
+  	{"targets": 11, "orderable": false},
+  	{"targets": 12, "orderable": false},
+  	{"targets": 13, "orderable": false},
+  	{"targets": 14, "orderable": false},
+  	{"targets": 15, "orderable": false},
+  	{"targets": 16, "orderable": false},
+  	{"targets": 17, "orderable": false},
+  	{"targets": 18, "orderable": false},
+  ],
+  buttons: [
+    {
+        extend: 'print',
+        title: '',
+        exportOptions: {
+          columns: [ 0, 1, 2]
+        }
+    },
+    {
+        extend: 'excelHtml5',        
+        title: '',
+        exportOptions: {
+          columns: [ 0, 1, 2]
+        }
+    },
+  ]
 });
-*/
-
-
-//$(document).ready( function () {
-
-	var table = $('#id_security_guard_list').DataTable({
-	  "paging": false,
-	  "pageLength": 15,
-	  "scrollCollapse": true,
-	  "lengthChange": false,
-	  "searching": true,
-	  "ordering": true,
-	  "info": false,
-	  "autoWidth": true,
-	  "dom": '<"top"i>rt<"bottom"><"clear">',
-	  "search": "_INPUT_",
-	  "searchPlaceholder": "Search",  
-	  "language": {
-	    search: '<i class="fa fa-filter" aria-hidden="true"></i>',
-	    searchPlaceholder: 'Filter data'
-	  }
-	});
-
-	//table.buttons('.buttons-print').nodes().css("display", "none");
-	//table.buttons('.buttons-excel').nodes().css("display", "none");
-
-
-	/*
-	$('#employee_search_button').on( 'keyup click', function () {
-	table.search($('#employee_search_text').val()).draw();
-	});
-
-	$('#employee_search_text').on( 'keyup click', function () {
-	table.search($('#employee_search_text').val()).draw();
-	});  		
-
-	$('#employee_search_clear_button').on( 'click', function () {
-		$('#employee_search_text').val("");
-		table.search($('#employee_search_text').val()).draw();
-	});
-	*/
-//});
 
 
 $('#select_employee_modal').on('shown.bs.modal', function () {
@@ -2198,8 +2209,9 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 
 function refresh_table(result) {
 	table.destroy();
+
 	$('#id_security_guard_list tbody').empty().append(result);        
-	
+
 	table = $('#id_security_guard_list').DataTable({
 	  "paging": false,
 	  "pageLength": 15,
@@ -2209,18 +2221,54 @@ function refresh_table(result) {
 	  "ordering": true,
 	  "info": false,
 	  "autoWidth": true,
-	  "dom": '<"top"i>rt<"bottom"><"clear">',
+	  "dom": '<"top"i>Brtip<"bottom"><"clear">',
 	  "search": "_INPUT_",
 	  "searchPlaceholder": "Search",  
 	  "language": {
 	    search: '<i class="fa fa-filter" aria-hidden="true"></i>',
 	    searchPlaceholder: 'Filter data'
-	  }
+	  },
+	  "columnDefs": [
+	  	{"targets": 0, "orderable": true},
+	  	{"targets": 1, "orderable": true},
+	  	{"targets": 2, "orderable": true},
+	  	{"targets": 3, "orderable": false},
+	  	{"targets": 4, "orderable": false},
+	  	{"targets": 5, "orderable": false},
+	  	{"targets": 6, "orderable": false},
+	  	{"targets": 7, "orderable": false},
+	  	{"targets": 8, "orderable": false},
+	  	{"targets": 9, "orderable": false},
+	  	{"targets": 10, "orderable": false},
+	  	{"targets": 11, "orderable": false},
+	  	{"targets": 12, "orderable": false},
+	  	{"targets": 13, "orderable": false},
+	  	{"targets": 14, "orderable": false},
+	  	{"targets": 15, "orderable": false},
+	  	{"targets": 16, "orderable": false},
+	  	{"targets": 17, "orderable": false},
+	  	{"targets": 18, "orderable": false},
+	  ],	  
+	  buttons: [
+	    {
+	        extend: 'print',
+	        title: '',
+	        exportOptions: {
+	          columns: [ 0, 1, 2]
+	        }
+	    },
+	    {
+	        extend: 'excelHtml5',        
+	        title: '',
+	        exportOptions: {
+	          columns: [ 0, 1, 2]
+	        }
+	    },
+	  ]	  
 	});
 
-	//table.buttons('.buttons-print').nodes().css("display", "none");
-	//table.buttons('.buttons-excel').nodes().css("display", "none");
-
+	table.buttons('.buttons-print').nodes().css("display", "none");
+	table.buttons('.buttons-excel').nodes().css("display", "none");
 
 	$('#employee_search_button').on( 'keyup click', function () {
 	table.search($('#employee_search_text').val()).draw();
@@ -2933,7 +2981,6 @@ $(document).on('click', '#contractServiceListTable tbody tr', function(row, $el,
 	
 	$('#id_duration_to').datepicker('setDate', srv_eff_to);
 	$("#chkDurationToDisable").prop("checked", true);	
-	
 });
 
 function showLoading() {
