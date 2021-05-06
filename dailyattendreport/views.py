@@ -1668,6 +1668,97 @@ def AjaxGPM403DailyGuardPerformanceReport(request):
     return response
 
 
+
+
+@login_required(login_url='/accounts/login/')
+def export_gpm_422_no_of_guard_operation_by_empl_by_zone_to_excel(request, *args, **kwargs):
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="GPM_Work_on_Day_Off.xls"'
+
+    report_obj = []
+    work_date = kwargs['work_date']
+    work_date = datetime.datetime.strptime(work_date, "%d/%m/%Y").date()
+    dept_zone = kwargs['dept_zone']
+
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('No. of Guard Operation')
+
+    sql = "select emp_id,emp_fname_th,emp_lname_th,sch_rank,cnt_id,cus_name_th,dept_id,dept_en "
+    sql += "FROM V_HDLYPLAN "
+    sql += "WHERE DLY_DATE='" + str(work_date) + "' and absent=0 "    
+    if (int(dept_zone) > 0):
+        sql += "and dept_id=" + str(dept_zone) + " "
+    else:
+        sql += "and dept_id=9999 "
+    sql += "order by emp_id;"
+    
+    # print("SQL : ", sql)
+
+    try:  
+        cursor = connection.cursor()
+        cursor.execute(sql)
+        report_obj = cursor.fetchall()        
+    except db.OperationalError as e:
+        error_message = "<b>Error: please send this error to IT team</b><br>" + str(e)
+    except db.Error as e:
+        error_message = "<b>Error: please send this error to IT team</b><br>" + str(e)
+    finally:
+        cursor.close()
+
+    ws.col(0).width = int(5*260)
+    ws.col(1).width = int(10*260)
+    ws.col(2).width = int(20*260)
+    ws.col(3).width = int(10*260)
+    ws.col(4).width = int(12*260)
+    ws.col(5).width = int(35*260)
+    
+    font_style = xlwt.XFStyle()
+    font_style = xlwt.easyxf('font: height 180;')
+    columns = ['No', 'EMP ID', 'Name', 'Rank', 'CNT ID', 'SITE NAME']
+    for col_num in range(len(columns)):
+        ws.write(0, col_num, columns[col_num], font_style)
+    
+    font_style = xlwt.XFStyle()
+    font_style = xlwt.easyxf('font: height 180;')
+
+    row_num =1
+    counter = 1
+
+    if len(report_obj) > 0:
+        for row in report_obj:
+            emp_id = row[0]
+            emp_fname_th = row[1]
+            emp_lname_th = row[2]
+            emp_full_name = emp_fname_th.strip() + " " + emp_lname_th.strip()
+            sch_rank = row[3]
+            cnt_id = row[4]
+            dept_id = row[6]
+            dept_en = row[7]
+            cus_name_th = row[5]
+
+            for col_num in range(len(row)):
+                if col_num==0:
+                    ws.write(row_num, 0, counter, font_style)
+                elif col_num==1:
+                    ws.write(row_num, col_num, emp_id, font_style)
+                elif col_num==2:
+                    ws.write(row_num, col_num, emp_full_name, font_style)
+                elif col_num==3:
+                    ws.write(row_num, col_num, sch_rank, font_style)
+                elif col_num==4:
+                    ws.write(row_num, col_num, cnt_id, font_style)
+                elif col_num==5:
+                    ws.write(row_num, col_num, cus_name_th, font_style)
+
+            row_num += 1
+            counter += 1
+    else:
+        ws.write(row_num, 0, "ไม่มีข้อมูล", font_style)
+
+    wb.save(response)
+    return response
+
+
 @login_required(login_url='/accounts/login/')
 def export_gpm_work_on_day_off_to_excel(request, *args, **kwargs):
     response = HttpResponse(content_type='application/ms-excel')
