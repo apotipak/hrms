@@ -1669,6 +1669,102 @@ def AjaxGPM403DailyGuardPerformanceReport(request):
 
 
 @login_required(login_url='/accounts/login/')
+def export_gpm_work_on_day_off_to_excel(request, *args, **kwargs):
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="GPM_Work_on_Day_Off.xls"'
+
+    r_d500_obj = []
+    pickup_record = []
+    context = {}
+
+    start_date = kwargs['start_date']
+    start_date = datetime.datetime.strptime(start_date, "%d/%m/%Y").date()
+
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Work on Day Off')
+
+    sql = "select emp_fname_th, emp_lname_th, shf_desc, dept_en, cnt_id, emp_id, dly_date, dept_id, sch_rank, absent, upd_by, upd_gen, cus_name_th, dof from V_HDLYPLAN "
+    sql += "Where V_HDLYPLAN.dof = 1 AND V_HDLYPLAN.absent = 0 "
+    sql += "AND V_HDLYPLAN.DLY_DATE = '" + str(start_date) + "' "
+    sql += "order By V_HDLYPLAN.dept_id Asc"
+
+    try:
+        cursor = connection.cursor()
+        cursor.execute(sql)
+        report_obj = cursor.fetchall()
+    finally:
+        cursor.close()
+
+    ws.col(0).width = int(5*260)
+    ws.col(1).width = int(10*260)
+    ws.col(2).width = int(10*260)
+    ws.col(3).width = int(20*260)
+    ws.col(4).width = int(5*260)
+    ws.col(5).width = int(8*260)
+    ws.col(6).width = int(15*260)
+    ws.col(7).width = int(18*260)
+    ws.col(8).width = int(12*260)
+    ws.col(9).width = int(30*260)
+    
+
+    font_style = xlwt.XFStyle()
+    font_style = xlwt.easyxf('font: height 180;')
+    columns = ['No', 'Date', 'EMP ID', 'Name', 'Rank', 'Zone ID', 'Zone Name', 'Shift', 'POST ID', 'Site Name']
+    for col_num in range(len(columns)):
+        ws.write(0, col_num, columns[col_num], font_style)
+    
+    font_style = xlwt.XFStyle()
+    font_style = xlwt.easyxf('font: height 180;')
+
+    row_num =1
+    counter = 1
+
+    if len(report_obj) > 0:
+        for row in report_obj:
+            emp_id = row[5]
+            emp_fname_th = row[0]
+            emp_lname_th = row[1]
+            emp_full_name = emp_fname_th.strip() + " " + emp_lname_th.strip()
+            dly_date = str(row[6].strftime("%d/%m/%Y"))
+            sch_rank = row[8]
+            dept_id = row[7]
+            dept_en = row[3]
+            shf_desc = row[2]
+            cnt_id = row[4]
+            cus_name_th = row[12]
+
+            for col_num in range(len(row)):
+                if col_num==0:
+                    ws.write(row_num, 0, counter, font_style)
+                elif col_num==1:
+                    ws.write(row_num, col_num, dly_date, font_style)
+                elif col_num==2:
+                    ws.write(row_num, col_num, emp_id, font_style)
+                elif col_num==3:
+                    ws.write(row_num, col_num, emp_full_name, font_style)
+                elif col_num==4:
+                    ws.write(row_num, col_num, sch_rank, font_style)
+                elif col_num==5:
+                    ws.write(row_num, col_num, dept_id, font_style)
+                elif col_num==6:
+                    ws.write(row_num, col_num, dept_en, font_style)
+                elif col_num==7:
+                    ws.write(row_num, col_num, shf_desc, font_style)
+                elif col_num==8:
+                    ws.write(row_num, col_num, cnt_id, font_style)
+                elif col_num==9:
+                    ws.write(row_num, col_num, cus_name_th, font_style)                
+
+            row_num += 1
+            counter += 1
+    else:
+        ws.write(row_num, 0, "ไม่มีข้อมูล", font_style)
+
+    wb.save(response)
+    return response
+
+
+@login_required(login_url='/accounts/login/')
 def export_gpm_403_daily_guard_performance_by_contract_to_excel(request):
     response = HttpResponse(content_type='application/ms-excel')
     response['Content-Disposition'] = 'attachment; filename="GPM_403.xls"'
