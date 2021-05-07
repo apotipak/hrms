@@ -808,8 +808,12 @@ def AjaxGPM422NoOfGuardOperationByEmplByZoneReport(request, *args, **kwargs):
     template_name = base_url + 'GPM_422.docx'
     file_name = request.user.username + "_GPM_422"
 
-    work_date = kwargs['work_date']
-    work_date = datetime.datetime.strptime(work_date, "%d/%m/%Y").date()
+    start_date = kwargs['start_date']
+    start_date = datetime.datetime.strptime(start_date, "%d/%m/%Y").date()
+
+    end_date = kwargs['end_date']
+    end_date = datetime.datetime.strptime(end_date, "%d/%m/%Y").date()    
+
     dept_zone = kwargs['dept_zone']
 
     dly_plan_obj = None
@@ -817,10 +821,13 @@ def AjaxGPM422NoOfGuardOperationByEmplByZoneReport(request, *args, **kwargs):
     dly_plan_list = []
     error_message = ""
 
-    # TODO
-    sql = "SELECT emp_id,emp_fname_th,emp_lname_th,sch_rank,cnt_id,cus_name_th,dept_id,dept_en "
+    # ironman
+    sql = "select emp_id,emp_fname_th,emp_lname_th,sch_rank,cnt_id,cus_name_th,dept_id,dept_en "
     sql += "FROM V_HDLYPLAN "
-    sql += "WHERE DLY_DATE='" + str(work_date) + "' and absent=0 "
+    # sql += "WHERE DLY_DATE='" + str(start_date) + "' and absent=0 "
+    sql += "where (DLY_DATE>='" + str(start_date) + "' and DLY_DATE<='" + str(end_date) + "') "
+    sql += " and absent=0 "
+
     if (int(dept_zone) > 0):
         sql += "and dept_id=" + str(dept_zone) + " "
     else:
@@ -1029,7 +1036,8 @@ def AjaxGPM422NoOfGuardOperationByEmplByZoneReport(request, *args, **kwargs):
             runner.font.size = Pt(15)
 
         context = {
-            'work_date': work_date.strftime("%d/%m/%Y"),
+            'start_date': start_date.strftime("%d/%m/%Y"),
+            'end_date': start_date.strftime("%d/%m/%Y"),
             'dept_zone': dept_zone,
         }
         
@@ -1038,7 +1046,8 @@ def AjaxGPM422NoOfGuardOperationByEmplByZoneReport(request, *args, **kwargs):
 
     else:
         context = {
-            'work_date': work_date.strftime("%d/%m/%Y"),
+            'start_date': start_date.strftime("%d/%m/%Y"),
+            'end_date': start_date.strftime("%d/%m/%Y"),
             'dept_zone': dept_zone,
         }
         
@@ -1046,7 +1055,8 @@ def AjaxGPM422NoOfGuardOperationByEmplByZoneReport(request, *args, **kwargs):
         document.save(MEDIA_ROOT + '/monitoring/download/' + file_name + ".docx")
 
     context = {
-        'work_date': work_date.strftime("%d/%m/%Y"),
+        'start_date': start_date.strftime("%d/%m/%Y"),
+        'end_date': start_date.strftime("%d/%m/%Y"),
         'dept_zone': dept_zone,
     }
 
@@ -1069,13 +1079,15 @@ def AjaxGPMWorkOnDayOffReport(request, *args, **kwargs):
 
     start_date = kwargs['start_date']
     start_date = datetime.datetime.strptime(start_date, "%d/%m/%Y").date()
+    end_date = kwargs['end_date']
+    end_date = datetime.datetime.strptime(end_date, "%d/%m/%Y").date()
 
     # TODO    
     sql = "SELECT emp_fname_th, emp_lname_th, shf_desc, dept_en, cnt_id, emp_id, dly_date, dept_id, sch_rank, absent, upd_by, upd_gen, cus_name_th, dof from V_HDLYPLAN "
     sql += "Where V_HDLYPLAN.dof = 1 AND V_HDLYPLAN.absent = 0 "
-    sql += "AND V_HDLYPLAN.DLY_DATE = '" + str(start_date) + "' "
+    sql += "and (V_HDLYPLAN.DLY_DATE>='" + str(start_date) + "' and V_HDLYPLAN.DLY_DATE<='" + str(end_date) + "') "
     sql += "order By V_HDLYPLAN.dept_id Asc"
-    print(sql)
+    # print(sql)
 
     dly_plan_obj = None
     record = {}
@@ -1676,23 +1688,29 @@ def export_gpm_422_no_of_guard_operation_by_empl_by_zone_to_excel(request, *args
     response['Content-Disposition'] = 'attachment; filename="GPM_Work_on_Day_Off.xls"'
 
     report_obj = []
-    work_date = kwargs['work_date']
-    work_date = datetime.datetime.strptime(work_date, "%d/%m/%Y").date()
+    start_date = kwargs['start_date']
+    start_date = datetime.datetime.strptime(start_date, "%d/%m/%Y").date()
+    end_date = kwargs['end_date']
+    end_date = datetime.datetime.strptime(end_date, "%d/%m/%Y").date()    
     dept_zone = kwargs['dept_zone']
+    dept_zone_name = ""
 
     wb = xlwt.Workbook(encoding='utf-8')
     ws = wb.add_sheet('No. of Guard Operation')
 
-    sql = "select emp_id,emp_fname_th,emp_lname_th,sch_rank,cnt_id,cus_name_th,dept_id,dept_en "
-    sql += "FROM V_HDLYPLAN "
-    sql += "WHERE DLY_DATE='" + str(work_date) + "' and absent=0 "    
+    sql = "select emp_id,emp_fname_th,emp_lname_th,sch_rank,cnt_id,cus_name_th,cus_name_en,dept_id,dept_en,dly_date "
+    sql += "FROM V_HDLYPLAN "    
+    # sql += "WHERE DLY_DATE='" + str(start_date) + "' and absent=0 "    
+    sql += "where (DLY_DATE>='" + str(start_date) + "' and DLY_DATE<='" + str(end_date) + "') "
+    sql += " and absent=0 "
+
     if (int(dept_zone) > 0):
         sql += "and dept_id=" + str(dept_zone) + " "
     else:
         sql += "and dept_id=9999 "
     sql += "order by emp_id;"
     
-    # print("SQL : ", sql)
+    print("SQL GPM 422 : ", sql)
 
     try:  
         cursor = connection.cursor()
@@ -1704,24 +1722,33 @@ def export_gpm_422_no_of_guard_operation_by_empl_by_zone_to_excel(request, *args
         error_message = "<b>Error: please send this error to IT team</b><br>" + str(e)
     finally:
         cursor.close()
+    
+    '''
+    font_style = xlwt.XFStyle()
+    font_style.font.bold = True
+    font_style = xlwt.easyxf('font: bold 1, height 200;')
+    ws.write(0, 0, "GPM 422 - No. of Guard Operation by Employee, Zone | " + "โซน " + str(dept_zone) + " ช่วงวันที่ " + str(start_date.strftime("%d/%m/%Y")) + " - " + str(end_date.strftime("%d/%m/%Y")), font_style)
+    '''
 
     ws.col(0).width = int(5*260)
     ws.col(1).width = int(10*260)
-    ws.col(2).width = int(20*260)
-    ws.col(3).width = int(10*260)
-    ws.col(4).width = int(12*260)
-    ws.col(5).width = int(35*260)
+    ws.col(2).width = int(10*260)
+    ws.col(3).width = int(20*260)
+    ws.col(4).width = int(5*260)
+    ws.col(5).width = int(12*260)
+    ws.col(6).width = int(35*260)
+    ws.col(7).width = int(35*260)
     
     font_style = xlwt.XFStyle()
-    font_style = xlwt.easyxf('font: height 180;')
-    columns = ['No', 'EMP ID', 'Name', 'Rank', 'CNT ID', 'SITE NAME']
+    font_style = xlwt.easyxf('font: bold 1, height 180;')
+    columns = ['No', 'Dly_Date', 'EMP ID', 'Name', 'Rank', 'CNT ID', 'Site Name (TH)', 'Site Name (EN)']
     for col_num in range(len(columns)):
-        ws.write(0, col_num, columns[col_num], font_style)
-    
+        ws.write(1, col_num, columns[col_num], font_style)
+
     font_style = xlwt.XFStyle()
     font_style = xlwt.easyxf('font: height 180;')
 
-    row_num =1
+    row_num = 2
     counter = 1
 
     if len(report_obj) > 0:
@@ -1732,28 +1759,40 @@ def export_gpm_422_no_of_guard_operation_by_empl_by_zone_to_excel(request, *args
             emp_full_name = emp_fname_th.strip() + " " + emp_lname_th.strip()
             sch_rank = row[3]
             cnt_id = row[4]
-            dept_id = row[6]
-            dept_en = row[7]
+            dept_id = row[7]
+            dept_en = row[8]
+            dept_zone_name = dept_en
             cus_name_th = row[5]
+            cus_name_en = row[6]
+            dly_date = row[9].strftime("%d/%m/%Y")
 
             for col_num in range(len(row)):
                 if col_num==0:
                     ws.write(row_num, 0, counter, font_style)
-                elif col_num==1:
-                    ws.write(row_num, col_num, emp_id, font_style)
+                elif col_num==1:    
+                    ws.write(row_num, col_num, dly_date, font_style)
                 elif col_num==2:
-                    ws.write(row_num, col_num, emp_full_name, font_style)
+                    ws.write(row_num, col_num, emp_id, font_style)
                 elif col_num==3:
-                    ws.write(row_num, col_num, sch_rank, font_style)
+                    ws.write(row_num, col_num, emp_full_name, font_style)
                 elif col_num==4:
-                    ws.write(row_num, col_num, cnt_id, font_style)
+                    ws.write(row_num, col_num, sch_rank, font_style)
                 elif col_num==5:
+                    ws.write(row_num, col_num, cnt_id, font_style)
+                elif col_num==6:
                     ws.write(row_num, col_num, cus_name_th, font_style)
+                elif col_num==7:
+                    ws.write(row_num, col_num, cus_name_en, font_style)
 
             row_num += 1
             counter += 1
     else:
         ws.write(row_num, 0, "ไม่มีข้อมูล", font_style)
+
+    font_style = xlwt.XFStyle()
+    font_style.font.bold = True
+    font_style = xlwt.easyxf('font: bold 1, height 200;')
+    ws.write(0, 0, "GPM 422 - No. of Guard Operation by Employee, Zone | " + "Zone " + str(dept_zone) + " : " + str(dept_zone_name.strip()) + " Date " + str(start_date.strftime("%d/%m/%Y")) + " - " + str(end_date.strftime("%d/%m/%Y")), font_style)
 
     wb.save(response)
     return response
@@ -1770,14 +1809,17 @@ def export_gpm_work_on_day_off_to_excel(request, *args, **kwargs):
 
     start_date = kwargs['start_date']
     start_date = datetime.datetime.strptime(start_date, "%d/%m/%Y").date()
+    end_date = kwargs['end_date']
+    end_date = datetime.datetime.strptime(end_date, "%d/%m/%Y").date()
 
     wb = xlwt.Workbook(encoding='utf-8')
     ws = wb.add_sheet('Work on Day Off')
 
-    sql = "select emp_fname_th, emp_lname_th, shf_desc, dept_en, cnt_id, emp_id, dly_date, dept_id, sch_rank, absent, upd_by, upd_gen, cus_name_th, dof from V_HDLYPLAN "
+    sql = "select emp_fname_th, emp_lname_th, shf_desc, dept_en, cnt_id, emp_id, dly_date, dept_id, sch_rank, absent, upd_by, upd_gen, cus_name_th, cus_name_en, dof from V_HDLYPLAN "
     sql += "Where V_HDLYPLAN.dof = 1 AND V_HDLYPLAN.absent = 0 "
-    sql += "AND V_HDLYPLAN.DLY_DATE = '" + str(start_date) + "' "
-    sql += "order By V_HDLYPLAN.dept_id Asc"
+    sql += "and (V_HDLYPLAN.DLY_DATE>='" + str(start_date) + "' and V_HDLYPLAN.DLY_DATE<='" + str(end_date) + "') "
+    sql += "order By V_HDLYPLAN.dept_id asc;"
+    print("SQL : ", sql)
 
     try:
         cursor = connection.cursor()
@@ -1785,6 +1827,11 @@ def export_gpm_work_on_day_off_to_excel(request, *args, **kwargs):
         report_obj = cursor.fetchall()
     finally:
         cursor.close()
+
+    font_style = xlwt.XFStyle()
+    font_style.font.bold = True
+    font_style = xlwt.easyxf('font: bold 1, height 200;')
+    ws.write(0, 0, "GPM - Work on Day Off : " + str(start_date.strftime("%d/%m/%Y")) + " - " + str(end_date.strftime("%d/%m/%Y")), font_style)
 
     ws.col(0).width = int(5*260)
     ws.col(1).width = int(10*260)
@@ -1795,19 +1842,19 @@ def export_gpm_work_on_day_off_to_excel(request, *args, **kwargs):
     ws.col(6).width = int(15*260)
     ws.col(7).width = int(18*260)
     ws.col(8).width = int(12*260)
-    ws.col(9).width = int(30*260)
-    
+    ws.col(9).width = int(30*260)    
+    ws.col(10).width = int(30*260)
 
-    font_style = xlwt.XFStyle()
-    font_style = xlwt.easyxf('font: height 180;')
-    columns = ['No', 'Date', 'EMP ID', 'Name', 'Rank', 'Zone ID', 'Zone Name', 'Shift', 'POST ID', 'Site Name']
+    font_style = xlwt.XFStyle()    
+    font_style = xlwt.easyxf('font: bold 1, height 180;')
+    columns = ['No', 'Date', 'EMP ID', 'Name', 'Rank', 'Zone ID', 'Zone Name', 'Shift', 'CNT ID', 'CUS NAME (TH)', 'CUS NAME (EN)']
     for col_num in range(len(columns)):
-        ws.write(0, col_num, columns[col_num], font_style)
+        ws.write(1, col_num, columns[col_num], font_style)
     
     font_style = xlwt.XFStyle()
     font_style = xlwt.easyxf('font: height 180;')
 
-    row_num =1
+    row_num = 2
     counter = 1
 
     if len(report_obj) > 0:
@@ -1823,6 +1870,7 @@ def export_gpm_work_on_day_off_to_excel(request, *args, **kwargs):
             shf_desc = row[2]
             cnt_id = row[4]
             cus_name_th = row[12]
+            cus_name_en = row[13]
 
             for col_num in range(len(row)):
                 if col_num==0:
@@ -1844,7 +1892,9 @@ def export_gpm_work_on_day_off_to_excel(request, *args, **kwargs):
                 elif col_num==8:
                     ws.write(row_num, col_num, cnt_id, font_style)
                 elif col_num==9:
-                    ws.write(row_num, col_num, cus_name_th, font_style)                
+                    ws.write(row_num, col_num, cus_name_th, font_style)
+                elif col_num==10:
+                    ws.write(row_num, col_num, cus_name_en, font_style)
 
             row_num += 1
             counter += 1
@@ -1878,38 +1928,21 @@ def export_gpm_403_daily_guard_performance_by_contract_to_excel(request, *args, 
     
     wb = xlwt.Workbook(encoding='utf-8')
     ws = wb.add_sheet('GPM 403 Daily Guard Performance')
-            
+    
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
-
-    font_style = xlwt.easyxf('font: bold 1, height 180;')
+    font_style = xlwt.easyxf('font: bold 1, height 200;')
     ws.write(0, 0, "GPM 403 - Daily Guard Performance by Contract : " + str(start_date.strftime("%d/%m/%Y")) + " - " + str(end_date.strftime("%d/%m/%Y")), font_style)
 
-
-    '''
     font_style = xlwt.XFStyle()
-    font_style = xlwt.easyxf('font: height 180;')
-    ws.write(3, 0, "Employee ID : " + str(emp_id))
-    ws.write(4, 0, "Employee Name : " + str(fullname_th))
-    ws.write(5, 0, "Employee Rank : " + str(sch_rank))
+    font_style = xlwt.easyxf('font: bold 1, height 180;')
 
-    ws.write(2, 14, "From Date : " + str(search_date_from))
-    ws.write(3, 14, "To Date : " + str(search_date_to)) 
-    ws.write(4, 14, "Print Date : " + str(datetime.datetime.now().strftime('%d/%m/%Y %H:%M')))
-
-    ws.col(1).width = int(13*260)
-    ws.col(3).width = int(10*260)
-    ws.col(4).width = int(25*260)
-    ws.col(15).width = int(10*260)
-    '''
-
-    font_style = xlwt.XFStyle()
-    font_style = xlwt.easyxf('font: height 180;')
-
-    columns = ['No', 'Date', 'EMP ID', 'Name', 'Rank', 'Shift', 'cnt_id', 'cus_name_th', 'cus_name_en', 'zone_id', 'zone_name', 'Relief ID', 'OT', 'Late', 'Full', 'Amt.HR', 'Call', 'Tel Paid']
+    columns = ['No', 'Date', 'EMP ID', 'Name', 'Rank', 'Shift', 'CNT ID', 'CUS NAME (TH)', 'CUS NAME (EN)', 'Zone ID', 'Zone Name', 'Relief ID', 'OT', 'Late', 'Full', 'Amt.HR', 'Call', 'Tel Paid']
     for col_num in range(len(columns)):
         ws.write(1, col_num, columns[col_num], font_style)
 
+    font_style = xlwt.XFStyle()
+    font_style = xlwt.easyxf('font: height 180;')
     ws.col(0).width = int(5*260)
     ws.col(1).width = int(10*260)
     ws.col(2).width = int(8*260)

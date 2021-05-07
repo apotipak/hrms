@@ -42,13 +42,15 @@
               <div class="input-group col-12">
 
                
-                <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:98px;">Work Date</span></div>
-                <input type="text" style="width: 80px;" name="work_date" class="form-control datepicker border-bottom-1 rounded-0 bg-white" placeholder="dd/mm/yyyy" required="" value="{{work_date}}" id="id_work_date" readonly="readonly">                                
+                <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:98px;"><b>Start Date</b></span></div>
+                <input type="text" style="width: 80px;" name="start_date" class="form-control datepicker border-bottom-1 rounded-0 bg-white" placeholder="dd/mm/yyyy" required="" value="{{work_date}}" id="id_start_date" readonly="readonly">
+
+                <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:98px;"><b>End Date</b></span></div>
+                <input type="text" style="width: 80px;" name="end_date" class="form-control datepicker border-bottom-1 rounded-0 bg-white" placeholder="dd/mm/yyyy" required="" value="{{end_date}}" id="id_end_date" readonly="readonly">
+
                 <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:98px;">Dept/Zone</span></div>
 
                 <select id="id_dept_zone_option" class="form-control form-control-md" style="border-radius: 0; width: 100px;">
-                  <!--<option value="">---------</option>-->
-                  <!-- <option value="0" selected="">All Departments</option>-->
                   {% for item in dept_zone_obj %}
                   <option value="{{item.0}}">{{item.0}} | {{ item.1 }}</option>
                   {% endfor %}
@@ -262,21 +264,26 @@ $(document).ready( function () {
   }  
 
   $(document).ready(function () {    
-    $('#id_work_date').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", new Date());    
+    $('#id_start_date').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", new Date());
+    $('#id_end_date').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", new Date());
   });
 
 
   function print_document() {
-    var work_date = $("#id_work_date").val();
+    var start_date = $("#id_start_date").val();
+    var end_date = $("#id_end_date").val();
     var dept_zone = $("#id_dept_zone_option").val();
-    var href = "/reports/cms/ajax-gpm-422-no-of-guard-operation-by-empl-by-zone/" + work_date + "/" + dept_zone + "/";
+    var href = "/reports/cms/ajax-gpm-422-no-of-guard-operation-by-empl-by-zone/" + start_date + "/" + end_date + "/" + dept_zone + "/";
     window.open(href,'_blank');
   }
    
   function export_to_excel() {
-    var work_date = $("#id_work_date").val();
+    var start_date = $("#id_start_date").val();
+    var end_date = $("#id_end_date").val();
     var dept_zone = $("#id_dept_zone_option").val();
-    var href = "/reports/cms/export-gpm-422-no-of-guard-operation-by-empl-by-zone-to-excel/" + work_date + "/" + dept_zone + "/";
+    var dept_zone_name = $("#id_dept_zone_option option:selected").text();
+
+    var href = "/reports/cms/export-gpm-422-no-of-guard-operation-by-empl-by-zone-to-excel/" + start_date + "/" + end_date + "/" + dept_zone + "/";
     window.open(href,'_blank');    
   }
 

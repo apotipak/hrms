@@ -38,8 +38,12 @@
 
               <div class="input-group col-8 offset-2">
                
-                <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:98px;">Work Date</span></div>
+                <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:98px;"><b>Start Date</b></span></div>
                 <input type="text" style="width: 100px;" name="start_date" class="form-control datepicker border-bottom-1 rounded-0 bg-white" placeholder="dd/mm/yyyy" required="" value="{{start_date}}" id="id_start_date" readonly="readonly">&nbsp;&nbsp;
+
+                <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:98px;"><b>End Date</b></span></div>
+                <input type="text" style="width: 100px;" name="end_date" class="form-control datepicker border-bottom-1 rounded-0 bg-white" placeholder="dd/mm/yyyy" required="" value="{{end_date}}" id="id_end_date" readonly="readonly">&nbsp;&nbsp;
+
                 <button class="btn btn-outline-info btn-sm dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="fas fa-print fa-sm"></i>&nbsp;&nbsp;Print
                 </button>
@@ -287,13 +291,15 @@ $(document).ready( function () {
 
   function print_document() {
     var start_date = $("#id_start_date").val();
-    var href = "/reports/cms/ajax-gpm-work-on-day-off/" + start_date + "/";
+    var end_date = $("#id_end_date").val();
+    var href = "/reports/cms/ajax-gpm-work-on-day-off/" + start_date + "/" + end_date + "/";
     window.open(href,'_blank');
   }
    
   function export_to_excel() {
     var start_date = $("#id_start_date").val();
-    var href = "/reports/cms/export-gpm-work-on-day-off-to-excel/" + start_date + "/";
+    var end_date = $("#id_end_date").val();
+    var href = "/reports/cms/export-gpm-work-on-day-off-to-excel/" + start_date + "/" + end_date + "/";
     window.open(href,'_blank');    
   }
 
