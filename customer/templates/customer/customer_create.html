@@ -2267,10 +2267,6 @@
 
 
 
-
-
-
-
   function enter_id_cus_brn(cus_id, cus_brn) {
 
     if(cus_id == "" || cus_id==null){
@@ -2285,7 +2281,7 @@
     $.ajax({
       url: "/customer/ajax/ajax_check_exist_cus_site/",
       type: "POST",
-      data: {          
+      data: {
         csrfmiddlewaretoken: '{{ csrf_token }}',
         cus_id: cus_id,
         cus_brn: cus_brn,
@@ -2573,7 +2569,8 @@
         }
       },
       error: function(data) {
-        alert(data.responseJSON.error);          
+        //alert(data.responseJSON.error);
+        alert(data.error);
       },
     });
 

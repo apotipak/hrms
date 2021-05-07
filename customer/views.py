@@ -415,8 +415,11 @@ def ajax_check_exist_cus_site(request):
                     cus_site_site_contact_position_th = customer_site.site_contact.con_position_th
                     cus_site_site_contact_title_id = customer_site.site_contact.con_title_id
 
-                    if customer_site.site_contact.con_title.title_en is not None:
-                        cus_site_site_contact_title_en = customer_site.site_contact.con_title.title_en
+                    if customer_site.site_contact.con_title is not None:
+                        if customer_site.site_contact.con_title.title_en is not None:
+                            cus_site_site_contact_title_en = customer_site.site_contact.con_title.title_en
+                        else:
+                            cus_site_site_contact_title_en = ""
                     else:
                         cus_site_site_contact_title_en = ""
 
@@ -576,13 +579,12 @@ def ajax_check_exist_cus_site(request):
             response.status_code = 200
             return response            
         else:
-            # print("form is invalid")       
+            # print("form is invalid")    
             response = JsonResponse({ "error": "Data is not correct.", "results": list(pickup_records) })
             response.status_code = 403
-            return response   
+            return response
     else:
         print("TODO: Handle get request")
-
 
     response = JsonResponse({ "error": "Contact admistrator.", "results": list(pickup_records) })
     response.status_code = 403

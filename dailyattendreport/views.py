@@ -1855,77 +1855,38 @@ def export_gpm_work_on_day_off_to_excel(request, *args, **kwargs):
     return response
 
 
-@login_required(login_url='/accounts/login/')
-def export_gpm_403_daily_guard_performance_by_contract_to_excel(request):
-    response = HttpResponse(content_type='application/ms-excel')
-    response['Content-Disposition'] = 'attachment; filename="GPM_403.xls"'
 
-    r_d500_obj = []
+
+
+
+@login_required(login_url='/accounts/login/')  
+def export_gpm_403_daily_guard_performance_by_contract_to_excel(request, *args, **kwargs):
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="GPM_403_Daily_Guard_Performance_by_Contract.xls"'
+
+    gpm_403_obj = []
     pickup_record = []
     context = {}
-    emp_id = ""
-    fname = ""
-    cnt_id = ""
-    dly_date = ""
-    shf_desc = ""
-    sch_rank = ""
-    pay_type = ""
-    bas_amt = ""
-    bon_amt = ""
-    pub_amt = ""
-    otm_amt = ""
-    dof = ""
-    spare = ""
-    tel_amt = ""
-    wage_id = ""
-    shf_amt_hr = ""
-    ot_hr_amt = ""
-    absent = ""
-    sum_otm_amt = 0
-    sum_shf_amt_hr = 0
-    sum_bas_amt = 0
-    sum_ot_hr_amt = 0
-    sum_bon_amt = 0
-    sum_pub_amt = 0
-    sum_tel_amt = 0
-    sum_dof = 0
-    sum_spare = 0
 
+    today_date = settings.TODAY_DATE.strftime("%d/%m/%Y")
+    contract_number_from = kwargs['contract_number_from']
+    contract_number_to = kwargs['contract_number_to']
+    start_date = kwargs['start_date']
+    start_date = datetime.datetime.strptime(start_date, "%d/%m/%Y").date()    
+    end_date = kwargs['end_date']
+    end_date = datetime.datetime.strptime(end_date, "%d/%m/%Y").date()
+    
     wb = xlwt.Workbook(encoding='utf-8')
-    ws = wb.add_sheet('DGP_500')
-
-    sql = "select "
-    sql += "0 as col0, "
-    sql += "R_D500.CNT_ID, R_D500.DLY_DATE, 3 as col3, R_D500.SHF_DESC, R_D500.OTM_AMT, R_D500.SHF_AMT_HR,"
-    sql += "R_D500.BAS_AMT, R_D500.OT_HR_AMT, R_D500.BON_AMT, R_D500.PUB_AMT, R_D500.TEL_AMT,"
-    sql += "R_D500.DOF, R_D500.SPARE, R_D500.WAGE_ID, R_D500.PAY_TYPE, R_D500.EMP_ID,"
-    sql += "R_D500.FNAME, R_D500.SCH_RANK, R_D500.ABSENT "
-    sql += "FROM HRMS.dbo.R_D500 R_D500 "
-    sql += "ORDER BY R_D500.EMP_ID ASC"
-    # print("SQL: ", sql)
-    try:
-        cursor = connection.cursor()
-        cursor.execute(sql)
-        r_d500_obj = cursor.fetchall()
-    finally:
-        cursor.close()
-
-    if r_d500_obj is not None:
-        if len(r_d500_obj)>0:
-            emp_id = r_d500_obj[0][16]
-            fullname_th = r_d500_obj[0][17]
-            sch_rank = r_d500_obj[0][18]
-            search_date_from = r_d500_obj[0][2].strftime('%d/%m/%Y')
-            search_date_to = r_d500_obj[len(r_d500_obj)-1][2].strftime('%d/%m/%Y')
+    ws = wb.add_sheet('GPM 403 Daily Guard Performance')
             
-
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
 
-    # First Row, First Column
-    font_style = xlwt.easyxf('font: bold 1,height 280;')
-    ws.write(1, 5, "Daily Guard Performance", font_style)
+    font_style = xlwt.easyxf('font: bold 1, height 180;')
+    ws.write(0, 0, "GPM 403 - Daily Guard Performance by Contract : " + str(start_date.strftime("%d/%m/%Y")) + " - " + str(end_date.strftime("%d/%m/%Y")), font_style)
 
+
+    '''
     font_style = xlwt.XFStyle()
     font_style = xlwt.easyxf('font: height 180;')
     ws.write(3, 0, "Employee ID : " + str(emp_id))
@@ -1940,128 +1901,140 @@ def export_gpm_403_daily_guard_performance_by_contract_to_excel(request):
     ws.col(3).width = int(10*260)
     ws.col(4).width = int(25*260)
     ws.col(15).width = int(10*260)
+    '''
 
-    columns = ['', 'CONTRACT', 'DATE', 'DAY', 'SHIFT', 'OT', 'HOURS', 'BAS', 'GOT', 'BON', 'PUB', 'TEL', 'DOF', 'SPARE', 'WAGE', 'PAY TYPE', 'REMARK']
+    font_style = xlwt.XFStyle()
+    font_style = xlwt.easyxf('font: height 180;')
+
+    columns = ['No', 'Date', 'EMP ID', 'Name', 'Rank', 'Shift', 'cnt_id', 'cus_name_th', 'cus_name_en', 'zone_id', 'zone_name', 'Relief ID', 'OT', 'Late', 'Full', 'Amt.HR', 'Call', 'Tel Paid']
     for col_num in range(len(columns)):
-        ws.write(7, col_num, columns[col_num], font_style)
+        ws.write(1, col_num, columns[col_num], font_style)
+
+    ws.col(0).width = int(5*260)
+    ws.col(1).width = int(10*260)
+    ws.col(2).width = int(8*260)
+    ws.col(3).width = int(25*260)
+    ws.col(4).width = int(5*260)
+    ws.col(5).width = int(18*260)
+    ws.col(6).width = int(12*260)
+    ws.col(7).width = int(25*260)
+    ws.col(8).width = int(25*260)
+    ws.col(9).width = int(8*260)
+    ws.col(10).width = int(15*260)
+    ws.col(11).width = int(10*260)
+    ws.col(12).width = int(10*260)
+    ws.col(13).width = int(10*260)
+    ws.col(14).width = int(10*260)
+
+    sql = "select emp_fname_th, emp_lname_th, shf_desc, dept_en, cnt_id, "
+    sql += "emp_id, dly_date, sch_shift, dept_id, sch_rank, "
+    sql += "absent, relieft_id, tel_man, tel_paid, ot, "
+    sql += "ot_hr_amt, cus_name_th, cus_name_en, late, late_full "
+    sql += "FROM V_HDLYPLAN "
+    sql += "WHERE absent = 0 AND (sch_shift <> 99 OR sch_shift <> 999) "
+    sql += "and (cnt_id>=" + str(contract_number_from) + " and cnt_id<=" + str(contract_number_to) + ") "
+    sql += "and (dly_date>='" + str(start_date) + "' and dly_date<='" + str(end_date) + "') "
+    sql += "ORDER BY cnt_id ASC, dly_date ASC, shf_desc ASC, emp_id ASC"
+    print(sql)
+
+    try:
+        cursor = connection.cursor()
+        cursor.execute(sql)
+        gpm_403_obj = cursor.fetchall()
+    finally:
+        cursor.close()
+
 
     # Sheet body, remaining rows
-    font_style = xlwt.XFStyle()
-    font_style = xlwt.easyxf('font: height 180;')
+    # font_style = xlwt.XFStyle()
+    # font_style = xlwt.easyxf('font: height 180;')
 
     # Sheet header, first row
-    row_num = 8
+    row_num = 2
     counter = 1
 
-    for row in r_d500_obj:
-        number = counter
-        fname = row[17]
-        cnt_id = str(row[2])
-        dly_date = str(row[2].strftime("%d/%m/%Y"))     
-        dly_date_week_day = datetime.datetime.strptime(dly_date, '%d/%m/%Y').strftime('%a')
-        # print("dly_date_week_day:", dly_date_week_day)
-        dly_date_str = str(dly_date)
-        shf_desc = row[4]
-        sch_rank = row[18]
-        pay_type = row[15]
+    if gpm_403_obj is not None:
 
-        if row[5] is not None:
-            otm_amt = row[5]
-        else:
-            otm_amt = 0
+        for row in gpm_403_obj:    
+            emp_id = row[5]
+            emp_fname_th = row[0]
+            emp_lname_th = row[1]
+            emp_full_name_th = emp_fname_th.strip() + " " + emp_lname_th.strip()            
+            sch_rank = row[9]
+            shf_desc = row[2]
+            cnt_id = row[4]
+            cus_name_th = row[16]
+            cus_name_en = row[17]
+            dept_id = row[8]
+            dept_en = row[3]
+            relieft_id = row[11]
+            ot = row[14]
+            late = row[18]
+            late_full = row[19]
+            ot_hr_amt = row[15]
+            tel_man = row[12]
+            tel_paid = row[13]
+            dly_date = row[6].strftime("%d/%m/%Y")
 
-        if pay_type!="LWO":         
-            sum_otm_amt += otm_amt
-            
-        shf_amt_hr = row[6]
-        if pay_type!="LWO":
-            sum_shf_amt_hr += shf_amt_hr
-
-        if row[7] is not None:
-            bas_amt = row[7]
-        else:
-            bas_amt = 0
-        sum_bas_amt += bas_amt
-
-        if row[8] is not None:
-            ot_hr_amt = row[8]
-        else:
-            ot_hr_amt = 0
-        sum_ot_hr_amt += ot_hr_amt
-
-        if row[9] is not None:
-            bon_amt = row[9]
-        else:
-            bon_amt = 0
-        sum_bon_amt += bon_amt
-
-        if row[10] is not None:
-            pub_amt = row[10]
-        else:
-            pub_amt = 0
-        sum_pub_amt += pub_amt
+            search_date_from = start_date
+            search_date_to = end_date
         
-        if row[11] is not None:
-            tel_amt = row[11]
-        else:
-            tel_amt = 0
-        sum_tel_amt += tel_amt
+            for col_num in range(len(row)):
+                if(col_num==0):
+                    ws.write(row_num, 0, counter, font_style)
+                elif(col_num==1):
+                    ws.write(row_num, col_num, dly_date, font_style)
+                elif(col_num==2):
+                    ws.write(row_num, col_num, emp_id, font_style)
+                elif(col_num==3):
+                    ws.write(row_num, col_num, emp_full_name_th, font_style)
+                elif(col_num==4):
+                    ws.write(row_num, col_num, sch_rank, font_style)
+                elif(col_num==5):
+                    ws.write(row_num, col_num, shf_desc, font_style)
+                elif(col_num==6):
+                    ws.write(row_num, col_num, cnt_id, font_style)
+                elif(col_num==7):
+                    ws.write(row_num, col_num, cus_name_th, font_style)
+                elif(col_num==8):
+                    ws.write(row_num, col_num, cus_name_en, font_style)
+                elif(col_num==9):
+                    ws.write(row_num, col_num, dept_id, font_style)
+                elif(col_num==10):
+                    ws.write(row_num, col_num, dept_en, font_style)
+                elif(col_num==11):
+                    ws.write(row_num, col_num, relieft_id, font_style)
+                elif(col_num==12):
+                    if not ot:
+                        ot = "N"
+                    else:
+                        ot = "Y"                  
+                    ws.write(row_num, col_num, ot, font_style)
+                elif(col_num==13):
+                    if not late:
+                        late = "N"
+                    else:
+                        late = "Y"
+                    ws.write(row_num, col_num, late, font_style)
+                elif(col_num==14):
+                    if not late_full:
+                        late_full = "N"
+                    else:
+                        late_full = "Y"
+                    ws.write(row_num, col_num, late_full, font_style)
+                elif(col_num==15):
+                    ws.write(row_num, col_num, ot_hr_amt, font_style)
+                elif(col_num==16):
+                    if not tel_man:
+                        tel_man = "N"
+                    else:
+                        tel_man = "Y"
+                    ws.write(row_num, col_num, tel_man, font_style)
+                elif(col_num==17):
+                    ws.write(row_num, col_num, tel_paid, font_style)
 
-        if row[12] is not None:
-            dof = row[12]
-        else:
-            dof = 0
-        sum_dof += dof
-
-        spare = row[13]
-        sum_spare += spare
-
-        wage_id = row[13]                   
-        absent = row[19]
-        
-        for col_num in range(len(row)):
-            if(col_num==0):
-                ws.write(row_num, 0, counter, font_style)
-            elif(col_num==2):
-                ws.write(row_num, 2, dly_date_week_day.upper(), font_style)
-            elif(col_num==3):
-                ws.write(row_num, 3, dly_date_str, font_style)
-            elif (col_num==16) or (col_num==17) or (col_num==18) or (col_num==19):
-                ws.write(row_num, col_num, "", font_style)
-            else:
-                ws.write(row_num, col_num, row[col_num], font_style)
-
-        row_num += 1
-        counter += 1
-
-    # Sum
-    font_style = xlwt.XFStyle()
-    font_style = xlwt.easyxf('font: height 180;')
-    
-    font_style.font.bold = True
-    for col_num in range(len(row)):
-        if(col_num==0):
-            ws.write(row_num, 0, counter-1, font_style)
-        elif(col_num==1):
-            ws.write(row_num, 1, "Days", font_style)            
-        elif(col_num==5):
-            ws.write(row_num, 5, sum_otm_amt, font_style)
-        elif(col_num==6):
-            ws.write(row_num, 6, sum_shf_amt_hr, font_style)
-        elif(col_num==7):
-            ws.write(row_num, 7, sum_bas_amt, font_style)
-        elif(col_num==8):
-            ws.write(row_num, 8, sum_ot_hr_amt, font_style)
-        elif(col_num==9):
-            ws.write(row_num, 9, sum_bon_amt, font_style)
-        elif(col_num==10):
-            ws.write(row_num, 10, sum_pub_amt, font_style)
-        elif(col_num==11):
-            ws.write(row_num, 11, sum_tel_amt, font_style)          
-        elif(col_num==12):
-            ws.write(row_num, 12, sum_dof, font_style)
-        elif(col_num==13):
-            ws.write(row_num, 13, sum_spare, font_style)
+            row_num += 1
+            counter += 1
 
     wb.save(response)
     return response

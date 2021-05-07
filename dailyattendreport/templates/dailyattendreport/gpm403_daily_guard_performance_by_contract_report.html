@@ -61,8 +61,8 @@
 
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink"> 
                   <span style="font-size: 14px;">
-                  <a class="dropdown-item" href="#" onclick="print_document()"><i class="fas fa-desktop text-secondary"></i>&nbsp;&nbsp;Display on screen</a>              
-                  <!--<a class="dropdown-item" href="{% url 'export-gpm-403-daily-guard-performance-by-contract-to-excel' %}">&nbsp;<i class="far fa-file-excel text-secondary"></i>&nbsp;&nbsp;&nbsp;Export to Excel</a>-->
+                  <a class="dropdown-item" href="#" onclick="print_document()"><i class="fas fa-desktop text-secondary"></i>&nbsp;&nbsp;Display on screen</a>
+                  <a class="dropdown-item" href="#" onclick="export_to_excel()"><i class="far fa-file-excel text-secondary"></i>&nbsp;&nbsp;&nbsp;&nbsp;Export to Excel</a>
                   </span>
                 </div>
 
@@ -174,6 +174,15 @@ function print_document() {
   window.open(href,'_blank');
 }
  
+function export_to_excel() {
+  var contract_number_from = $("#id_contract_number_from").val();
+  var contract_number_to = $("#id_contract_number_to").val();
+  var start_date = $("#id_start_date").val();
+  var end_date = $("#id_end_date").val();
+
+  var href = "/reports/cms/export-gpm-403-daily-guard-performance-by-contract-to-excel/" + contract_number_from + "/" + contract_number_to + "/" + start_date + "/" + end_date + "/";
+  window.open(href,'_blank');    
+}
 
 function showLoading() {
   $.LoadingOverlaySetup({
@@ -198,7 +207,7 @@ function showLoading() {
     showLoading();
 
     $.ajax({
-      url: "/reports/control-room/daily-attend/ajax-gpm403-daily-guard-performance-by-contract/",
+      url: "/reports/control-room/daily-attend/ajax-gpm-403-daily-guard-performance-by-contract/",
       type: "POST",
       data: {
         csrfmiddlewaretoken: '{{ csrf_token }}',
@@ -348,7 +357,6 @@ function showLoading() {
   $(document).on('keypress', '#id_contract_number_from', function(e) {
     if(e.which == 13) {      
       e.preventDefault();
-
       $("#id_contract_number_to").val($("#id_contract_number_from").val()); 
       $("#id_contract_number_to").focus();
 
