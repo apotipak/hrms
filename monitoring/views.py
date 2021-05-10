@@ -2405,8 +2405,8 @@ def getCustomerContractServiceList(cnt_id):
 	customer_contract_service_list = None
 	message = ""
 
-	sql = "select distinct * from v_contract where cnt_id=" + str(cnt_id) + " and srv_active=1 and CUS_SERVICE_FLAG<>'D' order by srv_id"
-	
+	# sql = "select distinct * from v_contract where cnt_id=" + str(cnt_id) + " and srv_active=1 and CUS_SERVICE_FLAG<>'D' order by srv_id"
+	sql = "select distinct * from v_contract where cnt_id=" + str(cnt_id) + " and CUS_SERVICE_FLAG<>'D' order by srv_active desc, srv_id;"
 	try:				
 		cursor = connection.cursor()
 		cursor.execute(sql)
@@ -2650,8 +2650,6 @@ def ajax_get_attendance_information(request):
 		# select distinct * from v_dlyplan where cnt_id=2526000001 and dly_date=convert(datetime,'2020-12-02',20) and customer_flag<>'D' order by sch_shift, emp_id
 		cursor = connection.cursor()
 		
-
-		# TOTORO
 		today_date = convertStringToDate(settings.TODAY_DATE.strftime("%d/%m/%Y"))		
 		selected_attendance_date = datetime.datetime.strptime(request.POST.get('attendance_date'), '%d/%m/%Y')
 		# print("today_date=", today_date)

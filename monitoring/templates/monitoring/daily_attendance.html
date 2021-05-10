@@ -788,34 +788,14 @@ thead th { white-space: nowrap; }
 
 						    <!-- Customer Information Section -->
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 						    <!-- Contract Service Section -->
-						    
-					      	<div class="card card-secondary">
+					      	<div class="card card-secondary" id="id_contract_service_card">
 							    
 						    	<div class="card-header" style="padding: 4px;">
 						    		<div>
 							        <h4 class="card-title">
 							          <div class="pt-2">
-							            <b>Contract Service</b>
+							            <span id="id_card_title_display"><b>Contract Service</b></span>
 							          </div>
 							        </h4>
 							        </div>
@@ -825,13 +805,6 @@ thead th { white-space: nowrap; }
 								    </div>
 							    </div>
 
-
-
-
-
-
-
-
 						        <div class="card-body" style="padding: 0 0 0 0; background-color: #e8e5e5; height: 150px; overflow: auto;">
 									<div class="row p-0" style="white-space:nowrap;">
 
@@ -840,7 +813,7 @@ thead th { white-space: nowrap; }
 										  <div>
 										  	<font size='2em;'>
 												
-												<table class='table table-sm table-striped table-condensed' id="id_customer_contract_service">
+												<table class='table table-sm table-striped table-condensed dataTable' id="id_customer_contract_service">
 													<thead class=thead-light>
 														<tr>
 															<th scope='col'>No</th>
@@ -865,7 +838,27 @@ thead th { white-space: nowrap; }
 														</tr>
 													</thead>
 													<tbody>
-														<tr><td colspan='19'>&nbsp;</td></tr>
+														<tr>
+															<td>&nbsp;</td>
+															<td>&nbsp;</td>
+															<td>&nbsp;</td>
+															<td>&nbsp;</td>
+															<td>&nbsp;</td>
+															<td>&nbsp;</td>
+															<td>&nbsp;</td>
+															<td>&nbsp;</td>
+															<td>&nbsp;</td>
+															<td>&nbsp;</td>
+															<td>&nbsp;</td>
+															<td>&nbsp;</td>
+															<td>&nbsp;</td>
+															<td>&nbsp;</td>
+															<td>&nbsp;</td>
+															<td>&nbsp;</td>
+															<td>&nbsp;</td>
+															<td>&nbsp;</td>
+															<td>&nbsp;</td>
+														</tr>
 													</tbody>
 												</table>
 
@@ -1009,7 +1002,38 @@ thead th { white-space: nowrap; }
 
 <script>
 
+var customer_contract_service_table = $('#id_customer_contract_service').DataTable({
+  		"paging": false,
+  		"scrollCollapse": true,
+		"lengthChange": false,
+		"searching": false,
+		"ordering": true,
+		"info": false,
+		"autoWidth": true,
+	}); 
+
 $(document).ready( function () {
+	$('#id_contract_service_card').on('maximized.lte.cardwidget', function() {	
+		cus_id = $('#id_cus_id').val();
+      	cus_brn = $('#id_cus_brn').val();
+      	cus_vol = $('#id_cus_vol').val();		
+		customer_number = parseInt(cus_id + cus_brn + cus_vol);
+		customer_name = $("#tab2-tab").text();
+				
+		$("#id_contract_service_card").removeClass("card-secondary");
+		$("#id_contract_service_card").addClass("card-success");
+		$("#id_card_title_display").html("<b>" + customer_number + "&nbsp;&nbsp;|&nbsp;&nbsp;" + customer_name + "</b>");
+
+	})
+
+	$('#id_contract_service_card').on('minimized.lte.cardwidget', function() {
+		$("#id_contract_service_card").removeClass("card-success");
+		$("#id_contract_service_card").addClass("card-secondary");		
+		$("#id_card_title_display").html("<b>Contract Service</b>");
+	})
+
+
+
 	$(function () {
 
 	    var table = $('#employee_list_table').DataTable({
@@ -2622,6 +2646,8 @@ $("#id_late_hour").click( function() {
 						result += "  </thead>";
 						result += "  <tbody>";
 						count = 1;
+
+						result = "";
 						for(i=0; i<number_of_rows; i++) {
 							srv_rank = data.customer_contract_service_list[i][19];
 							shift = data.customer_contract_service_list[i][39];
@@ -2671,10 +2697,23 @@ $("#id_late_hour").click( function() {
 							result += "</tr>";
 							count++;
 						}
-						result += "  </tbody>";
-						result += "</table>";
-
-						$("#id_customer_contract_service").html(result);
+						
+						//result += "  </tbody>";
+						//result += "</table>";
+						//$("#id_customer_contract_service").html(result);
+						
+						customer_contract_service_table.destroy();
+						$('#id_customer_contract_service tbody').empty().append(result);						
+						customer_contract_service_table = $('#id_customer_contract_service').DataTable({
+							"paging": false,
+							"scrollCollapse": true,
+							"lengthChange": false,
+							"searching": false,
+							"ordering": true,
+							"info": false,
+							"autoWidth": true,
+						}); 
+						
 					}
 
 					
@@ -5877,8 +5916,11 @@ $("#id_late_hour").click( function() {
         $("#tab2-tab").text("Schedule Information");
         
         $('#cusomer_information_form').trigger("reset");
-        $("#id_customer_contract_service tbody").html("<tr><td colspan='19' class='text-center'><br><br><br>There is no data.<br><br><br><br></td></tr>");
-        $("#id_customer_schedule_list tbody").html("<tr><td colspan='16' class='text-center'><br><br><br>There is no data.<br><br><br><br></td></tr>");        
+        
+		//$("#id_customer_contract_service tbody").html("<tr><td colspan='19' class='text-center'><br><br><br>There is no data.<br><br><br><br></td></tr>");
+		$('#id_customer_contract_service tbody').empty()
+
+        $("#id_customer_schedule_list tbody").html("<tr><td colspan='16' class='text-center'><br><br><br>There is no data.<br><br><br><br></td></tr>");		
 
         $("#id_late_check").prop("checked", false);
 
