@@ -1049,8 +1049,134 @@ $(document).ready( function () {
 	      "dom": '<"top"i>rt<"bottom"><"clear">',
 	      "search": "_INPUT_",
 	      "searchPlaceholder": "Search",
+		  "columnDefs": [
+			{"targets": 0, "orderable": false},
+			{"targets": 1, "orderable": false},
+
+			{"targets": 2, "orderable": true}, 	// No
+			{"targets": 3, "orderable": true},	// EMP ID
+			{"targets": 4, "orderable": true},	// Name
+			{"targets": 5, "orderable": true},	// Rank
+			{"targets": 6, "orderable": true},	// Shift
+			{"targets": 7, "orderable": false},
+			{"targets": 8, "orderable": false},
+			{"targets": 9, "orderable": false},
+			{"targets": 10, "orderable": false},
+			{"targets": 11, "orderable": false},
+			{"targets": 12, "orderable": false},
+			{"targets": 13, "orderable": false},
+			{"targets": 14, "orderable": false},
+			{"targets": 15, "orderable": false},
+			{"targets": 16, "orderable": false},
+			{"targets": 17, "orderable": false},
+			{"targets": 18, "orderable": false},
+
+			{"targets": 19, "orderable": false},
+			{"targets": 20, "orderable": false},
+			{"targets": 21, "orderable": false},
+			{"targets": 22, "orderable": false},
+			{"targets": 23, "orderable": false},
+			{"targets": 24, "orderable": false},
+			{"targets": 25, "orderable": false},
+			{"targets": 26, "orderable": false},
+			{"targets": 27, "orderable": false},
+			{"targets": 28, "orderable": false},
+			{"targets": 29, "orderable": false},
+			{"targets": 30, "orderable": false},
+			{"targets": 31, "orderable": false},
+			{"targets": 32, "orderable": false},
+		  ],		  
 	    });
     
+
+/*
+	<thead class="bg-secondary">
+	<tr>
+		<th scope='col' class='d-none text-center' nowrap>Absent Status</th>
+		<th scope="col">&nbsp;</th>								      
+		<th scope='col' class='text-center'>No</th>								  	  								  		
+		<th scope='col' nowrap>Emp ID</th>
+		<th scope='col'>Name</th>
+
+		<th scope="col">Rank</th>
+		<th scope="col">Shift</th>
+		<th scope="col">Late</th>
+		<th scope="col">Full</th>
+		<th scope="col">Relief</th>
+
+		<th scope="col" nowrap>Rel. ID</th>
+		<th scope="col">Name</th>
+		<th scope='col' class='d-none'>Tel Status</th>
+		<th scope="col">Tel</th>
+		<th scope="col" nowrap>Tel Time</th>
+		
+		<th scope="col" nowrap>Tel Amt</th>
+		<th scope="col" nowrap>Tel Paid</th>
+		<th scope="col">Spare</th>
+		<th scope="col">Wage</th>
+		<th scope="col" nowrap>Upd Date</th>
+
+		<th scope="col" nowrap>Upd By</th>
+		<th scope="col" nowrap>Upd Flag</th>								      
+
+		<th scope="col" class='d-none' nowrap>Upd Gen</th>
+		<th scope="col" class='d-none' nowrap>Remark</th>
+		<th scope='col' class='d-none'>Relief Status</th>
+		<th scope='col' class='d-none'>Late Status</th>
+		<th scope='col' class='d-none'>Late Full Status</th>
+
+
+		<th scope='col' class='d-none'>OT</th>
+		<th scope='col' class='d-none'>OT Reason</th>
+		<th scope='col' class='d-none'>OT Time From</th>
+		<th scope='col' class='d-none'>OT Time To</th>
+		<th scope='col' class='d-none'>OT Hour Amount</th>
+		<th scope='col' class='d-none'>Shift Type</th>
+	</tr>
+	</thead>
+
+
+	table = $('#id_security_guard_list').DataTable({
+	  "paging": false,
+	  "pageLength": 15,
+	  "scrollCollapse": true,
+	  "lengthChange": false,
+	  "searching": true,
+	  "ordering": true,
+	  "info": false,
+	  "autoWidth": true,
+	  "dom": '<"top"i>Brtip<"bottom"><"clear">',
+	  "search": "_INPUT_",
+	  "searchPlaceholder": "Search",  
+	  "language": {
+	    search: '<i class="fa fa-filter" aria-hidden="true"></i>',
+	    searchPlaceholder: 'Filter data'
+	  },
+	  "columnDefs": [
+	  	{"targets": 0, "orderable": true},
+	  	{"targets": 1, "orderable": true},
+	  	{"targets": 2, "orderable": true},
+	  	{"targets": 3, "orderable": false},
+	  	{"targets": 4, "orderable": false},
+	  	{"targets": 5, "orderable": false},
+	  	{"targets": 6, "orderable": false},
+	  	{"targets": 7, "orderable": false},
+	  	{"targets": 8, "orderable": false},
+	  	{"targets": 9, "orderable": false},
+	  	{"targets": 10, "orderable": false},
+	  	{"targets": 11, "orderable": false},
+	  	{"targets": 12, "orderable": false},
+	  	{"targets": 13, "orderable": false},
+	  	{"targets": 14, "orderable": false},
+	  	{"targets": 15, "orderable": false},
+	  	{"targets": 16, "orderable": false},
+	  	{"targets": 17, "orderable": false},
+	  	{"targets": 18, "orderable": false},
+	  ],	
+*/
+
+
+
  		$('#employee_search_button').on( 'keyup click', function () {
     		table.search($('#employee_search_text').val()).draw();
   		});
@@ -4021,8 +4147,6 @@ $("#id_late_hour").click( function() {
     	//$('#id_emp_id').focus();
     });
 
-
-    // LUFY
     function saveRecord_cross_site(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_status,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id,Timecross) {
 
     	alert("saveRecord_cross_site");
