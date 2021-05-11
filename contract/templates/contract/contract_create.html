@@ -909,8 +909,9 @@
 
       <div class="modal-footer" style="padding:5px 5px 5px 0;">
         <button type="button" class="btn btn-secondary btn-md" data-dismiss="modal">&nbsp;&nbsp;{% trans 'Close' %}&nbsp;&nbsp;</button>
-        <button onclick="add_new_service()" type="button" class="btn btn-primary btn-md"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}&nbsp;&nbsp;</button>
+        <button onclick="add_new_service()" type="button" class="btn btn-primary btn-md" id="id_add_service_save_button"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}&nbsp;&nbsp;</button>
       </div>
+
     </div>
   </div>
 
@@ -4260,6 +4261,7 @@
 
   // Add new service
   function add_new_service() {
+
     cus_id = $('#id_cus_id').val();
     cus_brn = $('#id_cus_brn').val();
     cus_vol = $('#id_cus_vol').val();
@@ -4394,9 +4396,14 @@
         srv_Spay4: srv_Spay4,        
       },
       beforeSend: function () {
-        //
+        $("#id_add_service_save_button").html("<i class='fas fa-save fa-sm'></i>&nbsp;&nbsp;Saving...");
+        $("#id_add_service_save_button").attr("disabled", true);        
       },    
       success: function (data) {
+
+        $("#id_add_service_save_button").html("<i class='fas fa-save fa-sm'></i>&nbsp;&nbsp;Save");
+        $("#id_add_service_save_button").attr("disabled", false);
+      
         $(document).Toasts('create', {
           class: data.class, 
           title: "{% trans 'Message' %}",
@@ -4545,10 +4552,10 @@
 
           },
           error: function(data){
-            // do nothing        
+            $("#id_add_service_save_button").html("<i class='fas fa-save fa-sm'></i>&nbsp;&nbsp;Save");
+            $("#id_add_service_save_button").attr("disabled", false);            
           }
-        });          
-
+        });
       },
       error: function(data){
         $(document).Toasts('create', {
@@ -4561,10 +4568,12 @@
           autoDismiss: true,
           close: true,
           autoremove: true,
-        });          
+        });  
+
+        $("#id_add_service_save_button").html("<i class='fas fa-save fa-sm'></i>&nbsp;&nbsp;Save");
+        $("#id_add_service_save_button").attr("disabled", false);
       }
     });            
-
   }
 
   // Save new service
@@ -4839,7 +4848,8 @@
   }
 
 
-  function save_customer_service_item() {    
+  function save_customer_service_item() {
+    
     srv_id = $('#id_select_customer_service_id').val();    
 
     if(srv_id == null || srv_id == "") {
@@ -5409,7 +5419,8 @@
 
 
 
-    $('#add_service_button').on('click', function (e) {      
+    $('#add_service_button').on('click', function (e) { 
+      
       var obj = $(this);
       cnt_eff_frm = $('#id_cnt_eff_frm').val();
       cnt_eff_to = $('#id_cnt_eff_to').val();
