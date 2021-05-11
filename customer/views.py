@@ -170,11 +170,19 @@ def ajax_check_exist_cus_main(request):
                         # print("xyz")
                         cus_main_cus_contact_id = cus_main.cus_contact_id
                         cus_main_con_title_id = cus_main.cus_contact.con_title_id
-                        cus_main_cus_contact_title_th = cus_main.cus_contact.con_title.title_th
+
+                        if cus_main.cus_contact.con_title is not None:
+                            cus_main_cus_contact_title_th = cus_main.cus_contact.con_title.title_th
+                        else:
+                            cus_main_cus_contact_title_th = ""
+
                         cus_main_cus_contact_fname_th = cus_main.cus_contact.con_fname_th
                         cus_main_cus_contact_lname_th = cus_main.cus_contact.con_lname_th
                         cus_main_cus_contact_position_th = cus_main.cus_contact.con_position_th
-                        cus_main_cus_contact_title_en = cus_main.cus_contact.con_title.title_en
+
+                        # cus_main_cus_contact_title_en = cus_main.cus_contact.con_title.title_en
+                        cus_main_cus_contact_title_en = cus_main.cus_contact.con_title.title_en if cus_main.cus_contact.con_title is not None else ""
+
                         cus_main_cus_contact_fname_en = cus_main.cus_contact.con_fname_en
                         cus_main_cus_contact_lname_en = cus_main.cus_contact.con_lname_en
                         cus_main_cus_contact_position_en = cus_main.cus_contact.con_position_en
