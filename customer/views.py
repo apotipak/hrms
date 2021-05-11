@@ -2197,7 +2197,7 @@ def save_all_cus_tabs(request):
             # Fulfill district, city, country
             cus_main_cus_district_id = None
             cus_main_city_id = None
-            cus_main_country_id = None    
+            cus_main_country_id = None
             cus_main_cus_district_id = request.POST.get('cus_main_cus_district_id')
             if (cus_main_cus_district_id is not None):
                 if (cus_main_cus_district_id.isnumeric()):
@@ -2454,27 +2454,27 @@ def save_all_cus_tabs(request):
                                 count_modified_field = count_modified_field + 1
 
                     # CUS_CONTACT
-                    print("main_office - abc")
-                    print("cus_main_cus_contact_con_fname_th = " + str(cus_main_cus_contact_con_fname_th))
+                    # print("main_office - abc")
+                    # print("cus_main_cus_contact_con_fname_th = " + str(cus_main_cus_contact_con_fname_th))
                     if len(cus_main_cus_contact_con_fname_th) > 0 or len(cus_main_cus_contact_con_lname_th) > 0:                        
                         try:
                             # print("cus_id = " + str(cus_id))
 
                             contact_list = CusContact.objects.filter(cus_id=cus_id, con_fname_th=cus_main_cus_contact_con_fname_th, con_lname_th=cus_main_cus_contact_con_lname_th)[:1].get()
-                            print("update old contact")
+                            # print("update old contact")
                             
                             contact_list = CusContact.objects.filter(con_id=cus_main_cus_contact_id).get()
 
                             # CUS_CONTACT_CON_TITLE 
-                            print("-------------debug title id--------------")
+                            # print("-------------debug title id--------------")
                             field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Contact Title (TH)", str(contact_list.con_title_id), str(cus_main_select_contact_title_id), "E", request)
                             if field_is_modified:
-                                print("xx")                                              
+                                # print("xx")                                              
                                 contact_list.con_title_id = cus_main_select_contact_title_id
                                 modified_records.append(record)
                                 count_modified_field = count_modified_field + 1
-                            else:
-                                print("yy")
+                            # else:
+                            #    print("yy")
 
                             field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Contact first name (TH)", contact_list.con_fname_th, cus_main_cus_contact_con_fname_th, "E", request)
                             if field_is_modified:                                
@@ -2628,7 +2628,7 @@ def save_all_cus_tabs(request):
                             # Business Status
                             # customer_option.op1 = cus_main_customer_option_op1.rstrip() # Status
                             if (cus_main_customer_option_op1 is not None and cus_main_customer_option_op1 != ""):
-                                field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Status", str(customer_option.op1), str(cus_main_customer_option_op1), "E", request)
+                                field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "Status", str(customer_option.op1).strip(), str(cus_main_customer_option_op1).strip(), "E", request)
                                 if field_is_modified:
                                     customer_option.op1 = cus_main_customer_option_op1
                                     modified_records.append(record)
@@ -2653,13 +2653,20 @@ def save_all_cus_tabs(request):
                                     count_modified_field = count_modified_field + 1
 
                             # Business A/R Code
+                            '''
+                            print("*********** DEBUG ***********")
+                            print("status 1 : ", "000-" + str(customer_option.op4).strip() + "-000")
+                            print("status 2 : ", "000-" + str(cus_main_customer_option_op4) + "-000") 
+                            print("*********** DEBUG ***********")
+                            '''
                             cus_main_customer_option_op4 = cus_main_customer_option_op4 # A/R Code
                             if (cus_main_customer_option_op4 is not None and cus_main_customer_option_op4 != ""):
-                                field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "A/R Code", customer_option.op4, cus_main_customer_option_op4, "E", request)
+                                field_is_modified, record = check_modified_field("CUS_MAIN", cus_no, "A/R Code", str(customer_option.op4).strip(), cus_main_customer_option_op4.strip(), "E", request)
                                 if field_is_modified:
                                     customer_option.op4 = cus_main_customer_option_op4 # A/R Code
                                     modified_records.append(record)
                                     count_modified_field = count_modified_field + 1
+                        
 
                             # Business GP Margin
                             print("debug1:", cus_main_customer_option_opn1)

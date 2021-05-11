@@ -2728,6 +2728,9 @@
   });
 
   $("#saveAllCustomerTabs").click( function() {
+    //alert("todo");
+    //return false;
+
     event.preventDefault();
 
     var cus_id = $('#id_cus_id').val();
@@ -2744,6 +2747,7 @@
       save_all_cus_tabs();
   });
 
+  
   function save_all_cus_tabs() {
 
     cus_id = $('#id_cus_id').val();
