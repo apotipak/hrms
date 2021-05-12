@@ -2375,14 +2375,19 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 					        result += "		 <td class='text-left align-center'>";
 
 					        result += "		   <div class='btn-group btn-group-xs' mt-2>";								
-					        result += "		     <a href=javascript:update_sch_plan('" + data.sch_plan_list[i]["sch_no"] + "','" + data.sch_plan_list[i]["srv_id"] + "'); type='button' class='btn btn-outline-primary btn-sm'>";
-					        result += "      <i class='fas fa-pen fa-xs'></i>";
-					        result += "   		</a>";
 
+					        result += "		     <a href=javascript:update_sch_plan('" + data.sch_plan_list[i]["sch_no"] + "','" + data.sch_plan_list[i]["srv_id"] + "'); type='button' class='btn btn-outline-primary btn-sm'><i class='fas fa-pen fa-xs'></i></a>";
+
+							/*
 					        result += "		     &nbsp;&nbsp;";
+
+					        result += "		     <a href=javascript:update_sch_plan('" + data.sch_plan_list[i]["sch_no"] + "','" + data.sch_plan_list[i]["srv_id"] + "'); type='button' class='btn btn-outline-primary btn-sm'>";
+					        result += "      		<i class='fas fa-trash fa-xs'></i>";
+					        result += "   		</a>";							
 					        result += "		     <button type='button' id='btn_delete_customer' class='btn btn-outline-danger btn-xs js-delete-customer' data-url='' >";
 					        result += "		       <i class='fas fa-trash fa-xs'></i>";
 					        result += "		     </button>";
+							*/
 
 					        result += "		   </div>";
 					        result += "		 </td>";
