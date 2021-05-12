@@ -1395,16 +1395,16 @@ $(document).ready(function(){
 							result += "      <td>" + data.sch_plan_list[i]["upd_by"] + "</td>";
 							result += "      <td class='text-center'>" + data.sch_plan_list[i]["upd_flag"] + "</td>";
 							
-							//result += "		 <td>&nbsp</td>";
+							
 					        result += "		 <td class='text-left align-center'>";
 					        result += "		   <div class='btn-group btn-group-xs' mt-2>";
-					        result += "		     <a href=javascript:update_sch_plan('" + data.sch_plan_list[i]["sch_no"] + "','" + data.sch_plan_list[i]["srv_id"] + "'); type='button' class='btn btn-outline-primary btn-sm'>";
-					        result += "      <i class='fas fa-pen fa-xs'></i>";
-					        result += "   		</a>";					       
-					        //result += "		     &nbsp;";
-					        //result += "		     <button type='button' id='btn_delete_customer' class='btn btn-danger btn-xs js-delete-customer' data-url='' >";
-					        //result += "		       <i class='fas fa-trash fa-xs'></i>";
-					        //result += "		     </button>";
+
+					        result += "		     <a href=javascript:update_sch_plan('" + data.sch_plan_list[i]["sch_no"] + "','" + data.sch_plan_list[i]["srv_id"] + "'); type='button' class='btn btn-outline-primary btn-sm'><i class='fas fa-pen fa-xs'></i></a>";							
+					        result += "		     &nbsp;&nbsp;";
+							result += "		     <a href=javascript:delete_sch_plan('" + data.sch_plan_list[i]["sch_no"] + "','" + data.sch_plan_list[i]["srv_id"] + "','" + data.sch_plan_list[i]["emp_id"] + "','" + data.sch_plan_list[i]["emp_fname_th"].trim() + "','" + data.sch_plan_list[i]["emp_lname_th"].trim() + "'); type='button' class='btn btn-outline-danger btn-sm'>";
+					        result += "      		<i class='fas fa-trash fa-xs'></i>";
+					        result += "   		</a>";							
+
 					        result += "		   </div>";
 					        result += "		 </td>";
 
@@ -2371,24 +2371,16 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 							result += "      <td>" + data.sch_plan_list[i]["upd_by"] + "</td>";
 							result += "      <td class='text-center'>" + data.sch_plan_list[i]["upd_flag"] + "</td>";
 							
-							//result += "		 <td>&nbsp</td>";
 					        result += "		 <td class='text-left align-center'>";
 
 					        result += "		   <div class='btn-group btn-group-xs' mt-2>";								
 
-					        result += "		     <a href=javascript:update_sch_plan('" + data.sch_plan_list[i]["sch_no"] + "','" + data.sch_plan_list[i]["srv_id"] + "'); type='button' class='btn btn-outline-primary btn-sm'><i class='fas fa-pen fa-xs'></i></a>";
-
-							/*
+					        result += "		     <a href=javascript:update_sch_plan('" + data.sch_plan_list[i]["sch_no"] + "','" + data.sch_plan_list[i]["srv_id"] + "'); type='button' class='btn btn-outline-primary btn-sm'><i class='fas fa-pen fa-xs'></i></a>";							
 					        result += "		     &nbsp;&nbsp;";
-
-					        result += "		     <a href=javascript:update_sch_plan('" + data.sch_plan_list[i]["sch_no"] + "','" + data.sch_plan_list[i]["srv_id"] + "'); type='button' class='btn btn-outline-primary btn-sm'>";
+							result += "		     <a href=javascript:delete_sch_plan('" + data.sch_plan_list[i]["sch_no"] + "','" + data.sch_plan_list[i]["srv_id"] + "','" + data.sch_plan_list[i]["emp_id"] + "','" + data.sch_plan_list[i]["emp_fname_th"].trim() + "','" + data.sch_plan_list[i]["emp_lname_th"].trim() + "'); type='button' class='btn btn-outline-danger btn-sm'>";
 					        result += "      		<i class='fas fa-trash fa-xs'></i>";
-					        result += "   		</a>";							
-					        result += "		     <button type='button' id='btn_delete_customer' class='btn btn-outline-danger btn-xs js-delete-customer' data-url='' >";
-					        result += "		       <i class='fas fa-trash fa-xs'></i>";
-					        result += "		     </button>";
-							*/
-
+					        result += "   		</a>";
+							
 					        result += "		   </div>";
 					        result += "		 </td>";
 
@@ -2526,6 +2518,208 @@ function refresh_table(result) {
 		$('#employee_search_text').val("");
 		table.search($('#employee_search_text').val()).draw();
 	});
+}
+
+function delete_sch_plan(sch_no, srv_id, emp_id, emp_fname_th, emp_lname_th) {
+//function delete_sch_plan(sch_no, srv_id, emp_id) {
+	
+	cus_id = $('#id_cus_id').val();
+	cus_brn = $('#id_cus_brn').val();
+	cus_vol = $('#id_cus_vol').val();	
+	
+	if(sch_no != 0) {
+		$.confirm({
+			title: 'Confirmation',
+			type: 'red',
+			content: 'ยืนยันที่จะลบรายการ : <b>' + emp_id + " | " + emp_fname_th + " " + emp_lname_th + "</b>",
+			animation: 'zoom',
+			animationBounce: 1.5,
+			closeIcon: true,
+			boxWidth: '38%',
+			useBootstrap: false,		    
+			buttons: {
+				confirm: {
+					text: 'ยืนยัน',
+					btnClass: 'btn-danger',
+					action: function () {						    		
+						
+						showLoading();
+
+						$.ajax({
+							url : "/monitoring/ajax/delete_employee_schedule_maintenance/",
+							type : "POST",
+							data : {          
+							csrfmiddlewaretoken: '{{ csrf_token }}',
+							cus_id: cus_id,
+							cus_brn: cus_brn,
+							cus_vol: cus_vol,
+							sch_no: sch_no,
+							},
+							success: function(data) {
+								$(document).Toasts('create', {
+									class: 'bg-success', 
+									title: "{% trans 'System Message' %}",
+									subtitle: '',
+									autohide: true,
+									delay: 2000,
+									body: data.message,
+									autoDismiss: true,
+									close: true,
+									autoremove: true,
+								});
+								
+								// ironman 4
+								result = "";
+								if(data.sch_plan_list.length>0) {
+									count = 1;
+									for(i=0; i<data.sch_plan_list.length; i++) {
+										result += "    <tr>";
+										result += "      <th scope='row'>" + count + "</th>";							
+										
+										result += "      <td><b>" + data.sch_plan_list[i]["emp_id"] + "</b></a></b></td>";
+										result += "      <td><b><a href=javascript:update_sch_plan('" + data.sch_plan_list[i]["sch_no"] + "','" + data.sch_plan_list[i]["srv_id"] + "'); type='button'>" + data.sch_plan_list[i]["emp_fname_th"] + " " + data.sch_plan_list[i]["emp_lname_th"] + "</a></b></td>";			
+										result += "      <td>" + data.sch_plan_list[i]["sch_rank"] + "</td>";
+										result += "      <td>" + data.sch_plan_list[i]["sch_date_frm"] + "</td>";
+										result += "      <td>" + data.sch_plan_list[i]["sch_date_to"] + "</td>";
+
+										if(data.sch_plan_list[i]["sch_shf_mon"] == "99") {
+											result += "      <td class='text-center text-danger'>OFF</td>";
+										}
+										else
+											result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_mon"] + "</td>";
+										
+										if(data.sch_plan_list[i]["sch_shf_tue"] == "99") {
+											//result += "      <td class='text-center text-danger'>" + data.sch_plan_list[i]["sch_shf_tue"] + "</td>";
+											result += "      <td class='text-center text-danger'>OFF</td>";
+										}
+										else
+											result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_tue"] + "</td>";
+
+										if(data.sch_plan_list[i]["sch_shf_wed"] == "99") {								
+											//result += "      <td class='text-center text-danger'>" + data.sch_plan_list[i]["sch_shf_wed"] + "</td>";
+											result += "      <td class='text-center text-danger'>OFF</td>";
+										}
+										else
+											result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_wed"] + "</td>";
+
+										if(data.sch_plan_list[i]["sch_shf_thu"] == "99") {								
+											//result += "      <td class='text-center text-danger'>" + data.sch_plan_list[i]["sch_shf_thu"] + "</td>";
+											result += "      <td class='text-center text-danger'>OFF</td>";
+										}
+										else
+											result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_thu"] + "</td>";
+
+										if(data.sch_plan_list[i]["sch_shf_fri"] == "99") {
+											//result += "      <td class='text-center text-danger'>" + data.sch_plan_list[i]["sch_shf_fri"] + "</td>";
+											result += "      <td class='text-center text-danger'>OFF</td>";
+										}								
+										else
+											result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_fri"] + "</td>";
+										
+										if(data.sch_plan_list[i]["sch_shf_sat"] == "99") {
+											//result += "      <td class='text-center text-danger'>" + data.sch_plan_list[i]["sch_shf_sat"] + "</td>";
+											result += "      <td class='text-center text-danger'>OFF</td>";
+										}
+										else
+											result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_sat"] + "</td>";
+										
+										if(data.sch_plan_list[i]["sch_shf_sun"] == "99") {
+											//result += "      <td class='text-center text-danger'>" + data.sch_plan_list[i]["sch_shf_sun"] + "</td>";
+											result += "      <td class='text-center text-danger'>OFF</td>";
+										}								
+										else
+											result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_sun"] + "</td>";
+
+										if(data.sch_plan_list[i]["sch_active"]==1) {
+											result += "      <td class='text-center text-success'><span class='badge badge-success'>active</span></td>";
+										}
+										else
+											result += "      <td class='text-center'>&nbsp;</td>";
+
+										if(data.sch_plan_list[i]["relief"]==1)
+											result += "      <td class='text-center text-success'>Yes</td>";
+										else
+											result += "      <td class='text-center'>&nbsp;</td>";
+
+										result += "      <td>" + data.sch_plan_list[i]["upd_date"] + "</td>";
+										result += "      <td>" + data.sch_plan_list[i]["upd_by"] + "</td>";
+										result += "      <td class='text-center'>" + data.sch_plan_list[i]["upd_flag"] + "</td>";
+																				
+										result += "		 <td class='text-left align-center'>";
+										result += "		   <div class='btn-group btn-group-xs' mt-2>";										
+										
+										result += "		     <a href=javascript:update_sch_plan('" + data.sch_plan_list[i]["sch_no"] + "','" + data.sch_plan_list[i]["srv_id"] + "'); type='button' class='btn btn-outline-primary btn-sm'><i class='fas fa-pen fa-xs'></i></a>";							
+					        			result += "		     &nbsp;&nbsp;";
+										result += "		     <a href=javascript:delete_sch_plan('" + data.sch_plan_list[i]["sch_no"] + "','" + data.sch_plan_list[i]["srv_id"] + "','" + data.sch_plan_list[i]["emp_id"] + "','" + data.sch_plan_list[i]["emp_fname_th"].trim() + "','" + data.sch_plan_list[i]["emp_lname_th"].trim() + "'); type='button' class='btn btn-outline-danger btn-sm'>";
+					        			result += "      		<i class='fas fa-trash fa-xs'></i>";
+					        			result += "   		</a>";										
+										
+										result += "		   </div>";
+										result += "		 </td>";
+
+										result += "    </tr>";						
+										count++;
+									}
+									
+								} else {
+									result = "<tr>";
+									result += "<td>&nbsp;</td>";
+									result += "<td>&nbsp;</td>";
+									result += "<td>&nbsp;</td>";
+									result += "<td>&nbsp;</td>";
+									result += "<td>&nbsp;</td>";
+									result += "<td>&nbsp;</td>";
+									result += "<td>&nbsp;</td>";
+									result += "<td>&nbsp;</td>";
+									result += "<td>&nbsp;</td>";
+									result += "<td>&nbsp;</td>";
+									result += "<td>&nbsp;</td>";
+									result += "<td>&nbsp;</td>";
+									result += "<td>&nbsp;</td>";
+									result += "<td>&nbsp;</td>";
+									result += "<td>&nbsp;</td>";
+									result += "<td>&nbsp;</td>";
+									result += "<td>&nbsp;</td>";
+									result += "<td>&nbsp;</td>";
+									result += "<td>&nbsp;</td>";
+									result += "</tr>";
+								}
+									
+								reset_security_guard_list_form();		
+								refresh_table(result);																
+								total = data.sch_plan_list.length;
+								$("#security_guard_list_amount").html("Total <b>" + total + "</b>");												
+
+								$.LoadingOverlay("hide");
+							},
+							error: function(data) {
+								$(document).Toasts('create', {
+									class: 'bg-danger', 
+									title: "{% trans 'Error message' %}",
+									subtitle: '',
+									autohide: true,
+									delay: 2000,
+									body: "There is an error. Please contact IT.",
+									autoDismiss: true,
+									close: true,
+									autoremove: true,
+								});
+								$.LoadingOverlay("hide");
+							},
+						});
+																				
+					}
+				},
+				cancel: {					        	
+					action: function () {
+						// alert("Cancel");
+						//$("#id_call_amount_option").css('border-color','red');
+						//$("#id_call_amount_option").css('border-style','solid');
+					}
+				}
+			}
+		});
+	}
 }
 
 function update_sch_plan(sch_no, srv_id) {

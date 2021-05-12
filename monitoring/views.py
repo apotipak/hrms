@@ -684,6 +684,7 @@ def ajax_save_customer_schedule_plan(request):
 	contract_list_filter_option = request.POST.get("contract_list_filter_option")
 	# print("contract_list_filter_option = " + str(contract_list_filter_option))
 
+	# ironman 1
 	sch_plan_list = []
 
 	# Case - add new employee into customer service
@@ -3176,6 +3177,87 @@ def ajax_get_attendance_information(request):
 
 @permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
 @login_required(login_url='/accounts/login/')
+def ajax_delete_employee_schedule_maintenance(request):
+	print("********************************")
+	print("FUNCTION: ajax_delete_employee_schedule_maintenance()")
+	print("********************************")
+	
+	is_error = True
+	message = ""
+	cus_id = request.POST.get('cus_id')
+	cus_brn = request.POST.get('cus_brn')
+	cus_vol = request.POST.get('cus_vol')
+	cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
+
+	sch_no = request.POST.get('sch_no')
+	upd_by = request.user.username
+	
+	sql = "update sch_plan set Upd_by='" + str(upd_by) + "', Upd_flag='D' where sch_no=" + str(sch_no) + ";"
+	try:
+		with connection.cursor() as cursor:
+			cursor.execute(sql)
+
+		# ironman 1
+		sch_plan_list = []
+		record = {}
+		sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).filter(sch_active=1).exclude(upd_flag='D').order_by('-upd_date', 'emp_id')
+		for d in sch_plan:
+			if d.relief:
+				relief = 1
+			else:
+				relief = 0 
+
+			if d.sch_active:
+				sch_active = 1
+			else:
+				sch_active = 0
+			record = {
+				"sch_no": d.sch_no,
+				"emp_id": d.emp_id_id,
+				"emp_fname_th": d.emp_id.emp_fname_th,
+				"emp_lname_th": d.emp_id.emp_lname_th,
+				"sch_rank": d.sch_rank,
+				"sch_date_frm": d.sch_date_frm.strftime("%d/%m/%Y"),
+				"sch_date_to": d.sch_date_to.strftime("%d/%m/%Y"),
+				"sch_shf_mon": d.sch_shf_mon,
+				"sch_shf_tue": d.sch_shf_tue,
+				"sch_shf_wed": d.sch_shf_wed,
+				"sch_shf_thu": d.sch_shf_thu,
+				"sch_shf_fri": d.sch_shf_fri,
+				"sch_shf_sat": d.sch_shf_sat,
+				"sch_shf_sun": d.sch_shf_sun,
+				"sch_active": sch_active,
+				"relief": relief,
+				"upd_date": d.upd_date.strftime("%d/%m/%Y %H:%M:%S"),
+				"upd_by": d.upd_by,
+				"upd_flag": d.upd_flag,					 
+			}
+			sch_plan_list.append(record)
+
+		is_error = False
+		message = "ลบรายการสำเร็จ"
+	except db.OperationalError as e:
+		is_error = True
+		message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+	except db.Error as e:
+		is_error = True
+		message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+	finally:
+		cursor.close()	
+
+	response = JsonResponse(data={
+	    "success": True,
+		"is_error": is_error,
+	    "message": message,
+		"sch_plan_list": list(sch_plan_list),
+	})
+
+	response.status_code = 200
+	return response
+
+
+@permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
+@login_required(login_url='/accounts/login/')
 def ajax_delete_employee(request):
 	print("********************************")
 	print("FUNCTION: ajax_delete_employee()")
@@ -3184,7 +3266,7 @@ def ajax_delete_employee(request):
 	cus_id = request.GET.get('cus_id').lstrip("0")
 	cus_brn = request.GET.get('cus_brn')
 	cus_vol = request.GET.get('cus_vol')
-	cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)		
+	cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
 	emp_id = request.GET.get('emp_id')
 	dly_date = datetime.datetime.strptime(request.GET.get('dly_date'), '%d/%m/%Y')	
 	shift_id = request.GET.get('shift_id')
