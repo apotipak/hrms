@@ -658,14 +658,14 @@ def ajax_save_customer_schedule_plan(request):
 	print("*********************************************")
 
 	selected_sch_no = request.POST.get("selected_sch_no")	
-	# print("selected_sch_no = " + str(selected_sch_no))
+	print("selected_sch_no = " + str(selected_sch_no))
 
 	selected_service_id = request.POST.get("selected_service_id")	
 	# print("selected_service_id = " + str(selected_service_id))
 
 	cus_id = request.POST.get('cus_id')
 	cus_brn = request.POST.get('cus_brn')
-	cus_vol = request.POST.get('cus_vol')    
+	cus_vol = request.POST.get('cus_vol')
 	cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
 	
 	emp_id = request.POST.get("emp_id")
@@ -688,6 +688,8 @@ def ajax_save_customer_schedule_plan(request):
 
 	# Case - add new employee into customer service
 	if selected_sch_no == "0":
+		print("TRUE")
+
 		'''
 		print("add new");
 		print("--- debug ---")
@@ -708,17 +710,24 @@ def ajax_save_customer_schedule_plan(request):
 		'''
 
 		# Get latest sch_no
-		cursor = connection.cursor()		
-		cursor.execute("select max(convert(decimal(4,0),right(rtrim(convert(char(20),sch_no)),4))) from sch_plan where cnt_id=" + cnt_id)
+		cursor = connection.cursor()
+		# cursor.execute("select max(convert(decimal(4,0),right(rtrim(convert(char(20),sch_no)),4))) from sch_plan where cnt_id=" + cnt_id)
+		cursor.execute("select max(sch_no) from sch_plan where cnt_id=" + cnt_id + ";")
 		max_sch_no = cursor.fetchone()[0]
-
 		if max_sch_no is not None:
 			new_sch_no = max_sch_no + 1
 		else:
-			new_sch_no = 1
+			cursor = connection.cursor()			
+			cursor.execute("select top 1 srv_id from cus_service where cnt_id=" + cnt_id + ";")
+			selected_service_id = cursor.fetchone()[0]			
+			new_sch_no = str(selected_service_id) + str(1).zfill(4)
 	
+		print("max_sch_no = ",  max_sch_no)
+		print("new_sch_no = ", new_sch_no)
+
+
 		# Generate new sch_no
-		new_sch_no = str(selected_service_id) + str(new_sch_no).zfill(4)
+		# new_sch_no = str(selected_service_id) + str(new_sch_no).zfill(4)
 		# print("new_sch_no = " + str(new_sch_no))
 
 		# RULE-1: Check if an employee is existed in another schedule		
@@ -803,6 +812,12 @@ def ajax_save_customer_schedule_plan(request):
 			})
 
 		else:
+			cursor = connection.cursor()			
+			cursor.execute("select top 1 srv_id from cus_service where cnt_id=" + cnt_id + ";")
+			selected_service_id = cursor.fetchone()[0]
+			if selected_service_id is None:
+				selected_service_id = 0
+
 			new_sch_plan = SchPlan(
 				sch_no = new_sch_no,
 				srv_id = selected_service_id,
@@ -826,13 +841,61 @@ def ajax_save_customer_schedule_plan(request):
 			    )
 			new_sch_plan.save() 
 
+			# ironman 2
+			cursor = connection.cursor()			
+			cursor.execute("select count(*) from sch_plan where cnt_id=" + cnt_id + ";")
+			record_count = cursor.fetchone()[0]
+			if record_count is None:
+				record_count = 0
+			print("record_count : ", record_count)
+
+
+			# print("sch_plan is found")
+			sch_plan_list = []
+			sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).filter(sch_date_to='2999-12-31').exclude(upd_flag='D').order_by('-upd_date')
+			for d in sch_plan:	
+				if d.sch_active:
+					if d.relief:
+						relief = 1
+					else:
+						relief = 0 
+
+					if d.sch_active:
+						sch_active = 1
+					else:
+						sch_active = 0
+
+					record = {
+						"sch_no": d.sch_no,
+						"srv_id": d.srv_id,
+						"emp_id": d.emp_id_id,
+						"emp_fname_th": d.emp_id.emp_fname_th,
+						"emp_lname_th": d.emp_id.emp_lname_th,	    				
+						"sch_rank": d.sch_rank,
+						"sch_date_frm": d.sch_date_frm.strftime("%d/%m/%Y"),
+						"sch_date_to": d.sch_date_to.strftime("%d/%m/%Y"),
+						"sch_shf_mon": d.sch_shf_mon,
+						"sch_shf_tue": d.sch_shf_tue,
+						"sch_shf_wed": d.sch_shf_wed,
+						"sch_shf_thu": d.sch_shf_thu,
+						"sch_shf_fri": d.sch_shf_fri,
+						"sch_shf_sat": d.sch_shf_sat,
+						"sch_shf_sun": d.sch_shf_sun,
+						"sch_active": sch_active,
+						"relief": relief,
+						"upd_date": d.upd_date.strftime("%d/%m/%Y %H:%M:%S"),
+						"upd_by": d.upd_by,
+						"upd_flag": d.upd_flag,
+					}
+					sch_plan_list.append(record)
+
 			response = JsonResponse(data={
-				"message": "Added success",
+				"message": "เพิ่มรายการสำเร็จ",
 				"class": "bg-success",
 				"sch_plan_list": list(sch_plan_list),
+				"record_count": record_count,
 				"is_saved": True,
 			})
-
 
 		'''
 		except SchPlan.DoesNotExist:
@@ -872,6 +935,7 @@ def ajax_save_customer_schedule_plan(request):
 
 
 	else:
+		print("FALSE")
 		# print("update existing");
 		# print("selected_sch_no = " + str(selected_sch_no))
 
@@ -908,7 +972,7 @@ def ajax_save_customer_schedule_plan(request):
 
 			# sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).filter(sch_date_to='2999-12-31').exclude(upd_flag='D').order_by('-upd_date')	
 			# sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).exclude(upd_flag='D').exclude(sch_date_to='2999-12-31').order_by('-upd_date', 'emp_id')
-			sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).exclude(upd_flag='D').order_by('-upd_date', 'emp_id')
+			sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).filter(sch_active=1).exclude(upd_flag='D').order_by('-upd_date', 'emp_id')
 
 			for d in sch_plan:
 				# if d.sch_active:
