@@ -14,7 +14,7 @@ urlpatterns = [
     url(r'^ajax/get_employee/$', views.ajax_get_employee, name='ajax_get_employee'),
     url(r'^ajax/get_employee_photo/$', views.ajax_get_employee_photo, name='ajax_get_employee_photo'),
     path('daily-attendance/', views.DailyAttendance, name='daily-attendance'),    
-    url(r'^ajax/delete_employee_schedule_maintenance/$', views.ajax_delete_employee_schedule_maintenance, name='ajax_delete_employee_schedule_maintenance'),
+    # url(r'^ajax/delete_employee_schedule_maintenance/$', views.ajax_delete_employee_schedule_maintenance, name='ajax_delete_employee_schedule_maintenance'),
 
 	path('generate-daily-attend/', views.GenerateDailyAttend, name='generate-daily-attend'),
 	url(r'^ajax/sp_generate_daily_attend/$', views.ajax_sp_generate_daily_attend, name='ajax_sp_generate_daily_attend'),

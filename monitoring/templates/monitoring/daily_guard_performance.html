@@ -830,8 +830,8 @@ function displayList(emp_id, search_date_from, search_date_to) {
 
 
 						bas_amt_ns = data.performance_list[i][10];
-						got_amt_ns = data.performance_list[i][11];
-						bon_amt_ns = data.performance_list[i][12];
+						got_amt_ns = data.performance_list[i][12];
+						bon_amt_ns = data.performance_list[i][11];
 
 
 						//pub_amt = data.performance_list[i][40];
@@ -905,14 +905,12 @@ function displayList(emp_id, search_date_from, search_date_to) {
 						result += "<td align='center'>" + rank + "</td>";
 						result += "<td nowrap>" + shift + "</td>";
 						result += "<td align='center'>" + pay_type + "</td>";
-						
-						
+												
 						result += "<td style='background-color: #b8d2c2;'>" + bas_amt + "</td>";
 						result += "<td style='background-color: #b8d2c2;'>" + got_amt + "</td>";
 						result += "<td style='background-color: #b8d2c2;'>" + bon_amt + "</td>";
 						result += "<td style='background-color: #b8d2c2;'>" + pub_amt + "</td>";
 						result += "<td style='background-color: #b8d2c2;'>" + dof_amt + "</td>";
-
 
 						result += "<td style='background-color: #c3dde7;'>" + bas_amt_ns + "</td>";
 						result += "<td style='background-color: #c3dde7;'>" + got_amt_ns + "</td>";
