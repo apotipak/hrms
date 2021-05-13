@@ -619,7 +619,7 @@
 					<th scope='col' class='text-center'>SAT</th>
 					<th scope='col' class='text-center'>SUN</th>
 					<th scope='col' class='text-center'>Active</th>
-					<th scope='col'>Relief</th>
+					<th scope='col' class='text-center'>Relief</th>
 					<th scope='col'>Update Date</th>
 					<th scope='col'>Update By</th>
 					<th scope='col'>Update Flag</th>
@@ -1386,8 +1386,9 @@ $(document).ready(function(){
 							else
 								result += "      <td class='text-center'>&nbsp;</td>";
 
-							if(data.sch_plan_list[i]["relief"]==1)
-								result += "      <td class='text-center text-success'>Yes</td>";
+							if(data.sch_plan_list[i]["relief"]==1) {
+								result += "      <td class='text-center text-success'><i class='fas fa-check fa-xs'></i></td>";
+							}
 							else
 								result += "      <td class='text-center'>&nbsp;</td>";
 
@@ -1627,7 +1628,8 @@ $(document).ready(function(){
 								result += "      <td class='text-center'>&nbsp;</td>";
 
 							if(data.sch_plan_list[i]["relief"]==1) {
-								result += "      <td class='text-center text-success'><span class='badge badge-success'>active</span></td>";
+								//result += "      <td class='text-center text-success'><span class='badge badge-success'>active</span></td>";
+								result += "      <td class='text-center text-success'><i class='fas fa-check fa-xs'></i></td>";
 							}
 							else
 								result += "      <td class='text-center'>&nbsp;</td>";
@@ -1802,8 +1804,10 @@ $(document).ready(function(){
 								result += "      <td class='text-center'>&nbsp;</td>";								
 							}
 
-							if(data.sch_plan_list[i]["relief"]==1)
-								result += "      <td class='text-center text-success'>Yes</td>";
+							if(data.sch_plan_list[i]["relief"]==1) {
+								//result += "      <td class='text-center text-success'>Yes</td>";
+								result += "      <td class='text-center text-success'><i class='fas fa-check fa-xs'></i></td>";
+							}
 							else
 								result += "      <td class='text-center'>&nbsp;</td>";
 
@@ -1968,8 +1972,8 @@ $(document).ready(function(){
 								result += "      <td class='text-center'>&nbsp;</td>";
 
 							if(data.sch_plan_list[i]["relief"]==1) {								
-								//result += "      <td class='text-center text-success'>Yes</td>";
-								result += "      <td class='text-center text-success'><span class='badge badge-success'>active</span></td>";
+								//result += "      <td class='text-center text-success'>Yes</td>";							
+								result += "      <td class='text-center text-success'><i class='fas fa-check fa-xs'></i></td>";
 							}
 							else
 								result += "      <td class='text-center'>&nbsp;</td>";
@@ -2374,8 +2378,10 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 							else
 								result += "      <td class='text-center'>&nbsp;</td>";
 
-							if(data.sch_plan_list[i]["relief"]==1)
-								result += "      <td class='text-center text-success'>Yes</td>";
+							if(data.sch_plan_list[i]["relief"]==1) {
+								//result += "      <td class='text-center text-success'>Yes</td>";
+								result += "      <td class='text-center text-success'><i class='fas fa-check fa-xs'></i></td>";
+							}
 							else
 								result += "      <td class='text-center'>&nbsp;</td>";
 
@@ -2648,8 +2654,10 @@ function delete_sch_plan(sch_no, srv_id, emp_id, emp_fname_th, emp_lname_th) {
 										else
 											result += "      <td class='text-center'>&nbsp;</td>";
 
-										if(data.sch_plan_list[i]["relief"]==1)
-											result += "      <td class='text-center text-success'>Yes</td>";
+										if(data.sch_plan_list[i]["relief"]==1) {
+											//result += "      <td class='text-center text-success'>Yes</td>";
+											result += "      <td class='text-center text-success'><i class='fas fa-check fa-xs'></i></td>";
+										}
 										else
 											result += "      <td class='text-center'>&nbsp;</td>";
 
