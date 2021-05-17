@@ -1181,8 +1181,23 @@ def CreateContract(request):
             else:
                 cnt_sale_amt = float(cnt_sale_amt)
 
+
             cnt_wage_id = request.POST.get('cnt_wage_id')
-            
+            # ironman
+            is_cnt_wage_id_found = False
+            current_wage_id_list = TWagezone.objects.all().filter(w2004=1)            
+            if current_wage_id_list is not None:                
+                for item in current_wage_id_list:
+                    print(item.wage_id)
+                    if int(cnt_wage_id) == item.wage_id:
+                        is_cnt_wage_id_found = True                        
+
+            if not is_cnt_wage_id_found:
+                response_data['form_is_valid'] = False
+                response_data['class'] = "bg-danger"
+                response_data['message'] = "<b>รหัสค่าแรง&nbsp;&nbsp;" + cnt_wage_id + "</b><br/> เลิกใช้งานแล้ว กรุณาเลือกรหัสค่าแรงใหม่"
+                return JsonResponse(response_data)
+
             cnt_zone_id = request.POST.get('cnt_zone_id')
             cnt_autoexpire = request.POST.get('cnt_autoexpire')
             cnt_then = request.POST.get('cnt_then')
@@ -1440,7 +1455,7 @@ def CreateContract(request):
                 response_data['message'] = "<b>Problem in cus_contract function.</b>. Please inform IT department to support this case."
                 response_data['class'] = "bg-danger"
             
-    return JsonResponse(response_data)            
+    return JsonResponse(response_data)
 
 
 @login_required(login_url='/accounts/login/')

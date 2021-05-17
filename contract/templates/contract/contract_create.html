@@ -1042,9 +1042,6 @@
   </div>
 </div>
 
-
-
-<!-- ironman -->
 <!-- Adjust Rate modal -->
 <div class="modal fade" id="adjust_new_price_modal" tabindex="-1" role="dialog">
 
@@ -1305,9 +1302,6 @@
                     autoremove: true,
                   });                
                 } else {
-
-
-                  // ironman
 
                   refresh_sale_amount = data.active_cnt_sale_amt;
 
@@ -2759,7 +2753,9 @@
             }
 
 
-            
+            // ironman
+            // alert(json.cnt_wage_id);
+
             $("#id_cnt_wage_id").val(json.cnt_wage_id);
             
             $("#id_wage_id_text").val(json.cnt_wage_id);
@@ -3019,7 +3015,6 @@
   // SAVE CONTRACT
   $("#saveContract").click( function() {
     event.preventDefault();
-
     var cus_id = $('#id_cus_id').val();
     var cus_brn = $('#id_cus_brn').val();
     var cus_vol = $('#id_cus_vol').val();
@@ -3036,6 +3031,8 @@
     } else {
 
     var wage_id = $("#id_cnt_wage_id").val();
+    // alert(wage_id);
+
     if(wage_id=="") {
       $.alert({
           title: 'Error',
@@ -5358,7 +5355,6 @@
 
   $(document).ready(function(){    
 
-    // ironman
     $('#adjust_newprice_button').on('click', function (e) {
             
       var cnt_id = $('#id_cus_id').val();
