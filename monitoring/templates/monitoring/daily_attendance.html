@@ -4975,6 +4975,10 @@ $("#id_late_hour").click( function() {
     // SAVE_BUTTON
     $(document).on('click', '#save_button', function(e) {
 
+		// ironman
+		//alert("test");
+		//return false;
+
     	var add_new_record_status = $("#id_add_new_record_status").val();
 
     	var allowZeroBathForPhoneAmount = 0;
@@ -5347,7 +5351,8 @@ $("#id_late_hour").click( function() {
 
     	} else {
 
-    		//alert("EDIT RECORD");
+    		// alert("EDIT RECORD");
+
     		// EDIT MODE
 	    	if(ui_absent_status==1) {
 	    		if(ui_relief_status==1) {
@@ -5378,7 +5383,7 @@ $("#id_late_hour").click( function() {
 		    		}
 
 	    		} else {
-
+				
 	    			saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);
 	    			
 	    			$("#id_late_check").prop("checked", false);
@@ -5837,6 +5842,9 @@ $("#id_late_hour").click( function() {
     	//console.log(cus_id+","+cus_brn+","+cus_vol+","+emp_id+","+shift_option+","+dly_date)			
     	var cnt_id = cus_id + cus_brn + cus_vol
 
+		//alert("debug");
+		//return false;
+		
 		$.confirm({
 		    title: 'Confirmation',
 		    type: 'red',
@@ -5845,7 +5853,7 @@ $("#id_late_hour").click( function() {
 		    animationBounce: 1.5,
 		    closeIcon: true,
 		    boxWidth: '38%',
-		    useBootstrap: false,		    
+		    useBootstrap: false,
 		    buttons: {
 		        confirm: {
 		        	text: 'ยืนยัน',

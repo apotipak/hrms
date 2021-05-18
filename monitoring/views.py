@@ -684,7 +684,6 @@ def ajax_save_customer_schedule_plan(request):
 	contract_list_filter_option = request.POST.get("contract_list_filter_option")
 	# print("contract_list_filter_option = " + str(contract_list_filter_option))
 
-	# ironman 1
 	sch_plan_list = []
 
 	# Case - add new employee into customer service
@@ -842,7 +841,6 @@ def ajax_save_customer_schedule_plan(request):
 			    )
 			new_sch_plan.save() 
 
-			# ironman 2
 			cursor = connection.cursor()			
 			cursor.execute("select count(*) from sch_plan where cnt_id=" + cnt_id + ";")
 			record_count = cursor.fetchone()[0]
@@ -2308,7 +2306,10 @@ def sfQuery(request):
 	else:
 		return False, "ข้อมูลตารางเวรของวันที่ <b>" + str(request.POST.get('attendance_date')) + "</b> ยังไม่ได้ Gen โปรด Gen ข้อมูลก่อน"
 
+	# ironman 2
 	# ตรวจสอบว่า post day end ไปหรือยัง
+	return False, "DEBUG 2"
+
 	if end_chk==1:			
 		return False, "ข้อมูลวันที่ <b>" + str() + "</b> ถูก DayEnd ไปแล้ว ไม่สามารถเรียกดูย้อนหลังได้"
 
@@ -2377,7 +2378,7 @@ def showContract(cnt_id):
 	sql += " left join t_wagezone as k on a.cnt_wage_id=k.wage_id"
 	sql += " where a.cnt_id=" + str(cnt_id)
 	sql += " and a.cnt_active=1"
-	print("sql 11:", sql)
+	# print("sql 11:", sql)
 
 	try:				
 		cursor = connection.cursor()
@@ -3197,7 +3198,6 @@ def ajax_delete_employee_schedule_maintenance(request):
 		with connection.cursor() as cursor:
 			cursor.execute(sql)
 
-		# ironman 1
 		sch_plan_list = []
 		record = {}
 		sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).filter(sch_active=1).exclude(upd_flag='D').order_by('-upd_date', 'emp_id')
@@ -3263,6 +3263,35 @@ def ajax_delete_employee(request):
 	print("FUNCTION: ajax_delete_employee()")
 	print("********************************")
 
+	# ironman0
+	username = request.user.username	
+	dly_date = datetime.datetime.strptime(request.GET.get('dly_date'), '%d/%m/%Y').date()
+	string_today_date = str(settings.TODAY_DATE.strftime("%d/%m/%Y"))
+	today_date = datetime.datetime.strptime(string_today_date, "%d/%m/%Y").date()
+	gen_chk = 0	
+	end_chk = 0
+	pro_chk = 0		
+	sql = "select date_chk,gen_chk,end_chk,pro_chk from t_date where date_chk='" + str(dly_date) + "'"
+	print("SQL : ", sql)
+	cursor = connection.cursor()
+	cursor.execute(sql)	
+	t_date_obj = cursor.fetchall()
+	cursor.close()
+	# ตรวจสอบว่ามีการสร้างตารางรับแจ้งเวรไว้หรือยัง
+	if (t_date_obj is not None):
+		if len(t_date_obj)>0:
+			gen_chk = t_date_obj[0][1]
+			end_chk = t_date_obj[0][2]
+			pro_chk = t_date_obj[0][3]
+
+
+	# ironman0
+	print()
+	print("*********************** DEBUG *************************")
+	print(username, dly_date, string_today_date, today_date, end_chk)
+	print("*********************** DEBUG *************************")
+	print()
+
 	cus_id = request.GET.get('cus_id').lstrip("0")
 	cus_brn = request.GET.get('cus_brn')
 	cus_vol = request.GET.get('cus_vol')
@@ -3270,15 +3299,142 @@ def ajax_delete_employee(request):
 	emp_id = request.GET.get('emp_id')
 	dly_date = datetime.datetime.strptime(request.GET.get('dly_date'), '%d/%m/%Y')	
 	shift_id = request.GET.get('shift_id')
-	username = request.user.first_name
+	# username = request.user.first_name
+	username = request.user.username
+
+	if username=='CMS_SUP':
+		if dly_date.date()==today_date:
+			if cus_id=="" or cus_id is None:
+				response = JsonResponse(data={"success": True, "message": "Contract Number is not correct."})
+				response.status_code = 200
+				return response
+			
+			if emp_id=="" or cus_id is None:
+				response = JsonResponse(data={"success": True, "message": "Employee ID is not correct."})
+				response.status_code = 200
+				return response
+
+			if dly_date=="" or cus_id is None:
+				response = JsonResponse(data={"success": True, "message": "Daily Attendnace Date is not correct."})
+				response.status_code = 200
+				return response
+
+			# Check if request's record is existed
+			with connection.cursor() as cursor:
+				cursor.execute("insert his_dly_plan_del select getdate(), %s, 'DLY_PLAN', * from dly_plan where cnt_id=%s and emp_id=%s and dly_date=%s and sch_shift=%s", [username, cnt_id, emp_id, dly_date, shift_id])
+				cursor.execute("delete dly_plan where cnt_id=%s and emp_id=%s and dly_date=%s and sch_shift=%s", [cnt_id, emp_id, dly_date, shift_id])
+				cursor.execute("select * from dly_plan where cnt_id=%s and emp_id=%s and dly_date=%s and sch_shift=%s", [cnt_id, emp_id, dly_date, shift_id])
+				row = cursor.fetchone()
+				cursor.close
+
+			if row is None:
+				message = "Employee ID " + emp_id + " has been deleted."
+			else:
+				message = "Cannot delete Employee ID " + emp_id
+
+			response = JsonResponse(data={
+				"success": True,	    
+				"message": message,
+			})
+		elif dly_date.date() < today_date:
+			if end_chk==1:
+				message = "CMS_SUP ทำการลบในตาราง his_dly_plan"
+				if cus_id=="" or cus_id is None:
+					response = JsonResponse(data={"success": True, "message": "Contract Number is not correct."})
+					response.status_code = 200
+					return response
+				
+				if emp_id=="" or cus_id is None:
+					response = JsonResponse(data={"success": True, "message": "Employee ID is not correct."})
+					response.status_code = 200
+					return response
+
+				if dly_date=="" or cus_id is None:
+					response = JsonResponse(data={"success": True, "message": "Daily Attendnace Date is not correct."})
+					response.status_code = 200
+					return response
+
+				# Check if request's record is existed
+				with connection.cursor() as cursor:
+					cursor.execute("insert his_dly_plan_del select getdate(), %s, 'HIS_DLY_PLAN', * from his_dly_plan where cnt_id=%s and emp_id=%s and dly_date=%s and sch_shift=%s", [username, cnt_id, emp_id, dly_date, shift_id])
+					cursor.execute("delete his_dly_plan where cnt_id=%s and emp_id=%s and dly_date=%s and sch_shift=%s", [cnt_id, emp_id, dly_date, shift_id])
+					cursor.execute("select * from his_dly_plan where cnt_id=%s and emp_id=%s and dly_date=%s and sch_shift=%s", [cnt_id, emp_id, dly_date, shift_id])
+					row = cursor.fetchone()
+					cursor.close
+
+				if row is None:
+					message = "Employee ID " + emp_id + " has been deleted."
+				else:
+					message = "Cannot delete Employee ID " + emp_id
+
+				response = JsonResponse(data={
+					"success": True,	    
+					"message": message,
+				})				
+			else:
+				message = "ERROR : วันที่ทำรายการมากกว่าวันที่ปัจจุบัน"
+
+	else:
+		if end_chk==1:
+			message = str(username) + " ไม่มีสิทธิ์ทำรายการ"			
+		else:
+			if dly_date==today_date:
+				print(str(username) + " ทำการลบในตาราง dly_plan")
+				if cus_id=="" or cus_id is None:
+					response = JsonResponse(data={"success": True, "message": "Contract Number is not correct."})
+					response.status_code = 200
+					return response
+				
+				if emp_id=="" or cus_id is None:
+					response = JsonResponse(data={"success": True, "message": "Employee ID is not correct."})
+					response.status_code = 200
+					return response
+
+				if dly_date=="" or cus_id is None:
+					response = JsonResponse(data={"success": True, "message": "Daily Attendnace Date is not correct."})
+					response.status_code = 200
+					return response
+
+				# Check if request's record is existed
+				with connection.cursor() as cursor:
+					cursor.execute("insert his_dly_plan_del select getdate(), %s, 'DLY_PLAN', * from dly_plan where cnt_id=%s and emp_id=%s and dly_date=%s and sch_shift=%s", [username, cnt_id, emp_id, dly_date, shift_id])
+					cursor.execute("delete dly_plan where cnt_id=%s and emp_id=%s and dly_date=%s and sch_shift=%s", [cnt_id, emp_id, dly_date, shift_id])
+					cursor.execute("select * from dly_plan where cnt_id=%s and emp_id=%s and dly_date=%s and sch_shift=%s", [cnt_id, emp_id, dly_date, shift_id])
+					row = cursor.fetchone()
+					cursor.close
+
+				if row is None:
+					message = "Employee ID " + emp_id + " has been deleted."
+				else:
+					message = "Cannot delete Employee ID " + emp_id
+
+				response = JsonResponse(data={
+					"success": True,	    
+					"message": message,
+				})
+			elif dly_date < today_date:
+				message = str(username) + " ไม่มีสิทธิ์ทำรายการ"				
+
+	response = JsonResponse(data={
+	    "success": True,	    
+	    "message": message,
+	})
+
+	# print("message : ", message)
+	response.status_code = 200
+	return response
+
 
 	'''
-	print("--------debug---------")
-	print("_cnt_id = " + str(cnt_id))
-	print("_emp_id = " + str(emp_id))
-	print("_dly_date = " + str(dly_date))
-	print("_shift_id = " + str(shift_id))
-	'''
+	cus_id = request.GET.get('cus_id').lstrip("0")
+	cus_brn = request.GET.get('cus_brn')
+	cus_vol = request.GET.get('cus_vol')
+	cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
+	emp_id = request.GET.get('emp_id')
+	dly_date = datetime.datetime.strptime(request.GET.get('dly_date'), '%d/%m/%Y')	
+	shift_id = request.GET.get('shift_id')
+	# username = request.user.first_name
+	username = request.user.username
 
 	if cus_id=="" or cus_id is None:
 		response = JsonResponse(data={"success": True, "message": "Contract Number is not correct."})
@@ -3315,7 +3471,7 @@ def ajax_delete_employee(request):
 
 	response.status_code = 200
 	return response
-
+	'''
 
 def get_DLY_PLAN_OR_HIS_DLY_PLAN(dly_date):
 	table_name = "DLY_PLAN"
@@ -4787,6 +4943,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 				pro_chk = t_date_obj[0][3]
 		
 		# ตรวจสอบว่า post day end ไปหรือยัง
+		'''
 		if end_chk==1:
 			return False, "ข้อมูลวันที่ <b>" + str() + "</b> ถูก DayEnd ไปแล้ว ไม่สามารถเรียกดูย้อนหลังได้"
 		else:
@@ -4803,7 +4960,40 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 					sql = "update dly_plan set "
 			else:
 				return False, "เลือกวันที่ทำรายการไม่ถูกต้อง"		
-
+		'''
+		# ironman0
+		# return False, "Debug 1"
+		if username=='CMS_SUP':
+			if dly_date==today_date.date():
+				sql = "update dly_plan set "
+			elif dly_date < today_date.date():
+				# เช็คล็อคอินยูสเซอร์เป็น CMS_SUP หรือไม่				
+				if username=='CMS_SUP':
+					if end_chk==1:
+						sql = "update his_dly_plan set "
+					else:
+						sql = "update dly_plan set "
+				else:
+					sql = "update dly_plan set "
+			else:
+				return False, "เลือกวันที่ทำรายการไม่ถูกต้อง"		
+		else:
+			if end_chk==1:
+				return False, "ข้อมูลวันที่ <b>" + str(string_today_date) + "</b> ถูก DayEnd ไปแล้ว ไม่สามารถเรียกดูย้อนหลังได้"
+			else:
+				if dly_date==today_date.date():
+					sql = "update dly_plan set "
+				elif dly_date < today_date.date():
+					# เช็คล็อคอินยูสเซอร์เป็น CMS_SUP หรือไม่				
+					if username=='CMS_SUP':
+						if end_chk==1:
+							sql = "update his_dly_plan set "
+						else:
+							sql = "update dly_plan set "
+					else:
+						sql = "update dly_plan set "
+				else:
+					return False, "เลือกวันที่ทำรายการไม่ถูกต้อง"			
 
 		# Get Period
 		try:
@@ -6701,7 +6891,7 @@ def ajax_is_scheduled_between_site(request):
 							message = "%s,%s,%s" %(tmp_cnt_id, tmp_emp_id, tmp_shf_type)
 
 							sql = "select * from v_dlyplan where emp_id=" + str(tmp_emp_id) + " and absent=0 and shf_type='" + str(tmp_shf_type) + "'"
-							print("DEBUG sql 11: ", sql)
+							# print("DEBUG sql 11: ", sql)
 							cursor = connection.cursor()
 							cursor.execute(sql)
 							v_dlyplan_obj = cursor.fetchone()
