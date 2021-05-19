@@ -6776,10 +6776,10 @@ def ajax_is_scheduled_between_site(request):
 	username = request.user.username
 	upd_date = datetime.datetime.now()
 	
-	# message = "%s,%s,%s,%s,%s" %(attendance_date,shift_id,cus_id,cus_brn,cus_vol)
-	# print("message:", message)
-	# print("shift_status:", shift_status)
-	# print("attendance_date:", attendance_date)
+	message = "%s,%s,%s,%s,%s" %(attendance_date,shift_id,cus_id,cus_brn,cus_vol)
+	print("message:", message)
+	print("shift_status:", shift_status)
+	print("attendance_date:", attendance_date)
 
 	# Field validation
 	if shift_status not in shift_status_list:
@@ -6900,8 +6900,10 @@ def ajax_is_scheduled_between_site(request):
 							if v_dlyplan_obj is not None:
 
 								# DlyPerRs[i][38]
-								message = "พนักงานรหัส <b>" + str(tmp_emp_id) + "</b> ลงเข้าเวรที่หน่วยงาน <b>" + str(v_dlyplan_obj[13]) + "</b> ในกะ <b>" + str(v_dlyplan_obj[3]) + "</b> แล้ว "
-								message += "หากต้องการทำงานต่อกรุณากดปุ่มยืนยัน"
+								message = "พนักงานรหัส <b>" + str(tmp_emp_id) + "</b> ได้แจ้งเวรเข้าหน่วยงาน <b>" + str(v_dlyplan_obj[13]) + "</b> ในกะ <b>" + str(v_dlyplan_obj[3]) + "</b> ไว้แล้ว "
+								message += "ระบบไม่อนุญาติให้ทำรายการของพนังงานท่านนี้<br>"
+								message += "<hr>หากต้องการบันทึกการแจ้งเวรของพนักงานที่เหลือ กรุณากดปุ่มยืนยัน"
+								
 								response = JsonResponse(data={"success": True, "is_error": True, "is_scheduled:": True, "message": message})
 								response.status_code = 200
 								return response
@@ -8645,14 +8647,14 @@ def is_scheduled(request):
 	sql += " and a.emp_id=" + str(emp_id)
 	sql += " and a.absent=0 "
 	sql += " and a.sch_shift=" + str(shift_id)
-	# print("DEBUG SQL: ", sql)
+	print("DEBUG SQL: ", sql)
 
 	cursor = connection.cursor()
 	cursor.execute(sql)
 	record = cursor.fetchone()
 	cursor.close()			
 
-	if record is not None:					
+	if record is not None:				
 		messcross = str(record[0]) + " Shift No =" + str(record[3])
 		dup_cnt_id = record[0]
 		dup_shift_number = record[3]
@@ -8661,25 +8663,35 @@ def is_scheduled(request):
 		Gfrom = record[48]
 		Gto = record[49]
 
-		if Shp != 0:
-			sql = "Select SHF_TYPE, SHF_TIME_FRM, SHF_TIME_TO, shf_desc from t_shift where shf_id=" + str(Shp)
-			cursor = connection.cursor()
-			cursor.execute(sql)
-			check_dup_record = cursor.fetchone()
-			cursor.close()	
-			if check_dup_record is not None:
-				Stype = check_dup_record[0]
-				Sfrom = check_dup_record[1]
-				Sto = check_dup_record[2]
-				shf_desc = check_dup_record[3]
-		
-		message = "รหัสพนักงาน  <b>" + str(emp_id) + "</b> "
-		message += "เข้าเวรกะ  <b>" + str(shf_desc) + "</b> "
-		message += "ที่หน่วยงาน  <b>" + str(dup_cnt_id) + "</b> ไปแล้ว"
+		print("cnt_id = ", int(cnt_id))
+		print("dup_cnt_id = ", dup_cnt_id)
+
+		if int(cnt_id)!=int(dup_cnt_id):
+			if Shp != 0:
+				sql = "Select SHF_TYPE, SHF_TIME_FRM, SHF_TIME_TO, shf_desc from t_shift where shf_id=" + str(Shp)
+				
+				cursor = connection.cursor()
+				cursor.execute(sql)
+				check_dup_record = cursor.fetchone()
+				cursor.close()	
+				if check_dup_record is not None:
+					Stype = check_dup_record[0]
+					Sfrom = check_dup_record[1]
+					Sto = check_dup_record[2]
+					shf_desc = check_dup_record[3]
+			
+			message = "พนักงานรหัส  <b>" + str(emp_id) + "</b> "
+			message += "ได้แจ้งเวรไว้แล้วที่หน่วยงาน <b>" + str(dup_cnt_id) + "</b><br>"
+			message += "ในกะ <b>" + str(shf_desc) + "</b><br><hr>"
+			message += "กรุณาตรวจสอบข้อมูลใหม่อีกครั้ง"
+		else:
+			is_scheduled = False
+			message = "ไม่คร่อมหน่วยงาน"
 	else:
 		is_scheduled = False
-		message = "ไม่คร่อมหน่วยงาน"
+		message = "--ไม่คร่อมหน่วยงาน-- not overlap"
 
+	print("MESSAGE : ", message)
 	response = JsonResponse(data={"success": True, "is_scheduled": is_scheduled, "message": message})
 	response.status_code = 200
 	return response    

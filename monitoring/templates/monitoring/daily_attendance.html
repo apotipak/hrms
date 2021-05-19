@@ -1446,6 +1446,8 @@ function checkSpecialBenefitList() {
 	    	} else {
 	    		//alert("Not absent")
 	    		//return false;
+				// ironman
+				// work_cross_site
 				$.ajax({
 			    	url : "/monitoring/ajax/ajax_is_scheduled_between_site/",
 			    	type : "POST",
@@ -1494,10 +1496,10 @@ function checkSpecialBenefitList() {
 										    	},
 										    	success: function(data) {
 										    		if(data.is_error) {
-										    			
+										    			alert("ERROR");
 										    		} else {
 
-
+														//alert("TODO");
 
 														$.ajax({
 															url : "/monitoring/ajax/get_attendance_information/",
@@ -5143,14 +5145,50 @@ $("#id_late_hour").click( function() {
 						$('#id_relief_emp_id').focus();
 
 						return false;    			
-		    		} else {    	
-		    			saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);
+		    		} else {
+						
+						$.ajax({
+							url : "/monitoring/ajax/is_scheduled/",
+							type : "POST",
+							data : {          
+						  		csrfmiddlewaretoken: '{{ csrf_token }}',
+						  		dly_date: dly_date,
+						  		shift_id: shift_id,
+						  		cus_id: cus_id,
+						  		cus_brn: cus_brn,
+						  		cus_vol: cus_vol,
+						  		emp_id: emp_id,
+							},
+							success : function(data) {
+								alert("..");
+								if (data.is_scheduled) {
+									$.alert({
+									    title: 'Error',
+									    type: 'red',
+									    content: data.message,
+									    animation: 'zoom',
+									    animationBounce: 1.5,
+									    closeIcon: false,
+									    boxWidth: '38%',
+									    useBootstrap: false,
+									});
+									return false;
+								} else {
+									alert("test");
+									//saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);
+								}
+							},
+						});
+
+		    			//saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);
 
 		    			$("#id_late_check").prop("checked", false);
 		    			return false;
 		    		}
 
 	    		} else {
+
+				
 	    			saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);
 	    			$("#id_late_check").prop("checked", false);
 	    			return false;
@@ -5176,9 +5214,9 @@ $("#id_late_hour").click( function() {
 						        	action: function () {						    		
 
 						        		allowZeroBathForPhoneAmount = 1;
-						        		saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);
+						        		//saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);
 
-						        		/*
+						        		
 										$.ajax({
 											url : "/monitoring/ajax/is_scheduled/",
 											type : "POST",
@@ -5203,12 +5241,13 @@ $("#id_late_hour").click( function() {
 													    boxWidth: '38%',
 													    useBootstrap: false,
 													});
+													return false;
 												} else {												
 													saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);
 												}
 											},
 										});
-										*/					        		
+														        		
 									}
 						        },
 						        cancel: {					        	
@@ -5221,9 +5260,8 @@ $("#id_late_hour").click( function() {
 						    }
 						});
 		    		} else {
-		    			saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);
+		    			//saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);
 
-		    			/*
 						$.ajax({
 							url : "/monitoring/ajax/is_scheduled/",
 							type : "POST",
@@ -5248,12 +5286,12 @@ $("#id_late_hour").click( function() {
 									    boxWidth: '38%',
 									    useBootstrap: false,
 									});
+									return false;
 								} else {								
 									saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);
 								}
 							},
-						});
-						*/
+						});					
 		    		}
 		    	} else {
 		    		// Not absent / Not Call
@@ -5354,6 +5392,7 @@ $("#id_late_hour").click( function() {
     		// alert("EDIT RECORD");
 
     		// EDIT MODE
+
 	    	if(ui_absent_status==1) {
 	    		if(ui_relief_status==1) {
 		    		if(relief_emp_id=="") {
@@ -5375,8 +5414,44 @@ $("#id_late_hour").click( function() {
 						$('#id_relief_emp_id').focus();
 
 						return false;    			
-		    		} else {    	
-		    			saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);
+		    		} else {
+
+
+						// ironman
+						$.ajax({
+							url : "/monitoring/ajax/is_scheduled/",
+							type : "POST",
+							data : {          
+						  		csrfmiddlewaretoken: '{{ csrf_token }}',
+						  		dly_date: dly_date,
+						  		shift_id: shift_id,
+						  		cus_id: cus_id,
+						  		cus_brn: cus_brn,
+						  		cus_vol: cus_vol,
+						  		//emp_id: emp_id,
+								emp_id: relief_emp_id,
+							},
+							success : function(data) {								
+								if (data.is_scheduled) {
+									$.alert({
+									    title: 'Error',
+									    type: 'red',
+									    content: data.message,
+									    animation: 'zoom',
+									    animationBounce: 1.5,
+									    closeIcon: false,
+									    boxWidth: '38%',
+									    useBootstrap: false,
+									});
+									return false;
+								} else {
+									//alert("test");
+									saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);
+								}
+							},
+						});
+
+		    			//saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);
 
 		    			$("#id_late_check").prop("checked", false);
 		    			return false;
@@ -5390,6 +5465,68 @@ $("#id_late_hour").click( function() {
 	    			return false;
 	    		}
 	    	} else {
+
+				//alert("a");
+				//return false;
+
+				// มาทำงาน
+				// ironman	
+				/*
+				var bulk_shift_status = $("#id_shift_status").val();
+        		var attendance_date = $('#id_dly_date').val();					
+				var shift_id = $("#id_shift_option").val();    	
+				var work_cross_site = 1;
+
+				$.ajax({
+					url : "/monitoring/ajax/ajax_is_scheduled_between_site/",
+					type : "POST",
+					data : {          
+						csrfmiddlewaretoken: '{{ csrf_token }}',
+						attendance_date: attendance_date,
+						shift_id: shift_id,
+						shift_status: bulk_shift_status,
+						cus_id: cus_id,
+						cus_brn: cus_brn,
+						cus_vol: cus_vol,
+					},
+					success: function(data) {
+						alert(data.is_scheduled);
+
+						if(data.is_error) {
+							$.confirm({
+								title: 'Confirmation',
+								type: 'red',
+								content: data.message,
+								animation: 'zoom',
+								animationBounce: 1.5,
+								closeIcon: true,
+								boxWidth: '38%',
+								useBootstrap: false,		    
+								buttons: {
+									confirm: {
+										text: 'ยืนยัน',
+										btnClass: 'btn-danger',
+										action: function () {
+											
+											skip_is_scheduled_record = 1
+											//return false;		        					        		
+										}
+									},
+									cancel: {					        	
+										action: function () {											
+											//alert("Cancel");
+											//return false;
+										}
+									}
+								}
+							});
+						} else {
+							alert("TODO");
+						}
+					}
+				});
+				*/
+				
 		    	// Not absent / Call
 		    	if(ui_phone_check==1) {
 		    		if(tel_amount=="0") {
@@ -5409,9 +5546,9 @@ $("#id_late_hour").click( function() {
 						        	action: function () {						    		
 
 						        		allowZeroBathForPhoneAmount = 1;
-						        		saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);
+						        		//saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);
 
-						        		/*
+						        		
 										$.ajax({
 											url : "/monitoring/ajax/is_scheduled/",
 											type : "POST",
@@ -5436,12 +5573,13 @@ $("#id_late_hour").click( function() {
 													    boxWidth: '38%',
 													    useBootstrap: false,
 													});
+													return false;
 												} else {												
 													saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);
 												}
 											},
 										});
-										*/					        		
+															        		
 									}
 						        },
 						        cancel: {					        	
@@ -5454,9 +5592,10 @@ $("#id_late_hour").click( function() {
 						    }
 						});
 		    		} else {
-		    			saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);
 
-		    			/*
+
+		    			//saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);
+		    			
 						$.ajax({
 							url : "/monitoring/ajax/is_scheduled/",
 							type : "POST",
@@ -5481,12 +5620,13 @@ $("#id_late_hour").click( function() {
 									    boxWidth: '38%',
 									    useBootstrap: false,
 									});
+									return false;
 								} else {								
 									saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);
 								}
 							},
 						});
-						*/
+						
 		    		}
 		    	} else {
 		    		// Not absent / Not Call
@@ -5503,9 +5643,7 @@ $("#id_late_hour").click( function() {
 					  		emp_id: emp_id,
 						},
 						success : function(data) {
-							if (data.is_scheduled) {
-
-								/*
+							if (data.is_scheduled) {								
 								$.alert({
 								    title: 'Error',
 								    type: 'red',
@@ -5516,13 +5654,8 @@ $("#id_late_hour").click( function() {
 								    boxWidth: '38%',
 								    useBootstrap: false,
 								});
-
-								return false;
-
-								*/
-
-								saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);
-
+								return false;								
+								//saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);
 							} else {
 
 								$.ajax({
