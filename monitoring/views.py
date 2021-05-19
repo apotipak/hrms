@@ -8693,7 +8693,7 @@ def is_scheduled(request):
 					shf_desc = check_dup_record[3]
 			
 			message = "พนักงานรหัส  <b>" + str(emp_id) + "</b> "
-			message += "ได้แจ้งเวรไว้แล้วที่หน่วยงาน <b>" + str(dup_cnt_id) + "</b><br>"
+			message += "ได้แจ้งเวรไว้แล้วที่หน่วยงาน <b>" + str(dup_cnt_id) + "</b> "
 			message += "ในกะ <b>" + str(shf_desc) + "</b><br><hr>"
 			message += "กรุณาตรวจสอบข้อมูลใหม่อีกครั้ง"
 		else:
