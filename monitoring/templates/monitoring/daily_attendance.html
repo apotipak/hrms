@@ -5391,7 +5391,8 @@ $("#id_late_hour").click( function() {
 
     	} else {
 
-    		// alert("EDIT RECORD");
+    		//alert("EDIT RECORD");
+			//return false;
 
     		// EDIT MODE
 
@@ -5616,8 +5617,8 @@ $("#id_late_hour").click( function() {
 									$.alert({
 									    title: 'Error',
 									    type: 'red',
-									    //content: data.message,
-										content: "aa",
+									    content: data.message,
+										//content: "aa",
 									    animation: 'zoom',
 									    animationBounce: 1.5,
 									    closeIcon: false,
@@ -5663,6 +5664,7 @@ $("#id_late_hour").click( function() {
 								//saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);
 							} else {
 
+
 								$.ajax({
 									url : "/monitoring/ajax/save_daily_attendance_check_rule_1/",
 									type : "POST",
@@ -5707,6 +5709,7 @@ $("#id_late_hour").click( function() {
 										} else {
 
 											//alert("debug 1");
+											// amnaj
 											saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);
 
 											return false;

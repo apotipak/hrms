@@ -2306,7 +2306,6 @@ def sfQuery(request):
 	else:
 		return False, "ข้อมูลตารางเวรของวันที่ <b>" + str(request.POST.get('attendance_date')) + "</b> ยังไม่ได้ Gen โปรด Gen ข้อมูลก่อน"
 
-	# ironman 2
 	# ตรวจสอบว่า post day end ไปหรือยัง
 	return False, "DEBUG 2"
 
@@ -3263,7 +3262,6 @@ def ajax_delete_employee(request):
 	print("FUNCTION: ajax_delete_employee()")
 	print("********************************")
 
-	# ironman0
 	username = request.user.username	
 	dly_date = datetime.datetime.strptime(request.GET.get('dly_date'), '%d/%m/%Y').date()
 	string_today_date = str(settings.TODAY_DATE.strftime("%d/%m/%Y"))
@@ -3285,7 +3283,6 @@ def ajax_delete_employee(request):
 			pro_chk = t_date_obj[0][3]
 
 
-	# ironman0
 	print()
 	print("*********************** DEBUG *************************")
 	print(username, dly_date, string_today_date, today_date, end_chk)
@@ -4549,7 +4546,6 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 
 	# return False, "TODO"
 
-	# amnaj
 	# print("tel_time BBBB:", tel_time)
 
 	# message = str(late_from) + " | " + str(late_to) + " | " + str(late_hour) + " | " + str(job_type)
@@ -4658,7 +4654,6 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 
 		# return False, "TODO3"
 
-
 		# Check #6
 		if ui_phone_status==db_phone_status:
 			if ui_late_status==db_late_status:
@@ -4681,6 +4676,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 						cursor.close	
 						informNo = rows[0] if rows[0]>0 else 0
 
+						# amnaj
 						# get srv_qty
 						sql = "select cnt_id, srv_shif_id, sum(srv_qty) as qty from cus_service where srv_active=1 and cnt_id=" + str(cnt_id) + " and srv_shif_id=" + str(shift_id) + " group by cnt_id, srv_shif_id"
 						print("DEBUG 10 sql: ", sql)
@@ -4744,7 +4740,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 
 	# debug
 	# Check #7
-	print("AAAA")
+	# print("AAAA")
 	is_pass, message = chkValidInput(2,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,ui_ot_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id)
 	
 	# return False, message
@@ -4973,7 +4969,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 			else:
 				return False, "เลือกวันที่ทำรายการไม่ถูกต้อง"		
 		'''
-		# ironman0
+
 		# return False, "Debug 1"
 		if username=='CMS_SUP':
 			if dly_date==today_date.date():
@@ -6285,7 +6281,6 @@ def ajax_save_daily_attendance_cross_site(request):
 	if AEdly == 0: # EDIT MODE
 		print("Edit Mode")
 		
-		# amnaj
 		# print("DEBUG job_type:", job_type)
 
 		is_edit_record_success, message = editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id,Tday7,Tdof,customer_wage_rate_id,customer_zone_id)
@@ -6425,7 +6420,6 @@ def ajax_save_daily_attendance(request):
 	if AEdly == 0: # EDIT MODE
 		print("Edit Mode")
 		
-		# amnaj
 		# print("DEBUG job_type:", job_type)
 
 		is_edit_record_success, message = editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id,Tday7,Tdof,customer_wage_rate_id,customer_zone_id)
@@ -8634,7 +8628,7 @@ def ajax_get_job_type_list(request):
 
 
 
-# LUFY
+# ironman
 @permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
 @login_required(login_url='/accounts/login/')
 def is_scheduled(request):
@@ -8677,6 +8671,8 @@ def is_scheduled(request):
 
 		print("cnt_id = ", int(cnt_id))
 		print("dup_cnt_id = ", dup_cnt_id)
+		print("emp_id : ", emp_id)
+		print("emp_id_temp : ", record[1])
 
 		if int(cnt_id)!=int(dup_cnt_id):
 			if Shp != 0:
@@ -8696,12 +8692,51 @@ def is_scheduled(request):
 			message += "ได้แจ้งเวรไว้แล้วที่หน่วยงาน <b>" + str(dup_cnt_id) + "</b> "
 			message += "ในกะ <b>" + str(shf_desc) + "</b><br><hr>"
 			message += "กรุณาตรวจสอบข้อมูลใหม่อีกครั้ง"
+
+			is_scheduled = True
+			message = "คร่อมหน่วยงาน"
 		else:
 			is_scheduled = False
 			message = "ไม่คร่อมหน่วยงาน"
 	else:
-		is_scheduled = False
-		message = "--ไม่คร่อมหน่วยงาน-- not overlap"
+		# amnaj
+		# get srv_qty
+		string_today_date = str(settings.TODAY_DATE.strftime("%d/%m/%Y"))
+		today_date = datetime.datetime.strptime(string_today_date, "%d/%m/%Y")
+		if dly_date == today_date.date():
+			sql = "select count(*) from dly_plan "
+		if dly_date < today_date.date():
+			sql = "select count(*) from his_dly_plan "		
+		sql += "where cnt_id=" + str(cnt_id) + " and sch_shift=" + str(shift_id) + " and absent=0 and dly_date='" + str(dly_date) + "'"
+		print("SQL 1 : ", sql)
+
+		cursor = connection.cursor()
+		cursor.execute(sql)
+		rows = cursor.fetchone()
+		cursor.close	
+		informNo = rows[0] if rows[0]>0 else 0
+		sql = "select cnt_id, srv_shif_id, sum(srv_qty) as qty from cus_service where srv_active=1 and cnt_id=" + str(cnt_id) + " and srv_shif_id=" + str(shift_id) + " group by cnt_id, srv_shif_id"
+		print("SQL 2 : ", sql)
+		cursor = connection.cursor()
+		cursor.execute(sql)
+		rows = cursor.fetchone()
+		cursor.close
+		srv_qty = rows[2]
+		print("cnt_id_1 = ", int(rows[0]))
+		print("cnt_id_2 = ", int(cnt_id))
+		print("informNo = ", informNo)
+		print("srv_qty = ", srv_qty)
+		if informNo >= srv_qty:
+			if(int(rows[0])==int(cnt_id)):
+				is_scheduled = True
+				message = "พนักงานที่แจ้งเวรมากกว่าที่มีอยู่ในสัญญา: <b>" + str(int(cnt_id)) + "</b>"			
+			else:
+				is_scheduled = True
+				message = "พนักงานที่แจ้งเวรมากกว่าที่มีอยู่ในสัญญา: <b>" + str(cnt_id) + "</b>"			
+		else:
+			is_scheduled = False # แจ้งเวรยังไม่เกินจำนวนที่อยู่ในสัญญา
+			message = "ทำรายการได้"
+		
 
 	print("MESSAGE : ", message)
 
@@ -8710,7 +8745,6 @@ def is_scheduled(request):
 	return response    
 
 
-# LUFY
 @permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
 @login_required(login_url='/accounts/login/')
 def ajax_save_daily_attendance_check_rule_1(request):
