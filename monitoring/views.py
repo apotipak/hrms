@@ -4070,6 +4070,8 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 	informno = len(record_count) if len(record_count)>0 else 0
 
 	sql = "select cnt_id, srv_shif_id, sum(srv_qty) as qty from cus_service where srv_active=1 and cnt_id=" + str(cnt_id) + " and srv_shif_id=" + str(shift_id) + " group by cnt_id, srv_shif_id"
+	print("SQL : ", sql)
+
 	cursor = connection.cursor()
 	cursor.execute(sql)
 	rows = cursor.fetchone()
@@ -4688,16 +4690,25 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 						cursor.close
 						srv_qty = rows[2]
 
+						print("cnt_id_1 = ", int(rows[0]))
+						print("cnt_id_2 = ", int(cnt_id))
 						print("informNo = ", informNo)
 						print("srv_qty = ", srv_qty)
+						print("tel_amount = ", tel_amount)
 
 						if informNo >= srv_qty:
-							is_pass = False					
-							message = "พนักงานที่แจ้งเวรมากกว่าที่มีอยู่ในสัญญา: <b>" + str(cnt_id) + "</b>"
-							return is_pass, message
+							if(int(rows[0])==int(cnt_id)):
+								is_pass = True
+								message = ""
+							else:
+								is_pass = False					
+								message = "พนักงานที่แจ้งเวรมากกว่าที่มีอยู่ในสัญญา: <b>" + str(cnt_id) + "</b>"
+
+							# return is_pass, message
 						else:
 							is_pass = True # แจ้งเวรยังไม่เกินจำนวนที่อยู่ในสัญญา
 							message = "Check #6 is passed."
+		
 		
 		'''				
 		else:
@@ -4733,6 +4744,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 
 	# debug
 	# Check #7
+	print("AAAA")
 	is_pass, message = chkValidInput(2,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,ui_ot_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id)
 	
 	# return False, message
@@ -6920,7 +6932,7 @@ def ajax_is_scheduled_between_site(request):
 					response.status_code = 200
 					return response
 			else:
-				response = JsonResponse(data={"success": True, "is_error": True, "is_scheduled:": True, "message": "จำนวนพนักงานทำงานมากกว่าสัญญาการให้บริการ"})
+				response = JsonResponse(data={"success": True, "is_error": True, "is_scheduled:": True, "message": "ไม่สามารถทำรายการได้เนื่องจาก <b>จำนวนพนักงานทำงานมากกว่าสัญญาการให้บริการ</b>"})
 				response.status_code = 200
 				return response
 
@@ -8692,6 +8704,7 @@ def is_scheduled(request):
 		message = "--ไม่คร่อมหน่วยงาน-- not overlap"
 
 	print("MESSAGE : ", message)
+
 	response = JsonResponse(data={"success": True, "is_scheduled": is_scheduled, "message": message})
 	response.status_code = 200
 	return response    

@@ -1475,7 +1475,7 @@ function checkSpecialBenefitList() {
 							    useBootstrap: false,		    
 							    buttons: {
 							        confirm: {
-							        	text: 'ยืนยัน',
+							        	text: 'ตกลง',
 							        	btnClass: 'btn-danger',
 							        	action: function () {
 							        		
@@ -1496,7 +1496,8 @@ function checkSpecialBenefitList() {
 										    	},
 										    	success: function(data) {
 										    		if(data.is_error) {
-										    			alert("ERROR");
+										    			//alert("ERROR: Please contact IT.");
+														alert(data.message);
 										    		} else {
 
 														//alert("TODO");
@@ -1567,7 +1568,8 @@ function checkSpecialBenefitList() {
 										    });					        					        		
 										}
 							        },
-							        cancel: {					        	
+							        cancel: {
+										text: 'ยกเลิก',
 							        	action: function () {											
 											//alert("Cancel");
 							        	}
@@ -4151,8 +4153,8 @@ $("#id_late_hour").click( function() {
 
     function saveRecord_cross_site(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_status,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id,Timecross) {
 
-    	alert("saveRecord_cross_site");
-    	return false;
+    	//alert("saveRecord_cross_site");
+    	//return false;
 
 		if(ui_phone_status==0) {    		
 			phone_status = 0;
@@ -4898,7 +4900,7 @@ $("#id_late_hour").click( function() {
 									$('#id_relief_emp_status').css('background-color', '');
 
 					    		} else {
-					    			alert("error");
+					    			alert("ERROR: Please contact IT.");
 					    		}
 
 					    		/*
@@ -4932,7 +4934,7 @@ $("#id_late_hour").click( function() {
 								//TODO1: refresh table
 
 								$("#id_emp_id").focus();
-				    		} else {
+				    		} else {								
 								$.alert({
 								    title: data.title,
 								    type: data.type,
@@ -5160,7 +5162,7 @@ $("#id_late_hour").click( function() {
 						  		emp_id: emp_id,
 							},
 							success : function(data) {
-								alert("..");
+								//alert("..");
 								if (data.is_scheduled) {
 									$.alert({
 									    title: 'Error',
@@ -5174,8 +5176,8 @@ $("#id_late_hour").click( function() {
 									});
 									return false;
 								} else {
-									alert("test");
-									//saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);
+									//alert("test");
+									saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);
 								}
 							},
 						});
@@ -5561,7 +5563,7 @@ $("#id_late_hour").click( function() {
 										  		cus_vol: cus_vol,
 										  		emp_id: emp_id,
 											},
-											success : function(data) {
+											success : function(data) {												
 												if (data.is_scheduled) {
 													$.alert({
 													    title: 'Error',
@@ -5609,11 +5611,13 @@ $("#id_late_hour").click( function() {
 						  		emp_id: emp_id,
 							},
 							success : function(data) {
+								//alert(data.is_scheduled);
 								if (data.is_scheduled) {
 									$.alert({
 									    title: 'Error',
 									    type: 'red',
-									    content: data.message,
+									    //content: data.message,
+										content: "aa",
 									    animation: 'zoom',
 									    animationBounce: 1.5,
 									    closeIcon: false,
@@ -5621,7 +5625,8 @@ $("#id_late_hour").click( function() {
 									    useBootstrap: false,
 									});
 									return false;
-								} else {								
+								} else {
+									//alert("b");
 									saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);
 								}
 							},
@@ -6103,7 +6108,7 @@ $("#id_late_hour").click( function() {
 									$("#id_phone_check").prop("checked", false);
 
 					    		} else {
-					    			alert("error");
+					    			alert("ERROR: Please contact IT");
 					    		}
 					    		
 					    	}
