@@ -6918,8 +6918,8 @@ def ajax_is_scheduled_between_site(request):
 			else:
 				# response = JsonResponse(data={"success": True, "is_error": True, "is_scheduled:": True, "message": "ไม่สามารถทำรายการได้เนื่องจาก <b>จำนวนพนักงานทำงานมากกว่าสัญญาการให้บริการ</b>"})
 				
-				message = "ไม่สามารถทำรายการได้เนื่องจาก <b>จำนวนพนักงานมีเกินสัญญาการให้บริการ</b> "
-				message += "(จำนวนพนักงาน <b>" + str(TDailyShift) + "</b> | สัญญาจ้าง<b> " + str(TContractShift) + "</b>)"
+				message = "ไม่สามารถทำรายการได้เนื่องจาก <b>จำนวนพนักงานเกินสัญญาการให้บริการ</b> "
+				message += "(จำนวนพนักงาน <b>" + str(TDailyShift) + "</b> อัตรา | จำนวนในสัญญา <b> " + str(TContractShift) + "</b> อัตรา)"
 				response = JsonResponse(data={"success": True, "is_error": True, "is_over_capacity": True, "is_scheduled:": True, "message": message})
 				response.status_code = 200
 				return response
