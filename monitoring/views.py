@@ -8693,8 +8693,7 @@ def is_scheduled(request):
 			message += "ในกะ <b>" + str(shf_desc) + "</b><br><hr>"
 			message += "กรุณาตรวจสอบข้อมูลใหม่อีกครั้ง"
 
-			is_scheduled = True
-			message = "คร่อมหน่วยงาน"
+			is_scheduled = True			
 		else:
 			is_scheduled = False
 			message = "ไม่คร่อมหน่วยงาน"
