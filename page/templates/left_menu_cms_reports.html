@@ -75,6 +75,24 @@
 
 
 
+            <!-- Contract -->
+            {% if perms.contractreport.can_access_contract_list_report %}
+            <a href="#" class="nav-link">
+              <i class="fas fa-chart-pie"></i>&nbsp;&nbsp;&nbsp;<p><b>SP-Admin Reports</b><i class="right fas fa-angle-left"></i></p>
+            </a>            
+            <ul class="nav nav-treeview p-0">
+
+              {% if perms.contractreport.can_access_contract_list_report %}
+              <li class="nav-item p-0">
+                <a href="/reports/sp-admin/contract-list/" class="nav-link"><p>Contract List</p></a>
+              </li>
+              {% endif %}
+
+            </ul>
+            {% endif %}
+
+
+            {% comment %}
             {% if perms.contractreport.can_access_contract_list_report %}
             <a href="#" class="nav-link">
               <i class="fas fa-chart-pie"></i>&nbsp;&nbsp;&nbsp;<p><b>SP-Admin Reports</b><i class="right fas fa-angle-left"></i></p>
@@ -94,7 +112,7 @@
               </li>
             </ul>
             {% endif %}
-
+            {% endcomment %}
 
           </li> 
 

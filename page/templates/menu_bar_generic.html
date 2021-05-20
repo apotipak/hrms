@@ -25,13 +25,6 @@
       </li>
       {% endif %}
 
-      {% if perms.contractreport.can_access_contract_list_report %}
-      <li class="nav-item d-none d-sm-inline-block">
-        <a id="reports-sp-admin" href="/reports/sp-admin/contract-list/" class="nav-link">Reports</a>        
-      </li>      
-      {% endif %}
-
-
       {% if perms.monitoring.view_dlyplan %}
       <li class="nav-item d-none d-sm-inline-block">
         <a href="{% url 'schedule-maintenance' %}" class="nav-link">Schedule Maintenance</a>
@@ -44,14 +37,19 @@
       </li>
       {% endif %}
 
-
-
+      
       {% if perms.dailyattendreport.can_access_daily_attend_report %}
       <li class="nav-item d-none d-sm-inline-block">
         <a id="reports-cms" href="/reports/cms/gpm-403-daily-guard-performance-by-contract/" class="nav-link">Reports</a>
       </li>
       {% endif %}
 
+      
+      {% if perms.contractreport.can_access_contract_menu_report %}
+      <li class="nav-item d-none d-sm-inline-block">
+        <a id="reports-sp-admin" href="/reports/sp-admin/contract-list/" class="nav-link">Reports</a>        
+      </li>   
+      {% endif %}
 
     </ul>
 
