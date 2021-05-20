@@ -590,7 +590,7 @@ thead th { white-space: nowrap; }
 								  <div class="col-2">
 									<div class="input-group">
 								  		<span style="font-size:0.9rem;padding:3px 0 0 0;"><b>Total Time (hrs)</b>&nbsp;&nbsp;</span>
-								  		<input type="number" id="id_late_hour" name="late_hour" class="form-control form-control-xs" />&nbsp;&nbsp;
+								  		<input type="number" id="id_late_hour" name="late_hour" class="form-control form-control-xs" readonly />&nbsp;&nbsp;
 								  	</div>
 								  </div>
 
@@ -1289,7 +1289,7 @@ function checkSpecialBenefitList() {
 
 	$("#bulk_shift_status_form").submit(function(e) {
 	    e.preventDefault();
-	    	   
+	    		
 		$("#id_bulk_shift_list_option").css('border-color', '');
 		$("#id_bulk_shift_list_option").css('background-color', '');
 		$("#id_bulk_shift_list_option").css('border-style', '');
@@ -1334,6 +1334,9 @@ function checkSpecialBenefitList() {
 
 	    	return false;  		
 	    } else {
+
+			//alert(bulk_shift_status)
+			//return false;
 
 	    	if(bulk_shift_status==1) {
 	    		//alert("Absent");
@@ -1446,6 +1449,7 @@ function checkSpecialBenefitList() {
 	    	} else {
 	    		//alert("Not absent")
 	    		//return false;
+
 				// ironman
 				// work_cross_site
 				$.ajax({
@@ -1464,118 +1468,135 @@ function checkSpecialBenefitList() {
 						// alert("success");
 						if(data.is_error) {
 							//alert("is_error");
-							$.confirm({
-							    title: 'Confirmation',
-							    type: 'red',
-							    content: data.message,
-								animation: 'zoom',
-							    animationBounce: 1.5,
-							    closeIcon: true,
-							    boxWidth: '38%',
-							    useBootstrap: false,		    
-							    buttons: {
-							        confirm: {
-							        	text: 'ตกลง',
-							        	btnClass: 'btn-danger',
-							        	action: function () {
-							        		
-							        		skip_is_scheduled_record = 1
 
-											$.ajax({
-										    	url : "/monitoring/ajax/bulk_update_absent_status/",
-										    	type : "POST",
-										    	data : {          
-										      		csrfmiddlewaretoken: '{{ csrf_token }}',
-										      		attendance_date: attendance_date,
-										      		shift_id: bulk_shift_id,
-										      		shift_status: bulk_shift_status,
-										      		cus_id: cus_id,
-										      		cus_brn: cus_brn,
-										      		cus_vol: cus_vol,
-										      		skip_is_scheduled_record,
-										    	},
-										    	success: function(data) {
-										    		if(data.is_error) {
-										    			//alert("ERROR: Please contact IT.");
-														alert(data.message);
-										    		} else {
+							if(data.is_over_capacity) {
+								$.alert({
+									title: 'Error',
+									type: 'red',
+									content: data.message,
+									animation: 'zoom',
+									animationBounce: 1.5,
+									closeIcon: false,
+									boxWidth: '38%',
+									useBootstrap: false,
+								});
+								
+								return false;
 
-														//alert("TODO");
+							} else {
+																					
+								$.confirm({
+									title: 'Confirmation',
+									type: 'red',
+									content: data.message,
+									animation: 'zoom',
+									animationBounce: 1.5,
+									closeIcon: true,
+									boxWidth: '38%',
+									useBootstrap: false,		    
+									buttons: {
+										confirm: {
+											text: 'ตกลง',
+											btnClass: 'btn-danger',
+											action: function () {
+												
+												skip_is_scheduled_record = 1
 
-														$.ajax({
-															url : "/monitoring/ajax/get_attendance_information/",
-															type : "POST",
-															data : {          
-														  		csrfmiddlewaretoken: '{{ csrf_token }}',
-														  		attendance_date: attendance_date,
-														  		cus_id: cus_id,
-														  		cus_brn: cus_brn,
-														  		cus_vol: cus_vol,
-														  		search_shift_option: search_shift_option,
-															},
-															success : function(data) {
-																if(data.is_found) {
+												$.ajax({
+													url : "/monitoring/ajax/bulk_update_absent_status/",
+													type : "POST",
+													data : {          
+														csrfmiddlewaretoken: '{{ csrf_token }}',
+														attendance_date: attendance_date,
+														shift_id: bulk_shift_id,
+														shift_status: bulk_shift_status,
+														cus_id: cus_id,
+														cus_brn: cus_brn,
+														cus_vol: cus_vol,
+														skip_is_scheduled_record,
+													},
+													success: function(data) {
+														if(data.is_error) {
+															//alert("ERROR: Please contact IT.");
+															alert("ERROR: " + data.message);														
 
-																	// Get Schedule list info
-																	result = "";
-																	schedule_list_length = data.schedule_list.length;
-																	for(i=0; i<schedule_list_length; i++) {
-																		result += data.schedule_list[i];
+														} else {
+
+															$.ajax({
+																url : "/monitoring/ajax/get_attendance_information/",
+																type : "POST",
+																data : {          
+																	csrfmiddlewaretoken: '{{ csrf_token }}',
+																	attendance_date: attendance_date,
+																	cus_id: cus_id,
+																	cus_brn: cus_brn,
+																	cus_vol: cus_vol,
+																	search_shift_option: search_shift_option,
+																},
+																success : function(data) {
+																	if(data.is_found) {
+
+																		// Get Schedule list info
+																		result = "";
+																		schedule_list_length = data.schedule_list.length;
+																		for(i=0; i<schedule_list_length; i++) {
+																			result += data.schedule_list[i];
+																		}
+
+																		employee_leave_list = null
+																		result = create_attandance_table(data.employee_list, employee_leave_list);
+
+																		$('#id_employee_list').html(result);
+
+																		// TOTAL
+																		$("#totalNDP").html(data.totalNDP);
+																		$("#totalNNP").html(data.totalNNP);
+																		$("#totalPDP").html(data.totalPDP);
+																		$("#totalPNP").html(data.totalPNP);
+
+																		$("#totalNDA").html(data.totalNDA);
+																		$("#totalNNA").html(data.totalNNA);
+																		$("#totalPDA").html(data.totalPDA);
+																		$("#totalPNA").html(data.totalPNA);
+
+																		if(data.totalNDM>=0)
+																			$("#totalNDM").html("<span class='text-danger'>" + data.totalNDM + "</span>");
+																		else
+																			$("#totalNDM").html("<span class='text-danger'>" + data.totalNDM + "</span>");
+
+																		if(data.totalNNM>=0)
+																			$("#totalNNM").html("<span class='text-danger'>" + data.totalNNM + "</span>");						
+																		else
+																			$("#totalNNM").html("<span class='text-danger'>" + data.totalNNM + "</span>");
+																		
+																		if(data.totalPDM>=0)
+																			$("#totalPDM").html("<span class='text-danger'>" + data.totalPDM + "</span>");
+																		else
+																			$("#totalPDM").html("<span class='text-danger'>" + data.totalPDM + "</span>");
+
+																		if(data.totalPNM>=0)
+																			$("#totalPNM").html("<span class='text-danger'>" + data.totalPNM + "</span>");
+																		else
+																			$("#totalPNM").html("<span class='text-danger'>" + data.totalPNM + "</span>");
 																	}
-
-																	employee_leave_list = null
-																	result = create_attandance_table(data.employee_list, employee_leave_list);
-
-																	$('#id_employee_list').html(result);
-
-																	// TOTAL
-																	$("#totalNDP").html(data.totalNDP);
-																	$("#totalNNP").html(data.totalNNP);
-																	$("#totalPDP").html(data.totalPDP);
-																	$("#totalPNP").html(data.totalPNP);
-
-																	$("#totalNDA").html(data.totalNDA);
-																	$("#totalNNA").html(data.totalNNA);
-																	$("#totalPDA").html(data.totalPDA);
-																	$("#totalPNA").html(data.totalPNA);
-
-																	if(data.totalNDM>=0)
-																		$("#totalNDM").html("<span class='text-danger'>" + data.totalNDM + "</span>");
-																	else
-																		$("#totalNDM").html("<span class='text-danger'>" + data.totalNDM + "</span>");
-
-																	if(data.totalNNM>=0)
-																		$("#totalNNM").html("<span class='text-danger'>" + data.totalNNM + "</span>");						
-																	else
-																		$("#totalNNM").html("<span class='text-danger'>" + data.totalNNM + "</span>");
-																	
-																	if(data.totalPDM>=0)
-																		$("#totalPDM").html("<span class='text-danger'>" + data.totalPDM + "</span>");
-																	else
-																		$("#totalPDM").html("<span class='text-danger'>" + data.totalPDM + "</span>");
-
-																	if(data.totalPNM>=0)
-																		$("#totalPNM").html("<span class='text-danger'>" + data.totalPNM + "</span>");
-																	else
-																		$("#totalPNM").html("<span class='text-danger'>" + data.totalPNM + "</span>");
 																}
-															}
-														});
+															});
 
-										    		}		    		
-										    	},
+														}		    		
+													},
 
-										    });					        					        		
+												});					        					        		
+											}
+										},
+										cancel: {
+											text: 'ยกเลิก',
+											action: function () {											
+												//alert("Cancel");
+											}
 										}
-							        },
-							        cancel: {
-										text: 'ยกเลิก',
-							        	action: function () {											
-											//alert("Cancel");
-							        	}
-							        }
-							    }
-							});
+									}
+								});
+							}
 						} else {
 
 							//alert("is_not_error");
@@ -1705,6 +1726,10 @@ function checkSpecialBenefitList() {
 
 		$("#id_late_hour").on('click', function(){
 			$("#id_late_hour").select();
+		});
+
+		$("#id_relief_emp_id").on('click', function(){
+			$("#id_relief_emp_id").select();
 		});
 
 		disableAllElements();
@@ -4446,7 +4471,7 @@ $("#id_late_hour").click( function() {
 									$("#id_late_hour").css('border-style','');									
 
 					    		} else {
-					    			alert("error");
+					    			alert("ERRROR : " + data.message);
 					    		}
 
 					    		/*
@@ -4976,10 +5001,10 @@ $("#id_late_hour").click( function() {
     }
 
 
+	// amnaj 0
     // SAVE_BUTTON
     $(document).on('click', '#save_button', function(e) {
 
-		// ironman
 		//alert("test");
 		//return false;
 
@@ -5033,8 +5058,7 @@ $("#id_late_hour").click( function() {
     		ui_relief_status = 1;
     	else
     		ui_relief_status = 0;
-
-
+		
     	var late_from = $("#id_late_from").val();
     	var late_to = $("#id_late_to").val();
     	var late_reason_option = $("#id_late_reason_option").val();
@@ -5390,21 +5414,25 @@ $("#id_late_hour").click( function() {
 
 
     	} else {
+			// EDIT MODE
 
+			// amnaj 1
     		//alert("EDIT RECORD");
 			//return false;
-
-    		// EDIT MODE
-
-	    	if(ui_absent_status==1) {
+    	
+	    	if(ui_absent_status==1) {				
 	    		if(ui_relief_status==1) {
+
+					//alert("edit + หยุดงาน + มีควงรอ");
+					//return false;
+
 		    		if(relief_emp_id=="") {
 					  	$(document).Toasts('create', {
 					    	class: "bg-danger", 
 					    	title: "{% trans 'Error' %}",
 					    	subtitle: '',
 					    	autohide: true,
-					    	delay: 2000,		    	
+					    	delay: 2000,
 					    	body: "กรุณาเลือกพนักงานที่มาเข้าเวรแทน &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
 					    	autoDismiss: true,
 					    	close: true,
@@ -5450,6 +5478,8 @@ $("#id_late_hour").click( function() {
 								} else {
 									//alert("test");
 									saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);
+									$("#id_late_check").prop("checked", false);
+									return false;
 								}
 							},
 						});
@@ -5467,9 +5497,12 @@ $("#id_late_hour").click( function() {
 	    			$("#id_late_check").prop("checked", false);
 	    			return false;
 	    		}
-	    	} else {
+	    	} 
+			else {
+				// edit + เคสมาสาย + ควงรอ			
+				// amnaj 2
 
-				//alert("a");
+				// alert("edit + มาสาย + ควงรอ" + " | " + ui_late_status + "," + late_hour + "," + late_full_paid_status);
 				//return false;
 
 				// มาทำงาน
@@ -5531,7 +5564,9 @@ $("#id_late_hour").click( function() {
 				*/
 				
 		    	// Not absent / Call
+				
 		    	if(ui_phone_check==1) {
+					//alert("edit + มาสาย + ควงรอ + โทรแจ้งเข้าเวรเอง");
 		    		if(tel_amount=="0") {
 						$.confirm({
 						    title: 'Confirmation',
@@ -5579,6 +5614,8 @@ $("#id_late_hour").click( function() {
 													return false;
 												} else {												
 													saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);
+													$("#id_late_check").prop("checked", false);
+													return false;
 												}
 											},
 										});
@@ -5629,6 +5666,8 @@ $("#id_late_hour").click( function() {
 								} else {
 									//alert("b");
 									saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);
+									$("#id_late_check").prop("checked", false);
+									return false;
 								}
 							},
 						});
@@ -5636,92 +5675,174 @@ $("#id_late_hour").click( function() {
 		    		}
 		    	} else {
 		    		// Not absent / Not Call
-					$.ajax({
-						url : "/monitoring/ajax/is_scheduled/",
-						type : "POST",
-						data : {          
-					  		csrfmiddlewaretoken: '{{ csrf_token }}',
-					  		dly_date: dly_date,
-					  		shift_id: shift_id,
-					  		cus_id: cus_id,
-					  		cus_brn: cus_brn,
-					  		cus_vol: cus_vol,
-					  		emp_id: emp_id,
-						},
-						success : function(data) {
-							if (data.is_scheduled) {								
-								$.alert({
-								    title: 'Error',
-								    type: 'red',
-								    content: data.message,
-								    animation: 'zoom',
-								    animationBounce: 1.5,
-								    closeIcon: false,
-								    boxWidth: '38%',
-								    useBootstrap: false,
-								});
-								return false;								
-								//saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);
-							} else {
+					// amnaj 3
+					//alert("c");
+					//return false;
 
+					//alert(relief_emp_id + " | " + ui_relief_status);
+					//return false;
+										
+					//alert("edit + มาสาย + ควงรอ" + " | " + ui_late_status + "," + late_hour + "," + late_full_paid_status);
+					//return false;
+					
+					
 
-								$.ajax({
-									url : "/monitoring/ajax/save_daily_attendance_check_rule_1/",
-									type : "POST",
-									data : {          
-								  		csrfmiddlewaretoken: '{{ csrf_token }}',
-								  		dly_date: dly_date,
-								  		shift_id: shift_id,
-								  		cus_id: cus_id,
-								  		cus_brn: cus_brn,
-								  		cus_vol: cus_vol,
-								  		emp_id: emp_id,
-									},
-									success : function(data) {
-										if (data.is_cross_site) {
-											
-											Timecross = data.Timecross;
-											
-											$.confirm({
-											    title: 'Confirmation',
-											    type: 'red',
-											    content: data.message,
-												animation: 'zoom',
-											    animationBounce: 1.5,
-											    closeIcon: true,
-											    boxWidth: '38%',
-											    useBootstrap: false,		    
-											    buttons: {
-											        confirm: {
-											        	text: 'ยืนยัน',
-											        	btnClass: 'btn-danger',
-											        	action: function () {
-											        		saveRecord_cross_site(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id, Timecross);
-														}
-											        },
-											        cancel: {					        	
-											        	action: function () {											
-															$("#id_emp_id").focus();														
-											        	}								        	
-											        }
-											    }
-											});							
-										} else {
+					if(ui_relief_status==1) {
+						if(relief_emp_id!="") {
 
-											//alert("debug 1");
-											// amnaj
-											saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);
+							//alert("edit + มาสาย + ควงรอ + ไม่ได้โทรแจ้งเข้าเวร");
 
-											return false;
+							$.ajax({
+							url : "/monitoring/ajax/save_daily_attendance_check_rule_1/",
+							type : "POST",
+							data : {          
+								csrfmiddlewaretoken: '{{ csrf_token }}',
+								dly_date: dly_date,
+								shift_id: shift_id,
+								cus_id: cus_id,
+								cus_brn: cus_brn,
+								cus_vol: cus_vol,
+								emp_id: relief_emp_id,
+							},
+							success : function(data) {
+								if (data.is_cross_site) {
+									
+									Timecross = data.Timecross;
+									/*
+									$.confirm({
+										title: 'Confirmation',
+										type: 'red',
+										content: data.message,
+										animation: 'zoom',
+										animationBounce: 1.5,
+										closeIcon: true,
+										boxWidth: '38%',
+										useBootstrap: false,		    
+										buttons: {
+											confirm: {
+												text: 'ยืนยัน',
+												btnClass: 'btn-danger',
+												action: function () {
+													alert("edit + มาสาย + ควงรอ" + " | " + ui_late_status + "," + late_hour + "," + late_full_paid_status);
+													alert("saveRecord_cross_site()");
+													//saveRecord_cross_site(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id, Timecross);
+												}
+											},
+											cancel: {					        	
+												action: function () {											
+													$("#id_emp_id").focus();														
+												}								        	
+											}
 										}
-									},
-								});
+									});
+									*/
+									$.alert({
+										title: 'Error',
+										type: 'red',
+										content: data.message,
+										animation: 'zoom',
+										animationBounce: 1.5,
+										closeIcon: false,
+										boxWidth: '38%',
+										useBootstrap: false,
+									});	
+								} else {
+
+									//alert("edit + มาสาย + ควงรอ" + " | " + ui_late_status + "," + late_hour + "," + late_full_paid_status);
+									//alert("saveRecord()");
+									saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);
+									$("#id_late_check").prop("checked", false);
+									return false;
+								}
+							},
+						});
+						} else {
+
+						}
+
+					} else {
+
+						//alert("ERROR!");
+						//return false;
+						
+						//alert("edit + มาทำงาน + ไม่สาย + ไม่มีควงรอ + ไม่โทร");
+						
+						$.ajax({
+							url : "/monitoring/ajax/is_scheduled/",
+							type : "POST",
+							data : {          
+								csrfmiddlewaretoken: '{{ csrf_token }}',
+								dly_date: dly_date,
+								shift_id: shift_id,
+								cus_id: cus_id,
+								cus_brn: cus_brn,
+								cus_vol: cus_vol,
+								emp_id: emp_id,
+							},
+							success : function(data) {
+								if (data.is_scheduled) {								
+									$.alert({
+										title: 'Error',
+										type: 'red',
+										content: data.message,
+										animation: 'zoom',
+										animationBounce: 1.5,
+										closeIcon: false,
+										boxWidth: '38%',
+										useBootstrap: false,
+									});
+									return false;								
+									//saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);
+								} else {
 
 
 
-							}
-						},
-					});
+									//alert("todo");
+									saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);
+									$("#id_late_check").prop("checked", false);
+
+									/*
+									$.ajax({
+										url : "/monitoring/ajax/save_daily_attendance_check_rule_1/",
+										type : "POST",
+										data : {          
+											csrfmiddlewaretoken: '{{ csrf_token }}',
+											dly_date: dly_date,
+											shift_id: shift_id,
+											cus_id: cus_id,
+											cus_brn: cus_brn,
+											cus_vol: cus_vol,
+											emp_id: emp_id,
+										},
+										success : function(data) {
+											if (data.is_cross_site) {												
+												$.alert({
+													title: 'Error',
+													type: 'red',
+													content: data.message,
+													animation: 'zoom',
+													animationBounce: 1.5,
+													closeIcon: false,
+													boxWidth: '38%',
+													useBootstrap: false,
+												});	
+																												
+											} else {
+
+												saveRecord(allowZeroBathForPhoneAmount,AEdly,dly_date,cus_id,cus_brn,cus_vol,emp_id,emp_rank,emp_dept,shift_id,shift_name,relief_emp_id,ui_phone_check,tel_time,tel_amount,ui_absent_status,ui_relief_status,ui_late_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,id_search_emp_id,customer_wage_rate_id,customer_zone_id);
+
+												return false;
+											}
+										},
+									});
+									*/
+
+
+								}
+							},
+						});						
+					}
+
 
 		    	}    		
 	    	}
@@ -5729,7 +5850,7 @@ $("#id_late_hour").click( function() {
 	    }
 
 
-    	$("#id_late_check").prop("checked", false);
+    	// $("#id_late_check").prop("checked", false);
     });
 
 

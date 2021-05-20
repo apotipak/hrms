@@ -3491,8 +3491,6 @@ def get_DLY_PLAN_OR_HIS_DLY_PLAN(dly_date):
 	return is_error_status, error_message, table_name
 
 
-
-# LUFY
 def addRecord_cross_site(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,
 	ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,
 	remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,
@@ -3579,8 +3577,6 @@ def addRecord_cross_site(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,
 	# Rule 3 ChkValidInput(2)
 	# ****** START **********
 
-
-	# LUFY
 	is_pass, message = chkValidInput(2,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,
 		shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,
 		relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,
@@ -4106,8 +4102,6 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 	# Rule 3 ChkValidInput(2)
 	# ****** START **********
 
-
-	# LUFY
 	is_pass, message = chkValidInput(2,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,
 		shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,
 		relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,
@@ -4676,7 +4670,6 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 						cursor.close	
 						informNo = rows[0] if rows[0]>0 else 0
 
-						# amnaj
 						# get srv_qty
 						sql = "select cnt_id, srv_shif_id, sum(srv_qty) as qty from cus_service where srv_active=1 and cnt_id=" + str(cnt_id) + " and srv_shif_id=" + str(shift_id) + " group by cnt_id, srv_shif_id"
 						print("DEBUG 10 sql: ", sql)
@@ -5090,7 +5083,6 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 			is_pass = True
 			message = "รับแจ้งเวรสำเร็จ"
 
-			# amnaj
 			# กรณีรับแจ้งเวรสำเร็จ
 			if is_pass:
 				print('Update spaydate table')
@@ -5507,8 +5499,6 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 
 
 
-
-			# LUFY
 			# ห้ามลงงานที่อื่นในเวลาที่คร่อมกัน วันเดียวกัน
 			# ตรวจสอบห้ามลงงานที่อื่นในกะเดียวกัน วันเดียวกัน
 			# TODO - CheckBetweenShift()
@@ -6328,7 +6318,7 @@ def ajax_save_daily_attendance_cross_site(request):
 
 	response.status_code = 200
 
-	print("LUFY")
+	# print("LUFY")
 
 	return response
 
@@ -6910,26 +6900,29 @@ def ajax_is_scheduled_between_site(request):
 								message += "ระบบไม่อนุญาติให้ทำรายการของพนังงานท่านนี้<br>"
 								message += "<hr>หากต้องการบันทึกการแจ้งเวรของพนักงานที่เหลือ กรุณากดปุ่มยืนยัน"
 								
-								response = JsonResponse(data={"success": True, "is_error": True, "is_scheduled:": True, "message": message})
+								response = JsonResponse(data={"success": True, "is_error": True, "is_over_capacity": False, "is_scheduled:": True, "message": message})
 								response.status_code = 200
 								return response
 							else:
-								response = JsonResponse(data={"success": True,"is_error": False, "is_scheduled:": False, "message": "Good to go"})
+								response = JsonResponse(data={"success": True,"is_error": False, "is_over_capacity": False, "is_scheduled:": False, "message": "Good to go"})
 								response.status_code = 200
 								return response								
 				except db.OperationalError as e:
-					response = JsonResponse(data={"success": True,"is_error": True, "is_scheduled:": True, "message": "<b>Please send this error to IT team or try again.</b><br>" + str(e)})
+					response = JsonResponse(data={"success": True,"is_error": True, "is_over_capacity": False, "is_scheduled:": True, "message": "<b>Please send this error to IT team or try again.</b><br>" + str(e)})
 					response.status_code = 200
 					return response
 				except db.Error as e:
-					response = JsonResponse(data={"success": True,"is_error": True, "is_scheduled:": True, "message": "<b>Please send this error to IT team or try again.</b><br>" + str(e)})
+					response = JsonResponse(data={"success": True,"is_error": True, "is_over_capacity": False, "is_scheduled:": True, "message": "<b>Please send this error to IT team or try again.</b><br>" + str(e)})
 					response.status_code = 200
 					return response
 			else:
-				response = JsonResponse(data={"success": True, "is_error": True, "is_scheduled:": True, "message": "ไม่สามารถทำรายการได้เนื่องจาก <b>จำนวนพนักงานทำงานมากกว่าสัญญาการให้บริการ</b>"})
+				# response = JsonResponse(data={"success": True, "is_error": True, "is_scheduled:": True, "message": "ไม่สามารถทำรายการได้เนื่องจาก <b>จำนวนพนักงานทำงานมากกว่าสัญญาการให้บริการ</b>"})
+				
+				message = "ไม่สามารถทำรายการได้เนื่องจาก <b>จำนวนพนักงานมีเกินสัญญาการให้บริการ</b> "
+				message += "(จำนวนพนักงาน <b>" + str(TDailyShift) + "</b> | สัญญาจ้าง<b> " + str(TContractShift) + "</b>)"
+				response = JsonResponse(data={"success": True, "is_error": True, "is_over_capacity": True, "is_scheduled:": True, "message": message})
 				response.status_code = 200
 				return response
-
 			
 		else: # Absent
 
@@ -8627,8 +8620,6 @@ def ajax_get_job_type_list(request):
     return response    
 
 
-
-# ironman
 @permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
 @login_required(login_url='/accounts/login/')
 def is_scheduled(request):
@@ -8691,14 +8682,13 @@ def is_scheduled(request):
 			message = "พนักงานรหัส  <b>" + str(emp_id) + "</b> "
 			message += "ได้แจ้งเวรไว้แล้วที่หน่วยงาน <b>" + str(dup_cnt_id) + "</b> "
 			message += "ในกะ <b>" + str(shf_desc) + "</b><br><hr>"
-			message += "กรุณาตรวจสอบข้อมูลใหม่อีกครั้ง"
+			message += "กรุณาตรวจสอบข้อมูลอีกครั้ง"
 
 			is_scheduled = True			
 		else:
 			is_scheduled = False
 			message = "ไม่คร่อมหน่วยงาน"
 	else:
-		# amnaj
 		# get srv_qty
 		string_today_date = str(settings.TODAY_DATE.strftime("%d/%m/%Y"))
 		today_date = datetime.datetime.strptime(string_today_date, "%d/%m/%Y")
@@ -8762,6 +8752,7 @@ def ajax_save_daily_attendance_check_rule_1(request):
 	Timecross = 0	
 	is_cross_site = True
 	message = ""
+
 
 	sql = "select a.*,b.shf_type,b.shf_time_frm,b.shf_time_to"
 	sql += " from dly_plan a left join t_shift b on a.sch_shift=b.shf_id"
@@ -8865,8 +8856,9 @@ def ajax_save_daily_attendance_check_rule_1(request):
 				message = "รหัสพนักงาน  <b>" + str(emp_id) + "</b> "
 				message += "เข้าเวรกะ  <b>" + str(shf_desc) + "</b> "
 				message += "ที่หน่วยงาน  <b>" + str(dup_cnt_id) + "</b> ไปแล้ว "							
-				message += "จำนวนชั่วโมงที่โดนหัก <b>" + str(Timecross) + "</b> ชั่วโมง"
-				message += " | ถ้าต้องการบันทึกกดปุ่มยืนยัน"
+				# message += "จำนวนชั่วโมงที่โดนหัก <b>" + str(Timecross) + "</b> ชั่วโมง"
+				message += " | กรุณาตรวจสอบข้อมูลอีกครั้ง"
+				# message += " | ถ้าต้องการบันทึกกดปุ่มยืนยัน"
 	else:
 		is_cross_site = False
 		message = "ไม่คร่อมหน่วยงาน"
@@ -8877,8 +8869,6 @@ def ajax_save_daily_attendance_check_rule_1(request):
 	return response    
 
 
-
-# LUFY
 def checkBetweenShiftNew(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id,Tday7,Tdof,customer_wage_rate_id,customer_zone_id):
 	is_cross_site = True
 	message = ""
@@ -9016,7 +9006,8 @@ def checkBetweenShiftNew(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,
 				message = "รหัสหนักงาน  <b>" + str(emp_id) + "</b> "
 				message += "เข้าเวรกะ  <b>" + str(dup_shift_number) + "</b> "
 				message += "ที่หน่วยงาน  <b>" + str(dup_cnt_id) + "</b> ไปแล้ว<br>"							
-				message += "จำนวนชั่วโมงที่โดนหัก  <b>" + str(Timecross) + "</b>"				
+				message += "กรุณาตรวจสอบข้อมูลอีกครั้ง"
+				# message += "จำนวนชั่วโมงที่โดนหัก  <b>" + str(Timecross) + "</b>"				
 	else:
 		is_cross_site = False
 		message = ""
