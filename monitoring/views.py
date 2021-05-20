@@ -8711,11 +8711,13 @@ def is_scheduled(request):
 			rows = cursor.fetchone()
 			cursor.close
 			srv_qty = rows[2]
+			
 			print("cnt_id_1 = ", int(rows[0]))
 			print("cnt_id_2 = ", int(cnt_id))
 			print("informNo = ", informNo)
 			print("srv_qty = ", srv_qty)
-			if informNo >= srv_qty:
+
+			if informNo > srv_qty:
 				if(int(rows[0])==int(cnt_id)):
 					is_scheduled = True
 					message = "พนักงานที่แจ้งเวรมากกว่าที่มีอยู่ในสัญญา: <b>" + str(int(cnt_id)) + "</b>"			
@@ -8725,9 +8727,6 @@ def is_scheduled(request):
 			else:
 				is_scheduled = False # แจ้งเวรยังไม่เกินจำนวนที่อยู่ในสัญญา
 				message = "ทำรายการได้"
-
-
-
 
 
 	else:
