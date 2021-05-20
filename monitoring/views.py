@@ -8686,8 +8686,50 @@ def is_scheduled(request):
 
 			is_scheduled = True			
 		else:
-			is_scheduled = False
-			message = "ไม่คร่อมหน่วยงาน"
+			# is_scheduled = False
+			# message = "ไม่คร่อมหน่วยงาน"
+
+			# get srv_qty
+			string_today_date = str(settings.TODAY_DATE.strftime("%d/%m/%Y"))
+			today_date = datetime.datetime.strptime(string_today_date, "%d/%m/%Y")
+			if dly_date == today_date.date():
+				sql = "select count(*) from dly_plan "
+			if dly_date < today_date.date():
+				sql = "select count(*) from his_dly_plan "		
+			sql += "where cnt_id=" + str(cnt_id) + " and sch_shift=" + str(shift_id) + " and absent=0 and dly_date='" + str(dly_date) + "'"
+			print("SQL 1 : ", sql)
+
+			cursor = connection.cursor()
+			cursor.execute(sql)
+			rows = cursor.fetchone()
+			cursor.close	
+			informNo = rows[0] if rows[0]>0 else 0
+			sql = "select cnt_id, srv_shif_id, sum(srv_qty) as qty from cus_service where srv_active=1 and cnt_id=" + str(cnt_id) + " and srv_shif_id=" + str(shift_id) + " group by cnt_id, srv_shif_id"
+			print("SQL 2 : ", sql)
+			cursor = connection.cursor()
+			cursor.execute(sql)
+			rows = cursor.fetchone()
+			cursor.close
+			srv_qty = rows[2]
+			print("cnt_id_1 = ", int(rows[0]))
+			print("cnt_id_2 = ", int(cnt_id))
+			print("informNo = ", informNo)
+			print("srv_qty = ", srv_qty)
+			if informNo >= srv_qty:
+				if(int(rows[0])==int(cnt_id)):
+					is_scheduled = True
+					message = "พนักงานที่แจ้งเวรมากกว่าที่มีอยู่ในสัญญา: <b>" + str(int(cnt_id)) + "</b>"			
+				else:
+					is_scheduled = True
+					message = "พนักงานที่แจ้งเวรมากกว่าที่มีอยู่ในสัญญา: <b>" + str(cnt_id) + "</b>"			
+			else:
+				is_scheduled = False # แจ้งเวรยังไม่เกินจำนวนที่อยู่ในสัญญา
+				message = "ทำรายการได้"
+
+
+
+
+
 	else:
 		# get srv_qty
 		string_today_date = str(settings.TODAY_DATE.strftime("%d/%m/%Y"))
