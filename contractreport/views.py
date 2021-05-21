@@ -346,10 +346,36 @@ def export_contract_list_report(request, *args, **kwargs):
 	grand_grand_total = 0
 
 	# TITLE
+	print("contract_zone value = ", contract_zone)
+	if contract_zone=="all_zone":
+		title_header = "Contract List : All Zones"
+	else:
+		sql = "select zone_en from com_zone where zone_id=" + str(contract_zone) + ";"
+		try:
+			with connection.cursor() as cursor:     
+				cursor.execute(sql)
+				com_zone_obj = cursor.fetchone()
+
+			if com_zone_obj is not None:				
+				if com_zone_obj[0] is None:
+					title_header = "Contract List : Unknown zone"
+				else:
+					title_header = "Contract List : " + com_zone_obj[0]
+			else:
+				title_header = "Contract List : Unknown zone"
+
+		except db.OperationalError as e:
+			message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+		except db.Error as e:
+			message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+		finally:
+			cursor.close()
+	
+
 	font_style = xlwt.XFStyle()
-	font_style.font.bold = True
+	# font_style.font.bold = True
 	font_style = xlwt.easyxf('font: bold 1,height 280;')
-	ws.write(0, 0, "Contract List", font_style)
+	ws.write(0, 0, title_header, font_style)
 
 	# COLUMN WIDTH
 	ws.col(0).width = int(5*260)
@@ -565,27 +591,27 @@ def export_contract_list_report(request, *args, **kwargs):
 		
 		# font_style = xlwt.easyxf('font: bold off, color black; borders: top_color black, bottom_color black, right_color black, left_color black, left thin, right thin, top thin, bottom thin; pattern: pattern solid, fore_color white; align: vert centre, horiz centre;')
 		# font_style = xlwt.easyxf('font: bold off, color black; borders: top_color black, bottom_color black, right_color black, left_color black, left thin, right thin, top thin, bottom thin; pattern: pattern solid, fore_color white; align: vert centre, horiz centre;')
-		ws.write(row_num, 4, total_mon, font_style)
-		ws.write(row_num, 5, total_tue, font_style)
-		ws.write(row_num, 6, total_wed, font_style)
-		ws.write(row_num, 7, total_thu, font_style)
-		ws.write(row_num, 8, total_fri, font_style)
-		ws.write(row_num, 9, total_sat, font_style)
-		ws.write(row_num, 10, total_sun, font_style)
-		ws.write(row_num, 11, total_pub, font_style)
+		ws.write(row_num, 5, total_mon, font_style)
+		ws.write(row_num, 6, total_tue, font_style)
+		ws.write(row_num, 7, total_wed, font_style)
+		ws.write(row_num, 8, total_thu, font_style)
+		ws.write(row_num, 9, total_fri, font_style)
+		ws.write(row_num, 10, total_sat, font_style)
+		ws.write(row_num, 11, total_sun, font_style)
+		ws.write(row_num, 12, total_pub, font_style)
 
-		ws.write(row_num, 12, total_nosupD, font_style)
-		ws.write(row_num, 13, total_nosupN, font_style)
-		ws.write(row_num, 14, grand_total_nosup_DN, font_style)
+		ws.write(row_num, 13, total_nosupD, font_style)
+		ws.write(row_num, 14, total_nosupN, font_style)
+		ws.write(row_num, 15, grand_total_nosup_DN, font_style)
 
-		ws.write(row_num, 15, total_supD, font_style)
-		ws.write(row_num, 16, total_supN, font_style)
-		ws.write(row_num, 17, grand_total_sup_DN, font_style)
+		ws.write(row_num, 16, total_supD, font_style)
+		ws.write(row_num, 17, total_supN, font_style)
+		ws.write(row_num, 18, grand_total_sup_DN, font_style)
 
-		ws.write(row_num, 18, grand_grand_total, font_style)
+		ws.write(row_num, 19, grand_grand_total, font_style)
 
-		# font_style = xlwt.easyxf('font: bold off, color black; borders: top_color black, bottom_color black, right_color black, left_color black, left thin, right thin, top thin, bottom thin; pattern: pattern solid, fore_color white; align: vert centre, horiz centre;')
-		ws.write_merge(row_num, row_num, 0, 3, "TOTAL", font_style)	
+		font_style = xlwt.easyxf('font: bold off, color black; borders: top_color black, bottom_color black, right_color black, left_color black, left thin, right thin, top thin, bottom thin; pattern: pattern solid, fore_color white; align: vert centre, horiz centre;')
+		ws.write_merge(row_num, row_num, 0, 4, "TOTAL", font_style)
 	else:
 		message = ""
 	  
