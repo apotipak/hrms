@@ -193,10 +193,12 @@ def AJAXReportSearchContract(request):
 		else:
 			cnt_eff_to = "<div class='text-left text-info'><i>Open ended</i></div>"
 
-
-		dept_sht_text = dept_sht_text_display(row[20])
-		# zone_text = row[7]
-
+		print("|" + row[20].strip() + "|")
+		if (contract_zone=="2050") or (row[20].strip()=='SP'):
+			dept_sht_text = "A"
+		else:
+			dept_sht_text = dept_sht_text_display(row[20])
+		
 		total_sup_DN = row[9] + row[11]
 		total_nosup_DN = row[8] + row[10]
 		grand_total = total_sup_DN + total_nosup_DN
@@ -365,7 +367,7 @@ def export_contract_list_report(request, *args, **kwargs):
 	font_style = xlwt.easyxf('font: bold off, color black; borders: top_color black, bottom_color black, right_color black, left_color black, left thin, right thin, top thin, bottom thin; pattern: pattern solid, fore_color white; align: vert centre, horiz centre;')
 	# font_style = xlwt.easyxf("align: vert centre, horiz centre")
 
-	columns = ['NO.', 'CONTRACT ID', 'SITE NAME', 'ZONE', 'DAY', 'SO', 'SUP', 'TOTAL', 'CONTRACT DATE', 'EFFECTIVE DATE']
+	columns = ['NO.', 'CONTRACT ID', 'SITE NAME (TH)', 'ZONE', 'DAY', 'SO', 'SUP', 'TOTAL', 'CONTRACT DATE', 'EFFECTIVE DATE']
 	for col_num in range(len(columns)):				
 		if(col_num==0):
 			ws.write_merge(2, 3, 0, 0, columns[col_num], font_style)
@@ -373,6 +375,7 @@ def export_contract_list_report(request, *args, **kwargs):
 			ws.write_merge(2, 3, 1, 1, columns[col_num], font_style)
 		elif(col_num==2):			
 			ws.write_merge(2, 3, 2, 2, columns[col_num], font_style)
+			
 		elif(col_num==3):			
 			ws.write_merge(2, 3, 3, 3, columns[col_num], font_style)
 		elif(col_num==4):
@@ -382,7 +385,6 @@ def export_contract_list_report(request, *args, **kwargs):
 		elif(col_num==6):
 			ws.write_merge(2, 2, 15, 17, columns[col_num], font_style)
 		elif(col_num==7):
-			# ws.write(2, 18, columns[col_num], font_style)
 			ws.write_merge(2, 3, 18, 18, columns[col_num], font_style)
 		elif(col_num==8):						
 			ws.write_merge(2, 2, 19, 20, columns[col_num], font_style)
@@ -427,7 +429,11 @@ def export_contract_list_report(request, *args, **kwargs):
 				cus_name_th = row[2]
 				
 				cnt_zone = row[7]
-				dept_sht_text = dept_sht_text_display(row[20])
+
+				if (contract_zone=="2050") or (row[20].strip())=='SP':
+					dept_sht_text = "A"
+				else:
+					dept_sht_text = dept_sht_text_display(row[20])
 				
 				cnt_sign_frm = "" if row[3] is None else str(row[3].strftime("%d/%m/%Y"))
 				cnt_sign_to = "" if row[4] is None else str(row[4].strftime("%d/%m/%Y"))
@@ -472,12 +478,14 @@ def export_contract_list_report(request, *args, **kwargs):
 				grand_grand_total += grand_total
 
 				# font_style = xlwt.easyxf('font: bold off, color black; borders: top_color black, bottom_color black, right_color black, left_color black, left thin, right thin, top thin, bottom thin; pattern: pattern solid, fore_color white; align: vert centre, horiz centre;')
+				
 				for col_num in range(23):
 					if(col_num==0):
 						ws.write(row_num, 0, row_count, font_style)
 					elif(col_num==1):
 						ws.write(row_num, 1, cnt_id, font_style)			
 					elif(col_num==2):
+						font_style = xlwt.easyxf('font: height 200;')
 						ws.write(row_num, 2, cus_name_th, font_style)
 					elif(col_num==3):
 						ws.write(row_num, 3, dept_sht_text, font_style)
@@ -526,7 +534,8 @@ def export_contract_list_report(request, *args, **kwargs):
 						ws.write(row_num, 21, cnt_eff_frm, font_style)
 					elif(col_num==22):
 						ws.write(row_num, 22, cnt_eff_to, font_style)
-
+				
+				font_style = xlwt.easyxf('font: height 180;')
 				row_num += 1
 				counter += 1
 
