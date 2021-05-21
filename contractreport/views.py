@@ -193,7 +193,7 @@ def AJAXReportSearchContract(request):
 		else:
 			cnt_eff_to = "<div class='text-left text-info'><i>Open ended</i></div>"
 
-		print("|" + row[20].strip() + "|")
+		# print("|" + row[20].strip() + "|")
 		if (contract_zone=="2050") or (row[20].strip()=='SP'):
 			dept_sht_text = "A"
 		else:
@@ -317,7 +317,7 @@ def export_contract_list_report(request, *args, **kwargs):
 
 	sql += "ORDER BY cnt_id;"
 
-	print("SQL:", sql)
+	print("SQL1:", sql)
 
 	try:
 		cursor = connection.cursor()
@@ -361,11 +361,12 @@ def export_contract_list_report(request, *args, **kwargs):
 	ws.col(20).width = int(12*260)
 	ws.col(21).width = int(12*260)
 	ws.col(22).width = int(12*260)
+	ws.col(23).width = int(12*260)
 	
 	# COLUMN NAME
 	font_style = xlwt.XFStyle()
 	font_style = xlwt.easyxf('font: bold 1, height 180;')	
-	font_style = xlwt.easyxf('font: bold off, color black; borders: top_color black, bottom_color black, right_color black, left_color black, left thin, right thin, top thin, bottom thin; pattern: pattern solid, fore_color white; align: vert centre, horiz centre;')
+	font_style = xlwt.easyxf('font: bold 1, color black; borders: top_color black, bottom_color black, right_color black, left_color black, left thin, right thin, top thin, bottom thin; pattern: pattern solid, fore_color white; align: vert centre, horiz centre;')
 	# font_style = xlwt.easyxf("align: vert centre, horiz centre")
 
 	columns = ['NO.', 'CONTRACT ID', 'SITE NAME (TH)', 'SITE NAME (EN)', 'ZONE', 'DAY', 'SO', 'SUP', 'TOTAL', 'CONTRACT DATE', 'EFFECTIVE DATE']
@@ -427,8 +428,7 @@ def export_contract_list_report(request, *args, **kwargs):
 	ws.write(3, 16, "D", font_style)
 	ws.write(3, 17, "N", font_style)
 	ws.write(3, 18, "TOTAL", font_style)
-
-
+	
 	ws.write(3, 20, "FROM", font_style)
 	ws.write(3, 21, "TO", font_style)
 	ws.write(3, 22, "FROM", font_style)
@@ -436,11 +436,11 @@ def export_contract_list_report(request, *args, **kwargs):
 
 
 
-	'''
+
 	if customer_list_obj is not None:
 		if len(customer_list_obj) > 0:
-			font_style = xlwt.XFStyle()
-			font_style = xlwt.easyxf('font: height 180;')
+			# font_style = xlwt.XFStyle()
+			# font_style = xlwt.easyxf('font: height 180;')
 			row_num = 4
 			counter = 1
 
@@ -459,7 +459,7 @@ def export_contract_list_report(request, *args, **kwargs):
 				
 				cnt_sign_frm = "" if row[3] is None else str(row[3].strftime("%d/%m/%Y"))
 				cnt_sign_to = "" if row[4] is None else str(row[4].strftime("%d/%m/%Y"))
-				cnt_eff_frm = "" if row[5] is None else str(row[5].strftime("%d/%m/%Y"))
+				cnt_eff_frm = "" if row[5] is None else str(row[5].strftime("%d/%m/%Y"))				
 				cnt_eff_to = "" if row[6] is None else str(row[6].strftime("%d/%m/%Y"))
 				
 				sun = row[12]
@@ -500,22 +500,20 @@ def export_contract_list_report(request, *args, **kwargs):
 				grand_grand_total += grand_total
 
 				# font_style = xlwt.easyxf('font: bold off, color black; borders: top_color black, bottom_color black, right_color black, left_color black, left thin, right thin, top thin, bottom thin; pattern: pattern solid, fore_color white; align: vert centre, horiz centre;')
-				
-				for col_num in range(23):
+				font_style = xlwt.easyxf('font: bold off, color black; borders: top_color black, bottom_color black, right_color black, left_color black, left thin, right thin, top thin, bottom thin; pattern: pattern solid, fore_color white;')
+
+				for col_num in range(24):
 					if(col_num==0):
 						ws.write(row_num, 0, row_count, font_style)
 					elif(col_num==1):
 						ws.write(row_num, 1, cnt_id, font_style)			
 					elif(col_num==2):
-						font_style = xlwt.easyxf('font: height 200;')
+						# font_style = xlwt.easyxf('font: height 200;')
 						ws.write(row_num, 2, cus_name_th, font_style)
-
 					elif(col_num==3):
-						ws.write(row_num, 3, cus_name_th, font_style)
-
+						ws.write(row_num, 3, cus_name_en, font_style)
 					elif(col_num==4):
 						ws.write(row_num, 4, dept_sht_text, font_style)
-
 					elif(col_num==5):
 						ws.write(row_num, 5, mon, font_style)
 					elif(col_num==6):
@@ -532,37 +530,30 @@ def export_contract_list_report(request, *args, **kwargs):
 						ws.write(row_num, 11, sun, font_style)
 					elif(col_num==12):
 						ws.write(row_num, 12, pub, font_style)
-
 					elif(col_num==13):
 						ws.write(row_num, 13, nosupD, font_style)
 					elif(col_num==14):
 						ws.write(row_num, 14, nosupN, font_style)
-
 					elif(col_num==15):
 						ws.write(row_num, 15, total_nosup_DN, font_style)
-
 					elif(col_num==16):
 						ws.write(row_num, 16, supD, font_style)
 					elif(col_num==17):
 						ws.write(row_num, 17, supN, font_style)
-
 					elif(col_num==18):
 						ws.write(row_num, 18, total_sup_DN, font_style)
-
 					elif(col_num==19):
 						ws.write(row_num, 19, grand_total, font_style)
-
 					elif(col_num==20):
 						ws.write(row_num, 20, cnt_sign_frm, font_style)
-
 					elif(col_num==21):
 						ws.write(row_num, 21, cnt_sign_to, font_style)
 					elif(col_num==22):
 						ws.write(row_num, 22, cnt_eff_frm, font_style)
 					elif(col_num==23):
 						ws.write(row_num, 23, cnt_eff_to, font_style)
-				
-				font_style = xlwt.easyxf('font: height 180;')
+
+				# font_style = xlwt.easyxf('font: height 180;')
 				row_num += 1
 				counter += 1
 
@@ -572,32 +563,32 @@ def export_contract_list_report(request, *args, **kwargs):
 
 		# Add TOTAL row
 		
-		#font_style = xlwt.easyxf('font: bold off, color black; borders: top_color black, bottom_color black, right_color black, left_color black, left thin, right thin, top thin, bottom thin; pattern: pattern solid, fore_color white; align: vert centre, horiz centre;')
-		#ws.write(row_num, 4, total_mon, font_style)
-		#ws.write(row_num, 5, total_tue, font_style)
-		#ws.write(row_num, 6, total_wed, font_style)
-		#ws.write(row_num, 7, total_thu, font_style)
-		#ws.write(row_num, 8, total_fri, font_style)
-		#ws.write(row_num, 9, total_sat, font_style)
-		#ws.write(row_num, 10, total_sun, font_style)
-		#ws.write(row_num, 11, total_pub, font_style)
+		# font_style = xlwt.easyxf('font: bold off, color black; borders: top_color black, bottom_color black, right_color black, left_color black, left thin, right thin, top thin, bottom thin; pattern: pattern solid, fore_color white; align: vert centre, horiz centre;')
+		# font_style = xlwt.easyxf('font: bold off, color black; borders: top_color black, bottom_color black, right_color black, left_color black, left thin, right thin, top thin, bottom thin; pattern: pattern solid, fore_color white; align: vert centre, horiz centre;')
+		ws.write(row_num, 4, total_mon, font_style)
+		ws.write(row_num, 5, total_tue, font_style)
+		ws.write(row_num, 6, total_wed, font_style)
+		ws.write(row_num, 7, total_thu, font_style)
+		ws.write(row_num, 8, total_fri, font_style)
+		ws.write(row_num, 9, total_sat, font_style)
+		ws.write(row_num, 10, total_sun, font_style)
+		ws.write(row_num, 11, total_pub, font_style)
 
+		ws.write(row_num, 12, total_nosupD, font_style)
+		ws.write(row_num, 13, total_nosupN, font_style)
+		ws.write(row_num, 14, grand_total_nosup_DN, font_style)
 
-		#ws.write(row_num, 12, total_nosupD, font_style)
-		#ws.write(row_num, 13, total_nosupN, font_style)
-		#ws.write(row_num, 14, grand_total_nosup_DN, font_style)
+		ws.write(row_num, 15, total_supD, font_style)
+		ws.write(row_num, 16, total_supN, font_style)
+		ws.write(row_num, 17, grand_total_sup_DN, font_style)
 
-		#ws.write(row_num, 15, total_supD, font_style)
-		#ws.write(row_num, 16, total_supN, font_style)
-		#ws.write(row_num, 17, grand_total_sup_DN, font_style)
+		ws.write(row_num, 18, grand_grand_total, font_style)
 
-		#ws.write(row_num, 18, grand_grand_total, font_style)
-
-		#font_style = xlwt.easyxf('font: bold off, color black; borders: top_color black, bottom_color black, right_color black, left_color black, left thin, right thin, top thin, bottom thin; pattern: pattern solid, fore_color white; align: vert centre, horiz centre;')
-		#ws.write_merge(row_num, row_num, 0, 3, "TOTAL", font_style)	
+		# font_style = xlwt.easyxf('font: bold off, color black; borders: top_color black, bottom_color black, right_color black, left_color black, left thin, right thin, top thin, bottom thin; pattern: pattern solid, fore_color white; align: vert centre, horiz centre;')
+		ws.write_merge(row_num, row_num, 0, 3, "TOTAL", font_style)	
 	else:
 		message = ""
-	'''
+	  
 	
 	wb.save(response)
 	return response	
