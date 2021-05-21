@@ -225,6 +225,7 @@ def AJAXReportSearchContract(request):
 			"cnt_id": row[0],					
 			"cus_name_en": row[1],
 			"cus_name_th": row[2],
+			"cus_name_en": row[3],
 			"cnt_sign_frm": cnt_sign_frm,
 			"cnt_sign_to": cnt_sign_to,
 			"cnt_eff_frm": cnt_eff_frm,
