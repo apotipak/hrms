@@ -206,15 +206,59 @@
 			    </div>
 
 	      	</div>
-	      	<div class="card-body">
-			  <table id="contractServiceListTable" class="text-center">
-			      <tr>
-			        <td class="col-12">There is no contract service available.</td>
-			      </tr>
+	      	<div class="card-body">			  
+			  <div class="col-12 table-responsive table-striped p-0">
+			  <font size="2">
+			  <table class='table table-sm' id="contractServiceListTable" style="white-space: nowrap;">
+				<thead>
+					<th scope='col'>No</th>
+					<th scope='col'>Rank</th>
+					<th scope='col'>Shift</th>
+					<th scope='col'>QTY</th>
+					<th scope='col'>Eff From</th>
+					<th scope='col'>Eff To</th>
+					<th scope='col'>MON</th>
+					<th scope='col'>TUE</th>
+					<th scope='col'>WED</th>
+					<th scope='col'>THU</th>
+					<th scope='col'>FRI</th>
+					<th scope='col'>SAT</th>
+					<th scope='col'>SUN</th>
+					<th scope='col'>PUB</th>
+					<th scope='col'>Status</th>
+					<th scope='col'>Remark</th>
+					<th scope='col'>Update Date</th>
+					<th scope='col'>Update By</th>
+				</thead>
+				<tbody>
+					<tr>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+					</tr>
+				</tbody>
 			  </table>
+			  </font>
+			  </div>
+
 	      	</div>
 	    </div>
-  			
+  		
 
       	<!-- Security Guard List -->      	
 	    <div class="card card-security-guard-list card-outline card-success">
@@ -598,10 +642,7 @@
 
 	      		</div>
 
-
-
-	      		<div class="col-12 table-responsive table-striped p-0">
-	      			<font size="2">
+	      		<div class="col-12 table-responsive table-striped p-0">	      			
 					<table class='table table-sm dataTable' id="id_security_guard_list" style="white-space: nowrap;">
 					<thead>
 					<tr>
@@ -650,7 +691,7 @@
 						</tr>
 					</tbody>
 					</table>
-					</font>
+					
 				</div>
 			<!--
               <div class="overlay">
@@ -736,7 +777,7 @@
 var table = $('#id_security_guard_list').DataTable({
   "paging": false,
   "pageLength": 15,
-  "scrollCollapse": true,
+  "scrollCollapse": false,
   "lengthChange": false,
   "searching": true,
   "ordering": true,
@@ -1516,7 +1557,8 @@ $(document).ready(function(){
 		$("#security_guard_list_form :input").attr("disabled", true);
 		$("#contract_service_list_form").trigger("reset");
 
-		$(".card-contract-service-list .card-body").html("");
+		//$(".card-contract-service-list .card-body").html("");
+		$("#contractServiceListTable tbody").html("");		
 		
 		//$(".card-security-guard-list .card-body").html("");
 		$("#id_security_guard_list tbody").html("");
@@ -2229,39 +2271,13 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 		    		//$("#id_cus_main_cus_name_th").css("background-color", "green");
 		    		//$("#id_cus_main_cus_name_th").animate({color:'white'}, 1000);					
 
-					// Contract Service List
-
-					result = "";
-					result += "<font size='2'>";					
-					result += "<table id='contractServiceListTable' class='table table-fixed table-sm table-condensed'>";
-					result += "  <thead>";
-					result += "    <tr>";
-					result += "      <th scope='col' name='service_id' class='d-none'>Service ID</th>";	
-					result += "      <th scope='col'>No</th>";
-					result += "      <th scope='col'>Rank</th>";
-					result += "      <th scope='col'>Shift</th>";
-					result += "      <th scope='col' class='text-center'>QTY</th>";
-					result += "      <th scope='col'>Eff From</th>";
-					result += "      <th scope='col'>Eff To</th>";
-					result += "      <th scope='col' class='text-center'>MON</th>";
-					result += "      <th scope='col' class='text-center'>TUE</th>";
-					result += "      <th scope='col' class='text-center'>WED</th>";
-					result += "      <th scope='col' class='text-center'>THU</th>";
-					result += "      <th scope='col' class='text-center'>FRI</th>";
-					result += "      <th scope='col' class='text-center'>SAT</th>";
-					result += "      <th scope='col' class='text-center'>SUN</th>";
-					result += "      <th scope='col' class='text-center'>PUB</th>";
-					result += "      <th scope='col' class='text-center'>Status</th>";
-					result += "      <th scope='col'>Remark</th>";
-					result += "      <th scope='col'>Update Date</th>";
-					result += "      <th scope='col'>Update By</th>";
-					result += "    </tr>";
-					result += "  </thead>";
-					result += "  <tbody>";
-
+					// Contract Service List			
 					if(data.cus_service_list.length>0) {
+						result = "";
 						count = 1;
+						
 						for(i=0; i<data.cus_service_list.length; i++) {
+
 							result += "    <tr class='clickableRow' data-serviceid='" + data.cus_service_list[i]["srv_id"] + "'>";
 							result += "      <td scope='row' class='d-none'>" + data.cus_service_list[i]["srv_id"] + "</td>";
 							result += "      <td scope='row'>" + count + "</td>";
@@ -2292,20 +2308,18 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 							count++;
 						}
 					} else {
-						result += "<tr><td colspan='18' align='center' class='text-danger'><br><font size='3'><i class='fas fa-xs fa-exclamation'></i>&nbsp;Sorry, there is no service available.</font><br><br></td></tr>";
+						result += "<tr><td colspan='18' align='center' class='text-danger'><br><font size='3'>There is no service available.</font><br><br></td></tr>";
 
 						$("#add_security_guard_button").attr("disabled", true);
 					}
 
-					result += "  </tbody>";
-					result += "</table>";
-					result += "</font>";
+					//result += "  </tbody>";
+					//result += "</table>";
+					//result += "</font>";
 
-					$(".card-contract-service-list .card-body").html(result);
+					$("#contractServiceListTable tbody").html(result);
+					//$(".card-contract-service-list .card-body").html(result);
 					$("#contract_service_list_amount").html("Total <b>" + data.cus_service_list.length + "</b>");
-
-
-
 
 					// Security Guard List
 					result = "";
