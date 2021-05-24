@@ -802,6 +802,40 @@ def GeneratePSNSlipD1(request, *args, **kwargs):
     return FileResponse(open(pdf_file, 'rb'), content_type='application/pdf')
 
 
+@permission_required('dailyattendreport.can_access_post_manpower_report', login_url='/accounts/login/')
+def AjaxPostManpowerReport(request):    
+    is_error = True
+    message = "TODO"
+
+    today_date = settings.TODAY_DATE.strftime("%d/%m/%Y")
+    contract_number_from = request.POST.get('contract_number_from')
+    contract_number_to = request.POST.get('contract_number_to')
+    contract_zone = request.POST.get('contract_zone')
+    start_date = request.POST.get('start_date')
+    end_date = request.POST.get('end_date')        
+    print("DEBUG: ", today_date, contract_number_from, contract_number_to, contract_zone, start_date, end_date)
+    
+    post_manpower_list = None
+    sql = "select cnt_id, dly_date,sum(case when absent=0 then 1 else 0 end) as total "
+    sql += "from his_dly_plan where dly_date>='2021-05-17' and dly_date<='2021-05-17' and cnt_id>=0 and cnt_id<=9999999999 and absent=0 "
+    sql += "group by cnt_id,dly_date order by dly_date, cnt_id;"
+    try:
+        cursor = connection.cursor()
+        cursor.execute(sql)
+        post_manpower_list = cursor.fetchall()
+    finally:
+        cursor.close()
+    # amnaj
+
+    response = JsonResponse(data={        
+        "is_error": is_error,
+        "message": message,
+        "post_manpower_list": post_manpower_list,
+    })
+
+    response.status_code = 200
+    return response
+
 @permission_required('dailyattendreport.can_access_gpm_422_no_of_guard_operation_by_empl_by_zone_report', login_url='/accounts/login/')
 def AjaxGPM422NoOfGuardOperationByEmplByZoneReport(request, *args, **kwargs):    
     base_url = MEDIA_ROOT + '/monitoring/template/'    
@@ -2106,6 +2140,36 @@ def GPMWorkOnDayOffReport(request):
         'dly_plan_list': None,
         })
 
+
+@permission_required('dailyattendreport.can_access_post_manpower_report', login_url='/accounts/login/')
+def PostManpowerReport(request):
+    page_title = settings.PROJECT_NAME
+    db_server = settings.DATABASES['default']['HOST']
+    project_name = settings.PROJECT_NAME
+    project_version = settings.PROJECT_VERSION  
+    today_date = settings.TODAY_DATE.strftime("%d/%m/%Y")    
+
+    # Get zone
+    dept_zone_obj = None
+    sql = "select dept_id, dept_en from COM_DEPARTMENT where dept_zone=1;"
+    try:
+        cursor = connection.cursor()
+        cursor.execute(sql)
+        dept_zone_obj = cursor.fetchall()
+    finally:
+        cursor.close()
+    
+    return render(request, 'dailyattendreport/post_manpower.html',
+        {
+        'page_title': page_title, 
+        'project_name': project_name,
+        'project_version': project_version,
+        'db_server': db_server, 
+        'today_date': today_date,
+        'database': settings.DATABASES['default']['NAME'],
+        'host': settings.DATABASES['default']['HOST'],
+        "dept_zone_obj": dept_zone_obj,
+        })
 
 
 @permission_required('dailyattendreport.can_access_psn_slip_d1_report', login_url='/accounts/login/')

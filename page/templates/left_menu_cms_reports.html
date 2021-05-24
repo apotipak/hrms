@@ -21,7 +21,7 @@
           <li class="nav-item has-treeview p-0">
             
             {% if perms.dailyattendreport.can_access_daily_attend_report %}
-            <a href="#" class="nav-link">
+            <a href="#" class="nav-link bg-secondary">
               <i class="fas fa-chart-pie"></i>&nbsp;&nbsp;&nbsp;<p><b>CMS Reports</b><i class="right fas fa-angle-left"></i></p>
             </a>
 
@@ -46,6 +46,12 @@
               </li>
               {% endif %}
 
+              {% if perms.dailyattendreport.can_access_post_manpower_report %}
+              <li class="nav-item p-0">
+                <a href="/reports/cms/post-manpower/" class="nav-link"><p>Post Manpower</p></a>
+              </li>
+              {% endif %}
+
             </ul>
             {% endif %}
 
@@ -53,7 +59,7 @@
 
             <!-- PAYROLL -->
             {% if perms.dailyattendreport.can_access_psn_slip_d1_report %}
-            <a href="#" class="nav-link">
+            <a href="#" class="nav-link bg-secondary">
               <i class="fas fa-chart-pie"></i>&nbsp;&nbsp;&nbsp;<p><b>Payroll Reports</b><i class="right fas fa-angle-left"></i></p>
             </a>            
             <ul class="nav nav-treeview p-0">
@@ -77,7 +83,7 @@
 
             <!-- Contract -->
             {% if perms.contractreport.can_access_contract_menu_report %}
-            <a href="#" class="nav-link">
+            <a href="#" class="nav-link bg-secondary">
               <i class="fas fa-chart-pie"></i>&nbsp;&nbsp;&nbsp;<p><b>SP-Admin Reports</b><i class="right fas fa-angle-left"></i></p>
             </a>
             <ul class="nav nav-treeview p-0">
@@ -102,7 +108,7 @@
 
 
             {% if perms.dailyattendreport.can_access_daily_attend_report %}
-            <a href="#" class="nav-link">
+            <a href="#" class="nav-link bg-secondary">
               <i class="fas fa-chart-pie"></i>&nbsp;&nbsp;&nbsp;<p><b>SP-Admin Reports</b><i class="right fas fa-angle-left"></i></p>
             </a>
             <ul class="nav nav-treeview p-0">

@@ -107,7 +107,8 @@ def AJAXReportSearchContract(request):
 	sql += "from V_Contract_Summary "
 	sql += "where cnt_id>=" + str(contract_number_from) + " " 
 	sql += "and cnt_id<=" + str(contract_number_to) + " "
-
+	print("TEST ", sql)
+	
 	if contract_status == "1":
 		sql += " and cnt_active=1 "
 	elif contract_status == "2":
