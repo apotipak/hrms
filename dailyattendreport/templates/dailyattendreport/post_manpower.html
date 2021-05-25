@@ -99,7 +99,7 @@
           <tr>
             <th class="align-middle text-center" scope="col" rowspan="2">#</th>
             <th class="align-middle text-center" scope="col" rowspan="2" nowrap>Cnt ID</th>
-            <th class="align-middle text-center col-lg-6" scope="col" rowspan="2" nowrap>Customer Name</th>
+            <th class="align-middle text-center col-8" scope="col" rowspan="2" nowrap>Customer Name</th>
             <th class="align-middle text-center" scope="col" rowspan="2" nowrap>Zone</th>
             <th class="align-middle text-center" scope="col" colspan="2" nowrap>Day</th>
           </tr>
@@ -255,13 +255,25 @@ function SearchFormSubmit() {
         success : function(data) {
             count = 1;      
             if(data.is_error) {
-                alert("ERROR: " + data.message);
+                //alert("ERROR: " + data.message);
+                $.alert({
+                    title: 'Error',
+                    type: 'red',
+                    content: data.message,
+                    animation: 'zoom',
+                    animationBounce: 1.5,
+                    closeIcon: false,
+                    boxWidth: '38%',
+                    useBootstrap: false,
+                });  
+                $.LoadingOverlay("hide");
+                return false;
             } else { 
                 thead_result = "";
                 thead_result += "<tr>";
                 thead_result += "  <th class='align-middle text-center' scope='col' rowspan='2'>#</th>";
                 thead_result += "  <th class='align-middle text-center' scope='col' rowspan='2' nowrap>Cnt ID</th>";
-                thead_result += "  <th class='align-middle text-center col-lg-6' scope='col' rowspan='2' nowrap>Customer Name</th>;"
+                thead_result += "  <th class='align-middle text-center col-8' scope='col' rowspan='2' nowrap>Customer Name</th>;"
                 thead_result += "  <th class='align-middle text-center' scope='col' rowspan='2' nowrap>Zone</th>;"
                 thead_result += "  <th class='align-middle text-center' scope='col' colspan='" + data.number_of_days + "' nowrap>Day</th>;"
                 //thead_result += "  <th class='align-middle text-center' scope='col' colspan='" + data.number_of_days + "' nowrap>" + start_date + " - " + end_date + "</th>;"

@@ -821,7 +821,15 @@ def AjaxPostManpowerReport(request):
 
     # Get number of dasys    
     number_of_days = abs((ed - sd).days) + 1
-    # print("Days : ", number_of_days)
+    print("Days : ", number_of_days)
+
+    if number_of_days > 31: 
+        response = JsonResponse(data={        
+            "is_error": True,
+            "message": "สามารถเลือกจำนวนวันได้ไม่เกิน 1 เดือน",
+        })
+        response.status_code = 200
+        return response
 
     # Get cnt_id list
     cnt_id_list = []
@@ -869,7 +877,7 @@ def AjaxPostManpowerReport(request):
 
     unique_cnt_id_list = { each['cnt_id'] : each for each in cnt_id_list }.values()
     
-    response = JsonResponse(data={        
+    response = JsonResponse(data={   
         "is_error": is_error,
         "message": message,
         "number_of_days": number_of_days,
