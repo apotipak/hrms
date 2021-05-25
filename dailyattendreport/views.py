@@ -807,7 +807,7 @@ def AjaxPostManpowerReport(request):
     is_error = True
     message = "TODO"
 
-    today_date = settings.TODAY_DATE.strftime("%d/%m/%Y")
+    today_date = settings.TODAY_DATE.strftime("%Y-%m-%d")
     contract_number_from = request.POST.get('contract_number_from')
     contract_number_to = request.POST.get('contract_number_to')
     contract_zone = request.POST.get('contract_zone')
@@ -830,7 +830,10 @@ def AjaxPostManpowerReport(request):
         cursor = connection.cursor()
         for i in range(number_of_days):                        
             sql = "select distinct h.cnt_id, h.dly_date, cus.cus_name_th, cus.cus_name_en, z.zone_en, sum(case when h.absent=0 then 1 else 0 end) as total "
-            sql += "from dly_plan h "
+            if (sd.strftime("%Y-%m-%d")==today_date):
+                sql += "from dly_plan h "
+            else:
+                sql += "from his_dly_plan h "
             sql += "left join cus_contract con on h.cnt_id=con.cnt_id "
             sql += "left join customer cus on con.cus_id=cus.cus_id and con.cus_brn=cus.cus_brn "
             sql += "left join com_zone z on cus.cus_zone=z.zone_id "
@@ -845,9 +848,9 @@ def AjaxPostManpowerReport(request):
             cursor.execute(sql)
             obj = cursor.fetchall()
             if obj is not None:            
-                for item in obj:
+                for item in obj:                    
                     record = {
-                        "cnt_id":item[0], "dly_date":item[1], "cus_name_th":item[2], "cus_name_en":item[3], "zone_th":item[4], "total":item[5]
+                        "cnt_id":item[0], "dly_date":item[1].day, "cus_name_th":item[2], "cus_name_en":item[3], "zone_th":item[4], "total":item[5]
                     }
                     cnt_id_list.append(record)
 
@@ -856,9 +859,6 @@ def AjaxPostManpowerReport(request):
     finally:        
         cursor.close()
     
-    unique_cnt_id_list = { each['cnt_id'] : each for each in cnt_id_list }.values()
-
-
     # Get day list
     day_list = []
     sd = datetime.datetime.strptime(start_date, '%d/%m/%Y')
@@ -867,6 +867,8 @@ def AjaxPostManpowerReport(request):
         day_list.append(sd.strftime("%d"))
         sd += datetime.timedelta(days=1)
 
+    unique_cnt_id_list = { each['cnt_id'] : each for each in cnt_id_list }.values()
+    
     response = JsonResponse(data={        
         "is_error": is_error,
         "message": message,

@@ -97,7 +97,7 @@
         
         <thead class="bg-secondary">
           <tr>
-            <th class="align-middle text-center" scope="col" rowspan="2">#</th>
+            <td class="align-middle text-center" scope="col" rowspan="2">#</th>
             <th class="align-middle text-center" scope="col" rowspan="2" nowrap>Cnt ID</th>
             <th class="align-middle text-center col-lg-10" scope="col" rowspan="2" nowrap>Customer Name</th>
             <th class="align-middle text-center" scope="col" rowspan="2" nowrap>Zone</th>
@@ -216,11 +216,13 @@ function SearchFormSubmit() {
     var month = dateParts[1] - 1;
     var year = dateParts[2];
     var sd = new Date(year, month, day);
+
     var dateParts = end_date.split("/");
     var day = dateParts[0];
     var month = dateParts[1] - 1;
-    var year = dateParts[2];
+    var year = dateParts[2];    
     var ed = new Date(year, month, day);
+
     if(sd>ed) {
         $.alert({
             title: 'Error',
@@ -293,9 +295,12 @@ function SearchFormSubmit() {
 
                 // TODO
                 col_number = 4;
-                for(j=0; j<data.number_of_days; j++) {
-                    for(i=0; i<data.cnt_id_list.length; i++) {
-                        $("#post_manpower_list_table").find('tr#'+data.cnt_id_list[i]["cnt_id"]).find('td:eq(' + col_number + ')').html("<center>" + data.cnt_id_list[i]["total"] + "</center>");
+                day_count = 1;
+                for(i=0; i<data.number_of_days; i++) {
+                    day = data.day_list[i]
+                    for(j=0; j<data.cnt_id_list.length; j++) {
+                        if(data.cnt_id_list[j]["dly_date"]==day)
+                            $("#post_manpower_list_table").find('tr#'+data.cnt_id_list[j]["cnt_id"]).find('td:eq(' + col_number + ')').html("<center>" + data.cnt_id_list[j]["total"] + "</center>");
                     }
                     col_number = col_number + 1;
                 }
