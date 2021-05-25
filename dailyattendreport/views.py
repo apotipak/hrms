@@ -814,27 +814,71 @@ def AjaxPostManpowerReport(request):
     start_date = request.POST.get('start_date')
     end_date = request.POST.get('end_date')        
     print("DEBUG: ", today_date, contract_number_from, contract_number_to, contract_zone, start_date, end_date)
-    
-    post_manpower_list = None
-    sql = "select cnt_id, dly_date,sum(case when absent=0 then 1 else 0 end) as total "
-    sql += "from his_dly_plan where dly_date>='2021-05-17' and dly_date<='2021-05-17' and cnt_id>=0 and cnt_id<=9999999999 and absent=0 "
-    sql += "group by cnt_id,dly_date order by dly_date, cnt_id;"
+
+    # Convert string to date
+    sd = datetime.datetime.strptime(start_date, '%d/%m/%Y')
+    ed = datetime.datetime.strptime(end_date, '%d/%m/%Y')
+
+    # Get number of dasys    
+    number_of_days = abs((ed - sd).days) + 1
+    # print("Days : ", number_of_days)
+
+    # Get cnt_id list
+    cnt_id_list = []
+    record = {}
     try:
         cursor = connection.cursor()
-        cursor.execute(sql)
-        post_manpower_list = cursor.fetchall()
-    finally:
+        for i in range(number_of_days):                        
+            sql = "select distinct h.cnt_id, h.dly_date, cus.cus_name_th, cus.cus_name_en, z.zone_en, sum(case when h.absent=0 then 1 else 0 end) as total "
+            sql += "from dly_plan h "
+            sql += "left join cus_contract con on h.cnt_id=con.cnt_id "
+            sql += "left join customer cus on con.cus_id=cus.cus_id and con.cus_brn=cus.cus_brn "
+            sql += "left join com_zone z on cus.cus_zone=z.zone_id "
+            sql += "where dly_date>='" + sd.strftime("%Y-%m-%d") + "' and dly_date<='" + sd.strftime("%Y-%m-%d") + "' "            
+            sql += "and h.cnt_id>=" + contract_number_from + " and h.cnt_id<=" + contract_number_to + " and h.absent=0 "
+            if contract_zone != "":
+                sql += "and dept_id=" + contract_zone + " "
+            sql += "group by h.cnt_id, h.dly_date, cus.cus_name_th, cus.cus_name_en, z.zone_en "
+            sql += "order by h.cnt_id"
+            print("SQLLL :", sql)
+
+            cursor.execute(sql)
+            obj = cursor.fetchall()
+            if obj is not None:            
+                for item in obj:
+                    record = {
+                        "cnt_id":item[0], "dly_date":item[1], "cus_name_th":item[2], "cus_name_en":item[3], "zone_th":item[4], "total":item[5]
+                    }
+                    cnt_id_list.append(record)
+
+            sd += datetime.timedelta(days=1)
+        is_error = False
+    finally:        
         cursor.close()
-    # amnaj
+    
+    unique_cnt_id_list = { each['cnt_id'] : each for each in cnt_id_list }.values()
+
+
+    # Get day list
+    day_list = []
+    sd = datetime.datetime.strptime(start_date, '%d/%m/%Y')
+    ed = datetime.datetime.strptime(end_date, '%d/%m/%Y')
+    for i in range(number_of_days):
+        day_list.append(sd.strftime("%d"))
+        sd += datetime.timedelta(days=1)
 
     response = JsonResponse(data={        
         "is_error": is_error,
         "message": message,
-        "post_manpower_list": post_manpower_list,
+        "number_of_days": number_of_days,
+        "day_list": day_list,
+        "unique_cnt_id_list": list(unique_cnt_id_list),
+        "cnt_id_list": list(cnt_id_list),
     })
 
     response.status_code = 200
     return response
+
 
 @permission_required('dailyattendreport.can_access_gpm_422_no_of_guard_operation_by_empl_by_zone_report', login_url='/accounts/login/')
 def AjaxGPM422NoOfGuardOperationByEmplByZoneReport(request, *args, **kwargs):    
