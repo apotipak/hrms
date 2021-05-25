@@ -91,17 +91,17 @@
           </div>
         </div>
 
-
+      <div class="table-responsive table-bordered table-hover table-striped" style="height: 420px;">
       <font size="2em;">
-      <table class="table table-sm table-bordered table-striped table-hover" id="post_manpower_list_table">
+      <table class="table table-sm" id="post_manpower_list_table">
         
         <thead class="bg-secondary">
           <tr>
             <td class="align-middle text-center" scope="col" rowspan="2">#</th>
             <th class="align-middle text-center" scope="col" rowspan="2" nowrap>Cnt ID</th>
-            <th class="align-middle text-center col-lg-10" scope="col" rowspan="2" nowrap>Customer Name</th>
+            <th class="align-middle text-center col-lg-6" scope="col" rowspan="2" nowrap>Customer Name</th>
             <th class="align-middle text-center" scope="col" rowspan="2" nowrap>Zone</th>
-            <th class="align-middle text-center" scope="col" colspan="2" nowrap>Period</th>
+            <th class="align-middle text-center" scope="col" colspan="2" nowrap>Day</th>
           </tr>
           <tr>             
             <th class="align-middle text-center" scope="col">&nbsp;</th>
@@ -122,6 +122,7 @@
 
       </table>
       </font>
+      </div>
 
     </section>
     <!-- /.content -->
@@ -260,9 +261,10 @@ function SearchFormSubmit() {
                 thead_result += "<tr>";
                 thead_result += "  <th class='align-middle text-center' scope='col' rowspan='2'>#</th>";
                 thead_result += "  <th class='align-middle text-center' scope='col' rowspan='2' nowrap>Cnt ID</th>";
-                thead_result += "  <th class='align-middle text-center col-lg-10' scope='col' rowspan='2' nowrap>Customer Name</th>;"
+                thead_result += "  <th class='align-middle text-center col-lg-6' scope='col' rowspan='2' nowrap>Customer Name</th>;"
                 thead_result += "  <th class='align-middle text-center' scope='col' rowspan='2' nowrap>Zone</th>;"
-                thead_result += "  <th class='align-middle text-center' scope='col' colspan='" + data.number_of_days + "' nowrap>" + start_date + " - " + end_date + "</th>;"
+                thead_result += "  <th class='align-middle text-center' scope='col' colspan='" + data.number_of_days + "' nowrap>Day</th>;"
+                //thead_result += "  <th class='align-middle text-center' scope='col' colspan='" + data.number_of_days + "' nowrap>" + start_date + " - " + end_date + "</th>;"
                 thead_result += "</tr>";
 
                 thead_result += "<tr>;"                
