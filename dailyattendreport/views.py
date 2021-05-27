@@ -1889,8 +1889,7 @@ def export_gpm_422_no_of_guard_operation_by_empl_by_zone_to_excel(request, *args
 
 def zone_name_display_text(zone_id):
     zone_name = "N/A"
-
-    print("zone_id : ", zone_id)
+    
     if zone_id=="0":
         zone_name = "Zone F"
     elif zone_id=="2050":
@@ -2036,6 +2035,8 @@ def export_post_manpower_to_excel(request, *args, **kwargs):
     font_style = xlwt.XFStyle()
     # font_style.font.bold = True
     font_style = xlwt.easyxf('font: bold 1, height 200;')
+    sd = datetime.datetime.strptime(start_date, '%d/%m/%Y')
+    ed = datetime.datetime.strptime(end_date, '%d/%m/%Y')    
     ws.write(0, 0, "Period : " + str(sd.strftime("%d/%m/%Y")) + " - " + str(ed.strftime("%d/%m/%Y")), font_style)
 
     ws.col(0).width = int(5*260)
@@ -2045,8 +2046,10 @@ def export_post_manpower_to_excel(request, *args, **kwargs):
 
     # Determine number of days        
     columns = ['No', 'Cnt ID', 'Customer Name', 'Zone']
-    for col in day_list:
-        columns.append(col + "-05 ")
+    for col in day_list:        
+        columns.append(col + "-" + sd.strftime("%m") + "-" + sd.strftime("%Y"))
+        sd += datetime.timedelta(days=1)
+        ws.col(3+int(col)).width = int(10*260)
 
     # Column Header
     font_style = xlwt.easyxf('font: bold 1, height 180;')
