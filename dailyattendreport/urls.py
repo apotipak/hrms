@@ -26,6 +26,7 @@ urlpatterns = [
     # Post Manpower
     path('post-manpower/', views.PostManpowerReport, name='post-manpower-report'),  
     url(r'^ajax-post-manpower/$', views.AjaxPostManpowerReport, name='ajax-post-manpower-report'),
+    url(r'^export-post-manpower-to-excel/(?P<contract_number_from>\d+)/(?P<contract_number_to>\d+)/(?P<contract_start_date>\d{2}/\d{2}/\d{4})/(?P<contract_end_date>\d{2}/\d{2}/\d{4})/(?P<contract_zone_id>\w+)/$', views.export_post_manpower_to_excel, name='export-post-manpower-to-excel'),
 
     # PSN Slip D1 Report
     path('psn-slip-d1/', views.PSNSlipD1Report, name='psn-slip-d1-report'),

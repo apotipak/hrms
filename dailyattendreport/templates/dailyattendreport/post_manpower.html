@@ -93,8 +93,9 @@
 
       <div class="table-responsive table-bordered table-hover table-striped" style="height: 420px;">
       <font size="2em;">
-      <table class="table table-sm" id="post_manpower_list_table">
-        
+
+      <!-- amnaj -->
+      <table class="table table-sm dataTable" id="post_manpower_list_table">        
         <thead class="bg-secondary">
           <tr>
             <th class="align-middle text-center" scope="col" rowspan="2">#</th>
@@ -110,7 +111,11 @@
         
         <tbody>
           <tr>
-            <td class="text-center" colspan='5'><br><br><br><br><br></td>
+            <td class="text-center">&nbsp;</td>
+            <td class="text-center">&nbsp;</td>
+            <td class="text-center">&nbsp;</td>
+            <td class="text-center">&nbsp;</td>
+            <td class="text-center">&nbsp;</td>
           </tr>
         </tbody>
 
@@ -139,6 +144,51 @@
 {% block javascript %}
 
 <script>
+/*
+var table = $('#post_manpower_list_table').DataTable({
+  "paging": false,
+  "scrollCollapse": false,
+  "lengthChange": false,
+  "searching": true,
+  "ordering": true,
+  "info": false,
+  "autoWidth": true,
+  fixedHeader:true,
+  "scrollX": true,
+  "scrollY": "200px",
+  "scrollCollapse": true,
+  "dom": '<"top"i>rt<"bottom"><"clear">',
+  "search": "_INPUT_",
+  "searchPlaceholder": "Search",  
+  "language": {
+    search: '<i class="fa fa-filter" aria-hidden="true"></i>',
+    searchPlaceholder: 'Filter data'
+  },
+  "columnDefs": [
+  	{"targets": 0, "orderable": true},
+  	{"targets": 1, "orderable": true},
+  	{"targets": 2, "orderable": true},
+  	{"targets": 3, "orderable": true},
+  	{"targets": 4, "orderable": true},
+  ],
+  buttons: [
+    {
+        extend: 'print',
+        title: '',
+        exportOptions: {
+          columns: [ 0, 1, 2, 3, 4]
+        }
+    },
+    {
+        extend: 'excelHtml5',        
+        title: '',
+        exportOptions: {
+          columns: [ 0, 1, 2, 3, 4]
+        }
+    },
+  ]
+});
+*/
 
 $(document).ready(function(){
 
@@ -207,9 +257,6 @@ function SearchFormSubmit() {
     var contract_zone = $('#id_contract_zone_option').val();
     var start_date = $('#id_start_date').val();
     var end_date = $('#id_end_date').val();
-
-    //alert("Test : " + contract_number_from + "," + contract_number_to + "," + start_date + "," + end_date);
-    //return false;
 
     // Check start date / end date
     var dateParts = start_date.split("/");
@@ -346,12 +393,8 @@ function display_on_screen() {
   window.open(href, '_blank');
 }
 
-function export_to_excel() {
-    alert("TODO");
-    return false;
-
-    // todo
-    var tbody = $('#contract_list_table tbody');
+function export_to_excel() {    
+    var tbody = $('#post_manpower_list_table tbody');
     if(tbody.children().length <= 1) {
         $.alert({
             title: 'Error',
@@ -364,24 +407,18 @@ function export_to_excel() {
             useBootstrap: false,
         });    
         return false;
-    } else {
-        //alert(tbody.children().length);
-        //return false;
+    } else {      
 
         var contract_number_from = $('#id_contract_number_from').val();
-        var contract_number_to = $('#id_contract_number_to').val();
-        var contract_status = $('#id_contract_status_option').val();
-        var contract_zone = $('#id_contract_zone_option').val();
+        var contract_number_to = $('#id_contract_number_to').val();            
+        var contract_start_date = $('#id_start_date').val();
+        var contract_end_date = $('#id_end_date').val();
+        var contract_zone_id = $('#id_contract_zone_option').val();
 
-        if(contract_status=="") {
-        contract_status = "all_status"
+        if(contract_zone_id=="") {
+          contract_zone_id = "all_zone"
         }
-
-        if(contract_zone=="") {
-        contract_zone = "all_zone"
-        }
-
-        var href = "/reports/sp-admin/contract-list/export-contract-list/" + contract_number_from + "/" + contract_number_to + "/" + contract_status + "/" + contract_zone + "/";
+        var href = "/reports/cms/export-post-manpower-to-excel/" + contract_number_from + "/" + contract_number_to + "/" + contract_start_date + "/" + contract_end_date + "/" + contract_zone_id + "/";
         window.open(href, '_blank');
     }
 }

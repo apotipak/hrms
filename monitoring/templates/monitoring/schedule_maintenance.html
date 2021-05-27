@@ -647,6 +647,7 @@
 
 	      		</div>
 
+			    <!-- amnaj -->
 	      		<div class="col-12 table-striped p-0">	      			
 					<table class='table table-sm dataTable' id="id_security_guard_list" style="white-space: nowrap;">
 					<thead>
@@ -835,11 +836,9 @@
 
 {% block javascript %}
 <script>	
-
-// amnaj fixed
+// amnaj
 var table = $('#id_security_guard_list').DataTable({
   "paging": false,
-  //"pageLength": 15,
   "scrollCollapse": false,
   "lengthChange": false,
   "searching": true,
@@ -1054,8 +1053,6 @@ document.onkeydown = function(e) {
   }
 }
 
-
-// amnaj
 function end_all_button_click() {	 		
 	$.ajax({
 		url: "/monitoring/ajax/end_all_active_status/",        	
@@ -2554,8 +2551,6 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 					//$(".card-contract-service-list .card-body").html(result);
 					$("#contract_service_list_amount").html("Total <b>" + data.cus_service_list.length + "</b>");
 
-
-					// amnaj
 					// Security Guard List
 					result = "";									
 					if(data.sch_plan_list.length>0) {
@@ -2709,7 +2704,7 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 	}
 });
 
-// amnaj fixed
+// amnaj
 function refresh_table(result) {
 	table.destroy();
 

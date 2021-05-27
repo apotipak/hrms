@@ -1887,6 +1887,56 @@ def export_gpm_422_no_of_guard_operation_by_empl_by_zone_to_excel(request, *args
 
 
 @login_required(login_url='/accounts/login/')
+def export_post_manpower_to_excel(request, *args, **kwargs):
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="Post Manpower Report.xls"'
+
+    contract_number_from = kwargs['contract_number_from']
+    contract_number_to = kwargs['contract_number_to']        
+    contract_start_date = kwargs['contract_start_date']
+    contract_start_date = datetime.datetime.strptime(contract_start_date, "%d/%m/%Y").date()
+    contract_end_date = kwargs['contract_end_date']
+    contract_end_date = datetime.datetime.strptime(contract_end_date, "%d/%m/%Y").date()
+    contract_zone_id = kwargs['contract_zone_id']
+
+    print(contract_number_from, contract_number_to, contract_start_date, contract_end_date, contract_zone_id)
+
+    pickup_record = []
+    context = {}
+
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Post Manpower')
+
+    font_style = xlwt.XFStyle()
+    font_style.font.bold = True
+    font_style = xlwt.easyxf('font: bold 1, height 200;')
+    ws.write(0, 0, "Period : " + str(contract_start_date.strftime("%d/%m/%Y")) + " - " + str(contract_end_date.strftime("%d/%m/%Y")), font_style)
+
+    ws.col(0).width = int(5*260)
+    ws.col(1).width = int(10*260)
+    ws.col(2).width = int(10*260)
+    ws.col(3).width = int(20*260)
+    ws.col(4).width = int(5*260)
+    ws.col(5).width = int(8*260)
+    ws.col(6).width = int(15*260)
+    ws.col(7).width = int(18*260)
+    ws.col(8).width = int(12*260)
+    ws.col(9).width = int(30*260)    
+    ws.col(10).width = int(30*260)
+
+    font_style = xlwt.XFStyle()    
+    font_style = xlwt.easyxf('font: bold 1, height 180;')
+    columns = ['No', 'Date', 'EMP ID', 'Name', 'Rank', 'Zone ID', 'Zone Name', 'Shift', 'CNT ID', 'CUS NAME (TH)', 'CUS NAME (EN)']
+    for col_num in range(len(columns)):
+        ws.write(1, col_num, columns[col_num], font_style)
+    
+    font_style = xlwt.XFStyle()
+    font_style = xlwt.easyxf('font: height 180;')
+    wb.save(response)
+    return response
+
+
+@login_required(login_url='/accounts/login/')
 def export_gpm_work_on_day_off_to_excel(request, *args, **kwargs):
     response = HttpResponse(content_type='application/ms-excel')
     response['Content-Disposition'] = 'attachment; filename="GPM_Work_on_Day_Off.xls"'
