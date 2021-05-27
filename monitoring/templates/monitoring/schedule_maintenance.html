@@ -3082,6 +3082,7 @@ function update_sch_plan(sch_no, srv_id) {
 
 
     		// Check Duration To condition
+			$('#id_duration_to').val(data.sch_date_to);
     		if(contractServiceToDate<unlimitedDate) {
 	    		$('#id_duration_to').attr("disabled", false);
 				$("#chkDurationToDisable").attr("disabled", false);
