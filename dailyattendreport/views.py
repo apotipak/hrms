@@ -813,7 +813,7 @@ def AjaxPostManpowerReport(request):
     contract_zone = request.POST.get('contract_zone')
     start_date = request.POST.get('start_date')
     end_date = request.POST.get('end_date')        
-    print("DEBUG: ", today_date, contract_number_from, contract_number_to, contract_zone, start_date, end_date)
+    # print("DEBUG: ", today_date, contract_number_from, contract_number_to, contract_zone, start_date, end_date)
 
     # Convert string to date
     sd = datetime.datetime.strptime(start_date, '%d/%m/%Y')
@@ -837,7 +837,7 @@ def AjaxPostManpowerReport(request):
     try:
         cursor = connection.cursor()
         for i in range(number_of_days):                        
-            sql = "select distinct h.cnt_id, h.dly_date, cus.cus_name_th, cus.cus_name_en, z.zone_en, sum(case when h.absent=0 then 1 else 0 end) as total "
+            sql = "select distinct h.cnt_id, h.dly_date, cus.cus_name_th, cus.cus_name_en, z.zone_en, sum(case when h.absent=0 then 1 else 0 end) as total, h.dept_id "
             if (sd.strftime("%Y-%m-%d")==today_date):
                 sql += "from dly_plan h "
             else:
@@ -847,18 +847,19 @@ def AjaxPostManpowerReport(request):
             sql += "left join com_zone z on cus.cus_zone=z.zone_id "
             sql += "where dly_date>='" + sd.strftime("%Y-%m-%d") + "' and dly_date<='" + sd.strftime("%Y-%m-%d") + "' "            
             sql += "and h.cnt_id>=" + contract_number_from + " and h.cnt_id<=" + contract_number_to + " and h.absent=0 "
-            if contract_zone != "":
+
+            if contract_zone != "" and contract_zone!="all_zone":            
                 sql += "and dept_id=" + contract_zone + " "
-            sql += "group by h.cnt_id, h.dly_date, cus.cus_name_th, cus.cus_name_en, z.zone_en "
+            sql += "group by h.cnt_id, h.dly_date, cus.cus_name_th, cus.cus_name_en, z.zone_en, h.dept_id "
             sql += "order by h.cnt_id"
             print("SQLLL :", sql)
-
             cursor.execute(sql)
             obj = cursor.fetchall()
-            if obj is not None:            
-                for item in obj:                    
+            if obj is not None:          
+                for item in obj:
+                    dept_name = zone_name_display_text(str(item[6]))
                     record = {
-                        "cnt_id":item[0], "dly_date":item[1].day, "cus_name_th":item[2], "cus_name_en":item[3], "zone_th":item[4], "total":item[5]
+                        "cnt_id":item[0], "dly_date":item[1].day, "cus_name_th":item[2], "cus_name_en":item[3], "zone_th":item[4], "total":item[5], "dept_name":dept_name
                     }
                     cnt_id_list.append(record)
 
@@ -1886,52 +1887,211 @@ def export_gpm_422_no_of_guard_operation_by_empl_by_zone_to_excel(request, *args
     return response
 
 
+def zone_name_display_text(zone_id):
+    zone_name = "N/A"
+
+    print("zone_id : ", zone_id)
+    if zone_id=="0":
+        zone_name = "Zone F"
+    elif zone_id=="2050":
+        zone_name = "A"
+    elif zone_id=="2051":
+        zone_name = "B"
+    elif zone_id=="2052":
+        zone_name = "C1"
+    elif zone_id=="2053":
+        zone_name = "D"
+    elif zone_id=="2054":
+        zone_name = "E"
+    elif zone_id=="2055":
+        zone_name = "F"
+    elif zone_id=="2056":
+        zone_name = "G"
+    elif zone_id=="2057":
+        zone_name = "H"
+    elif zone_id=="2058":
+        zone_name = "S"
+    elif zone_id=="2059":
+        zone_name = "Control"
+    elif zone_id=="2060":
+        zone_name = "PID"
+    elif zone_id=="2061":
+        zone_name = "SM"
+    elif zone_id=="2062":
+        zone_name = "P"
+    elif zone_id=="2063":
+        zone_name = "Nakornsrithamrat"
+    elif zone_id=="2064":
+        zone_name = "Krabi"
+    elif zone_id=="2065":
+        zone_name = "Suratthani"
+    elif zone_id=="2066":
+        zone_name = "Udonthani"
+    elif zone_id=="2067":
+        zone_name = "SP-ZoneC2"
+    elif zone_id=="2068":
+        zone_name = "K"
+    elif zone_id=="2069":
+        zone_name = "SP-ZoneC"
+    elif zone_id=="2070":
+        zone_name = "BEM"
+    elif zone_id=="2071":
+        zone_name = "I"
+    elif zone_id=="2073":
+        zone_name = "R"
+    elif zone_id=="3099":
+        zone_name = "ES Engineer"
+    elif zone_id=="3335":
+        zone_name = "SK"
+    elif zone_id=="9999":
+        zone_name = "Zone 0"
+
+    return zone_name
+
+
 @login_required(login_url='/accounts/login/')
 def export_post_manpower_to_excel(request, *args, **kwargs):
     response = HttpResponse(content_type='application/ms-excel')
     response['Content-Disposition'] = 'attachment; filename="Post Manpower Report.xls"'
 
-    contract_number_from = kwargs['contract_number_from']
-    contract_number_to = kwargs['contract_number_to']        
-    contract_start_date = kwargs['contract_start_date']
-    contract_start_date = datetime.datetime.strptime(contract_start_date, "%d/%m/%Y").date()
-    contract_end_date = kwargs['contract_end_date']
-    contract_end_date = datetime.datetime.strptime(contract_end_date, "%d/%m/%Y").date()
-    contract_zone_id = kwargs['contract_zone_id']
-
-    print(contract_number_from, contract_number_to, contract_start_date, contract_end_date, contract_zone_id)
-
     pickup_record = []
-    context = {}
+    context = {}    
+    
+    # amnaj
+    today_date = settings.TODAY_DATE.strftime("%Y-%m-%d")
+    contract_number_from = kwargs['contract_number_from']
+    contract_number_to = kwargs['contract_number_to']
+    contract_zone = kwargs['contract_zone_id']
+    
+    start_date = kwargs['contract_start_date']
+    end_date = kwargs['contract_end_date']
 
+    sd = datetime.datetime.strptime(start_date, "%d/%m/%Y").date()    
+    ed = datetime.datetime.strptime(end_date, "%d/%m/%Y").date()
+
+    print("DEBUG: ", today_date, contract_number_from, contract_number_to, contract_zone, sd, ed)
+    
+    # Get number of dasys    
+    number_of_days = abs((ed - sd).days) + 1
+    print("Days : ", number_of_days)
+
+    if number_of_days > 31: 
+        response = JsonResponse(data={        
+            "is_error": True,
+            "message": "สามารถเลือกจำนวนวันได้ไม่เกิน 1 เดือน",
+        })
+        response.status_code = 200
+        return response
+
+    # Get cnt_id list
+    cnt_id_list = []
+    record = {}
+    try:
+        cursor = connection.cursor()
+        for i in range(number_of_days):                        
+            sql = "select distinct h.cnt_id, h.dly_date, cus.cus_name_th, cus.cus_name_en, z.zone_en, sum(case when h.absent=0 then 1 else 0 end) as total, h.dept_id "
+            if (sd.strftime("%Y-%m-%d")==today_date):
+                sql += "from dly_plan h "
+            else:
+                sql += "from his_dly_plan h "
+            sql += "left join cus_contract con on h.cnt_id=con.cnt_id "
+            sql += "left join customer cus on con.cus_id=cus.cus_id and con.cus_brn=cus.cus_brn "
+            sql += "left join com_zone z on cus.cus_zone=z.zone_id "
+            sql += "where dly_date>='" + sd.strftime("%Y-%m-%d") + "' and dly_date<='" + sd.strftime("%Y-%m-%d") + "' "            
+            sql += "and h.cnt_id>=" + contract_number_from + " and h.cnt_id<=" + contract_number_to + " and h.absent=0 "
+            if contract_zone != "" and contract_zone!="all_zone":
+                sql += "and h.dept_id=" + contract_zone + " "
+            sql += "group by h.cnt_id, h.dly_date, cus.cus_name_th, cus.cus_name_en, z.zone_en, h.dept_id "
+            sql += "order by h.cnt_id"
+            # print("SQL :", sql)
+
+            cursor.execute(sql)
+            obj = cursor.fetchall()
+            if obj is not None:            
+                for item in obj:                    
+                    record = {
+                        "cnt_id":item[0], "dly_date":item[1].day, "cus_name_th":item[2], "cus_name_en":item[3], "zone_en":item[4], "total":item[5], "dept_id":item[6]
+                    }
+                    cnt_id_list.append(record)
+
+            sd += datetime.timedelta(days=1)
+        is_error = False
+    finally:        
+        cursor.close()
+    
+    # Get day list
+    day_list = []
+    sd = datetime.datetime.strptime(start_date, '%d/%m/%Y')
+    ed = datetime.datetime.strptime(end_date, '%d/%m/%Y')
+    for i in range(number_of_days):
+        day_list.append(sd.strftime("%d"))
+        sd += datetime.timedelta(days=1)
+
+    unique_cnt_id_list = { each['cnt_id'] : each for each in cnt_id_list }.values()
+
+    # Excel section
     wb = xlwt.Workbook(encoding='utf-8')
     ws = wb.add_sheet('Post Manpower')
 
     font_style = xlwt.XFStyle()
-    font_style.font.bold = True
+    # font_style.font.bold = True
     font_style = xlwt.easyxf('font: bold 1, height 200;')
-    ws.write(0, 0, "Period : " + str(contract_start_date.strftime("%d/%m/%Y")) + " - " + str(contract_end_date.strftime("%d/%m/%Y")), font_style)
+    ws.write(0, 0, "Period : " + str(sd.strftime("%d/%m/%Y")) + " - " + str(ed.strftime("%d/%m/%Y")), font_style)
 
     ws.col(0).width = int(5*260)
-    ws.col(1).width = int(10*260)
-    ws.col(2).width = int(10*260)
-    ws.col(3).width = int(20*260)
-    ws.col(4).width = int(5*260)
-    ws.col(5).width = int(8*260)
-    ws.col(6).width = int(15*260)
-    ws.col(7).width = int(18*260)
-    ws.col(8).width = int(12*260)
-    ws.col(9).width = int(30*260)    
-    ws.col(10).width = int(30*260)
+    ws.col(1).width = int(12*260)
+    ws.col(2).width = int(40*260)
+    ws.col(3).width = int(5*260)
 
-    font_style = xlwt.XFStyle()    
+    # Determine number of days        
+    columns = ['No', 'Cnt ID', 'Customer Name', 'Zone']
+    for col in day_list:
+        columns.append(col + "-05 ")
+
+    # Column Header
     font_style = xlwt.easyxf('font: bold 1, height 180;')
-    columns = ['No', 'Date', 'EMP ID', 'Name', 'Rank', 'Zone ID', 'Zone Name', 'Shift', 'CNT ID', 'CUS NAME (TH)', 'CUS NAME (EN)']
     for col_num in range(len(columns)):
         ws.write(1, col_num, columns[col_num], font_style)
-    
-    font_style = xlwt.XFStyle()
-    font_style = xlwt.easyxf('font: height 180;')
+
+    # Column Detail
+    # font_style = xlwt.easyxf('height 180;')
+    # font_style.font.bold = False
+    font_style = xlwt.easyxf('font: bold 0, height 180;')    
+    row_num = 2
+    counter = 1
+
+    if len(unique_cnt_id_list) > 0:
+        for row in unique_cnt_id_list:
+            cnt_id = row["cnt_id"]
+            cus_name_en = row["cus_name_en"]
+            dept_id = str(row["dept_id"]).strip()
+
+            for col_num in range(len(row)):
+                if col_num==0:
+                    ws.write(row_num, 0, counter, font_style)
+                elif col_num==1:
+                    ws.write(row_num, col_num, cnt_id, font_style)
+                elif col_num==2:
+                    ws.write(row_num, col_num, cus_name_en, font_style)
+                elif col_num==3:
+                    ws.write(row_num, col_num, zone_name_display_text(dept_id), font_style)
+
+            row_num += 1
+            counter += 1
+
+    # TODO    
+    col_num = 4
+    for count in range(number_of_days):
+        row_num = 2
+        for cnt_id in unique_cnt_id_list:
+            for item in cnt_id_list:
+                if int(cnt_id["cnt_id"]) == int(item["cnt_id"]):
+                    if int(day_list[count])==int(item["dly_date"]):                                    
+                        ws.write(row_num, col_num, item["total"], font_style)            
+            row_num = row_num + 1
+        col_num = col_num + 1
+        row_num = 2
+
     wb.save(response)
     return response
 

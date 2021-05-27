@@ -73,7 +73,7 @@
         <div class="float-right pb-1">
           <div class="d-flex flex-row-reverse">
 
-            <!--<button class="btn btn-success btn-sm" onclick="export_to_excel()">&nbsp;<i class="far fa-file-excel"></i>&nbsp;&nbsp;Export to Excel</button>-->
+            <button class="btn btn-success btn-sm" onclick="export_to_excel()">&nbsp;<i class="far fa-file-excel"></i>&nbsp;&nbsp;Export to Excel</button>
 
             {% comment %}
             <button class="btn btn-info btn-sm dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -338,7 +338,7 @@ function SearchFormSubmit() {
                     tbody_result += "<td>" + count + "</td>";
                     tbody_result += "<td>" + data.unique_cnt_id_list[i]["cnt_id"] + "</td>";
                     tbody_result += "<td>" + data.unique_cnt_id_list[i]["cus_name_en"] + "</td>";
-                    tbody_result += "<td nowrap>" + data.unique_cnt_id_list[i]["zone_th"] + "</td>";
+                    tbody_result += "<td nowrap>" + data.unique_cnt_id_list[i]["dept_name"] + "</td>";
 
 
 
