@@ -615,12 +615,17 @@
 						<div class="input-group-append float-right">
 							<input type="text" class="form-control form-control-xs w-200 border-success" placeholder="Filter Data" id="employee_search_text" style="border-top-right-radius:0px;border-bottom-right-radius:0px;" autocomplete="off">
 							<button class="btn btn-success btn-xs" type="button"  id="employee_search_clear_button" style="border-style: none none none none; border-top-left-radius:0px;border-bottom-left-radius:0px;">CLEAR</button>
-
+							
 							<!--
 			        		<span class='pl-2 pt-1 pr-2'>&nbsp;&nbsp;|&nbsp;&nbsp;</span><button id="print_scuedule_button" type="button" class="btn btn-primary btn-xs float-right">&nbsp;&nbsp;<i class="fas fa-print fa-sm"></i>&nbsp;&nbsp;{% trans 'Print' %}&nbsp;&nbsp;</button>
 							-->
 
-							<span class='pl-2 pt-1 pr-2'>&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+							<span class='pl-2 pt-1 pr-2'>&nbsp;&nbsp;|&nbsp;&nbsp;</span>							
+							<button class="btn btn-primary btn-xs" role="button" id="id_end_all_button" aria-haspopup="true" aria-expanded="false">
+								&nbsp;&nbsp;End All&nbsp;&nbsp;
+							</button>							
+							&nbsp;&nbsp;
+
 				            <ol class="breadcrumb float-sm-right p-0">
 				              <li>
 				                <button class="btn btn-outline-info btn-xs dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -642,7 +647,7 @@
 
 	      		</div>
 
-	      		<div class="col-12 table-responsive table-striped p-0">	      			
+	      		<div class="col-12 table-striped p-0">	      			
 					<table class='table table-sm dataTable' id="id_security_guard_list" style="white-space: nowrap;">
 					<thead>
 					<tr>
@@ -765,6 +770,63 @@
 	  </div>
 	</div>
 
+
+
+	<!-- End All modal -->
+	<div class="modal fade" id="id_end_all_modal" tabindex="-1" role="dialog">
+
+		<div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+		<div class="modal-content">
+			
+			<div class="modal-header bg-primary text-white" style="padding:7px;">
+			<h5 class="modal-title" id="exampleModalLongTitle"><strong>{% trans 'End All' %}</strong></h5>
+			<button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			</div>
+					
+			<div class="modal-body" style="padding:5px 5px 2px 5px;">        
+	
+			<div class="col-12 p-0">
+	
+				<form method="post" autocomplete="off" name="end_all_form">
+				{% csrf_token %}
+				
+				<div class="card-body p-0">
+					<div class="form-group">
+										
+					<div class="input-group col-12 p-0">                  
+						<div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:60px;">&nbsp;&nbsp;&nbsp;<i class="far fa-calendar-alt"></i></span></div>
+						<input type="text" name="end_all_date" class="form-control border-bottom-1 border-left-0 rounded-0 bg-white" style="width:50px;" id="id_end_all_date" placeholder="Enter date">
+					</div>
+	
+					<div class='col-12 pt-1 text-dark' id="confirmation_message"></div>
+					</div>
+				</div>
+				
+				<div class="text-danger pb-2">กรุณาตรวจสอบวันที่ให้แน่ใจก่อนทำรายการ</div>
+				</form>        
+				
+				
+			</div>
+	
+	
+			</div>
+	
+	
+	
+			<div class="modal-footer" style="padding:5px 5px 5px 0;">
+			<button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">&nbsp;&nbsp;{% trans 'Cancel' %}&nbsp;&nbsp;</button>
+			<button onclick="end_all_button_click()" type="button" class="btn btn-danger btn-sm">&nbsp;&nbsp;&nbsp;&nbsp;{% trans 'ยืนยัน' %}&nbsp;&nbsp;&nbsp;&nbsp;</button>
+			</div>
+	
+		</div>
+		</div>
+	
+	</div>
+
+
+
   </div>
   <!-- /.content-wrapper -->
 
@@ -774,15 +836,20 @@
 {% block javascript %}
 <script>	
 
+// amnaj fixed
 var table = $('#id_security_guard_list').DataTable({
   "paging": false,
-  "pageLength": 15,
+  //"pageLength": 15,
   "scrollCollapse": false,
   "lengthChange": false,
   "searching": true,
   "ordering": true,
   "info": false,
   "autoWidth": true,
+  fixedHeader:true,
+  "scrollX": true,
+  "scrollY": "200px",
+  "scrollCollapse": true,
   "dom": '<"top"i>rt<"bottom"><"clear">',
   "search": "_INPUT_",
   "searchPlaceholder": "Search",  
@@ -794,9 +861,9 @@ var table = $('#id_security_guard_list').DataTable({
   	{"targets": 0, "orderable": true},
   	{"targets": 1, "orderable": true},
   	{"targets": 2, "orderable": true},
-  	{"targets": 3, "orderable": false},
-  	{"targets": 4, "orderable": false},
-  	{"targets": 5, "orderable": false},
+  	{"targets": 3, "orderable": true},
+  	{"targets": 4, "orderable": true},
+  	{"targets": 5, "orderable": true},
   	{"targets": 6, "orderable": false},
   	{"targets": 7, "orderable": false},
   	{"targets": 8, "orderable": false},
@@ -987,7 +1054,177 @@ document.onkeydown = function(e) {
   }
 }
 
+
+// amnaj
+function end_all_button_click() {	 		
+	$.ajax({
+		url: "/monitoring/ajax/end_all_active_status/",        	
+		type: 'post',          
+		dataType: 'json',
+		data : {
+			csrfmiddlewaretoken: '{{ csrf_token }}',
+			cus_id: $("#id_cus_id").val(),
+			cus_brn: $("#id_cus_brn").val(),
+			cus_vol: $("#id_cus_vol").val(),			
+			end_all_date : $("#id_end_all_date").val(),
+		},          
+		success: function (data) {
+			if(data.is_error) {
+				$(document).Toasts('create', {
+					class: "bg-danger", 
+					title: "{% trans 'Error message' %}",
+					subtitle: '',
+					autohide: true,
+					delay: 2000,
+					body: data.message,
+					autoDismiss: true,
+					close: true,
+					autoremove: true,
+		  		});
+			} else {
+				$(document).Toasts('create', {
+					class: "bg-success", 
+					title: "{% trans 'Success message' %}",
+					subtitle: '',
+					autohide: true,
+					delay: 2000,
+					body: data.message,
+					autoDismiss: true,
+					close: true,
+					autoremove: true,
+		  		});
+
+				// Security Guard List
+				result = "";									
+				if(data.sch_plan_list.length>0) {
+					count = 1;
+					for(i=0; i<data.sch_plan_list.length; i++) {
+						result += "    <tr>";
+						result += "      <th scope='row'>" + count + "</th>";														
+						result += "      <td><b>" + data.sch_plan_list[i]["emp_id"] + "</b></a></b></td>";
+						result += "      <td><b><a href=javascript:update_sch_plan('" + data.sch_plan_list[i]["sch_no"] + "','" + data.sch_plan_list[i]["srv_id"] + "'); type='button'>" + data.sch_plan_list[i]["emp_fname_th"] + " " + data.sch_plan_list[i]["emp_lname_th"] + "</a></b></td>";
+
+						result += "      <td>" + data.sch_plan_list[i]["sch_rank"] + "</td>";
+						result += "      <td>" + data.sch_plan_list[i]["sch_date_frm"] + "</td>";
+						result += "      <td>" + data.sch_plan_list[i]["sch_date_to"] + "</td>";
+
+						if(data.sch_plan_list[i]["sch_shf_mon"] == "99") {
+							result += "      <td class='text-center text-danger'>OFF</td>";
+						}
+						else
+							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_mon"] + "</td>";
+						
+						if(data.sch_plan_list[i]["sch_shf_tue"] == "99") {
+							result += "      <td class='text-center text-danger'>OFF</td>";
+						}
+						else
+							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_tue"] + "</td>";
+
+						if(data.sch_plan_list[i]["sch_shf_wed"] == "99") {								
+							result += "      <td class='text-center text-danger'>OFF</td>";
+						}
+						else
+							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_wed"] + "</td>";
+
+						if(data.sch_plan_list[i]["sch_shf_thu"] == "99") {								
+							result += "      <td class='text-center text-danger'>OFF</td>";
+						}
+						else
+							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_thu"] + "</td>";
+
+						if(data.sch_plan_list[i]["sch_shf_fri"] == "99") {
+							result += "      <td class='text-center text-danger'>OFF</td>";
+						}								
+						else
+							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_fri"] + "</td>";
+						
+						if(data.sch_plan_list[i]["sch_shf_sat"] == "99") {
+							result += "      <td class='text-center text-danger'>OFF</td>";
+						}
+						else
+							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_sat"] + "</td>";
+						
+						if(data.sch_plan_list[i]["sch_shf_sun"] == "99") {
+							result += "      <td class='text-center text-danger'>OFF</td>";
+						}								
+						else
+							result += "      <td class='text-center'>" + data.sch_plan_list[i]["sch_shf_sun"] + "</td>";
+
+						if(data.sch_plan_list[i]["sch_active"]==1) {
+							result += "      <td class='text-center text-success'><span class='badge badge-success'>active</span></td>";
+						}
+						else
+							result += "      <td class='text-center'>&nbsp;</td>";
+
+						if(data.sch_plan_list[i]["relief"]==1) {
+							result += "      <td class='text-center text-success'><i class='fas fa-check fa-xs'></i></td>";
+						}
+						else
+							result += "      <td class='text-center'>&nbsp;</td>";
+
+						result += "      <td>" + data.sch_plan_list[i]["upd_date"] + "</td>";
+						result += "      <td>" + data.sch_plan_list[i]["upd_by"] + "</td>";
+						result += "      <td class='text-center'>" + data.sch_plan_list[i]["upd_flag"] + "</td>";
+						
+						result += "		 <td class='text-left align-center'>";
+
+						result += "		   <div class='btn-group btn-group-xs' mt-2>";								
+
+						result += "		     <a href=javascript:update_sch_plan('" + data.sch_plan_list[i]["sch_no"] + "','" + data.sch_plan_list[i]["srv_id"] + "'); type='button' class='btn btn-outline-primary btn-sm'><i class='fas fa-pen fa-xs'></i></a>";							
+						result += "		     &nbsp;&nbsp;";
+						result += "		     <a href=javascript:delete_sch_plan('" + data.sch_plan_list[i]["sch_no"] + "','" + data.sch_plan_list[i]["srv_id"] + "','" + data.sch_plan_list[i]["emp_id"] + "','" + data.sch_plan_list[i]["emp_fname_th"].trim() + "','" + data.sch_plan_list[i]["emp_lname_th"].trim() + "'); type='button' class='btn btn-outline-danger btn-sm'>";
+						result += "      		<i class='fas fa-trash fa-xs'></i>";
+						result += "   		</a>";
+						
+						result += "		   </div>";
+						result += "		 </td>";
+
+						result += "    </tr>";						
+						count++;
+					}
+				} else {
+					result = "<tr>";
+					result += "<td>&nbsp;</td>";
+					result += "<td>&nbsp;</td>";
+					result += "<td>&nbsp;</td>";
+					result += "<td>&nbsp;</td>";
+					result += "<td>&nbsp;</td>";
+					result += "<td>&nbsp;</td>";
+					result += "<td>&nbsp;</td>";
+					result += "<td>&nbsp;</td>";
+					result += "<td>&nbsp;</td>";
+					result += "<td>&nbsp;</td>";
+					result += "<td>&nbsp;</td>";
+					result += "<td>&nbsp;</td>";
+					result += "<td>&nbsp;</td>";
+					result += "<td>&nbsp;</td>";
+					result += "<td>&nbsp;</td>";
+					result += "<td>&nbsp;</td>";
+					result += "<td>&nbsp;</td>";
+					result += "<td>&nbsp;</td>";
+					result += "<td>&nbsp;</td>";
+					result += "</tr>";						
+				}
+
+				$("#security_guard_list_amount").html("Total <b>" + data.sch_plan_list.length + "</b>");
+				refresh_table(result);			
+			}
+			
+		},
+	});
+				
+	$("#id_end_all_modal").modal("hide");
+}
+
 $(document).ready(function(){
+	$('#id_end_all_date').datepicker({format: 'dd/mm/yyyy',altField: '#thealtdate',altFormat: 'dd/mm/yyyy',autoclose: true}).datepicker("setDate", new Date());
+
+	$("#id_end_all_button").on('click', function(){
+		$("#id_end_all_modal").modal("show");
+        $("#id_end_all_modal").draggable(); 	
+		return false;
+	});
+
  	$('#add_security_guard_button').on('click', function (e) {
  		
  		$("#id_selected_sch_no").val(0);
@@ -1153,10 +1390,6 @@ $(document).ready(function(){
 	});
 
  	$("#save_security_guard_button").click( function() {
-		// ironman 1
-		//alert("todo");
-		//return false;
-
     	event.preventDefault();    	
 
 		emp_id = $("#id_emp_id").val();
@@ -2212,7 +2445,7 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
           	cus_brn: cus_brn,
           	cus_vol: cus_vol,
         	},
-        	success : function(data) {				
+        	success : function(data) {			
 				
 				if(data.is_existed) {
 					$("#contract_service_list_form :input").attr("disabled", false);
@@ -2321,9 +2554,10 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 					//$(".card-contract-service-list .card-body").html(result);
 					$("#contract_service_list_amount").html("Total <b>" + data.cus_service_list.length + "</b>");
 
+
+					// amnaj
 					// Security Guard List
-					result = "";
-					// ironman 3
+					result = "";									
 					if(data.sch_plan_list.length>0) {
 						count = 1;
 						for(i=0; i<data.sch_plan_list.length; i++) {
@@ -2475,6 +2709,7 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 	}
 });
 
+// amnaj fixed
 function refresh_table(result) {
 	table.destroy();
 
@@ -2482,13 +2717,16 @@ function refresh_table(result) {
 	
 	table = $('#id_security_guard_list').DataTable({
 	  "paging": false,
-	  //"pageLength": 15,
 	  "scrollCollapse": true,
 	  "lengthChange": false,
 	  "searching": true,
 	  "ordering": true,
 	  "info": false,
-	  "autoWidth": true,
+	  "autoWidth": true,	  	  
+	  fixedHeader:true,
+  	  "scrollX": true,
+  	  "scrollY": "200px",
+  	  "scrollCollapse": true,
 	  "dom": '<"top"i>Brtip<"bottom"><"clear">',
 	  "search": "_INPUT_",
 	  "searchPlaceholder": "Search",  
@@ -2500,9 +2738,9 @@ function refresh_table(result) {
 	  	{"targets": 0, "orderable": true},
 	  	{"targets": 1, "orderable": true},
 	  	{"targets": 2, "orderable": true},
-	  	{"targets": 3, "orderable": false},
-	  	{"targets": 4, "orderable": false},
-	  	{"targets": 5, "orderable": false},
+	  	{"targets": 3, "orderable": true},
+	  	{"targets": 4, "orderable": true},
+	  	{"targets": 5, "orderable": true},
 	  	{"targets": 6, "orderable": false},
 	  	{"targets": 7, "orderable": false},
 	  	{"targets": 8, "orderable": false},
@@ -3347,9 +3585,9 @@ function search_employee_modal() {
 function reset_security_guard_list_form() {
 	$("#security_guard_list_form").trigger("reset");
 	$("#id_selected_sch_no").val(0);
-	$("#security_guard_list_form").trigger("reset");
+	//$("#security_guard_list_form").trigger("reset");
 	$("#save_security_guard_button").attr("disabled", true);
-	$("#security_guard_list_form :input").prop("disabled", true);
+	//$("#security_guard_list_form :input").prop("disabled", true);
 	$("#add_security_guard_button").attr("disabled", false);
 	$('input[type=radio][name=security_guard_list_status_option]').attr("disabled", false);
 	$("#id_emp_name_th").css("background-color", '');

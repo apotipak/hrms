@@ -16,6 +16,9 @@ urlpatterns = [
     path('daily-attendance/', views.DailyAttendance, name='daily-attendance'),    
     url(r'^ajax/delete_employee_schedule_maintenance/$', views.ajax_delete_employee_schedule_maintenance, name='ajax_delete_employee_schedule_maintenance'),
 
+    # End All Feature
+    url(r'^ajax/end_all_active_status/$', views.ajax_end_all_active_status, name='ajax_end_all_active_status'),
+
 	path('generate-daily-attend/', views.GenerateDailyAttend, name='generate-daily-attend'),
 	url(r'^ajax/sp_generate_daily_attend/$', views.ajax_sp_generate_daily_attend, name='ajax_sp_generate_daily_attend'),
 	url(r'^ajax/sp_generate_daily_attend_status/$', views.ajax_sp_generate_daily_attend_status, name='ajax_sp_generate_daily_attend_status'),
