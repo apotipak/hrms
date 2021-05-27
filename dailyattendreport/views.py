@@ -1911,7 +1911,7 @@ def zone_name_display_text(zone_id):
     elif zone_id=="2058":
         zone_name = "S"
     elif zone_id=="2059":
-        zone_name = "Control"
+        zone_name = "CR"
     elif zone_id=="2060":
         zone_name = "PID"
     elif zone_id=="2061":
@@ -1931,7 +1931,7 @@ def zone_name_display_text(zone_id):
     elif zone_id=="2068":
         zone_name = "K"
     elif zone_id=="2069":
-        zone_name = "SP-ZoneC"
+        zone_name = "C"
     elif zone_id=="2070":
         zone_name = "BEM"
     elif zone_id=="2071":
