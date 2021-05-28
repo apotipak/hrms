@@ -404,12 +404,14 @@ thead th { white-space: nowrap; }
 					              <label><input class="form-check-input" id="id_phone_check" name="phone_check" type="checkbox" /><span class="text-primary" style="cursor: pointer">Phone</span></label>&nbsp;&nbsp;&nbsp;&nbsp;
 					            </div>
 
-							    <div class="form-check d-inline float-right">
+								<!-- amnaj -->
+							    <div class="form-check d-inline float-right" id="id_crud_button">
 									<button id="add_button" type="button" class="btn btn-success btn-xs"><i class="fas fa-plus fa-xs"></i>&nbsp;&nbsp;{% trans 'New' %}</button>
 									<button id="reset_button" type="button" class="btn btn-secondary btn-xs">&nbsp;{% trans 'Cancel' %}</button>&nbsp;&nbsp;|&nbsp;&nbsp;
 						        	<button id="save_button" type="button" class="btn btn-primary btn-xs"><i class="fas fa-save fa-sm"></i>&nbsp;&nbsp;{% trans 'Save' %}</button>
 						        	<button id="delete_button" type="button" class="btn btn-danger btn-xs"><i class="fas fa-trash fa-sm"></i>&nbsp;&nbsp;{% trans 'Delete' %}</button>		        	
 							    </div>
+
 							</div>
 						  </div>
 
@@ -3073,7 +3075,13 @@ $("#id_late_hour").click( function() {
 					$("#cancelDailyAttendanceButton").removeAttr("disabled");
 
 					$("#tab2-tab").text(cus_name_th);
-
+									
+					if(data.allow_crud) {
+						$('#id_crud_button').show();
+					} else {
+						$('#id_crud_button').css('visibility', 'hidden');
+					}
+												
 					$.LoadingOverlay("hide");
 				} else {
 
@@ -5001,7 +5009,6 @@ $("#id_late_hour").click( function() {
     }
 
 
-	// amnaj 0
     // SAVE_BUTTON
     $(document).on('click', '#save_button', function(e) {
 
@@ -5416,7 +5423,6 @@ $("#id_late_hour").click( function() {
     	} else {
 			// EDIT MODE
 
-			// amnaj 1
     		//alert("EDIT RECORD");
 			//return false;
     	
@@ -5500,7 +5506,6 @@ $("#id_late_hour").click( function() {
 	    	} 
 			else {
 				// edit + เคสมาสาย + ควงรอ			
-				// amnaj 2
 
 				//alert("edit + มาสาย + ควงรอ" + " | " + ui_late_status + "," + late_hour + "," + late_full_paid_status);
 				//return false;
@@ -5674,7 +5679,6 @@ $("#id_late_hour").click( function() {
 		    		}
 		    	} else {
 		    		// Not absent / Not Call
-					// amnaj 3
 					//alert("c");
 					//return false;
 

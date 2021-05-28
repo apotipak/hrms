@@ -2222,6 +2222,9 @@ def ajax_sp_generate_daily_attend_status(request):
 
 
 def isGenerateDailyCreated(attendance_date,cnt_id,getPriorityStatus,gUSE,gADD,gEDIT,gDEL,gPREVIEW,gPRINT,gIM,gEX,gSALARY,gType,gOLD):
+	print("************************************")
+	print("FUNCTION: isGenerateDailyCreated()")
+	print("************************************")
 
 	# Implement ChkValidInput Case 3
 
@@ -2623,7 +2626,6 @@ def ajax_get_attendance_information(request):
 		return response	
 	else:
 		is_pass = True
-
 	
 	getPriorityStatus,gUSE,gADD,gEDIT,gDEL,gPREVIEW,gPRINT,gIM,gEX,gSALARY,gType,gOLD = getPriority(usr_id, form_name)
 
@@ -2632,7 +2634,10 @@ def ajax_get_attendance_information(request):
 	if gType != "":
 		getGaray(gType)
 
-	is_pass, message = isGenerateDailyCreated(attendance_date,cnt_id,getPriorityStatus,gUSE,gADD,gEDIT,gDEL,gPREVIEW,gPRINT,gIM,gEX,gSALARY,gType,gOLD)
+	# amnaj
+	# is_pass, message = isGenerateDailyCreated(attendance_date,cnt_id,getPriorityStatus,gUSE,gADD,gEDIT,gDEL,gPREVIEW,gPRINT,gIM,gEX,gSALARY,gType,gOLD)
+	# ไม่ตรวจสิทธิ์ดูข้อมูลการแจ้งเวรย้อนหลัง
+	is_pass = True
 
 	if is_pass:
 		attendance_date = request.POST.get('attendance_date')
@@ -2873,7 +2878,9 @@ def ajax_get_attendance_information(request):
 			elif daily_attendance_date < today_date.date():
 				# เช็คล็อคอินยูสเซอร์เป็น CMS_SUP หรือไม่
 				if username=='CMS_SUP':							
-					# aeiou
+					view_name = "v_hdlyplan"
+					table = " from " + str(view_name) + " where cnt_id=" + str(cnt_id) + " and dly_date='" + str(daily_attendance_date) + "' "
+				else:
 					view_name = "v_hdlyplan"
 					table = " from " + str(view_name) + " where cnt_id=" + str(cnt_id) + " and dly_date='" + str(daily_attendance_date) + "' "
 
@@ -3148,6 +3155,18 @@ def ajax_get_attendance_information(request):
 		is_found = False
 		message = message
 
+	
+	# ตรวจสอบการอนุญาติให้ใช้ปุ่ม
+	if view_name=="v_hdlyplan":
+		if request.user.username=='CMS_SUP':
+			allow_crud = True
+		else:
+			allow_crud = False
+	else:
+		allow_crud = True
+
+	print("allow_crud=", allow_crud)
+	
 	response = JsonResponse(data={
 	    "success": True,
 	    "is_found": is_found,
@@ -3171,6 +3190,7 @@ def ajax_get_attendance_information(request):
 		"totalNNM": totalNNM,
 		"totalPDM": totalPDM,
 		"totalPNM": totalPNM,
+		"allow_crud": allow_crud,
 	})
 	
 	response.status_code = 200
