@@ -195,11 +195,15 @@ def AJAXReportSearchContract(request):
 			cnt_eff_to = "<div class='text-left text-info'><i>Open ended</i></div>"
 
 		# print("|" + row[20].strip() + "|")
+		
+		'''
 		if (contract_zone=="2050") or (row[20].strip()=='SP'):
 			dept_sht_text = "A"
 		else:
 			dept_sht_text = dept_sht_text_display(row[20])
-		
+		'''	
+		dept_sht_text = zone_name_display_text(row[7])
+
 		total_sup_DN = row[9] + row[11]
 		total_nosup_DN = row[8] + row[10]
 		grand_total = total_sup_DN + total_nosup_DN
@@ -477,13 +481,15 @@ def export_contract_list_report(request, *args, **kwargs):
 				cus_name_en = row[1]
 				cus_name_th = row[2]
 				
-				cnt_zone = row[7]
-
+				# cnt_zone = row[7]			
+				'''
 				if (contract_zone=="2050") or (row[20].strip())=='SP':
 					dept_sht_text = "A"
 				else:
 					dept_sht_text = dept_sht_text_display(row[20])
-				
+				'''
+				dept_sht_text = zone_name_display_text(row[7])
+
 				cnt_sign_frm = "" if row[3] is None else str(row[3].strftime("%d/%m/%Y"))
 				cnt_sign_to = "" if row[4] is None else str(row[4].strftime("%d/%m/%Y"))
 				cnt_eff_frm = "" if row[5] is None else str(row[5].strftime("%d/%m/%Y"))				
