@@ -92,10 +92,26 @@ def ajax_get_customer(request):
 			cus_contract = CusContract.objects.filter(cnt_id=cnt_id).get()
 			cnt_doc_no = cus_contract.cnt_doc_no
 			cnt_active = cus_contract.cnt_active
-			cnt_sign_frm = cus_contract.cnt_sign_frm.strftime("%d/%m/%Y")
-			cnt_sign_to = cus_contract.cnt_sign_to.strftime("%d/%m/%Y")			
-			cnt_eff_frm = cus_contract.cnt_eff_frm.strftime("%d/%m/%Y")
-			cnt_eff_to = cus_contract.cnt_eff_to.strftime("%d/%m/%Y")
+
+			if cus_contract.cnt_sign_frm is not None:
+				cnt_sign_frm = cus_contract.cnt_sign_frm.strftime("%d/%m/%Y")
+			else:
+				cnt_sign_frm = ""
+
+			if cus_contract.cnt_sign_to is not None:
+				cnt_sign_to = cus_contract.cnt_sign_to.strftime("%d/%m/%Y")
+			else:
+				cnt_sign_to = ""
+			
+			if cus_contract.cnt_eff_frm is not None:
+				cnt_eff_frm = cus_contract.cnt_eff_frm.strftime("%d/%m/%Y")
+			else:
+				cnt_eff_frm = ""
+
+			if cus_contract.cnt_eff_to is not None:
+				cnt_eff_to = cus_contract.cnt_eff_to.strftime("%d/%m/%Y")
+			else:
+				cnt_eff_to = ""
 
 			if cus_contract.cnt_wage_id is not None:
 				if cus_contract.cnt_wage_id != "":
