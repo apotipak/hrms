@@ -2525,7 +2525,7 @@ def ajax_get_attendance_information(request):
 	print("********************************************")	
 
 	# กำหนดค่าเริ่มต้น
-	is_pass = False			# กำหนดให้เป็น False ไว้ก่อน
+	is_pass = False			# กำหนดให้เป็น False
 	message = ""
 	form_name = "frmD200"	# ค่าได้มาจากชื่อฟอร์ม D200: Daily Attendance
 	username = request.user.username	# ชื่อผู้ล็อคอิน
@@ -2753,7 +2753,7 @@ def ajax_get_attendance_information(request):
 			sql = "select date_chk,gen_chk,end_chk,pro_chk from t_date where date_chk='" + str(daily_attendance_date) + "'"
 			cursor1 = connection.cursor()
 			cursor1.execute(sql)	
-			t_date_obj = cursor1.fetchall()			
+			t_date_obj = cursor1.fetchall()
 			# ตรวจสอบค่า gen_chk, end_chk, prp_chk ของวันที่ต้องการดึงข้อมูล
 			if (t_date_obj is not None):
 				if len(t_date_obj)>0:

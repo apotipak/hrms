@@ -2593,7 +2593,8 @@ $("#id_late_hour").click( function() {
     }
 
     
-	// ID_CUS_VOL    
+	// ID_CUS_VOL
+	// amnaj
     $(document).on('keypress', '#id_cus_vol', function(e) {
       if(e.which == 13) {            
 
@@ -3076,8 +3077,9 @@ $("#id_late_hour").click( function() {
 
 					$("#tab2-tab").text(cus_name_th);
 									
+					
 					if(data.allow_crud) {
-						$('#id_crud_button').show();
+						$('#id_crud_button').css('visibility', 'visible');
 					} else {
 						$('#id_crud_button').css('visibility', 'hidden');
 					}
