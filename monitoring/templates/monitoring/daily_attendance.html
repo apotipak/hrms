@@ -201,10 +201,14 @@ thead th { white-space: nowrap; }
 								</div>
 
 								<div class="col-4 float-right p-0 pt-1">
-								  
+								  									
 								  <div class="input-group-append float-right">
-								  	<input type="text" class="form-control form-control-xs w-200 border-success" placeholder="Filter Data" id="employee_search_text" style="border-top-right-radius:0px;border-bottom-right-radius:0px;" autocomplete="off">
-								    <button class="btn btn-success btn-xs" type="button"  id="employee_search_clear_button" style="border-style: none none none none; border-top-left-radius:0px;border-bottom-left-radius:0px;">CLEAR</button>
+									
+								  	<input type="text" class="form-control form-control-xs border-secondary" placeholder="Filter Data" id="employee_search_text" style="border-top-right-radius:0px;border-bottom-right-radius:0px;" autocomplete="off">
+
+								    <button class="btn btn-secondary btn-xs" type="button"  id="employee_search_clear_button" style="border-style: none none none none; border-top-left-radius:0px;border-bottom-left-radius:0px;">CLEAR</button>
+
+								    &nbsp;&nbsp;|&nbsp;&nbsp;<button class="btn btn-outline-success btn-xs" href="#" onclick="export_to_excel();">&nbsp;&nbsp;<i class="far fa-file-excel"></i>&nbsp;&nbsp;Export</button>
 								  </div>
 									
 								</div>
@@ -217,7 +221,7 @@ thead th { white-space: nowrap; }
 
 								<font size='2em;'>
 																
-								<table id='employee_list_table' class='table table-sm' style="margin:0; white-space: nowrap; width: 100%;">
+								<table id='employee_list_table' class='table table-sm dataTable' style="margin:0; white-space: nowrap; width: 100%;">
 								  <thead class="bg-secondary">
 								    <tr>
 								      <th scope='col' class='d-none text-center' nowrap>Absent Status</th>
@@ -1037,7 +1041,6 @@ $(document).ready( function () {
 
 
 	$(function () {
-
 	    var table = $('#employee_list_table').DataTable({
 	      "paging": false,
 	      "scrollY": "200px",
@@ -1087,9 +1090,43 @@ $(document).ready( function () {
 			{"targets": 30, "orderable": false},
 			{"targets": 31, "orderable": false},
 			{"targets": 32, "orderable": false},
-		  ],		  
+		  ],
+		  "dom": 'Brtip',
+		  buttons: [
+		    {
+		        extend: 'print',
+		        title: '',
+		        exportOptions: {
+		          columns: [ 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21]
+		        }
+		    },
+		    {
+		        extend: 'excelHtml5',        
+		        title: '',
+		        exportOptions: {
+		          columns: [ 0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21]
+		        },
+		        filename: function() {
+		        	d = new Date();
+		        	n = d.getTime();	        
+
+					date_display = d.getDate() + "_" + d.getMonth() + "_" + d.getFullYear() + "_" + d.getHours() + "." + d.getMinutes() + "." + d.getSeconds();
+
+					cus_id = $('#id_cus_id').val();
+			      	cus_brn = $('#id_cus_brn').val();
+			      	cus_vol = $('#id_cus_vol').val();
+					customer_number = parseInt(cus_id + cus_brn + cus_vol);		
+		        	return 'my_daily_attendance_' + customer_number + "_" + date_display;
+		        },
+		    },
+		  ]		  		  
 	    });
     
+		table.buttons('.buttons-print').nodes().css("display", "none");
+		table.buttons('.buttons-excel').nodes().css("display", "none");
+		table.buttons('.buttons-pdf').nodes().css("display", "none");
+
+		//columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 /*
 	<thead class="bg-secondary">
@@ -6339,6 +6376,11 @@ $("#id_late_hour").click( function() {
 		$("#id_shift_option").css('border-color','');
 		$("#id_shift_option").css('border-style',''); 		
  	}
+
+	function export_to_excel() {
+	  $(".buttons-excel").trigger("click");  
+	}
+
 </script>
 {% endblock %}
 		
