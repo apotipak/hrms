@@ -8,7 +8,7 @@ click-didyoumean==0.0.3
 click-plugins==1.1.1
 click-repl==0.1.6
 comtypes==1.1.7
-Django==3.0.7
+Django==3.1.12
 django-mssql-backend==2.8.1
 django-post-office==3.4.1
 django-widget-tweaks==1.4.8
