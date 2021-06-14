@@ -269,6 +269,12 @@ function showLoading() {
                 case "png":
                     $("#id_file_attach_data").html("<b>ไฟล์แนบ</b><br><img src='data:image/png;base64," + data.file_attach_data + "' style='width:300px;'/>");			
                     break;
+                case "gif":
+                    $("#id_file_attach_data").html("<b>ไฟล์แนบ</b><br><img src='data:image/gif;base64," + data.file_attach_data + "' style='width:300px;'/>");
+                    break;                    
+                case "pdf":
+                    $("#id_file_attach_data").html("<embed src='" + data.file_attach_data + "' width='500' height='375' type='application/pdf'>");
+                    break;
                 default:
                     $("#id_file_attach_data").html("<b>ไฟล์แนบ</b> : " + data.file_attach_type + " is not supported");
             }            
