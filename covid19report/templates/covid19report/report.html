@@ -115,22 +115,12 @@ $(document).ready( function () {
 
     $(window).keydown(function(event){
         if(event.keyCode == 13) {
-        event.preventDefault();
-        return false;
+            event.preventDefault();
+            return false;
         }
     });
 
 });
-
-
-var input = document.getElementById("id_emp_id");
-input.addEventListener("keyup", function(event) {
-  if (event.keyCode === 13) {
-    event.preventDefault();
-    return false;
-  }
-});
-
 
 function print_document() {
   var contract_number_from = $("#id_contract_number_from").val();
@@ -274,7 +264,7 @@ function showLoading() {
                     $("#id_file_attach_data").html("<b>ไฟล์แนบ</b> : ไม่มีไฟล์แนบ");
                     break;
                 case "jpg":
-                    $("#id_file_attach_data").html("<b>ไฟล์แนบ</b><br><img src='data:image/jpg;base64," + data.file_attach_data + "' style='width:400%;'/>");			
+                    $("#id_file_attach_data").html("<b>ไฟล์แนบ</b><br><img src='data:image/jpg;base64," + data.file_attach_data + "' style='width:40%;'/>");			
                     break;
                 case "png":
                     $("#id_file_attach_data").html("<b>ไฟล์แนบ</b><br><img src='data:image/png;base64," + data.file_attach_data + "' style='width:40%;'/>");			
