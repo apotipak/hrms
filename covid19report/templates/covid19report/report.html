@@ -42,7 +42,7 @@
 
                
                 <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:120px;"><b>รหัสพนักงาน</b></span></div>
-                <input type="number" min=0 maxlength="6" id="id_emp_id" name="emp_id" class="form-control border-bottom-1 border-left-0 rounded-0 bg-white" style="width:50px;" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" value="900538" />
+                <input type="number" min=0 maxlength="6" id="id_emp_id" name="emp_id" class="form-control border-bottom-1 border-left-0 rounded-0 bg-white" style="width:50px;" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" value="" />
 
                 <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:165px;"><b>สถานะการฉีดวัคซีน</b></span></div>                
                 <select id="id_get_vaccine_status_option" name="get_vaccine_status_option" class="form-control form-control-md" style="border-radius: 0; width: 100px;">
@@ -54,7 +54,7 @@
                 </select>
   
                 &nbsp;&nbsp;
-                <a href="javascript:SearchFormSubmit();" class="btn btn-primary" role="button"><i class="fas fa-search fa-sm"></i>&nbsp;&nbsp;ค้นหา</a>                
+                <a href="javascript:SearchFormSubmit();" class="btn btn-primary" role="button"><i class="fas fa-search fa-sm"></i>&nbsp;&nbsp;ค้นหา</a>
                 
                 <!--
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink"> 
@@ -103,7 +103,32 @@
 <script>
 
 $(document).ready( function () {
-  //
+    /*
+    $('#id_emp_id').keyup(function(e){
+        if(e.keyCode == 13) {
+            e.preventDefault();
+            //$("#id_get_vaccine_status_option").focus();
+            return false;
+        }
+    });
+    */
+
+    $(window).keydown(function(event){
+        if(event.keyCode == 13) {
+        event.preventDefault();
+        return false;
+        }
+    });
+
+});
+
+
+var input = document.getElementById("id_emp_id");
+input.addEventListener("keyup", function(event) {
+  if (event.keyCode === 13) {
+    event.preventDefault();
+    return false;
+  }
 });
 
 
@@ -249,10 +274,10 @@ function showLoading() {
                     $("#id_file_attach_data").html("<b>ไฟล์แนบ</b> : ไม่มีไฟล์แนบ");
                     break;
                 case "jpg":
-                    $("#id_file_attach_data").html("<img src='data:image/jpg;base64," + data.file_attach_data + "' style='width:100%;'/>");			
+                    $("#id_file_attach_data").html("<b>ไฟล์แนบ</b><br><img src='data:image/jpg;base64," + data.file_attach_data + "' style='width:400%;'/>");			
                     break;
                 case "png":
-                    $("#id_file_attach_data").html("<img src='data:image/png;base64," + data.file_attach_data + "' style='width:100%;'/>");			
+                    $("#id_file_attach_data").html("<b>ไฟล์แนบ</b><br><img src='data:image/png;base64," + data.file_attach_data + "' style='width:40%;'/>");			
                     break;
                 default:
                     $("#id_file_attach_data").html("<b>ไฟล์แนบ</b> : " + data.file_attach_type + " is not supported");
