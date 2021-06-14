@@ -183,6 +183,32 @@
           <!-- /.col -->
           {% endif %}
 
+
+
+          {% if perms.covid19report.can_access_covid_19_report %}
+          <!--<div class="col-12 col-sm-12 col-md-6">-->
+          <div class="col-6 offset-3">
+            <div class="info-box mb-4">
+              <span class="info-box-icon" style="background-color:#006600 !important"><i class="fas fa-syringe text-white"></i></span>
+              <div class="info-box-content">
+                <div class="col-12">
+                  <h5>
+                    <span>{% trans 'Covid-19 Report' %}</span>
+                    
+                    <!--<a href="/contract/" type="button" class="btn btn-outline-primary float-right">{% trans 'Open' %}</a>-->
+                    <a href="{% url 'view_covid_19_report' %}" type="button" class="btn btn-outline-primary float-right">{% trans 'Open' %}</a>
+
+                  </h5>
+                </div>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+          {% endif %}
+          
+          
         </div>
         <!-- /.row -->
 
