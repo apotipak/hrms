@@ -17,7 +17,6 @@ from page.rules import *
 from base64 import b64encode
 
 
-# Create your views here.
 @permission_required('covid19report.can_access_covid_19_report', login_url='/accounts/login/')
 def ViewCovid19Report(request):
 	user_language = getDefaultLanguage(request.user.username)
@@ -32,7 +31,7 @@ def ViewCovid19Report(request):
 	today_year = timezone.now().year
 	today_date = str(today_day) + "-" + today_month + "-" + str(today_year)	
 
-	return render(request, 'covid19report/report.html', {
+	return render(request, 'covid19report/report_by_person.html', {
         'page_title': page_title, 
         'project_name': project_name, 
         'project_version': project_version,
@@ -132,4 +131,28 @@ def AjaxCovid19Report(request):
 	return response
 
 
+
+@permission_required('covid19report.can_access_covid_19_report', login_url='/accounts/login/')
+def ViewCovid19ReportByStatus(request):
+	user_language = getDefaultLanguage(request.user.username)
+	translation.activate(user_language)	
+
+	page_title = settings.PROJECT_NAME
+	db_server = settings.DATABASES['default']['HOST']
+	project_name = settings.PROJECT_NAME
+	project_version = settings.PROJECT_VERSION  
+	today_day = timezone.now().strftime('%d')
+	today_month = timezone.now().strftime('%m')
+	today_year = timezone.now().year
+	today_date = str(today_day) + "-" + today_month + "-" + str(today_year)	
+
+	return render(request, 'covid19report/report_by_status.html', {
+        'page_title': page_title, 
+        'project_name': project_name, 
+        'project_version': project_version,
+        'db_server': db_server, 
+        'today_date': today_date,
+        'database': settings.DATABASES['default']['NAME'],
+        'host': settings.DATABASES['default']['HOST'],
+	})
 

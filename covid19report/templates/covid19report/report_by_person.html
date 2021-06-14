@@ -1,4 +1,4 @@
-{% extends "page_report.html" %}
+{% extends "page_covid_report.html" %}
 
 {% load i18n %}
 {% block title %} {{ page_title}} - {% trans 'Report' %} {% endblock %}
@@ -14,7 +14,7 @@
     <section class="content">
 
       <div class="card-header" style="padding: 0 2px 10px 0;">        
-        <h5 class="card-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;<b>รายงานสถานะการฉีดวัคซีน COVID-19</b>&nbsp;&nbsp;</h5>
+        <h5 class="card-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;<b>รายงานการฉีดวัคซีนรายบุคคล</b>&nbsp;&nbsp;</h5>
         <br>
         <div class="float-right pb-1">
           <div class="d-flex flex-row-reverse">
@@ -38,8 +38,8 @@
           <div class="card-body p-0 pt-2">
             <div class="form-group">
 
-              <div class="input-group col-12">
-
+              
+              <div class="input-group col-8 offset-2">
                
                 <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:120px;"><b>รหัสพนักงาน</b></span></div>
                 <input type="number" min=0 maxlength="6" id="id_emp_id" name="emp_id" class="form-control border-bottom-1 border-left-0 rounded-0 bg-white" style="width:50px;" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" value="" />
