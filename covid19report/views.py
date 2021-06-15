@@ -293,7 +293,7 @@ def download_pdf(request, *args, **kwargs):
 	get_vaccine_place = ""
 
 	sql = "select * from covid_employee_vaccine_update where emp_id=" + emp_id + " and get_vaccine_status=" + get_vaccine_status_option + ";"
-	print("SQL : ", sql)
+	print("SQLTEST : ", sql)
 	try:        
 		cursor = connection.cursor()
 		cursor.execute(sql)
@@ -358,13 +358,10 @@ def download_pdf(request, *args, **kwargs):
 		if file_attach_type!="":
 			allowed_file_types = {'JPG','JPEG','PNG','GIF'}
 			if file_attach_type.upper() in allowed_file_types:
-				print("pass")
 				binary_img = BytesIO(employee_info[7]) 
 				document.add_picture(binary_img, width=Inches(2))
 				last_paragraph = document.paragraphs[-1]
 				last_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
-			else:
-				print("fail")
 			
 		document.save(MEDIA_ROOT + '/covid19/download/' + file_name + ".docx")    
 
