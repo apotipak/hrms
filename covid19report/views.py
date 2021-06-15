@@ -160,22 +160,43 @@ def AjaxReportByStatus(request):
 	emp_id = request.POST.get('emp_id')
 	emp_type = request.POST.get('emp_type')
 	post_id = request.POST.get('post_id')
-
-	print(emp_id)
-	print(emp_type)
-	print(post_id)
 	
 	employee_obj = None
 	employee_list = []
 	record = {}	
 	message = ""
 
+
+	if get_vaccine_status_option=="":
+		response = JsonResponse(data={        
+			"is_error": True,
+			"message": "ไม่พบข้อมูล",
+			"employee_list": list(employee_list),
+		})
+		response.status_code = 200
+		return response
+
+
 	sql = "select "
 	sql += "emp_id,full_name,phone_number,get_vaccine_status,get_vaccine_date,get_vaccine_place,"
 	sql += "file_attach,file_attach_data,file_attach_type,upd_date,upd_by,upd_flag,op1,op2,op3,"
 	sql += "op4,op5,opd1,opd2 "
-	sql += "from covid_employee_vaccine_update where get_vaccine_status=" + str(get_vaccine_status_option) + ";"
-	print("SQL11 : ", sql)
+	sql += "from covid_employee_vaccine_update "
+	sql += "where get_vaccine_status=" + str(get_vaccine_status_option)
+
+	if emp_id!="":
+		sql += " and emp_id=" + str(emp_id)
+	
+	if emp_type!="":
+		sql += " and op3='" + str(emp_type) + "'"
+
+	if post_id!="":
+		sql += " and op4='" + str(post_id) + "'"
+	
+	sql += ";"
+
+	# print("SQL11 : ", sql)
+
 	try:                
 		cursor = connection.cursor()
 		cursor.execute(sql)

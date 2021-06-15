@@ -39,11 +39,11 @@
 
                 <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:80px;"><b>ประเภท</b></span></div>
                 <select id="id_emp_type_option" name="id_emp_type_option" class="form-control form-control-md" style="border-radius: 0; width: 100px;">
-                  <option value="">เลือกประเภทพนักงาน</option>
+                  <option value="">ทั้งหมด</option>
                   <option value="M1">M1</option>
                   <option value="M2">M3</option>
-                  <option value="M3">M5</option>
-                  <option value="D4">D1</option>
+                  <option value="M5">M5</option>
+                  <option value="D1">D1</option>
                 </select>                
 
                 <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:125px;"><b>รหัสหน่วยงาน</b></span></div>
@@ -384,14 +384,14 @@ function showLoading() {
                 buttons: [
                     {
                         extend: 'print',
-                        title: 'รายงานการฉีดวัคซีนโควิด-19 - แยกตามสถานะ',
+                        title: '',
                         exportOptions: {
                           columns: [0,1,2,3,4,5,6,7,8,9]
                         }
                     },
                     {
                         extend: 'excelHtml5',        
-                        title: 'รายงานการฉีดวัคซีนโควิด-19 - แยกตามสถานะ',
+                        title: '',
                         exportOptions: {
                           columns: [0,1,2,3,4,5,6,7,8,9]
                         }
