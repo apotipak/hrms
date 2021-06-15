@@ -292,6 +292,8 @@ def download_pdf(request, *args, **kwargs):
 	get_vaccine_date = ""
 	get_vaccine_place = ""
 
+	allowed_file_types = {'JPG','JPEG','PNG','GIF'}
+
 	sql = "select * from covid_employee_vaccine_update where emp_id=" + emp_id + " and get_vaccine_status=" + get_vaccine_status_option + ";"
 	print("SQLTEST : ", sql)
 	try:        
@@ -312,7 +314,10 @@ def download_pdf(request, *args, **kwargs):
 		full_name = employee_info[1]
 		phone_number = employee_info[2]
 		get_vaccine_status_option = employee_info[3]
-		get_vaccine_date = employee_info[4]
+		
+		get_vaccine_date = employee_info[4].strftime("%d-%m-%Y %H:00")
+		
+
 		get_vaccine_place = employee_info[5]		
 		file_attach_type = employee_info[8]
 
@@ -330,17 +335,28 @@ def download_pdf(request, *args, **kwargs):
 		font = style.font
 		font.name = 'AngsanaUPC'
 		font.size = Pt(14)
-
-		if file_attach_type!="":
-			context = {
-				"emp_id": emp_id,
-				"full_name": full_name,
-				"phone_number": phone_number,
-				"get_vaccine_status_option_text": get_vaccine_status_option_text,
-				"get_vaccine_date": get_vaccine_date,
-				"get_vaccine_place": get_vaccine_place,
-				"is_file_attached": ""
-			}
+		
+		if file_attach_type!="" :
+			if file_attach_type.upper() in allowed_file_types:
+				context = {
+					"emp_id": emp_id,
+					"full_name": full_name,
+					"phone_number": phone_number,
+					"get_vaccine_status_option_text": get_vaccine_status_option_text,
+					"get_vaccine_date": get_vaccine_date,
+					"get_vaccine_place": get_vaccine_place,
+					"is_file_attached": ""
+				}
+			else:
+				context = {
+					"emp_id": emp_id,
+					"full_name": full_name,
+					"phone_number": phone_number,
+					"get_vaccine_status_option_text": get_vaccine_status_option_text,
+					"get_vaccine_date": get_vaccine_date,
+					"get_vaccine_place": get_vaccine_place,
+					"is_file_attached": "ไม่รองรับไฟล์ประเภท " + str(file_attach_type.upper())
+				}
 		else:
 			context = {
 				"emp_id": emp_id,
@@ -356,7 +372,7 @@ def download_pdf(request, *args, **kwargs):
 		
 
 		if file_attach_type!="":
-			allowed_file_types = {'JPG','JPEG','PNG','GIF'}
+			# allowed_file_types = {'JPG','JPEG','PNG','GIF'}
 			if file_attach_type.upper() in allowed_file_types:
 				binary_img = BytesIO(employee_info[7]) 
 				document.add_picture(binary_img, width=Inches(2))
