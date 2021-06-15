@@ -88,7 +88,7 @@ def AjaxCovid19Report(request):
 		
 		get_vaccine_status = employee_obj[3]
 		get_vaccine_date = employee_obj[4].strftime("%d/%m/%Y")
-		get_vaccine_time = employee_obj[4].strftime("%H:%M")
+		get_vaccine_time = employee_obj[4].strftime("%H:00")
 		get_vaccine_place = employee_obj[5]
 		file_attach_data = b64encode(employee_obj[7]).decode("utf-8")
 		file_attach_type = employee_obj[8]

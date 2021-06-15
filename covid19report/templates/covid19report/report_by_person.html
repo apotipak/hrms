@@ -54,7 +54,7 @@
                 </select>
   
                 &nbsp;&nbsp;
-                <a href="javascript:SearchFormSubmit();" class="btn btn-primary" role="button"><i class="fas fa-search fa-sm"></i>&nbsp;&nbsp;ค้นหา</a>
+                <a href="javascript:SearchFormSubmit();" class="btn btn-secondary" role="button"><i class="fas fa-search fa-sm"></i>&nbsp;&nbsp;ค้นหา</a>
                 
                 <!--
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink"> 
@@ -67,6 +67,7 @@
 
               </div>
 
+              <!--
               <div class="col-12 pt-2" id="id_search_result">
                 <div id="id_emp_id_result"></div>
                 <div id="id_emp_full_name_result"></div>
@@ -77,14 +78,93 @@
                 <div id="id_get_vaccine_place_result"></div>
                 <div id="id_file_attach_data"></div>
               </div>
+              -->
 
             </div>
           </div>
 
         </form>        
 
-      </div>
-      <!-- /.col -->
+
+        <div class="card">
+            
+            <div class="card-header d-flex p-0">
+              <h3 class="card-title p-3">&nbsp;</h3>
+              <ul class="nav nav-pills ml-auto p-2">                
+                <li class="nav-item dropdown">
+                    <a class="btn btn-sm btn-outline-secondary" href="#"><i class="far fa-file-pdf text-danger"></i>&nbsp;&nbsp;Download PDF</a>
+                    <!--
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
+                        Print <span class="caret"></span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" tabindex="-1" href="#">Print Preview</a>
+                        <a class="dropdown-item" tabindex="-1" href="#">Download PDF</a>
+                    </div>
+                    -->
+                </li>
+              </ul>
+            </div><!-- /.card-header -->
+
+            <div class="card-body">
+              <div class="tab-content p-0">
+
+                    <div class="form-group row p-0">
+                      <label for="id_emp_id_result" class="col-sm-2 col-form-label">รหัสพนักงาน</label>
+                      <div class="col-sm-10">
+                        <input type="text" readonly class="form-control-plaintext border" id="id_emp_id_result" value="" disabled>
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="id_emp_full_name_result" class="col-sm-2 col-form-label">ชื่อพนักงาน</label>
+                        <div class="col-sm-10">
+                          <input type="text" readonly class="form-control-plaintext border" id="id_emp_full_name_result" value="" disabled>
+                        </div>
+                    </div>
+                  
+                    <div class="form-group row">
+                        <label for="id_phone_number_result" class="col-sm-2 col-form-label">โทรศัพท์</label>
+                        <div class="col-sm-10">
+                          <input type="text" readonly class="form-control-plaintext border" id="id_phone_number_result" value="" disabled>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="id_get_vaccine_status_option_text" class="col-sm-2 col-form-label">สถานะการฉีดวัคซีน</label>
+                        <div class="col-sm-10">
+                          <input type="text" readonly class="form-control-plaintext border" id="id_get_vaccine_status_option_text" value="" disabled>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="id_get_vaccine_date_result" class="col-sm-2 col-form-label">วันที่ฉีดวัคซีน</label>
+                        <div class="col-sm-10">
+                          <input type="text" readonly class="form-control-plaintext border" id="id_get_vaccine_date_result" value="" disabled>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="id_get_vaccine_place_result" class="col-sm-2 col-form-label">สถานที่</label>
+                        <div class="col-sm-10">
+                          <input type="text" readonly class="form-control-plaintext border" id="id_get_vaccine_place_result" value="" disabled>
+                        </div>
+                    </div>                    
+
+                    <div class="form-group row">
+                        <label for="id_file_attach_data" class="col-sm-2 col-form-label">ไฟล์แนบ</label>
+                        <div class="col-sm-10">
+                          <div id="id_file_attach_data">&nbsp;</div>
+                        </div>
+                    </div>
+
+              </div>
+              <!-- /.tab-content -->
+            </div><!-- /.card-body -->
+          </div>
+          <!-- ./card -->
+        </div>
+        <!-- /.col -->
 
       </div>
     
@@ -112,6 +192,8 @@ $(document).ready( function () {
         }
     });
     */
+    
+    $("#id_emp_id").focus();
 
     $(window).keydown(function(event){
         if(event.keyCode == 13) {
@@ -249,34 +331,43 @@ function showLoading() {
             });
             $("#id_search_result").hide();
         } else {
-            $("#id_emp_id_result").html("<b>รหัสพนักงาน</b>&nbsp;" + data.emp_id);
-            $("#id_emp_full_name_result").html("<b>ชื่อพนักงาน</b>&nbsp;" + data.full_name);
-            $("#id_phone_number_result").html("<b>เบอร์โทร</b>&nbsp;" + data.phone_number);
-            $("#id_get_vaccine_status_option_text").html("<b>รายการนัดหมาย</b>&nbsp;" + data.get_vaccine_status_option_text);
-            $("#id_get_vaccine_date_result").html("<b>วันที่รับการฉีดวัคซีน</b>&nbsp;" + data.get_vaccine_date);
-            $("#id_get_vaccine_time_result").html("<b>เวลา</b>&nbsp;" + data.get_vaccine_time);
-            $("#id_get_vaccine_place_result").html("<b>สถานที่</b>&nbsp;" + data.get_vaccine_place + "<br>");
+            
+            $("#id_emp_id_result").val(data.emp_id);
+            $("#id_emp_full_name_result").val(data.full_name);
+            $("#id_phone_number_result").val(data.phone_number);
+            $("#id_get_vaccine_status_option_text").val(data.get_vaccine_status_option_text);
+            $("#id_get_vaccine_date_result").val(data.get_vaccine_date + " เวลา " + data.get_vaccine_time);
+            $("#id_get_vaccine_place_result").val(data.get_vaccine_place);
+
+            
+            //$("#id_emp_id_result").html("<b>รหัสพนักงาน</b>&nbsp;" + data.emp_id);
+            //$("#id_emp_full_name_result").html("<b>ชื่อพนักงาน</b>&nbsp;" + data.full_name);
+            //$("#id_phone_number_result").html("<b>เบอร์โทร</b>&nbsp;" + data.phone_number);
+            //$("#id_get_vaccine_status_option_text").html("<b>รายการนัดหมาย</b>&nbsp;" + data.get_vaccine_status_option_text);
+            //$("#id_get_vaccine_date_result").html("<b>วันที่รับการฉีดวัคซีน</b>&nbsp;" + data.get_vaccine_date);
+            //$("#id_get_vaccine_time_result").html("<b>เวลา</b>&nbsp;" + data.get_vaccine_time);
+            //$("#id_get_vaccine_place_result").html("<b>สถานที่</b>&nbsp;" + data.get_vaccine_place + "<br>");
 
             //alert(data.file_attach_type);
 
             switch(data.file_attach_type) {
                 case "":
-                    $("#id_file_attach_data").html("<b>ไฟล์แนบ</b> : ไม่มีไฟล์แนบ");
+                    $("#id_file_attach_data").html("<input type='text' readonly class='form-control-plaintext border' value='ไม่มีไฟล์แนบ' disabled>");                    
                     break;
                 case "jpg":
-                    $("#id_file_attach_data").html("<b>ไฟล์แนบ</b><br><img src='data:image/jpg;base64," + data.file_attach_data + "' style='width:300px;'/>");
+                    $("#id_file_attach_data").html("<img src='data:image/jpg;base64," + data.file_attach_data + "' style='height:250px;'/>");
                     break;
                 case "png":
-                    $("#id_file_attach_data").html("<b>ไฟล์แนบ</b><br><img src='data:image/png;base64," + data.file_attach_data + "' style='width:300px;'/>");			
+                    $("#id_file_attach_data").html("<img src='data:image/png;base64," + data.file_attach_data + "' style='height:250px;'/>");			
                     break;
                 case "gif":
-                    $("#id_file_attach_data").html("<b>ไฟล์แนบ</b><br><img src='data:image/gif;base64," + data.file_attach_data + "' style='width:300px;'/>");
+                    $("#id_file_attach_data").html("<img src='data:image/gif;base64," + data.file_attach_data + "' style='height:250px;'/>");
                     break;                    
                 case "pdf":
-                    $("#id_file_attach_data").html("<embed src='" + data.file_attach_data + "' width='500' height='375' type='application/pdf'>");
+                    $("#id_file_attach_data").html("<input type='text' readonly class='form-control-plaintext border' value='ไฟล์ที่แนบมาไม่สามารถเปิดได้ กรุณาติดต่อพนักงานเพื่อทำการอัพโหลดไฟล์ใหม่อีกครั้ง' disabled>");
                     break;
-                default:
-                    $("#id_file_attach_data").html("<b>ไฟล์แนบ</b> : " + data.file_attach_type + " is not supported");
+                default:                    
+                    $("#id_file_attach_data").html("<input type='text' readonly class='form-control-plaintext border' value='ไฟล์ที่แนบมาไม่สามารถเปิดได้ กรุณาติดต่อพนักงานเพื่อทำการอัพโหลดไฟล์ใหม่อีกครั้ง' disabled>");
             }            
 
             $("#id_search_result").show();
@@ -287,11 +378,6 @@ function showLoading() {
       }
     });
   }  
-
-  $(document).ready(function () {    
-    //$('#id_start_date').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", new Date());
-    //$('#id_end_date').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", new Date());
-  });
 
   </script>
 {% endblock %}  

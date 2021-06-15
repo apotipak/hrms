@@ -41,7 +41,7 @@
 
               <div class="input-group col-6 offset-3">
         
-                <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:165px;"><b>สถานะการฉีดวัคซีน</b></span></div>                
+                <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:165px;"><b>สถานะการฉีดวัคซีน</b></span></div>
                 <select id="id_get_vaccine_status_option" name="get_vaccine_status_option" class="form-control form-control-md" style="border-radius: 0; width: 100px;">
                     <option value="0">เลือกสถานะการฉีดวัคซีน</option>
                     <option value="1">นัดหมายเพื่อฉีดวัคซีนข็มที่ 1</option>
@@ -51,7 +51,7 @@
                 </select>
   
                 &nbsp;&nbsp;
-                <a href="javascript:SearchFormSubmit();" class="btn btn-primary" role="button"><i class="fas fa-search fa-sm"></i>&nbsp;&nbsp;ค้นหา</a>
+                <a href="javascript:SearchFormSubmit();" class="btn btn-secondary" role="button"><i class="fas fa-search fa-sm"></i>&nbsp;&nbsp;ค้นหา</a>
                 
                 <!--
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink"> 
@@ -79,6 +79,55 @@
           </div>
 
         </form>        
+
+        <div class="card">
+            
+            <div class="card-header d-flex p-0">
+              <h3 class="card-title p-3">&nbsp;</h3>
+              <ul class="nav nav-pills ml-auto p-2">                
+                <li class="nav-item">
+                  <a class="btn btn-sm btn-outline-secondary" href="#"><i class="far fa-file-excel text-success"></i>&nbsp;&nbsp;Export to Excel</a>
+                </li>
+              </ul>
+            </div><!-- /.card-header -->
+
+            <div class="card-body">
+
+              <div>
+                <table class="table table-hover table-sm">
+                    <thead class="bg-secondary">
+                      <tr>
+                        <td scope="col">รหัส</td>
+                        <td scope="col">ชื่อ</td>
+                        <td scope="col">เบอร์โทร</td>
+                        <td scope="col">สถานะการฉีดวัคซีน</td>
+                        <td scope="col">วันที่ฉีดวัคซีน</td>
+                        <td scope="col">สถานที่</td>
+                        <td scope="col">ไฟล์แนบ</td>
+                        <td scope="col">&nbsp;</td>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                      </tr>
+                    </tbody>
+                  </table>
+            
+              </div>
+              <!-- /.tab-content -->
+
+            </div><!-- /.card-body -->
+          </div>
+          <!-- ./card -->
+        
 
       </div>
       <!-- /.col -->
