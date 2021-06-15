@@ -194,7 +194,7 @@ def AjaxReportByStatus(request):
 				"full_name": full_name,
 				"phone_number": phone_number,
 				"get_vaccine_status_option_text": get_vaccine_status_option_text,
-				"get_vaccine_date": get_vaccine_date,
+				"get_vaccine_date": get_vaccine_date + " " + get_vaccine_time,
 				"get_vaccine_place": get_vaccine_place,
 				"file_attach": file_attach
 			}
