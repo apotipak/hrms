@@ -374,11 +374,19 @@ def download_pdf(request, *args, **kwargs):
 		if file_attach_type!="":
 			# allowed_file_types = {'JPG','JPEG','PNG','GIF'}
 			if file_attach_type.upper() in allowed_file_types:
-				binary_img = BytesIO(employee_info[7]) 
-				document.add_picture(binary_img, width=Inches(2))
-				last_paragraph = document.paragraphs[-1]
-				last_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
-			
+				binary_img = BytesIO(employee_info[7])
+
+				# document.add_picture(binary_img, width=Inches(2))
+				# last_paragraph = document.paragraphs[-1]
+				# last_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
+				
+				tables = document.tables
+				p = tables[1].rows[0].cells[0].add_paragraph()
+				r = p.add_run()
+				r.add_picture(binary_img, width=Inches(3))
+				p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+				r = p.add_run("\n")
+
 		document.save(MEDIA_ROOT + '/covid19/download/' + file_name + ".docx")    
 
 		docx_file = path.abspath("media\\covid19\\download\\" + file_name + ".docx")
