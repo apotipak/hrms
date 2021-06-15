@@ -43,11 +43,12 @@
         
                 <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:165px;"><b>สถานะการฉีดวัคซีน</b></span></div>
                 <select id="id_get_vaccine_status_option" name="get_vaccine_status_option" class="form-control form-control-md" style="border-radius: 0; width: 100px;">
-                    <option value="0">เลือกสถานะการฉีดวัคซีน</option>
-                    <option value="1">นัดหมายเพื่อฉีดวัคซีนข็มที่ 1</option>
-                    <option value="2">ได้รับการฉีดวัคซีนเข็มที่ 1 เรียบร้อยแล้ว</option>
-                    <option value="3">นัดหมายเพื่อฉีดวัคซีนข็มที่ 2</option>
-                    <option value="4">ได้รับการฉีดวัคซีนเข็มที่ 2 เรียบร้อยแล้ว</option>
+                    <option value="">เลือกสถานะการฉีดวัคซีน</option>
+                    <option value="0">พนักงานที่ยังไม่เคยได้รับการฉีดวัคซีน</option>
+                    <option value="1">พนักงานที่มีนัดหมายเพื่อฉีดวัคซีนข็มที่ 1</option>
+                    <option value="2">พนักงานที่ได้รับการฉีดวัคซีนเข็มที่ 1 เรียบร้อยแล้ว</option>
+                    <option value="3">พนักงานที่มีนัดหมายเพื่อฉีดวัคซีนข็มที่ 2</option>
+                    <option value="4">พนักงานได้รับการฉีดวัคซีนเข็มที่ 2 เรียบร้อยแล้ว</option>
                 </select>
                 &nbsp;&nbsp;
                 <a href="javascript:SearchFormSubmit();" class="btn btn-success" role="button"><i class="fas fa-search fa-sm"></i>&nbsp;&nbsp;ค้นหา</a>
@@ -82,7 +83,7 @@
                         <th scope="col">สถานะการฉีดวัคซีน</th>
                         <th scope="col">วันที่ฉีดวัคซีน</th>
                         <th scope="col">สถานที่</th>
-                        <th scope="col" class="text-center">ไฟล์แนบ</th>
+                        <th scope="col" class="d-none text-center">ไฟล์แนบ</th>
                         <th scope="col" class='d-none'>ไฟล์แนบ</th>
                         <th scope="col" class="text-center"><i class="fas fa-sm fa-download"></i></th>
                       </tr>
@@ -95,7 +96,7 @@
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
-                        <td>&nbsp;</td>
+                        <td class='d-none'>&nbsp;</td>
                         <td class='d-none'>&nbsp;</td>
                         <td>&nbsp;</td>
                       </tr>
@@ -154,14 +155,14 @@ var table = $('#employee_list_table').DataTable({
             extend: 'print',
             title: '',
             exportOptions: {
-            columns: [ 0,1,2,3,4,5,7]
+            columns: [ 0,1,2,3,4,5]
             }
         },
         {
             extend: 'excelHtml5',        
             title: '',
             exportOptions: {
-            columns: [ 0,1,2,3,4,5,7]
+            columns: [ 0,1,2,3,4,5]
             }
         },
     ]
@@ -254,7 +255,8 @@ function showLoading() {
   function SearchFormSubmit() {        
     var get_vaccine_status_option = $('#id_get_vaccine_status_option').val();
 
-    if(get_vaccine_status_option=="0") {
+    //if(get_vaccine_status_option=="0") {
+    if(get_vaccine_status_option=="") {
         $(document).Toasts('create', {
           class: "bg-danger", 
           title: "{% trans 'Error' %}",
@@ -312,15 +314,21 @@ function showLoading() {
                 result += "<td>" + data.employee_list[i]['get_vaccine_place'] + "</td>";
 
                 if(data.employee_list[i]['file_attach']!="") {
-                    result += "<td class='text-center'><i class='fas fa-xs fa-check text-success'></i></td>";
+                    result += "<td class='d-none text-center'><i class='fas fa-xs fa-check text-success'></i></td>";
                     result += "<td class='d-none'>Y</td>";
                 } else {
-                    result += "<td class='text-center'><i class='fas fa-xs fa-times text-danger'></i></td>";
+                    result += "<td class='d-none text-center'><i class='fas fa-xs fa-times text-danger'></i></td>";
                     result += "<td class='d-none'>N</td>";
                 }                
               
                 result += "<td class='text-center' nowrap>";
-                result += '<a href="#" onclick="download_pdf(\'' + emp_id + '\');">&nbsp;&nbsp;<small>PDF</small>&nbsp;&nbsp;</a>';              
+                
+                if(data.employee_list[i]['get_vaccine_status_option']=="0") {
+                  result += '&nbsp;';
+                } else {
+                  result += '<a href="#" onclick="download_pdf(\'' + emp_id + '\');">&nbsp;&nbsp;<small>Download</small>&nbsp;&nbsp;</a>';
+                }
+                
                 result += "</td>";
 
                 result += "</tr>";          
@@ -357,14 +365,14 @@ function showLoading() {
                         extend: 'print',
                         title: 'รายงานการฉีดวัคซีนโควิด-19 - แยกตามสถานะ',
                         exportOptions: {
-                        columns: [ 0,1,2,3,4,5,7]
+                        columns: [ 0,1,2,3,4,5]
                         }
                     },
                     {
                         extend: 'excelHtml5',        
                         title: 'รายงานการฉีดวัคซีนโควิด-19 - แยกตามสถานะ',
                         exportOptions: {
-                        columns: [ 0,1,2,3,4,5,7]
+                        columns: [ 0,1,2,3,4,5]
                         }
                     },
                 ]

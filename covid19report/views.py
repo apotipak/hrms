@@ -157,6 +157,7 @@ def ViewCovid19ReportByStatus(request):
 def AjaxReportByStatus(request):    
 	today_date = settings.TODAY_DATE.strftime("%d/%m/%Y")
 	get_vaccine_status_option = request.POST.get('get_vaccine_status_option')
+	print("AAA : ", get_vaccine_status_option)
 
 	employee_obj = None
 	employee_list = []
@@ -164,6 +165,7 @@ def AjaxReportByStatus(request):
 	message = ""
 
 	sql = "select * from covid_employee_vaccine_update where get_vaccine_status=" + str(get_vaccine_status_option) + ";"
+	print("SQL : ", sql)
 	try:                
 		cursor = connection.cursor()
 		cursor.execute(sql)
@@ -179,15 +181,19 @@ def AjaxReportByStatus(request):
 		for item in employee_obj:
 			emp_id = item[0]
 			full_name = item[1]
-			phone_number = item[2]			
-			get_vaccine_status = item[3]
-			get_vaccine_date = item[4].strftime("%d/%m/%Y")
-			get_vaccine_time = item[4].strftime("%H:00")
-			get_vaccine_place = item[5]
-			file_attach = item[6]
-			file_attach_data = b64encode(item[7]).decode("utf-8")
-			file_attach_type = item[8]
+			phone_number = item[2] if item[2] is not None else ""			
+			get_vaccine_status = item[3] if item[3] is not None else ""
+			get_vaccine_date = item[4].strftime("%d/%m/%Y") if item[4] is not None else ""
+			get_vaccine_time = item[4].strftime("%H:00") if item[4] is not None else ""
+			get_vaccine_place = item[5] if item[5] is not None else ""
+			file_attach = item[6] if item[6] is not None else ""
+			
+			# file_attach_data = b64encode(item[7]).decode("utf-8")
+			file_attach_data = b64encode(item[7]).decode("utf-8") if item[7] is not None else ""
+			file_attach_type = item[8] if item[8] is not None else ""
 
+			if get_vaccine_status_option=="0":
+				get_vaccine_status_option_text = "พนักงานที่ยังไม่เคยได้รับการฉีดวัคซีน"
 			if get_vaccine_status_option=="1":
 				get_vaccine_status_option_text = "นัดหมายเพื่อฉีดวัคซีนข็มที่ 1"
 			elif get_vaccine_status_option=="2":
@@ -197,10 +203,14 @@ def AjaxReportByStatus(request):
 			elif get_vaccine_status_option=="4":
 				get_vaccine_status_option_text = "ได้รับการฉีดวัคซีนเข็มที่ 2 เรียบร้อยแล้ว"
 
+			# print("DEBUG111 : ", get_vaccine_status_option_text)
+
+
 			record = {
 				"emp_id": emp_id,
 				"full_name": full_name,
 				"phone_number": phone_number,
+				"get_vaccine_status_option": get_vaccine_status_option,
 				"get_vaccine_status_option_text": get_vaccine_status_option_text,
 				"get_vaccine_date": get_vaccine_date + " " + get_vaccine_time,
 				"get_vaccine_place": get_vaccine_place,
@@ -304,14 +314,17 @@ def download_pdf(request, *args, **kwargs):
 
 		document.render(context)
 		
+
 		if file_attach_type!="":
-			if file_attach_type.upper()!="PDF":
+			allowed_file_types = {'JPG','JPEG','PNG','GIF'}
+			if file_attach_type.upper() in allowed_file_types:
+				print("pass")
 				binary_img = BytesIO(employee_info[7]) 
 				document.add_picture(binary_img, width=Inches(2))
 				last_paragraph = document.paragraphs[-1]
 				last_paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
 			else:
-				document.add
+				print("fail")
 			
 		document.save(MEDIA_ROOT + '/covid19/download/' + file_name + ".docx")    
 
