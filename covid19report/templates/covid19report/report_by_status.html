@@ -49,31 +49,10 @@
                     <option value="3">นัดหมายเพื่อฉีดวัคซีนข็มที่ 2</option>
                     <option value="4">ได้รับการฉีดวัคซีนเข็มที่ 2 เรียบร้อยแล้ว</option>
                 </select>
-  
                 &nbsp;&nbsp;
-                <a href="javascript:SearchFormSubmit();" class="btn btn-secondary" role="button"><i class="fas fa-search fa-sm"></i>&nbsp;&nbsp;ค้นหา</a>
-                
-                <!--
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink"> 
-                  <span style="font-size: 14px;">
-                  <a class="dropdown-item" href="#" onclick="print_document()"><i class="fas fa-desktop text-secondary"></i>&nbsp;&nbsp;Display on screen</a>
-                  <a class="dropdown-item" href="#" onclick="export_to_excel()"><i class="far fa-file-excel text-secondary"></i>&nbsp;&nbsp;&nbsp;&nbsp;Export to Excel</a>
-                  </span>
-                </div>
-                -->
-
+                <a href="javascript:SearchFormSubmit();" class="btn btn-secondary" role="button"><i class="fas fa-search fa-sm"></i>&nbsp;&nbsp;ค้นหา</a>                
               </div>
 
-              <div class="col-12 pt-2" id="id_search_result">
-                <div id="id_emp_id_result"></div>
-                <div id="id_emp_full_name_result"></div>
-                <div id="id_phone_number_result"></div>
-                <div id="id_get_vaccine_status_option_text"></div>
-                <div id="id_get_vaccine_date_result"></div>
-                <div id="id_get_vaccine_time_result"></div>
-                <div id="id_get_vaccine_place_result"></div>
-                <div id="id_file_attach_data"></div>
-              </div>
 
             </div>
           </div>
@@ -82,19 +61,19 @@
 
         <div class="card">
             
-            <div class="card-header d-flex p-0">
-              <h3 class="card-title p-3">&nbsp;</h3>
-              <ul class="nav nav-pills ml-auto p-2">                
+            <div class="card-header d-flex">
+              <h3 class="card-title">&nbsp;</h3>
+              <ul class="nav nav-pills ml-auto">                
                 <li class="nav-item">
                   <a class="btn btn-sm btn-outline-secondary" href="#"><i class="far fa-file-excel text-success"></i>&nbsp;&nbsp;Export to Excel</a>
                 </li>
               </ul>
-            </div><!-- /.card-header -->
+            </div>
 
             <div class="card-body">
 
               <div>
-                <table class="table table-striped table-sm dataTable" id="employee_list_table">
+                <table class="table table-striped dataTable" id="employee_list_table">
                     <thead class="bg-secondary">
                       <tr>
                         <td scope="col">รหัส</td>
@@ -104,7 +83,7 @@
                         <td scope="col">วันที่ฉีดวัคซีน</td>
                         <td scope="col">สถานที่</td>
                         <td scope="col" class="text-center">ไฟล์แนบ</td>
-                        <td scope="col">&nbsp;</td>
+                        <td scope="col" class="text-center"><i class="fas fa-sm fa-download"></i></td>
                       </tr>
                     </thead>
                     <tbody>
@@ -335,8 +314,8 @@ function showLoading() {
                     result += "<td class='text-center'><i class='fas fa-xs fa-times text-danger'></i></td>";
                 }                
 
-                result += "<td class='text-right' nowrap>";
-                result += " <a href='#' onclick='edit_item(" + data.employee_list[i]['emp_id'] + ")'><i class='fas fa-xs fa-download'>&nbsp;&nbsp;<small>PDF</small></i>&nbsp;&nbsp;</a>";
+                result += "<td class='text-center' nowrap>";
+                result += " <a href='#' onclick='edit_item(" + data.employee_list[i]['emp_id'] + ")'>&nbsp;&nbsp;<small>PDF</small>&nbsp;&nbsp;</a>";
                 result += "</tr>";          
             }
         
