@@ -65,7 +65,7 @@
               <h3 class="card-title">&nbsp;</h3>
               <ul class="nav nav-pills ml-auto">                
                 <li class="nav-item">
-                  <a class="btn btn-sm btn-outline-secondary" href="#"><i class="far fa-file-excel"></i>&nbsp;&nbsp;Export to Excel</a>
+                  <a class="btn btn-sm btn-outline-secondary" href="#" onclick="export_to_excel();"><i class="far fa-file-excel"></i>&nbsp;&nbsp;Export to Excel</a>                
                 </li>
               </ul>
             </div>
@@ -83,6 +83,7 @@
                         <th scope="col">วันที่ฉีดวัคซีน</th>
                         <th scope="col">สถานที่</th>
                         <th scope="col" class="text-center">ไฟล์แนบ</th>
+                        <th scope="col" class='d-none'>ไฟล์แนบ</th>
                         <th scope="col" class="text-center"><i class="fas fa-sm fa-download"></i></th>
                       </tr>
                     </thead>
@@ -95,6 +96,7 @@
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
+                        <td class='d-none'>&nbsp;</td>
                         <td>&nbsp;</td>
                       </tr>
                     </tbody>
@@ -142,7 +144,7 @@ var table = $('#employee_list_table').DataTable({
     },
     "columnDefs": [
         {
-        "targets": [2,3,4,5,6,7],
+        "targets": [2,3,4,5,6,7,8],
         "orderable": false
         }    
     ],  
@@ -152,14 +154,14 @@ var table = $('#employee_list_table').DataTable({
             extend: 'print',
             title: '',
             exportOptions: {
-            columns: [ 0,1,2,3,4,5]
+            columns: [ 0,1,2,3,4,5,7]
             }
         },
         {
             extend: 'excelHtml5',        
             title: '',
             exportOptions: {
-            columns: [ 0,1,2,3,4,5]
+            columns: [ 0,1,2,3,4,5,7]
             }
         },
     ]
@@ -310,9 +312,13 @@ function showLoading() {
 
                 if(data.employee_list[i]['file_attach']!="") {
                     result += "<td class='text-center'><i class='fas fa-xs fa-check text-success'></i></td>";
+                    result += "<td class='d-none'>Y</td>";
                 } else {
                     result += "<td class='text-center'><i class='fas fa-xs fa-times text-danger'></i></td>";
+                    result += "<td class='d-none'>N</td>";
                 }                
+
+                
 
                 result += "<td class='text-center' nowrap>";
                 result += " <a href='#' onclick='edit_item(" + data.employee_list[i]['emp_id'] + ")'>&nbsp;&nbsp;<small>PDF</small>&nbsp;&nbsp;</a>";
@@ -336,7 +342,7 @@ function showLoading() {
                 },
                 "columnDefs": [
                     {
-                    "targets": [2,3,4,5,6,7],
+                    "targets": [2,3,4,5,6,7,8],
                     "orderable": false
                     }    
                 ],  
@@ -344,16 +350,16 @@ function showLoading() {
                 buttons: [
                     {
                         extend: 'print',
-                        title: '',
+                        title: 'รายงานการฉีดวัคซีนโควิด-19 - แยกตามสถานะ',
                         exportOptions: {
-                        columns: [ 0,1,2,3,4,5]
+                        columns: [ 0,1,2,3,4,5,7]
                         }
                     },
                     {
                         extend: 'excelHtml5',        
-                        title: '',
+                        title: 'รายงานการฉีดวัคซีนโควิด-19 - แยกตามสถานะ',
                         exportOptions: {
-                        columns: [ 0,1,2,3,4,5]
+                        columns: [ 0,1,2,3,4,5,7]
                         }
                     },
                 ]
@@ -368,6 +374,10 @@ function showLoading() {
       }
     });
   }  
+
+    function export_to_excel() {
+        $(".buttons-excel").trigger("click");  
+    }
 
   </script>
 {% endblock %}  
