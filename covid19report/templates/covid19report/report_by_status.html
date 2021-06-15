@@ -37,7 +37,7 @@
                 <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:120px;"><b>รหัสพนักงาน</b></span></div>
                 <input type="number" min=0 maxlength="6" id="id_emp_id" name="emp_id" class="form-control border-bottom-1 border-left-0 rounded-0 bg-white" style="width:50px;" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" value="" />
 
-                <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:120px;"><b>ประเภท</b></span></div>
+                <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:80px;"><b>ประเภท</b></span></div>
                 <select id="id_emp_type_option" name="id_emp_type_option" class="form-control form-control-md" style="border-radius: 0; width: 100px;">
                   <option value="">เลือกประเภทพนักงาน</option>
                   <option value="M1">M1</option>
@@ -46,7 +46,7 @@
                   <option value="D4">D1</option>
                 </select>                
 
-                <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:120px;"><b>รหัสหน่วยงาน</b></span></div>
+                <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:125px;"><b>รหัสหน่วยงาน</b></span></div>
                 <input type="number" min=0 maxlength="10" id="id_post_id" name="post_id" class="form-control border-bottom-1 border-left-0 rounded-0 bg-white" style="width:50px;" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" value="" />
 
                 <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:165px;"><b>สถานะการฉีดวัคซีน</b></span></div>
@@ -190,15 +190,6 @@ table.buttons('.buttons-excel').nodes().css("display", "none");
 table.buttons('.buttons-pdf').nodes().css("display", "none");
 
 $(document).ready( function () {
-    /*
-    $('#id_emp_id').keyup(function(e){
-        if(e.keyCode == 13) {
-            e.preventDefault();
-            //$("#id_get_vaccine_status_option").focus();
-            return false;
-        }
-    });
-    */
 
     $(window).keydown(function(event){
         if(event.keyCode == 13) {
@@ -271,9 +262,15 @@ function showLoading() {
 
 
   function SearchFormSubmit() {        
-    var get_vaccine_status_option = $('#id_get_vaccine_status_option').val();
+    var get_vaccine_status_option = $('#id_get_vaccine_status_option').val();  
+    var emp_id = $("#id_emp_id").val();
+    var emp_type = $("#id_emp_type_option").val();
+    var post_id = $("#id_post_id").val();
+    
+    //console.log(get_vaccine_status_option);
+    //console.log(emp_id + "," + emp_type + "," + post_id);
+    //return false;
 
-    //if(get_vaccine_status_option=="0") {
     if(get_vaccine_status_option=="") {
         $(document).Toasts('create', {
           class: "bg-danger", 
@@ -303,6 +300,9 @@ function showLoading() {
       data: {
         csrfmiddlewaretoken: '{{ csrf_token }}',
         get_vaccine_status_option: get_vaccine_status_option,
+        emp_id: emp_id,
+        emp_type: emp_type,
+        post_id: post_id,
       },
       success : function(data) {              
         if(data.is_error) {

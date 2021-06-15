@@ -157,8 +157,14 @@ def ViewCovid19ReportByStatus(request):
 def AjaxReportByStatus(request):    
 	today_date = settings.TODAY_DATE.strftime("%d/%m/%Y")
 	get_vaccine_status_option = request.POST.get('get_vaccine_status_option')
-	print("AAA : ", get_vaccine_status_option)
+	emp_id = request.POST.get('emp_id')
+	emp_type = request.POST.get('emp_type')
+	post_id = request.POST.get('post_id')
 
+	print(emp_id)
+	print(emp_type)
+	print(post_id)
+	
 	employee_obj = None
 	employee_list = []
 	record = {}	
