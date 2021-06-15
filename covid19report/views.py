@@ -21,6 +21,7 @@ from docx.shared import Cm, Mm, Pt, Inches
 from os import path
 from django.http import FileResponse
 from docx2pdf import convert
+from io import BytesIO
 
 
 @permission_required('covid19report.can_access_covid_19_report', login_url='/accounts/login/')
@@ -256,13 +257,13 @@ def download_pdf(request, *args, **kwargs):
 		cursor.close()
 
 	if employee_info is not None:		
-		# print(employee_info[1])
 		emp_id = employee_info[0]
 		full_name = employee_info[1]
 		phone_number = employee_info[2]
 		get_vaccine_status_option = employee_info[3]
 		get_vaccine_date = employee_info[4]
 		get_vaccine_place = employee_info[5]
+		file_attach_data = b64encode(employee_info[7]).decode("utf-8")
 
 		if get_vaccine_status_option==1:
 			get_vaccine_status_option_text = "นัดหมายเพื่อฉีดวัคซีนข็มที่ 1"
@@ -289,6 +290,10 @@ def download_pdf(request, *args, **kwargs):
 		}
 
 		document.render(context)
+		
+		binary_img = BytesIO(employee_info[7]) 
+		document.add_picture(binary_img)
+
 		document.save(MEDIA_ROOT + '/covid19/download/' + file_name + ".docx")    
 
 		docx_file = path.abspath("media\\covid19\\download\\" + file_name + ".docx")
