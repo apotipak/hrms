@@ -201,21 +201,22 @@ function download_pdf() {
     var emp_id_result = $('#id_emp_id_result').val();
 
     if(emp_id_result=="") {
-        $.alert({
-            title: 'Error',
-            type: 'red',
-            content: "กรุณาเลือกข้อมูลสำหรับทำรายการ",
-            animation: 'zoom',
-            animationBounce: 1.5,
-            closeIcon: false,
-            boxWidth: '38%',
-            useBootstrap: false,
+        $(document).Toasts('create', {
+            class: "bg-danger", 
+            title: "{% trans 'Error' %}",
+            subtitle: '',
+            autohide: true,
+            delay: 2000,
+            body: "กรุณาเลือกข้อมูลสำหรับทำรายการ",
+            autoDismiss: true,
+            close: true,
+            autoremove: true,
         });
+        $("#id_emp_id").focus();  
         return false;
-    } else {
-        alert("TODO");
+    } else {        
         var href = "/reports/covid-19/download-pdf/" + emp_id + "/" + get_vaccine_status_option + "/";
-        // window.open(href,'_blank');        
+        window.open(href,'_blank');        
     }
 }  
 

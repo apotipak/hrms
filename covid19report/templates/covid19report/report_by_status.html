@@ -300,7 +300,8 @@ function showLoading() {
         } else {
             result = "";
             for(i=0;i<data.employee_list.length;i++) {
-                
+                emp_id = data.employee_list[i]['emp_id'];
+                console.log(emp_id);
                 result += "<tr>";
                 result += "<td>" + data.employee_list[i]['emp_id'] + "</td>";
                 result += "<td nowrap>" + data.employee_list[i]['full_name'] + "</td>";                          
@@ -317,13 +318,17 @@ function showLoading() {
                     result += "<td class='text-center'><i class='fas fa-xs fa-times text-danger'></i></td>";
                     result += "<td class='d-none'>N</td>";
                 }                
-
-                
-
+              
                 result += "<td class='text-center' nowrap>";
-                result += " <a href='#' onclick='edit_item(" + data.employee_list[i]['emp_id'] + ")'>&nbsp;&nbsp;<small>PDF</small>&nbsp;&nbsp;</a>";
+                result += '<a href="#" onclick="download_pdf(\'' + emp_id + '\');">&nbsp;&nbsp;<small>PDF</small>&nbsp;&nbsp;</a>';              
+                result += "</td>";
+
                 result += "</tr>";          
+                
+                
             }
+
+            
         
             table.destroy();
             $('#employee_list_table tbody').empty().append(result);        
@@ -393,6 +398,13 @@ function showLoading() {
             });
         }
         
+    }
+
+    function download_pdf(emp_id) {
+      get_vaccine_status_option = $('#id_get_vaccine_status_option').val();
+      //alert(emp_id + "," + get_vaccine_status_option);
+      var href = "/reports/covid-19/download-pdf/" + emp_id + "/" + get_vaccine_status_option + "/";
+      window.open(href,'_blank');              
     }
 
   </script>

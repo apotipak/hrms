@@ -16,6 +16,11 @@ from django.utils import timezone
 from page.rules import *
 from hrms.settings import MEDIA_ROOT
 from base64 import b64encode
+from docxtpl import DocxTemplate
+from docx.shared import Cm, Mm, Pt, Inches
+from os import path
+from django.http import FileResponse
+from docx2pdf import convert
 
 
 @permission_required('covid19report.can_access_covid_19_report', login_url='/accounts/login/')
@@ -221,8 +226,73 @@ def AjaxReportByStatus(request):
 @permission_required('covid19report.can_access_covid_19_report', login_url='/accounts/login/')
 def download_pdf(request, *args, **kwargs):    
 	base_url = MEDIA_ROOT + '/covid19/template/'
+	template_name = base_url + 'covid19.docx'
+	file_name = request.user.username + "_รายงานการฉีดวัคซีนโควิด-19"
+	is_error = True	
+	error_message = ""
 	emp_id = kwargs['emp_id']
 	get_vaccine_status_option = kwargs['get_vaccine_status_option']
+	employee_info = None
 
-	print("DEBUG : ", emp_id)
-	print("DEBUG : ", get_vaccine_status_option)
+	full_name = ""
+	phone_number = ""
+	get_vaccine_status_option_text = ""
+	get_vaccine_date = ""
+	get_vaccine_place = ""
+
+	sql = "select * from covid_employee_vaccine_update where emp_id=" + emp_id + " and get_vaccine_status=" + get_vaccine_status_option + ";"
+	print("SQL : ", sql)
+	try:        
+		cursor = connection.cursor()
+		cursor.execute(sql)
+		employee_info = cursor.fetchone()
+	except db.OperationalError as e:
+		is_error = True
+		error_message = "<b>Error: please send this error to IT team</b><br>" + str(e)
+	except db.Error as e:
+		is_error = True
+		error_message = "<b>Error: please send this error to IT team</b><br>" + str(e)
+	finally:
+		cursor.close()
+
+	if employee_info is not None:		
+		# print(employee_info[1])
+		emp_id = employee_info[0]
+		full_name = employee_info[1]
+		phone_number = employee_info[2]
+		get_vaccine_status_option = employee_info[3]
+		get_vaccine_date = employee_info[4]
+		get_vaccine_place = employee_info[5]
+
+		if get_vaccine_status_option==1:
+			get_vaccine_status_option_text = "นัดหมายเพื่อฉีดวัคซีนข็มที่ 1"
+		elif get_vaccine_status_option==2:
+			get_vaccine_status_option_text = "ได้รับการฉีดวัคซีนเข็มที่ 1 เรียบร้อยแล้ว"
+		elif get_vaccine_status_option==3:
+			get_vaccine_status_option_text = "นัดหมายเพื่อฉีดวัคซีนข็มที่ 2"
+		elif get_vaccine_status_option==4:
+			get_vaccine_status_option_text = "ได้รับการฉีดวัคซีนเข็มที่ 2 เรียบร้อยแล้ว"
+
+		document = DocxTemplate(template_name)
+		style = document.styles['Normal']
+		font = style.font
+		font.name = 'AngsanaUPC'
+		font.size = Pt(14)
+
+		context = {
+			"emp_id": emp_id,
+			"full_name": full_name,
+			"phone_number": phone_number,
+			"get_vaccine_status_option_text": get_vaccine_status_option_text,
+			"get_vaccine_date": get_vaccine_date,
+			"get_vaccine_place": get_vaccine_place,
+		}
+
+		document.render(context)
+		document.save(MEDIA_ROOT + '/covid19/download/' + file_name + ".docx")    
+
+		docx_file = path.abspath("media\\covid19\\download\\" + file_name + ".docx")
+		pdf_file = path.abspath("media\\covid19\\download\\" + file_name + ".pdf")
+		convert(docx_file, pdf_file)
+
+		return FileResponse(open(pdf_file, 'rb'), content_type='application/pdf')
