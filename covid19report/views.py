@@ -164,8 +164,12 @@ def AjaxReportByStatus(request):
 	record = {}	
 	message = ""
 
-	sql = "select * from covid_employee_vaccine_update where get_vaccine_status=" + str(get_vaccine_status_option) + ";"
-	print("SQL : ", sql)
+	sql = "select "
+	sql += "emp_id,full_name,phone_number,get_vaccine_status,get_vaccine_date,get_vaccine_place,"
+	sql += "file_attach,file_attach_data,file_attach_type,upd_date,upd_by,upd_flag,op1,op2,op3,"
+	sql += "op4,op5,opd1,opd2 "
+	sql += "from covid_employee_vaccine_update where get_vaccine_status=" + str(get_vaccine_status_option) + ";"
+	print("SQL11 : ", sql)
 	try:                
 		cursor = connection.cursor()
 		cursor.execute(sql)
@@ -181,13 +185,18 @@ def AjaxReportByStatus(request):
 		for item in employee_obj:
 			emp_id = item[0]
 			full_name = item[1]
-			phone_number = item[2] if item[2] is not None else ""			
+			phone_number = item[2] if item[2] is not None else ""
 			get_vaccine_status = item[3] if item[3] is not None else ""
 			get_vaccine_date = item[4].strftime("%d/%m/%Y") if item[4] is not None else ""
 			get_vaccine_time = item[4].strftime("%H:00") if item[4] is not None else ""
 			get_vaccine_place = item[5] if item[5] is not None else ""
 			file_attach = item[6] if item[6] is not None else ""
 			
+			emp_type = item[14] if item[14] is not None else ""
+			post_id = item[15] if item[15] is not None else ""
+			post_name = item[13] if item[13] is not None else ""
+			zone_name = item[12] if item[12] is not None else ""
+
 			# file_attach_data = b64encode(item[7]).decode("utf-8")
 			file_attach_data = b64encode(item[7]).decode("utf-8") if item[7] is not None else ""
 			file_attach_type = item[8] if item[8] is not None else ""
@@ -214,7 +223,11 @@ def AjaxReportByStatus(request):
 				"get_vaccine_status_option_text": get_vaccine_status_option_text,
 				"get_vaccine_date": get_vaccine_date + " " + get_vaccine_time,
 				"get_vaccine_place": get_vaccine_place,
-				"file_attach": file_attach
+				"file_attach": file_attach,
+				"emp_type": emp_type,
+				"post_id": post_id,
+				"post_name": post_name,
+				"zone_name": zone_name,
 			}
 
 			employee_list.append(record)

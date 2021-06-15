@@ -14,18 +14,11 @@
     <section class="content">
 
       <div class="card-header" style="padding: 0 2px 10px 0;">        
-        <h5 class="card-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;<b>รายงานการฉีดวัคซีนแยกตามสถานะ</b>&nbsp;&nbsp;</h5>
+        <h5 class="card-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;<b>รายงานการฉีดวัคซีนโควิด-19</b>&nbsp;&nbsp;</h5>
         <br>
         <div class="float-right pb-1">
           <div class="d-flex flex-row-reverse">
-            
-            <!--<button class="btn btn-outline-success btn-md" onclick="export_to_excel()">&nbsp;<i class="fas fa-print fa-sm"></i>&nbsp;&nbsp;Print</button>-->
-
-            <!--
-                <button class="btn btn-outline-info btn-sm dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="fas fa-print fa-sm"></i>&nbsp;&nbsp;Print
-                </button>                
-            -->
+            &nbsp;
           </div>
         </div>
       </div>
@@ -39,8 +32,23 @@
             <div class="form-group">
 
 
-              <div class="input-group col-6 offset-3">
-        
+              <div class="input-group col-12">
+
+                <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:120px;"><b>รหัสพนักงาน</b></span></div>
+                <input type="number" min=0 maxlength="6" id="id_emp_id" name="emp_id" class="form-control border-bottom-1 border-left-0 rounded-0 bg-white" style="width:50px;" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" value="" />
+
+                <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:120px;"><b>ประเภท</b></span></div>
+                <select id="id_emp_type_option" name="id_emp_type_option" class="form-control form-control-md" style="border-radius: 0; width: 100px;">
+                  <option value="">เลือกประเภทพนักงาน</option>
+                  <option value="M1">M1</option>
+                  <option value="M2">M3</option>
+                  <option value="M3">M5</option>
+                  <option value="D4">D1</option>
+                </select>                
+
+                <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:120px;"><b>รหัสหน่วยงาน</b></span></div>
+                <input type="number" min=0 maxlength="10" id="id_post_id" name="post_id" class="form-control border-bottom-1 border-left-0 rounded-0 bg-white" style="width:50px;" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" value="" />
+
                 <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:165px;"><b>สถานะการฉีดวัคซีน</b></span></div>
                 <select id="id_get_vaccine_status_option" name="get_vaccine_status_option" class="form-control form-control-md" style="border-radius: 0; width: 100px;">
                     <option value="">เลือกสถานะการฉีดวัคซีน</option>
@@ -74,15 +82,21 @@
             <div class="card-body">
 
               <div>
-                <table class="table table-striped dataTable" id="employee_list_table">
+                <table class="table table-sm table-striped dataTable" id="employee_list_table">
                     <thead class="bg-secondary">
                       <tr>
                         <th scope="col">รหัส</th>
-                        <th scope="col">ชื่อ</th>
-                        <th scope="col">เบอร์โทร</th>
-                        <th scope="col">สถานะการฉีดวัคซีน</th>
-                        <th scope="col">วันที่ฉีดวัคซีน</th>
-                        <th scope="col">สถานที่</th>
+                        <th scope="col" class="text-nowrap">ชื่อพนักงาน</th>
+                        <th scope="col" class="text-nowrap">ประเภท</th>
+                        <th scope="col" class="text-nowrap">เบอร์โทร</th>
+
+                        <th scope="col" class="text-nowrap">รหัสหน่วยงาน</th>
+                        <th scope="col" class="text-nowrap">ชื่อหน่วยงาน</th>
+                        <th scope="col">โซน</th>
+
+                        <th scope="col" class="text-nowrap">สถานะการฉีด</th>
+                        <th scope="col" class="text-nowrap">วันที่ฉีด</th>
+                        <th scope="col" class="text-nowrap">สถานที่ฉีด</th>
                         <th scope="col" class="d-none text-center">ไฟล์แนบ</th>
                         <th scope="col" class='d-none'>ไฟล์แนบ</th>
                         <th scope="col" class="text-center"><i class="fas fa-sm fa-download"></i></th>
@@ -90,6 +104,10 @@
                     </thead>
                     <tbody>
                       <tr>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
@@ -145,7 +163,7 @@ var table = $('#employee_list_table').DataTable({
     },
     "columnDefs": [
         {
-        "targets": [2,3,4,5,6,7,8],
+        "targets": [2,3,4,5,6,7,8,9,10,11,12],
         "orderable": false
         }    
     ],  
@@ -155,14 +173,14 @@ var table = $('#employee_list_table').DataTable({
             extend: 'print',
             title: '',
             exportOptions: {
-            columns: [ 0,1,2,3,4,5]
+            columns: [0,1,2,3,4,5,6,7,8,9]
             }
         },
         {
             extend: 'excelHtml5',        
             title: '',
             exportOptions: {
-            columns: [ 0,1,2,3,4,5]
+              columns: [0,1,2,3,4,5,6,7,8,9]
             }
         },
     ]
@@ -306,10 +324,13 @@ function showLoading() {
                 console.log(emp_id);
                 result += "<tr>";
                 result += "<td>" + data.employee_list[i]['emp_id'] + "</td>";
-                result += "<td nowrap>" + data.employee_list[i]['full_name'] + "</td>";                          
+                result += "<td nowrap>" + data.employee_list[i]['full_name'] + "</td>";
+                result += "<td>" + data.employee_list[i]['emp_type'] + "</td>";
                 result += "<td nowrap>" + data.employee_list[i]['phone_number'] + "</td>";
+                result += "<td>" + data.employee_list[i]['post_id'] + "</td>";
+                result += "<td>" + data.employee_list[i]['post_name'] + "</td>";
+                result += "<td>" + data.employee_list[i]['zone_name'] + "</td>";
                 result += "<td nowrap>" + data.employee_list[i]['get_vaccine_status_option_text'] + "</td>";
-
                 result += "<td>" + data.employee_list[i]['get_vaccine_date'] + "</td>";
                 result += "<td>" + data.employee_list[i]['get_vaccine_place'] + "</td>";
 
@@ -355,7 +376,7 @@ function showLoading() {
                 },
                 "columnDefs": [
                     {
-                    "targets": [2,3,4,5,6,7,8],
+                    "targets": [2,3,4,5,6,7,8,9,10,11,12],
                     "orderable": false
                     }    
                 ],  
@@ -365,14 +386,14 @@ function showLoading() {
                         extend: 'print',
                         title: 'รายงานการฉีดวัคซีนโควิด-19 - แยกตามสถานะ',
                         exportOptions: {
-                        columns: [ 0,1,2,3,4,5]
+                          columns: [0,1,2,3,4,5,6,7,8,9]
                         }
                     },
                     {
                         extend: 'excelHtml5',        
                         title: 'รายงานการฉีดวัคซีนโควิด-19 - แยกตามสถานะ',
                         exportOptions: {
-                        columns: [ 0,1,2,3,4,5]
+                          columns: [0,1,2,3,4,5,6,7,8,9]
                         }
                     },
                 ]
@@ -399,7 +420,7 @@ function showLoading() {
             subtitle: '',
             autohide: true,
             delay: 2000,
-            body: "ยังไม่มีรายการสำหรับ Export",
+            body: "ยังไม่ข้อมูลสำหรับทำรายการ",
             autoDismiss: true,
             close: true,
             autoremove: true,
