@@ -92,7 +92,7 @@
               <h3 class="card-title p-3">&nbsp;</h3>
               <ul class="nav nav-pills ml-auto p-2">                
                 <li class="nav-item dropdown">
-                    <a class="btn btn-sm btn-outline-secondary" href="#"><i class="far fa-file-pdf"></i>&nbsp;&nbsp;Download PDF</a>
+                    <a class="btn btn-sm btn-outline-secondary" href="#" onclick="download_pdf();"><i class="far fa-file-pdf"></i>&nbsp;&nbsp;Download PDF</a>
                 </li>
               </ul>
             </div><!-- /.card-header -->
@@ -173,17 +173,7 @@
 {% block javascript %}
 <script>
 
-$(document).ready( function () {
-    /*
-    $('#id_emp_id').keyup(function(e){
-        if(e.keyCode == 13) {
-            e.preventDefault();
-            //$("#id_get_vaccine_status_option").focus();
-            return false;
-        }
-    });
-    */
-    
+$(document).ready( function () {    
     $("#id_emp_id").focus();
 
     $(window).keydown(function(event){
@@ -195,55 +185,6 @@ $(document).ready( function () {
 
 });
 
-function print_document() {
-  var contract_number_from = $("#id_contract_number_from").val();
-  var contract_number_to = $("#id_contract_number_to").val();
-  var start_date = $("#id_start_date").val();
-  var end_date = $("#id_end_date").val();
-
-  console.log(contract_number_from + "," + contract_number_to + "," + start_date + "," + end_date);
-  if(contract_number_from=="") {
-    $.alert({
-        title: 'Error',
-        type: 'red',
-        content: "กรุณาป้อนรหัสสัญญา",
-        animation: 'zoom',
-        animationBounce: 1.5,
-        closeIcon: false,
-        boxWidth: '38%',
-        useBootstrap: false,
-    });    
-    return false;
-  }
-
-  if(contract_number_to=="") {
-    $.alert({
-        title: 'Error',
-        type: 'red',
-        content: "กรุณาป้อนรหัสสัญญา",
-        animation: 'zoom',
-        animationBounce: 1.5,
-        closeIcon: false,
-        boxWidth: '38%',
-        useBootstrap: false,
-    });    
-    return false;
-  }
-
-  var href = "/reports/cms/gpm-403-daily-guard-performance-by-contract/" + contract_number_from + "/" + contract_number_to + "/" + start_date + "/" + end_date + "/";
-  window.open(href,'_blank');
-}
- 
-function export_to_excel() {
-  var contract_number_from = $("#id_contract_number_from").val();
-  var contract_number_to = $("#id_contract_number_to").val();
-  var start_date = $("#id_start_date").val();
-  var end_date = $("#id_end_date").val();
-
-  var href = "/reports/cms/export-gpm-403-daily-guard-performance-by-contract-to-excel/" + contract_number_from + "/" + contract_number_to + "/" + start_date + "/" + end_date + "/";
-  window.open(href,'_blank');    
-}
-
 function showLoading() {
   $.LoadingOverlaySetup({
       background      : "rgba(0, 0, 0, 0.5)",
@@ -254,24 +195,46 @@ function showLoading() {
   $.LoadingOverlay("show"); 
 }
 
+function download_pdf() {
+    var emp_id = $('#id_emp_id').val();
+    var get_vaccine_status_option = $('#id_get_vaccine_status_option').val();
+    var emp_id_result = $('#id_emp_id_result').val();
+
+    if(emp_id_result=="") {
+        $.alert({
+            title: 'Error',
+            type: 'red',
+            content: "กรุณาเลือกข้อมูลสำหรับทำรายการ",
+            animation: 'zoom',
+            animationBounce: 1.5,
+            closeIcon: false,
+            boxWidth: '38%',
+            useBootstrap: false,
+        });
+        return false;
+    } else {
+        alert("TODO");
+        var href = "/reports/covid-19/download-pdf/" + emp_id + "/" + get_vaccine_status_option + "/";
+        // window.open(href,'_blank');        
+    }
+}  
 
 
-
-  function SearchFormSubmit() {
+function SearchFormSubmit() {
     var emp_id = $('#id_emp_id').val();
     var get_vaccine_status_option = $('#id_get_vaccine_status_option').val();
 
     if(emp_id=="") {
         $(document).Toasts('create', {
-          class: "bg-danger", 
-          title: "{% trans 'Error' %}",
-          subtitle: '',
-          autohide: true,
-          delay: 2000,
-          body: "กรุณาป้อนรหัสพนักงาน",
-          autoDismiss: true,
-          close: true,
-          autoremove: true,
+            class: "bg-danger", 
+            title: "{% trans 'Error' %}",
+            subtitle: '',
+            autohide: true,
+            delay: 2000,
+            body: "กรุณาป้อนรหัสพนักงาน",
+            autoDismiss: true,
+            close: true,
+            autoremove: true,
         });
         $("#id_emp_id").focus();
         return false;
@@ -279,36 +242,33 @@ function showLoading() {
 
     if(get_vaccine_status_option=="0") {
         $(document).Toasts('create', {
-          class: "bg-danger", 
-          title: "{% trans 'Error' %}",
-          subtitle: '',
-          autohide: true,
-          delay: 2000,
-          body: "กรุณาเลือกสถานะการฉีดวัคซีน",
-          autoDismiss: true,
-          close: true,
-          autoremove: true,
+            class: "bg-danger", 
+            title: "{% trans 'Error' %}",
+            subtitle: '',
+            autohide: true,
+            delay: 2000,
+            body: "กรุณาเลือกสถานะการฉีดวัคซีน",
+            autoDismiss: true,
+            close: true,
+            autoremove: true,
         });
         $("#id_get_vaccine_status_option").focus();
         return false;    
     }
 
-    //alert(emp_id + "," + get_vaccine_status_option);
-    //return false;
-
     showLoading();
 
     $.ajax({
-      url: "/reports/covid-19/ajax-covid-19-report/",
-      type: "POST",
-      dataType: 'json',
-      async: true,      
-      data: {
+        url: "/reports/covid-19/ajax-covid-19-report/",
+        type: "POST",
+        dataType: 'json',
+        async: true,      
+        data: {
         csrfmiddlewaretoken: '{{ csrf_token }}',
         emp_id: emp_id,
         get_vaccine_status_option: get_vaccine_status_option,
-      },
-      success : function(data) {              
+        },
+        success : function(data) {              
         if(data.is_error) {
             $.alert({
                 title: 'Error',
@@ -329,17 +289,6 @@ function showLoading() {
             $("#id_get_vaccine_status_option_text").val(data.get_vaccine_status_option_text);
             $("#id_get_vaccine_date_result").val(data.get_vaccine_date + " เวลา " + data.get_vaccine_time);
             $("#id_get_vaccine_place_result").val(data.get_vaccine_place);
-
-            
-            //$("#id_emp_id_result").html("<b>รหัสพนักงาน</b>&nbsp;" + data.emp_id);
-            //$("#id_emp_full_name_result").html("<b>ชื่อพนักงาน</b>&nbsp;" + data.full_name);
-            //$("#id_phone_number_result").html("<b>เบอร์โทร</b>&nbsp;" + data.phone_number);
-            //$("#id_get_vaccine_status_option_text").html("<b>รายการนัดหมาย</b>&nbsp;" + data.get_vaccine_status_option_text);
-            //$("#id_get_vaccine_date_result").html("<b>วันที่รับการฉีดวัคซีน</b>&nbsp;" + data.get_vaccine_date);
-            //$("#id_get_vaccine_time_result").html("<b>เวลา</b>&nbsp;" + data.get_vaccine_time);
-            //$("#id_get_vaccine_place_result").html("<b>สถานที่</b>&nbsp;" + data.get_vaccine_place + "<br>");
-
-            //alert(data.file_attach_type);
 
             switch(data.file_attach_type) {
                 case "":
@@ -366,9 +315,9 @@ function showLoading() {
 
         $.LoadingOverlay("hide");
         
-      }
-    });
-  }  
+        }
+    });  
+}  
 
   </script>
 {% endblock %}  

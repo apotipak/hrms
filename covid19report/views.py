@@ -14,6 +14,7 @@ from django.db import connection
 from page.rules import *
 from django.utils import timezone
 from page.rules import *
+from hrms.settings import MEDIA_ROOT
 from base64 import b64encode
 
 
@@ -215,3 +216,13 @@ def AjaxReportByStatus(request):
 
 	response.status_code = 200
 	return response
+
+
+@permission_required('covid19report.can_access_covid_19_report', login_url='/accounts/login/')
+def download_pdf(request, *args, **kwargs):    
+	base_url = MEDIA_ROOT + '/covid19/template/'
+	emp_id = kwargs['emp_id']
+	get_vaccine_status_option = kwargs['get_vaccine_status_option']
+
+	print("DEBUG : ", emp_id)
+	print("DEBUG : ", get_vaccine_status_option)
