@@ -57,8 +57,7 @@ def AjaxCovid19Report(request):
 	phone_number = ""
 
 
-	sql = "select * from covid_employee_vaccine_update where emp_id=" + str(emp_id) + " and get_vaccine_status=" + str(get_vaccine_status_option) + ";"
-	print("SQL : ", sql)
+	sql = "select * from covid_employee_vaccine_update where emp_id=" + str(emp_id) + " and get_vaccine_status=" + str(get_vaccine_status_option) + ";"	
 	try:                
 		cursor = connection.cursor()
 		cursor.execute(sql)
@@ -69,18 +68,6 @@ def AjaxCovid19Report(request):
 		message = "<b>Error: please send this error to IT team</b><br>" + str(e)
 	finally:
 		cursor.close()
-
-	try:                
-		cursor = connection.cursor()
-		cursor.execute(sql)
-		dly_plan_obj = cursor.fetchall()        
-	except db.OperationalError as e:
-		error_message = "<b>Error: please send this error to IT team</b><br>" + str(e)
-	except db.Error as e:
-		error_message = "<b>Error: please send this error to IT team</b><br>" + str(e)
-	finally:
-		cursor.close()
-
 
 	if employee_obj is not None:
 		full_name = employee_obj[1]
@@ -156,3 +143,75 @@ def ViewCovid19ReportByStatus(request):
         'host': settings.DATABASES['default']['HOST'],
 	})
 
+
+
+@permission_required('covid19report.can_access_covid_19_report', login_url='/accounts/login/')
+def AjaxReportByStatus(request):    
+	today_date = settings.TODAY_DATE.strftime("%d/%m/%Y")
+	get_vaccine_status_option = request.POST.get('get_vaccine_status_option')
+
+	employee_obj = None
+	employee_list = []
+	record = {}	
+	message = ""
+
+	sql = "select * from covid_employee_vaccine_update where get_vaccine_status=" + str(get_vaccine_status_option) + ";"
+	try:                
+		cursor = connection.cursor()
+		cursor.execute(sql)
+		employee_obj = cursor.fetchall()		
+	except db.OperationalError as e:
+		message = "<b>Error: please send this error to IT team</b><br>" + str(e)
+	except db.Error as e:
+		message = "<b>Error: please send this error to IT team</b><br>" + str(e)
+	finally:
+		cursor.close()
+
+	if employee_obj is not None:
+		for item in employee_obj:
+			emp_id = item[0]
+			full_name = item[1]
+			phone_number = item[2]			
+			get_vaccine_status = item[3]
+			get_vaccine_date = item[4].strftime("%d/%m/%Y")
+			get_vaccine_time = item[4].strftime("%H:00")
+			get_vaccine_place = item[5]
+			file_attach = item[6]
+			file_attach_data = b64encode(item[7]).decode("utf-8")
+			file_attach_type = item[8]
+
+			if get_vaccine_status_option=="1":
+				get_vaccine_status_option_text = "นัดหมายเพื่อฉีดวัคซีนข็มที่ 1"
+			elif get_vaccine_status_option=="2":
+				get_vaccine_status_option_text = "ได้รับการฉีดวัคซีนเข็มที่ 1 เรียบร้อยแล้ว"
+			elif get_vaccine_status_option=="3":
+				get_vaccine_status_option_text = "นัดหมายเพื่อฉีดวัคซีนข็มที่ 2"
+			elif get_vaccine_status_option=="4":
+				get_vaccine_status_option_text = "ได้รับการฉีดวัคซีนเข็มที่ 2 เรียบร้อยแล้ว"
+
+			record = {
+				"emp_id": emp_id,
+				"full_name": full_name,
+				"phone_number": phone_number,
+				"get_vaccine_status_option_text": get_vaccine_status_option_text,
+				"get_vaccine_date": get_vaccine_date,
+				"get_vaccine_place": get_vaccine_place,
+				"file_attach": file_attach
+			}
+
+			employee_list.append(record)
+
+		response = JsonResponse(data={        
+			"is_error": False,
+			"message": "",
+			"employee_list": list(employee_list),
+		})
+	else:
+		response = JsonResponse(data={        
+			"is_error": True,
+			"message": "ไม่พบข้อมูล",
+			"employee_list": list(employee_list),
+		})
+
+	response.status_code = 200
+	return response

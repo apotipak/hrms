@@ -10,4 +10,5 @@ urlpatterns = [
     path('ajax-covid-19-report/', views.AjaxCovid19Report, name='ajax-covid-19-report'),
 
     path('report-by-status/', views.ViewCovid19ReportByStatus, name='view_covid_19_report_by_status'),
+    path('ajax-report-by-status/', views.AjaxReportByStatus, name='ajax-report-by-status'),
 ]

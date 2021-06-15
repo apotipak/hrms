@@ -1,7 +1,7 @@
 {% extends "page_covid_report.html" %}
 
 {% load i18n %}
-{% block title %} {{ page_title}} - {% trans 'Report' %} {% endblock %}
+{% block title %} {{ page_title}} - {% trans 'Covid-19 Report' %} {% endblock %}
 {% load static %}
 {% load widget_tweaks %}
 
@@ -94,7 +94,7 @@
             <div class="card-body">
 
               <div>
-                <table class="table table-hover table-sm">
+                <table class="table table-striped table-sm dataTable" id="employee_list_table">
                     <thead class="bg-secondary">
                       <tr>
                         <td scope="col">รหัส</td>
@@ -103,7 +103,7 @@
                         <td scope="col">สถานะการฉีดวัคซีน</td>
                         <td scope="col">วันที่ฉีดวัคซีน</td>
                         <td scope="col">สถานที่</td>
-                        <td scope="col">ไฟล์แนบ</td>
+                        <td scope="col" class="text-center">ไฟล์แนบ</td>
                         <td scope="col">&nbsp;</td>
                       </tr>
                     </thead>
@@ -148,6 +148,47 @@
 {% block javascript %}
 <script>
 
+var table = $('#employee_list_table').DataTable({
+    "paging": true,
+    "pageLength": 15,
+    "scrollCollapse": true,
+    "lengthChange": false,
+    "searching": true,
+    "ordering": true,
+    "info": false,
+    "autoWidth": true,
+    "language": {
+        search: '<i class="fa fa-filter" aria-hidden="true"></i>',
+        searchPlaceholder: 'Filter data'
+    },
+    "columnDefs": [
+        {
+        "targets": [2,3,4,5,6,7],
+        "orderable": false
+        }    
+    ],  
+    "dom": 'Brtip',
+    buttons: [
+        {
+            extend: 'print',
+            title: '',
+            exportOptions: {
+            columns: [ 0,1,2,3,4,5]
+            }
+        },
+        {
+            extend: 'excelHtml5',        
+            title: '',
+            exportOptions: {
+            columns: [ 0,1,2,3,4,5]
+            }
+        },
+    ]
+});
+table.buttons('.buttons-print').nodes().css("display", "none");
+table.buttons('.buttons-excel').nodes().css("display", "none");
+table.buttons('.buttons-pdf').nodes().css("display", "none");
+
 $(document).ready( function () {
     /*
     $('#id_emp_id').keyup(function(e){
@@ -165,7 +206,6 @@ $(document).ready( function () {
             return false;
         }
     });
-
 });
 
 function print_document() {
@@ -230,25 +270,8 @@ function showLoading() {
 
 
 
-  function SearchFormSubmit() {
-    var emp_id = $('#id_emp_id').val();
+  function SearchFormSubmit() {        
     var get_vaccine_status_option = $('#id_get_vaccine_status_option').val();
-
-    if(emp_id=="") {
-        $(document).Toasts('create', {
-          class: "bg-danger", 
-          title: "{% trans 'Error' %}",
-          subtitle: '',
-          autohide: true,
-          delay: 2000,
-          body: "กรุณาป้อนรหัสพนักงาน",
-          autoDismiss: true,
-          close: true,
-          autoremove: true,
-        });
-        $("#id_emp_id").focus();
-        return false;
-    }
 
     if(get_vaccine_status_option=="0") {
         $(document).Toasts('create', {
@@ -272,13 +295,12 @@ function showLoading() {
     showLoading();
 
     $.ajax({
-      url: "/reports/covid-19/ajax-covid-19-report/",
+      url: "/reports/covid-19/ajax-report-by-status/",
       type: "POST",
       dataType: 'json',
       async: true,      
       data: {
         csrfmiddlewaretoken: '{{ csrf_token }}',
-        emp_id: emp_id,
         get_vaccine_status_option: get_vaccine_status_option,
       },
       success : function(data) {              
@@ -295,37 +317,71 @@ function showLoading() {
             });
             $("#id_search_result").hide();
         } else {
-            $("#id_emp_id_result").html("<b>รหัสพนักงาน</b>&nbsp;" + data.emp_id);
-            $("#id_emp_full_name_result").html("<b>ชื่อพนักงาน</b>&nbsp;" + data.full_name);
-            $("#id_phone_number_result").html("<b>เบอร์โทร</b>&nbsp;" + data.phone_number);
-            $("#id_get_vaccine_status_option_text").html("<b>รายการนัดหมาย</b>&nbsp;" + data.get_vaccine_status_option_text);
-            $("#id_get_vaccine_date_result").html("<b>วันที่รับการฉีดวัคซีน</b>&nbsp;" + data.get_vaccine_date);
-            $("#id_get_vaccine_time_result").html("<b>เวลา</b>&nbsp;" + data.get_vaccine_time);
-            $("#id_get_vaccine_place_result").html("<b>สถานที่</b>&nbsp;" + data.get_vaccine_place + "<br>");
+            result = "";
+            for(i=0;i<data.employee_list.length;i++) {
+                
+                result += "<tr>";
+                result += "<td>" + data.employee_list[i]['emp_id'] + "</td>";
+                result += "<td nowrap>" + data.employee_list[i]['full_name'] + "</td>";                          
+                result += "<td nowrap>" + data.employee_list[i]['phone_number'] + "</td>";
+                result += "<td nowrap>" + data.employee_list[i]['get_vaccine_status_option_text'] + "</td>";
 
-            //alert(data.file_attach_type);
+                result += "<td>" + data.employee_list[i]['get_vaccine_date'] + "</td>";
+                result += "<td>" + data.employee_list[i]['get_vaccine_place'] + "</td>";
 
-            switch(data.file_attach_type) {
-                case "":
-                    $("#id_file_attach_data").html("<b>ไฟล์แนบ</b> : ไม่มีไฟล์แนบ");
-                    break;
-                case "jpg":
-                    $("#id_file_attach_data").html("<b>ไฟล์แนบ</b><br><img src='data:image/jpg;base64," + data.file_attach_data + "' style='width:300px;'/>");
-                    break;
-                case "png":
-                    $("#id_file_attach_data").html("<b>ไฟล์แนบ</b><br><img src='data:image/png;base64," + data.file_attach_data + "' style='width:300px;'/>");			
-                    break;
-                case "gif":
-                    $("#id_file_attach_data").html("<b>ไฟล์แนบ</b><br><img src='data:image/gif;base64," + data.file_attach_data + "' style='width:300px;'/>");
-                    break;                    
-                case "pdf":
-                    $("#id_file_attach_data").html("<embed src='" + data.file_attach_data + "' width='500' height='375' type='application/pdf'>");
-                    break;
-                default:
-                    $("#id_file_attach_data").html("<b>ไฟล์แนบ</b> : " + data.file_attach_type + " is not supported");
-            }            
+                if(data.employee_list[i]['file_attach']!="") {
+                    result += "<td class='text-center'><i class='fas fa-xs fa-check text-success'></i></td>";
+                } else {
+                    result += "<td class='text-center'><i class='fas fa-xs fa-times text-danger'></i></td>";
+                }                
 
-            $("#id_search_result").show();
+                result += "<td class='text-right' nowrap>";
+                result += " <a href='#' onclick='edit_item(" + data.employee_list[i]['emp_id'] + ")'><i class='fas fa-xs fa-download'>&nbsp;&nbsp;<small>PDF</small></i>&nbsp;&nbsp;</a>";
+                result += "</tr>";          
+            }
+        
+            table.destroy();
+            $('#employee_list_table tbody').empty().append(result);        
+            table = $('#employee_list_table').DataTable({
+                "paging": true,
+                "pageLength": 15,
+                "scrollCollapse": true,
+                "lengthChange": false,
+                "searching": true,
+                "ordering": true,
+                "info": false,
+                "autoWidth": true,
+                "language": {
+                    search: '<i class="fa fa-filter" aria-hidden="true"></i>',
+                    searchPlaceholder: 'Filter data'
+                },
+                "columnDefs": [
+                    {
+                    "targets": [2,3,4,5,6,7],
+                    "orderable": false
+                    }    
+                ],  
+                "dom": 'Brtip',
+                buttons: [
+                    {
+                        extend: 'print',
+                        title: '',
+                        exportOptions: {
+                        columns: [ 0,1,2,3,4,5]
+                        }
+                    },
+                    {
+                        extend: 'excelHtml5',        
+                        title: '',
+                        exportOptions: {
+                        columns: [ 0,1,2,3,4,5]
+                        }
+                    },
+                ]
+            });
+            table.buttons('.buttons-print').nodes().css("display", "none");
+            table.buttons('.buttons-excel').nodes().css("display", "none");
+            table.buttons('.buttons-pdf').nodes().css("display", "none");
         }
 
         $.LoadingOverlay("hide");
@@ -333,11 +389,6 @@ function showLoading() {
       }
     });
   }  
-
-  $(document).ready(function () {    
-    //$('#id_start_date').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", new Date());
-    //$('#id_end_date').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", new Date());
-  });
 
   </script>
 {% endblock %}  
