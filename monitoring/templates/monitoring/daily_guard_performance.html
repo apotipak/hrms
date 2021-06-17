@@ -47,8 +47,9 @@
 
 						<div class="col-2">
 							<div class="d-flex flex-row-reverse">
-								<!--<button id="id_print_button" name="print_button" type="button" class="btn btn-sm btn-outline-info"><i class="fas fa-print"></i>&nbsp;Print</button>-->
+								<button id="id_export_to_excel_button" name="export_to_excel_button" onclick="export_to_excel();" type="button" class="btn btn-sm btn-outline-success"><i class="fas fa-file-excel"></i>&nbsp;&nbsp;Export to Excel</button>
 
+								{% comment %}
 					            <button class="btn btn-outline-info btn-sm dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					              <i class="fas fa-print fa-sm"></i>&nbsp;&nbsp;Print
 					            </button>
@@ -58,12 +59,13 @@
 					              <a class="dropdown-item" href="#" onclick="print_document()"><i class="fas fa-desktop text-secondary"></i>&nbsp;&nbsp;Display on screen</a>              
 					              <!--<a class="dropdown-item" href="#" onclick="download_document()"><i class="fas fa-download text-secondary"></i>&nbsp;&nbsp;Download file</a>-->
 
-					              <a class="dropdown-item" href="{% url 'export_dgp_500_xls' %}">&nbsp;<i class="far fa-file-excel text-secondary"></i>&nbsp;&nbsp;&nbsp;Download Excel file</a>
-
+					              <a class="dropdown-item" href="#" onclick="export_to_excel()">&nbsp;<i class="far fa-file-excel text-secondary"></i>&nbsp;&nbsp;&nbsp;Export to Excel</a>					              
+					              
 					              <!--<i class="far fa-file-word"></i>-->
 					              
 					          		</font>
 					            </div>
+					            {% endcomment %}
 
 							</div>
 						</div>
@@ -253,13 +255,107 @@
 		            <div class="tab-pane fade show active pt-2 row" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
 		            	<div id="id_performance_list" class="table-responsive table-bordered bg-light" style='height:100% !important; overflow: scroll;'>
 							<font size='2em;'>
-							<table id='performance_list_table' class='table table-sm table-hover'>
+					
+
+					<!-- amnaj -->
+					<table id='performance_list_table' class='table-bordered dataTable'>
+
+					 <thead class=thead-light>
+					   <tr>
+					     <th scope='col'>No</th>
+						 <th scope='col'>Cnt</th>
+						 <th scope='col'>Date</th>
+					     <th scope='col'>Rank</th>
+					     <th scope='col'>Shift</th>
+
+					     <th scope='col' class="text-nowrap">Pay Type</th>
+					     <th scope='col'>BAS</th>
+					     <th scope='col'>GOT</th>					
+					     <th scope='col'>BON</th>
+					     <th scope='col'>PUB</th>
+
+					     <th scope='col'>DOF</th>
+					     <th scope='col'>BAS_NS</th>
+					     <th scope='col'>GOT_NS</th>					
+					     <th scope='col'>BON_NS</th>
+					     <th scope='col'>PUB_NS</th>
+
+					     <th scope='col'>DOF_NS</th>
+					     <th scope='col' class='text-center'>DF</th>
+					     <th scope='col'>Relief</th>
+					     <th scope='col'>Rel.ID</th>
+					     <th scope='col'>Name</th>
+
+					     <th scope='col' class='text-center'>Tel</th>
+					     <th scope='col' class="text-nowrap">Call Time</th>
+					     <th scope='col' class="text-nowrap">Call Amt</th>
+					     <th scope='col' class='text-center text-nowrap'>Call Paid</th>					     
+					     <th scope='col'>OT.</th>
+
+					     <th scope='col'>Reason</th>
+					     <th scope='col'>HR</th>
+					     <th scope='col'>Paid(OT)</th>
+					     <th scope='col'>Spare</th>
+					     <th scope='col'>Wage</th>
+					
+					     <th scope='col' class='txt-center'>SOC</th>
+					     <th scope='col' class='txt-center'>PUB</th>
+					     <th scope='col' class='txt-center'>Paid</th>
+					     <th scope='col'>REMARK</th>
+
+					   </tr>
+					 </thead>
+
 							  <tbody>
 							    <tr>
-							      <td class="text-center"><br><br><br><br>There is no data.<br><br><br><br><br></td>
+							      <td>&nbsp;</td>
+							      <td>&nbsp;</td>
+							      <td>&nbsp;</td>
+							      <td>&nbsp;</td>
+							      <td>&nbsp;</td>
+
+							      <td>&nbsp;</td>
+							      <td>&nbsp;</td>
+							      <td>&nbsp;</td>
+							      <td>&nbsp;</td>
+							      <td>&nbsp;</td>
+							      
+							      <td>&nbsp;</td>
+							      <td>&nbsp;</td>
+							      <td>&nbsp;</td>
+							      <td>&nbsp;</td>
+							      <td>&nbsp;</td>
+
+							      <td>&nbsp;</td>
+							      <td>&nbsp;</td>
+							      <td>&nbsp;</td>
+							      <td>&nbsp;</td>
+							      <td>&nbsp;</td>
+
+							      <td>&nbsp;</td>
+							      <td>&nbsp;</td>
+							      <td>&nbsp;</td>
+							      <td>&nbsp;</td>
+							      <td>&nbsp;</td>
+
+							      <td>&nbsp;</td>
+							      <td>&nbsp;</td>
+							      <td>&nbsp;</td>
+							      <td>&nbsp;</td>
+							      <td>&nbsp;</td>
+
+							      <td>&nbsp;</td>
+							      <td>&nbsp;</td>
+							      <td>&nbsp;</td>
+							      <td>&nbsp;</td>
 							    </tr>
 							  </tbody>
 							</table>
+
+
+
+
+
 							</font>
 						</div>
 		        	</div>
@@ -371,7 +467,63 @@
 
 {% block javascript %}
 <script>	
-	
+
+function export_to_excel() {
+  $(".buttons-excel").trigger("click");  
+}
+
+function print_document() {  
+  $(".buttons-print").trigger("click");
+}
+
+// amnaj 
+var table = $('#performance_list_table').DataTable({
+  "paging": false,
+  "pageLength": 15,
+  "scrollCollapse": false,
+  "lengthChange": false,
+  "searching": false,
+  "ordering": false,
+  "info": false,
+  "autoWidth": true,
+  "language": {
+    search: '<i class="fa fa-filter" aria-hidden="true"></i>',
+    searchPlaceholder: 'Filter data'
+  },
+  "columnDefs": [
+    {
+      "targets": [12],
+      "orderable": false
+    },
+    {
+        "targets": [10],
+        "visible": false
+    }    
+  ],  
+  "dom": 'Brtip',
+  buttons: [
+    {
+        extend: 'print',
+        title: '',
+        exportOptions: {
+          columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33]
+        }
+    },
+    {
+        extend: 'excelHtml5',        
+        title: 'Daily Guard Performace Report - ' + $("#id_emp_fullname").val() + "(" + $("#id_search_emp_id").val() + ")",
+        exportOptions: {
+          columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33]
+        }
+    },
+  ]
+}); 
+
+table.buttons('.buttons-print').nodes().css("display", "none");
+table.buttons('.buttons-excel').nodes().css("display", "none");
+table.buttons('.buttons-pdf').nodes().css("display", "none");
+
+
 $(document).ready(function(){
 	var today = new Date();
 	var date = today.getDate() + "/" + ("0" + today.getMonth()+1).slice(-2) + '/' + today.getFullYear() + " 00:00";
@@ -667,8 +819,13 @@ $(document).on('click', '#id_search_cancel_button', function(e) {
 	result += "<tr>";
 	result += "<td colspan='10' class='text-center'><br><br><br><br>There is no data.<br><br><br><br><br></td>";
 	result += "</tr>";
-	result += "</tbody>";	
-	$("#performance_list_table").html(result);
+	result += "</tbody>";
+
+	//$("#performance_list_table").html(result);
+	$('#performance_list_table tbody').empty();
+	// amnaj
+
+
 	$("#schedule_list_table").html(result);
 	$("#substitute_list_table").html(result);
 	$("#leave_list_table").html(result);
@@ -803,6 +960,8 @@ function displayList(emp_id, search_date_from, search_date_to) {
 					result += "    </tr>";
 					result += "  </thead>";
 					result += "  <tbody>";
+
+					result = "";
 					count = 1;
 					for(i=0; i<performance_list_count; i++) {
 						
@@ -896,8 +1055,7 @@ function displayList(emp_id, search_date_from, search_date_to) {
 
 						//remark = data.performance_list[i][61];
 						remark = data.performance_list[i][65];
-
-
+						
 						result += "<tr>";
 						result += "<td>" + count + "</td>";
 						result += "<td>" + cnt_id + "</td>";
@@ -929,10 +1087,12 @@ function displayList(emp_id, search_date_from, search_date_to) {
 
 						if(tel_man) {
 							//
-							result += "<td class='text-center'><i class='fas fa-phone-alt fa-xs text-success'></i></td>";
+							//result += "<td class='text-center'><i class='fas fa-phone-alt fa-xs text-success'></i></td>";
+							result += "<td class='text-center text-success'>Y</td>";
 							result += "<td nowrap>" + tel_time + "</td>";
 							result += "<td align='center'>" + tel_amt + "</td>";
-							result += "<td class='text-center'><i class='fas fa-check fa-xs text-success'></i></td>";
+							//result += "<td class='text-center'><i class='fas fa-check fa-xs text-success'></i></td>";
+							result += "<td class='text-center text-success'>Y</td>";
 						} else {
 							result += "<td class='text-center'>&nbsp;</td>";
 							result += "<td>&nbsp;</td>";
@@ -957,21 +1117,27 @@ function displayList(emp_id, search_date_from, search_date_to) {
 						
 
 						if(soc_status) {
-							result += "<td class='text-center'><i class='fas fa-check fa-xs text-success'></i></td>";
+							//result += "<td class='text-center'><i class='fas fa-check fa-xs text-success'></i></td>";
+							result += "<td class='text-center text-succes'>Y</td>";
 						} else {
-							result += "<td class='text-center'><i class='fas fa-times fa-xs text-danger'></i></td>";
+							//result += "<td class='text-center'><i class='fas fa-times fa-xs text-danger'></i></td>";
+							result += "<td class='text-center text-danger'>N</td>";
 						}
 						
 						if(pub_status) {
-							result += "<td class='text-center'><i class='fas fa-check fa-xs text-success'></i></td>";
+							//result += "<td class='text-center'><i class='fas fa-check fa-xs text-success'></i></td>";
+							result += "<td class='text-center text-success'>Y</td>";
 						} else {
-							result += "<td class='text-center'><i class='fas fa-times fa-xs text-danger'></i></td>";
+							//result += "<td class='text-center'><i class='fas fa-times fa-xs text-danger'></i></td>";
+							result += "<td class='text-center text-danger'>N</td>";
 						}
 
 						if(paid_status) {
-							result += "<td class='text-center'><i class='fas fa-check fa-xs text-success'></i></td>";
+							//result += "<td class='text-center'><i class='fas fa-check fa-xs text-success'></i></td>";
+							result += "<td class='text-center text-success'>Y</td>";
 						} else {
-							result += "<td class='text-center'><i class='fas fa-times fa-xs text-danger'></i></td>";
+							//result += "<td class='text-center'><i class='fas fa-times fa-xs text-danger'></i></td>";
+							result += "<td class='text-center text-danger'>N</td>";
 						}
 
 						// REMARK
@@ -989,11 +1155,59 @@ function displayList(emp_id, search_date_from, search_date_to) {
 						result += "</tr>";
 						count++;
 					}
-					result += "  </tbody>";
-					result += "</table>";
 
-					$("#performance_list_table").html(result);
+					//result += "  </tbody>";
+					//result += "</table>";
 
+					//$("#performance_list_table").html(result);
+        			table.destroy();
+        			$('#performance_list_table tbody').empty().append(result);
+        			// amnaj1
+					table = $('#performance_list_table').DataTable({
+					  "paging": false,
+					  "pageLength": 15,
+					  "scrollCollapse": false,
+					  "lengthChange": false,
+					  "searching": false,
+					  "ordering": false,
+					  "info": false,
+					  "autoWidth": true,
+					  "language": {
+					    search: '<i class="fa fa-filter" aria-hidden="true"></i>',
+					    searchPlaceholder: 'Filter data'
+					  },
+					  "columnDefs": [
+					    {
+					      "targets": [12],
+					      "orderable": false
+					    },
+					    {
+					        "targets": [10],
+					        "visible": false
+					    }    
+					  ],  
+					  "dom": 'Brtip',
+					  buttons: [
+					    {
+					        extend: 'print',
+					        title: '',
+					        exportOptions: {
+					          columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33]
+					        }
+					    },
+					    {
+					        extend: 'excelHtml5',
+					        title: 'Daily Guard Performace Report - ' + $("#id_emp_fullname").val() + "(" + $("#id_search_emp_id").val() + ") | During " + $("#id_search_date_from").val() + " - " + $("#id_search_date_to").val(),
+					        exportOptions: {
+					          columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33]
+					        }
+					    },
+					  ]
+					}); 
+
+					table.buttons('.buttons-print').nodes().css("display", "none");
+					table.buttons('.buttons-excel').nodes().css("display", "none");
+					table.buttons('.buttons-pdf').nodes().css("display", "none");
 
 					var hours = Number(data.income_list[0]).toFixed(2).replace(/\.00$/, '');
 					
@@ -1609,7 +1823,7 @@ function download_document() {
 }
 
 
-function print_document() {
+function print_document_old() {
 	var emp_id = $("#id_search_emp_id").val();
 	var search_date_from = $("#id_search_date_from").val();
 	var search_date_to = $("#id_search_date_to").val();

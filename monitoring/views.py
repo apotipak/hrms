@@ -2651,7 +2651,6 @@ def ajax_get_attendance_information(request):
 	if gType != "":
 		getGaray(gType)
 
-	# amnaj
 	# is_pass, message = isGenerateDailyCreated(attendance_date,cnt_id,getPriorityStatus,gUSE,gADD,gEDIT,gDEL,gPREVIEW,gPRINT,gIM,gEX,gSALARY,gType,gOLD)
 	# ไม่ตรวจสิทธิ์ดูข้อมูลการแจ้งเวรย้อนหลัง
 	is_pass = True
@@ -7945,7 +7944,11 @@ def SearchDailyGurdPerformance_old(request):
 
 
 
+# amnaj
 def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_date_to):
+	print("********************")
+	print("DisplayList()")
+	print("********************")
 
 	# ABSENT_DLY_PLAN
 	if(table_name=="ABSENT_DLY_PLAN"):
@@ -9000,6 +9003,9 @@ def SearchDailyGurdPerformanceEmployeeInformation(request):
 
 @login_required(login_url='/accounts/login/')
 def generate_dgp_500(request, *args, **kwargs):    
+	print("********************")
+	print("generate_dgp_500()")
+	print("********************")
 
 	r_d500_obj = []
 	pickup_record = []
@@ -9207,8 +9213,13 @@ def generate_dgp_500(request, *args, **kwargs):
 	return FileResponse(open(pdf_file, 'rb'), content_type='application/pdf')
 
 
+# amnaj
 @login_required(login_url='/accounts/login/')
 def export_dgp_500_xls(request):
+	print("***********************")
+	print("export_dgp_500_xls()")
+	print("***********************")
+
 	response = HttpResponse(content_type='application/ms-excel')
 	response['Content-Disposition'] = 'attachment; filename="DGP_500.xls"'
 
