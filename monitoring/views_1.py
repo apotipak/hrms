@@ -3087,17 +3087,6 @@ def ajax_get_attendance_information(request):
 		is_found = False
 		message = message
 
-	# ตรวจสอบการอนุญาติให้ใช้ปุ่ม
-	if view_name=="v_hdlyplan":
-		if request.user.username=='CMS_SUP':
-			allow_crud = True
-		else:
-			allow_crud = False
-	else:
-		allow_crud = True
-
-	print("allow_crud=", allow_crud)
-
 	response = JsonResponse(data={
 	    "success": True,
 	    "is_found": is_found,
@@ -3121,7 +3110,6 @@ def ajax_get_attendance_information(request):
 		"totalNNM": totalNNM,
 		"totalPDM": totalPDM,
 		"totalPNM": totalPNM,
-		"allow_crud": allow_crud,
 	})
 	
 	response.status_code = 200
