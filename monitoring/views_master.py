@@ -31,7 +31,6 @@ from os import path
 from django.http import FileResponse
 from django.core.exceptions import PermissionDenied
 from django.views.decorators.cache import never_cache
-from decimal import Decimal
 import xlwt
 
 
@@ -93,10 +92,26 @@ def ajax_get_customer(request):
 			cus_contract = CusContract.objects.filter(cnt_id=cnt_id).get()
 			cnt_doc_no = cus_contract.cnt_doc_no
 			cnt_active = cus_contract.cnt_active
-			cnt_sign_frm = cus_contract.cnt_sign_frm.strftime("%d/%m/%Y")
-			cnt_sign_to = cus_contract.cnt_sign_to.strftime("%d/%m/%Y")			
-			cnt_eff_frm = cus_contract.cnt_eff_frm.strftime("%d/%m/%Y")
-			cnt_eff_to = cus_contract.cnt_eff_to.strftime("%d/%m/%Y")
+
+			if cus_contract.cnt_sign_frm is not None:
+				cnt_sign_frm = cus_contract.cnt_sign_frm.strftime("%d/%m/%Y")
+			else:
+				cnt_sign_frm = ""
+
+			if cus_contract.cnt_sign_to is not None:
+				cnt_sign_to = cus_contract.cnt_sign_to.strftime("%d/%m/%Y")
+			else:
+				cnt_sign_to = ""
+			
+			if cus_contract.cnt_eff_frm is not None:
+				cnt_eff_frm = cus_contract.cnt_eff_frm.strftime("%d/%m/%Y")
+			else:
+				cnt_eff_frm = ""
+
+			if cus_contract.cnt_eff_to is not None:
+				cnt_eff_to = cus_contract.cnt_eff_to.strftime("%d/%m/%Y")
+			else:
+				cnt_eff_to = ""
 
 			if cus_contract.cnt_wage_id is not None:
 				if cus_contract.cnt_wage_id != "":
@@ -659,14 +674,14 @@ def ajax_save_customer_schedule_plan(request):
 	print("*********************************************")
 
 	selected_sch_no = request.POST.get("selected_sch_no")	
-	# print("selected_sch_no = " + str(selected_sch_no))
+	print("selected_sch_no = " + str(selected_sch_no))
 
 	selected_service_id = request.POST.get("selected_service_id")	
 	# print("selected_service_id = " + str(selected_service_id))
 
 	cus_id = request.POST.get('cus_id')
 	cus_brn = request.POST.get('cus_brn')
-	cus_vol = request.POST.get('cus_vol')    
+	cus_vol = request.POST.get('cus_vol')
 	cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
 	
 	emp_id = request.POST.get("emp_id")
@@ -689,6 +704,8 @@ def ajax_save_customer_schedule_plan(request):
 
 	# Case - add new employee into customer service
 	if selected_sch_no == "0":
+		print("TRUE")
+
 		'''
 		print("add new");
 		print("--- debug ---")
@@ -709,17 +726,24 @@ def ajax_save_customer_schedule_plan(request):
 		'''
 
 		# Get latest sch_no
-		cursor = connection.cursor()		
-		cursor.execute("select max(convert(decimal(4,0),right(rtrim(convert(char(20),sch_no)),4))) from sch_plan where cnt_id=" + cnt_id)
+		cursor = connection.cursor()
+		# cursor.execute("select max(convert(decimal(4,0),right(rtrim(convert(char(20),sch_no)),4))) from sch_plan where cnt_id=" + cnt_id)
+		cursor.execute("select max(sch_no) from sch_plan where cnt_id=" + cnt_id + ";")
 		max_sch_no = cursor.fetchone()[0]
-
 		if max_sch_no is not None:
 			new_sch_no = max_sch_no + 1
 		else:
-			new_sch_no = 1
+			cursor = connection.cursor()			
+			cursor.execute("select top 1 srv_id from cus_service where cnt_id=" + cnt_id + ";")
+			selected_service_id = cursor.fetchone()[0]			
+			new_sch_no = str(selected_service_id) + str(1).zfill(4)
 	
+		print("max_sch_no = ",  max_sch_no)
+		print("new_sch_no = ", new_sch_no)
+
+
 		# Generate new sch_no
-		new_sch_no = str(selected_service_id) + str(new_sch_no).zfill(4)
+		# new_sch_no = str(selected_service_id) + str(new_sch_no).zfill(4)
 		# print("new_sch_no = " + str(new_sch_no))
 
 		# RULE-1: Check if an employee is existed in another schedule		
@@ -804,6 +828,12 @@ def ajax_save_customer_schedule_plan(request):
 			})
 
 		else:
+			cursor = connection.cursor()			
+			cursor.execute("select top 1 srv_id from cus_service where cnt_id=" + cnt_id + ";")
+			selected_service_id = cursor.fetchone()[0]
+			if selected_service_id is None:
+				selected_service_id = 0
+
 			new_sch_plan = SchPlan(
 				sch_no = new_sch_no,
 				srv_id = selected_service_id,
@@ -822,18 +852,66 @@ def ajax_save_customer_schedule_plan(request):
 				sch_shf_sun = sun_shift,
 				sch_active = sch_active,			
 				upd_date = datetime.datetime.now(),
-				upd_by = request.user.first_name,
+				# upd_by = request.user.first_name,
+				upd_by = request.user.username,
 				upd_flag = 'A',
 			    )
 			new_sch_plan.save() 
 
+			cursor = connection.cursor()			
+			cursor.execute("select count(*) from sch_plan where cnt_id=" + cnt_id + ";")
+			record_count = cursor.fetchone()[0]
+			if record_count is None:
+				record_count = 0
+			print("record_count : ", record_count)
+
+
+			# print("sch_plan is found")
+			sch_plan_list = []
+			sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).filter(sch_date_to='2999-12-31').exclude(upd_flag='D').order_by('-upd_date')
+			for d in sch_plan:	
+				if d.sch_active:
+					if d.relief:
+						relief = 1
+					else:
+						relief = 0 
+
+					if d.sch_active:
+						sch_active = 1
+					else:
+						sch_active = 0
+
+					record = {
+						"sch_no": d.sch_no,
+						"srv_id": d.srv_id,
+						"emp_id": d.emp_id_id,
+						"emp_fname_th": d.emp_id.emp_fname_th,
+						"emp_lname_th": d.emp_id.emp_lname_th,	    				
+						"sch_rank": d.sch_rank,
+						"sch_date_frm": d.sch_date_frm.strftime("%d/%m/%Y"),
+						"sch_date_to": d.sch_date_to.strftime("%d/%m/%Y"),
+						"sch_shf_mon": d.sch_shf_mon,
+						"sch_shf_tue": d.sch_shf_tue,
+						"sch_shf_wed": d.sch_shf_wed,
+						"sch_shf_thu": d.sch_shf_thu,
+						"sch_shf_fri": d.sch_shf_fri,
+						"sch_shf_sat": d.sch_shf_sat,
+						"sch_shf_sun": d.sch_shf_sun,
+						"sch_active": sch_active,
+						"relief": relief,
+						"upd_date": d.upd_date.strftime("%d/%m/%Y %H:%M:%S"),
+						"upd_by": d.upd_by,
+						"upd_flag": d.upd_flag,
+					}
+					sch_plan_list.append(record)
+
 			response = JsonResponse(data={
-				"message": "Added success",
+				"message": "เพิ่มรายการสำเร็จ",
 				"class": "bg-success",
 				"sch_plan_list": list(sch_plan_list),
+				"record_count": record_count,
 				"is_saved": True,
 			})
-
 
 		'''
 		except SchPlan.DoesNotExist:
@@ -861,7 +939,6 @@ def ajax_save_customer_schedule_plan(request):
 				upd_flag = 'A',
 			    )
 			new_sch_plan.save() 			
-
 			response = JsonResponse(data={
 				"message": "Added success",
 				"class": "bg-success",
@@ -874,6 +951,7 @@ def ajax_save_customer_schedule_plan(request):
 
 
 	else:
+		print("FALSE")
 		# print("update existing");
 		# print("selected_sch_no = " + str(selected_sch_no))
 
@@ -891,7 +969,8 @@ def ajax_save_customer_schedule_plan(request):
 			sch_plan.sch_date_frm = datetime.datetime.strptime(duration_from, "%d/%m/%Y")
 			sch_plan.sch_date_to = datetime.datetime.strptime(duration_to, "%d/%m/%Y")
 			sch_plan.upd_date = datetime.datetime.now()
-			sch_plan.upd_by = request.user.first_name
+			# sch_plan.upd_by = request.user.first_name
+			sch_plan.upd_by = request.user.username
 			sch_plan.upd_flag = 'E'
 			sch_plan.save()
 
@@ -910,7 +989,7 @@ def ajax_save_customer_schedule_plan(request):
 
 			# sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).filter(sch_date_to='2999-12-31').exclude(upd_flag='D').order_by('-upd_date')	
 			# sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).exclude(upd_flag='D').exclude(sch_date_to='2999-12-31').order_by('-upd_date', 'emp_id')
-			sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).exclude(upd_flag='D').order_by('-upd_date', 'emp_id')
+			sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).filter(sch_active=1).exclude(upd_flag='D').order_by('-upd_date', 'emp_id')
 
 			for d in sch_plan:
 				# if d.sch_active:
@@ -1306,13 +1385,11 @@ def ajax_get_employee(request):
 			# 6 = เสียชีวิต
 			# 8 = เกษียณ
 			# 9 = ไล่ออก
-
 			employee = Employee.objects.filter(emp_id__exact=emp_id).filter(emp_type='D1').exclude(empstatus='I').exclude(emp_status__in=exclude_list).get()
 			if employee.emp_join_date is not None:
 				emp_join_date = employee.emp_join_date.strftime("%d/%m/%Y")
 			else:
 				emp_join_date = ""
-
 			if employee.emp_term_date is not None:
 				emp_term_date = employee.emp_term_date.strftime("%d/%m/%Y")
 			else:
@@ -2161,6 +2238,9 @@ def ajax_sp_generate_daily_attend_status(request):
 
 
 def isGenerateDailyCreated(attendance_date,cnt_id,getPriorityStatus,gUSE,gADD,gEDIT,gDEL,gPREVIEW,gPRINT,gIM,gEX,gSALARY,gType,gOLD):
+	print("************************************")
+	print("FUNCTION: isGenerateDailyCreated()")
+	print("************************************")
 
 	# Implement ChkValidInput Case 3
 
@@ -2248,6 +2328,8 @@ def sfQuery(request):
 		return False, "ข้อมูลตารางเวรของวันที่ <b>" + str(request.POST.get('attendance_date')) + "</b> ยังไม่ได้ Gen โปรด Gen ข้อมูลก่อน"
 
 	# ตรวจสอบว่า post day end ไปหรือยัง
+	return False, "DEBUG 2"
+
 	if end_chk==1:			
 		return False, "ข้อมูลวันที่ <b>" + str() + "</b> ถูก DayEnd ไปแล้ว ไม่สามารถเรียกดูย้อนหลังได้"
 
@@ -2316,7 +2398,7 @@ def showContract(cnt_id):
 	sql += " left join t_wagezone as k on a.cnt_wage_id=k.wage_id"
 	sql += " where a.cnt_id=" + str(cnt_id)
 	sql += " and a.cnt_active=1"
-	print("sql 11:", sql)
+	# print("sql 11:", sql)
 
 	try:				
 		cursor = connection.cursor()
@@ -2409,8 +2491,8 @@ def getCustomerContractServiceList(cnt_id):
 	customer_contract_service_list = None
 	message = ""
 
-	sql = "select distinct * from v_contract where cnt_id=" + str(cnt_id) + " and srv_active=1 and CUS_SERVICE_FLAG<>'D' order by srv_id"
-	
+	# sql = "select distinct * from v_contract where cnt_id=" + str(cnt_id) + " and srv_active=1 and CUS_SERVICE_FLAG<>'D' order by srv_id"
+	sql = "select distinct * from v_contract where cnt_id=" + str(cnt_id) + " and CUS_SERVICE_FLAG<>'D' order by srv_active desc, srv_id;"
 	try:				
 		cursor = connection.cursor()
 		cursor.execute(sql)
@@ -2443,7 +2525,7 @@ def ajax_get_attendance_information(request):
 	print("********************************************")	
 
 	# กำหนดค่าเริ่มต้น
-	is_pass = False			# กำหนดให้เป็น False ไว้ก่อน
+	is_pass = False			# กำหนดให้เป็น False
 	message = ""
 	form_name = "frmD200"	# ค่าได้มาจากชื่อฟอร์ม D200: Daily Attendance
 	username = request.user.username	# ชื่อผู้ล็อคอิน
@@ -2560,7 +2642,6 @@ def ajax_get_attendance_information(request):
 		return response	
 	else:
 		is_pass = True
-
 	
 	getPriorityStatus,gUSE,gADD,gEDIT,gDEL,gPREVIEW,gPRINT,gIM,gEX,gSALARY,gType,gOLD = getPriority(usr_id, form_name)
 
@@ -2569,7 +2650,10 @@ def ajax_get_attendance_information(request):
 	if gType != "":
 		getGaray(gType)
 
-	is_pass, message = isGenerateDailyCreated(attendance_date,cnt_id,getPriorityStatus,gUSE,gADD,gEDIT,gDEL,gPREVIEW,gPRINT,gIM,gEX,gSALARY,gType,gOLD)
+	# amnaj
+	# is_pass, message = isGenerateDailyCreated(attendance_date,cnt_id,getPriorityStatus,gUSE,gADD,gEDIT,gDEL,gPREVIEW,gPRINT,gIM,gEX,gSALARY,gType,gOLD)
+	# ไม่ตรวจสิทธิ์ดูข้อมูลการแจ้งเวรย้อนหลัง
+	is_pass = True
 
 	if is_pass:
 		attendance_date = request.POST.get('attendance_date')
@@ -2654,8 +2738,6 @@ def ajax_get_attendance_information(request):
 		# select distinct * from v_dlyplan where cnt_id=2526000001 and dly_date=convert(datetime,'2020-12-02',20) and customer_flag<>'D' order by sch_shift, emp_id
 		cursor = connection.cursor()
 		
-
-		# TOTORO
 		today_date = convertStringToDate(settings.TODAY_DATE.strftime("%d/%m/%Y"))		
 		selected_attendance_date = datetime.datetime.strptime(request.POST.get('attendance_date'), '%d/%m/%Y')
 		# print("today_date=", today_date)
@@ -2671,7 +2753,7 @@ def ajax_get_attendance_information(request):
 			sql = "select date_chk,gen_chk,end_chk,pro_chk from t_date where date_chk='" + str(daily_attendance_date) + "'"
 			cursor1 = connection.cursor()
 			cursor1.execute(sql)	
-			t_date_obj = cursor1.fetchall()			
+			t_date_obj = cursor1.fetchall()
 			# ตรวจสอบค่า gen_chk, end_chk, prp_chk ของวันที่ต้องการดึงข้อมูล
 			if (t_date_obj is not None):
 				if len(t_date_obj)>0:
@@ -2812,7 +2894,9 @@ def ajax_get_attendance_information(request):
 			elif daily_attendance_date < today_date.date():
 				# เช็คล็อคอินยูสเซอร์เป็น CMS_SUP หรือไม่
 				if username=='CMS_SUP':							
-					# aeiou
+					view_name = "v_hdlyplan"
+					table = " from " + str(view_name) + " where cnt_id=" + str(cnt_id) + " and dly_date='" + str(daily_attendance_date) + "' "
+				else:
 					view_name = "v_hdlyplan"
 					table = " from " + str(view_name) + " where cnt_id=" + str(cnt_id) + " and dly_date='" + str(daily_attendance_date) + "' "
 
@@ -3087,6 +3171,18 @@ def ajax_get_attendance_information(request):
 		is_found = False
 		message = message
 
+	
+	# ตรวจสอบการอนุญาติให้ใช้ปุ่ม
+	if view_name=="v_hdlyplan":
+		if request.user.username=='CMS_SUP':
+			allow_crud = True
+		else:
+			allow_crud = False
+	else:
+		allow_crud = True
+
+	print("allow_crud=", allow_crud)
+	
 	response = JsonResponse(data={
 	    "success": True,
 	    "is_found": is_found,
@@ -3110,10 +3206,91 @@ def ajax_get_attendance_information(request):
 		"totalNNM": totalNNM,
 		"totalPDM": totalPDM,
 		"totalPNM": totalPNM,
+		"allow_crud": allow_crud,
 	})
 	
 	response.status_code = 200
 	return response	
+
+
+@permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
+@login_required(login_url='/accounts/login/')
+def ajax_delete_employee_schedule_maintenance(request):
+	print("********************************")
+	print("FUNCTION: ajax_delete_employee_schedule_maintenance()")
+	print("********************************")
+	
+	is_error = True
+	message = ""
+	cus_id = request.POST.get('cus_id')
+	cus_brn = request.POST.get('cus_brn')
+	cus_vol = request.POST.get('cus_vol')
+	cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
+
+	sch_no = request.POST.get('sch_no')
+	upd_by = request.user.username
+	
+	sql = "update sch_plan set Upd_by='" + str(upd_by) + "', Upd_flag='D' where sch_no=" + str(sch_no) + ";"
+	try:
+		with connection.cursor() as cursor:
+			cursor.execute(sql)
+
+		sch_plan_list = []
+		record = {}
+		sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).filter(sch_active=1).exclude(upd_flag='D').order_by('-upd_date', 'emp_id')
+		for d in sch_plan:
+			if d.relief:
+				relief = 1
+			else:
+				relief = 0 
+
+			if d.sch_active:
+				sch_active = 1
+			else:
+				sch_active = 0
+			record = {
+				"sch_no": d.sch_no,
+				"emp_id": d.emp_id_id,
+				"emp_fname_th": d.emp_id.emp_fname_th,
+				"emp_lname_th": d.emp_id.emp_lname_th,
+				"sch_rank": d.sch_rank,
+				"sch_date_frm": d.sch_date_frm.strftime("%d/%m/%Y"),
+				"sch_date_to": d.sch_date_to.strftime("%d/%m/%Y"),
+				"sch_shf_mon": d.sch_shf_mon,
+				"sch_shf_tue": d.sch_shf_tue,
+				"sch_shf_wed": d.sch_shf_wed,
+				"sch_shf_thu": d.sch_shf_thu,
+				"sch_shf_fri": d.sch_shf_fri,
+				"sch_shf_sat": d.sch_shf_sat,
+				"sch_shf_sun": d.sch_shf_sun,
+				"sch_active": sch_active,
+				"relief": relief,
+				"upd_date": d.upd_date.strftime("%d/%m/%Y %H:%M:%S"),
+				"upd_by": d.upd_by,
+				"upd_flag": d.upd_flag,					 
+			}
+			sch_plan_list.append(record)
+
+		is_error = False
+		message = "ลบรายการสำเร็จ"
+	except db.OperationalError as e:
+		is_error = True
+		message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+	except db.Error as e:
+		is_error = True
+		message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+	finally:
+		cursor.close()	
+
+	response = JsonResponse(data={
+	    "success": True,
+		"is_error": is_error,
+	    "message": message,
+		"sch_plan_list": list(sch_plan_list),
+	})
+
+	response.status_code = 200
+	return response
 
 
 @permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
@@ -3123,22 +3300,176 @@ def ajax_delete_employee(request):
 	print("FUNCTION: ajax_delete_employee()")
 	print("********************************")
 
+	username = request.user.username	
+	dly_date = datetime.datetime.strptime(request.GET.get('dly_date'), '%d/%m/%Y').date()
+	string_today_date = str(settings.TODAY_DATE.strftime("%d/%m/%Y"))
+	today_date = datetime.datetime.strptime(string_today_date, "%d/%m/%Y").date()
+	gen_chk = 0	
+	end_chk = 0
+	pro_chk = 0		
+	sql = "select date_chk,gen_chk,end_chk,pro_chk from t_date where date_chk='" + str(dly_date) + "'"
+	print("SQL : ", sql)
+	cursor = connection.cursor()
+	cursor.execute(sql)	
+	t_date_obj = cursor.fetchall()
+	cursor.close()
+	# ตรวจสอบว่ามีการสร้างตารางรับแจ้งเวรไว้หรือยัง
+	if (t_date_obj is not None):
+		if len(t_date_obj)>0:
+			gen_chk = t_date_obj[0][1]
+			end_chk = t_date_obj[0][2]
+			pro_chk = t_date_obj[0][3]
+
+
+	print()
+	print("*********************** DEBUG *************************")
+	print(username, dly_date, string_today_date, today_date, end_chk)
+	print("*********************** DEBUG *************************")
+	print()
+
 	cus_id = request.GET.get('cus_id').lstrip("0")
 	cus_brn = request.GET.get('cus_brn')
 	cus_vol = request.GET.get('cus_vol')
-	cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)		
+	cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
 	emp_id = request.GET.get('emp_id')
 	dly_date = datetime.datetime.strptime(request.GET.get('dly_date'), '%d/%m/%Y')	
 	shift_id = request.GET.get('shift_id')
-	username = request.user.first_name
+	# username = request.user.first_name
+	username = request.user.username
+
+	if username=='CMS_SUP':
+		if dly_date.date()==today_date:
+			if cus_id=="" or cus_id is None:
+				response = JsonResponse(data={"success": True, "message": "Contract Number is not correct."})
+				response.status_code = 200
+				return response
+			
+			if emp_id=="" or cus_id is None:
+				response = JsonResponse(data={"success": True, "message": "Employee ID is not correct."})
+				response.status_code = 200
+				return response
+
+			if dly_date=="" or cus_id is None:
+				response = JsonResponse(data={"success": True, "message": "Daily Attendnace Date is not correct."})
+				response.status_code = 200
+				return response
+
+			# Check if request's record is existed
+			with connection.cursor() as cursor:
+				cursor.execute("insert his_dly_plan_del select getdate(), %s, 'DLY_PLAN', * from dly_plan where cnt_id=%s and emp_id=%s and dly_date=%s and sch_shift=%s", [username, cnt_id, emp_id, dly_date, shift_id])
+				cursor.execute("delete dly_plan where cnt_id=%s and emp_id=%s and dly_date=%s and sch_shift=%s", [cnt_id, emp_id, dly_date, shift_id])
+				cursor.execute("select * from dly_plan where cnt_id=%s and emp_id=%s and dly_date=%s and sch_shift=%s", [cnt_id, emp_id, dly_date, shift_id])
+				row = cursor.fetchone()
+				cursor.close
+
+			if row is None:
+				message = "Employee ID " + emp_id + " has been deleted."
+			else:
+				message = "Cannot delete Employee ID " + emp_id
+
+			response = JsonResponse(data={
+				"success": True,	    
+				"message": message,
+			})
+		elif dly_date.date() < today_date:
+			if end_chk==1:
+				message = "CMS_SUP ทำการลบในตาราง his_dly_plan"
+				if cus_id=="" or cus_id is None:
+					response = JsonResponse(data={"success": True, "message": "Contract Number is not correct."})
+					response.status_code = 200
+					return response
+				
+				if emp_id=="" or cus_id is None:
+					response = JsonResponse(data={"success": True, "message": "Employee ID is not correct."})
+					response.status_code = 200
+					return response
+
+				if dly_date=="" or cus_id is None:
+					response = JsonResponse(data={"success": True, "message": "Daily Attendnace Date is not correct."})
+					response.status_code = 200
+					return response
+
+				# Check if request's record is existed
+				with connection.cursor() as cursor:
+					cursor.execute("insert his_dly_plan_del select getdate(), %s, 'HIS_DLY_PLAN', * from his_dly_plan where cnt_id=%s and emp_id=%s and dly_date=%s and sch_shift=%s", [username, cnt_id, emp_id, dly_date, shift_id])
+					cursor.execute("delete his_dly_plan where cnt_id=%s and emp_id=%s and dly_date=%s and sch_shift=%s", [cnt_id, emp_id, dly_date, shift_id])
+					cursor.execute("select * from his_dly_plan where cnt_id=%s and emp_id=%s and dly_date=%s and sch_shift=%s", [cnt_id, emp_id, dly_date, shift_id])
+					row = cursor.fetchone()
+					cursor.close
+
+				if row is None:
+					message = "Employee ID " + emp_id + " has been deleted."
+				else:
+					message = "Cannot delete Employee ID " + emp_id
+
+				response = JsonResponse(data={
+					"success": True,	    
+					"message": message,
+				})				
+			else:
+				message = "ERROR : วันที่ทำรายการมากกว่าวันที่ปัจจุบัน"
+
+	else:
+		if end_chk==1:
+			message = str(username) + " ไม่มีสิทธิ์ทำรายการ"			
+		else:
+			if dly_date==today_date:
+				print(str(username) + " ทำการลบในตาราง dly_plan")
+				if cus_id=="" or cus_id is None:
+					response = JsonResponse(data={"success": True, "message": "Contract Number is not correct."})
+					response.status_code = 200
+					return response
+				
+				if emp_id=="" or cus_id is None:
+					response = JsonResponse(data={"success": True, "message": "Employee ID is not correct."})
+					response.status_code = 200
+					return response
+
+				if dly_date=="" or cus_id is None:
+					response = JsonResponse(data={"success": True, "message": "Daily Attendnace Date is not correct."})
+					response.status_code = 200
+					return response
+
+				# Check if request's record is existed
+				with connection.cursor() as cursor:
+					cursor.execute("insert his_dly_plan_del select getdate(), %s, 'DLY_PLAN', * from dly_plan where cnt_id=%s and emp_id=%s and dly_date=%s and sch_shift=%s", [username, cnt_id, emp_id, dly_date, shift_id])
+					cursor.execute("delete dly_plan where cnt_id=%s and emp_id=%s and dly_date=%s and sch_shift=%s", [cnt_id, emp_id, dly_date, shift_id])
+					cursor.execute("select * from dly_plan where cnt_id=%s and emp_id=%s and dly_date=%s and sch_shift=%s", [cnt_id, emp_id, dly_date, shift_id])
+					row = cursor.fetchone()
+					cursor.close
+
+				if row is None:
+					message = "Employee ID " + emp_id + " has been deleted."
+				else:
+					message = "Cannot delete Employee ID " + emp_id
+
+				response = JsonResponse(data={
+					"success": True,	    
+					"message": message,
+				})
+			elif dly_date < today_date:
+				message = str(username) + " ไม่มีสิทธิ์ทำรายการ"				
+
+	response = JsonResponse(data={
+	    "success": True,	    
+	    "message": message,
+	})
+
+	# print("message : ", message)
+	response.status_code = 200
+	return response
+
 
 	'''
-	print("--------debug---------")
-	print("_cnt_id = " + str(cnt_id))
-	print("_emp_id = " + str(emp_id))
-	print("_dly_date = " + str(dly_date))
-	print("_shift_id = " + str(shift_id))
-	'''
+	cus_id = request.GET.get('cus_id').lstrip("0")
+	cus_brn = request.GET.get('cus_brn')
+	cus_vol = request.GET.get('cus_vol')
+	cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
+	emp_id = request.GET.get('emp_id')
+	dly_date = datetime.datetime.strptime(request.GET.get('dly_date'), '%d/%m/%Y')	
+	shift_id = request.GET.get('shift_id')
+	# username = request.user.first_name
+	username = request.user.username
 
 	if cus_id=="" or cus_id is None:
 		response = JsonResponse(data={"success": True, "message": "Contract Number is not correct."})
@@ -3175,7 +3506,7 @@ def ajax_delete_employee(request):
 
 	response.status_code = 200
 	return response
-
+	'''
 
 def get_DLY_PLAN_OR_HIS_DLY_PLAN(dly_date):
 	table_name = "DLY_PLAN"
@@ -3198,13 +3529,14 @@ def get_DLY_PLAN_OR_HIS_DLY_PLAN(dly_date):
 	return is_error_status, error_message, table_name
 
 
-
-# LUFY
 def addRecord_cross_site(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,
 	ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,
 	remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,
 	allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id,Tday7,Tdof,customer_wage_rate_id,customer_zone_id,Timecross):
-	
+
+	# print("customer_wage_rate_id : ", customer_wage_rate_id)
+	# return False
+
 	# print("Tot_hr_amt = ", Timecross)	
 	# return False, Timecross
 
@@ -3283,8 +3615,6 @@ def addRecord_cross_site(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,
 	# Rule 3 ChkValidInput(2)
 	# ****** START **********
 
-
-	# LUFY
 	is_pass, message = chkValidInput(2,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,
 		shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,
 		relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,
@@ -3391,8 +3721,11 @@ def addRecord_cross_site(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,
 	#TODO: หาค่า txtSpare มีการเซ็ทค่าเริ่มต้นมาจากที่ไหน
 	txtSpare = 0
 	Tspare = txtSpare
+	
 	#TODO: ส่งค่า wage_id จาก Customer Tab
-	wage_id = 32
+	# wage_id = 32
+	wage_id = customer_wage_rate_id
+
 	Twage_id = wage_id
 	Twage_no = str(Twage_id) + str(emp_rank)
 	Tpay_type = 1 if ui_ot_status==1 else ""
@@ -3695,7 +4028,11 @@ def addRecord_cross_site(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,
 			sql += "0" + "," + "0" + "," + "0" + "," + "0" + "," + "0" + ","
 			sql += "0" + "," + "NULL" + "," + "0" + "," + "0" + ","
 			sql += "0" + "," + "0" + "," + "NULL" + "," + "NULL" + "," + "0" + "," + "0" + ","
-			sql += "0" + "," + "32" + "," + "'32SOY'" + "," + "NULL" + "," + "0" + "," + "0" + "," + "1" + "," + "NULL" + ",'"
+			
+			# sql += "0" + "," + "32" + "," + "'32SOY'" + "," + "NULL" + "," + "0" + "," + "0" + "," + "1" + "," + "NULL" + ",'"
+			sql += "0" + "," + str(customer_wage_rate_id) + "," + "'32SOY'" + "," + "NULL" + "," + "0" + "," + "0" + "," + "1" + "," + "NULL" + ",'"
+			
+
 			sql += str(upd_date) + "'," + str(username) + "," + "'A'" + ",'" + remark + "')"
 			# print(sql)
 
@@ -3764,6 +4101,8 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 	informno = len(record_count) if len(record_count)>0 else 0
 
 	sql = "select cnt_id, srv_shif_id, sum(srv_qty) as qty from cus_service where srv_active=1 and cnt_id=" + str(cnt_id) + " and srv_shif_id=" + str(shift_id) + " group by cnt_id, srv_shif_id"
+	print("SQL : ", sql)
+
 	cursor = connection.cursor()
 	cursor.execute(sql)
 	rows = cursor.fetchone()
@@ -3801,8 +4140,6 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 	# Rule 3 ChkValidInput(2)
 	# ****** START **********
 
-
-	# LUFY
 	is_pass, message = chkValidInput(2,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,
 		shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,
 		relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,
@@ -3896,8 +4233,11 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 	#TODO: หาค่า txtSpare มีการเซ็ทค่าเริ่มต้นมาจากที่ไหน
 	txtSpare = 0
 	Tspare = txtSpare
+	
 	#TODO: ส่งค่า wage_id จาก Customer Tab
-	wage_id = 32
+	# wage_id = 32
+	wage_id = customer_wage_rate_id
+
 	Twage_id = wage_id
 	Twage_no = str(Twage_id) + str(emp_rank)
 	Tpay_type = 1 if ui_ot_status==1 else ""
@@ -4202,7 +4542,11 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 			sql += "0" + "," + "0" + "," + "0" + "," + "0" + "," + "0" + ","
 			sql += "0" + "," + "NULL" + "," + "0" + "," + "0" + ","
 			sql += "0" + "," + "0" + "," + "NULL" + "," + "NULL" + "," + "0" + "," + "0" + ","
-			sql += "0" + "," + "32" + "," + "'32SOY'" + "," + "NULL" + "," + "0" + "," + "0" + "," + "1" + "," + "NULL" + ",'"
+			
+			# sql += "0" + "," + "32" + "," + "'32SOY'" + "," + "NULL" + "," + "0" + "," + "0" + "," + "1" + "," + "NULL" + ",'"
+			sql += "0" + "," + str(customer_wage_rate_id) + "," + "'32SOY'" + "," + "NULL" + "," + "0" + "," + "0" + "," + "1" + "," + "NULL" + ",'"
+			
+
 			sql += str(upd_date) + "'," + str(username) + "," + "'A'" + ",'" + remark + "')"
 			# print(sql)
 
@@ -4234,7 +4578,6 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 
 	# return False, "TODO"
 
-	# amnaj
 	# print("tel_time BBBB:", tel_time)
 
 	# message = str(late_from) + " | " + str(late_to) + " | " + str(late_hour) + " | " + str(job_type)
@@ -4280,7 +4623,6 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 	'''
 	if dly_date == today_date.date():
 		sql = "select cnt_id,emp_id,absent,late,tel_man,relieft from dly_plan "
-
 	if dly_date < today_date.date():
 		sql = "select cnt_id,emp_id,absent,late,tel_man,relieft from his_dly_plan "
 	sql += " where cnt_id=" + str(cnt_id) + " and dly_date='" + str(dly_date) + "' and emp_id=" + str(emp_id)
@@ -4344,7 +4686,6 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 
 		# return False, "TODO3"
 
-
 		# Check #6
 		if ui_phone_status==db_phone_status:
 			if ui_late_status==db_late_status:
@@ -4376,19 +4717,25 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 						cursor.close
 						srv_qty = rows[2]
 
+						print("cnt_id_1 = ", int(rows[0]))
+						print("cnt_id_2 = ", int(cnt_id))
 						print("informNo = ", informNo)
 						print("srv_qty = ", srv_qty)
-
-						# ironman
-						# return False, "TODO"
+						print("tel_amount = ", tel_amount)
 
 						if informNo >= srv_qty:
-							is_pass = False					
-							message = "พนักงานที่แจ้งเวรมากกว่าที่มีอยู่ในสัญญา: <b>" + str(cnt_id) + "</b>"
-							return is_pass, message
+							if(int(rows[0])==int(cnt_id)):
+								is_pass = True
+								message = ""
+							else:
+								is_pass = False					
+								message = "พนักงานที่แจ้งเวรมากกว่าที่มีอยู่ในสัญญา: <b>" + str(cnt_id) + "</b>"
+
+							# return is_pass, message
 						else:
 							is_pass = True # แจ้งเวรยังไม่เกินจำนวนที่อยู่ในสัญญา
 							message = "Check #6 is passed."
+		
 		
 		'''				
 		else:
@@ -4396,18 +4743,14 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 				if shift_id != 99:				
 					if dly_date == today_date.date():
 						sql = "select count(*) from dly_plan "
-
 					if dly_date < today_date.date():
 						sql = "select count(*) from his_dly_plan "
-
 					sql += "where cnt_id=" + str(cnt_id) + " and sch_shift=" + str(shift_id) + " and absent=0 and dly_date='" + str(dly_date) + "'"
-
 					cursor = connection.cursor()
 					cursor.execute(sql)
 					rows = cursor.fetchone()
 					cursor.close	
 					informNo = rows[0] if rows[0]>0 else 0
-
 					# get srv_qty
 					sql = "select cnt_id, srv_shif_id, sum(srv_qty) as qty from cus_service where srv_active=1 and cnt_id=" + str(cnt_id) + " and srv_shif_id=" + str(shift_id) + " group by cnt_id, srv_shif_id"
 					cursor = connection.cursor()
@@ -4415,7 +4758,6 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 					rows = cursor.fetchone()
 					cursor.close
 					srv_qty = rows[2]
-
 					if informNo >= srv_qty:
 						is_pass = False					
 						message = "พนักงานที่แจ้งเวรมากกว่าที่มีอยู่ในสัญญา: <b>" + str(cnt_id) + "</b>"
@@ -4429,6 +4771,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 
 	# debug
 	# Check #7
+	# print("AAAA")
 	is_pass, message = chkValidInput(2,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,ui_ot_status,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id)
 	
 	# return False, message
@@ -4460,13 +4803,11 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		'''
 
 		'''
-
 		is_public_holiday, message = isPublicHoliday(dly_date)
 		if is_public_holiday:
 			Tpub = 1
 		else:
 			Tpub = 0
-
 		DN = None
 		print(shift_id)
 		if (shift_id == "99" or shift_id == "999"):
@@ -4474,7 +4815,6 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		else:
 			DN = shift_name.split("#")[1].strip()[0:1]
 			print("DN=", DN.strip())
-
 		if DN is not None:
 			if DN=="D":
 				print("DAY")			
@@ -4490,23 +4830,19 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 					totalPNA = totalPNA + 1
 		else:
 			print("DN is None")
-
 		lblNDM = totalNDA - totalNDP
 		lblNNM = totalNNA - totalNNP
 		lblPDM = totalPDA - totalPDP
 		lblPNM = totalPNA - totalPNP
-
 		print(str(lblNDM) + " | " + str(lblNNM) + " | " + str(lblPDM) + " | " + str(lblPNM))
 		if Tpub == 0:
 			if lblNDM > 0:
 				return False, "จำนวน รปภ.ในกะกลางวันเกินกว่าที่ระบุในสัญญา"
-
 			if lblNNM > 0:
 				return False, "จำนวน รปภ.ในกะกลางคืนเกินกว่าที่ระบุในสัญญา"
 		else:
 			if lblPDM > 0:
 				return False, "จำนวน รปภ.ในกะกลางวันเกินกว่าที่ระบุในสัญญา"
-
 			if lblPNM > 0:
 				return False, "จำนวน รปภ.ในกะกลางคืนเกินกว่าที่ระบุในสัญญา"
 		'''
@@ -4646,6 +4982,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 				pro_chk = t_date_obj[0][3]
 		
 		# ตรวจสอบว่า post day end ไปหรือยัง
+		'''
 		if end_chk==1:
 			return False, "ข้อมูลวันที่ <b>" + str() + "</b> ถูก DayEnd ไปแล้ว ไม่สามารถเรียกดูย้อนหลังได้"
 		else:
@@ -4662,7 +4999,40 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 					sql = "update dly_plan set "
 			else:
 				return False, "เลือกวันที่ทำรายการไม่ถูกต้อง"		
+		'''
 
+		# return False, "Debug 1"
+		if username=='CMS_SUP':
+			if dly_date==today_date.date():
+				sql = "update dly_plan set "
+			elif dly_date < today_date.date():
+				# เช็คล็อคอินยูสเซอร์เป็น CMS_SUP หรือไม่				
+				if username=='CMS_SUP':
+					if end_chk==1:
+						sql = "update his_dly_plan set "
+					else:
+						sql = "update dly_plan set "
+				else:
+					sql = "update dly_plan set "
+			else:
+				return False, "เลือกวันที่ทำรายการไม่ถูกต้อง"		
+		else:
+			if end_chk==1:
+				return False, "ข้อมูลวันที่ <b>" + str(string_today_date) + "</b> ถูก DayEnd ไปแล้ว ไม่สามารถเรียกดูย้อนหลังได้"
+			else:
+				if dly_date==today_date.date():
+					sql = "update dly_plan set "
+				elif dly_date < today_date.date():
+					# เช็คล็อคอินยูสเซอร์เป็น CMS_SUP หรือไม่				
+					if username=='CMS_SUP':
+						if end_chk==1:
+							sql = "update his_dly_plan set "
+						else:
+							sql = "update dly_plan set "
+					else:
+						sql = "update dly_plan set "
+				else:
+					return False, "เลือกวันที่ทำรายการไม่ถูกต้อง"			
 
 		# Get Period
 		try:
@@ -4751,7 +5121,6 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 			is_pass = True
 			message = "รับแจ้งเวรสำเร็จ"
 
-			# amnaj
 			# กรณีรับแจ้งเวรสำเร็จ
 			if is_pass:
 				print('Update spaydate table')
@@ -5030,13 +5399,11 @@ def editRecord_temp(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_d
 		sql += " and dly_date='" + str(dly_date) + "'"
 		sql += " and emp_id=" + str(emp_id)
 		sql += " and sch_shift=" + str(shift_id)
-
 		# print(sql)
 	
 		try:
 			with connection.cursor() as cursor:
 				cursor.execute(sql)
-
 			is_pass = True
 			message = "Edit complete."
 		except db.OperationalError as e:
@@ -5045,7 +5412,6 @@ def editRecord_temp(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_d
 		except db.Error as e:
 			is_pass = False
 			message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
-
 	return is_pass, message
 	'''
 
@@ -5171,8 +5537,6 @@ def chkValidInput(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_r
 
 
 
-
-			# LUFY
 			# ห้ามลงงานที่อื่นในเวลาที่คร่อมกัน วันเดียวกัน
 			# ตรวจสอบห้ามลงงานที่อื่นในกะเดียวกัน วันเดียวกัน
 			# TODO - CheckBetweenShift()
@@ -5546,6 +5910,9 @@ def chkValidInput_bk(check_type,dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,em
 	
 	return False, "Validation is failed! Please contact admin"
 
+
+
+'''
 def editRecord_old(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,absent_status,late_status,phone_status,relief_status,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM):
 	is_pass = True
 	message = ""	
@@ -5859,7 +6226,7 @@ def editRecord_old(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_de
 			message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
 
 	return is_pass, message
-
+'''
 
 
 @permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
@@ -5942,7 +6309,6 @@ def ajax_save_daily_attendance_cross_site(request):
 	if AEdly == 0: # EDIT MODE
 		print("Edit Mode")
 		
-		# amnaj
 		# print("DEBUG job_type:", job_type)
 
 		is_edit_record_success, message = editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id,Tday7,Tdof,customer_wage_rate_id,customer_zone_id)
@@ -5956,8 +6322,8 @@ def ajax_save_daily_attendance_cross_site(request):
 			type_status = "red"
 
 	elif AEdly == 1: # ADD MODE
-		print("Add Mode")
-		# LUFY
+		# print("Add Mode")
+		
 		is_add_record_success, message = addRecord_cross_site(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id,Tday7,Tdof,customer_wage_rate_id,customer_zone_id, Timecross)
 
 		if is_add_record_success:
@@ -5990,7 +6356,7 @@ def ajax_save_daily_attendance_cross_site(request):
 
 	response.status_code = 200
 
-	print("LUFY")
+	# print("LUFY")
 
 	return response
 
@@ -6082,7 +6448,6 @@ def ajax_save_daily_attendance(request):
 	if AEdly == 0: # EDIT MODE
 		print("Edit Mode")
 		
-		# amnaj
 		# print("DEBUG job_type:", job_type)
 
 		is_edit_record_success, message = editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id,Tday7,Tdof,customer_wage_rate_id,customer_zone_id)
@@ -6445,10 +6810,10 @@ def ajax_is_scheduled_between_site(request):
 	username = request.user.username
 	upd_date = datetime.datetime.now()
 	
-	# message = "%s,%s,%s,%s,%s" %(attendance_date,shift_id,cus_id,cus_brn,cus_vol)
-	# print("message:", message)
-	# print("shift_status:", shift_status)
-	# print("attendance_date:", attendance_date)
+	message = "%s,%s,%s,%s,%s" %(attendance_date,shift_id,cus_id,cus_brn,cus_vol)
+	print("message:", message)
+	print("shift_status:", shift_status)
+	print("attendance_date:", attendance_date)
 
 	# Field validation
 	if shift_status not in shift_status_list:
@@ -6560,7 +6925,7 @@ def ajax_is_scheduled_between_site(request):
 							message = "%s,%s,%s" %(tmp_cnt_id, tmp_emp_id, tmp_shf_type)
 
 							sql = "select * from v_dlyplan where emp_id=" + str(tmp_emp_id) + " and absent=0 and shf_type='" + str(tmp_shf_type) + "'"
-							print("DEBUG sql 11: ", sql)
+							# print("DEBUG sql 11: ", sql)
 							cursor = connection.cursor()
 							cursor.execute(sql)
 							v_dlyplan_obj = cursor.fetchone()
@@ -6569,28 +6934,33 @@ def ajax_is_scheduled_between_site(request):
 							if v_dlyplan_obj is not None:
 
 								# DlyPerRs[i][38]
-								message = "พนักงานรหัส <b>" + str(tmp_emp_id) + "</b> ลงเข้าเวรที่หน่วยงาน <b>" + str(v_dlyplan_obj[13]) + "</b> ในกะ <b>" + str(v_dlyplan_obj[3]) + "</b> แล้ว "
-								message += "หากต้องการทำงานต่อกรุณากดปุ่มยืนยัน"
-								response = JsonResponse(data={"success": True, "is_error": True, "is_scheduled:": True, "message": message})
+								message = "พนักงานรหัส <b>" + str(tmp_emp_id) + "</b> ได้แจ้งเวรเข้าหน่วยงาน <b>" + str(v_dlyplan_obj[13]) + "</b> ในกะ <b>" + str(v_dlyplan_obj[3]) + "</b> ไว้แล้ว "
+								message += "ระบบไม่อนุญาติให้ทำรายการของพนังงานท่านนี้<br>"
+								message += "<hr>หากต้องการบันทึกการแจ้งเวรของพนักงานที่เหลือ กรุณากดปุ่มยืนยัน"
+								
+								response = JsonResponse(data={"success": True, "is_error": True, "is_over_capacity": False, "is_scheduled:": True, "message": message})
 								response.status_code = 200
 								return response
 							else:
-								response = JsonResponse(data={"success": True,"is_error": False, "is_scheduled:": False, "message": "Good to go"})
+								response = JsonResponse(data={"success": True,"is_error": False, "is_over_capacity": False, "is_scheduled:": False, "message": "Good to go"})
 								response.status_code = 200
 								return response								
 				except db.OperationalError as e:
-					response = JsonResponse(data={"success": True,"is_error": True, "is_scheduled:": True, "message": "<b>Please send this error to IT team or try again.</b><br>" + str(e)})
+					response = JsonResponse(data={"success": True,"is_error": True, "is_over_capacity": False, "is_scheduled:": True, "message": "<b>Please send this error to IT team or try again.</b><br>" + str(e)})
 					response.status_code = 200
 					return response
 				except db.Error as e:
-					response = JsonResponse(data={"success": True,"is_error": True, "is_scheduled:": True, "message": "<b>Please send this error to IT team or try again.</b><br>" + str(e)})
+					response = JsonResponse(data={"success": True,"is_error": True, "is_over_capacity": False, "is_scheduled:": True, "message": "<b>Please send this error to IT team or try again.</b><br>" + str(e)})
 					response.status_code = 200
 					return response
 			else:
-				response = JsonResponse(data={"success": True, "is_error": True, "is_scheduled:": True, "message": "จำนวนพนักงานทำงานมากกว่าสัญญาการให้บริการ"})
+				# response = JsonResponse(data={"success": True, "is_error": True, "is_scheduled:": True, "message": "ไม่สามารถทำรายการได้เนื่องจาก <b>จำนวนพนักงานทำงานมากกว่าสัญญาการให้บริการ</b>"})
+				
+				message = "ไม่สามารถทำรายการได้เนื่องจาก <b>จำนวนพนักงานเกินสัญญาการให้บริการ</b> "
+				message += "(จำนวนพนักงาน <b>" + str(TDailyShift) + "</b> อัตรา | จำนวนในสัญญา <b> " + str(TContractShift) + "</b> อัตรา)"
+				response = JsonResponse(data={"success": True, "is_error": True, "is_over_capacity": True, "is_scheduled:": True, "message": message})
 				response.status_code = 200
 				return response
-
 			
 		else: # Absent
 
@@ -7318,7 +7688,6 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 		sql += "and b.lve_year>=year(getdate())"
 		# print("EMP_LEAVE_PLAN SQL:", sql)
 
-
 		try:
 			with connection.cursor() as cursor:		
 				cursor.execute(sql)
@@ -7334,9 +7703,7 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 			message += message + "Error! Please send this error to IT team.<br>" + str(e)
 			return is_error, message
 		finally:
-			cursor.close()
-
-
+			cursor.close()		
 		return is_error, message, DlyPerRs_EMPLEAVEPLAN
 
 
@@ -7365,8 +7732,7 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 			message += message + "Error! Please send this error to IT team.<br>" + str(e)
 			return is_error, message
 		finally:
-			cursor.close()
-
+			cursor.close()		
 		return is_error, message, DlyPerRs_EMPLEAVEACT
 
 
@@ -7547,15 +7913,13 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 		finally:
 			cursor.close()
 
-
-
 		# DlyPerRs		
 		sql = "select distinct * from " + str(user_first_name) + " "
 		sql += "where emp_id=" + str(emp_id) + " "
 		sql += "and dly_date>='" + str(search_date_from) + "' "
 		sql += "and dly_date<='" + str(search_date_to) + "' "
 		sql += "order by dly_date, sch_shift"
-		print("DEBUG 1 DlyPerRs : ", sql)
+		# print("sql DlyPerRs: ", sql)
 		try:
 			with connection.cursor() as cursor:		
 				cursor.execute(sql)
@@ -7612,44 +7976,14 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 		finally:
 			cursor.close()
 
-		A1 = 0.0
-		A2 = 0.0
-		A3 = 0.0
-		A4 = 0.0
-		A5 = 0.0
-		A6 = 0.0
-		A7 = 0.0
-		
-		A8 = 0.0
-		A9 = 0.0
-		A10 = 0.0
-		A11 = 0.0
-		A12 = 0.0
-
-		bas_amt = 0.0
-		otm_amt = 0.0
-		bon_amt = 0.0
-		pub_amt = 0.0
-		dof_amt = 0.0
-
-		A3_new = 0.0
-		A4_new = 0.0
-		A5_new = 0.0
-		A6_new = 0.0
-		A7_new = 0.0
-
-		bas_amt_new = 0.0
-		otm_amt_new = 0.0
-		bon_amt_new = 0.0
-		pub_amt_new = 0.0
-		dof_amt_new = 0.0
-
-		bas_amt_ns = 0.0
-		otm_amt_ns = 0.0
-		bon_amt_ns = 0.0
-		pub_amt_12 = 0.0
-		dof_amt_ns = 0.0
-
+		A1 = 0
+		A2 = 0
+		A3 = 0
+		A4 = 0
+		A5 = 0
+		A6 = 0
+		A7 = 0
+		A8 = 0
 
 		DropTable(user_first_name + "_TMPC")
 		sql = "select distinct * into " + str(user_first_name + "_TMPC") + " "
@@ -7676,188 +8010,73 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 
 		print("DEBUG message = ", message)
 
-
-
-
 		if DlyPerRs is not None:
 			if len(DlyPerRs) > 0:
 				for i in range(0, len(DlyPerRs)):
 					absent = DlyPerRs[i][21]
 					shf_amt_hr = DlyPerRs[i][6]
 					
-					# A3 - BAS
 					if  DlyPerRs[i][38] is not None:
-						bas_amt = DlyPerRs[i][38] if DlyPerRs[i][38]>0 else 0.0
+						bas_amt = DlyPerRs[i][38] if DlyPerRs[i][38]>0 else 0
 					else:
-						bas_amt = 0.0
-
-					# A4 - GOT
-					if  DlyPerRs[i][52] is not None:
-						otm_amt = DlyPerRs[i][52] if DlyPerRs[i][52]>0 else 0.0
-					else:
-						otm_amt = 0.0
-
-					# A5 - BON
-					if  DlyPerRs[i][39] is not None:
-						bon_amt = DlyPerRs[i][39] if DlyPerRs[i][39]>0 else 0.0
-					else:
-						bon_amt = 0.0
-
-					# A6 - PUB
-					if  DlyPerRs[i][40] is not None:
-						pub_amt = DlyPerRs[i][40] if DlyPerRs[i][40]>0 else 0.0
-					else:
-						pub_amt = 0.0
-
-					# A7 - DOF
-					if  DlyPerRs[i][53] is not None:
-						dof_amt = DlyPerRs[i][53] if DlyPerRs[i][53]>0 else 0.0
-					else:
-						dof_amt = 0.0
+						bas_amt = 0
 					
-					'''
+					if  DlyPerRs[i][52] is not None:
+						otm_amt = DlyPerRs[i][52] if DlyPerRs[i][52]>0 else 0
+					else:
+						otm_amt = 0
+
+					if  DlyPerRs[i][39] is not None:
+						bon_amt = DlyPerRs[i][39] if DlyPerRs[i][39]>0 else 0
+					else:
+						bon_amt = 0
+
+					if  DlyPerRs[i][40] is not None:
+						pub_amt = DlyPerRs[i][40] if DlyPerRs[i][40]>0 else 0
+					else:
+						pub_amt = 0
+
+					if  DlyPerRs[i][53] is not None:
+						dof_amt = DlyPerRs[i][53] if DlyPerRs[i][53]>0 else 0
+					else:
+						dof_amt = 0
+
 					if  DlyPerRs[i][62] is not None:
 						ex_dof_amt = DlyPerRs[i][62] if DlyPerRs[i][62]>0 else 0
 					else:
 						ex_dof_amt = 0
-					'''
 
-					if absent != int(1):
+					if absent==int(1):
+						print("absent = true")
+					else:
 						# print("shf_amt_hr =", shf_amt_hr)
-						A1 = Decimal(A1) + shf_amt_hr
+						A1 = A1 + shf_amt_hr
 						A2 = A2 + 1
-						A3 = Decimal(A3) + Decimal(bas_amt)
-						A4 = Decimal(A4) + Decimal(otm_amt)
-						A5 = Decimal(A5) + Decimal(bon_amt)
-
-						A6 = Decimal(A6) + Decimal(pub_amt)
-						A7 = Decimal(A7) + Decimal(dof_amt)
-
-						# A8 = A8 + ex_dof_amt					
+						A3 = A3 + bas_amt
+						A4 = A4 + otm_amt
+						A5 = A5 + bon_amt
+						A6 = A6 + pub_amt
+						A7 = A7 + dof_amt
+						A7 = A7 + ex_dof_amt					
 					# print("absent:", absent)
 
 				'''
-				print("")
-				print("DEBUG")
-				print("A3 : ", A3)
-				print("A4 : ", A4)
-				print("A5 : ", A5)
-				print("A6 : ", A6)
-				print("A7 : ", A7)
-				print("")
+				print("A1:", A1)
+				print("A2:", A2)
+				print("A3:", A3)
+				print("A4:", A4)
+				print("A5:", A5)
+				print("A6:", A6)
+				print("A7:", A7)
 				'''
 
-				#income_list = [A1,A2,A3,A4,A5,A6,A7,A8]
-
-
-
-		# New Requirement
-		sql = "select cnt_id,emp_id,dly_date dlydate,sch_shift schshift,prd_id,absent,Pay_type,bas_amt,bon_amt,otm_amt,bas_amtNS,bon_amtNS,otm_amtNS,PUB_amt,PUB_AMt12,DOF_amt,DOF_AmtNS,DOF,Pub,* "
-		sql += "from his_dly_plan "
-		sql += "where emp_id=" + str(emp_id) + " "
-		sql += "and dly_date>='" + str(search_date_from) + "' "
-		sql += "and dly_date<='" + str(search_date_to) + "' "
-		sql += "order by dly_date, sch_shift;"
-		print("DEBUG 2 DlyPerRs_new : ", sql)
-
-		try:
-			with connection.cursor() as cursor:		
-				cursor.execute(sql)
-				DlyPerRs_new = cursor.fetchall()
-		except db.OperationalError as e:
-			is_error = True
-			message = "<b>Please send this error to IT team.</b><br>" + str(e)			
-		except db.Error as e:
-			is_error = True
-			message = "<b>Please send this error to IT team.</b><br>" + str(e)
-		finally:			
-			cursor.close()		
-
-		if DlyPerRs_new is not None:
-			if len(DlyPerRs_new) > 0:
-				for i in range(0, len(DlyPerRs_new)):
-
-					absent = DlyPerRs_new[i][5]
-					
-					if not absent:
-						bas_amt_new = Decimal(bas_amt_new) + DlyPerRs_new[i][7]
-						otm_amt_new = Decimal(otm_amt_new) + DlyPerRs_new[i][9]
-						bon_amt_new = Decimal(bon_amt_new) + DlyPerRs_new[i][8]
-						dof_amt_new = Decimal(dof_amt_new) + DlyPerRs_new[i][15]
-
-						bas_amt_ns = Decimal(bas_amt_ns) + DlyPerRs_new[i][10]
-						otm_amt_ns = Decimal(otm_amt_ns) + DlyPerRs_new[i][12]
-						bon_amt_ns = Decimal(bon_amt_ns) + DlyPerRs_new[i][11]
-
-						PUB_AMt12 = DlyPerRs_new[i][14]
-						DOF_AmtNS = DlyPerRs_new[i][16]
-						DOF_Amt = DlyPerRs_new[i][15]
-						
-						# if (PUB_AMt12==0) and (DOF_AmtNS==0):
-						if (PUB_AMt12==0) and (DOF_Amt==0):
-							pub_amt_new = Decimal(pub_amt_new) + DlyPerRs_new[i][14]
-							dof_amt_new = Decimal(dof_amt_new) + DlyPerRs_new[i][15]
-
-						if (PUB_AMt12>0) or (DOF_AmtNS>0):
-							pub_amt_12 = Decimal(pub_amt_12) + DlyPerRs_new[i][14]
-							dof_amt_ns = Decimal(dof_amt_ns) + DlyPerRs_new[i][16]
-
-					A3_new = Decimal(A3_new) + Decimal(bas_amt_new)
-					A4_new = Decimal(A4_new) + Decimal(otm_amt_new)
-					A5_new = Decimal(A5_new) + Decimal(bon_amt_new)
-					
-					A6_new = Decimal(A6_new) + Decimal(pub_amt_new)
-					A7_new = Decimal(A7_new) + Decimal(dof_amt_new)
-
-					A8 = Decimal(A8) + Decimal(bas_amt_ns)
-					A9 = Decimal(A9) + Decimal(otm_amt_ns)
-					A10 = Decimal(A10) + Decimal(bon_amt_ns)
-
-					A11 = Decimal(A11) + Decimal(pub_amt_12)
-					A12 = Decimal(A12) + Decimal(dof_amt_ns)
-
-		print("")
-		print("DEBUG")
-		print("bas_amt : ", A3, " | bas_amt_new : ", bas_amt_new, " | bas_amt_ns : ", bas_amt_ns)
-		print("otm_amt : ", A4, " | otm_amt_new : ", otm_amt_new, " | otm_amt_ns : ", bas_amt_ns)
-		print("bon_amt : ", A5, " | bon_amt_new : ", bon_amt_new, " | bos_amt_ns : ", bon_amt_ns)
-
-		print("pub_amt : ", A6, " | bon_amt_new : ", pub_amt_new)
-		print("dof_amt : ", A7, " | dof_amt_new : ", dof_amt_new)
-
-		print("pub : ", A6)
-		print("dof : ", A7)
-		print("")
-
-		# Return						
-		A3 = '{:,.2f}'.format(A3)	# BAS
-		A4 = '{:,.2f}'.format(A4)	# GOT
-		A5 = '{:,.2f}'.format(A5)	# BON
-		A3_new = '{:,.2f}'.format(A3_new)	# BAS New
-		A4_new = '{:,.2f}'.format(A4_new)	# GOT New
-		A5_new = '{:,.2f}'.format(A5_new)	# BON New
-		A6_new = '{:,.2f}'.format(A6_new)	# PUB New
-		A7_new = '{:,.2f}'.format(A7_new)	# DOF New
-		A6 = '{:,.2f}'.format(A6)	# PUB
-		A7 = '{:,.2f}'.format(A7)	# DOF
-
-		pub_amt_12 = '{:.2f}'.format(pub_amt_12)	# PUB_NS
-		dof_amt_ns = '{:.2f}'.format(dof_amt_ns)	# DOF_NS
-		print("aaa : ", pub_amt_12)
-		print("bbb : ", dof_amt_ns)
-
-		income_list = [A1,A2,A3,A4,A5,A6,A7,bas_amt_ns,otm_amt_ns,bon_amt_ns,pub_amt_12,dof_amt_ns, bas_amt_new, otm_amt_new, bon_amt_new, pub_amt_new, dof_amt_new]
+				income_list = [A1,A2,A3,A4,A5,A6,A7]
 
 		is_error = False
 		message = "DisplayList('DLY_PLAN') is pass."
 
 	# is_error, error_message, performance_list, income_list = DisplayList("DLY_PLAN", user_first_name, emp_id, search_date_from, search_date_to)
-	
-	# return is_error, message, DlyPerRs, income_list
-	return is_error, message, DlyPerRs_new, income_list
-
-
-
+	return is_error, message, DlyPerRs, income_list
 
 
 def SearchDailyGurdPerformanceEmployeeInformation(request):
@@ -8362,7 +8581,6 @@ def DailyMonitoringReports(request):
 from celery import shared_task
 from celery_progress.backend import ProgressRecorder
 import time
-
 @shared_task(bind=True)
 def my_task(self, seconds):
     progress_recorder = ProgressRecorder(self)
@@ -8373,8 +8591,6 @@ def my_task(self, seconds):
         result += i
         progress_recorder.set_progress(i + 1, seconds)
     return result
-
-
 def progress_view(request):
     result = my_task.delay(10)
     return render(request, 'post_daily_attend.html', context={'task_id': result.task_id})
@@ -8442,8 +8658,6 @@ def ajax_get_job_type_list(request):
     return response    
 
 
-
-# LUFY
 @permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
 @login_required(login_url='/accounts/login/')
 def is_scheduled(request):
@@ -8468,14 +8682,14 @@ def is_scheduled(request):
 	sql += " and a.emp_id=" + str(emp_id)
 	sql += " and a.absent=0 "
 	sql += " and a.sch_shift=" + str(shift_id)
-	# print("DEBUG SQL: ", sql)
+	print("DEBUG SQL: ", sql)
 
 	cursor = connection.cursor()
 	cursor.execute(sql)
 	record = cursor.fetchone()
 	cursor.close()			
 
-	if record is not None:					
+	if record is not None:				
 		messcross = str(record[0]) + " Shift No =" + str(record[3])
 		dup_cnt_id = record[0]
 		dup_shift_number = record[3]
@@ -8484,31 +8698,121 @@ def is_scheduled(request):
 		Gfrom = record[48]
 		Gto = record[49]
 
-		if Shp != 0:
-			sql = "Select SHF_TYPE, SHF_TIME_FRM, SHF_TIME_TO, shf_desc from t_shift where shf_id=" + str(Shp)
+		print("cnt_id = ", int(cnt_id))
+		print("dup_cnt_id = ", dup_cnt_id)
+		print("emp_id : ", emp_id)
+		print("emp_id_temp : ", record[1])
+
+		if int(cnt_id)!=int(dup_cnt_id):
+			if Shp != 0:
+				sql = "Select SHF_TYPE, SHF_TIME_FRM, SHF_TIME_TO, shf_desc from t_shift where shf_id=" + str(Shp)
+				
+				cursor = connection.cursor()
+				cursor.execute(sql)
+				check_dup_record = cursor.fetchone()
+				cursor.close()	
+				if check_dup_record is not None:
+					Stype = check_dup_record[0]
+					Sfrom = check_dup_record[1]
+					Sto = check_dup_record[2]
+					shf_desc = check_dup_record[3]
+			
+			message = "พนักงานรหัส  <b>" + str(emp_id) + "</b> "
+			message += "ได้แจ้งเวรไว้แล้วที่หน่วยงาน <b>" + str(dup_cnt_id) + "</b> "
+			message += "ในกะ <b>" + str(shf_desc) + "</b><br><hr>"
+			message += "กรุณาตรวจสอบข้อมูลอีกครั้ง"
+
+			is_scheduled = True			
+		else:
+			# is_scheduled = False
+			# message = "ไม่คร่อมหน่วยงาน"
+
+			# get srv_qty
+			string_today_date = str(settings.TODAY_DATE.strftime("%d/%m/%Y"))
+			today_date = datetime.datetime.strptime(string_today_date, "%d/%m/%Y")
+			if dly_date == today_date.date():
+				sql = "select count(*) from dly_plan "
+			if dly_date < today_date.date():
+				sql = "select count(*) from his_dly_plan "		
+			sql += "where cnt_id=" + str(cnt_id) + " and sch_shift=" + str(shift_id) + " and absent=0 and dly_date='" + str(dly_date) + "'"
+			print("SQL 1 : ", sql)
+
 			cursor = connection.cursor()
 			cursor.execute(sql)
-			check_dup_record = cursor.fetchone()
-			cursor.close()	
-			if check_dup_record is not None:
-				Stype = check_dup_record[0]
-				Sfrom = check_dup_record[1]
-				Sto = check_dup_record[2]
-				shf_desc = check_dup_record[3]
-		
-		message = "รหัสพนักงาน  <b>" + str(emp_id) + "</b> "
-		message += "เข้าเวรกะ  <b>" + str(shf_desc) + "</b> "
-		message += "ที่หน่วยงาน  <b>" + str(dup_cnt_id) + "</b> ไปแล้ว"
+			rows = cursor.fetchone()
+			cursor.close	
+			informNo = rows[0] if rows[0]>0 else 0
+			sql = "select cnt_id, srv_shif_id, sum(srv_qty) as qty from cus_service where srv_active=1 and cnt_id=" + str(cnt_id) + " and srv_shif_id=" + str(shift_id) + " group by cnt_id, srv_shif_id"
+			print("SQL 2 : ", sql)
+			cursor = connection.cursor()
+			cursor.execute(sql)
+			rows = cursor.fetchone()
+			cursor.close
+			srv_qty = rows[2]
+			
+			print("cnt_id_1 = ", int(rows[0]))
+			print("cnt_id_2 = ", int(cnt_id))
+			print("informNo = ", informNo)
+			print("srv_qty = ", srv_qty)
+
+			if informNo > srv_qty:
+				if(int(rows[0])==int(cnt_id)):
+					is_scheduled = True
+					message = "พนักงานที่แจ้งเวรมากกว่าที่มีอยู่ในสัญญา: <b>" + str(int(cnt_id)) + "</b>"			
+				else:
+					is_scheduled = True
+					message = "พนักงานที่แจ้งเวรมากกว่าที่มีอยู่ในสัญญา: <b>" + str(cnt_id) + "</b>"			
+			else:
+				is_scheduled = False # แจ้งเวรยังไม่เกินจำนวนที่อยู่ในสัญญา
+				message = "ทำรายการได้"
+
+
 	else:
-		is_scheduled = False
-		message = "ไม่คร่อมหน่วยงาน"
+		# get srv_qty
+		string_today_date = str(settings.TODAY_DATE.strftime("%d/%m/%Y"))
+		today_date = datetime.datetime.strptime(string_today_date, "%d/%m/%Y")
+		if dly_date == today_date.date():
+			sql = "select count(*) from dly_plan "
+		if dly_date < today_date.date():
+			sql = "select count(*) from his_dly_plan "		
+		sql += "where cnt_id=" + str(cnt_id) + " and sch_shift=" + str(shift_id) + " and absent=0 and dly_date='" + str(dly_date) + "'"
+		print("SQL 1 : ", sql)
+
+		cursor = connection.cursor()
+		cursor.execute(sql)
+		rows = cursor.fetchone()
+		cursor.close	
+		informNo = rows[0] if rows[0]>0 else 0
+		sql = "select cnt_id, srv_shif_id, sum(srv_qty) as qty from cus_service where srv_active=1 and cnt_id=" + str(cnt_id) + " and srv_shif_id=" + str(shift_id) + " group by cnt_id, srv_shif_id"
+		print("SQL 2 : ", sql)
+		cursor = connection.cursor()
+		cursor.execute(sql)
+		rows = cursor.fetchone()
+		cursor.close
+		srv_qty = rows[2]
+		print("cnt_id_1 = ", int(rows[0]))
+		print("cnt_id_2 = ", int(cnt_id))
+		print("informNo = ", informNo)
+		print("srv_qty = ", srv_qty)
+		if informNo >= srv_qty:
+			if(int(rows[0])==int(cnt_id)):
+				is_scheduled = True
+				message = "พนักงานที่แจ้งเวรมากกว่าที่มีอยู่ในสัญญา: <b>" + str(int(cnt_id)) + "</b>"			
+			else:
+				is_scheduled = True
+				message = "พนักงานที่แจ้งเวรมากกว่าที่มีอยู่ในสัญญา: <b>" + str(cnt_id) + "</b>"			
+		else:
+			is_scheduled = False # แจ้งเวรยังไม่เกินจำนวนที่อยู่ในสัญญา
+			message = "ทำรายการได้"
+		
+
+	print("MESSAGE : ", message)
 
 	response = JsonResponse(data={"success": True, "is_scheduled": is_scheduled, "message": message})
 	response.status_code = 200
 	return response    
 
 
-# LUFY
 @permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
 @login_required(login_url='/accounts/login/')
 def ajax_save_daily_attendance_check_rule_1(request):
@@ -8527,6 +8831,7 @@ def ajax_save_daily_attendance_check_rule_1(request):
 	Timecross = 0	
 	is_cross_site = True
 	message = ""
+
 
 	sql = "select a.*,b.shf_type,b.shf_time_frm,b.shf_time_to"
 	sql += " from dly_plan a left join t_shift b on a.sch_shift=b.shf_id"
@@ -8630,8 +8935,9 @@ def ajax_save_daily_attendance_check_rule_1(request):
 				message = "รหัสพนักงาน  <b>" + str(emp_id) + "</b> "
 				message += "เข้าเวรกะ  <b>" + str(shf_desc) + "</b> "
 				message += "ที่หน่วยงาน  <b>" + str(dup_cnt_id) + "</b> ไปแล้ว "							
-				message += "จำนวนชั่วโมงที่โดนหัก <b>" + str(Timecross) + "</b> ชั่วโมง"
-				message += " | ถ้าต้องการบันทึกกดปุ่มยืนยัน"
+				# message += "จำนวนชั่วโมงที่โดนหัก <b>" + str(Timecross) + "</b> ชั่วโมง"
+				message += " | กรุณาตรวจสอบข้อมูลอีกครั้ง"
+				# message += " | ถ้าต้องการบันทึกกดปุ่มยืนยัน"
 	else:
 		is_cross_site = False
 		message = "ไม่คร่อมหน่วยงาน"
@@ -8642,8 +8948,6 @@ def ajax_save_daily_attendance_check_rule_1(request):
 	return response    
 
 
-
-# LUFY
 def checkBetweenShiftNew(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,shift_id,shift_name,ui_absent_status,ui_late_status,ui_phone_status,tel_man,tel_time,tel_amount,ui_relief_status,relief_emp_id,ot_status,job_type,remark,totalNDP,totalNDA,totalNDM,totalNNP,totalNNA,totalNNM,totalPDP,totalPDA,totalPDM,totalPNP,totalPNA,totalPNM,username,allowZeroBathForPhoneAmount,late_from,late_to,late_reason_option,late_hour,late_full_paid_status,search_emp_id,Tday7,Tdof,customer_wage_rate_id,customer_zone_id):
 	is_cross_site = True
 	message = ""
@@ -8781,92 +9085,14 @@ def checkBetweenShiftNew(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,
 				message = "รหัสหนักงาน  <b>" + str(emp_id) + "</b> "
 				message += "เข้าเวรกะ  <b>" + str(dup_shift_number) + "</b> "
 				message += "ที่หน่วยงาน  <b>" + str(dup_cnt_id) + "</b> ไปแล้ว<br>"							
-				message += "จำนวนชั่วโมงที่โดนหัก  <b>" + str(Timecross) + "</b>"				
+				message += "กรุณาตรวจสอบข้อมูลอีกครั้ง"
+				# message += "จำนวนชั่วโมงที่โดนหัก  <b>" + str(Timecross) + "</b>"				
 	else:
 		is_cross_site = False
 		message = ""
 
 	return is_cross_site, message
 
-
-@permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
-@login_required(login_url='/accounts/login/')
-def ajax_delete_employee_schedule_maintenance(request):
-	print("********************************")
-	print("FUNCTION: ajax_delete_employee_schedule_maintenance()")
-	print("********************************")
-	
-	is_error = True
-	message = ""
-	cus_id = request.POST.get('cus_id')
-	cus_brn = request.POST.get('cus_brn')
-	cus_vol = request.POST.get('cus_vol')
-	cnt_id = cus_id + cus_brn.zfill(3) + cus_vol.zfill(3)
-
-	sch_no = request.POST.get('sch_no')
-	upd_by = request.user.username
-	
-	sql = "update sch_plan set Upd_by='" + str(upd_by) + "', Upd_flag='D' where sch_no=" + str(sch_no) + ";"
-	try:
-		with connection.cursor() as cursor:
-			cursor.execute(sql)
-
-		sch_plan_list = []
-		record = {}
-		sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).filter(sch_active=1).exclude(upd_flag='D').order_by('-upd_date', 'emp_id')
-		for d in sch_plan:
-			if d.relief:
-				relief = 1
-			else:
-				relief = 0 
-
-			if d.sch_active:
-				sch_active = 1
-			else:
-				sch_active = 0
-			record = {
-				"sch_no": d.sch_no,
-				"emp_id": d.emp_id_id,
-				"emp_fname_th": d.emp_id.emp_fname_th,
-				"emp_lname_th": d.emp_id.emp_lname_th,
-				"sch_rank": d.sch_rank,
-				"sch_date_frm": d.sch_date_frm.strftime("%d/%m/%Y"),
-				"sch_date_to": d.sch_date_to.strftime("%d/%m/%Y"),
-				"sch_shf_mon": d.sch_shf_mon,
-				"sch_shf_tue": d.sch_shf_tue,
-				"sch_shf_wed": d.sch_shf_wed,
-				"sch_shf_thu": d.sch_shf_thu,
-				"sch_shf_fri": d.sch_shf_fri,
-				"sch_shf_sat": d.sch_shf_sat,
-				"sch_shf_sun": d.sch_shf_sun,
-				"sch_active": sch_active,
-				"relief": relief,
-				"upd_date": d.upd_date.strftime("%d/%m/%Y %H:%M:%S"),
-				"upd_by": d.upd_by,
-				"upd_flag": d.upd_flag,					 
-			}
-			sch_plan_list.append(record)
-
-		is_error = False
-		message = "ลบรายการสำเร็จ"
-	except db.OperationalError as e:
-		is_error = True
-		message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
-	except db.Error as e:
-		is_error = True
-		message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
-	finally:
-		cursor.close()	
-
-	response = JsonResponse(data={
-	    "success": True,
-		"is_error": is_error,
-	    "message": message,
-		"sch_plan_list": list(sch_plan_list),
-	})
-
-	response.status_code = 200
-	return response
 
 @permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
 @login_required(login_url='/accounts/login/')
@@ -8938,3 +9164,5 @@ def ajax_end_all_active_status(request):
 	response = JsonResponse(data={"success": True, "is_error": is_error, "message": message, "sch_plan_list": sch_plan_list})
 	response.status_code = 200
 	return response
+
+
