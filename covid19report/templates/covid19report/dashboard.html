@@ -1,0 +1,402 @@
+{% extends "page_covid_report.html" %}
+
+{% load i18n %}
+{% block title %} {{ page_title}} - {% trans 'Covid-19 Report' %} {% endblock %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper pt-2">
+
+    <!-- Main content -->
+    <section class="content">
+
+      <div class="card-header" style="padding: 0 2px 10px 0;">        
+        <h5 class="card-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;<b>รายงานการฉีดวัคซีนโควิด-19</b>&nbsp;&nbsp;</h5>
+        <br>
+        <div class="float-right pb-1">
+          <div class="d-flex flex-row-reverse">
+            &nbsp;
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 p-0 pt-2">
+
+        <form method="post" autocomplete="off" name="search_form">
+          {% csrf_token %}
+          
+          <div class="card-body p-0 pt-2">
+            <div class="form-group">
+
+
+              <div class="input-group col-12">
+
+                <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:120px;"><b>รหัสพนักงาน</b></span></div>
+                <input type="number" min=0 maxlength="6" id="id_emp_id" name="emp_id" class="form-control border-bottom-1 border-left-0 rounded-0 bg-white" style="width:50px;" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" value="" />
+
+                <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:80px;"><b>ประเภท</b></span></div>
+                <select id="id_emp_type_option" name="id_emp_type_option" class="form-control form-control-md" style="border-radius: 0; width: 100px;">
+                  <option value="">ทั้งหมด</option>
+                  <option value="M1">M1</option>
+                  <option value="M2">M3</option>
+                  <option value="M5">M5</option>
+                  <option value="D1">D1</option>
+                </select>                
+
+                <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:125px;"><b>รหัสหน่วยงาน</b></span></div>
+                <input type="number" min=0 maxlength="10" id="id_post_id" name="post_id" class="form-control border-bottom-1 border-left-0 rounded-0 bg-white" style="width:50px;" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" value="" />
+
+                <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:165px;"><b>สถานะการฉีดวัคซีน</b></span></div>
+                <select id="id_get_vaccine_status_option" name="get_vaccine_status_option" class="form-control form-control-md" style="border-radius: 0; width: 100px;">
+                    <option value="">เลือกสถานะการฉีดวัคซีน</option>
+                    <option value="0">พนักงานที่ยังไม่เคยได้รับการฉีดวัคซีน</option>
+                    <option value="1">พนักงานที่มีนัดหมายเพื่อฉีดวัคซีนข็มที่ 1</option>
+                    <option value="2">พนักงานที่ได้รับการฉีดวัคซีนเข็มที่ 1 เรียบร้อยแล้ว</option>
+                    <option value="3">พนักงานที่มีนัดหมายเพื่อฉีดวัคซีนข็มที่ 2</option>
+                    <option value="4">พนักงานได้รับการฉีดวัคซีนเข็มที่ 2 เรียบร้อยแล้ว</option>
+                </select>
+                &nbsp;&nbsp;
+                <a href="javascript:SearchFormSubmit();" class="btn btn-success" role="button"><i class="fas fa-search fa-sm"></i>&nbsp;&nbsp;ค้นหา</a>
+              </div>
+
+
+            </div>
+          </div>
+
+        </form>        
+
+        <div class="card">
+            
+            <div class="card-header d-flex">
+              <h3 class="card-title">&nbsp;</h3>
+              <ul class="nav nav-pills ml-auto">                
+                <li class="nav-item">
+                  <a class="btn btn-sm btn-outline-secondary" href="#" onclick="export_to_excel();"><i class="far fa-file-excel"></i>&nbsp;&nbsp;Export to Excel</a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="card-body">
+
+              <div>
+                &nbsp;
+              </div>
+              <!-- /.tab-content -->
+
+            </div><!-- /.card-body -->
+          </div>
+          <!-- ./card -->
+        
+
+      </div>
+      <!-- /.col -->
+
+      </div>
+    
+
+    </section>
+    <!-- /.content -->
+
+
+
+
+{% endblock %}
+
+
+
+{% block javascript %}
+<script>
+
+var table = $('#employee_list_table').DataTable({
+    "paging": true,
+    "pageLength": 15,
+    "scrollCollapse": true,
+    "lengthChange": false,
+    "searching": true,
+    "ordering": true,
+    "info": false,
+    "autoWidth": true,
+    "language": {
+        search: '<i class="fa fa-filter" aria-hidden="true"></i>',
+        searchPlaceholder: 'Filter data'
+    },
+    "columnDefs": [
+        {
+        "targets": [2,3,4,5,6,7,8,9,10,11,12],
+        "orderable": false
+        }    
+    ],  
+    "dom": 'Brtip',
+    buttons: [
+        {
+            extend: 'print',
+            title: '',
+            exportOptions: {
+            columns: [0,1,2,3,4,5,6,7,8,9]
+            }
+        },
+        {
+            extend: 'excelHtml5',        
+            title: '',
+            exportOptions: {
+              columns: [0,1,2,3,4,5,6,7,8,9]
+            }
+        },
+    ]
+});
+table.buttons('.buttons-print').nodes().css("display", "none");
+table.buttons('.buttons-excel').nodes().css("display", "none");
+table.buttons('.buttons-pdf').nodes().css("display", "none");
+
+$(document).ready( function () {
+
+    $(window).keydown(function(event){
+        if(event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+        }
+    });
+});
+
+function print_document() {
+  var contract_number_from = $("#id_contract_number_from").val();
+  var contract_number_to = $("#id_contract_number_to").val();
+  var start_date = $("#id_start_date").val();
+  var end_date = $("#id_end_date").val();
+
+  console.log(contract_number_from + "," + contract_number_to + "," + start_date + "," + end_date);
+  if(contract_number_from=="") {
+    $.alert({
+        title: 'Error',
+        type: 'red',
+        content: "กรุณาป้อนรหัสสัญญา",
+        animation: 'zoom',
+        animationBounce: 1.5,
+        closeIcon: false,
+        boxWidth: '38%',
+        useBootstrap: false,
+    });    
+    return false;
+  }
+
+  if(contract_number_to=="") {
+    $.alert({
+        title: 'Error',
+        type: 'red',
+        content: "กรุณาป้อนรหัสสัญญา",
+        animation: 'zoom',
+        animationBounce: 1.5,
+        closeIcon: false,
+        boxWidth: '38%',
+        useBootstrap: false,
+    });    
+    return false;
+  }
+
+  var href = "/reports/cms/gpm-403-daily-guard-performance-by-contract/" + contract_number_from + "/" + contract_number_to + "/" + start_date + "/" + end_date + "/";
+  window.open(href,'_blank');
+}
+ 
+function export_to_excel() {
+  var contract_number_from = $("#id_contract_number_from").val();
+  var contract_number_to = $("#id_contract_number_to").val();
+  var start_date = $("#id_start_date").val();
+  var end_date = $("#id_end_date").val();
+
+  var href = "/reports/cms/export-gpm-403-daily-guard-performance-by-contract-to-excel/" + contract_number_from + "/" + contract_number_to + "/" + start_date + "/" + end_date + "/";
+  window.open(href,'_blank');    
+}
+
+function showLoading() {
+  $.LoadingOverlaySetup({
+      background      : "rgba(0, 0, 0, 0.5)",
+      image           : "/static/img/logo-small.png",        
+      imageAnimation  : "1.5s fadein",
+      imageColor      : "#ffcc00"
+  });
+  $.LoadingOverlay("show"); 
+}
+
+
+
+
+  function SearchFormSubmit() {        
+    var get_vaccine_status_option = $('#id_get_vaccine_status_option').val();  
+    var emp_id = $("#id_emp_id").val();
+    var emp_type = $("#id_emp_type_option").val();
+    var post_id = $("#id_post_id").val();
+    
+    //console.log(get_vaccine_status_option);
+    //console.log(emp_id + "," + emp_type + "," + post_id);
+    //return false;
+
+    if(get_vaccine_status_option=="") {
+        $(document).Toasts('create', {
+          class: "bg-danger", 
+          title: "{% trans 'Error' %}",
+          subtitle: '',
+          autohide: true,
+          delay: 2000,
+          body: "กรุณาเลือกสถานะการฉีดวัคซีน",
+          autoDismiss: true,
+          close: true,
+          autoremove: true,
+        });
+        $("#id_get_vaccine_status_option").focus();
+        return false;    
+    }
+
+    //alert(emp_id + "," + get_vaccine_status_option);
+    //return false;
+
+    showLoading();
+
+    $.ajax({
+      url: "/reports/covid-19/ajax-report-by-status/",
+      type: "POST",
+      dataType: 'json',
+      async: true,      
+      data: {
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        get_vaccine_status_option: get_vaccine_status_option,
+        emp_id: emp_id,
+        emp_type: emp_type,
+        post_id: post_id,
+      },
+      success : function(data) {              
+        if(data.is_error) {
+            $.alert({
+                title: 'Error',
+                type: 'red',
+                content: "ไม่พบข้อมูล",
+                animation: 'zoom',
+                animationBounce: 1.5,
+                closeIcon: false,
+                boxWidth: '38%',
+                useBootstrap: false,
+            });
+            $("#id_search_result").hide();
+        } else {
+            result = "";
+            for(i=0;i<data.employee_list.length;i++) {
+                emp_id = data.employee_list[i]['emp_id'];
+                console.log(emp_id);
+                result += "<tr>";
+                result += "<td>" + data.employee_list[i]['emp_id'] + "</td>";
+                result += "<td nowrap>" + data.employee_list[i]['full_name'] + "</td>";
+                result += "<td>" + data.employee_list[i]['emp_type'] + "</td>";
+                result += "<td nowrap>" + data.employee_list[i]['phone_number'] + "</td>";
+                result += "<td>" + data.employee_list[i]['post_id'] + "</td>";
+                result += "<td>" + data.employee_list[i]['post_name'] + "</td>";
+                result += "<td>" + data.employee_list[i]['zone_name'] + "</td>";
+                result += "<td nowrap>" + data.employee_list[i]['get_vaccine_status_option_text'] + "</td>";
+                result += "<td>" + data.employee_list[i]['get_vaccine_date'] + "</td>";
+                result += "<td>" + data.employee_list[i]['get_vaccine_place'] + "</td>";
+
+                if(data.employee_list[i]['file_attach']!="") {
+                    result += "<td class='d-none text-center'><i class='fas fa-xs fa-check text-success'></i></td>";
+                    result += "<td class='d-none'>Y</td>";
+                } else {
+                    result += "<td class='d-none text-center'><i class='fas fa-xs fa-times text-danger'></i></td>";
+                    result += "<td class='d-none'>N</td>";
+                }                
+              
+                result += "<td class='text-center' nowrap>";
+                
+                if(data.employee_list[i]['get_vaccine_status_option']=="0") {
+                  result += '&nbsp;';
+                } else {
+                  result += '<a href="#" onclick="download_pdf(\'' + emp_id + '\');">&nbsp;&nbsp;Download&nbsp;&nbsp;</a>';
+                }
+                
+                result += "</td>";
+
+                result += "</tr>";          
+                
+                
+            }
+
+            
+        
+            table.destroy();
+            $('#employee_list_table tbody').empty().append(result);        
+            table = $('#employee_list_table').DataTable({
+                "paging": true,
+                "pageLength": 15,
+                "scrollCollapse": true,
+                "lengthChange": false,
+                "searching": true,
+                "ordering": true,
+                "info": false,
+                "autoWidth": true,
+                "language": {
+                    search: '<i class="fa fa-filter" aria-hidden="true"></i>',
+                    searchPlaceholder: 'Filter data'
+                },
+                "columnDefs": [
+                    {
+                    "targets": [2,3,4,5,6,7,8,9,10,11,12],
+                    "orderable": false
+                    }    
+                ],  
+                "dom": 'Brtip',
+                buttons: [
+                    {
+                        extend: 'print',
+                        title: '',
+                        exportOptions: {
+                          columns: [0,1,2,3,4,5,6,7,8,9]
+                        }
+                    },
+                    {
+                        extend: 'excelHtml5',        
+                        title: '',
+                        exportOptions: {
+                          columns: [0,1,2,3,4,5,6,7,8,9]
+                        }
+                    },
+                ]
+            });
+            table.buttons('.buttons-print').nodes().css("display", "none");
+            table.buttons('.buttons-excel').nodes().css("display", "none");
+            table.buttons('.buttons-pdf').nodes().css("display", "none");
+        }
+
+        $.LoadingOverlay("hide");
+        
+      }
+    });
+  }  
+
+    function export_to_excel() {        
+        var rowCount = $("#employee_list_table").find('tbody').children().length;        
+        if(rowCount>1) {
+            $(".buttons-excel").trigger("click");  
+        } else {
+            $(document).Toasts('create', {
+            class: "bg-danger", 
+            title: "{% trans 'Error' %}",
+            subtitle: '',
+            autohide: true,
+            delay: 2000,
+            body: "ยังไม่ข้อมูลสำหรับทำรายการ",
+            autoDismiss: true,
+            close: true,
+            autoremove: true,
+            });
+        }
+        
+    }
+
+    function download_pdf(emp_id) {
+      get_vaccine_status_option = $('#id_get_vaccine_status_option').val();
+      //alert(emp_id + "," + get_vaccine_status_option);
+      var href = "/reports/covid-19/download-pdf/" + emp_id + "/" + get_vaccine_status_option + "/";
+      window.open(href,'_blank');              
+    }
+
+  </script>
+{% endblock %}  
