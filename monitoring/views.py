@@ -31,6 +31,7 @@ from os import path
 from django.http import FileResponse
 from django.core.exceptions import PermissionDenied
 from django.views.decorators.cache import never_cache
+from decimal import Decimal
 import xlwt
 
 
@@ -7352,6 +7353,9 @@ def DropTable(table_name):
 	return is_success, message
 
 
+
+
+
 @login_required(login_url='/accounts/login/')
 @permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
 def SearchDailyGurdPerformance(request):
@@ -7646,7 +7650,883 @@ def SearchDailyGurdPerformance(request):
 	return response	
 
 
+@login_required(login_url='/accounts/login/')
+@permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
+def SearchDailyGurdPerformance_old(request):
+	is_error = True
+	message = ""
+	emp_id = request.POST.get('emp_id')
+	user_first_name = request.user.first_name
+	
+	search_date_from = datetime.datetime.strptime(request.POST.get('search_date_from'), '%d/%m/%Y').date()
+	search_date_to = datetime.datetime.strptime(request.POST.get('search_date_to'), '%d/%m/%Y').date()
+
+	performance_list = None
+	overtime_list = None
+	schedule_list = None
+	substitue_list = None
+	leave_list = None
+	emp_leave_plan_list = None
+	absent_dly_plan_list = None
+	
+	'''
+	message = "%s | %s | %s" %(emp_id, search_date_from, search_date_to)	
+	response = JsonResponse(data={"success": True,"is_error": is_error,"message": message})
+	response.status_code = 200
+	return response	
+	'''
+
+	# Call ChkValidInput(1)
+	if (emp_id=="") or (search_date_from=="") or (search_date_to==""):
+		message = "ป้อนข้อมูลไม่ถูกต้อง กรุณาตรวจสอบอีกครั้ง"
+		response = JsonResponse(data={"success": True,"is_error": True,"message": message})
+		response.status_code = 200
+		return response	
+
+	# TODO: validate Start Date must not over than End Date
+
+	# TODO: validate emp_id is existed
+	sql = "select count(*) from v_hdlyplan where emp_id=" + str(emp_id)
+	try:
+		with connection.cursor() as cursor:		
+			cursor.execute(sql)
+			count = cursor.fetchone()[0]
+
+		if count <= 0:
+			is_error = True
+			message = "รหัสพนักงาน <b>" + str(emp_id) + "</b> ไม่มีอยู่ในระบบ"
+		else:
+			is_error = False
+			message = "Pass"
+
+	except db.OperationalError as e:
+		response = JsonResponse(data={"success": True, "is_error": True, "message": "<b>Please send this error to IT team.</b><br>" + str(e)})
+		response.status_code = 200
+		return response
+	except db.Error as e:
+		response = JsonResponse(data={"success": True, "is_error": True, "message": "<b>Please send this error to IT team.</b><br>" + str(e)})
+		response.status_code = 200
+		return response		
+	finally:
+		cursor.close()
+
+	# if emp_id is existed
+	# TODO: drop all 5 user tables (usertable, usertable1, usertable2, usertable3, usertable4)
+	is_drop_table_success, message = DropTable(user_first_name)
+
+	if is_drop_table_success:		
+		DropTable(user_first_name + "1")
+		DropTable(user_first_name + "2")
+		DropTable(user_first_name + "3")
+		DropTable(user_first_name + "4")
+
+		sql = "select distinct * into " + str(user_first_name + "1") + " from v_hdlyplan "
+		sql += "where emp_id=" + str(emp_id) + " "
+		sql += "and dly_date>='" + str(search_date_from) + "' "
+		sql += "and dly_date<='" + str(search_date_to) + "'"
+		
+		try:
+			with connection.cursor() as cursor:		
+				cursor.execute(sql)
+		except db.OperationalError as e:
+			response = JsonResponse(data={"success": True, "is_error": True, "message": "<b>Please send this error to IT team.</b><br>" + str(e)})
+			response.status_code = 200
+			return response
+		except db.Error as e:
+			response = JsonResponse(data={"success": True, "is_error": True, "message": "<b>Please send this error to IT team.</b><br>" + str(e)})
+			response.status_code = 200
+			return response
+		finally:
+			cursor.close()
+
+
+		sql = "alter table " + str(user_first_name + "1") + " add Customer_Flag nvarchar(1) NULL"
+		try:
+			with connection.cursor() as cursor:		
+				cursor.execute(sql)
+		except db.OperationalError as e:
+			response = JsonResponse(data={"success": True, "is_error": True, "message": "<b>Please send this error to IT team.</b><br>" + str(e)})
+			response.status_code = 200
+			return response
+		except db.Error as e:
+			response = JsonResponse(data={"success": True, "is_error": True, "message": "<b>Please send this error to IT team.</b><br>" + str(e)})
+			response.status_code = 200
+			return response
+		finally:
+			cursor.close()
+
+
+		sql = "select distinct * into " + str(user_first_name + "2") + " from v_dlyplan "
+		sql += "where emp_id=" + str(emp_id) + " "
+		sql += "and dly_date>='" + str(search_date_from) + "' "
+		sql += "and dly_date<='" + str(search_date_to) + "'"
+		try:
+			with connection.cursor() as cursor:		
+				cursor.execute(sql)
+		except db.OperationalError as e:
+			response = JsonResponse(data={"success": True, "is_error": True, "message": "<b>Please send this error to IT team.</b><br>" + str(e)})
+			response.status_code = 200
+			return response
+		except db.Error as e:
+			response = JsonResponse(data={"success": True, "is_error": True, "message": "<b>Please send this error to IT team.</b><br>" + str(e)})
+			response.status_code = 200
+			return response
+		finally:
+			cursor.close()
+
+
+		sql = "select distinct * into " + str(user_first_name + "3") + " from v_dlyplan "
+		sql += "where relieft_id=" + str(emp_id) + " "
+		sql += "and dly_date>='" + str(search_date_from) + "' "
+		sql += "and dly_date<='" + str(search_date_to) + "'"
+		try:
+			with connection.cursor() as cursor:		
+				cursor.execute(sql)
+		except db.OperationalError as e:
+			response = JsonResponse(data={"success": True, "is_error": True, "message": "<b>Please send this error to IT team.</b><br>" + str(e)})
+			response.status_code = 200
+			return response
+		except db.Error as e:
+			response = JsonResponse(data={"success": True, "is_error": True, "message": "<b>Please send this error to IT team.</b><br>" + str(e)})
+			response.status_code = 200
+			return response
+		finally:
+			cursor.close()
+
+
+		sql = "select distinct * into " + str(user_first_name + "4") + " from v_hdlyplan "
+		sql += "where relieft_id=" + str(emp_id) + " "
+		sql += "and dly_date>='" + str(search_date_from) + "' "
+		sql += "and dly_date<='" + str(search_date_to) + "'"
+		try:
+			with connection.cursor() as cursor:		
+				cursor.execute(sql)
+		except db.OperationalError as e:
+			response = JsonResponse(data={"success": True, "is_error": True, "message": "<b>Please send this error to IT team.</b><br>" + str(e)})
+			response.status_code = 200
+			return response
+		except db.Error as e:
+			response = JsonResponse(data={"success": True, "is_error": True, "message": "<b>Please send this error to IT team.</b><br>" + str(e)})
+			response.status_code = 200
+			return response
+		finally:
+			cursor.close()
+
+		sql = "alter table " + str(user_first_name + "4") + " add Customer_Flag nvarchar(1) NULL"
+		try:
+			with connection.cursor() as cursor:		
+				cursor.execute(sql)
+		except db.OperationalError as e:
+			response = JsonResponse(data={"success": True, "is_error": True, "message": "<b>Please send this error to IT team.</b><br>" + str(e)})
+			response.status_code = 200
+			return response
+		except db.Error as e:
+			response = JsonResponse(data={"success": True, "is_error": True, "message": "<b>Please send this error to IT team.</b><br>" + str(e)})
+			response.status_code = 200
+			return response
+		finally:
+			cursor.close()
+
+
+		sql = "select * into " + str(user_first_name) + " " 
+		sql += "from " + str(user_first_name + "1") + " "
+		sql += "union select * from " + str(user_first_name + "2") + " "
+		sql += "union select * from " + str(user_first_name + "3") + " "
+		sql += "union select * from " + str(user_first_name + "4") + " "
+		# print("SQL:", sql)
+
+		try:
+			with connection.cursor() as cursor:		
+				cursor.execute(sql)
+		except db.OperationalError as e:
+			response = JsonResponse(data={"success": True, "is_error": True, "message": "<b>Please send this error to IT team.</b><br>" + str(e)})
+			response.status_code = 200
+			return response
+		except db.Error as e:
+			response = JsonResponse(data={"success": True, "is_error": True, "message": "<b>Please send this error to IT team.</b><br>" + str(e)})
+			response.status_code = 200
+			return response
+		finally:
+			cursor.close()
+
+
+		# TODO: Call DisplayList("DLY_PLAN")
+		is_error, error_message, performance_list, income_list = DisplayList("DLY_PLAN", user_first_name, emp_id, search_date_from, search_date_to)
+		if is_error:
+			is_error = True
+			message = error_message
+		else:
+			is_error = False
+			message = error_message
+
+
+		# TODO: Call DisplayList("DLY_OT")		
+		is_error, error_message, overtime_list = DisplayList("DLY_OT", user_first_name, emp_id, search_date_from, search_date_to)
+		if is_error:
+			is_error = True
+			message = error_message
+		else:
+			is_error = False
+			message = error_message
+
+
+		# TODO: Call DisplayList("DLY_SUB")
+		is_error, error_message, substitute_list = DisplayList("DLY_SUB", user_first_name, emp_id, search_date_from, search_date_to)
+		if is_error:
+			is_error = True
+			message = error_message
+		else:
+			is_error = False
+			message = error_message
+
+
+
+		# TODO: Call DisplayList("SCH_PLAN")
+		is_error, error_message, schedule_list = DisplayList("SCH_PLAN", user_first_name, emp_id, search_date_from, search_date_to)
+		if is_error:
+			is_error = True
+			message = error_message
+		else:
+			is_error = False
+			message = error_message
+
+
+
+		# TODO: Call DisplayList("EMP_LEAVE_ACT")
+		is_error, error_message, leave_list = DisplayList("EMP_LEAVE_ACT", user_first_name, emp_id, search_date_from, search_date_to)
+		if is_error:
+			is_error = True
+			message = error_message
+		else:
+			is_error = False
+			message = error_message
+
+
+
+		# TODO: Call DisplayList("EMP_LEAVE_PLAN")
+		is_error, error_message, emp_leave_plan_list = DisplayList("EMP_LEAVE_PLAN", user_first_name, emp_id, search_date_from, search_date_to)
+		if is_error:
+			is_error = True
+			message = error_message
+		else:
+			is_error = False
+			message = error_message
+
+
+
+		# TODO: Call DisplayList("ABSENT_DLY_PLAN")
+		is_error, error_message, absent_dly_plan_list = DisplayList("ABSENT_DLY_PLAN", user_first_name, emp_id, search_date_from, search_date_to)
+		if is_error:
+			is_error = True
+			message = error_message
+		else:
+			is_error = False
+			message = error_message
+
+
+		'''
+		DropTable(user_first_name)
+		DropTable(user_first_name + "1")
+		DropTable(user_first_name + "2")
+		DropTable(user_first_name + "3")
+		DropTable(user_first_name + "4")		
+		'''
+	else:
+		is_error = True
+		message = "Can't drop table " + str(user_first_name)
+
+	response = JsonResponse(data={"success": True,"is_error": is_error,"message": message, 
+		"performance_list": performance_list, "income_list": income_list, "overtime_list":overtime_list, 
+		"schedule_list": schedule_list, "substitute_list":substitute_list, "leave_list":leave_list, 
+		"emp_leave_plan_list": emp_leave_plan_list, "absent_dly_plan_list": absent_dly_plan_list})
+
+	response.status_code = 200
+	return response	
+
+
+
 def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_date_to):
+
+	# ABSENT_DLY_PLAN
+	if(table_name=="ABSENT_DLY_PLAN"):
+		is_error = True
+		message = "<b>ABSENT_DLY_PLAN</b>: "
+		DlyPerRs_ABSENTDLYPLAN = None
+		sql = "select emp_id,dly_date,cnt_id,sch_shift,shf_desc,upd_date,upd_by,upd_flag from " + str(user_first_name) + " "		
+		sql += "where emp_id=" + str(emp_id) + " "
+		sql += "and absent=1 and sch_shift<>99 and year(dly_date)=year(getdate()) "
+		sql += "order by dly_date desc"
+		# print("ABSENT_DLY_PLAN SQL:", sql)
+		try:
+			with connection.cursor() as cursor:		
+				cursor.execute(sql)
+				DlyPerRs_ABSENTDLYPLAN = cursor.fetchall()
+			message += "Success"
+			is_error = False
+		except db.OperationalError as e:
+			is_error = True
+			message += message + "Error! Please send this error to IT team.<br>" + str(e)
+			return is_error, message
+		except db.Error as e:
+			is_error = True
+			message += message + "Error! Please send this error to IT team.<br>" + str(e)
+			return is_error, message
+		finally:
+			cursor.close()		
+		return is_error, message, DlyPerRs_ABSENTDLYPLAN
+
+
+	# EMP_LEAVE_PLAN
+	if(table_name=="EMP_LEAVE_PLAN"):
+		is_error = True
+		message = "<b>EMP_LEAVE_PLAN</b>: "
+		DlyPerRs_EMPLEAVEPLAN = None
+		sql = "select b.*,c.lve_th from v_employee as a left join emp_leave_plan as b on a.emp_id=b.emp_id "
+		sql += "left join t_leave as c on b.lve_id=c.lve_id "
+		sql += "where a.emp_id= " + str(emp_id) + " "
+		sql += "and b.lve_year>=year(getdate())"
+		# print("EMP_LEAVE_PLAN SQL:", sql)
+
+
+		try:
+			with connection.cursor() as cursor:		
+				cursor.execute(sql)
+				DlyPerRs_EMPLEAVEPLAN = cursor.fetchall()
+			message += "Success"
+			is_error = False
+		except db.OperationalError as e:
+			is_error = True
+			message += message + "Error! Please send this error to IT team.<br>" + str(e)
+			return is_error, message
+		except db.Error as e:
+			is_error = True
+			message += message + "Error! Please send this error to IT team.<br>" + str(e)
+			return is_error, message
+		finally:
+			cursor.close()
+
+
+		return is_error, message, DlyPerRs_EMPLEAVEPLAN
+
+
+	# EMP_LEAVE_ACT
+	if(table_name=="EMP_LEAVE_ACT"):
+		is_error = True
+		message = "<b>EMP_LEAVE_ACT</b>: "
+		DlyPerRs_EMPLEAVEACT = None
+
+		sql = "select b.*,c.lve_th from v_employee as a left join emp_leave_act as b on a.emp_id=b.emp_id "
+		sql += "left join t_leave as c on b.lve_id=c.lve_id "		
+		sql += "where a.emp_id= " + str(emp_id) + " and b.lve_date_frm>='" + str(search_date_from) + "' "	
+		# print("EMP_LEAVE_ACT SQL:", sql)
+		try:
+			with connection.cursor() as cursor:		
+				cursor.execute(sql)
+				DlyPerRs_EMPLEAVEACT = cursor.fetchall()
+			message += "Success"
+			is_error = False
+		except db.OperationalError as e:
+			is_error = True
+			message += message + "Error! Please send this error to IT team.<br>" + str(e)
+			return is_error, message
+		except db.Error as e:
+			is_error = True
+			message += message + "Error! Please send this error to IT team.<br>" + str(e)
+			return is_error, message
+		finally:
+			cursor.close()
+
+		return is_error, message, DlyPerRs_EMPLEAVEACT
+
+
+	# DLY_SUB
+	if(table_name=="DLY_SUB"):
+		is_error = True
+		message = "<b>DLY_SUB</b>: "
+		DlyPerRs_DLYSUB = None
+		sql = "select distinct * from " + str(user_first_name) + " where relieft_id=" + str(emp_id) + " "
+		sql += "and dly_date>='" + str(search_date_from) + "' "
+		sql += "and dly_date<='" + str(search_date_to) + "' "
+		sql += "order by sch_shift"
+		# print("DLY_SUB SQL:", sql)
+		try:
+			with connection.cursor() as cursor:		
+				cursor.execute(sql)
+				DlyPerRs_DLYSUB = cursor.fetchall()
+			message += "Success"
+			is_error = False
+		except db.OperationalError as e:
+			is_error = True
+			message += message + "Error! Please send this error to IT team.<br>" + str(e)
+			return is_error, message
+		except db.Error as e:
+			is_error = True
+			message += message + "Error! Please send this error to IT team.<br>" + str(e)
+			return is_error, message
+		finally:
+			cursor.close()		
+		return is_error, message, DlyPerRs_DLYSUB
+
+
+	# SCH_PLAN
+	if(table_name=="SCH_PLAN"):
+		is_error = True
+		message = "<b>SCH_PLAN</b>: "
+		DlyPerRs_SCHPLAN = None
+
+		sql = "select b.*,k.emp_fname_th,k.emp_lname_th,"
+		sql += "c.shf_desc as shf_mon,"
+		sql += "d.shf_desc as shf_tue,"
+		sql += "e.shf_desc as shf_wed,"
+		sql += "f.shf_desc as shf_thu,"
+		sql += "g.shf_desc as shf_fri,"
+		sql += "h.shf_desc as shf_sat,"
+		sql += "i.shf_desc as shf_sun "
+		sql += "from cus_contract as a left join sch_plan as b on a.cnt_id=b.cnt_id "
+		sql += "left join v_employee as k on b.emp_id=k.emp_id "		
+		sql += "left join t_shift as c on b.sch_shf_mon=c.shf_id "
+		sql += "left join t_shift as d on b.sch_shf_tue=d.shf_id "
+		sql += "left join t_shift as e on b.sch_shf_wed=e.shf_id "
+		sql += "left join t_shift as f on b.sch_shf_thu=f.shf_id "
+		sql += "left join t_shift as g on b.sch_shf_fri=g.shf_id "
+		sql += "left join t_shift as h on b.sch_shf_sat=h.shf_id "
+		sql += "left join t_shift as i on b.sch_shf_sun=i.shf_id "		
+		sql += "where b.emp_id=" + str(emp_id) + " "
+		sql += "and b.upd_flag<>'D' "
+		sql += "order by sch_date_frm desc, sch_no asc"
+		# print("SQL debug:", sql)
+		try:
+			with connection.cursor() as cursor:		
+				cursor.execute(sql)
+				DlyPerRs_SCHPLAN = cursor.fetchall()
+			message += "Success"
+			is_error = False
+		except db.OperationalError as e:
+			is_error = True
+			message += message + "Error! Please send this error to IT team.<br>" + str(e)
+			return is_error, message
+		except db.Error as e:
+			is_error = True
+			message += message + "Error! Please send this error to IT team.<br>" + str(e)
+			return is_error, message
+		finally:
+			cursor.close()
+
+		return is_error, message, DlyPerRs_SCHPLAN
+
+
+	# DLY_OT
+	if(table_name=="DLY_OT"):
+		is_error = True
+		message = "<b>DLY_OT</b>: "
+		DlyPerRs_DLYOT = None
+		sql = "select distinct "
+		sql += "absent,sch_no,emp_id,dly_date,emp_fname_th,sch_rank,shf_desc,prd_id,cnt_id,relieft,relieft_id,remp_fname_th,remp_lname_th,tel_man,"
+		sql += "tel_time,tel_amt,tel_paid,ot,ot_reason,ot_res_th,ot_time_frm,ot_time_to,ot_hr_amt,ot_pay_amt,spare,wage_id,pay_type,soc,pub,paid,shf_type,remark,sch_shift "
+		sql += "from " + str(user_first_name) + " where emp_id=" + str(emp_id) + " and ot_hr_amt>0 "
+		sql += "and dly_date>='" + str(search_date_from) + "' "
+		sql += "and dly_date<='" + str(search_date_to) + "' "
+		sql += "order by sch_shift"
+		# print("DLY_OT SQL:", sql)
+		try:
+			with connection.cursor() as cursor:		
+				cursor.execute(sql)
+				DlyPerRs_DLYOT = cursor.fetchall()
+			message += "Success"
+			is_error = False
+		except db.OperationalError as e:
+			is_error = True
+			message += message + "Error! Please send this error to IT team.<br>" + str(e)
+			return is_error, message
+		except db.Error as e:
+			is_error = True
+			message += message + "Error! Please send this error to IT team.<br>" + str(e)
+			return is_error, message
+		finally:
+			cursor.close()
+		return is_error, message, DlyPerRs_DLYOT
+
+
+	# DLY_PLAN
+	if (table_name=="DLY_PLAN"):
+		is_error = True
+		message = "<b>DLY_PLAN</b>: "
+		DlyPerRs = None
+		income_list = []
+
+		# UPDATE 1
+		sql = "update " + str(user_first_name) + " "
+		sql += "set shf_amt_hr = ot_hr_amt "
+		sql += "where (ot_hr_amt<>0 and relieft_id<>0) "
+		sql += "or (ot_hr_amt<>0 and pay_type='TPA')"
+		# print("SQL:", sql)
+		try:
+			with connection.cursor() as cursor:		
+				cursor.execute(sql)
+		except db.OperationalError as e:
+			is_error = True
+			message = "<b>Please send this error to IT team.</b><br>" + str(e)
+			return is_error, message
+		except db.Error as e:
+			is_error = True
+			message = "<b>Please send this error to IT team.</b><br>" + str(e)
+			return is_error, message
+		finally:
+			cursor.close()
+		
+		#return is_error, message, DlyPerRs, income_list
+
+
+		# UPDATE 2
+		sql = "update "	+ str(user_first_name) + " "
+		sql += "set shf_amt_hr = (shf_amt_hr + ot_hr_amt) "
+		sql += "where (ot_hr_amt<>0 and relieft_id<>0) "
+		sql += "or (ot_hr_amt<>0 and pay_type<>'TPA')"
+		try:
+			with connection.cursor() as cursor:
+				cursor.execute(sql)
+		except db.OperationalError as e:
+			is_error = True
+			message = "<b>Please send this error to IT team.</b><br>" + str(e)
+			return is_error, message
+		except db.Error as e:
+			is_error = True
+			message = "<b>Please send this error to IT team.</b><br>" + str(e)
+			return is_error, message
+		finally:
+			cursor.close()
+
+
+		# UPDATE 3
+		sql = "update " + str(user_first_name) + " "
+		sql += "set shf_amt_hr='0' "
+		sql += "where left(ltrim(shf_desc),3)='999' "
+		sql += "and absent='1'"
+		try:
+			with connection.cursor() as cursor:		
+				cursor.execute(sql)
+		except db.OperationalError as e:
+			is_error = True
+			message = "<b>Please send this error to IT team.</b><br>" + str(e)
+			return is_error, message
+		except db.Error as e:
+			is_error = True
+			message = "<b>Please send this error to IT team.</b><br>" + str(e)
+			return is_error, message
+		finally:
+			cursor.close()
+
+
+
+		# DlyPerRs		
+		sql = "select distinct * from " + str(user_first_name) + " "
+		sql += "where emp_id=" + str(emp_id) + " "
+		sql += "and dly_date>='" + str(search_date_from) + "' "
+		sql += "and dly_date<='" + str(search_date_to) + "' "
+		sql += "order by dly_date, sch_shift"
+		print("DEBUG 1 DlyPerRs : ", sql)
+		try:
+			with connection.cursor() as cursor:		
+				cursor.execute(sql)
+				DlyPerRs = cursor.fetchall()			
+		except db.OperationalError as e:
+			is_error = True
+			message = "<b>Please send this error to IT team.</b><br>" + str(e)
+			return is_error, message
+		except db.Error as e:
+			is_error = True
+			message = "<b>Please send this error to IT team.</b><br>" + str(e)
+			return is_error, message
+		finally:
+			cursor.close()
+
+		sql = "if exists (select * from dbo.sysobjects where id=object_id(N'[dbo].[R_D500]') and OBJECTPROPERTY(id,N'IsUserTable')=1) "
+		sql += "drop table [dbo].[R_D500]"
+		try:
+			with connection.cursor() as cursor:		
+				cursor.execute(sql)
+		except db.OperationalError as e:
+			is_error = True
+			message = "<b>Please send this error to IT team.</b><br>" + str(e)
+			return is_error, message
+		except db.Error as e:
+			is_error = True
+			message = "<b>Please send this error to IT team.</b><br>" + str(e)
+			return is_error, message
+		finally:
+			cursor.close()
+
+
+
+		sql = "select distinct emp_id,rtrim(emp_fname_th)+' ' + rtrim(emp_lname_th) as fname,cnt_id,dly_date,sch_shift, "
+		sql += "shf_desc,sch_rank,pay_type,bas_amt,bon_amt,pub_amt,otm_amt,dof_amt+ex_dof_amt as dof,spare, "
+		sql += "tel_amt,wage_id,shf_amt_hr,ot_hr_amt,absent,remark "
+		sql += "into R_D500 from " + str(user_first_name) + " "
+		sql += "where emp_id=" + str(emp_id) + " "
+		sql += "and dly_date>='" + str(search_date_from) + "' "
+		sql += "and dly_date<='" + str(search_date_to) + "' "
+		sql += "and pay_type<>'ABS' order by dly_date,sch_shift"
+		# print("SQL:", sql)
+		try:
+			with connection.cursor() as cursor:		
+				cursor.execute(sql)
+		except db.OperationalError as e:
+			is_error = True
+			message = "<b>Please send this error to IT team.</b><br>" + str(e)
+			return is_error, message
+		except db.Error as e:
+			is_error = True
+			message = "<b>Please send this error to IT team.</b><br>" + str(e)
+			return is_error, message
+		finally:
+			cursor.close()
+
+		A1 = 0.0
+		A2 = 0.0
+		A3 = 0.0
+		A4 = 0.0
+		A5 = 0.0
+		A6 = 0.0
+		A7 = 0.0
+		
+		A8 = 0.0
+		A9 = 0.0
+		A10 = 0.0
+		A11 = 0.0
+		A12 = 0.0
+
+		bas_amt = 0.0
+		otm_amt = 0.0
+		bon_amt = 0.0
+		pub_amt = 0.0
+		dof_amt = 0.0
+
+		A3_new = 0.0
+		A4_new = 0.0
+		A5_new = 0.0
+		A6_new = 0.0
+		A7_new = 0.0
+
+		bas_amt_new = 0.0
+		otm_amt_new = 0.0
+		bon_amt_new = 0.0
+		pub_amt_new = 0.0
+		dof_amt_new = 0.0
+
+		bas_amt_ns = 0.0
+		otm_amt_ns = 0.0
+		bon_amt_ns = 0.0
+		pub_amt_12 = 0.0
+		dof_amt_ns = 0.0
+
+
+		DropTable(user_first_name + "_TMPC")
+		sql = "select distinct * into " + str(user_first_name + "_TMPC") + " "
+		sql += "from " + str(user_first_name) + " "
+		sql += "where emp_id=" + str(emp_id) + " "
+		sql += "and dly_date>='" + str(search_date_from) + "' "
+		sql += "and dly_date<='" + str(search_date_to) + "' "
+		sql += "order by dly_date,sch_shift"
+		# print("DEBUG SQL:", sql)
+		try:
+			with connection.cursor() as cursor:		
+				cursor.execute(sql)
+
+		except db.OperationalError as e:
+			is_error = True
+			message = "<b>Please send this error to IT team.</b><br>" + str(e)
+			return is_error, message
+		except db.Error as e:
+			is_error = True
+			message = "<b>Please send this error to IT team.</b><br>" + str(e)
+			return is_error, message
+		finally:
+			cursor.close()
+
+		print("DEBUG message = ", message)
+
+
+
+
+		if DlyPerRs is not None:
+			if len(DlyPerRs) > 0:
+				for i in range(0, len(DlyPerRs)):
+					absent = DlyPerRs[i][21]
+					shf_amt_hr = DlyPerRs[i][6]
+					
+					# A3 - BAS
+					if  DlyPerRs[i][38] is not None:
+						bas_amt = DlyPerRs[i][38] if DlyPerRs[i][38]>0 else 0.0
+					else:
+						bas_amt = 0.0
+
+					# A4 - GOT
+					if  DlyPerRs[i][52] is not None:
+						otm_amt = DlyPerRs[i][52] if DlyPerRs[i][52]>0 else 0.0
+					else:
+						otm_amt = 0.0
+
+					# A5 - BON
+					if  DlyPerRs[i][39] is not None:
+						bon_amt = DlyPerRs[i][39] if DlyPerRs[i][39]>0 else 0.0
+					else:
+						bon_amt = 0.0
+
+					# A6 - PUB
+					if  DlyPerRs[i][40] is not None:
+						pub_amt = DlyPerRs[i][40] if DlyPerRs[i][40]>0 else 0.0
+					else:
+						pub_amt = 0.0
+
+					# A7 - DOF
+					if  DlyPerRs[i][53] is not None:
+						dof_amt = DlyPerRs[i][53] if DlyPerRs[i][53]>0 else 0.0
+					else:
+						dof_amt = 0.0
+					
+					'''
+					if  DlyPerRs[i][62] is not None:
+						ex_dof_amt = DlyPerRs[i][62] if DlyPerRs[i][62]>0 else 0
+					else:
+						ex_dof_amt = 0
+					'''
+
+					if absent != int(1):
+						# print("shf_amt_hr =", shf_amt_hr)
+						A1 = Decimal(A1) + shf_amt_hr
+						A2 = A2 + 1
+						A3 = Decimal(A3) + Decimal(bas_amt)
+						A4 = Decimal(A4) + Decimal(otm_amt)
+						A5 = Decimal(A5) + Decimal(bon_amt)
+
+						A6 = Decimal(A6) + Decimal(pub_amt)
+						A7 = Decimal(A7) + Decimal(dof_amt)
+
+						# A8 = A8 + ex_dof_amt					
+					# print("absent:", absent)
+
+				'''
+				print("")
+				print("DEBUG")
+				print("A3 : ", A3)
+				print("A4 : ", A4)
+				print("A5 : ", A5)
+				print("A6 : ", A6)
+				print("A7 : ", A7)
+				print("")
+				'''
+
+				#income_list = [A1,A2,A3,A4,A5,A6,A7,A8]
+
+
+
+		# New Requirement
+		sql = "select cnt_id,emp_id,dly_date dlydate,sch_shift schshift,prd_id,absent,Pay_type,bas_amt,bon_amt,otm_amt,bas_amtNS,bon_amtNS,otm_amtNS,PUB_amt,PUB_AMt12,DOF_amt,DOF_AmtNS,DOF,Pub,* "
+		sql += "from his_dly_plan "
+		sql += "where emp_id=" + str(emp_id) + " "
+		sql += "and dly_date>='" + str(search_date_from) + "' "
+		sql += "and dly_date<='" + str(search_date_to) + "' "
+		sql += "order by dly_date, sch_shift;"
+		print("DEBUG 2 DlyPerRs_new : ", sql)
+
+		try:
+			with connection.cursor() as cursor:		
+				cursor.execute(sql)
+				DlyPerRs_new = cursor.fetchall()
+		except db.OperationalError as e:
+			is_error = True
+			message = "<b>Please send this error to IT team.</b><br>" + str(e)			
+		except db.Error as e:
+			is_error = True
+			message = "<b>Please send this error to IT team.</b><br>" + str(e)
+		finally:			
+			cursor.close()		
+
+		if DlyPerRs_new is not None:
+			if len(DlyPerRs_new) > 0:
+				for i in range(0, len(DlyPerRs_new)):
+
+					absent = DlyPerRs_new[i][5]
+					
+					if not absent:
+						bas_amt_new = Decimal(bas_amt_new) + DlyPerRs_new[i][7]
+						otm_amt_new = Decimal(otm_amt_new) + DlyPerRs_new[i][9]
+						bon_amt_new = Decimal(bon_amt_new) + DlyPerRs_new[i][8]
+						dof_amt_new = Decimal(dof_amt_new) + DlyPerRs_new[i][15]
+
+						bas_amt_ns = Decimal(bas_amt_ns) + DlyPerRs_new[i][10]
+						otm_amt_ns = Decimal(otm_amt_ns) + DlyPerRs_new[i][12]
+						bon_amt_ns = Decimal(bon_amt_ns) + DlyPerRs_new[i][11]
+
+						PUB_AMt12 = DlyPerRs_new[i][14]
+						DOF_AmtNS = DlyPerRs_new[i][16]
+						DOF_Amt = DlyPerRs_new[i][15]
+						
+						# if (PUB_AMt12==0) and (DOF_AmtNS==0):
+						if (PUB_AMt12==0) and (DOF_Amt==0):
+							pub_amt_new = Decimal(pub_amt_new) + DlyPerRs_new[i][14]
+							dof_amt_new = Decimal(dof_amt_new) + DlyPerRs_new[i][15]
+
+						if (PUB_AMt12>0) or (DOF_AmtNS>0):
+							pub_amt_12 = Decimal(pub_amt_12) + DlyPerRs_new[i][14]
+							dof_amt_ns = Decimal(dof_amt_ns) + DlyPerRs_new[i][16]
+
+					A3_new = Decimal(A3_new) + Decimal(bas_amt_new)
+					A4_new = Decimal(A4_new) + Decimal(otm_amt_new)
+					A5_new = Decimal(A5_new) + Decimal(bon_amt_new)
+					
+					A6_new = Decimal(A6_new) + Decimal(pub_amt_new)
+					A7_new = Decimal(A7_new) + Decimal(dof_amt_new)
+
+					A8 = Decimal(A8) + Decimal(bas_amt_ns)
+					A9 = Decimal(A9) + Decimal(otm_amt_ns)
+					A10 = Decimal(A10) + Decimal(bon_amt_ns)
+
+					A11 = Decimal(A11) + Decimal(pub_amt_12)
+					A12 = Decimal(A12) + Decimal(dof_amt_ns)
+
+		print("")
+		print("DEBUG")
+		print("bas_amt : ", A3, " | bas_amt_new : ", bas_amt_new, " | bas_amt_ns : ", bas_amt_ns)
+		print("otm_amt : ", A4, " | otm_amt_new : ", otm_amt_new, " | otm_amt_ns : ", bas_amt_ns)
+		print("bon_amt : ", A5, " | bon_amt_new : ", bon_amt_new, " | bos_amt_ns : ", bon_amt_ns)
+
+		print("pub_amt : ", A6, " | bon_amt_new : ", pub_amt_new)
+		print("dof_amt : ", A7, " | dof_amt_new : ", dof_amt_new)
+
+		print("pub : ", A6)
+		print("dof : ", A7)
+		print("")
+
+		# Return						
+		A3 = '{:,.2f}'.format(A3)	# BAS
+		A4 = '{:,.2f}'.format(A4)	# GOT
+		A5 = '{:,.2f}'.format(A5)	# BON
+		A3_new = '{:,.2f}'.format(A3_new)	# BAS New
+		A4_new = '{:,.2f}'.format(A4_new)	# GOT New
+		A5_new = '{:,.2f}'.format(A5_new)	# BON New
+		A6_new = '{:,.2f}'.format(A6_new)	# PUB New
+		A7_new = '{:,.2f}'.format(A7_new)	# DOF New
+		A6 = '{:,.2f}'.format(A6)	# PUB
+		A7 = '{:,.2f}'.format(A7)	# DOF
+
+		pub_amt_12 = '{:.2f}'.format(pub_amt_12)	# PUB_NS
+		dof_amt_ns = '{:.2f}'.format(dof_amt_ns)	# DOF_NS
+		print("aaa : ", pub_amt_12)
+		print("bbb : ", dof_amt_ns)
+
+		income_list = [A1,A2,A3,A4,A5,A6,A7,bas_amt_ns,otm_amt_ns,bon_amt_ns,pub_amt_12,dof_amt_ns, bas_amt_new, otm_amt_new, bon_amt_new, pub_amt_new, dof_amt_new]
+
+		is_error = False
+		message = "DisplayList('DLY_PLAN') is pass."
+
+	# is_error, error_message, performance_list, income_list = DisplayList("DLY_PLAN", user_first_name, emp_id, search_date_from, search_date_to)
+	
+	# return is_error, message, DlyPerRs, income_list
+	return is_error, message, DlyPerRs_new, income_list
+
+
+def DisplayList_old(table_name, user_first_name, emp_id, search_date_from, search_date_to):
 
 	# ABSENT_DLY_PLAN
 	if(table_name=="ABSENT_DLY_PLAN"):
