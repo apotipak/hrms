@@ -1161,7 +1161,10 @@ def AjaxGPM422NoOfGuardOperationByEmplByZoneReport(request, *args, **kwargs):
 
 
 @permission_required('dailyattendreport.can_access_gpm403_daily_guard_performance_by_contract_report', login_url='/accounts/login/')
-def AjaxGPMWorkOnDayOffReport(request, *args, **kwargs):    
+def AjaxGPMWorkOnDayOffReport(request, *args, **kwargs):
+    print("*****************************")
+    print("AjaxGPMWorkOnDayOffReport()")
+    print("*****************************")
     base_url = MEDIA_ROOT + '/monitoring/template/'    
     template_name = base_url + 'GPM_HDOF.docx'
     file_name = request.user.username + "_GPM_HDOF"
@@ -1176,7 +1179,7 @@ def AjaxGPMWorkOnDayOffReport(request, *args, **kwargs):
     sql += "Where V_HDLYPLAN.dof = 1 AND V_HDLYPLAN.absent = 0 "
     sql += "and (V_HDLYPLAN.DLY_DATE>='" + str(start_date) + "' and V_HDLYPLAN.DLY_DATE<='" + str(end_date) + "') "
     sql += "order By V_HDLYPLAN.dept_id Asc"
-    # print(sql)
+    print("DEBUG: ", sql)
 
     dly_plan_obj = None
     record = {}
@@ -1186,7 +1189,7 @@ def AjaxGPMWorkOnDayOffReport(request, *args, **kwargs):
     try:                
         cursor = connection.cursor()
         cursor.execute(sql)
-        dly_plan_obj = cursor.fetchall()        
+        dly_plan_obj = cursor.fetchall()     
     except db.OperationalError as e:
         error_message = "<b>Error: please send this error to IT team</b><br>" + str(e)
     except db.Error as e:
@@ -2376,6 +2379,10 @@ def export_gpm_403_daily_guard_performance_by_contract_to_excel(request, *args, 
 
 @permission_required('dailyattendreport.can_access_gpm_work_on_day_off_report', login_url='/accounts/login/')
 def GPMWorkOnDayOffReport(request):
+    print("***********************")
+    print("GPMWorkOnDayOffReport()")
+    print("***********************")
+
     page_title = settings.PROJECT_NAME
     db_server = settings.DATABASES['default']['HOST']
     project_name = settings.PROJECT_NAME
