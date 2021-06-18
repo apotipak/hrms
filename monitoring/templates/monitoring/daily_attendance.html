@@ -408,7 +408,6 @@ thead th { white-space: nowrap; }
 					              <label><input class="form-check-input" id="id_phone_check" name="phone_check" type="checkbox" /><span class="text-primary" style="cursor: pointer">Phone</span></label>&nbsp;&nbsp;&nbsp;&nbsp;
 					            </div>
 
-								<!-- amnaj -->
 							    <div class="form-check d-inline float-right" id="id_crud_button">
 									<button id="add_button" type="button" class="btn btn-success btn-xs"><i class="fas fa-plus fa-xs"></i>&nbsp;&nbsp;{% trans 'New' %}</button>
 									<button id="reset_button" type="button" class="btn btn-secondary btn-xs">&nbsp;{% trans 'Cancel' %}</button>&nbsp;&nbsp;|&nbsp;&nbsp;
@@ -2631,7 +2630,6 @@ $("#id_late_hour").click( function() {
 
     
 	// ID_CUS_VOL
-	// amnaj
     $(document).on('keypress', '#id_cus_vol', function(e) {
       if(e.which == 13) {            
 
@@ -3728,7 +3726,7 @@ $("#id_late_hour").click( function() {
 
 
     // ClickRow
-	$(document).on('click', '#employee_list_table tbody tr', function(row, $el, field) {
+	$(document).on('click', '#employee_list_table tbody tr', function(row, $el, field) {		
 		var today = new Date();
 		var date = today.getDate() + "/" + today.getMonth() + '/' + today.getFullYear() + " 00:00";
 
@@ -4047,6 +4045,8 @@ $("#id_late_hour").click( function() {
 	    	},
 	    });
 
+
+		// amnaj
 		$(this).addClass('highlight').siblings().removeClass('highlight');
 
 		if(absent_status==1) {

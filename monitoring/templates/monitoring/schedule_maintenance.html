@@ -651,7 +651,7 @@
 	      		<div class="col-12 table-striped p-0">	      			
 					<table class='table table-sm dataTable' id="id_security_guard_list" style="white-space: nowrap;">
 					<thead>
-					<tr>
+					<tr class='clickableRow'>
 					<th scope='col'>No</th>
 					<th scope='col'>EMP ID</th>
 					<th scope='col'>Name</th>
@@ -674,7 +674,7 @@
 					</tr>
 					</thead>
 					<tbody>
-						<tr>
+						<tr class="clickableRow" data-href='url://'>
 							<td>&nbsp;</td>
 							<td>&nbsp;</td>
 							<td>&nbsp;</td>
@@ -836,7 +836,31 @@
 
 {% block javascript %}
 <script>	
-// amnaj
+
+/*
+jQuery(document).ready(function($) {
+    $(".clickableRow").click(function() {
+    	//alert("aa");
+        window.location = $(this).data("href");
+    });
+});
+*/
+
+// ClickRow
+
+$(document).on('click', '#id_security_guard_list tbody tr', function(row, $el, field) {
+    $("#id_security_guard_list tbody tr").removeClass('highlight');        
+    $(this).addClass('highlight');
+});
+
+
+/*
+$("#id_security_guard_list tbody tr").on('click',function(event) {
+    $("#id_security_guard_list tbody tr").removeClass('highlight');        
+    $(this).addClass('highlight');
+});
+*/
+
 var table = $('#id_security_guard_list').DataTable({
   "paging": false,
   "scrollCollapse": false,
@@ -894,6 +918,12 @@ var table = $('#id_security_guard_list').DataTable({
     },
   ]
 });
+$('#id_security_guard_list tbody').on('dblclick', 'tr', function () {
+    var table =$('#id_security_guard_list').DataTable();
+    var data = table.row( this ).data();
+    alert( 'You ID '+data[0]+'\'s row' );
+} );
+
 
 function print_document() {  
   $(".buttons-print").trigger("click");
@@ -1592,7 +1622,7 @@ $(document).ready(function(){
 						count = 1;
 						for(i=0; i<data.sch_plan_list.length; i++) {
 							result += "    <tr>";
-							result += "      <th scope='row'>" + count + "</th>";							
+							result += "      <td>" + count + "</td>";
 							
 							//result += "      <td><b>" + data.sch_plan_list[i]["emp_id"] + "</b> | <b><a href=javascript:update_sch_plan('" + data.sch_plan_list[i]["sch_no"] + "','" + data.sch_plan_list[i]["srv_id"] + "'); type='button'>" + data.sch_plan_list[i]["emp_fname_th"] + " " + data.sch_plan_list[i]["emp_lname_th"] + "</a></b></td>";
 							result += "      <td><b>" + data.sch_plan_list[i]["emp_id"] + "</b></a></b></td>";
@@ -1845,7 +1875,7 @@ $(document).ready(function(){
 						result = "";
 						for(i=0; i<total; i++) {								
 							result += "    <tr>";
-							result += "      <th scope='row'>" + count + "</th>";
+							result += "      <td>" + count + "</td>";
 							
 
 							//result += "      <td><b>" + data.sch_plan_list[i]["emp_id"] + "</b> | <b><a href=javascript:update_sch_plan('" + data.sch_plan_list[i]["sch_no"] + "','" + data.sch_plan_list[i]["srv_id"] + "'); type='button'>" + data.sch_plan_list[i]["emp_fname_th"] + " " + data.sch_plan_list[i]["emp_lname_th"] + "</a></b></td>";
@@ -2021,7 +2051,7 @@ $(document).ready(function(){
 						result = "";
 						for(i=0; i<total; i++) {								
 							result += "    <tr>";
-							result += "      <th scope='row'>" + count + "</th>";
+							result += "      <td>" + count + "</td>";
 							
 							//result += "      <td><b>" + data.sch_plan_list[i]["emp_id"] + "</b> | <b><a href=javascript:update_sch_plan('" + data.sch_plan_list[i]["sch_no"] + "','" + data.sch_plan_list[i]["srv_id"] +"'); type='button'>" + data.sch_plan_list[i]["emp_fname_th"] + " " + data.sch_plan_list[i]["emp_lname_th"] + "</a></b></td>";
 							result += "      <td><b>" + data.sch_plan_list[i]["emp_id"] + "</b></a></b></td>";
@@ -2190,7 +2220,7 @@ $(document).ready(function(){
 						count = 1;
 						result = "";
 						for(i=0; i<total; i++) {
-							result += "    <tr>";
+							result += "    <tr class='clickableRow'>";
 							result += "      <th scope='row'>" + count + "</th>";
 							
 							//result += "      <td><b>" + data.sch_plan_list[i]["emp_id"] + "</b> | <b><a href=javascript:update_sch_plan('" + data.sch_plan_list[i]["sch_no"] + "','" + data.sch_plan_list[i]["srv_id"] + "'); type='button'>" + data.sch_plan_list[i]["emp_fname_th"] + " " + data.sch_plan_list[i]["emp_lname_th"] + "</a></b></td>";
