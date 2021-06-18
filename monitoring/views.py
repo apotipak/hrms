@@ -168,6 +168,7 @@ def ajax_get_customer(request):
 			# SCH_PLAN			
 			try:
 				sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).filter(sch_date_to='2999-12-31').exclude(upd_flag='D').order_by('-upd_date')
+				
 				# print("sch_plan is found")
 				sch_plan_list = []
 				for d in sch_plan:
@@ -347,6 +348,7 @@ def ajax_get_customer(request):
 
 					"cus_service_list": list(cus_service_list),
 					"sch_plan_list": list(sch_plan_list),
+					# "sch_plan_list": []
 			    })
 			    response.status_code = 200
 			except Customer.DoesNotExist:            
@@ -445,7 +447,10 @@ def ajax_get_customer_schedule_plan_list(request):
     	total = 0
 
     	if sch_active == '1':
+
+    		print("999999999999")
     		sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).filter(sch_date_to='2999-12-31').exclude(upd_flag='D').order_by('-upd_date')
+    		# sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).filter(sch_date_to='2999-12-31', sch_active=1).exclude(upd_flag='D').order_by('-upd_date')
     		# print("sch")
 
 	    	for d in sch_plan:	
@@ -753,7 +758,8 @@ def ajax_save_customer_schedule_plan(request):
 		#  sch_plan_count = SchPlan.objects.filter(emp_id=emp_id).exclude(upd_flag='D').exclude(sch_active="").count()
 		
 		sch_plan_count = 0		
-		sql = "select * from sch_plan where emp_id=" + emp_id + " and sch_active=1 and upd_flag!='D'"
+		sql = "select * from sch_plan where emp_id=" + emp_id + " and sch_active=1 and upd_flag!='D'"		
+
 		try:
 			with connection.cursor() as cursor:		
 				cursor.execute(sql)
@@ -869,7 +875,7 @@ def ajax_save_customer_schedule_plan(request):
 
 			# print("sch_plan is found")
 			sch_plan_list = []
-			sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).filter(sch_date_to='2999-12-31').exclude(upd_flag='D').order_by('-upd_date')
+			sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).filter(sch_date_to='2999-12-31').exclude(upd_flag='D').order_by('-upd_date')			
 			for d in sch_plan:	
 				if d.sch_active:
 					if d.relief:
@@ -906,6 +912,7 @@ def ajax_save_customer_schedule_plan(request):
 					}
 					sch_plan_list.append(record)
 
+			print("TEST")
 			response = JsonResponse(data={
 				"message": "เพิ่มรายการสำเร็จ",
 				"class": "bg-success",
@@ -958,6 +965,7 @@ def ajax_save_customer_schedule_plan(request):
 
 		try:
 			sch_plan = SchPlan.objects.filter(sch_no=selected_sch_no).get()
+		
 			sch_plan.sch_active = sch_active
 			sch_plan.relief = relief
 			sch_plan.sch_shf_mon = mon_shift
@@ -990,7 +998,10 @@ def ajax_save_customer_schedule_plan(request):
 
 			# sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).filter(sch_date_to='2999-12-31').exclude(upd_flag='D').order_by('-upd_date')	
 			# sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).exclude(upd_flag='D').exclude(sch_date_to='2999-12-31').order_by('-upd_date', 'emp_id')
-			sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).filter(sch_active=1).exclude(upd_flag='D').order_by('-upd_date', 'emp_id')
+			# sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).filter(sch_active=1).exclude(upd_flag='D').order_by('-upd_date', 'emp_id')
+			
+			# amnaj1			
+			sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).filter(sch_date_to='2999-12-31').filter(sch_active=1).exclude(upd_flag='D').order_by('-upd_date')
 
 			for d in sch_plan:
 				# if d.sch_active:
@@ -1031,6 +1042,7 @@ def ajax_save_customer_schedule_plan(request):
 				"message": "บันทึกรายการสำเร็จ",
 				"class": "bg-success",
 				"sch_plan_list": list(sch_plan_list),
+				#"sch_plan_list": [],
 				"is_saved": True,
 			})
 		except SchPlan.DoesNotExist:
@@ -3287,6 +3299,7 @@ def ajax_delete_employee_schedule_maintenance(request):
 		"is_error": is_error,
 	    "message": message,
 		"sch_plan_list": list(sch_plan_list),
+		# "sch_plan_list": [],
 	})
 
 	response.status_code = 200
