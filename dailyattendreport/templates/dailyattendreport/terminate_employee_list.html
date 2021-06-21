@@ -1,0 +1,473 @@
+{% extends "page_report.html" %}
+
+{% load i18n %}
+{% block title %} {{ page_title}} - {% trans 'Report' %} {% endblock %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper pt-2">
+
+    <!-- Main content -->
+    <section class="content">
+
+      <div class="card-header" style="padding: 0 2px 10px 0;">        
+        <h5 class="card-title"><i class="far fa-list-alt"></i>&nbsp;<b>Terminate Employee List</b></h5>
+        <br>
+        <div class="float-right pb-1">
+          <div class="d-flex flex-row-reverse">
+            <!--<button class="btn btn-success btn-sm" onclick="export_to_excel()">&nbsp;<i class="far fa-file-excel"></i>&nbsp;&nbsp;Export to Excel</button>-->
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 p-0 pt-2">
+
+        <form method="post" autocomplete="off" name="search_form">
+          {% csrf_token %}
+          
+          <div class="card-body p-0 pt-2">
+            <div class="form-group">
+
+              <div class="input-group col-12">
+
+
+                <div class="input-group-prepend pr-2 pt-1" style="width:80px;"><label>Employee</label></div>
+                <div class="input-group-prepend">
+                  <span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:60px;">From</span>
+                </div>
+                <input type="number" min=0 maxlength="6" name="emp_id_from" class="form-control border-bottom-1 border-left-0 rounded-0 bg-white" value="0" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" id="id_emp_id_from">
+
+                <div class="input-group-prepend">
+                  <span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:42px;">To</span>
+                </div>
+                <input type="number" min=0 maxlength="6" name="emp_id_to" class="form-control border-bottom-1 border-left-0 rounded-0 bg-white" value="999999" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" id="id_emp_id_to">
+
+
+                <div class="input-group-prepend">
+                  <span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:60px;">Type</span>
+                </div>
+                <input type="text" id="id_emp_type_option" name="emp_type_option" class="form-control form-control-md col-xs-1" style="border-radius: 0;" value="D1" readonly="">
+
+
+
+
+                <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:95px;">Dept/Zone</span></div>
+                <select id="id_dept_zone_option" name="dept_zone_option" class="form-control form-control-md" style="border-radius: 0;">
+                  <option value="">เลือกทั้งหมด</option>
+                  {% for item in dept_zone_obj %}
+                  <option value="{{item.0}}">{{item.0}} | {{ item.1 }}</option>
+                  {% endfor %}
+                </select>                
+                &nbsp;&nbsp;
+
+                <div class="input-group-prepend pr-2 pt-1 text-right"><label>Year</label></div>
+                <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:67px;">From</span></div>
+                <input type="text" name="start_date" class="form-control datepicker border-bottom-1 border-left-0 rounded-0 bg-white" placeholder="dd/mm/yyyy" required="" value="{{start_date}}" id="id_start_date" readonly="readonly">
+                
+                <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:42px;">To</span></div>
+                <input type="text" name="end_date" class="form-control datepicker border-bottom-1 border-left-0 rounded-0 bg-white" placeholder="dd/mm/yyyy" required="" id="id_end_date" value="{{end_date}}" readonly="readonly">
+
+                &nbsp;&nbsp;
+
+                <button class="btn btn-outline-info btn-sm dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="fas fa-print fa-sm"></i>&nbsp;&nbsp;Print
+                </button>
+
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink"> 
+                  <span style="font-size: 14px;">
+                  <a class="dropdown-item" href="#" onclick="print_document()"><i class="fas fa-desktop text-secondary"></i>&nbsp;&nbsp;Display on screen</a>
+                  <a class="dropdown-item" href="#" onclick="export_to_excel()"><i class="far fa-file-excel text-secondary"></i>&nbsp;&nbsp;&nbsp;&nbsp;Export to Excel</a>
+                  </span>
+                </div>
+
+
+              </div>
+
+
+
+
+
+
+
+            </div>
+          </div>
+
+        </form>        
+
+      </div>
+      <!-- /.col -->
+
+
+
+      <div>
+
+        <table class="table" id="terminate_employee_list">
+          <thead class="text-light">
+            <tr>
+              <th scope="col">Seq</th>
+              <th scope="col">EMP.ID</th>
+              <th scope="col">Name</th>
+              <th scope="col">Section</th>
+              <th scope="col">Rank</th>
+
+              <th scope="col">Doc Date</th>
+              <th scope="col">Join</th>
+              <th scope="col">Term</th>
+              <th scope="col">Work</th>
+              <th scope="col">Status</th>
+
+              <th scope="col">Reason</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+
+              <td>&nbsp;</td>                            
+            </tr>
+          </tbody>
+        </table>                
+
+      </div>
+
+
+      </div>
+    
+
+    </section>
+    <!-- /.content -->
+
+
+
+
+{% endblock %}
+
+
+
+{% block javascript %}
+<script>
+
+$(document).ready( function () {
+  //
+});
+
+
+function print_document() {
+  var emp_id_from = $("#id_emp_id_from").val();
+  var emp_id_to = $("#id_emp_id_to").val();
+  var emp_type = $("#id_emp_type_option").val();
+  var emp_dept = $("#id_dept_zone_option").val();  
+  var start_date = $("#id_start_date").val();
+  var end_date = $("#id_end_date").val();
+  
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0');
+  var yyyy = today.getFullYear(); 
+  today = dd + '/' + mm + '/' + yyyy;
+  var result = "";
+
+  start_date_moment = moment(start_date, "DD/MM/YYYY");
+  end_date_moment = moment(end_date, "DD/MM/YYYY");
+
+  if(end_date_moment < start_date_moment) {
+    $.alert({
+        title: 'Error',
+        type: 'red',
+        content: "วันที่สิ้นสุดน้อยกว่าวันที่เริ่มต้น",
+        animation: 'zoom',
+        animationBounce: 1.5,
+        closeIcon: false,
+        boxWidth: '38%',
+        useBootstrap: false,
+    });    
+    return false;
+  }
+
+  $.ajax({
+    url: "/reports/cms/ajax-terminate-employee-list/",
+    type: "POST",
+    data: {
+      csrfmiddlewaretoken: '{{ csrf_token }}',
+      emp_id_from: emp_id_from,
+      emp_id_to: emp_id_to,
+      emp_type: emp_type,
+      emp_dept: emp_dept,
+      start_date: start_date,
+      end_date: end_date,
+    },
+    success : function(data) {
+        //alert(data.error_message);
+        if(data.is_error) {
+          alert("Error!");
+        } else {
+
+          result = "";
+          count = 1;
+
+          for(i=0; i<data.employee_list.length; i++) {
+            emp_id = data.employee_list[i]['emp_id'];
+            emp_fullname = data.employee_list[i]['emp_fname_th'] + " " + data.employee_list[i]['emp_lname_th'];
+            trm_res_th = data.employee_list[i]['trm_res_th'];
+            reason = data.employee_list[i]['sts_th'];
+            //console.log(emp_fullname);
+
+            result += "<tr>";
+            result += "<td>" + count + "</td>";
+            result += "<td>" + emp_id + "</td>";
+            result += "<td>" + emp_fullname + "</td>";            
+            result += "<td></td>";
+            result += "<td></td>";
+            result += "<td></td>";
+            result += "<td></td>";
+            result += "<td></td>";
+            result += "<td></td>";
+            result += "<td></td>";
+            result += "<td>" + trm_res_th + "</td>";
+            result += "</tr>";
+
+            count++;
+          }
+
+
+          $("#terminate_employee_list tbody").html(result)
+          
+
+        }
+
+    },
+  });
+
+  //var href = "/reports/cms/gpm-403-daily-guard-performance-by-contract/" + contract_number_from + "/" + contract_number_to + "/" + start_date + "/" + end_date + "/";
+  //window.open(href,'_blank');
+}
+ 
+function export_to_excel() {
+  var contract_number_from = $("#id_contract_number_from").val();
+  var contract_number_to = $("#id_contract_number_to").val();
+  var start_date = $("#id_start_date").val();
+  var end_date = $("#id_end_date").val();
+
+  alert("todo");
+  return false;
+
+  showLoading();
+
+  $.ajax({
+    url: "/reports/control-room/daily-attend/ajax-gpm-403-daily-guard-performance-by-contract/",
+    type: "POST",
+    data: {
+      csrfmiddlewaretoken: '{{ csrf_token }}',
+      contract_number_from: contract_number_from,
+      contract_number_to: contract_number_to,
+      start_date: start_date,
+      end_date: end_date,
+    },
+    success : function(data) {
+
+    },
+  });
+
+
+  /*
+  var href = "/reports/cms/export-gpm-403-daily-guard-performance-by-contract-to-excel/" + contract_number_from + "/" + contract_number_to + "/" + start_date + "/" + end_date + "/";
+  window.open(href,'_blank');    
+  */
+
+}
+
+function showLoading() {
+  $.LoadingOverlaySetup({
+      background      : "rgba(0, 0, 0, 0.5)",
+      image           : "/static/img/logo-small.png",        
+      imageAnimation  : "1.5s fadein",
+      imageColor      : "#ffcc00"
+  });
+  $.LoadingOverlay("show"); 
+}
+
+  function SearchFormSubmit() {
+
+    //alert("Test");
+    return false;
+
+    var contract_number_from = $('#id_contract_number_from').val();
+    var contract_number_to = $('#id_contract_number_to').val();
+    var start_date = $('#id_start_date').val();
+    var end_date = $('#id_end_date').val(); 
+    
+    showLoading();
+
+    $.ajax({
+      url: "/reports/control-room/daily-attend/ajax-gpm-403-daily-guard-performance-by-contract/",
+      type: "POST",
+      data: {
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        contract_number_from: contract_number_from,
+        contract_number_to: contract_number_to,
+        start_date: start_date,
+        end_date: end_date,
+      },
+      success : function(data) {
+              
+        number_of_rows = data.dly_plan_list.length;
+        row_count = 0
+        
+        if(data.is_error) {
+          alert("ERROR: " + data.error_message);
+        } else {          
+          result = "";
+          row_group_count = 1
+          row_count = 1;
+          if(row_count>0) {
+            for(i=0; i<number_of_rows; i++) {
+
+              emp_fullname = data.dly_plan_list[i]["emp_fname_th"] + " " + data.dly_plan_list[i]["emp_lname_th"];
+              shf_desc = data.dly_plan_list[i]["shf_desc"];
+              dept_en = data.dly_plan_list[i]["dept_en"];
+              cnt_id = data.dly_plan_list[i]["cnt_id"];
+              emp_id = data.dly_plan_list[i]["emp_id"];
+              dly_date = data.dly_plan_list[i]["dly_date"];
+              sch_shift = data.dly_plan_list[i]["sch_shift"];
+              dept_id = data.dly_plan_list[i]["dpet_id"];
+              sch_rank = data.dly_plan_list[i]["sch_rank"];
+              absent = data.dly_plan_list[i]["absent"];
+              relieft_id = data.dly_plan_list[i]["relieft_id"];
+              tel_man = data.dly_plan_list[i]["tel_man"];
+              tel_paid = data.dly_plan_list[i]["tel_paid"];
+              ot = data.dly_plan_list[i]["ot"];
+              ot_hr_amt = data.dly_plan_list[i]["ot_hr_amt"];
+              cus_name_th = data.dly_plan_list[i]["cus_name_th"];
+              late = data.dly_plan_list[i]["late"];
+              late_full = data.dly_plan_list[i]["late_full"];
+
+              if(row_group_count!=cnt_id) {
+                result += "<tr style='background-color: #257638;color: #fff;font-size: 14px;'><td colspan='13'>" + cnt_id + " - "  + cus_name_th;
+                row_group_count = cnt_id;
+                row_count = 1;
+              }
+
+              result += "<tr>";
+              result += "<td class='text-center' nowrap>" + row_count + "</td>";              
+              result += "<td class='text-left' nowrap>" + dly_date + "</td>";
+              result += "<td class='text-left' nowrap>" + emp_id + "</td>";
+              result += "<td class='text-left' nowrap>" + emp_fullname + "</td>";
+
+
+
+              result += "<td class='text-center' nowrap>" + sch_rank + "</td>";
+              result += "<td class='text-center' nowrap>" + sch_shift + "</td>";
+              
+              if(relieft_id>0)
+                  result += "<td class='text-left' nowrap>" + relieft_id + "</td>";
+              else
+                  result += "<td class='text-left' nowrap>&nbsp;</td>";
+              
+              // OT
+              if(ot=="")
+                result += "<td class='text-left' nowrap>&nbsp;</td>";
+              else
+                result += "<td class='text-center' nowrap><i class='fas fa-check fa-xs text-success'></i></td>";
+
+              // LATE
+              if(late=="")
+                result += "<td class='text-left' nowrap>&nbsp;</td>";
+              else
+                result += "<td class='text-center' nowrap><i class='fas fa-check fa-xs text-success'></i></td>";
+
+
+              // LATE FULL
+              if(late_full=="")
+                result += "<td class='text-left' nowrap>&nbsp;</td>";
+              else
+                result += "<td class='text-center' nowrap><i class='fas fa-check fa-xs text-success'></i></td>";
+
+              if(ot_hr_amt>0)
+                  result += "<td class='text-left' nowrap>" + ot_hr_amt + "</td>";
+              else
+                  result += "<td class='text-left' nowrap>&nbsp;</td>";
+
+              // TEL MAN
+              if(tel_man=="")
+                result += "<td class='text-left' nowrap>&nbsp;</td>";
+              else              
+                result += "<td class='text-center' nowrap><i class='fas fa-check fa-xs text-success'></i></td>";
+
+              // TEL PAID
+              if(tel_paid=="")
+                result += "<td class='text-left' nowrap>&nbsp;</td>";
+              else
+                if(tel_paid>0)
+                    result += "<td class='text-center' nowrap>" + tel_paid + "</td>";
+                else
+                    result += "<td class='text-center' nowrap>&nbsp;</td>";
+
+              result += "</tr>";
+
+              row_count = row_count + 1;
+
+
+            }
+          } else {
+              result = "";
+              result = "<tr style='background-color: #d2d4d6;'><td scope='row' class='text-center' colspan='25'><br><br>There is no data.<br><br><br></td></tr>";
+          }
+        }        
+
+        $.LoadingOverlay("hide");
+        $("#report_table tbody").html(result);      
+
+      }
+    });
+  }  
+
+  $(document).ready(function () {    
+    $('#id_start_date').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", new Date());
+    $('#id_end_date').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", new Date());
+  });
+
+
+  $(document).on('click', '#id_contract_number_from', function(e) {
+    $("#id_contract_number_from").select();
+  });
+
+  $(document).on('click', '#id_contract_number_to', function(e) {
+    temp = $("#id_contract_number_to").val();
+    
+    if(temp==0 || temp=="") {
+      $("#id_contract_number_to").val($("#id_contract_number_from").val());
+    }
+    
+    $("#id_contract_number_to").select();
+
+  });
+
+  $(document).on('click', '#id_contract_number_to', function(e) {
+      $("#id_contract_number_to").select();   
+  });
+
+  $(document).on('keypress', '#id_contract_number_from', function(e) {
+    if(e.which == 13) {      
+      e.preventDefault();
+      $("#id_contract_number_to").val($("#id_contract_number_from").val()); 
+      $("#id_contract_number_to").focus();
+
+    }
+  });
+
+
+  </script>
+{% endblock %}  

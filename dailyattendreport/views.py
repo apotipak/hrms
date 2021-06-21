@@ -1691,6 +1691,10 @@ def GPM403DailyGuardPerformanceReport(request):
         })
 
 
+
+
+
+
 @permission_required('dailyattendreport.can_access_gpm403_daily_guard_performance_by_contract_report', login_url='/accounts/login/')
 def AjaxGPM403DailyGuardPerformanceReport(request):
     page_title = settings.PROJECT_NAME
@@ -3147,3 +3151,108 @@ def AjaxValidatePSNSlipD1Period(request):
     response.status_code = 200
     return response
 
+
+
+@permission_required('dailyattendreport.can_access_terminate_employee_list', login_url='/accounts/login/')
+def TerminateEmployeeListReport(request):
+    page_title = settings.PROJECT_NAME
+    db_server = settings.DATABASES['default']['HOST']
+    project_name = settings.PROJECT_NAME
+    project_version = settings.PROJECT_VERSION  
+    
+    today_date = settings.TODAY_DATE.strftime("%d/%m/%Y")
+    contract_number_from = request.POST.get('contract_number_from')
+    contract_number_to = request.POST.get('contract_number_to')
+    start_date = request.POST.get('start_date')
+    end_date = request.POST.get('end_date')
+
+    start_date = today_date if start_date is None else datetime.datetime.strptime(start_date, "%d/%m/%Y").date()
+    end_date = today_date if end_date is None else datetime.datetime.strptime(end_date, "%d/%m/%Y").date()
+
+    dept_zone_obj = None
+    sql = "select dept_id, dept_en from COM_DEPARTMENT where dept_zone=1;"
+    try:
+        cursor = connection.cursor()
+        cursor.execute(sql)
+        dept_zone_obj = cursor.fetchall()
+    finally:
+        cursor.close()
+    
+    return render(request, 'dailyattendreport/terminate_employee_list.html',
+        {
+        'page_title': page_title, 
+        'project_name': project_name,
+        'project_version': project_version,
+        'db_server': db_server, 
+        'today_date': today_date,
+        'database': settings.DATABASES['default']['NAME'],
+        'host': settings.DATABASES['default']['HOST'],
+        "dept_zone_obj": dept_zone_obj,
+        })
+
+
+@permission_required('dailyattendreport.can_access_terminate_employee_list', login_url='/accounts/login/')
+def AjaxTerminateEmployeeListReport(request):    
+    employee_obj = None
+    employee_list = []
+    record = {}
+    is_error = True
+    error_message = ""
+
+    emp_id_from = request.POST.get('emp_id_from')
+    emp_id_to = request.POST.get('emp_id_to')
+    emp_type = request.POST.get('emp_type')
+    emp_dept = request.POST.get('emp_dept')
+    start_date = request.POST.get('start_date')
+    end_date = request.POST.get('end_date')
+    
+    sd = datetime.datetime.strptime(start_date, '%d/%m/%Y') 
+    ed = datetime.datetime.strptime(end_date, '%d/%m/%Y') 
+    # print(emp_id_from,emp_id_to,emp_type,emp_dept,sd,ed)
+
+    sql = "select * from v_emptrm where emp_type='D1' "
+    sql += " and emp_id>='" + str(emp_id_from) + "' "
+    sql += " and emp_id<='" + str(emp_id_to) + "' "
+    if emp_dept!="":
+        sql += " and emp_sect=" + str(emp_dept) + " "
+    sql += " and emp_term_date>='" + str(sd) + "' and emp_term_date<='" + str(ed) + "';"
+    # print("SQL : ", sql)
+
+    try:
+        cursor = connection.cursor()
+        cursor.execute(sql)
+        employee_obj = cursor.fetchall()
+    finally:
+        cursor.close()
+
+    if employee_obj is not None:
+        for item in employee_obj:
+            emp_id = item[0];
+            emp_fname_th = item[1];
+            emp_lname_th = item[2];
+            emp_fullname_th = emp_fname_th.strip() + emp_lname_th.strip()
+            trm_res_th = item[10];
+            sts_th = item[13];
+
+            record = {
+                'emp_id': emp_id,
+                'emp_fname_th': emp_fname_th,
+                'emp_lname_th': emp_lname_th,
+                'emp_fullname_th': emp_fullname_th,
+                'trm_res_th': trm_res_th,
+                'sts_th': sts_th,
+            }
+
+            employee_list.append(record)
+
+        is_error = False
+        error_message = ""
+
+    response = JsonResponse(data={   
+        "is_error": is_error,
+        "error_message": error_message,
+        "employee_list": employee_list,
+    })
+
+    response.status_code = 200
+    return response 

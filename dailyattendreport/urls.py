@@ -37,4 +37,8 @@ urlpatterns = [
     path('income-deduct-d1/', views.IncomeDeductD1Report, name='income-deduct-d1-report'),
     path('ajax-search-income-deduct-d1/', views.AjaxSearchIncomeDeductD1, name='ajax-search-income-deduct-d1'),
 
+    # Terminate Employee List
+    path('terminate-employee-list/', views.TerminateEmployeeListReport, name='terminate-employee-list'),
+    path('ajax-terminate-employee-list/', views.AjaxTerminateEmployeeListReport, name='ajax-terminate-employee-list'),
+
 ]

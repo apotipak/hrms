@@ -52,6 +52,12 @@
               </li>
               {% endif %}
 
+              {% if perms.dailyattendreport.can_access_terminate_employee_list %}
+              <li class="nav-item p-0">
+                <a href="/reports/cms/terminate-employee-list/" class="nav-link"><p>Terminate Employee List</p></a>
+              </li>
+              {% endif %}
+
             </ul>
             {% endif %}
 
