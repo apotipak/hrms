@@ -246,8 +246,9 @@ def AjaxReportByStatus(request):
 			full_name = item[1]
 			phone_number = item[2] if item[2] is not None else ""
 			get_vaccine_status_option = item[3] if item[3] is not None else 0
+			
 			# get_vaccine_status_option = item[3]
-			print("get_vaccine_status : ", get_vaccine_status_option)
+			# print("get_vaccine_status : ", get_vaccine_status_option)
 
 			get_vaccine_date = item[4].strftime("%d/%m/%Y") if item[4] is not None else ""
 			get_vaccine_time = item[4].strftime("%H:00") if item[4] is not None else ""
