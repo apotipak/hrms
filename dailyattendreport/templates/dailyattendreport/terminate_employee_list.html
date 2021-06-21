@@ -222,20 +222,25 @@ function print_document() {
             emp_id = data.employee_list[i]['emp_id'];
             emp_fullname = data.employee_list[i]['emp_fname_th'] + " " + data.employee_list[i]['emp_lname_th'];
             trm_res_th = data.employee_list[i]['trm_res_th'];
+            emp_sect = data.employee_list[i]['emp_sect'];
+            emp_rank = data.employee_list[i]['emp_rank'];
+            trm_doc_date = data.employee_list[i]['trm_doc_date'];
+            emp_join_date = data.employee_list[i]['emp_join_date'];
+            emp_term_date = data.employee_list[i]['emp_term_date'];
+            wmonth = data.employee_list[i]['wmonth'];
             reason = data.employee_list[i]['sts_th'];
-            //console.log(emp_fullname);
 
             result += "<tr>";
             result += "<td>" + count + "</td>";
             result += "<td>" + emp_id + "</td>";
             result += "<td>" + emp_fullname + "</td>";            
-            result += "<td></td>";
-            result += "<td></td>";
-            result += "<td></td>";
-            result += "<td></td>";
-            result += "<td></td>";
-            result += "<td></td>";
-            result += "<td></td>";
+            result += "<td>" + emp_sect + "</td>";
+            result += "<td>" + emp_rank + "</td>";
+            result += "<td>" + trm_doc_date + "</td>";
+            result += "<td>" + emp_join_date + "</td>";
+            result += "<td>" + emp_term_date + "</td>";
+            result += "<td>" + wmonth + "</td>";
+            result += "<td>" + reason + "</td>";
             result += "<td>" + trm_res_th + "</td>";
             result += "</tr>";
 

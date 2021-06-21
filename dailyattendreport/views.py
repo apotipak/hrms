@@ -3231,16 +3231,28 @@ def AjaxTerminateEmployeeListReport(request):
             emp_fname_th = item[1];
             emp_lname_th = item[2];
             emp_fullname_th = emp_fname_th.strip() + emp_lname_th.strip()
+            emp_sect = item[5]
+            emp_rank = item[6];
+            emp_join_date = item[7];
+            emp_term_date = item[8];
             trm_res_th = item[10];
+            trm_doc_date = item[11];
             sts_th = item[13];
+            wmonth = item[21];
 
             record = {
                 'emp_id': emp_id,
                 'emp_fname_th': emp_fname_th,
                 'emp_lname_th': emp_lname_th,
                 'emp_fullname_th': emp_fullname_th,
+                'emp_sect': emp_sect,
+                'emp_rank': emp_rank,
+                'emp_join_date': emp_join_date,
+                'emp_term_date': emp_term_date,
                 'trm_res_th': trm_res_th,
+                'trm_doc_date': trm_doc_date,
                 'sts_th': sts_th,
+                'wmonth': wmonth,
             }
 
             employee_list.append(record)
