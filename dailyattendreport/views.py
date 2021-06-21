@@ -2171,6 +2171,30 @@ def export_gpm_work_on_day_off_to_excel(request, *args, **kwargs):
             sch_rank = row[8]
             dept_id = row[7]
             dept_en = row[3]
+
+            if (dept_en.find('SP-Zone') != -1):
+                dept_en_short = dept_en.replace("SP-Zone", "").lstrip()[0]
+            elif (dept_en.find('ZONE H BPI') != -1):
+                dept_en_short = "H"
+            elif (dept_en.find('ZONE Control') != -1):
+                dept_en_short = "CR"
+            elif (dept_en.find('SP-Samui') != -1):
+                dept_en_short = "SM"
+            elif (dept_en.find('ZONE PHUKET') != -1):
+                dept_en_short = "P"
+            elif (dept_en.find('Zone Khon kean') != -1):
+                dept_en_short = "K"
+            elif (dept_en.find('BEM') != -1):
+                dept_en_short = "BEM"
+            elif (dept_en.find('ZONE I') != -1):
+                dept_en_short = "I"
+            elif (dept_en.find('ZONE R') != -1):
+                dept_en_short = "R"
+            elif (dept_en.find('Zone Songkhla') != -1):
+                dept_en_short = "SK"
+            else:
+                dept_en_short = "?"
+                            
             shf_desc = row[2]
             cnt_id = row[4]
             cus_name_th = row[12]
@@ -2190,7 +2214,7 @@ def export_gpm_work_on_day_off_to_excel(request, *args, **kwargs):
                 elif col_num==5:
                     ws.write(row_num, col_num, dept_id, font_style)
                 elif col_num==6:
-                    ws.write(row_num, col_num, dept_en, font_style)
+                    ws.write(row_num, col_num, dept_en_short, font_style)
                 elif col_num==7:
                     ws.write(row_num, col_num, shf_desc, font_style)
                 elif col_num==8:
