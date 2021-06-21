@@ -419,7 +419,8 @@ function showLoading() {
               
                 result += "<td class='text-center' nowrap>";
                 
-                if(data.employee_list[i]['get_vaccine_status_option']=="0") {
+                //if(data.employee_list[i]['get_vaccine_status_option']=="0") {
+                if(data.employee_list[i]['file_attach']=="") {
                   result += '&nbsp;';
                 } else {
                   result += '<a href="#" onclick="download_pdf(\'' + data.employee_list[i]['emp_id'].toString() + '\');">&nbsp;&nbsp;Download&nbsp;&nbsp;</a>';
