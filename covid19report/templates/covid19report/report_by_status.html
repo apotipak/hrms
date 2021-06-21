@@ -181,14 +181,14 @@ var table = $('#employee_list_table').DataTable({
             extend: 'print',
             title: '',
             exportOptions: {
-            columns: [0,1,2,3,4,5,6,7,8,9,11]
+            columns: [0,1,2,3,4,5,6,8,9,11]
             }
         },
         {
             extend: 'excelHtml5',        
             title: '',
             exportOptions: {
-              columns: [0,1,2,3,4,5,6,7,8,9,11],
+              columns: [0,1,2,3,4,5,6,8,9,11],
               format: {
                 header:  function (data, columnIdx) {
                   return columnIdx + ': ' + data + "blah";
@@ -467,14 +467,14 @@ function showLoading() {
                         extend: 'print',
                         title: '',
                         exportOptions: {
-                          columns: [0,1,2,3,4,5,6,7,8,9,11]
+                          columns: [0,1,2,3,4,5,6,8,9,11]
                         }
                     },
                     {
                         extend: 'excelHtml5',        
                         title: 'covid_19_status_list',
                         exportOptions: {
-                          columns: [0,1,2,3,4,5,6,7,8,9,11],
+                          columns: [0,1,2,3,4,5,6,8,9,11],
                         },
                         customize: function (xlsx) {
                           var today = new Date();
