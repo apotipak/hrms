@@ -86,7 +86,7 @@
                 <input type="text" name="end_date" class="form-control datepicker border-bottom-1 border-left-0 rounded-0 bg-white" placeholder="dd/mm/yyyy" required="" id="id_end_date" value="{{end_date}}" readonly="readonly">
 
                 &nbsp;&nbsp;
-                <a href="javascript:print_document();" class="btn btn-outline-info" role="button">Search</a>
+                <a href="javascript:print_document();" class="btn btn-info" role="button">Search</a>
 
                 <!--
                 <button class="btn btn-outline-info btn-sm dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -235,35 +235,40 @@ function print_document() {
           result = "";
           count = 1;
 
-          for(i=0; i<data.employee_list.length; i++) {
-            emp_id = data.employee_list[i]['emp_id'];
-            emp_fullname = data.employee_list[i]['emp_fname_th'] + " " + data.employee_list[i]['emp_lname_th'];
-            trm_res_th = data.employee_list[i]['trm_res_th'];
-            emp_sect = data.employee_list[i]['emp_sect'];
-            emp_rank = data.employee_list[i]['emp_rank'];
-            trm_doc_date = data.employee_list[i]['trm_doc_date'];
-            emp_join_date = data.employee_list[i]['emp_join_date'];
-            emp_term_date = data.employee_list[i]['emp_term_date'];
-            wmonth = data.employee_list[i]['wmonth'];
-            reason = data.employee_list[i]['sts_th'];
-            emp_status = data.employee_list[i]['emp_status'];
+          if(data.employee_list.length>0) {
+            for(i=0; i<data.employee_list.length; i++) {
+              emp_id = data.employee_list[i]['emp_id'];
+              emp_fullname = data.employee_list[i]['emp_fname_th'] + " " + data.employee_list[i]['emp_lname_th'];
+              trm_res_th = data.employee_list[i]['trm_res_th'];
+              emp_sect = data.employee_list[i]['emp_sect'];
+              emp_rank = data.employee_list[i]['emp_rank'];
+              trm_doc_date = data.employee_list[i]['trm_doc_date'];
+              emp_join_date = data.employee_list[i]['emp_join_date'];
+              emp_term_date = data.employee_list[i]['emp_term_date'];
+              wmonth = data.employee_list[i]['wmonth'];
+              reason = data.employee_list[i]['sts_th'];
+              emp_status = data.employee_list[i]['emp_status'];
 
-            result += "<tr>";
-            result += "<td>" + count + "</td>";
-            result += "<td>" + emp_id + "</td>";
-            result += "<td>" + emp_fullname + "</td>";            
-            result += "<td>" + emp_sect + "</td>";
-            result += "<td>" + emp_rank + "</td>";
-            result += "<td>" + trm_doc_date + "</td>";
-            result += "<td>" + emp_join_date + "</td>";
-            result += "<td>" + emp_term_date + "</td>";
-            result += "<td>" + wmonth + "</td>";
-            result += "<td>" + reason + "</td>";
-            result += "<td>" + trm_res_th + "</td>";
-            result += "</tr>";
+              result += "<tr>";
+              result += "<td>" + count + "</td>";
+              result += "<td>" + emp_id + "</td>";
+              result += "<td>" + emp_fullname + "</td>";            
+              result += "<td>" + emp_sect + "</td>";
+              result += "<td>" + emp_rank + "</td>";
+              result += "<td>" + trm_doc_date + "</td>";
+              result += "<td>" + emp_join_date + "</td>";
+              result += "<td>" + emp_term_date + "</td>";
+              result += "<td>" + wmonth + "</td>";
+              result += "<td>" + reason + "</td>";
+              result += "<td>" + trm_res_th + "</td>";
+              result += "</tr>";
 
-            count++;
+              count++;
+            }
+          } else {
+            result = "<tr><td colspan='10' class='text-center'><br>ไม่พบข้อมูล</td></tr>";
           }
+
 
 
           $("#terminate_employee_list tbody").html(result)
@@ -346,7 +351,7 @@ function showLoading() {
       },
       success : function(data) {
               
-        number_of_rows = data.dly_plan_list.length;
+        number_of_rows = data.employee_list.length;
         row_count = 0
         
         if(data.is_error) {
@@ -355,6 +360,7 @@ function showLoading() {
           result = "";
           row_group_count = 1
           row_count = 1;
+
           if(row_count>0) {
             for(i=0; i<number_of_rows; i++) {
 
@@ -445,8 +451,9 @@ function showLoading() {
 
             }
           } else {
+              alert("a");
               result = "";
-              result = "<tr style='background-color: #d2d4d6;'><td scope='row' class='text-center' colspan='25'><br><br>There is no data.<br><br><br></td></tr>";
+              result += "<tr style='background-color: #d2d4d6;'><td scope='row' class='text-center' colspan='25'><br><br>There is no data.<br><br><br></td></tr>";
           }
         }        
 
