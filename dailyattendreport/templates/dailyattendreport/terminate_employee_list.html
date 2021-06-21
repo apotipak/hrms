@@ -71,7 +71,9 @@
                 <input type="text" name="end_date" class="form-control datepicker border-bottom-1 border-left-0 rounded-0 bg-white" placeholder="dd/mm/yyyy" required="" id="id_end_date" value="{{end_date}}" readonly="readonly">
 
                 &nbsp;&nbsp;
+                <a href="javascript:print_document();" class="btn btn-outline-info" role="button">Search</a>
 
+                <!--
                 <button class="btn btn-outline-info btn-sm dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="fas fa-print fa-sm"></i>&nbsp;&nbsp;Print
                 </button>
@@ -82,7 +84,7 @@
                   <a class="dropdown-item" href="#" onclick="export_to_excel()"><i class="far fa-file-excel text-secondary"></i>&nbsp;&nbsp;&nbsp;&nbsp;Export to Excel</a>
                   </span>
                 </div>
-
+                -->
 
               </div>
 
@@ -229,6 +231,7 @@ function print_document() {
             emp_term_date = data.employee_list[i]['emp_term_date'];
             wmonth = data.employee_list[i]['wmonth'];
             reason = data.employee_list[i]['sts_th'];
+            emp_status = data.employee_list[i]['emp_status'];
 
             result += "<tr>";
             result += "<td>" + count + "</td>";

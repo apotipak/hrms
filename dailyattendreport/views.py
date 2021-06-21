@@ -3216,7 +3216,7 @@ def AjaxTerminateEmployeeListReport(request):
     if emp_dept!="":
         sql += " and emp_sect=" + str(emp_dept) + " "
     sql += " and emp_term_date>='" + str(sd) + "' and emp_term_date<='" + str(ed) + "';"
-    # print("SQL : ", sql)
+    print("SQL : ", sql)
 
     try:
         cursor = connection.cursor()
@@ -3233,12 +3233,16 @@ def AjaxTerminateEmployeeListReport(request):
             emp_fullname_th = emp_fname_th.strip() + emp_lname_th.strip()
             emp_sect = item[5]
             emp_rank = item[6];
-            emp_join_date = item[7];
-            emp_term_date = item[8];
+            emp_join_date = item[7].strftime("%d/%m/%Y");
+            emp_term_date = item[8].strftime("%d/%m/%Y");
             trm_res_th = item[10];
-            trm_doc_date = item[11];
+            trm_doc_date = item[11].strftime("%d/%m/%Y");
+            emp_status = item[12];
             sts_th = item[13];
             wmonth = item[21];
+
+            if emp_status==9:
+                sts_th = "ไล่ออก/ปลดออก"
 
             record = {
                 'emp_id': emp_id,
@@ -3253,6 +3257,7 @@ def AjaxTerminateEmployeeListReport(request):
                 'trm_doc_date': trm_doc_date,
                 'sts_th': sts_th,
                 'wmonth': wmonth,
+                'emp_status': emp_status,
             }
 
             employee_list.append(record)
