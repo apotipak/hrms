@@ -43,7 +43,7 @@
                 <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:80px;"><b>ประเภท</b></span></div>
                 <select id="id_emp_type_option" name="id_emp_type_option" class="form-control form-control-md" style="border-radius: 0; width: 100px;">
                   <option value="">แสดงทั้งหมด</option>
-                  <option value="M1">M1</option>
+                  <option value="M1" selected>M1</option>
                   <option value="M2">M3</option>
                   <option value="M5">M5</option>
                   <option value="D1">D1</option>
@@ -178,14 +178,19 @@ var table = $('#employee_list_table').DataTable({
             extend: 'print',
             title: '',
             exportOptions: {
-            columns: [0,1,2,3,4,5,6,7,8,9]
+            columns: [0,1,2,3,4,5,6,7,8,9,11]
             }
         },
         {
             extend: 'excelHtml5',        
             title: '',
             exportOptions: {
-              columns: [0,1,2,3,4,5,6,7,8,9]
+              columns: [0,1,2,3,4,5,6,7,8,9,11],
+              format: {
+                header:  function (data, columnIdx) {
+                  return columnIdx + ': ' + data + "blah";
+                }
+              }                      
             }
         },
     ]
@@ -409,7 +414,7 @@ function showLoading() {
                     result += "<td class='d-none'>Y</td>";
                 } else {
                     result += "<td class='d-none text-center'><i class='fas fa-xs fa-times text-danger'></i></td>";
-                    result += "<td class='d-none'>N</td>";
+                    result += "<td class='d-none'></td>";
                 }         
               
                 result += "<td class='text-center' nowrap>";
@@ -454,18 +459,35 @@ function showLoading() {
                         extend: 'print',
                         title: '',
                         exportOptions: {
-                          columns: [0,1,2,3,4,5,6,7,8,9]
+                          columns: [0,1,2,3,4,5,6,7,8,9,11]
                         }
                     },
                     {
                         extend: 'excelHtml5',        
-                        title: '',
+                        title: 'covid_19_status_list',
                         exportOptions: {
-                          columns: [0,1,2,3,4,5,6,7,8,9]
-                        }
+                          columns: [0,1,2,3,4,5,6,7,8,9,11],
+                        },
+                        customize: function (xlsx) {
+                          var today = new Date();
+                          var date = today.getDate() + "-" + (today.getMonth()+1) + '-'+ today.getFullYear();
+                          var time = today.getHours() + ":" + today.getMinutes();
+                          var CurrentDateTime = date+' '+time;
+                          var sheet = xlsx.xl.worksheets['sheet1.xml'];
+
+                          $('c[r=A1] t', sheet).text('Covid-19 Vaccine Report on : ' + CurrentDateTime);
+                          $('row:first c', sheet).attr('s', '11');
+                          $('row', sheet).first().attr('ht', '30').attr('customHeight', "1");
+
+                          var styles = xlsx.xl['styles.xml'];
+                          $('fonts font:nth-child(2) color', styles).attr('rgb', 'FFFF0000');
+                          $('fonts font:nth-child(2) sz', styles).attr('val', '20');
+
+                        }                        
                     },
                 ]
             });
+
             table.buttons('.buttons-print').nodes().css("display", "none");
             table.buttons('.buttons-excel').nodes().css("display", "none");
             table.buttons('.buttons-pdf').nodes().css("display", "none");
