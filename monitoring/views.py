@@ -1000,7 +1000,6 @@ def ajax_save_customer_schedule_plan(request):
 			# sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).exclude(upd_flag='D').exclude(sch_date_to='2999-12-31').order_by('-upd_date', 'emp_id')
 			# sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).filter(sch_active=1).exclude(upd_flag='D').order_by('-upd_date', 'emp_id')
 			
-			# amnaj1			
 			sch_plan = SchPlan.objects.all().filter(cnt_id=cnt_id).filter(sch_date_to='2999-12-31').filter(sch_active=1).exclude(upd_flag='D').order_by('-upd_date')
 
 			for d in sch_plan:
@@ -7962,10 +7961,14 @@ def SearchDailyGurdPerformance_old(request):
 
 
 # amnaj
+# Search DGP 500
 def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_date_to):
 	print("********************")
 	print("DisplayList()")
 	print("********************")
+
+	print("table_name : ", table_name)
+
 
 	# ABSENT_DLY_PLAN
 	if(table_name=="ABSENT_DLY_PLAN"):
@@ -8440,6 +8443,7 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 
 
 
+		# amnaj [SEARCH]
 		# New Requirement
 		sql = "select cnt_id,emp_id,dly_date dlydate,sch_shift schshift,prd_id,absent,Pay_type,bas_amt,bon_amt,otm_amt,bas_amtNS,bon_amtNS,otm_amtNS,PUB_amt,PUB_AMt12,DOF_amt,DOF_AmtNS,DOF,Pub,* "
 		sql += "from his_dly_plan "
@@ -8447,7 +8451,7 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 		sql += "and dly_date>='" + str(search_date_from) + "' "
 		sql += "and dly_date<='" + str(search_date_to) + "' "
 		sql += "order by dly_date, sch_shift;"
-		print("DEBUG 2 DlyPerRs_new : ", sql)
+		print("DEBUG 2 [SEARCH] DlyPerRs_new : ", sql)
 
 		try:
 			with connection.cursor() as cursor:		
@@ -9018,8 +9022,215 @@ def SearchDailyGurdPerformanceEmployeeInformation(request):
 	return response
 
 
+
+
+# amnaj
+# def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_date_to):
 @login_required(login_url='/accounts/login/')
 def generate_dgp_500(request, *args, **kwargs):    
+	print("********************")
+	print("generate_dgp_500()")
+	print("********************")
+
+	r_d500_obj = None
+	d500_list = []
+	context = {}
+	emp_id = ""
+	fname = ""
+	fname = ""
+	cnt_id = ""
+	dly_date = ""
+	shf_desc = ""
+	sch_rank = ""
+	pay_type = ""
+	bas_amt = ""
+	bon_amt = ""
+	pub_amt = ""
+	otm_amt = ""
+	dof = ""
+	spare = ""
+	tel_amt = ""
+	wage_id = ""
+	shf_amt_hr = ""
+	ot_hr_amt = ""
+	absent = ""
+	sum_otm_amt = 0
+	sum_shf_amt_hr = 0
+	sum_bas_amt = 0
+	sum_ot_hr_amt = 0
+	sum_bon_amt = 0
+	sum_pub_amt = 0
+	sum_tel_amt = 0
+	sum_dof = 0
+	sum_spare = 0	
+
+	base_url = MEDIA_ROOT + '/monitoring/template/'
+	emp_id = kwargs['emp_id']
+	search_date_from = kwargs['search_date_from']
+	search_date_to = kwargs['search_date_to']
+	template_name = base_url + 'DGP_500.docx'
+	file_name = "DGP_500"
+
+	sd = datetime.datetime.strptime(search_date_from, '%d/%m/%Y').strftime('%Y-%m-%d')
+	ed = datetime.datetime.strptime(search_date_to, '%d/%m/%Y').strftime('%Y-%m-%d')
+	
+	# amnaj - PDF
+	# New Requirement
+	sql = "select h.cnt_id,h.emp_id,h.dly_date dlydate,h.sch_shift schshift,h.prd_id,h.absent,h.Pay_type,h.bas_amt,h.bon_amt,"
+	sql += "h.otm_amt,h.bas_amtNS,h.bon_amtNS,h.otm_amtNS,h.PUB_amt,h.PUB_AMt12,h.DOF_amt,h.DOF_AmtNS,h.DOF,h.Pub,h.sch_rank,h.tel_amt,h.spare,wage_id,h.remark, "
+	sql += "e.emp_fname_th, e.emp_lname_th, s.shf_desc "
+	sql += "from his_dly_plan h "
+	sql += "join employee e on h.emp_id=e.emp_id "
+	sql += "join t_shift s on h.sch_shift=s.shf_id "
+	sql += "where h.emp_id=" + str(emp_id) + " "
+	sql += "and h.dly_date>='" + str(sd) + "' "
+	sql += "and h.dly_date<='" + str(ed) + "' "
+	sql += "order by h.dly_date, h.sch_shift;"
+	
+	print("DEBUG 2 [PDF] DlyPerRs_new_1 : ", sql)
+
+
+	'''
+	try:
+		with connection.cursor() as cursor:		
+			cursor.execute(sql)
+			DlyPerRs_new = cursor.fetchall()
+	except db.OperationalError as e:
+		is_error = True
+		message = "<b>Please send this error to IT team.</b><br>" + str(e)			
+	except db.Error as e:
+		is_error = True
+		message = "<b>Please send this error to IT team.</b><br>" + str(e)
+	finally:			
+		cursor.close()	
+
+
+	sql = "select R_D500.EMP_ID,R_D500.FNAME,R_D500.CNT_ID,R_D500.DLY_DATE,"
+	sql += "R_D500.SHF_DESC,R_D500.SCH_RANK,R_D500.PAY_TYPE,R_D500.BAS_AMT,"
+	sql += "R_D500.BON_AMT,R_D500.PUB_AMT,R_D500.OTM_AMT,R_D500.DOF,R_D500.SPARE,"
+	sql += "R_D500.TEL_AMT,R_D500.WAGE_ID,R_D500.SHF_AMT_HR,R_D500.OT_HR_AMT,R_D500.ABSENT "
+	sql += "FROM HRMS.dbo.R_D500 R_D500 "
+	sql += "ORDER BY R_D500.EMP_ID ASC"
+	print("DEBUG 2 [PDF] DlyPerRs_new_2 : ", sql)
+	'''
+
+	try:
+		cursor = connection.cursor()
+		cursor.execute(sql)
+		r_d500_obj = cursor.fetchall()
+		counter = 1
+
+		if r_d500_obj is not None:
+			if len(r_d500_obj)>0:
+
+				for row in r_d500_obj:
+					number = counter
+					cnt_id = row[0]
+					emp_id = row[1]
+					dly_date = row[2].strftime("%d/%m/%Y")					
+
+					shift_id = row[3]
+					shf_desc = row[26]
+					shf_desc_temp = str(shift_id) + " #" + shf_desc.rsplit('#')[1].strip()
+					pay_type = row[6]
+					
+					bas_amt = row[7]
+					bon_amt = row[8]
+					otm_amt = row[9]
+					pub_amt = row[13]
+					dof_amt = row[15]
+
+					bas_amtns = row[10]
+					bon_amtns = row[11]
+					otm_amtns = row[12]
+					
+					pub_amt12 = row[14]					
+					dof_amtns = row[16]
+
+					dof = row[17]
+
+					sch_rank = row[19]
+					tel_amt = row[20]
+					spare = row[21]
+					wage_id = row[22]
+
+					remark = row[23]
+					if remark=="00" or remark is None:
+						remark = ""
+
+					emp_fullname = row[24].strip() + "  " + row[25].strip()
+					
+
+					record = {
+						"number": number,
+						"emp_id": emp_id,
+						"cnt_id": cnt_id,
+						"dly_date": dly_date,
+						"shf_desc": shf_desc,
+						"pay_type": pay_type,
+
+						"bas_amt": bas_amt,
+						"otm_amt": otm_amt,
+						"bon_amt": bon_amt,
+						"pub_amt": pub_amt,
+						"dof_amt": dof_amt,
+						"dof": dof,
+
+						"bas_amtns": bas_amtns,
+						"otm_amtns": otm_amtns,
+						"bon_amtns": bon_amtns,
+						"pub_amt12": pub_amt12,
+						
+						"dof_amtns": dof_amtns,
+						"spare": spare,
+						"tel_amt": tel_amt,					
+						"sch_rank": sch_rank,
+						"wage_id": wage_id,
+						"remark": remark,						
+						"shf_desc": shf_desc_temp,
+					}
+
+					emp_fullname = emp_fullname
+					counter = counter + 1
+					d500_list.append(record)
+	finally:
+		cursor.close()
+
+	counter = counter -1
+	if counter>0:
+		total_row = str(counter) + str(" Days")
+	else:
+		total_row = str(counter) + str(" Day")
+
+	current_datetime = datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
+
+	context = {
+		"current_datetime": current_datetime,
+		"search_date_from": search_date_from,
+		"search_date_to": search_date_to,
+		"number": number,
+		"emp_id": emp_id,
+		"emp_fullname": emp_fullname,
+		"cnt_id": cnt_id,
+		"dly_date": dly_date,
+		"sch_rank": sch_rank,
+		"d500_list": list(d500_list),
+	}
+
+	tpl = DocxTemplate(template_name)
+	tpl.render(context)
+	tpl.save(MEDIA_ROOT + '/monitoring/download/' + file_name + ".docx")
+
+	# docx2pdf
+	docx_file = path.abspath("media\\monitoring\\download\\" + file_name + ".docx")
+	pdf_file = path.abspath("media\\monitoring\\download\\" + file_name + ".pdf")    
+	convert(docx_file, pdf_file)
+
+	return FileResponse(open(pdf_file, 'rb'), content_type='application/pdf')
+
+
+@login_required(login_url='/accounts/login/')
+def generate_dgp_500_old(request, *args, **kwargs):    
 	print("********************")
 	print("generate_dgp_500()")
 	print("********************")
@@ -9230,7 +9441,6 @@ def generate_dgp_500(request, *args, **kwargs):
 	return FileResponse(open(pdf_file, 'rb'), content_type='application/pdf')
 
 
-# amnaj
 @login_required(login_url='/accounts/login/')
 def export_dgp_500_xls(request):
 	print("***********************")

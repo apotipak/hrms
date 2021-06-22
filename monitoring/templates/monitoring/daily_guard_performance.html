@@ -47,25 +47,21 @@
 
 						<div class="col-2">
 							<div class="d-flex flex-row-reverse">
+								<!--
 								<button id="id_export_to_excel_button" name="export_to_excel_button" onclick="export_to_excel();" type="button" class="btn btn-sm btn-outline-success"><i class="fas fa-file-excel"></i>&nbsp;&nbsp;Export to Excel</button>
-
-								{% comment %}
+								-->
+								
 					            <button class="btn btn-outline-info btn-sm dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					              <i class="fas fa-print fa-sm"></i>&nbsp;&nbsp;Print
 					            </button>
 
 					            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink"> 
 					            	<font size="2em;">
-					              <a class="dropdown-item" href="#" onclick="print_document()"><i class="fas fa-desktop text-secondary"></i>&nbsp;&nbsp;Display on screen</a>              
-					              <!--<a class="dropdown-item" href="#" onclick="download_document()"><i class="fas fa-download text-secondary"></i>&nbsp;&nbsp;Download file</a>-->
-
-					              <a class="dropdown-item" href="#" onclick="export_to_excel()">&nbsp;<i class="far fa-file-excel text-secondary"></i>&nbsp;&nbsp;&nbsp;Export to Excel</a>					              
-					              
-					              <!--<i class="far fa-file-word"></i>-->
-					              
+					              	<a class="dropdown-item" href="#" onclick="print_document()"><i class="fas fa-desktop text-secondary"></i>&nbsp;&nbsp;Display on Screen</a>
+					              	<a class="dropdown-item" href="#" onclick="export_to_excel()">&nbsp;<i class="far fa-file-excel text-secondary"></i>&nbsp;&nbsp;&nbsp;Export to Excel</a>
 					          		</font>
 					            </div>
-					            {% endcomment %}
+					            
 
 							</div>
 						</div>
@@ -248,113 +244,108 @@
 
 
 		        <!-- Tab Body -->
-		        <div class="tab-content pt-2 container col-12" id="table_list_body">
+		        <div class="tab-content container col-12" id="table_list_body">
 
 		        	
 		        	<!-- Performance Tab -->
-		            <div class="tab-pane fade show active pt-2 row" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
-		            	<div id="id_performance_list" class="table-responsive table-bordered bg-light" style='height:100% !important; overflow: scroll;'>
+		            <div class="tab-pane fade show active row p-0" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+
+		            	<div id="id_performance_list" class="table-responsive table-bordered bg-light p-0" style='height:100% !important; overflow: scroll;'>
 							<font size='2em;'>
 					
+							<table id='performance_list_table' class='dataTable p-0'>
 
-					<!-- amnaj -->
-					<table id='performance_list_table' class='table-bordered dataTable'>
+								<thead class=thead-light>
+									<tr>
+										 <th scope='col'>No</th>
+										 <th scope='col' class='text-nowrap'>Cnt ID</th>
+										 <th scope='col'>Date</th>
+										 <th scope='col'>Rank</th>
+										 <th scope='col'>Shift</th>
 
-					 <thead class=thead-light>
-					   <tr>
-					     <th scope='col'>No</th>
-						 <th scope='col'>Cnt</th>
-						 <th scope='col'>Date</th>
-					     <th scope='col'>Rank</th>
-					     <th scope='col'>Shift</th>
+										 <th scope='col' class="text-nowrap">Pay Type</th>
+										 <th scope='col'>BAS</th>
+										 <th scope='col'>GOT</th>					
+										 <th scope='col'>BON</th>
+										 <th scope='col'>PUB</th>
 
-					     <th scope='col' class="text-nowrap">Pay Type</th>
-					     <th scope='col'>BAS</th>
-					     <th scope='col'>GOT</th>					
-					     <th scope='col'>BON</th>
-					     <th scope='col'>PUB</th>
+										 <th scope='col'>DOF</th>
 
-					     <th scope='col'>DOF</th>
-					     <th scope='col'>BAS_NS</th>
-					     <th scope='col'>GOT_NS</th>					
-					     <th scope='col'>BON_NS</th>
-					     <th scope='col'>PUB_NS</th>
+										 <th scope='col'>BAS_NS</th>
+										 <th scope='col'>GOT_NS</th>					
+										 <th scope='col'>BON_NS</th>
+										 <th scope='col'>PUB_NS</th>
 
-					     <th scope='col'>DOF_NS</th>
-					     <th scope='col' class='text-center'>DF</th>
-					     <th scope='col'>Relief</th>
-					     <th scope='col'>Rel.ID</th>
-					     <th scope='col'>Name</th>
+										 <th scope='col'>DOF_NS</th>
+										 <th scope='col' class='text-center'>DF</th>
+										 <th scope='col'>Relief</th>
+										 <th scope='col'>Rel.ID</th>
+										 <th scope='col'>Name</th>
 
-					     <th scope='col' class='text-center'>Tel</th>
-					     <th scope='col' class="text-nowrap">Call Time</th>
-					     <th scope='col' class="text-nowrap">Call Amt</th>
-					     <th scope='col' class='text-center text-nowrap'>Call Paid</th>					     
-					     <th scope='col'>OT.</th>
+										 <th scope='col' class='text-center'>Tel</th>
+										 <th scope='col' class="text-nowrap">Call Time</th>
+										 <th scope='col' class="text-nowrap">Call Amt</th>
+										 <th scope='col' class='text-center text-nowrap'>Call Paid</th>					     
+										 <th scope='col'>OT.</th>
 
-					     <th scope='col'>Reason</th>
-					     <th scope='col'>HR</th>
-					     <th scope='col'>Paid(OT)</th>
-					     <th scope='col'>Spare</th>
-					     <th scope='col'>Wage</th>
-					
-					     <th scope='col' class='txt-center'>SOC</th>
-					     <th scope='col' class='txt-center'>PUB</th>
-					     <th scope='col' class='txt-center'>Paid</th>
-					     <th scope='col'>REMARK</th>
+										 <th scope='col'>Reason</th>
+										 <th scope='col'>HR</th>
+										 <th scope='col'>Paid(OT)</th>
+										 <th scope='col'>Spare</th>
+										 <th scope='col'>Wage</th>
 
-					   </tr>
-					 </thead>
+										 <th scope='col' class='txt-center'>SOC</th>
+										 <th scope='col' class='txt-center'>PUB</th>
+										 <th scope='col' class='txt-center'>Paid</th>
+										 <th scope='col'>Remark</th>
+									</tr>
+								</thead>
 
-							  <tbody>
-							    <tr>
-							      <td>&nbsp;</td>
-							      <td>&nbsp;</td>
-							      <td>&nbsp;</td>
-							      <td>&nbsp;</td>
-							      <td>&nbsp;</td>
+								<tbody>
+									<tr>
+									  <td>&nbsp;</td>
+									  <td>&nbsp;</td>
+									  <td>&nbsp;</td>
+									  <td>&nbsp;</td>
+									  <td>&nbsp;</td>
 
-							      <td>&nbsp;</td>
-							      <td>&nbsp;</td>
-							      <td>&nbsp;</td>
-							      <td>&nbsp;</td>
-							      <td>&nbsp;</td>
-							      
-							      <td>&nbsp;</td>
-							      <td>&nbsp;</td>
-							      <td>&nbsp;</td>
-							      <td>&nbsp;</td>
-							      <td>&nbsp;</td>
+									  <td>&nbsp;</td>
+									  <td>&nbsp;</td>
+									  <td>&nbsp;</td>
+									  <td>&nbsp;</td>
+									  <td>&nbsp;</td>
+									  
+									  <td>&nbsp;</td>
+									  <td>&nbsp;</td>
+									  <td>&nbsp;</td>
+									  <td>&nbsp;</td>
+									  <td>&nbsp;</td>
 
-							      <td>&nbsp;</td>
-							      <td>&nbsp;</td>
-							      <td>&nbsp;</td>
-							      <td>&nbsp;</td>
-							      <td>&nbsp;</td>
+									  <td>&nbsp;</td>
+									  <td>&nbsp;</td>
+									  <td>&nbsp;</td>
+									  <td>&nbsp;</td>
+									  <td>&nbsp;</td>
 
-							      <td>&nbsp;</td>
-							      <td>&nbsp;</td>
-							      <td>&nbsp;</td>
-							      <td>&nbsp;</td>
-							      <td>&nbsp;</td>
+									  <td>&nbsp;</td>
+									  <td>&nbsp;</td>
+									  <td>&nbsp;</td>
+									  <td>&nbsp;</td>
+									  <td>&nbsp;</td>
 
-							      <td>&nbsp;</td>
-							      <td>&nbsp;</td>
-							      <td>&nbsp;</td>
-							      <td>&nbsp;</td>
-							      <td>&nbsp;</td>
+									  <td>&nbsp;</td>
+									  <td>&nbsp;</td>
+									  <td>&nbsp;</td>
+									  <td>&nbsp;</td>
+									  <td>&nbsp;</td>
 
-							      <td>&nbsp;</td>
-							      <td>&nbsp;</td>
-							      <td>&nbsp;</td>
-							      <td>&nbsp;</td>
-							    </tr>
-							  </tbody>
+									  <td>&nbsp;</td>
+									  <td>&nbsp;</td>
+									  <td>&nbsp;</td>
+									  <td>&nbsp;</td>
+									</tr>
+								</tbody>
 							</table>
-
-
-
-
 
 							</font>
 						</div>
@@ -472,11 +463,130 @@ function export_to_excel() {
   $(".buttons-excel").trigger("click");  
 }
 
-function print_document() {  
-  $(".buttons-print").trigger("click");
+
+// amnaj
+function print_document() {
+
+	var emp_id = $("#id_search_emp_id").val();
+	var search_date_from = $("#id_search_date_from").val();
+	var search_date_to = $("#id_search_date_to").val();
+
+	var today = new Date();
+	var dd = String(today.getDate()).padStart(2, '0');
+	var mm = String(today.getMonth() + 1).padStart(2, '0');
+	var yyyy = today.getFullYear(); 
+	var today = dd + '/' + mm + '/' + yyyy;
+	  
+	start_date_moment = moment(search_date_from, "DD/MM/YYYY");
+	end_date_moment = moment(search_date_to, "DD/MM/YYYY");
+
+	if(end_date_moment < start_date_moment) {
+		$.alert({
+		    title: 'Error',
+		    type: 'red',
+		    content: "วันที่สิ้นสุดน้อยกว่าวันที่เริ่มต้น",
+		    animation: 'zoom',
+		    animationBounce: 1.5,
+		    closeIcon: false,
+		    boxWidth: '38%',
+		    useBootstrap: false,
+		});    
+		return false;
+	}
+
+	//def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_date_to):
+	var href = "/monitoring/generate-dgp-500/" + emp_id + "/" + search_date_from + "/" + search_date_to;
+	window.open(href,'_blank');
 }
 
-// amnaj 
+
+function print_document_datatable_old() {
+	alert("test");
+	return false;
+  	$(".buttons-print").trigger("click");
+}
+
+
+function print_document_old() {
+	var emp_id = $("#id_search_emp_id").val();
+	var search_date_from = $("#id_search_date_from").val();
+	var search_date_to = $("#id_search_date_to").val();
+
+	if(emp_id=="") {
+		$.alert({
+		    title: 'Error',
+		    type: 'red',
+		    content: "กรุณาป้อนรหัสพนักงาน",
+		    animation: 'zoom',
+		    animationBounce: 1.5,
+		    closeIcon: false,
+		    boxWidth: '38%',
+		    useBootstrap: false,
+		    keys: ['enter', 'shift'],
+		});
+		return false;		
+	} 
+
+	if(search_date_from=="") {
+		$.alert({
+		    title: 'Error',
+		    type: 'red',
+		    content: "กรุณาป้อนวันที่เริ่มต้น",
+		    animation: 'zoom',
+		    animationBounce: 1.5,
+		    closeIcon: false,
+		    boxWidth: '38%',
+		    useBootstrap: false,
+		});
+		return false;
+	}
+
+	if(search_date_to=="") {
+		$.alert({
+		    title: 'Error',
+		    type: 'red',
+		    content: "กรุณาป้อนวันที่สิ้นสุด",
+		    animation: 'zoom',
+		    animationBounce: 1.5,
+		    closeIcon: false,
+		    boxWidth: '38%',
+		    useBootstrap: false,
+		});
+		return false;
+	}
+
+
+	var today = new Date();
+	var dd = String(today.getDate()).padStart(2, '0');
+	var mm = String(today.getMonth() + 1).padStart(2, '0');
+	var yyyy = today.getFullYear(); 
+	var today = dd + '/' + mm + '/' + yyyy;
+	  
+	start_date_moment = moment(search_date_from, "DD/MM/YYYY");
+	end_date_moment = moment(search_date_to, "DD/MM/YYYY");
+
+	if(end_date_moment < start_date_moment) {
+		$.alert({
+		    title: 'Error',
+		    type: 'red',
+		    content: "วันที่สิ้นสุดน้อยกว่าวันที่เริ่มต้น",
+		    animation: 'zoom',
+		    animationBounce: 1.5,
+		    closeIcon: false,
+		    boxWidth: '38%',
+		    useBootstrap: false,
+		});    
+		return false;
+	}
+
+	alert("todo")
+	return false;
+
+	var href = "/monitoring/generate-dgp-500/" + emp_id + "/" + search_date_from + "/" + search_date_to;
+	window.open(href,'_blank');
+}
+
+
 var table = $('#performance_list_table').DataTable({
   "paging": false,
   "pageLength": 15,
@@ -495,10 +605,12 @@ var table = $('#performance_list_table').DataTable({
       "targets": [12],
       "orderable": false
     },
+    /*
     {
         "targets": [10],
         "visible": false
-    }    
+    }
+    */   
   ],  
   "dom": 'Brtip',
   buttons: [
@@ -792,7 +904,30 @@ $(document).on('click', '#id_search_submit_button', function(e) {
 
 	// TODO: Start/End Date validation
 	// Case1: end date must be greater than start date
+	/*
+	var today = new Date();
+	var dd = String(today.getDate()).padStart(2, '0');
+	var mm = String(today.getMonth() + 1).padStart(2, '0');
+	var yyyy = today.getFullYear(); 
+	var today = dd + '/' + mm + '/' + yyyy;
+	*/
 
+	start_date_moment = moment(search_date_from, "DD/MM/YYYY");
+	end_date_moment = moment(search_date_to, "DD/MM/YYYY");
+
+	if(end_date_moment < start_date_moment) {
+		$.alert({
+		    title: 'Error',
+		    type: 'red',
+		    content: "วันที่สิ้นสุดน้อยกว่าวันที่เริ่มต้น",
+		    animation: 'zoom',
+		    animationBounce: 1.5,
+		    closeIcon: false,
+		    boxWidth: '38%',
+		    useBootstrap: false,
+		});    
+		return false;
+	}
 
 	// TODO: Delete this line
 	// console.log(emp_id+","+search_date_from+","+search_date_to);
@@ -823,8 +958,6 @@ $(document).on('click', '#id_search_cancel_button', function(e) {
 
 	//$("#performance_list_table").html(result);
 	$('#performance_list_table tbody').empty();
-	// amnaj
-
 
 	$("#schedule_list_table").html(result);
 	$("#substitute_list_table").html(result);
@@ -879,7 +1012,10 @@ function convertStringToDDMMYYYYHHSS(strdate) {
 }
 
 
+
+// amnaj
 function displayList(emp_id, search_date_from, search_date_to) {
+	
 	//showLoading();
 	$.ajax({
     	url : "/monitoring/ajax/search_daily_guard_performance/",
@@ -912,46 +1048,45 @@ function displayList(emp_id, search_date_from, search_date_to) {
 					result = "<table id='performance_list_table' class='table-bordered'>";
 					result += "  <thead class=thead-light>";
 					result += "    <tr>";
+
 					result += "      <th scope='col'>No</th>";
 					result += "		 <th scope='col'>Cnt</th>";
 					result += "		 <th scope='col'>Date</th>";
 					result += "      <th scope='col'>Rank</th>";
 					result += "      <th scope='col'>Shift</th>";
+					
 					result += "      <th scope='col' nowrap>Pay Type</th>";
-
 					result += "      <th scope='col'>BAS</th>";
 					result += "      <th scope='col'>GOT</th>";					
 					result += "      <th scope='col'>BON</th>";
 					result += "      <th scope='col'>PUB</th>";
-					result += "      <th scope='col'>DOF</th>";
 
+					result += "      <th scope='col'>DOF</th>";
 					result += "      <th scope='col'>BAS_NS</th>";
 					result += "      <th scope='col'>GOT_NS</th>";					
 					result += "      <th scope='col'>BON_NS</th>";
 					result += "      <th scope='col'>PUB_NS</th>";
+
 					result += "      <th scope='col'>DOF_NS</th>";
-
-
 					result += "      <th scope='col' class='text-center'>DF</th>";
 					result += "      <th scope='col'>Relief</th>";
 					result += "      <th scope='col'>Rel.ID</th>";
 					result += "      <th scope='col'>Name</th>";
+
 					result += "      <th scope='col' class='text-center'>Tel</th>";
 					result += "      <th scope='col' nowrap>Call Time</th>";
 					result += "      <th scope='col' nowrap>Call Amt</th>";
 					result += "      <th scope='col' class='text-center' nowrap>Call Paid</th>";
 					result += "      <th scope='col'>OT.</th>";				
+					
 					result += "      <th scope='col'>Reason</th>";
-
 					//result += "      <th scope='col'>From</th>";
 					//result += "      <th scope='col'>To</th>";
-
 					result += "      <th scope='col'>HR</th>";
 					result += "      <th scope='col'>Paid(OT)</th>";
-
 					result += "      <th scope='col'>Spare</th>";
 					result += "      <th scope='col'>Wage</th>";
-					
+
 					result += "      <th scope='col' class='txt-center'>SOC</th>";
 					result += "      <th scope='col' class='txt-center'>PUB</th>";
 					result += "      <th scope='col' class='txt-center'>Paid</th>";
@@ -1062,24 +1197,27 @@ function displayList(emp_id, search_date_from, search_date_to) {
 						result += "<td>" + dly_date + "</td>";
 						result += "<td align='center'>" + rank + "</td>";
 						result += "<td nowrap>" + shift + "</td>";
-						result += "<td align='center'>" + pay_type + "</td>";
-												
+
+						result += "<td align='center'>" + pay_type + "</td>";											
 						result += "<td style='background-color: #ccdcd3;'>" + bas_amt + "</td>";
 						result += "<td style='background-color: #ccdcd3;'>" + got_amt + "</td>";
 						result += "<td style='background-color: #ccdcd3;'>" + bon_amt + "</td>";
 						result += "<td style='background-color: #ccdcd3;'>" + pub_amt + "</td>";
-						result += "<td style='background-color: #ccdcd3;'>" + dof_amt + "</td>";
 
+						result += "<td style='background-color: #ccdcd3;'>" + dof_amt + "</td>";
 						result += "<td style='background-color: #d2e2e9;'>" + bas_amt_ns + "</td>";
 						result += "<td style='background-color: #d2e2e9;'>" + got_amt_ns + "</td>";
 						result += "<td style='background-color: #d2e2e9;'>" + bon_amt_ns + "</td>";
 						result += "<td style='background-color: #d2e2e9;'>" + pub_amt_ns + "</td>";
-						result += "<td style='background-color: #d2e2e9;'>" + dof_amt_ns + "</td>";
-					
-						if(dof_status)
-							result += "<td class='text-center'><i class='fas fa-check fa-xs text-success'></i></td>";
-						else
+
+						result += "<td style='background-color: #d2e2e9;'>" + dof_amt_ns + "</td>";				
+						if(dof_status) {
+							//result += "<td class='text-center'><i class='fas fa-check fa-xs text-success'></i></td>";
+							result += "<td class='text-center text-success'>Y</td>";
+						}
+						else {
 							result += "<td class='text-center'>&nbsp;</td>";
+						}
 
 						result += "<td>&nbsp;</td>";
 						result += "<td>&nbsp;</td>";
@@ -1162,7 +1300,7 @@ function displayList(emp_id, search_date_from, search_date_to) {
 					//$("#performance_list_table").html(result);
         			table.destroy();
         			$('#performance_list_table tbody').empty().append(result);
-        			// amnaj1
+        			
 					table = $('#performance_list_table').DataTable({
 					  "paging": false,
 					  "pageLength": 15,
@@ -1181,10 +1319,12 @@ function displayList(emp_id, search_date_from, search_date_to) {
 					      "targets": [12],
 					      "orderable": false
 					    },
+					    /*
 					    {
 					        "targets": [10],
 					        "visible": false
-					    }    
+					    }
+					    */   
 					  ],  
 					  "dom": 'Brtip',
 					  buttons: [
@@ -1822,75 +1962,6 @@ function download_document() {
 	alert("This service is not available.");
 }
 
-
-function print_document_old() {
-	var emp_id = $("#id_search_emp_id").val();
-	var search_date_from = $("#id_search_date_from").val();
-	var search_date_to = $("#id_search_date_to").val();
-
-
-	if(emp_id=="") {
-		$.alert({
-		    title: 'Error',
-		    type: 'red',
-		    content: "กรุณาป้อนรหัสพนักงาน",
-		    animation: 'zoom',
-		    animationBounce: 1.5,
-		    closeIcon: false,
-		    boxWidth: '38%',
-		    useBootstrap: false,
-		});
-		
-		return false;
-	}
-
-	if(emp_id=="") {
-		$.alert({
-		    title: 'Error',
-		    type: 'red',
-		    content: "กรุณาป้อนรหัสพนักงาน",
-		    animation: 'zoom',
-		    animationBounce: 1.5,
-		    closeIcon: false,
-		    boxWidth: '38%',
-		    useBootstrap: false,
-		    keys: ['enter', 'shift'],
-		});
-		return false;		
-	} 
-
-	if(search_date_from=="") {
-		$.alert({
-		    title: 'Error',
-		    type: 'red',
-		    content: "กรุณาป้อนวันที่เริ่มต้น",
-		    animation: 'zoom',
-		    animationBounce: 1.5,
-		    closeIcon: false,
-		    boxWidth: '38%',
-		    useBootstrap: false,
-		});
-		return false;
-	}
-
-	if(search_date_to=="") {
-		$.alert({
-		    title: 'Error',
-		    type: 'red',
-		    content: "กรุณาป้อนวันที่สิ้นสุด",
-		    animation: 'zoom',
-		    animationBounce: 1.5,
-		    closeIcon: false,
-		    boxWidth: '38%',
-		    useBootstrap: false,
-		});
-		return false;
-	}
-
-
-	var href = "/monitoring/generate-dgp-500/" + emp_id + "/" + search_date_from + "/" + search_date_to;
-	window.open(href,'_blank');
-}
 
 
 
