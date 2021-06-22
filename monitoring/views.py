@@ -9127,7 +9127,8 @@ def generate_dgp_500(request, *args, **kwargs):
 					number = counter
 					cnt_id = row[0]
 					emp_id = row[1]
-					dly_date = row[2].strftime("%d/%m/%Y")					
+					dly_date = row[2].strftime("%d/%m/%Y")
+					week_day_en = row[2].strftime('%a')
 
 					shift_id = row[3]
 					shf_desc = row[26]
@@ -9160,6 +9161,7 @@ def generate_dgp_500(request, *args, **kwargs):
 
 					emp_fullname = row[24].strip() + "  " + row[25].strip()
 					
+					print("week_day_en : ", week_day_en)
 
 					record = {
 						"number": number,
@@ -9188,6 +9190,7 @@ def generate_dgp_500(request, *args, **kwargs):
 						"wage_id": wage_id,
 						"remark": remark,						
 						"shf_desc": shf_desc_temp,
+						"week_day_en": week_day_en,
 					}
 
 					emp_fullname = emp_fullname
