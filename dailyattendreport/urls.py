@@ -40,5 +40,6 @@ urlpatterns = [
     # Terminate Employee List
     path('terminate-employee-list/', views.TerminateEmployeeListReport, name='terminate-employee-list'),
     path('ajax-terminate-employee-list/', views.AjaxTerminateEmployeeListReport, name='ajax-terminate-employee-list'),
-
+    url(r'^ajax-print-terminate-employee-list-report/(?P<emp_id_from>\d+)/(?P<emp_id_to>\d+)/(?P<emp_type>\w+)/(?P<emp_dept>\w+)/(?P<start_date>\d{2}/\d{2}/\d{4})/(?P<end_date>\d{2}/\d{2}/\d{4})/$', views.AjaxPrintTerminateEmployeeListReport, name='ajax-print-terminate-employee-list-report'),
+    url(r'^ajax-export-terminate-employee-list-report/(?P<emp_id_from>\d+)/(?P<emp_id_to>\d+)/(?P<emp_type>\w+)/(?P<emp_dept>\w+)/(?P<start_date>\d{2}/\d{2}/\d{4})/(?P<end_date>\d{2}/\d{2}/\d{4})/$', views.AjaxExportTerminateEmployeeListReport, name='ajax-export-terminate-employee-list-report'),
 ]

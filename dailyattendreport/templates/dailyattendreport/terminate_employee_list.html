@@ -18,21 +18,19 @@
         
         <div class="float-right pb-1">
           <div class="d-flex flex-row-reverse">
-            <!--
-            <button class="btn btn-primary btn-sm" onclick="export_to_excel()">&nbsp;<i class="far fa-file-pdf"></i>&nbsp;&nbsp;PDF</button>&nbsp;
-            <button class="btn btn-success btn-sm" onclick="export_to_excel()">&nbsp;<i class="far fa-file-excel"></i>&nbsp;&nbsp;Export</button>
-            -->
   
+            <!--
             <button class="btn btn-outline-info btn-sm dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <i class="fas fa-print fa-sm"></i>&nbsp;&nbsp;Print
             </button>
 
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink"> 
               <span style="font-size: 14px;">
-                <a class="dropdown-item" href="#" onclick="print_document()"><i class="fas fa-desktop text-secondary"></i>&nbsp;&nbsp;Display on screen</a>
-                <a class="dropdown-item" href="#" onclick="export_to_excel()"><i class="far fa-file-excel text-secondary"></i>&nbsp;&nbsp;&nbsp;&nbsp;Export to Excel</a>
+                <a class="dropdown-item" href="#" onclick="print_document()"><i class="fas fa-desktop text-secondary"></i>&nbsp;&nbsp;&nbsp;Display on Screen</a>
+                <a class="dropdown-item" href="#" onclick="export_to_excel()">&nbsp;<i class="far fa-file-excel text-secondary"></i>&nbsp;&nbsp;&nbsp;&nbsp;Export to Excel</a>
               </span>
             </div>
+            -->
 
           </div>
         </div>
@@ -63,15 +61,20 @@
 
                 <div class="input-group-prepend">
                   <span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:60px;">Type</span>
-                </div>
-                <input type="text" id="id_emp_type_option" name="emp_type_option" class="form-control form-control-md col-xs-1" style="border-radius: 0;" value="D1" readonly="">
-
+                </div>                
+                <select id="id_emp_type_option" name="emp_type_option" class="form-control form-control-md" style="border-radius: 0;">
+                  <option value="D1" selected>D1</option>
+                  <option value="D3">D3</option>
+                  <option value="M1">M1</option>
+                  <option value="M3">M3</option>
+                  <option value="M5">M5</option>
+                </select>
 
 
 
                 <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:95px;">Dept/Zone</span></div>
                 <select id="id_dept_zone_option" name="dept_zone_option" class="form-control form-control-md" style="border-radius: 0;">
-                  <option value="">เลือกทั้งหมด</option>
+                  <option value="0">ทั้งหมด</option>
                   {% for item in dept_zone_obj %}
                   <option value="{{item.0}}">{{item.0}} | {{ item.1 }}</option>
                   {% endfor %}
@@ -86,9 +89,10 @@
                 <input type="text" name="end_date" class="form-control datepicker border-bottom-1 border-left-0 rounded-0 bg-white" placeholder="dd/mm/yyyy" required="" id="id_end_date" value="{{end_date}}" readonly="readonly">
 
                 &nbsp;&nbsp;
-                <a href="javascript:print_document();" class="btn btn-info" role="button">Search</a>
+                <!--<a href="javascript:print_document();" class="btn btn-info" role="button">Search</a>-->
 
-                <!--
+
+                
                 <button class="btn btn-outline-info btn-sm dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="fas fa-print fa-sm"></i>&nbsp;&nbsp;Print
                 </button>
@@ -99,7 +103,7 @@
                   <a class="dropdown-item" href="#" onclick="export_to_excel()"><i class="far fa-file-excel text-secondary"></i>&nbsp;&nbsp;&nbsp;&nbsp;Export to Excel</a>
                   </span>
                 </div>
-                -->
+                
 
               </div>
 
@@ -121,7 +125,8 @@
 
       <div>
 
-        <table class="table" id="terminate_employee_list">
+        <!--
+        <table class="table table-sm dataTable" id="terminate_employee_list">
           <thead class="text-light">
             <tr>
               <th scope="col">Seq</th>
@@ -157,7 +162,7 @@
             </tr>
           </tbody>
         </table>                
-
+        -->
       </div>
 
 
@@ -177,12 +182,13 @@
 {% block javascript %}
 <script>
 
-$(document).ready( function () {
-  //
+$(document).ready(function () {    
+  $('#id_start_date').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", new Date());
+  $('#id_end_date').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", new Date());
 });
 
 
-function print_document() {
+function search_terminate_employee() {
   var emp_id_from = $("#id_emp_id_from").val();
   var emp_id_to = $("#id_emp_id_to").val();
   var emp_type = $("#id_emp_type_option").val();
@@ -278,43 +284,63 @@ function print_document() {
 
     },
   });
-
-  //var href = "/reports/cms/gpm-403-daily-guard-performance-by-contract/" + contract_number_from + "/" + contract_number_to + "/" + start_date + "/" + end_date + "/";
-  //window.open(href,'_blank');
 }
  
-function export_to_excel() {
-  var contract_number_from = $("#id_contract_number_from").val();
-  var contract_number_to = $("#id_contract_number_to").val();
+
+
+function print_document() {
+
+  var emp_id_from = $("#id_emp_id_from").val();
+  var emp_id_to = $("#id_emp_id_to").val();
+  var emp_type = $("#id_emp_type_option").val();
+  var emp_dept = $("#id_dept_zone_option").val();  
   var start_date = $("#id_start_date").val();
   var end_date = $("#id_end_date").val();
 
-  alert("todo");
-  return false;
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0');
+  var yyyy = today.getFullYear(); 
+  var today = dd + '/' + mm + '/' + yyyy;
+  
+  start_date_moment = moment(start_date, "DD/MM/YYYY");
+  end_date_moment = moment(end_date, "DD/MM/YYYY");
 
-  showLoading();
+  if(end_date_moment < start_date_moment) {
+    $.alert({
+        title: 'Error',
+        type: 'red',
+        content: "วันที่สิ้นสุดน้อยกว่าวันที่เริ่มต้น",
+        animation: 'zoom',
+        animationBounce: 1.5,
+        closeIcon: false,
+        boxWidth: '38%',
+        useBootstrap: false,
+    });    
+    return false;
+  }
 
-  $.ajax({
-    url: "/reports/control-room/daily-attend/ajax-gpm-403-daily-guard-performance-by-contract/",
-    type: "POST",
-    data: {
-      csrfmiddlewaretoken: '{{ csrf_token }}',
-      contract_number_from: contract_number_from,
-      contract_number_to: contract_number_to,
-      start_date: start_date,
-      end_date: end_date,
-    },
-    success : function(data) {
-
-    },
-  });
+  var href = "/reports/cms/ajax-print-terminate-employee-list-report/" + emp_id_from + "/" + emp_id_to + "/" + emp_type + "/" + emp_dept + "/" + start_date + "/" + end_date + "/";
+  window.open(href,'_blank');
+}
 
 
-  /*
-  var href = "/reports/cms/export-gpm-403-daily-guard-performance-by-contract-to-excel/" + contract_number_from + "/" + contract_number_to + "/" + start_date + "/" + end_date + "/";
+function export_to_excel() {
+  var emp_id_from = $("#id_emp_id_from").val();
+  var emp_id_to = $("#id_emp_id_to").val();
+  var emp_type = $("#id_emp_type_option").val();
+  var emp_dept = $("#id_dept_zone_option").val();  
+  var start_date = $("#id_start_date").val();
+  var end_date = $("#id_end_date").val();
+
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0');
+  var yyyy = today.getFullYear(); 
+  var today = dd + '/' + mm + '/' + yyyy;
+
+  var href = "/reports/cms/ajax-export-terminate-employee-list-report/" + emp_id_from + "/" + emp_id_to + "/" + emp_type + "/" + emp_dept + "/" + start_date + "/" + end_date + "/";
   window.open(href,'_blank');    
-  */
-
 }
 
 function showLoading() {
@@ -327,177 +353,5 @@ function showLoading() {
   $.LoadingOverlay("show"); 
 }
 
-  function SearchFormSubmit() {
-
-    //alert("Test");
-    return false;
-
-    var contract_number_from = $('#id_contract_number_from').val();
-    var contract_number_to = $('#id_contract_number_to').val();
-    var start_date = $('#id_start_date').val();
-    var end_date = $('#id_end_date').val(); 
-    
-    showLoading();
-
-    $.ajax({
-      url: "/reports/control-room/daily-attend/ajax-gpm-403-daily-guard-performance-by-contract/",
-      type: "POST",
-      data: {
-        csrfmiddlewaretoken: '{{ csrf_token }}',
-        contract_number_from: contract_number_from,
-        contract_number_to: contract_number_to,
-        start_date: start_date,
-        end_date: end_date,
-      },
-      success : function(data) {
-              
-        number_of_rows = data.employee_list.length;
-        row_count = 0
-        
-        if(data.is_error) {
-          alert("ERROR: " + data.error_message);
-        } else {          
-          result = "";
-          row_group_count = 1
-          row_count = 1;
-
-          if(row_count>0) {
-            for(i=0; i<number_of_rows; i++) {
-
-              emp_fullname = data.dly_plan_list[i]["emp_fname_th"] + " " + data.dly_plan_list[i]["emp_lname_th"];
-              shf_desc = data.dly_plan_list[i]["shf_desc"];
-              dept_en = data.dly_plan_list[i]["dept_en"];
-              cnt_id = data.dly_plan_list[i]["cnt_id"];
-              emp_id = data.dly_plan_list[i]["emp_id"];
-              dly_date = data.dly_plan_list[i]["dly_date"];
-              sch_shift = data.dly_plan_list[i]["sch_shift"];
-              dept_id = data.dly_plan_list[i]["dpet_id"];
-              sch_rank = data.dly_plan_list[i]["sch_rank"];
-              absent = data.dly_plan_list[i]["absent"];
-              relieft_id = data.dly_plan_list[i]["relieft_id"];
-              tel_man = data.dly_plan_list[i]["tel_man"];
-              tel_paid = data.dly_plan_list[i]["tel_paid"];
-              ot = data.dly_plan_list[i]["ot"];
-              ot_hr_amt = data.dly_plan_list[i]["ot_hr_amt"];
-              cus_name_th = data.dly_plan_list[i]["cus_name_th"];
-              late = data.dly_plan_list[i]["late"];
-              late_full = data.dly_plan_list[i]["late_full"];
-
-              if(row_group_count!=cnt_id) {
-                result += "<tr style='background-color: #257638;color: #fff;font-size: 14px;'><td colspan='13'>" + cnt_id + " - "  + cus_name_th;
-                row_group_count = cnt_id;
-                row_count = 1;
-              }
-
-              result += "<tr>";
-              result += "<td class='text-center' nowrap>" + row_count + "</td>";              
-              result += "<td class='text-left' nowrap>" + dly_date + "</td>";
-              result += "<td class='text-left' nowrap>" + emp_id + "</td>";
-              result += "<td class='text-left' nowrap>" + emp_fullname + "</td>";
-
-
-
-              result += "<td class='text-center' nowrap>" + sch_rank + "</td>";
-              result += "<td class='text-center' nowrap>" + sch_shift + "</td>";
-              
-              if(relieft_id>0)
-                  result += "<td class='text-left' nowrap>" + relieft_id + "</td>";
-              else
-                  result += "<td class='text-left' nowrap>&nbsp;</td>";
-              
-              // OT
-              if(ot=="")
-                result += "<td class='text-left' nowrap>&nbsp;</td>";
-              else
-                result += "<td class='text-center' nowrap><i class='fas fa-check fa-xs text-success'></i></td>";
-
-              // LATE
-              if(late=="")
-                result += "<td class='text-left' nowrap>&nbsp;</td>";
-              else
-                result += "<td class='text-center' nowrap><i class='fas fa-check fa-xs text-success'></i></td>";
-
-
-              // LATE FULL
-              if(late_full=="")
-                result += "<td class='text-left' nowrap>&nbsp;</td>";
-              else
-                result += "<td class='text-center' nowrap><i class='fas fa-check fa-xs text-success'></i></td>";
-
-              if(ot_hr_amt>0)
-                  result += "<td class='text-left' nowrap>" + ot_hr_amt + "</td>";
-              else
-                  result += "<td class='text-left' nowrap>&nbsp;</td>";
-
-              // TEL MAN
-              if(tel_man=="")
-                result += "<td class='text-left' nowrap>&nbsp;</td>";
-              else              
-                result += "<td class='text-center' nowrap><i class='fas fa-check fa-xs text-success'></i></td>";
-
-              // TEL PAID
-              if(tel_paid=="")
-                result += "<td class='text-left' nowrap>&nbsp;</td>";
-              else
-                if(tel_paid>0)
-                    result += "<td class='text-center' nowrap>" + tel_paid + "</td>";
-                else
-                    result += "<td class='text-center' nowrap>&nbsp;</td>";
-
-              result += "</tr>";
-
-              row_count = row_count + 1;
-
-
-            }
-          } else {
-              alert("a");
-              result = "";
-              result += "<tr style='background-color: #d2d4d6;'><td scope='row' class='text-center' colspan='25'><br><br>There is no data.<br><br><br></td></tr>";
-          }
-        }        
-
-        $.LoadingOverlay("hide");
-        $("#report_table tbody").html(result);      
-
-      }
-    });
-  }  
-
-  $(document).ready(function () {    
-    $('#id_start_date').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", new Date());
-    $('#id_end_date').datepicker({format: 'dd/mm/yyyy', altField: '#thealtdate', altFormat: 'dd/mm/yyyy', autoclose: true, todayHighlight: true}).datepicker("setDate", new Date());
-  });
-
-
-  $(document).on('click', '#id_contract_number_from', function(e) {
-    $("#id_contract_number_from").select();
-  });
-
-  $(document).on('click', '#id_contract_number_to', function(e) {
-    temp = $("#id_contract_number_to").val();
-    
-    if(temp==0 || temp=="") {
-      $("#id_contract_number_to").val($("#id_contract_number_from").val());
-    }
-    
-    $("#id_contract_number_to").select();
-
-  });
-
-  $(document).on('click', '#id_contract_number_to', function(e) {
-      $("#id_contract_number_to").select();   
-  });
-
-  $(document).on('keypress', '#id_contract_number_from', function(e) {
-    if(e.which == 13) {      
-      e.preventDefault();
-      $("#id_contract_number_to").val($("#id_contract_number_from").val()); 
-      $("#id_contract_number_to").focus();
-
-    }
-  });
-
-
-  </script>
+</script>
 {% endblock %}  

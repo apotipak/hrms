@@ -2237,10 +2237,6 @@ def export_gpm_work_on_day_off_to_excel(request, *args, **kwargs):
     return response
 
 
-
-
-
-
 @login_required(login_url='/accounts/login/')  
 def export_gpm_403_daily_guard_performance_by_contract_to_excel(request, *args, **kwargs):
     response = HttpResponse(content_type='application/ms-excel')
@@ -3273,3 +3269,281 @@ def AjaxTerminateEmployeeListReport(request):
 
     response.status_code = 200
     return response 
+
+
+@permission_required('dailyattendreport.can_access_terminate_employee_list', login_url='/accounts/login/')
+def AjaxPrintTerminateEmployeeListReport(request, *args, **kwargs):    
+    
+    base_url = MEDIA_ROOT + '/monitoring/template/'
+
+    emp_id_from = kwargs['emp_id_from']
+    emp_id_to = kwargs['emp_id_to']
+    emp_type = kwargs['emp_type']
+    emp_dept = kwargs['emp_dept']
+    start_date = kwargs['start_date']
+    end_date = kwargs['end_date']
+    
+    sd = datetime.datetime.strptime(start_date, '%d/%m/%Y') 
+    ed = datetime.datetime.strptime(end_date, '%d/%m/%Y') 
+
+    template_name = base_url + 'Terminate_Employee_List.docx'
+    file_name = request.user.username + "Terminate_Employee_List"
+
+    sql = "select * from v_emptrm "
+    sql += " where emp_type='" + str(emp_type) + "' "
+    sql += " and emp_id>='" + str(emp_id_from) + "' "
+    sql += " and emp_id<='" + str(emp_id_to) + "' "
+    if emp_dept!="0":
+        sql += " and emp_sect=" + str(emp_dept) + " "
+    sql += " and emp_term_date>='" + str(sd) + "' and emp_term_date<='" + str(ed) + "';"
+    
+    # print(sql)
+    # print(emp_id_from, emp_id_to, emp_type, emp_dept, sd, ed)
+    
+    employee_obj = None
+    record = {}
+    employee_list = []
+    error_message = ""
+
+    try:                
+        cursor = connection.cursor()
+        cursor.execute(sql)
+        employee_obj = cursor.fetchall()        
+    except db.OperationalError as e:
+        error_message = "<b>Error: please send this error to IT team</b><br>" + str(e)
+    except db.Error as e:
+        error_message = "<b>Error: please send this error to IT team</b><br>" + str(e)
+    finally:
+        cursor.close()
+
+    document = DocxTemplate(template_name)
+    style = document.styles['Normal']
+    font = style.font
+    font.name = 'AngsanaUPC'
+    font.size = Pt(14)
+
+
+    if employee_obj is not None:
+    
+        row_count = 1
+
+        for item in employee_obj:
+            emp_id = item[0]
+            emp_fname_th = item[1].strip()
+            emp_lname_th = item[2].strip()
+            emp_type = item[3]
+            emp_com = item[4]
+            emp_sect = item[5]
+            emp_rank = item[6]
+            
+            emp_join_date = item[7].strftime('%d/%m/%Y')
+            emp_term_date = item[8].strftime('%d/%m/%Y')
+
+            title_th = item[9]
+            trm_res_th = item[10]
+            trm_doc_date = item[11].strftime('%d/%m/%Y')
+            emp_status = item[12]
+            sts_th = item[13]
+            emp_fname_en = item[14]
+            emp_lname_en = item[15]
+            title_en = item[16]
+            trm_res_en = item[17]
+            emp_birth = item[18].strftime('%d/%m/%Y')
+            emp_sex = item[19]
+            dept_th = item[20]
+            wmonth = item[21]
+
+            record = {
+                'seq': row_count,
+                'emp_id': emp_id,
+                'emp_fname_th': emp_fname_th,
+                'emp_lname_th': emp_lname_th,
+                'emp_fullname_th': title_th + " " + emp_fname_th + "  " + emp_lname_th,
+                'emp_type': emp_type,
+                'emp_com': emp_com,
+                'emp_sect': emp_sect,
+                'emp_rank': emp_rank,
+                'emp_join_date': emp_join_date,
+                'emp_term_date': emp_term_date,
+                'title_th': title_th,
+                'trm_res_th': trm_res_th,
+                'trm_doc_date': trm_doc_date,
+                'emp_status': emp_status,
+                'sts_th': sts_th,
+                'emp_fname_en': emp_fname_en,
+                'emp_lname_en': emp_lname_en,
+                'emp_fullname_en': title_en + " " + emp_fname_en + "  " + emp_lname_en,
+                'title_en': title_en,
+                'trm_res_en': trm_res_en,
+                'emp_dob': emp_birth,
+                'emp_sex': emp_sex,
+                'dept_th': dept_th,
+                'wmonth': wmonth,
+            }
+
+            employee_list.append(record)
+            row_count = row_count + 1
+
+        today_date = settings.TODAY_DATE.strftime("%d/%m/%Y %H:%M:%S")
+
+        context = {
+            'emp_type': emp_type,
+            'start_date': sd.strftime("%d/%m/%Y"),
+            'end_date': ed.strftime("%d/%m/%Y"),
+            'employee_list': list(employee_list),
+            'total_count': row_count - 1,
+            'today_date': today_date,
+        }
+        
+        document.render(context)
+        document.save(MEDIA_ROOT + '/monitoring/download/' + file_name + ".docx")        
+
+    else:
+        context = {
+            'start_date': start_date.strftime("%d/%m/%Y"),
+            'end_date': end_date.strftime("%d/%m/%Y"),
+        }
+        
+        document.render(context)
+        document.save(MEDIA_ROOT + '/monitoring/download/' + file_name + ".docx")
+
+    # docx2pdf
+    docx_file = path.abspath("media\\monitoring\\download\\" + file_name + ".docx")
+    pdf_file = path.abspath("media\\monitoring\\download\\" + file_name + ".pdf")    
+    convert(docx_file, pdf_file)
+
+    return FileResponse(open(pdf_file, 'rb'), content_type='application/pdf')
+
+
+
+@permission_required('dailyattendreport.can_access_terminate_employee_list', login_url='/accounts/login/')
+def AjaxExportTerminateEmployeeListReport(request, *args, **kwargs):
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="Terminate_Employee_List.xls"'
+
+    emp_id_from = kwargs['emp_id_from']
+    emp_id_to = kwargs['emp_id_to']
+    emp_type = kwargs['emp_type']
+    emp_dept = kwargs['emp_dept']
+    start_date = kwargs['start_date']
+    end_date = kwargs['end_date']    
+    sd = datetime.datetime.strptime(start_date, '%d/%m/%Y') 
+    ed = datetime.datetime.strptime(end_date, '%d/%m/%Y') 
+    
+    employee_obj = []
+    pickup_record = []
+    context = {}
+
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Terminate Employee List')
+    
+    font_style = xlwt.XFStyle()
+    font_style.font.bold = True
+    font_style = xlwt.easyxf('font: bold 1, height 200;')
+    ws.write(0, 0, "Terminate Employee List : " + str(sd.strftime("%d/%m/%Y")) + " - " + str(ed.strftime("%d/%m/%Y")), font_style)
+
+    font_style = xlwt.XFStyle()
+    font_style = xlwt.easyxf('font: bold 1, height 180;')
+
+    columns = ['Seq', 'EMP ID', 'Name (TH)', 'Name (EN)', 'Section', 'Rank', 'Doc Date', 'Join', 'Term', 'Work', 'Status', 'Reason']
+    for col_num in range(len(columns)):
+        ws.write(1, col_num, columns[col_num], font_style)
+
+    font_style = xlwt.XFStyle()
+    font_style = xlwt.easyxf('font: height 180;')
+    ws.col(0).width = int(5*260)
+    ws.col(1).width = int(10*260)
+    ws.col(2).width = int(8*260)
+    ws.col(3).width = int(25*260)
+    ws.col(4).width = int(5*260)
+    ws.col(5).width = int(18*260)
+    ws.col(6).width = int(12*260)
+    ws.col(7).width = int(25*260)
+    ws.col(8).width = int(25*260)
+    ws.col(9).width = int(8*260)
+    ws.col(10).width = int(15*260)
+    ws.col(11).width = int(10*260)
+
+    sql = "select * from v_emptrm "
+    sql += " where emp_type='" + str(emp_type) + "' "
+    sql += " and emp_id>='" + str(emp_id_from) + "' "
+    sql += " and emp_id<='" + str(emp_id_to) + "' "
+    if emp_dept!="0":
+        sql += " and emp_sect=" + str(emp_dept) + " "
+    sql += " and emp_term_date>='" + str(sd) + "' and emp_term_date<='" + str(ed) + "';"
+
+    print(sql)
+
+    try:
+        cursor = connection.cursor()
+        cursor.execute(sql)
+        employee_obj = cursor.fetchall()
+    finally:
+        cursor.close()
+
+    # Sheet header, first row
+    row_num = 2
+    counter = 1
+
+    if employee_obj is not None:
+
+        for item in employee_obj:    
+            emp_id = item[0]
+            emp_fname_th = item[1].strip()
+            emp_lname_th = item[2].strip()
+            emp_type = item[3]
+            emp_com = item[4]
+            emp_sect = item[5]
+            emp_rank = item[6]
+            
+            emp_join_date = item[7].strftime('%d/%m/%Y')
+            emp_term_date = item[8].strftime('%d/%m/%Y')
+
+            title_th = item[9]
+            trm_res_th = item[10]
+            trm_doc_date = item[11].strftime('%d/%m/%Y')
+            emp_status = item[12]
+            sts_th = item[13]
+            emp_fname_en = item[14]
+            emp_lname_en = item[15]
+            title_en = item[16]
+            trm_res_en = item[17]
+            emp_birth = item[18].strftime('%d/%m/%Y')
+            emp_sex = item[19]
+            dept_th = item[20]
+            wmonth = item[21]
+        
+            for col_num in range(len(item)):
+                if(col_num==0):
+                    ws.write(row_num, 0, counter, font_style)
+                elif(col_num==1):
+                    ws.write(row_num, col_num, emp_id, font_style)
+                elif(col_num==2):
+                    ws.write(row_num, col_num, title_th + " " + emp_fname_th + "  " + emp_lname_th, font_style)
+                elif(col_num==3):
+                    ws.write(row_num, col_num, title_en + " " + emp_fname_en + "  " + emp_lname_en, font_style)
+                elif(col_num==4):
+                    ws.write(row_num, col_num, emp_sect, font_style)
+                elif(col_num==5):
+                    ws.write(row_num, col_num, emp_rank, font_style)
+                elif(col_num==6):
+                    ws.write(row_num, col_num, trm_doc_date, font_style)
+                elif(col_num==7):
+                    ws.write(row_num, col_num, emp_join_date, font_style)
+                elif(col_num==8):
+                    ws.write(row_num, col_num, emp_term_date, font_style)
+                elif(col_num==9):
+                    ws.write(row_num, col_num, wmonth, font_style)
+                elif(col_num==10):
+                    ws.write(row_num, col_num, sts_th, font_style)
+                elif(col_num==11):
+                    ws.write(row_num, col_num, trm_res_th, font_style)
+
+            row_num += 1
+            counter += 1
+
+        font_style = xlwt.easyxf('font: bold 1, height 180;')
+        ws.write(row_num, 0, "TOTAL " + str(counter-1), font_style)
+
+    wb.save(response)
+    return response
