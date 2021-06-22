@@ -3432,7 +3432,7 @@ def AjaxExportTerminateEmployeeListReport(request, *args, **kwargs):
 
     emp_type = kwargs['emp_type']
     emp_type = 'D1'
-    
+
     emp_dept = kwargs['emp_dept']
     start_date = kwargs['start_date']
     end_date = kwargs['end_date']    
@@ -3513,8 +3513,8 @@ def AjaxExportTerminateEmployeeListReport(request, *args, **kwargs):
             trm_doc_date = item[11].strftime('%d/%m/%Y')
             emp_status = item[12]
             sts_th = item[13]
-            emp_fname_en = item[14]
-            emp_lname_en = item[15]
+            emp_fname_en = item[14].strip()
+            emp_lname_en = item[15].strip()
             title_en = item[16]
             trm_res_en = item[17]
             emp_birth = item[18].strftime('%d/%m/%Y')
