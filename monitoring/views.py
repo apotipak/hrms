@@ -5086,7 +5086,11 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 		else:
 			sql += "tel_time='" + str(Ttel_time) + "',"
 		'''
-		sql += "tel_time='" + str(datetime.datetime.now())[:-10] + "',"
+		print("TEL MAN : ", tel_man)
+		if tel_man=="0":
+			sql += "tel_time=null,"
+		else:
+			sql += "tel_time='" + str(datetime.datetime.now())[:-10] + "',"
 
 		sql += "tel_amt=" + str(Ttel_amt) + ","
 		sql += "tel_paid=" + str(Ttel_paid) + ","
@@ -5214,7 +5218,7 @@ def editRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,s
 			sql += str("0") + "," + str(Tlate) + "," + str(Tlate_full) + "," + str(Trelief) + "," + str("0") + ","
 			sql += str(ui_phone_status) + "," 
 			
-			print("SQL : ", sql)
+			print("SQL teltime : ", sql)
 			# return False, sql
 
 			if (Ttel_time is None) or (Ttel_time==""):
