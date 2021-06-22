@@ -3197,7 +3197,10 @@ def AjaxTerminateEmployeeListReport(request):
 
     emp_id_from = request.POST.get('emp_id_from')
     emp_id_to = request.POST.get('emp_id_to')
+    
     emp_type = request.POST.get('emp_type')
+    emp_type = 'D1'
+
     emp_dept = request.POST.get('emp_dept')
     start_date = request.POST.get('start_date')
     end_date = request.POST.get('end_date')
@@ -3206,7 +3209,7 @@ def AjaxTerminateEmployeeListReport(request):
     ed = datetime.datetime.strptime(end_date, '%d/%m/%Y') 
     # print(emp_id_from,emp_id_to,emp_type,emp_dept,sd,ed)
 
-    sql = "select * from v_emptrm where emp_type='D1' "
+    sql = "select * from v_emptrm where emp_type='" + str(emp_type) + "' "
     sql += " and emp_id>='" + str(emp_id_from) + "' "
     sql += " and emp_id<='" + str(emp_id_to) + "' "
     if emp_dept!="":
@@ -3278,7 +3281,10 @@ def AjaxPrintTerminateEmployeeListReport(request, *args, **kwargs):
 
     emp_id_from = kwargs['emp_id_from']
     emp_id_to = kwargs['emp_id_to']
+    
     emp_type = kwargs['emp_type']
+    emp_type = 'D1'
+
     emp_dept = kwargs['emp_dept']
     start_date = kwargs['start_date']
     end_date = kwargs['end_date']
@@ -3423,7 +3429,10 @@ def AjaxExportTerminateEmployeeListReport(request, *args, **kwargs):
 
     emp_id_from = kwargs['emp_id_from']
     emp_id_to = kwargs['emp_id_to']
+
     emp_type = kwargs['emp_type']
+    emp_type = 'D1'
+    
     emp_dept = kwargs['emp_dept']
     start_date = kwargs['start_date']
     end_date = kwargs['end_date']    
