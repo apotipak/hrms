@@ -1412,6 +1412,11 @@ def AjaxGPMWorkOnDayOffReport(request, *args, **kwargs):
 
 @permission_required('dailyattendreport.can_access_gpm403_daily_guard_performance_by_contract_report', login_url='/accounts/login/')
 def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):    
+
+    print("*************************************************")
+    print("GenerateGPM403DailyGuardPerformanceReport()")
+    print("*************************************************")
+
     base_url = MEDIA_ROOT + '/monitoring/template/'
     contract_number_from = kwargs['contract_number_from']
     contract_number_to = kwargs['contract_number_to']
@@ -1419,6 +1424,7 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
     end_date = kwargs['end_date']
 
     template_name = base_url + 'GPM_403.docx'
+    # template_name = base_url + 'GPM_403_P.docx'
     file_name = request.user.username + "_GPM_403"
 
     start_date = datetime.datetime.strptime(start_date, "%d/%m/%Y").date()
@@ -1697,6 +1703,11 @@ def GPM403DailyGuardPerformanceReport(request):
 
 @permission_required('dailyattendreport.can_access_gpm403_daily_guard_performance_by_contract_report', login_url='/accounts/login/')
 def AjaxGPM403DailyGuardPerformanceReport(request):
+
+    print("****************************************")
+    print("AjaxGPM403DailyGuardPerformanceReport()")
+    print("****************************************")
+
     page_title = settings.PROJECT_NAME
     db_server = settings.DATABASES['default']['HOST']
     project_name = settings.PROJECT_NAME

@@ -154,8 +154,10 @@ def ViewCovid19ReportByStatus(request):
 
 
 
+
+
 @permission_required('covid19report.can_access_covid_19_report', login_url='/accounts/login/')
-def AjaxReportByStatus(request):    
+def AjaxReportByLatestStatus(request):    
 	today_date = settings.TODAY_DATE.strftime("%d/%m/%Y")
 	get_vaccine_status_option = request.POST.get('get_vaccine_status_option')
 	
@@ -170,64 +172,49 @@ def AjaxReportByStatus(request):
 	record = {}	
 	message = ""
 
-	'''
-	if get_vaccine_status_option=="":
-		response = JsonResponse(data={        
-			"is_error": True,
-			"message": "ไม่พบข้อมูล",
-			"employee_list": list(employee_list),
-		})
-		response.status_code = 200
-		return response
-	'''
-
 	print(emp_id_from, emp_id_to, emp_type, post_id, get_vaccine_status_option)
 
-	sql = "select "
-	sql += "emp_id,full_name,phone_number,get_vaccine_status,get_vaccine_date,get_vaccine_place,"
-	sql += "file_attach,file_attach_data,file_attach_type,upd_date,upd_by,upd_flag,op1,op2,op3,"
-	sql += "op4,op5,opd1,opd2 "
-	sql += "from covid_employee_vaccine_update "	
-	# sql += "where get_vaccine_status=" + str(get_vaccine_status_option)
-
+	sql = "select c.emp_id,c.full_name,c.phone_number,c.get_vaccine_status,c.get_vaccine_date,c.get_vaccine_place,"
+	sql += "c.file_attach,c.file_attach_data,c.file_attach_type,c.upd_date,c.upd_by,c.upd_flag,c.op1,c.op2,c.op3,c.op4,c.op5,c.opd1,c.opd2 "
+	sql += "from covid_employee_vaccine_update c "
+	sql += "join (select emp_id,max(get_vaccine_status) vaccine_status from covid_employee_vaccine_update "
+	sql += "where emp_id>=" + str(emp_id_from) + " and emp_id<=" + str(emp_id_to) + " and op3='" + str(emp_type) + "' group by emp_id) "
+	sql += "c2 on c.emp_id=c2.emp_id and c.get_vaccine_status=c2.vaccine_status "	
 	if get_vaccine_status_option=="99":
 		if emp_id_from!="":
-			sql += " where emp_id>=" + str(emp_id_from)
+			sql += " where c.emp_id>=" + str(emp_id_from)
 		else:
-			sql += " where emp_id>=0"
+			sql += " where c.emp_id>=0"
 		
 		if emp_id_to!="":
-			sql += " and emp_id<=" + str(emp_id_to)
+			sql += " and c.emp_id<=" + str(emp_id_to)
 		else:
-			sql += " and emp_id<=999999"
+			sql += " and c.emp_id<=999999"
 
 		if emp_type!="":
-			sql += " and op3='" + str(emp_type) + "'"
+			sql += " and c.op3='" + str(emp_type) + "'"
 
 		if post_id!="":
-			sql += " and op4='" + str(post_id) + "'"		
+			sql += " and c.op4='" + str(post_id) + "'"		
 	else:
-		sql += "where get_vaccine_status=" + str(get_vaccine_status_option)
+		sql += "where c.get_vaccine_status=" + str(get_vaccine_status_option)
 		if emp_id_from!="":
-			sql += " and emp_id>=" + str(emp_id_from)
+			sql += " and c.emp_id>=" + str(emp_id_from)
 		else:
-			sql += " where emp_id>=0"
+			sql += " where c.emp_id>=0"
 		
 		if emp_id_to!="":
-			sql += " and emp_id<=" + str(emp_id_to)
+			sql += " and c.emp_id<=" + str(emp_id_to)
 		else:
-			sql += " and emp_id<=999999"
+			sql += " and c.emp_id<=999999"
 
 		if emp_type!="":
-			sql += " and op3='" + str(emp_type) + "'"
+			sql += " and c.op3='" + str(emp_type) + "'"
 
 		if post_id!="":
-			sql += " and op4='" + str(post_id) + "'"	
-	sql += " order by emp_id, get_vaccine_status;"
-
+			sql += " and c.op4='" + str(post_id) + "'"	
+	sql += " order by c.emp_id, c.get_vaccine_status;"
 	print("SQL11 : ", sql)
-	#print(emp_id_from, emp_id_to)
-	# return False
 
 	try:                
 		cursor = connection.cursor()
@@ -240,6 +227,7 @@ def AjaxReportByStatus(request):
 	finally:
 		cursor.close()
 
+	record_count = 0
 	if employee_obj is not None:
 		for item in employee_obj:
 			emp_id = item[0]
@@ -299,11 +287,226 @@ def AjaxReportByStatus(request):
 			}
 
 			employee_list.append(record)
+			record_count += 1
 
 		response = JsonResponse(data={        
 			"is_error": False,
 			"message": "",
 			"employee_list": list(employee_list),
+			"record_count": record_count,
+		})
+	else:
+		response = JsonResponse(data={        
+			"is_error": True,
+			"message": "ไม่พบข้อมูล",
+			"employee_list": list(employee_list),
+		})
+
+	response.status_code = 200
+	return response
+
+
+@permission_required('covid19report.can_access_covid_19_report', login_url='/accounts/login/')
+def AjaxReportByStatus(request):    
+	today_date = settings.TODAY_DATE.strftime("%d/%m/%Y")
+	get_vaccine_status_option = request.POST.get('get_vaccine_status_option')
+	
+	emp_id_from = request.POST.get('emp_id_from')
+	emp_id_to = request.POST.get('emp_id_to')
+
+	emp_type = request.POST.get('emp_type')
+	post_id = request.POST.get('post_id')
+	
+	employee_obj = None
+	employee_list = []
+	record = {}	
+	message = ""
+
+	'''
+	if get_vaccine_status_option=="":
+		response = JsonResponse(data={        
+			"is_error": True,
+			"message": "ไม่พบข้อมูล",
+			"employee_list": list(employee_list),
+		})
+		response.status_code = 200
+		return response
+	'''
+
+	print(emp_id_from, emp_id_to, emp_type, post_id, get_vaccine_status_option)
+
+
+	sql = "select "
+	sql += "emp_id,full_name,phone_number,get_vaccine_status,get_vaccine_date,get_vaccine_place,"
+	sql += "file_attach,file_attach_data,file_attach_type,upd_date,upd_by,upd_flag,op1,op2,op3,"
+	sql += "op4,op5,opd1,opd2 "
+	sql += "from covid_employee_vaccine_update "	
+	# sql += "where get_vaccine_status=" + str(get_vaccine_status_option)
+
+	if get_vaccine_status_option=="99":
+		if emp_id_from!="":
+			sql += " where emp_id>=" + str(emp_id_from)
+		else:
+			sql += " where emp_id>=0"
+		
+		if emp_id_to!="":
+			sql += " and emp_id<=" + str(emp_id_to)
+		else:
+			sql += " and emp_id<=999999"
+
+		if emp_type!="":
+			sql += " and op3='" + str(emp_type) + "'"
+
+		if post_id!="":
+			sql += " and op4='" + str(post_id) + "'"		
+	else:
+		sql += "where get_vaccine_status=" + str(get_vaccine_status_option)
+		if emp_id_from!="":
+			sql += " and emp_id>=" + str(emp_id_from)
+		else:
+			sql += " where emp_id>=0"
+		
+		if emp_id_to!="":
+			sql += " and emp_id<=" + str(emp_id_to)
+		else:
+			sql += " and emp_id<=999999"
+
+		if emp_type!="":
+			sql += " and op3='" + str(emp_type) + "'"
+
+		if post_id!="":
+			sql += " and op4='" + str(post_id) + "'"	
+	sql += " order by emp_id, get_vaccine_status;"
+
+	# print("SQL11 : ", sql)
+	#print(emp_id_from, emp_id_to)
+	# return False
+	
+
+
+	'''
+	sql = "select c.emp_id,c.full_name,c.phone_number,c.get_vaccine_status,c.get_vaccine_date,c.get_vaccine_place,"
+	sql += "c.file_attach,c.file_attach_data,c.file_attach_type,c.upd_date,c.upd_by,c.upd_flag,c.op1,c.op2,c.op3,c.op4,c.op5,c.opd1,c.opd2 "
+	sql += "from covid_employee_vaccine_update c "
+	sql += "join (select emp_id,max(get_vaccine_status) vaccine_status from covid_employee_vaccine_update "
+	sql += "where emp_id>=" + str(emp_id_from) + " and emp_id<=" + str(emp_id_to) + " and op3='" + str(emp_type) + "' group by emp_id) "
+	sql += "c2 on c.emp_id=c2.emp_id and c.get_vaccine_status=c2.vaccine_status "	
+	if get_vaccine_status_option=="99":
+		if emp_id_from!="":
+			sql += " where c.emp_id>=" + str(emp_id_from)
+		else:
+			sql += " where c.emp_id>=0"
+		
+		if emp_id_to!="":
+			sql += " and c.emp_id<=" + str(emp_id_to)
+		else:
+			sql += " and c.emp_id<=999999"
+
+		if emp_type!="":
+			sql += " and c.op3='" + str(emp_type) + "'"
+
+		if post_id!="":
+			sql += " and c.op4='" + str(post_id) + "'"		
+	else:
+		sql += "where c.get_vaccine_status=" + str(get_vaccine_status_option)
+		if emp_id_from!="":
+			sql += " and c.emp_id>=" + str(emp_id_from)
+		else:
+			sql += " where c.emp_id>=0"
+		
+		if emp_id_to!="":
+			sql += " and c.emp_id<=" + str(emp_id_to)
+		else:
+			sql += " and c.emp_id<=999999"
+
+		if emp_type!="":
+			sql += " and c.op3='" + str(emp_type) + "'"
+
+		if post_id!="":
+			sql += " and c.op4='" + str(post_id) + "'"	
+	sql += " order by c.emp_id, c.get_vaccine_status;"
+	print("SQL11 : ", sql)
+	'''
+
+
+	try:                
+		cursor = connection.cursor()
+		cursor.execute(sql)
+		employee_obj = cursor.fetchall()		
+	except db.OperationalError as e:
+		message = "<b>Error: please send this error to IT team</b><br>" + str(e)
+	except db.Error as e:
+		message = "<b>Error: please send this error to IT team</b><br>" + str(e)
+	finally:
+		cursor.close()
+
+	record_count = 0
+	if employee_obj is not None:
+		for item in employee_obj:
+			emp_id = item[0]
+			full_name = item[1]
+			phone_number = item[2] if item[2] is not None else ""
+			get_vaccine_status_option = item[3] if item[3] is not None else 0
+			
+			# get_vaccine_status_option = item[3]
+			# print("get_vaccine_status : ", get_vaccine_status_option)
+
+			get_vaccine_date = item[4].strftime("%d/%m/%Y") if item[4] is not None else ""
+			get_vaccine_time = item[4].strftime("%H:00") if item[4] is not None else ""
+			get_vaccine_place = item[5] if item[5] is not None else ""
+			file_attach = item[6] if item[6] is not None else ""
+			
+			emp_type = item[14] if item[14] is not None else ""
+			post_id = item[15] if item[15] is not None else ""
+			post_name = item[13] if item[13] is not None else ""
+			zone_name = item[12] if item[12] is not None else ""
+
+			# file_attach_data = b64encode(item[7]).decode("utf-8")
+			file_attach_data = b64encode(item[7]).decode("utf-8") if item[7] is not None else ""
+			file_attach_type = item[8] if item[8] is not None else ""
+
+			if int(get_vaccine_status_option)==0:
+				get_vaccine_status_option_text = "พนักงานที่ยังไม่เคยได้รับการฉีดวัคซีน"
+			elif int(get_vaccine_status_option)==1:
+				get_vaccine_status_option_text = "นัดหมายเพื่อฉีดวัคซีนข็มที่ 1"
+			elif int(get_vaccine_status_option)==2:
+				get_vaccine_status_option_text = "ได้รับการฉีดวัคซีนเข็มที่ 1 เรียบร้อยแล้ว"
+			elif int(get_vaccine_status_option)==3:
+				get_vaccine_status_option_text = "นัดหมายเพื่อฉีดวัคซีนข็มที่ 2"
+			elif int(get_vaccine_status_option)==4:
+				get_vaccine_status_option_text = "ได้รับการฉีดวัคซีนเข็มที่ 2 เรียบร้อยแล้ว"
+			elif int(get_vaccine_status_option)==5:
+				get_vaccine_status_option_text = "ยังไม่มีข้อมูลการฉีดวัคซีน"
+			else:
+				get_vaccine_status_option_text = "Error! : " + str(get_vaccine_status_option)
+
+			# print("DEBUG111 : ", get_vaccine_status_option_text)
+
+
+			record = {
+				"emp_id": emp_id,
+				"full_name": full_name,
+				"phone_number": phone_number,
+				"get_vaccine_status_option": get_vaccine_status_option,
+				"get_vaccine_status_option_text": get_vaccine_status_option_text,
+				# "get_vaccine_status_option_text": "",
+				"get_vaccine_date": get_vaccine_date + " " + get_vaccine_time,
+				"get_vaccine_place": get_vaccine_place,
+				"file_attach": file_attach,
+				"emp_type": emp_type,
+				"post_id": post_id,
+				"post_name": post_name,
+				"zone_name": zone_name,
+			}
+
+			employee_list.append(record)
+			record_count += 1
+
+		response = JsonResponse(data={        
+			"is_error": False,
+			"message": "",
+			"employee_list": list(employee_list),
+			"record_count": record_count,
 		})
 	else:
 		response = JsonResponse(data={        

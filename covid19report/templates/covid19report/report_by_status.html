@@ -57,7 +57,8 @@
                 <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:165px;"><b>สถานะการฉีดวัคซีน</b></span></div>
                 <select id="id_get_vaccine_status_option" name="get_vaccine_status_option" class="form-control form-control-md" style="border-radius: 0; width: 100px;">
                     <!--<option value="">เลือกสถานะ</option>-->
-                    <option value="99">เลือกดูสถานะล่าสุด</option>
+                    <!--<option value="99">เลือกดูสถานะล่าสุด</option>-->
+                    <option value="99">เลือกดูุทุกสถานะ</option>
                     <option value="0">พนักงานที่ยังไม่เคยได้รับการฉีดวัคซีน</option>
                     <option value="1">พนักงานที่มีนัดหมายเพื่อฉีดวัคซีนข็มที่ 1</option>
                     <option value="2">พนักงานที่ได้รับการฉีดวัคซีนเข็มที่ 1 เรียบร้อยแล้ว</option>
@@ -65,7 +66,7 @@
                     <option value="4">พนักงานได้รับการฉีดวัคซีนเข็มที่ 2 เรียบร้อยแล้ว</option>
                 </select>
                 &nbsp;&nbsp;
-                <a href="javascript:SearchFormSubmit();" class="btn btn-success" role="button"><i class="fas fa-search fa-sm"></i>&nbsp;&nbsp;ค้นหา</a>
+                <button onclick="javascript:SearchFormSubmit();" class="btn btn-success" role="button" id="search_button"><i class="fas fa-search fa-sm"></i>&nbsp;&nbsp;ค้นหา</button>
               </div>
 
 
@@ -77,7 +78,7 @@
         <div class="card">
             
             <div class="card-header d-flex">
-              <h3 class="card-title">&nbsp;</h3>
+              <h3 class="card-title p-2" id="total_record"></h3>
               <ul class="nav nav-pills ml-auto">                
                 <li class="nav-item">
                   <a class="btn btn-sm btn-outline-secondary" href="#" onclick="export_to_excel();"><i class="far fa-file-excel"></i>&nbsp;&nbsp;Export to Excel</a>
@@ -89,7 +90,7 @@
 
               <div>
                 <!--<table class="table table-sm table-striped dataTable" id="employee_list_table">-->
-                <table class="table table-sm table-hover dataTable" id="employee_list_table">
+                <table class="table table-sm table-hover table-bordered dataTable" id="employee_list_table">
                     <thead class="bg-secondary">
                       <tr>
                         <th scope="col">รหัส</th>
@@ -364,6 +365,10 @@ function showLoading() {
 
     showLoading();
 
+    $("#search_button").text("Searching...");
+    $("#search_button").attr("disabled", true);
+
+
     $.ajax({
       url: "/reports/covid-19/ajax-report-by-status/",
       type: "POST",
@@ -408,13 +413,13 @@ function showLoading() {
                 result += "<td>" + data.employee_list[i]['emp_type'] + "</td>";
                 result += "<td nowrap>" + data.employee_list[i]['phone_number'] + "</td>";
                 result += "<td>" + data.employee_list[i]['post_id'] + "</td>";
-                result += "<td>" + data.employee_list[i]['post_name'] + "</td>";
+                result += "<td nowrap>" + data.employee_list[i]['post_name'] + "</td>";
                 result += "<td>" + data.employee_list[i]['zone_name'] + "</td>";
 
                 result += "<td class='d-none'>" + data.employee_list[i]['get_vaccine_status_option'] + "</td>";
                 result += "<td nowrap>" + data.employee_list[i]['get_vaccine_status_option_text'] + "</td>";
                               
-                result += "<td>" + data.employee_list[i]['get_vaccine_date'] + "</td>";
+                result += "<td nowrap>" + data.employee_list[i]['get_vaccine_date'] + "</td>";
                 result += "<td>" + data.employee_list[i]['get_vaccine_place'] + "</td>";
 
                 if(data.employee_list[i]['file_attach']!="") {
@@ -501,6 +506,11 @@ function showLoading() {
             table.buttons('.buttons-print').nodes().css("display", "none");
             table.buttons('.buttons-excel').nodes().css("display", "none");
             table.buttons('.buttons-pdf').nodes().css("display", "none");
+
+            $("#total_record").html("<b>TOTAL</b>&nbsp;<span class='text-success' style='font-size: 14pt;'><b>" + data.record_count + "</b></span>");
+            $("#search_button").html("<i class='fas fa-search fa-sm'></i>&nbsp;&nbsp;ค้นหา");
+            $("#search_button").attr("disabled", false);
+
         }
 
         $.LoadingOverlay("hide");
