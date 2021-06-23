@@ -9085,6 +9085,8 @@ def generate_dgp_500(request, *args, **kwargs):
 	sql += "where h.emp_id=" + str(emp_id) + " "
 	sql += "and h.dly_date>='" + str(sd) + "' "
 	sql += "and h.dly_date<='" + str(ed) + "' "
+	sql += "and h.sch_shift!=99 and h.sch_shift!=999 "
+	sql += "and h.pay_type!='ABS' "
 	sql += "order by h.dly_date, h.sch_shift;"
 	
 	print("DEBUG 2 [PDF] DlyPerRs_new_1 : ", sql)
@@ -9113,6 +9115,9 @@ def generate_dgp_500(request, *args, **kwargs):
 	sql += "ORDER BY R_D500.EMP_ID ASC"
 	print("DEBUG 2 [PDF] DlyPerRs_new_2 : ", sql)
 	'''
+	bas_amt_total,otm_amt_total,bon_amt_total,pub_amt_total,dof_amt_total = 0,0,0,0,0
+	dof_total,bas_amtns_total,otm_amtns_total,bon_amtns_total,pub_amt12_total,dof_amtns_total = 0,0,0,0,0,0
+	tel_amt_total, spare_total = 0,0
 
 	try:
 		cursor = connection.cursor()
@@ -9192,10 +9197,26 @@ def generate_dgp_500(request, *args, **kwargs):
 						"shf_desc": shf_desc_temp,
 						"week_day_en": week_day_en,
 					}
-
+					
+					d500_list.append(record)
 					emp_fullname = emp_fullname
 					counter = counter + 1
-					d500_list.append(record)
+					bas_amt_total += bas_amt
+					otm_amt_total += otm_amt
+					bon_amt_total += bon_amt
+					pub_amt_total += pub_amt
+					dof_amt_total += dof_amt
+					dof_total += dof
+
+					bas_amtns_total += bas_amtns
+					otm_amtns_total += otm_amtns
+					bon_amtns_total += bon_amtns
+					pub_amt12_total += pub_amt12
+					dof_amtns_total += dof_amtns
+
+					tel_amt_total += tel_amt
+					spare_total += spare
+
 	finally:
 		cursor.close()
 
@@ -9217,7 +9238,21 @@ def generate_dgp_500(request, *args, **kwargs):
 		"cnt_id": cnt_id,
 		"dly_date": dly_date,
 		"sch_rank": sch_rank,
-		"d500_list": list(d500_list),
+		"d500_list": list(d500_list),		
+		"bas_amt_total": "{:,.2f}".format(bas_amt_total),
+		"otm_amt_total": "{:,.2f}".format(otm_amt_total),
+		"bon_amt_total": "{:,.2f}".format(bon_amt_total),
+		"pub_amt_total": "{:,.2f}".format(pub_amt_total),
+		"dof_amt_total": "{:,.2f}".format(dof_amt_total),
+		"dof_total": "{:,.2f}".format(dof_total),
+		"bas_amtns_total": "{:,.2f}".format(bas_amtns_total),
+		"otm_amtns_total": "{:,.2f}".format(otm_amtns_total),
+		"bon_amtns_total": "{:,.2f}".format(bon_amtns_total),
+		"pub_amt12_total": "{:,.2f}".format(pub_amt12_total),
+		"dof_amtns_total": "{:,.2f}".format(dof_amtns_total),
+		"total_row": total_row,
+		"tel_amt_total": "{:,.2f}".format(tel_amt_total),
+		"spare_total": "{:,.2f}".format(spare_total),
 	}
 
 	tpl = DocxTemplate(template_name)
