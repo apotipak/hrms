@@ -9157,7 +9157,7 @@ def generate_dgp_500(request, *args, **kwargs):
 
 					sch_rank = row[19]
 					tel_amt = row[20]
-					spare = row[21]
+					spare = row[21] if row[21] is not None else 0
 					wage_id = row[22]
 
 					remark = row[23]
