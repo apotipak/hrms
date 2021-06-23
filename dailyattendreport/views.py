@@ -1470,6 +1470,7 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
     if dly_plan_obj is not None:
         
         temp_cnt_id = None
+        company_name = ""
         row_count = 1
 
         for item in dly_plan_obj:
@@ -1550,6 +1551,16 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
                     company_name.font.name = 'AngsanaUPC'
                     company_name.font.size = Pt(16)
                     company_name.bold = True
+
+                    record = {
+                        "row_count": row_count,
+                        "dly_date": dly_date,
+                        "emp_id": emp_id,
+                        "cnt_id": cnt_id,
+                        "company_name": cus_name_th,
+                        "dept_id": dept_id,
+                        "dept_en": dept_en,
+                    }
             else:
                 if cnt_id != temp_cnt_id:
                     # document.add_paragraph('TOTAL      %s' % str(row_count - 1)) 
@@ -1617,18 +1628,32 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
                     row[3].width = Cm(5)
                     row[5].width = Cm(8)
 
+
+                record = {
+                    "row_count": row_count,
+                    "dly_date": dly_date,
+                    "emp_id": emp_id,
+                    "cnt_id": cnt_id,
+                    "company_name": cus_name_th,
+                    "dept_id": dept_id,
+                    "dept_en": dept_en,
+                }
+
+            dly_plan_list.append(record)
+
             temp_cnt_id = cnt_id
             row_count += 1
     
         if len(dly_plan_obj) > 0:
             p = document.add_paragraph()
             runner = p.add_run('TOTAL  %s' % str(row_count - 1))
-            runner.bold = True            
+            runner.bold = True  
             runner.font.size = Pt(15)
 
         context = {
             'start_date': start_date.strftime("%d/%m/%Y"),
             'end_date': end_date.strftime("%d/%m/%Y"),
+            'dly_plan_list': list(dly_plan_list),
         }
         
         document.render(context)
@@ -1974,7 +1999,6 @@ def export_post_manpower_to_excel(request, *args, **kwargs):
     pickup_record = []
     context = {}    
     
-    # amnaj
     today_date = settings.TODAY_DATE.strftime("%Y-%m-%d")
     contract_number_from = kwargs['contract_number_from']
     contract_number_to = kwargs['contract_number_to']

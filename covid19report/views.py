@@ -211,7 +211,7 @@ def AjaxReportByLatestStatus(request):
 		if post_id!="":
 			sql += " and c.op4='" + str(post_id) + "'"	
 	sql += " order by c.emp_id, c.get_vaccine_status;"
-	# print("SQL11 : ", sql)
+	print("SQL11 : ", sql)
 
 
 	try:                
