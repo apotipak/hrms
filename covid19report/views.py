@@ -127,8 +127,12 @@ def AjaxCovid19Report(request):
 
 
 
+
+
+
+
 @permission_required('covid19report.can_access_covid_19_report', login_url='/accounts/login/')
-def ViewCovid19ReportByStatus(request):
+def ViewReportByLatestStatus(request):
 	user_language = getDefaultLanguage(request.user.username)
 	translation.activate(user_language)	
 
@@ -141,7 +145,7 @@ def ViewCovid19ReportByStatus(request):
 	today_year = timezone.now().year
 	today_date = str(today_day) + "-" + today_month + "-" + str(today_year)	
 
-	return render(request, 'covid19report/report_by_status.html', {
+	return render(request, 'covid19report/report_by_latest_status.html', {
         'page_title': page_title, 
         'project_name': project_name, 
         'project_version': project_version,
@@ -152,27 +156,20 @@ def ViewCovid19ReportByStatus(request):
 	})
 
 
-
-
-
-
 @permission_required('covid19report.can_access_covid_19_report', login_url='/accounts/login/')
 def AjaxReportByLatestStatus(request):    
 	today_date = settings.TODAY_DATE.strftime("%d/%m/%Y")
-	get_vaccine_status_option = request.POST.get('get_vaccine_status_option')
-	
+	get_vaccine_status_option = "99"	
 	emp_id_from = request.POST.get('emp_id_from')
 	emp_id_to = request.POST.get('emp_id_to')
-
 	emp_type = request.POST.get('emp_type')
 	post_id = request.POST.get('post_id')
-	
 	employee_obj = None
 	employee_list = []
 	record = {}	
 	message = ""
 
-	print(emp_id_from, emp_id_to, emp_type, post_id, get_vaccine_status_option)
+	# print(emp_id_from, emp_id_to, emp_type, post_id, get_vaccine_status_option)
 
 	sql = "select c.emp_id,c.full_name,c.phone_number,c.get_vaccine_status,c.get_vaccine_date,c.get_vaccine_place,"
 	sql += "c.file_attach,c.file_attach_data,c.file_attach_type,c.upd_date,c.upd_by,c.upd_flag,c.op1,c.op2,c.op3,c.op4,c.op5,c.opd1,c.opd2 "
@@ -214,7 +211,8 @@ def AjaxReportByLatestStatus(request):
 		if post_id!="":
 			sql += " and c.op4='" + str(post_id) + "'"	
 	sql += " order by c.emp_id, c.get_vaccine_status;"
-	print("SQL11 : ", sql)
+	# print("SQL11 : ", sql)
+
 
 	try:                
 		cursor = connection.cursor()
@@ -306,6 +304,39 @@ def AjaxReportByLatestStatus(request):
 	return response
 
 
+
+
+
+
+
+
+
+@permission_required('covid19report.can_access_covid_19_report', login_url='/accounts/login/')
+def ViewCovid19ReportByStatus(request):
+	user_language = getDefaultLanguage(request.user.username)
+	translation.activate(user_language)	
+
+	page_title = settings.PROJECT_NAME
+	db_server = settings.DATABASES['default']['HOST']
+	project_name = settings.PROJECT_NAME
+	project_version = settings.PROJECT_VERSION  
+	today_day = timezone.now().strftime('%d')
+	today_month = timezone.now().strftime('%m')
+	today_year = timezone.now().year
+	today_date = str(today_day) + "-" + today_month + "-" + str(today_year)	
+
+	return render(request, 'covid19report/report_by_status.html', {
+        'page_title': page_title, 
+        'project_name': project_name, 
+        'project_version': project_version,
+        'db_server': db_server, 
+        'today_date': today_date,
+        'database': settings.DATABASES['default']['NAME'],
+        'host': settings.DATABASES['default']['HOST'],
+	})
+
+
+
 @permission_required('covid19report.can_access_covid_19_report', login_url='/accounts/login/')
 def AjaxReportByStatus(request):    
 	today_date = settings.TODAY_DATE.strftime("%d/%m/%Y")
@@ -320,28 +351,13 @@ def AjaxReportByStatus(request):
 	employee_obj = None
 	employee_list = []
 	record = {}	
-	message = ""
-
-	'''
-	if get_vaccine_status_option=="":
-		response = JsonResponse(data={        
-			"is_error": True,
-			"message": "ไม่พบข้อมูล",
-			"employee_list": list(employee_list),
-		})
-		response.status_code = 200
-		return response
-	'''
-
-	print(emp_id_from, emp_id_to, emp_type, post_id, get_vaccine_status_option)
-
+	message = ""	
 
 	sql = "select "
 	sql += "emp_id,full_name,phone_number,get_vaccine_status,get_vaccine_date,get_vaccine_place,"
 	sql += "file_attach,file_attach_data,file_attach_type,upd_date,upd_by,upd_flag,op1,op2,op3,"
 	sql += "op4,op5,opd1,opd2 "
 	sql += "from covid_employee_vaccine_update "	
-	# sql += "where get_vaccine_status=" + str(get_vaccine_status_option)
 
 	if get_vaccine_status_option=="99":
 		if emp_id_from!="":
@@ -379,55 +395,6 @@ def AjaxReportByStatus(request):
 	sql += " order by emp_id, get_vaccine_status;"
 
 	# print("SQL11 : ", sql)
-	#print(emp_id_from, emp_id_to)
-	# return False
-	
-
-
-	'''
-	sql = "select c.emp_id,c.full_name,c.phone_number,c.get_vaccine_status,c.get_vaccine_date,c.get_vaccine_place,"
-	sql += "c.file_attach,c.file_attach_data,c.file_attach_type,c.upd_date,c.upd_by,c.upd_flag,c.op1,c.op2,c.op3,c.op4,c.op5,c.opd1,c.opd2 "
-	sql += "from covid_employee_vaccine_update c "
-	sql += "join (select emp_id,max(get_vaccine_status) vaccine_status from covid_employee_vaccine_update "
-	sql += "where emp_id>=" + str(emp_id_from) + " and emp_id<=" + str(emp_id_to) + " and op3='" + str(emp_type) + "' group by emp_id) "
-	sql += "c2 on c.emp_id=c2.emp_id and c.get_vaccine_status=c2.vaccine_status "	
-	if get_vaccine_status_option=="99":
-		if emp_id_from!="":
-			sql += " where c.emp_id>=" + str(emp_id_from)
-		else:
-			sql += " where c.emp_id>=0"
-		
-		if emp_id_to!="":
-			sql += " and c.emp_id<=" + str(emp_id_to)
-		else:
-			sql += " and c.emp_id<=999999"
-
-		if emp_type!="":
-			sql += " and c.op3='" + str(emp_type) + "'"
-
-		if post_id!="":
-			sql += " and c.op4='" + str(post_id) + "'"		
-	else:
-		sql += "where c.get_vaccine_status=" + str(get_vaccine_status_option)
-		if emp_id_from!="":
-			sql += " and c.emp_id>=" + str(emp_id_from)
-		else:
-			sql += " where c.emp_id>=0"
-		
-		if emp_id_to!="":
-			sql += " and c.emp_id<=" + str(emp_id_to)
-		else:
-			sql += " and c.emp_id<=999999"
-
-		if emp_type!="":
-			sql += " and c.op3='" + str(emp_type) + "'"
-
-		if post_id!="":
-			sql += " and c.op4='" + str(post_id) + "'"	
-	sql += " order by c.emp_id, c.get_vaccine_status;"
-	print("SQL11 : ", sql)
-	'''
-
 
 	try:                
 		cursor = connection.cursor()
@@ -517,6 +484,16 @@ def AjaxReportByStatus(request):
 
 	response.status_code = 200
 	return response
+
+
+
+
+
+
+
+
+
+
 
 
 @permission_required('covid19report.can_access_covid_19_report', login_url='/accounts/login/')
