@@ -2707,7 +2707,7 @@ $("#id_late_hour").click( function() {
 									$("#id_search_emp_id").prop("checked", false);
 
 									$("#id_search_by_cnt_id").attr("disabled", false);
-									$("#id_search_by_cnt_id").prop("checked", true);								    
+									$("#id_search_by_cnt_id").prop("checked", true);
 								}
 					        },
 					        cancel: {					        	
@@ -2719,48 +2719,59 @@ $("#id_late_hour").click( function() {
 					});
 
 				} else {
+					if(data.is_cnt_id_found) {						
+						$.alert({
+						    title: 'Error',
+						    type: 'red',
+						    content: data.message,
+						    animation: 'zoom',
+						    animationBounce: 1.5,
+						    closeIcon: false,
+						    boxWidth: '38%',
+						    useBootstrap: false,
+						});							
+					} else {
+						$.confirm({
+						    title: 'ข้อความ',
+						    type: 'primary',
+						    content: data.message,
+							animation: 'zoom',
+						    animationBounce: 1.5,
+						    closeIcon: true,
+						    boxWidth: '38%',
+						    useBootstrap: false,
+						    buttons: {
+						        confirm: {
+						        	text: 'ต้องการ',
+						        	btnClass: 'btn-primary',
+						        	action: function () {						    		
+										$("#id_cus_id").val(data.cus_id);
+										$("#id_cus_brn").val(data.cus_brn);
+										$("#id_cus_vol").val(data.cus_vol);
+										
+										e = jQuery.Event("keypress")
+										e.which = 13
+									    $("#id_cus_vol").keypress(function() {
+									    	//
+									    }).trigger(e)							
 
-					$.confirm({
-					    title: 'ข้อความ',
-					    type: 'primary',
-					    content: data.message,
-						animation: 'zoom',
-					    animationBounce: 1.5,
-					    closeIcon: true,
-					    boxWidth: '38%',
-					    useBootstrap: false,
-					    buttons: {
-					        confirm: {
-					        	text: 'ต้องการ',
-					        	btnClass: 'btn-primary',
-					        	action: function () {						    		
-									$("#id_cus_id").val(data.cus_id);
-									$("#id_cus_brn").val(data.cus_brn);
-									$("#id_cus_vol").val(data.cus_vol);
-									
-									e = jQuery.Event("keypress")
-									e.which = 13
-								    $("#id_cus_vol").keypress(function() {
-								    	//
-								    }).trigger(e)							
+										$("#id_search_emp_id").val(null);
+										$("#id_search_emp_id").attr("disabled", true);
+										$("#id_search_emp_id").prop("checked", false);
 
-									$("#id_search_emp_id").val(null);
-									$("#id_search_emp_id").attr("disabled", true);
-									$("#id_search_emp_id").prop("checked", false);
+										$("#id_search_by_cnt_id").attr("disabled", false);
+										$("#id_search_by_cnt_id").prop("checked", true);
 
-									$("#id_search_by_cnt_id").attr("disabled", false);
-									$("#id_search_by_cnt_id").prop("checked", true);
-
-								}
-					        },
-					        cancel: {	
-					        	action: function () {
-					        		// todo
-					        	}
-					        }
-					    }
-					});
-
+									}
+						        },
+						        cancel: {	
+						        	action: function () {
+						        		// todo
+						        	}
+						        }
+						    }
+						});
+					}
 
 				}
 			}
@@ -3732,7 +3743,7 @@ $("#id_late_hour").click( function() {
 
 		if(_val==1) {
 			// Search by Contract ID
-			$("#id_search_emp_id").val("");
+			//$("#id_search_emp_id").val("");
 			$("#id_search_emp_id").attr("readonly", true);
 
 			$("#id_cus_id").focus();		
@@ -3741,6 +3752,13 @@ $("#id_late_hour").click( function() {
 			$("#id_cus_vol").attr("readonly", false);
 
 			$("#id_emp_id").attr("readonly", true);
+
+			$("#id_search_emp_id").val(null);
+			$("#id_search_emp_id").attr("disabled", true);
+			$("#id_search_emp_id").prop("checked", false);
+
+			$("#id_search_by_cnt_id").attr("disabled", false);
+			$("#id_search_by_cnt_id").prop("checked", true);			
 		} else {
 			// Search by Employee ID
 
@@ -3754,7 +3772,7 @@ $("#id_late_hour").click( function() {
 
 			$("#id_search_emp_id").focus();
 			$("#id_search_emp_id").attr("readonly", false);
-
+			$("#id_search_emp_id").attr("disabled", false);
 		}
 	});
 
@@ -6518,6 +6536,13 @@ $("#id_late_hour").click( function() {
 
     	$("#id_cus_id").focus();
     	$("#id_cus_id").select();
+
+		$("#id_search_emp_id").val(null);
+		$("#id_search_emp_id").attr("disabled", true);
+		$("#id_search_emp_id").prop("checked", false);
+
+		$("#id_search_by_cnt_id").attr("disabled", false);
+		$("#id_search_by_cnt_id").prop("checked", true);    	
     });
 
  	function clearRedHighlightTextbox() {

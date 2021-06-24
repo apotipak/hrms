@@ -10337,6 +10337,7 @@ def ajax_search_by_emp_id(request):
 	attendance_date = datetime.datetime.strptime(request.POST.get('selected_dly_date'), '%d/%m/%Y')
 	period = getPeriod(request.POST.get('selected_dly_date'))
 
+	is_cnt_id_found = False
 	table_name = "DLY_PLAN"
 	is_error = False
 	message = ""
@@ -10414,24 +10415,62 @@ def ajax_search_by_emp_id(request):
 				cursor.close()
 
 			if employee_obj_2 is not None:
-				for item in employee_obj_2:
-					cnt_id = item[0]
 
+				print("len : ", len(employee_obj_2))
+				if len(employee_obj_2)>0:
+					for item in employee_obj_2:
+						cnt_id = item[0]
+					cus_id = str(cnt_id)[0:4]
+					cus_brn = str(cnt_id)[4:7]
+					cus_vol = str(cnt_id)[7:10]				
+					message = "พนักงานรหัส <b>" + str(search_emp_id) + "</b> ยังไม่มีการแจ้งเวร<br>"
+					message += "เคยมีประวัติการแจ้งเวรของเมื่อวานไว้ที่หน่วยงาน <b>" + str(cnt_id)  + "</b><br><hr>"
+					message += "ต้องการให้ระบบโหลดข้อมูลหน่วยงานขึ้นมาหรือไม่"
+				else:
+					is_cnt_id_found = True
+					message = "พนักงานรหัส <b>" + str(search_emp_id) + "</b> ยังไม่มีการแจ้งเวร<br>"						
+			else:				
+				is_cnt_id_found = True
+				message = "พนักงานรหัส <b>" + str(search_emp_id) + "</b> ยังไม่มีการแจ้งเวร<br>"	
+			
+	else:
+		# ดูหน่วยงานที่ได้แจ้งเวรไว้เมื่อวาน
+		sql = "select * from " + str(table_name) + " where emp_id=" + search_emp_id + " and prd_id='" + str(period) + "' "
+		sql += "and dly_date='" + str(attendance_date) + "' and absent=1;"
+		# print("SQL NEW 2 : ", sql)
+
+		try:
+			with connection.cursor() as cursor:		
+				cursor.execute(sql)
+				employee_obj_2 = cursor.fetchall()
+		except db.OperationalError as e:
+			is_error = True
+			message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+		except db.Error as e:
+			is_error = True
+			message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+		finally:
+			cursor.close()
+
+		if employee_obj_2 is not None:
+			for item in employee_obj_2:
+				cnt_id = item[0]
 			cus_id = str(cnt_id)[0:4]
 			cus_brn = str(cnt_id)[4:7]
-			cus_vol = str(cnt_id)[7:10]
-			
+			cus_vol = str(cnt_id)[7:10]				
 			message = "พนักงานรหัส <b>" + str(search_emp_id) + "</b> ยังไม่มีการแจ้งเวร<br>"
 			message += "เคยมีประวัติการแจ้งเวรของเมื่อวานไว้ที่หน่วยงาน <b>" + str(cnt_id)  + "</b><br><hr>"
 			message += "ต้องการให้ระบบโหลดข้อมูลหน่วยงานขึ้นมาหรือไม่"
-	else:
-		message = "พนักงานรหัส <b>" + str(search_emp_id) + "</b> ยังไม่มีการแจ้งเวร | ต้องการแจ้งเวรเลยหรือไม่"
+		else:
+			is_cnt_id_found = True
+			message = "พนักงานรหัส <b>" + str(search_emp_id) + "</b> ยังไม่มีการแจ้งเวร<br>"	
 
 	response = JsonResponse(data={
 		"success": True, "is_error": is_error, "message": message,
 		"cus_id": cus_id,
 		"cus_brn": cus_brn,
 		"cus_vol": cus_vol,
+		"is_cnt_id_found": is_cnt_id_found,
 	})
 
 	response.status_code = 200
