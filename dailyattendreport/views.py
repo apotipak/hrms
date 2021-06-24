@@ -1443,7 +1443,7 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
     sql += "and (cnt_id>=" + str(contract_number_from) + " and cnt_id<=" + str(contract_number_to) + ") "
     sql += "and (dly_date>='" + str(start_date) + "' and dly_date<='" + str(end_date) + "') "
     sql += "ORDER BY cnt_id ASC, dly_date ASC, shf_desc ASC, emp_id ASC"
-    # print(sql)
+    print("SQL Test: ", sql)
     
     dly_plan_obj = None
     record = {}
