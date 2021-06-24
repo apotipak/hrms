@@ -44,6 +44,10 @@ urlpatterns = [
 
     # Rules
     url(r'^ajax/is_scheduled/$', views.is_scheduled, name='is_scheduled'),
+
+    # Search by EMP ID
+    url(r'^ajax/search-by-emp-id/$', views.ajax_search_by_emp_id, name='ajax-search-by-emp-id'),
+
 ]
 
 

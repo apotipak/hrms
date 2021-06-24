@@ -7960,7 +7960,6 @@ def SearchDailyGurdPerformance_old(request):
 
 
 
-# amnaj
 # Search DGP 500
 def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_date_to):
 	print("********************")
@@ -9023,8 +9022,6 @@ def SearchDailyGurdPerformanceEmployeeInformation(request):
 
 
 
-
-# amnaj
 # def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_date_to):
 @login_required(login_url='/accounts/login/')
 def generate_dgp_500(request, *args, **kwargs):    
@@ -10321,4 +10318,122 @@ def ajax_end_all_active_status(request):
 	response.status_code = 200
 	return response
 
+
+
+
+
+@permission_required('monitoring.view_dlyplan', login_url='/accounts/login/')
+@login_required(login_url='/accounts/login/')
+def ajax_search_by_emp_id(request):
+
+	print("**********************************")
+	print("FUNCTION: ajax_search_by_emp_id()")
+	print("**********************************")
+	
+	is_error = False
+	message = ""
+
+	search_emp_id = request.POST.get('search_emp_id')
+	attendance_date = datetime.datetime.strptime(request.POST.get('selected_dly_date'), '%d/%m/%Y')
+	period = getPeriod(request.POST.get('selected_dly_date'))
+
+	table_name = "DLY_PLAN"
+	is_error = False
+	message = ""
+	
+	cnt_id = ""
+	cus_id = ""
+	cus_brn = ""
+	cus_vol = ""
+
+	# ถ้าไม่มีตารางแจ้งเวรในระบบให้ออกจากฟังก์ชันไปเลย
+	sql = "select end_chk from t_date where date_chk='" + str(attendance_date) + "'"
+	cursor = connection.cursor()
+	cursor.execute(sql)	
+	t_date_obj = cursor.fetchone()
+	cursor.close()
+	if t_date_obj is not None:		
+		end_chk = t_date_obj[0]
+		if end_chk==1:
+			table_name = "HIS_DLY_PLAN"			
+	else:
+		is_error = True
+		message = "ตารางแจ้งเวรของวันที่ <b>" + str(request.POST.get('selected_dly_date')) + "</b> ไม่มีในระบบ"
+		response = JsonResponse(data={"success": True, "is_error": is_error, "message": message})
+		response.status_code = 200
+		return response
+
+
+
+	# ตรวจสอบว่าพนักงานมีการแจ้งเข้าเวรไว้ที่หน่วยงานไหนแล้วหรือไม่
+	sql = "select * from " + str(table_name) + " where emp_id=" + search_emp_id + " and prd_id='" + str(period) + "' "
+	sql += "and dly_date='" + str(attendance_date) + "' and sch_shift not in (99,999) and absent=0;"
+	print("SQL NEW : ", sql)
+	try:
+		with connection.cursor() as cursor:		
+			cursor.execute(sql)
+			employee_obj = cursor.fetchall()
+	except db.OperationalError as e:
+		is_error = True
+		message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+	except db.Error as e:
+		is_error = True
+		message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+	finally:
+		cursor.close()
+	
+	if employee_obj is not None:
+		if len(employee_obj)>0:
+			for item in employee_obj:
+				cnt_id = item[0]
+
+			cus_id = str(cnt_id)[0:4]
+			cus_brn = str(cnt_id)[4:7]
+			cus_vol = str(cnt_id)[7:10]
+
+			message = "พนักงานรหัส <b>" + str(search_emp_id) + "</b> ได้แจ้งเข้าเวรแล้วที่หน่วยงาน <b>" + str(cnt_id) + "</b><br>"
+			message += "ต้องการให้ระบบโหลดข้อมูลหน่วยงานขึ้นมาหรือไม่"
+			is_error = True
+		else:
+
+			# ดูหน่วยงานที่ได้แจ้งเวรไว้เมื่อวาน
+			sql = "select * from " + str(table_name) + " where emp_id=" + search_emp_id + " and prd_id='" + str(period) + "' "
+			sql += "and dly_date='" + str(attendance_date) + "' and absent=1;"
+			print("SQL NEW 2 : ", sql)
+			try:
+				with connection.cursor() as cursor:		
+					cursor.execute(sql)
+					employee_obj_2 = cursor.fetchall()
+			except db.OperationalError as e:
+				is_error = True
+				message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+			except db.Error as e:
+				is_error = True
+				message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+			finally:
+				cursor.close()
+
+			if employee_obj_2 is not None:
+				for item in employee_obj_2:
+					cnt_id = item[0]
+
+			cus_id = str(cnt_id)[0:4]
+			cus_brn = str(cnt_id)[4:7]
+			cus_vol = str(cnt_id)[7:10]
+			
+			message = "พนักงานรหัส <b>" + str(search_emp_id) + "</b> ยังไม่มีการแจ้งเวร<br>"
+			message += "เคยมีประวัติการแจ้งเวรของเมื่อวานไว้ที่หน่วยงาน <b>" + str(cnt_id)  + "</b><br><hr>"
+			message += "ต้องการให้ระบบโหลดข้อมูลหน่วยงานขึ้นมาหรือไม่"
+	else:
+		message = "พนักงานรหัส <b>" + str(search_emp_id) + "</b> ยังไม่มีการแจ้งเวร | ต้องการแจ้งเวรเลยหรือไม่"
+
+	response = JsonResponse(data={
+		"success": True, "is_error": is_error, "message": message,
+		"cus_id": cus_id,
+		"cus_brn": cus_brn,
+		"cus_vol": cus_vol,
+	})
+
+	response.status_code = 200
+	return response
 
