@@ -10392,7 +10392,7 @@ def ajax_search_by_emp_id(request):
 			cus_brn = str(cnt_id)[4:7]
 			cus_vol = str(cnt_id)[7:10]
 
-			message = "พนักงานรหัส <b>" + str(search_emp_id) + "</b> ได้แจ้งเข้าเวรแล้วที่หน่วยงาน <b>" + str(cnt_id) + "</b><br>"
+			message = "พนักงานรหัส <b>" + str(search_emp_id) + "</b> แจ้งเข้าเวรแล้วที่หน่วยงาน <b>" + str(cnt_id) + "</b><br>"
 			message += "ต้องการให้ระบบโหลดข้อมูลหน่วยงานขึ้นมาหรือไม่"
 			is_error = True
 		else:

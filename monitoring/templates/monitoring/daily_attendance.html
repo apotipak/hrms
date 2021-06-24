@@ -2710,7 +2710,9 @@ $("#id_late_hour").click( function() {
 									$("#id_search_by_cnt_id").prop("checked", true);
 								}
 					        },
-					        cancel: {					        	
+					        cancel: {
+					        	text: 'ไม่ต้องการ',
+					        	btnClass: 'btn-secondary',				        	
 					        	action: function () {
 					        		// todo
 					        	}
@@ -2720,20 +2722,48 @@ $("#id_late_hour").click( function() {
 
 				} else {
 					if(data.is_cnt_id_found) {						
-						$.alert({
-						    title: 'Error',
-						    type: 'red',
+						/*
+						$.confirm({
+							title: 'ข้อความ',
+							content: data.message,
+							type: 'blue',
+							closeIcon: true,
+							btnClass: 'btn-primary',
+						    buttons: {						    	
+						        ปิด: function () {
+						            
+						        },
+						    }
+						});
+						*/
+
+
+						$.confirm({
+						    title: 'ข้อความ',
+						    type: 'blue',
 						    content: data.message,
-						    animation: 'zoom',
+							animation: 'zoom',
 						    animationBounce: 1.5,
-						    closeIcon: false,
+						    closeIcon: true,
 						    boxWidth: '38%',
 						    useBootstrap: false,
-						});							
+						    buttons: {
+						        cancel: {
+						        	text: 'ปิด',
+						        	btnClass: 'btn-secondary',
+						        	action: function () {
+						        		// todo
+						        	}
+						        }
+						    }
+						});
+
+
+
 					} else {
 						$.confirm({
 						    title: 'ข้อความ',
-						    type: 'primary',
+						    type: 'blue',
 						    content: data.message,
 							animation: 'zoom',
 						    animationBounce: 1.5,
@@ -2764,7 +2794,9 @@ $("#id_late_hour").click( function() {
 
 									}
 						        },
-						        cancel: {	
+						        cancel: {
+						        	text: 'ไม่ต้องการ',
+						        	btnClass: 'btn-secondary',
 						        	action: function () {
 						        		// todo
 						        	}
