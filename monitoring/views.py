@@ -10424,8 +10424,8 @@ def ajax_search_by_emp_id(request):
 					cus_brn = str(cnt_id)[4:7]
 					cus_vol = str(cnt_id)[7:10]				
 					message = "พนักงานรหัส <b>" + str(search_emp_id) + "</b> ยังไม่มีการแจ้งเวร<br>"
-					message += "เคยมีประวัติการแจ้งเวรของเมื่อวานไว้ที่หน่วยงาน <b>" + str(cnt_id)  + "</b><br><hr>"
-					message += "ต้องการให้ระบบโหลดข้อมูลหน่วยงานขึ้นมาหรือไม่"
+					message += "เคยมีประวัติการแจ้งเวรไว้ที่หน่วยงาน <b>" + str(cnt_id)  + "</b><br><hr>"
+					message += "ต้องการโหลดข้อมูลหน่วยงานขึ้นมาหรือไม่"
 				else:
 					is_cnt_id_found = True
 					message = "พนักงานรหัส <b>" + str(search_emp_id) + "</b> ยังไม่มีการแจ้งเวร<br>"						
@@ -10459,8 +10459,8 @@ def ajax_search_by_emp_id(request):
 			cus_brn = str(cnt_id)[4:7]
 			cus_vol = str(cnt_id)[7:10]				
 			message = "พนักงานรหัส <b>" + str(search_emp_id) + "</b> ยังไม่มีการแจ้งเวร<br>"
-			message += "เคยมีประวัติการแจ้งเวรของเมื่อวานไว้ที่หน่วยงาน <b>" + str(cnt_id)  + "</b><br><hr>"
-			message += "ต้องการให้ระบบโหลดข้อมูลหน่วยงานขึ้นมาหรือไม่"
+			message += "เคยมีประวัติการแจ้งเวรไว้ที่หน่วยงาน <b>" + str(cnt_id)  + "</b><br><hr>"
+			message += "ต้องการโหลดข้อมูลหน่วยงานขึ้นมาหรือไม่"
 		else:
 			is_cnt_id_found = True
 			message = "พนักงานรหัส <b>" + str(search_emp_id) + "</b> ยังไม่มีการแจ้งเวร<br>"	
