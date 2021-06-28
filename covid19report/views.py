@@ -24,6 +24,68 @@ from docx2pdf import convert
 from io import BytesIO
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 
+import random
+import matplotlib
+from matplotlib import pyplot as plt
+import numpy as np
+import base64
+
+
+@permission_required('covid19report.can_access_covid_19_report', login_url='/accounts/login/')
+def Dashboard(request):
+	user_language = getDefaultLanguage(request.user.username)
+	translation.activate(user_language)	
+
+	page_title = settings.PROJECT_NAME
+	db_server = settings.DATABASES['default']['HOST']
+	project_name = settings.PROJECT_NAME
+	project_version = settings.PROJECT_VERSION  
+	today_day = timezone.now().strftime('%d')
+	today_month = timezone.now().strftime('%m')
+	today_year = timezone.now().year
+	today_date = str(today_day) + "-" + today_month + "-" + str(today_year)	
+
+
+	# กำหนดขนาดกราฟ
+	fig = plt.figure(figsize=(4, 3))
+
+	# กำหนดชื่อให้กราฟ
+	plt.title('M1 Vaccine Status')
+	plt.ylabel('Quantity')
+
+	# กำหนดข้อมูลที่แสดงในกราฟ
+	species = ['Vaccine #1', 'Vaccine #2']
+	quantity = [10, 18]
+
+	# กำหนดแท่งกราฟ
+	y_pos = np.arange(len(species))	
+	plt.bar(y_pos, quantity, align='edge', width=0.3, color=('green'))
+	plt.xticks(y_pos, species)	
+	
+	# กำหนกแกน Y ให้เป็นเลขจำนวนเต็ม
+	loc, labels = plt.yticks()
+	plt.yticks(np.arange(0, max(loc), step=5))
+
+	# เซฟรูปลงในบัฟเฟอร์เพื่อส่งค่าไปที่ไฟล์เท็มเพลท
+	buffer = BytesIO()
+	plt.savefig(buffer, format='png')
+	buffer.seek(0)
+	image_png = buffer.getvalue()
+	buffer.close()
+	graphic = base64.b64encode(image_png)
+	graphic = graphic.decode('utf-8')
+
+	return render(request, 'covid19report/dashboard.html', {
+        'page_title': page_title, 
+        'project_name': project_name, 
+        'project_version': project_version,
+        'db_server': db_server, 
+        'today_date': today_date,
+        'database': settings.DATABASES['default']['NAME'],
+        'host': settings.DATABASES['default']['HOST'],
+        'graphic': graphic,
+	})
+
 
 @permission_required('covid19report.can_access_covid_19_report', login_url='/accounts/login/')
 def ViewCovid19Report(request):

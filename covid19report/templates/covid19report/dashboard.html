@@ -15,80 +15,60 @@
 
       <div class="card-header" style="padding: 0 2px 10px 0;">        
         <h5 class="card-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;<b>รายงานการฉีดวัคซีนโควิด-19</b>&nbsp;&nbsp;</h5>
+
+        <!--
         <br>
         <div class="float-right pb-1">
           <div class="d-flex flex-row-reverse">
             &nbsp;
           </div>
         </div>
+        -->
+
       </div>
 
       <div class="col-12 p-0 pt-2">
 
+        <!--
         <form method="post" autocomplete="off" name="search_form">
           {% csrf_token %}
           
           <div class="card-body p-0 pt-2">
             <div class="form-group">
 
-
               <div class="input-group col-12">
-
-                <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:120px;"><b>รหัสพนักงาน</b></span></div>
-                <input type="number" min=0 maxlength="6" id="id_emp_id" name="emp_id" class="form-control border-bottom-1 border-left-0 rounded-0 bg-white" style="width:50px;" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" value="" />
-
-                <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:80px;"><b>ประเภท</b></span></div>
-                <select id="id_emp_type_option" name="id_emp_type_option" class="form-control form-control-md" style="border-radius: 0; width: 100px;">
-                  <option value="">ทั้งหมด</option>
-                  <option value="M1">M1</option>
-                  <option value="M2">M3</option>
-                  <option value="M5">M5</option>
-                  <option value="D1">D1</option>
-                </select>                
-
-                <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:125px;"><b>รหัสหน่วยงาน</b></span></div>
-                <input type="number" min=0 maxlength="10" id="id_post_id" name="post_id" class="form-control border-bottom-1 border-left-0 rounded-0 bg-white" style="width:50px;" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" value="" />
-
-                <div class="input-group-prepend"><span class="input-group-text border-bottom-0 rounded-0" style="background-color: #d2d4d6; width:165px;"><b>สถานะการฉีดวัคซีน</b></span></div>
-                <select id="id_get_vaccine_status_option" name="get_vaccine_status_option" class="form-control form-control-md" style="border-radius: 0; width: 100px;">
-                    <option value="">เลือกสถานะการฉีดวัคซีน</option>
-                    <option value="0">พนักงานที่ยังไม่เคยได้รับการฉีดวัคซีน</option>
-                    <option value="1">พนักงานที่มีนัดหมายเพื่อฉีดวัคซีนข็มที่ 1</option>
-                    <option value="2">พนักงานที่ได้รับการฉีดวัคซีนเข็มที่ 1 เรียบร้อยแล้ว</option>
-                    <option value="3">พนักงานที่มีนัดหมายเพื่อฉีดวัคซีนข็มที่ 2</option>
-                    <option value="4">พนักงานได้รับการฉีดวัคซีนเข็มที่ 2 เรียบร้อยแล้ว</option>
-                </select>
-                &nbsp;&nbsp;
-                <a href="javascript:SearchFormSubmit();" class="btn btn-success" role="button"><i class="fas fa-search fa-sm"></i>&nbsp;&nbsp;ค้นหา</a>
+                &nbsp;
               </div>
-
 
             </div>
           </div>
 
         </form>        
+        -->
 
         <div class="card">
             
             <div class="card-header d-flex">
               <h3 class="card-title">&nbsp;</h3>
+              <!--
               <ul class="nav nav-pills ml-auto">                
                 <li class="nav-item">
                   <a class="btn btn-sm btn-outline-secondary" href="#" onclick="export_to_excel();"><i class="far fa-file-excel"></i>&nbsp;&nbsp;Export to Excel</a>
                 </li>
               </ul>
+              -->
             </div>
 
             <div class="card-body">
 
               <div>
-                &nbsp;
-              </div>
-              <!-- /.tab-content -->
+                <img src="data:image/png;base64,{{ graphic|safe }}">
+              </div>            
 
-            </div><!-- /.card-body -->
-          </div>
-          <!-- ./card -->
+            </div>
+
+        </div>
+        <!-- ./card -->
         
 
       </div>
