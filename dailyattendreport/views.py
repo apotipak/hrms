@@ -1507,22 +1507,49 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
 
                 row = table.add_row().cells
                 row[0].text = "No."
+                row[0].paragraphs[0].runs[0].font.bold = True
+
                 row[1].text = "Date"
+                row[1].paragraphs[0].runs[0].font.bold = True
+
                 row[2].text = "EMP ID"
+                row[2].paragraphs[0].runs[0].font.bold = True
+
                 row[3].text = "Name"
+                row[3].paragraphs[0].runs[0].font.bold = True
+
                 row[4].text = "Rank"
+                row[4].paragraphs[0].runs[0].font.bold = True
+
                 row[5].text = "Shift"
+                row[5].paragraphs[0].runs[0].font.bold = True
+
                 row[6].text = "Relief ID"
+                row[6].paragraphs[0].runs[0].font.bold = True
+
                 row[7].text = "OT"
+                row[7].paragraphs[0].runs[0].font.bold = True
+
                 row[8].text = "Late"
+                row[8].paragraphs[0].runs[0].font.bold = True
+
                 row[9].text = "Full"
+                row[9].paragraphs[0].runs[0].font.bold = True
+
                 row[10].text = "Amt.HR"
+                row[10].paragraphs[0].runs[0].font.bold = True
+
                 row[11].text = "Call"
+                row[11].paragraphs[0].runs[0].font.bold = True
+
                 row[12].text = "Tel Paid"
+                row[12].paragraphs[0].runs[0].font.bold = True
                 
                 row[0].width = Cm(0.5)
                 row[3].width = Cm(5)
                 row[5].width = Cm(8)
+                row[6].width = Cm(5)
+                row[12].width = Cm(5)
 
                 if cnt_id is not None:
                     row = table.add_row().cells
@@ -1563,7 +1590,7 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
                     }
             else:
                 if cnt_id != temp_cnt_id:
-                    # document.add_paragraph('TOTAL      %s' % str(row_count - 1)) 
+                    # document.add_paragraph('TOTAL      %s' % str(row_count - 1))                     
                     p = document.add_paragraph()
                     runner = p.add_run('TOTAL  %s' % str(row_count - 1))
                     runner.bold = True
@@ -1571,6 +1598,7 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
                     company_name.font.name = 'AngsanaUPC'
                     runner.font.size = Pt(15)
 
+                    # p = document.add_page_break()
                     table = document.add_table(rows=1, cols=13, style='TableGridLight')                    
 
                     a = table.cell(0, 0)
@@ -1580,6 +1608,56 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
                     d.text = '%s' % (cnt_id)
                     d.paragraphs[0].runs[0].font.bold = True
                     d.paragraphs[0].runs[0].font.size = Pt(15)
+
+
+                    row = table.add_row().cells
+
+                    row[0].text = "No."
+                    row[0].paragraphs[0].runs[0].font.bold = True
+
+                    row[1].text = "Date"
+                    row[1].paragraphs[0].runs[0].font.bold = True
+
+                    row[2].text = "EMP ID"
+                    row[2].paragraphs[0].runs[0].font.bold = True
+
+                    row[3].text = "Name"
+                    row[3].paragraphs[0].runs[0].font.bold = True
+
+                    row[4].text = "Rank"
+                    row[4].paragraphs[0].runs[0].font.bold = True
+
+                    row[5].text = "Shift"
+                    row[5].paragraphs[0].runs[0].font.bold = True
+
+                    row[6].text = "Relief ID"
+                    row[6].paragraphs[0].runs[0].font.bold = True
+
+                    row[7].text = "OT"
+                    row[7].paragraphs[0].runs[0].font.bold = True
+
+                    row[8].text = "Late"
+                    row[8].paragraphs[0].runs[0].font.bold = True
+
+                    row[9].text = "Full"
+                    row[9].paragraphs[0].runs[0].font.bold = True
+
+                    row[10].text = "Amt.HR"
+                    row[10].paragraphs[0].runs[0].font.bold = True
+
+                    row[11].text = "Call"
+                    row[11].paragraphs[0].runs[0].font.bold = True
+
+                    row[12].text = "Tel Paid"
+                    row[12].paragraphs[0].runs[0].font.bold = True
+                    
+                    row[0].width = Cm(0.5)
+                    row[3].width = Cm(5)
+                    row[5].width = Cm(8)
+                    row[6].width = Cm(5)
+                    row[12].width = Cm(5)
+
+                    
 
                     row_count = 1                                
                     row = table.add_row().cells
@@ -1600,7 +1678,9 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
                     row[0].width = Cm(0.5)
                     row[3].width = Cm(5)
                     row[5].width = Cm(8)
-                    
+
+
+
                     company_name = "  " + str(cus_name_th) + "    |    " + str(dept_id) + "   " + str(dept_en)
                     row = table.rows[0]
                     company_name = row.cells[0].paragraphs[0].add_run(company_name)
