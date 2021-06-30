@@ -4113,7 +4113,7 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 	informno = len(record_count) if len(record_count)>0 else 0
 
 	sql = "select cnt_id, srv_shif_id, sum(srv_qty) as qty from cus_service where srv_active=1 and cnt_id=" + str(cnt_id) + " and srv_shif_id=" + str(shift_id) + " group by cnt_id, srv_shif_id"
-	print("SQL : ", sql)
+	print("SQL 123 : ", sql)
 
 	cursor = connection.cursor()
 	cursor.execute(sql)
@@ -4377,6 +4377,12 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 			else:
 				return False, "You don't have a permission to Add/Edit passed date."
 
+
+	# print("Tdept_id : ", Tdept_id)
+	# print("emp_dept : ", emp_dept)
+	# print("customer_zone_id : ", customer_zone_id)
+	Tdept_id = customer_zone_id
+
 	sql += "(cnt_id,emp_id,dly_date,sch_shift"
 	sql += ",sch_no,dept_id,sch_rank,prd_id"
 	sql += ",absent,late,late_full,relieft,relieft_id"
@@ -4414,27 +4420,64 @@ def addRecord(dly_date,cus_id,cus_brn,cus_vol,cnt_id,emp_id,emp_rank,emp_dept,sh
 	sql += str(str(datetime.datetime.now())[:-3]) + "','" + str(username) + "'," + "'A'" + ",'" + remark + "')"	
 
 	
-	print("DEBUG sql: ", sql)
-	# return False, "debug3"
+	# sql += str(cnt_id) + "," + str(emp_id) + ",'" + str(dly_date) + "'," + str(Tsch_shift) + ","
+	
+	# print(cnt_id,emp_id,dly_date,Tsch_shift)
+	# print("DEBUG sql 111: ", sql)
+	
+	
 
-	# return True, "TEST"
+	# amnaj
+	# TODO
+	# กรณีพนักงานยังแจ้งไม่เวรไม่ครบ ระบบต้องตรวจสอบก่อนว่ามีพนักงานแจ้งเวรไว้หรือยังก่อนเพิ่มรายการใหม่
+	# sql = "select count(*) from dly_plan where dly_date='" + str(dly_date) + "' and cnt_id=" + str(cnt_id) + " and emp_id=" + str(emp_id) + " and sch_shift=" + str(Tsch_shift) + " and absent=0;"
+	sql_1 = "select count(*) from dly_plan where dly_date='" + str(dly_date) + "' and cnt_id=" + str(cnt_id) + " and emp_id=" + str(emp_id) + " and sch_shift=" + str(Tsch_shift) + ";"
+	# print("SQL 222 : ", sql)
+	cursor = connection.cursor()
+	cursor.execute(sql_1)
+	rows = cursor.fetchone()
+	cursor.close()
+	record_count = rows[0] if rows[0]>0 else 0
 
-	try:
-		with connection.cursor() as cursor:
-			cursor.execute(sql)
-		is_pass = True
-		message = "รับแจ้งเวรสำเร็จ"
-	except db.OperationalError as e:
-		is_pass = False
-		message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
-	except db.Error as e:
-		is_pass = False
-		message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+	if record_count <= 0:
+		count = 0
+	else:
+		count = record_count
 
-	return is_pass, message
+	# count = 0
+	if count == 0:
+		try:
+			with connection.cursor() as cursor:
+				cursor.execute(sql)
+			is_pass = True
+			message = "รับแจ้งเวรสำเร็จ"
+		except db.OperationalError as e:
+			is_pass = False
+			message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
+		except db.Error as e:
+			is_pass = False
+			message = "<b>Please send this error to IT team or try again.</b><br>" + str(e)
 
+		return is_pass, message
+
+	else:
+		sql = "select count(*) from dly_plan where dly_date='" + str(dly_date) + "' and cnt_id=" + str(cnt_id) + " and emp_id=" + str(emp_id) + " and sch_shift=" + str(Tsch_shift) + " and absent=1;"
+		# print("SQL 222 : ", sql)
+		cursor = connection.cursor()
+		cursor.execute(sql)
+		rows = cursor.fetchone()
+		cursor.close	
+		record_count = rows[0] if rows[0]>0 else 0
+
+		if record_count > 0:
+			message = "พนักงานรหัส <b>" + str(emp_id) + "</b> มีอยู่ในตารางแล้ว กรุณาเลือกรายการจากในตารางมาแก้ไข"
+			return False, message
 
 	# return False, "debug"
+
+
+
+
 
 
 
@@ -6685,7 +6728,7 @@ def validateInput(dly_date, cnt_id, emp_id, shift_id, shift_type, shift_name, jo
 		is_duplicated, message = checkDupDly(sql)
 		if is_duplicated:
 			isPass = False
-			message = "3) พนักงานรหัส <b>" + str(emp_id) + "</b> มีการแจ้งเวรไปแล้ว กรุณาตรวจสอบอีกครั้ง"
+			message = "3) พนักงานรหัส <b>" + str(emp_id) + "</b> มีการแจ้งเวรแล้ว กรุณาตรวจสอบอีกครั้ง"
 		else:
 			isPass = True
 
@@ -6950,7 +6993,7 @@ def ajax_is_scheduled_between_site(request):
 							if v_dlyplan_obj is not None:
 
 								# DlyPerRs[i][38]
-								message = "พนักงานรหัส <b>" + str(tmp_emp_id) + "</b> ได้แจ้งเวรเข้าหน่วยงาน <b>" + str(v_dlyplan_obj[13]) + "</b> ในกะ <b>" + str(v_dlyplan_obj[3]) + "</b> ไว้แล้ว "
+								message = "พนักงานรหัส <b>" + str(tmp_emp_id) + "</b> ได้แจ้งเวรเข้าหน่วยงาน <b>" + str(v_dlyplan_obj[13]) + "</b> ในกะ <b>" + str(v_dlyplan_obj[3]) + "</b> แล้ว "
 								message += "ระบบไม่อนุญาติให้ทำรายการของพนังงานท่านนี้<br>"
 								message += "<hr>หากต้องการบันทึกการแจ้งเวรของพนักงานที่เหลือ กรุณากดปุ่มยืนยัน"
 								
@@ -8442,7 +8485,6 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 
 
 
-		# amnaj [SEARCH]
 		# New Requirement
 		sql = "select cnt_id,emp_id,dly_date dlydate,sch_shift schshift,prd_id,absent,Pay_type,bas_amt,bon_amt,otm_amt,bas_amtNS,bon_amtNS,otm_amtNS,PUB_amt,PUB_AMt12,DOF_amt,DOF_AmtNS,DOF,Pub,* "
 		sql += "from his_dly_plan "
@@ -9071,7 +9113,7 @@ def generate_dgp_500(request, *args, **kwargs):
 	sd = datetime.datetime.strptime(search_date_from, '%d/%m/%Y').strftime('%Y-%m-%d')
 	ed = datetime.datetime.strptime(search_date_to, '%d/%m/%Y').strftime('%Y-%m-%d')
 	
-	# amnaj - PDF
+
 	# New Requirement
 	sql = "select h.cnt_id,h.emp_id,h.dly_date dlydate,h.sch_shift schshift,h.prd_id,h.absent,h.Pay_type,h.bas_amt,h.bon_amt,"
 	sql += "h.otm_amt,h.bas_amtNS,h.bon_amtNS,h.otm_amtNS,h.PUB_amt,h.PUB_AMt12,h.DOF_amt,h.DOF_AmtNS,h.DOF,h.Pub,h.sch_rank,h.tel_amt,h.spare,wage_id,h.remark, "
@@ -10085,9 +10127,9 @@ def ajax_save_daily_attendance_check_rule_1(request):
 				message = "ไม่คร่อมหน่วยงาน"
 			else:
 				is_cross_site = True
-				message = "รหัสพนักงาน  <b>" + str(emp_id) + "</b> "
+				message = "พนักงานรหัส  <b>" + str(emp_id) + "</b> "
 				message += "เข้าเวรกะ  <b>" + str(shf_desc) + "</b> "
-				message += "ที่หน่วยงาน  <b>" + str(dup_cnt_id) + "</b> ไปแล้ว "							
+				message += "ที่หน่วยงาน  <b>" + str(dup_cnt_id) + "</b> แล้ว "							
 				# message += "จำนวนชั่วโมงที่โดนหัก <b>" + str(Timecross) + "</b> ชั่วโมง"
 				message += " | กรุณาตรวจสอบข้อมูลอีกครั้ง"
 				# message += " | ถ้าต้องการบันทึกกดปุ่มยืนยัน"
