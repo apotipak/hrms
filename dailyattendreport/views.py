@@ -1447,6 +1447,7 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
     
     dly_plan_obj = None
     record = {}
+    dly_plan_title_list = []
     dly_plan_list = []
     error_message = ""
 
@@ -1496,6 +1497,8 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
             late_full = "x" if item[18] else ""
 
             if temp_cnt_id is None:
+
+                '''
                 table = document.add_table(rows=1, cols=13, style='TableGridLight')                                                
 
                 a = table.cell(0, 0)
@@ -1550,9 +1553,11 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
                 row[5].width = Cm(8)
                 row[6].width = Cm(5)
                 row[12].width = Cm(5)
+                '''
 
                 if cnt_id is not None:
-                    row = table.add_row().cells
+                    '''
+                    row = table.add_row().cells                    
                     row[0].text = str(row_count)
                     row[1].text = str(dly_date)
                     row[2].text = str(emp_id)
@@ -1570,27 +1575,43 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
                     row[0].width = Cm(0.5)
                     row[3].width = Cm(5)
                     row[5].width = Cm(8)
-
+                    '''
                     company_name = "  " + str(cus_name_th) + "    |    " + str(dept_id) + "   " + str(dept_en)
-                    row = table.rows[0]
+                    dly_plan_title_list.append(str(cnt_id) + "  " + company_name)
+                    
+                    '''
+                    row = table.rows[0]                    
                     company_name = row.cells[0].paragraphs[0].add_run(company_name)
-                    # company_name.font.name = 'Cordia New (Body CS)'
                     company_name.font.name = 'AngsanaUPC'
                     company_name.font.size = Pt(16)
                     company_name.bold = True
-
+                    '''
+                                    
                     record = {
                         "row_count": row_count,
                         "dly_date": dly_date,
                         "emp_id": emp_id,
+                        "emp_full_name": emp_full_name,
+                        "sch_rank": sch_rank,
+                        "sch_shift": sch_shift,
+                        "shf_desc": shf_desc,                        
+                        "relieft_id": relieft_id,
+                        "ot": ot,
+                        "late": late,
+                        "late_full": late_full,
+                        "ot_hr_amt": ot_hr_amt,
+                        "tel_man": tel_man,
+                        "tel_paid": tel_paid,
                         "cnt_id": cnt_id,
                         "company_name": cus_name_th,
                         "dept_id": dept_id,
                         "dept_en": dept_en,
                     }
+
             else:
                 if cnt_id != temp_cnt_id:
-                    # document.add_paragraph('TOTAL      %s' % str(row_count - 1))                     
+                    '''
+                    # document.add_paragraph('TOTAL      %s' % str(row_count - 1))                                         
                     p = document.add_paragraph()
                     runner = p.add_run('TOTAL  %s' % str(row_count - 1))
                     runner.bold = True
@@ -1678,17 +1699,21 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
                     row[0].width = Cm(0.5)
                     row[3].width = Cm(5)
                     row[5].width = Cm(8)
-
-
-
+                    '''
+    
                     company_name = "  " + str(cus_name_th) + "    |    " + str(dept_id) + "   " + str(dept_en)
-                    row = table.rows[0]
+                    dly_plan_title_list.append(str(cnt_id) + "  " + company_name)
+                    
+                    '''
+                    row = table.rows[0]                    
                     company_name = row.cells[0].paragraphs[0].add_run(company_name)
                     # company_name.font.name = 'Cordia New (Body CS)'
                     company_name.font.name = 'AngsanaUPC'
                     company_name.font.size = Pt(16)
                     company_name.bold = True
-                else:
+                    '''
+                '''
+                else:                   
                     row = table.add_row().cells
                     row[0].text = str(row_count)
                     row[1].text = str(dly_date)
@@ -1707,17 +1732,29 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
                     row[0].width = Cm(0.5)
                     row[3].width = Cm(5)
                     row[5].width = Cm(8)
-
-
+                '''
+                   
                 record = {
                     "row_count": row_count,
                     "dly_date": dly_date,
                     "emp_id": emp_id,
+                    "emp_full_name": emp_full_name,
+                    "sch_rank": sch_rank,
+                    "sch_shift": sch_shift,
+                    "shf_desc": shf_desc,
+                    "relieft_id": relieft_id,
+                    "ot": ot,
+                    "late": late,
+                    "late_full": late_full,
+                    "ot_hr_amt": ot_hr_amt,
+                    "tel_man": tel_man,
+                    "tel_paid": tel_paid,
                     "cnt_id": cnt_id,
                     "company_name": cus_name_th,
                     "dept_id": dept_id,
                     "dept_en": dept_en,
                 }
+
 
             dly_plan_list.append(record)
 
@@ -1734,6 +1771,7 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
             'start_date': start_date.strftime("%d/%m/%Y"),
             'end_date': end_date.strftime("%d/%m/%Y"),
             'dly_plan_list': list(dly_plan_list),
+            'dly_plan_title_list': dly_plan_title_list,
         }
         
         document.render(context)
@@ -1743,6 +1781,8 @@ def GenerateGPM403DailyGuardPerformanceReport(request, *args, **kwargs):
         context = {
             'start_date': start_date.strftime("%d/%m/%Y"),
             'end_date': end_date.strftime("%d/%m/%Y"),
+            'dly_plan_list': list(dly_plan_list),
+            'dly_plan_title_list': dly_plan_title_list,
         }
         
         document.render(context)
