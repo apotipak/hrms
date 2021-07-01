@@ -8494,13 +8494,20 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 
 
 		# New Requirement
-		sql = "select cnt_id,emp_id,dly_date dlydate,sch_shift schshift,prd_id,absent,Pay_type,bas_amt,bon_amt,otm_amt,bas_amtNS,bon_amtNS,otm_amtNS,PUB_amt,PUB_AMt12,DOF_amt,DOF_AmtNS,DOF,Pub,* "
-		sql += "from his_dly_plan "
-		sql += "where emp_id=" + str(emp_id) + " "
-		sql += "and dly_date>='" + str(search_date_from) + "' "
-		sql += "and dly_date<='" + str(search_date_to) + "' "
-		sql += "order by dly_date, sch_shift;"
-		print("DEBUG 2 [SEARCH] DlyPerRs_new : ", sql)
+		sql = "select "
+		sql += "hd.cnt_id, hd.emp_id, hd.dly_date dlydate, hd.sch_shift schshift, hd.prd_id, hd.absent, hd.Pay_type, hd.bas_amt, hd.bon_amt, hd.otm_amt,"
+		sql += "hd.bas_amtNS, hd.bon_amtNS, hd.otm_amtNS, hd.PUB_amt, hd.PUB_AMt12, hd.DOF_amt, hd.DOF_AmtNS, hd.DOF, hd.Pub, "
+		sql += " hd.*, "
+		sql += "s.shf_desc "
+
+		sql += "from his_dly_plan hd "
+		sql += "join t_shift s on hd.sch_shift=s.shf_id "
+		sql += "where hd.emp_id=" + str(emp_id) + " "
+		sql += "and hd.dly_date>='" + str(search_date_from) + "' "
+		sql += "and hd.dly_date<='" + str(search_date_to) + "' "
+		sql += "order by hd.dly_date, hd.sch_shift;"
+		
+		# print("DEBUG 2 [SEARCH] DlyPerRs_new : ", sql)
 
 		try:
 			with connection.cursor() as cursor:		
@@ -8558,6 +8565,8 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 					A11 = Decimal(A11) + Decimal(pub_amt_12)
 					A12 = Decimal(A12) + Decimal(dof_amt_ns)
 
+
+		'''
 		print("")
 		print("DEBUG")
 		print("bas_amt : ", A3, " | bas_amt_new : ", bas_amt_new, " | bas_amt_ns : ", bas_amt_ns)
@@ -8570,6 +8579,7 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 		print("pub : ", A6)
 		print("dof : ", A7)
 		print("")
+		'''
 
 		# Return						
 		A3 = '{:,.2f}'.format(A3)	# BAS
@@ -8585,8 +8595,8 @@ def DisplayList(table_name, user_first_name, emp_id, search_date_from, search_da
 
 		pub_amt_12 = '{:.2f}'.format(pub_amt_12)	# PUB_NS
 		dof_amt_ns = '{:.2f}'.format(dof_amt_ns)	# DOF_NS
-		print("aaa : ", pub_amt_12)
-		print("bbb : ", dof_amt_ns)
+		# print("aaa : ", pub_amt_12)
+		# print("bbb : ", dof_amt_ns)
 
 		income_list = [A1,A2,A3,A4,A5,A6,A7,bas_amt_ns,otm_amt_ns,bon_amt_ns,pub_amt_12,dof_amt_ns, bas_amt_new, otm_amt_new, bon_amt_new, pub_amt_new, dof_amt_new]
 

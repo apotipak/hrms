@@ -1108,6 +1108,7 @@ function displayList(emp_id, search_date_from, search_date_to) {
 
 						//shift = data.performance_list[i][3];
 						shift = data.performance_list[i][3];
+						sch_desc = data.performance_list[i][83];
 
 						//rank = data.performance_list[i][19];
 						rank = data.performance_list[i][25];
@@ -1196,7 +1197,7 @@ function displayList(emp_id, search_date_from, search_date_to) {
 						result += "<td>" + cnt_id + "</td>";
 						result += "<td>" + dly_date + "</td>";
 						result += "<td align='center'>" + rank + "</td>";
-						result += "<td nowrap>" + shift + "</td>";
+						result += "<td nowrap>" + sch_desc + "</td>";
 
 						result += "<td align='center'>" + pay_type + "</td>";											
 						result += "<td style='background-color: #ccdcd3;'>" + bas_amt + "</td>";
