@@ -790,7 +790,7 @@ def download_pdf(request, *args, **kwargs):
 				tables = document.tables
 				p = tables[1].rows[0].cells[0].add_paragraph()
 				r = p.add_run()
-				r.add_picture(binary_img, width=Inches(3))
+				r.add_picture(binary_img, width=Inches(4))
 				p.alignment = WD_ALIGN_PARAGRAPH.CENTER
 				r = p.add_run("\n")
 
