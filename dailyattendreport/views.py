@@ -3458,7 +3458,9 @@ def AjaxPrintTerminateEmployeeListReport(request, *args, **kwargs):
         sql += " and emp_sect=" + str(emp_dept) + " "
     sql += " and emp_term_date>='" + str(sd) + "' and emp_term_date<='" + str(ed) + "';"
     
-    # print(sql)
+
+    # amnaj
+    print("SQL 22 : ", sql)
     # print(emp_id_from, emp_id_to, emp_type, emp_dept, sd, ed)
     
     employee_obj = None
@@ -3514,6 +3516,11 @@ def AjaxPrintTerminateEmployeeListReport(request, *args, **kwargs):
             dept_th = item[20]
             wmonth = item[21]
 
+            
+            #print("zone id: ", emp_sect)
+            zone_name = zone_name_display_text(str(emp_sect))
+            #print("zone name: ", zone_name)
+
             record = {
                 'seq': row_count,
                 'emp_id': emp_id,
@@ -3522,7 +3529,7 @@ def AjaxPrintTerminateEmployeeListReport(request, *args, **kwargs):
                 'emp_fullname_th': title_th + " " + emp_fname_th + "  " + emp_lname_th,
                 'emp_type': emp_type,
                 'emp_com': emp_com,
-                'emp_sect': emp_sect,
+                'emp_sect': zone_name,
                 'emp_rank': emp_rank,
                 'emp_join_date': emp_join_date,
                 'emp_term_date': emp_term_date,
@@ -3657,7 +3664,10 @@ def AjaxExportTerminateEmployeeListReport(request, *args, **kwargs):
             emp_lname_th = item[2].strip()
             emp_type = item[3]
             emp_com = item[4]
-            emp_sect = item[5]
+            
+            # emp_sect = item[5]
+            emp_sect = zone_name_display_text(str(item[5]))
+
             emp_rank = item[6]
             
             emp_join_date = item[7].strftime('%d/%m/%Y')
