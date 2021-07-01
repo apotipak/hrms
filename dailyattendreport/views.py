@@ -3616,7 +3616,7 @@ def AjaxExportTerminateEmployeeListReport(request, *args, **kwargs):
     font_style = xlwt.XFStyle()
     font_style = xlwt.easyxf('font: bold 1, height 180;')
 
-    columns = ['Seq', 'EMP ID', 'Name (TH)', 'Name (EN)', 'Section', 'Rank', 'Doc Date', 'Join', 'Term', 'Work', 'Status', 'Reason']
+    columns = ['Seq', 'EMP ID', 'Name (TH)', 'Name (EN)', 'Zone', 'Rank', 'Doc Date', 'Join', 'Term', 'Work', 'Status', 'Reason']
     for col_num in range(len(columns)):
         ws.write(1, col_num, columns[col_num], font_style)
 
