@@ -3403,7 +3403,9 @@ def ajax_delete_employee(request):
 
 				# Check if request's record is existed
 				with connection.cursor() as cursor:
-					cursor.execute("insert his_dly_plan_del select getdate(), %s, 'HIS_DLY_PLAN', * from his_dly_plan where cnt_id=%s and emp_id=%s and dly_date=%s and sch_shift=%s", [username, cnt_id, emp_id, dly_date, shift_id])
+
+					fields = "cnt_id,emp_id,dly_date,sch_shift,sch_no,dept_id,sch_rank,prd_id,absent,late,late_full,sch_relieft,relieft,relieft_id,tel_man,tel_time,tel_amt,tel_paid,ot,ot_reason,ot_time_frm,ot_time_to,ot_hr_amt,ot_pay_amt,spare,wage_id,wage_no,pay_type,bas_amt,otm_amt,bon_amt,pub_amt,soc_amt,dof_amt,ex_dof_amt,soc,pub,dof,paid,TPA,DAY7,upd_date,upd_by,upd_flag,upd_gen,upd_log,Remark"
+					cursor.execute("insert his_dly_plan_del select getdate(), %s, 'HIS_DLY_PLAN', " + fields + " from his_dly_plan where cnt_id=%s and emp_id=%s and dly_date=%s and sch_shift=%s", [username, cnt_id, emp_id, dly_date, shift_id])
 					cursor.execute("delete his_dly_plan where cnt_id=%s and emp_id=%s and dly_date=%s and sch_shift=%s", [cnt_id, emp_id, dly_date, shift_id])
 					cursor.execute("select * from his_dly_plan where cnt_id=%s and emp_id=%s and dly_date=%s and sch_shift=%s", [cnt_id, emp_id, dly_date, shift_id])
 					row = cursor.fetchone()
@@ -3414,13 +3416,17 @@ def ajax_delete_employee(request):
 				else:
 					message = "Cannot delete Employee ID " + emp_id
 
+				print("message : ", message)
+
 				response = JsonResponse(data={
 					"success": True,	    
 					"message": message,
 				})				
 			else:
+				print("check point #3")
 				message = "ERROR : วันที่ทำรายการมากกว่าวันที่ปัจจุบัน"
 
+			# print("debug : ", message)
 	else:
 		if end_chk==1:
 			message = str(username) + " ไม่มีสิทธิ์ทำรายการ"			
@@ -3444,6 +3450,8 @@ def ajax_delete_employee(request):
 
 				# Check if request's record is existed
 				with connection.cursor() as cursor:
+					# fields = "cnt_id,emp_id,dly_date,sch_shift,sch_no,dept_id,sch_rank,prd_id,absent,late,late_full,sch_relieft,relieft,relieft_id,tel_man,tel_time,tel_amt,tel_paid,ot,ot_reason,ot_time_frm,ot_time_to,ot_hr_amt,ot_pay_amt,spare,wage_id,wage_no,pay_type,bas_amt,otm_amt,bon_amt,pub_amt,soc_amt,dof_amt,ex_dof_amt,soc,pub,dof,paid,TPA,DAY7,upd_date,upd_by,upd_flag,upd_gen,upd_log,Remark"
+					# cursor.execute("insert his_dly_plan_del select getdate(), %s, 'HIS_DLY_PLAN', " + fields + " from his_dly_plan where cnt_id=%s and emp_id=%s and dly_date=%s and sch_shift=%s", [username, cnt_id, emp_id, dly_date, shift_id])
 					cursor.execute("insert his_dly_plan_del select getdate(), %s, 'DLY_PLAN', * from dly_plan where cnt_id=%s and emp_id=%s and dly_date=%s and sch_shift=%s", [username, cnt_id, emp_id, dly_date, shift_id])
 					cursor.execute("delete dly_plan where cnt_id=%s and emp_id=%s and dly_date=%s and sch_shift=%s", [cnt_id, emp_id, dly_date, shift_id])
 					cursor.execute("select * from dly_plan where cnt_id=%s and emp_id=%s and dly_date=%s and sch_shift=%s", [cnt_id, emp_id, dly_date, shift_id])
