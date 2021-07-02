@@ -903,14 +903,14 @@ var table = $('#id_security_guard_list').DataTable({
   buttons: [
     {
         extend: 'print',
-        title: '',
+        title: 'title',
         exportOptions: {
           columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
         }
     },
     {
         extend: 'excelHtml5',        
-        title: '',
+        title: 'title',
         exportOptions: {
           columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
         }
@@ -2770,6 +2770,11 @@ $(document).on('keypress', '#id_cus_vol', function(e) {
 });
 
 function refresh_table(result) {
+	cus_id = $("#id_cus_id").val();
+	cus_brn = $("#id_cus_brn").val();
+	cus_vol = $("#id_cus_vol").val();	
+	header_title = $("#customer_name_title").text();
+
 	table.destroy();
 
 	$('#id_security_guard_list tbody').empty().append(result);        
@@ -2820,6 +2825,7 @@ function refresh_table(result) {
 	  buttons: [
 	    {
 	        extend: 'print',
+	        messageTop: cus_id.substring(3) + cus_brn + cus_vol + " | " + header_title,
 	        title: '',
 	        exportOptions: {
 	          columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
@@ -2827,10 +2833,27 @@ function refresh_table(result) {
 	    },
 	    {
 	        extend: 'excelHtml5',        
-	        title: '',
+	        title: cus_id.substring(3) + cus_brn + cus_vol + " | " + header_title,
 	        exportOptions: {
 	          columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
-	        }
+	        },
+			customize: function (xlsx) {
+				var today = new Date();
+				var date = today.getDate() + "-" + (today.getMonth()+1) + '-'+ today.getFullYear();
+				var time = today.getHours() + ":" + today.getMinutes();
+				var CurrentDateTime = date+' '+time;
+				var sheet = xlsx.xl.worksheets['sheet1.xml'];
+
+				$('c[r=A1] t', sheet).text(cus_id.substring(3) + cus_brn + cus_vol + " | " + header_title);
+				$('row:first c', sheet).attr('s', '2');
+				$('row', sheet).first().attr('ht', '20').attr('customHeight', "1");
+
+				/*
+				var styles = xlsx.xl['styles.xml'];
+				$('fonts font:nth-child(2) color', styles).attr('rgb', 'FFFF0000');
+				$('fonts font:nth-child(2) sz', styles).attr('val', '20');
+				*/
+			}	        
 	    },
 	  ]	  
 	});
