@@ -2828,14 +2828,14 @@ function refresh_table(result) {
 	        messageTop: cus_id.substring(3) + cus_brn + cus_vol + " | " + header_title,
 	        title: '',
 	        exportOptions: {
-	          columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
+	          columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
 	        }
 	    },
 	    {
 	        extend: 'excelHtml5',        
 	        title: cus_id.substring(3) + cus_brn + cus_vol + " | " + header_title,
 	        exportOptions: {
-	          columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
+	          columns: [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
 	        },
 			customize: function (xlsx) {
 				var today = new Date();
